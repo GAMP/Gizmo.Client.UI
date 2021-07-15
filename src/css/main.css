@@ -200,6 +200,14 @@
 .giz-login__footer {
   margin-top: 22.3rem; }
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0; }
+
+body {
+  background: #fff; }
+
 .giz-header {
   min-height: 9.6rem; }
   [light-theme] .giz-header {
@@ -257,6 +265,19 @@
     color: #FFFFFF !important; }
     [light-theme] .giz-header .giz-menu > button {
       color: #6E7689 !important; }
+
+#navbar nav {
+  border-bottom: 1px solid #ddd; }
+  #navbar nav .nav-wrapper {
+    display: flex;
+    justify-content: space-between; }
+    #navbar nav .nav-wrapper ul {
+      list-style: none; }
+      #navbar nav .nav-wrapper ul li {
+        display: inline-block; }
+        #navbar nav .nav-wrapper ul li a {
+          text-decoration: none;
+          color: #000; }
 
 .giz-aside-nav {
   grid-area: nav; }
@@ -896,23 +917,6 @@ template {
 /* ==========================================================================
    Base styles: opinionated defaults
    ========================================================================== */
-html {
-  color: #222;
-  font-size: 10px;
-  line-height: 1.4; }
-
-@media (max-width: 1300px) {
-  html {
-    font-size: 8px; } }
-@media (max-width: 1100px) {
-  html {
-    font-size: 6px; } }
-@media (max-width: 900px) {
-  html {
-    font-size: 4px; } }
-@media (max-width: 600px) {
-  html {
-    font-size: 3px; } }
 /*
  * Remove text-shadow in selection highlight:
  * https://twitter.com/miketaylr/status/12228805301
@@ -933,10 +937,8 @@ html {
 /*
  * A better looking default horizontal rule
  */
-body {
-  background: #171c28; }
-  [light-theme] body {
-    background: #FFFFFF; }
+[light-theme] body {
+  background: #FFFFFF; }
 
 hr {
   display: block;
