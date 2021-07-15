@@ -1,0 +1,394 @@
+//== gizmo order tab section common style == //
+.giz-orders-popup-height {
+    height: 50rem !important;
+}
+
+.giz-orders-popup-caret {
+    transform: scale(1.2) rotate(-180deg);
+}
+
+.giz-order-open-body-bg {
+    background: $black-color;
+    opacity: 0.2;
+}
+
+//== gizmo orders popup
+
+.giz-orders-popup {
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 0px;
+    box-shadow: 0px 8px 80px rgba(0, 0, 0, 0.15);
+    transition: height 1s ease;
+
+    &__btn {
+        top: -64px;
+        list-style-type: $list-unstyled;
+        box-shadow: 0px 8px 80px rgba(0, 0, 0, 0.15);
+        border-radius: 4px 4px 0px 0px;
+        width: 5%; //set giz-order-popup-btn width according to aside-nav width
+        bottom: 0;
+
+        [light-theme] & {
+            color: $secondary-color !important;
+        }
+    }
+
+    &__text {
+        display: $display-none;
+        margin-right: 2rem;
+    }
+
+    &__icon {
+        padding-left: 0.1rem;
+    }
+
+    &__caret-icon {
+        right: 2.2rem;
+        display: none;
+    }
+
+    &__icon-1 {
+        margin: 0 0.2rem;
+    }
+
+}
+
+//gizmo order popup aside
+.giz-order-popup-aside {
+    padding-top: $spacer-28;
+    width: 33.7rem;
+    border-right: 1px solid #ccc;
+    height: 50rem;
+    background: $dark-light-color;
+
+    [light-theme] & {
+        background: $secondary-light;
+    }
+
+    &__ul {
+        padding: $spacer-0;
+        list-style: $list-unstyled;
+        margin: $spacer-0;
+        position: $position-relative;
+
+        a.active {
+            color: $primary-color;
+
+            &::after {
+                content: "";
+                position: $position-absolute;
+                right: 0;
+                top: 0;
+                width: 0.4rem;
+                height: $height-full;
+                background: $primary-color;
+            }
+        }
+    }
+
+    &__nav-link {
+        color: $secondary-color;
+        position: $position-relative;
+        list-style-type: $list-unstyled;
+        padding: 2rem 6rem;
+        display: $display-flex;
+        align-items: $align-center;
+        justify-content: $justify-start;
+        cursor: $cursor-pointer;
+        @extend %gizmo-font-19-normal;
+    }
+
+    .giz-notification {
+        margin-left: $spacer-0;
+        margin-right: $spacer-16;
+    }
+}
+
+//gizmo aside bottom link
+.giz-aside-bottom-link {
+    padding: 2rem 6rem;
+    margin-top: $spacer-48;
+
+    &__text {
+        font-weight: $font-weight-600;
+        font-size: $font-12;
+        line-height: 14px;
+        letter-spacing: $letter-spacing-8;
+        color: $dim-light;
+        margin-bottom: $spacer-12;
+
+        svg {
+            margin-right: $spacer-8;
+        }
+    }
+}
+//gizmo order popup main
+.giz-order-popup-main {
+    padding: $spacer-28;
+    width: 78%;
+    display: $display-flex;
+    flex-direction: $flex-column;
+
+    &__search-box {
+        width: $width-full;
+        display: $display-flex;
+    }
+
+    &__search-input {
+        width: 75%;
+
+        i {
+            font-size: $font-15;
+            color: $primary-color;
+            position: $position-absolute;
+            margin-left: $spacer-20;
+            margin-top: $spacer-16;
+        }
+
+        ::placeholder {
+            color: $gray-light-color;
+        }
+
+        input {
+            width: $width-full;
+            background: $white-color;
+            border: 1px solid $gray-dark;
+            height: 4.8rem;
+            outline: none;
+            padding-left: $spacer-48;
+            font-weight: $font-weight-600;
+            font-size: $font-15;
+            line-height: $line-height-16;
+            letter-spacing: $letter-spacing-8;
+            color: $secondary-color;
+
+            &:focus {
+                border-color: $primary-color;
+            }
+        }
+    }
+
+    &__search-box-btn {
+        width: 25%;
+
+        button {
+            border: 1px solid $gray-dark;
+            box-sizing: border-box;
+            border-radius: 4px;
+            height: 48px;
+            background: $white-color;
+            align-items: $align-center;
+            padding: $spacer-12;
+            font-weight: $font-weight-600;
+            font-size: $font-15;
+            line-height: $line-height-16;
+            letter-spacing: $letter-spacing-8;
+            color: $secondary-color;
+            margin-left: $spacer-24;
+            cursor: $cursor-pointer;
+
+            svg {
+                margin-right: $spacer-8;
+            }
+        }
+    }
+
+    &__transaction-detail {
+        width: $width-full;
+        margin-top: $spacer-28;
+        display: $display-flex;
+        height: 350px;
+        overflow-y: $overflow-scroll;
+    }
+
+    &__transaction-action {
+        width: 50%;
+        color: $secondary-color;
+
+        table {
+            width: $width-full;
+            font-weight: $font-weight-600;
+            font-size: $font-12;
+            line-height: 14px;
+            letter-spacing: $letter-spacing-8;
+
+            .giz-table-user-name {
+                font-weight: $font-weight-600;
+                font-size: $font-17;
+                line-height: $line-height-22;
+                letter-spacing: $letter-spacing-8;
+                color: $white-color;
+
+                [light-theme] & {
+                    color: $black-color;
+                }
+            }
+        }
+
+        .giz-list-item-selected {
+            color: $white-color;
+
+            table {
+                .giz-table-user-name {
+                    color: $white-color;
+                }
+            }
+        }
+    }
+
+    &__product-list {
+        .giz-data-grid {
+            td:nth-child(1) {
+                font-weight: $font-weight-600;
+                font-size: $font-15;
+                line-height: $line-height-16;
+                letter-spacing: $letter-spacing-8;
+                color: $white-color;
+
+                [light-theme] & {
+                    color: $black-color;
+                }
+            }
+        }
+        /* width */
+        ::-webkit-scrollbar {
+            width: 3px;
+        }
+        /* Track */
+        ::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 5px $gray-dark;
+            border-radius: 8px;
+        }
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #939DB5;
+            border-radius: 8px;
+        }
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: $dim-light;
+        }
+        ////////scroll end
+        width: 46%;
+        border: 1px solid $gray-dark;
+        border-radius: 4px;
+        background: $white-color;
+        margin-left: $spacer-24;
+        margin-right: $spacer-24;
+        padding: 2.4rem 3.2rem;
+
+        .giz-product-list-scroll {
+            height: 260px;
+            overflow-y: $overflow-scroll;
+        }
+    }
+
+    &__total-value {
+
+        .giz-total-value-text {
+            font-weight: $font-weight-600;
+            font-size: $font-12;
+            line-height: 14px;
+            letter-spacing: $letter-spacing-8;
+            color: $secondary-color;
+            text-transform: $text-uppercase;
+        }
+
+        .giz-total-value-number {
+            font-weight: $font-weight-600;
+            font-size: $font-20;
+            line-height: 29px;
+            display: $display-flex;
+            align-items: $align-center;
+            letter-spacing: -0.4px;
+            color: $primary-color;
+        }
+    }
+
+    &__note {
+        background: $white-color;
+        border: 1px solid $gray-dark;
+        border-radius: 4px;
+        margin-top: $spacer-24;
+        margin-bottom: $spacer-24;
+        font-weight: $font-weight-600;
+        font-size: $font-12;
+        line-height: 14px;
+        letter-spacing: $letter-spacing-8;
+        color: $secondary-color;
+    }
+
+    &__product-list-detail {
+        font-weight: $font-weight-600;
+        font-size: $font-12;
+        line-height: 14px;
+        letter-spacing: $letter-spacing-8;
+        color: $secondary-color;
+
+        th {
+            text-align: $text-align-left;
+            text-transform: uppercase;
+            font-weight: $font-weight-600;
+            font-size: $font-12;
+            line-height: 14px;
+            letter-spacing: $letter-spacing-8;
+            color: $secondary-color;
+        }
+
+        .giz-product-name {
+            font-weight: $font-weight-600;
+            font-size: $font-15;
+            line-height: $line-height-16;
+            letter-spacing: $letter-spacing-8;
+            color: $black-color;
+        }
+
+        .giz-product-count {
+            margin: 0px 8px;
+        }
+    }
+}
+
+//=== orders nav popup on nav open style === //
+.is-nav-opened {
+
+    .giz-orders-popup {
+
+        &__btn {
+            width: 22%; //set giz-order-popup-btn width according to aside-nav width
+            padding-left: 6rem;
+            padding-right: 6rem;
+        }
+
+        &__text {
+            display: $display-block;
+        }
+
+        &__caret-icon {
+            display: $display-block;
+        }
+
+        &__icon {
+            margin-right: 1.6rem;
+        }
+
+        &__icon-1 {
+            padding: 1.2rem;
+        }
+
+        &__icon-2 {
+            margin-left: 1.2rem;
+            padding: 1.2rem;
+        }
+    }
+}
+
+
+
+
+
+
+
+

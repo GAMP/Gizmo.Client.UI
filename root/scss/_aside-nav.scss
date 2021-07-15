@@ -1,0 +1,114 @@
+
+//== aside nav section common style ==//
+
+.giz-aside-nav {
+    grid-area: nav;
+
+    [light-theme] & {
+        border-color: $light-color !important;
+    }
+
+    &__logo-box {
+        height: 9.6rem;
+    }
+
+    &__logo {
+
+        img {
+            width: $width-full;
+        }
+
+        &--dark {
+            [light-theme] & {
+                display: $display-none;
+            }
+        }
+
+        &--white {
+            display: $display-none;
+
+            [light-theme] & {
+                display: $display-block;
+            }
+        }
+    }
+    //side nav menu
+    &__box {
+        height: calc(100vh - 20rem);
+        overflow-y: $overflow-auto;
+    }
+
+    &__menu {
+        direction: initial;
+    }
+
+    a {
+        list-style-type: $list-unstyled;
+        padding: $spacer-20;
+        font-size: 0;
+
+        [light-theme] & {
+            color: $secondary-color !important;
+        }
+
+        &:after {
+            content: '';
+            position: $position-absolute;
+            right: 0;
+            top: 0;
+            width: 0.4rem;
+            height: $height-full;
+        }
+    }
+
+    &__menu > a:hover, &__menu > a.active {
+        color: $white-color !important;
+
+        [light-theme] & {
+            color: $primary-color !important;
+        }
+
+        [light-theme] & a {
+            color: $primary-color !important;
+        }
+
+        [light-theme] & path {
+            fill: $primary-color !important;
+        }
+    }
+
+    &__menu > a:hover:after, &__menu > a.active:after {
+        background: $primary-color !important;
+    }
+
+    &__icon {
+        margin: 0 auto;
+    }
+
+    &__menu > a:hover path {
+        fill: $white-color !important;
+
+        [light-theme] & {
+            fill: $primary-color !important;
+        }
+    }
+}
+
+//is nav open logo size increase
+.is-nav-opened .giz-aside-nav__logo img{
+    width: 65%;    
+}
+
+//is nav open aside nav > a
+.is-nav-opened .giz-aside-nav__menu > a {
+    @extend %gizmo-font-19-normal;
+    padding: 2rem 6rem;
+}
+
+//is nav open aside nav icon
+.is-nav-opened .giz-aside-nav__icon {
+    padding-right: $spacer-16;
+    margin: $spacer-0;
+}
+
+
