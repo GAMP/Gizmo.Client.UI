@@ -6,6 +6,22 @@
 		<UseWPF>true</UseWPF>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <PlatformTarget>AnyCPU</PlatformTarget>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="images\Logo.svg" />
+	  <None Remove="Components\index.html" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="images\Logo.svg">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="6.0.100-preview.6.1003" />
 	</ItemGroup>
