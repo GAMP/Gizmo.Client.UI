@@ -1,223 +1,141 @@
 //== header section common style == //
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
 body {
     font-family: $font-family;
 }
 
+//color
+$bg-color: #040506;
+$btn-color: #258cf6;
+
 // nav bar
-#nav-bar {
 
-    .main-nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        position: relative;
-        flex-wrap: wrap;
-        background-color: #040506;
+#giz-navbar {
+    background: #040506;
 
-        .navbar-heading {
-            display: flex;
-            align-items: baseline;
+    .giz-nav {
+        list-style: $list-unstyled;
+        display: $display-flex;
+        justify-content: $justify-center;
+        flex-wrap: $flex-wrap;
 
-            .navbar-brand {
-                margin: 0 34px;
-                font-size: 1.25rem;
-                text-decoration: none;
+        &--logo {
+            flex: 1;
+            align-self: $align-self-center;
+
+            .giz-navbar-brand {
+                margin: $spacer-0 1.5rem;
+
+                img {
+                    vertical-align: text-bottom;
+                }
             }
 
             form {
-                position: relative;
+                display: $display-inline-block;
 
-                img {
-                    position: absolute;
-                    left: 10px;
-                    top: 10px;
-                }
-
-                .form-control {
-                    color: #FFFFFF;
-                    background-color: #040506;
-                    background-clip: padding-box;
+                input {
+                    color: rgba(255, 255, 255, 0.3);
+                    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                    background-color: $bg-color;
+                    box-sizing: initial;
                     border: none;
                     outline: none;
-                    padding: 10px 36px;
-                    font-size: 13px;
-                    line-height: 13px;
-                    width: 16rem;
-                    border-radius: 0.4rem;
+                    padding: 0.625rem 2.25rem;
+                    font-size: 0.813rem;
+                    line-height: 0.813rem;
+                    width: $width-full;
+                    border-radius: $rounded;
+                    background-image: url("../img/Search.svg");
+                    background-repeat: no-repeat;
+                    background-position: 0.625rem;
+                    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
                 }
             }
         }
 
-        .navbar-nav {
-            list-style: none;
-            display: flex;
-            overflow: hidden;
+        &--item:last-child {
+            padding: 0.875rem 1.375rem;
 
-            .nav-item {
-                border-left: 1px solid #2a2f34;
-                display: flex;
-                align-items: center;
+            img {
+                margin-right: 0.625rem;
+            }
 
-                .nav-link {
-                    display: block;
-                    padding: 20px 22px;
-                    font-size: 11px;
-                    line-height: 11px;
-                    color: #FFFFFF;
-                    text-decoration: none;
+            &:active {
+                background: linear-gradient(180deg, rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 100%);
+            }
+        }
 
-                    img {
-                        margin-right: 10px;
-                    }
-                    .notification {
-                        margin: 0px;
-                        vertical-align: super;
-                        height: 19px;
-                        width: 18px;
-                    }
+        &--item {
+            border-left: 1px solid #2a2f34;
+            display: $display-flex;
+            align-items: $align-center;
 
-                    div {
-                        display: flex;
+            &:hover {
+                background: rgba(176, 187, 203, 0.04);
+            }
+        }
 
-                        .system {
-                            display: flex;
-                            flex-direction: column;
-                            color: rgba(255, 255, 255, 0.45);
+        &--link {
+            font-size: 0.688rem;
+            line-height: 0.688rem;
+            color: $white-color;
+            display: $display-inline-block;
+            padding: 1.25rem 1.375rem;
 
-                            .user {
-                                font-size: 16px;
-                                margin-top: 6px;
-                                color: #FFFFFF;
-                            }
-                        }
-                    }
+            img {
+                margin-right: 0.625rem;
+            }
 
-                    .btn {
-                        border-radius: 3px;
-                        color: #FFFFFF;
-                        font-size: 15px;
-                        line-height: 15px;
-                        font-weight: 700;
-                        padding: 11px 11px;
-                        background: #258cf6;
-                        border: none;
-                        outline: none;
-                        margin-left: 12px;
-                        font-family: $font-family-2;
-                        text-align: center;
-                        cursor: pointer;
+            .giz-notifications {
+                margin: $spacer-0;
+                vertical-align: super;
+            }
+        }
 
-                        + img {
-                            margin-left: 22px;
-                            margin-right:0px;
-                            align-self: center;
-                        }
-                    }
+        &--avtar {
+            display: $display-flex;
+
+            .giz-about-user {
+                color: rgba(255, 255, 255, 0.45);
+                font-size: 0.688rem;
+                line-height: 0.688rem;
+
+                &--user {
+                    font-size: 1rem;
+                    font-weight: $font-weight-600;
+                    font-family: $font-family-2;
+                    color: $white-color;
+                    line-height: 1rem;
+                    margin-top: 0.375rem;
+                }
+            }
+
+            .giz-btn {
+                border-radius: 0.188rem;
+                color: $white-color;
+                font-size: 0.938rem;
+                line-height: 0.938rem;
+                font-weight: $font-weight-700;
+                letter-spacing: -0.015rem;
+                padding: 0.688rem 0.688rem;
+                background: $btn-color;
+                border: none;
+                outline: none;
+                margin-left: 0.75rem;
+                text-align: $text-align-center;
+                cursor: $cursor-pointer;
+                font-family: $font-family-2;
+                box-shadow: 0px 1px 12px rgba(37, 140, 246, 0.5);
+
+                + img {
+                    margin-left: 1.375rem;
+                    margin-right: $spacer-0;
+                    align-self: $align-self-center;
+                    cursor: $cursor-pointer;
                 }
             }
         }
+
+
     }
 }
-
-// .giz-header {
-//     min-height: 9.6rem;
-
-//     [light-theme] & {
-//         color: $secondary-color !important;
-//         border-bottom-color: $gray-dark !important;
-//     }
-
-//     &__menu {
-//         [light-theme] & {
-//             color: $secondary-color !important;
-//         }
-//     }
-
-//     &__menu-switch {
-//         -webkit-user-select: none;
-//         -moz-user-select: none;
-//         -ms-user-select: none;
-//         user-select: none;
-//     }
-
-//     &__toggle-btn {
-//         width: 3rem;
-//         height: 2rem;
-//     }
-
-//     &__toggle-line, &__toggle-btn:after, &__toggle-btn:before {
-//         content: '';
-//         position: $position-absolute;
-//         left: 0;
-//         width: $width-full;
-//         height: 1px;
-//         background: $white-color;
-//         bottom: 0;
-
-//         [light-theme] & {
-//             background: $secondary-color;
-//         }
-//     }
-
-//     &__toggle-btn:before {
-//         top: 0;
-//         bottom: auto;
-//     }
-
-//     &__toggle-line {
-//         top: 50%;
-//         transform: translateY(-50%);
-//     }
-
-//     &__user-dropdown-user-img {
-//         width: 3.2rem;
-//         border-radius: 50px;
-//         overflow: $overflow-hidden;
-//     }
-
-//     &__user-dropdown-user-text {
-//         white-space: $nowrap-white-space;
-
-//         i {
-//             transform: translateY(-2px);
-//         }
-
-//         [light-theme] & {
-//             color: $secondary-color !important;
-//         }
-//     }
-
-//     &__notification-icon {
-//         img {
-//             height: 2.5rem;
-//         }
-//     }
-
-//     &__notification-icon.is-active:after {
-//         content: '';
-//         position: $position-absolute;
-//         right: -0.3rem;
-//         width: 0.6rem;
-//         height: 0.6rem;
-//         border-radius: 50px;
-//         background: $primary-color;
-//     }
-
-//     & .giz-menu {
-//         & > button {
-//             font-size: 1.9rem;
-//             font-weight: 500;
-//             color: $white-color !important;
-
-//             [light-theme] & {
-//                 color: $secondary-color !important;
-//             }
-//         }
-//     }
-// }
