@@ -10,18 +10,23 @@ body {
     font-weight: normal !important;
     line-height: normal !important;
     letter-spacing: normal !important;
+    background-image: url(https://i.postimg.cc/W1NXyBF8/Background-img.jpg);
+    height: 100vh;
+    background-repeat: round;
 }
 
 // nav bar
 
 #giz-navbar {
-    background: $bg-color;
 
     .giz-nav {
         list-style: $list-unstyled;
         display: $display-flex;
         justify-content: $justify-center;
         flex-wrap: $flex-wrap;
+        border-bottom: 1px solid #282B32;
+        background-color: rgba(9, 11, 16, 0.1);
+        backdrop-filter: blur(20px);
 
         &--logo {
             flex: 1;
@@ -41,7 +46,7 @@ body {
                 input {
                     color: rgba(255, 255, 255, 0.3);
                     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-                    background-color: $bg-color;
+                    background-color: rgba(9, 11, 16, 0.1);
                     box-sizing: initial;
                     border: none;
                     outline: none;
@@ -53,7 +58,6 @@ body {
                     background-image: url("https://i.postimg.cc/X7yrggbx/Vector-2.png");
                     background-repeat: no-repeat;
                     background-position: 0.625rem;
-                    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
                 }
             }
         }
@@ -64,10 +68,6 @@ body {
             img {
                 margin-right: 0.625rem;
             }
-
-            &:active {
-                background: linear-gradient(180deg, rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 100%);
-            }
         }
 
         &--item {
@@ -77,6 +77,10 @@ body {
 
             &:hover {
                 background: rgba(176, 187, 203, 0.04);
+            }
+
+            &:active {
+                background: linear-gradient(180deg, rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 100%);
             }
         }
 
@@ -112,7 +116,10 @@ body {
                     color: $white-color;
                     line-height: 1rem;
                     margin-top: 0.375rem;
+                    letter-spacing: -0.015rem;
+
                 }
+
             }
 
             .giz-btn {
