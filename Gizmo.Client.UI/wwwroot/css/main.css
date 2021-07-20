@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Metrophobic&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;0,800;1,600;1,700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400%3b500%3b600%3b700%3b800&display=swap");
-.is-nav-opened .giz-aside-nav__menu > a, .content-search__input, .giz-order-popup-aside__nav-link {
+.content-search__input, .giz-order-popup-aside__nav-link {
   font-size: 1.9rem;
   font-weight: 500;
   line-height: 2.4rem;
@@ -216,155 +216,151 @@ body {
   height: 100vh;
   background-repeat: round; }
 
-#giz-navbar .giz-nav {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  border-bottom: 1px solid #282B32;
-  background-color: rgba(9, 11, 16, 0.1);
-  backdrop-filter: blur(20px); }
-  #giz-navbar .giz-nav--logo {
-    flex: 1;
-    align-self: center; }
-    #giz-navbar .giz-nav--logo .giz-navbar-brand {
-      margin: 0rem 1.5rem; }
-      #giz-navbar .giz-nav--logo .giz-navbar-brand img {
-        vertical-align: text-bottom; }
-    #giz-navbar .giz-nav--logo form {
-      display: inline-block; }
-      #giz-navbar .giz-nav--logo form input {
-        color: rgba(255, 255, 255, 0.3);
-        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        background-color: rgba(9, 11, 16, 0.1);
-        box-sizing: initial;
+#giz-navbar {
+  grid-area: header;
+  position: fixed;
+  width: 100%;
+  z-index: 1000; }
+  #giz-navbar .giz-nav {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #282B32;
+    background-color: rgba(9, 11, 16, 0.1);
+    backdrop-filter: blur(20px); }
+    #giz-navbar .giz-nav--logo {
+      flex: 1;
+      align-self: center; }
+      #giz-navbar .giz-nav--logo .giz-navbar-brand {
+        margin: 0rem 1.5rem; }
+        #giz-navbar .giz-nav--logo .giz-navbar-brand img {
+          vertical-align: text-bottom; }
+      #giz-navbar .giz-nav--logo form {
+        display: inline-block; }
+        #giz-navbar .giz-nav--logo form input {
+          color: rgba(255, 255, 255, 0.3);
+          text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+          background-color: rgba(9, 11, 16, 0.1);
+          box-sizing: initial;
+          border: none;
+          outline: none;
+          padding: 0.625rem 2.25rem;
+          font-size: 0.813rem;
+          line-height: 0.813rem;
+          width: 100%;
+          border-radius: 0.4rem;
+          background-image: url("https://i.postimg.cc/X7yrggbx/Vector-2.png");
+          background-repeat: no-repeat;
+          background-position: 0.625rem; }
+    #giz-navbar .giz-nav--item:last-child {
+      padding: 0.875rem 1.375rem; }
+      #giz-navbar .giz-nav--item:last-child img {
+        margin-right: 0.625rem; }
+    #giz-navbar .giz-nav--item {
+      border-left: 1px solid #2a2f34;
+      display: flex;
+      align-items: center; }
+      #giz-navbar .giz-nav--item:hover {
+        background: rgba(176, 187, 203, 0.04); }
+      #giz-navbar .giz-nav--item:active {
+        background: linear-gradient(180deg, rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 100%); }
+    #giz-navbar .giz-nav--link {
+      font-size: 0.688rem;
+      line-height: 0.688rem;
+      color: #FFFFFF;
+      display: inline-block;
+      padding: 1.25rem 1.375rem; }
+      #giz-navbar .giz-nav--link img {
+        margin-right: 0.625rem; }
+      #giz-navbar .giz-nav--link .giz-notifications {
+        margin: 0rem;
+        vertical-align: super; }
+    #giz-navbar .giz-nav--avtar {
+      display: flex; }
+      #giz-navbar .giz-nav--avtar .giz-about-user {
+        color: rgba(255, 255, 255, 0.45);
+        font-size: 0.688rem;
+        line-height: 0.688rem; }
+        #giz-navbar .giz-nav--avtar .giz-about-user--user {
+          font-size: 1rem;
+          font-weight: 600;
+          font-family: "Open Sans", sans-serif;
+          color: #FFFFFF;
+          line-height: 1rem;
+          margin-top: 0.375rem;
+          letter-spacing: -0.015rem; }
+      #giz-navbar .giz-nav--avtar .giz-btn {
+        border-radius: 0.188rem;
+        color: #FFFFFF;
+        font-size: 0.938rem;
+        line-height: 0.938rem;
+        font-weight: 700;
+        letter-spacing: -0.015rem;
+        padding: 0.688rem 0.688rem;
+        background: #258cf6;
         border: none;
         outline: none;
-        padding: 0.625rem 2.25rem;
-        font-size: 0.813rem;
-        line-height: 0.813rem;
-        width: 100%;
-        border-radius: 0.4rem;
-        background-image: url("https://i.postimg.cc/X7yrggbx/Vector-2.png");
-        background-repeat: no-repeat;
-        background-position: 0.625rem; }
-  #giz-navbar .giz-nav--item:last-child {
-    padding: 0.875rem 1.375rem; }
-    #giz-navbar .giz-nav--item:last-child img {
-      margin-right: 0.625rem; }
-  #giz-navbar .giz-nav--item {
-    border-left: 1px solid #2a2f34;
-    display: flex;
-    align-items: center; }
-    #giz-navbar .giz-nav--item:hover {
-      background: rgba(176, 187, 203, 0.04); }
-    #giz-navbar .giz-nav--item:active {
-      background: linear-gradient(180deg, rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 100%); }
-  #giz-navbar .giz-nav--link {
-    font-size: 0.688rem;
-    line-height: 0.688rem;
-    color: #FFFFFF;
-    display: inline-block;
-    padding: 1.25rem 1.375rem; }
-    #giz-navbar .giz-nav--link img {
-      margin-right: 0.625rem; }
-    #giz-navbar .giz-nav--link .giz-notifications {
-      margin: 0rem;
-      vertical-align: super; }
-  #giz-navbar .giz-nav--avtar {
-    display: flex; }
-    #giz-navbar .giz-nav--avtar .giz-about-user {
-      color: rgba(255, 255, 255, 0.45);
-      font-size: 0.688rem;
-      line-height: 0.688rem; }
-      #giz-navbar .giz-nav--avtar .giz-about-user--user {
-        font-size: 1rem;
-        font-weight: 600;
+        margin-left: 0.75rem;
+        text-align: center;
+        cursor: pointer;
         font-family: "Open Sans", sans-serif;
-        color: #FFFFFF;
-        line-height: 1rem;
-        margin-top: 0.375rem;
-        letter-spacing: -0.015rem; }
-    #giz-navbar .giz-nav--avtar .giz-btn {
-      border-radius: 0.188rem;
-      color: #FFFFFF;
-      font-size: 0.938rem;
-      line-height: 0.938rem;
-      font-weight: 700;
-      letter-spacing: -0.015rem;
-      padding: 0.688rem 0.688rem;
-      background: #258cf6;
-      border: none;
-      outline: none;
-      margin-left: 0.75rem;
-      text-align: center;
-      cursor: pointer;
-      font-family: "Open Sans", sans-serif;
-      box-shadow: 0px 1px 12px rgba(37, 140, 246, 0.5); }
-      #giz-navbar .giz-nav--avtar .giz-btn + img {
-        margin-left: 1.375rem;
-        margin-right: 0rem;
-        align-self: center;
-        cursor: pointer; }
+        box-shadow: 0px 1px 12px rgba(37, 140, 246, 0.5); }
+        #giz-navbar .giz-nav--avtar .giz-btn + img {
+          margin-left: 1.375rem;
+          margin-right: 0rem;
+          align-self: center;
+          cursor: pointer; }
 
-.giz-aside-nav {
+#giz-sidenavbar {
+  padding-top: 66px;
+  z-index: 999;
   grid-area: nav; }
-  [light-theme] .giz-aside-nav {
-    border-color: #eff0f2 !important; }
-  .giz-aside-nav__logo-box {
-    height: 9.6rem; }
-  .giz-aside-nav__logo img {
-    width: 100%; }
-  [light-theme] .giz-aside-nav__logo--dark {
-    display: none; }
-  .giz-aside-nav__logo--white {
-    display: none; }
-    [light-theme] .giz-aside-nav__logo--white {
-      display: block; }
-  .giz-aside-nav__box {
-    height: calc(100vh - 20rem);
-    overflow-y: auto; }
-  .giz-aside-nav__menu {
-    direction: initial; }
-  .giz-aside-nav a {
-    list-style-type: none;
-    padding: 2rem;
-    font-size: 0; }
-    [light-theme] .giz-aside-nav a {
-      color: #6E7689 !important; }
-    .giz-aside-nav a:after {
-      content: '';
-      position: absolute;
-      right: 0;
-      top: 0;
-      width: 0.4rem;
-      height: 100%; }
-  .giz-aside-nav__menu > a:hover, .giz-aside-nav__menu > a.active {
-    color: #FFFFFF !important; }
-    [light-theme] .giz-aside-nav__menu > a:hover, [light-theme] .giz-aside-nav__menu > a.active {
-      color: #5A67F2 !important; }
-    [light-theme] .giz-aside-nav__menu > a:hover a, [light-theme] .giz-aside-nav__menu > a.active a {
-      color: #5A67F2 !important; }
-    [light-theme] .giz-aside-nav__menu > a:hover path, [light-theme] .giz-aside-nav__menu > a.active path {
-      fill: #5A67F2 !important; }
-  .giz-aside-nav__menu > a:hover:after, .giz-aside-nav__menu > a.active:after {
-    background: #5A67F2 !important; }
-  .giz-aside-nav__icon {
-    margin: 0 auto; }
-  .giz-aside-nav__menu > a:hover path {
-    fill: #FFFFFF !important; }
-    [light-theme] .giz-aside-nav__menu > a:hover path {
-      fill: #5A67F2 !important; }
-
-.is-nav-opened .giz-aside-nav__logo img {
-  width: 65%; }
-
-.is-nav-opened .giz-aside-nav__menu > a {
-  padding: 2rem 6rem; }
-
-.is-nav-opened .giz-aside-nav__icon {
-  padding-right: 1.6rem;
-  margin: 0rem; }
+  #giz-sidenavbar .giz-sidenav {
+    height: 100vh;
+    width: 4.5rem;
+    border-right: 1px solid #282b32;
+    background: rgba(9, 11, 16, 0.5);
+    backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed; }
+    #giz-sidenavbar .giz-sidenav--link {
+      color: rgba(196, 204, 217, 0.5);
+      display: block;
+      padding: 1.25rem 1rem;
+      text-align: center;
+      text-transform: uppercase;
+      font-size: 0.625rem;
+      line-height: 0.625rem; }
+      #giz-sidenavbar .giz-sidenav--link svg {
+        margin-bottom: 0.375rem; }
+      #giz-sidenavbar .giz-sidenav--link svg {
+        fill: #c2c8d3;
+        fill-opacity: 0.3; }
+      #giz-sidenavbar .giz-sidenav--link:hover {
+        color: #FFFFFF;
+        background: rgba(176, 187, 203, 0.08); }
+    #giz-sidenavbar .giz-sidenav--item .giz-sidenav--link:hover:not(.active) svg {
+      fill: #FFFFFF !important;
+      fill-opacity: 1 !important; }
+    #giz-sidenavbar .giz-sidenav--item:last-child {
+      display: flex;
+      flex-grow: 1;
+      flex-shrink: 0;
+      flex-basis: 80%;
+      align-items: center; }
+    #giz-sidenavbar .giz-sidenav ul {
+      list-style: none; }
+      #giz-sidenavbar .giz-sidenav ul .active {
+        background: linear-gradient(180deg, rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 100%);
+        color: #FFFFFF;
+        border-left: 5px solid #258cf6;
+        padding: 1.25rem 0.875rem; }
+        #giz-sidenavbar .giz-sidenav ul .active svg {
+          fill: #258cf6 !important;
+          fill-opacity: 1 !important; }
 
 .giz-footer {
   height: 7rem;

@@ -18,13 +18,17 @@ body {
 // nav bar
 
 #giz-navbar {
+    grid-area: header;
+    position: $position-fixed;
+    width: 100%;
+    z-index: 1000;
 
     .giz-nav {
         list-style: $list-unstyled;
         display: $display-flex;
         justify-content: $justify-center;
         flex-wrap: $flex-wrap;
-        border-bottom: 1px solid #282B32;
+        border-bottom: 1px solid $giz-border-grey;
         background-color: rgba(9, 11, 16, 0.1);
         backdrop-filter: blur(20px);
 
@@ -117,9 +121,7 @@ body {
                     line-height: 1rem;
                     margin-top: 0.375rem;
                     letter-spacing: -0.015rem;
-
                 }
-
             }
 
             .giz-btn {
