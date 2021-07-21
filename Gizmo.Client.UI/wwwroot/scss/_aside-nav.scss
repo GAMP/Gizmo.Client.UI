@@ -18,7 +18,7 @@
         &--link {
             color: rgba(196, 204, 217, 0.5);
             display: $display-block;
-            padding: 1.25rem 1rem;
+            padding: 1.25rem 0.980rem;
             text-align: $text-align-center;
             text-transform: $text-uppercase;
             font-size: 0.625rem;
@@ -46,16 +46,14 @@
             }
         }
 
-        &--item:last-child {
-            display: $display-flex;
-            flex-grow: $flex-grow-1;
-            flex-shrink: $flex-shrink-0;
-            flex-basis: 80%;
-            align-items: $align-center;
-        }
-
         ul {
             list-style: $list-unstyled;
+
+            + div {
+                position: fixed;
+                left: 0;
+                bottom: 4.688rem;
+            }
 
             .active {
                 background: linear-gradient(180deg, rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 100%);
