@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Gizmo.Client.UI
+namespace Gizmo.Client.UI.Host.WPF
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
