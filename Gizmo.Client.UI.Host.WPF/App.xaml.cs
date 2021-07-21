@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
-namespace Gizmo.Client.UI.Wpf
+namespace Gizmo.Client.UI.Host.WPF
 {
     /// <summary>
     /// Interaction logic for App.xaml

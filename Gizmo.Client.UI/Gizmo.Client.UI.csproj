@@ -1,30 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<OutputType>WinExe</OutputType>
-		<TargetFramework>net6.0-windows10.0.19041</TargetFramework>
-		<UseWPF>true</UseWPF>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
 	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-	  <PlatformTarget>AnyCPU</PlatformTarget>
-	</PropertyGroup>
-
-	<ItemGroup>
-	  <None Remove="images\Logo.svg" />
-	  <None Remove="Components\index.html" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Content Include="images\Logo.svg">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="6.0.100-preview.6.1003" />
-	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Gizmo.Shared\Gizmo.Shared.csproj" />
@@ -32,12 +11,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Update="wwwroot\css\main.css">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Update="wwwroot\Index.html">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
+	  <Folder Include="Properties\" />
 	</ItemGroup>
 
 </Project>
