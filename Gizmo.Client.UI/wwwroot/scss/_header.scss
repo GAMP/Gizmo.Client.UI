@@ -7,10 +7,12 @@
 
 body {
     font-family: $font-family-metrophobic !important;
-    font-size: 1rem !important;
-    font-weight: normal !important;
-    line-height: normal !important;
-    letter-spacing: normal !important;
+    font-size: $base-font-size !important;
+    font-weight: $base-font-weight !important;
+    line-height: $base-line-height !important;
+    letter-spacing: $base-letter-spacing !important;
+    color: $base-color !important;
+    background-color: $base-background !important;
     background-image: url(https://i.postimg.cc/W1NXyBF8/Background-img.jpg);
     height: 100vh;
     background-repeat: round;
@@ -79,7 +81,7 @@ img,svg{
             }
         }
 
-        .active {
+        .active:not(&--logo) {
             background: linear-gradient(180deg, rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 100%);
         }
 
