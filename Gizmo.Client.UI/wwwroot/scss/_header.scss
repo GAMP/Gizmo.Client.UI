@@ -18,8 +18,8 @@ body {
     background-repeat: round;
 }
 
-img,svg{
-    vertical-align:middle;
+img, svg {
+    vertical-align: middle;
 }
 
 // nav bar
@@ -27,140 +27,147 @@ img,svg{
 #giz-navbar {
     grid-area: header;
     position: $position-fixed;
-    width: 100%;
+    width: $width-full;
     z-index: 1000;
 
-    .giz-nav {
-        list-style: $list-unstyled;
+    nav {
         display: $display-flex;
-        justify-content: $justify-center;
-        flex-wrap: $flex-wrap;
+        border-bottom: 1px solid #282b32;
+        align-items: $align-center;
         border-bottom: 1px solid $giz-border-grey;
         background-color: $giz-light-black;
         backdrop-filter: blur(20px);
 
-        &--logo {
-            flex: 1;
-            align-self: $align-self-center;
+        .giz-navbar-brand {
+            margin: 0 1.375rem;
+        }
 
-            .giz-navbar-brand {
-                margin: $spacer-0 1.5rem;
+        .giz-nav-container {
+            display: $display-flex;
+            justify-content: $justify-space-between;
+            flex-basis: 100%;
 
-                img {
-                    vertical-align: text-bottom;
+            .giz-nav-menu {
+                display: $display-flex;
+                align-items: $align-center;
+                list-style: $list-unstyled;
+
+                &--item {
+
+                    input {
+                        color: rgba(255, 255, 255, 0.3);
+                        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                        background-color: $giz-light-black;
+                        box-sizing: initial;
+                        border: none;
+                        outline: none;
+                        padding: 0.625rem 2.25rem;
+                        font-size: 0.813rem;
+                        line-height: 0.813rem;
+                        width: $width-full;
+                        border-radius: $rounded;
+                        background-image: url("https://i.postimg.cc/X7yrggbx/Vector-2.png");
+                        background-repeat: no-repeat;
+                        background-position: 0.625rem;
+                    }
                 }
             }
 
-            form {
-                display: $display-inline-block;
+            .giz-menu {
+                list-style: $list-unstyled;
+                display: $display-flex;
+                justify-content: $justify-center;
 
-                input {
-                    color: rgba(255, 255, 255, 0.3);
-                    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-                    background-color: $giz-light-black;
-                    box-sizing: initial;
-                    border: none;
-                    outline: none;
-                    padding: 0.625rem 2.25rem;
-                    font-size: 0.813rem;
-                    line-height: 0.813rem;
-                    width: $width-full;
-                    border-radius: $rounded;
-                    background-image: url("https://i.postimg.cc/X7yrggbx/Vector-2.png");
-                    background-repeat: no-repeat;
-                    background-position: 0.625rem;
+                &--item:last-child {
+                    padding: 0.875rem 1.375rem;
+
+                    svg {
+                        margin-right: 0.625rem;
+                    }
                 }
-            }
-        }
 
-        &--item:last-child {
-            padding: 0.875rem 1.375rem;
+                .active {
+                    background: linear-gradient(180deg, rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 100%);
+                }
 
-            svg {
-                margin-right: 0.625rem;
-            }
-        }
+                &--item {
+                    border-left: 1px solid $giz-light-border;
+                    display: $display-flex;
+                    align-items: $align-center;
 
-        .active:not(&--logo) {
-            background: linear-gradient(180deg, rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 100%);
-        }
+                    &:hover:not(.active) {
+                        background: $giz-dim-grey;
+                    }
 
-        &--item {
-            border-left: 1px solid $giz-light-border;
-            display: $display-flex;
-            align-items: $align-center;
+                    &:active {
+                        background: linear-gradient(180deg, rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 100%);
+                    }
+                }
 
-            &:hover {
-                background: $giz-dim-grey;
-            }
-
-            &:active {
-                background: linear-gradient(180deg, rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 100%);
-            }
-        }
-
-        &--link {
-            font-size: 0.688rem;
-            line-height: 0.688rem;
-            color: $white-color;
-            display: $display-inline-block;
-            padding: 1.25rem 1.375rem;
-
-            svg {
-                margin-right: 0.625rem;
-            }
-
-            .giz-notifications {
-                margin: $spacer-0;
-                vertical-align: super;
-            }
-
-            .active {
-                background: linear-gradient(180deg, rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 100%);
-            }
-        }
-
-        &--avtar {
-            display: $display-flex;
-
-            .giz-about-user {
-                color: $giz-dim-white;
-                font-size: 0.688rem;
-                line-height: 0.688rem;
-
-                &--user {
-                    font-size: 1rem;
-                    font-weight: $font-weight-600;
-                    font-family: $font-family-open_sans;
+                &--link {
+                    font-size: 0.688rem;
+                    line-height: 0.688rem;
                     color: $white-color;
-                    line-height: 1rem;
-                    margin-top: 0.375rem;
-                    letter-spacing: -0.015rem;
+                    display: $display-inline-block;
+                    padding: 1.25rem 1.375rem;
+
+                    svg {
+                        margin-right: 0.625rem;
+                    }
+
+                    .giz-notifications {
+                        margin: $spacer-0;
+                        vertical-align: super;
+                    }
+
+                    .active {
+                        background: linear-gradient(180deg, rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 100%);
+                    }
                 }
-            }
 
-            .giz-btn {
-                border-radius: 0.188rem;
-                color: $white-color;
-                font-size: 0.938rem;
-                line-height: 0.938rem;
-                font-weight: $font-weight-700;
-                letter-spacing: -0.015rem;
-                padding: 0.688rem 0.688rem;
-                background: $btn-color;
-                border: none;
-                outline: none;
-                margin-left: 0.75rem;
-                text-align: $text-align-center;
-                cursor: $cursor-pointer;
-                font-family: $font-family-open_sans;
-                box-shadow: 0px 1px 12px rgba(37, 140, 246, 0.5);
+                &--avtar {
+                    display: $display-flex;
 
-                + svg {
-                    margin-left: 1.375rem;
-                    margin-right: $spacer-0;
-                    align-self: $align-self-center;
-                    cursor: $cursor-pointer;
+                    .giz-about-user {
+                        color: $giz-dim-white;
+                        font-size: 0.688rem;
+                        line-height: 0.688rem;
+
+                        &--user {
+                            font-size: 1rem;
+                            font-weight: $font-weight-600;
+                            font-family: $font-family-open_sans;
+                            color: $white-color;
+                            line-height: 1rem;
+                            margin-top: 0.375rem;
+                            letter-spacing: -0.015rem;
+                        }
+                    }
+
+                    .giz-btn {
+                        border-radius: 0.188rem;
+                        color: $white-color;
+                        font-size: 0.938rem;
+                        line-height: 0.938rem;
+                        font-weight: $font-weight-700;
+                        letter-spacing: -0.015rem;
+                        padding: 0.688rem 0.688rem;
+                        background: $btn-color;
+                        border: none;
+                        outline: none;
+                        margin-left: 0.75rem;
+                        text-align: $text-align-center;
+                        cursor: $cursor-pointer;
+                        font-family: $font-family-open_sans;
+                        box-shadow: 0px 1px 12px rgba(37, 140, 246, 0.5);
+
+                        + svg {
+                            margin-left: 1.375rem;
+                            margin-right: $spacer-0;
+                            align-self: $align-self-center;
+                            cursor: $cursor-pointer;
+                        }
+                    }
                 }
             }
         }
