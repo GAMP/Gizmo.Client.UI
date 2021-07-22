@@ -35,4 +35,13 @@
 		<Folder Include="wwwroot\scss\" />
 	</ItemGroup>
 
+	<PropertyGroup>
+		<PostBuildEvent>
+			<!--copy client ui web assets-->
+			xcopy "$(SolutionDir)\Gizmo.Client.UI\wwwroot\" "$(TargetDir)wwwroot\_content\Gizmo.Client.UI\" /e /y
+			<!--copy shared components web assets-->
+			xcopy "$(SolutionDir)..\Gizmo.Web.Components\wwwroot\" "$(TargetDir)wwwroot\_content\Gizmo.Web.Components\" /e /y
+		</PostBuildEvent>
+	</PropertyGroup>
+
 </Project>
