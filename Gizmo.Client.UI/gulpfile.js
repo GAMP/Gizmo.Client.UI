@@ -2,39 +2,38 @@
 'use strict';
 
 const { src, dest } = require('gulp');
-
-
 var gulp = require('gulp');
-var sass = require('gulp-sass')(require('sass'));
 var connect = require('gulp-connect');
 var gcmq = require('gulp-group-css-media-queries');
 var cleanCSS = require('gulp-clean-css');
 var autoprefixer = require('gulp-autoprefixer');
-var concat = require('gulp-concat');
+var rename = require('gulp-rename');
+var sourcemaps = require('gulp-sourcemaps');
 
-sass.compiler = require('sass');
+//create sass compiler
+var nodeSass = require('node-sass');
+var gulpSass = require("gulp-sass");
+var sass = gulpSass(nodeSass);
 
 //sass compilation function
 function sassCompile() {
     return src('wwwroot/scss/main.scss')
+        .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
         .pipe(autoprefixer({
             cascade: false,
             overrideBrowserslist: ['last 2 versions']
         }))
         .pipe(gcmq())
+        .pipe(sourcemaps.write('.'))
         .pipe(dest('wwwroot/css'))
+        .pipe(rename("main.min.css"))
         .pipe(cleanCSS({
             level: 1
         }))
-        .pipe(connect.reload());s
-}
-
-//js file concat function
-function scripts() {
-    return src(['wwwroot/js/*.js', 'wwwroot/fontawesome/js/all.js'])
-        .pipe(concat('all.js'))
-        .pipe(dest('wwwroot'))
+        .pipe(rename("main.min.css"))
+        .pipe(sourcemaps.write('.'))
+        .pipe(dest('wwwroot/css'))
         .pipe(connect.reload());
 }
 
@@ -42,8 +41,6 @@ function scripts() {
 function watchTask() {
     gulp.watch('wwwroot/scss/*.scss', sassCompile);
     gulp.watch('wwwroot/scss/*/*.scss', sassCompile);
-    gulp.watch('wwwroot/js/*.js', scripts);   
-    gulp.watch('wwwroot/fontawesome/js/all.js', scripts);
 }
 
 //define our default sass compilation task
