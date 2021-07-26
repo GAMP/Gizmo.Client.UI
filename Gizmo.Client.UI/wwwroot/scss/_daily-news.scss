@@ -23,10 +23,15 @@ main {
                 }
             }
 
-            .giz-card {
-                background: #1B1D25;
+            .giz-card-carousel {
+                background: #1B1D25 !important;
                 box-shadow: $elevation-3;
+            }
+
+            .giz-card {
                 border-radius: $rounded-lg;
+                margin-bottom: 0.625rem;
+                background:#0E1015;
 
                 &--heading {
 
@@ -39,7 +44,7 @@ main {
                 &--body {
                     padding: 1.25rem 1.188rem;
 
-                    .card-title {
+                    .giz-card-title {
                         text-transform: $text-uppercase;
                         letter-spacing: $letter-spacing-24;
                         font-size: $font-11;
@@ -49,7 +54,7 @@ main {
                         line-height: 100%;
                     }
 
-                    .card-text {
+                    .giz-card-text {
                         font-size: $font-15;
                         font-family: $font-family-open-sans;
                         color: $white-color;
@@ -57,6 +62,32 @@ main {
                         letter-spacing: $letter-spacing-5;
                         line-height: 125%;
                     }
+                }
+            }
+
+            .giz-carousel {
+                display: $display-flex;
+                justify-content: $justify-center;
+                margin: 0.625rem 0 1.25rem 0;
+
+                &--indicator {
+                    width: 2.25rem;
+                    height: 0.25rem;
+                    margin-right: 0.313rem;
+                    margin-left: 0.313rem;
+                    cursor: $cursor-pointer;
+                    border: $border-0;
+                    transition: opacity .6s ease;
+                    background: rgba(47, 50, 62, 0.9);
+                    border-radius: $rounded;
+
+                    &:hover:not(.active) {
+                        background-color: #666A79;
+                    }
+                }
+
+                .active {
+                    background: $primary-color;
                 }
             }
         }
