@@ -24,11 +24,16 @@
   it will effect all web projects where we are using (Gizmo.Web.Components).
 
 * To resolve this problem, We are using override approach.
-  copy _variable and _typography .scss files from (Gizmo.Web.Components)
-  and paste both files inside the web project wwwroot/scss folder.
+  We override variables/classes in specific project.
+
+  for this, go to (Gizmo.Client.UI) > wwwroot > scss folder.
+  inside scss folder we see _variable.scss and _typography.scss file.
   where we can override variable/typography according to project requirements.
   It will not effect (Gizmo.Web.Components) and other web projects too.
   and woking with proper way.
+
+ 
+  
 
 
   
