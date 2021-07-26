@@ -2,20 +2,63 @@
 main {
     padding: 72px 0px 0px 72px;
 
-    #giz-news{
-       
-        .giz-daily-news{
+    #giz-news {
 
-    &--heading {
+        .giz-daily-news {
 
-        span {
-            color: #4a5560;
+            &--heading {
+
+                span {
+                    color: #4a5560;
+                }
+
+                svg {
+                    fill: $white-color;
+                    fill-opacity: 0.35;
+                    cursor: $cursor-pointer;
+
+                    &.active {
+                        fill-opacity: 1 !important;
+                    }
+                }
+            }
+
+            .giz-card {
+                background: #1B1D25;
+                box-shadow: $elevation-3;
+                border-radius: $rounded-lg;
+
+                &--heading {
+
+                    img {
+                        width: $width-full;
+                        height: auto;
+                    }
+                }
+
+                &--body {
+                    padding: 1.25rem 1.188rem;
+
+                    .card-title {
+                        text-transform: $text-uppercase;
+                        letter-spacing: $letter-spacing-24;
+                        font-size: $font-11;
+                        color: rgba(198, 216, 242, 0.55);
+                        text-shadow: $text-shadow-sm;
+                        margin-bottom: $spacer-8;
+                        line-height: 100%;
+                    }
+
+                    .card-text {
+                        font-size: $font-15;
+                        font-family: $font-family-open-sans;
+                        color: $white-color;
+                        font-weight: $font-weight-600;
+                        letter-spacing: $letter-spacing-5;
+                        line-height: 125%;
+                    }
+                }
+            }
         }
-
-    }
-
-    }
-
     }
 }
-
