@@ -1,6 +1,7 @@
 //== new apps section common style ==//
 
 #giz-apps {
+
     .giz-app-carousel {
 
         &--heading {
@@ -27,6 +28,64 @@
             line-height: $line-height-20;
             letter-spacing: $letter-spacing-5;
 
+            .active {
+
+                .giz-wrapper {
+
+                    .giz-btn {
+                        position: $position-absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        -ms-transform: translate(-50%, -50%);
+                        padding: 13px 49px;
+                        display: $display-block !important;
+                    }
+
+                    .giz-img-top::after {
+                        content: "";
+                        position: $position-absolute;
+                        top: 0;
+                        left: 0;
+                        width: 97%;
+                        height: $height-full;
+                        background: linear-gradient(180deg, rgba(4, 5, 6, 0.45) 0%, rgba(4, 5, 6, 0.9) 91.51%);
+                    }
+
+                    svg {
+                        display: $display-block !important;
+                    }
+                }
+
+                .giz-rating {
+                    visibility: $visibility-visible !important;
+                }
+
+                svg:not(.inactive){
+                    fill: $primary-color !important;
+                }
+            }
+
+            .giz-wrapper {
+                position: $position-relative;
+                cursor: $cursor-pointer;
+
+                .giz-btn {
+                    display: $display-none;
+                }
+
+                img {
+                    border-radius: $rounded;
+                }
+
+                svg {
+                    position: $position-absolute;
+                    top: 16px;
+                    right: 16px;
+                    display: $display-none;
+                }
+            }
+
             .card-text {
                 font-size: $font-12;
                 line-height: $line-height-12;
@@ -34,7 +93,22 @@
 
                 span {
                     color: #C6C9D8;
-                    letter-spacing:normal;
+                    letter-spacing: normal;
+                }
+
+                svg {
+                    fill: $white-color;
+                }
+
+                .giz-rating {
+                    margin-left: 0.625rem;
+                    color: $white-color;
+                    visibility: $visibility-invisible;
+                }
+
+                .inactive {
+                    fill: #BFC8EC;
+                    fill-opacity: 0.4;
                 }
             }
         }
