@@ -1,14 +1,22 @@
 //== new apps section common style ==//
-
+.apps{
+    grid-area:apps;
+}
 #giz-apps {
 
     .giz-app-carousel {
 
         &--heading {
+            display: grid;
+            grid-template-columns: 1fr .5fr;
 
             .heading-title {
                 font-size: $font-18;
                 letter-spacing: $letter-spacing-2;
+
+                + div {
+                    justify-self: right;
+                }
             }
 
             svg {
@@ -47,7 +55,7 @@
                         position: $position-absolute;
                         top: 0;
                         left: 0;
-                        width: 97%;
+                        width: 100%;
                         height: $height-full;
                         background: linear-gradient(180deg, rgba(4, 5, 6, 0.45) 0%, rgba(4, 5, 6, 0.9) 91.51%);
                     }
@@ -80,6 +88,7 @@
 
                 img {
                     border-radius: $rounded;
+                    width: -webkit-fill-available;
                 }
 
                 svg {
@@ -93,7 +102,7 @@
                     position: $position-absolute;
                     bottom: 13px;
                     @extend .card-text;
-                    width: 97%;
+                    width: 100%;
                     display: $display-none;
 
                     .giz-time {
@@ -102,7 +111,7 @@
                     }
 
                     hr {
-                        margin: 0.438rem 1.313rem;
+                        margin: 0.438rem 2.25rem;
                         border-bottom: 0px solid $border-dim;
                     }
                 }
