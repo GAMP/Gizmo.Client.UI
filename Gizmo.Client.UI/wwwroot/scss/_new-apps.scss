@@ -1,22 +1,17 @@
 //== new apps section common style ==//
-.apps{
-    grid-area:apps;
-}
+
 #giz-apps {
 
     .giz-app-carousel {
 
         &--heading {
             display: grid;
-            grid-template-columns: 1fr .5fr;
+            grid-template-columns: max-content max-content;
+            justify-content: space-between;
 
             .heading-title {
                 font-size: $font-18;
                 letter-spacing: $letter-spacing-2;
-
-                + div {
-                    justify-self: right;
-                }
             }
 
             svg {
@@ -28,6 +23,14 @@
                     fill-opacity: 1 !important;
                 }
             }
+        }
+
+        .giz-card-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+            grid-template-rows: minmax(200px,1fr);
+            grid-column-gap: 1.688rem;
+            grid-row-gap: 0.875rem;
         }
 
         &--card {
@@ -88,7 +91,9 @@
 
                 img {
                     border-radius: $rounded;
+                    width: -moz-available; 
                     width: -webkit-fill-available;
+                    width: fill-available;
                 }
 
                 svg {
@@ -111,7 +116,7 @@
                     }
 
                     hr {
-                        margin: 0.438rem 2.25rem;
+                        margin: 0.438rem 1.5rem;
                         border-bottom: 0px solid $border-dim;
                     }
                 }

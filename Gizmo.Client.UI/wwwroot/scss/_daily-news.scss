@@ -2,29 +2,33 @@
 
 main {
     padding: 72px 0px 0px 72px;
+
+    .giz-container {
+        display: grid;
+        grid-template-areas: 'news apps apps apps';
+        grid-template-columns: 1fr 3fr;
+        grid-template-rows: 1fr auto;
+
+        .news {
+            grid-area: news;
+        }
+
+        .apps {
+            grid-area: apps;
+        }
+    }
 }
 
-.giz-container {
-    display: grid;
-    grid-template-areas: 'news apps apps apps';
-    grid-template-columns: 1fr 3fr;
-    grid-template-rows: 1fr auto;
-}
 
-.card-wrapper {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
-    grid-template-rows: minmax(200px,1fr);
-    grid-column-gap: 27px;
-    grid-row-gap: 10px;
-}
 
 #giz-news {
-    grid-area: news;
 
     .giz-daily-news {
 
         &--heading {
+            display: grid;
+            grid-template-columns: max-content max-content;
+            justify-content: space-between;
 
             .heading-title {
                 font-size: $font-18;
