@@ -61,8 +61,12 @@
                     visibility: $visibility-visible !important;
                 }
 
-                svg:not(.inactive){
+                svg:not(.inactive) {
                     fill: $primary-color !important;
+                }
+
+                .giz-summary {
+                    display: $display-block !important;
                 }
             }
 
@@ -84,6 +88,24 @@
                     right: 16px;
                     display: $display-none;
                 }
+
+                .giz-summary {
+                    position: $position-absolute;
+                    bottom: 13px;
+                    @extend .card-text;
+                    width: 97%;
+                    display: $display-none;
+
+                    .giz-time {
+                        display: $display-flex;
+                        justify-content: $justify-space-around;
+                    }
+
+                    hr {
+                        margin: 0.438rem 1.313rem;
+                        border-bottom: 0px solid $border-dim;
+                    }
+                }
             }
 
             .card-text {
@@ -92,7 +114,7 @@
                 letter-spacing: $letter-spacing-2;
 
                 span {
-                    color: #C6C9D8;
+                    color: $light-blue;
                     letter-spacing: normal;
                 }
 
@@ -107,8 +129,7 @@
                 }
 
                 .inactive {
-                    fill: #BFC8EC;
-                    fill-opacity: 0.4;
+                    fill: $melrose-color;
                 }
             }
         }
