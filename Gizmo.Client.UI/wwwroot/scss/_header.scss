@@ -1,13 +1,6 @@
 //== header section common style == //
 
-body {
-    background: url(https://i.postimg.cc/W1NXyBF8/Background-img.jpg) no-repeat fixed;
-    background-size: cover;
-}
-
-//button
-
-// nav bar
+//== nav bar
 
 #giz-navbar {
     position: $position-fixed;
@@ -38,7 +31,7 @@ body {
                 &--item {
 
                     input {
-                        color: $gray-color;
+                        color: $dim-white;
                         text-shadow: $text-shadow-sm;
                         background-color: $dark-light-color;
                         box-sizing: initial;
@@ -113,7 +106,7 @@ body {
                     display: $display-flex;
 
                     .giz-about-user {
-                        color: $gray-color;
+                        color: $dim-white;
                         font-size: $font-11;
                         line-height: $line-height-11;
 
@@ -130,7 +123,9 @@ body {
 
                     .giz-btn-primary {
                         margin-left: 0.75rem;
-
+                        padding: 0.688rem;
+                        font-size: $font-15;
+                        line-height: $line-height-15;
 
                         + svg {
                             margin-left: 1.375rem;
@@ -140,29 +135,27 @@ body {
                         }
                     }
                 }
-
+                //== dropdown menu
                 .giz-dropdown-menu {
-                    background: rgba(9, 11, 16, 0.55);
-                    box-shadow: 0px 5px 10px rgba(8, 8, 13, 0.3);
+                    background: $dark-color;
+                    box-shadow: $elevation-4;
                     backdrop-filter: blur(20px);
                     width: 17.25rem;
                     position: $position-absolute;
                     border: 1px solid $border-color;
-                    z-index: 1000;
                     min-width: 10rem;
-                    background-clip: padding-box;
                     top: 100%;
                     left: -22px;
 
                     &--header {
                         display: grid;
                         grid-template-columns: 1fr 1fr;
-                        padding: 23px;
+                        padding: 1.438rem;
                     }
 
                     .giz-title {
                         text-transform: $text-uppercase;
-                        color: rgba(255, 255, 255, 0.6);
+                        color: $dim-white;
                         text-shadow: $text-shadow-sm;
                         font-size: $font-10;
                         line-height: $line-height-10;
@@ -181,7 +174,7 @@ body {
                             &::after {
                                 content: "";
                                 position: $position-absolute;
-                                border-left: 1px solid #242931;
+                                border-left: 1px solid $border-black-color;
                                 top: 50%;
                                 left: 0;
                                 height: $height-full;
@@ -205,15 +198,15 @@ body {
 
                     &--carousel {
                         text-transform: $text-uppercase;
-                        color: rgba(255, 255, 255, 0.6);
+                        color: $dim-white;
                         text-shadow: $text-shadow-sm;
                         font-size: $font-10;
                         line-height: $line-height-10;
                         display: $display-flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        margin-bottom: 13px;
-                        padding: 23px 23px 0 23px;
+                        align-items: $align-center;
+                        justify-content: $justify-space-between;
+                        margin-bottom: 0.813rem;
+                        padding: 1.438rem 1.438rem 0 1.438rem;
 
                         svg {
                             fill: $white-color;
@@ -228,41 +221,34 @@ body {
 
                     &--timing {
                         font-family: $font-family-open-sans;
-                        padding: 0 23px;
-                        border-bottom: 1px solid #2C3847;
+                        padding: 0 1.438rem 1.438rem 1.438rem;
+                        border-bottom: 1px solid $border-dark-blue;
 
                         .giz-pack {
                             font-weight: $font-weight-600;
                             line-height: $line-height-16;
                             letter-spacing: $letter-spacing-24;
-                            margin-bottom: 20px;
+                            margin-bottom: 1.25rem;
                         }
 
                         .giz-countdown {
                             font-weight: $font-weight-700;
-                            line-height: 26px;
+                            line-height: $line-height-26;
                             letter-spacing: $letter-spacing-24;
-                            font-size: 26px;
-                            margin-bottom: 12px;
+                            font-size: $font-26;
                         }
                     }
 
                     button {
-                        width: 100%;
-                        font-size: 13px;
-                        line-height: 13px;
+                        width: $width-full;
                     }
 
                     &--user-links {
-                        padding: 26px 23px;
-                        border-bottom: 1px solid #263649;
+                        padding: 1.625rem 1.438rem;
+                        border-bottom: 1px solid $border-nile-blue;
 
                         button {
-                            width: 100%;
                             margin-bottom: 0.625rem;
-                            font-size: 13px;
-                            line-height: 13px;
-                            padding: 13px;
 
                             &:last-of-type {
                                 margin-bottom: 0px !important;
@@ -271,7 +257,7 @@ body {
                     }
 
                     &--logout {
-                        padding: 26px 23px;
+                        padding: 1.625rem 1.438rem;
                     }
                 }
             }
