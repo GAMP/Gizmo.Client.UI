@@ -7,23 +7,6 @@ body {
 
 //button
 
-.giz-btn {
-    border-radius: $rounded-sm;
-    color: $white-color;
-    font-size: $font-15;
-    line-height: $line-height-15;
-    font-weight: $font-weight-700;
-    letter-spacing: $letter-spacing-24;
-    padding: 0.688rem;
-    background: $primary-color;
-    border: $border-0;
-    outline: $outline-0;
-    text-align: $text-align-center;
-    cursor: $cursor-pointer;
-    font-family: $font-family-open-sans;
-    box-shadow: $elevation-1;
-}
-
 // nav bar
 
 #giz-navbar {
@@ -145,8 +128,9 @@ body {
                         }
                     }
 
-                    .giz-btn {
+                    .giz-btn-primary {
                         margin-left: 0.75rem;
+
 
                         + svg {
                             margin-left: 1.375rem;
@@ -166,16 +150,25 @@ body {
                     border: 1px solid $border-color;
                     z-index: 1000;
                     min-width: 10rem;
-                    list-style: none;
                     background-clip: padding-box;
                     top: 100%;
-                    left: 0;
-                    padding: 26px 23px;
-                    display:none;
+                    left: -22px;
 
                     &--header {
                         display: grid;
                         grid-template-columns: 1fr 1fr;
+                        padding: 23px;
+                    }
+
+                    .giz-title {
+                        text-transform: $text-uppercase;
+                        color: rgba(255, 255, 255, 0.6);
+                        text-shadow: $text-shadow-sm;
+                        font-size: $font-10;
+                        line-height: $line-height-10;
+                        margin-bottom: 0.375rem;
+                        font-weight: normal;
+                        font-family: $font-family;
                     }
 
                     &--content {
@@ -200,23 +193,85 @@ body {
 
 
                     &--text {
-                        font-size: $font-16;
                         font-weight: $font-weight-600;
                         font-family: $font-family-open-sans;
-                        color: $white-color;
                         line-height: $line-height-16;
                         letter-spacing: $letter-spacing-24;
+                    }
 
-                        .giz-title {
-                            text-transform: $text-uppercase;
-                            opacity: 0.6;
-                            text-shadow: $text-shadow-sm;
-                            font-size: $font-10;
-                            line-height: $line-height-10;
-                            font-weight: normal;
-                            font-family: $font-family;
-                            margin-bottom: 0.375rem;
+                    .giz-dropdwon-menu--body {
+                        border-top: 1px solid $border-color;
+                    }
+
+                    &--carousel {
+                        text-transform: $text-uppercase;
+                        color: rgba(255, 255, 255, 0.6);
+                        text-shadow: $text-shadow-sm;
+                        font-size: $font-10;
+                        line-height: $line-height-10;
+                        display: $display-flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        margin-bottom: 13px;
+                        padding: 23px 23px 0 23px;
+
+                        svg {
+                            fill: $white-color;
+                            fill-opacity: 0.35;
+                            cursor: $cursor-pointer;
+
+                            &.active {
+                                fill-opacity: 1 !important;
+                            }
                         }
+                    }
+
+                    &--timing {
+                        font-family: $font-family-open-sans;
+                        padding: 0 23px;
+                        border-bottom: 1px solid #2C3847;
+
+                        .giz-pack {
+                            font-weight: $font-weight-600;
+                            line-height: $line-height-16;
+                            letter-spacing: $letter-spacing-24;
+                            margin-bottom: 20px;
+                        }
+
+                        .giz-countdown {
+                            font-weight: $font-weight-700;
+                            line-height: 26px;
+                            letter-spacing: $letter-spacing-24;
+                            font-size: 26px;
+                            margin-bottom: 12px;
+                        }
+                    }
+
+                    button {
+                        width: 100%;
+                        font-size: 13px;
+                        line-height: 13px;
+                    }
+
+                    &--user-links {
+                        padding: 26px 23px;
+                        border-bottom: 1px solid #263649;
+
+                        button {
+                            width: 100%;
+                            margin-bottom: 0.625rem;
+                            font-size: 13px;
+                            line-height: 13px;
+                            padding: 13px;
+
+                            &:last-of-type {
+                                margin-bottom: 0px !important;
+                            }
+                        }
+                    }
+
+                    &--logout {
+                        padding: 26px 23px;
                     }
                 }
             }
