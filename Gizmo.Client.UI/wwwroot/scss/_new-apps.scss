@@ -7,7 +7,7 @@
         &--heading {
             display: grid;
             grid-template-columns: max-content max-content;
-            justify-content: $justify-space-between;
+            justify-content: space-between;
 
             .heading-title {
                 font-size: $font-18;
@@ -41,7 +41,7 @@
 
             .active {
 
-                .giz-wrapper {
+                .giz-app-carousel--content {
 
                     .giz-btn {
                         position: $position-absolute;
@@ -68,7 +68,7 @@
                     }
                 }
 
-                .giz-rating {
+                .giz-card-text--rating {
                     visibility: $visibility-visible !important;
                 }
 
@@ -81,47 +81,7 @@
                 }
             }
 
-            .giz-wrapper {
-                position: $position-relative;
-                cursor: $cursor-pointer;
-
-                .giz-btn {
-                    display: $display-none;
-                }
-
-                img {
-                    border-radius: $rounded;
-                    width: -moz-available;
-                    width: -webkit-fill-available;
-                }
-
-                svg {
-                    position: $position-absolute;
-                    top: 16px;
-                    right: 16px;
-                    display: $display-none;
-                }
-
-                .giz-summary {
-                    position: $position-absolute;
-                    bottom: 13px;
-                    @extend .card-text;
-                    width: 100%;
-                    display: $display-none;
-
-                    .giz-time {
-                        display: $display-flex;
-                        justify-content: $justify-space-around;
-                    }
-
-                    hr {
-                        margin: 0.438rem 1.5rem;
-                        border-bottom: 0px solid $border-dim;
-                    }
-                }
-            }
-
-            .card-text {
+            .giz-card-text {
                 font-size: $font-12;
                 line-height: $line-height-12;
                 letter-spacing: $letter-spacing-2;
@@ -135,7 +95,7 @@
                     fill: $white-color;
                 }
 
-                .giz-rating {
+                &--rating {
                     margin-left: 0.625rem;
                     color: $white-color;
                     visibility: $visibility-invisible;
@@ -143,6 +103,55 @@
 
                 .inactive {
                     fill: $melrose-color;
+                }
+            }
+        }
+
+        &--content {
+            position: $position-relative;
+            cursor: $cursor-pointer;
+
+            .giz-btn {
+                display: $display-none;
+            }
+
+            img {
+                border-radius: $rounded;
+                width: -moz-available;
+                width: -webkit-fill-available;
+            }
+
+            svg {
+                position: $position-absolute;
+                top: 16px;
+                right: 16px;
+                display: $display-none;
+            }
+
+            .giz-summary {
+                position: $position-absolute;
+                bottom: 13px;
+                @extend .giz-card-text;
+                width: 100%;
+                display: $display-none;
+
+                &--time {
+                    display: $display-flex;
+                    justify-content: $justify-space-around;
+                }
+
+                .giz-bottom-line {
+                    position: relative;
+                    margin-bottom: 12px;
+
+                    &::after {
+                        content: "";
+                        border-bottom: 1px solid $border-dim;
+                        content: "";
+                        width: 76%;
+                        bottom: -6px;
+                        position: absolute;
+                    }
                 }
             }
         }
