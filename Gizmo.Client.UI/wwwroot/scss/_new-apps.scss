@@ -5,13 +5,12 @@
     .giz-app-carousel {
 
         &--heading {
-            display: grid;
+            display: $display-grid;
             grid-template-columns: max-content max-content;
             justify-content: $justify-space-between;
 
             .heading-title {
-                font-size: $font-18;
-                letter-spacing: $letter-spacing-2;
+                @include font-18;
             }
 
             svg {
@@ -26,7 +25,7 @@
         }
 
         .giz-card-wrapper {
-            display: grid;
+            display: $display-grid;
             grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
             grid-template-rows: minmax(200px,1fr);
             grid-column-gap: 1.688rem;
@@ -34,10 +33,9 @@
         }
 
         &--card {
-            font-family: $font-family-open-sans;
-            font-weight: $font-weight-600;
+            @include font-15;
             line-height: $line-height-20;
-            letter-spacing: $letter-spacing-5;
+            @include open-sans-600;
 
             .active {
 
@@ -113,6 +111,7 @@
 
             .giz-btn-primary {
                 display: $display-none;
+                @include btn-style;
             }
 
             img {
@@ -147,7 +146,6 @@
                     &::after {
                         content: "";
                         border-bottom: 1px solid $border-dim;
-                        content: "";
                         width: 76%;
                         bottom: -6px;
                         position: $position-absolute;

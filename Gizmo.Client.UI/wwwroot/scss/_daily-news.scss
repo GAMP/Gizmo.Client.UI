@@ -5,13 +5,12 @@
     .giz-daily-news {
 
         &--heading {
-            display: grid;
+            display: $display-grid;
             grid-template-columns: max-content max-content;
             justify-content: $justify-space-between;
 
             .heading-title {
-                font-size: $font-18;
-                letter-spacing: $letter-spacing-2;
+                @include font-18;
 
                 span {
                     color: $slate-gray;
@@ -39,7 +38,7 @@
             margin-bottom: 0.625rem;
             background: $dark-jungle;
             position: $position-relative;
-            box-shadow:$elevation-0;
+            box-shadow: $elevation-0;
 
             &--heading {
 
@@ -55,20 +54,17 @@
                 .giz-card-title {
                     text-transform: $text-uppercase;
                     letter-spacing: $letter-spacing-24;
-                    font-size: $font-11;
                     color: $blue-gray;
                     text-shadow: $text-shadow-sm;
                     margin-bottom: $spacer-8;
-                    line-height: $line-height-11;
+                    @include font-11;
                 }
 
                 .giz-card-text {
-                    font-size: $font-15;
-                    font-family: $font-family-open-sans;
                     color: $white-color;
-                    font-weight: $font-weight-600;
-                    letter-spacing: $letter-spacing-5;
                     line-height: $line-height-19;
+                    @include open-sans-600;
+                    @include font-15;
                 }
 
                 .giz-card-footer-text {
