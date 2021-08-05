@@ -6,11 +6,11 @@
     position: $position-fixed;
     width: $width-full;
     z-index: 1000;
+    border-bottom: 1px solid $border-color;
 
     nav {
         display: $display-flex;
         align-items: $align-center;
-        border-bottom: 1px solid $border-color;
         background-color: $dark-light-color;
         backdrop-filter: blur(20px);
 
@@ -30,21 +30,28 @@
 
                 &--item {
 
-                    input {
-                        color: $dim-white;
-                        text-shadow: $text-shadow-sm;
-                        background-color: $dark-light-color;
-                        box-sizing: initial;
-                        border: $border-0;
-                        outline: $outline-0;
-                        padding: 0.625rem 2.25rem;
-                        font-size: $font-13;
-                        line-height: $line-height-13;
-                        width: $width-full;
-                        border-radius: $rounded;
-                        background-image: url("https://i.postimg.cc/X7yrggbx/Vector-2.png");
-                        background-repeat: no-repeat;
-                        background-position: 0.625rem;
+                    form {
+                        position: $position-relative;
+
+                        input {
+                            color: $dim-white;
+                            text-shadow: $text-shadow-sm;
+                            background-color: $dark-light-color;
+                            box-sizing: initial;
+                            border: $border-0;
+                            outline: $outline-0;
+                            padding: 0.625rem 2.25rem;
+                            font-size: $font-13;
+                            line-height: $line-height-13;
+                            width: $width-full;
+                            border-radius: $rounded;
+                        }
+
+                        svg {
+                            position: $position-absolute;
+                            top: 8px;
+                            left: 8px;
+                        }
                     }
                 }
             }

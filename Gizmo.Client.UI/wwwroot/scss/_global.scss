@@ -50,3 +50,33 @@ button {
 .giz-btn-secondary {
     @include btn-secondary;
 }
+
+
+//============== media query
+
+
+//============ Media query for max width 1110px
+
+
+@media only screen and (max-width: 1110px) {
+    #giz-navbar {
+        white-space: $nowrap-white-space;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+
+        nav {
+            .giz-nav-menu {
+                flex-basis: 34%;
+                flex-grow: 1;
+                flex-shrink: 0;
+            }
+        }
+    }
+
+    main {
+        .giz-container {
+            grid-template-areas: 'news news news news' 'apps apps apps apps';
+        }
+    }
+}
