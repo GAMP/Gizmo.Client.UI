@@ -63,7 +63,7 @@
 
                 &--item:last-child {
                     padding: 0.875rem 1.375rem;
-                    position: relative;
+
 
                     svg {
                         margin-right: 0.625rem;
@@ -72,6 +72,52 @@
 
                 .active {
                     background: linear-gradient(to right, rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 100%);
+                }
+
+                .giz-active-apps {
+
+                    .giz-dropdown-menu {
+                        width: 21rem;
+                        display: none;
+                        top: 0;
+                        right: 0;
+                        z-index: 22;
+                        height: 100vh;
+
+
+                        &--header {
+                            text-align: center;
+                            padding: 47px 0;
+
+                            .giz-title {
+                                color: $primary-light-color;
+                                letter-spacing: $letter-spacing-24;
+                                margin-bottom: 15px;
+                                box-shadow: $elevation-0;
+                            }
+
+                            .giz-heading {
+                                font-size: $font-20;
+                                line-height: $line-height-20;
+                                letter-spacing: $letter-spacing-2;
+                            }
+                        }
+                    }
+                }
+
+                .giz-user-profile {
+                    position: $position-relative;
+
+                    .giz-dorpdown-menu {
+                        top: 100%;
+                        left: -22px;
+
+                        &--header {
+                            display: $display-grid;
+                            grid-template-columns: 1fr 1fr;
+                            padding: 1.438rem;
+                        }
+                    }
                 }
 
                 &--item {
@@ -137,6 +183,7 @@
                     }
                 }
                 //== dropdown menu
+
                 .giz-dropdown-menu {
                     background: $dark-jungle;
                     box-shadow: $elevation-4;
@@ -145,16 +192,7 @@
                     position: $position-absolute;
                     border: 1px solid $border-color;
                     min-width: 10rem;
-                    top: 100%;
-                    left: -22px;
                     display: $display-none;
-
-
-                    &--header {
-                        display: $display-grid;
-                        grid-template-columns: 1fr 1fr;
-                        padding: 1.438rem;
-                    }
 
                     .giz-title {
                         text-transform: $text-uppercase;
