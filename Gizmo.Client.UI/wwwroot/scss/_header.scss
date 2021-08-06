@@ -82,7 +82,7 @@
                         top: 0;
                         right: 0;
                         z-index: 22;
-                        height: 100vh;
+                        height: $height-full;
 
 
                         &--header {
@@ -106,12 +106,12 @@
                     }
 
                     .active {
-                        position: relative;
+                        position: $position-relative;
 
                         &::before {
                             background: linear-gradient(to right, rgba(44, 124, 244, 0.2) 0%, rgba(13, 16, 23, 0) 30%);
                             border-left: 2px solid $primary-color;
-                            position: absolute;
+                            position: $position-absolute;
                             left: 0;
                             height: 100%;
                             content: "";
@@ -122,20 +122,20 @@
                         }
 
                         .giz-user-action-btn {
-                            display: block !important;
+                            display: $display-block !important;
                         }
                     }
 
                     .giz-dropdown-menu--apps {
-                        display: grid;
+                        display: $display-grid;
                         grid-template-columns: 1fr 1fr;
-                        align-items: center;
+                        align-items: $align-center;
                         border-bottom: 1px solid $border-cinder-color;
-                        padding: 26px 24px;
+                        padding: 1.625rem 1.5rem;
 
                         .giz-user-action-btn {
                             justify-self: right;
-                            display: none;
+                            display: $display-none;
 
                             button {
                                 @include btn-style;
@@ -150,7 +150,7 @@
                     .giz-dropdown-menu--content {
 
                         img {
-                            margin-right: 16px;
+                            margin-right: 1rem;
                         }
                     }
                 }
