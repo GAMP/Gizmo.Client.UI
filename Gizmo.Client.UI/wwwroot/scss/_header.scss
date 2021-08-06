@@ -77,8 +77,8 @@
                 .giz-active-apps {
 
                     .giz-dropdown-menu {
-                        width: 21rem;
-                        display: none;
+                        width: 24rem;
+                        display: block;
                         top: 0;
                         right: 0;
                         z-index: 22;
@@ -86,12 +86,13 @@
 
 
                         &--header {
-                            text-align: center;
+                            text-align: $text-align-center;
                             padding: 47px 0;
+                            border-bottom: 1px solid $border-cinder-color;
 
                             .giz-title {
                                 color: $primary-light-color;
-                                letter-spacing: $letter-spacing-24;
+                                letter-spacing: $letter-spacing-15;
                                 margin-bottom: 15px;
                                 box-shadow: $elevation-0;
                             }
@@ -103,12 +104,61 @@
                             }
                         }
                     }
+
+                    .active {
+                        position: relative;
+
+                        &::before {
+                            background: linear-gradient(to right, rgba(44, 124, 244, 0.2) 0%, rgba(13, 16, 23, 0) 30%);
+                            border-left: 2px solid $primary-color;
+                            position: absolute;
+                            left: 0;
+                            height: 100%;
+                            content: "";
+                        }
+
+                        .giz-dropdown-menu--content {
+                            word-break: break-all;
+                        }
+
+                        .giz-user-action-btn {
+                            display: block !important;
+                        }
+                    }
+
+                    .giz-dropdown-menu--apps {
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        align-items: center;
+                        border-bottom: 1px solid $border-cinder-color;
+                        padding: 26px 24px;
+
+                        .giz-user-action-btn {
+                            justify-self: right;
+                            display: none;
+
+                            button {
+                                @include btn-style;
+
+                                svg {
+                                    margin: 0;
+                                }
+                            }
+                        }
+                    }
+
+                    .giz-dropdown-menu--content {
+
+                        img {
+                            margin-right: 16px;
+                        }
+                    }
                 }
 
                 .giz-user-profile {
                     position: $position-relative;
 
-                 .giz-dropdown-menu {
+                    .giz-dropdown-menu {
                         top: 100%;
                         left: -22px;
 
@@ -116,6 +166,10 @@
                             display: $display-grid;
                             grid-template-columns: 1fr 1fr;
                             padding: 1.438rem;
+                        }
+
+                        .giz-dropdwon-menu--body {
+                            border-top: 1px solid $border-color;
                         }
                     }
                 }
@@ -229,10 +283,6 @@
                     &--text {
                         @include font-16;
                         @include open-sans-600;
-                    }
-
-                    .giz-dropdwon-menu--body {
-                        border-top: 1px solid $border-color;
                     }
 
                     &--carousel {
