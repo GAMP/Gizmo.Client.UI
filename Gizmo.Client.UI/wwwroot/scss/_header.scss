@@ -75,7 +75,14 @@
                 }
 
                 .giz-active-apps {
-                    display:none;
+
+                   .active {
+                        .giz-dropdown-overlay {
+                            display:block !important;
+                        }
+                    }
+
+
 
                     .giz-dropdown-overlay {
                         position: $position-fixed;
@@ -86,15 +93,23 @@
                         bottom: 0;
                         background-color: $black-pearl;
                         z-index: 2;
-
+                        display:none;
+                       
                         .giz-dropdown-menu {
                             width: 24rem;
-                          
+                            display: block;
                             top: 0;
                             right: 0;
                             z-index: 22;
                             height: $viewport-height;
                             background: linear-gradient( 180deg, rgba(9, 11, 16, 0.6)0%, rgba(44, 48, 63, 0.4)75%, rgba(37, 140, 246, 0.45)148%);
+                            overflow: auto;
+
+                            &::-webkit-scrollbar {
+                                display: $display-none;
+                                -ms-overflow-style: none;
+                                scrollbar-width: none;
+                            }
 
                             &--header {
                                 text-align: $text-align-center;
@@ -114,29 +129,30 @@
                                     letter-spacing: $letter-spacing-2;
                                 }
                             }
+
+                            .active {
+                                position: $position-relative;
+
+                                &::before {
+                                    background: linear-gradient(to right, rgba(44, 124, 244, 0.2) 0%, rgba(13, 16, 23, 0) 30%);
+                                    border-left: 2px solid $primary-color;
+                                    position: $position-absolute;
+                                    left: 0;
+                                    height: $height-full;
+                                    content: "";
+                                }
+
+                                .giz-dropdown-menu--content {
+                                    word-break: break-all;
+                                }
+
+                                .giz-user-action-btn {
+                                    display: $display-block !important;
+                                }
+                            }
                         }
                     }
 
-                    .active {
-                        position: $position-relative;
-
-                        &::before {
-                            background: linear-gradient(to right, rgba(44, 124, 244, 0.2) 0%, rgba(13, 16, 23, 0) 30%);
-                            border-left: 2px solid $primary-color;
-                            position: $position-absolute;
-                            left: 0;
-                            height: $height-full;
-                            content: "";
-                        }
-
-                        .giz-dropdown-menu--content {
-                            word-break: break-all;
-                        }
-
-                        .giz-user-action-btn {
-                            display: $display-block !important;
-                        }
-                    }
 
                     .giz-dropdown-menu--apps {
                         display: $display-grid;
