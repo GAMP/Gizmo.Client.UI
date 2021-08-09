@@ -76,13 +76,11 @@
 
                 .giz-active-apps {
 
-                   .active {
+                    .active {
                         .giz-dropdown-overlay {
-                            display:block !important;
+                            display: block !important;
                         }
                     }
-
-
 
                     .giz-dropdown-overlay {
                         position: $position-fixed;
@@ -93,8 +91,8 @@
                         bottom: 0;
                         background-color: $black-pearl;
                         z-index: 2;
-                        display:none;
-                       
+
+
                         .giz-dropdown-menu {
                             width: 24rem;
                             display: block;
@@ -164,12 +162,127 @@
                         .giz-user-action-btn {
                             justify-self: right;
                             display: $display-none;
+                            position: relative;
 
                             button {
                                 @include btn-style;
 
                                 svg {
                                     margin: 0;
+                                }
+                            }
+
+
+                            .giz-sub-dropdown {
+                                position: absolute;
+                                top: 100%;
+                                left: -80px;
+                                z-index: 1000;
+                                background: rgba(9, 11, 16, 0.55);
+                                box-shadow: 0px 5px 10px rgba(8, 8, 13, 0.3);
+                                backdrop-filter: blur(20px);
+                                float: left;
+                                min-width: 11.563rem;
+                                padding: .5rem 0;
+                                margin-top: 7px;
+                                text-align: left;
+                                list-style: none;
+                                background-clip: padding-box;
+                                border: 1px solid rgba(0,0,0,.15);
+                                font-family: Open Sans;
+                                font-style: normal;
+                                font-weight: 600;
+                                font-size: 13px;
+                                line-height: 100%;
+                                color: #FFF;
+                                z-index: 5555;
+                                /* or 13px */
+
+                                letter-spacing: -0.02em;
+
+                                form {
+                                    display: inline-block;
+                                    margin: 0 11px;
+
+                                    .giz-label {
+                                        display: block;
+                                        position: relative;
+                                        padding-left: 17px;
+                                        margin-bottom: 12px;
+                                        cursor: pointer;
+                                        -webkit-user-select: none;
+                                        -moz-user-select: none;
+                                        -ms-user-select: none;
+                                        user-select: none;
+
+                                        input {
+                                            position: absolute;
+                                            opacity: 0;
+                                            cursor: pointer;
+                                            height: 0;
+                                            width: 0;
+                                        }
+
+                                        .giz-checkmark {
+                                            position: absolute;
+                                            top: 0;
+                                            left: 0;
+                                            height: 14px;
+                                            width: 14px;
+                                            background-color: transparent;
+                                            background: rgba(9, 10, 13, 0.2);
+                                            border: 1px solid #3C414A;
+                                            box-sizing: border-box;
+                                            border-radius: 4px;
+
+                                            &:after {
+                                                content: "";
+                                                position: absolute;
+                                                display: none;
+                                                left: 4px;
+                                                top: 1px;
+                                                width: 3px;
+                                                height: 7px;
+                                                border: solid white;
+                                                border-width: 0 1px 1px 0;
+                                                -webkit-transform: rotate(45deg);
+                                                -ms-transform: rotate(45deg);
+                                                transform: rotate(45deg);
+                                            }
+                                        }
+
+                                      input:checked ~ .giz-checkmark {
+                                            background-color: transparent;
+                                        }
+
+                                         input:checked ~ .giz-checkmark:after {
+                                            display: block;
+                                        }
+                                    }
+                           
+                                }
+
+                                .giz-dropdown-item {
+                                    display: block;
+                                    width: 100%;
+                                    text-align: inherit;
+                                    white-space: nowrap;
+                                    border: 0;
+                                    color: #FFF;
+                                    padding: 8px 0px;
+
+                                    svg {
+                                        margin: 0 11px;
+                                    }
+
+                                    .giz-icon-right {
+                                        float: right;
+                                        margin-top:3px;
+                                    }
+
+                                    &:hover {
+                                        background: rgba(39, 49, 57, 0.5);
+                                    }
                                 }
                             }
                         }
