@@ -76,31 +76,42 @@
 
                 .giz-active-apps {
 
-                    .giz-dropdown-menu {
-                        width: 24rem;
-                        display: block;
+                    .giz-dropdown-overlay {
+                        position: $position-fixed;
+                        width: $width-full;
+                        height: $viewport-height;
                         top: 0;
                         right: 0;
-                        z-index: 22;
-                        height: 100vh;
+                        bottom: 0;
+                        background-color: $black-pearl;
+                        z-index: 2;
 
+                        .giz-dropdown-menu {
+                            width: 24rem;
+                            display: block;
+                            top: 0;
+                            right: 0;
+                            z-index: 22;
+                            height: $viewport-height;
+                            background: linear-gradient( 180deg, rgba(9, 11, 16, 0.6)0%, rgba(44, 48, 63, 0.4)75%, rgba(37, 140, 246, 0.45)148%);
 
-                        &--header {
-                            text-align: $text-align-center;
-                            padding: 47px 0;
-                            border-bottom: 1px solid $border-cinder-color;
+                            &--header {
+                                text-align: $text-align-center;
+                                padding: 47px 0;
+                                border-bottom: 1px solid $border-cinder-color;
 
-                            .giz-title {
-                                color: $primary-light-color;
-                                letter-spacing: $letter-spacing-15;
-                                margin-bottom: 15px;
-                                box-shadow: $elevation-0;
-                            }
+                                .giz-title {
+                                    color: $primary-light-color;
+                                    letter-spacing: $letter-spacing-15;
+                                    margin-bottom: 15px;
+                                    box-shadow: $elevation-0;
+                                }
 
-                            .giz-heading {
-                                font-size: $font-20;
-                                line-height: $line-height-20;
-                                letter-spacing: $letter-spacing-2;
+                                .giz-heading {
+                                    font-size: $font-20;
+                                    line-height: $line-height-20;
+                                    letter-spacing: $letter-spacing-2;
+                                }
                             }
                         }
                     }
@@ -113,7 +124,7 @@
                             border-left: 2px solid $primary-color;
                             position: $position-absolute;
                             left: 0;
-                            height: 100%;
+                            height: $height-full;
                             content: "";
                         }
 
