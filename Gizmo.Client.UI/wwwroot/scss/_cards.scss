@@ -1,0 +1,57 @@
+//============= Client UI Cards style ===============//
+.giz-card {
+    border-radius: $rounded-lg;
+    margin-bottom: 0.625rem;
+    background: $dark-jungle;
+    position: $position-relative;
+    box-shadow: $elevation-0;
+    word-break: break-all;
+
+    &--heading {
+
+        img {
+            width: $width-full;
+            height: auto;
+        }
+    }
+
+    &--body {
+        padding: 1.25rem 1.188rem;
+
+        .giz-card-title {
+            text-transform: $text-uppercase;
+            letter-spacing: $letter-spacing-24;
+            color: $blue-gray;
+            text-shadow: $text-shadow-sm;
+            margin-bottom: $spacer-8;
+            @include font-11;
+        }
+
+        .giz-card-text {
+            color: $white-color;
+            line-height: $line-height-19;
+            @include open-sans-600;
+            @include font-15;
+        }
+
+        .giz-card-footer-text {
+            font-family: $font-family-open-sans;
+            font-size: $font-13;
+            line-height: $line-height-17;
+            color: $dim-blue-gray;
+            margin-top: $spacer-8;
+        }
+
+        &.active {
+            border-left: 3px solid $primary-color;
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+            border-top-right-radius: 8px;
+            background: linear-gradient(to right, rgba(44, 124, 244, 0.2) 0%, rgba(13, 16, 23, 0) 30%);
+        }
+    }
+}
+.giz-news-card {
+    background: $jet-black !important;
+    box-shadow: $elevation-3;
+}
