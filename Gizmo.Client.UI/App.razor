@@ -1,19 +1,11 @@
-﻿@*@inherits ComponentWithModelBase<AppPageViewModel>;*@
+﻿@inherits ComponentBase;
 
-@*<Router AppAssembly="@typeof(Program).Assembly">*@
-<Router>
+<Router AppAssembly="typeof(App).Assembly">
     <NotFound>
         <h1>Sorry</h1>
         <p>Sorry, there's nothing at this address.</p>
-        @*<Gizmo.Web.Manager.Pages.NotFound/>*@
     </NotFound>
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
     </Found>
 </Router>
-
-@*@code
-    {
-    [CascadingParameter]
-    RouteData RouteData { get; set; }
-    }*@
