@@ -1,14 +1,7 @@
-using Gizmo.Shared.ViewModels;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Host.Web
@@ -22,7 +15,7 @@ namespace Gizmo.Client.UI.Host.Web
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
+          
             await builder.Build().RunAsync();
         }
     }
