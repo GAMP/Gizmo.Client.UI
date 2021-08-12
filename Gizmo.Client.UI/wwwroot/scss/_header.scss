@@ -74,239 +74,6 @@
                     background: linear-gradient(to right, rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 100%);
                 }
 
-                .giz-active-apps {
-
-                    .active {
-                        .giz-dropdown-overlay {
-                            display: block !important;
-                        }
-                    }
-
-                    .giz-dropdown-overlay {
-                        position: $position-fixed;
-                        width: $width-full;
-                        height: $viewport-height;
-                        top: 0;
-                        right: 0;
-                        bottom: 0;
-                        background-color: $black-pearl;
-                        z-index: 2;
-                        display: none;
-
-
-
-                        .giz-dropdown-menu {
-                            width: 24rem;
-                            display: block;
-                            top: 0;
-                            right: 0;
-                            z-index: 22;
-                            height: $viewport-height;
-                            background: linear-gradient( 180deg, rgba(9, 11, 16, 0.6)0%, rgba(44, 48, 63, 0.4)75%, rgba(37, 140, 246, 0.45)148%);
-                            overflow: auto;
-
-                            &::-webkit-scrollbar {
-                                display: $display-none;
-                                -ms-overflow-style: none;
-                                scrollbar-width: none;
-                            }
-
-                            &--header {
-                                text-align: $text-align-center;
-                                padding: 2.938rem 0;
-                                border-bottom: 1px solid $border-cinder-color;
-
-                                .giz-title {
-                                    color: $primary-light-color;
-                                    letter-spacing: $letter-spacing-15;
-                                    margin-bottom: 0.938rem;
-                                    box-shadow: $elevation-0;
-                                }
-
-                                .giz-heading {
-                                    font-size: $font-20;
-                                    line-height: $line-height-20;
-                                    letter-spacing: $letter-spacing-2;
-                                }
-                            }
-
-                            .active {
-                                position: $position-relative;
-
-                                &::before {
-                                    background: linear-gradient(to right, rgba(44, 124, 244, 0.2) 0%, rgba(13, 16, 23, 0) 30%);
-                                    border-left: 2px solid $primary-color;
-                                    position: $position-absolute;
-                                    left: 0;
-                                    height: $height-full;
-                                    content: "";
-                                }
-
-                                .giz-dropdown-menu--content {
-                                    word-break: break-all;
-                                }
-
-                                .giz-user-action-btn {
-                                    display: $display-block !important;
-                                }
-                            }
-                        }
-                    }
-
-
-                    .giz-dropdown-menu--apps {
-                        display: $display-grid;
-                        grid-template-columns: 1fr 1fr;
-                        align-items: $align-center;
-                        border-bottom: 1px solid $border-cinder-color;
-                        padding: 1.625rem 1.5rem;
-
-                        .giz-user-action-btn {
-                            justify-self: right;
-                            display: $display-none;
-                            position: $position-relative;
-
-                            button {
-                                @include btn-style;
-
-                                svg {
-                                    margin: 0;
-                                }
-                            }
-
-
-                            .giz-sub-dropdown {
-                                position: $position-absolute;
-                                top: 100%;
-                                left: -80px;
-                                z-index: 1000;
-                                background: $dark-color;
-                                box-shadow: $elevation-4;
-                                backdrop-filter: blur(20px);
-                                list-style: $list-unstyled;
-                                min-width: 11.563rem;
-                                margin-top: 0.438rem;
-                                text-align: left;
-                                z-index: 5555;
-
-                                .giz-dropdown-item {
-                                    display: $display-block;
-                                    width: $width-full;
-                                    text-align: inherit;
-                                    white-space: $nowrap-white-space;
-                                    border: 0;
-                                    padding: 0.625rem 0px;
-                                    letter-spacing: $letter-spacing-2;
-                                    @include open-sans-600;
-                                    @include font-13;
-
-                                    form {
-                                        display: $display-inline-block;
-                                        margin: 0 0.688rem;
-
-                                        .giz-label {
-                                            display: $display-block;
-                                            position: $position-relative;
-                                            padding-left: 1.063rem;
-                                            margin-bottom: 0.75rem;
-                                            cursor: $cursor-pointer;
-                                            -webkit-user-select: none;
-                                            -moz-user-select: none;
-                                            -ms-user-select: none;
-                                            user-select: none;
-
-                                            input {
-                                                position: $position-absolute;
-                                                opacity: 0;
-                                                cursor: $cursor-pointer;
-                                                height: 0;
-                                                width: 0;
-                                            }
-
-                                            .giz-checkmark {
-                                                position: $position-absolute;
-                                                top: 0;
-                                                left: 0;
-                                                height: 0.875rem;
-                                                width: 0.875rem;
-                                                background: $dark-light-color;
-                                                border: 1px solid $border-bright-gray;
-                                                border-radius: $rounded;
-
-                                                &:after {
-                                                    left: 4px;
-                                                    top: 1px;
-                                                    width: 0.188rem;
-                                                    height: 0.438rem;
-                                                    border: solid $white-color;
-                                                    border-width: 0 1px 1px 0;
-                                                    -webkit-transform: rotate(45deg);
-                                                    -ms-transform: rotate(45deg);
-                                                    transform: rotate(45deg);
-                                                    content: "";
-                                                    position: $position-absolute;
-                                                    display: $display-none;
-                                                }
-                                            }
-
-                                            input:checked ~ .giz-checkmark {
-                                                background-color: $transparent-color;
-                                            }
-
-                                            input:checked ~ .giz-checkmark:after {
-                                                display: $display-block;
-                                            }
-                                        }
-                                    }
-
-                                    .giz-dropdown-link {
-                                        color: $dim-white;
-                                    }
-
-                                    .giz-terminate {
-                                        stroke: $dim-white;
-                                    }
-
-                                    svg {
-                                        margin: 0 0.688rem;
-                                        vertical-align: middle;
-                                        fill: $dim-white;
-                                    }
-
-                                    .giz-icon-right {
-                                        float: $float-right;
-                                        margin-top: 0.188rem;
-                                    }
-
-                                    &:hover {
-                                        background: $midnight-color;
-                                        color: $white-color;
-
-                                        svg {
-                                            fill: $white-color !important;
-                                        }
-
-                                        .giz-terminate {
-                                            stroke: $white-color;
-                                        }
-                                    }
-
-                                    &:hover .giz-dropdown-link {
-                                        color: $white-color;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    .giz-dropdown-menu--content {
-
-                        img {
-                            margin-right: 1rem;
-                        }
-                    }
-                }
-
                 .giz-user-profile {
                     position: $position-relative;
 
@@ -390,123 +157,127 @@
                 }
                 //== dropdown menu
 
-                .giz-dropdown-menu {
-                    background: $dark-jungle;
-                    box-shadow: $elevation-4;
-                    backdrop-filter: blur(20px);
-                    width: 17.25rem;
-                    position: $position-absolute;
-                    border: 1px solid $border-color;
-                    min-width: 10rem;
-                    display: $display-none;
-
-                    .giz-title {
-                        text-transform: $text-uppercase;
-                        color: $dim-white;
-                        text-shadow: $text-shadow-sm;
-                        margin-bottom: 0.375rem;
-                        font-weight: normal;
-                        font-family: $font-family;
-                        @include font-10;
-                    }
-
-                    &--content {
-                        display: $display-flex;
-                        align-items: $align-center;
-
-                        .giz-svg {
-                            position: $position-relative;
-
-                            &::after {
-                                content: "";
-                                position: $position-absolute;
-                                border-left: 1px solid $border-black-color;
-                                top: 50%;
-                                left: 0;
-                                height: $height-full;
-                                transform: translate(-50%,-50%);
-                                -ms-transform: translate(-50%, -50%);
-                                width: $width-full;
-                            }
-                        }
-                    }
-
-
-                    &--text {
-                        @include font-16;
-                        @include open-sans-600;
-                    }
-
-                    &--carousel {
-                        text-transform: $text-uppercase;
-                        color: $dim-white;
-                        text-shadow: $text-shadow-sm;
-                        display: $display-flex;
-                        align-items: $align-center;
-                        justify-content: $justify-space-between;
-                        margin-bottom: 0.813rem;
-                        padding: 1.438rem 1.438rem 0 1.438rem;
-                        @include font-10;
-
-                        svg {
-                            fill: $white-color;
-                            fill-opacity: 0.35;
-                            cursor: $cursor-pointer;
-                            background: inherit;
-
-                            &.active {
-                                fill-opacity: 1 !important;
-                            }
-                        }
-                    }
-
-                    &--timing {
-                        font-family: $font-family-open-sans;
-                        padding: 0 1.438rem 1.438rem 1.438rem;
-                        border-bottom: 1px solid $border-dark-blue;
-
-                        .giz-pack {
-                            @include font-16;
-                            @include open-sans-600;
-                            margin-bottom: 1.25rem;
-                        }
-
-                        .giz-countdown {
-                            font-weight: $font-weight-700;
-                            line-height: $line-height-26;
-                            letter-spacing: $letter-spacing-24;
-                            font-size: $font-26;
-                        }
-                    }
-
-                    &--wrapper {
-                        background: linear-gradient(180deg, rgba(90, 94, 107, 0) 0%, rgba(37, 140, 246, 0.166) 84.37%);
-
-                        button {
-                            width: $width-full;
-                            margin-left: $spacer-0;
-                            @include btn-style;
-                        }
-                    }
-
-                    &--user-links {
-                        padding: 1.625rem 1.438rem;
-                        border-bottom: 1px solid $border-nile-blue;
-
-                        button {
-                            margin-bottom: 0.625rem;
-
-                            &:last-of-type {
-                                margin-bottom: 0px !important;
-                            }
-                        }
-                    }
-
-                    &--logout {
-                        padding: 1.625rem 1.438rem;
-                    }
-                }
             }
         }
+    }
+
+}
+
+
+
+.giz-dropdown-menu {
+    background: $dark-jungle;
+    box-shadow: $elevation-4;
+    backdrop-filter: blur(20px);
+    width: 17.25rem;
+    position: $position-absolute;
+    border: 1px solid $border-color;
+    min-width: 10rem;
+    display: $display-none;
+
+    .giz-title {
+        text-transform: $text-uppercase;
+        color: $dim-white;
+        text-shadow: $text-shadow-sm;
+        margin-bottom: 0.375rem;
+        font-weight: normal;
+        font-family: $font-family;
+        @include font-10;
+    }
+
+    &--content {
+        display: $display-flex;
+        align-items: $align-center;
+
+        .giz-svg {
+            position: $position-relative;
+
+            &::after {
+                content: "";
+                position: $position-absolute;
+                border-left: 1px solid $border-black-color;
+                top: 50%;
+                left: 0;
+                height: $height-full;
+                transform: translate(-50%,-50%);
+                -ms-transform: translate(-50%, -50%);
+                width: $width-full;
+            }
+        }
+    }
+
+
+    &--text {
+        @include font-16;
+        @include open-sans-600;
+    }
+
+    &--carousel {
+        text-transform: $text-uppercase;
+        color: $dim-white;
+        text-shadow: $text-shadow-sm;
+        display: $display-flex;
+        align-items: $align-center;
+        justify-content: $justify-space-between;
+        margin-bottom: 0.813rem;
+        padding: 1.438rem 1.438rem 0 1.438rem;
+        @include font-10;
+
+        svg {
+            fill: $white-color;
+            fill-opacity: 0.35;
+            cursor: $cursor-pointer;
+            background: inherit;
+
+            &.active {
+                fill-opacity: 1 !important;
+            }
+        }
+    }
+
+    &--timing {
+        font-family: $font-family-open-sans;
+        padding: 0 1.438rem 1.438rem 1.438rem;
+        border-bottom: 1px solid $border-dark-blue;
+
+        .giz-pack {
+            @include font-16;
+            @include open-sans-600;
+            margin-bottom: 1.25rem;
+        }
+
+        .giz-countdown {
+            font-weight: $font-weight-700;
+            line-height: $line-height-26;
+            letter-spacing: $letter-spacing-24;
+            font-size: $font-26;
+        }
+    }
+
+    &--wrapper {
+        background: linear-gradient(180deg, rgba(90, 94, 107, 0) 0%, rgba(37, 140, 246, 0.166) 84.37%);
+
+        button {
+            width: $width-full;
+            margin-left: $spacer-0;
+            @include btn-style;
+        }
+    }
+
+    &--user-links {
+        padding: 1.625rem 1.438rem;
+        border-bottom: 1px solid $border-nile-blue;
+
+        button {
+            margin-bottom: 0.625rem;
+
+            &:last-of-type {
+                margin-bottom: 0px !important;
+            }
+        }
+    }
+
+    &--logout {
+        padding: 1.625rem 1.438rem;
     }
 }
