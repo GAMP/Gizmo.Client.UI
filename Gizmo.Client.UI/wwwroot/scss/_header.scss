@@ -155,12 +155,57 @@
                         }
                     }
                 }
-                //== dropdown menu
 
+                .giz-notification-dropdown {
+                    position: relative;
+
+                    .giz-dropdown-menu {
+                        display: block;
+                        top: 100%;
+                        left: -22px;
+
+                        .giz-notification-items {
+                            padding: 22px;
+                            border-bottom: 1px solid $border-nile-blue;
+                            position: relative;
+
+                            &:last-of-type {
+                                border-bottom: none;
+                            }
+
+                            &--title {
+                                @include font-14;
+                                @include open-sans-600;
+                                letter-spacing: $letter-spacing-24;
+                            }
+
+                            &--icon {
+                                position: absolute;
+                                right: 26px;
+                                top: 36px;
+
+                                svg {
+                                    fill: $primary-color;
+                                }
+                            }
+
+                            &--info {
+                                @include font-10;
+                                text-transform: $text-uppercase;
+                                text-shadow: $text-shadow-sm;
+                                margin-top: 20px;
+
+                                a {
+                                    color: $dim-white;
+                                    margin-left: 12px;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
-
 }
 
 

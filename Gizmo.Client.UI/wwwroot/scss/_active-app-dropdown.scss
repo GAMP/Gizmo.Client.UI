@@ -1,26 +1,53 @@
 //============= Active app dropdown menu style ===============//
 .giz-active-apps {
 
+    &:hover:after {
+        z-index: 10;
+        opacity: 1;
+        visibility: $visibility-visible;
+        position: $position-fixed;
+        height: $viewport-height;
+        width: $width-full;
+    }
+
+    &:after {
+        content: '';
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        transition: opacity .15s ease-in-out;
+        opacity: 0;
+        visibility: $visibility-invisible;
+        background-color: $black-pearl;
+        pointer-events: none;
+    }
+
+    &:hover .giz-dropdown-overlay {
+        display: $display-block !important;
+    }
+
+
     .active {
         .giz-dropdown-overlay {
-            display: block !important;
+            /* display: $display-block !important;*/
         }
     }
 
     .giz-dropdown-overlay {
-        position: $position-fixed;
+        /*      position: $position-fixed;
         width: $width-full;
         height: $viewport-height;
         top: 0;
         right: 0;
         bottom: 0;
         background-color: $black-pearl;
-        z-index: 2;
-        display: none;
+        z-index: 2;*/
+        display: $display-none;
 
         .giz-dropdown-menu {
             width: 24rem;
-            display: block;
+            display: $display-block;
             top: 0;
             right: 0;
             z-index: 22;
@@ -87,10 +114,6 @@
         .giz-user-action-btn {
             justify-self: right;
             display: $display-none;
-
-            button {
-                @include btn-style;
-            }
         }
     }
 
