@@ -1,0 +1,89 @@
+//============= Client Ui Notification dropdown menu ===============//
+.giz-notification-dropdown {
+    position: $position-relative;
+
+    .giz-dropdown-menu {
+        display: $display-block;
+        top: 100%;
+        left: -22px;
+
+        .giz-no-notification-wrapper {
+            display: $display-flex;
+            align-items: $align-center;
+            min-height: 21rem;
+            text-align: $text-align-center;
+
+            .giz-no-notification {
+                padding: 1.375rem;
+                letter-spacing: $letter-spacing-24;
+                @include open-sans-600;
+
+                &--title {
+                    font-size: $font-15;
+                    line-height: $line-height-20;
+                    margin-bottom: 1.25rem;       
+                }
+
+                &--text {
+                    @include font-13;
+                    line-height: $line-height-16;
+                    color: $dull-blue;
+                }
+            }
+        }
+
+        &--wrapper {
+            padding: 1.375rem;
+            text-align: $text-align-center;
+
+            a {
+                margin-top: 0.75rem;
+                font-size: $font-14;
+                letter-spacing: $letter-spacing-24;
+                color: $dull-blue;
+                font-family: $font-family-open-sans;
+                line-height: $line-height-17;
+            }
+        }
+
+        .giz-notification-wrapper {
+            display: $display-none;
+
+            .giz-notification-items {
+                padding: 1.375rem;
+                border-bottom: 1px solid $border-nile-blue;
+                position: $position-relative;
+
+
+                &--title {
+                    @include font-14;
+                    @include open-sans-600;
+                    letter-spacing: $letter-spacing-24;
+                    line-height: $line-height-17;
+                }
+
+                &--icon {
+                    position: $position-absolute;
+                    right: 26px;
+                    top: 42px;
+
+                    svg {
+                        fill: $primary-color;
+                    }
+                }
+
+                &--info {
+                    @include font-10;
+                    text-transform: $text-uppercase;
+                    text-shadow: $text-shadow-sm;
+                    margin-top: 1.25rem;
+
+                    a {
+                        color: $dim-white;
+                        margin-left: 0.75rem;
+                    }
+                }
+            }
+        }
+    }
+}
