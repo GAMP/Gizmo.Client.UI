@@ -8,119 +8,130 @@
     }
 
     }
-    .giz-sub-dropdown {
-        position: $position-absolute;
-        top: 100%;
-        right: 0;
-        z-index: 1000;
-        background: $dark-color;
-        box-shadow: $elevation-4;
-        backdrop-filter: blur(20px);
-        list-style: $list-unstyled;
-        min-width: 11.563rem;
-        margin-top: 0.438rem;
-        border: 1px solid $midnight-color;
-        display: $display-none;
-        text-align: $text-align-left;
+.giz-sub-dropdown {
+    position: $position-absolute;
+    top: 100%;
+    right: 0;
+    z-index: 1000;
+    background: $dark-color;
+    box-shadow: $elevation-4;
+    backdrop-filter: blur(20px);
+    list-style: $list-unstyled;
+    min-width: 11.563rem;
+    margin-top: 0.438rem;
+    border: 1px solid $midnight-color;
+    display: $display-none;
+    text-align: $text-align-left;
 
-        .giz-dropdown-item {
-            padding: 0.625rem 0px;
-            letter-spacing: $letter-spacing-2;
+    .giz-detail-btn {
+        border-top: 1px solid $border-black-gray;
+        padding: 0.813rem 0.75rem;
 
-            form {
-                display: $display-inline-block;
-                margin: 0 0.688rem;
+        .giz-primary {
+            padding: 0.75rem 0.813rem;
+            width: 100%;
+        }
+    }
 
-                .giz-label {
-                    display: $display-block;
-                    position: $position-relative;
-                    padding-left: 1.063rem;
-                    margin-bottom: 0.75rem;
+    .giz-dropdown-item {
+        padding: 0.625rem 0px;
+        letter-spacing: $letter-spacing-2;
+
+        form {
+            display: $display-inline-block;
+            margin: 0 0.688rem;
+
+            .giz-label {
+                display: $display-block;
+                position: $position-relative;
+                padding-left: 1.063rem;
+                margin-bottom: 0.75rem;
+                cursor: $cursor-pointer;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+
+                input {
+                    position: $position-absolute;
+                    opacity: 0;
                     cursor: $cursor-pointer;
-                    -webkit-user-select: none;
-                    -moz-user-select: none;
-                    -ms-user-select: none;
-                    user-select: none;
+                    height: 0;
+                    width: 0;
+                }
 
-                    input {
+                .giz-checkmark {
+                    position: $position-absolute;
+                    top: 0;
+                    left: 0;
+                    height: 0.875rem;
+                    width: 0.875rem;
+                    background: $dark-light-color;
+                    border: 1px solid $border-bright-gray;
+                    border-radius: $rounded;
+
+                    &:after {
+                        content: "";
                         position: $position-absolute;
-                        opacity: 0;
-                        cursor: $cursor-pointer;
-                        height: 0;
-                        width: 0;
-                    }
-
-                    .giz-checkmark {
-                        position: $position-absolute;
-                        top: 0;
-                        left: 0;
-                        height: 0.875rem;
-                        width: 0.875rem;
-                        background: $dark-light-color;
-                        border: 1px solid $border-bright-gray;
-                        border-radius: $rounded;
-
-                        &:after {
-                            content: "";
-                            position: $position-absolute;
-                            display: $display-none;
-                            left: 4px;
-                            top: 1px;
-                            width: 0.188rem;
-                            height: 0.438rem;
-                            border: solid $white-color;
-                            border-width: 0 1px 1px 0;
-                            -webkit-transform: rotate(45deg);
-                            -ms-transform: rotate(45deg);
-                            transform: rotate(45deg);
-                        }
-                    }
-
-                    input:checked ~ .giz-checkmark {
-                        background-color: $transparent-color;
-                    }
-
-                    input:checked ~ .giz-checkmark:after {
-                        display: $display-block;
+                        display: $display-none;
+                        left: 4px;
+                        top: 1px;
+                        width: 0.188rem;
+                        height: 0.438rem;
+                        border: solid $white-color;
+                        border-width: 0 1px 1px 0;
+                        -webkit-transform: rotate(45deg);
+                        -ms-transform: rotate(45deg);
+                        transform: rotate(45deg);
                     }
                 }
-            }
 
-            .giz-dropdown-link {
-                color: $dim-white;
-                @include open-sans-600;
-                @include font-13;
+                input:checked ~ .giz-checkmark {
+                    background-color: $transparent-color;
+                }
+
+                input:checked ~ .giz-checkmark:after {
+                    display: $display-block;
+                }
+            }
+        }
+
+        .giz-dropdown-link {
+            color: $dim-white;
+            @include open-sans-600;
+            @include font-13;
+        }
+
+
+        .giz-terminate {
+            stroke: $dim-white;
+        }
+
+        svg {
+            margin: 0 0.688rem;
+            fill: $dim-white;
+        }
+
+        .giz-icon-right {
+            float: $float-right;
+            margin-top: 0.188rem;
+        }
+
+        &:hover {
+            background: $midnight-color;
+            color: $white-color;
+
+            svg {
+                fill: $white-color !important;
             }
 
             .giz-terminate {
-                stroke: $dim-white;
-            }
-
-            svg {
-                margin: 0 0.688rem;
-                fill: $dim-white;
-            }
-
-            .giz-icon-right {
-                float: $float-right;
-                margin-top: 0.188rem;
-            }
-
-            &:hover {
-                background: $midnight-color;
-                color: $white-color;
-
-                svg {
-                    fill: $white-color !important;
-                }
-
-                .giz-terminate {
-                    stroke: $white-color;
-                }
-            }
-
-            &:hover .giz-dropdown-link {
-                color: $white-color;
+                stroke: $white-color;
             }
         }
+
+        &:hover .giz-dropdown-link {
+            color: $white-color;
+        }
     }
+}
