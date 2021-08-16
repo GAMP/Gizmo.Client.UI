@@ -1,7 +1,7 @@
+using Gizmo.Client.UI.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Host.Web
@@ -10,13 +10,36 @@ namespace Gizmo.Client.UI.Host.Web
     {
         public static async Task Main(string[] args)
         {
-            var builder = WebAssemblyHostBuilder.CreateDefault(args);
+            var hostBuilder = WebAssemblyHostBuilder.CreateDefault(args);
 
-            builder.RootComponents.Add<App>("#app");
+            hostBuilder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-          
-            await builder.Build().RunAsync();
+            #region CONFIGURATION
+
+            hostBuilder.Configuration.AddClientConfiguration();
+            hostBuilder.Services.AddClientConfiguration(hostBuilder.Configuration);
+
+            #endregion
+
+            #region LOGGING
+
+            //add logging service
+            hostBuilder.Services.AddLogging();
+
+            #endregion
+
+            hostBuilder.Services.AddSingleton<IComponentDiscoveryService, WebAssemblyComponentDiscoveryService>();
+
+            //add http client factory along with default http client
+            hostBuilder.Services.AddHttpClient("Default", cfg => { cfg.BaseAddress = new Uri(hostBuilder.HostEnvironment.BaseAddress); });
+
+
+            var host = hostBuilder.Build();
+
+            var ds = host.Services.GetRequiredService<IComponentDiscoveryService>();
+
+            await ds.InitializeAsync(default);
+            await host.RunAsync();
         }
-    }
+    }    
 }

@@ -1,4 +1,6 @@
-﻿<!--aside nav-->
+﻿@namespace Gizmo.Client.UI
+@inherits ComponentBase
+<!--aside nav-->
 <aside id="giz-sidenavbar">
     <div class="giz-sidenav">
         <!--ul-->
@@ -43,6 +45,14 @@
                     <span>shop</span>
                 </NavLink>
             </li>
+        </ul>
+        <ul>
+            @foreach (var pageModule in ComponentDiscoveryService.PageModules)
+            {
+                <li class="giz-sidenav--item">
+                    <PageModuleNavLinkTemplate MetaData="@pageModule"></PageModuleNavLinkTemplate>
+                </li>
+            }
         </ul>
         <!--/ul-->
         <!--ul-->
