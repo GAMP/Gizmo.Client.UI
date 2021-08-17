@@ -8,6 +8,7 @@
     }
 
     }
+
 .giz-sub-dropdown {
     position: $position-absolute;
     top: 100%;
@@ -23,17 +24,7 @@
     display: $display-none;
     text-align: $text-align-left;
 
-    .giz-detail-btn {
-        border-top: 1px solid $border-black-gray;
-        padding: 0.813rem 0.75rem;
-
-        .giz-primary {
-            padding: 0.75rem 0.813rem;
-            width: $width-full;
-        }
-    }
-
-    .giz-dropdown-item {
+    &--item {
         padding: 0.625rem 0px;
         letter-spacing: $letter-spacing-2;
 
@@ -96,13 +87,6 @@
             }
         }
 
-        .giz-dropdown-link {
-            color: $dim-white;
-            @include open-sans-600;
-            @include font-13;
-        }
-
-
         .giz-terminate {
             stroke: $dim-white;
         }
@@ -130,8 +114,25 @@
             }
         }
 
-        &:hover .giz-dropdown-link {
+        &:hover .giz-sub-dropdown--link {
             color: $white-color;
+        }
+    }
+
+    &--link {
+        color: $dim-white;
+        @include open-sans-600;
+        @include font-13;
+    }
+
+    &--btn {
+        border-top: 1px solid $border-black-gray;
+        padding: 0.813rem 0.75rem;
+        display: $display-none;
+
+        .giz-primary {
+            padding: 0.75rem 0.813rem;
+            width: $width-full;
         }
     }
 }
