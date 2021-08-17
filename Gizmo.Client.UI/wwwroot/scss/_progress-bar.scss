@@ -1,0 +1,35 @@
+//== progress bar style ==//
+.giz-progress-wrapper {
+    @include font-13;
+    @include open-sans-600;
+    text-align: $text-align-center;
+    text-transform: $text-uppercase;
+    position: $position-absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+
+    .giz-progress-text {
+        margin-bottom: 0.25rem;
+    }
+
+    .giz-progress {
+        height: 0.25rem;
+        overflow: $visibility-invisible;
+        background: rgba(73, 76, 86, 1);
+        border-radius: $rounded;
+        width: $width-full;
+
+        .giz-progress-bar {
+            width: 70%;
+            height: $height-full;
+            background-color: $primary-color;
+            border-color: $primary-color;
+            -webkit-transition: width .6s ease;
+            -o-transition: width .6s ease;
+            transition: width .6s ease;
+        }
+    }
+}
+
