@@ -107,7 +107,7 @@
 
                             .giz-animate {
                                 @include align-center;
-                                visibility: hidden;
+                                display: $display-none;
 
                                 svg {
                                     height: 3.125rem;
@@ -129,10 +129,7 @@
                                     &--overlay {
 
                                         .giz-card-title {
-                                            position: $position-absolute;
-                                            top: 50%;
-                                            left: 50%;
-                                            transform: translate(-50%,-50%);
+                                            @include align-center;
                                             text-align: $text-align-center;
 
                                             a {
