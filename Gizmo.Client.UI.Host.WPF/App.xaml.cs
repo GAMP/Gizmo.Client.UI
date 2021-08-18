@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.Services;
+using Gizmo.Shared.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -25,6 +26,12 @@ namespace Gizmo.Client.UI.Host.WPF
                      serviceCollection.AddSingleton<IComponentDiscoveryService, DesktopComponentDiscoveryService>();
                      serviceCollection.AddClientConfiguration(context.Configuration);
 
+                     serviceCollection.AddLocalization(opt =>
+                     {
+                         opt.ResourcesPath = "Properties";
+                     });
+                     serviceCollection.AddSingleton<ILocalizationService, UILocalizationService>();
+
                  }).ConfigureLogging(loggingBuilder =>
                  {
                      loggingBuilder.AddConsole();
@@ -33,6 +40,8 @@ namespace Gizmo.Client.UI.Host.WPF
                  {
                      configurationBuilder.AddClientConfiguration();
                  });
+
+ 
 
 
             var host = hostBuilder.Build();

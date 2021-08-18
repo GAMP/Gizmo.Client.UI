@@ -2,7 +2,8 @@
 
 namespace Gizmo.Client.UI.Pages
 {
-    [PageUIModule(), ModuleDisplayOrder(2)]
+    [ModuleGuid(KnownModules.MODULE_GAMES)]
+    [PageUIModule(TitleLocalizationKey = "MODULE_PAGE_GAMES_TITLE",DescriptionLocalizationKey = "MODULE_PAGE_GAMES_TITLE"), ModuleDisplayOrder(2)]
     [Route("/games")]
     public partial class Games : ComponentBase
     {

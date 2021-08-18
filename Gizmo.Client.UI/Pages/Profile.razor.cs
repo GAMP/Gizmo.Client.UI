@@ -2,7 +2,8 @@
 
 namespace Gizmo.Client.UI.Pages
 {
-    [PageUIModule(), ModuleDisplayOrder(3)]
+    [ModuleGuid(KnownModules.MODULE_PROFILE)]
+    [PageUIModule(TitleLocalizationKey = "MODULE_PAGE_PROFILE_TITLE", DescriptionLocalizationKey = "MODULE_PAGE_PROFILE_TITLE"), ModuleDisplayOrder(3)]
     [Route("/profile")]
     public partial class Profile : ComponentBase
     {

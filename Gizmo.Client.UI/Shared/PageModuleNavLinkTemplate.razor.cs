@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Gizmo.Shared.Services;
+using Microsoft.AspNetCore.Components;
 using System;
 
 namespace Gizmo.Client.UI
@@ -13,6 +14,9 @@ namespace Gizmo.Client.UI
         #endregion  
 
         #region PROPERTIES
+
+        [Inject()]
+        private ILocalizationService LocalizationService { get;set; }
         
         /// <summary>
         /// Gets or sets template component type.

@@ -2,7 +2,8 @@
 
 namespace Gizmo.Client.UI.Pages
 {
-    [PageUIModule(),ModuleDisplayOrder(0)]
+    [ModuleGuid(KnownModules.MODULE_HOME)]
+    [PageUIModule(TitleLocalizationKey = "MODULE_PAGE_HOME_TITLE", DescriptionLocalizationKey = "MODULE_PAGE_HOME_TITLE"),ModuleDisplayOrder(0)]
     [Route("/")]
     public partial class Home : ComponentBase
     {

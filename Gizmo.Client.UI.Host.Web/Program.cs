@@ -1,4 +1,5 @@
 using Gizmo.Client.UI.Services;
+using Gizmo.Shared.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,7 +19,7 @@ namespace Gizmo.Client.UI.Host.Web
 
             hostBuilder.Configuration.AddClientConfiguration();
             hostBuilder.Services.AddClientConfiguration(hostBuilder.Configuration);
-
+  
             #endregion
 
             #region LOGGING
@@ -29,6 +30,12 @@ namespace Gizmo.Client.UI.Host.Web
             #endregion
 
             hostBuilder.Services.AddSingleton<IComponentDiscoveryService, WebAssemblyComponentDiscoveryService>();
+
+            hostBuilder.Services.AddLocalization(opt =>
+            {
+                opt.ResourcesPath = "Properties";
+            });
+            hostBuilder.Services.AddSingleton<ILocalizationService, UILocalizationService>();
 
             //add http client factory along with default http client
             hostBuilder.Services.AddHttpClient("Default", cfg => { cfg.BaseAddress = new Uri(hostBuilder.HostEnvironment.BaseAddress); });
