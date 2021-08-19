@@ -29,6 +29,12 @@ namespace Gizmo.Client.UI.Services
         #endregion
 
         #region PROPERTIES
+
+        /// <summary>
+        /// Gets http client factory.
+        /// </summary>
+        private IHttpClientFactory HttpClientFactory => _httpClientFactory;
+
         #endregion
 
         #region OVERRIDES
@@ -38,7 +44,7 @@ namespace Gizmo.Client.UI.Services
             if (string.IsNullOrWhiteSpace(assemblyName))
                 throw new ArgumentNullException(nameof(assemblyName));
 
-            using (HttpClient client = _httpClientFactory.CreateClient("Default"))
+            using (HttpClient client = HttpClientFactory.CreateClient("Default"))
             {
                 //the default client should have the base address set so we can start requesting the assembly data with relative path
 
