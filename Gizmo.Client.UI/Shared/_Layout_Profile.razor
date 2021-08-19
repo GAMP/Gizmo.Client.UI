@@ -70,20 +70,41 @@
             <!--user profile links-->
             <ul class="giz-user-profile-menu">
                 <li class="giz-user-profile-menu--items">
-                    <a class="giz-user-profile-menu--links">User Details</a>
+                    <NavLink class="giz-user-profile-menu--links"
+                             href="/profile"
+                             Match=@NavLinkMatch.All>
+                        User Details
+                    </NavLink>
+                </li>              
+                <li class="giz-user-profile-menu--items">
+
+                    <NavLink class="giz-user-profile-menu--links"
+                             href="/profile/history"
+                             Match=@NavLinkMatch.All>
+                        Purchase History
+                    </NavLink>
+                </li>               
+                <li class="giz-user-profile-menu--items">
+                    <NavLink class="giz-user-profile-menu--links"
+                             href="/profile/deposits"
+                             Match=@NavLinkMatch.All>
+                        Deposits
+                    </NavLink>
                 </li>
                 <li class="giz-user-profile-menu--items">
-                    <a class="giz-user-profile-menu--links">Purchase History</a>
-                </li>
+                    <NavLink class="giz-sidenav--link giz-user-profile-menu--links"
+                             href="/profile/refills"
+                             Match=@NavLinkMatch.All>
+                        Time Refills
+                    </NavLink>
+                </li>              
                 <li class="giz-user-profile-menu--items">
-                    <a class="giz-user-profile-menu--links">Deposits</a>
-                </li>
-                <li class="giz-user-profile-menu--items">
-                    <a class="giz-user-profile-menu--links">Time Refills</a>
-                </li>
-                <li class="giz-user-profile-menu--items">
-                    <a class="giz-user-profile-menu--links">Notifications</a>
-                </li>
+                    <NavLink class="giz-sidenav--link giz-user-profile-menu--links"
+                             href="/profile/notifications"
+                             Match=@NavLinkMatch.All>
+                        Notifications
+                    </NavLink>
+                </li>               
             </ul>
             <!--user profile links-->
         </div>

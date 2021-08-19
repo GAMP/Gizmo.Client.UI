@@ -111,6 +111,10 @@
             &:last-child {
                 margin-bottom: 0;
             }
+
+            .active {
+                background: $metalic-black;
+            }
         }
 
         &--links {
@@ -123,6 +127,7 @@
             border-radius: $rounded-lg;
             padding: 1rem;
             cursor: $cursor-pointer;
+            color: $white-color;
 
             &:hover {
                 background: $metalic-black;
@@ -131,4 +136,51 @@
     }
 }
 
+#giz-user-history {
+    padding-top: 40px;
+    padding-left: 29px;
 
+    .giz-heading {
+        font-family: Open Sans;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 125%;
+        /* or 25px */
+        letter-spacing: -0.005em;
+        margin-bottom: 5px;
+    }
+
+    .giz-history {
+        table-layout: fixed;
+        min-width: 100%;
+        border-collapse: collapse;
+
+        .giz-table-heading {
+            font-size: 10px;
+            line-height: 100%;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.7);
+            text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+            td {
+                padding: 16px 30px;
+            }
+        }
+
+        .giz-table-data {
+            td {
+                padding: 16px 30px;
+                font-family: Open Sans;
+                font-weight: 600;
+                font-size: 14px;
+                line-height: 100%;
+                border-top: 1px solid #303D4E;
+                border-bottom: 1px solid #303D4E;
+                background: rgba(98, 123, 156, 0.05);
+                /* or 14px */
+                letter-spacing: -0.015em;
+            }
+        }
+    }
+}
