@@ -1,0 +1,53 @@
+//============= Client UI profile history style ===============//
+#giz-user-history {
+    padding: 2.5rem 0 2.5rem 1.813rem;
+
+    .giz-heading {
+        @include open-sans-600;
+        font-size: $font-20;
+        line-height: $line-height-25;
+        letter-spacing: $letter-spacing-5;
+        margin-bottom: 0.313rem;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+
+        .giz-history {
+            min-width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: $width-full;
+
+            td {
+                padding: 1rem 1.875rem;
+            }
+
+            .giz-table-heading {
+                @include font-10;
+                text-transform: $text-uppercase;
+                color: $dim-white;
+                text-shadow: $text-shadow-sm;
+            }
+
+            .giz-table-data {
+
+                td {
+                    @include open-sans-600;
+                    @include font-14;
+                    letter-spacing: $letter-spacing-24;
+                }
+
+                tr {
+                    border-top: 1px solid $border-dark-color;
+
+                    &:hover {
+                        background: $crystal-light;
+                        border-bottom: 1px solid $border-dark-color;
+                    }
+                }
+            }
+        }
+    }
+}
+
