@@ -22,13 +22,12 @@
 
                 button {
                     background: $secondary-dark !important;
-                    padding: 4px 6px;
                 }
             }
         }
 
         &--links {
-            display: grid;
+            display: $display-grid;
             grid-template-columns: 1fr auto;
             @include open-sans-600;
             font-size: $font-17;
@@ -44,6 +43,7 @@
                 @include font-13;
                 background: $black-russian;
                 letter-spacing: $letter-spacing-2;
+                padding: 0.25rem 0.375rem;
             }
 
             &:hover {
@@ -51,10 +51,20 @@
 
                 button {
                     background: $secondary-dark !important;
-                    padding: 0.25rem 0.375rem;
                 }
             }
         }
     }
-}
 
+    .giz-filter {
+        &--heading {
+            display: flex;
+            justify-content: space-between;
+            @include open-sans-600;
+            font-size: $font-15;
+            line-height: $line-height-19;
+            letter-spacing: $letter-spacing-5;
+            padding: 3.125rem 0 2.5rem;
+        }
+    }
+}
