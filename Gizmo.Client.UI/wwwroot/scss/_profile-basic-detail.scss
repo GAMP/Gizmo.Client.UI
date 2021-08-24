@@ -1,8 +1,44 @@
 //============= Profile basic style ===============//
-#giz-basic-detail{
+#giz-basic-detail {
+    padding: 2.5rem 0 2.5rem 1.813rem;
+    width: 33.5rem;
 
+    .giz-user-detail {
 
+        &--heading {
+            font-size: $font-20;
+            line-height: $line-height-25;
+            @include open-sans-600;
+            border-bottom: 1px solid $border-dark-color;
+            padding-bottom: 1.375rem;
+            letter-spacing: $letter-spacing-5;
 
+            svg {
+                vertical-align: baseline;
+                margin-left: 2rem;
+            }
+        }
 
+        .giz-private-info {
+            padding-top: 1.25rem;
+            padding-bottom: 1.25rem;
+            @include font-14;
+            @include open-sans-600;
+            letter-spacing: $letter-spacing-24;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            grid-auto-flow: row dense;
+            grid-row-gap: 1.063rem;
+            grid-column-gap: 6.625rem;
 
+            &--text {
+                color: #D0D9E3;
+                font-weight: $font-weight-400;
+            }
+
+            &--not-available {
+                color: rgba(208, 217, 227, 0.4);
+            }
+        }
+    }
 }
