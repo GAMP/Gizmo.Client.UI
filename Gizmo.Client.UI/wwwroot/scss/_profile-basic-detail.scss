@@ -15,29 +15,48 @@
 
             svg {
                 vertical-align: baseline;
-                margin-left: 2rem;
+                margin-left: 2.125rem;
             }
         }
 
-        .giz-private-info {
+        .giz-private-information {
             padding-top: 1.25rem;
-            padding-bottom: 1.25rem;
+            padding-bottom: 60px;
             @include font-14;
             @include open-sans-600;
             letter-spacing: $letter-spacing-24;
-            display: grid;
-            grid-template-columns: auto 1fr;
+            display: $display-grid;
+            grid-template-columns: .7fr 1fr;
             grid-auto-flow: row dense;
             grid-row-gap: 1.063rem;
-            grid-column-gap: 6.625rem;
+            grid-column-gap: 0.188rem;
 
             &--text {
-                color: #D0D9E3;
+                color: $light-gray;
                 font-weight: $font-weight-400;
+
+                .giz-changepassword-input {
+                    display: $display-flex;
+
+                    &--dot {
+                        height: 0.563rem;
+                        width: 0.563rem;
+                        background: $white-color;
+                        border-radius: $rounded-circle;
+                        margin-right: 0.188rem;
+                    }
+                }
             }
 
             &--not-available {
-                color: rgba(208, 217, 227, 0.4);
+                color: $light-dim-gray-color !important;
+            }
+        }
+
+        .giz-changepassword-btn {
+
+            .giz-btn-primary {
+           padding:0.625rem;
             }
         }
     }
