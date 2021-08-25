@@ -57,6 +57,7 @@
     }
 
     .giz-filter {
+
         &--heading {
             display: $display-flex;
             justify-content: $justify-space-between;
@@ -67,13 +68,45 @@
             padding: 3.125rem 0 2.5rem;
         }
 
-        .giz-card {
-            &--body {
-                border-radius: 8px;
+        .giz-card-wrapper {
 
-                .giz-card-text {
-                    font-size: $font-17;
-                    line-height: $line-height-21;
+            &:hover {
+
+                .giz-sub-dropdown {
+                    display: block;
+
+                    &--btn {
+                        display: block;
+                    }
+                }
+            }
+
+            .active {
+                border-radius: $rounded-lg !important;
+
+                &::before {
+                    border-radius: $rounded-lg;
+                }
+
+                .giz-card--body {
+                    border-radius: $rounded-sm 0px 0px $rounded-sm !important;
+                }
+
+                & + .giz-sub-dropdown {
+                    top: 18%;
+                }
+            }
+
+            .giz-card {
+                padding: 0.125rem 0;
+                cursor: pointer;
+
+                &--body {
+
+                    .giz-card-text {
+                        font-size: $font-17;
+                        line-height: $line-height-21;
+                    }
                 }
             }
         }
