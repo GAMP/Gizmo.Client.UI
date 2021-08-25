@@ -118,6 +118,34 @@
                 }
             }
         }
+
+        .giz-playing {
+            position: $position-absolute;
+            bottom: 13px;
+            width: $width-full;
+            display: $display-flex;
+            justify-content: $justify-space-around;
+
+            &--text {
+                @include font-12;
+                @include open-sans-600;
+                letter-spacing: $letter-spacing-2;
+
+                .giz-playing-indicator {
+                    height: 0.5rem;
+                    width: 0.5rem;
+                    background: #DC1C1C;
+                    border-radius: $rounded-circle;
+                    margin-right: 0.188rem;
+                    display: $display-inline-block;
+                }
+            }
+
+            &--count {
+                @include font-12;
+                text-shadow: $text-shadow-sm;
+            }
+        }
     }
 
     .active {
@@ -170,7 +198,7 @@
         }
 
         .giz-summary {
-            display: $display-block !important;
+            /*display: $display-block !important;*/
         }
     }
 
@@ -199,5 +227,3 @@
         }
     }
 }
-
-
