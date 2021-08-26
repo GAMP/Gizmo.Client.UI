@@ -1,8 +1,7 @@
 //============= Apps Card style ===============//
 .giz-apps-card {
-    @include font-15;
+    font-size: $font-16;
     line-height: $line-height-20;
-    @include open-sans-600;
     word-break: break-word;
 
     &--overlay {
@@ -147,6 +146,24 @@
                 font-weight: $font-weight-400;
             }
         }
+
+        .giz-offer {
+            @extend .giz-playing;
+
+            &--text {
+                @extend .giz-playing--text;
+            }
+
+            &--score {
+                @extend .giz-playing--count;
+                font-weight: $font-weight-700;
+                color: $primary-color;
+
+                svg {
+                    vertical-align: baseline;
+                }
+            }
+        }
     }
 
     .active {
@@ -171,6 +188,7 @@
                 width: $width-full;
                 height: $height-full;
                 background: linear-gradient(180deg, rgba(4, 5, 6, 0.45) 0%, rgba(4, 5, 6, 0.9) 91.51%);
+                border-radius: $rounded-sm;
             }
 
             .giz-heart {
@@ -178,7 +196,7 @@
             }
 
             .giz-like {
-               /* display: $display-block !important;*/
+                /* display: $display-block !important;*/
 
                 svg {
                     fill: none;
@@ -204,14 +222,21 @@
         }
     }
 
+    .giz-card-title {
+        @include open-sans-600;
+    }
+
     .giz-card-text {
         font-size: $font-12;
         line-height: $line-height-12;
         letter-spacing: $letter-spacing-2;
+        @include open-sans-600;
 
         span {
             color: $light-blue;
             letter-spacing: normal;
+            font-weight: $font-weight-400;
+            font-family: $font-family;
         }
 
         svg {

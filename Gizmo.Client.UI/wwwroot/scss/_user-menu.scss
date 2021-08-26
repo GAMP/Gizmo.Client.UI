@@ -1,0 +1,63 @@
+//== user menu section == //
+.giz-category-menu {
+    border-radius: $rounded-lg;
+    background: $dark-jungle;
+    list-style: $list-unstyled;
+
+    &--heading {
+        border-bottom: 1px solid $border-color;
+        padding: 1.25rem 0.625rem !important;
+    }
+
+    &--items {
+        padding: 0.625rem 0.625rem 0 0.625rem;
+        @include open-sans-600;
+        font-size: $font-17;
+        line-height: $line-height-21;
+        letter-spacing: $letter-spacing-5;
+
+        &:last-child {
+            padding-bottom: 0.625rem !important;
+        }
+
+        svg {
+            margin-right: 1.063rem;
+            vertical-align: baseline;
+            cursor: $cursor-pointer;
+        }
+
+        .active {
+            background: $metalic-black;
+
+            .giz-search-number {
+                background: $secondary-dark !important;
+            }
+        }
+    }
+
+    &--links {
+        display: $display-grid;
+        grid-template-columns: 1fr auto;
+        background: $black-forest;
+        border-radius: $rounded-lg;
+        padding: 1rem;
+        cursor: $cursor-pointer;
+        color: $white-color;
+
+        .giz-search-number {
+            @include font-13;
+            background: $black-russian;
+            letter-spacing: $letter-spacing-2;
+            padding: 0.25rem 0.375rem;
+            border-radius: $rounded-sm;
+        }
+
+        &:hover {
+            background: $metalic-black;
+
+            .giz-search-number {
+                background: $secondary-dark !important;
+            }
+        }
+    }
+}
