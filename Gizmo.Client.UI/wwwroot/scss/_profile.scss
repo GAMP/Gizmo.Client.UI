@@ -103,13 +103,16 @@
         border-radius: $rounded-lg;
         background: $dark-jungle;
         list-style: $list-unstyled;
-        padding: 0.625rem;
 
         &--items {
-            margin-bottom: 0.625rem;
+            padding: 0.625rem 0.625rem 0 0.625rem;
+            @include open-sans-600;
+            font-size: $font-17;
+            line-height: $line-height-21;
+            letter-spacing: $letter-spacing-5;
 
             &:last-child {
-                margin-bottom: 0;
+                padding-bottom: 0.625rem !important;
             }
 
             .active {
@@ -119,10 +122,6 @@
 
         &--links {
             display: $display-block;
-            @include open-sans-600;
-            font-size: $font-17;
-            line-height: $line-height-21;
-            letter-spacing: $letter-spacing-5;
             background: $black-forest;
             border-radius: $rounded-lg;
             padding: 1rem;
