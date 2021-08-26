@@ -93,8 +93,13 @@
                     border-radius: $rounded-lg;
                 }
 
+                &::after{
+                    border:none;
+                }
+
                 .giz-card--body {
                     border-radius: $rounded-sm 0px 0px $rounded-sm !important;
+                    border-left: 3px solid $primary-dark;
                 }
 
                 & + .giz-sub-dropdown {
@@ -104,9 +109,10 @@
 
             .giz-card {
                 padding: 0.125rem 0;
-                cursor: pointer;
+                cursor: $cursor-pointer;
 
                 &--body {
+                    border-left: 3px solid $transparent-color;
 
                     .giz-card-text {
                         font-size: $font-17;

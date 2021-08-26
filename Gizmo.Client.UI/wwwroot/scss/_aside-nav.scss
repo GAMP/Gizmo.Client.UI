@@ -14,6 +14,32 @@
         background: $dark-color;
         backdrop-filter: blur(20px);
 
+        .giz-nav{
+
+        .active {
+            background: linear-gradient(to right, rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 75%);
+            color: $white-color;
+            padding: 1.25rem 0.875rem;
+            position: $position-relative;
+
+            &::before {
+                position: $position-absolute;
+                content: "";
+                top: 0;
+                left: 0;
+                border-left: 5px solid $primary-dark;
+                height: $height-full;
+                width: $width-full;
+            }
+
+            svg {
+                fill: $primary-color !important;
+                fill-opacity: 1 !important;
+            }
+        }
+
+        }
+
         &--link {
             color: $gray-light-color;
             display: $display-block;
@@ -49,18 +75,6 @@
 
         ul {
             list-style: $list-unstyled;
-
-            .active {
-                background: linear-gradient(to right, rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 75%);
-                color: $white-color;
-                border-left: 5px solid $primary-dark;
-                padding: 1.25rem 0.875rem;
-
-                svg {
-                    fill: $primary-color !important;
-                    fill-opacity: 1 !important;
-                }
-            }
         }
     }
 }
