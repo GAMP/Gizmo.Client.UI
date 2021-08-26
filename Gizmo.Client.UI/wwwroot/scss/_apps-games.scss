@@ -15,10 +15,15 @@
 
         &--items {
             padding: 0 0.625rem 0.688rem 0.625rem;
+            @include open-sans-600;
+            font-size: $font-17;
+            line-height: $line-height-21;
+            letter-spacing: $letter-spacing-5;
 
             svg {
                 margin-right: 1.063rem;
                 vertical-align: baseline;
+                cursor: $cursor-pointer;
             }
 
             .active {
@@ -34,10 +39,6 @@
         &--links {
             display: $display-grid;
             grid-template-columns: 1fr auto;
-            @include open-sans-600;
-            font-size: $font-17;
-            line-height: $line-height-21;
-            letter-spacing: $letter-spacing-5;
             background: $black-forest;
             border-radius: $rounded-lg;
             padding: 1rem;
@@ -93,8 +94,8 @@
                     border-radius: $rounded-lg;
                 }
 
-                &::after{
-                    border:none;
+                &::after {
+                    border: none;
                 }
 
                 .giz-card--body {
