@@ -71,15 +71,12 @@
             padding-top: 1.25rem;
             border-bottom: 1px solid $border-color;
             height: calc(30.563rem - 10rem);
-            position: relative;
+            position: $position-relative;
 
             .giz-no-order-wrapper {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
+                @include align-center;
                 width: 85%;
-                text-align: center;
+                text-align: $text-align-center;
                 @include open-sans-600;
 
                 &--title {
@@ -91,7 +88,7 @@
 
                 &--text {
                     @include font-12;
-                    color: #4E5160;
+                    color: $davy-gray;
                     letter-spacing: $letter-spacing-2;
                 }
             }
@@ -100,7 +97,7 @@
         &--footer {
 
             .giz-order-summary {
-                display: grid;
+                display: $display-grid;
                 grid-template-columns: 1fr auto;
                 grid-row-gap: 0.625rem;
                 margin-top: 1.25rem;
@@ -110,7 +107,7 @@
                 &--text {
                     @include font-10;
                     text-shadow: $text-shadow-sm;
-                    text-transform: uppercase;
+                    text-transform: $text-uppercase;
                     letter-spacing: $letter-spacing-2;
                 }
 
@@ -123,107 +120,9 @@
             .giz-order-btn {
 
                 button {
-                    width: 100%;
-                    color: $dim-white;
-                    background: #33353D;
-                }
-            }
-        }
-
-        &--content {
-            display: $display-flex;
-            align-items: $align-center;
-
-            .giz-svg {
-                position: $position-relative;
-
-                &::after {
-                    content: "";
-                    position: $position-absolute;
-                    border-left: 1px solid $border-black-color;
-                    top: 50%;
-                    left: 0;
-                    height: $height-full;
-                    transform: translate(-50%,-50%);
-                    -ms-transform: translate(-50%, -50%);
                     width: $width-full;
                 }
             }
-        }
-
-
-        &--text {
-            @include font-16;
-            @include open-sans-600;
-        }
-
-        &--carousel {
-            text-transform: $text-uppercase;
-            color: $dim-white;
-            text-shadow: $text-shadow-sm;
-            display: $display-flex;
-            align-items: $align-center;
-            justify-content: $justify-space-between;
-            margin-bottom: 0.813rem;
-            padding: 1.438rem 1.438rem 0 1.438rem;
-            @include font-10;
-
-            svg {
-                fill: $white-color;
-                fill-opacity: 0.35;
-                cursor: $cursor-pointer;
-                background: inherit !important;
-
-                &.active {
-                    fill-opacity: 1 !important;
-                }
-            }
-        }
-
-        &--timing {
-            font-family: $font-family-open-sans;
-            padding: 0 1.438rem 1.438rem 1.438rem;
-            border-bottom: 1px solid $border-dark-blue;
-
-            .giz-pack {
-                @include font-16;
-                @include open-sans-600;
-                margin-bottom: 1.25rem;
-            }
-
-            .giz-countdown {
-                font-weight: $font-weight-700;
-                line-height: $line-height-26;
-                letter-spacing: $letter-spacing-24;
-                font-size: $font-26;
-            }
-        }
-
-        &--wrapper {
-            background: linear-gradient(180deg, rgba(90, 94, 107, 0) 0%, rgba(37, 140, 246, 0.166) 84.37%);
-
-            button {
-                width: $width-full;
-                margin-left: $spacer-0 !important;
-                padding: 0.813rem;
-            }
-        }
-
-        &--user-links {
-            padding: 1.625rem 1.438rem;
-            border-bottom: 1px solid $border-nile-blue;
-
-            button {
-                margin-bottom: 0.625rem;
-
-                &:last-of-type {
-                    margin-bottom: 0px !important;
-                }
-            }
-        }
-
-        &--logout {
-            padding: 1.625rem 1.438rem;
         }
     }
 }
