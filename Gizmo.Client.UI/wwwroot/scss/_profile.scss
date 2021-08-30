@@ -5,15 +5,16 @@
     .giz-user {
 
         &--avtar {
-            display: $display-flex;
-
-            svg {
-                margin-right: 2rem;
-            }
+            display: $display-grid;
+            grid-template-columns: auto 1fr;
+            grid-column-gap: 2rem;
+            margin-bottom: 1.1rem;
         }
 
         .giz-about-user {
             margin-bottom: 1.563rem;
+            display: $display-flex;
+            flex-direction: column;
 
             &--title {
                 @include font-10;
@@ -41,7 +42,7 @@
             display: $display-grid;
             grid-template-columns: 1fr 1fr 1fr;
             grid-gap: 1.063rem;
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.875rem;
 
             &--content {
                 display: $display-flex;
@@ -88,14 +89,9 @@
 
         .giz-btn-wrapper {
             display: $display-grid;
-            grid-template-columns: max-content max-content;
+            grid-template-columns: auto auto;
             grid-gap: 0.625rem;
             margin-bottom: 1.875rem;
-
-            .giz-btn-info {
-                padding-left: 2.25rem;
-                padding-right: 2.25rem;
-            }
         }
     }
 
