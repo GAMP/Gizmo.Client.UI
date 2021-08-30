@@ -11,15 +11,17 @@
         left: -22px;
 
         .giz-no-notification-wrapper {
-            display: $display-flex;
-            align-items: $align-center;
             min-height: 22rem;
             text-align: $text-align-center;
+            position:$position-relative;
+            display:$display-none;
 
             .giz-no-notification {
+                @include align-center;
                 padding: 1.375rem;
                 letter-spacing: $letter-spacing-24;
                 @include open-sans-600;
+                width:fit-content;
 
                 &--title {
                     font-size: $font-15;
@@ -28,7 +30,7 @@
                 }
 
                 &--text {
-                    @include font-13;
+                    font-size:$font-13;
                     line-height: $line-height-16;
                     color: $dull-blue;
                 }
@@ -50,7 +52,7 @@
         }
 
         .giz-notification-wrapper {
-            display: $display-none;
+            display: $display-block;
 
             .giz-notification-items {
                 padding: 1.375rem;

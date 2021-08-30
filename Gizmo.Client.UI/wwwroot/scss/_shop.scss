@@ -1,4 +1,4 @@
-//== shop section style == //
+//============= shop section style =============== //
 .giz-shop-categories {
     padding-right: 1.813rem;
 
@@ -73,10 +73,10 @@
 
             .giz-no-order-wrapper {
                 @include align-center;
-                width: 85%;
+                width: fit-content;
                 text-align: $text-align-center;
                 @include open-sans-600;
-                visibility: hidden;
+                visibility: $visibility-invisible;
 
                 &--title {
                     font-size: $font-15;
@@ -93,6 +93,10 @@
             }
         }
 
+        .giz-order-wrapper{
+            display:$display-block;
+            }
+           
         &--items {
             padding: 1.25rem 0;
             border-bottom: 1px solid $border-color;
@@ -109,7 +113,7 @@
                 @extend .giz-no-order-wrapper--title;
 
                 .giz-rounded-circle {
-                    background: #22262F;
+                    background: $midnight-black;
                     border-radius: $rounded-circle;
                     text-align: $text-align-center;
                     height: 1.875rem;
@@ -124,7 +128,7 @@
                 font-size: $font-13;
                 line-height: $line-height-16;
                 letter-spacing: $letter-spacing-5;
-                color: #9EA1AC;
+                color: $santa-grey-color;
             }
 
             .giz-order-btn {
@@ -145,16 +149,16 @@
                 }
 
                 button {
-                    background: #22262F;
+                    background: $midnight-black;
                     border-radius: $rounded;
                     @extend .giz-order-btn;
 
                     &:hover {
-                        background: #4E535E;
+                        background: $davy-dark-gray;
                     }
 
                     &:focus {
-                        background: #4E535E;
+                        background: $davy-dark-gray;
                     }
                 }
             }
@@ -203,7 +207,7 @@
                 }
             }
 
-            .giz-order-btn {
+            .giz-place-order-btn {
 
                 button {
                     width: $width-full;
