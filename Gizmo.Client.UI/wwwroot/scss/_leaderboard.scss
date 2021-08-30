@@ -1,128 +1,183 @@
 //============= Client UI leaderboards style ===============//
 
-.giz-leaderboard{
+.giz-leaderboard {
+    padding-right: 1.625rem;
 
-.giz-user {
+    .giz-user {
 
-    &--avtar {
-        display: $display-grid;
-        grid-template-columns: auto 1fr;
-        grid-column-gap: 2rem;
-        margin-bottom: 1.1rem;
-    }
-
-    .giz-about-user {
-        display: $display-flex;
-        flex-direction: column;
-        margin-bottom: 1.563rem;
-
-        &--title {
-            @include font-10;
-            text-transform: $text-uppercase;
-            color: $dim-white;
-            text-shadow: $text-shadow-sm;
-            margin-bottom: 0.375rem;
+        &--avtar {
+            display: $display-grid;
+            grid-template-columns: auto 1fr;
+            grid-column-gap: 2rem;
+            margin-bottom: 1.875rem;
         }
 
-        &--name {
-            @include open-sans-600;
-            font-size: $font-20;
-            line-height: $line-height-25;
-            margin-bottom: 0.875rem;
-            letter-spacing: $letter-spacing-5;
-        }
-
-        &--detail {
-            font-family: $font-family-open-sans;
-            @include font-12;
-        }
-    }
-
-    .giz-user-points {
-        display: $display-grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-gap: 1.063rem;
-        margin-bottom: 1.875rem;
-
-        &--content {
+        .giz-about-user {
             display: $display-flex;
-            align-items: $align-center;
+            flex-direction: column;
+            justify-content: flex-end;
 
-            svg {
-                margin-right: 0.625rem;
-            }
-
-            .giz-svg {
-                position: $position-relative;
-
-                &::after {
-                    content: "";
-                    position: $position-absolute;
-                    border-left: 1px solid $border-black-color;
-                    top: 50%;
-                    left: 19%;
-                    height: $height-full;
-                    transform: translate(-50%,-50%);
-                    -ms-transform: translate(-50%, -50%);
-                    width: $width-full;
-                }
-            }
-        }
-
-        &--text {
-
-            .giz-title {
+            &--title {
                 @include font-10;
                 text-transform: $text-uppercase;
                 color: $dim-white;
                 text-shadow: $text-shadow-sm;
-                margin-bottom: 0.25rem;
+                margin-bottom: 0.375rem;
             }
 
-            .giz-numbers {
+            &--name {
                 @include open-sans-600;
-                line-height: $line-height-16;
-                letter-spacing: $letter-spacing-24;
+                font-size: $font-20;
+                line-height: $line-height-25;
+                margin-bottom: 0.875rem;
+                letter-spacing: $letter-spacing-5;
+            }
+
+            &--detail {
+                font-family: $font-family-open-sans;
+                @include font-12;
+            }
+        }
+
+        .giz-user-points {
+            display: $display-grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-gap: 1.063rem;
+            margin-bottom: 1.875rem;
+
+            &--content {
+                display: $display-flex;
+                align-items: $align-center;
+
+                svg {
+                    margin-right: 0.625rem;
+                }
+
+                .giz-svg {
+                    position: $position-relative;
+
+                    &::after {
+                        content: "";
+                        position: $position-absolute;
+                        border-left: 1px solid $border-black-color;
+                        top: 50%;
+                        left: 19%;
+                        height: $height-full;
+                        transform: translate(-50%,-50%);
+                        -ms-transform: translate(-50%, -50%);
+                        width: $width-full;
+                    }
+                }
+            }
+
+            &--text {
+
+                .giz-title {
+                    @include font-10;
+                    text-transform: $text-uppercase;
+                    color: $dim-white;
+                    text-shadow: $text-shadow-sm;
+                    margin-bottom: 0.25rem;
+                }
+
+                .giz-numbers {
+                    @include open-sans-600;
+                    line-height: $line-height-16;
+                    letter-spacing: $letter-spacing-24;
+                }
+            }
+        }
+    }
+
+    .giz-user-site-menu {
+
+        &--items {
+
+            .active {
+                .giz-user-site-menu--items {
+                    border: none;
+                }
+            }
+
+            .giz-csgo {
+                background: url("https://i.postimg.cc/g07c8dSx/Csgo.png")no-repeat;
+                background-size: cover;
+            }
+
+            .giz-fortnite {
+                background: url("https://i.postimg.cc/YSvWZQ90/fortnitee.png")no-repeat;
+                background-size: cover;
+            }
+
+            .giz-cod {
+                background: url("https://i.postimg.cc/wBrhj0PD/Cod.png")no-repeat;
+                background-size: cover;
+            }
+
+            .giz-log {
+                background: url("https://i.postimg.cc/gkqR9YK9/log.png")no-repeat;
+                background-size: cover;
+            }
+
+            .giz-pubg {
+                background: url("https://i.postimg.cc/RVQCCh8R/pubg.png")no-repeat;
+                background-size: cover;
             }
         }
     }
 }
 
-.giz-user-site-menu {
+#giz-leaderboard-ranking {
+    padding: 2.5rem 0 2.5rem 1.813rem;
 
-    &--items {
+    .giz-ranking-heading {
+    @include open-sans-600;
+        font-size: $font-20;
+        line-height: $line-height-25;
+        letter-spacing: $letter-spacing-5;
+    }
 
-        .active {
-            .giz-user-site-menu--items {
-                border: none;
+    .table-wrapper {
+        overflow-x: auto;
+
+        .giz-table-history {
+            min-width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: $width-full;
+
+            td {
+                padding: 1rem 1.875rem;
+            }
+
+            &--heading {
+                @include font-10;
+                text-transform: $text-uppercase;
+                color: $dim-white;
+                text-shadow: $text-shadow-sm;
+            }
+
+            &--data {
+
+                td {
+                    @include open-sans-600;
+                    @include font-14;
+                    letter-spacing: $letter-spacing-24;
+                }
+
+                tr {
+                    border-top: 1px solid $border-dark-color;
+
+                    &:last-child {
+                        border-bottom: 1px solid $border-dark-color;
+                    }
+
+                    &:hover {
+                        background: $crystal-light;
+                        border-bottom: 1px solid $border-dark-color;
+                    }
+                }
             }
         }
-
-        .giz-csgo {
-            background: url("https://i.postimg.cc/g07c8dSx/Csgo.png")no-repeat;
-            background-size: cover;
-        }
-
-        .giz-fortnite {
-            background: url("https://i.postimg.cc/YSvWZQ90/fortnitee.png")no-repeat;
-            background-size: cover;
-        }
-
-        .giz-cod {
-            background: url("https://i.postimg.cc/wBrhj0PD/Cod.png")no-repeat;
-            background-size: cover;
-        }
-
-        .giz-log {
-            background: url("https://i.postimg.cc/gkqR9YK9/log.png")no-repeat;
-            background-size: cover;
-        }
-
-        .giz-pubg {
-            background: url("https://i.postimg.cc/RVQCCh8R/pubg.png")no-repeat;
-            background-size: cover;
-        }
     }
-}
-
 }
