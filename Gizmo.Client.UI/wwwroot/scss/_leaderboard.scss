@@ -135,6 +135,95 @@
         font-size: $font-20;
         line-height: $line-height-25;
         letter-spacing: $letter-spacing-5;
+        margin-bottom: 1rem;
+    }
+
+    .giz-ranking-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .giz-ranking-modes {
+            list-style: none;
+
+            &--items {
+                display: $display-inline-block;
+                margin-right: 1rem;
+
+                &:last-child {
+                    margin-right: 0px;
+                }
+
+                .active {
+                    background: $primary-color;
+                    box-shadow: $elevation-1;
+                    border-radius: 200px;
+                }
+            }
+
+
+            &--link {
+                @include font-11;
+                color: $white-color;
+                display: $display-block;
+                text-transform: $text-uppercase;
+                padding: 0.5rem;
+            }
+        }
+
+        .giz-pagination-container {
+            display: flex;
+            padding-left: 0;
+            list-style: none;
+            border: 1px solid #303D4E;
+            border-radius: 5px;
+
+            &--items {
+                border-right: 1px solid #303D4E;
+
+                &:last-child {
+                    border-right: none;
+                }
+
+                .active {
+                    background: linear-gradient(180deg, rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 100%);
+                }
+            }
+
+            &--link {
+                @include font-11;
+                @include open-sans-600;
+                text-transform: uppercase;
+                color: $white-color;
+                padding: 0.688rem;
+                display: block;
+            }
+        }
+    }
+
+    .giz-rankig-region {
+
+        .giz-regional-ranking {
+
+            select {
+                border: 1px solid $border-dark-color;
+                border-radius: $rounded-5;
+                @include open-sans-600;
+                @include font-11;
+                text-transform: $text-uppercase;
+                color: $white-color;
+                background: $transparent-color;
+                padding: 8px;
+
+                &:focus-visible {
+                    outline: none;
+                }
+
+                option {
+                    background: $jet-black;
+                }
+            }
+        }
     }
 
     .table-wrapper {
@@ -169,9 +258,12 @@
                     }
 
                     .giz-flag-icon {
-                        margin-right: 1rem;
+                        margin-right: 0.875rem;
                     }
 
+                    .giz-stacked-progress {
+                        margin-right: 0.313rem;
+                    }
                 }
 
                 tr {
