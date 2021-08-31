@@ -1,0 +1,38 @@
+//== Stacked progress bar == //
+
+.giz-stacked-progress {
+    display: $display-inline-block;
+    position: $position-relative;
+    height: 1.563rem;
+    overflow: $overflow-hidden;
+    border-radius: $rounded-md;
+    vertical-align: inherit;
+    width: 11.5rem;
+    background: $danger-color;
+    margin-right: 0.625rem;
+
+    &--bar {
+        position: $position-absolute;
+        height: $height-full;
+        top: 0;
+        left: 0;
+        -webkit-transition: width 0.3s;
+        transition: width 0.3s;
+        background: #289BDD;
+    }
+
+    &--text {
+        position: $position-relative;
+        display: $display-grid;
+        grid-template-columns: 1fr 1fr;
+        @include open-sans-600;
+        @include font-11;
+        letter-spacing: $letter-spacing-24;
+        padding: 0.438rem 0.375rem;
+    }
+
+    &--right-text {
+        text-align: $text-align-right;
+    }
+
+}
