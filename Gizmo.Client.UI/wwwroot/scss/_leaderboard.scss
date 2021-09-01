@@ -139,12 +139,13 @@
     }
 
     .giz-ranking-info {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        display: $display-flex;
+        justify-content: $justify-space-between;
+        align-items: $align-center;
+        margin-bottom: 1.625rem;
 
         .giz-ranking-modes {
-            list-style: none;
+            list-style: $list-unstyled;
 
             &--items {
                 display: $display-inline-block;
@@ -170,16 +171,45 @@
                 padding: 0.5rem;
             }
         }
+    }
+
+    .giz-rankig-wrapper {
+        display: $display-flex;
+        align-items: $align-center;
+
+        .giz-regional-ranking {
+            margin-left: 0.938rem;
+
+            select {
+                border: 1px solid $border-dark-color;
+                border-radius: $rounded-5;
+                @include open-sans-600;
+                @include font-11;
+                text-transform: $text-uppercase;
+                color: $white-color;
+                background: $transparent-color;
+                padding: 0.5rem;
+
+                &:focus-visible {
+                    outline: none;
+                }
+
+                option {
+                    background: $jet-black;
+                }
+            }
+        }
 
         .giz-pagination-container {
-            display: flex;
+            display: $display-flex;
             padding-left: 0;
-            list-style: none;
-            border: 1px solid #303D4E;
+            list-style: $list-unstyled;
+            border: 1px solid $border-dark-color;
             border-radius: 5px;
+            margin-left: 0.938rem;
 
             &--items {
-                border-right: 1px solid #303D4E;
+                border-right: 1px solid $border-dark-color;
 
                 &:last-child {
                     border-right: none;
@@ -193,35 +223,18 @@
             &--link {
                 @include font-11;
                 @include open-sans-600;
-                text-transform: uppercase;
-                color: $white-color;
-                padding: 0.688rem;
-                display: block;
-            }
-        }
-    }
-
-    .giz-rankig-region {
-
-        .giz-regional-ranking {
-
-            select {
-                border: 1px solid $border-dark-color;
-                border-radius: $rounded-5;
-                @include open-sans-600;
-                @include font-11;
                 text-transform: $text-uppercase;
                 color: $white-color;
-                background: $transparent-color;
-                padding: 8px;
+                padding: 0.688rem;
+                display: $display-block;
+            }
+        }
 
-                &:focus-visible {
-                    outline: none;
-                }
+        .giz-filter-btn {
+            margin-left: 0.938rem;
 
-                option {
-                    background: $jet-black;
-                }
+            .giz-btn-info {
+                padding: 0.625rem;
             }
         }
     }
@@ -236,7 +249,7 @@
             width: $width-full;
 
             td {
-                padding: 1rem 1.875rem;
+                padding: 1rem 1.375rem;
             }
 
             &--heading {
@@ -280,5 +293,10 @@
                 }
             }
         }
+    }
+
+    .giz-loading-btn {
+        margin-top: 1.25rem;
+        text-align: $text-align-center;
     }
 }
