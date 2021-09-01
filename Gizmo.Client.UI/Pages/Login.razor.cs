@@ -2,7 +2,7 @@
 
 namespace Gizmo.Client.UI.Pages
 {
-    [Route("/login")]
+    [Route("/")]
     public partial class Login : ComponentBase
     {
     }
