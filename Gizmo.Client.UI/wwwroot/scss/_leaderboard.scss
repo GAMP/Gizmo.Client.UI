@@ -240,31 +240,20 @@
     }
 
     .table-wrapper {
-        overflow-x: auto;
 
         .giz-table-history {
-            min-width: 100%;
-            border-collapse: collapse;
-            border-spacing: 0;
-            width: $width-full;
-
-            td {
-                padding: 1rem 1.375rem;
-            }
-
-            &--heading {
-                @include font-10;
-                text-transform: $text-uppercase;
-                color: $dim-white;
-                text-shadow: $text-shadow-sm;
-            }
 
             &--data {
 
+                tr {
+
+                    &:last-child {
+                        border-bottom: 1px solid $border-dark-color;
+                    }
+
+                }
+
                 td {
-                    @include open-sans-600;
-                    @include font-14;
-                    letter-spacing: $letter-spacing-24;
 
                     .giz-icon-arrow {
                         margin-left: 0.313rem;
@@ -276,19 +265,6 @@
 
                     .giz-stacked-progress {
                         margin-right: 0.313rem;
-                    }
-                }
-
-                tr {
-                    border-top: 1px solid $border-dark-color;
-
-                    &:last-child {
-                        border-bottom: 1px solid $border-dark-color;
-                    }
-
-                    &:hover {
-                        background: $crystal-light;
-                        border-bottom: 1px solid $border-dark-color;
                     }
                 }
             }
