@@ -1,7 +1,6 @@
 //============== Clien UI login ============//
 .giz-login {
     background: url("https://i.postimg.cc/Znmrwx0d/login-img.png")no-repeat fixed;
-    height: 100vh;
     background-size: cover;
     padding: 30px 40px;
 
@@ -16,5 +15,153 @@
             text-align: end;
         }
     }
-}
 
+    &--wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin:140px 0;
+    }
+
+    .giz-login-content {
+        min-width: 442px;
+        /*min-height: 619px;*/
+        background: rgba(20, 22, 28, 0.8);
+        backdrop-filter: blur(20px);
+        border-radius: 12px;
+
+        &--heading {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 30px 0px 30px;
+
+            .giz-language-menu {
+                font-size: 9px;
+                line-height: 100%;
+                /* identical to box height, or 9px */
+
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                color: rgba(186, 204, 238, 0.9);
+            }
+
+            .giz-terminate{
+                background-color:inherit;
+            }
+        }
+
+        &--body {
+            padding: 0px 44px 50px 44px;
+            text-align: center;
+
+            .giz-login-btn {
+                margin-bottom: 25px;
+
+                .giz-btn-primary {
+                    border-radius: 4px;
+                    padding: 19.5px;
+                    @include font-14;
+                    font-family: Metrophobic;
+                }
+            }
+
+            .giz-third-parties-login {
+                font-size: 9px;
+                line-height: 100%;
+                /* or 9px */
+
+                text-align: center;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                color: rgba(186, 204, 238, 0.9);
+            }
+
+            .giz-social-icon {
+                list-style: none;
+
+                &--list {
+                    height: 50px;
+                    width: 50px;
+                    line-height: 48px;
+                    text-align: center;
+                    border-radius: 50%;
+                    display: inline-block;
+                    background: #2A2E3B;
+                    border: 1px solid rgba(108, 124, 133, 0.55);
+                    margin-top: 1rem;
+                    margin-right: 15px;
+                }
+            }
+
+            input {
+                background: #1C2129;
+                border: 1px solid rgba(59, 62, 66, 0.5);
+                border-radius: 4px;
+                width: 100%;
+                padding: 17px 18px;
+                color: $white-color;
+                outline: none;
+
+                &:focus {
+                    background: #0D0E12;
+                    border: 1px solid rgba(177, 191, 200, 0.35);
+                }
+            }
+
+            input[type=text] {
+                font-size: 1rem;
+                line-height: $line-height-16;
+                text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            }
+
+            input[type=password] {
+                @include font-15;
+                line-height: $line-height-15;
+            }
+        }
+
+        &--title {
+            @include font-10;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #8DA4CF;
+            margin-bottom: 1rem;
+        }
+
+        &--text {
+            font-size: 20px;
+            line-height: 100%;
+            letter-spacing: -0.02em;
+            margin-bottom: 42px;
+        }
+
+
+        &--footer {
+            padding-top: 120px;
+
+            .giz-no-account {
+                font-size: 9px;
+                line-height: 100%;
+                /* identical to box height, or 9px */
+                margin-bottom:0.625rem;
+                text-align: center;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+
+                a {
+                    color: rgba(188, 204, 234, 0.85);
+                }
+            }
+
+            .giz-footer-links {
+                @include font-11;
+                letter-spacing: 0.05em;
+                text-transform: uppercase;
+
+                a {
+                    color: #FFFFFF;
+                }
+            }
+        }
+    }
+}
