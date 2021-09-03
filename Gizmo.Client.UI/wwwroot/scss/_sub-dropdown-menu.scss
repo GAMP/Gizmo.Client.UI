@@ -1,10 +1,15 @@
 //============= Client UI Sub Dropdown Menu ===========//
 
 .giz-sub-dropdown-menu-btn {
-    padding: 0.813rem;
+    display:$display-inline-block;
 
-    &:hover .giz-sub-dropdown {
-        display: $display-block !important;
+    .giz-btn-info {
+        padding: 0.813rem;
+
+        &:hover + .giz-sub-dropdown {
+            display: $display-block !important;
+        }
+
     }
 }
 
@@ -122,7 +127,7 @@
         color: $dim-white;
         @include open-sans-600;
         @include font-13;
-        display:$display-block;
+        display: $display-inline-block;
     }
 
     &--btn {

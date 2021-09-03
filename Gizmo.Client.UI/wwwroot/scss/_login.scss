@@ -9,14 +9,14 @@
         display: $display-flex;
         align-items: center;
         padding: 30px 40px;
-
+        background: linear-gradient(to top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.85) 100%);
 
         .giz-login-title {
             font-size: 100px;
             line-height: 100px;
             flex-basis: 50%;
             text-align: end;
-            font-weight:800;
+            font-weight: 800;
         }
     }
 
@@ -39,11 +39,11 @@
             justify-content: $justify-space-between;
             align-items: $align-baseline;
             padding: 1.875rem 1.875rem 0px 1.875rem;
-            position: relative;
+            position: $position-relative;
 
             &::before {
                 content: "";
-                position: absolute;
+                position: $position-absolute;
                 top: 0;
                 left: 44px;
                 width: 79%;
@@ -53,8 +53,20 @@
             }
 
             .giz-language-menu {
-                @include font-9;
-                color: $light-blue-gray;
+
+                button {
+                    font-family: $font-family;
+                    letter-spacing: $letter-spacing-2;
+                    font-weight: $font-weight-400;
+                    @include font-9;
+                    color: $light-blue-gray;
+
+                    span{
+                        margin-left:0.625rem;
+                        margin-right:0.313rem;
+                        vertical-align:middle;
+                    }
+                }
             }
 
             .giz-terminate {
@@ -173,8 +185,8 @@
     &--footer {
         padding: 1.875rem 2.5rem;
         background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.85) 100%);
-        display: flex;
-        align-items: center;
+        display: $display-flex;
+        align-items: $align-center;
 
         .giz-language-menu {
             position: $position-relative;
@@ -190,16 +202,17 @@
                 span {
                     margin-left: 0.625rem;
                     margin-right: 0.313rem;
+                    vertical-align: middle;
                 }
 
                 &:hover + .giz-sub-dropdown {
                     display: $display-block;
+                    transition: all 0.3s linear;
                 }
             }
 
             .giz-sub-dropdown {
                 background: $dark-jungle;
-                display: $display-block;
                 bottom: 130%;
                 top: auto;
                 right: auto;
@@ -235,6 +248,7 @@
         .giz-server {
             display: $display-flex;
             align-items: $align-center;
+            margin-right: 1.875rem;
 
             &--icon {
                 position: $position-relative;
@@ -257,13 +271,25 @@
             &--title {
                 @include font-9;
                 color: $dim-white;
-                margin-bottom: 0.25rem
+                margin-bottom: 0.313rem;
             }
 
             &--info {
                 @include font-12;
                 letter-spacing: $letter-spacing-2;
             }
+        }
+
+        .giz-alert-message {
+            @include btn-danger;
+        }
+
+        .giz-warning-message {
+            @include btn-warning;
+        }
+
+        .giz-disable-message {
+            @include btn-blue-violet;
         }
     }
 }
