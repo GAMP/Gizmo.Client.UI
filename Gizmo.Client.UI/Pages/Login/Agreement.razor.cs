@@ -2,7 +2,7 @@
 
 namespace Gizmo.Client.UI.Pages
 {
-    [Route("/Agreement")]
+    [Route("/agreement")]
     public partial class Agreement : ComponentBase
     {
     }
