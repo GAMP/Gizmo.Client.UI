@@ -2,7 +2,7 @@
 
 namespace Gizmo.Client.UI.Pages
 {
-    [Route("/Loading")]
+    [Route("/loading")]
     public partial class Loading : ComponentBase
     {
     }
