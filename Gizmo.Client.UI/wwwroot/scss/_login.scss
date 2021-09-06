@@ -16,7 +16,7 @@
             line-height: 6.25rem;
             flex-basis: 6.25rem;
             text-align: $text-align-right;
-            flex-basis:50%;
+            flex-basis: 50%;
             font-weight: $font-weight-700;
         }
     }
@@ -33,24 +33,24 @@
         background: $black-slate;
         backdrop-filter: blur(20px);
         border-radius: $rounded-xxl;
+        position: $position-relative;
+
+        &::before {
+            content: "";
+            position: $position-absolute;
+            top: 0;
+            left: 44px;
+            width: 79%;
+            border-top: 3px solid $border-dark-sky-blue;
+            border-left: 5px solid $transparent-color;
+            border-right: 5px solid $transparent-color;
+        }
 
         &--heading {
             display: $display-flex;
             justify-content: $justify-space-between;
             align-items: $align-baseline;
             padding: 1.875rem 1.875rem 0px 1.875rem;
-            position: $position-relative;
-
-            &::before {
-                content: "";
-                position: $position-absolute;
-                top: 0;
-                left: 44px;
-                width: 79%;
-                border-top: 3px solid $border-dark-sky-blue;
-                border-left: 5px solid $transparent-color;
-                border-right: 5px solid $transparent-color;
-            }
 
             .giz-language-menu {
 

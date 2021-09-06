@@ -1,0 +1,108 @@
+﻿@layout _EmptyLayout
+@inherits LayoutComponentBase
+@inject NavigationManager UriHelper
+
+
+<!--body section-->
+<!--Login-->
+<section class="giz-login">
+    <!--login nav brand-->
+    <div class="giz-login--brand">
+        <div class="giz-logo"><a href="#"><img src="https://i.postimg.cc/ZqR6bSr5/Logo.png" alt="loading"></a></div>
+        <div class="giz-login-title">05</div>
+    </div>
+    <!--/login nav brand-->
+    <!--login wrapper-->
+    <div class="giz-login--wrapper">
+        <!--login content-->
+        <div class="giz-login-content">
+          @Body
+        </div>
+        <!--/login content-->
+    </div>
+    <!--/login wrappper-->
+    <!--login footer-->
+    <div class="giz-login--footer">
+        <div class="giz-language-menu">
+            <button class="giz-transparent rounded-pill pa-4">
+                <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8.5 15.9999C12.6421 15.9999 16 12.642 16 8.49988C16 4.35774 12.6421 0.999878 8.5 0.999878C4.35786 0.999878 1 4.35774 1 8.49988C1 12.642 4.35786 15.9999 8.5 15.9999Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M1 8.49988H16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M8.5 0.999878C10.376 3.05364 11.4421 5.7189 11.5 8.49988C11.4421 11.2809 10.376 13.9461 8.5 15.9999C6.62404 13.9461 5.55794 11.2809 5.5 8.49988C5.55794 5.7189 6.62404 3.05364 8.5 0.999878V0.999878Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span>
+                    Eng
+                </span>
+                <svg class="giz-arrow-icon" width="9" height="5" viewBox="0 0 9 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 0.999878L4.5 3.99988L8 0.999878" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
+            <!--sub dropdown content-->
+            <ul class="giz-sub-dropdown">
+                <li class="giz-sub-dropdown--item">
+                    <a href="#" class="giz-sub-dropdown--link">
+                        <img src="https://i.postimg.cc/cLXq1dgt/Flag-2.png" class="giz-flag-icon" alt="loading">
+                        English
+                    </a>
+                </li>
+                <li class="giz-sub-dropdown--item">
+                    <a href="#" class="giz-sub-dropdown--link">
+                        <img src="https://i.postimg.cc/tJTn8DqT/Flag-7.png" class="giz-flag-icon" alt="loading">
+                        Italian
+                    </a>
+                </li>
+                <li class="giz-sub-dropdown--item">
+                    <a href="#" class="giz-sub-dropdown--link">
+                        <img src="https://i.postimg.cc/y8FCCHrJ/Flag-8.png" class="giz-flag-icon" alt="loading">
+                        German
+                    </a>
+                </li>
+                <li class="giz-sub-dropdown--item">
+                    <a href="#" class="giz-sub-dropdown--link">
+                        <img src="https://i.postimg.cc/YCxnN8M5/Flag-1.png" class="giz-flag-icon" alt="loading">
+                        Greek
+                    </a>
+                </li>
+            </ul>
+            <!---/sub dropdown content-->
+        </div>
+        <!--version-->
+        <div class="giz-server">
+            <div class="giz-server--icon">
+                <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.9462 1.61523H2.43846C1.64402 1.61523 1 2.25926 1 3.0537V5.93062C1 6.72506 1.64402 7.36908 2.43846 7.36908H13.9462C14.7406 7.36908 15.3846 6.72506 15.3846 5.93062V3.0537C15.3846 2.25926 14.7406 1.61523 13.9462 1.61523Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M13.9462 10.246H2.43846C1.64402 10.246 1 10.89 1 11.6844V14.5614C1 15.3558 1.64402 15.9998 2.43846 15.9998H13.9462C14.7406 15.9998 15.3846 15.3558 15.3846 14.5614V11.6844C15.3846 10.89 14.7406 10.246 13.9462 10.246Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M3.87695 4.49213H3.88382" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M3.87695 13.1229H3.88382" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span class="giz-server--status"></span>
+            </div>
+            <div class="giz-version">
+                <div class="giz-version--title">
+                    version
+                </div>
+                <div class="giz-version--info">2.457.002A</div>
+            </div>
+        </div>
+        <!--version-->
+        <!--message-->
+        <div class="giz-alert-message mr-7 d-none">
+            Computer is reserved
+            from 14:00 to 20:00
+        </div>
+        <div class="giz-warning-message d-none mr-7">
+            Login is unavailable
+            Computer is reserved
+        </div>
+        <div class="giz-disable-message d-none mr-7">
+            Mouse and keyboard
+            is currently locked
+        </div>
+        <!--/message-->
+    </div>
+    <!--/login--foter-->
+</section>
+<!--/login-->
+<!--/body section-->
+
+

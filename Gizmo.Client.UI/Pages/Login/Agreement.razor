@@ -1,0 +1,20 @@
+﻿@namespace Gizmo.Client.UI.Pages
+@inherits ComponentBase
+@layout _Layout_Login
+@inject NavigationManager UriHelper
+
+<!--Agreement-->
+ <div class="giz-login-content--body py-5">
+        <div class="giz-login-content--title">welcome to inspot</div>
+        <div class="giz-login-content--text">Sign in to your account</div>
+<div class="px-8">
+<button class="giz-btn-primary giz-width-full mt-5"  @onclick=@Navigate>I Agree</button>
+</div>
+</div>
+<!--/Agreement-->
+@code {
+    void Navigate()
+    {
+        UriHelper.NavigateTo("/home");
+    }
+}
