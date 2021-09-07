@@ -12,6 +12,7 @@ namespace Gizmo.Client.UI.ViewModels
         public int LP { get; set; }
         public int Games { get; set; }
         public decimal KDA { get; set; }
-        public int Wins { get; set; }
+        public int Victories { get; set; }
+        public int Defeats { get; set; }
     }
 }

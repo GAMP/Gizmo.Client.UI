@@ -212,20 +212,12 @@
                         @game.KDA
                     </CellTemplate>
                 </DataGridColumn>
-                <DataGridColumn Field="@(nameof(GameStatisticsViewModel.Wins))" TItemType="GameStatisticsViewModel" Context="game">
+                <DataGridColumn Field="@(nameof(GameStatisticsViewModel.Victories))" TItemType="GameStatisticsViewModel" Context="game">
                     <HeaderTemplate>
                         win ratio
                     </HeaderTemplate>
                     <CellTemplate>
-                        <!--stacked progress bar-->
-                        <div class="giz-stacked-progress">
-                            <div class="giz-stacked-progress--bar " role="progressbar" style="width: 61%;" aria-valuemin="0" aria-valuemax="100"></div>
-                            <div class="giz-stacked-progress--text">
-                                <div class="giz-stacked-progress--left-text">2222</div>
-                                <div class="giz-stacked-progress--right-text">1445</div>
-                            </div>
-                        </div>
-                        <!--/stacked progress bar-->
+                        <PercentageStackBar ShowValues="true" Values="@(new List<decimal>() { @game.Victories, @game.Defeats })" Colors="@(new List<string>() { "#289bdd", "#bc3740" })" />
                         61%
                     </CellTemplate>
                 </DataGridColumn>
