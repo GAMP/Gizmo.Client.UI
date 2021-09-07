@@ -1,4 +1,5 @@
 //============== Clien UI login ============//
+
 .giz-main-container {
     background: url("https://i.postimg.cc/Znmrwx0d/login-img.png")no-repeat fixed;
     background-size: cover;
@@ -6,7 +7,7 @@
     overflow-y: auto;
     display: $display-flex;
     flex-direction: $flex-column;
-
+   
     //== giz login nav
 
     .giz-nav {
@@ -61,7 +62,7 @@
                 display: $display-flex;
                 justify-content: $justify-space-between;
                 align-items: $align-baseline;
-                padding: 1.875rem 1.875rem 0px 1.875rem;
+                padding: 1.875rem 1.875rem 0 1.875rem;
 
                 .giz-language-menu {
 
@@ -160,7 +161,7 @@
                 @include font-10;
                 letter-spacing: $letter-spacing-15;
                 color: $primary-light-color;
-                margin-bottom: 1rem;
+                margin-bottom: 0.625rem;
             }
 
             &--text {
@@ -201,7 +202,7 @@
         background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.85) 100%);
         display: $display-flex;
         align-items: $align-center;
-        margin-top:auto;
+        margin-top: auto;
 
         .giz-language-menu {
             position: $position-relative;
@@ -310,51 +311,7 @@
 
 //== spinner
 
-.giz-animate-spinner{
+.giz-align-center {
     @include align-center;
-}
-
-$offset: 150;
-$duration: 1.4s;
-
-
-.giz-spinner {
-    animation: rotator $duration linear infinite;
-}
-
-@keyframes rotator {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(270deg);
-    }
-}
-
-.giz-circle {
-    stroke-dasharray: $offset;
-    stroke-dashoffset: 0;
-    transform-origin: center;
-    animation: dash $duration ease-in-out infinite;
-    stroke-width: 3px;
-    stroke:white;
-}
-
-@keyframes dash {
-    0% {
-        stroke: white;
-        stroke-dashoffset: $offset;
-    }
-
-    50% {
-        stroke-dashoffset: $offset/3;
-        transform: rotate(135deg);
-    }
-
-    100% {
-        stroke-dashoffset: $offset;
-        transform: rotate(360deg);
-        stroke: #0B0E15;
-    }
+    text-align:center;
 }
