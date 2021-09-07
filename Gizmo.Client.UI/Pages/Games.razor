@@ -1,4 +1,7 @@
 ﻿@inherits ComponentBase
+@using Gizmo.Web.Components
+@using Gizmo.Client.UI.ViewModels
+
 <!--wrapper 1-->
 <div class="wrapper_1">
     <!--leaderboard site menu-->
@@ -141,362 +144,94 @@
             <!--/ranking wrapper-->
         </div>
         <!--ranking info-->
-        <!--table wrapper-->
-        <div class="table-wrapper">
-            <!--table-->
-            <table class="giz-table-history">
-                <!--thead-->
-                <thead>
-                    <tr class="giz-table-history--heading">
-                        <td>rank</td>
-                        <td>player</td>
-                        <td>tier</td>
-                        <td>lp</td>
-                        <td>games</td>
-                        <td>kd/a</td>
-                        <td>win ratio</td>
-                    </tr>
-                </thead>
-                <!--/thead-->
-                <!--tbody-->
-                <tbody class="giz-table-history--data">
-                    <tr>
-                        <td>
-                            01
-                            <!--svg-->
+
+        <DataGrid ItemSource="@GameStatistics"
+                  Context="games"
+                  Class="giz-table-history">
+            <ChildContent>
+                <DataGridColumn Field="@(nameof(GameStatisticsViewModel.Rank))" TItemType="GameStatisticsViewModel" Context="game">
+                    <HeaderTemplate>
+                        rank
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        @game.Rank
+                        @if (game.Arrow > 0)
+                        {
                             <svg width="8" height="4" viewBox="0 0 8 4" class="giz-icon-arrow" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M7.46093 4H0.53906C0.0597662 4 -0.180257 3.48908 0.158649 3.19028L3.61958 0.138917C3.82967 -0.0463058 4.17032 -0.0463058 4.38041 0.138917L7.84134 3.19028C8.18027 3.48908 7.94022 4 7.46093 4Z" fill="#26D156" />
                             </svg>
-                            <!--/svg-->
-                        </td>
-                        <td>
-                            <!--flag img-->
-                            <img src="https://i.postimg.cc/YCxnN8M5/Flag-1.png" class="giz-flag-icon" alt="loading" />
-                            <!--/flag img-->
-                            ga1mingqudu
-                        </td>
-                        <td>
-                            Challenger
-                        </td>
-                        <td>
-                            2,354
-                        </td>
-                        <td>
-                            892
-                        </td>
-                        <td>
-                            8.5
-                        </td>
-                        <td>
-                            <!--stacked progress bar-->
-                            <div class="giz-stacked-progress">
-                                <div class="giz-stacked-progress--bar " role="progressbar" style="width: 65%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                <div class="giz-stacked-progress--text">
-                                    <div class="giz-stacked-progress--left-text">2222</div>
-                                    <div class="giz-stacked-progress--right-text">1445</div>
-                                </div>
-                            </div>
-                            <!--/stacked progress bar-->
-                            65%
-                        </td>
-                    </tr>
-                    <tr class="giz-table-history--data">
-                        <td>
-                            02
-                            <!--svg-->
-                            <svg width="8" height="4" viewBox="0 0 8 4" class="giz-icon-arrow" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M7.46093 4H0.53906C0.0597662 4 -0.180257 3.48908 0.158649 3.19028L3.61958 0.138917C3.82967 -0.0463058 4.17032 -0.0463058 4.38041 0.138917L7.84134 3.19028C8.18027 3.48908 7.94022 4 7.46093 4Z" fill="#26D156" />
-                            </svg>
-                            <!--/svg-->
-                        </td>
-                        <td>
-                            <!--flag img-->
-                            <img src="https://i.postimg.cc/cLXq1dgt/Flag-2.png" class="giz-flag-icon" alt="loading" />
-                            <!--/flag img-->
-                            Meng_2021
-                        </td>
-                        <td>
-                            Challenger
-                        </td>
-                        <td>
-                            2,354
-                        </td>
-                        <td>
-                            181
-                        </td>
-                        <td>
-                            8
-                        </td>
-                        <td>
-                            <!--stacked progress bar-->
-                            <div class="giz-stacked-progress">
-                                <div class="giz-stacked-progress--bar " role="progressbar" style="width: 61%;" aria-valuemin="0" aria-valuemax="100"></div>
-                                <div class="giz-stacked-progress--text">
-                                    <div class="giz-stacked-progress--left-text">2222</div>
-                                    <div class="giz-stacked-progress--right-text">1445</div>
-                                </div>
-                            </div>
-                            <!--/stacked progress bar-->
-                            61%
-                        </td>
-                    </tr>
-                    <tr class="giz-table-history--data">
-                        <td>
-                            03
-                        </td>
-                        <td>
-                            <!--flag img-->
-                            <img src="https://i.postimg.cc/cLXq1dgt/Flag-2.png" class="giz-flag-icon" alt="loading" />
-                            <!--/flag img-->
-                            BLood-shennan
-                        </td>
-                        <td>
-                            Challenger
-                        </td>
-                        <td>
-                            2,354
-                        </td>
-                        <td>
-                            282
-                        </td>
-                        <td>
-                            7.5
-                        </td>
-                        <td>
-                            <!--stacked progress bar-->
-                            <GizStackedProgressBar></GizStackedProgressBar>
-                            <!--/stacked progress bar-->
-                            55%
-                        </td>
-                    </tr>
-                    <tr class="giz-table-history--data">
-                        <td>
-                            04
-                        </td>
-                        <td>
-                            <!--flag img-->
-                            <img src="https://i.postimg.cc/W4k7Wnvp/Flag-3.png" class="giz-flag-icon" alt="loading" />
-                            <!--/flag img-->
-                            7MiuU
-                        </td>
-                        <td>
-                            Challenger
-                        </td>
-                        <td>
-                            2,354
-                        </td>
-                        <td>
-                            453
-                        </td>
-                        <td>
-                            7.4
-                        </td>
-                        <td>
-                            <!--stacked progress bar-->
-                            <GizStackedProgressBar></GizStackedProgressBar>
-                            <!--/stacked progress bar-->
-                            58%
-                        </td>
-                    </tr>
-                    <tr class="giz-table-history--data">
-                        <td>
-                            05
-                        </td>
-                        <td>
-                            <!--flag img-->
-                            <img src="https://i.postimg.cc/Hkfwyy7q/Flag-4.png" class="giz-flag-icon" alt="loading" />
-                            <!--/flag img-->
-                            YY-TV290386
-                        </td>
-                        <td>
-                            Challenger
-                        </td>
-                        <td>
-                            2,354
-                        </td>
-                        <td>
-                            656
-                        </td>
-                        <td>
-                            7.2
-                        </td>
-                        <td>
-                            <!--stacked progress bar-->
-                            <GizStackedProgressBar></GizStackedProgressBar>
-                            <!--/stacked progress bar-->
-                            65%
-                        </td>
-                    </tr>
-                    <tr class="giz-table-history--data">
-                        <td>
-                            06
-                            <!--svg-->
+                        }
+                        @if (game.Arrow < 0)
+                        {
                             <svg width="8" height="4" viewBox="0 0 8 4" class="giz-icon-arrow" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M0.539072 6.52255e-07L7.46094 4.71261e-08C7.94023 5.22493e-09 8.18026 0.510917 7.84135 0.809716L4.38042 3.86108C4.17033 4.04631 3.82968 4.04631 3.61959 3.86108L0.158661 0.809717C-0.180272 0.510917 0.0597779 6.94156e-07 0.539072 6.52255e-07Z" fill="#D2212B" />
                             </svg>
-                            <!--/svg-->
-                        </td>
-                        <td>
-                            <!--flag img-->
-                            <img src="https://i.postimg.cc/wMyxL7Nr/Flag-5.png" class="giz-flag-icon" alt="loading" />
-                            <!--/flag img-->
-                            whnbnmkk
-                        </td>
-                        <td>
-                            Challenger
-                        </td>
-                        <td>
-                            2,354
-                        </td>
-                        <td>
-                            353
-                        </td>
-                        <td>
-                            7
-                        </td>
-                        <td>
-                            <!--stacked progress bar-->
-                            <GizStackedProgressBar></GizStackedProgressBar>
-                            <!--/stacked progress bar-->
-                            65%
-                        </td>
-                    </tr>
-                    <tr class="giz-table-history--data">
-                        <td>
-                            07
-                        </td>
-                        <td>
-                            <!--flag img-->
-                            <img src="https://i.postimg.cc/YCxnN8M5/Flag-1.png" class="giz-flag-icon" alt="loading" />
-                            <!--/flag img-->
-                            ShenJi_GuoErPiao
-                        </td>
-                        <td>
-                            Master I
-                        </td>
-                        <td>
-                            1,840
-                        </td>
-                        <td>
-                            458
-                        </td>
-                        <td>
-                            6
-                        </td>
-                        <td>
-                            <!--stacked progress bar-->
-                            <GizStackedProgressBar></GizStackedProgressBar>
-                            <!--/stacked progress bar-->
-                            48%
-                        </td>
-                    </tr>
-                    <tr class="giz-table-history--data">
-                        <td>
-                            08
-                            <!--svg-->
-                            <svg width="8" height="4" viewBox="0 0 8 4" class="giz-icon-arrow" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M7.46093 4H0.53906C0.0597662 4 -0.180257 3.48908 0.158649 3.19028L3.61958 0.138917C3.82967 -0.0463058 4.17032 -0.0463058 4.38041 0.138917L7.84134 3.19028C8.18027 3.48908 7.94022 4 7.46093 4Z" fill="#26D156" />
-                            </svg>
-                            <!--/svg-->
-                        </td>
-                        <td>
-                            <!--flag img-->
-                            <img src="https://i.postimg.cc/K8vGDqtL/Flag-6.png" class="giz-flag-icon" alt="loading" />
-                            <!--/flag img-->
-                            Nirvana-_o
-                        </td>
-                        <td>
-                            Master I
-                        </td>
-                        <td>
-                            1,840
-                        </td>
-                        <td>
-                            756
-                        </td>
-                        <td>
-                            6
-                        </td>
-                        <td>
-                            <!--stacked progress bar-->
-                            <GizStackedProgressBar></GizStackedProgressBar>
-                            <!--/stacked progress bar-->
-                            48%
-                        </td>
-                    </tr>
-                    <tr class="giz-table-history--data">
-                        <td>
-                            09
-                            <!--svg-->
-                            <svg width="8" height="4" viewBox="0 0 8 4" class="giz-icon-arrow" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0.539072 6.52255e-07L7.46094 4.71261e-08C7.94023 5.22493e-09 8.18026 0.510917 7.84135 0.809716L4.38042 3.86108C4.17033 4.04631 3.82968 4.04631 3.61959 3.86108L0.158661 0.809717C-0.180272 0.510917 0.0597779 6.94156e-07 0.539072 6.52255e-07Z" fill="#D2212B" />
-                            </svg>
-                            <!--/svg-->
-                        </td>
-                        <td>
-                            <!--flag img-->
-                            <img src="https://i.postimg.cc/K8vGDqtL/Flag-6.png" class="giz-flag-icon" alt="loading" />
-                            <!--/flag img-->
-                            ga1mingqudu
-                        </td>
-                        <td>
-                            Master IV
-                        </td>
-                        <td>
-                            1,840
-                        </td>
-                        <td>
-                            654
-                        </td>
-                        <td>
-                            5.8
-                        </td>
-                        <td>
-                            <!--stacked progress bar-->
-                            <GizStackedProgressBar></GizStackedProgressBar>
-                            <!--/stacked progress bar-->
-                            46%
-                        </td>
-                    </tr>
-                    <tr class="giz-table-history--data">
-                        <td>
-                            10
-                            <!--svg-->
-                            <svg width="8" height="4" viewBox="0 0 8 4" class="giz-icon-arrow" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M7.46093 4H0.53906C0.0597662 4 -0.180257 3.48908 0.158649 3.19028L3.61958 0.138917C3.82967 -0.0463058 4.17032 -0.0463058 4.38041 0.138917L7.84134 3.19028C8.18027 3.48908 7.94022 4 7.46093 4Z" fill="#26D156" />
-                            </svg>
-                            <!--/svg-->
-                        </td>
-                        <td>
-                            <!--flag img-->
-                            <img src="https://i.postimg.cc/Hkfwyy7q/Flag-4.png" class="giz-flag-icon" alt="loading" />
-                            <!--/flag img-->
-                            unkown1008
-                        </td>
-                        <td>
-                            Master IV
-                        </td>
-                        <td>
-                            1,840
-                        </td>
-                        <td>
-                            325
-                        </td>
-                        <td>
-                            5.8
-                        </td>
-                        <td>
-                            <!--stacked progress bar-->
-                            <GizStackedProgressBar></GizStackedProgressBar>
-                            <!--/stacked progress bar-->
-                            46%
-                        </td>
-                    </tr>
-                </tbody>
-                <!--/tbody-->
-            </table>
-            <!--/table-->
-        </div>
+                        }
+                    </CellTemplate>
+                </DataGridColumn>
+                <DataGridColumn Field="@(nameof(GameStatisticsViewModel.Player))" TItemType="GameStatisticsViewModel" Context="game">
+                    <HeaderTemplate>
+                        player
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <!--flag img-->
+                        <img src="https://i.postimg.cc/ @game.Flag" class="giz-flag-icon" alt="loading" />
+                        <!--/flag img-->
+                        @game.Player
+                    </CellTemplate>
+                </DataGridColumn>
+                <DataGridColumn Field="@(nameof(GameStatisticsViewModel.Tier))" TItemType="GameStatisticsViewModel" Context="game">
+                    <HeaderTemplate>
+                        tier
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        @game.Tier
+                    </CellTemplate>
+                </DataGridColumn>
+                <DataGridColumn Field="@(nameof(GameStatisticsViewModel.LP))" TItemType="GameStatisticsViewModel" Context="game">
+                    <HeaderTemplate>
+                        lp
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        @game.LP
+                    </CellTemplate>
+                </DataGridColumn>
+                <DataGridColumn Field="@(nameof(GameStatisticsViewModel.Games))" TItemType="GameStatisticsViewModel" Context="game">
+                    <HeaderTemplate>
+                        games
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        @game.Games
+                    </CellTemplate>
+                </DataGridColumn>
+                <DataGridColumn Field="@(nameof(GameStatisticsViewModel.KDA))" TItemType="GameStatisticsViewModel" Context="game">
+                    <HeaderTemplate>
+                        kd/a
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        @game.KDA
+                    </CellTemplate>
+                </DataGridColumn>
+                <DataGridColumn Field="@(nameof(GameStatisticsViewModel.Wins))" TItemType="GameStatisticsViewModel" Context="game">
+                    <HeaderTemplate>
+                        win ratio
+                    </HeaderTemplate>
+                    <CellTemplate>
+                        <!--stacked progress bar-->
+                        <div class="giz-stacked-progress">
+                            <div class="giz-stacked-progress--bar " role="progressbar" style="width: 61%;" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="giz-stacked-progress--text">
+                                <div class="giz-stacked-progress--left-text">2222</div>
+                                <div class="giz-stacked-progress--right-text">1445</div>
+                            </div>
+                        </div>
+                        <!--/stacked progress bar-->
+                        61%
+                    </CellTemplate>
+                </DataGridColumn>
+            </ChildContent>
+        </DataGrid>
+
         <!--/table wrapper-->
         <div class="giz-loading-btn">
             <button class="giz-btn-info">load more</button>
