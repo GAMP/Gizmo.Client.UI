@@ -1,14 +1,28 @@
 //============= Client UI Spinner ===============//
-.giz-spinner {
-    animation: rotator 1s linear infinite;
-}
+.giz-animate-spinner {
 
-@keyframes rotator {
-    0% {
-        transform: rotate(0deg);
+    .giz-spinner {
+        animation: rotator 1s linear infinite;
     }
 
-    100% {
-        transform: rotate(360deg);
+    @keyframes rotator {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    &--title {
+        @include font-10;
+        letter-spacing: $letter-spacing-15;
+        color: $primary-light-color;
+    }
+
+    &--text {
+        @include font-20;
+        letter-spacing: $letter-spacing-2;
     }
 }

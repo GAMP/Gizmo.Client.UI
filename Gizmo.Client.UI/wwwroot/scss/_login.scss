@@ -7,7 +7,6 @@
     overflow-y: auto;
     display: $display-flex;
     flex-direction: $flex-column;
-   
     //== giz login nav
 
     .giz-nav {
@@ -24,11 +23,11 @@
                 line-height: 6.25rem;
                 text-align: $text-align-right;
                 flex-basis: 50%;
-                font-weight: $font-weight-700;
+                font-family: $font-family-mark-pro;
+                font-weight:$font-weight-700;
             }
         }
     }
-
     //== giz login
 
     .giz-login {
@@ -107,6 +106,7 @@
                     &--text {
                         @include font-9;
                         color: $light-blue-gray;
+                        margin-bottom: 1px;
                     }
 
                     .giz-social-icon {
@@ -166,6 +166,7 @@
 
             &--text {
                 @include font-20;
+                letter-spacing: $letter-spacing-2;
                 margin-bottom: 2.625rem;
             }
 
@@ -194,7 +195,6 @@
             }
         }
     }
-
     //== giz footer
 
     .giz-login-footer {
@@ -272,12 +272,13 @@
             }
 
             &--status {
-                padding: 0.156rem;
+                height: 5px;
+                width: 5px;
                 position: $position-absolute;
                 top: 2px;
                 background: $success-light-color;
                 border-radius: $rounded-circle;
-                right: -1px;
+                right: 0px;
             }
         }
 
@@ -313,5 +314,5 @@
 
 .giz-align-center {
     @include align-center;
-    text-align:center;
+    text-align: center;
 }

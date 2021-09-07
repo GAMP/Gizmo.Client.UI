@@ -2,106 +2,111 @@
 @inherits ComponentBase
 @layout _Layout_Login
 @inject NavigationManager UriHelper
+@using System.Threading;
 
 <!--spinner-->
-<div class="giz-align-center d-none">
-    <GizSpinner></GizSpinner>
-    <div class="giz-login-content--title mt-10">please wait</div>
-    <div class="giz-login-content--text">Loggin in now</div>
+<div class="giz-align-center @(ShowSpinner ? "" : "d-none")">
+  <GizSpinner_2></GizSpinner_2>
 </div>
 <!--/spinner-->
-<!--login form-->
-<form>
-    <!--login-heading-->
-    <div class="giz-login-content--heading">
-        <div class="giz-language-menu">
-            <button class="giz-transparent" type="button">
-                <!--svg-->
-                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <circle cx="7.5" cy="7.5" r="7.5" fill="url(#pattern0)" />
-                    <defs>
-                        <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
-                            <use xlink:href="#image0" transform="translate(-0.333333) scale(0.00653595)" />
-                        </pattern>
-                        <image id="image0" width="255" height="153" xlink:href="data:image/png;base64,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" />
-                    </defs>
+<div class="@(ShowSpinner ? "d-none" : "d-block")">
+    <!--login form-->
+    <form>
+        <!--login-heading-->
+        <div class="giz-login-content--heading">
+            <div class="giz-language-menu">
+                <button class="giz-transparent" type="button">
+                    <!--svg-->
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <circle cx="7.5" cy="7.5" r="7.5" fill="url(#pattern0)" />
+                        <defs>
+                            <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+                                <use xlink:href="#image0" transform="translate(-0.333333) scale(0.00653595)" />
+                            </pattern>
+                            <image id="image0" width="255" height="153" xlink:href="data:image/png;base64,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" />
+                        </defs>
+                    </svg>
+                    <!--/svg-->
+                    <span>EN</span>
+                    <!--svg-->
+                    <svg width="7" height="5" viewBox="0 0 7 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.33097 0.78815L6.03906 1.49624L3.0259 4.5094L0.0127468 1.49624L0.720839 0.78815L3.0259 3.08819L5.33097 0.78815Z" fill="white" />
+                    </svg>
+                    <!--/svg-->
+                </button>
+            </div>
+            <button class="giz-terminate">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.89545 5L9.73835 2.1571C10.0872 1.80824 10.0872 1.24261 9.73835 0.893466L9.10653 0.261648C8.75767 -0.0872159 8.19205 -0.0872159 7.8429 0.261648L5 3.10455L2.1571 0.261648C1.80824 -0.0872159 1.24261 -0.0872159 0.893466 0.261648L0.261648 0.893466C-0.0872159 1.24233 -0.0872159 1.80795 0.261648 2.1571L3.10455 5L0.261648 7.8429C-0.0872159 8.19176 -0.0872159 8.75739 0.261648 9.10653L0.893466 9.73835C1.24233 10.0872 1.80824 10.0872 2.1571 9.73835L5 6.89545L7.8429 9.73835C8.19176 10.0872 8.75767 10.0872 9.10653 9.73835L9.73835 9.10653C10.0872 8.75767 10.0872 8.19205 9.73835 7.8429L6.89545 5Z" fill="#DAEDF8" fill-opacity="0.74" style="mix-blend-mode:screen" />
                 </svg>
-                <!--/svg-->
-                <span>EN</span>
-                <!--svg-->
-                <svg width="7" height="5" viewBox="0 0 7 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M5.33097 0.78815L6.03906 1.49624L3.0259 4.5094L0.0127468 1.49624L0.720839 0.78815L3.0259 3.08819L5.33097 0.78815Z" fill="white" />
-                </svg>
-                <!--/svg-->
             </button>
         </div>
-        <button class="giz-terminate">
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6.89545 5L9.73835 2.1571C10.0872 1.80824 10.0872 1.24261 9.73835 0.893466L9.10653 0.261648C8.75767 -0.0872159 8.19205 -0.0872159 7.8429 0.261648L5 3.10455L2.1571 0.261648C1.80824 -0.0872159 1.24261 -0.0872159 0.893466 0.261648L0.261648 0.893466C-0.0872159 1.24233 -0.0872159 1.80795 0.261648 2.1571L3.10455 5L0.261648 7.8429C-0.0872159 8.19176 -0.0872159 8.75739 0.261648 9.10653L0.893466 9.73835C1.24233 10.0872 1.80824 10.0872 2.1571 9.73835L5 6.89545L7.8429 9.73835C8.19176 10.0872 8.75767 10.0872 9.10653 9.73835L9.73835 9.10653C10.0872 8.75767 10.0872 8.19205 9.73835 7.8429L6.89545 5Z" fill="#DAEDF8" fill-opacity="0.74" style="mix-blend-mode:screen" />
-            </svg>
-        </button>
-    </div>
-    <!--login heading-->
-    <!--login content body-->
-    <div class="giz-login-content--body">
-        <div class="giz-login-content--title">welcome to inspot</div>
-        <div class="giz-login-content--text">Sign in to your account</div>
-        <div class="mb-3">
-            <input type="text" />
+        <!--login heading-->
+        <!--login content body-->
+        <div class="giz-login-content--body">
+            <div class="giz-login-content--title">welcome to inspot</div>
+            <div class="giz-login-content--text">Sign in to your account</div>
+            <div class="mb-3">
+                <input type="text" />
+            </div>
+            <div class="mb-3">
+                <input type="password" />
+            </div>
+            <!--login btn-->
+            <div class="giz-btn">
+                <button class="giz-btn-primary giz-width-full" @onclick=@Navigate>continue</button>
+            </div>
+            <!--/login btn-->
+            <!--third party login-->
+            <div class="giz-third-parties-login">
+                <div class="giz-third-parties-login--text">or connect via your</div>
+                <div class="giz-third-parties-login--text"> social network account</div>
+                <!--social icons-->
+                <ul class="giz-social-icon">
+                    <li class="giz-social-icon--list">
+                        <a href="https://www.facebook.com/">
+                            <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M23 11.57C23 5.1785 17.8528 0 11.5 0C5.14718 0 0 5.1785 0 11.57C0 17.3447 4.20538 22.1313 9.70312 23V14.9145H6.78175V11.57H9.70312V9.02085C9.70312 6.12136 11.4189 4.51976 14.0467 4.51976C15.3052 4.51976 16.6212 4.74556 16.6212 4.74556V7.5914H15.1707C13.7425 7.5914 13.2969 8.48341 13.2969 9.39828V11.57H16.4863L15.9762 14.9145H13.2969V23C18.7946 22.1313 23 17.3447 23 11.57Z" fill="#CACED8" />
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="giz-social-icon--list">
+                        <a href="https://accounts.google.com/signin/v2/identifier?continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&service=mail&sacu=1&rip=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin">
+                            <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M25.0707 13.7643C25.0707 12.9778 25.0056 12.187 24.8667 11.4132H13.7324V15.8688H20.1086C19.844 17.3058 18.9938 18.5769 17.749 19.3847V22.2757H21.553C23.7867 20.2604 25.0707 17.2845 25.0707 13.7643Z" fill="#848B98" />
+                                <path d="M13.7324 25.0699C16.9162 25.0699 19.601 24.0453 21.5573 22.2767L17.7533 19.3857C16.695 20.0914 15.3287 20.491 13.7367 20.491C10.6572 20.491 8.046 18.4547 7.1091 15.7167H3.18359V18.697C5.18757 22.604 9.2691 25.0699 13.7324 25.0699Z" fill="#848B98" />
+                                <path d="M7.10453 15.7159C6.61004 14.2789 6.61004 12.7229 7.10453 11.2859V8.30566H3.18345C1.50916 11.575 1.50916 15.4268 3.18345 18.6961L7.10453 15.7159Z" fill="#848B98" />
+                                <path d="M13.7324 6.50818C15.4154 6.48263 17.0419 7.10334 18.2608 8.24274L21.6311 4.93939C19.497 2.97523 16.6646 1.89533 13.7324 1.92937C9.2691 1.92937 5.18757 4.39524 3.18359 8.30658L7.10477 11.2868C8.03733 8.54466 10.6529 6.50818 13.7324 6.50818Z" fill="#848B98" />
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="giz-social-icon--list">
+                        <a href="https://twitter.com/?lang=en">
+                            <svg width="24" height="21" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21.5331 5.23357C21.5483 5.46325 21.5483 5.69298 21.5483 5.92265C21.5483 12.9281 16.5991 21 7.55333 21C4.7665 21 2.17768 20.1304 0 18.6211C0.395955 18.6703 0.776628 18.6867 1.18782 18.6867C3.48728 18.6867 5.60407 17.85 7.29444 16.4227C5.13199 16.3734 3.31979 14.8477 2.69542 12.7477C3.00001 12.7968 3.30456 12.8297 3.62439 12.8297C4.066 12.8297 4.50766 12.764 4.9188 12.6492C2.66499 12.157 0.974582 10.0242 0.974582 7.44843V7.38283C1.62938 7.77658 2.39087 8.02267 3.19792 8.05544C1.87304 7.10386 1.00505 5.47966 1.00505 3.64215C1.00505 2.65779 1.24866 1.75545 1.67508 0.967944C4.09642 4.18357 7.73605 6.28353 11.8172 6.51326C11.7411 6.11951 11.6954 5.70939 11.6954 5.29923C11.6954 2.37888 13.8883 0 16.6142 0C18.0304 0 19.3096 0.639842 20.2081 1.67344C21.3198 1.44376 22.3858 1.00077 23.33 0.393753C22.9644 1.62425 22.1878 2.65784 21.1675 3.31405C22.1574 3.19926 23.1168 2.90388 24 2.49377C23.3301 3.54373 22.4924 4.47884 21.5331 5.23357Z" fill="#848B98" />
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+                <!--/social icons-->
+            </div>
+            <!--/third party login-->
+            <div class="giz-login-content--footer">
+                <div class="giz-no-account"><a href="#">don’t have an account?</a></div>
+                <div class="giz-footer-links"><a href="#">create new account</a> | <a href="#">forgot password?</a></div>
+            </div>
         </div>
-        <div class="mb-3">
-            <input type="password" />
-        </div>
-        <!--login btn-->
-        <div class="giz-btn">
-            <button class="giz-btn-primary giz-width-full" @onclick=@Navigate>continue</button>
-        </div>
-        <!--/login btn-->
-        <!--third party login-->
-        <div class="giz-third-parties-login">
-            <div class="giz-third-parties-login--text">or connect via your</div>
-            <div class="giz-third-parties-login--text"> social network account</div>
-            <!--social icons-->
-            <ul class="giz-social-icon">
-                <li class="giz-social-icon--list">
-                    <a href="https://www.facebook.com/">
-                        <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M23 11.57C23 5.1785 17.8528 0 11.5 0C5.14718 0 0 5.1785 0 11.57C0 17.3447 4.20538 22.1313 9.70312 23V14.9145H6.78175V11.57H9.70312V9.02085C9.70312 6.12136 11.4189 4.51976 14.0467 4.51976C15.3052 4.51976 16.6212 4.74556 16.6212 4.74556V7.5914H15.1707C13.7425 7.5914 13.2969 8.48341 13.2969 9.39828V11.57H16.4863L15.9762 14.9145H13.2969V23C18.7946 22.1313 23 17.3447 23 11.57Z" fill="#CACED8" />
-                        </svg>
-                    </a>
-                </li>
-                <li class="giz-social-icon--list">
-                    <a href="https://accounts.google.com/signin/v2/identifier?continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&service=mail&sacu=1&rip=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin">
-                        <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M25.0707 13.7643C25.0707 12.9778 25.0056 12.187 24.8667 11.4132H13.7324V15.8688H20.1086C19.844 17.3058 18.9938 18.5769 17.749 19.3847V22.2757H21.553C23.7867 20.2604 25.0707 17.2845 25.0707 13.7643Z" fill="#848B98" />
-                            <path d="M13.7324 25.0699C16.9162 25.0699 19.601 24.0453 21.5573 22.2767L17.7533 19.3857C16.695 20.0914 15.3287 20.491 13.7367 20.491C10.6572 20.491 8.046 18.4547 7.1091 15.7167H3.18359V18.697C5.18757 22.604 9.2691 25.0699 13.7324 25.0699Z" fill="#848B98" />
-                            <path d="M7.10453 15.7159C6.61004 14.2789 6.61004 12.7229 7.10453 11.2859V8.30566H3.18345C1.50916 11.575 1.50916 15.4268 3.18345 18.6961L7.10453 15.7159Z" fill="#848B98" />
-                            <path d="M13.7324 6.50818C15.4154 6.48263 17.0419 7.10334 18.2608 8.24274L21.6311 4.93939C19.497 2.97523 16.6646 1.89533 13.7324 1.92937C9.2691 1.92937 5.18757 4.39524 3.18359 8.30658L7.10477 11.2868C8.03733 8.54466 10.6529 6.50818 13.7324 6.50818Z" fill="#848B98" />
-                        </svg>
-                    </a>
-                </li>
-                <li class="giz-social-icon--list">
-                    <a href="https://twitter.com/?lang=en">
-                        <svg width="24" height="21" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M21.5331 5.23357C21.5483 5.46325 21.5483 5.69298 21.5483 5.92265C21.5483 12.9281 16.5991 21 7.55333 21C4.7665 21 2.17768 20.1304 0 18.6211C0.395955 18.6703 0.776628 18.6867 1.18782 18.6867C3.48728 18.6867 5.60407 17.85 7.29444 16.4227C5.13199 16.3734 3.31979 14.8477 2.69542 12.7477C3.00001 12.7968 3.30456 12.8297 3.62439 12.8297C4.066 12.8297 4.50766 12.764 4.9188 12.6492C2.66499 12.157 0.974582 10.0242 0.974582 7.44843V7.38283C1.62938 7.77658 2.39087 8.02267 3.19792 8.05544C1.87304 7.10386 1.00505 5.47966 1.00505 3.64215C1.00505 2.65779 1.24866 1.75545 1.67508 0.967944C4.09642 4.18357 7.73605 6.28353 11.8172 6.51326C11.7411 6.11951 11.6954 5.70939 11.6954 5.29923C11.6954 2.37888 13.8883 0 16.6142 0C18.0304 0 19.3096 0.639842 20.2081 1.67344C21.3198 1.44376 22.3858 1.00077 23.33 0.393753C22.9644 1.62425 22.1878 2.65784 21.1675 3.31405C22.1574 3.19926 23.1168 2.90388 24 2.49377C23.3301 3.54373 22.4924 4.47884 21.5331 5.23357Z" fill="#848B98" />
-                        </svg>
-                    </a>
-                </li>
-            </ul>
-            <!--/social icons-->
-        </div>
-        <!--/third party login-->
-        <div class="giz-login-content--footer">
-            <div class="giz-no-account"><a href="#">don’t have an account?</a></div>
-            <div class="giz-footer-links"><a href="#">create new account</a> | <a href="#">forgot password?</a></div>
-        </div>
-    </div>
-    <!--login content body-->
-</form>
-<!--login form-->
+        <!--login content body-->
+    </form>
+    <!--login form-->
+</div>
 @code {
+    private bool ShowSpinner { get; set; } = false;
     void Navigate()
     {
+        ShowSpinner = !ShowSpinner;
+        Thread.Sleep(200);
+        //Task.Delay(1000).Wait();
         UriHelper.NavigateTo("/agreement");
     }
 }
