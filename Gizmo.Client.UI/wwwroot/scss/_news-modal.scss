@@ -1,0 +1,91 @@
+//============= news modal style ===============//
+
+.giz-modal-wrapper {
+    display: $display-none;
+    position: $position-fixed;
+    width: $width-full;
+    height: $height-full;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(22, 30, 37, 0.8) 0%, rgba(11, 17, 23, 0.9) 100%);
+    backdrop-filter: blur(15px);
+    z-index: 1001;
+
+    .giz-news-modal {
+        @include align-center;
+        border-radius: $rounded-xl;
+        z-index: 1002;
+        border: 1px solid #343C47;
+        background: $dark-color;
+        box-shadow: $elevation-4;
+        backdrop-filter: blur(20px);
+
+        .giz-modal-header {
+            text-align: $text-align-center;
+            position: $position-relative;
+
+            .giz-terminate {
+                background: inherit;
+                float: $float-right;
+            }
+
+            &::before {
+                content: "";
+                position: $position-absolute;
+                border-bottom: 1px solid #343c47;
+                width: $width-full;
+                bottom: 0;
+                left: 0;
+            }
+
+            &--title {
+                @include font-10;
+                letter-spacing: $letter-spacing-15;
+                color: $primary-light-color;
+            }
+
+            &--text {
+                @include font-20;
+                letter-spacing: $letter-spacing-2;
+                color: $white-color;
+                margin-top: 0.625rem;
+            }
+        }
+
+        .giz-modal-body {
+
+            img {
+                border-radius: $rounded-lg;
+                width: $width-full;
+            }
+
+            &--title {
+                text-transform: $text-uppercase;
+                letter-spacing: $letter-spacing-24;
+                color: $blue-gray;
+                text-shadow: $text-shadow-sm;
+                margin-bottom: $spacer-8;
+                @include font-11;
+            }
+
+            &--text {
+                color: $white-color;
+                line-height: $line-height-19;
+                @include open-sans-600;
+                @include font-15;
+            }
+
+            &--footer-text {
+                font-family: $font-family-open-sans;
+                font-size: $font-13;
+                line-height: $line-height-17;
+                color: $dim-blue-gray;
+                margin-top: $spacer-8;
+            }
+        }
+    }
+}
+
+
