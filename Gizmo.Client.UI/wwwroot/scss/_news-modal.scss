@@ -17,7 +17,7 @@
         @include align-center;
         border-radius: $rounded-xl;
         z-index: 1002;
-        border: 1px solid #343C47;
+        border: 1px solid $border-silver-gray;
         background: $dark-color;
         box-shadow: $elevation-4;
         backdrop-filter: blur(20px);
@@ -34,7 +34,7 @@
             &::before {
                 content: "";
                 position: $position-absolute;
-                border-bottom: 1px solid #343c47;
+                border-bottom: 1px solid $border-silver-gray;
                 width: $width-full;
                 bottom: 0;
                 left: 0;
@@ -72,17 +72,19 @@
 
             &--text {
                 color: $white-color;
-                line-height: $line-height-19;
+                line-height: $line-height-25;
                 @include open-sans-600;
-                @include font-15;
+                font-size: $font-20;
+                letter-spacing: $letter-spacing-5;
             }
 
             &--footer-text {
                 font-family: $font-family-open-sans;
-                font-size: $font-13;
-                line-height: $line-height-17;
-                color: $dim-blue-gray;
-                margin-top: $spacer-8;
+                font-size: $font-14;
+                line-height: $line-height-21;
+                letter-spacing: $letter-spacing-1;
+                color: $milky-white;
+                margin-top: 1rem;
             }
         }
     }
