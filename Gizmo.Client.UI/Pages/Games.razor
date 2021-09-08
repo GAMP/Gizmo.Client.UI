@@ -115,26 +115,18 @@
             <!--/ranking mode-->
             <!--ranking wrapper-->
             <div class="giz-rankig-wrapper">
-                <!--ranking region-->
-                <div class="giz-regional-ranking">
-                    <form>
-                        <select>
-                            <option value="Global">Global</option>
-                            <option value="Asia">Asia</option>
-                            <option value="South America">South America</option>
-                            <option value="North America">North America</option>
-                            <option value="Europe">Euore</option>
-                        </select>
-                    </form>
-                </div>
-                <!--ranking region-->
-                <!--pagination-wrapper-->
-                <ul class="giz__pagination">
-                    <li class="giz__pagination--items"><a class="giz__pagination--link active" href="#">today</a></li>
-                    <li class="giz__pagination--items"><a class="giz__pagination--link" href="#">this week</a></li>
-                    <li class="giz__pagination--items"><a class="giz__pagination--link" href="#">this month</a></li>
-                </ul>
-                <!--/pagination-wrapper-->
+                <Select IsFullWidth="true" IsTransparent="true" TValue="string">
+                    <SelectItem Value="@("Global")" Text="Global" />
+                    <SelectItem Value="@("Asia")" Text="Asia" />
+                    <SelectItem Value="@("South America")" Text="South America" />
+                    <SelectItem Value="@("North America")" Text="North America" />
+                    <SelectItem Value="@("Europe")" Text="Europe" />
+                </Select>
+                <ButtonGroup IsMandatory="true">
+                    <Button>today</Button>
+                    <Button>this week</Button>
+                    <Button>this month</Button>
+                </ButtonGroup>
                 <!--button-->
                 <div class="giz-filter-btn">
                     <button class="giz-btn-info">clear filter</button>

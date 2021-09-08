@@ -3,6 +3,7 @@
 @layout _Layout_Login
 @inject NavigationManager UriHelper
 @using System.Threading;
+@using Gizmo.Web.Components
 
 <!--spinner-->
 <div class="giz-align-center @(ShowSpinner ? "" : "d-none")">
@@ -47,10 +48,10 @@
             <div class="giz-login-content--title">welcome to inspot</div>
             <div class="giz-login-content--text">Sign in to your account</div>
             <div class="mb-3">
-                <input type="text" />
+                <TextInput TValue="string" Size="InputSizes.Large" IsFullWidth="true" />
             </div>
             <div class="mb-3">
-                <input type="password" />
+                <TextInput TValue="string" Size="InputSizes.Large" IsFullWidth="true" Type="password" />
             </div>
             <!--login btn-->
             <div class="giz-btn">
