@@ -77,8 +77,8 @@
 .giz-bar-wrapper {
     display: $display-flex;
     align-items: $align-center;
-    justify-content: space-between;
-    padding: 1rem 24px;
+    justify-content: $justify-space-between;
+    padding: 1rem 1.5rem;
 
     .giz-active-bar {
         list-style: $list-unstyled;
@@ -88,7 +88,7 @@
         &--items {
             position: $position-relative;
             cursor: $cursor-pointer;
-            margin-right: 26px;
+            margin-right: 1.625rem;
 
             &::before {
                 content: "";
@@ -135,9 +135,9 @@
     .giz-apps-bar {
         @extend .giz-active-bar;
 
-       &--title {
+        &--title {
             @include font-11;
-            text-transform: uppercase;
+            text-transform: $text-uppercase;
         }
     }
 }
