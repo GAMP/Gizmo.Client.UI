@@ -73,3 +73,71 @@
         }
     }
 }
+
+.giz-bar-wrapper {
+    display: $display-flex;
+    align-items: $align-center;
+    justify-content: space-between;
+    padding: 1rem 24px;
+
+    .giz-active-bar {
+        list-style: $list-unstyled;
+        display: $display-flex;
+        align-items: $align-center;
+
+        &--items {
+            position: $position-relative;
+            cursor: $cursor-pointer;
+            margin-right: 26px;
+
+            &::before {
+                content: "";
+                position: $position-absolute;
+                height: $height-full;
+                width: $width-full;
+                top: 0;
+            }
+
+            &:hover .giz-tooltip-text {
+                visibility: $visibility-visible !important;
+            }
+
+            .giz-fill-text {
+                width: 5.875rem !important;
+                top: 57px !important;
+                margin-left: -45px !important;
+            }
+
+            .giz-sub-dropdown--btn {
+                display: $display-block;
+            }
+
+            .giz-tooltip-text {
+                visibility: $visibility-invisible;
+                width: 3.938rem;
+                background-color: $dark-black-pearl;
+                text-align: $text-align-center;
+                border-radius: $rounded;
+                padding: 0.313rem 0;
+                position: $position-absolute;
+                z-index: 1;
+                top: 49px;
+                left: 50%;
+                margin-left: -34px;
+                white-space: $nowrap-white-space;
+                @include font-12;
+                @include open-sans-600;
+                letter-spacing: -0.025rem;
+            }
+        }
+    }
+
+    .giz-apps-bar {
+        @extend .giz-active-bar;
+
+       &--title {
+            @include font-11;
+            text-transform: uppercase;
+        }
+    }
+}
