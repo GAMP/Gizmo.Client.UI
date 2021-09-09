@@ -10,85 +10,90 @@
         top: 100%;
         left: -22px;
 
-        .giz-notification-wrapper {
-            position: $position-relative;
+        .giz-notification {
 
-            .giz-no-notification {
-                @include align-center;
-                padding: 1.375rem;
-                letter-spacing: $letter-spacing-24;
-                @include open-sans-600;
-                width: fit-content;
-                text-align: $text-align-center;
-                display: $display-none;
-                min-height: 22rem;
+            &--wrapper {
+                min-height: 24.188rem;
+                position: $position-relative;
 
-                &--title {
-                    font-size: $font-15;
-                    line-height: $line-height-20;
-                    margin-bottom: 1.25rem;
-                }
+                .giz-no-notification {
+                    @include align-center;
+                    padding: 1.375rem;
+                    letter-spacing: $letter-spacing-24;
+                    @include open-sans-600;
+                    width: fit-content;
+                    text-align: $text-align-center;
+                    display: $display-none;
 
-                &--text {
-                    font-size: $font-13;
-                    line-height: $line-height-16;
-                    color: $dull-blue;
+                    &--title {
+                        font-size: $font-15;
+                        line-height: $line-height-20;
+                        margin-bottom: 1.25rem;
+                    }
+
+                    &--text {
+                        font-size: $font-13;
+                        line-height: $line-height-16;
+                        color: $dull-blue;
+                    }
                 }
             }
 
-            .giz-notification {
+            &--items {
+                padding: 1.375rem;
+                border-bottom: 1px solid $border-nile-blue;
+                position: $position-relative;
 
-                &--items {
-                    padding: 1.375rem;
-                    border-bottom: 1px solid $border-nile-blue;
-                    position: $position-relative;
+                &:last-child{
+                    border-bottom:none;
+                }
+            }
+
+            &--title {
+                @include font-14;
+                @include open-sans-600;
+                letter-spacing: $letter-spacing-24;
+                line-height: $line-height-17;
+            }
+
+            &--icon {
+                position: $position-absolute;
+                right: 26px;
+                top: 42px;
+
+                svg {
+                    fill: $primary-color;
+                }
+            }
+
+            &--info {
+                @include font-10;
+                text-shadow: $text-shadow-sm;
+                margin-top: 1.25rem;
+
+                a {
+                    color: $dim-white;
+                    margin-left: 0.75rem;
+                }
+            }
+
+            &--btn {
+                padding: 1.375rem;
+                border-top: 1px solid $border-nile-blue;
+                text-align: $text-align-center;
+                background: linear-gradient( 180deg, rgba(90, 94, 107, 0) 0%, rgba(37, 140, 246, 0.166) 84.37%);
+
+                .giz-btn-info {
+                    width: $width-full;
                 }
 
-                &--title {
-                    @include font-14;
-                    @include open-sans-600;
+                a {
+                    margin-top: 0.75rem;
+                    font-size: $font-14;
                     letter-spacing: $letter-spacing-24;
+                    color: $dull-blue;
+                    font-family: $font-family-open-sans;
                     line-height: $line-height-17;
-                }
-
-                &--icon {
-                    position: $position-absolute;
-                    right: 26px;
-                    top: 42px;
-
-                    svg {
-                        fill: $primary-color;
-                    }
-                }
-
-                &--info {
-                    @include font-10;
-                    text-shadow: $text-shadow-sm;
-                    margin-top: 1.25rem;
-
-                    a {
-                        color: $dim-white;
-                        margin-left: 0.75rem;
-                    }
-                }
-
-                &--btn {
-                    padding: 1.375rem;
-                    text-align: $text-align-center;
-                    background: linear-gradient( 180deg, rgba(90, 94, 107, 0) 0%, rgba(37, 140, 246, 0.166) 84.37%);
-
-                    .giz-btn-info {
-                        width: $width-full;
-                    }
-
-                    a {
-                        margin-top: 0.75rem;
-                        font-size: $font-14;
-                        letter-spacing: $letter-spacing-24;
-                        color: $dull-blue;
-                        font-family: $font-family-open-sans;
-                        line-height: $line-height-17;
-                    }
                 }
             }
         }

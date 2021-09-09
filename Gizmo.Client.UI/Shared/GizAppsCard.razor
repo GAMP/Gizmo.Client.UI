@@ -1,9 +1,9 @@
 ﻿@namespace Gizmo.Client.UI.Shared
 <!--carousel card-->
-<div class="giz-apps-card">
+<div class="giz-apps-card" @onclick="ShowPrimaryModal">
     <div class="giz-apps-card--overlay mb-4">
         <div class="giz-img-top">
-            <img src="https://i.postimg.cc/MGN8G2pM/Battle-net.png" alt='loading' />
+          <a href="#" ><img src="https://i.postimg.cc/MGN8G2pM/Battle-net.png" alt='loading' /></a>
         </div>
     </div>
     <div class="giz-card-title mb-2">
@@ -12,5 +12,36 @@
     <div class="giz-card-text">
         Add date <span>3/12/2021</span>
     </div>
+    <!--primary modal-->
+    <div class="giz-modal-wrapper" style="display: @(IsOpen ? "none" : "block");">
+    <div class="giz-primary-modal pa-11">
+        <div class="giz-primary-modal--heading mb-2">
+            Heads up
+        </div>
+        <div class="giz-primary-modal--title mb-8">
+            Primary modal example
+        </div>
+        <div class="giz-primary-modal-body">
+            <div class="giz-primary-modal-body--text mb-4">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+            <div class="giz-primary-modal-body--btn">
+                <button class="giz-btn-primary mr-2">confirm</button>
+                <button class="giz-btn-info">cancel</button>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!--/primary modal-->
 </div>
 <!--/carousel card-->
+@code {
+
+    private bool IsOpen { get; set; } = true;
+
+    private void ShowPrimaryModal()
+    {
+        IsOpen = !IsOpen;
+    }
+    }
