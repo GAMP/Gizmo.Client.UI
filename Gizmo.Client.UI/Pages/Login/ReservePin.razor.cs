@@ -2,8 +2,8 @@
 
 namespace Gizmo.Client.UI.Pages
 {
-    [Route("/resetpin")]
-    public partial class ResetPin : ComponentBase
+    [Route("/reservepin")]
+    public partial class ReservePin : ComponentBase
     {
     }
 }
