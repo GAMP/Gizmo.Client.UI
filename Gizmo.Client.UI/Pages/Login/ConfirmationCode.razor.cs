@@ -2,8 +2,8 @@
 
 namespace Gizmo.Client.UI.Pages
 {
-    [Route("/confirmation")]
-    public partial class Confirmation : ComponentBase
+    [Route("/confirmationcode")]
+    public partial class ConfirmationCode : ComponentBase
     {
     }
 }
