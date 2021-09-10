@@ -24,6 +24,32 @@ namespace Gizmo.Client.UI.Pages
             GameStatistics.Add(new GameStatisticsViewModel() { Rank = 10, Arrow = 1, Flag = "Hkfwyy7q/Flag-4.png", Player = "unkown1008", Tier = "Master IV", LP = 1840, Games = 325, KDA = 5.8m, Victories = 1000, Defeats = 400 });
         }
 
+        private List<string> _filterOptions;
+
         public List<GameStatisticsViewModel> GameStatistics { get; set; }
+
+        public string SelectedFilterOption { get; set; } = "Global";
+
+        public List<string> FilterOptions
+        {
+            get
+            {
+                if (_filterOptions == null)
+                {
+                    _filterOptions = new List<string>();
+                    _filterOptions.Add("Global");
+                    _filterOptions.Add("Asia");
+                    _filterOptions.Add("South America");
+                    _filterOptions.Add("North America");
+                    _filterOptions.Add("Europe");
+                }
+
+                return _filterOptions;
+            }
+            set
+            {
+                _filterOptions = value;
+            }
+        }
     }
 }

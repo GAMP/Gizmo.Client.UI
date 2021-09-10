@@ -1,4 +1,8 @@
 ﻿@inherits ComponentBase
+@using Gizmo.Web.Components
+@using Gizmo.Client.UI.Components
+@using Gizmo.Client.UI.ViewModels
+
 <!--wrapper 1-->
 <div class="wrapper_1">
     <section class="giz-shop-categories pa-6">
@@ -67,19 +71,21 @@
                         <svg width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg" class="ml-2">
                             <path d="M1 1L4 4L7 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
+                        @*<Select IsTransparent="true" HasOutline="false" @bind-Value="SelectedSortOption">
+                            @foreach (var item in SortOptions)
+                            {
+                                <SelectItem Value="@item" Text="@item" />
+                            }
+                        </Select>*@
                     </div>
                 </div>
                 <!--/heading-->
                 <div class="giz-wrapper">
                     <!--carousel cards-->
-                    <GizShopCard></GizShopCard>
-                    <GizShopCard></GizShopCard>
-                    <GizShopCard></GizShopCard>
-                    <GizShopCard></GizShopCard>
-                    <GizShopCard></GizShopCard>
-                    <GizShopCard></GizShopCard>
-                    <GizShopCard></GizShopCard>
-                    <GizShopCard></GizShopCard>
+                    @foreach (var product in Products)
+                    {
+                        <GizShopCard Product="@product" OnAddProduct="@AddProduct" />
+                    }
                     <!--/carousel cards-->
                 </div>
             </section>
@@ -107,44 +113,13 @@
                         <!--/no order text-->
                         <!--order detail-->
                         <div class="giz-order-wrapper">
-                        <div class="giz-order-menu--items">
-                            <div class="giz-order-info">
-                                Monster Energy Ultra Ripper 500ml
-                                <button class="giz-rounded-circle">
-                                    <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M1.19922 3.63989H2.31922H11.2792" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-                                        <path d="M4.00031 3.6399V2.5199C4.00031 2.22286 4.11831 1.93798 4.32835 1.72794C4.53839 1.5179 4.82327 1.3999 5.12031 1.3999H7.36031C7.65736 1.3999 7.94223 1.5179 8.15227 1.72794C8.36231 1.93798 8.48031 2.22286 8.48031 2.5199V3.6399M10.1603 3.6399V11.4799C10.1603 11.7769 10.0423 12.0618 9.83227 12.2719C9.62223 12.4819 9.33736 12.5999 9.04031 12.5999H3.44031C3.14327 12.5999 2.85839 12.4819 2.64835 12.2719C2.43831 12.0618 2.32031 11.7769 2.32031 11.4799V3.6399H10.1603Z" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-                                        <path d="M5.11914 6.43994V9.79994" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-                                        <path d="M7.35938 6.43994V9.79994" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="giz-order-amount">7.10€</div>
-                            <div class="giz-order-btn">
-                                <button class="giz-decrease-btn">-</button>
-                                <span>2</span>
-                                <button class="giz-increase-btn">+</button>
-                            </div>
-                        </div>
-                        <div class="giz-order-menu--items">
-                            <div class="giz-order-info">
-                                Monster Energy Ultra Ripper 500ml
-                                <button class="giz-rounded-circle">
-                                    <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M1.19922 3.63989H2.31922H11.2792" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-                                        <path d="M4.00031 3.6399V2.5199C4.00031 2.22286 4.11831 1.93798 4.32835 1.72794C4.53839 1.5179 4.82327 1.3999 5.12031 1.3999H7.36031C7.65736 1.3999 7.94223 1.5179 8.15227 1.72794C8.36231 1.93798 8.48031 2.22286 8.48031 2.5199V3.6399M10.1603 3.6399V11.4799C10.1603 11.7769 10.0423 12.0618 9.83227 12.2719C9.62223 12.4819 9.33736 12.5999 9.04031 12.5999H3.44031C3.14327 12.5999 2.85839 12.4819 2.64835 12.2719C2.43831 12.0618 2.32031 11.7769 2.32031 11.4799V3.6399H10.1603Z" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-                                        <path d="M5.11914 6.43994V9.79994" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-                                        <path d="M7.35938 6.43994V9.79994" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="giz-order-amount">7.10€</div>
-                            <div class="giz-order-btn">
-                                <button class="giz-decrease-btn">-</button>
-                                <span>2</span>
-                                <button class="giz-increase-btn">+</button>
-                            </div>
-                        </div>
+                            @if (Order != null)
+                            {
+                                @foreach (var orderLine in Order.OrderLines)
+                                {
+                                    <GizOrderItem OrderLine="@orderLine" OnRemoveProduct="@RemoveProduct" />
+                                }
+                            }
                         </div>
                         <!--order detail-->
                     </div>
@@ -153,24 +128,24 @@
                     <div class="giz-order-menu--footer">
                         <div class="giz-order-message">
                             <form>
-                            <textarea placeholder="Add your note..">  
+                                <textarea placeholder="Add your note..">  
                             </textarea>
                             </form>
                         </div>
                         <!--order summary-->
                         <div class="giz-order-summary">
                             <div class="giz-order-summary--text">Total</div>
-                            <div class="giz-order-summary--number">7.00€</div>
+                            <div class="giz-order-summary--number">@Order.Total.ToString("C")</div>
                             <div class="giz-order-summary--text">points</div>
-                            <div class="giz-order-summary--number">0</div>
+                            <div class="giz-order-summary--number">@Order.PointsTotal</div>
                             <div class="giz-order-summary--text">awards</div>
-                            <div class="giz-order-summary--number">0</div>
+                            <div class="giz-order-summary--number">@Order.PointsAwardTotal</div>
                         </div>
                         <!--/order summary-->
                         <!--order btn-->
                         <div class="giz-place-order-btn">
                             <button class="giz-btn-dark-graylish giz-dim-white-text d-none">place order</button>
-                             <button class="giz-btn-primary">place order</button>
+                            <button class="giz-btn-primary">place order</button>
                         </div>
                         <!--order btn-->
                     </div>
