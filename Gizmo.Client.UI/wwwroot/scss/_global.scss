@@ -107,6 +107,51 @@ button {
     grid-row-gap: 1.875rem;
 }
 
+//== lists
+.giz-menu-list {
+    padding: 0.625rem;
+
+    .giz-list-item {
+        margin: 0.625rem 0;
+        padding: 0.75rem;
+        @include open-sans-600;
+
+        &:first-child {
+            margin: 0 0 0.625rem 0;
+        }
+
+        &:last-child {
+            margin: 0.625rem 0 0 0;
+        }
+
+        .giz-search-number {
+            @include font-13;
+            letter-spacing: $letter-spacing-2;
+            padding: 0.25rem 0.375rem;
+            border-radius: $rounded-sm;
+        }
+    }
+
+    &.giz-list--selectable {
+        .giz-list-item {
+            &:hover {
+                .giz-search-number {
+                    background: $secondary-dark;
+                }
+            }
+
+            &.giz-list-item-selected {
+                background: $metalic-black;
+                color: $white-color;
+
+                .giz-search-number {
+                    background: $secondary-dark;
+                }
+            }
+        }
+    }
+}
+
 //============== media query==========//
 
 

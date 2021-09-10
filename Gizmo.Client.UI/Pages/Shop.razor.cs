@@ -15,6 +15,14 @@ namespace Gizmo.Client.UI.Pages
         {
             Random random = new Random();
 
+            ProductCategories = new List<ProductCategoryViewModel>();
+            ProductCategories.Add(new ProductCategoryViewModel() { Id = 1, Name = "Coffee", Products = 10 });
+            ProductCategories.Add(new ProductCategoryViewModel() { Id = 1, Name = "Beverages", Products = 6 });
+            ProductCategories.Add(new ProductCategoryViewModel() { Id = 1, Name = "FPS & Action", Products = 12 });
+            ProductCategories.Add(new ProductCategoryViewModel() { Id = 1, Name = "Sandwiches", Products = 16 });
+            ProductCategories.Add(new ProductCategoryViewModel() { Id = 1, Name = "Snacks", Products = 8 });
+            ProductCategories.Add(new ProductCategoryViewModel() { Id = 1, Name = "Time offers", Products = 8 });
+
             Products = Enumerable.Range(0, 8).Select(i => new ProductViewModel()
             {
                 Id = i,
@@ -43,6 +51,8 @@ namespace Gizmo.Client.UI.Pages
         }
 
         private List<string> _sortOptions;
+
+        public List<ProductCategoryViewModel> ProductCategories { get; set; }
 
         public ICollection<ProductViewModel> Products { get; set; }
 

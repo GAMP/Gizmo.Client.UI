@@ -8,44 +8,21 @@
     <section class="giz-shop-categories pa-6">
         <!--Apps and games Categories-->
         <div class="giz-header-title">Categories</div>
-        <ul class="giz-user-site-menu">
-            <li class="giz-user-site-menu--items">
-                <a class="giz-user-site-menu--links"
-                   href="#">
-                    Coffee <span class="giz-search-number">10</span>
-                </a>
-            </li>
-            <li class="giz-user-site-menu--items">
-                <a class="giz-user-site-menu--links active"
-                   href="#">
-                    Beverages <span class="giz-search-number">6</span>
-                </a>
-            </li>
-            <li class="giz-user-site-menu--items">
-                <a class="giz-user-site-menu--links"
-                   href="#">
-                    FPS & Action <span class="giz-search-number">12</span>
-                </a>
-            </li>
-            <li class="giz-user-site-menu--items">
-                <a class="giz-user-site-menu--links"
-                   href="#">
-                    Sandwiches<span class="giz-search-number">16</span>
-                </a>
-            </li>
-            <li class="giz-user-site-menu--items">
-                <a class="giz-user-site-menu--links"
-                   href="#">
-                    Snacks <span class="giz-search-number">8</span>
-                </a>
-            </li>
-            <li class="giz-user-site-menu--items">
-                <a class="giz-user-site-menu--links"
-                   href="#">
-                    Time offers <span class="giz-search-number">8</span>
-                </a>
-            </li>
-        </ul>
+        <List CanClick="true" CanSelect="true" Class="giz-menu-list">
+            @foreach (var productCategory in ProductCategories)
+            {
+                <ListItem>
+                    <div class="d-flex">
+                        <div class="mr-auto">
+                            @productCategory.Name
+                        </div>
+                        <div class="giz-search-number">
+                            @productCategory.Products
+                        </div>
+                    </div>
+                </ListItem>
+            }
+        </List>
         <!--/Apps and games Categories-->
     </section>
 </div>
@@ -72,11 +49,11 @@
                             <path d="M1 1L4 4L7 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                         @*<Select IsTransparent="true" HasOutline="false" @bind-Value="SelectedSortOption">
-                            @foreach (var item in SortOptions)
-                            {
-                                <SelectItem Value="@item" Text="@item" />
-                            }
-                        </Select>*@
+                                @foreach (var item in SortOptions)
+                                {
+                                    <SelectItem Value="@item" Text="@item" />
+                                }
+                            </Select>*@
                     </div>
                 </div>
                 <!--/heading-->
