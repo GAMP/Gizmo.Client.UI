@@ -1,7 +1,7 @@
 //============== Clien UI login ============//
 
 .giz-main-container {
-    background: url("https://i.postimg.cc/Znmrwx0d/login-img.png")no-repeat fixed;
+    background: url("https://i.postimg.cc/131tJwn2/bg-img.png")no-repeat fixed;
     background-size: cover;
     height: $viewport-height;
     overflow-y: auto;
@@ -40,7 +40,6 @@
         .giz-login-content {
             width: 27.625rem;
             min-width: 27.625rem;
-            min-height: 38.688rem;
             background: $black-slate;
             backdrop-filter: blur(20px);
             border-radius: $rounded-xxl;
@@ -213,6 +212,8 @@
         display: $display-flex;
         align-items: $align-center;
         margin-top: auto;
+        justify-content: space-between;
+        position:$position-relative;
 
         .giz-language-menu {
             position: $position-relative;
@@ -306,16 +307,44 @@
             }
         }
 
+        .giz-keyboard-menu {
+
+            button {
+                font-family: $font-family;
+                letter-spacing: $letter-spacing-2;
+                font-weight: $font-weight-400;
+                vertical-align: top;
+
+                span {
+                    margin-left: 0.625rem;
+                    margin-right: 0.313rem;
+                    vertical-align: middle;
+                }
+            }
+        }
+
         .giz-alert-message {
             @include btn-danger;
+            @include align-center;
+            width: 184px;
+            top: 50%;
+            text-align: center;
         }
 
         .giz-warning-message {
             @include btn-warning;
+            @include align-center;
+            width: 184px;
+            top: 50%;
+            text-align: center;
         }
 
         .giz-disable-message {
             @include btn-blue-violet;
+            @include align-center;
+            width: 184px;
+            top: 50%;
+            text-align: center;
         }
     }
 }
