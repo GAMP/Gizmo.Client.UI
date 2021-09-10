@@ -113,12 +113,11 @@
             <!--/ranking mode-->
             <!--ranking wrapper-->
             <div class="giz-rankig-wrapper">
-                <Select IsFullWidth="true" IsTransparent="true" TValue="string">
-                    <SelectItem Value="@("Global")" Text="Global" />
-                    <SelectItem Value="@("Asia")" Text="Asia" />
-                    <SelectItem Value="@("South America")" Text="South America" />
-                    <SelectItem Value="@("North America")" Text="North America" />
-                    <SelectItem Value="@("Europe")" Text="Europe" />
+                <Select IsFullWidth="true" IsTransparent="true" @bind-Value="SelectedFilterOption">
+                    @foreach (var item in FilterOptions)
+                    {
+                        <SelectItem Value="@item" Text="@item" />
+                    }
                 </Select>
                 <ButtonGroup IsMandatory="true">
                     <Button>today</Button>

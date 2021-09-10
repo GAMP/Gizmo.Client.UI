@@ -1,0 +1,26 @@
+﻿@using Gizmo.Web.Components
+
+<div class="giz-order-menu--items">
+    <div class="giz-order-info">
+        @OrderLine.ProductName
+        @*<Button Variant="ButtonVariants.Icon" LeftSVGIcon="Icons.Trash" />*@
+        <button class="giz-rounded-circle" @onclick="@(() => RemoveProduct())">
+            <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.19922 3.63989H2.31922H11.2792" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M4.00031 3.6399V2.5199C4.00031 2.22286 4.11831 1.93798 4.32835 1.72794C4.53839 1.5179 4.82327 1.3999 5.12031 1.3999H7.36031C7.65736 1.3999 7.94223 1.5179 8.15227 1.72794C8.36231 1.93798 8.48031 2.22286 8.48031 2.5199V3.6399M10.1603 3.6399V11.4799C10.1603 11.7769 10.0423 12.0618 9.83227 12.2719C9.62223 12.4819 9.33736 12.5999 9.04031 12.5999H3.44031C3.14327 12.5999 2.85839 12.4819 2.64835 12.2719C2.43831 12.0618 2.32031 11.7769 2.32031 11.4799V3.6399H10.1603Z" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M5.11914 6.43994V9.79994" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M7.35938 6.43994V9.79994" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </button>
+    </div>
+    <div class="giz-order-amount">@OrderLine.Total.ToString("C")</div>
+    <div class="giz-order-btn">
+        <button class="giz-decrease-btn" @onclick="@(() => RemoveQuantity())">-</button>
+        <span>@OrderLine.Quantity</span>
+        <button class="giz-increase-btn" @onclick="@(() => AddQuantity())">+</button>
+    </div>
+</div>
+
+@code {
+
+}
