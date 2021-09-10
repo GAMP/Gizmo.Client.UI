@@ -24,7 +24,7 @@
                 text-align: $text-align-right;
                 flex-basis: 50%;
                 font-family: $font-family-mark-pro;
-                font-weight: $font-weight-700;
+                font-weight: $font-weight-800;
             }
         }
     }
@@ -54,6 +54,7 @@
                 width: $width-full;
                 background: linear-gradient( 360deg, rgba(20, 22, 28, 0) 0%, rgba(66, 128, 250, 0.3) 100%);
                 background-blend-mode: lighten;
+                z-index:-1;
             }
 
             &::before {
@@ -69,7 +70,6 @@
 
             &--heading {
                 display: $display-flex;
-                justify-content: $justify-space-between;
                 align-items: $align-baseline;
                 padding: 1.875rem 1.875rem 0 1.875rem;
 
@@ -102,7 +102,7 @@
                 .giz-btn {
                     margin-bottom: 1.563rem;
 
-                    .giz-btn-primary {
+                    button {
                         border-radius: $rounded;
                         padding: 1.219rem;
                         @include font-14;
@@ -175,21 +175,17 @@
 
             &--text {
                 @include font-20;
-                letter-spacing: $letter-spacing-2;
-                margin-bottom: 2.625rem;
+                margin-bottom: 2.875rem;
             }
 
 
             &--footer {
-                padding-top: 7.5rem;
 
                 .giz-no-account {
                     @include font-9;
                     margin-bottom: 0.625rem;
-
-                    a {
-                        color: $dark-blue-gray;
-                    }
+                    color: $dark-blue-gray;
+                    padding-top: 7.5rem;
                 }
 
                 .giz-footer-links {
@@ -213,7 +209,7 @@
         align-items: $align-center;
         margin-top: auto;
         justify-content: space-between;
-        position:$position-relative;
+        position: $position-relative;
 
         .giz-language-menu {
             position: $position-relative;
@@ -326,25 +322,22 @@
         .giz-alert-message {
             @include btn-danger;
             @include align-center;
-            width: 184px;
-            top: 50%;
-            text-align: center;
+            width: 11.5rem;
+            text-align: $text-align-center;
         }
 
         .giz-warning-message {
             @include btn-warning;
             @include align-center;
-            width: 184px;
-            top: 50%;
-            text-align: center;
+            width: 11.5rem;
+            text-align: $text-align-center;
         }
 
         .giz-disable-message {
             @include btn-blue-violet;
             @include align-center;
-            width: 184px;
-            top: 50%;
-            text-align: center;
+            width: 11.5rem;
+            text-align: $text-align-center;
         }
     }
 }
@@ -353,5 +346,5 @@
 
 .giz-align-center {
     @include align-center;
-    text-align: center;
+    text-align: $text-align-center;
 }
