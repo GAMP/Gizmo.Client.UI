@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @layout _Layout
+@using Gizmo.Web.Components
 
 <!--wrapper 1-->
 <div class="wrapper_1 border-end">
@@ -63,8 +64,8 @@
             <!--/user points-->
             <!--Button-->
             <div class="giz-btn-wrapper">
-                <button class="giz-btn-primary">Refill time</button>
-                <button class="giz-btn-info">purchase</button>
+                <Button Size="ButtonSizes.Large" HasShadow="true" Class="refill-time-button">Refill time</Button>
+                <Button Size="ButtonSizes.Large" Color="ButtonColors.Info" Class="purchase-button">purchase</Button>
             </div>
             <!--/button-->
             <!--user profile links-->
@@ -75,7 +76,7 @@
                              Match=@NavLinkMatch.All>
                         User Details
                     </NavLink>
-                </li>              
+                </li>
                 <li class="giz-user-site-menu--items">
 
                     <NavLink class="giz-user-site-menu--links"
@@ -83,7 +84,7 @@
                              Match=@NavLinkMatch.All>
                         Purchase History
                     </NavLink>
-                </li>               
+                </li>
                 <li class="giz-user-site-menu--items">
                     <NavLink class="giz-user-site-menu--links"
                              href="/profile/deposits"
@@ -97,14 +98,14 @@
                              Match=@NavLinkMatch.All>
                         Time Refills
                     </NavLink>
-                </li>              
+                </li>
                 <li class="giz-user-site-menu--items">
                     <NavLink class="giz-user-site-menu--links"
                              href="/profile/notifications"
                              Match=@NavLinkMatch.All>
                         Notifications
                     </NavLink>
-                </li>               
+                </li>
             </ul>
             <!--/user profile links-->
         </div>
