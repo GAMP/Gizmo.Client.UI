@@ -2,8 +2,8 @@
 
 namespace Gizmo.Client.UI.Pages
 {
-    [Route("/loading")]
-    public partial class Loading : ComponentBase
+    [Route("/confirmemail")]
+    public partial class ConfirmEmail : ComponentBase
     {
     }
 }
