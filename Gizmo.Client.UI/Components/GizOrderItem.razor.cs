@@ -1,10 +1,11 @@
 ﻿using Gizmo.Client.UI.ViewModels;
+using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class GizOrderItem
+    public partial class GizOrderItem : CustomDOMComponentBase
     {
         public GizOrderItem()
         {
