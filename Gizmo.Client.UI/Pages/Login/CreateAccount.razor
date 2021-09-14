@@ -3,9 +3,10 @@
 @layout _Layout_Login
 @using System.Threading;
 @using Gizmo.Web.Components
+@inject NavigationManager UriHelper
 
 <form>
-    <div class="giz-login-content--heading justify-end mb-1">
+    <div @onclick="@NavigateToHome" class="giz-login-content--heading justify-end mb-1">
         <button class="client-button giz-terminate giz-float-right">
             <svg width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M6.89545 5.72656L9.73835 2.88366C10.0872 2.5348 10.0872 1.96918 9.73835 1.62003L9.10653 0.98821C8.75767 0.639347 8.19205 0.639347 7.8429 0.98821L5 3.83111L2.1571 0.98821C1.80824 0.639347 1.24261 0.639347 0.893466 0.98821L0.261648 1.62003C-0.0872159 1.96889 -0.0872159 2.53452 0.261648 2.88366L3.10455 5.72656L0.261648 8.56946C-0.0872159 8.91832 -0.0872159 9.48395 0.261648 9.8331L0.893466 10.4649C1.24233 10.8138 1.80824 10.8138 2.1571 10.4649L5 7.62202L7.8429 10.4649C8.19176 10.8138 8.75767 10.8138 9.10653 10.4649L9.73835 9.8331C10.0872 9.48423 10.0872 8.91861 9.73835 8.56946L6.89545 5.72656Z" fill="#ACD7EF" fill-opacity="0.3" style="mix-blend-mode:screen" />
@@ -49,15 +50,24 @@
         </div>
         <!--button-->
         <div class="giz-btn mb-8">
-            <button class="client-button giz-royal-blue giz-width-full">Register</button>
+            <button @onclick="@NavigateToEmail"  class="client-button giz-royal-blue giz-width-full">Register</button>
         </div>
         <!--/button-->
         <div class="giz-login-content--footer">
             <div class="giz-footer-text px-5">
                 by clicking continue you agree to
-                our <a href="#" class="giz-white-text">end user agreement</a> and <a href="#" class="giz-white-text">terms & conditions</a>
+                our <a href="/agreement" class="giz-white-text">end user agreement</a> and <a href="/agreement" class="giz-white-text">terms & conditions</a>
             </div>
         </div>
     </div>
     <!--/body-->
 </form>
+@code { 
+
+void NavigateToEmail()
+{ UriHelper.NavigateTo("/confirmemail"); }
+
+void NavigateToHome()
+{ UriHelper.NavigateTo("/"); }
+}
+
