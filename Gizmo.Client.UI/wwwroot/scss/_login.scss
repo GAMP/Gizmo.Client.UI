@@ -70,19 +70,16 @@
             }
 
             &--heading {
-                display: $display-flex;
-                align-items: $align-baseline;
-                padding: 1.875rem 1.875rem 0 1.875rem;
+                padding: 0 1.875rem;
 
                 .giz-language-menu {
 
                     button {
                         font-family: $font-family;
-                        letter-spacing: $letter-spacing-2;
                         font-weight: $font-weight-400;
-                        @include font-9;
-                        line-height: $line-height-9;
+                        @include font-9($line-height-9,$letter-spacing-2);
                         color: $light-blue-gray;
+                        vertical-align: text-top;
 
                         span {
                             margin-left: 0.625rem;
@@ -98,7 +95,6 @@
             }
 
             &--body {
-                padding: 0 2.75rem 3.125rem 2.75rem;
                 text-align: $text-align-center;
 
                 .giz-btn {
@@ -110,6 +106,11 @@
                         font-weight: $font-weight-400;
                         font-family: $font-family;
                         letter-spacing: $letter-spacing-10;
+
+                        svg {
+                            stroke: $white-color;
+                            vertical-align: text-top;
+                        }
                     }
                 }
 
@@ -117,9 +118,8 @@
 
                     &--text {
                         @include font-9;
-                        line-height: $line-height-9;
                         color: $light-blue-gray;
-                        padding: 0 4.188rem;
+                        padding: 0 4.388rem;
                     }
 
                     .giz-social-icon {
@@ -190,7 +190,6 @@
 
                 .giz-no-account {
                     @include font-9;
-                    line-height: $line-height-9;
                     margin-bottom: 0.625rem;
                     color: $dark-blue-gray;
                     padding-top: 7.5rem;
@@ -297,7 +296,6 @@
 
             &--title {
                 @include font-9;
-                line-height: $line-height-9;
                 color: $dim-white;
                 margin-bottom: 0.313rem;
             }
