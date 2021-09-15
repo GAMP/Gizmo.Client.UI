@@ -1,8 +1,10 @@
 ﻿using Gizmo.Client.UI.ViewModels;
+using Gizmo.Web.Components.Infrastructure;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
 
 namespace Gizmo.Client.UI.Pages
 {
@@ -51,6 +53,8 @@ namespace Gizmo.Client.UI.Pages
         }
 
         private List<string> _sortOptions;
+
+        private ICommand _placeOrderCommand;
 
         public List<ProductCategoryViewModel> ProductCategories { get; set; }
 
@@ -112,5 +116,38 @@ namespace Gizmo.Client.UI.Pages
                 _sortOptions = value;
             }
         }
+
+        public bool SelectPaymentMethodIsOpen { get; set; }
+
+        #region COMMANDS
+
+        public ICommand PlaceOrderCommand
+        {
+            get
+            {
+                if (_placeOrderCommand == null)
+                    _placeOrderCommand = new SimpleCommand<object, object>(PlaceOrder);
+
+                return _placeOrderCommand;
+            }
+            set
+            {
+                _placeOrderCommand = value;
+            }
+        }
+
+        #endregion
+
+        #region COMMAND IMPLEMENTATION
+
+        private void PlaceOrder(object parameter)
+        {
+            SelectPaymentMethodIsOpen = true;
+
+            StateHasChanged();
+        }
+
+        #endregion
+
     }
 }
