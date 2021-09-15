@@ -1,187 +1,60 @@
 ﻿@namespace Gizmo.Client.UI.Pages
 @inherits ComponentBase
 @layout _Layout_Profile
+@using Gizmo.Web.Components
+@using Gizmo.Client.UI.ViewModels
 
 <!--item detail-->
 <section id="giz-user-history">
     <div class="giz-user-profile-heading">
         Purchase History
     </div>
-    <!--table wrapper-->
-    <div class="table-wrapper">
-        <!--table-->
-        <table class="giz-table-history">
-            <!--thead-->
-            <thead>
-                <tr class="giz-table-history--heading">
-                    <td>item</td>
-                    <td>amount</td>
-                    <td>date</td>
-                    <td>payment</td>
-                    <td>method</td>
-                </tr>
-            </thead>
-            <!--/thead-->
-            <!--tbody-->
-            <tbody class="giz-table-history--data">
-                <tr>
-                    <td>
-                        Espresso Coffee
-                    </td>
-                    <td>
-                        01
-                    </td>
-                    <td>
-                        02/01/2020
-                    </td>
-                    <td>
-                        2.50€
-                    </td>
-                    <td>
-                        Balance
-                    </td>
-                </tr>
-                <tr class="giz-table-history--data">
-                    <td>
-                        Redbull 330ml
-                    </td>
-                    <td>
-                        02
-                    </td>
-                    <td>
-                        12/05/2020
-                    </td>
-                    <td>
-                        4.59€
-                    </td>
-                    <td>
-                        Credit Card
-                    </td>
-                </tr>
-                <tr class="giz-table-history--data">
-                    <td>
-                        Panini Turkey Croissant
-                    </td>
-                    <td>
-                        01
-                    </td>
-                    <td>
-                        16/05/2020
-                    </td>
-                    <td>
-                        1.99€
-                    </td>
-                    <td>
-                        Credit Card
-                    </td>
-                </tr>
-                <tr class="giz-table-history--data">
-                    <td>
-                        Espresso Coffee
-                    </td>
-                    <td>
-                        01
-                    </td>
-                    <td>
-                        30/07/2020
-                    </td>
-                    <td>
-                        5.00€
-                    </td>
-                    <td>
-                        Balance
-                    </td>
-                </tr>
-                <tr class="giz-table-history--data">
-                    <td>
-                        Espresso Coffee
-                    </td>
-                    <td>
-                        01
-                    </td>
-                    <td>
-                        02/01/2020
-                    </td>
-                    <td>
-                        2.50€
-                    </td>
-                    <td>
-                        Balance
-                    </td>
-                </tr>
-                <tr class="giz-table-history--data">
-                    <td>
-                        Espresso Coffee
-                    </td>
-                    <td>
-                        01
-                    </td>
-                    <td>
-                        08/08/2020
-                    </td>
-                    <td>
-                        2.50€
-                    </td>
-                    <td>
-                        Balance
-                    </td>
-                </tr>
-                <tr class="giz-table-history--data">
-                    <td>
-                        Service: Printing
-                    </td>
-                    <td>
-                        01
-                    </td>
-                    <td>
-                        19/10/2020
-                    </td>
-                    <td>
-                        4.99€
-                    </td>
-                    <td>
-                        Credit Card
-                    </td>
-                </tr>
-                <tr class="giz-table-history--data">
-                    <td>
-                        Espresso Coffee
-                    </td>
-                    <td>
-                        01
-                    </td>
-                    <td>
-                        02/01/2020
-                    </td>
-                    <td>
-                        2.50€
-                    </td>
-                    <td>
-                        Balance
-                    </td>
-                </tr>
-                <tr class="giz-table-history--data">
-                    <td>
-                        Fredo Espresso Coffe
-                    </td>
-                    <td>
-                        01
-                    </td>
-                    <td>
-                        20/10/2020
-                    </td>
-                    <td>
-                        3.20€
-                    </td>
-                    <td>
-                        Balance
-                    </td>
-                </tr>
-            </tbody>
-            <!--/tbody-->
-        </table>
-        <!--/table-->
-    </div>
-    <!--/table wrapper-->
+
+    <DataGrid ItemSource="@GameStatistics"
+              Context="purchases"
+              Class="giz-table-history">
+        <ChildContent>
+            <DataGridColumn Field="@(nameof(PurchaseViewModel.ProductName))" TItemType="PurchaseViewModel" Context="purchase">
+                <HeaderTemplate>
+                    item
+                </HeaderTemplate>
+                <CellTemplate>
+                    @purchase.ProductName
+                </CellTemplate>
+            </DataGridColumn>
+            <DataGridColumn Field="@(nameof(PurchaseViewModel.Quantity))" TItemType="PurchaseViewModel" Context="purchase">
+                <HeaderTemplate>
+                    amount
+                </HeaderTemplate>
+                <CellTemplate>
+                    @purchase.Quantity
+                </CellTemplate>
+            </DataGridColumn>
+            <DataGridColumn Field="@(nameof(PurchaseViewModel.Date))" TItemType="PurchaseViewModel" Context="purchase">
+                <HeaderTemplate>
+                    date
+                </HeaderTemplate>
+                <CellTemplate>
+                    @purchase.Date.ToShortDateString()
+                </CellTemplate>
+            </DataGridColumn>
+            <DataGridColumn Field="@(nameof(PurchaseViewModel.Total))" TItemType="PurchaseViewModel" Context="purchase">
+                <HeaderTemplate>
+                    payment
+                </HeaderTemplate>
+                <CellTemplate>
+                    @purchase.Total
+                </CellTemplate>
+            </DataGridColumn>
+            <DataGridColumn Field="@(nameof(PurchaseViewModel.PaymentMethod))" TItemType="PurchaseViewModel" Context="purchase">
+                <HeaderTemplate>
+                    method
+                </HeaderTemplate>
+                <CellTemplate>
+                    @purchase.PaymentMethod
+                </CellTemplate>
+            </DataGridColumn>
+        </ChildContent>
+    </DataGrid>
 </section>
 <!--/item detail-->
