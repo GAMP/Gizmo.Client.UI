@@ -115,7 +115,7 @@
                         <!--/order summary-->
                         <!--order btn-->
                         <div class="giz-place-order-btn">
-                            <Button Size="ButtonSizes.Large" IsFullWidth="true" HasShadow="true" IsDisabled="@(Order == null || Order.OrderLines.Count == 0)">place order</Button>
+                            <Button Size="ButtonSizes.Large" IsFullWidth="true" HasShadow="true" IsDisabled="@(Order == null || Order.OrderLines.Count == 0)" Command="@PlaceOrderCommand">place order</Button>
                         </div>
                         <!--order btn-->
                     </div>
@@ -130,3 +130,5 @@
     <!--/giz main-->
 </div>
 <!--/wrapper 2-->
+
+<SelectPaymentMethodDialog @bind-IsOpen="SelectPaymentMethodIsOpen" />
