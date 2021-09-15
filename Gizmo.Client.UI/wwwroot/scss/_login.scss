@@ -64,7 +64,7 @@
                 top: 0;
                 left: 44px;
                 width: 79%;
-                border-top: 3px solid $border-dark-sky-blue;
+                border-top: 3px solid $border-blue;
                 border-left: 5px solid $transparent-color;
                 border-right: 5px solid $transparent-color;
             }
@@ -225,12 +225,6 @@
                 font-weight: $font-weight-400;
                 margin-right: 2.125rem;
 
-                span {
-                    margin-left: 0.625rem;
-                    margin-right: 0.313rem;
-                    vertical-align: middle;
-                }
-
                 &:hover + .giz-sub-dropdown {
                     display: $display-block;
                 }
@@ -312,32 +306,26 @@
                 font-family: $font-family;
                 letter-spacing: $letter-spacing-2;
                 font-weight: $font-weight-400;
-                vertical-align: top;
-
-                span {
-                    margin-left: 0.625rem;
-                    margin-right: 0.313rem;
-                    vertical-align: middle;
-                }
+                vertical-align: text-bottom;
             }
         }
 
         .giz-alert-message {
-            @include btn-danger;
+            @include alert-danger;
             @include align-center;
             width: 11.5rem;
             text-align: $text-align-center;
         }
 
         .giz-warning-message {
-            @include btn-warning;
+            @include alert-warning;
             @include align-center;
             width: 11.5rem;
             text-align: $text-align-center;
         }
 
         .giz-disable-message {
-            @include btn-blue-violet;
+            @include alert-disable;
             @include align-center;
             width: 11.5rem;
             text-align: $text-align-center;

@@ -38,47 +38,12 @@
     padding: 0.813rem;
 }
 
-//== danger btn
-@mixin btn-danger {
-    background: $danger-color;
-    padding: 0.625rem;
-    border-radius: $rounded;
-    @include font-14;
-    font-family: $font-family;
-    font-weight: $font-weight-400;
-    letter-spacing: $letter-spacing-5;
-}
-
-//== warning btn
-@mixin btn-warning {
-    background: $warning-color;
-    padding: 0.625rem;
-    border-radius: $rounded;
-    @include font-14;
-    font-family: $font-family;
-    font-weight: $font-weight-400;
-    letter-spacing: $letter-spacing-5;
-}
-
-//== disable btn
-@mixin btn-blue-violet {
-    background: $blue-violet;
-    padding: 0.625rem;
-    border-radius: $rounded;
-    @include font-14;
-    font-family: $font-family;
-    font-weight: $font-weight-400;
-    letter-spacing: $letter-spacing-5;
-}
-
 //== jet gray btn
 @mixin btn-jet-gray {
     background: $jet-gray;
     padding: 0.625rem;
     border-radius: $rounded;
     @include font-14;
-    font-family: $font-family;
-    font-weight: $font-weight-400;
     letter-spacing: $letter-spacing-5;
 }
 
@@ -88,8 +53,6 @@
     padding: 0.625rem;
     border-radius: $rounded;
     @include font-14;
-    font-family: $font-family;
-    font-weight: $font-weight-400;
     letter-spacing: $letter-spacing-5;
 }
 
@@ -99,8 +62,6 @@
     padding: 0.625rem;
     border-radius: $rounded;
     @include font-14;
-    font-family: $font-family;
-    font-weight: $font-weight-400;
     letter-spacing: $letter-spacing-5;
 }
 
@@ -110,9 +71,27 @@
     padding: 0.625rem;
     border-radius: $rounded;
     @include font-14;
-    font-family: $font-family;
-    font-weight: $font-weight-400;
     letter-spacing: $letter-spacing-5;
+}
+
+//======= Client UI alerts =====//
+//== danger btn
+@mixin alert-danger($bg-color: $danger-color) {
+    background: $bg-color;
+    padding: 0.625rem;
+    border-radius: $rounded;
+    @include font-14;
+    letter-spacing: $letter-spacing-5;
+}
+
+//== warning btn
+@mixin alert-warning {
+    @include alert-danger($warning-color);
+}
+
+//== disable btn
+@mixin alert-disable {
+    @include alert-danger($blue-violet);
 }
 
 //=== font-size ====//
@@ -185,9 +164,16 @@
 }
 
 //== font-family
+//==open sans
 @mixin open-sans-600{
     font-weight: $font-weight-600;
     font-family: $font-family-open-sans;
+}
+
+//== Metrophobic
+@mixin open-sans-400 {
+    font-weight: $font-weight-400;
+    font-family: $font-family;
 }
 
 //=== background linear for login UI ===//
@@ -227,7 +213,6 @@
     background: linear-gradient(360deg, rgba(20, 22, 28, 0) 0%, rgba(91, 186, 240, 0.3) 100%);
     background-blend-mode: lighten;
 }
-
 
 //=== perfect center ===//
 //== align center
