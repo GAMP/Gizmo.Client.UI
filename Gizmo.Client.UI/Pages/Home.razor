@@ -65,10 +65,45 @@
                 <GizRatingCard></GizRatingCard>
                 <GizRatingCard></GizRatingCard>
                 <!--/carousel cards-->
+                <!--order modal-->
+                <div class="giz-order-modal" style="display: @(IsOpen ? "" : "none");">
+                    <div class="giz-order-modal--content">
+                        <div class="giz-order-modal--header">
+                            <div class="giz-heading-text">
+                                heads up
+                            </div>
+                            <button @onclick="HideOrderModal" Class="client-button giz-terminate">
+                                <!--svg-->
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M13 1L1 13" stroke="#69748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M1 1L13 13" stroke="#69748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <!--/svg-->
+                            </button>
+                        </div>
+                        <div class="giz-order-modal--title">
+                            Order on hold
+                        </div>
+                        <div class="giz-order-modal--text">
+                            Your order is on hold. You will be further be notified once order is accepted.
+                        </div>
+                    </div>
+                </div>
+                <!--/order modal-->
             </div>
         </div>
     </section>
     <!--/Top rated apps-->
 </div>
 <!--/wrapper 2-->
+@code {
+
+    private bool IsOpen { get; set; } = true;
+
+    private void HideOrderModal()
+    {
+        IsOpen = !IsOpen;
+    }
+
+}
 
