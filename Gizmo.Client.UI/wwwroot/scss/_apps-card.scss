@@ -145,8 +145,7 @@
                 font-weight: $font-weight-400;
             }
         }
-
-        .giz-offer {
+        /*.giz-offer {
             @extend .giz-playing;
 
             &--text {
@@ -162,7 +161,7 @@
                     vertical-align: baseline;
                 }
             }
-        }
+        }*/
     }
 
     .active {
@@ -251,5 +250,133 @@
         .inactive {
             fill: $melrose-color;
         }
+    }
+}
+
+.giz-hoverable-card {
+    position: relative;
+
+    &:hover {
+        .hovered-content-wrapper {
+            display: block;
+            background: linear-gradient(180deg, rgba(4, 5, 6, 0.45) 0%, rgba(4, 5, 6, 0.9) 91.51%);
+            border-radius: $rounded;
+        }
+    }
+
+    .hoverable-content {
+        img {
+            border-radius: $rounded;
+            width: -moz-available;
+            width: -webkit-fill-available;
+        }
+    }
+
+    .hovered-content-wrapper {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        .hovered-content {
+            height: 100%;
+            display: grid;
+            grid-template-rows: 48px 1fr 48px;
+            align-items: center;
+            padding: 0 20px;
+        }
+    }
+}
+
+.product-card {
+
+    .hovered-content {
+        svg {
+            cursor: $cursor-pointer;
+        }
+    }
+
+    .product-card-title {
+        @include open-sans-600;
+    }
+
+    .product-card-text {
+        font-size: $font-12;
+        line-height: $line-height-12;
+        letter-spacing: $letter-spacing-2;
+        @include open-sans-600;
+
+        svg {
+            fill: $white-color;
+        }
+
+        .inactive {
+            fill: $melrose-color;
+        }
+    }
+
+    .product-card-points {
+        @include font-12;
+        text-shadow: $text-shadow-sm;
+        font-weight: $font-weight-700;
+        color: $primary-color;
+
+        svg {
+            vertical-align: baseline;
+        }
+    }
+}
+
+
+.application-card {
+
+    .hovered-content {
+        svg {
+            cursor: $cursor-pointer;
+        }
+    }
+
+    .application-card-title {
+        @include open-sans-600;
+    }
+
+    .application-card-text {
+        font-size: $font-12;
+        line-height: $line-height-12;
+        letter-spacing: $letter-spacing-2;
+        @include open-sans-600;
+
+        .inactive {
+            fill: $melrose-color;
+        }
+
+        svg:not(.inactive) {
+            fill: $primary-color;
+        }
+
+        .giz-playing-indicator {
+            height: 0.5rem;
+            width: 0.5rem;
+            background: $danger-light;
+            border-radius: $rounded-circle;
+            margin-right: 0.188rem;
+            display: $display-inline-block;
+        }
+    }
+
+    .application-card-count {
+        @include font-12;
+        text-shadow: $text-shadow-sm;
+        font-weight: $font-weight-400;
+    }
+
+    .application-card-rating {
+        color: $light-blue;
+        letter-spacing: normal;
+        font-weight: $font-weight-400;
+        font-family: $font-family;
+        margin-left: 0.625rem;
     }
 }
