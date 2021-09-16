@@ -8,21 +8,21 @@
 
 
     &--content {
-        width: 385px;
-        padding: 33px 29px;
+        width: 24.063rem;
+        padding: 2.063rem 1.813rem;
         backdrop-filter: blur(20px);
         border-radius: $rounded-xl;
         background: linear-gradient( 180deg, rgba(90, 94, 107, 0) -12%, rgba(37, 140, 246, 0.45) 169%);
         position: $position-relative;
         border: 1px solid $border-color;
-        overflow: hidden;
+        overflow: $overflow-hidden;
 
         &::before {
             content: "";
             background: $dark-color;
-            position: absolute;
-            height: 100%;
-            width: 100%;
+            position: $position-absolute;
+            height: $height-full;
+            width: $width-full;
             z-index: -1;
             top: 0;
             left: 0;
@@ -32,6 +32,7 @@
     &--header {
         display: $display-flex;
         justify-content: $justify-space-between;
+        align-items:$align-center;
         margin-bottom: 0.5rem;
 
         .giz-heading-text {
