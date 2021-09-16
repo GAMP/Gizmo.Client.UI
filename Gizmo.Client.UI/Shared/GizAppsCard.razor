@@ -1,6 +1,6 @@
 ﻿@namespace Gizmo.Client.UI.Shared
 @using Gizmo.Client.UI.Components
- 
+
 <!--carousel card-->
 <div class="giz-apps-card">
     <div class="giz-apps-card--overlay mb-4">
@@ -15,31 +15,147 @@
         Add date <span>3/12/2021</span>
     </div>
     <!--primary modal-->
-    <div class="giz-modal-wrapper" style="display: @(IsOpen ? "none" : "block");">
+    @*<div class="giz-modal-wrapper" style="display: @(IsOpen ? "none" : "block");">
         <div class="giz-primary-modal pa-11">
-            <div class="giz-primary-modal--heading mb-2">
-                Heads up
-            </div>
-            <div class="giz-primary-modal--title mb-8">
-                Primary modal example
-            </div>
-            <div class="giz-primary-modal-body">
-                <div class="giz-primary-modal-body--text mb-4">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </div>
-                <div class="giz-primary-modal-body--btn">
-                    <button class="client-button giz-btn-primary giz-elevation-0 mr-2">confirm</button>
-                    <button class="client-button giz-btn-info" @onclick="ShowPrimaryModal">cancel</button>
-                </div>
-            </div>
+        <div class="giz-primary-modal--heading mb-2">
+        Heads up
         </div>
-    </div>
+        <div class="giz-primary-modal--title mb-8">
+        Primary modal example
+        </div>
+        <div class="giz-primary-modal-body">
+        <div class="giz-primary-modal-body--text mb-4">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </div>
+        <div class="giz-primary-modal-body--btn">
+        <button class="client-button giz-btn-primary giz-elevation-0 mr-2">confirm</button>
+        <button class="client-button giz-btn-info" @onclick="ShowPrimaryModal">cancel</button>
+        </div>
+        </div>
+        </div>
+        </div>*@
     <!--/primary modal-->
     <!--warning modal-->
     <AlertDialog Message="winexe002piw974muaf65_ss8d6.bat was terminated unexpectedly." AlertType="AlertDialog.AlertTypes.Warning" @bind-IsOpen="WarningDialogIsOpen" />
     <!--/warning modal-->
+    <!--app modal-->
+    <div class="giz-modal-wrapper" style="display: @(IsOpen ? "none" : "block");">
+        <div class="giz-app-modal">
+            <div class="giz-app-brand">
+                <img src="https://i.postimg.cc/TwKtfx1Y/Falls-guy.png" alt="loading" />
+                <div class="giz-app-brand--info">
+                    <div class="giz-app-brand--title">
+                        Publisher
+                    </div>
+                    <div class="giz-app-brand--text">
+                        Very Positive Inc
+                    </div>
+                </div>
+                <div class="giz-app-brand--info">
+                    <div class="giz-app-brand--title">
+                        Publisher
+                    </div>
+                    <div class="giz-app-brand--text">
+                        Very Positive Inc
+                    </div>
+                </div>
+                <div class="giz-app-brand--info">
+                    <div class="giz-app-brand--title">
+                        Release Date
+                    </div>
+                    <div class="giz-app-brand--text">
+                        10/22/2019
+                    </div>
+                </div>
+                <div class="giz-app-brand--info">
+                    <div class="giz-app-brand--title">
+                        Date Added
+                    </div>
+                    <div class="giz-app-brand--text">
+                        5/13/2020
+                    </div>
+                </div>
+                <div class="giz-app-brand--info">
+                    <div class="giz-app-brand--title">
+                        Player Mode
+                    </div>
+                    <div class="giz-app-brand--text">
+                        Single Player
+                        <!--svg-->
+                        <svg width="4" height="10" viewBox="0 0 4 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2.00016 2.66659C2.64183 2.66659 3.16683 2.14159 3.16683 1.49992C3.16683 0.858252 2.64183 0.333252 2.00016 0.333252C1.3585 0.333252 0.833496 0.858252 0.833496 1.49992C0.833496 2.14159 1.3585 2.66659 2.00016 2.66659ZM2.00016 3.83325C1.3585 3.83325 0.833496 4.35825 0.833496 4.99992C0.833496 5.64159 1.3585 6.16659 2.00016 6.16659C2.64183 6.16659 3.16683 5.64159 3.16683 4.99992C3.16683 4.35825 2.64183 3.83325 2.00016 3.83325ZM2.00016 7.33325C1.3585 7.33325 0.833496 7.85825 0.833496 8.49992C0.833496 9.14159 1.3585 9.66659 2.00016 9.66659C2.64183 9.66659 3.16683 9.14159 3.16683 8.49992C3.16683 7.85825 2.64183 7.33325 2.00016 7.33325Z" fill="white" />
+                        </svg>
+                        <!--/svg-->
+                    </div>
+                </div>
+            </div>
+            <div class="giz-app-modal--content">
+                <!--heading-->
+                <div class="giz-app-modal--heading">
+                    <div class="giz-header-text">
+                        02. action / adventure
+                    </div>
+                    <button class="client-button giz-terminate" @onclick="ShowPrimaryModal">
+                        <!--!--><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 1L1 13" stroke="#69748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M1 1L13 13" stroke="#69748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                    </button>
+                </div>
+                <!--/heading-->
+                <div class="giz-app-modal--title">
+                    Fall Guys: Ultimate Knockout
+                </div>
+                <div class=" giz-app-rating">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 12.0667L12.9467 15.6667L11.0533 9.85337L16 6.33337H9.93333L8 0.333374L6.06667 6.33337H0L4.94667 9.85337L3.05333 15.6667L8 12.0667Z" fill="white" />
+                    </svg>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 12.0667L12.9467 15.6667L11.0533 9.85337L16 6.33337H9.93333L8 0.333374L6.06667 6.33337H0L4.94667 9.85337L3.05333 15.6667L8 12.0667Z" fill="white" />
+                    </svg>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 12.0667L12.9467 15.6667L11.0533 9.85337L16 6.33337H9.93333L8 0.333374L6.06667 6.33337H0L4.94667 9.85337L3.05333 15.6667L8 12.0667Z" fill="white" />
+                    </svg>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 12.0667L12.9467 15.6667L11.0533 9.85337L16 6.33337H9.93333L8 0.333374L6.06667 6.33337H0L4.94667 9.85337L3.05333 15.6667L8 12.0667Z" fill="white" />
+                    </svg>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 12.0667L12.9467 15.6667L11.0533 9.85337L16 6.33337H9.93333L8 0.333374L6.06667 6.33337H0L4.94667 9.85337L3.05333 15.6667L8 12.0667Z" fill="#BFC8EC" fill-opacity="0.4" />
+                    </svg>
+                    <span>168 Ratings</span>
+                </div>
+                <div class="giz-apps-tags">
+                    <span class="giz-selected-tag">Multiplayer</span>
+                    <span class="giz-selected-tag">Free to Play</span>
+                    <span class="giz-selected-tag">MMO</span>
+                    <span class="giz-selected-tag">Custom Tag</span>
+                    <button class="giz-add-tags client-button">
+                        +2
+                        <div class="giz-tolltip d-none">
+                            <div class="giz-tooltip--text">
+                                Action
+                            </div>
+                            <div class="giz-tooltip--text">
+                                Adventure
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div class="giz-modal--text">
+                    Fall Guys is a massively multiplayer party game with up to 60 players online in a free-for-all struggle through round after round of escalating chaos until
+                    one victor remains!
+                </div>
+                <div>
+                    <button class="client-button giz-btn-primary px-13">launch</button>
+                    <GizSubDropdownMenu></GizSubDropdownMenu>
+                </div>
+            </div>
 
+
+        </div>
+    </div>
+    <!--/app modal-->
 
 </div>
 <!--/carousel card-->
