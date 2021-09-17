@@ -6,8 +6,8 @@
     border: thin solid $border-silver-gray;
     background: $dark-color;
     overflow: $overflow-hidden;
-    padding: 35px;
-    max-width: 652px;
+    padding: 2.188rem;
+    max-width: 40.75rem;
 
     &::before {
         position: $position-absolute;
@@ -22,14 +22,14 @@
     &--container {
         display: $display-grid;
         grid-template-columns: min-content 3fr;
-        grid-column-gap: 35px;
+        grid-column-gap: 2.188rem;
     }
 
     .giz-app-brand {
-        margin-bottom: 35px;
+        margin-bottom: 2.188rem;
 
         img {
-            margin-bottom: 8px;
+            margin-bottom: 0.5rem;
         }
 
         &--info {
@@ -52,7 +52,7 @@
 
         &--text {
             text-shadow: $text-shadow-sm;
-            text-align: right;
+            text-align: $text-align-right;
         }
     }
 
@@ -80,7 +80,7 @@
 
     .giz-app-rating {
         display: $display-inline-block;
-        margin-bottom: 35px;
+        margin-bottom: 2.188rem;
 
         span {
             @include font-12;
@@ -91,17 +91,14 @@
     .giz-apps-tags {
         display: $display-flex;
         align-items: $align-center;
-        margin-bottom: 15px;
-
-        > * {
-            text-align: center;
-            padding: 0 0.25rem;
-        }
+        margin-bottom: 0.938rem;
 
         .giz-selected-tag {
-            color: #8CBFF3;
-            margin-right: 3px;
-            background: #19314D;
+            color: $pastel-blue;
+            margin-right: 0.188rem;
+            padding: 0 0.25rem;
+            text-align: $text-align-center;
+            background: $dark-pastel-blue;
             border-radius: $rounded;
             font-family: $font-family-open-sans;
             font-size: $font-11;
@@ -109,8 +106,8 @@
             letter-spacing: $letter-spacing-2;
         }
 
-        .giz-add-tags {
-            background: #204D82;
+     @at-root  .giz-add-tags{
+            background: $light-navy-blue;
             border-radius: $rounded;
             font-size: $font-11;
             line-height: $line-height-20;
@@ -119,7 +116,7 @@
             font-weight: $font-weight-400;
 
             &:hover .giz-tooltip-text {
-                visibility: $visibility-visible;
+                visibility: $visibility-visible !important;
             }
 
             .giz-tooltip-text {
@@ -136,11 +133,11 @@
                 white-space: $nowrap-white-space;
                 @include font-12;
                 @include open-sans-600;
-                letter-spacing: -0.025em;
+                letter-spacing: $letter-spacing-25;
                 line-height: $line-height-21;
-                text-transform: capitalize;
-                list-style: none;
-                text-align: left;
+                text-transform: $text-capitalize;
+                list-style: $list-unstyled;
+                text-align: $text-align-left;
 
                 &::after {
                     content: "";
@@ -161,13 +158,13 @@
         line-height: $line-height-20;
         letter-spacing: $letter-spacing-1;
         font-family: $font-family-open-sans;
-        margin-bottom: 40px;
+        margin-bottom: 2.5rem;
     }
 
     .giz-about-app {
-        position: relative;
-        border-top: 1px solid #303D4E;
-        padding-top: 35px;
+        position: $position-relative;
+        border-top: 1px solid $border-dark-color;
+        padding-top: 2.188rem;
 
         .giz-modal-nav {
             display: $display-flex;
@@ -200,25 +197,25 @@
         }
 
         .giz-video-wrapper {
-            display: grid;
+            display: $display-grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            grid-gap: 35px;
+            grid-gap: 2.188rem;
         }
 
         .giz-modal-video {
-             margin-bottom:1rem;
+            margin-bottom: 1rem;
 
             img {
                 min-width: $width-full;
                 margin-bottom: 1rem;
-                border-radius:$rounded;
+                border-radius: $rounded;
             }
 
             &--title {
                 @include font-11;
-                letter-spacing: -0.015em;
-                text-transform: uppercase;
-                color: rgba(198, 216, 242, 0.55);
+                letter-spacing: $letter-spacing-24;
+                text-transform: $text-uppercase;
+                color: $blue-gray;
                 text-shadow: $text-shadow-sm;
                 margin-bottom: 0.5rem;
             }
@@ -227,7 +224,7 @@
                 @include open-sans-600;
                 font-size: $font-15;
                 line-height: $line-height-19;
-                letter-spacing: -0.005em;
+                letter-spacing: $letter-spacing-5;
             }
         }
 
@@ -236,11 +233,11 @@
             width: $width-full;
 
             .giz-progress {
-                background: #303D4E;
-                boarder-ra:$rounded-lg;
+                background: $border-dark-color;
+                boarder-radius: $rounded-lg;
 
                 &--bar {
-                    background: #CAD4E2;
+                    background: $light-smokey-grey;
                 }
             }
         }
