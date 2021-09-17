@@ -202,14 +202,16 @@
         .giz-video-wrapper {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            grid-column-gap: 35px;
+            grid-gap: 35px;
         }
 
         .giz-modal-video {
+             margin-bottom:1rem;
 
             img {
                 min-width: $width-full;
                 margin-bottom: 1rem;
+                border-radius:$rounded;
             }
 
             &--title {
@@ -226,6 +228,20 @@
                 font-size: $font-15;
                 line-height: $line-height-19;
                 letter-spacing: -0.005em;
+            }
+        }
+
+        .giz-progress-wrapper {
+            position: $position-relative;
+            width: $width-full;
+
+            .giz-progress {
+                background: #303D4E;
+                boarder-ra:$rounded-lg;
+
+                &--bar {
+                    background: #CAD4E2;
+                }
             }
         }
     }
