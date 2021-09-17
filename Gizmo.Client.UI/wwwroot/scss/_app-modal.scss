@@ -7,6 +7,7 @@
     background: $dark-color;
     overflow: $overflow-hidden;
     padding: 35px;
+    max-width: 652px;
 
     &::before {
         position: $position-absolute;
@@ -20,7 +21,7 @@
 
     &--container {
         display: $display-grid;
-        grid-template-columns: 1fr 3fr;
+        grid-template-columns: min-content 3fr;
         grid-column-gap: 35px;
     }
 
@@ -166,12 +167,13 @@
     .giz-about-app {
         position: relative;
         border-top: 1px solid #303D4E;
-        padding-top:35px;
+        padding-top: 35px;
 
         .giz-modal-nav {
             display: $display-flex;
             align-items: $align-center;
             justify-content: $justify-space-between;
+            margin-bottom: 18px;
 
             &--navbar {
                 list-style: none;
@@ -194,6 +196,36 @@
             &--links {
                 color: $dim-white;
                 padding: 0.5rem;
+            }
+        }
+
+        .giz-video-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-column-gap: 35px;
+        }
+
+        .giz-modal-video {
+
+            img {
+                min-width: $width-full;
+                margin-bottom: 1rem;
+            }
+
+            &--title {
+                @include font-11;
+                letter-spacing: -0.015em;
+                text-transform: uppercase;
+                color: rgba(198, 216, 242, 0.55);
+                text-shadow: $text-shadow-sm;
+                margin-bottom: 0.5rem;
+            }
+
+            &--text {
+                @include open-sans-600;
+                font-size: $font-15;
+                line-height: $line-height-19;
+                letter-spacing: -0.005em;
             }
         }
     }
