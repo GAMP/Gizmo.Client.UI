@@ -243,12 +243,13 @@
             }
         }
 
-        .giz-containers {
+        .giz-cards {
             display: $display-grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             grid-gap: 14px;
             height: 260px;
-            overflow:auto;
+            overflow-y: scroll;
+            overflow-x:hidden;
 
             //== custom scroll bar
             /* width */
@@ -273,6 +274,50 @@
 
             .giz-card-wrapper {
 
+                .giz-user-action-btn {
+
+                    .giz-progress-button {
+                        padding: 13.5px 47px !important;
+                    }
+                }
+
+                .giz-card {
+                    min-height: 100%;
+                    padding: 0.125rem 0;
+                    cursor: $cursor-pointer;
+                    margin: 0 !important;
+
+                    &--body {
+                        border-radius: $rounded-sm 0px 0px $rounded-sm !important;
+                        display: grid;
+                        border-left: 3px solid $transparent-color;
+                        grid-gap: 17px;
+                        grid-template-columns: auto 1fr;
+                        width: 282px;
+                        align-items: center;
+
+                        .giz-app {
+                              
+                            &--name {
+                                @include font-16;
+                            }
+
+                           &--title {
+                                @include font-10;
+                                margin-bottom: 0.625rem;
+
+                                svg {
+                                    margin-left: 0.625rem;
+                                }
+                            }
+                        }
+
+                        .giz-user-action-btn {
+                            display: $display-none !important;
+                        }
+                    }
+                }
+
                 .active {
                     border-radius: $rounded-lg !important;
 
@@ -285,30 +330,19 @@
                     }
 
                     .giz-card--body {
-                        border-radius: $rounded-sm 0px 0px $rounded-sm !important;
-                        border-left: 3px solid $primary-dark;
-                        display:flex;
-                        justify-content:space-between;
-                    }
-                }
+                        border-left: 3px solid $primary-dark !important;
 
-                .giz-card {
-                    padding: 0.125rem 0;
-                    cursor: $cursor-pointer;
-                    margin: 0 !important;
+                        .giz-user-action-btn {
+                            display: $display-block !important;
+                        }
 
-                    &--body {
-                        border-left: 3px solid $transparent-color;
-
-                        .giz-card-text {
-                            font-size: $font-17;
-                            line-height: $line-height-21;
+                        .giz-app{
+                            display:$display-none;
                         }
                     }
                 }
             }
         }
-
 
         .giz-video-wrapper {
             display: $display-grid;
