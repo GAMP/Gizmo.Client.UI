@@ -1,46 +1,30 @@
 ﻿@inherits ComponentBase
+@using Gizmo.Web.Components
+@using Gizmo.Client.UI.Components
+@using Gizmo.Client.UI.ViewModels
+
 <!--wrapper 1-->
 <div class="wrapper_1">
     <section class="giz-categories pa-6">
         <!--Apps and games Categories-->
-        <ul class="giz-user-site-menu">
-            <li class="giz-user-site-menu--items giz-user-site-menu--heading">
-                <svg width="9" height="13" viewBox="0 0 9 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8.08607 11.3176L6.61423 12.7895L0.351074 6.5263L6.61423 0.263144L8.08607 1.73499L3.3052 6.5263L8.08607 11.3176Z" fill="white" />
-                </svg>
-                Categories
-            </li>
-            <li class="giz-user-site-menu--items">
-                <a class="giz-user-site-menu--links"
-                   href="#">
-                    Adventure <span class="giz-search-number">10</span>
-                </a>
-            </li>
-            <li class="giz-user-site-menu--items">
-                <a class="giz-user-site-menu--links active"
-                   href="#">
-                    Online & MMOs <span class="giz-search-number">6</span>
-                </a>
-            </li>
-            <li class="giz-user-site-menu--items">
-                <a class="giz-user-site-menu--links"
-                   href="#">
-                    FPS & Action <span class="giz-search-number">12</span>
-                </a>
-            </li>
-            <li class="giz-user-site-menu--items">
-                <a class="giz-user-site-menu--links"
-                   href="#">
-                    Strategy <span class="giz-search-number">16</span>
-                </a>
-            </li>
-            <li class="giz-user-site-menu--items">
-                <a class="giz-user-site-menu--links"
-                   href="#">
-                    Sports <span class="giz-search-number">8</span>
-                </a>
-            </li>
-        </ul>
+        <List CanClick="true" CanSelect="true" Class="giz-menu-list giz-apps-menu-list">
+            @foreach (var applicationGroup in ApplicationGroups)
+            {
+                <ListItem Command="@SelectProductGroupCommand" CommandParameter="@applicationGroup.Id">
+                    <div class="d-flex">
+                        <div class="mr-auto">
+                            @applicationGroup.Name
+                        </div>
+                        @if (Applications != null)
+                        {
+                            <div class="giz-search-number">
+                                @Applications.Where(a => a.ApplicationGroupId == applicationGroup.Id).Count()
+                            </div>
+                        }
+                    </div>
+                </ListItem>
+            }
+        </List>
         <!--/Apps and games Categories-->
         <!--filter cards-->
         <div class="giz-filter">
@@ -74,22 +58,10 @@
             <!--/heading-->
             <div class="giz-wrapper">
                 <!--carousel cards-->
-                <GizRatingCard></GizRatingCard>
-                <GizRatingCard></GizRatingCard>
-                <GizRatingCard></GizRatingCard>
-                <GizRatingCard></GizRatingCard>
-                <GizRatingCard></GizRatingCard>
-                <GizRatingCard></GizRatingCard>
-                <GizRatingCard></GizRatingCard>
-                <GizRatingCard></GizRatingCard>
-                <GizRatingCard></GizRatingCard>
-                <GizRatingCard></GizRatingCard>
-                <GizRatingCard></GizRatingCard>
-                <GizRatingCard></GizRatingCard>
-                <GizRatingCard></GizRatingCard>
-                <GizRatingCard></GizRatingCard>
-                <GizRatingCard></GizRatingCard>
-                <GizRatingCard></GizRatingCard>
+                @foreach (var app in Applications.Where(a => !_selectedApplicationGroup.HasValue || a.ApplicationGroupId == _selectedApplicationGroup))
+                {
+                    <GizRatingCard Application="@app" OnOpenDetails="@OpenDetails"></GizRatingCard>
+                }
                 <!--/carousel cards-->
             </div>
         </div>
@@ -97,3 +69,5 @@
     <!--/apps and games-->
 </div>
 <!--/wrapper 2-->
+
+<AppDetailsDialog @bind-IsOpen="AppDetailsIsOpen" />

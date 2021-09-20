@@ -9,16 +9,19 @@
         <!--Apps and games Categories-->
         <div class="giz-header-title">Categories</div>
         <List CanClick="true" CanSelect="true" Class="giz-menu-list">
-            @foreach (var productCategory in ProductCategories)
+            @foreach (var productGroup in ProductGroups)
             {
-                <ListItem>
+                <ListItem Command="@SelectProductGroupCommand" CommandParameter="@productGroup.Id">
                     <div class="d-flex">
                         <div class="mr-auto">
-                            @productCategory.Name
+                            @productGroup.Name
                         </div>
-                        <div class="giz-search-number">
-                            @productCategory.Products
-                        </div>
+                        @if (Products != null)
+                        {
+                            <div class="giz-search-number">
+                                @Products.Where(a => a.ProductGroupId == productGroup.Id).Count()
+                            </div>
+                        }
                     </div>
                 </ListItem>
             }
@@ -53,9 +56,9 @@
                 <!--/heading-->
                 <div class="giz-wrapper">
                     <!--carousel cards-->
-                    @foreach (var product in Products)
+                    @foreach (var product in Products.Where(a => !_selectedProductGroup.HasValue || a.ProductGroupId == _selectedProductGroup))
                     {
-                        <GizShopCard Product="@product" OnAddProduct="@AddProduct" />
+                        <GizShopCard Product="@product" OnAddProduct="@AddProduct" OnOpenDetails="@OpenDetails" />
                     }
                     <!--/carousel cards-->
                 </div>
@@ -76,23 +79,26 @@
                     <!--/order header-->
                     <!--order body-->
                     <div class="giz-order-menu--body">
-                        <!--no order text-->
-                        <div class="giz-no-order-wrapper">
-                            <div class="giz-no-order-wrapper--title">No products</div>
-                            <div class="giz-no-order-wrapper--text">Add products to get started</div>
-                        </div>
-                        <!--/no order text-->
-                        <!--order detail-->
-                        <div class="giz-order-wrapper">
-                            @if (Order != null)
-                            {
+                        @if (Order != null && Order.OrderLines.Count > 0)
+                        {
+                            <!--order detail-->
+                            <div class="giz-order-wrapper">
                                 @foreach (var orderLine in Order.OrderLines)
                                 {
                                     <GizOrderItem OrderLine="@orderLine" OnRemoveProduct="@RemoveProduct" />
                                 }
-                            }
-                        </div>
-                        <!--order detail-->
+                            </div>
+                            <!--order detail-->
+                        }
+                        else
+                        {
+                            <!--no order text-->
+                            <div class="giz-no-order-wrapper">
+                                <div class="giz-no-order-wrapper--title">No products</div>
+                                <div class="giz-no-order-wrapper--text">Add products to get started</div>
+                            </div>
+                            <!--/no order text-->
+                        }
                     </div>
                     <!--/order body-->
                     <!--order footer section-->
@@ -132,3 +138,4 @@
 <!--/wrapper 2-->
 
 <SelectPaymentMethodDialog @bind-IsOpen="SelectPaymentMethodIsOpen" />
+<ProductDetailsDialog @bind-IsOpen="ProductDetailsIsOpen" />

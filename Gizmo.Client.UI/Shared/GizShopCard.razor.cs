@@ -1,10 +1,11 @@
 ﻿using Gizmo.Client.UI.ViewModels;
+using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Shared
 {
-    public partial class GizShopCard
+    public partial class GizShopCard : CustomDOMComponentBase
     {
         [Parameter]
         public ProductViewModel Product { get; set; }
@@ -12,9 +13,17 @@ namespace Gizmo.Client.UI.Shared
         [Parameter]
         public EventCallback<int> OnAddProduct { get; set; }
 
+        [Parameter]
+        public EventCallback<int> OnOpenDetails { get; set; }
+
         public async Task AddProduct()
         {
             await OnAddProduct.InvokeAsync(Product.Id);
+        }
+
+        public async Task OpenDetails()
+        {
+            await OnOpenDetails.InvokeAsync(Product.Id);
         }
     }
 }

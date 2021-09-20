@@ -2,7 +2,7 @@
 
 namespace Gizmo.Client.UI.ViewModels
 {
-    public class ProductCategoryViewModel : ViewModelBase
+    public class ProductGroupViewModel : ViewModelBase
     {
         public int Id
         {
@@ -10,11 +10,6 @@ namespace Gizmo.Client.UI.ViewModels
         }
 
         public string Name
-        {
-            get; set;
-        }
-
-        public int Products
         {
             get; set;
         }

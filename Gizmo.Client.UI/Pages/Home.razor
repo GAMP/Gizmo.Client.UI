@@ -1,4 +1,7 @@
-﻿@inherits ComponentBase;
+﻿@inherits ComponentBase
+@using Gizmo.Web.Components
+@using Gizmo.Client.UI.Components
+@using Gizmo.Client.UI.ViewModels
 
 <!--wrapper 1-->
 <div class="wrapper_1">
@@ -60,6 +63,10 @@
             <!--/heading-->
             <div class="giz-wrapper">
                 <!--carousel cards-->
+                @foreach (var app in Applications)
+                {
+                    <GizRatingCard Application="@app" OnOpenDetails="@OpenDetails"></GizRatingCard>
+                }
                 <GizRatingCard></GizRatingCard>
                 <GizRatingCard></GizRatingCard>
                 <GizRatingCard></GizRatingCard>
@@ -96,6 +103,9 @@
     <!--/Top rated apps-->
 </div>
 <!--/wrapper 2-->
+
+<AppDetailsDialog @bind-IsOpen="AppDetailsIsOpen" />
+
 @code {
 
     private bool IsOpen { get; set; } = true;

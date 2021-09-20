@@ -1,4 +1,5 @@
-﻿@namespace Gizmo.Client.UI.Shared
+﻿@inherits CustomDOMComponentBase
+@namespace Gizmo.Client.UI.Shared
 @using Gizmo.Web.Components
 
 <!--Rating cards-->
@@ -7,12 +8,12 @@
         <div class="hoverable-content">
             <!--img-->
             <div class="giz-img-top">
-                <img src="https://i.postimg.cc/T2zmSh4K/Gta-5.png" alt='loading' />
+                <img src="_content/Gizmo.Client.UI/img/@Application.Image" alt='loading' />
             </div>
             <!--/img-->
         </div>
         <div class="hovered-content-wrapper">
-            <div class="hovered-content">
+            <div class="hovered-content" @onclick="() => OpenDetails()">
                 <div class="d-flex">
                     <!--store-->
                     <Tooltip Text="Including Store Account">
@@ -35,7 +36,7 @@
                             <span class="giz-playing-indicator"></span>
                             Now Playing
                         </div>
-                        <div class="application-card-count ml-auto">24</div>
+                        <div class="application-card-count ml-auto">@Application?.NowPlaying</div>
                     </div>
                     <!--offer score-->
                 </div>
@@ -45,15 +46,15 @@
     <div class="application-card-footer">
         <!--card title-->
         <div class="application-card-title mt-4 mb-2">
-            Grand Theft Auto IV
+            @Application?.Name
         </div>
         <!--/card title-->
         <div class="application-card-text">
             <div>
                 <!--rating svg-->
-                <Rating Value="4" />
+                <Rating Value="@(Application?.Rate ?? 0)" />
                 <!--/rating svg-->
-                <span class="application-card-rating">168 Rating</span>
+                <span class="application-card-rating">@Application?.Ratings Rating</span>
             </div>
         </div>
     </div>

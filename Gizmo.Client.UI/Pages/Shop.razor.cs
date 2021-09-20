@@ -17,15 +17,14 @@ namespace Gizmo.Client.UI.Pages
         {
             Random random = new Random();
 
-            ProductCategories = new List<ProductCategoryViewModel>();
-            ProductCategories.Add(new ProductCategoryViewModel() { Id = 1, Name = "Coffee", Products = 10 });
-            ProductCategories.Add(new ProductCategoryViewModel() { Id = 1, Name = "Beverages", Products = 6 });
-            ProductCategories.Add(new ProductCategoryViewModel() { Id = 1, Name = "FPS & Action", Products = 12 });
-            ProductCategories.Add(new ProductCategoryViewModel() { Id = 1, Name = "Sandwiches", Products = 16 });
-            ProductCategories.Add(new ProductCategoryViewModel() { Id = 1, Name = "Snacks", Products = 8 });
-            ProductCategories.Add(new ProductCategoryViewModel() { Id = 1, Name = "Time offers", Products = 8 });
+            ProductGroups = new List<ProductGroupViewModel>();
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 1, Name = "Coffee" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 2, Name = "Beverages" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 3, Name = "Sandwiches" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 4, Name = "Snacks" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 5, Name = "Time offers" });
 
-            Products = Enumerable.Range(0, 8).Select(i => new ProductViewModel()
+            Products = Enumerable.Range(0, 18).Select(i => new ProductViewModel()
             {
                 Id = i,
                 ProductGroupId = random.Next(1, 5),
@@ -52,15 +51,103 @@ namespace Gizmo.Client.UI.Pages
             Order.OrderLines.Add(orderLine);
         }
 
+        #region FIELDS
         private List<string> _sortOptions;
-
+        private ICommand _selectProductGroupCommand;
         private ICommand _placeOrderCommand;
+        private int? _selectedProductGroup;
+        #endregion
 
-        public List<ProductCategoryViewModel> ProductCategories { get; set; }
+        #region PROPERTIES
+
+        public List<ProductGroupViewModel> ProductGroups { get; set; }
+
+        public ProductGroupViewModel SelectedCategory { get; set; }
 
         public ICollection<ProductViewModel> Products { get; set; }
 
         public OrderViewModel Order { get; set; }
+
+        public string SelectedSortOption { get; set; } = "Name";
+
+        public List<string> SortOptions
+        {
+            get
+            {
+                if (_sortOptions == null)
+                {
+                    _sortOptions = new List<string>();
+                    _sortOptions.Add("Name");
+                    _sortOptions.Add("Price");
+                }
+
+                return _sortOptions;
+            }
+            set
+            {
+                _sortOptions = value;
+            }
+        }
+
+        public bool SelectPaymentMethodIsOpen { get; set; }
+
+        public bool ProductDetailsIsOpen { get; set; }
+
+        #endregion
+
+        #region COMMANDS
+
+        public ICommand SelectProductGroupCommand
+        {
+            get
+            {
+                if (_selectProductGroupCommand == null)
+                    _selectProductGroupCommand = new SimpleCommand<object, object>(SelectProductGroup);
+
+                return _selectProductGroupCommand;
+            }
+            set
+            {
+                _selectProductGroupCommand = value;
+            }
+        }
+
+        public ICommand PlaceOrderCommand
+        {
+            get
+            {
+                if (_placeOrderCommand == null)
+                    _placeOrderCommand = new SimpleCommand<object, object>(PlaceOrder);
+
+                return _placeOrderCommand;
+            }
+            set
+            {
+                _placeOrderCommand = value;
+            }
+        }
+
+        #endregion
+
+        #region COMMAND IMPLEMENTATION
+
+        private void PlaceOrder(object parameter)
+        {
+            SelectPaymentMethodIsOpen = true;
+
+            StateHasChanged();
+        }
+
+        private void SelectProductGroup(object parameter)
+        {
+            _selectedProductGroup = (int)parameter;
+
+            StateHasChanged();
+        }
+
+        #endregion
+
+        #region METHODS
 
         public void AddProduct(int id)
         {
@@ -96,55 +183,9 @@ namespace Gizmo.Client.UI.Pages
             }
         }
 
-        public string SelectedSortOption { get; set; } = "Name";
-
-        public List<string> SortOptions
+        public void OpenDetails(int id)
         {
-            get
-            {
-                if (_sortOptions == null)
-                {
-                    _sortOptions = new List<string>();
-                    _sortOptions.Add("Name");
-                    _sortOptions.Add("Price");
-                }
-
-                return _sortOptions;
-            }
-            set
-            {
-                _sortOptions = value;
-            }
-        }
-
-        public bool SelectPaymentMethodIsOpen { get; set; }
-
-        #region COMMANDS
-
-        public ICommand PlaceOrderCommand
-        {
-            get
-            {
-                if (_placeOrderCommand == null)
-                    _placeOrderCommand = new SimpleCommand<object, object>(PlaceOrder);
-
-                return _placeOrderCommand;
-            }
-            set
-            {
-                _placeOrderCommand = value;
-            }
-        }
-
-        #endregion
-
-        #region COMMAND IMPLEMENTATION
-
-        private void PlaceOrder(object parameter)
-        {
-            SelectPaymentMethodIsOpen = true;
-
-            StateHasChanged();
+            ProductDetailsIsOpen = true;
         }
 
         #endregion
