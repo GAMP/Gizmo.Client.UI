@@ -248,8 +248,7 @@
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             grid-gap: 14px;
             height: 260px;
-            overflow:auto;
-
+            overflow: auto;
             //== custom scroll bar
             /* width */
             &::-webkit-scrollbar {
@@ -273,6 +272,17 @@
 
             .giz-card-wrapper {
 
+                .giz-user-action-btn {
+
+                    .giz-progress-button {
+                        padding: 13.5px 47px !important;
+                    }
+                }
+
+                .giz-card {
+                    min-height: 100%;
+                }
+
                 .active {
                     border-radius: $rounded-lg !important;
 
@@ -287,8 +297,24 @@
                     .giz-card--body {
                         border-radius: $rounded-sm 0px 0px $rounded-sm !important;
                         border-left: 3px solid $primary-dark;
-                        display:flex;
-                        justify-content:space-between;
+                        display: grid;
+                        grid-gap: 17px;
+                        grid-template-columns: auto 1fr;
+                        width: 282px;
+                        align-items: center;
+
+                        .giz-app-title {
+                            @include font-10;
+                            margin-bottom: 0.625rem;
+
+                            svg {
+                                margin-left: 0.625rem;
+                            }
+                        }
+
+                        .giz-app {
+                            @include font-16;
+                        }
                     }
                 }
 
