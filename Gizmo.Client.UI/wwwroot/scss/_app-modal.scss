@@ -23,6 +23,7 @@
         display: $display-grid;
         grid-template-columns: min-content 3fr;
         grid-column-gap: 2.188rem;
+        position: $position-relative;
     }
 
     .giz-app-brand {
@@ -42,6 +43,52 @@
 
             &:last-child {
                 border-bottom: none !important;
+            }
+
+            .giz-tooltip {
+                position: $position-relative;
+                display: $display-inline-block;
+                cursor: pointer;
+
+                &:hover .giz-tooltip-top {
+                    visibility: $visibility-visible !important;
+                }
+            }
+
+            .giz-tooltip-top {
+                background-color: $dark-black-pearl;
+                border-radius: $rounded;
+                min-width: 200px;
+                top: -7px;
+                left: 50%;
+                transform: translate(-50%, -100%);
+                padding: 0.625rem 1.25rem;
+                z-index: 99999999;
+                visibility: $visibility-invisible;
+                display: $display-block;
+                position: $position-absolute;
+                white-space: $nowrap-white-space;
+                @include font-12;
+                @include open-sans-600;
+                letter-spacing: $letter-spacing-25;
+                line-height: $line-height-21;
+                text-align: $text-align-left;
+                text-transform: $text-capitalize;
+
+                &::after {
+                    content: "";
+                    position: $position-absolute;
+                    top: 100%;
+                    left: 50%;
+                    margin-left: -5px;
+                    border-width: 5px;
+                    border-style: solid;
+                    border-color: $dark-black-pearl transparent transparent transparent;
+                }
+
+                svg {
+                    vertical-align: baseline;
+                }
             }
         }
 
@@ -106,7 +153,7 @@
             letter-spacing: $letter-spacing-2;
         }
 
-     @at-root  .giz-add-tags{
+        @at-root .giz-add-tags {
             background: $light-navy-blue;
             border-radius: $rounded;
             font-size: $font-11;
@@ -115,29 +162,29 @@
             padding: 0 0.25rem;
             font-weight: $font-weight-400;
 
-            &:hover .giz-tooltip-text {
+            &:hover .giz-tooltip-top{
                 visibility: $visibility-visible !important;
             }
 
-            .giz-tooltip-text {
-                visibility: $visibility-invisible;
+            .giz-tooltip-top {
                 background-color: $dark-black-pearl;
-                text-align: $text-align-center;
                 border-radius: $rounded;
-                padding: 0.438rem 0.563rem;
+                min-width: 150px;
+                top: -7px;
+                left: 50%;
+                transform: translate(-50%, -100%);
+                padding: 0.625rem 1.25rem;
+                z-index: 99999999;
+                visibility: $visibility-invisible;
+                display: $display-block;
                 position: $position-absolute;
-                z-index: 1;
-                bottom: 140%;
-                left: 45px;
-                margin-left: -74px;
                 white-space: $nowrap-white-space;
                 @include font-12;
                 @include open-sans-600;
                 letter-spacing: $letter-spacing-25;
                 line-height: $line-height-21;
-                text-transform: $text-capitalize;
-                list-style: $list-unstyled;
                 text-align: $text-align-left;
+                text-transform: $text-capitalize;
 
                 &::after {
                     content: "";

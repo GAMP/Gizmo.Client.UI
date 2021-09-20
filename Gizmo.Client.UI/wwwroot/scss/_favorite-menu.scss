@@ -13,7 +13,6 @@
         border-radius: $rounded-xl;
         display: $display-none;
 
-
         .giz-favorite-apps-wrapper {
             padding: 2rem 1.625rem;
 
@@ -23,53 +22,49 @@
                 align-items: $align-center;
                 justify-content: $justify-space-between;
 
-                &--items {
+                .giz-tooltip {
                     position: $position-relative;
-                    cursor: $cursor-pointer;
+                    transition: all .25s ease-out;
+                    width: fit-content;
 
-                    &::before {
-                        content: "";
+                    &::after {
+                        content: attr(data-tooltip-text);
+                        background-color: $dark-black-pearl;
+                        text-align: $text-align-center;
+                        border-radius: $rounded;
+                        @include font-12;
+                        @include open-sans-600;
+                        letter-spacing: $letter-spacing-25;
+                        white-space: $nowrap-white-space;
                         position: $position-absolute;
-                        height: $height-full;
-                        width: $width-full;
-                        top: 0;
-                        background: #110c0c8a;
+                        z-index: 555;
+                        opacity: 0;
+                        transition: all cubic-bezier(0.17, 0.67, 0.5, 0.71) 100ms;
+                        pointer-events: none;
+                        display: $display-flex;
+                        align-items: $align-center;
+                        padding: 0.281rem 0.375rem;
+                        bottom: 0;
+                        left: 50%;
+                        transform: translate(-50%, 0);
+                        text-transform: $text-capitalize;
                     }
+
+                    &:hover::after {
+                        opacity: 1 !important;
+                        transform: translate(-50%, calc(100% + 10px));
+                    }
+                }
+
+                &--items {
+                    cursor: $cursor-pointer;
 
                     &:hover .giz-sub-dropdown {
                         display: $display-block !important;
                     }
 
-                    &:hover .giz-tooltip-text {
-                        visibility: $visibility-visible !important;
-                    }
-
-                    .giz-fill-text {
-                        width: 5.875rem !important;
-                        top: 57px !important;
-                        margin-left: -45px !important;
-                    }
-
                     .giz-sub-dropdown--btn {
                         display: $display-block;
-                    }
-
-                    .giz-tooltip-text {
-                        visibility: $visibility-invisible;
-                        width: 3.938rem;
-                        background-color: $dark-black-pearl;
-                        text-align: $text-align-center;
-                        border-radius: $rounded;
-                        padding: 0.313rem 0;
-                        position: $position-absolute;
-                        z-index: 1;
-                        top: 49px;
-                        left: 50%;
-                        margin-left: -34px;
-                        white-space: $nowrap-white-space;
-                        @include font-12;
-                        @include open-sans-600;
-                        letter-spacing: $letter-spacing-25;
                     }
                 }
             }
