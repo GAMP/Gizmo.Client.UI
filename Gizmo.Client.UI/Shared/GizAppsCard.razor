@@ -1,5 +1,6 @@
 ﻿@namespace Gizmo.Client.UI.Shared
 @using Gizmo.Client.UI.Components
+@using Gizmo.Web.Components
 
 <!--carousel card-->
 <div class="giz-apps-card">
@@ -188,14 +189,70 @@
                 </div>
                 <!--/modal nav-->
                 <!--playing card-->
-                <div class="giz-video-wrapper">
+                <div class="giz-containers">
                     <div class="giz-card-wrapper">
                         <div class="giz-card active">
                             <div class="giz-card--body">
-                                <div class="giz-card-title">All</div>
-                                <div class="giz-card-text">
-                                    Access
+                                <div class="giz-img"><img src="https://i.postimg.cc/0yk0qNtT/app-icon.png" /></div>
+                                <!--progress Button-->
+                                <button class="client-button giz-progress-button">
+                                    <div class="giz-progress-button--inner"></div>
+                                    <span class="giz-progress-button--text">30%</span>
+                                </button>
+                                <div class="giz-sub-dropdown-menu-btn">
+                                    <Button Size="ButtonSizes.Large" Color="ButtonColors.Info" Class="btn-info">
+                                        <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0.5 10H15.5V8.33333H0.5V10ZM0.5 5.83333H15.5V4.16667H0.5V5.83333ZM0.5 0V1.66667H15.5V0H0.5Z" fill="white" />
+                                        </svg>
+                                    </Button>
+                                    <!--sub dropdown content-->
+                                    <ul class="giz-sub-dropdown">
+                                        <li class="giz-sub-dropdown--item">
+                                            <form>
+                                                <label class="giz-label">
+                                                    <input type="checkbox" />
+                                                    <span class="giz-checkmark"></span>
+                                                </label>
+                                            </form>
+                                            <a href="#" class="giz-sub-dropdown--link">
+                                                Autostart
+                                            </a>
+                                        </li>
+                                        <li class="giz-sub-dropdown--item">
+                                            <a href="#" class="giz-sub-dropdown--link">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" viewBox="0 0 16 16" fill="none">
+                                                    <path d="M9 3.75V0.75L5.25 4.5L9 8.25V5.25C11.4825 5.25 13.5 7.2675 13.5 9.75C13.5 12.2325 11.4825 14.25 9 14.25C6.5175 14.25 4.5 12.2325 4.5 9.75H3C3 13.065 5.685 15.75 9 15.75C12.315 15.75 15 13.065 15 9.75C15 6.435 12.315 3.75 9 3.75Z" />
+                                                </svg>
+                                                Repair
+                                            </a>
+                                        </li>
+                                        <li class="giz-sub-dropdown--item">
+                                            <a href="#" class="giz-sub-dropdown--link">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 14" fill="none">
+                                                    <path d="M14 1.5H8L6.5 0H2C1.175 0 0.5075 0.675 0.5075 1.5L0.5 10.5C0.5 11.325 1.175 12 2 12H14C14.825 12 15.5 11.325 15.5 10.5V3C15.5 2.175 14.825 1.5 14 1.5ZM14 10.5H2V3H14V10.5Z" />
+                                                </svg>
+                                                Personal Files
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="7" height="11" viewBox="0 0 7 11" fill="none" class="giz-icon-right">
+                                                    <path d="M0.781824 1.90259L1.89498 0.789429L6.63184 5.52628L1.89498 10.2631L0.781824 9.14997L4.39762 5.52628L0.781824 1.90259Z" />
+                                                </svg>
+                                            </a>
+                                        </li>
+                                        <li class="giz-sub-dropdown--item">
+                                            <a href="#" class="giz-sub-dropdown--link">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="none" class="giz-terminate">
+                                                    <path d="M12 1L1 12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M1 1L12 12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                                Terminate
+                                            </a>
+                                        </li>
+                                        <li class="giz-sub-dropdown--btn">
+                                            <button class="client-button giz-primary">details</button>
+                                        </li>
+                                    </ul>
+                                    <!---/sub dropdown content-->
                                 </div>
+                                <!--/progress button-->
                             </div>
                         </div>
                     </div>

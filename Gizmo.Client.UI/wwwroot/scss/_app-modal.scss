@@ -243,6 +243,73 @@
             }
         }
 
+        .giz-containers {
+            display: $display-grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-gap: 14px;
+            height: 260px;
+            overflow:auto;
+
+            //== custom scroll bar
+            /* width */
+            &::-webkit-scrollbar {
+                width: 0.25rem;
+            }
+            /* Track */
+            &::-webkit-scrollbar-track {
+                background: $border-dark-color;
+                border-radius: $rounded-xl;
+            }
+            /* Handle */
+            &::-webkit-scrollbar-thumb {
+                background: $gray-nickel;
+                border-radius: $rounded-xl;
+            }
+
+            &--heading {
+                font-weight: $font-weight-700;
+                color: $white-color;
+            }
+
+            .giz-card-wrapper {
+
+                .active {
+                    border-radius: $rounded-lg !important;
+
+                    &::before {
+                        border-radius: $rounded-lg;
+                    }
+
+                    &::after {
+                        border: none;
+                    }
+
+                    .giz-card--body {
+                        border-radius: $rounded-sm 0px 0px $rounded-sm !important;
+                        border-left: 3px solid $primary-dark;
+                        display:flex;
+                        justify-content:space-between;
+                    }
+                }
+
+                .giz-card {
+                    padding: 0.125rem 0;
+                    cursor: $cursor-pointer;
+                    margin: 0 !important;
+
+                    &--body {
+                        border-left: 3px solid $transparent-color;
+
+                        .giz-card-text {
+                            font-size: $font-17;
+                            line-height: $line-height-21;
+                        }
+                    }
+                }
+            }
+        }
+
+
         .giz-video-wrapper {
             display: $display-grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -270,7 +337,7 @@
                 .giz-card {
                     padding: 0.125rem 0;
                     cursor: $cursor-pointer;
-                    margin:0 !important;
+                    margin: 0 !important;
 
                     &--body {
                         border-left: 3px solid $transparent-color;
@@ -282,7 +349,6 @@
                     }
                 }
             }
-
         }
 
         .giz-modal-video {
