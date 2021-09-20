@@ -162,7 +162,7 @@
             padding: 0 0.25rem;
             font-weight: $font-weight-400;
 
-            &:hover .giz-tooltip-top{
+            &:hover .giz-tooltip-top {
                 visibility: $visibility-visible !important;
             }
 
@@ -217,7 +217,7 @@
             display: $display-flex;
             align-items: $align-center;
             justify-content: $justify-space-between;
-            margin-bottom: 18px;
+            margin-bottom: 1.125rem;
 
             &--navbar {
                 list-style: none;
@@ -227,12 +227,12 @@
 
             &--items {
                 @include font-11;
-                text-transform: uppercase;
+                text-transform: $text-uppercase;
                 margin-right: 1rem;
 
                 .active {
                     border-radius: 200px;
-                    background: #153C7A;
+                    background: $info-color;
                     color: $white-color;
                 }
             }
@@ -247,6 +247,42 @@
             display: $display-grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             grid-gap: 2.188rem;
+
+            .giz-card-wrapper {
+
+                .active {
+                    border-radius: $rounded-lg !important;
+
+                    &::before {
+                        border-radius: $rounded-lg;
+                    }
+
+                    &::after {
+                        border: none;
+                    }
+
+                    .giz-card--body {
+                        border-radius: $rounded-sm 0px 0px $rounded-sm !important;
+                        border-left: 3px solid $primary-dark;
+                    }
+                }
+
+                .giz-card {
+                    padding: 0.125rem 0;
+                    cursor: $cursor-pointer;
+                    margin:0 !important;
+
+                    &--body {
+                        border-left: 3px solid $transparent-color;
+
+                        .giz-card-text {
+                            font-size: $font-17;
+                            line-height: $line-height-21;
+                        }
+                    }
+                }
+            }
+
         }
 
         .giz-modal-video {
