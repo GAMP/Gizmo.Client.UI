@@ -240,6 +240,7 @@ main {
     gap: 10px;
     height: calc(100vh - 75px);
     overflow-y: auto;
+    pointer-events: none;
 }
 
 .close-btn {
@@ -259,6 +260,26 @@ main {
     .giz-icon {
         width: 24px;
         height: 24px;
+    }
+}
+
+.giz-carousel-indicator-btn {
+    width: 2.25rem;
+    height: 0.25rem;
+    margin-right: 0.313rem;
+    cursor: $cursor-pointer;
+    border: $border-0;
+    transition: opacity .6s ease;
+    background: $gray-black;
+    border-radius: $rounded;
+
+    &.active {
+        background: $primary-color;
+    }
+
+
+    &:hover:not(.active) {
+        background-color: $gray-dim;
     }
 }
 

@@ -1,11 +1,13 @@
 ﻿@namespace Gizmo.Client.UI.Shared
-     <!--carousel button-->
-                    <div class="giz-carousel-indicator">
-                        <button type="button" class="client-button giz-indicator active"></button>
-                        <button type="button" class="client-button giz-indicator"></button>
-                        <button type="button" class="client-button giz-indicator"></button>
-                        <button type="button" class="client-button giz-indicator"></button>
-                        <button type="button" class="client-button giz-indicator"></button>
-                        <button type="button" class="client-button giz-indicator"></button>
-                    </div>
-                    <!--/carousel button-->
+@using Gizmo.Web.Components
+
+<!--carousel button-->
+<div class="giz-carousel-indicator">
+
+    @for (int i = 0; i < Size; i++)
+    {
+        var local_i = i;
+        <button type="button" class="giz-carousel-indicator-btn @(local_i == SelectedIndex ? "active": "")" @onclick="@(() => OnClickButton(local_i))"></button>
+    }
+</div>
+<!--/carousel button-->
