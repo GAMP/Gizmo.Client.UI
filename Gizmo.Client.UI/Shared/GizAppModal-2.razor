@@ -1,429 +1,7 @@
 ﻿@namespace Gizmo.Client.UI.Shared
-@using Gizmo.Client.UI.Components
-@using Gizmo.Web.Components
 
-<!--carousel card-->
-<div class="giz-apps-card">
-    <div class="giz-apps-card--overlay mb-4">
-        <div class="giz-img-top">
-            <a href="#"><img src="https://i.postimg.cc/MGN8G2pM/Battle-net.png" alt='loading' /></a>
-        </div>
-    </div>
-    <div class="giz-card-title mb-2" @onclick="ShowPrimaryModal">
-        BattleNet
-    </div>
-    <div class="giz-card-text" @onclick="ShowWarning">
-        Add date <span>3/12/2021</span>
-    </div>
-    <!--primary modal-->
-    @*<div class="giz-modal-wrapper" style="display: @(IsOpen ? "none" : "block");">
-        <div class="giz-primary-modal pa-11">
-        <div class="giz-primary-modal--heading mb-2">
-        Heads up
-        </div>
-        <div class="giz-primary-modal--title mb-8">
-        Primary modal example
-        </div>
-        <div class="giz-primary-modal-body">
-        <div class="giz-primary-modal-body--text mb-4">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </div>
-        <div class="giz-primary-modal-body--btn">
-        <button class="client-button giz-btn-primary giz-elevation-0 mr-2">confirm</button>
-        <button class="client-button giz-btn-info" @onclick="ShowPrimaryModal">cancel</button>
-        </div>
-        </div>
-        </div>
-        </div>*@
-    <!--/primary modal-->
-    <!--warning modal-->
-    <AlertDialog Message="winexe002piw974muaf65_ss8d6.bat was terminated unexpectedly." AlertType="AlertDialog.AlertTypes.Warning" @bind-IsOpen="WarningDialogIsOpen" />
-    <!--/warning modal-->
-    <!--app modal-->
-    @*    <div class="giz-modal-wrapper" style="display: @(IsOpen ? "none" : "block");">
-        <div class="giz-app-modal">
-        <div class="giz-app-modal--container">
-        <div class="giz-app-brand">
-        <img src="https://i.postimg.cc/TwKtfx1Y/Falls-guy.png" alt="loading" />
-        <div class="giz-app-brand--info">
-        <div class="giz-app-brand--title">
-        Publisher
-        </div>
-        <div class="giz-app-brand--text">
-        Very Positive Inc
-        </div>
-        </div>
-        <div class="giz-app-brand--info">
-        <div class="giz-app-brand--title">
-        Release Date
-        </div>
-        <div class="giz-app-brand--text">
-        10/22/2019
-        </div>
-        </div>
-        <div class="giz-app-brand--info">
-        <div class="giz-app-brand--title">
-        Date Added
-        </div>
-        <div class="giz-app-brand--text">
-        5/13/2020
-        </div>
-        </div>
-        <div class="giz-app-brand--info">
-        <div class="giz-app-brand--title">
-        Player Mode
-        </div>
-        <div class="giz-app-brand--text giz-dot-icon">
-        Single Player
-
-        <div class="giz-tooltip">
-        <!--svg-->
-        <svg width="4" height="10" viewBox="0 0 4 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2.00016 2.66659C2.64183 2.66659 3.16683 2.14159 3.16683 1.49992C3.16683 0.858252 2.64183 0.333252 2.00016 0.333252C1.3585 0.333252 0.833496 0.858252 0.833496 1.49992C0.833496 2.14159 1.3585 2.66659 2.00016 2.66659ZM2.00016 3.83325C1.3585 3.83325 0.833496 4.35825 0.833496 4.99992C0.833496 5.64159 1.3585 6.16659 2.00016 6.16659C2.64183 6.16659 3.16683 5.64159 3.16683 4.99992C3.16683 4.35825 2.64183 3.83325 2.00016 3.83325ZM2.00016 7.33325C1.3585 7.33325 0.833496 7.85825 0.833496 8.49992C0.833496 9.14159 1.3585 9.66659 2.00016 9.66659C2.64183 9.66659 3.16683 9.14159 3.16683 8.49992C3.16683 7.85825 2.64183 7.33325 2.00016 7.33325Z" fill="white" />
-        </svg>
-        <!--/svg-->
-
-        <div class="giz-tooltip-top">
-        <div class="d-flex justify-space-between">
-        <div>
-        Free to Play
-        </div>
-        <div>
-        <!--svg-->
-        <svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4.16667 6.02273C5.46061 6.02273 6.51042 4.87749 6.51042 3.46591C6.51042 2.05433 5.46061 0.909092 4.16667 0.909092C2.87272 0.909092 1.82292 2.05433 1.82292 3.46591C1.82292 4.87749 2.87272 6.02273 4.16667 6.02273ZM6.25 6.59091H5.35319C4.99186 6.77202 4.58984 6.875 4.16667 6.875C3.74349 6.875 3.3431 6.77202 2.98014 6.59091H2.08333C0.932617 6.59091 0 7.60831 0 8.86364V9.14773C0 9.61825 0.349935 10 0.78125 10H7.55208C7.9834 10 8.33333 9.61825 8.33333 9.14773V8.86364C8.33333 7.60831 7.40071 6.59091 6.25 6.59091Z" fill="white" />
-        </svg>
-        8+
-        <!--/svg-->
-        </div>
-        </div>
-        <div class="d-flex justify-space-between">
-        <div>
-        Co-Op Online
-        </div>
-        <div>
-        <!--svg-->
-        <svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4.16667 6.02273C5.46061 6.02273 6.51042 4.87749 6.51042 3.46591C6.51042 2.05433 5.46061 0.909092 4.16667 0.909092C2.87272 0.909092 1.82292 2.05433 1.82292 3.46591C1.82292 4.87749 2.87272 6.02273 4.16667 6.02273ZM6.25 6.59091H5.35319C4.99186 6.77202 4.58984 6.875 4.16667 6.875C3.74349 6.875 3.3431 6.77202 2.98014 6.59091H2.08333C0.932617 6.59091 0 7.60831 0 8.86364V9.14773C0 9.61825 0.349935 10 0.78125 10H7.55208C7.9834 10 8.33333 9.61825 8.33333 9.14773V8.86364C8.33333 7.60831 7.40071 6.59091 6.25 6.59091Z" fill="white" />
-        </svg>
-        2
-        <!--/svg-->
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        <div class="giz-app-modal--content">
-        <!--heading-->
-        <div class="giz-app-modal--heading">
-        <div class="giz-header-text">
-        02. action / adventure
-        </div>
-        <button class="client-button giz-terminate" @onclick="ShowPrimaryModal">
-        <!--!--><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M13 1L1 13" stroke="#69748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-        <path d="M1 1L13 13" stroke="#69748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-        </svg>
-        </button>
-        </div>
-        <!--/heading-->
-        <div class="giz-app-modal--title">
-        Fall Guys: Ultimate Knockout
-        </div>
-        <div class=" giz-app-rating">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8 12.0667L12.9467 15.6667L11.0533 9.85337L16 6.33337H9.93333L8 0.333374L6.06667 6.33337H0L4.94667 9.85337L3.05333 15.6667L8 12.0667Z" fill="white" />
-        </svg>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8 12.0667L12.9467 15.6667L11.0533 9.85337L16 6.33337H9.93333L8 0.333374L6.06667 6.33337H0L4.94667 9.85337L3.05333 15.6667L8 12.0667Z" fill="white" />
-        </svg>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8 12.0667L12.9467 15.6667L11.0533 9.85337L16 6.33337H9.93333L8 0.333374L6.06667 6.33337H0L4.94667 9.85337L3.05333 15.6667L8 12.0667Z" fill="white" />
-        </svg>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8 12.0667L12.9467 15.6667L11.0533 9.85337L16 6.33337H9.93333L8 0.333374L6.06667 6.33337H0L4.94667 9.85337L3.05333 15.6667L8 12.0667Z" fill="white" />
-        </svg>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8 12.0667L12.9467 15.6667L11.0533 9.85337L16 6.33337H9.93333L8 0.333374L6.06667 6.33337H0L4.94667 9.85337L3.05333 15.6667L8 12.0667Z" fill="#BFC8EC" fill-opacity="0.4" />
-        </svg>
-        <span>168 Ratings</span>
-        </div>
-        <div class="giz-apps-tags">
-        <span class="giz-selected-tag">Multiplayer</span>
-        <span class="giz-selected-tag">Free to Play</span>
-        <span class="giz-selected-tag">MMO</span>
-        <span class="giz-selected-tag">Custom Tag</span>
-        <button class="giz-add-tags client-button giz-tooltip">
-        +2
-        <div class="giz-tooltip-top">
-        <div>
-        Action
-        </div>
-        <div>
-        Adventure
-        </div>
-        </div>
-        </button>
-        </div>
-        <div class="giz-modal--text">
-        Fall Guys is a massively multiplayer party game with up to 60 players online in a free-for-all struggle through round after round of escalating chaos until
-        one victor remains!
-        </div>
-        <div>
-        <button class="client-button giz-btn-primary px-13">launch</button>
-        <GizSubDropdownMenu></GizSubDropdownMenu>
-        </div>
-        </div>
-        </div>
-        <div class="giz-about-app">
-        <!--modal nav-->
-        <div class="giz-modal-nav">
-        <ul class="giz-modal-nav--navbar">
-        <li class="giz-modal-nav--items"><a href="#" class="giz-modal-nav--links active">executables</a></li>
-        <li class="giz-modal-nav--items"><a href="#" class="giz-modal-nav--links">videos</a></li>
-        <li class="giz-modal-nav--items"><a href="#" class="giz-modal-nav--links giz-disable-link "> links</a></li>
-        </ul>
-        </div>
-        <!--/modal nav-->
-        <!--playing card-->
-        <div class="giz-cards">
-        <div class="giz-card-wrapper">
-        <div class="giz-card active">
-        <div class="giz-card--body">
-        <div class="giz-img"><img src="https://i.postimg.cc/0yk0qNtT/app-icon.png" /><div class="giz-status"><i class="giz-status--icon"></i>24</div></div>
-        <!--user action btn-->
-        <div class="giz-user-action-btn">
-        <GizProgressButton></GizProgressButton>
-        <GizSubDropdownMenu></GizSubDropdownMenu>
-        </div>
-        <!--user action btn-->
-        <div class="giz-app">
-        <div class="giz-app--title">
-        Games
-        <!--svg-->
-        <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2.11976 3.87257C2.82003 3.87257 3.38937 3.29369 3.38937 2.58169C3.38937 1.86969 2.82003 1.29082 2.11976 1.29082C1.41948 1.29082 0.85014 1.86969 0.85014 2.58169C0.85014 3.29369 1.41948 3.87257 2.11976 3.87257ZM11.0071 3.87257C11.7073 3.87257 12.2767 3.29369 12.2767 2.58169C12.2767 1.86969 11.7073 1.29082 11.0071 1.29082C10.3068 1.29082 9.73746 1.86969 9.73746 2.58169C9.73746 3.29369 10.3068 3.87257 11.0071 3.87257ZM11.6419 4.51801H10.3723C10.0231 4.51801 9.7077 4.66121 9.47758 4.89317C10.277 5.33892 10.8444 6.1437 10.9674 7.09976H12.2767C12.6278 7.09976 12.9115 6.81133 12.9115 6.45432V5.80888C12.9115 5.09688 12.3422 4.51801 11.6419 4.51801ZM6.56342 4.51801C7.79137 4.51801 8.78525 3.50749 8.78525 2.25897C8.78525 1.01045 7.79137 -6.10352e-05 6.56342 -6.10352e-05C5.33546 -6.10352e-05 4.34159 1.01045 4.34159 2.25897C4.34159 3.50749 5.33546 4.51801 6.56342 4.51801ZM8.08696 5.16344H7.9223C7.50968 5.36514 7.05143 5.48616 6.56342 5.48616C6.07541 5.48616 5.61914 5.36514 5.20453 5.16344H5.03988C3.77819 5.16344 2.75457 6.20421 2.75457 7.48702V8.06791C2.75457 8.60242 3.18108 9.03607 3.70678 9.03607H9.42005C9.94576 9.03607 10.3723 8.60242 10.3723 8.06791V7.48702C10.3723 6.20421 9.34864 5.16344 8.08696 5.16344ZM3.64925 4.89317C3.41913 4.66121 3.10371 4.51801 2.75457 4.51801H1.48495C0.784676 4.51801 0.215332 5.09688 0.215332 5.80888V6.45432C0.215332 6.81133 0.499012 7.09976 0.85014 7.09976H2.15745C2.28243 6.1437 2.84979 5.33892 3.64925 4.89317Z" fill="white" fill-opacity="0.7" />
-        </svg>
-        <!--/svg-->
-        </div>
-        <div class="giz-app--name">
-        Linage II Freya Hi5
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        <div class="giz-card-wrapper">
-        <div class="giz-card">
-        <div class="giz-card--body">
-        <div class="giz-img"><img src="https://i.postimg.cc/0yk0qNtT/app-icon.png" /><div class="giz-status"><i class="giz-status--icon"></i>24</div></div>
-        <!--user action btn-->
-        <div class="giz-user-action-btn d-none">
-        <GizProgressButton></GizProgressButton>
-        <GizSubDropdownMenu></GizSubDropdownMenu>
-        </div>
-        <!--user action btn-->
-        <div class="giz-app">
-        <div class="giz-app--title">
-        Games
-        <!--svg-->
-        <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2.11976 3.87257C2.82003 3.87257 3.38937 3.29369 3.38937 2.58169C3.38937 1.86969 2.82003 1.29082 2.11976 1.29082C1.41948 1.29082 0.85014 1.86969 0.85014 2.58169C0.85014 3.29369 1.41948 3.87257 2.11976 3.87257ZM11.0071 3.87257C11.7073 3.87257 12.2767 3.29369 12.2767 2.58169C12.2767 1.86969 11.7073 1.29082 11.0071 1.29082C10.3068 1.29082 9.73746 1.86969 9.73746 2.58169C9.73746 3.29369 10.3068 3.87257 11.0071 3.87257ZM11.6419 4.51801H10.3723C10.0231 4.51801 9.7077 4.66121 9.47758 4.89317C10.277 5.33892 10.8444 6.1437 10.9674 7.09976H12.2767C12.6278 7.09976 12.9115 6.81133 12.9115 6.45432V5.80888C12.9115 5.09688 12.3422 4.51801 11.6419 4.51801ZM6.56342 4.51801C7.79137 4.51801 8.78525 3.50749 8.78525 2.25897C8.78525 1.01045 7.79137 -6.10352e-05 6.56342 -6.10352e-05C5.33546 -6.10352e-05 4.34159 1.01045 4.34159 2.25897C4.34159 3.50749 5.33546 4.51801 6.56342 4.51801ZM8.08696 5.16344H7.9223C7.50968 5.36514 7.05143 5.48616 6.56342 5.48616C6.07541 5.48616 5.61914 5.36514 5.20453 5.16344H5.03988C3.77819 5.16344 2.75457 6.20421 2.75457 7.48702V8.06791C2.75457 8.60242 3.18108 9.03607 3.70678 9.03607H9.42005C9.94576 9.03607 10.3723 8.60242 10.3723 8.06791V7.48702C10.3723 6.20421 9.34864 5.16344 8.08696 5.16344ZM3.64925 4.89317C3.41913 4.66121 3.10371 4.51801 2.75457 4.51801H1.48495C0.784676 4.51801 0.215332 5.09688 0.215332 5.80888V6.45432C0.215332 6.81133 0.499012 7.09976 0.85014 7.09976H2.15745C2.28243 6.1437 2.84979 5.33892 3.64925 4.89317Z" fill="white" fill-opacity="0.7" />
-        </svg>
-        <!--/svg-->
-        </div>
-        <div class="giz-app--name">
-        Linage II Freya Hi5
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        <div class="giz-card-wrapper">
-        <div class="giz-card">
-        <div class="giz-card--body">
-        <div class="giz-img"><img src="https://i.postimg.cc/0yk0qNtT/app-icon.png" /><div class="giz-status"><i class="giz-status--icon"></i>24</div></div>
-        <!--user action btn-->
-        <div class="giz-user-action-btn">
-        <GizProgressButton></GizProgressButton>
-        <GizSubDropdownMenu></GizSubDropdownMenu>
-        </div>
-        <!--user action btn-->
-        <div class="giz-app">
-        <div class="giz-app--title">
-        Games
-        <!--svg-->
-        <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2.11976 3.87257C2.82003 3.87257 3.38937 3.29369 3.38937 2.58169C3.38937 1.86969 2.82003 1.29082 2.11976 1.29082C1.41948 1.29082 0.85014 1.86969 0.85014 2.58169C0.85014 3.29369 1.41948 3.87257 2.11976 3.87257ZM11.0071 3.87257C11.7073 3.87257 12.2767 3.29369 12.2767 2.58169C12.2767 1.86969 11.7073 1.29082 11.0071 1.29082C10.3068 1.29082 9.73746 1.86969 9.73746 2.58169C9.73746 3.29369 10.3068 3.87257 11.0071 3.87257ZM11.6419 4.51801H10.3723C10.0231 4.51801 9.7077 4.66121 9.47758 4.89317C10.277 5.33892 10.8444 6.1437 10.9674 7.09976H12.2767C12.6278 7.09976 12.9115 6.81133 12.9115 6.45432V5.80888C12.9115 5.09688 12.3422 4.51801 11.6419 4.51801ZM6.56342 4.51801C7.79137 4.51801 8.78525 3.50749 8.78525 2.25897C8.78525 1.01045 7.79137 -6.10352e-05 6.56342 -6.10352e-05C5.33546 -6.10352e-05 4.34159 1.01045 4.34159 2.25897C4.34159 3.50749 5.33546 4.51801 6.56342 4.51801ZM8.08696 5.16344H7.9223C7.50968 5.36514 7.05143 5.48616 6.56342 5.48616C6.07541 5.48616 5.61914 5.36514 5.20453 5.16344H5.03988C3.77819 5.16344 2.75457 6.20421 2.75457 7.48702V8.06791C2.75457 8.60242 3.18108 9.03607 3.70678 9.03607H9.42005C9.94576 9.03607 10.3723 8.60242 10.3723 8.06791V7.48702C10.3723 6.20421 9.34864 5.16344 8.08696 5.16344ZM3.64925 4.89317C3.41913 4.66121 3.10371 4.51801 2.75457 4.51801H1.48495C0.784676 4.51801 0.215332 5.09688 0.215332 5.80888V6.45432C0.215332 6.81133 0.499012 7.09976 0.85014 7.09976H2.15745C2.28243 6.1437 2.84979 5.33892 3.64925 4.89317Z" fill="white" fill-opacity="0.7" />
-        </svg>
-        <!--/svg-->
-        </div>
-        <div class="giz-app--name">
-        Linage II Freya Hi5
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        <div class="giz-card-wrapper">
-        <div class="giz-card">
-        <div class="giz-card--body">
-        <div class="giz-img"><img src="https://i.postimg.cc/0yk0qNtT/app-icon.png" /><div class="giz-status"><i class="giz-status--icon"></i>24</div></div>
-        <!--user action btn-->
-        <div class="giz-user-action-btn">
-        <GizProgressButton></GizProgressButton>
-        <GizSubDropdownMenu></GizSubDropdownMenu>
-        </div>
-        <!--user action btn-->
-        <div class="giz-app">
-        <div class="giz-app--title">
-        Games
-        <!--svg-->
-        <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2.11976 3.87257C2.82003 3.87257 3.38937 3.29369 3.38937 2.58169C3.38937 1.86969 2.82003 1.29082 2.11976 1.29082C1.41948 1.29082 0.85014 1.86969 0.85014 2.58169C0.85014 3.29369 1.41948 3.87257 2.11976 3.87257ZM11.0071 3.87257C11.7073 3.87257 12.2767 3.29369 12.2767 2.58169C12.2767 1.86969 11.7073 1.29082 11.0071 1.29082C10.3068 1.29082 9.73746 1.86969 9.73746 2.58169C9.73746 3.29369 10.3068 3.87257 11.0071 3.87257ZM11.6419 4.51801H10.3723C10.0231 4.51801 9.7077 4.66121 9.47758 4.89317C10.277 5.33892 10.8444 6.1437 10.9674 7.09976H12.2767C12.6278 7.09976 12.9115 6.81133 12.9115 6.45432V5.80888C12.9115 5.09688 12.3422 4.51801 11.6419 4.51801ZM6.56342 4.51801C7.79137 4.51801 8.78525 3.50749 8.78525 2.25897C8.78525 1.01045 7.79137 -6.10352e-05 6.56342 -6.10352e-05C5.33546 -6.10352e-05 4.34159 1.01045 4.34159 2.25897C4.34159 3.50749 5.33546 4.51801 6.56342 4.51801ZM8.08696 5.16344H7.9223C7.50968 5.36514 7.05143 5.48616 6.56342 5.48616C6.07541 5.48616 5.61914 5.36514 5.20453 5.16344H5.03988C3.77819 5.16344 2.75457 6.20421 2.75457 7.48702V8.06791C2.75457 8.60242 3.18108 9.03607 3.70678 9.03607H9.42005C9.94576 9.03607 10.3723 8.60242 10.3723 8.06791V7.48702C10.3723 6.20421 9.34864 5.16344 8.08696 5.16344ZM3.64925 4.89317C3.41913 4.66121 3.10371 4.51801 2.75457 4.51801H1.48495C0.784676 4.51801 0.215332 5.09688 0.215332 5.80888V6.45432C0.215332 6.81133 0.499012 7.09976 0.85014 7.09976H2.15745C2.28243 6.1437 2.84979 5.33892 3.64925 4.89317Z" fill="white" fill-opacity="0.7" />
-        </svg>
-        <!--/svg-->
-        </div>
-        <div class="giz-app--name">
-        Linage II Freya Hi5
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        <div class="giz-card-wrapper">
-        <div class="giz-card">
-        <div class="giz-card--body">
-        <div class="giz-img"><img src="https://i.postimg.cc/0yk0qNtT/app-icon.png" /><div class="giz-status"><i class="giz-status--icon"></i>24</div></div>
-        <!--user action btn-->
-        <div class="giz-user-action-btn">
-        <GizProgressButton></GizProgressButton>
-        <GizSubDropdownMenu></GizSubDropdownMenu>
-        </div>
-        <!--user action btn-->
-        <div class="giz-app">
-        <div class="giz-app--title">
-        Games
-        <!--svg-->
-        <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2.11976 3.87257C2.82003 3.87257 3.38937 3.29369 3.38937 2.58169C3.38937 1.86969 2.82003 1.29082 2.11976 1.29082C1.41948 1.29082 0.85014 1.86969 0.85014 2.58169C0.85014 3.29369 1.41948 3.87257 2.11976 3.87257ZM11.0071 3.87257C11.7073 3.87257 12.2767 3.29369 12.2767 2.58169C12.2767 1.86969 11.7073 1.29082 11.0071 1.29082C10.3068 1.29082 9.73746 1.86969 9.73746 2.58169C9.73746 3.29369 10.3068 3.87257 11.0071 3.87257ZM11.6419 4.51801H10.3723C10.0231 4.51801 9.7077 4.66121 9.47758 4.89317C10.277 5.33892 10.8444 6.1437 10.9674 7.09976H12.2767C12.6278 7.09976 12.9115 6.81133 12.9115 6.45432V5.80888C12.9115 5.09688 12.3422 4.51801 11.6419 4.51801ZM6.56342 4.51801C7.79137 4.51801 8.78525 3.50749 8.78525 2.25897C8.78525 1.01045 7.79137 -6.10352e-05 6.56342 -6.10352e-05C5.33546 -6.10352e-05 4.34159 1.01045 4.34159 2.25897C4.34159 3.50749 5.33546 4.51801 6.56342 4.51801ZM8.08696 5.16344H7.9223C7.50968 5.36514 7.05143 5.48616 6.56342 5.48616C6.07541 5.48616 5.61914 5.36514 5.20453 5.16344H5.03988C3.77819 5.16344 2.75457 6.20421 2.75457 7.48702V8.06791C2.75457 8.60242 3.18108 9.03607 3.70678 9.03607H9.42005C9.94576 9.03607 10.3723 8.60242 10.3723 8.06791V7.48702C10.3723 6.20421 9.34864 5.16344 8.08696 5.16344ZM3.64925 4.89317C3.41913 4.66121 3.10371 4.51801 2.75457 4.51801H1.48495C0.784676 4.51801 0.215332 5.09688 0.215332 5.80888V6.45432C0.215332 6.81133 0.499012 7.09976 0.85014 7.09976H2.15745C2.28243 6.1437 2.84979 5.33892 3.64925 4.89317Z" fill="white" fill-opacity="0.7" />
-        </svg>
-        <!--/svg-->
-        </div>
-        <div class="giz-app--name">
-        Linage II Freya Hi5
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        <div class="giz-card-wrapper">
-        <div class="giz-card">
-        <div class="giz-card--body">
-        <div class="giz-img"><img src="https://i.postimg.cc/0yk0qNtT/app-icon.png" /><div class="giz-status"><i class="giz-status--icon"></i>24</div></div>
-        <!--user action btn-->
-        <div class="giz-user-action-btn">
-        <GizProgressButton></GizProgressButton>
-        <GizSubDropdownMenu></GizSubDropdownMenu>
-        </div>
-        <!--user action btn-->
-        <div class="giz-app">
-        <div class="giz-app--title">
-        Games
-        <!--svg-->
-        <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2.11976 3.87257C2.82003 3.87257 3.38937 3.29369 3.38937 2.58169C3.38937 1.86969 2.82003 1.29082 2.11976 1.29082C1.41948 1.29082 0.85014 1.86969 0.85014 2.58169C0.85014 3.29369 1.41948 3.87257 2.11976 3.87257ZM11.0071 3.87257C11.7073 3.87257 12.2767 3.29369 12.2767 2.58169C12.2767 1.86969 11.7073 1.29082 11.0071 1.29082C10.3068 1.29082 9.73746 1.86969 9.73746 2.58169C9.73746 3.29369 10.3068 3.87257 11.0071 3.87257ZM11.6419 4.51801H10.3723C10.0231 4.51801 9.7077 4.66121 9.47758 4.89317C10.277 5.33892 10.8444 6.1437 10.9674 7.09976H12.2767C12.6278 7.09976 12.9115 6.81133 12.9115 6.45432V5.80888C12.9115 5.09688 12.3422 4.51801 11.6419 4.51801ZM6.56342 4.51801C7.79137 4.51801 8.78525 3.50749 8.78525 2.25897C8.78525 1.01045 7.79137 -6.10352e-05 6.56342 -6.10352e-05C5.33546 -6.10352e-05 4.34159 1.01045 4.34159 2.25897C4.34159 3.50749 5.33546 4.51801 6.56342 4.51801ZM8.08696 5.16344H7.9223C7.50968 5.36514 7.05143 5.48616 6.56342 5.48616C6.07541 5.48616 5.61914 5.36514 5.20453 5.16344H5.03988C3.77819 5.16344 2.75457 6.20421 2.75457 7.48702V8.06791C2.75457 8.60242 3.18108 9.03607 3.70678 9.03607H9.42005C9.94576 9.03607 10.3723 8.60242 10.3723 8.06791V7.48702C10.3723 6.20421 9.34864 5.16344 8.08696 5.16344ZM3.64925 4.89317C3.41913 4.66121 3.10371 4.51801 2.75457 4.51801H1.48495C0.784676 4.51801 0.215332 5.09688 0.215332 5.80888V6.45432C0.215332 6.81133 0.499012 7.09976 0.85014 7.09976H2.15745C2.28243 6.1437 2.84979 5.33892 3.64925 4.89317Z" fill="white" fill-opacity="0.7" />
-        </svg>
-        <!--/svg-->
-        </div>
-        <div class="giz-app--name">
-        Linage II Freya Hi5
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        <div class="giz-card-wrapper">
-        <div class="giz-card">
-        <div class="giz-card--body">
-        <div class="giz-img"><img src="https://i.postimg.cc/0yk0qNtT/app-icon.png" /><div class="giz-status"><i class="giz-status--icon"></i>24</div></div>
-        <!--user action btn-->
-        <div class="giz-user-action-btn">
-        <GizProgressButton></GizProgressButton>
-        <GizSubDropdownMenu></GizSubDropdownMenu>
-        </div>
-        <!--user action btn-->
-        <div class="giz-app">
-        <div class="giz-app--title">
-        Games
-        <!--svg-->
-        <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2.11976 3.87257C2.82003 3.87257 3.38937 3.29369 3.38937 2.58169C3.38937 1.86969 2.82003 1.29082 2.11976 1.29082C1.41948 1.29082 0.85014 1.86969 0.85014 2.58169C0.85014 3.29369 1.41948 3.87257 2.11976 3.87257ZM11.0071 3.87257C11.7073 3.87257 12.2767 3.29369 12.2767 2.58169C12.2767 1.86969 11.7073 1.29082 11.0071 1.29082C10.3068 1.29082 9.73746 1.86969 9.73746 2.58169C9.73746 3.29369 10.3068 3.87257 11.0071 3.87257ZM11.6419 4.51801H10.3723C10.0231 4.51801 9.7077 4.66121 9.47758 4.89317C10.277 5.33892 10.8444 6.1437 10.9674 7.09976H12.2767C12.6278 7.09976 12.9115 6.81133 12.9115 6.45432V5.80888C12.9115 5.09688 12.3422 4.51801 11.6419 4.51801ZM6.56342 4.51801C7.79137 4.51801 8.78525 3.50749 8.78525 2.25897C8.78525 1.01045 7.79137 -6.10352e-05 6.56342 -6.10352e-05C5.33546 -6.10352e-05 4.34159 1.01045 4.34159 2.25897C4.34159 3.50749 5.33546 4.51801 6.56342 4.51801ZM8.08696 5.16344H7.9223C7.50968 5.36514 7.05143 5.48616 6.56342 5.48616C6.07541 5.48616 5.61914 5.36514 5.20453 5.16344H5.03988C3.77819 5.16344 2.75457 6.20421 2.75457 7.48702V8.06791C2.75457 8.60242 3.18108 9.03607 3.70678 9.03607H9.42005C9.94576 9.03607 10.3723 8.60242 10.3723 8.06791V7.48702C10.3723 6.20421 9.34864 5.16344 8.08696 5.16344ZM3.64925 4.89317C3.41913 4.66121 3.10371 4.51801 2.75457 4.51801H1.48495C0.784676 4.51801 0.215332 5.09688 0.215332 5.80888V6.45432C0.215332 6.81133 0.499012 7.09976 0.85014 7.09976H2.15745C2.28243 6.1437 2.84979 5.33892 3.64925 4.89317Z" fill="white" fill-opacity="0.7" />
-        </svg>
-        <!--/svg-->
-        </div>
-        <div class="giz-app--name">
-        Linage II Freya Hi5
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        <!--/playing card-->
-        <!--modal nav-->
-        <div class="giz-modal-nav d-none">
-        <ul class="giz-modal-nav--navbar">
-        <li class="giz-modal-nav--items"><a href="#" class="giz-modal-nav--links">announcements</a></li>
-        <li class="giz-modal-nav--items"><a href="#" class="giz-modal-nav--links active">media</a></li>
-        <li class="giz-modal-nav--items"><a href="#" class="giz-modal-nav--links giz-disable-link ">Links</a></li>
-        <li class="giz-modal-nav--items"><a href="#" class="giz-modal-nav--links giz-disable-link ">Tutorials</a></li>
-        </ul>
-        <div class="giz-arrows">
-        <!--svg-->
-        <svg width="9" class="mr-2" height="13" viewBox="0 0 9 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8.08607 1.73503L6.61423 0.263184L0.351074 6.52634L6.61423 12.7895L8.08607 11.3177L3.3052 6.52634L8.08607 1.73503Z" fill="white" fill-opacity="0.35" />
-        </svg>
-        <!--/svg-->
-        <!--svg-->
-        <svg width="9" height="13" viewBox="0 0 9 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0.913926 1.73503L2.38577 0.263184L8.64893 6.52634L2.38577 12.7895L0.913926 11.3177L5.6948 6.52634L0.913926 1.73503Z" fill="white" />
-        </svg>
-        <!--/svg-->
-        </div>
-        </div>
-        <!--/modal nav-->
-        <!--modal video-->
-        <div class="giz-video-wrapper d-none">
-        <div class="giz-modal-video">
-        <img src="https://i.postimg.cc/kXYNPNgF/Video.png" alt="loading" />
-        <div class="giz-modal-video--title">unboxholics</div>
-        <div class="giz-modal-video--text">Κλαίμε με το νέο Season 4 Fall Guys Ultimate Knockout!!!</div>
-        </div>
-        <div class="giz-modal-video">
-        <img src="https://i.postimg.cc/d3rRY34R/trailer.png" alt="loading" />
-        <div class="giz-modal-video--title">ign</div>
-        <div class="giz-modal-video--text">Fall Guys Season 4 - Official Trailer</div>
-        </div>
-        </div>
-        <!--progress bar-->
-        <div class="giz-progress-wrapper d-none">
-        <div class="giz-progress">
-        <div class="giz-progress--bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%">
-        </div>
-        </div>
-        </div>
-        <!--/progress bar-->
-        <!--/modal video-->
-        </div>
-        </div>
-        </div>*@
-    <!--/app modal-->
 <!--app modal-->
-<div class="giz-modal-wrapper" style="display: @(IsOpen ? "none" : "block");">
+<div class="giz-modal-wrapper">
     <div class="giz-app-modal">
         <div class="giz-app-modal--container">
             <!--app info-->
@@ -496,6 +74,14 @@
                             </div>
                         </div>
                     </div>
+                    <div class="giz-app-brand--info">
+                        <div class="giz-app-brand--title">
+                            Available Accounts
+                        </div>
+                        <div class="giz-app-brand--text">
+                            3/4
+                        </div>
+                    </div>
                 </div>
             </div>
             <!--/app info-->
@@ -505,7 +91,7 @@
                     <div class="giz-header-text">
                         02. action / adventure
                     </div>
-                    <button class="client-button giz-terminate" @onclick="ShowPrimaryModal">
+                    <button class="client-button giz-terminate">
                         <!--!--><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M13 1L1 13" stroke="#69748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                             <path d="M1 1L13 13" stroke="#69748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -758,27 +344,215 @@
                 </div>
             </div>
             <!--/playing card-->
+            <!--modal nav-->
+            <div class="giz-modal-nav">
+                <ul class="giz-modal-nav--navbar">
+                    <li class="giz-modal-nav--items"><a href="#" class="giz-modal-nav--links">announcements</a></li>
+                    <li class="giz-modal-nav--items"><a href="#" class="giz-modal-nav--links active">media</a></li>
+                    <li class="giz-modal-nav--items"><a href="#" class="giz-modal-nav--links giz-disable-link ">Links</a></li>
+                    <li class="giz-modal-nav--items"><a href="#" class="giz-modal-nav--links giz-disable-link ">Tutorials</a></li>
+                </ul>
+                <div class="giz-arrows">
+                    <!--svg-->
+                    <svg width="9" class="mr-2" height="13" viewBox="0 0 9 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.08607 1.73503L6.61423 0.263184L0.351074 6.52634L6.61423 12.7895L8.08607 11.3177L3.3052 6.52634L8.08607 1.73503Z" fill="white" fill-opacity="0.35" />
+                    </svg>
+                    <!--/svg-->
+                    <!--svg-->
+                    <svg width="9" height="13" viewBox="0 0 9 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0.913926 1.73503L2.38577 0.263184L8.64893 6.52634L2.38577 12.7895L0.913926 11.3177L5.6948 6.52634L0.913926 1.73503Z" fill="white" />
+                    </svg>
+                    <!--/svg-->
+                </div>
+            </div>
+            <!--/modal nav-->
+            <!--playing card-->
+            <div class="giz-cards">
+                <div class="giz-card-wrapper">
+                    <div class="giz-card active">
+                        <div class="giz-card--body">
+                            <div class="giz-img"><img src="https://i.postimg.cc/0yk0qNtT/app-icon.png" /><div class="giz-status"><i class="giz-status--icon"></i>24</div></div>
+                            <!--user action btn-->
+                            <div class="giz-user-action-btn">
+                                <GizProgressButton></GizProgressButton>
+                                <GizSubDropdownMenu></GizSubDropdownMenu>
+                            </div>
+                            <!--user action btn-->
+                            <div class="giz-app">
+                                <div class="giz-app--title">
+                                    Games
+                                    <!--svg-->
+                                    <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.11976 3.87257C2.82003 3.87257 3.38937 3.29369 3.38937 2.58169C3.38937 1.86969 2.82003 1.29082 2.11976 1.29082C1.41948 1.29082 0.85014 1.86969 0.85014 2.58169C0.85014 3.29369 1.41948 3.87257 2.11976 3.87257ZM11.0071 3.87257C11.7073 3.87257 12.2767 3.29369 12.2767 2.58169C12.2767 1.86969 11.7073 1.29082 11.0071 1.29082C10.3068 1.29082 9.73746 1.86969 9.73746 2.58169C9.73746 3.29369 10.3068 3.87257 11.0071 3.87257ZM11.6419 4.51801H10.3723C10.0231 4.51801 9.7077 4.66121 9.47758 4.89317C10.277 5.33892 10.8444 6.1437 10.9674 7.09976H12.2767C12.6278 7.09976 12.9115 6.81133 12.9115 6.45432V5.80888C12.9115 5.09688 12.3422 4.51801 11.6419 4.51801ZM6.56342 4.51801C7.79137 4.51801 8.78525 3.50749 8.78525 2.25897C8.78525 1.01045 7.79137 -6.10352e-05 6.56342 -6.10352e-05C5.33546 -6.10352e-05 4.34159 1.01045 4.34159 2.25897C4.34159 3.50749 5.33546 4.51801 6.56342 4.51801ZM8.08696 5.16344H7.9223C7.50968 5.36514 7.05143 5.48616 6.56342 5.48616C6.07541 5.48616 5.61914 5.36514 5.20453 5.16344H5.03988C3.77819 5.16344 2.75457 6.20421 2.75457 7.48702V8.06791C2.75457 8.60242 3.18108 9.03607 3.70678 9.03607H9.42005C9.94576 9.03607 10.3723 8.60242 10.3723 8.06791V7.48702C10.3723 6.20421 9.34864 5.16344 8.08696 5.16344ZM3.64925 4.89317C3.41913 4.66121 3.10371 4.51801 2.75457 4.51801H1.48495C0.784676 4.51801 0.215332 5.09688 0.215332 5.80888V6.45432C0.215332 6.81133 0.499012 7.09976 0.85014 7.09976H2.15745C2.28243 6.1437 2.84979 5.33892 3.64925 4.89317Z" fill="white" fill-opacity="0.7" />
+                                    </svg>
+                                    <!--/svg-->
+                                </div>
+                                <div class="giz-app--name">
+                                    Linage II Freya Hi5
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="giz-card-wrapper">
+                    <div class="giz-card">
+                        <div class="giz-card--body">
+                            <div class="giz-img"><img src="https://i.postimg.cc/0yk0qNtT/app-icon.png" /><div class="giz-status"><i class="giz-status--icon"></i>24</div></div>
+                            <!--user action btn-->
+                            <div class="giz-user-action-btn d-none">
+                                <GizProgressButton></GizProgressButton>
+                                <GizSubDropdownMenu></GizSubDropdownMenu>
+                            </div>
+                            <!--user action btn-->
+                            <div class="giz-app">
+                                <div class="giz-app--title">
+                                    Games
+                                    <!--svg-->
+                                    <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.11976 3.87257C2.82003 3.87257 3.38937 3.29369 3.38937 2.58169C3.38937 1.86969 2.82003 1.29082 2.11976 1.29082C1.41948 1.29082 0.85014 1.86969 0.85014 2.58169C0.85014 3.29369 1.41948 3.87257 2.11976 3.87257ZM11.0071 3.87257C11.7073 3.87257 12.2767 3.29369 12.2767 2.58169C12.2767 1.86969 11.7073 1.29082 11.0071 1.29082C10.3068 1.29082 9.73746 1.86969 9.73746 2.58169C9.73746 3.29369 10.3068 3.87257 11.0071 3.87257ZM11.6419 4.51801H10.3723C10.0231 4.51801 9.7077 4.66121 9.47758 4.89317C10.277 5.33892 10.8444 6.1437 10.9674 7.09976H12.2767C12.6278 7.09976 12.9115 6.81133 12.9115 6.45432V5.80888C12.9115 5.09688 12.3422 4.51801 11.6419 4.51801ZM6.56342 4.51801C7.79137 4.51801 8.78525 3.50749 8.78525 2.25897C8.78525 1.01045 7.79137 -6.10352e-05 6.56342 -6.10352e-05C5.33546 -6.10352e-05 4.34159 1.01045 4.34159 2.25897C4.34159 3.50749 5.33546 4.51801 6.56342 4.51801ZM8.08696 5.16344H7.9223C7.50968 5.36514 7.05143 5.48616 6.56342 5.48616C6.07541 5.48616 5.61914 5.36514 5.20453 5.16344H5.03988C3.77819 5.16344 2.75457 6.20421 2.75457 7.48702V8.06791C2.75457 8.60242 3.18108 9.03607 3.70678 9.03607H9.42005C9.94576 9.03607 10.3723 8.60242 10.3723 8.06791V7.48702C10.3723 6.20421 9.34864 5.16344 8.08696 5.16344ZM3.64925 4.89317C3.41913 4.66121 3.10371 4.51801 2.75457 4.51801H1.48495C0.784676 4.51801 0.215332 5.09688 0.215332 5.80888V6.45432C0.215332 6.81133 0.499012 7.09976 0.85014 7.09976H2.15745C2.28243 6.1437 2.84979 5.33892 3.64925 4.89317Z" fill="white" fill-opacity="0.7" />
+                                    </svg>
+                                    <!--/svg-->
+                                </div>
+                                <div class="giz-app--name">
+                                    Linage II Freya Hi5
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="giz-card-wrapper">
+                    <div class="giz-card">
+                        <div class="giz-card--body">
+                            <div class="giz-img"><img src="https://i.postimg.cc/0yk0qNtT/app-icon.png" /><div class="giz-status"><i class="giz-status--icon"></i>24</div></div>
+                            <!--user action btn-->
+                            <div class="giz-user-action-btn">
+                                <GizProgressButton></GizProgressButton>
+                                <GizSubDropdownMenu></GizSubDropdownMenu>
+                            </div>
+                            <!--user action btn-->
+                            <div class="giz-app">
+                                <div class="giz-app--title">
+                                    Games
+                                    <!--svg-->
+                                    <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.11976 3.87257C2.82003 3.87257 3.38937 3.29369 3.38937 2.58169C3.38937 1.86969 2.82003 1.29082 2.11976 1.29082C1.41948 1.29082 0.85014 1.86969 0.85014 2.58169C0.85014 3.29369 1.41948 3.87257 2.11976 3.87257ZM11.0071 3.87257C11.7073 3.87257 12.2767 3.29369 12.2767 2.58169C12.2767 1.86969 11.7073 1.29082 11.0071 1.29082C10.3068 1.29082 9.73746 1.86969 9.73746 2.58169C9.73746 3.29369 10.3068 3.87257 11.0071 3.87257ZM11.6419 4.51801H10.3723C10.0231 4.51801 9.7077 4.66121 9.47758 4.89317C10.277 5.33892 10.8444 6.1437 10.9674 7.09976H12.2767C12.6278 7.09976 12.9115 6.81133 12.9115 6.45432V5.80888C12.9115 5.09688 12.3422 4.51801 11.6419 4.51801ZM6.56342 4.51801C7.79137 4.51801 8.78525 3.50749 8.78525 2.25897C8.78525 1.01045 7.79137 -6.10352e-05 6.56342 -6.10352e-05C5.33546 -6.10352e-05 4.34159 1.01045 4.34159 2.25897C4.34159 3.50749 5.33546 4.51801 6.56342 4.51801ZM8.08696 5.16344H7.9223C7.50968 5.36514 7.05143 5.48616 6.56342 5.48616C6.07541 5.48616 5.61914 5.36514 5.20453 5.16344H5.03988C3.77819 5.16344 2.75457 6.20421 2.75457 7.48702V8.06791C2.75457 8.60242 3.18108 9.03607 3.70678 9.03607H9.42005C9.94576 9.03607 10.3723 8.60242 10.3723 8.06791V7.48702C10.3723 6.20421 9.34864 5.16344 8.08696 5.16344ZM3.64925 4.89317C3.41913 4.66121 3.10371 4.51801 2.75457 4.51801H1.48495C0.784676 4.51801 0.215332 5.09688 0.215332 5.80888V6.45432C0.215332 6.81133 0.499012 7.09976 0.85014 7.09976H2.15745C2.28243 6.1437 2.84979 5.33892 3.64925 4.89317Z" fill="white" fill-opacity="0.7" />
+                                    </svg>
+                                    <!--/svg-->
+                                </div>
+                                <div class="giz-app--name">
+                                    Linage II Freya Hi5
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="giz-card-wrapper">
+                    <div class="giz-card">
+                        <div class="giz-card--body">
+                            <div class="giz-img"><img src="https://i.postimg.cc/0yk0qNtT/app-icon.png" /><div class="giz-status"><i class="giz-status--icon"></i>24</div></div>
+                            <!--user action btn-->
+                            <div class="giz-user-action-btn">
+                                <GizProgressButton></GizProgressButton>
+                                <GizSubDropdownMenu></GizSubDropdownMenu>
+                            </div>
+                            <!--user action btn-->
+                            <div class="giz-app">
+                                <div class="giz-app--title">
+                                    Games
+                                    <!--svg-->
+                                    <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.11976 3.87257C2.82003 3.87257 3.38937 3.29369 3.38937 2.58169C3.38937 1.86969 2.82003 1.29082 2.11976 1.29082C1.41948 1.29082 0.85014 1.86969 0.85014 2.58169C0.85014 3.29369 1.41948 3.87257 2.11976 3.87257ZM11.0071 3.87257C11.7073 3.87257 12.2767 3.29369 12.2767 2.58169C12.2767 1.86969 11.7073 1.29082 11.0071 1.29082C10.3068 1.29082 9.73746 1.86969 9.73746 2.58169C9.73746 3.29369 10.3068 3.87257 11.0071 3.87257ZM11.6419 4.51801H10.3723C10.0231 4.51801 9.7077 4.66121 9.47758 4.89317C10.277 5.33892 10.8444 6.1437 10.9674 7.09976H12.2767C12.6278 7.09976 12.9115 6.81133 12.9115 6.45432V5.80888C12.9115 5.09688 12.3422 4.51801 11.6419 4.51801ZM6.56342 4.51801C7.79137 4.51801 8.78525 3.50749 8.78525 2.25897C8.78525 1.01045 7.79137 -6.10352e-05 6.56342 -6.10352e-05C5.33546 -6.10352e-05 4.34159 1.01045 4.34159 2.25897C4.34159 3.50749 5.33546 4.51801 6.56342 4.51801ZM8.08696 5.16344H7.9223C7.50968 5.36514 7.05143 5.48616 6.56342 5.48616C6.07541 5.48616 5.61914 5.36514 5.20453 5.16344H5.03988C3.77819 5.16344 2.75457 6.20421 2.75457 7.48702V8.06791C2.75457 8.60242 3.18108 9.03607 3.70678 9.03607H9.42005C9.94576 9.03607 10.3723 8.60242 10.3723 8.06791V7.48702C10.3723 6.20421 9.34864 5.16344 8.08696 5.16344ZM3.64925 4.89317C3.41913 4.66121 3.10371 4.51801 2.75457 4.51801H1.48495C0.784676 4.51801 0.215332 5.09688 0.215332 5.80888V6.45432C0.215332 6.81133 0.499012 7.09976 0.85014 7.09976H2.15745C2.28243 6.1437 2.84979 5.33892 3.64925 4.89317Z" fill="white" fill-opacity="0.7" />
+                                    </svg>
+                                    <!--/svg-->
+                                </div>
+                                <div class="giz-app--name">
+                                    Linage II Freya Hi5
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="giz-card-wrapper">
+                    <div class="giz-card">
+                        <div class="giz-card--body">
+                            <div class="giz-img"><img src="https://i.postimg.cc/0yk0qNtT/app-icon.png" /><div class="giz-status"><i class="giz-status--icon"></i>24</div></div>
+                            <!--user action btn-->
+                            <div class="giz-user-action-btn">
+                                <GizProgressButton></GizProgressButton>
+                                <GizSubDropdownMenu></GizSubDropdownMenu>
+                            </div>
+                            <!--user action btn-->
+                            <div class="giz-app">
+                                <div class="giz-app--title">
+                                    Games
+                                    <!--svg-->
+                                    <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.11976 3.87257C2.82003 3.87257 3.38937 3.29369 3.38937 2.58169C3.38937 1.86969 2.82003 1.29082 2.11976 1.29082C1.41948 1.29082 0.85014 1.86969 0.85014 2.58169C0.85014 3.29369 1.41948 3.87257 2.11976 3.87257ZM11.0071 3.87257C11.7073 3.87257 12.2767 3.29369 12.2767 2.58169C12.2767 1.86969 11.7073 1.29082 11.0071 1.29082C10.3068 1.29082 9.73746 1.86969 9.73746 2.58169C9.73746 3.29369 10.3068 3.87257 11.0071 3.87257ZM11.6419 4.51801H10.3723C10.0231 4.51801 9.7077 4.66121 9.47758 4.89317C10.277 5.33892 10.8444 6.1437 10.9674 7.09976H12.2767C12.6278 7.09976 12.9115 6.81133 12.9115 6.45432V5.80888C12.9115 5.09688 12.3422 4.51801 11.6419 4.51801ZM6.56342 4.51801C7.79137 4.51801 8.78525 3.50749 8.78525 2.25897C8.78525 1.01045 7.79137 -6.10352e-05 6.56342 -6.10352e-05C5.33546 -6.10352e-05 4.34159 1.01045 4.34159 2.25897C4.34159 3.50749 5.33546 4.51801 6.56342 4.51801ZM8.08696 5.16344H7.9223C7.50968 5.36514 7.05143 5.48616 6.56342 5.48616C6.07541 5.48616 5.61914 5.36514 5.20453 5.16344H5.03988C3.77819 5.16344 2.75457 6.20421 2.75457 7.48702V8.06791C2.75457 8.60242 3.18108 9.03607 3.70678 9.03607H9.42005C9.94576 9.03607 10.3723 8.60242 10.3723 8.06791V7.48702C10.3723 6.20421 9.34864 5.16344 8.08696 5.16344ZM3.64925 4.89317C3.41913 4.66121 3.10371 4.51801 2.75457 4.51801H1.48495C0.784676 4.51801 0.215332 5.09688 0.215332 5.80888V6.45432C0.215332 6.81133 0.499012 7.09976 0.85014 7.09976H2.15745C2.28243 6.1437 2.84979 5.33892 3.64925 4.89317Z" fill="white" fill-opacity="0.7" />
+                                    </svg>
+                                    <!--/svg-->
+                                </div>
+                                <div class="giz-app--name">
+                                    Linage II Freya Hi5
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="giz-card-wrapper">
+                    <div class="giz-card">
+                        <div class="giz-card--body">
+                            <div class="giz-img"><img src="https://i.postimg.cc/0yk0qNtT/app-icon.png" /><div class="giz-status"><i class="giz-status--icon"></i>24</div></div>
+                            <!--user action btn-->
+                            <div class="giz-user-action-btn">
+                                <GizProgressButton></GizProgressButton>
+                                <GizSubDropdownMenu></GizSubDropdownMenu>
+                            </div>
+                            <!--user action btn-->
+                            <div class="giz-app">
+                                <div class="giz-app--title">
+                                    Games
+                                    <!--svg-->
+                                    <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.11976 3.87257C2.82003 3.87257 3.38937 3.29369 3.38937 2.58169C3.38937 1.86969 2.82003 1.29082 2.11976 1.29082C1.41948 1.29082 0.85014 1.86969 0.85014 2.58169C0.85014 3.29369 1.41948 3.87257 2.11976 3.87257ZM11.0071 3.87257C11.7073 3.87257 12.2767 3.29369 12.2767 2.58169C12.2767 1.86969 11.7073 1.29082 11.0071 1.29082C10.3068 1.29082 9.73746 1.86969 9.73746 2.58169C9.73746 3.29369 10.3068 3.87257 11.0071 3.87257ZM11.6419 4.51801H10.3723C10.0231 4.51801 9.7077 4.66121 9.47758 4.89317C10.277 5.33892 10.8444 6.1437 10.9674 7.09976H12.2767C12.6278 7.09976 12.9115 6.81133 12.9115 6.45432V5.80888C12.9115 5.09688 12.3422 4.51801 11.6419 4.51801ZM6.56342 4.51801C7.79137 4.51801 8.78525 3.50749 8.78525 2.25897C8.78525 1.01045 7.79137 -6.10352e-05 6.56342 -6.10352e-05C5.33546 -6.10352e-05 4.34159 1.01045 4.34159 2.25897C4.34159 3.50749 5.33546 4.51801 6.56342 4.51801ZM8.08696 5.16344H7.9223C7.50968 5.36514 7.05143 5.48616 6.56342 5.48616C6.07541 5.48616 5.61914 5.36514 5.20453 5.16344H5.03988C3.77819 5.16344 2.75457 6.20421 2.75457 7.48702V8.06791C2.75457 8.60242 3.18108 9.03607 3.70678 9.03607H9.42005C9.94576 9.03607 10.3723 8.60242 10.3723 8.06791V7.48702C10.3723 6.20421 9.34864 5.16344 8.08696 5.16344ZM3.64925 4.89317C3.41913 4.66121 3.10371 4.51801 2.75457 4.51801H1.48495C0.784676 4.51801 0.215332 5.09688 0.215332 5.80888V6.45432C0.215332 6.81133 0.499012 7.09976 0.85014 7.09976H2.15745C2.28243 6.1437 2.84979 5.33892 3.64925 4.89317Z" fill="white" fill-opacity="0.7" />
+                                    </svg>
+                                    <!--/svg-->
+                                </div>
+                                <div class="giz-app--name">
+                                    Linage II Freya Hi5
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="giz-card-wrapper">
+                    <div class="giz-card">
+                        <div class="giz-card--body">
+                            <div class="giz-img"><img src="https://i.postimg.cc/0yk0qNtT/app-icon.png" /><div class="giz-status"><i class="giz-status--icon"></i>24</div></div>
+                            <!--user action btn-->
+                            <div class="giz-user-action-btn">
+                                <GizProgressButton></GizProgressButton>
+                                <GizSubDropdownMenu></GizSubDropdownMenu>
+                            </div>
+                            <!--user action btn-->
+                            <div class="giz-app">
+                                <div class="giz-app--title">
+                                    Games
+                                    <!--svg-->
+                                    <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.11976 3.87257C2.82003 3.87257 3.38937 3.29369 3.38937 2.58169C3.38937 1.86969 2.82003 1.29082 2.11976 1.29082C1.41948 1.29082 0.85014 1.86969 0.85014 2.58169C0.85014 3.29369 1.41948 3.87257 2.11976 3.87257ZM11.0071 3.87257C11.7073 3.87257 12.2767 3.29369 12.2767 2.58169C12.2767 1.86969 11.7073 1.29082 11.0071 1.29082C10.3068 1.29082 9.73746 1.86969 9.73746 2.58169C9.73746 3.29369 10.3068 3.87257 11.0071 3.87257ZM11.6419 4.51801H10.3723C10.0231 4.51801 9.7077 4.66121 9.47758 4.89317C10.277 5.33892 10.8444 6.1437 10.9674 7.09976H12.2767C12.6278 7.09976 12.9115 6.81133 12.9115 6.45432V5.80888C12.9115 5.09688 12.3422 4.51801 11.6419 4.51801ZM6.56342 4.51801C7.79137 4.51801 8.78525 3.50749 8.78525 2.25897C8.78525 1.01045 7.79137 -6.10352e-05 6.56342 -6.10352e-05C5.33546 -6.10352e-05 4.34159 1.01045 4.34159 2.25897C4.34159 3.50749 5.33546 4.51801 6.56342 4.51801ZM8.08696 5.16344H7.9223C7.50968 5.36514 7.05143 5.48616 6.56342 5.48616C6.07541 5.48616 5.61914 5.36514 5.20453 5.16344H5.03988C3.77819 5.16344 2.75457 6.20421 2.75457 7.48702V8.06791C2.75457 8.60242 3.18108 9.03607 3.70678 9.03607H9.42005C9.94576 9.03607 10.3723 8.60242 10.3723 8.06791V7.48702C10.3723 6.20421 9.34864 5.16344 8.08696 5.16344ZM3.64925 4.89317C3.41913 4.66121 3.10371 4.51801 2.75457 4.51801H1.48495C0.784676 4.51801 0.215332 5.09688 0.215332 5.80888V6.45432C0.215332 6.81133 0.499012 7.09976 0.85014 7.09976H2.15745C2.28243 6.1437 2.84979 5.33892 3.64925 4.89317Z" fill="white" fill-opacity="0.7" />
+                                    </svg>
+                                    <!--/svg-->
+                                </div>
+                                <div class="giz-app--name">
+                                    Linage II Freya Hi5
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/playing card-->
         </div>
     </div>
 </div>
 <!--/app modal-->
-
-</div>
-<!--/carousel card-->
-@code {
-
-    private bool IsOpen { get; set; } = true;
-
-    private void ShowPrimaryModal()
-    {
-        IsOpen = !IsOpen;
-    }
-
-    private bool WarningDialogIsOpen { get; set; }
-
-    private void ShowWarning()
-    {
-        WarningDialogIsOpen = true;
-    }
-
-}
