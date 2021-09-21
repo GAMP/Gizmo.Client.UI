@@ -264,7 +264,46 @@
     background-blend-mode: lighten;
 }
 
-//=== perfect center ===//
+//=== Tooltip ===//
+@mixin tooltip{
+    position:$position-relative;
+    display:$display-inline-block;
+    cursor:$cursor-pointer;
+}
+
+@mixin tooltip-top($min-height: 170px) {
+    background-color: $dark-black-pearl;
+    border-radius: $rounded;
+    min-width: $min-height;
+    top: -7px;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    padding: 0.625rem 1.25rem;
+    z-index: 10000;
+    visibility: $visibility-invisible;
+    display: $display-block;
+    position: $position-absolute;
+    white-space: $nowrap-white-space;
+    @include font-12;
+    @include open-sans-600;
+    letter-spacing: $letter-spacing-25;
+    line-height: $line-height-21;
+    text-align: $text-align-left;
+    text-transform: $text-capitalize;
+
+    &::after {
+        content: "";
+        position: $position-absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: $dark-black-pearl transparent transparent transparent;
+    }
+}
+
+//=== vertical center ===//
 //== align center
 @mixin align-center {
     position: $position-absolute;
