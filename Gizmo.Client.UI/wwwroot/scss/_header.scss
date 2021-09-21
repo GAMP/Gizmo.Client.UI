@@ -97,6 +97,10 @@
                 .giz-user-profile {
                     position: $position-relative;
 
+                    &:hover .giz-dropdown-menu {
+                        display: $display-block !important;
+                    }
+
                     .giz-dropdown-menu {
                         top: 100%;
                         left: -22px;
@@ -119,7 +123,8 @@
                     align-items: $align-center;
 
                     &:hover:not(.active) {
-                        background: $dim-light;
+                        //background: $dim-light;
+                        background: linear-gradient(rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 100%);
                     }
                 }
 
@@ -173,10 +178,6 @@
                             margin-right: $spacer-0;
                             align-self: $align-self-center;
                             cursor: $cursor-pointer;
-
-                            &:hover + .giz-dropdown-menu {
-                                display: $display-block !important;
-                            }
                         }
                     }
                 }
