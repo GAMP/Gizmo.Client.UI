@@ -1,6 +1,5 @@
 //============= App Modal ===============//
 .giz-app-modal {
-    @include align-center;
     border-radius: $rounded-xl;
     z-index: 1002;
     border: thin solid $border-silver-gray;
@@ -8,6 +7,9 @@
     overflow: $overflow-hidden;
     padding: 2.188rem;
     max-width: 40.75rem;
+    margin: 0 auto;
+    position: $position-relative;
+    backdrop-filter: blur(20px);
 
     &::before {
         position: $position-absolute;
@@ -37,7 +39,7 @@
             display: $display-grid;
             grid-template-columns: 6.438rem 5.688rem;
             @include font-12;
-            grid-column-gap:2px;
+            grid-column-gap: 2px;
             font-family: $font-family-open-sans;
             border-bottom: 1px solid $border-dark-color;
             padding: 0.563rem 0;
@@ -55,7 +57,7 @@
             }
 
             .giz-tooltip-top {
-                @include tooltip-top(94px);
+                @include tooltip-top;
 
                 svg {
                     vertical-align: baseline;
@@ -149,9 +151,9 @@
     }
 
     .giz-about-app {
-        position: $position-relative;
         border-top: 1px solid $border-dark-color;
         padding-top: 2.188rem;
+        position: $position-relative;
 
         .giz-modal-nav {
             display: $display-flex;

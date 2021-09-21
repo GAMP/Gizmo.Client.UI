@@ -1,7 +1,7 @@
 //============= news modal style ===============//
 
 .giz-modal-wrapper {
-    display: $display-none;
+    visibility: $visibility-invisible;
     position: $position-fixed;
     width: $width-full;
     height: $height-full;
@@ -12,9 +12,12 @@
     background: linear-gradient(180deg, rgba(22, 30, 37, 0.8) 0%, rgba(11, 17, 23, 0.9) 100%);
     backdrop-filter: blur(15px);
     z-index: 1001;
+    display:$display-flex;
+    justify-content:$justify-center;
+    align-items:$align-center;
 
     .giz-news-modal {
-        @include align-center;
+        margin:0 auto;
         border-radius: $rounded-xl;
         z-index: 1002;
         border: thin solid $border-silver-gray;
