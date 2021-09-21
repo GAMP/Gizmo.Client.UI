@@ -150,6 +150,18 @@
         margin-bottom: 2.5rem;
     }
 
+    .giz-launch-button {
+
+        .giz-btn-primary {
+            padding: 0.847rem 1.938rem;
+        }
+
+        .giz-sub-dropdown {
+            right: auto;
+            left: 0;
+        }
+    }
+    //== app info
     .giz-about-app {
         border-top: 1px solid $border-dark-color;
         padding-top: 2.188rem;
@@ -188,6 +200,7 @@
                 pointer-events: none;
             }
         }
+        //=== cards
 
         .giz-cards {
             display: $display-grid;
@@ -219,9 +232,14 @@
 
             .giz-card-wrapper {
 
-                .giz-user-action-btn {
+                .giz-button-wrapper {
+                    display: $display-none;
 
                     .giz-sub-dropdown-menu-btn {
+
+                        button {
+                            background: $transparent-color;
+                        }
 
                         &:hover .giz-sub-dropdown {
                             display: $display-block !important;
@@ -288,10 +306,6 @@
                                 }
                             }
                         }
-
-                        .giz-user-action-btn {
-                            display: $display-none !important;
-                        }
                     }
                 }
 
@@ -309,7 +323,7 @@
                     .giz-card--body {
                         border-left: 3px solid $primary-dark !important;
 
-                        .giz-user-action-btn {
+                        .giz-button-wrapper {
                             display: $display-block !important;
                         }
 
@@ -320,6 +334,7 @@
                 }
             }
         }
+        //=== video wrapper
 
         .giz-video-wrapper {
             display: $display-grid;
@@ -352,7 +367,7 @@
                 }
             }
         }
-
+        //== progress bar
         .giz-progress-wrapper {
             position: $position-relative;
             width: $width-full;
