@@ -16,7 +16,7 @@
         Add date <span>3/12/2021</span>
     </div>
     <!--primary modal-->
- <div class="giz-modal-wrapper" style="visibility: @(IsOpen ? "hidden" : "visible");">
+    @* <div class="giz-modal-wrapper" style="visibility: @(IsOpen ? "hidden" : "visible");">
         <div class="giz-primary-modal pa-11">
         <div class="giz-primary-modal--heading mb-2">
         Heads up
@@ -35,7 +35,7 @@
         </div>
         </div>
         </div>
-        </div>
+        </div>*@
     <!--/primary modal-->
     <!--warning modal-->
     <AlertDialog Message="winexe002piw974muaf65_ss8d6.bat was terminated unexpectedly." AlertType="AlertDialog.AlertTypes.Warning" @bind-IsOpen="WarningDialogIsOpen" />
@@ -423,28 +423,136 @@
         </div>*@
     <!--/app modal-->
     <!--window app modal-->
-@*    <div class="giz-modal-wrapper" style="visibility: @(IsOpen ? "hidden" : "visible");">
+    <div class="giz-modal-wrapper" style="visibility: @(IsOpen ? "hidden" : "visible");">
         <div class="giz-window-modal pa-11">
-            <div class="giz-window-modal--heading mb-2">
-                Heads up
+            <!--modal header-->
+            <div class="giz-modal-header">
+                <div class="giz-modal-header--title">windows apps</div>
+                <button class="client-button giz-terminate" @onclick="ShowPrimaryModal">
+                    <!--svg-->
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13 1L1 13" stroke="#69748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M1 1L13 13" stroke="#69748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <!--/svg-->
+                </button>
+                <div class="giz-modal-header--text">Select application version</div>
             </div>
-            <div class="giz-primary-modal--title mb-8">
-                Primary modal example
-            </div>
-            <div class="giz-primary-modal-body">
-                <div class="giz-primary-modal-body--text mb-4">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            <!--/modal header-->
+            <!--playing card-->
+            <div class="giz-window-modal--body">
+                <div class="giz-cards">
+                    <div class="giz-card-wrapper">
+                        <div class="giz-card active">
+                            <div class="giz-card--body">
+                                <div class="giz-img"><img src="https://i.postimg.cc/Jhr89jNZ/chrome.png" alt="loading" /></div>
+                                <!--user action btn-->
+                                <div class="giz-button-wrapper">
+                                    <GizProgressButton></GizProgressButton>
+                                    <GizSubDropdownMenu></GizSubDropdownMenu>
+                                </div>
+                                <!--user action btn-->
+                                <div class="giz-app">
+                                    <div class="giz-app--title">
+                                       programs
+                                    </div>
+                                    <div class="giz-app--name">
+                                        Google Chrome
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="giz-card-wrapper">
+                        <div class="giz-card">
+                            <div class="giz-card--body">
+                                <div class="giz-img"><img src="https://i.postimg.cc/fTvD5HXD/exp.png" alt="loading" /></div>
+                                <!--user action btn-->
+                                <div class="giz-button-wrapper">
+                                    <GizProgressButton></GizProgressButton>
+                                    <GizSubDropdownMenu></GizSubDropdownMenu>
+                                </div>
+                                <!--user action btn-->
+                                <div class="giz-app">
+                                    <div class="giz-app--title">
+                                       programs
+                                    </div>
+                                    <div class="giz-app--name">
+                                       Explorer
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="giz-card-wrapper">
+                        <div class="giz-card">
+                            <div class="giz-card--body">
+                                <div class="giz-img"><img src="https://i.postimg.cc/q74KSDDw/pc.png" /></div>
+                                <!--user action btn-->
+                                <div class="giz-button-wrapper">
+                                    <GizProgressButton></GizProgressButton>
+                                    <GizSubDropdownMenu></GizSubDropdownMenu>
+                                </div>
+                                <!--user action btn-->
+                                <div class="giz-app">
+                                    <div class="giz-app--title">
+                                        programs
+                                    </div>
+                                    <div class="giz-app--name">
+                                       My computer
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="giz-card-wrapper">
+                        <div class="giz-card">
+                            <div class="giz-card--body">
+                                <div class="giz-img">  <img src="https://i.postimg.cc/W120tb0j/dota2.png" alt="loading" /></div>
+                                <!--user action btn-->
+                                <div class="giz-button-wrapper d-none">
+                                    <GizProgressButton></GizProgressButton>
+                                    <GizSubDropdownMenu></GizSubDropdownMenu>
+                                </div>
+                                <!--user action btn-->
+                                <div class="giz-app">
+                                    <div class="giz-app--title">
+                                        programs
+                                    </div>
+                                    <div class="giz-app--name">
+                                        Dota 2
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="giz-card-wrapper">
+                        <div class="giz-card">
+                            <div class="giz-card--body">
+                                <div class="giz-img"> <img src="https://i.postimg.cc/RFjZ5NVm/spoty.png" alt="loading" /></div>
+                                <!--user action btn-->
+                                <div class="giz-button-wrapper">
+                                    <GizProgressButton></GizProgressButton>
+                                    <GizSubDropdownMenu></GizSubDropdownMenu>
+                                </div>
+                                <!--user action btn-->
+                                <div class="giz-app">
+                                    <div class="giz-app--title">
+                                        programs
+                                    </div>
+                                    <div class="giz-app--name">
+                                       Spotify
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="giz-primary-modal-body--btn">
-                    <button class="client-button giz-btn-primary giz-elevation-0 mr-2">confirm</button>
-                    <button class="client-button giz-btn-info" @onclick="ShowPrimaryModal">cancel</button>
-                </div>
             </div>
+            <!--/playing card-->
         </div>
-    </div>*@
+    </div>
     <!--/window app modal-->
-
 </div>
 <!--/carousel card-->
 @code {
