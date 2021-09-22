@@ -2,30 +2,25 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
+@using Gizmo.Client.UI.ViewModels
 
-<!--app carousel-->
-<div class="giz-carousel mb-4">
-    <div class="heading-title">Daily News</div>
-    <div>
-        @*<IconButton Variant="ButtonVariants.Text" Size="ButtonSizes.Small" SVGIcon="Icons.ArrowLeft_Client" />
-        <IconButton Variant="ButtonVariants.Text" Size="ButtonSizes.Small" SVGIcon="Icons.ArrowRight_Client" />*@
-        <!--heading svg-->
-        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14" fill="none" class="mr-3">
-            <path d="M8.08559 2.20866L6.61374 0.736816L0.350586 6.99997L6.61374 13.2631L8.08559 11.7913L3.30471 6.99997L8.08559 2.20866Z" />
-        </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14" fill="none" class="active">
-            <path d="M0.914414 2.20866L2.38626 0.736816L8.64941 6.99997L2.38626 13.2631L0.914414 11.7913L5.69529 6.99997L0.914414 2.20866Z" />
-        </svg>
-        <!--/heading svg-->
-    </div>
-</div>
-<!--/app carousel-->
+<GizNavigation Title="Daily News" OnClickPreviousButton="@OnClickPreviousButtonHandler" OnClickNextButton="@OnClickNextButtonHandler" />
 
-<GizNewsCard></GizNewsCard>
-
-<GizIndicator Size="6"></GizIndicator>
-
-@foreach (var rssFeedItem in RssFeedItems)
+@if (NewsFeeds != null)
 {
-    <RssFeedItemCard RssFeedItem="@rssFeedItem" />
+    <GizIndicator Size="NewsFeeds.Count" SelectedIndex="@_currentPage" SelectedIndexChanged="SelectedIndexChangedHandler"></GizIndicator>
+
+    if (NewsFeeds[_currentPage].Type == Enumerations.NewsFeedType.Media)
+    {
+        var mediaFeed = (MediaFeed)NewsFeeds[_currentPage];
+        <MediaFeedItemCard MediaFeed="@mediaFeed" />
+    }
+    else
+    {
+        var rssFeed = (RssFeed)NewsFeeds[_currentPage];
+        @foreach (var rssFeedItem in rssFeed.Items)
+        {
+            <RssFeedItemCard RssFeedItem="@rssFeedItem" />
+        }
+    }
 }

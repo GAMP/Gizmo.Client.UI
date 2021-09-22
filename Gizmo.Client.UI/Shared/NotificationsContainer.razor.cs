@@ -9,7 +9,7 @@ namespace Gizmo.Client.UI.Shared
     {
         public NotificationsContainer()
         {
-            Notifications = Enumerable.Range(0, 8).Select(i => new NotificationViewModel()
+            Notifications = Enumerable.Range(1, 3).Select(i => new NotificationViewModel()
             {
                 Id = i,
                 Title = $"Order on hold {i}",

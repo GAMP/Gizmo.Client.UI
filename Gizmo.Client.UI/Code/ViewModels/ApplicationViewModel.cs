@@ -1,4 +1,5 @@
 ﻿using Gizmo.Shared.ViewModels;
+using System;
 
 namespace Gizmo.Client.UI.ViewModels
 {
@@ -11,5 +12,8 @@ namespace Gizmo.Client.UI.ViewModels
         public int Ratings { get; set; }
         public decimal Rate { get; set; }
         public int NowPlaying { get; set; }
+        public string Publisher { get; set; }
+        public DateTime ReleaseDate { get; set; }
+        public DateTime DateAdded { get; set; }
     }
 }

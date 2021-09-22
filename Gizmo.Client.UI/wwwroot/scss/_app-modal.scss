@@ -20,371 +20,376 @@
         height: $height-full;
         width: $width-full;
     }
+}
 
-    &--container {
+.giz-app-details-dialog-body {
+    color: $white-color !important;
+    text-align: left !important;
+}
+.giz-app-modal--container {
+    display: $display-grid;
+    grid-template-columns: min-content 3fr;
+    grid-column-gap: 2.188rem;
+    position: $position-relative;
+}
+
+.giz-app-brand {
+    margin-bottom: 2.188rem;
+
+    img {
+        margin-bottom: 0.5rem;
+    }
+
+    &--info {
         display: $display-grid;
-        grid-template-columns: min-content 3fr;
-        grid-column-gap: 2.188rem;
-        position: $position-relative;
-    }
+        grid-template-columns: 6.438rem 5.688rem;
+        @include font-12;
+        grid-column-gap: 2px;
+        font-family: $font-family-open-sans;
+        border-bottom: 1px solid $border-dark-color;
+        padding: 0.563rem 0;
 
-    .giz-app-brand {
-        margin-bottom: 2.188rem;
-
-        img {
-            margin-bottom: 0.5rem;
+        &:last-child {
+            border-bottom: none !important;
         }
 
-        &--info {
-            display: $display-grid;
-            grid-template-columns: 6.438rem 5.688rem;
-            @include font-12;
-            grid-column-gap: 2px;
-            font-family: $font-family-open-sans;
-            border-bottom: 1px solid $border-dark-color;
-            padding: 0.563rem 0;
-
-            &:last-child {
-                border-bottom: none !important;
-            }
-
-            .giz-tooltip {
-                @include tooltip;
-
-                &:hover .giz-tooltip-top {
-                    visibility: $visibility-visible !important;
-                }
-            }
-
-            .giz-tooltip-top {
-                @include tooltip-top;
-
-                svg {
-                    vertical-align: baseline;
-                }
-            }
-        }
-
-        &--title {
-            letter-spacing: $letter-spacing-2;
-            font-weight: $font-weight-600;
-        }
-
-        &--text {
-            text-shadow: $text-shadow-sm;
-            text-align: $text-align-right;
-        }
-    }
-
-    &--heading {
-        display: $display-flex;
-        justify-content: $justify-space-between;
-        align-content: $align-center;
-        margin-bottom: 0.625rem;
-
-        .giz-header-text {
-            @include font-10;
-        }
-
-        .giz-terminate {
-            background: inherit;
-        }
-    }
-
-    &--title {
-        font-size: $font-20;
-        letter-spacing: $letter-spacing-10;
-        line-height: $line-height-25;
-        margin-bottom: 1.25rem;
-    }
-
-    .giz-app-rating {
-        display: $display-inline-block;
-        margin-bottom: 2.188rem;
-
-        span {
-            @include font-12;
-            font-family: $font-family-open-sans;
-        }
-    }
-
-    .giz-apps-tags {
-        display: $display-flex;
-        align-items: $align-center;
-        margin-bottom: 0.938rem;
-
-        .giz-selected-tag {
-            color: $pastel-blue;
-            margin-right: 0.188rem;
-            padding: 0 0.25rem;
-            text-align: $text-align-center;
-            background: $dark-pastel-blue;
-            border-radius: $rounded;
-            font-family: $font-family-open-sans;
-            font-size: $font-11;
-            line-height: $line-height-20;
-            letter-spacing: $letter-spacing-2;
-        }
-
-        .giz-add-tags {
-            background: $light-navy-blue;
-            @extend .giz-selected-tag;
-            font-weight: $font-weight-400;
-            color: $white-color;
+        .giz-tooltip {
+            @include tooltip;
 
             &:hover .giz-tooltip-top {
                 visibility: $visibility-visible !important;
             }
+        }
 
-            .giz-tooltip-top {
-                @include tooltip-top;
+        .giz-tooltip-top {
+            @include tooltip-top;
+
+            svg {
+                vertical-align: baseline;
             }
         }
     }
 
-    .giz-modal--text {
-        font-size: $font-13;
-        line-height: $line-height-20;
-        letter-spacing: $letter-spacing-1;
+    &--title {
+        letter-spacing: $letter-spacing-2;
+        font-weight: $font-weight-600;
+    }
+
+    &--text {
+        text-shadow: $text-shadow-sm;
+        text-align: $text-align-right;
+    }
+}
+
+.giz-app-modal--heading {
+    display: $display-flex;
+    justify-content: $justify-space-between;
+    align-content: $align-center;
+    margin-bottom: 0.625rem;
+
+    .giz-header-text {
+        @include font-10;
+    }
+
+    .giz-terminate {
+        background: inherit;
+    }
+}
+
+.giz-app-modal--title {
+    font-size: $font-20;
+    letter-spacing: $letter-spacing-10;
+    line-height: $line-height-25;
+    margin-bottom: 1.25rem;
+}
+
+.giz-app-rating {
+    display: $display-inline-block;
+    margin-bottom: 2.188rem;
+
+    span {
+        @include font-12;
         font-family: $font-family-open-sans;
-        margin-bottom: 2.5rem;
+    }
+}
+
+.giz-apps-tags {
+    display: $display-flex;
+    align-items: $align-center;
+    margin-bottom: 0.938rem;
+
+    .giz-selected-tag {
+        color: $pastel-blue;
+        margin-right: 0.188rem;
+        padding: 0 0.25rem;
+        text-align: $text-align-center;
+        background: $dark-pastel-blue;
+        border-radius: $rounded;
+        font-family: $font-family-open-sans;
+        font-size: $font-11;
+        line-height: $line-height-20;
+        letter-spacing: $letter-spacing-2;
     }
 
-    .giz-launch-button {
+    .giz-add-tags {
+        background: $light-navy-blue;
+        @extend .giz-selected-tag;
+        font-weight: $font-weight-400;
+        color: $white-color;
 
-        .giz-sub-dropdown-menu-btn {
+        &:hover .giz-tooltip-top {
+            visibility: $visibility-visible !important;
+        }
 
-            button {
-                background: $transparent-color !important;
-                border: thin solid $border-silver-gray;
-            }
-
-            .giz-sub-dropdown {
-                right: auto;
-                left: 0;
-            }
+        .giz-tooltip-top {
+            @include tooltip-top;
         }
     }
-    //== app info
-    .giz-about-app {
-        border-top: 1px solid $border-dark-color;
-        padding-top: 2.188rem;
-        position: $position-relative;
+}
 
-        .giz-modal-nav {
+.giz-modal--text {
+    font-size: $font-13;
+    line-height: $line-height-20;
+    letter-spacing: $letter-spacing-1;
+    font-family: $font-family-open-sans;
+    margin-bottom: 2.5rem;
+}
+
+.giz-launch-button {
+
+    .giz-sub-dropdown-menu-btn {
+
+        button {
+            background: $transparent-color !important;
+            border: thin solid $border-silver-gray;
+        }
+
+        .giz-sub-dropdown {
+            right: auto;
+            left: 0;
+        }
+    }
+}
+
+//== app info
+.giz-about-app {
+    border-top: 1px solid $border-dark-color;
+    padding-top: 2.188rem;
+    position: $position-relative;
+
+    .giz-modal-nav {
+        display: $display-flex;
+        align-items: $align-center;
+        justify-content: $justify-space-between;
+        margin-bottom: 1.875rem;
+
+        &--navbar {
+            list-style: $list-unstyled;
             display: $display-flex;
             align-items: $align-center;
-            justify-content: $justify-space-between;
-            margin-bottom: 1.875rem;
+        }
 
-            &--navbar {
-                list-style: $list-unstyled;
-                display: $display-flex;
-                align-items: $align-center;
-            }
+        &--items {
+            @include font-11;
+            text-transform: $text-uppercase;
+            margin-right: 1rem;
 
-            &--items {
-                @include font-11;
-                text-transform: $text-uppercase;
-                margin-right: 1rem;
-
-                .active {
-                    border-radius: $rounded-pill;
-                    background: $info-color;
-                }
-            }
-
-            &--links {
-                color: $white-color;
-                padding: 0.5rem;
-            }
-
-            .giz-disable-link {
-                color: $dim-white;
-                pointer-events: none;
+            .active {
+                border-radius: $rounded-pill;
+                background: $info-color;
             }
         }
-        //=== cards
 
-        .giz-app-cards {
-            display: $display-grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            grid-gap: 0.875rem;
-            height: 16.25rem;
-            overflow-y: scroll;
-            overflow-x: hidden;
+        &--links {
+            color: $white-color;
+            padding: 0.5rem;
+        }
 
-            //== custom scroll bar
+        .giz-disable-link {
+            color: $dim-white;
+            pointer-events: none;
+        }
+    }
+    //=== cards
 
-            /* width */
-            &::-webkit-scrollbar {
-                width: 0.25rem;
-            }
-            /* Track */
-            &::-webkit-scrollbar-track {
-                background: $border-dark-color;
-                border-radius: $rounded-xl;
-            }
-            /* Handle */
-            &::-webkit-scrollbar-thumb {
-                background: $gray-nickel;
-                border-radius: $rounded-xl;
-            }
+    .giz-app-cards {
+        display: $display-grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-gap: 0.875rem;
+        height: 16.25rem;
+        overflow-y: scroll;
+        overflow-x: hidden;
 
-            &--heading {
-                font-weight: $font-weight-700;
-                color: $white-color;
-            }
+        //== custom scroll bar
 
-            .giz-card-wrapper {
+        /* width */
+        &::-webkit-scrollbar {
+            width: 0.25rem;
+        }
+        /* Track */
+        &::-webkit-scrollbar-track {
+            background: $border-dark-color;
+            border-radius: $rounded-xl;
+        }
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+            background: $gray-nickel;
+            border-radius: $rounded-xl;
+        }
 
-                .giz-button-wrapper {
-                    display: $display-none;
+        &--heading {
+            font-weight: $font-weight-700;
+            color: $white-color;
+        }
 
-                    .giz-sub-dropdown-menu-btn {
+        .giz-card-wrapper {
 
-                        &:hover .giz-sub-dropdown {
-                            display: $display-block !important;
-                        }
-                    }
+            .giz-button-wrapper {
+                display: $display-none;
 
-                    .giz-progress-button {
-                        padding: 0.844rem 2.75rem !important;
-                        margin-right: 0.313rem;
-                    }
-                }
+                .giz-sub-dropdown-menu-btn {
 
-                .giz-card {
-                    min-height: 100%;
-                    padding: 0.125rem 0;
-                    cursor: $cursor-pointer;
-                    margin: 0 !important;
-
-                    &--body {
-                        border-radius: $rounded-sm 0px 0px $rounded-sm !important;
-                        display: $display-grid;
-                        border-left: 3px solid $transparent-color;
-                        grid-gap: 1rem;
-                        grid-template-columns: auto 1fr;
-                        align-items: $align-center;
-
-                        .giz-img {
-                            position: $position-relative;
-
-                            .giz-status {
-                                position: $position-absolute;
-                                @include font-11;
-                                bottom: 4px;
-                                left: 4px;
-                                background: $blue-charcoal-color;
-                                color: $white-color;
-                                border-radius: $rounded-pill-19;
-                                padding: 0.188rem 0.313rem;
-
-                                &--icon {
-                                    height: 8px;
-                                    width: 8px;
-                                    border-radius: $rounded-circle;
-                                    display: $display-inline-block;
-                                    margin-right: 0.375rem;
-                                    background: $danger-light;
-                                    box-shadow: $elevation-6;
-                                }
-                            }
-                        }
-
-                        .giz-app {
-
-                            &--name {
-                                @include font-16;
-                                letter-spacing: $letter-spacing-24;
-                                @include open-sans-600;
-                                text-transform: $text-capitalize;
-                            }
-
-                            &--title {
-                                @include font-10;
-                                margin-bottom: 0.625rem;
-                                color: $dim-white;
-
-                                svg {
-                                    margin-left: 0.625rem;
-                                }
-                            }
-                        }
+                    &:hover .giz-sub-dropdown {
+                        display: $display-block !important;
                     }
                 }
 
-                .active {
-                    border-radius: $rounded-lg !important;
+                .giz-progress-button {
+                    padding: 0.844rem 2.75rem !important;
+                    margin-right: 0.313rem;
+                }
+            }
 
-                    &::before {
-                        border-radius: $rounded-lg;
+            .giz-card {
+                min-height: 100%;
+                padding: 0.125rem 0;
+                cursor: $cursor-pointer;
+                margin: 0 !important;
+
+                &--body {
+                    border-radius: $rounded-sm 0px 0px $rounded-sm !important;
+                    display: $display-grid;
+                    border-left: 3px solid $transparent-color;
+                    grid-gap: 1rem;
+                    grid-template-columns: auto 1fr;
+                    align-items: $align-center;
+
+                    .giz-img {
+                        position: $position-relative;
+
+                        .giz-status {
+                            position: $position-absolute;
+                            @include font-11;
+                            bottom: 4px;
+                            left: 4px;
+                            background: $blue-charcoal-color;
+                            color: $white-color;
+                            border-radius: $rounded-pill-19;
+                            padding: 0.188rem 0.313rem;
+
+                            &--icon {
+                                height: 8px;
+                                width: 8px;
+                                border-radius: $rounded-circle;
+                                display: $display-inline-block;
+                                margin-right: 0.375rem;
+                                background: $danger-light;
+                                box-shadow: $elevation-6;
+                            }
+                        }
                     }
 
-                    &::after {
-                        border: none;
+                    .giz-app {
+
+                        &--name {
+                            @include font-16;
+                            letter-spacing: $letter-spacing-24;
+                            @include open-sans-600;
+                            text-transform: $text-capitalize;
+                        }
+
+                        &--title {
+                            @include font-10;
+                            margin-bottom: 0.625rem;
+                            color: $dim-white;
+
+                            svg {
+                                margin-left: 0.625rem;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .active {
+                border-radius: $rounded-lg !important;
+
+                &::before {
+                    border-radius: $rounded-lg;
+                }
+
+                &::after {
+                    border: none;
+                }
+
+                .giz-card--body {
+                    border-left: 3px solid $primary-dark !important;
+
+                    .giz-button-wrapper {
+                        display: $display-block !important;
                     }
 
-                    .giz-card--body {
-                        border-left: 3px solid $primary-dark !important;
-
-                        .giz-button-wrapper {
-                            display: $display-block !important;
-                        }
-
-                        .giz-app {
-                            display: $display-none;
-                        }
+                    .giz-app {
+                        display: $display-none;
                     }
                 }
             }
         }
-        //=== video wrapper
+    }
+    //=== video wrapper
 
-        .giz-video-wrapper {
-            display: $display-grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            grid-gap: 2.188rem;
+    .giz-video-wrapper {
+        display: $display-grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-gap: 2.188rem;
 
-            .giz-modal-video {
+        .giz-modal-video {
+            margin-bottom: 1rem;
+
+            img {
+                min-width: $width-full;
                 margin-bottom: 1rem;
+                border-radius: $rounded;
+            }
 
-                img {
-                    min-width: $width-full;
-                    margin-bottom: 1rem;
-                    border-radius: $rounded;
-                }
+            &--title {
+                @include font-11;
+                letter-spacing: $letter-spacing-24;
+                text-transform: $text-uppercase;
+                color: $blue-gray;
+                text-shadow: $text-shadow-sm;
+                margin-bottom: 0.5rem;
+            }
 
-                &--title {
-                    @include font-11;
-                    letter-spacing: $letter-spacing-24;
-                    text-transform: $text-uppercase;
-                    color: $blue-gray;
-                    text-shadow: $text-shadow-sm;
-                    margin-bottom: 0.5rem;
-                }
-
-                &--text {
-                    @include open-sans-600;
-                    font-size: $font-15;
-                    line-height: $line-height-19;
-                    letter-spacing: $letter-spacing-5;
-                }
+            &--text {
+                @include open-sans-600;
+                font-size: $font-15;
+                line-height: $line-height-19;
+                letter-spacing: $letter-spacing-5;
             }
         }
-        //== progress bar
-        .giz-progress-wrapper {
-            position: $position-relative;
-            width: $width-full;
+    }
+    //== progress bar
+    .giz-progress-wrapper {
+        position: $position-relative;
+        width: $width-full;
 
-            .giz-progress {
-                background: $border-dark-color;
-                boarder-radius: $rounded-lg;
+        .giz-progress {
+            background: $border-dark-color;
+            boarder-radius: $rounded-lg;
 
-                &--bar {
-                    background: $light-smokey-grey;
-                }
+            &--bar {
+                background: $light-smokey-grey;
             }
         }
     }
