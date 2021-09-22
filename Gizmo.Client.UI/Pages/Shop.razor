@@ -58,7 +58,7 @@
                     <!--carousel cards-->
                     @foreach (var product in Products.Where(a => !_selectedProductGroup.HasValue || a.ProductGroupId == _selectedProductGroup))
                     {
-                        <GizShopCard Product="@product" OnAddProduct="@AddProduct" OnOpenDetails="@OpenDetails" />
+                        <GizProductCard Product="@product" OnAddProduct="@AddProduct" OnOpenDetails="@OpenDetails" />
                     }
                     <!--/carousel cards-->
                 </div>

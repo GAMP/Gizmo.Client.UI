@@ -60,7 +60,7 @@
                 <!--carousel cards-->
                 @foreach (var app in Applications.Where(a => !_selectedApplicationGroup.HasValue || a.ApplicationGroupId == _selectedApplicationGroup))
                 {
-                    <GizRatingCard Application="@app" OnOpenDetails="@OpenDetails"></GizRatingCard>
+                    <GizAppCard Application="@app" OnOpenDetails="@OpenDetails"></GizAppCard>
                 }
                 <!--/carousel cards-->
             </div>

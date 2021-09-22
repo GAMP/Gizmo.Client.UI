@@ -3,9 +3,9 @@ using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
-namespace Gizmo.Client.UI.Shared
+namespace Gizmo.Client.UI.Components
 {
-    public partial class GizShopCard : CustomDOMComponentBase
+    public partial class GizProductCard : CustomDOMComponentBase
     {
         [Parameter]
         public ProductViewModel Product { get; set; }

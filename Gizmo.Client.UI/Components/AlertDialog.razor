@@ -1,10 +1,11 @@
-﻿@inherits CustomDOMComponentBase
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
 <Dialog @bind-IsOpen="IsOpen" IsModal="true" MaximumWidth="37.313rem">
     <DialogHeader>
 
-        @switch(AlertType)
+        @switch (AlertType)
         {
             case AlertTypes.Warning:
                 <Icon SVGIcon="Icons.Warning_Client" Size="IconSizes.ExtraLarge" Color="#FFFFFF" />
@@ -12,7 +13,7 @@
                     warning
                 </div>
 
-            break;
+                break;
         }
 
     </DialogHeader>

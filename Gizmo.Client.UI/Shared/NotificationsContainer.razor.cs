@@ -3,7 +3,7 @@ using Gizmo.Web.Components;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Gizmo.Client.UI.Components
+namespace Gizmo.Client.UI.Shared
 {
     public partial class NotificationsContainer : CustomDOMComponentBase
     {

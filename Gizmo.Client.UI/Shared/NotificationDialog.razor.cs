@@ -3,7 +3,7 @@ using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
-namespace Gizmo.Client.UI.Components
+namespace Gizmo.Client.UI.Shared
 {
     public partial class NotificationDialog : CustomDOMComponentBase
     {

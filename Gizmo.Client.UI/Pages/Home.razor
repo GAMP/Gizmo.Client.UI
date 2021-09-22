@@ -8,28 +8,7 @@
     <!--News section-->
     <section id="giz-news" class="pa-6">
         <div class="giz-daily-news">
-            <!--heading-->
-            <GizAppCarousel></GizAppCarousel>
-            <!--/heading-->
-            <GizNewsCard></GizNewsCard>
-            <!--carousel button-->
-            <GizIndicator Size="6"></GizIndicator>
-            <!--/carousel button-->
-            <!--giz card-->
-            <GizCard_2></GizCard_2>
-            <!--/giz card-->
-            <!--giz card-->
-            <GizCard></GizCard>
-            <!--/giz card-->
-            <!--giz card-->
-            <GizCard></GizCard>
-            <!--/giz card-->
-            <!--giz card-->
-            <GizCard></GizCard>
-            <!--/giz card-->
-            <!--giz card-->
-            <GizCard></GizCard>
-            <!--/giz card-->
+            <NewsFeedCarousel />
         </div>
     </section>
     <!--/News section-->
@@ -65,7 +44,7 @@
                 <!--carousel cards-->
                 @foreach (var app in Applications)
                 {
-                    <GizRatingCard Application="@app" OnOpenDetails="@OpenDetails"></GizRatingCard>
+                    <GizAppCard Application="@app" OnOpenDetails="@OpenDetails"></GizAppCard>
                 }
                 <!--/carousel cards-->
             </div>
