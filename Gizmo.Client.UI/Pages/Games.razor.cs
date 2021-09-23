@@ -25,6 +25,7 @@ namespace Gizmo.Client.UI.Pages
         }
 
         private List<string> _filterOptions;
+        private int _selectedRangeIndex = 0;
 
         public List<GameStatisticsViewModel> GameStatistics { get; set; }
 
@@ -51,5 +52,11 @@ namespace Gizmo.Client.UI.Pages
                 _filterOptions = value;
             }
         }
+
+        public void SelectRange(int index)
+        {
+            _selectedRangeIndex = index;
+        }
+
     }
 }

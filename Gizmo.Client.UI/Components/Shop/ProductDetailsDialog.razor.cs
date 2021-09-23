@@ -28,5 +28,9 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<bool> IsOpenChanged { get; set; }
 
+        private void CloseDialog()
+        {
+            IsOpen = false;
+        }
     }
 }

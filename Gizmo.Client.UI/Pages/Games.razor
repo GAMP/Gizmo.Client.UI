@@ -120,9 +120,9 @@
                     }
                 </Select>
                 <ButtonGroup IsMandatory="true">
-                    <Button>today</Button>
-                    <Button>this week</Button>
-                    <Button>this month</Button>
+                    <Button IsSelected="@(_selectedRangeIndex == 0)" @onclick="@(() => SelectRange(0))">today</Button>
+                    <Button IsSelected="@(_selectedRangeIndex == 1)" @onclick="@(() => SelectRange(1))">this week</Button>
+                    <Button IsSelected="@(_selectedRangeIndex == 2)" @onclick="@(() => SelectRange(2))">this month</Button>
                 </ButtonGroup>
                 <!--button-->
                 <div class="giz-filter-btn">

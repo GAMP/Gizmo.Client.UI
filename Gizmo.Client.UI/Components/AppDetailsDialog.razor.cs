@@ -22,6 +22,8 @@ namespace Gizmo.Client.UI.Components
         }
 
         private bool _isOpen { get; set; }
+        private int _selectedTabIndex = 0;
+
 
         [Parameter]
         public bool IsOpen
@@ -49,6 +51,12 @@ namespace Gizmo.Client.UI.Components
         private void CloseDialog()
         {
             IsOpen = false;
+        }
+
+        private void SelectTab(int index)
+        {
+            if (index < 3)
+                _selectedTabIndex = index;
         }
 
     }
