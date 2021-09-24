@@ -1,5 +1,6 @@
 ﻿using Gizmo.Shared.ViewModels;
 using System;
+using System.Collections.Generic;
 
 namespace Gizmo.Client.UI.ViewModels
 {
@@ -8,6 +9,7 @@ namespace Gizmo.Client.UI.ViewModels
         public int Id { get; set; }
         public int ApplicationGroupId { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
         public string Image { get; set; }
         public int Ratings { get; set; }
         public decimal Rate { get; set; }
@@ -15,5 +17,6 @@ namespace Gizmo.Client.UI.ViewModels
         public string Publisher { get; set; }
         public DateTime ReleaseDate { get; set; }
         public DateTime DateAdded { get; set; }
+        public List<ExecutableViewModel> Executables { get; set; }
     }
 }

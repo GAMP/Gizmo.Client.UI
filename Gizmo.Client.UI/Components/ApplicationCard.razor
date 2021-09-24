@@ -2,7 +2,6 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
-<!--Rating cards-->
 <div class="application-card">
     <div class="giz-hoverable-card">
         <div class="hoverable-content">
@@ -26,7 +25,7 @@
                 </div>
                 <div>
                     <!--button-->
-                    <Button Size="ButtonSizes.Large" HasShadow="true" IsFullWidth="true" Class="card-primary-button">LAUNCH</Button>
+                    <Button Size="ButtonSizes.Large" HasShadow="true" IsFullWidth="true" Class="card-primary-button" @onclick="@(() => ShowWarning())">LAUNCH</Button>
                     <!--/button-->
                 </div>
                 <div>
@@ -50,13 +49,20 @@
         </div>
         <!--/card title-->
         <div class="application-card-text">
-            <div>
-                <!--rating svg-->
-                <Rating Value="@(Application?.Rate ?? 0)" />
-                <!--/rating svg-->
-                <span class="application-card-rating">@Application?.Ratings Rating</span>
-            </div>
+            @if (ShowDateAdded)
+            {
+                <div>
+                    Add date <span>@Application?.DateAdded.ToShortDateString()</span>
+                </div>
+            }
+            else
+            {
+                <div>
+                    <Rating Value="@(Application?.Rate ?? 0)" />
+                    <span class="application-card-rating">@Application?.Ratings Rating</span>
+                </div>
+            }
         </div>
     </div>
+    <AlertDialog Message="winexe002piw974muaf65_ss8d6.bat was terminated unexpectedly." AlertType="AlertDialog.AlertTypes.Warning" @bind-IsOpen="_warningDialogIsOpen" />
 </div>
-<!--Rating Cards-->

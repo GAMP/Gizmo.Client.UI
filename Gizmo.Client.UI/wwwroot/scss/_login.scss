@@ -23,7 +23,6 @@
                 text-align: $text-align-right;
                 flex-basis: 50%;
                 font-family: $font-family-mark-pro;
-             
             }
         }
     }
@@ -37,6 +36,9 @@
         }
 
         .giz-login-content {
+            display: flex;
+            flex-direction: column;
+            min-height: 619px;
             width: 27.625rem;
             min-width: 27.625rem;
             background: opacify($dark-color, 0.31);
@@ -94,6 +96,9 @@
             }
 
             &--body {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
                 text-align: $text-align-center;
 
                 .giz-btn {
@@ -120,47 +125,7 @@
                         color: $light-blue-gray;
                         padding: 0 4.388rem;
                     }
-
-                    .giz-social-icon {
-                        list-style: $list-unstyled;
-
-                        &--list {
-                            height: 49px;
-                            width: 49px;
-                            line-height: 45px;
-                            text-align: $text-align-center;
-                            border-radius: $rounded-circle;
-                            display: $display-inline-block;
-                            background: $light-midnight-black;
-                            border: 1px solid $border-steel-gray;
-                            margin-right: 0.813rem;
-
-                            &:last-child {
-                                margin-right: 0;
-                            }
-                        }
-                    }
                 }
-                /*input {
-                    background: $black-mirage-color;
-                    border: 1px solid $border-charcoal-gray;
-                    border-radius: $rounded;
-                    width: $width-full;
-                    padding: 1.063rem 1.125rem;
-                    color: $white-color;
-                    outline: none;
-
-                    &:focus {
-                        background: $onyx-black;
-                        border: 1px solid $border-heather-gray;
-                    }
-                }
-
-                input[type=text] {
-                    font-size: $font-16;
-                    line-height: $line-height-16;
-                    text-shadow: $text-shadow-sm;
-                }*/
 
                 input[type=password] {
                     @include font-15;
@@ -185,12 +150,12 @@
             }
 
             &--footer {
+                margin-top: auto;
 
                 .giz-no-account {
                     @include font-9;
                     margin-bottom: 0.625rem;
                     color: $dark-blue-gray;
-                    padding-top: 7.5rem;
                 }
 
                 .giz-footer-links {
@@ -198,6 +163,20 @@
                     letter-spacing: $letter-spacing-10;
                     text-transform: $text-uppercase;
                 }
+            }
+
+            .giz-login-options {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+            }
+
+            .giz-login-status {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+                justify-content: center;
+                align-items: center;
             }
         }
     }

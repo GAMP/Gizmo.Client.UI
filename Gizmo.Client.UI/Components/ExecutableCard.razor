@@ -1,0 +1,68 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using Gizmo.Web.Components
+
+<div class="giz-card-wrapper">
+    <div class="giz-card">
+        <div class="giz-card--body">
+            @if (Executable != null)
+            {
+                <div class="giz-img"><img src="https://i.postimg.cc/0yk0qNtT/app-icon.png" /><div class="giz-status"><i class="giz-status--icon"></i>24</div></div>
+
+                if (Executable.Loading)
+                {
+                    <!--user action btn-->
+                    <div class="d-flex">
+                        <GizProgressButton></GizProgressButton>
+                        <Menu Class="ml-2">
+                            <Activator>
+                                <Button Size="ButtonSizes.Large" LeftSVGIcon="Icons.Settings_Client" Color="ButtonColors.Info"></Button>
+                            </Activator>
+                            <ChildContent>
+                                <ListItem>
+                                    Autostart
+                                </ListItem>
+                                <ListItem SVGIcon="Icons.Repair_Client">
+                                    Repair
+                                </ListItem>
+                                <ListItem SVGIcon="Icons.Folder_Client">
+                                    <ChildContent>
+                                        Personal Files
+                                    </ChildContent>
+                                    <NestedList>
+                                        <ListItem>
+                                            123
+                                        </ListItem>
+                                        <ListItem>
+                                            456
+                                        </ListItem>
+                                    </NestedList>
+                                </ListItem>
+                                <ListItem SVGIcon="Icons.Close_Client">
+                                    Terminate
+                                </ListItem>
+                            </ChildContent>
+                        </Menu>
+                    </div>
+                    <!--/user action btn-->
+                }
+                else
+                {
+                    <div class="giz-app">
+                        <div class="giz-app--title">
+                            Games
+                            <!--svg-->
+                            <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2.11976 3.87257C2.82003 3.87257 3.38937 3.29369 3.38937 2.58169C3.38937 1.86969 2.82003 1.29082 2.11976 1.29082C1.41948 1.29082 0.85014 1.86969 0.85014 2.58169C0.85014 3.29369 1.41948 3.87257 2.11976 3.87257ZM11.0071 3.87257C11.7073 3.87257 12.2767 3.29369 12.2767 2.58169C12.2767 1.86969 11.7073 1.29082 11.0071 1.29082C10.3068 1.29082 9.73746 1.86969 9.73746 2.58169C9.73746 3.29369 10.3068 3.87257 11.0071 3.87257ZM11.6419 4.51801H10.3723C10.0231 4.51801 9.7077 4.66121 9.47758 4.89317C10.277 5.33892 10.8444 6.1437 10.9674 7.09976H12.2767C12.6278 7.09976 12.9115 6.81133 12.9115 6.45432V5.80888C12.9115 5.09688 12.3422 4.51801 11.6419 4.51801ZM6.56342 4.51801C7.79137 4.51801 8.78525 3.50749 8.78525 2.25897C8.78525 1.01045 7.79137 -6.10352e-05 6.56342 -6.10352e-05C5.33546 -6.10352e-05 4.34159 1.01045 4.34159 2.25897C4.34159 3.50749 5.33546 4.51801 6.56342 4.51801ZM8.08696 5.16344H7.9223C7.50968 5.36514 7.05143 5.48616 6.56342 5.48616C6.07541 5.48616 5.61914 5.36514 5.20453 5.16344H5.03988C3.77819 5.16344 2.75457 6.20421 2.75457 7.48702V8.06791C2.75457 8.60242 3.18108 9.03607 3.70678 9.03607H9.42005C9.94576 9.03607 10.3723 8.60242 10.3723 8.06791V7.48702C10.3723 6.20421 9.34864 5.16344 8.08696 5.16344ZM3.64925 4.89317C3.41913 4.66121 3.10371 4.51801 2.75457 4.51801H1.48495C0.784676 4.51801 0.215332 5.09688 0.215332 5.80888V6.45432C0.215332 6.81133 0.499012 7.09976 0.85014 7.09976H2.15745C2.28243 6.1437 2.84979 5.33892 3.64925 4.89317Z" fill="white" fill-opacity="0.7" />
+                            </svg>
+                            <!--/svg-->
+                        </div>
+                        <div class="giz-app--name">
+                            @Executable.Name
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
