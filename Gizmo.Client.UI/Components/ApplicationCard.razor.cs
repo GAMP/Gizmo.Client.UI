@@ -23,6 +23,7 @@ namespace Gizmo.Client.UI.Components
         #endregion
 
         #region Methods
+
         public async Task OpenDetails()
         {
             await OnOpenDetails.InvokeAsync(Application.Id);

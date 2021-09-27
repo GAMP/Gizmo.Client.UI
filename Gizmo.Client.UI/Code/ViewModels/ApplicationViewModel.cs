@@ -11,6 +11,7 @@ namespace Gizmo.Client.UI.ViewModels
         public string Name { get; set; }
         public string Description { get; set; }
         public string Image { get; set; }
+        public string BackgroundImage { get; set; }
         public int Ratings { get; set; }
         public decimal Rate { get; set; }
         public int NowPlaying { get; set; }

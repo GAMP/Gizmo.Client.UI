@@ -55,7 +55,8 @@ namespace Gizmo.Client.UI.Pages
         private List<string> _sortOptions;
         private ICommand _selectProductGroupCommand;
         private ICommand _placeOrderCommand;
-        private int? _selectedProductGroup;
+        private int? _selectedProductGroupId;
+        private ProductGroupViewModel _selectedProductGroup;
         #endregion
 
         #region PROPERTIES
@@ -140,7 +141,8 @@ namespace Gizmo.Client.UI.Pages
 
         private void SelectProductGroup(object parameter)
         {
-            _selectedProductGroup = (int)parameter;
+            _selectedProductGroupId = (int)parameter;
+            _selectedProductGroup = ProductGroups.Where(a => a.Id == _selectedProductGroupId).FirstOrDefault();
 
             StateHasChanged();
         }

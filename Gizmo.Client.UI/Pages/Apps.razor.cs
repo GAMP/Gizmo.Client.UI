@@ -37,11 +37,17 @@ namespace Gizmo.Client.UI.Pages
             Applications.Add(new ApplicationViewModel() { Id = 9, Name = "Apex Legends", Image = "Apex.png", ApplicationGroupId = random.Next(1, 5), Ratings = random.Next(0, 100), Rate = random.Next(1, 5), NowPlaying = random.Next(0, 100) });
             Applications.Add(new ApplicationViewModel() { Id = 10, Name = "Windows Apps", Image = "Window-apps.png", ApplicationGroupId = random.Next(1, 5), Ratings = random.Next(0, 100), Rate = random.Next(1, 5), NowPlaying = random.Next(0, 100) });
 
+            ApplicationFilters = new List<ApplicationFilterViewModel>();
+            ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 1, Name = "Access" });
+            ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 2, Name = "Rating" });
+            ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 3, Name = "Type" });
+            ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 4, Name = "Player mode" });
         }
 
         #region FIELDS
         private ICommand _selectApplicationGroupCommand;
-        private int? _selectedApplicationGroup;
+        private int? _selectedApplicationGroupId;
+        private ApplicationGroupViewModel _selectedApplicationGroup;
         #endregion
 
         #region PROPERTIES
@@ -66,11 +72,13 @@ namespace Gizmo.Client.UI.Pages
 
         public List<ApplicationViewModel> Applications { get; set; }
 
+        public List<ApplicationFilterViewModel> ApplicationFilters { get; set; }
+
         #endregion
 
         #region COMMANDS
 
-        public ICommand SelectProductGroupCommand
+        public ICommand SelectApplicationGroupCommand
         {
             get
             {
@@ -91,7 +99,8 @@ namespace Gizmo.Client.UI.Pages
 
         private void SelectApplicationGroup(object parameter)
         {
-            _selectedApplicationGroup = (int)parameter;
+            _selectedApplicationGroupId = (int)parameter;
+            _selectedApplicationGroup = ApplicationGroups.Where(a => a.Id == _selectedApplicationGroupId).FirstOrDefault();
 
             StateHasChanged();
         }

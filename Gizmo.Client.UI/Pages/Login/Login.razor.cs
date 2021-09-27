@@ -8,6 +8,9 @@ namespace Gizmo.Client.UI.Pages
     {
         private bool _logginIn;
 
+        [Inject]
+        NavigationManager UriHelper { get; set; }
+
         public async Task Navigate()
         {
             _logginIn = true;

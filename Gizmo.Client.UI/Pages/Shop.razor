@@ -41,7 +41,7 @@
                 <!--heading-->
                 <div class="giz-shop-items">
                     <div class="giz-shop-items--heading">
-                        Beverages
+                        @(_selectedProductGroup?.Name ?? "All")
                     </div>
                     <div class="giz-shop-items--sort">
                         <svg width="20" height="8" viewBox="0 0 20 8" fill="white" xmlns="http://www.w3.org/2000/svg" class="mr-4">
@@ -56,7 +56,7 @@
                 <!--/heading-->
                 <div class="giz-wrapper">
                     <!--carousel cards-->
-                    @foreach (var product in Products.Where(a => !_selectedProductGroup.HasValue || a.ProductGroupId == _selectedProductGroup))
+                    @foreach (var product in Products.Where(a => !_selectedProductGroupId.HasValue || a.ProductGroupId == _selectedProductGroupId))
                     {
                         <GizProductCard Product="@product" OnAddProduct="@AddProduct" OnOpenDetails="@OpenDetails" />
                     }

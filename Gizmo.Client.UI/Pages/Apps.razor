@@ -8,22 +8,27 @@
     <section class="giz-categories pa-6">
         <!--Apps and games Categories-->
         <List CanClick="true" CanSelect="true" Class="giz-menu-list giz-apps-menu-list">
-            @foreach (var applicationGroup in ApplicationGroups)
-            {
-                <ListItem Command="@SelectProductGroupCommand" CommandParameter="@applicationGroup.Id">
-                    <div class="d-flex">
-                        <div class="mr-auto">
-                            @applicationGroup.Name
-                        </div>
-                        @if (Applications != null)
-                        {
-                            <div class="giz-search-number">
-                                @Applications.Where(a => a.ApplicationGroupId == applicationGroup.Id).Count()
+            <ListHeader>
+                @(_selectedApplicationGroup?.Name ?? "Categories")
+            </ListHeader>
+            <ChildContent>
+                @foreach (var applicationGroup in ApplicationGroups)
+                {
+                    <ListItem Command="@SelectApplicationGroupCommand" CommandParameter="@applicationGroup.Id">
+                        <div class="d-flex">
+                            <div class="mr-auto">
+                                @applicationGroup.Name
                             </div>
-                        }
-                    </div>
-                </ListItem>
-            }
+                            @if (Applications != null)
+                            {
+                                <div class="giz-search-number">
+                                    @Applications.Where(a => a.ApplicationGroupId == applicationGroup.Id).Count()
+                                </div>
+                            }
+                        </div>
+                    </ListItem>
+                }
+            </ChildContent>
         </List>
         <!--/Apps and games Categories-->
         <!--filter cards-->
@@ -36,11 +41,11 @@
                     Clear
                 </div>
             </div>
-            <GizFilterCard></GizFilterCard>
-            <GizFilterCard></GizFilterCard>
-            <GizFilterCard></GizFilterCard>
-            <GizFilterCard></GizFilterCard>
-            <GizFilterCard></GizFilterCard>
+
+            @foreach (var applicationFilters in ApplicationFilters)
+            {                
+                <ApplicationFilterCard ApplicationFilter="@applicationFilters" />
+            }
         </div>
         <!--/filter cards-->
     </section>
@@ -58,7 +63,7 @@
             <!--/heading-->
             <div class="giz-wrapper">
                 <!--carousel cards-->
-                @foreach (var app in Applications.Where(a => !_selectedApplicationGroup.HasValue || a.ApplicationGroupId == _selectedApplicationGroup))
+                @foreach (var app in Applications.Where(a => !_selectedApplicationGroupId.HasValue || a.ApplicationGroupId == _selectedApplicationGroupId))
                 {
                     <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails"></ApplicationCard>
                 }

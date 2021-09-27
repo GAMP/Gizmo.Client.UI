@@ -1,5 +1,6 @@
 ﻿@inherits ComponentBase
 @using Gizmo.Web.Components
+@using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
 
 <!--wrapper 1-->
@@ -50,44 +51,24 @@
             <!--/user points-->
         </div>
         <!--Apps and games Categories-->
-        <ul class="giz-user-site-menu">
-            <li class="giz-user-site-menu--items giz-user-site-menu--heading">
-                <svg width="9" height="13" viewBox="0 0 9 13" class="d-none" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8.08607 11.3176L6.61423 12.7895L0.351074 6.5263L6.61423 0.263144L8.08607 1.73499L3.3052 6.5263L8.08607 11.3176Z" fill="white" />
-                </svg>
+
+        <List CanClick="true" CanSelect="true" Class="giz-menu-list giz-apps-menu-list">
+            <ListHeader>
                 Browse leaderboards
-            </li>
-            <li class="giz-user-site-menu--items">
-                <a class="giz-user-site-menu--links giz-csgo"
-                   href="#">
-                    CS:GO
-                </a>
-            </li>
-            <li class="giz-user-site-menu--items">
-                <a class="giz-user-site-menu--links active giz-fortnite"
-                   href="#">
-                    Fortnite
-                </a>
-            </li>
-            <li class="giz-user-site-menu--items">
-                <a class="giz-user-site-menu--links giz-cod"
-                   href="#">
-                    Call of Duty: Warzone
-                </a>
-            </li>
-            <li class="giz-user-site-menu--items">
-                <a class="giz-user-site-menu--links giz-log"
-                   href="#">
-                    League of Legends
-                </a>
-            </li>
-            <li class="giz-user-site-menu--items">
-                <a class="giz-user-site-menu--links giz-pubg"
-                   href="#">
-                    Player Unknown’s Battlegrounds
-                </a>
-            </li>
-        </ul>
+            </ListHeader>
+            <ChildContent>
+                @foreach (var application in Applications)
+                {
+                    <ListItem BackgroundImage="@application.BackgroundImage" Command="@SelectApplicationCommand" CommandParameter="@application.Id">
+                        <div class="d-flex">
+                            <div class="mr-auto">
+                                @application.Name
+                            </div>
+                        </div>
+                    </ListItem>
+                }
+            </ChildContent>
+        </List>
         <!--/Apps and games Categories-->
     </section>
     <!--leaderboard site menu-->
