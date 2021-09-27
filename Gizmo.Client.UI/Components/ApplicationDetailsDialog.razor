@@ -1,25 +1,13 @@
-﻿@namespace Gizmo.Client.UI.Shared
-@using Gizmo.Client.UI.Components
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
-<!--carousel card-->
-<div class="giz-apps-card">
-    <div class="giz-apps-card--overlay mb-4">
-        <div class="giz-img-top">
-            <a href="#"><img src="https://i.postimg.cc/MGN8G2pM/Battle-net.png" alt='loading' /></a>
-        </div>
-    </div>
-    <div class="giz-card-title mb-2" @onclick="ShowPrimaryModal">
-        BattleNet
-    </div>
-    <div class="giz-card-text" @onclick="ShowWarning">
-        Add date <span>3/12/2021</span>
-    </div>
-    <!--warning modal-->
-    <AlertDialog Message="winexe002piw974muaf65_ss8d6.bat was terminated unexpectedly." AlertType="AlertDialog.AlertTypes.Warning" @bind-IsOpen="WarningDialogIsOpen" />
-    <!--/warning modal-->
-    <div class="giz-modal-wrapper" style="visibility: @(IsOpen ? "hidden" : "visible");">
-        <div class="giz-app-modal">
+<Dialog @bind-IsOpen="IsOpen" IsModal="true" MaximumWidth="45rem">
+    <DialogHeader>
+        <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
+    </DialogHeader>
+    <DialogBody>
+        <div class="giz-app-details-dialog-body">
             <div class="giz-app-modal--container">
                 <!--app info-->
                 <div class="giz-app-brand">
@@ -29,7 +17,7 @@
                             Publisher
                         </div>
                         <div class="giz-app-brand--text">
-                            Very Positive Inc
+                            @Application?.Publisher
                         </div>
                     </div>
                     <div class="giz-app-brand--info">
@@ -37,7 +25,7 @@
                             Release Date
                         </div>
                         <div class="giz-app-brand--text">
-                            10/22/2019
+                            @Application?.ReleaseDate.ToShortDateString()
                         </div>
                     </div>
                     <div class="giz-app-brand--info">
@@ -45,7 +33,7 @@
                             Date Added
                         </div>
                         <div class="giz-app-brand--text">
-                            5/13/2020
+                            @Application?.DateAdded.ToShortDateString()
                         </div>
                     </div>
                     <div class="giz-app-brand--info">
@@ -100,36 +88,16 @@
                         <div class="giz-header-text">
                             02. action / adventure
                         </div>
-                        <button class="client-button giz-terminate" @onclick="ShowPrimaryModal">
-                            <!--!--><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M13 1L1 13" stroke="#69748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                <path d="M1 1L13 13" stroke="#69748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                        </button>
                     </div>
                     <!--/heading-->
                     <!--title-->
                     <div class="giz-app-modal--title">
-                        Fall Guys: Ultimate Knockout
+                        @Application?.Name
                     </div>
                     <!--/title-->
                     <div class=" giz-app-rating">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8 12.0667L12.9467 15.6667L11.0533 9.85337L16 6.33337H9.93333L8 0.333374L6.06667 6.33337H0L4.94667 9.85337L3.05333 15.6667L8 12.0667Z" fill="white" />
-                        </svg>
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8 12.0667L12.9467 15.6667L11.0533 9.85337L16 6.33337H9.93333L8 0.333374L6.06667 6.33337H0L4.94667 9.85337L3.05333 15.6667L8 12.0667Z" fill="white" />
-                        </svg>
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8 12.0667L12.9467 15.6667L11.0533 9.85337L16 6.33337H9.93333L8 0.333374L6.06667 6.33337H0L4.94667 9.85337L3.05333 15.6667L8 12.0667Z" fill="white" />
-                        </svg>
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8 12.0667L12.9467 15.6667L11.0533 9.85337L16 6.33337H9.93333L8 0.333374L6.06667 6.33337H0L4.94667 9.85337L3.05333 15.6667L8 12.0667Z" fill="white" />
-                        </svg>
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8 12.0667L12.9467 15.6667L11.0533 9.85337L16 6.33337H9.93333L8 0.333374L6.06667 6.33337H0L4.94667 9.85337L3.05333 15.6667L8 12.0667Z" fill="#BFC8EC" fill-opacity="0.4" />
-                        </svg>
-                        <span>168 Ratings</span>
+                        <Rating Value="@(Application?.Rate ?? 0)" />
+                        <span>@Application?.Ratings Ratings</span>
                     </div>
                     <div class="giz-apps-tags">
                         <span class="giz-selected-tag">Multiplayer</span>
@@ -149,13 +117,40 @@
                         </button>
                     </div>
                     <div class="giz-modal--text">
-                        Fall Guys is a massively multiplayer party game with up to 60 players online in a free-for-all struggle through round after round of escalating chaos until
-                        one victor remains!
+                        @Application?.Description
                     </div>
                     <!--launch btn-->
-                    <div class="giz-launch-button">
-                        <button class="client-button giz-btn-primary px-13">launch</button>
-                        <GizSubDropdownMenu></GizSubDropdownMenu>
+                    <div class="d-flex">
+                        <Button Size="ButtonSizes.Large">launch</Button>
+                        <Menu Class="ml-2">
+                            <Activator>
+                                <Button Size="ButtonSizes.Large" LeftSVGIcon="Icons.Settings_Client" Color="ButtonColors.Info"></Button>
+                            </Activator>
+                            <ChildContent>
+                                <ListItem>
+                                    Autostart
+                                </ListItem>
+                                <ListItem SVGIcon="Icons.Repair_Client">
+                                    Repair
+                                </ListItem>
+                                <ListItem SVGIcon="Icons.Folder_Client">
+                                    <ChildContent>
+                                        Personal Files
+                                    </ChildContent>
+                                    <NestedList>
+                                        <ListItem>
+                                            123
+                                        </ListItem>
+                                        <ListItem>
+                                            456
+                                        </ListItem>
+                                    </NestedList>
+                                </ListItem>
+                                <ListItem SVGIcon="Icons.Close_Client">
+                                    Terminate
+                                </ListItem>
+                            </ChildContent>
+                        </Menu>
                     </div>
                     <!--/launch btn-->
                 </div>
@@ -163,68 +158,56 @@
             <div class="giz-about-app">
                 <!--modal nav-->
                 <div class="giz-modal-nav">
-                    <ul class="giz-modal-nav--navbar">
-                        <li class="giz-modal-nav--items"><a href="#" class="giz-modal-nav--links">announcements</a></li>
-                        <li class="giz-modal-nav--items"><a href="#" class="giz-modal-nav--links active">media</a></li>
-                        <li class="giz-modal-nav--items"><a href="#" class="giz-modal-nav--links giz-disable-link ">Links</a></li>
-                        <li class="giz-modal-nav--items"><a href="#" class="giz-modal-nav--links giz-disable-link ">Tutorials</a></li>
-                    </ul>
+                    <ChipGroup Color="ButtonColors.Info">
+                        <Chip IsSelected="@(_selectedTabIndex == 0)" @onclick="@(() => SelectTab(0))">executables</Chip>
+                        <Chip IsSelected="@(_selectedTabIndex == 1)" @onclick="@(() => SelectTab(1))">announcements</Chip>
+                        <Chip IsSelected="@(_selectedTabIndex == 2)" @onclick="@(() => SelectTab(2))">media</Chip>
+                        <Chip IsSelected="@(_selectedTabIndex == 3)" IsDisabled="true" @onclick="@(() => SelectTab(3))">Links</Chip>
+                        <Chip IsSelected="@(_selectedTabIndex == 4)" IsDisabled="true" @onclick="@(() => SelectTab(4))">Tutorials</Chip>
+                    </ChipGroup>
                     <div class="giz-arrows">
-                        <!--svg-->
-                        <svg width="9" class="mr-2" height="13" viewBox="0 0 9 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8.08607 1.73503L6.61423 0.263184L0.351074 6.52634L6.61423 12.7895L8.08607 11.3177L3.3052 6.52634L8.08607 1.73503Z" fill="white" fill-opacity="0.35" />
-                        </svg>
-                        <!--/svg-->
-                        <!--svg-->
-                        <svg width="9" height="13" viewBox="0 0 9 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M0.913926 1.73503L2.38577 0.263184L8.64893 6.52634L2.38577 12.7895L0.913926 11.3177L5.6948 6.52634L0.913926 1.73503Z" fill="white" />
-                        </svg>
-                        <!--/svg-->
+                        <IconButton Variant="ButtonVariants.Text" Size="ButtonSizes.Small" SVGIcon="Icons.ArrowLeft_Client" />
+                        <IconButton Variant="ButtonVariants.Text" Size="ButtonSizes.Small" SVGIcon="Icons.ArrowRight_Client" />
                     </div>
                 </div>
                 <!--/modal nav-->
-                <!--modal video-->
-                <div class="giz-video-wrapper">
-                    <div class="giz-modal-video">
-                        <img src="https://i.postimg.cc/kXYNPNgF/Video.png" alt="loading" />
-                        <div class="giz-modal-video--title">unboxholics</div>
-                        <div class="giz-modal-video--text">Κλαίμε με το νέο Season 4 Fall Guys Ultimate Knockout!!!</div>
-                    </div>
-                    <div class="giz-modal-video">
-                        <img src="https://i.postimg.cc/d3rRY34R/trailer.png" alt="loading" />
-                        <div class="giz-modal-video--title">ign</div>
-                        <div class="giz-modal-video--text">Fall Guys Season 4 - Official Trailer</div>
-                    </div>
-                </div>
-                <!--/modal video-->
-                <!--progress bar-->
-                <div class="giz-progress-wrapper">
-                    <div class="giz-progress">
-                        <div class="giz-progress--bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%">
+                @switch (_selectedTabIndex)
+                {
+                    case 0:
+
+                        <div class="giz-app-cards">
+
+                            @if (Application != null && Application.Executables != null)
+                            {
+                                @foreach (var executable in Application.Executables)
+                                {
+                                    <ExecutableCard Executable="@executable" />
+                                }
+                            }
+
                         </div>
-                    </div>
-                </div>
-                <!--/progress bar-->
+
+                        break;
+
+                    case 2:
+
+                        <div class="giz-video-wrapper">
+                            <div class="giz-modal-video">
+                                <img src="https://i.postimg.cc/kXYNPNgF/Video.png" alt="loading" />
+                                <div class="giz-modal-video--title">unboxholics</div>
+                                <div class="giz-modal-video--text">Κλαίμε με το νέο Season 4 Fall Guys Ultimate Knockout!!!</div>
+                            </div>
+                            <div class="giz-modal-video">
+                                <img src="https://i.postimg.cc/d3rRY34R/trailer.png" alt="loading" />
+                                <div class="giz-modal-video--title">ign</div>
+                                <div class="giz-modal-video--text">Fall Guys Season 4 - Official Trailer</div>
+                            </div>
+                        </div>
+
+                        break;
+                }
+
             </div>
         </div>
-    </div>
-    <!--/app modal-->
-</div>
-<!--/carousel card-->
-@code {
-
-    private bool IsOpen { get; set; } = true;
-
-    private void ShowPrimaryModal()
-    {
-        IsOpen = !IsOpen;
-    }
-
-    private bool WarningDialogIsOpen { get; set; }
-
-    private void ShowWarning()
-    {
-        WarningDialogIsOpen = true;
-    }
-
-}
+    </DialogBody>
+</Dialog>

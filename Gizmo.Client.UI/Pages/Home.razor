@@ -24,12 +24,10 @@
             <GizNavigation Title="New Apps" />
             <!--/heading-->
             <div class="giz-wrapper">
-                <!--carousel cards-->
-                <GizAppsCard></GizAppsCard>
-                <GizAppsCard></GizAppsCard>
-                <GizAppsCard></GizAppsCard>
-                <GizAppsCard></GizAppsCard>
-                <!--/carousel cards-->
+                @foreach (var app in NewApplications)
+                {
+                    <ApplicationCard Application="@app" ShowDateAdded="true" OnOpenDetails="@OpenDetails"></ApplicationCard>
+                }
             </div>
         </div>
     </section>
@@ -44,7 +42,7 @@
                 <!--carousel cards-->
                 @foreach (var app in Applications)
                 {
-                    <GizAppCard Application="@app" OnOpenDetails="@OpenDetails"></GizAppCard>
+                    <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails"></ApplicationCard>
                 }
                 <!--/carousel cards-->
             </div>
@@ -54,7 +52,7 @@
 </div>
 <!--/wrapper 2-->
 
-<AppDetailsDialog @bind-IsOpen="AppDetailsIsOpen" />
+<ApplicationDetailsDialog @bind-IsOpen="AppDetailsIsOpen" />
 
 @code {
 

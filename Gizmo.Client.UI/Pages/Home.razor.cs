@@ -15,6 +15,18 @@ namespace Gizmo.Client.UI.Pages
         {
             Random random = new Random();
 
+            NewApplications = Enumerable.Range(1, 4).Select(i => new ApplicationViewModel()
+            {
+                Id = i,
+                ApplicationGroupId = random.Next(1, 5),
+                Name = "BattleNet",
+                Image = "Battle-net.png",
+                Ratings = random.Next(0, 100),
+                Rate = random.Next(1, 5),
+                NowPlaying = random.Next(0, 100),
+                DateAdded = new DateTime(2021, 3, 12)
+            }).ToList();
+
             Applications = Enumerable.Range(0, 5).Select(i => new ApplicationViewModel()
             {
                 Id = i,
@@ -28,6 +40,8 @@ namespace Gizmo.Client.UI.Pages
         }
 
         public bool AppDetailsIsOpen { get; set; }
+
+        public List<ApplicationViewModel> NewApplications { get; set; }
 
         public List<ApplicationViewModel> Applications { get; set; }
 

@@ -60,7 +60,7 @@
                 <!--carousel cards-->
                 @foreach (var app in Applications.Where(a => !_selectedApplicationGroup.HasValue || a.ApplicationGroupId == _selectedApplicationGroup))
                 {
-                    <GizAppCard Application="@app" OnOpenDetails="@OpenDetails"></GizAppCard>
+                    <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails"></ApplicationCard>
                 }
                 <!--/carousel cards-->
             </div>
@@ -70,4 +70,4 @@
 </div>
 <!--/wrapper 2-->
 
-<AppDetailsDialog @bind-IsOpen="AppDetailsIsOpen" />
+<ApplicationDetailsDialog @bind-IsOpen="AppDetailsIsOpen" />
