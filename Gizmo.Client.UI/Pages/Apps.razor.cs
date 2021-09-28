@@ -37,11 +37,17 @@ namespace Gizmo.Client.UI.Pages
             Applications.Add(new ApplicationViewModel() { Id = 9, Name = "Apex Legends", Image = "Apex.png", ApplicationGroupId = random.Next(1, 5), Ratings = random.Next(0, 100), Rate = random.Next(1, 5), NowPlaying = random.Next(0, 100) });
             Applications.Add(new ApplicationViewModel() { Id = 10, Name = "Windows Apps", Image = "Window-apps.png", ApplicationGroupId = random.Next(1, 5), Ratings = random.Next(0, 100), Rate = random.Next(1, 5), NowPlaying = random.Next(0, 100) });
 
+            List<ApplicationFilterOptionViewModel> options = new List<ApplicationFilterOptionViewModel>();
+            options.Add(new ApplicationFilterOptionViewModel() { Id = 1, Name = "Free to Play" });
+            options.Add(new ApplicationFilterOptionViewModel() { Id = 2, Name = "Subscription Based" });
+            options.Add(new ApplicationFilterOptionViewModel() { Id = 3, Name = "Multiple" });
+            options.Add(new ApplicationFilterOptionViewModel() { Id = 4, Name = "All" });
+
             ApplicationFilters = new List<ApplicationFilterViewModel>();
-            ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 1, Name = "Access" });
-            ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 2, Name = "Rating" });
-            ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 3, Name = "Type" });
-            ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 4, Name = "Player mode" });
+            ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 1, Name = "Access", Options = options });
+            ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 2, Name = "Rating", Options = options });
+            ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 3, Name = "Type", Options = options });
+            ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 4, Name = "Player mode", Options = options });
         }
 
         #region FIELDS

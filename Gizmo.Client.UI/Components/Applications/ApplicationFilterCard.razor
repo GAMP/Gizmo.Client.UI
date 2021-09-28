@@ -3,13 +3,34 @@
 @using Gizmo.Web.Components
 
 <div class="giz-card-wrapper">
-    <div class="giz-card active">
-        <div class="giz-card--body">
-            <div class="giz-card-title">All</div>
-            <div class="giz-card-text">
-                @ApplicationFilter?.Name
+    <Menu CloseOnItemClick="false" OpenDirection="PopupOpenDirections.Cursor" Style="width: 100%;">
+        <Activator>
+            <div class="giz-card active">
+                <div class="giz-card--body">
+                    <div class="giz-card-title">All</div>
+                    <div class="giz-card-text">
+                        @ApplicationFilter?.Name
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <GizSubDropdownContent></GizSubDropdownContent>
+        </Activator>
+        <ChildContent>
+            @if (ApplicationFilter != null)
+            {
+                @foreach (var option in ApplicationFilter.Options)
+                {
+                    <ListItem>
+                        <div class="d-flex align-center">
+                            <CheckBox @bind-IsChecked="option.IsSelected"></CheckBox>
+                            @option.Name
+                        </div>
+                    </ListItem>
+                }
+                <Divider />
+                <div class="d-flex pa-3">
+                    <Button Size="ButtonSizes.Large" Color="ButtonColors.Info" IsFullWidth="true">Clear</Button>
+                </div>
+            }
+        </ChildContent>
+    </Menu>
 </div>
