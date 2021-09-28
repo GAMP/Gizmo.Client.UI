@@ -65,7 +65,7 @@
                 <!--carousel cards-->
                 @foreach (var app in Applications.Where(a => !_selectedApplicationGroupId.HasValue || a.ApplicationGroupId == _selectedApplicationGroupId))
                 {
-                    <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails"></ApplicationCard>
+                    <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
                 }
                 <!--/carousel cards-->
             </div>
@@ -76,3 +76,4 @@
 <!--/wrapper 2-->
 
 <ApplicationDetailsDialog @bind-IsOpen="AppDetailsIsOpen" />
+<ExecutableSelectorDialog @bind-IsOpen="ExecutableSelectorIsOpen" />

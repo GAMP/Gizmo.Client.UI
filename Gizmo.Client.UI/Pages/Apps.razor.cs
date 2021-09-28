@@ -72,6 +72,8 @@ namespace Gizmo.Client.UI.Pages
 
         public bool AppDetailsIsOpen { get; set; }
 
+        public bool ExecutableSelectorIsOpen { get; set; }
+
         #endregion
 
         public List<ApplicationGroupViewModel> ApplicationGroups { get; set; }
@@ -118,6 +120,11 @@ namespace Gizmo.Client.UI.Pages
         public void OpenDetails(int id)
         {
             AppDetailsIsOpen = true;
+        }
+
+        public void OpenExecutableSelector(int id)
+        {
+            ExecutableSelectorIsOpen = true;
         }
 
         #endregion
