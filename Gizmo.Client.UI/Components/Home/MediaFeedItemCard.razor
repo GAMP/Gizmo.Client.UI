@@ -4,53 +4,55 @@
 
 @if (MediaFeed != null)
 {
-    <!--news cards-->
     <div class="giz-card-wrapper" @onclick="ShowModal">
-        <div class="giz-card giz-news-card">
-            <div class="giz-card--heading">
-                <a href="#"><img src="https://i.postimg.cc/bJgnQb1h/Image-1.png" alt="Image" /></a>
-                <!--news modal-->
-                <div class="giz-modal-wrapper" style="visibility: @(IsOpen ? "hidden" : "visible");">
-                    <div class="giz-news-modal">
-                        <!--modal header-->
-                        <div class="giz-modal-header py-6 px-8">
-                            <div class="giz-modal-header--title">news</div>
-                            <button class="client-button giz-terminate">
-                                <!--svg-->
-                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M13 1L1 13" stroke="#69748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M1 1L13 13" stroke="#69748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <!--/svg-->
-                            </button>
-                            <div class="giz-modal-header--text">via RedBull Gaming News</div>
-                        </div>
-                        <!--/modal header-->
-                        <!--modal body-->
-                        <div class="giz-modal-body px-8 py-9">
-                            <img src="@MediaFeed.Image" alt="Image" class="pb-6" />
-                            <div class="giz-modal-body--title">@MediaFeed.Source</div>
-                            <div class="giz-modal-body--text">
-                                @MediaFeed.Title
+        <Card Class="media-feed-item-card">
+            <CardBody>
+                <div class="media-feed-item-card-heading">
+                    <a href="#"><img src="https://i.postimg.cc/bJgnQb1h/Image-1.png" alt="Image" /></a>
+                    <!--news modal-->
+                    <div class="giz-modal-wrapper" style="visibility: @(IsOpen ? "hidden" : "visible");">
+                        <div class="giz-news-modal">
+                            <!--modal header-->
+                            <div class="giz-modal-header py-6 px-8">
+                                <div class="giz-modal-header--title">news</div>
+                                <button class="client-button giz-terminate">
+                                    <!--svg-->
+                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13 1L1 13" stroke="#69748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M1 1L13 13" stroke="#69748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <!--/svg-->
+                                </button>
+                                <div class="giz-modal-header--text">via RedBull Gaming News</div>
                             </div>
-                            <div class="giz-modal-body--footer-text">
-                                @MediaFeed.Description
+                            <!--/modal header-->
+                            <!--modal body-->
+                            <div class="giz-modal-body px-8 py-9">
+                                <img src="@MediaFeed.Image" alt="Image" class="pb-6" />
+                                <div class="giz-modal-body--title">@MediaFeed.Source</div>
+                                <div class="giz-modal-body--text">
+                                    @MediaFeed.Title
+                                </div>
+                                <div class="giz-modal-body--footer-text">
+                                    @MediaFeed.Description
+                                </div>
                             </div>
+                            <!--/modal body-->
                         </div>
-                        <!--/modal body-->
+                    </div>
+                    <!--/news modal-->
+                </div>
+                <div class="media-feed-item-card-body">
+                    <div class="media-feed-item-card-title">
+                        @MediaFeed.Source
+                    </div>
+                    <div class="media-feed-item-card-text">
+                        @MediaFeed.Title
                     </div>
                 </div>
-                <!--/news modal-->
-            </div>
-            <div class="giz-card--body">
-                <div class="giz-card-title">@MediaFeed.Source</div>
-                <div class="giz-card-text">
-                    @MediaFeed.Title
-                </div>
-            </div>
-        </div>
+            </CardBody>
+        </Card>
     </div>
-    <!--/news cards-->
 }
 
 @code {

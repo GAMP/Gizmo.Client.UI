@@ -2,7 +2,7 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
-<Dialog @bind-IsOpen="IsOpen">
+<Dialog @bind-IsOpen="IsOpen" IsModal="true">
     <DialogHeader>
         <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
     </DialogHeader>
@@ -17,111 +17,15 @@
             <!--playing card-->
             <div class="giz-window-modal-body">
                 <div class="giz-app-cards">
-                    <div class="giz-card-wrapper">
-                        <div class="giz-card active">
-                            <div class="giz-card--body">
-                                <div class="giz-img"><img src="https://i.postimg.cc/Jhr89jNZ/chrome.png" alt="loading" /></div>
-                                <!--user action btn-->
-                                <div class="giz-button-wrapper">
-                                    <GizProgressButton></GizProgressButton>
-                                    <GizSubDropdownMenu></GizSubDropdownMenu>
-                                </div>
-                                <!--user action btn-->
-                                <div class="giz-app">
-                                    <div class="giz-app--title">
-                                        programs
-                                    </div>
-                                    <div class="giz-app--name">
-                                        Google Chrome
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="giz-card-wrapper">
-                        <div class="giz-card">
-                            <div class="giz-card--body">
-                                <div class="giz-img"><img src="https://i.postimg.cc/fTvD5HXD/exp.png" alt="loading" /></div>
-                                <!--user action btn-->
-                                <div class="giz-button-wrapper">
-                                    <GizProgressButton></GizProgressButton>
-                                    <GizSubDropdownMenu></GizSubDropdownMenu>
-                                </div>
-                                <!--user action btn-->
-                                <div class="giz-app">
-                                    <div class="giz-app--title">
-                                        programs
-                                    </div>
-                                    <div class="giz-app--name">
-                                        Explorer
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="giz-card-wrapper">
-                        <div class="giz-card">
-                            <div class="giz-card--body">
-                                <div class="giz-img"><img src="https://i.postimg.cc/q74KSDDw/pc.png" /></div>
-                                <!--user action btn-->
-                                <div class="giz-button-wrapper">
-                                    <GizProgressButton></GizProgressButton>
-                                    <GizSubDropdownMenu></GizSubDropdownMenu>
-                                </div>
-                                <!--user action btn-->
-                                <div class="giz-app">
-                                    <div class="giz-app--title">
-                                        programs
-                                    </div>
-                                    <div class="giz-app--name">
-                                        My computer
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="giz-card-wrapper">
-                        <div class="giz-card">
-                            <div class="giz-card--body">
-                                <div class="giz-img">  <img src="https://i.postimg.cc/W120tb0j/dota2.png" alt="loading" /></div>
-                                <!--user action btn-->
-                                <div class="giz-button-wrapper d-none">
-                                    <GizProgressButton></GizProgressButton>
-                                    <GizSubDropdownMenu></GizSubDropdownMenu>
-                                </div>
-                                <!--user action btn-->
-                                <div class="giz-app">
-                                    <div class="giz-app--title">
-                                        programs
-                                    </div>
-                                    <div class="giz-app--name">
-                                        Dota 2
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="giz-card-wrapper">
-                        <div class="giz-card">
-                            <div class="giz-card--body">
-                                <div class="giz-img"> <img src="https://i.postimg.cc/RFjZ5NVm/spoty.png" alt="loading" /></div>
-                                <!--user action btn-->
-                                <div class="giz-button-wrapper">
-                                    <GizProgressButton></GizProgressButton>
-                                    <GizSubDropdownMenu></GizSubDropdownMenu>
-                                </div>
-                                <!--user action btn-->
-                                <div class="giz-app">
-                                    <div class="giz-app--title">
-                                        programs
-                                    </div>
-                                    <div class="giz-app--name">
-                                        Spotify
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                
+                    @if (Application != null && Application.Executables != null)
+                    {
+                        @foreach (var executable in Application.Executables)
+                        {
+                            <ExecutableCard Executable="@executable" />
+                        }
+                    }
+
                 </div>
             </div>
             <!--/playing card-->

@@ -1,0 +1,40 @@
+//============= Application Filter Card ===============//
+.giz-app-filter-card {
+    margin-bottom: 0.625rem;
+
+    .giz-card {
+        background: $dark-jungle !important;
+    }
+
+    .giz-app-filter-card-body {
+        padding: 22px !important;
+        border-radius: $rounded-sm 0px 0px $rounded-sm !important;
+        border-left: 3px solid $transparent-color;
+
+        .giz-app-filter-card-title {
+            text-transform: $text-uppercase;
+            letter-spacing: $letter-spacing-24;
+            color: $blue-gray;
+            text-shadow: $text-shadow-sm;
+            margin-bottom: $spacer-8;
+            @include font-11;
+        }
+
+        .giz-app-filter-card-text {
+            color: $white-color;
+            letter-spacing: $letter-spacing-5;
+            @include open-sans-600;
+            font-size: $font-17;
+            line-height: $line-height-21;
+        }
+    }
+
+    &.active {
+        border-radius: $rounded-lg !important;
+
+        .giz-app-filter-card-body {
+            border-left: 3px solid $primary-dark !important;
+            background: linear-gradient(to right, rgba(44, 124, 244, 0.2) 0%, rgba(13, 16, 23, 0) 30%) !important;
+        }
+    }
+}

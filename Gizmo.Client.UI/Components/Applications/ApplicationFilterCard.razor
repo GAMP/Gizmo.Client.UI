@@ -2,17 +2,21 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
-<div class="giz-card-wrapper">
+<div class="giz-app-filter-card active">
     <Menu CloseOnItemClick="false" OpenDirection="PopupOpenDirections.Cursor" Style="width: 100%;">
         <Activator>
-            <div class="giz-card active">
-                <div class="giz-card--body">
-                    <div class="giz-card-title">All</div>
-                    <div class="giz-card-text">
-                        @ApplicationFilter?.Name
+            <Card>
+                <CardBody>
+                    <div class="giz-app-filter-card-body">
+                        <div class="giz-app-filter-card-title">
+                            All
+                        </div>
+                        <div class="giz-app-filter-card-text">
+                            @ApplicationFilter?.Name
+                        </div>
                     </div>
-                </div>
-            </div>
+                </CardBody>
+            </Card>
         </Activator>
         <ChildContent>
             @if (ApplicationFilter != null)

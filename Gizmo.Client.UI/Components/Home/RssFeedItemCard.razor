@@ -2,18 +2,20 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
-<!--giz card-->
-<div class="giz-card-wrapper">
-    <div class="giz-card active">
-        <div class="giz-card--body">
-            <div class="giz-card-title">@RssFeedItem?.Source</div>
-            <div class="giz-card-text">
-                @RssFeedItem?.Title
+<div class="rss-feed-item-card active">
+    <Card>
+        <CardBody>
+            <div class="rss-feed-item-card-body">
+                <div class="rss-feed-item-card-title">
+                    @RssFeedItem?.Source
+                </div>
+                <div class="rss-feed-item-card-text">
+                    @RssFeedItem?.Title
+                </div>
+                <div class="rss-feed-item-card-details">
+                    @RssFeedItem?.Description
+                </div>
             </div>
-            <div class="giz-card-footer-text">
-                @RssFeedItem?.Description
-            </div>
-        </div>
-    </div>
+        </CardBody>
+    </Card>
 </div>
-<!--/giz card-->

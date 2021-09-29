@@ -25,11 +25,11 @@ namespace Gizmo.Client.UI.Components
             };
 
             Application.Executables = new List<ExecutableViewModel>();
-            Application.Executables.Add(new ExecutableViewModel() { Id = 1, Name = "Linage II Freya Hi5", Loading = Convert.ToBoolean(random.Next(0, 2)), LoadingPercentage = random.Next(0, 100) });
-            Application.Executables.Add(new ExecutableViewModel() { Id = 2, Name = "Linage II Freya Hi5", Loading = Convert.ToBoolean(random.Next(0, 2)), LoadingPercentage = random.Next(0, 100) });
-            Application.Executables.Add(new ExecutableViewModel() { Id = 3, Name = "Linage II Freya Hi5", Loading = Convert.ToBoolean(random.Next(0, 2)), LoadingPercentage = random.Next(0, 100) });
-            Application.Executables.Add(new ExecutableViewModel() { Id = 4, Name = "Linage II Freya Hi5", Loading = Convert.ToBoolean(random.Next(0, 2)), LoadingPercentage = random.Next(0, 100) });
-            Application.Executables.Add(new ExecutableViewModel() { Id = 5, Name = "Linage II Freya Hi5", Loading = Convert.ToBoolean(random.Next(0, 2)), LoadingPercentage = random.Next(0, 100) });
+            Application.Executables.Add(new ExecutableViewModel() { Id = 1, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Loading = Convert.ToBoolean(random.Next(0, 2)), LoadingPercentage = random.Next(0, 100) });
+            Application.Executables.Add(new ExecutableViewModel() { Id = 2, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Loading = Convert.ToBoolean(random.Next(0, 2)), LoadingPercentage = random.Next(0, 100) });
+            Application.Executables.Add(new ExecutableViewModel() { Id = 3, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Loading = Convert.ToBoolean(random.Next(0, 2)), LoadingPercentage = random.Next(0, 100) });
+            Application.Executables.Add(new ExecutableViewModel() { Id = 4, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Loading = Convert.ToBoolean(random.Next(0, 2)), LoadingPercentage = random.Next(0, 100) });
+            Application.Executables.Add(new ExecutableViewModel() { Id = 5, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Loading = Convert.ToBoolean(random.Next(0, 2)), LoadingPercentage = random.Next(0, 100) });
         }
 
         #region FIELDS

@@ -1,4 +1,6 @@
 ﻿@namespace Gizmo.Client.UI.Shared
+@using Gizmo.Web.Components
+
 <!--Active apps dropdown-->
 <div class="giz-dropdown-wrapper active">
     <div class="giz-dropdown-overlay">
@@ -31,9 +33,37 @@
                         <img src="https://i.postimg.cc/SsSKjxsW/Discord.png" alt="loading" />
                         <div class="giz-dropdown-menu--text"><div class="giz-title">gaming</div><div>Discord</div></div>
                     </div>
-                    <div class="giz-user-action-btn">
+                    <div class="d-flex">
                         <GizProgressButton></GizProgressButton>
-                        <GizSubDropdownMenu></GizSubDropdownMenu>
+                        <Menu OpenDirection="PopupOpenDirections.Cursor" Class="ml-2">
+                            <Activator>
+                                <Button Size="ButtonSizes.Large" LeftSVGIcon="Icons.Settings_Client" Color="ButtonColors.Info"></Button>
+                            </Activator>
+                            <ChildContent>
+                                <ListItem>
+                                    Autostart
+                                </ListItem>
+                                <ListItem SVGIcon="Icons.Repair_Client">
+                                    Repair
+                                </ListItem>
+                                <ListItem SVGIcon="Icons.Folder_Client">
+                                    <ChildContent>
+                                        Personal Files
+                                    </ChildContent>
+                                    <NestedList>
+                                        <ListItem>
+                                            123
+                                        </ListItem>
+                                        <ListItem>
+                                            456
+                                        </ListItem>
+                                    </NestedList>
+                                </ListItem>
+                                <ListItem SVGIcon="Icons.Close_Client">
+                                    Terminate
+                                </ListItem>
+                            </ChildContent>
+                        </Menu>
                     </div>
                 </div>
 
