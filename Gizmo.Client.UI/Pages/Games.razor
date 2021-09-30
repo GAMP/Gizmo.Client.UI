@@ -86,10 +86,10 @@
         <!--ranking mode-->
         <div class="giz-ranking-info">
             <ChipGroup>
-                <Chip IsSelected="true">all time</Chip>
-                <Chip>solo</Chip>
-                <Chip>squads</Chip>
-                <Chip>duo</Chip>
+                <Chip IsSelected="@(_selectedTabIndex == 0)" @onclick="@(() => SelectTab(0))">all time</Chip>
+                <Chip IsSelected="@(_selectedTabIndex == 1)" @onclick="@(() => SelectTab(1))">solo</Chip>
+                <Chip IsSelected="@(_selectedTabIndex == 2)" @onclick="@(() => SelectTab(2))">squads</Chip>
+                <Chip IsSelected="@(_selectedTabIndex == 3)" @onclick="@(() => SelectTab(3))">duo</Chip>
             </ChipGroup>
             <!--/ranking mode-->
             <!--ranking wrapper-->

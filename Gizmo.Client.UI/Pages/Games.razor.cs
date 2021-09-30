@@ -41,6 +41,7 @@ namespace Gizmo.Client.UI.Pages
         private int _selectedRangeIndex = 0;
         private ICommand _selectApplicationCommand;
         private int? _selectedApplication;
+        private int _selectedTabIndex = 0;
         #endregion
 
         #region PROPERTIES
@@ -110,6 +111,12 @@ namespace Gizmo.Client.UI.Pages
         public void SelectRange(int index)
         {
             _selectedRangeIndex = index;
+        }
+
+        private void SelectTab(int index)
+        {
+            if (index < 3)
+                _selectedTabIndex = index;
         }
 
         #endregion

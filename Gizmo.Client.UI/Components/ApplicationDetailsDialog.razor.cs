@@ -30,6 +30,14 @@ namespace Gizmo.Client.UI.Components
             Application.Executables.Add(new ExecutableViewModel() { Id = 3, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Loading = Convert.ToBoolean(random.Next(0, 2)), LoadingPercentage = random.Next(0, 100) });
             Application.Executables.Add(new ExecutableViewModel() { Id = 4, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Loading = Convert.ToBoolean(random.Next(0, 2)), LoadingPercentage = random.Next(0, 100) });
             Application.Executables.Add(new ExecutableViewModel() { Id = 5, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Loading = Convert.ToBoolean(random.Next(0, 2)), LoadingPercentage = random.Next(0, 100) });
+
+            Application.Tags = new List<TagViewModel>();
+            Application.Tags.Add(new TagViewModel() { Id = 1, Name = "Multiplayer" });
+            Application.Tags.Add(new TagViewModel() { Id = 2, Name = "Free to Play" });
+            Application.Tags.Add(new TagViewModel() { Id = 3, Name = "MMO" });
+            Application.Tags.Add(new TagViewModel() { Id = 4, Name = "Custom Tag" });
+            Application.Tags.Add(new TagViewModel() { Id = 5, Name = "Action" });
+            Application.Tags.Add(new TagViewModel() { Id = 6, Name = "Adventure" });
         }
 
         #region FIELDS
@@ -77,6 +85,23 @@ namespace Gizmo.Client.UI.Components
         {
             if (index < 3)
                 _selectedTabIndex = index;
+        }
+
+        private int GetTagsByChars(int numberOfCharacters)
+        {
+            int spaceBetweenTags = 3;
+            int c = 0;
+            int index = 0;
+            foreach (var item in Application.Tags)
+            {
+                c += item.Name.Length + spaceBetweenTags;
+                if (c > numberOfCharacters)
+                {
+                    return index;
+                }
+                index += 1;
+            }
+            return index;
         }
 
         #endregion

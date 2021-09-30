@@ -95,26 +95,40 @@
                         @Application?.Name
                     </div>
                     <!--/title-->
-                    <div class=" giz-app-rating">
-                        <Rating Value="@(Application?.Rate ?? 0)" />
-                        <span>@Application?.Ratings Ratings</span>
+                    <div class="giz-app-rating">
+                        @if (Application != null)
+                        {
+                            <Rating @bind-Value="Application.Rate" />
+                        }
+                        else
+                        {
+                            <Rating Value="0" IsReadOnly="true" />
+                        }
+                        <span>@(Application?.Ratings ?? 0) Ratings</span>
                     </div>
                     <div class="giz-apps-tags">
-                        <span class="giz-selected-tag">Multiplayer</span>
-                        <span class="giz-selected-tag">Free to Play</span>
-                        <span class="giz-selected-tag">MMO</span>
-                        <span class="giz-selected-tag">Custom Tag</span>
-                        <button class="giz-add-tags client-button giz-tooltip">
-                            +2
-                            <div class="giz-tooltip-top">
-                                <div>
-                                    Action
-                                </div>
-                                <div>
-                                    Adventure
-                                </div>
-                            </div>
-                        </button>
+                        @if (Application != null && Application.Tags != null)
+                        {
+                            var tagsToShow = GetTagsByChars(40);
+                            @foreach (var tag in Application.Tags.Take(tagsToShow))
+                            {
+                                <span class="giz-selected-tag">@tag.Name</span>
+                            }
+                            @if (tagsToShow < Application.Tags.Count)
+                            {
+                                <button class="giz-add-tags client-button giz-tooltip">
+                                    +@(Application.Tags.Count - tagsToShow)
+                                    <div class="giz-tooltip-top">
+                                        @foreach (var tag in Application.Tags.Skip(tagsToShow))
+                                        {
+                                            <div>
+                                                @tag.Name
+                                            </div>
+                                        }
+                                    </div>
+                                </button>
+                            }
+                        }
                     </div>
                     <div class="giz-modal--text">
                         @Application?.Description

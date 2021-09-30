@@ -57,9 +57,16 @@
             }
             else
             {
-                <div>
-                    <Rating Value="@(Application?.Rate ?? 0)" />
-                    <span class="application-card-rating">@Application?.Ratings Rating</span>
+                <div class="d-flex align-center">
+                    @if (Application != null)
+                    {
+                        <Rating @bind-Value="Application.Rate" />
+                    }
+                    else
+                    {
+                        <Rating Value="0" IsReadOnly="true" />
+                    }
+                    <span class="application-card-rating">@(Application?.Ratings ?? 0) Ratings</span>
                 </div>
             }
         </div>

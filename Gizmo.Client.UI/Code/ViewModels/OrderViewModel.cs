@@ -8,15 +8,9 @@ namespace Gizmo.Client.UI.ViewModels
     {
         private List<OrderLineViewModel> _orderLines;
 
-        public int Id
-        {
-            get; set;
-        }
+        public int Id { get; set; }
 
-        public string UserNote
-        {
-            get; set;
-        }
+        public string UserNote { get; set; }
 
         public decimal Total
         {

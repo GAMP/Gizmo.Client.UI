@@ -4,51 +4,23 @@ namespace Gizmo.Client.UI.ViewModels
 {
     public class OrderLineViewModel : ViewModelBase
     {
-        public int Id
-        {
-            get; set;
-        }
+        public int Id { get; set; }
 
-        public int ProductId
-        {
-            get; set;
-        }
+        public int ProductId { get; set; }
 
-        public string ProductName
-        {
-            get; set;
-        }
+        public string ProductName { get; set; }
 
-        public decimal Quantity
-        {
-            get; set;
-        }
+        public decimal Quantity { get; set; }
 
-        public decimal DeliveredQuantity
-        {
-            get; set;
-        }
+        public decimal DeliveredQuantity { get; set; }
 
-        public decimal UnitPrice
-        {
-            get; set;
-        }
+        public decimal UnitPrice { get; set; }
 
-        public int? UnitPointsPrice
-        {
-            get; set;
-        }
+        public int? UnitPointsPrice { get; set; }
 
-        public int? UnitPointsAward
+        public int? UnitPointsAward { get; set; }
 
-        {
-            get; set;
-        }
-
-        public decimal Tax
-        {
-            get; set;
-        }
+        public decimal Tax { get; set; }
 
         public decimal Total
         {
@@ -58,19 +30,10 @@ namespace Gizmo.Client.UI.ViewModels
             }
         }
 
-        public int PointsTotal
-        {
-            get; set;
-        }
+        public int PointsTotal { get; set; }
 
-        public int? PointsAwardTotal
-        {
-            get; set;
-        }
+        public int? PointsAwardTotal { get; set; }
 
-        public decimal TaxTotal
-        {
-            get; set;
-        }
+        public decimal TaxTotal { get; set; }
     }
 }
