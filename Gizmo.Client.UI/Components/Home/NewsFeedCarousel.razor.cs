@@ -14,7 +14,7 @@ namespace Gizmo.Client.UI.Components
         {
             Random random = new Random();
 
-            NewsFeeds = new List<NewsFeed>();
+            NewsFeeds = new List<NewsFeedViewModel>();
 
             for (int i = 0; i < 6; i++)
             {
@@ -23,7 +23,7 @@ namespace Gizmo.Client.UI.Components
                 switch (itemType)
                 {
                     case Enumerations.NewsFeedType.Rss:
-                        RssFeed rssItem = new RssFeed();
+                        RssFeedViewModel rssItem = new RssFeedViewModel();
 
                         rssItem.Type = itemType;
                         rssItem.Items = Enumerable.Range(0, 5).Select(a => new RssFeedItemViewModel()
@@ -37,9 +37,10 @@ namespace Gizmo.Client.UI.Components
                         break;
 
                     case Enumerations.NewsFeedType.Media:
-                        MediaFeed mediaItem = new MediaFeed();
+                        MediaFeedViewModel mediaItem = new MediaFeedViewModel();
 
                         mediaItem.Type = itemType;
+                        mediaItem.Thumb = "https://i.postimg.cc/bJgnQb1h/Image-1.png";
                         mediaItem.Image = "https://i.postimg.cc/50RYR6CT/news-img.png";
                         mediaItem.Title = "Το Red Bull Mobile Esports Open Season 3 επιστρέφει αυτο το καλοκαίρι";
                         mediaItem.Source = $"turnaments 2021  | {i + 1} hours ago";
@@ -53,7 +54,7 @@ namespace Gizmo.Client.UI.Components
 
         private int _currentPage = 0;
 
-        public List<NewsFeed> NewsFeeds { get; set; }
+        public List<NewsFeedViewModel> NewsFeeds { get; set; }
 
         public void SelectedIndexChangedHandler(int index)
         {

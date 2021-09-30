@@ -1,88 +1,68 @@
 //============= news modal style ===============//
 
-.giz-modal-wrapper {
-    visibility: $visibility-invisible;
-    position: $position-fixed;
-    width: $width-full;
-    height: $height-full;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(180deg, rgba(22, 30, 37, 0.8) 0%, rgba(11, 17, 23, 0.9) 100%);
-    backdrop-filter: blur(15px);
-    z-index: 1001;
-    display:$display-flex;
-    justify-content:$justify-center;
-    align-items:$align-center;
-
-    .giz-news-modal {
-        position:$position-relative;
-        margin:0 auto;
-        border-radius: $rounded-xl;
-        z-index: 1002;
-        border: thin solid $border-silver-gray;
+.giz-media-feed-item-dialog {
+    .giz-card {
+        padding: unset !important;
         background: $dark-color;
-        backdrop-filter: blur(20px);
-        max-width: 39.313rem;
-        min-width: 15.875rem;
-        cursor: default;
 
-        .giz-modal-header {
-            text-align: $text-align-center;
-            border-bottom: 1px solid $border-silver-gray;
-
-            .giz-terminate {
-                background: inherit;
-                float: $float-right;
-            }
-
-            &--title {
-                @include font-10($letter-spacing-15);
-                color: $primary-light-color;
-            }
-
-            &--text {
-                @include font-20;
-                color: $white-color;
-                margin-top: 0.625rem;
-            }
+        &:before {
+            background: unset !important;
         }
 
-        .giz-modal-body {
+        &-header {
+            border-bottom: 1px solid $border-silver-gray;
+        }
+    }
 
-            img {
-                border-radius: $rounded-lg;
-                width: $width-full;
-            }
+    .giz-media-feed-item-dialog-header {
+        text-align: $text-align-center;
+        margin: 2rem;
 
-            &--title {
-                text-transform: $text-uppercase;
-                letter-spacing: $letter-spacing-24;
-                color: $blue-gray;
-                text-shadow: $text-shadow-sm;
-                margin-bottom: $spacer-8;
-                @include font-11;
-            }
+        &-title {
+            @include font-10($letter-spacing-15);
+            color: $primary-light-color;
+        }
 
-            &--text {
-                color: $white-color;
-                line-height: $line-height-25;
-                @include open-sans-600;
-                font-size: $font-20;
-                letter-spacing: $letter-spacing-5;
-            }
+        &-text {
+            @include font-20;
+            color: $white-color;
+            margin-top: 0.625rem;
+        }
+    }
 
-            &--footer-text {
-                font-family: $font-family-open-sans;
-                font-size: $font-14;
-                line-height: $line-height-21;
-                letter-spacing: $letter-spacing-1;
-                color: $milky-white;
-                margin-top: 1rem;
-            }
+    .giz-media-feed-item-dialog-body {
+        text-align: left;
+        margin: 2rem;
+
+        img {
+            border-radius: $rounded-lg;
+            width: $width-full;
+        }
+
+        &-source {
+            text-transform: $text-uppercase;
+            letter-spacing: $letter-spacing-24;
+            color: $blue-gray;
+            text-shadow: $text-shadow-sm;
+            margin-bottom: $spacer-8;
+            @include font-11;
+        }
+
+        &-title {
+            color: $white-color;
+            line-height: $line-height-25;
+            @include open-sans-600;
+            font-size: $font-20;
+            letter-spacing: $letter-spacing-5;
+        }
+
+        &-description {
+            font-family: $font-family-open-sans;
+            font-size: $font-14;
+            line-height: $line-height-21;
+            letter-spacing: $letter-spacing-1;
+            color: $milky-white;
+            margin-top: 1rem;
         }
     }
 }
-
-

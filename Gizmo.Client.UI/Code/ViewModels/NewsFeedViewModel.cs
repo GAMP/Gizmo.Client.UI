@@ -3,7 +3,7 @@ using Gizmo.Shared.ViewModels;
 
 namespace Gizmo.Client.UI.ViewModels
 {
-    public class NewsFeed : ViewModelBase
+    public class NewsFeedViewModel : ViewModelBase
     {
         public NewsFeedType Type { get; set; }
     }
