@@ -6,21 +6,23 @@
 
 <GizNavigation Title="Daily News" OnClickPreviousButton="@OnClickPreviousButtonHandler" OnClickNextButton="@OnClickNextButtonHandler" />
 
-@if (NewsFeeds != null)
-{
-    <NewsFeedCarouselIndicator Size="NewsFeeds.Count" SelectedIndex="@_currentPage" SelectedIndexChanged="SelectedIndexChangedHandler" />
+<div class="giz-news-feed-carousel">
+    @if (NewsFeeds != null)
+    {
+        <NewsFeedCarouselIndicator Size="NewsFeeds.Count" SelectedIndex="@_currentPage" SelectedIndexChanged="SelectedIndexChangedHandler" />
 
-    if (NewsFeeds[_currentPage].Type == Enumerations.NewsFeedType.Media)
-    {
-        var mediaFeed = (MediaFeedViewModel)NewsFeeds[_currentPage];
-        <MediaFeedItemCard MediaFeed="@mediaFeed" />
-    }
-    else
-    {
-        var rssFeed = (RssFeedViewModel)NewsFeeds[_currentPage];
-        @foreach (var rssFeedItem in rssFeed.Items)
+        if (NewsFeeds[_currentPage].Type == Enumerations.NewsFeedType.Media)
         {
-            <RssFeedItemCard RssFeedItem="@rssFeedItem" />
+            var mediaFeed = (MediaFeedViewModel)NewsFeeds[_currentPage];
+            <MediaFeedItemCard MediaFeed="@mediaFeed" />
+        }
+        else
+        {
+            var rssFeed = (RssFeedViewModel)NewsFeeds[_currentPage];
+            @foreach (var rssFeedItem in rssFeed.Items)
+            {
+                <RssFeedItemCard RssFeedItem="@rssFeedItem" />
+            }
         }
     }
-}
+</div>

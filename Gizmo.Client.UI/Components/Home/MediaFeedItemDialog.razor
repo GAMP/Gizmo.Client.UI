@@ -2,22 +2,22 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
-<Dialog @bind-IsOpen="IsOpen" IsModal="true" MaximumWidth="629px" MaximumHeight="629px" Class="giz-media-feed-item-dialog">
+<Dialog @bind-IsOpen="IsOpen" IsModal="true" MaximumWidth="629px" MaximumHeight="629px" Class="giz-news-feed-media-item-dialog">
     <DialogHeader>
-        <div class="giz-media-feed-item-dialog-header">
-            <div class="giz-media-feed-item-dialog-header-title">news</div>
-            <div class="giz-media-feed-item-dialog-header-text">via RedBull Gaming News</div>
+        <div class="giz-news-feed-media-item-card-header">
+            <div class="giz-news-feed-media-item-card-header-title">news</div>
+            <div class="giz-news-feed-media-item-card-header-text">via RedBull Gaming News</div>
         </div>
         <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
     </DialogHeader>
     <DialogBody>
-        <div class="giz-media-feed-item-dialog-body">
+        <div class="giz-news-feed-media-item-card-body">
             <img src="@MediaFeed.Image" alt="Image" class="pb-6" />
-            <div class="giz-media-feed-item-dialog-body-source">@MediaFeed.Source</div>
-            <div class="giz-media-feed-item-dialog-body-title">
+            <div class="giz-news-feed-media-item-card-body-source">@MediaFeed.Source</div>
+            <div class="giz-news-feed-media-item-card-body-title">
                 @MediaFeed.Title
             </div>
-            <div class="giz-media-feed-item-dialog-body-description">
+            <div class="giz-news-feed-media-item-card-body-text">
                 @MediaFeed.Description
             </div>
         </div>

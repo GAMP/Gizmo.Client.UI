@@ -1,0 +1,70 @@
+//============= Notifications ===============//
+
+.giz-notifications-container {
+    z-index: 50;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 40px 28px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+    height: calc(100vh - 75px);
+    overflow-y: auto;
+    pointer-events: none;
+}
+
+.giz-notification-dialog {
+    pointer-events: all;
+}
+
+.giz-notification-card {
+    width: 24.063rem;
+    padding: 2.063rem 1.813rem;
+    backdrop-filter: blur(20px);
+    border-radius: $rounded-xl;
+    background: linear-gradient( 180deg, rgba(90, 94, 107, 0) -12%, rgba(37, 140, 246, 0.45) 169%);
+    position: $position-relative;
+    border: 1px solid $border-color;
+    overflow: $overflow-hidden;
+
+    &::before {
+        content: "";
+        background: $dark-color;
+        position: $position-absolute;
+        height: $height-full;
+        width: $width-full;
+        z-index: -1;
+        top: 0;
+        left: 0;
+    }
+
+    &-header {
+        display: $display-flex;
+        justify-content: $justify-space-between;
+        align-items: $align-center;
+        margin-bottom: 0.5rem;
+
+        .giz-heading-text {
+            @include font-10($letter-spacing-15);
+            color: $primary-light-color;
+        }
+
+        .giz-terminate {
+            background: inherit;
+        }
+    }
+
+    &-title {
+        @include font-18;
+        letter-spacing: $letter-spacing-2;
+        margin-bottom: 1.25rem;
+    }
+
+    &-text {
+        font-size: $font-15;
+        letter-spacing: $letter-spacing-24;
+        line-height: $line-height-20;
+        font-family: $font-family-open-sans;
+    }
+}

@@ -4,7 +4,7 @@
         background: rgba(14, 16, 21, 0.5) !important;
     }
 
-    .giz-executable-card-body {
+    &-body {
         padding: 22px !important;
         border-radius: $rounded-sm 0px 0px $rounded-sm !important;
         border-left: 3px solid $transparent-color;
@@ -13,10 +13,12 @@
         grid-template-columns: auto 1fr;
         align-items: $align-center;
 
-        .giz-executable-image {
-            position: $position-relative;
+        &-executable {
+            &-image {
+                position: $position-relative;
+            }
 
-            .giz-status {
+            &-status {
                 position: $position-absolute;
                 @include font-11;
                 bottom: 4px;
@@ -26,7 +28,7 @@
                 border-radius: $rounded-pill-19;
                 padding: 0.188rem 0.313rem;
 
-                &--icon {
+                &-bullet {
                     height: 8px;
                     width: 8px;
                     border-radius: $rounded-circle;
@@ -38,8 +40,8 @@
             }
         }
 
-        .giz-executable-card-details {
-            .giz-executable-card-details-header {
+        &-details {
+            &-group {
                 @include font-10;
                 margin-bottom: 0.625rem;
                 color: $dim-white;
@@ -49,15 +51,12 @@
                 }
             }
 
-            .giz-executable-card-details-body {
+            &-title {
                 @include font-16;
                 letter-spacing: $letter-spacing-24;
                 @include open-sans-600;
                 text-transform: $text-capitalize;
             }
-        }
-
-        .giz-executable-card-actions {
         }
     }
 

@@ -5,12 +5,12 @@
 <!--dropdown-->
 <div class="giz-dropdown-menu">
     <!--dropdown body-->
-    <div class="giz-dropdwon-menu--body">
+    <div class="giz-dropdown-menu--body">
         <!--notification-->
-        <div class="giz-notification">
-            <div class="giz-notification--wrapper">
+        <div class="giz-menu-notifications-container">
+            <div class="giz-menu-notifications-container-wrapper">
 
-                @if (Notifications!=null && Notifications.Count > 0)
+                @if (Notifications != null && Notifications.Count > 0)
                 {
                     foreach (var notification in Notifications)
                     {
@@ -20,16 +20,16 @@
                 else
                 {
                     <!--no notification-->
-                    <div class="giz-no-notification">
-                        <div class="giz-no-notification--title">No new notifications.</div>
-                        <div class="giz-no-notification--text">When something new happens you’ll find it here.</div>
+                    <div class="giz-menu-notification-default-item">
+                        <div class="giz-menu-notification-default-item-title">No new notifications.</div>
+                        <div class="giz-menu-notification-default-item-text">When something new happens you’ll find it here.</div>
                     </div>
                     <!--/no notification-->
                 }
 
             </div>
             <!--notification btn-->
-            <div class="giz-notification--btn">
+            <div class="giz-menu-notifications-container-actions">
                 <button class="client-button giz-btn-info mb-2">
                     Mark as all read
                 </button>

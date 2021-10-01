@@ -8,7 +8,9 @@
             <div class="giz-executable-card-body">
                 @if (Executable != null)
                 {
-                    <div class="giz-executable-image"><img src="@Executable.Image" /><div class="giz-status"><i class="giz-status--icon"></i>24</div></div>
+                    <div class="giz-executable-card-body-executable-image"><img src="@Executable.Image" />
+                        <div class="giz-executable-card-body-executable-status"><i class="giz-executable-card-body-executable-status-bullet"></i>24</div>
+                    </div>
 
                     if (Executable.Loading)
                     {
@@ -49,8 +51,8 @@
                     }
                     else
                     {
-                        <div class="giz-executable-card-details">
-                            <div class="giz-executable-card-details-header">
+                        <div class="giz-executable-card-body-details">
+                            <div class="giz-executable-card-body-details-group">
                                 Games
                                 <!--svg-->
                                 <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -58,7 +60,7 @@
                                 </svg>
                                 <!--/svg-->
                             </div>
-                            <div class="giz-executable-card-details-body">
+                            <div class="giz-executable-card-body-details-title">
                                 @Executable.Name
                             </div>
                         </div>
