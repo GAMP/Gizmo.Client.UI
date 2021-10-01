@@ -1,62 +1,24 @@
 //============= Executable Selector Dialog ===============//
-.giz-exe-selector-dialog-body {
+
+.giz-exe-selector-card {
     min-width: 556px;
 
-    //=== modal header
-    .giz-modal-header {
+    &-header {
         text-align: $text-align-center;
         margin-bottom: 2.813rem;
 
-        .giz-terminate {
-            background: inherit;
-            float: $float-right;
-        }
-
-        &--title {
+        &-title {
             @include font-10($letter-spacing-15);
             color: $primary-light-color;
         }
 
-        &--text {
+        &-text {
             @include font-20;
             color: $white-color;
             margin-top: 0.625rem;
         }
     }
-    //=== modal body
-    .giz-window-modal-body {
 
-        .giz-app-cards {
-            display: $display-grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            grid-gap: 0.875rem;
-
-            .giz-card-wrapper {
-
-                .active {
-                    border-radius: $rounded-lg !important;
-
-                    &::before {
-                        border-radius: $rounded-lg;
-                    }
-
-                    &::after {
-                        border: none;
-                    }
-
-                    .giz-card--body {
-                        border-left: 3px solid $primary-dark !important;
-
-                        .giz-button-wrapper {
-                            display: $display-block !important;
-                        }
-
-                        .giz-app {
-                            display: $display-none;
-                        }
-                    }
-                }
-            }
-        }
+    &-body {
     }
 }

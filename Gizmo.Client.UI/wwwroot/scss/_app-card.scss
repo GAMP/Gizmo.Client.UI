@@ -1,0 +1,51 @@
+//============= Application Card ===============//
+
+.application-card {
+
+    .hovered-content {
+        svg {
+            cursor: $cursor-pointer;
+        }
+    }
+
+    .application-card-title {
+        @include open-sans-600;
+    }
+
+    .application-card-text {
+        font-size: $font-12;
+        line-height: $line-height-12;
+        letter-spacing: $letter-spacing-2;
+        @include open-sans-600;
+
+        .inactive {
+            fill: $melrose-color;
+        }
+        /*svg:not(.inactive) {
+            fill: $primary-color;
+        }*/
+
+        .giz-playing-indicator {
+            height: 0.5rem;
+            width: 0.5rem;
+            background: $danger-light;
+            border-radius: $rounded-circle;
+            margin-right: 0.188rem;
+            display: $display-inline-block;
+        }
+    }
+
+    .application-card-count {
+        @include font-12;
+        text-shadow: $text-shadow-sm;
+        font-weight: $font-weight-400;
+    }
+
+    .application-card-rating {
+        color: $light-blue;
+        letter-spacing: normal;
+        font-weight: $font-weight-400;
+        font-family: $font-family;
+        margin-left: 0.625rem;
+    }
+}

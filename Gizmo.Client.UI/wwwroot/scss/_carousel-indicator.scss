@@ -1,9 +1,10 @@
-//============= carousel indicators style ===============//
+//============= Carousel Indicator ===============//
+
 .giz-carousel-indicator {
     text-align: $text-align-center;
     margin: 0.625rem 0 1.25rem 0;
 
-    .giz-indicator {
+    &-btn {
         width: 2.25rem;
         height: 0.25rem;
         margin-right: 0.313rem;
@@ -12,6 +13,11 @@
         transition: opacity .6s ease;
         background: $gray-black;
         border-radius: $rounded;
+
+        &.active {
+            background: $primary-color;
+        }
+
 
         &:hover:not(.active) {
             background-color: $gray-dim;
