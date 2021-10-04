@@ -53,22 +53,6 @@
         &:last-child {
             border-bottom: none !important;
         }
-
-        .giz-tooltip {
-            @include tooltip;
-
-            &:hover .giz-tooltip-top {
-                visibility: $visibility-visible !important;
-            }
-        }
-
-        .giz-tooltip-top {
-            @include tooltip-top;
-
-            svg {
-                vertical-align: baseline;
-            }
-        }
     }
 
     &--title {
@@ -134,18 +118,11 @@
     }
 
     .giz-add-tags {
+        cursor: pointer;
         background: $light-navy-blue;
         @extend .giz-selected-tag;
         font-weight: $font-weight-400;
         color: $white-color;
-
-        &:hover .giz-tooltip-top {
-            visibility: $visibility-visible !important;
-        }
-
-        .giz-tooltip-top {
-            @include tooltip-top;
-        }
     }
 }
 
@@ -205,21 +182,6 @@
         height: 16.25rem;
         overflow-y: scroll;
         overflow-x: hidden;
-        //== custom scroll bar
-        /* width */
-        &::-webkit-scrollbar {
-            width: 0.25rem;
-        }
-        /* Track */
-        &::-webkit-scrollbar-track {
-            background: $border-dark-color;
-            border-radius: $rounded-xl;
-        }
-        /* Handle */
-        &::-webkit-scrollbar-thumb {
-            background: $gray-nickel;
-            border-radius: $rounded-xl;
-        }
 
         &--heading {
             font-weight: $font-weight-700;
@@ -229,12 +191,16 @@
     //=== video wrapper
 
     .giz-video-wrapper {
-        display: $display-grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        grid-gap: 2.188rem;
+        display: flex;
+        overflow-x: scroll;
 
         .giz-modal-video {
             margin-bottom: 1rem;
+            margin-right: 2rem;
+
+            &:last-child {
+                margin-right: 0;
+            }
 
             img {
                 min-width: $width-full;

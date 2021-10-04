@@ -3,8 +3,26 @@
 .giz-nav-item-global-search {
 
     .giz-global-search {
+        display: inline-flex;
+        align-items: center;
         position: $position-relative;
         width: $width-full;
+
+        &:focus-within {
+            background: $jet-black;
+            border-top-left-radius: $rounded;
+            border-top-right-radius: $rounded;
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+
+            .giz-terminate {
+                visibility: $visibility-visible !important;
+            }
+
+            .giz-dropdown-menu {
+                display: $display-block !important;
+            }
+        }
 
         input {
             color: $white-color;
@@ -16,21 +34,6 @@
             font-size: $font-15;
             line-height: $line-height-15;
             width: 19.75rem;
-            border-radius: $rounded;
-
-            &:focus {
-                background: $jet-black;
-                border-bottom-left-radius: 0px;
-                border-bottom-right-radius: 0px;
-
-                ~ .giz-terminate {
-                    visibility: $visibility-visible !important;
-                }
-
-                ~ .giz-dropdown-menu {
-                    display: $display-block !important;
-                }
-            }
         }
 
         .giz-search {
@@ -41,12 +44,10 @@
 
         .giz-terminate {
             visibility: $visibility-invisible;
-            position: $position-absolute;
-            top: 6px;
-            right: 12px;
         }
 
         .giz-dropdown-menu {
+            top: 100%;
             width: $width-full;
             min-height: 26.625rem;
             border-radius: 0 0 $rounded-lg $rounded-lg;

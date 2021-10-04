@@ -41,43 +41,36 @@
                             Player Mode
                         </div>
                         <div class="giz-app-brand--text">
-                            Single Player
-                            <div class="giz-tooltip">
-                                <!--svg-->
-                                <svg width="4" height="10" viewBox="0 0 4 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M2.00016 2.66659C2.64183 2.66659 3.16683 2.14159 3.16683 1.49992C3.16683 0.858252 2.64183 0.333252 2.00016 0.333252C1.3585 0.333252 0.833496 0.858252 0.833496 1.49992C0.833496 2.14159 1.3585 2.66659 2.00016 2.66659ZM2.00016 3.83325C1.3585 3.83325 0.833496 4.35825 0.833496 4.99992C0.833496 5.64159 1.3585 6.16659 2.00016 6.16659C2.64183 6.16659 3.16683 5.64159 3.16683 4.99992C3.16683 4.35825 2.64183 3.83325 2.00016 3.83325ZM2.00016 7.33325C1.3585 7.33325 0.833496 7.85825 0.833496 8.49992C0.833496 9.14159 1.3585 9.66659 2.00016 9.66659C2.64183 9.66659 3.16683 9.14159 3.16683 8.49992C3.16683 7.85825 2.64183 7.33325 2.00016 7.33325Z" fill="white" />
-                                </svg>
-                                <!--/svg-->
-
-                                <div class="giz-tooltip-top">
-                                    <div class="d-flex justify-space-between">
+                            <div class="d-flex align-center" style="justify-content: flex-end;">
+                                Single Player
+                                <Tooltip>
+                                    <TooltipContent>
                                         <div>
-                                            Free to Play
+                                            <div class="d-flex justify-space-between">
+                                                <div>
+                                                    Free to Play
+                                                </div>
+                                                <div>
+                                                    <Icon SVGIcon="Icons.User_Client" Size="IconSizes.ExtraSmall" />
+                                                    8+
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-space-between">
+                                                <div>
+                                                    Co-Op Online
+                                                </div>
+                                                <div>
+                                                    <Icon SVGIcon="Icons.User_Client" Size="IconSizes.ExtraSmall" />
+                                                    2
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <!--svg-->
-                                            <svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M4.16667 6.02273C5.46061 6.02273 6.51042 4.87749 6.51042 3.46591C6.51042 2.05433 5.46061 0.909092 4.16667 0.909092C2.87272 0.909092 1.82292 2.05433 1.82292 3.46591C1.82292 4.87749 2.87272 6.02273 4.16667 6.02273ZM6.25 6.59091H5.35319C4.99186 6.77202 4.58984 6.875 4.16667 6.875C3.74349 6.875 3.3431 6.77202 2.98014 6.59091H2.08333C0.932617 6.59091 0 7.60831 0 8.86364V9.14773C0 9.61825 0.349935 10 0.78125 10H7.55208C7.9834 10 8.33333 9.61825 8.33333 9.14773V8.86364C8.33333 7.60831 7.40071 6.59091 6.25 6.59091Z" fill="white" />
-                                            </svg>
-                                            8+
-                                            <!--/svg-->
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-space-between">
-                                        <div>
-                                            Co-Op Online
-                                        </div>
-                                        <div>
-                                            <!--svg-->
-                                            <svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M4.16667 6.02273C5.46061 6.02273 6.51042 4.87749 6.51042 3.46591C6.51042 2.05433 5.46061 0.909092 4.16667 0.909092C2.87272 0.909092 1.82292 2.05433 1.82292 3.46591C1.82292 4.87749 2.87272 6.02273 4.16667 6.02273ZM6.25 6.59091H5.35319C4.99186 6.77202 4.58984 6.875 4.16667 6.875C3.74349 6.875 3.3431 6.77202 2.98014 6.59091H2.08333C0.932617 6.59091 0 7.60831 0 8.86364V9.14773C0 9.61825 0.349935 10 0.78125 10H7.55208C7.9834 10 8.33333 9.61825 8.33333 9.14773V8.86364C8.33333 7.60831 7.40071 6.59091 6.25 6.59091Z" fill="white" />
-                                            </svg>
-                                            2
-                                            <!--/svg-->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                    </TooltipContent>
+                                    <ChildContent>
+                                        <Icon SVGIcon="Icons.More_Client" Size="IconSizes.Small" Style="cursor: pointer" />
+                                    </ChildContent>
+                                </Tooltip>
+                            </div>                            
                         </div>
                     </div>
                 </div>
@@ -116,17 +109,23 @@
                             }
                             @if (tagsToShow < Application.Tags.Count)
                             {
-                                <button class="giz-add-tags client-button giz-tooltip">
-                                    +@(Application.Tags.Count - tagsToShow)
-                                    <div class="giz-tooltip-top">
-                                        @foreach (var tag in Application.Tags.Skip(tagsToShow))
-                                        {
-                                            <div>
-                                                @tag.Name
-                                            </div>
-                                        }
-                                    </div>
-                                </button>
+                                <Tooltip>
+                                    <TooltipContent>
+                                        <div>
+                                            @foreach (var tag in Application.Tags.Skip(tagsToShow))
+                                            {
+                                                <div>
+                                                    @tag.Name
+                                                </div>
+                                            }
+                                        </div>
+                                    </TooltipContent>
+                                    <ChildContent>
+                                        <div class="giz-add-tags">
+                                            +@(Application.Tags.Count - tagsToShow)
+                                        </div>
+                                    </ChildContent>
+                                </Tooltip>
                             }
                         }
                     </div>
@@ -189,7 +188,7 @@
                 {
                     case 0:
 
-                        <div class="giz-executable-list">
+                        <div class="giz-executable-list giz-scrollbar-v">
 
                             @if (Application != null && Application.Executables != null)
                             {
@@ -205,11 +204,16 @@
 
                     case 2:
 
-                        <div class="giz-video-wrapper">
+                        <div class="giz-video-wrapper giz-scrollbar-h">
                             <div class="giz-modal-video">
                                 <img src="https://i.postimg.cc/kXYNPNgF/Video.png" alt="loading" />
                                 <div class="giz-modal-video--title">unboxholics</div>
                                 <div class="giz-modal-video--text">Κλαίμε με το νέο Season 4 Fall Guys Ultimate Knockout!!!</div>
+                            </div>
+                            <div class="giz-modal-video">
+                                <img src="https://i.postimg.cc/d3rRY34R/trailer.png" alt="loading" />
+                                <div class="giz-modal-video--title">ign</div>
+                                <div class="giz-modal-video--text">Fall Guys Season 4 - Official Trailer</div>
                             </div>
                             <div class="giz-modal-video">
                                 <img src="https://i.postimg.cc/d3rRY34R/trailer.png" alt="loading" />
