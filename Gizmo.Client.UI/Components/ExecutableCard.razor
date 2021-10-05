@@ -2,7 +2,7 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
-<div class="giz-executable-card @(Executable?.Loading == true ? "active" : "")">
+<div class="giz-executable-card @(Executable?.Installing == true ? "active" : "")">
     <Card>
         <CardBody>
             <div class="giz-executable-card-body">
@@ -12,11 +12,11 @@
                         <div class="giz-executable-card-body-executable-status"><i class="giz-executable-card-body-executable-status-bullet"></i>24</div>
                     </div>
 
-                    if (Executable.Loading)
+                    if (Executable.Installing)
                     {
                         <!--user action btn-->
                         <div class="d-flex">
-                            <GizProgressButton></GizProgressButton>
+                            <GizProgressButton Value="@Executable.InstallingPercentage" />
                             <Menu OpenDirection="PopupOpenDirections.Cursor" Class="ml-2">
                                 <Activator>
                                     <Button Size="ButtonSizes.Large" LeftSVGIcon="Icons.Settings_Client" Color="ButtonColors.Info"></Button>

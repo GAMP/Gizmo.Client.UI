@@ -9,10 +9,12 @@ namespace Gizmo.Client.UI.ViewModels
 
         public string Name { get; set; }
 
+        public string Category { get; set; }
+
         public string Image { get; set; }
 
-        public bool Loading { get; set; }
+        public bool Installing { get; set; }
 
-        public decimal LoadingPercentage { get; set; }
+        public decimal InstallingPercentage { get; set; }
     }
 }

@@ -11,7 +11,7 @@
     {
         <NewsFeedCarouselIndicator Size="NewsFeeds.Count" SelectedIndex="@_currentPage" SelectedIndexChanged="SelectedIndexChangedHandler" />
 
-        if (NewsFeeds[_currentPage].Type == Enumerations.NewsFeedType.Media)
+       @* @if (NewsFeeds[_currentPage].Type == Enumerations.NewsFeedType.Media)
         {
             var mediaFeed = (MediaFeedViewModel)NewsFeeds[_currentPage];
             <MediaFeedItemCard MediaFeed="@mediaFeed" />
@@ -23,6 +23,30 @@
             {
                 <RssFeedItemCard RssFeedItem="@rssFeedItem" />
             }
-        }
+        }*@
     }
 </div>
+
+<Carousel SelectedIndex="@_currentPage">
+    @if (NewsFeeds != null)
+    {
+        @foreach (var item in NewsFeeds)
+        {
+            <CarouselItem>
+                @if (NewsFeeds[_currentPage].Type == Enumerations.NewsFeedType.Media)
+                {
+                    var mediaFeed = (MediaFeedViewModel)NewsFeeds[_currentPage];
+                    <MediaFeedItemCard MediaFeed="@mediaFeed" />
+                }
+                else
+                {
+                    var rssFeed = (RssFeedViewModel)NewsFeeds[_currentPage];
+                    @foreach (var rssFeedItem in rssFeed.Items)
+                    {
+                        <RssFeedItemCard RssFeedItem="@rssFeedItem" />
+                    }
+                }
+            </CarouselItem>
+        }
+    }
+</Carousel>

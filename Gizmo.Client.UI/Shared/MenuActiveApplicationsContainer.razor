@@ -1,0 +1,23 @@
+﻿@namespace Gizmo.Client.UI.Shared
+@inherits CustomDOMComponentBase
+@using Gizmo.Web.Components
+@using Gizmo.Client.UI.Components
+
+<Drawer @bind-IsOpen="IsOpen">
+    <div class="giz-active-apps-drawer">
+        <!--dropdown header-->
+        <div class="giz-active-apps-drawer-header">
+            <div class="giz-title">Manager</div>
+            <div class="giz-heading">Active applications</div>
+        </div>
+        <!--/dropdown header-->
+        <!--dropdown body-->
+        <div class="giz-active-apps-drawer-body">
+            @foreach (var executable in Executables)
+            {
+                <MenuActiveApplicationCard Executable="@executable" />
+            }
+        </div>
+        <!--/dropdown body-->
+    </div>    
+</Drawer>

@@ -80,5 +80,31 @@ namespace Gizmo.Client.UI.Components
 
             return Task.CompletedTask;
         }
+
+        private NewsFeedViewModel GetCurrentPageItem()
+        {
+            return NewsFeeds[_currentPage];
+        }
+
+        private NewsFeedViewModel GetPreviousPageItem()
+        {
+            int previousItem = _currentPage - 1;
+
+            if (previousItem < 0)
+                previousItem = NewsFeeds.Count - 1;
+
+            return NewsFeeds[previousItem];
+        }
+
+        private NewsFeedViewModel GetNextPageItem()
+        {
+            int nextItem = _currentPage + 1;
+
+            if (nextItem > NewsFeeds.Count - 1)
+                nextItem = 0;
+
+            return NewsFeeds[nextItem];
+        }
+
     }
 }

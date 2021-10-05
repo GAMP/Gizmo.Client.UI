@@ -1,0 +1,57 @@
+﻿@namespace Gizmo.Client.UI.Shared
+@inherits CustomDOMComponentBase
+@using Gizmo.Web.Components
+
+<div class="giz-active-app-card @(Executable.Installing ? "active" : "")">
+    @if (Executable != null)
+    {
+        <div class="giz-active-app-card-body">
+            <div class="giz-active-app-card-body-header">
+                <img src="@Executable.Image" alt="loading" />
+                <div>
+                    <div class="giz-active-app-card-body-header-title">Gaming</div>
+                    <div>@Executable.Name</div>
+                </div>
+            </div>
+            <div class="giz-active-app-card-body-actions">
+                @if (Executable.Installing)
+                {
+                    <GizProgressButton Value="@Executable.InstallingPercentage" />
+                }
+                else
+                {
+                    <Button Size="ButtonSizes.Large">play</Button>
+                }
+                <Menu Direction="ListDirections.Left" OpenDirection="PopupOpenDirections.Cursor" Class="ml-2">
+                    <Activator>
+                        <Button Size="ButtonSizes.Large" LeftSVGIcon="Icons.Settings_Client" Color="ButtonColors.Info"></Button>
+                    </Activator>
+                    <ChildContent>
+                        <ListItem>
+                            Autostart
+                        </ListItem>
+                        <ListItem SVGIcon="Icons.Repair_Client">
+                            Repair
+                        </ListItem>
+                        <ListItem SVGIcon="Icons.Folder_Client">
+                            <ChildContent>
+                                Personal Files
+                            </ChildContent>
+                            <NestedList>
+                                <ListItem>
+                                    123
+                                </ListItem>
+                                <ListItem>
+                                    456
+                                </ListItem>
+                            </NestedList>
+                        </ListItem>
+                        <ListItem SVGIcon="Icons.Close_Client">
+                            Terminate
+                        </ListItem>
+                    </ChildContent>
+                </Menu>
+            </div>
+        </div>
+    }
+</div>

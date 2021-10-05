@@ -1,4 +1,7 @@
-﻿@using Gizmo.Web.Components
+﻿@inherits CustomDOMComponentBase
+@using Gizmo.Web.Components
+@using Gizmo.Client.UI.Components
+@using Gizmo.Client.UI.ViewModels
 
 <!--header-->
 <header id="giz-navbar" client-theme="true">
@@ -18,31 +21,31 @@
             <ul class="giz-menu">
                 <!--navbar item-->
                 <li class="giz-menu--item">
-                    <a href="#" class="giz-menu--link">
+                    <div class="giz-menu--link">
                         <Icon SVGIcon="Icons.Rocket_Client" Size="IconSizes.Small" Class="mr-3" />
                         QUICK LAUNCH
-                    </a>
+                    </div>
                 </li>
                 <li class="giz-menu--item menu-active-apps">
-                    <a href="#" class="giz-menu--link">
+                    <div class="giz-menu--link" @onclick="() => ToggleActiveApps()">
                         <Icon SVGIcon="Icons.Apps_Client" Size="IconSizes.Small" Class="mr-3" />
                         ACTIVE APPS
-                    </a>
+                    </div>
                     <!--dropdown-->
-                    <MenuActiveApplications></MenuActiveApplications>
+                    <MenuActiveApplicationsContainer @bind-IsOpen="_isOpen"></MenuActiveApplicationsContainer>
                     <!--/dropdown-->
                 </li>
                 <li class="giz-menu--item giz-favorite-dropdown">
-                    <a href="#" class="giz-menu--link">
+                    <div class="giz-menu--link">
                         <Icon SVGIcon="Icons.Heart_Client" Size="IconSizes.Small" Class="mr-3" />
                         FAVORITES
-                    </a>
+                    </div>
                     <!--dropdown-->
                     <MenuFavorites></MenuFavorites>
                     <!--/dropdown-->
                 </li>
                 <li class="giz-menu--item giz-notification-dropdown">
-                    <a href="#" class="giz-menu--link">
+                    <div class="giz-menu--link">
                         <!--svg-->
                         <svg xmlns="http://www.w3.org/2000/svg" width="26" height="28" viewBox="0 0 26 28" fill="none" class="giz-notifications">
                             <path d="M13.5 15C13.5 13.6739 12.9732 12.4021 12.0355 11.4645C11.0979 10.5268 9.82608 10 8.5 10C7.17392 10 5.90215 10.5268 4.96447 11.4645C4.02678 12.4021 3.5 13.6739 3.5 15C3.5 20.8333 1 22.5 1 22.5H16C16 22.5 13.5 20.8333 13.5 15Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -64,12 +67,12 @@
                             </defs>
                         </svg>
                         <!--/svg-->
-                    </a>
+                    </div>
                     <!--dropdown-->
                     <MenuNotificationsContainer></MenuNotificationsContainer>
                     <!--/dropdown-->
                 </li>
-                <li class="giz-menu--item giz-user-profile">
+                <li class="giz-menu--item giz-user-dropdown giz-user-profile">
                     <div class="giz-menu--avtar">
                         <!--svg-->
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="27" height="27" viewBox="0 0 27 27" fill="none">

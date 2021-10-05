@@ -8,3 +8,82 @@
         @include font-18;
     }
 }
+
+.giz-carousel {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+
+    &-item {
+        display: none;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+
+        &.active {
+            display: inline-block;
+        }
+    }
+
+    .slide-left-current {
+        animation-duration: 1s;
+        animation-name: slide-left-current-anim;
+    }
+
+    .slide-left-next {
+        animation-duration: 1s;
+        animation-name: slide-left-next-anim;
+    }
+
+    .slide-right-current {
+        animation-duration: 1s;
+        animation-name: slide-right-current-anim;
+    }
+
+    .slide-right-next {
+        animation-duration: 1s;
+        animation-name: slide-right-next-anim;
+    }
+}
+
+@keyframes slide-left-current-anim {
+    from {
+        left: 0;
+    }
+
+    to {
+        left: -100%;
+    }
+}
+
+@keyframes slide-left-next-anim {
+    from {
+        left: 100%;
+    }
+
+    to {
+        left: 0;
+    }
+}
+
+@keyframes slide-right-current-anim {
+    from {
+        right: 0;
+    }
+
+    to {
+        right: -100%;
+    }
+}
+
+@keyframes slide-right-next-anim {
+    from {
+        right: 100%;
+    }
+
+    to {
+        right: 0;
+    }
+}

@@ -25,11 +25,11 @@ namespace Gizmo.Client.UI.Components
             };
 
             Application.Executables = new List<ExecutableViewModel>();
-            Application.Executables.Add(new ExecutableViewModel() { Id = 1, Name = "Google Chrome", Image = "https://i.postimg.cc/Jhr89jNZ/chrome.png", Loading = Convert.ToBoolean(random.Next(0, 2)), LoadingPercentage = random.Next(0, 100) });
-            Application.Executables.Add(new ExecutableViewModel() { Id = 2, Name = "Explorer", Image = "https://i.postimg.cc/fTvD5HXD/exp.png", Loading = Convert.ToBoolean(random.Next(0, 2)), LoadingPercentage = random.Next(0, 100) });
-            Application.Executables.Add(new ExecutableViewModel() { Id = 3, Name = "My computer", Image = "https://i.postimg.cc/q74KSDDw/pc.png", Loading = Convert.ToBoolean(random.Next(0, 2)), LoadingPercentage = random.Next(0, 100) });
-            Application.Executables.Add(new ExecutableViewModel() { Id = 4, Name = "Dota 2", Image = "https://i.postimg.cc/W120tb0j/dota2.png", Loading = Convert.ToBoolean(random.Next(0, 2)), LoadingPercentage = random.Next(0, 100) });
-            Application.Executables.Add(new ExecutableViewModel() { Id = 5, Name = "Spotify", Image = "https://i.postimg.cc/RFjZ5NVm/spoty.png", Loading = Convert.ToBoolean(random.Next(0, 2)), LoadingPercentage = random.Next(0, 100) });
+            Application.Executables.Add(new ExecutableViewModel() { Id = 1, Name = "Google Chrome", Image = "https://i.postimg.cc/Jhr89jNZ/chrome.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) });
+            Application.Executables.Add(new ExecutableViewModel() { Id = 2, Name = "Explorer", Image = "https://i.postimg.cc/fTvD5HXD/exp.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) });
+            Application.Executables.Add(new ExecutableViewModel() { Id = 3, Name = "My computer", Image = "https://i.postimg.cc/q74KSDDw/pc.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) });
+            Application.Executables.Add(new ExecutableViewModel() { Id = 4, Name = "Dota 2", Image = "https://i.postimg.cc/W120tb0j/dota2.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) });
+            Application.Executables.Add(new ExecutableViewModel() { Id = 5, Name = "Spotify", Image = "https://i.postimg.cc/RFjZ5NVm/spoty.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) });
         }
 
         private bool _isOpen { get; set; }
