@@ -33,14 +33,14 @@
         @foreach (var item in NewsFeeds)
         {
             <CarouselItem>
-                @if (NewsFeeds[_currentPage].Type == Enumerations.NewsFeedType.Media)
+                @if (item.Type == Enumerations.NewsFeedType.Media)
                 {
-                    var mediaFeed = (MediaFeedViewModel)NewsFeeds[_currentPage];
+                    var mediaFeed = (MediaFeedViewModel)item;
                     <MediaFeedItemCard MediaFeed="@mediaFeed" />
                 }
                 else
                 {
-                    var rssFeed = (RssFeedViewModel)NewsFeeds[_currentPage];
+                    var rssFeed = (RssFeedViewModel)item;
                     @foreach (var rssFeedItem in rssFeed.Items)
                     {
                         <RssFeedItemCard RssFeedItem="@rssFeedItem" />
