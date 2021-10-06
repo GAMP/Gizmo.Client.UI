@@ -33,36 +33,40 @@
             @include font-12;
         }
     }
+}
 
-    .giz-user-points {
-        display: $display-grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-gap: 1.063rem;
-        margin-bottom: 1.875rem;
+.giz-user-stats {
+    display: $display-grid;
+    grid-auto-flow: column;
+    grid-gap: 1.063rem;
 
-        &--content {
-            display: $display-flex;
-            align-items: $align-center;
-            
-            .giz-icon {
-                margin-right: 0.625rem;
-            }
+    &-item {
+        display: $display-flex;
+        align-items: $align-center;
+        border-right: solid 1px $border-black-color;
+
+        &:last-child {
+            border-right: none;
         }
 
-        &--text {
+        .giz-icon {
+            margin-right: 0.625rem;
+        }
+    }
 
-            .giz-title {
-                @include font-10;
-                color: $dim-white;
-                text-shadow: $text-shadow-sm;
-                margin-bottom: 0.25rem;
-            }
+    &--text {
 
-            .giz-numbers {
-                @include open-sans-600;
-                line-height: $line-height-16;
-                letter-spacing: $letter-spacing-24;
-            }
+        .giz-title {
+            @include font-10;
+            color: $dim-white;
+            text-shadow: $text-shadow-sm;
+            margin-bottom: 0.25rem;
+        }
+
+        .giz-numbers {
+            @include open-sans-600;
+            line-height: $line-height-16;
+            letter-spacing: $letter-spacing-24;
         }
     }
 }

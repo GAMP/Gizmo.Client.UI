@@ -14,7 +14,7 @@
                 {
                     foreach (var notification in Notifications)
                     {
-                        <MenuNotificationCard Notification="@notification" />
+                        <MenuNotificationCard Notification="@notification" OnMarkAsRead="@MarkAsRead" />
                     }
                 }
                 else
@@ -30,10 +30,8 @@
             </div>
             <!--notification btn-->
             <div class="giz-menu-notifications-container-actions">
-                <button class="client-button giz-btn-info mb-2">
-                    Mark as all read
-                </button>
-                <a href="#">See older notifications.</a>
+                <Button Size="ButtonSizes.Large" IsFullWidth="true" Color="ButtonColors.Info" Class="mb-2" @onclick="@(() => MarkAllAsRead())">Mark as all read</Button>
+                <div class="giz-menu-notifications-container-actions-more">See older notifications.</div>
             </div>
             <!--/notification-btn-->
         </div>

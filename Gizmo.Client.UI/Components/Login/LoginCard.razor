@@ -1,0 +1,52 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using Gizmo.Web.Components
+
+ <div class="giz-login-card">
+    <div class="giz-login-card-header">
+        <div class="giz-login-card-header-actions">
+            <div class="giz-language-menu">
+                @if (ShowLanguageMenu)
+                {
+                    <button class="client-button giz-transparent" type="button">
+                        <!--svg-->
+                        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <circle cx="7.5" cy="7.5" r="7.5" fill="url(#pattern0)" />
+                            <defs>
+                                <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+                                    <use xlink:href="#image0" transform="translate(-0.333333) scale(0.00653595)" />
+                                </pattern>
+                                <image id="image0" width="255" height="153" xlink:href="data:image/png;base64,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" />
+                            </defs>
+                        </svg>
+                        <!--/svg-->
+                        <span>EN</span>
+                        <!--svg-->
+                        <svg width="7" height="5" viewBox="0 0 7 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.33097 0.78815L6.03906 1.49624L3.0259 4.5094L0.0127468 1.49624L0.720839 0.78815L3.0259 3.08819L5.33097 0.78815Z" fill="white" />
+                        </svg>
+                        <!--/svg-->
+                    </button>
+                }
+            </div>
+            @if (ShowCloseButton)
+            {
+                <!--cancel button-->
+                <button class="client-button giz-terminate giz-float-right">
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6.89545 5L9.73835 2.1571C10.0872 1.80824 10.0872 1.24261 9.73835 0.893466L9.10653 0.261648C8.75767 -0.0872159 8.19205 -0.0872159 7.8429 0.261648L5 3.10455L2.1571 0.261648C1.80824 -0.0872159 1.24261 -0.0872159 0.893466 0.261648L0.261648 0.893466C-0.0872159 1.24233 -0.0872159 1.80795 0.261648 2.1571L3.10455 5L0.261648 7.8429C-0.0872159 8.19176 -0.0872159 8.75739 0.261648 9.10653L0.893466 9.73835C1.24233 10.0872 1.80824 10.0872 2.1571 9.73835L5 6.89545L7.8429 9.73835C8.19176 10.0872 8.75767 10.0872 9.10653 9.73835L9.73835 9.10653C10.0872 8.75767 10.0872 8.19205 9.73835 7.8429L6.89545 5Z" fill="#DAEDF8" fill-opacity="0.74" style="mix-blend-mode:screen" />
+                    </svg>
+                </button>
+                <!--/cancel button-->
+            }
+        </div>
+        <div class="giz-login-card-header-title">@Text</div>
+        <div class="giz-login-card-header-text">@Title</div>
+    </div>
+    <div class="giz-login-card-body">        
+        @CardBody
+    </div>
+    <div class="giz-login-card-footer">        
+        @CardFooter
+    </div>
+</div>

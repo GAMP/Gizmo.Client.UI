@@ -1,4 +1,4 @@
-//============== Clien UI login ============//
+//=============== Clien UI Login ================//
 
 .giz-main-container {
     background: url("https://i.postimg.cc/131tJwn2/bg-img.png")no-repeat fixed;
@@ -36,70 +36,8 @@
         }
 
         .giz-login-content {
-            display: flex;
-            flex-direction: column;
-            min-height: 619px;
-            width: 27.625rem;
-            min-width: 27.625rem;
-            background: opacify($dark-color, 0.31);
-            backdrop-filter: blur(20px);
-            border-radius: $rounded-xxl;
-            position: $position-relative;
-            overflow: $overflow-hidden;
-            border: 1px solid $border-color;
-
-            &::after {
-                content: "";
-                position: $position-absolute;
-                top: 0;
-                height: 20%;
-                width: $width-full;
-                background: linear-gradient( 360deg, rgba(20, 22, 28, 0) 0%, rgba(66, 128, 250, 0.3) 100%);
-                background-blend-mode: lighten;
-                z-index: -1;
-            }
-
-            &::before {
-                content: "";
-                position: $position-absolute;
-                top: 0;
-                left: 44px;
-                width: 79%;
-                border-top: 3px solid $border-blue;
-                border-left: 5px solid $transparent-color;
-                border-right: 5px solid $transparent-color;
-            }
-
-            &--heading {
-                padding: 0 1.875rem;
-
-                .giz-language-menu {
-
-                    button {
-                        font-family: $font-family;
-                        font-weight: $font-weight-400;
-                        @include font-9($line-height-9,$letter-spacing-2);
-                        color: $light-blue-gray;
-                        vertical-align: text-top;
-
-                        span {
-                            margin-left: 0.625rem;
-                            margin-right: 0.313rem;
-                            vertical-align: middle;
-                        }
-                    }
-                }
-
-                .giz-terminate {
-                    background-color: inherit;
-                }
-            }
 
             &--body {
-                display: flex;
-                flex-direction: column;
-                flex-grow: 1;
-                text-align: $text-align-center;
 
                 .giz-btn {
 
@@ -118,65 +56,9 @@
                     }
                 }
 
-                .giz-third-parties-login {
-
-                    &--text {
-                        @include font-9;
-                        color: $light-blue-gray;
-                        padding: 0 4.388rem;
-                    }
-                }
-
                 input[type=password] {
                     @include font-15;
                 }
-
-                .giz-personalinfo-input {
-                    display: $display-grid;
-                    grid-template-columns: 1fr 1fr;
-                    grid-column-gap: 0.75rem;
-                }
-            }
-
-            &--title {
-                @include font-10($letter-spacing-15);
-                color: $primary-light-color;
-                margin-bottom: 0.625rem;
-            }
-
-            &--text {
-                @include font-20;
-                margin-bottom: 2.875rem;
-            }
-
-            &--footer {
-                margin-top: auto;
-
-                .giz-no-account {
-                    @include font-9;
-                    margin-bottom: 0.625rem;
-                    color: $dark-blue-gray;
-                }
-
-                .giz-footer-links {
-                    @include font-11;
-                    letter-spacing: $letter-spacing-10;
-                    text-transform: $text-uppercase;
-                }
-            }
-
-            .giz-login-options {
-                display: flex;
-                flex-direction: column;
-                flex-grow: 1;
-            }
-
-            .giz-login-status {
-                display: flex;
-                flex-direction: column;
-                flex-grow: 1;
-                justify-content: center;
-                align-items: center;
             }
         }
     }
@@ -315,4 +197,190 @@
 .giz-align-center {
     @include align-center;
     text-align: $text-align-center;
+}
+
+.giz-login-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 619px;
+    width: 27.625rem;
+    min-width: 27.625rem;
+    background: opacify($dark-color, 0.31);
+    backdrop-filter: blur(20px);
+    border-radius: $rounded-xxl;
+    position: $position-relative;
+    overflow: $overflow-hidden;
+    border: 1px solid $border-color;
+    text-align: $text-align-center;
+
+    &::after {
+        content: "";
+        position: $position-absolute;
+        top: 0;
+        height: 20%;
+        width: $width-full;
+        background: linear-gradient( 360deg, rgba(20, 22, 28, 0) 0%, rgba(66, 128, 250, 0.3) 100%);
+        background-blend-mode: lighten;
+        z-index: -1;
+    }
+
+    &::before {
+        content: "";
+        position: $position-absolute;
+        top: 0;
+        left: 44px;
+        width: 79%;
+        border-top: 3px solid $border-blue;
+        border-left: 5px solid $transparent-color;
+        border-right: 5px solid $transparent-color;
+    }
+
+    &-header {
+        padding: 2rem 1.875rem 0 1.875rem;
+
+        &-actions {
+            display: flex;
+            justify-content: space-between;
+
+            .giz-terminate {
+                background-color: inherit;
+            }
+        }
+
+        &-title {
+            @include font-10($letter-spacing-15);
+            color: $primary-light-color;
+            margin-bottom: 0.625rem;
+        }
+
+        &-text {
+            @include font-20;
+            margin-bottom: 2.875rem;
+        }
+    }
+
+    &-body {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        padding: 0 2.5rem;
+    }
+
+    &-footer {
+        margin-top: auto;
+        padding-bottom: 3rem;
+
+        .giz-no-account {
+            @include font-9;
+            margin-bottom: 0.625rem;
+            color: $dark-blue-gray;
+        }
+
+        .giz-footer-links {
+            @include font-11;
+            letter-spacing: $letter-spacing-10;
+            text-transform: $text-uppercase;
+        }
+    }
+}
+
+.giz-language-menu {
+
+    button {
+        font-family: $font-family;
+        font-weight: $font-weight-400;
+        @include font-9($line-height-9,$letter-spacing-2);
+        color: $light-blue-gray;
+        vertical-align: text-top;
+
+        span {
+            margin-left: 0.625rem;
+            margin-right: 0.313rem;
+            vertical-align: middle;
+        }
+    }
+}
+
+.giz-third-parties-login {
+
+    &--text {
+        @include font-9;
+        color: $light-blue-gray;
+        padding: 0 4.388rem;
+    }
+}
+
+.giz-personalinfo-input {
+    display: $display-grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 0.75rem;
+}
+
+.giz-no-account {
+    @include font-9;
+    margin-bottom: 0.625rem;
+    color: $dark-blue-gray;
+}
+
+.giz-footer-links {
+    @include font-11;
+    letter-spacing: $letter-spacing-10;
+    text-transform: $text-uppercase;
+}
+
+.giz-login-status {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.giz-footer-text {
+    @include font-9($line-height-14);
+    color: $dark-blue-gray;
+}
+
+.giz-mobile-number-input {
+    display: $display-flex;
+    justify-content: $justify-space-between;
+
+    button {
+        font-family: $font-family;
+        letter-spacing: $letter-spacing-2;
+        font-weight: $font-weight-400;
+        border: 1px solid $border-charcoal-gray;
+
+        span {
+            vertical-align: middle;
+            margin: 0 0.375rem;
+        }
+    }
+}
+
+.giz-reserve-pin-input {
+    display: $display-grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 0.813rem;
+
+    input {
+        text-align: $text-align-center;
+        /*background: $dim-midnight-black;*/
+    }
+}
+
+.giz-user-agreement {
+    font-family: $font-family-open-sans;
+    font-weight: $font-weight-400;
+    font-size: $font-14;
+    line-height: $line-height-21;
+    letter-spacing: $letter-spacing-1;
+    color: $milky-white;
+    height: 24.555rem;
+    overflow-y: auto;
+
+    &--heading {
+        font-weight: $font-weight-700;
+        color: $white-color;
+    }
 }

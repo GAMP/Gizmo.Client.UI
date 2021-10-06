@@ -1,6 +1,7 @@
 ﻿using Gizmo.Client.UI.ViewModels;
 using Gizmo.Web.Components;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Gizmo.Client.UI.Shared
 {
@@ -17,5 +18,19 @@ namespace Gizmo.Client.UI.Shared
         }
 
         public List<MenuNotificationViewModel> Notifications { get; set; }
+
+        private void MarkAllAsRead()
+        {
+            Notifications.Clear();
+        }
+
+        private void MarkAsRead(int id)
+        {
+            var existingNotification = Notifications.Where(a => a.Id == id).FirstOrDefault();
+            if (existingNotification != null)
+            {
+                Notifications.Remove(existingNotification);
+            }
+        }
     }
 }
