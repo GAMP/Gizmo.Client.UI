@@ -18,32 +18,40 @@
     <section id="giz-apps" class="px-8 py-6">
         <!--row-->
         <div class=" giz-app-carousel">
-            <!--heading-->
-            <GizNavigation Title="New Apps" />
-            <!--/heading-->
-            <div class="giz-wrapper">
-                @foreach (var app in NewApplications)
+            <Carousel Title="New apps" @bind-SelectedIndex="_newAppsIndex">
+                @for (int i = 0; i < GetPages(NewApplications.Count, 6); i++)
                 {
-                    <ApplicationCard Application="@app" ShowDateAdded="true" OnOpenDetails="@OpenDetails"></ApplicationCard>
+                    var local_i = i;
+                    <CarouselItem>
+                        <div class="giz-app-carousel-wrapper">
+                            @foreach (var app in NewApplications.Skip(local_i * 6).Take(6))
+                            {
+                                <ApplicationCard Application="@app" ShowDateAdded="true" OnOpenDetails="@OpenDetails"></ApplicationCard>
+                            }
+                        </div>
+                    </CarouselItem>
                 }
-            </div>
+            </Carousel>
         </div>
     </section>
     <!--/New App Section-->
     <!--Top rated apps-->
     <section id="giz-apps" class="mt-10 px-8">
         <div class=" giz-app-carousel">
-            <!--heading-->
-            <GizNavigation Title="New Apps" />
-            <!--/heading-->
-            <div class="giz-wrapper">
-                <!--carousel cards-->
-                @foreach (var app in Applications)
+            <Carousel Title="Top rated apps" @bind-SelectedIndex="_appsIndex">
+                @for (int i = 0; i < GetPages(Applications.Count, 6); i++)
                 {
-                    <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
+                    var local_i = i;
+                    <CarouselItem>
+                        <div class="giz-app-carousel-wrapper">
+                            @foreach (var app in Applications.Skip(local_i * 6).Take(6))
+                            {
+                                <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails"></ApplicationCard>
+                            }
+                        </div>
+                    </CarouselItem>
                 }
-                <!--/carousel cards-->
-            </div>
+            </Carousel>
         </div>
     </section>
     <!--/Top rated apps-->

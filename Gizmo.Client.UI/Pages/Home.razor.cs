@@ -15,11 +15,11 @@ namespace Gizmo.Client.UI.Pages
         {
             Random random = new Random();
 
-            NewApplications = Enumerable.Range(1, 4).Select(i => new ApplicationViewModel()
+            NewApplications = Enumerable.Range(1, 17).Select(i => new ApplicationViewModel()
             {
                 Id = i,
                 ApplicationGroupId = random.Next(1, 5),
-                Name = "BattleNet",
+                Name = $"BattleNet {i}",
                 Image = "Battle-net.png",
                 Ratings = random.Next(0, 100),
                 Rate = random.Next(1, 5),
@@ -27,17 +27,22 @@ namespace Gizmo.Client.UI.Pages
                 DateAdded = new DateTime(2021, 3, 12)
             }).ToList();
 
-            Applications = Enumerable.Range(0, 5).Select(i => new ApplicationViewModel()
+            Applications = Enumerable.Range(0, 25).Select(i => new ApplicationViewModel()
             {
                 Id = i,
                 ApplicationGroupId = random.Next(1, 5),
-                Name = "Grand Theft Auto IV",
+                Name = $"Grand Theft Auto IV {i}",
                 Image = "Gta-5.png",
                 Ratings = random.Next(0, 100),
                 Rate = random.Next(1, 5),
                 NowPlaying = random.Next(0, 100),
             }).ToList();
         }
+
+        private int _newAppsIndex = 0;
+
+        private int _appsIndex = 0;
+
 
         public bool AppDetailsIsOpen { get; set; }
 
@@ -57,6 +62,16 @@ namespace Gizmo.Client.UI.Pages
         public void OpenExecutableSelector(int id)
         {
             ExecutableSelectorIsOpen = true;
+        }
+
+        private int GetPages(int items, int divider)
+        {
+            int pages = items / divider;
+            if (items % divider != 0)
+            {
+                pages += 1;
+            }
+            return pages;
         }
 
         #endregion

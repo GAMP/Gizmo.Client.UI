@@ -2,7 +2,7 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
-<div class="application-card">
+<div class="giz-app-card">
     <div class="giz-hoverable-card">
         <div class="hoverable-content">
             <!--img-->
@@ -31,24 +31,24 @@
                 <div>
                     <!--offer-->
                     <div class="d-flex">
-                        <div class="application-card-text">
+                        <div class="giz-app-card-text">
                             <span class="giz-playing-indicator"></span>
                             Now Playing
                         </div>
-                        <div class="application-card-count ml-auto">@Application?.NowPlaying</div>
+                        <div class="giz-app-card-count ml-auto">@Application?.NowPlaying</div>
                     </div>
                     <!--offer score-->
                 </div>
             </div>
         </div>
     </div>
-    <div class="application-card-footer">
+    <div class="giz-app-card-footer">
         <!--card title-->
-        <div class="application-card-title mt-4 mb-2">
+        <div class="giz-app-card-title mt-4 mb-2">
             @Application?.Name
         </div>
         <!--/card title-->
-        <div class="application-card-text">
+        <div class="giz-app-card-text">
             @if (ShowDateAdded)
             {
                 <div>
@@ -66,7 +66,7 @@
                     {
                         <Rating Value="0" IsReadOnly="true" />
                     }
-                    <span class="application-card-rating">@(Application?.Ratings ?? 0) Ratings</span>
+                    <span class="giz-app-card-rating">@(Application?.Ratings ?? 0) Ratings</span>
                 </div>
             }
         </div>

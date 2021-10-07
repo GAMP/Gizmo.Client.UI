@@ -4,16 +4,7 @@
 @using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
 
-<GizNavigation Title="Daily News" OnClickPreviousButton="@OnClickPreviousButtonHandler" OnClickNextButton="@OnClickNextButtonHandler" />
-
-<div class="giz-news-feed-carousel">
-    @if (NewsFeeds != null)
-    {
-        <NewsFeedCarouselIndicator Size="NewsFeeds.Count" SelectedIndex="@_currentPage" SelectedIndexChanged="SelectedIndexChangedHandler" />
-    }
-</div>
-
-<Carousel SelectedIndex="@_currentPage">
+<Carousel Title="Daily News">
     @if (NewsFeeds != null)
     {
         @foreach (var item in NewsFeeds)

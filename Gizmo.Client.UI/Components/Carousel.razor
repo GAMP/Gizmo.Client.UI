@@ -5,7 +5,18 @@
 @using Gizmo.Client.UI.ViewModels
 
 <div class="giz-carousel">
-	<CascadingValue Value="@this" IsFixed="true">
-		@ChildContent
-	</CascadingValue>
+	<div>
+		<CarouselNavigation Title="@Title" OnClickPreviousButton="@OnClickPreviousButtonHandler" OnClickNextButton="@OnClickNextButtonHandler" />
+	</div>
+	@if (ShowIndicator)
+	{
+		<div>
+			<CarouselIndicator Size="@_items.Count" SelectedIndex="@SelectedIndex" SelectedIndexChanged="SelectedIndexChangedHandler" />
+		</div>
+	}
+	<div class="giz-carousel-wrapper">
+		<CascadingValue Value="@this" IsFixed="true">
+			@ChildContent
+		</CascadingValue>
+	</div>
 </div>

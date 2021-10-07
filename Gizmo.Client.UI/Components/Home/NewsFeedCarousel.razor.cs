@@ -1,10 +1,8 @@
 ﻿using Gizmo.Client.UI.ViewModels;
 using Gizmo.Web.Components;
-using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -52,59 +50,7 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        private int _currentPage = 0;
-
         public List<NewsFeedViewModel> NewsFeeds { get; set; }
-
-        public void SelectedIndexChangedHandler(int index)
-        {
-            _currentPage = index;
-        }
-
-        protected Task OnClickPreviousButtonHandler(MouseEventArgs args)
-        {
-            _currentPage -= 1;
-
-            if (_currentPage < 0)
-                _currentPage = NewsFeeds.Count - 1;
-
-            return Task.CompletedTask;
-        }
-
-        protected Task OnClickNextButtonHandler(MouseEventArgs args)
-        {
-            _currentPage += 1;
-
-            if (_currentPage > NewsFeeds.Count - 1)
-                _currentPage = 0;
-
-            return Task.CompletedTask;
-        }
-
-        private NewsFeedViewModel GetCurrentPageItem()
-        {
-            return NewsFeeds[_currentPage];
-        }
-
-        private NewsFeedViewModel GetPreviousPageItem()
-        {
-            int previousItem = _currentPage - 1;
-
-            if (previousItem < 0)
-                previousItem = NewsFeeds.Count - 1;
-
-            return NewsFeeds[previousItem];
-        }
-
-        private NewsFeedViewModel GetNextPageItem()
-        {
-            int nextItem = _currentPage + 1;
-
-            if (nextItem > NewsFeeds.Count - 1)
-                nextItem = 0;
-
-            return NewsFeeds[nextItem];
-        }
 
     }
 }

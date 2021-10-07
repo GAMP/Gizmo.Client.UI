@@ -1,18 +1,20 @@
 //=============== Application Card ================//
 
-.application-card {
+.giz-app-card {
+    max-width: 190px;
 
-    .hovered-content {
-        svg {
-            cursor: $cursor-pointer;
-        }
+    .giz-img-top {
+        max-height: 271px;
     }
 
-    .application-card-title {
+    &-title {
         @include open-sans-600;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
 
-    .application-card-text {
+    &-text {
         font-size: $font-12;
         line-height: $line-height-12;
         letter-spacing: $letter-spacing-2;
@@ -32,13 +34,13 @@
         }
     }
 
-    .application-card-count {
+    &-count {
         @include font-12;
         text-shadow: $text-shadow-sm;
         font-weight: $font-weight-400;
     }
 
-    .application-card-rating {
+    &-rating {
         color: $light-blue;
         letter-spacing: normal;
         font-weight: $font-weight-400;

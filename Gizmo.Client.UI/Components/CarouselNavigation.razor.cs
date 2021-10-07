@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Shared
 {
-    public partial class GizNavigation : CustomDOMComponentBase
+    public partial class CarouselNavigation : CustomDOMComponentBase
     {
         [Parameter]
         public string Title { get; set; }

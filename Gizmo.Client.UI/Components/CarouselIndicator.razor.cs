@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class NewsFeedCarouselIndicator : CustomDOMComponentBase
+    public partial class CarouselIndicator : CustomDOMComponentBase
     {
         private int _selectedIndex;
 
