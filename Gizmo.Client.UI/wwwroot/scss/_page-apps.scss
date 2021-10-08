@@ -1,0 +1,86 @@
+//=============== Page Apps ================//
+
+#giz-apps-sidebar {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    max-height: 100%;
+    overflow: hidden;
+
+    .giz-apps-categories {
+        max-height: 100%;
+        overflow: hidden;
+
+        .giz-apps-menu-list {
+            max-height: 100%;
+            overflow: hidden;
+            padding: 0.625rem 0.325rem 0.625rem 0.625rem;
+
+            .giz-list-body {
+                max-height: 100%;
+                overflow-y: auto;
+                padding-right: 0.3rem;
+            }
+
+            &.giz-list--selectable {
+                .giz-list-item {
+                    &.giz-list-item-selected {
+                        border: 1px solid $black-color;
+                    }
+                }
+            }
+        }
+    }
+
+    .giz-apps-filters {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        max-height: 100%;
+        overflow: hidden;
+
+        &-header {
+            display: $display-flex;
+            justify-content: $justify-space-between;
+            @include open-sans-600;
+            font-size: $font-15;
+            line-height: $line-height-19;
+            letter-spacing: $letter-spacing-5;
+            padding: 3.125rem 0 2.5rem;
+        }
+
+        &-body {
+            max-height: 100%;
+            overflow-y: auto;
+        }
+    }
+}
+
+#giz-apps-main {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    padding-top: 1.5rem;
+    padding-left: 2rem;
+    padding-right: 0.5rem;
+    height: 100%;
+    overflow: hidden;
+
+    .giz-apps-header {
+        @include font-18;
+        margin-bottom: 1.188rem;
+    }
+
+    .giz-apps-body {
+        padding-bottom: 1.5rem;
+        padding-right: 2rem;
+        max-height: 100%;
+        overflow-y: auto;
+
+        .giz-apps-wrapper {
+            display: $display-grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            grid-template-rows: minmax(200px, 1fr);
+            grid-column-gap: 1.688rem;
+            grid-row-gap: 1.875rem;
+            justify-content: left;
+        }
+    }
+}

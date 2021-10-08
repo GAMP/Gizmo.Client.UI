@@ -27,7 +27,18 @@ namespace Gizmo.Client.UI.Pages
                 DateAdded = new DateTime(2021, 3, 12)
             }).ToList();
 
-            Applications = Enumerable.Range(0, 25).Select(i => new ApplicationViewModel()
+            TopRatedApplications = Enumerable.Range(0, 25).Select(i => new ApplicationViewModel()
+            {
+                Id = i,
+                ApplicationGroupId = random.Next(1, 5),
+                Name = $"Grand Theft Auto IV {i}",
+                Image = "Gta-5.png",
+                Ratings = random.Next(0, 100),
+                Rate = random.Next(1, 5),
+                NowPlaying = random.Next(0, 100),
+            }).ToList();
+
+            MostUsedApplications = Enumerable.Range(0, 25).Select(i => new ApplicationViewModel()
             {
                 Id = i,
                 ApplicationGroupId = random.Next(1, 5),
@@ -40,9 +51,8 @@ namespace Gizmo.Client.UI.Pages
         }
 
         private int _newAppsIndex = 0;
-
-        private int _appsIndex = 0;
-
+        private int _topRatedAppsIndex = 0;
+        private int _mostUsedAppsIndex = 0;
 
         public bool AppDetailsIsOpen { get; set; }
 
@@ -50,7 +60,9 @@ namespace Gizmo.Client.UI.Pages
 
         public List<ApplicationViewModel> NewApplications { get; set; }
 
-        public List<ApplicationViewModel> Applications { get; set; }
+        public List<ApplicationViewModel> TopRatedApplications { get; set; }
+
+        public List<ApplicationViewModel> MostUsedApplications { get; set; }
 
         #region METHODS
 

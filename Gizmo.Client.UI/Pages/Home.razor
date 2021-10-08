@@ -6,7 +6,7 @@
 <!--wrapper 1-->
 <div class="wrapper_1">
     <!--News section-->
-    <section id="giz-news" class="pa-6">
+    <section id="giz-home-sidebar" class="pa-6">
         <NewsFeedCarousel />
     </section>
     <!--/News section-->
@@ -14,10 +14,9 @@
 <!--/wrapper 1-->
 <!--wrapper 2-->
 <div class="wrapper_2 border-start">
-    <!-- New App Section-->
-    <section id="giz-apps" class="px-8 py-6">
-        <!--row-->
-        <div class=" giz-app-carousel">
+    <section id="giz-home-main" class="giz-scrollbar-v px-8 py-6">
+
+        <div class="giz-app-carousel">
             <Carousel Title="New apps" @bind-SelectedIndex="_newAppsIndex">
                 @for (int i = 0; i < GetPages(NewApplications.Count, 6); i++)
                 {
@@ -33,18 +32,15 @@
                 }
             </Carousel>
         </div>
-    </section>
-    <!--/New App Section-->
-    <!--Top rated apps-->
-    <section id="giz-apps" class="mt-10 px-8">
-        <div class=" giz-app-carousel">
-            <Carousel Title="Top rated apps" @bind-SelectedIndex="_appsIndex">
-                @for (int i = 0; i < GetPages(Applications.Count, 6); i++)
+
+        <div class="giz-app-carousel">
+            <Carousel Title="Top rated apps" @bind-SelectedIndex="_topRatedAppsIndex">
+                @for (int i = 0; i < GetPages(TopRatedApplications.Count, 6); i++)
                 {
                     var local_i = i;
                     <CarouselItem>
                         <div class="giz-app-carousel-wrapper">
-                            @foreach (var app in Applications.Skip(local_i * 6).Take(6))
+                            @foreach (var app in TopRatedApplications.Skip(local_i * 6).Take(6))
                             {
                                 <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails"></ApplicationCard>
                             }
@@ -53,8 +49,25 @@
                 }
             </Carousel>
         </div>
+
+        <div class="giz-app-carousel">
+            <Carousel Title="Most used apps" @bind-SelectedIndex="_mostUsedAppsIndex">
+                @for (int i = 0; i < GetPages(MostUsedApplications.Count, 6); i++)
+                {
+                    var local_i = i;
+                    <CarouselItem>
+                        <div class="giz-app-carousel-wrapper">
+                            @foreach (var app in MostUsedApplications.Skip(local_i * 6).Take(6))
+                            {
+                                <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails"></ApplicationCard>
+                            }
+                        </div>
+                    </CarouselItem>
+                }
+            </Carousel>
+        </div>
+
     </section>
-    <!--/Top rated apps-->
 </div>
 <!--/wrapper 2-->
 

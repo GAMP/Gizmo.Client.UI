@@ -24,6 +24,22 @@ namespace Gizmo.Client.UI.Pages
             ProductGroups.Add(new ProductGroupViewModel() { Id = 4, Name = "Snacks" });
             ProductGroups.Add(new ProductGroupViewModel() { Id = 5, Name = "Time offers" });
 
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 1, Name = "Coffee" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 2, Name = "Beverages" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 3, Name = "Sandwiches" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 4, Name = "Snacks" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 5, Name = "Time offers" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 1, Name = "Coffee" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 2, Name = "Beverages" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 3, Name = "Sandwiches" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 4, Name = "Snacks" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 5, Name = "Time offers" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 1, Name = "Coffee" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 2, Name = "Beverages" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 3, Name = "Sandwiches" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 4, Name = "Snacks" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 5, Name = "Time offers" });
+
             Products = Enumerable.Range(0, 18).Select(i => new ProductViewModel()
             {
                 Id = i,

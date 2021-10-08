@@ -2,6 +2,11 @@
 
 .menu-active-apps {
     .giz-active-apps-drawer {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        height: 100%;
+        overflow: hidden;
+
         &-header {
             text-align: $text-align-center;
             padding: 2.938rem 0;
@@ -19,6 +24,10 @@
                 line-height: $line-height-20;
                 letter-spacing: $letter-spacing-2;
             }
+        }
+
+        &-body {
+            overflow-y: auto;
         }
     }
 }

@@ -5,47 +5,51 @@
 
 <!--wrapper 1-->
 <div class="wrapper_1">
-    <section class="giz-categories pa-6">
+    <section id="giz-apps-sidebar" class="pa-6">
         <!--Apps and games Categories-->
-        <List CanClick="true" CanSelect="true" Class="giz-menu-list giz-apps-menu-list">
-            <ListHeader>
-                @(_selectedApplicationGroup?.Name ?? "Categories")
-            </ListHeader>
-            <ChildContent>
-                @foreach (var applicationGroup in ApplicationGroups)
-                {
-                    <ListItem Command="@SelectApplicationGroupCommand" CommandParameter="@applicationGroup.Id">
-                        <div class="d-flex">
-                            <div class="mr-auto">
-                                @applicationGroup.Name
-                            </div>
-                            @if (Applications != null)
-                            {
-                                <div class="giz-search-number">
-                                    @Applications.Where(a => a.ApplicationGroupId == applicationGroup.Id).Count()
+        <div class="giz-apps-categories">
+            <List CanClick="true" CanSelect="true" Class="giz-menu-list giz-apps-menu-list" BodyClass="giz-scrollbar-v">
+                <ListHeader>
+                    @(_selectedApplicationGroup?.Name ?? "Categories")
+                </ListHeader>
+                <ChildContent>
+                    @foreach (var applicationGroup in ApplicationGroups)
+                    {
+                        <ListItem Command="@SelectApplicationGroupCommand" CommandParameter="@applicationGroup.Id">
+                            <div class="d-flex">
+                                <div class="mr-auto">
+                                    @applicationGroup.Name
                                 </div>
-                            }
-                        </div>
-                    </ListItem>
-                }
-            </ChildContent>
-        </List>
+                                @if (Applications != null)
+                                {
+                                    <div class="giz-search-number">
+                                        @Applications.Where(a => a.ApplicationGroupId == applicationGroup.Id).Count()
+                                    </div>
+                                }
+                            </div>
+                        </ListItem>
+                    }
+                </ChildContent>
+            </List>
+        </div>
         <!--/Apps and games Categories-->
         <!--filter cards-->
-        <div class="giz-filter">
-            <div class="giz-filter--heading">
-                <div class="giz-filter-text">
+        <div class="giz-apps-filters">
+            <div class="giz-apps-filters-header">
+                <div class="giz-apps-filters-text">
                     Filters
                 </div>
-                <div class="giz-filter-text">
+                <div class="giz-apps-filters-text">
                     <Button Variant="ButtonVariants.Text">Clear</Button>
                 </div>
             </div>
 
-            @foreach (var applicationFilters in ApplicationFilters)
-            {                
-                <ApplicationFilterCard ApplicationFilter="@applicationFilters" />
-            }
+            <div class="giz-apps-filters-body giz-scrollbar-v">
+                @foreach (var applicationFilters in ApplicationFilters)
+                {                
+                    <ApplicationFilterCard ApplicationFilter="@applicationFilters" />
+                }
+            </div>
         </div>
         <!--/filter cards-->
     </section>
@@ -54,22 +58,21 @@
 <!--wrapper 2-->
 <div class="wrapper_2 border-start">
     <!--apps and games-->
-    <section id="giz-apps" class="px-8 py-6">
-        <div class="giz-app-carousel">
-            <!--heading-->
-            <div class="giz-app-heading">
-                Games & applications
-            </div>
-            <!--/heading-->
-            <div class="giz-wrapper">
-                <!--carousel cards-->
+    <section id="giz-apps-main">
+
+        <div class="giz-apps-header">
+            Games & applications
+        </div>
+
+        <div class="giz-apps-body giz-scrollbar-v">
+            <div class="giz-apps-wrapper">
                 @foreach (var app in Applications.Where(a => !_selectedApplicationGroupId.HasValue || a.ApplicationGroupId == _selectedApplicationGroupId))
                 {
                     <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
                 }
-                <!--/carousel cards-->
             </div>
         </div>
+
     </section>
     <!--/apps and games-->
 </div>

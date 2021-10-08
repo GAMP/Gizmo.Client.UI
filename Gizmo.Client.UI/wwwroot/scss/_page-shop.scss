@@ -1,41 +1,74 @@
-//============= shop section style =============== //
-.giz-shop-categories {
-    /*padding-right: 1.813rem;*/
+//=============== Page Shop ================//
+
+#giz-shop-sidebar {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    max-height: 100%;
+    overflow: hidden;
 
     .giz-header-title {
         @include font-18;
         margin-bottom: 0.625rem;
     }
-    /*.giz-category-menu {
-        background: inherit;
 
-        &--items {
-            padding-left: 0;
-            padding-right: 0;
+    .giz-shop-products-menu-list {
+        height: 100%;
+        overflow: hidden;
+        padding: 0.625rem 0.325rem 0.625rem 0.625rem;
+
+        .giz-list-body {
+            max-height: 100%;
+            overflow-y: auto;
+            padding-right: 0.3rem;
         }
-    }*/
+    }
 }
 
-.giz-shop-items {
-    display: $display-grid;
-    grid-template-columns: max-content max-content;
-    justify-content: $justify-space-between;
+#giz-shop-products-main {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    padding-top: 1.5rem;
+    padding-left: 2rem;
+    padding-right: 0.5rem;
+    height: 100%;
+    overflow: hidden;
 
-    &--heading {
-        @include font-18;
-        margin-bottom: 1.25rem;
+    .giz-shop-products-header {
+        display: $display-grid;
+        grid-template-columns: max-content max-content;
+        justify-content: $justify-space-between;
+
+        &--heading {
+            @include font-18;
+            margin-bottom: 1.25rem;
+        }
+
+        &--sort {
+            @include open-sans-600;
+            font-size: $font-14;
+            line-height: $line-height-17;
+            letter-spacing: $letter-spacing-5;
+
+            span {
+                color: $dim-white;
+                font-family: $font-family;
+                font-weight: $font-weight-400;
+            }
+        }
     }
 
-    &--sort {
-        @include open-sans-600;
-        font-size: $font-14;
-        line-height: $line-height-17;
-        letter-spacing: $letter-spacing-5;
+    .giz-shop-products-body {
+        max-height: 100%;
+        overflow-y: auto;
+        padding-bottom: 1.5rem;
 
-        span {
-            color: $dim-white;
-            font-family: $font-family;
-            font-weight: $font-weight-400;
+        .giz-shop-products-wrapper {
+            display: $display-grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            grid-template-rows: minmax(200px, 1fr);
+            grid-column-gap: 1.688rem;
+            grid-row-gap: 1.875rem;
+            justify-content: left;
         }
     }
 }
@@ -43,12 +76,17 @@
 //== order menu
 
 .giz-order {
+    overflow: hidden;
+    height: 100%;
 
     .giz-order-menu {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
         background: $dark-jungle;
         min-width: 17.25rem;
         padding: 1.25rem 1rem;
-        min-height: 29.563rem;
+        border-radius: 8px;
+        height: 100%;
 
         &--header {
             border-bottom: 1px solid $border-color;
@@ -67,8 +105,9 @@
         }
 
         &--body {
-            min-height: calc(29.563rem - 10rem);
             position: $position-relative;
+            max-height: 100%;
+            overflow-y: auto;
 
             .giz-no-order-wrapper {
                 @include align-center;

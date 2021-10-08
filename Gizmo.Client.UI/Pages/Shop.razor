@@ -5,10 +5,10 @@
 
 <!--wrapper 1-->
 <div class="wrapper_1">
-    <section class="giz-shop-categories pa-6">
-        <!--Apps and games Categories-->
+    <section id="giz-shop-sidebar" class="giz-shop-categories pa-6">
         <div class="giz-header-title">Categories</div>
-        <List CanClick="true" CanSelect="true" Class="giz-menu-list">
+
+        <List CanClick="true" CanSelect="true" Class="giz-menu-list giz-shop-products-menu-list" BodyClass="giz-scrollbar-v">
             @foreach (var productGroup in ProductGroups)
             {
                 <ListItem Command="@SelectProductGroupCommand" CommandParameter="@productGroup.Id">
@@ -26,7 +26,7 @@
                 </ListItem>
             }
         </List>
-        <!--/Apps and games Categories-->
+
     </section>
 </div>
 <!--/wrapper 1-->
@@ -35,15 +35,15 @@
     <!--giz main-->
     <div class="giz-main">
         <!--wrapper 3-->
-        <div class="wrapper_3  border-end">
+        <div class="wrapper_3 border-end">
             <!--apps and games-->
-            <section id="giz-apps" class="px-8 py-6">
-                <!--heading-->
-                <div class="giz-shop-items">
-                    <div class="giz-shop-items--heading">
+            <section id="giz-shop-products-main">
+
+                <div class="giz-shop-products-header">
+                    <div class="giz-shop-products-header--heading">
                         @(_selectedProductGroup?.Name ?? "All")
                     </div>
-                    <div class="giz-shop-items--sort">
+                    <div class="giz-shop-products-header--sort">
                         <svg width="20" height="8" viewBox="0 0 20 8" fill="white" xmlns="http://www.w3.org/2000/svg" class="mr-4">
                             <path d="M0.666016 0.5H19.3327V2.83333H0.666016V0.5ZM0.666016 5.16667H12.3327V7.5H0.666016V5.16667Z" />
                         </svg>
@@ -53,14 +53,14 @@
                         </svg>
                     </div>
                 </div>
-                <!--/heading-->
-                <div class="giz-wrapper">
-                    <!--carousel cards-->
-                    @foreach (var product in Products.Where(a => !_selectedProductGroupId.HasValue || a.ProductGroupId == _selectedProductGroupId))
-                    {
-                        <GizProductCard Product="@product" OnAddProduct="@AddProduct" OnOpenDetails="@OpenDetails" />
-                    }
-                    <!--/carousel cards-->
+
+                <div class="giz-shop-products-body giz-scrollbar-v">
+                    <div class="giz-shop-products-wrapper">
+                        @foreach (var product in Products.Where(a => !_selectedProductGroupId.HasValue || a.ProductGroupId == _selectedProductGroupId))
+                        {
+                            <GizProductCard Product="@product" OnAddProduct="@AddProduct" OnOpenDetails="@OpenDetails" />
+                        }
+                    </div>
                 </div>
             </section>
         </div>
@@ -78,7 +78,7 @@
                     </div>
                     <!--/order header-->
                     <!--order body-->
-                    <div class="giz-order-menu--body">
+                    <div class="giz-order-menu--body giz-scrollbar-v">
                         @if (Order != null && Order.OrderLines.Count > 0)
                         {
                             <!--order detail-->
