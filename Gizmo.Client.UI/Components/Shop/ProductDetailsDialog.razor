@@ -7,25 +7,25 @@
         <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
     </DialogHeader>
     <DialogBody>
-        <div class="giz-app-details-dialog-body">
-            <div class="giz-app-details-card-common">
+        <div class="giz-details-dialog-body">
+            <div class="giz-details-card-common">
                 <!--app info-->
-                <div class="giz-app-details-card-brand">
+                <div class="giz-details-card-brand">
                     <img src="_content/Gizmo.Client.UI/img/@Product?.Image" alt="loading" />
                 </div>
                 <!--/app info-->
-                <div class="giz-app-details-card-content">
+                <div class="giz-details-card-content">
                     <!--heading-->
-                    <div class="giz-app-details-card-category">
+                    <div class="giz-details-card-category">
                         Beverages
                     </div>
                     <!--/heading-->
                     <!--title-->
-                    <div class="giz-app-details-card-title">
+                    <div class="giz-details-card-title">
                         @Product?.Name
                     </div>
                     <!--/title-->
-                    <div class="giz-app-rating">
+                    <div class="giz-details-card-rating">
                         @if (Product != null)
                         {
                             <Rating @bind-Value="Product.Rate" />
@@ -37,7 +37,7 @@
                         <span>@(Product?.Ratings ?? 0) Ratings</span>
                     </div>
 
-                    <div class="giz-modal--text">
+                    <div class="giz-details-card-description">
                         @Product?.Description
                     </div>
 
@@ -48,9 +48,9 @@
                     <!--/launch btn-->
                 </div>
             </div>
-            <div class="giz-app-details-card-media">
-                <!--modal nav-->
-                <div class="giz-modal-nav">
+            <div class="giz-details-card-extra">
+                
+                <div class="giz-details-card-extra-title">
                     Related products
                 </div>
                 

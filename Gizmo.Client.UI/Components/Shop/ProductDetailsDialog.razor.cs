@@ -28,6 +28,7 @@ namespace Gizmo.Client.UI.Components
                 Id = i,
                 ProductGroupId = random.Next(1, 5),
                 Name = $"Coca Cola 500ml",
+                Image = "Cola.png",
                 Price = random.Next(1, 5),
                 PointsPrice = random.Next(0, 100),
                 Points = random.Next(1, 500),

@@ -7,15 +7,14 @@
         <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
     </DialogHeader>
     <DialogBody>
-        <div class="giz-exe-selector-card">
-            <!--modal header-->
-            <div class="giz-exe-selector-card-header">
-                <div class="giz-exe-selector-card-header-title">windows apps</div>
-                <div class="giz-exe-selector-card-header-text">Select application version</div>
+        <div class="giz-client-dialog giz-exe-selector-card">
+
+            <div class="giz-client-dialog-header">
+                <div class="giz-client-dialog-header-title">windows apps</div>
+                <div class="giz-client-dialog-header-text">Select application version</div>
             </div>
-            <!--/modal header-->
-            <!--playing card-->
-            <div class="giz-exe-selector-card-body">
+
+            <div class="giz-client-dialog-body">
                 <div class="giz-executable-list">
                 
                     @if (Application != null && Application.Executables != null)
@@ -28,10 +27,7 @@
 
                 </div>
             </div>
-            <!--/playing card-->
+
         </div>
     </DialogBody>
-    <DialogFooter>
-
-    </DialogFooter>
 </Dialog>

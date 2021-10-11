@@ -25,7 +25,7 @@
                         <div class="giz-app-carousel-wrapper">
                             @foreach (var app in NewApplications.Skip(local_i * 6).Take(6))
                             {
-                                <ApplicationCard Application="@app" ShowDateAdded="true" OnOpenDetails="@OpenDetails"></ApplicationCard>
+                                <ApplicationCard Application="@app" ShowDateAdded="true" OnOpenDetails="@OpenDetails" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
                             }
                         </div>
                     </CarouselItem>
@@ -42,7 +42,7 @@
                         <div class="giz-app-carousel-wrapper">
                             @foreach (var app in TopRatedApplications.Skip(local_i * 6).Take(6))
                             {
-                                <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails"></ApplicationCard>
+                                <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
                             }
                         </div>
                     </CarouselItem>
@@ -59,7 +59,7 @@
                         <div class="giz-app-carousel-wrapper">
                             @foreach (var app in MostUsedApplications.Skip(local_i * 6).Take(6))
                             {
-                                <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails"></ApplicationCard>
+                                <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
                             }
                         </div>
                     </CarouselItem>

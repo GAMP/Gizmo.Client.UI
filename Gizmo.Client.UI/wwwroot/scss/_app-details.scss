@@ -1,189 +1,129 @@
 //=============== Application Details Dialog ================//
 
-.giz-app-details-dialog-body {
-    color: $white-color !important;
-    text-align: left !important;
+.giz-app-details-card {
 
-    .giz-app-details-card-common {
-        display: $display-grid;
-        grid-template-columns: min-content 3fr;
-        grid-column-gap: 2.188rem;
-        position: $position-relative;
+    .giz-app-details-card-brand {
+        &--info {
+            display: $display-grid;
+            grid-template-columns: 6.438rem 5.688rem;
+            @include font-12;
+            grid-column-gap: 2px;
+            font-family: $font-family-open-sans;
+            border-bottom: 1px solid $border-dark-color;
+            padding: 0.563rem 0;
 
-        .giz-app-details-card-brand {
-            margin-bottom: 2.188rem;
-
-            img {
-                margin-bottom: 0.5rem;
+            &:last-child {
+                border-bottom: none !important;
             }
+        }
 
-            &--info {
-                display: $display-grid;
-                grid-template-columns: 6.438rem 5.688rem;
-                @include font-12;
-                grid-column-gap: 2px;
-                font-family: $font-family-open-sans;
-                border-bottom: 1px solid $border-dark-color;
-                padding: 0.563rem 0;
+        &--title {
+            letter-spacing: $letter-spacing-2;
+            font-weight: $font-weight-600;
+        }
 
-                &:last-child {
-                    border-bottom: none !important;
-                }
-            }
-
-            &--title {
-                letter-spacing: $letter-spacing-2;
-                font-weight: $font-weight-600;
-            }
-
-            &--text {
-                text-shadow: $text-shadow-sm;
-                text-align: $text-align-right;
-            }
+        &--text {
+            text-shadow: $text-shadow-sm;
+            text-align: $text-align-right;
         }
     }
 
-    .giz-app-details-card-media {
-        border-top: 1px solid $border-dark-color;
-        padding-top: 2.188rem;
-        position: $position-relative;
+    .giz-apps-tags {
+        display: $display-flex;
+        align-items: $align-center;
+        margin-bottom: 0.938rem;
 
-        .giz-modal-nav {
+        .giz-selected-tag {
+            color: $pastel-blue;
+            margin-right: 0.188rem;
+            padding: 0 0.25rem;
+            text-align: $text-align-center;
+            background: $dark-pastel-blue;
+            border-radius: $rounded;
+            font-family: $font-family-open-sans;
+            font-size: $font-11;
+            line-height: $line-height-20;
+            letter-spacing: $letter-spacing-2;
+        }
+
+        .giz-add-tags {
+            cursor: pointer;
+            background: $light-navy-blue;
+            @extend .giz-selected-tag;
+            font-weight: $font-weight-400;
+            color: $white-color;
+        }
+    }
+
+    .giz-executable-list {
+        display: $display-grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-gap: 0.875rem;
+        height: 16.25rem;
+        overflow-y: scroll;
+        overflow-x: hidden;
+
+        &--heading {
+            font-weight: $font-weight-700;
+            color: $white-color;
+        }
+    }
+
+    .giz-modal-nav {
+        display: $display-flex;
+        align-items: $align-center;
+        justify-content: $justify-space-between;
+        margin-bottom: 1.875rem;
+
+        &--navbar {
+            list-style: $list-unstyled;
             display: $display-flex;
             align-items: $align-center;
-            justify-content: $justify-space-between;
-            margin-bottom: 1.875rem;
+        }
 
-            &--navbar {
-                list-style: $list-unstyled;
-                display: $display-flex;
-                align-items: $align-center;
-            }
+        &--items {
+            @include font-11;
+            text-transform: $text-uppercase;
+            margin-right: 1rem;
 
-            &--items {
-                @include font-11;
-                text-transform: $text-uppercase;
-                margin-right: 1rem;
-
-                .active {
-                    border-radius: $rounded-pill;
-                    background: $info-color;
-                }
-            }
-
-            &--links {
-                color: $white-color;
-                padding: 0.5rem;
-            }
-
-            .giz-disable-link {
-                color: $dim-white;
-                pointer-events: none;
+            .active {
+                border-radius: $rounded-pill;
+                background: $info-color;
             }
         }
 
-        .giz-executable-list {
-            display: $display-grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            grid-gap: 0.875rem;
-            height: 16.25rem;
-            overflow-y: scroll;
-            overflow-x: hidden;
-
-            &--heading {
-                font-weight: $font-weight-700;
-                color: $white-color;
-            }
+        &--links {
+            color: $white-color;
+            padding: 0.5rem;
         }
 
-        .giz-video-wrapper {
-            display: flex;
-            overflow-x: scroll;
-            overflow-y: hidden;
-            column-gap: 20px;
-
-            .giz-modal-video {
-                margin-bottom: 1rem;
-
-                img {
-                    min-width: $width-full;
-                    margin-bottom: 1rem;
-                    border-radius: $rounded;
-                }
-
-                &--title {
-                    @include font-11;
-                    letter-spacing: $letter-spacing-24;
-                    text-transform: $text-uppercase;
-                    color: $blue-gray;
-                    text-shadow: $text-shadow-sm;
-                    margin-bottom: 0.5rem;
-                }
-
-                &--text {
-                    @include open-sans-600;
-                    font-size: $font-15;
-                    line-height: $line-height-19;
-                    letter-spacing: $letter-spacing-5;
-                }
-            }
+        .giz-disable-link {
+            color: $dim-white;
+            pointer-events: none;
         }
     }
-}
 
-.giz-app-details-card-category {
-    @include font-10;
-}
+    .giz-modal-video {
+        img {
+            min-width: $width-full;
+            margin-bottom: 1rem;
+            border-radius: $rounded;
+        }
 
-.giz-app-details-card-title {
-    font-size: $font-20;
-    letter-spacing: $letter-spacing-10;
-    line-height: $line-height-25;
-    margin-bottom: 1.25rem;
-}
+        &--title {
+            @include font-11;
+            letter-spacing: $letter-spacing-24;
+            text-transform: $text-uppercase;
+            color: $blue-gray;
+            text-shadow: $text-shadow-sm;
+            margin-bottom: 0.5rem;
+        }
 
-.giz-app-rating {
-    display: $display-flex;
-    align-items: $align-center;
-    margin-bottom: 2.188rem;
-
-    span {
-        @include font-12;
-        font-family: $font-family-open-sans;
+        &--text {
+            @include open-sans-600;
+            font-size: $font-15;
+            line-height: $line-height-19;
+            letter-spacing: $letter-spacing-5;
+        }
     }
-}
-
-.giz-apps-tags {
-    display: $display-flex;
-    align-items: $align-center;
-    margin-bottom: 0.938rem;
-
-    .giz-selected-tag {
-        color: $pastel-blue;
-        margin-right: 0.188rem;
-        padding: 0 0.25rem;
-        text-align: $text-align-center;
-        background: $dark-pastel-blue;
-        border-radius: $rounded;
-        font-family: $font-family-open-sans;
-        font-size: $font-11;
-        line-height: $line-height-20;
-        letter-spacing: $letter-spacing-2;
-    }
-
-    .giz-add-tags {
-        cursor: pointer;
-        background: $light-navy-blue;
-        @extend .giz-selected-tag;
-        font-weight: $font-weight-400;
-        color: $white-color;
-    }
-}
-
-.giz-modal--text {
-    font-size: $font-13;
-    line-height: $line-height-20;
-    letter-spacing: $letter-spacing-1;
-    font-family: $font-family-open-sans;
-    margin-bottom: 2.5rem;
 }

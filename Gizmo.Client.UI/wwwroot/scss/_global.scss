@@ -169,6 +169,28 @@ main {
     }
 }
 
+.giz-dock-root {
+    display: flex;
+}
+
+.giz-dock {
+    display: $display-grid;
+    grid-auto-flow: column;
+
+    &-item {
+        transition: transform 0.2s;
+        padding: 15px;
+
+        &.half-scaled {
+            transform: scale(1.2);
+        }
+
+        &.scaled {
+            transform: scale(1.6);
+        }
+    }
+}
+
 //=== font size Client UI ===//
 .giz-fs-9 {
     @include font-9;
