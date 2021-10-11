@@ -8,6 +8,9 @@ namespace Gizmo.Client.UI.Components
     public partial class GizProductCard : CustomDOMComponentBase
     {
         [Parameter]
+        public bool IsHoverable { get; set; }
+
+        [Parameter]
         public ProductViewModel Product { get; set; }
 
         [Parameter]

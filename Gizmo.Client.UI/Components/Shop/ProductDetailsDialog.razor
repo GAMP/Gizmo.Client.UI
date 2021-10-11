@@ -2,15 +2,65 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
-<Dialog @bind-IsOpen="IsOpen">
+<Dialog @bind-IsOpen="IsOpen" IsModal="true" MaximumWidth="45rem">
     <DialogHeader>
-        Product Details
         <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
     </DialogHeader>
     <DialogBody>
-        Product Details
-    </DialogBody>
-    <DialogFooter>
+        <div class="giz-app-details-dialog-body">
+            <div class="giz-app-details-card-common">
+                <!--app info-->
+                <div class="giz-app-details-card-brand">
+                    <img src="_content/Gizmo.Client.UI/img/@Product?.Image" alt="loading" />
+                </div>
+                <!--/app info-->
+                <div class="giz-app-details-card-content">
+                    <!--heading-->
+                    <div class="giz-app-details-card-category">
+                        Beverages
+                    </div>
+                    <!--/heading-->
+                    <!--title-->
+                    <div class="giz-app-details-card-title">
+                        @Product?.Name
+                    </div>
+                    <!--/title-->
+                    <div class="giz-app-rating">
+                        @if (Product != null)
+                        {
+                            <Rating @bind-Value="Product.Rate" />
+                        }
+                        else
+                        {
+                            <Rating Value="0" IsReadOnly="true" />
+                        }
+                        <span>@(Product?.Ratings ?? 0) Ratings</span>
+                    </div>
 
-    </DialogFooter>
+                    <div class="giz-modal--text">
+                        @Product?.Description
+                    </div>
+
+                    <!--launch btn-->
+                    <div class="d-flex">
+                        <Button Size="ButtonSizes.Large">Add to cart</Button>
+                    </div>
+                    <!--/launch btn-->
+                </div>
+            </div>
+            <div class="giz-app-details-card-media">
+                <!--modal nav-->
+                <div class="giz-modal-nav">
+                    Related products
+                </div>
+                
+                <div class="giz-video-wrapper giz-scrollbar-h">
+                    @foreach (var product in RelatedProducts)
+                    {
+                        <GizProductCard Product="@product" />
+                    }
+                </div>
+            </div>
+        </div>
+    </DialogBody>
 </Dialog>

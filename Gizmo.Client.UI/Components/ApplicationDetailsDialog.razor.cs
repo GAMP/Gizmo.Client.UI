@@ -16,7 +16,7 @@ namespace Gizmo.Client.UI.Components
             {
                 Name = "Fall Guys: Ultimate Knockout",
                 Description = "Fall Guys is a massively multiplayer party game with up to 60 players online in a free-for-all struggle through round after round of escalating chaos until one victor remains!",
-                Image = "",
+                Image = "Unlimited.png",
                 Ratings = 168,
                 Rate = 4,
                 Publisher = "Very Positive Inc",

@@ -8,37 +8,40 @@
         <div class="hoverable-content">
             <!--img-->
             <div class="giz-img-top">
-                <img src="https://i.postimg.cc/sgmjBb4R/cola.png" alt='loading' />
+                <img src="_content/Gizmo.Client.UI/img/@Product?.Image" alt='loading' />
             </div>
             <!--/img-->
         </div>
-        <div class="hovered-content-wrapper">
-            <div class="hovered-content" @onclick="@(() => OpenDetails())">
-                <div class="d-flex">
-                    <!--heart-->
-                    <IconButton SVGIcon="Icons.Heart_Client" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="ml-auto" />
-                    <!--/heart-->
-                </div>
-                <div>
-                    <!--button-->
-                    <Button Size="ButtonSizes.Large" HasShadow="true" IsFullWidth="true" Class="card-primary-button" @onclick="@(() => AddProduct())">Add to cart</Button>
-                    <!--/button-->
-                </div>
-                <div>
-                    <!--offer-->
+        @if (IsHoverable)
+        {
+            <div class="hovered-content-wrapper">
+                <div class="hovered-content" @onclick="@(() => OpenDetails())">
                     <div class="d-flex">
-                        <div class="product-card-text">
-                            Buy One Get
+                        <!--heart-->
+                    <IconButton SVGIcon="Icons.Heart_Client" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="ml-auto" />
+                        <!--/heart-->
+                </div>
+                    <div>
+                        <!--button-->
+                    <Button Size="ButtonSizes.Large" HasShadow="true" IsFullWidth="true" Class="card-primary-button" @onclick="@(() => AddProduct())">Add to cart</Button>
+                        <!--/button-->
+                </div>
+                    <div>
+                        <!--offer-->
+                    <div class="d-flex">
+                            <div class="product-card-text">
+                                Buy One Get
+                            </div>
+                            <div class="product-card-points ml-auto">
+                                @Product?.Points
+                                <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.ExtraSmall" />
+                            </div>
                         </div>
-                        <div class="product-card-points ml-auto">
-                            @Product?.Points
-                            <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.ExtraSmall" />
-                        </div>
-                    </div>
-                    <!--offer score-->
+                        <!--offer score-->
+                </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
     <div class="product-card-footer">
         <!--card title-->

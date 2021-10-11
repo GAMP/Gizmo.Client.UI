@@ -58,7 +58,7 @@
                     <div class="giz-shop-products-wrapper">
                         @foreach (var product in Products.Where(a => !_selectedProductGroupId.HasValue || a.ProductGroupId == _selectedProductGroupId))
                         {
-                            <GizProductCard Product="@product" OnAddProduct="@AddProduct" OnOpenDetails="@OpenDetails" />
+                            <GizProductCard Product="@product" IsHoverable="true" OnAddProduct="@AddProduct" OnOpenDetails="@OpenDetails" />
                         }
                     </div>
                 </div>
