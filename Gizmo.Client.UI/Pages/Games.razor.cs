@@ -34,13 +34,23 @@ namespace Gizmo.Client.UI.Pages
             Applications.Add(new ApplicationViewModel() { Id = 3, Name = "Call of Duty: Warzone", BackgroundImage = "https://i.postimg.cc/wBrhj0PD/Cod.png" });
             Applications.Add(new ApplicationViewModel() { Id = 4, Name = "League of Legends", BackgroundImage = "https://i.postimg.cc/gkqR9YK9/log.png" });
             Applications.Add(new ApplicationViewModel() { Id = 5, Name = "Player Unknown's Battlegrounds", BackgroundImage = "https://i.postimg.cc/RVQCCh8R/pubg.png" });
+
+            User = new UserViewModel();
+            User.Username = "Infidel 06";
+            User.RegistrationDate = new DateTime(2020, 3, 4);
+            User.Balance = 10.76m;
+            User.CurrentTimeProduct = "Six Hours (6) for 10$ Pack";
+            User.Time = new TimeSpan(6, 36, 59);
+            User.Points = 416;
+            User.Picture = "_content/Gizmo.Client.UI/img/Cyber Punks.png";
+            //User.Picture = "_content/Gizmo.Client.UI/img/Avatar-1.png";
         }
 
         #region FIELDS
         private List<string> _filterOptions;
         private int _selectedRangeIndex = 0;
         private ICommand _selectApplicationCommand;
-        private int? _selectedApplication;
+        private int? _selectedApplicationId;
         private int _selectedTabIndex = 0;
         #endregion
 
@@ -74,6 +84,8 @@ namespace Gizmo.Client.UI.Pages
 
         public List<ApplicationViewModel> Applications { get; set; }
 
+        public UserViewModel User { get; set; }
+
         #endregion
 
         #region COMMANDS
@@ -99,7 +111,7 @@ namespace Gizmo.Client.UI.Pages
 
         private void SelectApplication(object parameter)
         {
-            _selectedApplication = (int)parameter;
+            _selectedApplicationId = (int)parameter;
 
             StateHasChanged();
         }

@@ -10,34 +10,6 @@ namespace Gizmo.Client.UI.Components
     {
         public ApplicationDetailsDialog()
         {
-            Random random = new Random();
-
-            Application = new ApplicationViewModel()
-            {
-                Name = "Fall Guys: Ultimate Knockout",
-                Description = "Fall Guys is a massively multiplayer party game with up to 60 players online in a free-for-all struggle through round after round of escalating chaos until one victor remains!",
-                Image = "Unlimited.png",
-                Ratings = 168,
-                Rate = 4,
-                Publisher = "Very Positive Inc",
-                ReleaseDate = new DateTime(2019, 10, 22),
-                DateAdded = new DateTime(2020, 5, 13)
-            };
-
-            Application.Executables = new List<ExecutableViewModel>();
-            Application.Executables.Add(new ExecutableViewModel() { Id = 1, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) });
-            Application.Executables.Add(new ExecutableViewModel() { Id = 2, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) });
-            Application.Executables.Add(new ExecutableViewModel() { Id = 3, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) });
-            Application.Executables.Add(new ExecutableViewModel() { Id = 4, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) });
-            Application.Executables.Add(new ExecutableViewModel() { Id = 5, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) });
-
-            Application.Tags = new List<TagViewModel>();
-            Application.Tags.Add(new TagViewModel() { Id = 1, Name = "Multiplayer" });
-            Application.Tags.Add(new TagViewModel() { Id = 2, Name = "Free to Play" });
-            Application.Tags.Add(new TagViewModel() { Id = 3, Name = "MMO" });
-            Application.Tags.Add(new TagViewModel() { Id = 4, Name = "Custom Tag" });
-            Application.Tags.Add(new TagViewModel() { Id = 5, Name = "Action" });
-            Application.Tags.Add(new TagViewModel() { Id = 6, Name = "Adventure" });
         }
 
         #region FIELDS
@@ -70,6 +42,7 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<bool> IsOpenChanged { get; set; }
 
+        [Parameter]
         public ApplicationViewModel Application { get; set; }
 
         #endregion

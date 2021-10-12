@@ -16,62 +16,71 @@
 <div class="wrapper_2 border-start">
     <section id="giz-home-main" class="giz-scrollbar-v px-8 py-6">
 
-        <div class="giz-app-carousel">
-            <Carousel Title="New apps" @bind-SelectedIndex="_newAppsIndex">
-                @for (int i = 0; i < GetPages(NewApplications.Count, 6); i++)
-                {
-                    var local_i = i;
-                    <CarouselItem>
-                        <div class="giz-app-carousel-wrapper">
-                            @foreach (var app in NewApplications.Skip(local_i * 6).Take(6))
-                            {
-                                <ApplicationCard Application="@app" ShowDateAdded="true" OnOpenDetails="@OpenDetails" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
-                            }
-                        </div>
-                    </CarouselItem>
-                }
-            </Carousel>
-        </div>
+        @if (NewApplications != null)
+        {
+            <div class="giz-app-carousel">
+                <Carousel Title="New apps" @bind-SelectedIndex="_newAppsIndex">
+                    @for (int i = 0; i < GetPages(NewApplications.Count, 6); i++)
+                    {
+                        var local_i = i;
+                        <CarouselItem>
+                            <div class="giz-app-carousel-wrapper">
+                                @foreach (var app in NewApplications.Skip(local_i * 6).Take(6))
+                                {
+                                    <ApplicationCard Application="@app" ShowDateAdded="true" OnOpenDetails="@OpenDetails" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
+                                }
+                            </div>
+                        </CarouselItem>
+                    }
+                </Carousel>
+            </div>
+        }
 
-        <div class="giz-app-carousel">
-            <Carousel Title="Top rated apps" @bind-SelectedIndex="_topRatedAppsIndex">
-                @for (int i = 0; i < GetPages(TopRatedApplications.Count, 6); i++)
-                {
-                    var local_i = i;
-                    <CarouselItem>
-                        <div class="giz-app-carousel-wrapper">
-                            @foreach (var app in TopRatedApplications.Skip(local_i * 6).Take(6))
-                            {
-                                <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
-                            }
-                        </div>
-                    </CarouselItem>
-                }
-            </Carousel>
-        </div>
-
-        <div class="giz-app-carousel">
-            <Carousel Title="Most used apps" @bind-SelectedIndex="_mostUsedAppsIndex">
-                @for (int i = 0; i < GetPages(MostUsedApplications.Count, 6); i++)
-                {
-                    var local_i = i;
-                    <CarouselItem>
-                        <div class="giz-app-carousel-wrapper">
-                            @foreach (var app in MostUsedApplications.Skip(local_i * 6).Take(6))
-                            {
-                                <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
-                            }
-                        </div>
-                    </CarouselItem>
-                }
-            </Carousel>
-        </div>
+        @if (TopRatedApplications != null)
+        {
+            <div class="giz-app-carousel">
+                <Carousel Title="Top rated apps" @bind-SelectedIndex="_topRatedAppsIndex">
+                    @for (int i = 0; i < GetPages(TopRatedApplications.Count, 6); i++)
+                    {
+                        var local_i = i;
+                        <CarouselItem>
+                            <div class="giz-app-carousel-wrapper">
+                                @foreach (var app in TopRatedApplications.Skip(local_i * 6).Take(6))
+                                {
+                                    <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
+                                }
+                            </div>
+                        </CarouselItem>
+                    }
+                </Carousel>
+            </div>
+        }
+        
+        @if (MostUsedApplications != null)
+        {
+            <div class="giz-app-carousel">
+                <Carousel Title="Most used apps" @bind-SelectedIndex="_mostUsedAppsIndex">
+                    @for (int i = 0; i < GetPages(MostUsedApplications.Count, 6); i++)
+                    {
+                        var local_i = i;
+                        <CarouselItem>
+                            <div class="giz-app-carousel-wrapper">
+                                @foreach (var app in MostUsedApplications.Skip(local_i * 6).Take(6))
+                                {
+                                    <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
+                                }
+                            </div>
+                        </CarouselItem>
+                    }
+                </Carousel>
+            </div>
+        }
 
     </section>
 </div>
 <!--/wrapper 2-->
 
-<ApplicationDetailsDialog @bind-IsOpen="AppDetailsIsOpen" />
+<ApplicationDetailsDialog @bind-IsOpen="AppDetailsIsOpen" Application="@_selectedApplication" />
 <ExecutableSelectorDialog @bind-IsOpen="ExecutableSelectorIsOpen" />
 
 @code {

@@ -26,30 +26,33 @@
                     </div>
                 </ListHeader>
                 <ChildContent>
-                    @foreach (var applicationGroup in ApplicationGroups.Where(a =>
-                        @*Show subgroups if the clicked group has any*@
-                        (_clickedGroupHasSubGroups && a.ParentGroupId == _selectedApplicationGroupId) ||
-                        @*Hide subgroups*@
-                        (!_clickedGroupHasSubGroups &&
-                            @*If there is no selected group, show groups without parent*@
-                            (_selectedApplicationGroup == null && !a.ParentGroupId.HasValue) ||
-                            @*If there is a selected group, show groups under the selected group*@
-                            (_selectedApplicationGroup != null && a.ParentGroupId == _selectedApplicationGroupId))
-                        ))
+                    @if (ApplicationGroups != null)
                     {
-                        <ListItem Command="@SelectApplicationGroupCommand" CommandParameter="@applicationGroup.Id" IsSelected="@(applicationGroup.Id == _clickedApplicationGroupId)">
-                            <div class="d-flex">
-                                <div class="mr-auto">
-                                    @applicationGroup.Name
-                                </div>
-                                @if (Applications != null)
-                                {
-                                    <div class="giz-search-number">
-                                        @Applications.Where(a => a.ApplicationGroupId == applicationGroup.Id).Count()
+                        @foreach (var applicationGroup in ApplicationGroups.Where(a =>
+                            @*Show subgroups if the clicked group has any*@
+                            (_clickedGroupHasSubGroups && a.ParentGroupId == _selectedApplicationGroupId) ||
+                            @*Hide subgroups*@
+                            (!_clickedGroupHasSubGroups &&
+                                @*If there is no selected group, show groups without parent*@
+                                (_selectedApplicationGroup == null && !a.ParentGroupId.HasValue) ||
+                                @*If there is a selected group, show groups under the selected group*@
+                                (_selectedApplicationGroup != null && a.ParentGroupId == _selectedApplicationGroupId))
+                            ))
+                        {
+                            <ListItem Command="@SelectApplicationGroupCommand" CommandParameter="@applicationGroup.Id" IsSelected="@(applicationGroup.Id == _clickedApplicationGroupId)">
+                                <div class="d-flex">
+                                    <div class="mr-auto">
+                                        @applicationGroup.Name
                                     </div>
-                                }
-                            </div>
-                        </ListItem>
+                                    @if (Applications != null)
+                                    {
+                                        <div class="giz-search-number">
+                                            @Applications.Where(a => a.ApplicationGroupId == applicationGroup.Id).Count()
+                                        </div>
+                                    }
+                                </div>
+                            </ListItem>
+                        }
                     }
                 </ChildContent>
             </List>
@@ -67,9 +70,12 @@
             </div>
 
             <div class="giz-apps-filters-body giz-scrollbar-v">
-                @foreach (var applicationFilters in ApplicationFilters)
-                {                
-                    <ApplicationFilterCard ApplicationFilter="@applicationFilters" />
+                @if (ApplicationFilters != null)
+                {
+                    @foreach (var applicationFilters in ApplicationFilters)
+                    {                
+                        <ApplicationFilterCard ApplicationFilter="@applicationFilters" />
+                    }
                 }
             </div>
         </div>
@@ -88,9 +94,12 @@
 
         <div class="giz-apps-body giz-scrollbar-v">
             <div class="giz-apps-wrapper">
-                @foreach (var app in Applications.Where(a => a.ApplicationGroupId == _clickedApplicationGroupId))
+                @if (Applications != null)
                 {
-                    <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
+                    @foreach (var app in Applications.Where(a => a.ApplicationGroupId == _clickedApplicationGroupId))
+                    {
+                        <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
+                    }
                 }
             </div>
         </div>
@@ -100,5 +109,5 @@
 </div>
 <!--/wrapper 2-->
 
-<ApplicationDetailsDialog @bind-IsOpen="AppDetailsIsOpen" />
+<ApplicationDetailsDialog @bind-IsOpen="AppDetailsIsOpen" Application="@_selectedApplication" />
 <ExecutableSelectorDialog @bind-IsOpen="ExecutableSelectorIsOpen" />
