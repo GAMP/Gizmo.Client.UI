@@ -21,7 +21,8 @@
                     {
                         @foreach (var paymentMethod in PaymentMethods)
                         {
-                            <div class="giz-payment-method-list-item @(paymentMethod.Id == _selectedPaymentMethod ? "active" : "")">
+                            <div class="giz-payment-method-list-item"
+                                 @onclick="@(() => SelectPaymentMethod(paymentMethod.Id))">
                                 <div class="giz-payment-method-list-item-icon">
                                     <Icon SVGIcon="@paymentMethod.Icon" Size="IconSizes.Large" />
                                 </div>

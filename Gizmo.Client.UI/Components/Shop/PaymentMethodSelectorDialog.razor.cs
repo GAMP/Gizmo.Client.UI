@@ -2,12 +2,13 @@
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class SelectPaymentMethodDialog : CustomDOMComponentBase
+    public partial class PaymentMethodSelectorDialog : CustomDOMComponentBase
     {
-        public SelectPaymentMethodDialog()
+        public PaymentMethodSelectorDialog()
         {
             PaymentMethods = new List<PaymentMethodViewModel>();
             PaymentMethods.Add(new PaymentMethodViewModel() { Id = 1, Name = "Cash", Icon = Icons.Coins_Client });
@@ -15,8 +16,6 @@ namespace Gizmo.Client.UI.Components
         }
 
         private bool _isOpen { get; set; }
-
-        private int _selectedPaymentMethod = 2;
 
         [Parameter]
         public bool IsOpen
@@ -39,10 +38,19 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<bool> IsOpenChanged { get; set; }
 
+        [Parameter]
+        public EventCallback<int> OnSelectPaymentMethod { get; set; }
+
         public List<PaymentMethodViewModel> PaymentMethods { get; set; }
 
         private void CloseDialog()
         {
+            IsOpen = false;
+        }
+
+        private async Task SelectPaymentMethod(int id)
+        {
+            await OnSelectPaymentMethod.InvokeAsync(id);
             IsOpen = false;
         }
 

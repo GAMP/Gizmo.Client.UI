@@ -1,4 +1,6 @@
 ﻿@namespace Gizmo.Client.UI.Shared
+@inherits CustomDOMComponentBase
+@using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
 
 <!--dropdown-->
@@ -7,21 +9,12 @@
     <div class="giz-dropdown-menu--body">
         <div class="giz-favorite-apps-wrapper">
             <GizDock>
-                <GizDockItem>
-                    <img src="https://i.postimg.cc/J4RGXr13/Places-folder-red-icon-1.png" alt="loading" />
-                </GizDockItem>
-                <GizDockItem>
-                    <img src="https://i.postimg.cc/XYG3Gmyc/Word-2-icon-1.png" alt="loading" />
-                </GizDockItem>
-                <GizDockItem>
-                    <img src="https://i.postimg.cc/bYm9dBPv/dota-2-icon-1.png" alt="loading" />
-                </GizDockItem>
-                <GizDockItem>
-                    <img src="https://i.postimg.cc/VNmGQb1r/spotify-512.png" alt="loading" />
-                </GizDockItem>
-                <GizDockItem>
-                    <img src="https://i.postimg.cc/rpfvf9WF/bNet.png" alt="loading" />
-                </GizDockItem>
+                @foreach(var item in Favorites)
+                {
+                    <GizDockItem>
+                        <img src="@item.Icon" alt="loading" />
+                    </GizDockItem>
+                }
             </GizDock>
         </div>
     </div>

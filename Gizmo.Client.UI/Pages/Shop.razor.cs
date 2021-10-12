@@ -45,11 +45,27 @@ namespace Gizmo.Client.UI.Pages
                 Id = i,
                 ProductGroupId = random.Next(1, 5),
                 Name = $"Coca Cola 500ml",
+                Description = "Iced coffee is a coffee beverage served cold. It may be prepared either by brewing coffee in the normal way and then serving it over ice.",
                 Image = "Cola.png",
                 Price = random.Next(1, 5),
                 PointsPrice = random.Next(0, 100),
                 Points = random.Next(1, 500),
+                Ratings = random.Next(1, 500),
+                Rate = random.Next(1, 5)
             }).ToList();
+
+            Products.Add(new ProductViewModel()
+            {
+                ProductGroupId = 100,
+                Name = "Freddo Espresso Coffee",
+                Description = "Iced coffee is a coffee beverage served cold. It may be prepared either by brewing coffee in the normal way and then serving it over ice.",
+                Image = "Cola.png",
+                Price = random.Next(1, 5),
+                PointsPrice = random.Next(0, 100),
+                Points = random.Next(1, 500),
+                Ratings = random.Next(1, 500),
+                Rate = random.Next(1, 5)
+            });
 
             Order = new OrderViewModel();
 
@@ -74,6 +90,7 @@ namespace Gizmo.Client.UI.Pages
         private ICommand _placeOrderCommand;
         private int? _selectedProductGroupId;
         private ProductGroupViewModel _selectedProductGroup;
+        private ProductViewModel _selectedProduct;
         #endregion
 
         #region PROPERTIES
@@ -107,7 +124,7 @@ namespace Gizmo.Client.UI.Pages
             }
         }
 
-        public bool SelectPaymentMethodIsOpen { get; set; }
+        public bool PaymentMethodSelectorIsOpen { get; set; }
 
         public bool ProductDetailsIsOpen { get; set; }
 
@@ -151,7 +168,7 @@ namespace Gizmo.Client.UI.Pages
 
         private void PlaceOrder(object parameter)
         {
-            SelectPaymentMethodIsOpen = true;
+            PaymentMethodSelectorIsOpen = true;
 
             StateHasChanged();
         }
@@ -170,6 +187,9 @@ namespace Gizmo.Client.UI.Pages
 
         public void AddProduct(int id)
         {
+            if (Order == null)
+                Order = new OrderViewModel();
+
             var existingOrderLine = Order.OrderLines.Where(a => a.ProductId == id).FirstOrDefault();
             if (existingOrderLine != null)
             {
@@ -204,7 +224,16 @@ namespace Gizmo.Client.UI.Pages
 
         public void OpenDetails(int id)
         {
+            _selectedProduct = Products.Where(a => a.Id == id).FirstOrDefault();
             ProductDetailsIsOpen = true;
+        }
+
+        public void SelectPaymentMethod(int id)
+        {
+            //SEND THE ORDER.
+            Order = null;
+
+            StateHasChanged();
         }
 
         #endregion

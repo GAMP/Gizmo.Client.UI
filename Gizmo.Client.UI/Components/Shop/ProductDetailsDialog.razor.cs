@@ -1,9 +1,11 @@
 ﻿using Gizmo.Client.UI.ViewModels;
 using Gizmo.Web.Components;
+using Gizmo.Web.Components.Infrastructure;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -12,16 +14,6 @@ namespace Gizmo.Client.UI.Components
         public ProductDetailsDialog()
         {
             Random random = new Random();
-
-            Product = new ProductViewModel()
-            {
-                ProductGroupId = 1,
-                Name = "Freddo Espresso Coffee",
-                Description = "Iced coffee is a coffee beverage served cold. It may be prepared either by brewing coffee in the normal way and then serving it over ice.",
-                Image = "Cola.png",
-                Ratings = 168,
-                Rate = 4
-            };
 
             RelatedProducts = Enumerable.Range(0, 4).Select(i => new ProductViewModel()
             {
@@ -36,6 +28,7 @@ namespace Gizmo.Client.UI.Components
         }
 
         private bool _isOpen { get; set; }
+        private ICommand _addToCartCommand;
 
         [Parameter]
         public bool IsOpen
@@ -58,9 +51,45 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<bool> IsOpenChanged { get; set; }
 
+        [Parameter]
         public ProductViewModel Product { get; set; }
 
+        [Parameter]
+        public EventCallback<int> OnAddToCart { get; set; }
+
         public ICollection<ProductViewModel> RelatedProducts { get; set; }
+
+        #region COMMANDS
+
+        public ICommand AddToCartCommand
+        {
+            get
+            {
+                if (_addToCartCommand == null)
+                    _addToCartCommand = new SimpleCommand<object, object>(AddToCart);
+
+                return _addToCartCommand;
+            }
+            set
+            {
+                _addToCartCommand = value;
+            }
+        }
+
+        #endregion
+
+        #region COMMAND IMPLEMENTATION
+
+        private void AddToCart(object parameter)
+        {
+            if (Product != null)
+            {
+                OnAddToCart.InvokeAsync(Product.Id);
+                IsOpen = false;
+            }
+        }
+
+        #endregion
 
         private void CloseDialog()
         {

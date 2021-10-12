@@ -1,9 +1,11 @@
 ﻿using Gizmo.Client.UI.ViewModels;
 using Gizmo.Web.Components.Infrastructure;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Gizmo.Client.UI.Pages
@@ -19,23 +21,28 @@ namespace Gizmo.Client.UI.Pages
             Random random = new Random();
 
             ApplicationGroups = new List<ApplicationGroupViewModel>();
-            ApplicationGroups.Add(new ApplicationGroupViewModel() { Id = 1, Name = "Adventure" });
+
+            var category1 = new ApplicationGroupViewModel() { Id = 1, Name = "Adventure" };
+
+            ApplicationGroups.Add(category1);
             ApplicationGroups.Add(new ApplicationGroupViewModel() { Id = 2, Name = "Online & MMOs" });
             ApplicationGroups.Add(new ApplicationGroupViewModel() { Id = 3, Name = "FPS & Action" });
             ApplicationGroups.Add(new ApplicationGroupViewModel() { Id = 4, Name = "Strategy" });
             ApplicationGroups.Add(new ApplicationGroupViewModel() { Id = 5, Name = "Sports" });
 
-            ApplicationGroups.Add(new ApplicationGroupViewModel() { Id = 1, Name = "Adventure" });
-            ApplicationGroups.Add(new ApplicationGroupViewModel() { Id = 2, Name = "Online & MMOs" });
-            ApplicationGroups.Add(new ApplicationGroupViewModel() { Id = 3, Name = "FPS & Action" });
-            ApplicationGroups.Add(new ApplicationGroupViewModel() { Id = 4, Name = "Strategy" });
-            ApplicationGroups.Add(new ApplicationGroupViewModel() { Id = 5, Name = "Sports" });
+            ApplicationGroups.AddRange(Enumerable.Range(1, 8).Select(i => new ApplicationGroupViewModel()
+            {
+                Id = 10 + i,
+                ParentGroupId = 1,
+                Name = $"Subcategory {i}",
+            }).ToList());
 
-            ApplicationGroups.Add(new ApplicationGroupViewModel() { Id = 1, Name = "Adventure" });
-            ApplicationGroups.Add(new ApplicationGroupViewModel() { Id = 2, Name = "Online & MMOs" });
-            ApplicationGroups.Add(new ApplicationGroupViewModel() { Id = 3, Name = "FPS & Action" });
-            ApplicationGroups.Add(new ApplicationGroupViewModel() { Id = 4, Name = "Strategy" });
-            ApplicationGroups.Add(new ApplicationGroupViewModel() { Id = 5, Name = "Sports" });
+            ApplicationGroups.AddRange(Enumerable.Range(1, 8).Select(i => new ApplicationGroupViewModel()
+            {
+                Id = 20 + i,
+                ParentGroupId = 2,
+                Name = $"Subcategory2 {i}",
+            }).ToList());
 
             Applications = new List<ApplicationViewModel>();
             Applications.Add(new ApplicationViewModel() { Id = 1, Name = "Grand Theft Auto IV", Image = "Gta-5.png", ApplicationGroupId = random.Next(1, 5), Ratings = random.Next(0, 100), Rate = random.Next(1, 5), NowPlaying = random.Next(0, 100) });
@@ -83,12 +90,17 @@ namespace Gizmo.Client.UI.Pages
             ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 2, Name = "Rating", Options = options });
             ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 3, Name = "Type", Options = options });
             ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 4, Name = "Player mode", Options = options });
+
+            _clickedApplicationGroupId = category1.Id;
         }
 
         #region FIELDS
         private ICommand _selectApplicationGroupCommand;
+        private int? _clickedApplicationGroupId;
         private int? _selectedApplicationGroupId;
         private ApplicationGroupViewModel _selectedApplicationGroup;
+        private bool _selectedGroupHasSubGroups;
+        private bool _clickedGroupHasSubGroups;
         #endregion
 
         #region PROPERTIES
@@ -142,10 +154,31 @@ namespace Gizmo.Client.UI.Pages
 
         private void SelectApplicationGroup(object parameter)
         {
-            _selectedApplicationGroupId = (int)parameter;
-            _selectedApplicationGroup = ApplicationGroups.Where(a => a.Id == _selectedApplicationGroupId).FirstOrDefault();
+            _clickedApplicationGroupId = (int)parameter;
+
+            _clickedGroupHasSubGroups = ApplicationGroups.Where(a => a.ParentGroupId == _clickedApplicationGroupId).Count() > 0;
+
+            //If the clicked application group has subgroups then set it as selected to show the subgroups.
+            if (_clickedGroupHasSubGroups)
+            {
+                _selectedGroupHasSubGroups = _clickedGroupHasSubGroups;
+                _selectedApplicationGroupId = _clickedApplicationGroupId;
+                _selectedApplicationGroup = ApplicationGroups.Where(a => a.Id == _selectedApplicationGroupId).FirstOrDefault();
+            }
 
             StateHasChanged();
+        }
+
+        #endregion
+
+        #region EVENTS
+
+        protected Task OnClickBackButtonHandler(MouseEventArgs args)
+        {
+            _selectedApplicationGroupId = _selectedApplicationGroup.ParentGroupId;
+            _selectedApplicationGroup = ApplicationGroups.Where(a => a.Id == _selectedApplicationGroupId).FirstOrDefault();
+
+            return Task.CompletedTask;
         }
 
         #endregion

@@ -10,12 +10,34 @@
         <div class="giz-apps-categories">
             <List CanClick="true" CanSelect="true" Class="giz-menu-list giz-apps-menu-list" BodyClass="giz-scrollbar-v">
                 <ListHeader>
-                    @(_selectedApplicationGroup?.Name ?? "Categories")
+                    <div class="d-flex align-center">
+                        @if (_selectedApplicationGroup != null)
+                        {
+                            @if (_selectedGroupHasSubGroups)
+                            {
+                                <div class="mr-2"><IconButton Variant="ButtonVariants.Text" Size="ButtonSizes.Small" SVGIcon="Icons.ArrowLeft_Client" @onclick="@OnClickBackButtonHandler" /></div>
+                            }
+                            <div>@_selectedApplicationGroup.Name</div>
+                        }
+                        else
+                        {
+                            <div>Categories</div>
+                        }
+                    </div>
                 </ListHeader>
                 <ChildContent>
-                    @foreach (var applicationGroup in ApplicationGroups)
+                    @foreach (var applicationGroup in ApplicationGroups.Where(a =>
+                        @*Show subgroups if the clicked group has any*@
+                        (_clickedGroupHasSubGroups && a.ParentGroupId == _selectedApplicationGroupId) ||
+                        @*Hide subgroups*@
+                        (!_clickedGroupHasSubGroups &&
+                            @*If there is no selected group, show groups without parent*@
+                            (_selectedApplicationGroup == null && !a.ParentGroupId.HasValue) ||
+                            @*If there is a selected group, show groups under the selected group*@
+                            (_selectedApplicationGroup != null && a.ParentGroupId == _selectedApplicationGroupId))
+                        ))
                     {
-                        <ListItem Command="@SelectApplicationGroupCommand" CommandParameter="@applicationGroup.Id">
+                        <ListItem Command="@SelectApplicationGroupCommand" CommandParameter="@applicationGroup.Id" IsSelected="@(applicationGroup.Id == _clickedApplicationGroupId)">
                             <div class="d-flex">
                                 <div class="mr-auto">
                                     @applicationGroup.Name
@@ -66,7 +88,7 @@
 
         <div class="giz-apps-body giz-scrollbar-v">
             <div class="giz-apps-wrapper">
-                @foreach (var app in Applications.Where(a => !_selectedApplicationGroupId.HasValue || a.ApplicationGroupId == _selectedApplicationGroupId))
+                @foreach (var app in Applications.Where(a => a.ApplicationGroupId == _clickedApplicationGroupId))
                 {
                     <ApplicationCard Application="@app" OnOpenDetails="@OpenDetails" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
                 }

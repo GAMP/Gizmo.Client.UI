@@ -111,11 +111,11 @@
                         <!--order summary-->
                         <div class="giz-order-summary">
                             <div class="giz-order-summary--text">Total</div>
-                            <div class="giz-order-summary--number">@Order.Total.ToString("C")</div>
+                            <div class="giz-order-summary--number">@(Order?.Total.ToString("C") ?? (0).ToString("C"))</div>
                             <div class="giz-order-summary--text">points</div>
-                            <div class="giz-order-summary--number">@Order.PointsTotal</div>
+                            <div class="giz-order-summary--number">@(Order?.PointsTotal ?? 0)</div>
                             <div class="giz-order-summary--text">awards</div>
-                            <div class="giz-order-summary--number">@Order.PointsAwardTotal</div>
+                            <div class="giz-order-summary--number">@(Order?.PointsAwardTotal ?? 0)</div>
                         </div>
                         <!--/order summary-->
                         <!--order btn-->
@@ -136,5 +136,5 @@
 </div>
 <!--/wrapper 2-->
 
-<SelectPaymentMethodDialog @bind-IsOpen="SelectPaymentMethodIsOpen" />
-<ProductDetailsDialog @bind-IsOpen="ProductDetailsIsOpen" />
+<PaymentMethodSelectorDialog @bind-IsOpen="PaymentMethodSelectorIsOpen" OnSelectPaymentMethod="@SelectPaymentMethod" />
+<ProductDetailsDialog @bind-IsOpen="ProductDetailsIsOpen" Product="@_selectedProduct" OnAddToCart="@AddProduct" />
