@@ -87,11 +87,11 @@ namespace Gizmo.Client.UI.Pages
                 DateAdded = new DateTime(2021, 3, 12),
                 Executables = new List<ExecutableViewModel>()
                 {
-                    new ExecutableViewModel() { Id = 1, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
-                    new ExecutableViewModel() { Id = 2, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
-                    new ExecutableViewModel() { Id = 3, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
-                    new ExecutableViewModel() { Id = 4, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
-                    new ExecutableViewModel() { Id = 5, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) }
+                    new ExecutableViewModel() { Id = 1, Name = "Linage II Freya Hi5", Image = "_content/Gizmo.Client.UI/img/dota-2-icon 1.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
+                    new ExecutableViewModel() { Id = 2, Name = "Linage II Freya Hi5", Image = "_content/Gizmo.Client.UI/img/dota-2-icon 1.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
+                    new ExecutableViewModel() { Id = 3, Name = "Linage II Freya Hi5", Image = "_content/Gizmo.Client.UI/img/dota-2-icon 1.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
+                    new ExecutableViewModel() { Id = 4, Name = "Linage II Freya Hi5", Image = "_content/Gizmo.Client.UI/img/dota-2-icon 1.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
+                    new ExecutableViewModel() { Id = 5, Name = "Linage II Freya Hi5", Image = "_content/Gizmo.Client.UI/img/dota-2-icon 1.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) }
                 },
                 Tags = new List<TagViewModel>()
                 {
@@ -119,11 +119,11 @@ namespace Gizmo.Client.UI.Pages
                 DateAdded = new DateTime(2021, 3, 12),
                 Executables = new List<ExecutableViewModel>()
                 {
-                    new ExecutableViewModel() { Id = 1, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
-                    new ExecutableViewModel() { Id = 2, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
-                    new ExecutableViewModel() { Id = 3, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
-                    new ExecutableViewModel() { Id = 4, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
-                    new ExecutableViewModel() { Id = 5, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) }
+                    new ExecutableViewModel() { Id = 1, Name = "Linage II Freya Hi5", Image = "_content/Gizmo.Client.UI/img/dota-2-icon 1.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
+                    new ExecutableViewModel() { Id = 2, Name = "Linage II Freya Hi5", Image = "_content/Gizmo.Client.UI/img/dota-2-icon 1.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
+                    new ExecutableViewModel() { Id = 3, Name = "Linage II Freya Hi5", Image = "_content/Gizmo.Client.UI/img/dota-2-icon 1.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
+                    new ExecutableViewModel() { Id = 4, Name = "Linage II Freya Hi5", Image = "_content/Gizmo.Client.UI/img/dota-2-icon 1.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
+                    new ExecutableViewModel() { Id = 5, Name = "Linage II Freya Hi5", Image = "_content/Gizmo.Client.UI/img/dota-2-icon 1.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) }
                 },
                 Tags = new List<TagViewModel>()
                 {
@@ -151,11 +151,11 @@ namespace Gizmo.Client.UI.Pages
                 DateAdded = new DateTime(2021, 3, 12),
                 Executables = new List<ExecutableViewModel>()
                 {
-                    new ExecutableViewModel() { Id = 1, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
-                    new ExecutableViewModel() { Id = 2, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
-                    new ExecutableViewModel() { Id = 3, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
-                    new ExecutableViewModel() { Id = 4, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
-                    new ExecutableViewModel() { Id = 5, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) }
+                    new ExecutableViewModel() { Id = 1, Name = "Linage II Freya Hi5", Image = "_content/Gizmo.Client.UI/img/dota-2-icon 1.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
+                    new ExecutableViewModel() { Id = 2, Name = "Linage II Freya Hi5", Image = "_content/Gizmo.Client.UI/img/dota-2-icon 1.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
+                    new ExecutableViewModel() { Id = 3, Name = "Linage II Freya Hi5", Image = "_content/Gizmo.Client.UI/img/dota-2-icon 1.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
+                    new ExecutableViewModel() { Id = 4, Name = "Linage II Freya Hi5", Image = "_content/Gizmo.Client.UI/img/dota-2-icon 1.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) },
+                    new ExecutableViewModel() { Id = 5, Name = "Linage II Freya Hi5", Image = "_content/Gizmo.Client.UI/img/dota-2-icon 1.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) }
                 },
                 Tags = new List<TagViewModel>()
                 {

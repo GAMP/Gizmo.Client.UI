@@ -94,7 +94,6 @@
 
             .giz-align-center {
                 @include align-center;
-                display: $display-none;
             }
 
             .giz-search-menu-container {
@@ -107,10 +106,22 @@
                 }
 
                 .giz-apps-card {
+                    font-size: $font-16;
+                    line-height: $line-height-20;
+                    word-break: break-word;
+
+                    &-title {
+                        @include open-sans-600;
+                    }
 
                     &--overlay {
+                        position: relative;
+                        width: 167px;
+                        height: 239px;
+                        background: #242731;
+                        border-radius: 4px;
 
-                        .giz-card-title {
+                        .giz-apps-card-more {
                             @include align-center;
                             text-align: $text-align-center;
 
@@ -119,6 +130,14 @@
                                 color: $smokey-gray;
                                 text-transform: none;
                             }
+                        }
+
+                        img {
+                            border-radius: $rounded;
+                            width: -moz-available;
+                            width: -webkit-fill-available;
+                            height: -moz-available;
+                            height: -webkit-fill-available;
                         }
                     }
                 }

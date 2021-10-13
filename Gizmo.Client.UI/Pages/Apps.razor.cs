@@ -192,11 +192,11 @@ namespace Gizmo.Client.UI.Pages
                 item.Description = "Fall Guys is a massively multiplayer party game with up to 60 players online in a free-for-all struggle through round after round of escalating chaos until one victor remains!";
              
                 item.Executables = new List<ExecutableViewModel>();
-                item.Executables.Add(new ExecutableViewModel() { Id = 1, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) });
-                item.Executables.Add(new ExecutableViewModel() { Id = 2, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) });
-                item.Executables.Add(new ExecutableViewModel() { Id = 3, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) });
-                item.Executables.Add(new ExecutableViewModel() { Id = 4, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) });
-                item.Executables.Add(new ExecutableViewModel() { Id = 5, Name = "Linage II Freya Hi5", Image = "https://i.postimg.cc/0yk0qNtT/app-icon.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) });
+                item.Executables.Add(new ExecutableViewModel() { Id = 1, Name = "Linage II Freya Hi5", Image = "_content/Gizmo.Client.UI/img/dota-2-icon 1.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) });
+                item.Executables.Add(new ExecutableViewModel() { Id = 2, Name = "Linage II Freya Hi5", Image = "_content/Gizmo.Client.UI/img/dota-2-icon 1.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) });
+                item.Executables.Add(new ExecutableViewModel() { Id = 3, Name = "Linage II Freya Hi5", Image = "_content/Gizmo.Client.UI/img/dota-2-icon 1.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) });
+                item.Executables.Add(new ExecutableViewModel() { Id = 4, Name = "Linage II Freya Hi5", Image = "_content/Gizmo.Client.UI/img/dota-2-icon 1.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) });
+                item.Executables.Add(new ExecutableViewModel() { Id = 5, Name = "Linage II Freya Hi5", Image = "_content/Gizmo.Client.UI/img/dota-2-icon 1.png", Installing = Convert.ToBoolean(random.Next(0, 2)), InstallingPercentage = random.Next(0, 100) });
 
                 item.Tags = new List<TagViewModel>();
                 item.Tags.Add(new TagViewModel() { Id = 1, Name = "Multiplayer" });

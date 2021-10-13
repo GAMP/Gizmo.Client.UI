@@ -5,6 +5,6 @@ namespace Gizmo.Client.UI.ViewModels
 {
     public class NewsFeedViewModel : ViewModelBase
     {
-        public NewsFeedType Type { get; set; }
+        public NewsFeedTypes Type { get; set; }
     }
 }

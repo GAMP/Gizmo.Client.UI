@@ -1,8 +1,10 @@
-﻿namespace Gizmo.Client.UI.ViewModels
+﻿using Gizmo.Client.UI.Enumerations;
+
+namespace Gizmo.Client.UI.ViewModels
 {
     public class SearchResultViewModel
     {
-        public int Type { get; set; } //1 = App, 2 = Product
+        public SearchResultTypes Type { get; set; }
 
         public int Id { get; set; }
 

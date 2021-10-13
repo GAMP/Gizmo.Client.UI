@@ -1,6 +1,6 @@
 ﻿namespace Gizmo.Client.UI.Enumerations
 {
-    public enum NewsFeedType
+    public enum NewsFeedTypes
     {
         Rss,
         Media

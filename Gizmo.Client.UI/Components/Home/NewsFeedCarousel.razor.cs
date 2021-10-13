@@ -16,11 +16,11 @@ namespace Gizmo.Client.UI.Components
 
             for (int i = 0; i < 6; i++)
             {
-                var itemType = (Enumerations.NewsFeedType)random.Next(0, 2);
+                var itemType = (Enumerations.NewsFeedTypes)random.Next(0, 2);
 
                 switch (itemType)
                 {
-                    case Enumerations.NewsFeedType.Rss:
+                    case Enumerations.NewsFeedTypes.Rss:
                         RssFeedViewModel rssItem = new RssFeedViewModel();
 
                         rssItem.Type = itemType;
@@ -34,12 +34,12 @@ namespace Gizmo.Client.UI.Components
                         NewsFeeds.Add(rssItem);
                         break;
 
-                    case Enumerations.NewsFeedType.Media:
+                    case Enumerations.NewsFeedTypes.Media:
                         MediaFeedViewModel mediaItem = new MediaFeedViewModel();
 
                         mediaItem.Type = itemType;
-                        mediaItem.Thumb = "https://i.postimg.cc/bJgnQb1h/Image-1.png";
-                        mediaItem.Image = "https://i.postimg.cc/50RYR6CT/news-img.png";
+                        mediaItem.Thumb = "_content/Gizmo.Client.UI/img/Redbull.png";
+                        mediaItem.Image = "_content/Gizmo.Client.UI/img/news-modal-img.png";
                         mediaItem.Title = "Το Red Bull Mobile Esports Open Season 3 επιστρέφει αυτο το καλοκαίρι";
                         mediaItem.Source = $"turnaments 2021  | {i + 1} hours ago";
                         mediaItem.Description = "Για τους συλλέκτες που αγαπούν να προσθέτουν τις τελευταίες κυκλοφορίες στο ράφι τους, αυτή η αλλαγή μπορεί να είναι τρομακτική.Αλλά η κυριαρχία της ψηφιακής αγορά θα σημαίνει απαραιτήτως το τέλος των φυσικών παιχνιδιών ή οι συλλέκτες θα δείξουν αρκετό ενδιαφέρον και θα ξοδέψουν αρκετά χρήματα για να κρατήσουν τα φυσικά μέσα ζωντανά, αν και σε μια νέα, πιο εξειδικευμένη μορφή;";
