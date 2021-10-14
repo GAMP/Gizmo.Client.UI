@@ -4,43 +4,35 @@
 
 <!--dropdown-->
 <div class="giz-dropdown-menu">
-    <!--dropdown body-->
-    <div class="giz-dropdown-menu--body">
-        <!--notification-->
-        <div class="giz-menu-notifications-container">
-            <div class="giz-menu-notifications-container-wrapper giz-scrollbar-v">
+    <!--notification-->
+    <div class="giz-menu-notifications-container">
+        <div class="giz-menu-notifications-container-wrapper giz-scrollbar-v">
 
-                <div>
-
-                    @if (Notifications != null && Notifications.Count > 0)
-                    {
-                        foreach (var notification in Notifications)
-                        {
-                            <MenuNotificationCard Notification="@notification" OnMarkAsRead="@MarkAsRead" />
-                        }
-                    }
-                    else
-                    {
-                        <!--no notification-->
-                        <div class="giz-menu-notification-default-item">
-                            <div class="giz-menu-notification-default-item-title">No new notifications.</div>
-                            <div class="giz-menu-notification-default-item-text">When something new happens you’ll find it here.</div>
-                        </div>
-                        <!--/no notification-->
-                    }
-
+            @if (Notifications != null && Notifications.Count > 0)
+            {
+                @foreach (var notification in Notifications)
+                {
+                    <MenuNotificationCard Notification="@notification" OnMarkAsRead="@MarkAsRead" />
+                }
+            }
+            else
+            {
+                <!--no notification-->
+                <div class="giz-menu-notification-default-item">
+                    <div class="giz-menu-notification-default-item-title">No new notifications.</div>
+                    <div class="giz-menu-notification-default-item-text">When something new happens you’ll find it here.</div>
                 </div>
+                <!--/no notification-->
+            }
 
-            </div>
-            <!--notification btn-->
-            <div class="giz-menu-notifications-container-actions">
-                <Button Size="ButtonSizes.Large" IsFullWidth="true" Color="ButtonColors.Info" Class="mb-2" @onclick="@(() => MarkAllAsRead())">Mark as all read</Button>
-                <div class="giz-menu-notifications-container-actions-more">See older notifications.</div>
-            </div>
-            <!--/notification-btn-->
         </div>
-        <!--/notification-->
+        <!--notification btn-->
+        <div class="giz-menu-notifications-container-actions">
+            <Button Size="ButtonSizes.Large" IsFullWidth="true" Color="ButtonColors.Info" Class="mb-2" @onclick="@(() => MarkAllAsRead())">Mark as all read</Button>
+            <div class="giz-menu-notifications-container-actions-more">See older notifications.</div>
+        </div>
+        <!--/notification-btn-->
     </div>
-    <!--/dropdown body-->
+    <!--/notification-->
 </div>
 <!--/dropdown-->

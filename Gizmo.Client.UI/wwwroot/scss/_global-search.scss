@@ -10,24 +10,18 @@
 
         &:focus-within {
             background: $jet-black;
-            border-top-left-radius: $rounded;
-            border-top-right-radius: $rounded;
+            border-radius: $rounded;
+        }
+
+        &.open {
             border-bottom-left-radius: 0px;
             border-bottom-right-radius: 0px;
-
-            .giz-terminate {
-                visibility: $visibility-visible !important;
-            }
-
-            .giz-global-search-dropdown {
-                display: $display-block !important;
-            }
         }
 
         input {
             color: $white-color;
             text-shadow: $text-shadow-sm;
-            background-color: $dark-light-color;
+            background-color: inherit;
             border: $border-0;
             outline: $outline-0;
             padding: 0.625rem;
@@ -47,10 +41,9 @@
         }
 
         .giz-global-search-dropdown {
-            display: $display-none;
             top: 100%;
             width: $width-full;
-            min-height: 26.625rem;
+            min-height: 25rem;
             border-radius: 0 0 $rounded-lg $rounded-lg;
             background: $jet-black;
             box-shadow: $elevation-5;
@@ -112,6 +105,8 @@
 
                     &-title {
                         @include open-sans-600;
+                        margin-top: 10px;
+                        margin-bottom: 10px;
                     }
 
                     &--overlay {

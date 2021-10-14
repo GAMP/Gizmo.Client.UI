@@ -1,6 +1,7 @@
 ﻿using Gizmo.Client.UI.Enumerations;
 using Gizmo.Client.UI.ViewModels;
 using Gizmo.Web.Components;
+using Gizmo.Web.Components.Infrastructure;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System;
@@ -34,13 +35,13 @@ namespace Gizmo.Client.UI.Shared
             Applications.Add(new ApplicationViewModel() { Id = 10, Name = "Windows Apps", Image = "Window-apps.png", ApplicationGroupId = random.Next(1, 5), Ratings = random.Next(0, 100), Rate = random.Next(1, 5), NowPlaying = random.Next(0, 100) });
 
             Products = new List<ProductViewModel>();
-            Products.Add(new ProductViewModel() { Id = 1, Name = "Mars Bar" });
-            Products.Add(new ProductViewModel() { Id = 2, Name = "Snickers Bar" });
-            Products.Add(new ProductViewModel() { Id = 3, Name = "Pizza (Small)" });
-            Products.Add(new ProductViewModel() { Id = 4, Name = "Pizza and Cola" });
-            Products.Add(new ProductViewModel() { Id = 5, Name = "Coca Cola (Can)" });
-            Products.Add(new ProductViewModel() { Id = 6, Name = "Six Hours (6)" });
-            Products.Add(new ProductViewModel() { Id = 7, Name = "Six Hours (6 Weekends)" });
+            Products.Add(new ProductViewModel() { Id = 1, Name = "Mars Bar", Image = "Cola.png" });
+            Products.Add(new ProductViewModel() { Id = 2, Name = "Snickers Bar", Image = "Cola.png" });
+            Products.Add(new ProductViewModel() { Id = 3, Name = "Pizza (Small)", Image = "Cola.png" });
+            Products.Add(new ProductViewModel() { Id = 4, Name = "Pizza and Cola", Image = "Cola.png" });
+            Products.Add(new ProductViewModel() { Id = 5, Name = "Coca Cola (Can)", Image = "Cola.png" });
+            Products.Add(new ProductViewModel() { Id = 6, Name = "Six Hours (6)", Image = "Cola.png" });
+            Products.Add(new ProductViewModel() { Id = 7, Name = "Six Hours (6 Weekends)", Image = "Cola.png" });
 
             Results = new List<SearchResultViewModel>();
         }
@@ -51,6 +52,8 @@ namespace Gizmo.Client.UI.Shared
         private int _delay = DEFAULT_DELAY;
         private TimeSpan _delayTimeSpan;
         private string _text;
+        private bool _openDropDown;
+        private bool _loading;
         private int _resultApplications;
         private int _resultProducts;
 
@@ -71,6 +74,21 @@ namespace Gizmo.Client.UI.Shared
 
         #region EVENTS
 
+        protected Task OnFocusInHandler()
+        {
+            if (!string.IsNullOrEmpty(_text))
+                _openDropDown = true;
+
+            return Task.CompletedTask;
+        }
+
+        protected Task OnFocusOutHandler()
+        {
+            _openDropDown = false;
+
+            return Task.CompletedTask;
+        }
+
         protected Task OnInputHandler(ChangeEventArgs args)
         {
             var newValue = args?.Value as string;
@@ -78,6 +96,12 @@ namespace Gizmo.Client.UI.Shared
             if (newValue != _text)
             {
                 _text = newValue;
+
+                if (!_openDropDown)
+                {
+                    _openDropDown = true;
+                }
+
                 if (MinimumCharacters == 0 || (MinimumCharacters > 0 && _text.Length >= MinimumCharacters))
                 {
                     _deferredAction.Defer(_delayTimeSpan);
@@ -92,6 +116,16 @@ namespace Gizmo.Client.UI.Shared
             return Task.CompletedTask;
         }
 
+        private void Clear()
+        {
+            Results.Clear();
+            _resultApplications = 0;
+            _resultProducts = 0;
+            _text = string.Empty;
+            _loading = false;
+            _openDropDown = false;
+        }
+
         #endregion
 
         private async Task Search()
@@ -99,6 +133,8 @@ namespace Gizmo.Client.UI.Shared
             Results.Clear();
             _resultApplications = 0;
             _resultProducts = 0;
+
+            _loading = true;
 
             StateHasChanged();
 
@@ -116,8 +152,18 @@ namespace Gizmo.Client.UI.Shared
                 _resultProducts += 1;
             }
 
+            _loading = false;
+
             StateHasChanged();
         }
+
+        #region CLASSMAPPERS
+
+        protected string CloseButtonStyleValue => new StyleMapper()
+                 .If($"visibility: hidden", () => string.IsNullOrEmpty(_text))
+                 .AsString();
+
+        #endregion
 
     }
 }

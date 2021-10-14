@@ -4,17 +4,22 @@
 @using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
 
-<div class="giz-global-search">
+<div class="giz-global-search @(_openDropDown ? "open" : "")">
 
     <Icon SVGIcon="Icons.Search_Client" Size="IconSizes.Small" Color="#a4a5a8" Class="ml-3" />
     <input type="text"
+           value="@_text"
            placeholder="Search games and applications"
+           @onfocusin="OnFocusInHandler"
+           @onfocusout="OnFocusOutHandler"
            @oninput="OnInputHandler"
            @onclick="OnClickHandler">
-    <Icon SVGIcon="Icons.Close_Client" Size="IconSizes.Small" Color="#a4a5a8" Class="mr-3" />
+
+    <IconButton SVGIcon="Icons.Close_Client" Size="ButtonSizes.Small" Variant="ButtonVariants.Text" IconColor="#a4a5a8" Class="mr-3" @onclick="@(() => Clear())"
+                Style="@CloseButtonStyleValue" />
 
     <!--dropdown-->
-    <div class="giz-global-search-dropdown">
+    <div class="giz-global-search-dropdown" style="display: @(_openDropDown ? "block" : "none")">
         <!--dropdown body-->
         <div class="giz-global-search-dropdown--body">
             <div class="giz-search-menu">
@@ -58,7 +63,14 @@
             else
             {
                 <div class="giz-align-center">
-                    <GizSpinner />
+                    @if (_loading)
+                    {
+                        <GizSpinner />
+                    }
+                    else
+                    {
+                        <div>No results</div>
+                    }
                 </div>
             }
 
