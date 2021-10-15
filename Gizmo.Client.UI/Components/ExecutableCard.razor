@@ -2,14 +2,14 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
-<div class="giz-executable-card @(Executable?.Installing == true ? "active" : "")">
+<div class="giz-executable-card @(Executable?.Installing == true ? "giz-executable-card--active" : "")">
     <Card>
         <CardBody>
-            <div class="giz-executable-card-body">
+            <div class="giz-executable-card__body">
                 @if (Executable != null)
                 {
-                    <div class="giz-executable-card-body-executable-image"><img src="@Executable.Image" />
-                        <div class="giz-executable-card-body-executable-status"><i class="giz-executable-card-body-executable-status-bullet"></i>24</div>
+                    <div class="giz-executable-card__body__executable-image"><img src="@Executable.Image" />
+                        <div class="giz-executable-card__body__executable-status"><i class="giz-executable-card__body__executable-status__bullet"></i>24</div>
                     </div>
 
                     if (Executable.Installing)
@@ -34,6 +34,18 @@
                                         </ChildContent>
                                         <NestedList>
                                             <ListItem>
+                                                -123
+                                            </ListItem>
+                                            <ListItem>
+                                                456
+                                            </ListItem>
+                                            <ListItem>
+                                                123
+                                            </ListItem>
+                                            <ListItem>
+                                                456
+                                            </ListItem>
+                                            <ListItem>
                                                 123
                                             </ListItem>
                                             <ListItem>
@@ -51,12 +63,12 @@
                     }
                     else
                     {
-                        <div class="giz-executable-card-body-details">
-                            <div class="giz-executable-card-body-details-group">
+                        <div class="giz-executable-card__body__details">
+                            <div class="giz-executable-card__body__details__group">
                                 Games
                                 <Icon SVGIcon="Icons.StoreApp_Client" Size="IconSizes.ExtraSmall" />
                             </div>
-                            <div class="giz-executable-card-body-details-title">
+                            <div class="giz-executable-card__body__details__title">
                                 @Executable.Name
                             </div>
                         </div>

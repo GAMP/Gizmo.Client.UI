@@ -9,12 +9,12 @@
     <DialogBody>
         <div class="giz-client-dialog">
 
-            <div class="giz-client-dialog-header">
-                <div class="giz-client-dialog-header-title">one more step</div>
-                <div class="giz-client-dialog-header-text">Please select payment method</div>
+            <div class="giz-client-dialog__header">
+                <div class="giz-client-dialog__header__title">one more step</div>
+                <div class="giz-client-dialog__header__text">Please select payment method</div>
             </div>
 
-            <div class="giz-client-dialog-body">
+            <div class="giz-client-dialog__body">
                 <div class="giz-payment-method-list">
                 
                     @if (PaymentMethods != null)
@@ -23,10 +23,10 @@
                         {
                             <div class="giz-payment-method-list-item"
                                  @onclick="@(() => SelectPaymentMethod(paymentMethod.Id))">
-                                <div class="giz-payment-method-list-item-icon">
+                                <div class="giz-payment-method-list-item__icon">
                                     <Icon SVGIcon="@paymentMethod.Icon" Size="IconSizes.Large" />
                                 </div>
-                                <div class="giz-payment-method-list-item-title">
+                                <div class="giz-payment-method-list-item__title">
                                     @paymentMethod.Name
                                 </div>
                             </div>

@@ -7,13 +7,6 @@
         max-height: 271px;
     }
 
-    &-title {
-        @include open-sans-600;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
-
     &-text {
         font-size: $font-12;
         line-height: $line-height-12;
@@ -35,17 +28,31 @@
         }
     }
 
-    &-count {
+    &__title {
+        @include open-sans-600;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    &__count {
         @include font-12;
         text-shadow: $text-shadow-sm;
         font-weight: $font-weight-400;
     }
 
-    &-rating {
+    &__rating {
         color: $light-blue;
         letter-spacing: normal;
         font-weight: $font-weight-400;
         font-family: $font-family;
         margin-left: 0.625rem;
+    }
+}
+
+.store-btn {
+    .giz-icon {
+        width: 24px;
+        height: 24px;
     }
 }

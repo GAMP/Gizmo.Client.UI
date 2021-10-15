@@ -4,20 +4,20 @@
 
 <Dialog @bind-IsOpen="IsOpen" IsModal="true" MaximumWidth="629px" MaximumHeight="629px" Class="giz-news-feed-media-item-dialog">
     <DialogHeader>
-        <div class="giz-news-feed-media-item-dialog-card-header">
-            <div class="giz-news-feed-media-item-dialog-card-header-title">news</div>
-            <div class="giz-news-feed-media-item-dialog-card-header-text">via RedBull Gaming News</div>
+        <div class="giz-news-feed-media-item-dialog__header">
+            <div class="giz-news-feed-media-item-dialog__header__title">news</div>
+            <div class="giz-news-feed-media-item-dialog__header__text">via RedBull Gaming News</div>
         </div>
         <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
     </DialogHeader>
     <DialogBody>
-        <div class="giz-news-feed-media-item-dialog-card-body">
+        <div class="giz-news-feed-media-item-dialog__body">
             <img src="@MediaFeed.Image" alt="Image" class="pb-6" />
-            <div class="giz-news-feed-media-item-dialog-card-body-source">@MediaFeed.Source</div>
-            <div class="giz-news-feed-media-item-dialog-card-body-title">
+            <div class="giz-news-feed-media-item-dialog__body__source">@MediaFeed.Source</div>
+            <div class="giz-news-feed-media-item-dialog__body__title">
                 @MediaFeed.Title
             </div>
-            <div class="giz-news-feed-media-item-dialog-card-body-text">
+            <div class="giz-news-feed-media-item-dialog__body__text">
                 @MediaFeed.Description
             </div>
         </div>

@@ -2,13 +2,13 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
-<div class="giz-order-menu--items">
-    <div class="giz-order-info">
+<div class="giz-order-item">
+    <div class="giz-order-item__info">
         @OrderLine.ProductName
         <IconButton Variant="ButtonVariants.Fill" Size="ButtonSizes.Small" SVGIcon="Icons.Trash_Client" Class="trash-btn" @onclick="@(() => RemoveProduct())" />
     </div>
-    <div class="giz-order-amount">@OrderLine.Total.ToString("C")</div>
-    <div class="giz-order-btn">
+    <div class="giz-order-item__amount">@OrderLine.Total.ToString("C")</div>
+    <div class="giz-order-item__buttons">
         <button class="client-button giz-decrease-btn" @onclick="@(() => RemoveQuantity())">-</button>
         <span>@OrderLine.Quantity</span>
         <button class="client-button giz-increase-btn" @onclick="@(() => AddQuantity())">+</button>

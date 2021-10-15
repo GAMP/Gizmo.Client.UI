@@ -50,8 +50,8 @@ namespace Gizmo.Client.UI.Shared
         #region CLASSMAPPERS
 
         protected string ClassName => new ClassMapper()
-                 .Add("giz-drawer-root")
-                 .If("open", () => IsOpen)
+                 .Add("giz-drawer")
+                 .If("giz-drawer--open", () => IsOpen)
                  .AsString();
 
         #endregion

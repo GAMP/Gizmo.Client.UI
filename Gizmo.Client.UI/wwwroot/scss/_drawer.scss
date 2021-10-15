@@ -1,25 +1,14 @@
 //=============== Drawer ================//
 
-.giz-drawer-root {
+.giz-drawer {
 
-    &.open {
-        .giz-drawer {
-            /*display: block;*/
-            right: 0;
-        }
-    }
-
-    .giz-overlay {
-        background-color: $black-pearl;
-    }
-
-    .giz-drawer {
+    &__body {
         display: block;
         top: 0;
         right: -100%;
         z-index: 100;
         height: $viewport-height;
-        background: linear-gradient( 180deg, rgba(9, 11, 16, 0.6)0%, rgba(44, 48, 63, 0.4)75%, rgba(37, 140, 246, 0.45)148%);
+        background: linear-gradient( 180deg, rgba(9, 11, 16, 0.9)0%, rgba(44, 48, 63, 0.8)75%, rgba(37, 140, 246, 0.85)148%);
         overflow: auto;
         /*backdrop-filter: blur(20px);*/
         box-shadow: $elevation-4;
@@ -27,5 +16,16 @@
         border: 1px solid $border-color;
         min-width: 10rem;
         transition: right 0.3s ease-in-out;
+    }
+
+    &--open {
+        .giz-drawer__body {
+            /*display: block;*/
+            right: 0;
+        }
+    }
+
+    .giz-overlay {
+        background-color: $black-pearl;
     }
 }

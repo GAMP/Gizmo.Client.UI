@@ -4,13 +4,16 @@
     color: $white-color !important;
     text-align: left !important;
 
-    .giz-details-card-common {
-        display: $display-grid;
-        grid-template-columns: min-content 3fr;
-        grid-column-gap: 2.188rem;
-        position: $position-relative;
+    .giz-details-card {
 
-        .giz-details-card-brand {
+        &__common {
+            display: $display-grid;
+            grid-template-columns: min-content 3fr;
+            grid-column-gap: 2.188rem;
+            position: $position-relative;
+        }
+
+        &__brand {
             margin-bottom: 2.188rem;
 
             img {
@@ -18,58 +21,58 @@
                 margin-bottom: 0.5rem;
             }
         }
-    }
 
-    .giz-details-card-extra {
-        border-top: 1px solid $border-dark-color;
-        padding-top: 2.188rem;
-        position: $position-relative;
+        &__extra {
+            border-top: 1px solid $border-dark-color;
+            padding-top: 2.188rem;
+            position: $position-relative;
 
-        .giz-video-wrapper {
-            display: flex;
-            overflow-x: scroll;
-            overflow-y: hidden;
-            column-gap: 20px;
-            padding-bottom: 1rem;
+            .giz-video-wrapper {
+                display: flex;
+                overflow-x: scroll;
+                overflow-y: hidden;
+                column-gap: 20px;
+                padding-bottom: 1rem;
+            }
+
+            &__title {
+                font-family: $font-family-open-sans;
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 125%;
+                letter-spacing: -0.005em;
+                margin-bottom: 1rem;
+            }
         }
 
-        &-title {
+        &__category {
+            @include font-10;
+        }
+
+        &__title {
+            font-size: $font-20;
+            letter-spacing: $letter-spacing-10;
+            line-height: $line-height-25;
+            margin-bottom: 1.25rem;
+        }
+
+        &__rating {
+            display: $display-flex;
+            align-items: $align-center;
+            margin-bottom: 1.5rem;
+
+            span {
+                @include font-12;
+                font-family: $font-family-open-sans;
+            }
+        }
+
+        &__description {
+            font-size: $font-13;
+            line-height: $line-height-20;
+            letter-spacing: $letter-spacing-1;
             font-family: $font-family-open-sans;
-            font-weight: 600;
-            font-size: 16px;
-            line-height: 125%;
-            letter-spacing: -0.005em;
-            margin-bottom: 1rem;
+            margin-bottom: 2.5rem;
         }
     }
-}
-
-.giz-details-card-category {
-    @include font-10;
-}
-
-.giz-details-card-title {
-    font-size: $font-20;
-    letter-spacing: $letter-spacing-10;
-    line-height: $line-height-25;
-    margin-bottom: 1.25rem;
-}
-
-.giz-details-card-rating {
-    display: $display-flex;
-    align-items: $align-center;
-    margin-bottom: 1.5rem;
-
-    span {
-        @include font-12;
-        font-family: $font-family-open-sans;
-    }
-}
-
-.giz-details-card-description {
-    font-size: $font-13;
-    line-height: $line-height-20;
-    letter-spacing: $letter-spacing-1;
-    font-family: $font-family-open-sans;
-    margin-bottom: 2.5rem;
 }

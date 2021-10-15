@@ -8,24 +8,24 @@
     </DialogHeader>
     <DialogBody>
         <div class="giz-details-dialog-body">
-            <div class="giz-details-card-common">
+            <div class="giz-details-card__common">
                 <!--app info-->
-                <div class="giz-details-card-brand">
+                <div class="giz-details-card__brand">
                     <img src="_content/Gizmo.Client.UI/img/@Product?.Image" alt="loading" />
                 </div>
                 <!--/app info-->
-                <div class="giz-details-card-content">
+                <div class="giz-details-card__content">
                     <!--heading-->
-                    <div class="giz-details-card-category">
+                    <div class="giz-details-card__category">
                         Beverages
                     </div>
                     <!--/heading-->
                     <!--title-->
-                    <div class="giz-details-card-title">
+                    <div class="giz-details-card__title">
                         @Product?.Name
                     </div>
                     <!--/title-->
-                    <div class="giz-details-card-rating">
+                    <div class="giz-details-card__rating">
                         @if (Product != null)
                         {
                             <Rating @bind-Value="Product.Rate" />
@@ -37,7 +37,7 @@
                         <span>@(Product?.Ratings ?? 0) Ratings</span>
                     </div>
 
-                    <div class="giz-details-card-description">
+                    <div class="giz-details-card__description">
                         @Product?.Description
                     </div>
 
@@ -48,13 +48,13 @@
                     <!--/launch btn-->
                 </div>
             </div>
-            <div class="giz-details-card-extra">
+            <div class="giz-details-card__extra">
                 
-                <div class="giz-details-card-extra-title">
+                <div class="giz-details-card__extra__title">
                     Related products
                 </div>
                 
-                <div class="giz-video-wrapper giz-scrollbar-h">
+                <div class="giz-video-wrapper giz-scrollbar--h">
                     @foreach (var product in RelatedProducts)
                     {
                         <GizProductCard Product="@product" />

@@ -66,8 +66,8 @@ namespace Gizmo.Client.UI.Components
 
         protected string ClassName => new ClassMapper()
                 .Add("giz-carousel-item")
-                .If("active", () => _slideDirection != 0)
-                .If("current", () => !_isCurrent && _slideDirection != 0)
+                .If("giz-carousel-item--active", () => _slideDirection != 0)
+                .If("giz-carousel-item--current", () => !_isCurrent && _slideDirection != 0)
                 .If("slide-left-current", () => _isCurrent && _slideDirection == -1)
                 .If("slide-left-next", () => !_isCurrent && _slideDirection == -1)
                 .If("slide-right-current", () => _isCurrent && _slideDirection == 1)
