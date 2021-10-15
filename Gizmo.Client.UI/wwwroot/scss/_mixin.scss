@@ -266,12 +266,12 @@
 
 //=== Tooltip ===//
 @mixin tooltip{
-    position:$position-relative;
-    display:$display-inline-block;
+    position:relative;
+    display:inline-block;
     cursor:$cursor-pointer;
 }
 
-@mixin tooltip-top{
+@mixin tooltip-top {
     background-color: $dark-black-pearl;
     border-radius: $rounded;
     min-width: 142px;
@@ -280,9 +280,9 @@
     transform: translate(-50%, -100%);
     padding: 0.625rem 1.25rem;
     z-index: 10000;
-    visibility: $visibility-invisible;
-    display: $display-block;
-    position: $position-absolute;
+    visibility: hidden;
+    display: block;
+    position: absolute;
     white-space: $nowrap-white-space;
     @include font-12;
     @include open-sans-600;
@@ -293,7 +293,7 @@
 
     &::after {
         content: "";
-        position: $position-absolute;
+        position: absolute;
         top: 100%;
         left: 50%;
         margin-left: -5px;
@@ -306,7 +306,7 @@
 //=== vertical center ===//
 //== align center
 @mixin align-center {
-    position: $position-absolute;
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);

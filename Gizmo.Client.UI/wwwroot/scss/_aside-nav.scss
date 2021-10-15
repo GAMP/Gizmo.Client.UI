@@ -3,7 +3,7 @@
 #giz-sidenavbar {
     padding-top: 4.125rem;
     z-index: 999;
-    position: $position-fixed;
+    position: fixed;
     top: 9px;
     left: 0;
 
@@ -19,10 +19,10 @@
         .active {
             background: linear-gradient(to right, rgba(44, 124, 244, 0.25) 0%, rgba(13, 16, 23, 0) 75%);
             color: $white-color;
-            position: $position-relative;
+            position: relative;
 
             &::before {
-                position: $position-absolute;
+                position: absolute;
                 content: "";
                 top: 0;
                 left: 0;
@@ -41,7 +41,7 @@
 
         &--link {
             color: $gray-light-color;
-            display: $display-block;
+            display: block;
             padding: 1.25rem 0.980rem;
             text-align: $text-align-center;
             @include font-10;
@@ -70,7 +70,7 @@
         }
 
         &--logout {
-            position: $position-fixed;
+            position: fixed;
             left: 0;
             bottom: 4.688rem;
             width:inherit;

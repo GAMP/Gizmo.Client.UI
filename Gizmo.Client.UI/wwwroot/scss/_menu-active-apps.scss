@@ -35,14 +35,14 @@
 .giz-active-app-card {
 
     &-body {
-        display: $display-grid;
+        display: grid;
         grid-template-columns: 1fr 1fr;
         align-items: $align-center;
         border-bottom: 1px solid $border-cinder-color;
         padding: 1.625rem 1.5rem;
 
         &-header {
-            display: $display-flex;
+            display: flex;
             align-items: $align-center;
             @include font-16;
             @include open-sans-600;
@@ -73,17 +73,17 @@
 
     .giz-user-action-btn {
         justify-self: right;
-        display: $display-none;
+        display: none;
     }
 
     &.active {
         .giz-active-app-card-body {
-            position: $position-relative;
+            position: relative;
             background: linear-gradient(to right, rgba(44, 124, 244, 0.2) 0%, rgba(13, 16, 23, 0) 30%) !important;
 
             &::before {
                 border-left: 2px solid $primary-color;
-                position: $position-absolute;
+                position: absolute;
                 left: 0;
                 height: $height-full;
                 content: "";
