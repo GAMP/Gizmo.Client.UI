@@ -18,7 +18,7 @@ namespace Gizmo.Client.UI.Services
             IServiceProvider serviceProvider,
             ILogger<DesktopComponentDiscoveryService> logger) : base(configuration, logger, serviceProvider)
         {
-            _appAssembly = typeof(Client.UI.App).Assembly;
+            _appAssembly = typeof(App).Assembly;
         }
         #endregion
 
