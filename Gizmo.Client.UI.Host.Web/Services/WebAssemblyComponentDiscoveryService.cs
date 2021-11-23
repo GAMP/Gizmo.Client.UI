@@ -19,7 +19,6 @@ namespace Gizmo.Client.UI.Services
               IHttpClientFactory httpClientFactory,
               ILogger<WebAssemblyComponentDiscoveryService> logger) : base(configuration, logger, serviceProvider)
         {
-            _appAssembly = typeof(App).Assembly;
             _httpClientFactory = httpClientFactory;
         }
         #endregion
@@ -39,7 +38,7 @@ namespace Gizmo.Client.UI.Services
 
         #region OVERRIDES
 
-        protected async override Task LoadAssemblyAsync(string assemblyName, CancellationToken ct)
+        protected async override Task<Assembly> LoadAssemblyAsync(string assemblyName, bool isAdditional = true, CancellationToken ct = default)
         {
             if (string.IsNullOrWhiteSpace(assemblyName))
                 throw new ArgumentNullException(nameof(assemblyName));
@@ -54,8 +53,14 @@ namespace Gizmo.Client.UI.Services
                 //load the external assembly into app domain
                 var assembly = AppDomain.CurrentDomain.Load(externallib);
 
-                //on sucess add the assembly to additional assemblies list
-                _addtionalAssemblies.Add(assembly);
+                //check if this is additional assembly
+                if (isAdditional)
+                {
+                    //on sucess add the assembly to additional assemblies list
+                    _addtionalAssemblies.Add(assembly);
+                }
+
+                return assembly;
             }
         }
 

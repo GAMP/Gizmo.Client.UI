@@ -1,0 +1,16 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@inherits ComponentBase
+
+<h3>ValidationForm</h3>
+
+<EditForm Model=@Model>
+
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <InputText @bind-Value=Model.Email class="form-control" id="Name" />
+        <ValidationMessage For="() => Model.Email"  />
+    </div>
+    <input type="submit" class="btn btn-primary" value="Save" />
+        <DataAnnotationsValidator />
+    <ValidationSummary />
+</EditForm>

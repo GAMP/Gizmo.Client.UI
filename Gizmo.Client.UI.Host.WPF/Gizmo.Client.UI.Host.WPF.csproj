@@ -4,14 +4,17 @@
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net6.0-windows</TargetFramework>
 		<UseWPF>true</UseWPF>
+		<UseWindowsForms>True</UseWindowsForms>
 		<!--Fixes duplicate file error on publish (.NET6 BUG)-->
 		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="6.0.100-rc.1.1608" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0-rc.1.21451.13" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0-rc.1.21451.13" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="6.0.101-preview.10.2068" />
+		<PackageReference Include="Microsoft.AspNetCore.Localization" Version="2.2.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+		<PackageReference Include="System.Resources.ResourceManager" Version="4.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -22,6 +25,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Gizmo.Client.UI.Resources\Gizmo.Client.UI.Resources\Gizmo.Client.UI.Resources.csproj" />
 		<ProjectReference Include="..\Gizmo.Client.UI\Gizmo.Client.UI.csproj" />
 	</ItemGroup>
 

@@ -2,6 +2,7 @@ using Gizmo.Client.UI.Services;
 using Gizmo.Shared.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Threading.Tasks;
 
@@ -35,6 +36,8 @@ namespace Gizmo.Client.UI.Host.Web
             {
                 opt.ResourcesPath = "Properties";
             });
+
+            hostBuilder.Services.AddSingleton<IStringLocalizer, StringLocalizer<Resources.Resources>>();
             hostBuilder.Services.AddSingleton<ILocalizationService, UILocalizationService>();
 
             //add http client factory along with default http client
@@ -45,7 +48,7 @@ namespace Gizmo.Client.UI.Host.Web
 
             var ds = host.Services.GetRequiredService<IComponentDiscoveryService>();
 
-            await ds.InitializeAsync(default);
+            await ds.InitializeAsync();
             await host.RunAsync();
         }
     }    
