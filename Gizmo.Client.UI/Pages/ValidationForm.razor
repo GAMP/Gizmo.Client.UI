@@ -1,10 +1,44 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
 @inherits ComponentBase
+@using Gizmo.Client.UI.Components
 
 <h3>ValidationForm</h3>
 
-<EditForm Model=@Model>
+<EditForm Model="@Sample1Model" OnValidSubmit="@HandleValidSubmit">
 
+    <div>
+        <div>
+            Sample 1
+        </div>
+
+        <div>
+            <InputText @bind-Value=Sample1Model.Email
+                       DisplayName="Display name does not work with DataAnnotations, so we cannot translate it or set a friendly name." />
+            <ValidationMessage For="() => Sample1Model.Email"  />
+        </div>
+
+        <div>
+            <InputDate @bind-Value="Sample1Model.BirthDate" 
+                   DisplayName="@_localizationService.GetString("FIELD_BIRTH_DATE")" 
+                   ParsingErrorMessage="The {0} field has an incorrect date value. Localizer needs a fix for this to work." />
+            <ValidationMessage For="() => Sample1Model.BirthDate"  />
+        </div>
+
+        <div>
+            <input type="submit" class="btn btn-primary" value="Save" />
+        </div>
+
+        <div>
+            Errors:
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <CustomValidation @ref="_customValidation" />
+        </div>
+    </div>
+
+</EditForm>
+
+@*<EditForm Model=@Model>
     <div class="form-group">
         <label for="Name">Name</label>
         <InputText @bind-Value=Model.Email class="form-control" id="Name" />
@@ -13,4 +47,4 @@
     <input type="submit" class="btn btn-primary" value="Save" />
         <DataAnnotationsValidator />
     <ValidationSummary />
-</EditForm>
+</EditForm>*@
