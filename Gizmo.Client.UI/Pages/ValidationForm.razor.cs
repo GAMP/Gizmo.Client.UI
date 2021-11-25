@@ -1,18 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
 {
     [ModuleGuid(KnownModules.MODULE_SHOP)]
     [PageUIModule(TitleLocalizationKey = "MODULE_PAGE_SHOP_TITLE", DescriptionLocalizationKey = "MODULE_PAGE_SHOP_DESCRIPTION"), ModuleDisplayOrder(5)]
     [Route("/validation")]
-    public partial class ValidationForm
+    public partial class ValidationForm : ComponentBase
     {
         public ValidationModel Model { get; set; } = new ValidationModel();
     }

@@ -54,15 +54,13 @@ namespace Gizmo.Client.UI.Host.WPF
                      configurationBuilder.AddClientConfiguration(appSettingsFile);
                  });
 
-            var host = hostBuilder.Build();         
+            var host = hostBuilder.Build();
+
+            var ls = host.Services.GetRequiredService<ILocalizationService>();
+            ls.SetCurrentCulture(greekCulture);
 
             var localizer = host.Services.GetRequiredService<IStringLocalizer<Resources.Resources>>();
-            var vd = localizer.GetAllStrings();
-
-            var ls = host.Services.GetRequiredService<ILocalizationService>();           
-            
-            ls.SetCurrentCulture(greekCulture);
-       
+            var vd = localizer.GetAllStrings();          
 
             var serviceProvider = host.Services.GetRequiredService<IServiceProvider>();
             Resources.Add("services", serviceProvider);

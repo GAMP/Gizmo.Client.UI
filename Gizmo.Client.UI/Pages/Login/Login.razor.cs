@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
@@ -13,6 +14,8 @@ namespace Gizmo.Client.UI.Pages
 
         public async Task Navigate()
         {
+            var uiCulture = CultureInfo.CurrentUICulture;
+            var culture = CultureInfo.CurrentCulture;
             _logginIn = true;
 
             await Task.Delay(2000);
