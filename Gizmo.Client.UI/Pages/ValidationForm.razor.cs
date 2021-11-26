@@ -1,9 +1,11 @@
-﻿using Gizmo.Client.UI.Components;
+﻿using Gizmo.Client.UI.Code;
+using Gizmo.Client.UI.Components;
 using Gizmo.Shared.Services;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,6 +16,13 @@ namespace Gizmo.Client.UI.Pages
     [Route("/validation")]
     public partial class ValidationForm : ComponentBase
     {
+        public ValidationForm()
+        {
+            _culture = new CultureInfo("en-US", false);
+        }
+
+        CultureInfo _culture;
+
         [Inject]
         private ILocalizationService _localizationService { get; set; }
 
@@ -75,5 +84,9 @@ namespace Gizmo.Client.UI.Pages
         public string Email { get; set; }
 
         public DateTime BirthDate { get; set; } = DateTime.Now;
+
+        [Required(ErrorMessageResourceName = "VALIDATION_ERROR_REQUIRED_FIELD",
+            ErrorMessageResourceType = typeof(Resources.Properties.Resources))]
+        public decimal Amount { get; set; } = 10000.42m;
     }
 }
