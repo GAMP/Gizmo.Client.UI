@@ -7,7 +7,6 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
-using System.Threading;
 using System.Windows;
 
 namespace Gizmo.Client.UI.Host.WPF
@@ -17,11 +16,9 @@ namespace Gizmo.Client.UI.Host.WPF
     /// </summary>
     public partial class App : Application
     {
-        protected override async void OnStartup(StartupEventArgs e)
+        protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
-            var greekCulture = new CultureInfo("el-gr");
 
             var hostBuilder = new HostBuilder();
 
@@ -57,17 +54,16 @@ namespace Gizmo.Client.UI.Host.WPF
             var host = hostBuilder.Build();
 
             var ls = host.Services.GetRequiredService<ILocalizationService>();
-            ls.SetCurrentCulture(greekCulture);
-
-            var localizer = host.Services.GetRequiredService<IStringLocalizer<Resources.Resources>>();
-            var vd = localizer.GetAllStrings();          
+            
+            var greekCulture = new CultureInfo("el-gr");
+            ls.SetCurrentCulture(greekCulture);         
 
             var serviceProvider = host.Services.GetRequiredService<IServiceProvider>();
             Resources.Add("services", serviceProvider);
 
             var ds = host.Services.GetRequiredService<IComponentDiscoveryService>();
 
-            await ds.InitializeAsync(default);
+            ds.InitializeAsync(default).GetAwaiter().GetResult();
 
             var hostWindow = (HostWindow)serviceProvider.GetRequiredService<IHostWindow>();
 

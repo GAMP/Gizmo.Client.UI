@@ -1,5 +1,4 @@
-﻿using Gizmo.Client.UI.Code;
-using Gizmo.Client.UI.Components;
+﻿using Gizmo.Client.UI.Components;
 using Gizmo.Shared.Services;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -7,7 +6,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
 {
