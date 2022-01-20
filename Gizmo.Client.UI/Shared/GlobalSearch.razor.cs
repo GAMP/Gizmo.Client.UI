@@ -1,7 +1,6 @@
 ﻿using Gizmo.Client.UI.Enumerations;
 using Gizmo.Client.UI.ViewModels;
 using Gizmo.Web.Components;
-using Gizmo.Web.Components.Infrastructure;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System;

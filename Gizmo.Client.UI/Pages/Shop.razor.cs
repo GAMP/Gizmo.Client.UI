@@ -1,9 +1,9 @@
 ﻿using Gizmo.Client.UI.ViewModels;
-using Gizmo.Web.Components.Infrastructure;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Gizmo.Client.UI.Pages
@@ -137,7 +137,7 @@ namespace Gizmo.Client.UI.Pages
             get
             {
                 if (_selectProductGroupCommand == null)
-                    _selectProductGroupCommand = new SimpleCommand<object, object>(SelectProductGroup);
+                    _selectProductGroupCommand = new AsyncCommand<object, object>(SelectProductGroup);
 
                 return _selectProductGroupCommand;
             }
@@ -152,7 +152,7 @@ namespace Gizmo.Client.UI.Pages
             get
             {
                 if (_placeOrderCommand == null)
-                    _placeOrderCommand = new SimpleCommand<object, object>(PlaceOrder);
+                    _placeOrderCommand = new AsyncCommand<object, object>(PlaceOrder);
 
                 return _placeOrderCommand;
             }
@@ -166,19 +166,23 @@ namespace Gizmo.Client.UI.Pages
 
         #region COMMAND IMPLEMENTATION
 
-        private void PlaceOrder(object parameter)
+        private Task PlaceOrder(object parameter)
         {
             PaymentMethodSelectorIsOpen = true;
 
             StateHasChanged();
+
+            return Task.CompletedTask;
         }
 
-        private void SelectProductGroup(object parameter)
+        private Task SelectProductGroup(object parameter)
         {
             _selectedProductGroupId = (int)parameter;
             _selectedProductGroup = ProductGroups.Where(a => a.Id == _selectedProductGroupId).FirstOrDefault();
 
             StateHasChanged();
+
+            return Task.CompletedTask;
         }
 
         #endregion

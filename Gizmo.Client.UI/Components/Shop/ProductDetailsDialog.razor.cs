@@ -1,10 +1,10 @@
 ﻿using Gizmo.Client.UI.ViewModels;
 using Gizmo.Web.Components;
-using Gizmo.Web.Components.Infrastructure;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Gizmo.Client.UI.Components
@@ -66,7 +66,7 @@ namespace Gizmo.Client.UI.Components
             get
             {
                 if (_addToCartCommand == null)
-                    _addToCartCommand = new SimpleCommand<object, object>(AddToCart);
+                    _addToCartCommand = new AsyncCommand<object, object>(AddToCart);
 
                 return _addToCartCommand;
             }
@@ -80,13 +80,15 @@ namespace Gizmo.Client.UI.Components
 
         #region COMMAND IMPLEMENTATION
 
-        private void AddToCart(object parameter)
+        private Task AddToCart(object parameter)
         {
             if (Product != null)
             {
                 OnAddToCart.InvokeAsync(Product.Id);
                 IsOpen = false;
             }
+
+            return Task.CompletedTask;
         }
 
         #endregion
