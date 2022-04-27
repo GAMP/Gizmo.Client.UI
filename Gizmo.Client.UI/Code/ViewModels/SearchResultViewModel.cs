@@ -1,6 +1,4 @@
-﻿using Gizmo.Client.UI.Enumerations;
-
-namespace Gizmo.Client.UI.ViewModels
+﻿namespace Gizmo.Client.UI.ViewModels
 {
     public class SearchResultViewModel
     {

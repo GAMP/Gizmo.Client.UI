@@ -1,4 +1,4 @@
-﻿namespace Gizmo.Client.UI.Enumerations
+﻿namespace Gizmo.Client.UI.ViewModels
 {
     public enum NewsFeedTypes
     {

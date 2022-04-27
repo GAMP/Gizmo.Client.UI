@@ -1,5 +1,4 @@
-﻿using Gizmo.Client.UI.Enumerations;
-using Gizmo.Shared.ViewModels;
+﻿using Gizmo.Shared.ViewModels;
 
 namespace Gizmo.Client.UI.ViewModels
 {

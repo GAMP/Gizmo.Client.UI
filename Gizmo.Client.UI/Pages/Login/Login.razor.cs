@@ -14,8 +14,6 @@ namespace Gizmo.Client.UI.Pages
 
         public async Task Navigate()
         {
-            var uiCulture = CultureInfo.CurrentUICulture;
-            var culture = CultureInfo.CurrentCulture;
             _logginIn = true;
 
             await Task.Delay(2000);

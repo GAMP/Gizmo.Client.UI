@@ -16,11 +16,11 @@ namespace Gizmo.Client.UI.Components
 
             for (int i = 0; i < 6; i++)
             {
-                var itemType = (Enumerations.NewsFeedTypes)random.Next(0, 2);
+                var itemType = (NewsFeedTypes)random.Next(0, 2);
 
                 switch (itemType)
                 {
-                    case Enumerations.NewsFeedTypes.Rss:
+                    case NewsFeedTypes.Rss:
                         RssFeedViewModel rssItem = new RssFeedViewModel();
 
                         rssItem.Type = itemType;
@@ -34,7 +34,7 @@ namespace Gizmo.Client.UI.Components
                         NewsFeeds.Add(rssItem);
                         break;
 
-                    case Enumerations.NewsFeedTypes.Media:
+                    case NewsFeedTypes.Media:
                         MediaFeedViewModel mediaItem = new MediaFeedViewModel();
 
                         mediaItem.Type = itemType;
