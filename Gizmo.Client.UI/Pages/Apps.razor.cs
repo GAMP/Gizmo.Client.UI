@@ -1,5 +1,4 @@
 ﻿using Gizmo.Client.UI.ViewModels;
-using Gizmo.Web.Components.Infrastructure;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System;
@@ -65,7 +64,7 @@ namespace Gizmo.Client.UI.Pages
             get
             {
                 if (_selectApplicationGroupCommand == null)
-                    _selectApplicationGroupCommand = new SimpleCommand<object, object>(SelectApplicationGroup);
+                    _selectApplicationGroupCommand = new AsyncCommand<object, object>(SelectApplicationGroup);
 
                 return _selectApplicationGroupCommand;
             }
@@ -79,7 +78,7 @@ namespace Gizmo.Client.UI.Pages
 
         #region COMMAND IMPLEMENTATION
 
-        private void SelectApplicationGroup(object parameter)
+        private Task SelectApplicationGroup(object parameter)
         {
             _clickedApplicationGroupId = (int)parameter;
 
@@ -94,6 +93,8 @@ namespace Gizmo.Client.UI.Pages
             }
 
             StateHasChanged();
+
+            return Task.CompletedTask;
         }
 
         #endregion
