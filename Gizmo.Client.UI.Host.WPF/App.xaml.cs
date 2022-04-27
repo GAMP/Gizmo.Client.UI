@@ -6,7 +6,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Globalization;
 using System.Windows;
 
 namespace Gizmo.Client.UI.Host.WPF
@@ -28,6 +27,7 @@ namespace Gizmo.Client.UI.Host.WPF
                  .ConfigureServices((context, serviceCollection) =>
                  {
                      serviceCollection.AddBlazorWebView();
+                     serviceCollection.AddWpfBlazorWebView();
                      serviceCollection.AddClientConfiguration(context.Configuration);
 
                      serviceCollection.AddSingleton<IHostWindow, HostWindow>();
@@ -51,12 +51,7 @@ namespace Gizmo.Client.UI.Host.WPF
                      configurationBuilder.AddClientConfiguration(appSettingsFile);
                  });
 
-            var host = hostBuilder.Build();
-
-            var ls = host.Services.GetRequiredService<ILocalizationService>();
-            
-            var greekCulture = new CultureInfo("el-gr");
-            ls.SetCurrentCulture(greekCulture);         
+            var host = hostBuilder.Build(); 
 
             var serviceProvider = host.Services.GetRequiredService<IServiceProvider>();
             Resources.Add("services", serviceProvider);
@@ -67,13 +62,18 @@ namespace Gizmo.Client.UI.Host.WPF
 
             var hostWindow = (HostWindow)serviceProvider.GetRequiredService<IHostWindow>();
 
-            hostWindow._blazorView.HostPage = @"D:\My Documents\Visual Studio 2015\Projects\Gizmo\Gizmo.Client.UI\Gizmo.Client.UI.Host.WPF\bin\Debug\net6.0-windows\wwwroot\index.html";
+            //set host page
+            hostWindow._blazorView.HostPage = @"wwwroot\index.html";
+
+            //create root component
             var rootComponent = new RootComponent()
             {
                 ComponentType = ds.RootComponentType,
                 Selector = "#app",
             };
+
             hostWindow._blazorView.RootComponents.Add(rootComponent);
+            
             hostWindow.Show();
 
         }

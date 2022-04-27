@@ -1,53 +1,33 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net6.0-windows</TargetFramework>
 		<UseWPF>true</UseWPF>
-		<UseWindowsForms>True</UseWindowsForms>
 		<!--Fixes duplicate file error on publish (.NET6 BUG)-->
 		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="6.0.101-preview.10.2068" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="6.0.300-rc.2.5513" />
 		<PackageReference Include="Microsoft.AspNetCore.Localization" Version="2.2.0" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
 		<PackageReference Include="System.Resources.ResourceManager" Version="4.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="wwwroot\index.html">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\..\Gizmo.Client.UI.Resources\Gizmo.Client.UI.Resources\Gizmo.Client.UI.Resources.csproj" />
 		<ProjectReference Include="..\Gizmo.Client.UI\Gizmo.Client.UI.csproj" />
-	</ItemGroup>
+	</ItemGroup>	
 
-	<ItemGroup>
-		<Content Update="wwwroot\Index.html">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="wwwroot\css\" />
-		<Folder Include="wwwroot\img\" />
-		<Folder Include="wwwroot\scss\" />
-	</ItemGroup>
-
-	<PropertyGroup>
+	<!--<PropertyGroup>
 		<PostBuildEvent>
-			<!--copy client ui web assets-->
+			--><!--copy client ui web assets--><!--
 			xcopy "$(SolutionDir)\Gizmo.Client.UI\wwwroot\" "$(TargetDir)wwwroot\_content\Gizmo.Client.UI\" /e /y
-			<!--copy shared components web assets-->
+			--><!--copy shared components web assets--><!--
 			xcopy "$(SolutionDir)..\Gizmo.Web.Components\wwwroot\" "$(TargetDir)wwwroot\_content\Gizmo.Web.Components\" /e /y
 		</PostBuildEvent>
-	</PropertyGroup>
+	</PropertyGroup>-->
 
 </Project>
