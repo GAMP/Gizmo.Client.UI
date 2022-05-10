@@ -15,9 +15,16 @@ var nodeSass = require('node-sass');
 var gulpSass = require("gulp-sass");
 var sass = gulpSass(nodeSass);
 
+//compile all function
+function compileAll(cb) {
+    sassCompile();
+    jsCompile();
+    cb();
+}
+
 //sass compilation function
 function sassCompile() {
-    return src('wwwroot/scss/main.scss')
+    return src('src/scss/main.scss')
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
         .pipe(autoprefixer({
@@ -37,17 +44,37 @@ function sassCompile() {
         .pipe(connect.reload());
 }
 
-//sass file change watch function
-function watchTask() {
-    gulp.watch('wwwroot/scss/*.scss', sassCompile);
-    gulp.watch('wwwroot/scss/*/*.scss', sassCompile);
+//js compilation function
+function jsCompile() {
+    return src('src/js/*.js')
+        .pipe(minify({
+            ext: {
+                min: '.min.js'
+            },
+            ignoreFiles: ['-min.js']
+        }))
+        .pipe(dest('wwwroot/js'));
 }
 
-//define our default sass compilation task
-gulp.task('sass', sassCompile);
+//sass file change watch function
+function watchTask() {
+    gulp.watch('src/scss/*.scss', sassCompile);
+    gulp.watch('src/scss/*/*.scss', sassCompile);
+    gulp.watch('src/js/*.js', jsCompile);
+    gulp.watch('src/js/*/*.js', jsCompile);
+}
+
+//this watch task will run on project open and will monitor sass file changes
+gulp.task('default', watchTask);
 
 //create a watch task responsible of compiling sass on any source file changes
 gulp.task("watch", watchTask);
 
-//this watch task will run on project open and will monitor sass file changes
-gulp.task('default', watchTask);
+//define our default compilation task
+gulp.task('comiple', compileAll);
+
+//sass compilation task
+gulp.task('sass', sassCompile);
+
+//java script compilation task
+gulp.task('js', jsCompile);
