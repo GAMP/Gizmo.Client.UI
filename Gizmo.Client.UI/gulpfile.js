@@ -9,6 +9,7 @@ var cleanCSS = require('gulp-clean-css');
 var autoprefixer = require('gulp-autoprefixer');
 var rename = require('gulp-rename');
 var sourcemaps = require('gulp-sourcemaps');
+var minify = require('gulp-minify');
 
 //create sass compiler
 var nodeSass = require('node-sass');
@@ -46,7 +47,7 @@ function sassCompile() {
 
 //js compilation function
 function jsCompile() {
-    return src('src/js/*.js')
+    return src('src/js/**/*.js')
         .pipe(minify({
             ext: {
                 min: '.min.js'
