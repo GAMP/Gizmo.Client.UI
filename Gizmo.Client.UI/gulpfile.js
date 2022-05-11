@@ -1,4 +1,4 @@
-/// <binding BeforeBuild='sass' ProjectOpened='watch' />
+/// <binding BeforeBuild='comiple' ProjectOpened='watch' />
 'use strict';
 
 const { src, dest } = require('gulp');
