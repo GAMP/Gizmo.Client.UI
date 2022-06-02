@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using System.Linq;
+using Gizmo.Client.UI.Services;
 
-namespace Gizmo.Client.UI.Services
+namespace Gizmo.Client.UI.Host.Web.Services
 {
     public sealed class WebAssemblyComponentDiscoveryService : ComponentDiscoveryServiceBase
     {

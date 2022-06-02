@@ -21,7 +21,7 @@ namespace Gizmo.Client.UI.Host.WPF
 
             var hostBuilder = new HostBuilder();
 
-            string appSettingsFile = @"D:\My Documents\Visual Studio 2015\Projects\Gizmo\Gizmo.Client.UI\Gizmo.Client.UI\bin\Release\net6.0\skin.json";
+            string appSettingsFile = @"skin.json";
 
             hostBuilder
                  .ConfigureServices((context, serviceCollection) =>
