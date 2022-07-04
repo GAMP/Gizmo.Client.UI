@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
+using Microsoft.AspNetCore.Components;
 using System.Globalization;
 using System.Threading.Tasks;
 
@@ -11,6 +13,12 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         NavigationManager UriHelper { get; set; }
+
+        [Inject]
+        UserLoginService UserLoginService { get; set; }
+
+        [Inject]
+        UserLoginViewState UserLoginViewState { get; set; }
 
         public async Task Navigate()
         {

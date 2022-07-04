@@ -44,8 +44,12 @@ namespace Gizmo.Client.UI.Host.Web
             //add http client factory along with default http client
             hostBuilder.Services.AddHttpClient("Default", cfg => { cfg.BaseAddress = new Uri(hostBuilder.HostEnvironment.BaseAddress); });
 
+            hostBuilder.Services.AddViewStates();
+            hostBuilder.Services.AddViewServices();
 
             var host = hostBuilder.Build();
+
+            await host.Services.InitializeViewsServices();
 
             var ds = host.Services.GetRequiredService<IComponentDiscoveryService>();
 

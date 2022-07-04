@@ -4,6 +4,7 @@
 @using System.Threading;
 @using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
+@using Microsoft.AspNetCore.Components.Forms
 
 @if (_logginIn)
 {
@@ -21,20 +22,20 @@ else
 {
     <LoginCard Text="welcome to inspot" Title="Sign in to your account" ShowLanguageMenu="false" ShowCloseButton="false">
         <CardBody>
-            <form>
+             <EditForm EditContext="@UserLoginService.EditContext">
                 <div class="mb-3">
-                    <TextInput TValue="string" Size="InputSizes.Large" IsFullWidth="true" Placeholder="Username" />
+                    <TextInput UpdateOnInput="true" @bind-Value="UserLoginViewState.LoginName" Size="InputSizes.Large" IsFullWidth="true" Placeholder="Username" />
                 </div>
                 <div class="mb-3">
-                    <TextInput TValue="string" Size="InputSizes.Large" IsFullWidth="true" Type="password" Placeholder="Password" />
+                    <TextInput UpdateOnInput="true" @bind-Value="UserLoginViewState.Password" Size="InputSizes.Large" IsFullWidth="true" Type="password" Placeholder="Password" />
                 </div>
                 <!--login btn-->
                 <div class="giz-btn mb-6">
-                    <Button LeftSVGIcon="Icons.Login_Client" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick=@Navigate>
+                    <Button LeftSVGIcon="Icons.Login_Client" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserLoginService.SubmitAsync">
                         continue
                     </Button>
                 </div>
-            </form>
+            </EditForm>
             <!--/login btn-->
             <!--third party login-->
             <div class="giz-third-parties-login">

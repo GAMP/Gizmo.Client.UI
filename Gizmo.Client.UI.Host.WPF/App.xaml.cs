@@ -26,6 +26,9 @@ namespace Gizmo.Client.UI.Host.WPF
             hostBuilder
                  .ConfigureServices((context, serviceCollection) =>
                  {
+                     serviceCollection.AddViewStates();
+                     serviceCollection.AddViewServices();
+
                      serviceCollection.AddBlazorWebView();
                      serviceCollection.AddWpfBlazorWebView();
                      serviceCollection.AddClientConfiguration(context.Configuration);
@@ -51,7 +54,9 @@ namespace Gizmo.Client.UI.Host.WPF
                      configurationBuilder.AddClientConfiguration(appSettingsFile);
                  });
 
-            var host = hostBuilder.Build(); 
+            var host = hostBuilder.Build();
+
+            host.Services.InitializeViewsServices().GetAwaiter().GetResult();
 
             var serviceProvider = host.Services.GetRequiredService<IServiceProvider>();
             Resources.Add("services", serviceProvider);
@@ -73,7 +78,7 @@ namespace Gizmo.Client.UI.Host.WPF
             };
 
             hostWindow._blazorView.RootComponents.Add(rootComponent);
-            
+
             hostWindow.Show();
 
         }
