@@ -1,5 +1,6 @@
 ﻿using Gizmo.Client.UI.Services;
 using Gizmo.Shared.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebView.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,7 +16,7 @@ namespace Gizmo.Client.UI.Host.WPF
     /// </summary>
     public partial class App : Application
     {
-        protected override void OnStartup(StartupEventArgs e)
+        protected async override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
@@ -28,7 +29,8 @@ namespace Gizmo.Client.UI.Host.WPF
                  {
                      serviceCollection.AddViewStates();
                      serviceCollection.AddViewServices();
-
+                     serviceCollection.AddUIServices();
+                     
                      serviceCollection.AddBlazorWebView();
                      serviceCollection.AddWpfBlazorWebView();
                      serviceCollection.AddClientConfiguration(context.Configuration);
@@ -48,24 +50,27 @@ namespace Gizmo.Client.UI.Host.WPF
                  .ConfigureLogging(loggingBuilder =>
                  {
                      loggingBuilder.AddConsole();
+                     loggingBuilder.SetMinimumLevel(LogLevel.Trace);
 
                  }).ConfigureAppConfiguration(configurationBuilder =>
                  {
                      configurationBuilder.AddClientConfiguration(appSettingsFile);
                  });
 
+
             var host = hostBuilder.Build();
 
-            host.Services.InitializeViewsServices().GetAwaiter().GetResult();
+           
 
             var serviceProvider = host.Services.GetRequiredService<IServiceProvider>();
-            Resources.Add("services", serviceProvider);
+           Resources.Add("services", serviceProvider);
 
             var ds = host.Services.GetRequiredService<IComponentDiscoveryService>();
 
-            ds.InitializeAsync(default).GetAwaiter().GetResult();
+           await ds.InitializeAsync(default);
 
             var hostWindow = (HostWindow)serviceProvider.GetRequiredService<IHostWindow>();
+           
 
             //set host page
             hostWindow._blazorView.HostPage = @"wwwroot\index.html";
@@ -81,6 +86,9 @@ namespace Gizmo.Client.UI.Host.WPF
 
             hostWindow.Show();
 
+            await host.StartAsync();
+
+            await host.Services.InitializeViewsServices();
         }
     }
 }

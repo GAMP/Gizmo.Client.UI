@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Gizmo.Client.UI.Services;
+using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI
 {
@@ -22,6 +23,24 @@ namespace Gizmo.Client.UI
             protected set;
         }
 
+        [Inject()]
+        private NavigationManager NavigationManager
+        {
+            get;set;
+        }
+
+        [Inject()]
+        private NavigationService NavigationService
+        {
+            get;set;
+        }
+
         #endregion
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+            NavigationService.AssociateNavigtionManager(NavigationManager);
+        }
     }   
 }
