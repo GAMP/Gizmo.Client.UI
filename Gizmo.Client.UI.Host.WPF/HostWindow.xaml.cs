@@ -7,9 +7,10 @@ namespace Gizmo.Client.UI.Host.WPF
     /// </summary>
     public partial class HostWindow : Window , IHostWindow
     {
-        public HostWindow()
+        public HostWindow(IComponentDiscoveryService componentDiscoveryService)
         {
-            InitializeComponent(); 
-        }
+            InitializeComponent();
+            _ROOT_COMPONENT.ComponentType = componentDiscoveryService.RootComponentType;
+        }        
     }
 }

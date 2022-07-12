@@ -1,4 +1,3 @@
-using Gizmo.Client.UI.Host.Web.Services;
 using Gizmo.Client.UI.Services;
 using Gizmo.Shared.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -6,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Gizmo.Client.UI.Host.Web
 {
@@ -28,10 +28,8 @@ namespace Gizmo.Client.UI.Host.Web
 
             //add logging service
             hostBuilder.Services.AddLogging();
-
+            hostBuilder.Logging.SetMinimumLevel(LogLevel.Trace);
             #endregion
-
-            hostBuilder.Services.AddSingleton<IComponentDiscoveryService, WebAssemblyComponentDiscoveryService>();
 
             hostBuilder.Services.AddLocalization(opt =>
             {
@@ -44,16 +42,15 @@ namespace Gizmo.Client.UI.Host.Web
             //add http client factory along with default http client
             hostBuilder.Services.AddHttpClient("Default", cfg => { cfg.BaseAddress = new Uri(hostBuilder.HostEnvironment.BaseAddress); });
 
-            hostBuilder.Services.AddViewStates();
-            hostBuilder.Services.AddViewServices();
+            hostBuilder.Services.AddClientUIServices();
+            hostBuilder.Services.AddClientViewServices();
+            hostBuilder.Services.AddClientViewStates();          
 
             var host = hostBuilder.Build();
 
-            await host.Services.InitializeViewsServices();
+            await host.Services.InitializeClientServices();
+            await host.Services.InitializeClientViewServices();       
 
-            var ds = host.Services.GetRequiredService<IComponentDiscoveryService>();
-
-            await ds.InitializeAsync();
             await host.RunAsync();
         }
     }    

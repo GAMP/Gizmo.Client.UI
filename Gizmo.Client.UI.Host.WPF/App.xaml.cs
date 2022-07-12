@@ -1,7 +1,4 @@
 ﻿using Gizmo.Client.UI.Services;
-using Gizmo.Shared.Services;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.WebView.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization;
@@ -20,6 +17,8 @@ namespace Gizmo.Client.UI.Host.WPF
         {
             base.OnStartup(e);
 
+            var servicesAssembly = typeof(View.States.BusinessLogoViewState).Assembly;
+            
             var hostBuilder = new HostBuilder();
 
             string appSettingsFile = @"skin.json";
@@ -27,10 +26,8 @@ namespace Gizmo.Client.UI.Host.WPF
             hostBuilder
                  .ConfigureServices((context, serviceCollection) =>
                  {
-                     serviceCollection.AddViewStates();
-                     serviceCollection.AddViewServices();
-                     serviceCollection.AddUIServices();
-                     
+                     serviceCollection.AddLogging();          
+
                      serviceCollection.AddBlazorWebView();
                      serviceCollection.AddWpfBlazorWebView();
                      serviceCollection.AddClientConfiguration(context.Configuration);
@@ -43,8 +40,10 @@ namespace Gizmo.Client.UI.Host.WPF
                      });
 
                      serviceCollection.AddSingleton<IStringLocalizer, StringLocalizer<Resources.Resources>>();
-                     serviceCollection.AddSingleton<ILocalizationService, UILocalizationService>();
-                     serviceCollection.AddSingleton<IComponentDiscoveryService, DesktopComponentDiscoveryService>();
+
+                     serviceCollection.AddClientUIServices();
+                     serviceCollection.AddClientViewServices();
+                     serviceCollection.AddClientViewStates();                  
                  })
 
                  .ConfigureLogging(loggingBuilder =>
@@ -60,35 +59,19 @@ namespace Gizmo.Client.UI.Host.WPF
 
             var host = hostBuilder.Build();
 
-           
+            await host.Services.InitializeClientServices();
+            await host.Services.InitializeClientViewServices();
 
             var serviceProvider = host.Services.GetRequiredService<IServiceProvider>();
-           Resources.Add("services", serviceProvider);
-
-            var ds = host.Services.GetRequiredService<IComponentDiscoveryService>();
-
-           await ds.InitializeAsync(default);
-
+            Resources.Add("services", serviceProvider);
             var hostWindow = (HostWindow)serviceProvider.GetRequiredService<IHostWindow>();
-           
 
-            //set host page
-            hostWindow._blazorView.HostPage = @"wwwroot\index.html";
-
-            //create root component
-            var rootComponent = new RootComponent()
-            {
-                ComponentType = ds.RootComponentType,
-                Selector = "#app",
-            };
-
-            hostWindow._blazorView.RootComponents.Add(rootComponent);
 
             hostWindow.Show();
 
             await host.StartAsync();
 
-            await host.Services.InitializeViewsServices();
+         
         }
     }
 }
