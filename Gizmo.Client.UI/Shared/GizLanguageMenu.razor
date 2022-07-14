@@ -1,29 +1,40 @@
 ﻿@namespace Gizmo.Client.UI.Shared
-        <!--language menu content-->
-                <ul class="giz-sub-dropdown">
-                    <li class="giz-sub-dropdown--item">
-                        <a href="#" class="giz-sub-dropdown--link">
-                            <img src="https://i.postimg.cc/cLXq1dgt/Flag-2.png" class="giz-flag-icon" alt="loading">
-                            English
-                        </a>
-                    </li>
-                    <li class="giz-sub-dropdown--item">
-                        <a href="#" class="giz-sub-dropdown--link">
-                            <img src="https://i.postimg.cc/tJTn8DqT/Flag-7.png" class="giz-flag-icon" alt="loading">
-                            Italian
-                        </a>
-                    </li>
-                    <li class="giz-sub-dropdown--item">
-                        <a href="#" class="giz-sub-dropdown--link">
-                            <img src="https://i.postimg.cc/y8FCCHrJ/Flag-8.png" class="giz-flag-icon" alt="loading">
-                            German
-                        </a>
-                    </li>
-                    <li class="giz-sub-dropdown--item">
-                        <a href="#" class="giz-sub-dropdown--link">
-                            <img src="https://i.postimg.cc/YCxnN8M5/Flag-1.png" class="giz-flag-icon" alt="loading">
-                            Greek
-                        </a>
-                    </li>
-                </ul>
-                <!---/language menu content-->
+<!--language menu content-->
+<ul class="giz-sub-dropdown">
+    <li class="giz-sub-dropdown--item">
+        <a href="#" class="giz-sub-dropdown--link">
+            <img src="https://i.postimg.cc/cLXq1dgt/Flag-2.png" class="giz-flag-icon" alt="loading">
+            English
+        </a>
+    </li>
+    <li class="giz-sub-dropdown--item">
+        <a href="#" class="giz-sub-dropdown--link">
+            <img src="https://i.postimg.cc/tJTn8DqT/Flag-7.png" class="giz-flag-icon" alt="loading">
+            Italian
+        </a>
+    </li>
+    <li class="giz-sub-dropdown--item">
+        <a href="#" class="giz-sub-dropdown--link">
+            <img src="https://i.postimg.cc/y8FCCHrJ/Flag-8.png" class="giz-flag-icon" alt="loading">
+            German
+        </a>
+    </li>
+    <li class="giz-sub-dropdown--item">
+        <a href="#" class="giz-sub-dropdown--link">
+            <img src="https://i.postimg.cc/YCxnN8M5/Flag-1.png" class="giz-flag-icon" alt="loading">
+            Greek
+        </a>
+    </li>
+
+    @foreach (var language in ViewState.Regions)
+    {
+        <li class="giz-sub-dropdown--item">
+            <a href="#" class="giz-sub-dropdown--link">
+                <img src="@("https://countryflagsapi.com/svg/" + @language.TwoLetterISORegionName)" style="max-width:32px;max-height:32px" class="giz-flag-icon" alt="loading">
+                @language.EnglishName
+            </a>
+        </li>
+    }
+</ul>
+
+<!---/language menu content-->

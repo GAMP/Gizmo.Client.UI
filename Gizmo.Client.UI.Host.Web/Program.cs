@@ -1,8 +1,6 @@
 using Gizmo.Client.UI.Services;
-using Gizmo.Shared.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -19,8 +17,8 @@ namespace Gizmo.Client.UI.Host.Web
 
             #region CONFIGURATION
 
-            hostBuilder.Configuration.AddClientConfiguration();
-            hostBuilder.Services.AddClientConfiguration(hostBuilder.Configuration);
+            hostBuilder.Configuration.AddClientConfigurationSource();
+            hostBuilder.Services.AddClientOptions(hostBuilder.Configuration);
   
             #endregion
 
@@ -31,25 +29,14 @@ namespace Gizmo.Client.UI.Host.Web
             hostBuilder.Logging.SetMinimumLevel(LogLevel.Trace);
             #endregion
 
-            hostBuilder.Services.AddLocalization(opt =>
-            {
-                opt.ResourcesPath = "Properties";
-            });
-
-            hostBuilder.Services.AddSingleton<IStringLocalizer, StringLocalizer<Resources.Resources>>();
-            hostBuilder.Services.AddSingleton<ILocalizationService, UILocalizationService>();
-
             //add http client factory along with default http client
             hostBuilder.Services.AddHttpClient("Default", cfg => { cfg.BaseAddress = new Uri(hostBuilder.HostEnvironment.BaseAddress); });
 
-            hostBuilder.Services.AddClientUIServices();
-            hostBuilder.Services.AddClientViewServices();
-            hostBuilder.Services.AddClientViewStates();          
+            hostBuilder.Services.AddClientServices();       
 
             var host = hostBuilder.Build();
 
-            await host.Services.InitializeClientServices();
-            await host.Services.InitializeClientViewServices();       
+            await host.Services.InitializeClientServices();     
 
             await host.RunAsync();
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Gizmo.UI;
+using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Pages
 {

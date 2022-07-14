@@ -1,9 +1,9 @@
 ﻿using Gizmo.Client.UI.Services;
+using Gizmo.UI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using System;
+using System.IO;
 using System.Windows;
 
 namespace Gizmo.Client.UI.Host.WPF
@@ -17,61 +17,50 @@ namespace Gizmo.Client.UI.Host.WPF
         {
             base.OnStartup(e);
 
-            var servicesAssembly = typeof(View.States.BusinessLogoViewState).Assembly;
-            
             var hostBuilder = new HostBuilder();
 
-            string appSettingsFile = @"skin.json";
+            string skinBasePath = @"D:\My Documents\Visual Studio 2015\Projects\Gizmo\Gizmo.Client.UI\Gizmo.Client.UI.Host.WPF\bin\Release\net6.0-windows\publish";
+            string appSettingsFile = Path.Combine(skinBasePath, @"skin.json");
 
-            hostBuilder
-                 .ConfigureServices((context, serviceCollection) =>
-                 {
-                     serviceCollection.AddLogging();          
 
-                     serviceCollection.AddBlazorWebView();
-                     serviceCollection.AddWpfBlazorWebView();
-                     serviceCollection.AddClientConfiguration(context.Configuration);
+            hostBuilder.ConfigureServices((context, serviceCollection) =>
+            {
+                serviceCollection.AddLogging();
+                serviceCollection.AddBlazorWebViewDeveloperTools();
+                serviceCollection.AddWpfBlazorWebView();
 
-                     serviceCollection.AddSingleton<IHostWindow, HostWindow>();
+                serviceCollection.AddClientOptions(context.Configuration);
+                serviceCollection.AddClientServices();
+                serviceCollection.AddSingleton<IHostWindow, HostWindow>();
+              
+            }).ConfigureLogging(loggingBuilder =>
+            {
+                loggingBuilder.AddConsole();
+                loggingBuilder.SetMinimumLevel(LogLevel.Trace);
 
-                     serviceCollection.AddLocalization(opt =>
-                     {
-                         opt.ResourcesPath = "Properties";
-                     });
-
-                     serviceCollection.AddSingleton<IStringLocalizer, StringLocalizer<Resources.Resources>>();
-
-                     serviceCollection.AddClientUIServices();
-                     serviceCollection.AddClientViewServices();
-                     serviceCollection.AddClientViewStates();                  
-                 })
-
-                 .ConfigureLogging(loggingBuilder =>
-                 {
-                     loggingBuilder.AddConsole();
-                     loggingBuilder.SetMinimumLevel(LogLevel.Trace);
-
-                 }).ConfigureAppConfiguration(configurationBuilder =>
-                 {
-                     configurationBuilder.AddClientConfiguration(appSettingsFile);
-                 });
-
+            }).ConfigureAppConfiguration(configurationBuilder =>
+            {
+                //add skin configuration source
+                configurationBuilder.AddClientConfigurationSource();
+            });
 
             var host = hostBuilder.Build();
 
+            Resources.Add("services", host.Services);
+
+            //get host window
+            var hostWindow = (HostWindow)host.Services.GetRequiredService<IHostWindow>();
+            var ds = host.Services.GetRequiredService<DesktopComponentDiscoveryService>();
+
+            //initialize services
             await host.Services.InitializeClientServices();
-            await host.Services.InitializeClientViewServices();
 
-            var serviceProvider = host.Services.GetRequiredService<IServiceProvider>();
-            Resources.Add("services", serviceProvider);
-            var hostWindow = (HostWindow)serviceProvider.GetRequiredService<IHostWindow>();
+            await ds.SetConfigurationSourceAsync(appSettingsFile);
 
-
+            //show host window
             hostWindow.Show();
 
             await host.StartAsync();
-
-         
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Gizmo.Client.UI.Components;
-using Gizmo.Shared.Services;
+using Gizmo.UI;
+using Gizmo.UI.Services;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Linq;
 namespace Gizmo.Client.UI.Pages
 {
     [ModuleGuid(KnownModules.MODULE_SHOP)]
-    [PageUIModule(TitleLocalizationKey = "MODULE_PAGE_SHOP_TITLE", DescriptionLocalizationKey = "MODULE_PAGE_SHOP_DESCRIPTION"), ModuleDisplayOrder(5)]
+    [PageUIModule(TitleLocalizationKey = "MODULE_PAGE_VALIDATION_TITLE", DescriptionLocalizationKey = "MODULE_PAGE_VALIDATION_DESCRIPTION"), ModuleDisplayOrder(5)]
     [Route("/validation")]
     public partial class ValidationForm : ComponentBase
     {
@@ -75,7 +76,7 @@ namespace Gizmo.Client.UI.Pages
 
     public class ValidationModel
     {
-        [StringLength(2, ErrorMessageResourceName = "MODULE_PAGE_APPS_TITLE",
+        [StringLength(2, ErrorMessageResourceName = nameof(Resources.Properties.Resources.VALIDATION_ERROR_REQUIRED_FIELD),
             ErrorMessageResourceType = typeof(Resources.Properties.Resources))]
         [Required(ErrorMessageResourceName = "VALIDATION_ERROR_REQUIRED_FIELD",
             ErrorMessageResourceType = typeof(Resources.Properties.Resources))]
