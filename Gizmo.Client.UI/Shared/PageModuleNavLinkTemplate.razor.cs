@@ -1,5 +1,5 @@
-﻿using Gizmo.UI;
-using Gizmo.UI.Services;
+﻿using Gizmo.Shared.UI.Services;
+using Gizmo.UI;
 using Microsoft.AspNetCore.Components;
 using System;
 

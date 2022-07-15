@@ -1,6 +1,6 @@
 ﻿using Gizmo.Client.UI.Components;
+using Gizmo.Shared.UI.Services;
 using Gizmo.UI;
-using Gizmo.UI.Services;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿using Gizmo.UI.Services;
+﻿using Gizmo.Shared.UI.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI
