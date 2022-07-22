@@ -20,6 +20,12 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         UserLoginViewState UserLoginViewState { get; set; }
 
+        protected override void OnInitialized()
+        {
+            this.SubscribeChange(UserLoginViewState);
+            base.OnInitialized();
+        }
+
         public async Task Navigate()
         {
             _logginIn = true;

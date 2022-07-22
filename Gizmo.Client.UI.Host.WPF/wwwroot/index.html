@@ -16,5 +16,16 @@
     <div id="app"></div>
     <script src="_framework/blazor.webview.js"></script>
     <script src="_content/Gizmo.Web.Components/js/main.min.js"></script>
+    <script>
+        var UIFunctions = UIFunctions || {};
+        UIFunctions.SetNumberAsync = function (dotNetObject) {
+            setInterval(function () {
+                let text = Math.floor(Math.random() * 1000);
+                console.log("JS: Generated " + text);
+                dotNetObject.invokeMethodAsync('SetNumberAsync', text);
+            }, 500);
+        };
+
+    </script>
 </body>
 </html>

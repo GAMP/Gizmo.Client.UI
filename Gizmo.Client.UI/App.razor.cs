@@ -1,6 +1,8 @@
-﻿using Gizmo.Shared.UI.Services;
+﻿using Gizmo.Client.UI.Services;
+using Gizmo.Shared.UI.Services;
 using Gizmo.UI.Services;
 using Microsoft.AspNetCore.Components;
+using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI
 {
@@ -13,7 +15,7 @@ namespace Gizmo.Client.UI
         #endregion
 
         #region PROPERTIES
-        
+
         /// <summary>
         /// Component discovery service.
         /// </summary>
@@ -27,13 +29,20 @@ namespace Gizmo.Client.UI
         [Inject()]
         private NavigationManager NavigationManager
         {
-            get;set;
+            get; set;
         }
 
         [Inject()]
         private NavigationService NavigationService
         {
-            get;set;
+            get; set;
+        }
+
+        [Inject()]
+        private JSInteropService JSInteropService
+        {
+            get;
+            set;
         }
 
         #endregion
@@ -43,5 +52,13 @@ namespace Gizmo.Client.UI
             base.OnInitialized();
             NavigationService.AssociateNavigtionManager(NavigationManager);
         }
-    }   
+        protected async override Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+                await JSInteropService.InitializeAsync(default);
+
+            await base.OnAfterRenderAsync(firstRender);
+        }
+    }
+
 }
