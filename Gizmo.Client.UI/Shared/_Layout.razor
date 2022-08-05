@@ -1,6 +1,17 @@
 ﻿@inherits LayoutComponentBase
 @using Gizmo.Client.UI.Components
 
+@using Microsoft.Extensions.Options
+
+@inject IOptions<ClientUIOptions> ClientUIOptions
+
+@if (!string.IsNullOrEmpty(ClientUIOptions.Value.Skin))
+{
+    <HeadContent>
+        <link href="css/@ClientUIOptions.Value.Skin" rel="stylesheet" />
+    </HeadContent>
+}
+
 <Header></Header>
 <LeftNavBar></LeftNavBar>
 <!--body section-->

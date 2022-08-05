@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Gizmo.Client.UI.Host.Web
 {
@@ -14,6 +15,7 @@ namespace Gizmo.Client.UI.Host.Web
             var hostBuilder = WebAssemblyHostBuilder.CreateDefault(args);
 
             hostBuilder.RootComponents.Add<App>("#app");
+            hostBuilder.RootComponents.Add<HeadOutlet>("head::after");
 
             #region CONFIGURATION
 
