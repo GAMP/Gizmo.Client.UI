@@ -9,23 +9,14 @@ namespace Gizmo.Client.UI.Components
         #region PROPERTIES
 
         [Parameter]
-        public string Text { get; set; }
-
-        [Parameter]
-        public string Title { get; set; }
+        public RenderFragment CardHeader { get; set; }
 
         [Parameter]
         public RenderFragment CardBody { get; set; }
 
         [Parameter]
         public RenderFragment CardFooter { get; set; }
-
-        [Parameter]
-        public bool ShowLanguageMenu { get; set; }
-
-        [Parameter]
-        public bool ShowCloseButton { get; set; }
-        
+                
         #endregion
 
         public Task Navigate()

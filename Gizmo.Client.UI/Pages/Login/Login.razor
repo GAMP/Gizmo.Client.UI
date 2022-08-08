@@ -8,7 +8,7 @@
 
 @if (_logginIn)
 {
-    <LoginCard ShowLanguageMenu="false" ShowCloseButton="false">
+    <LoginCard>
         <CardBody>
             <div class="giz-login-status">
                 <GizSpinner />
@@ -20,28 +20,35 @@
 }
 else
 {
-    <LoginCard Text="welcome to inspot" Title="Sign in to your account" ShowLanguageMenu="false" ShowCloseButton="false">
+    <LoginCard>
+        <CardHeader>
+            <div class="giz-login-new-user">Not a member? <a href="/createaccount">Sign up now</a></div>
+        </CardHeader>
         <CardBody>
              <EditForm EditContext="@UserLoginService.EditContext">
-                <div class="mb-3">
+                <div class="giz-login-title">Sign in</div>
+                <div class="giz-login-input">
                     <TextInput UpdateOnInput="true" @bind-Value="UserLoginViewState.LoginName" Size="InputSizes.Large" IsFullWidth="true" Placeholder="Username" />
                 </div>
-                <div class="mb-3">
+                <div class="giz-login-forgot-password">
+                     <a href="/resetpassword">Forgot you password?</a>
+                </div>
+                <div class="giz-login-input">
                     <TextInput UpdateOnInput="true" @bind-Value="UserLoginViewState.Password" Size="InputSizes.Large" IsFullWidth="true" Type="password" Placeholder="Password" />
                 </div>
                 <!--login btn-->
-                <div class="giz-btn mb-6">
+                <div class="giz-login-input">
                     <Button LeftSVGIcon="Icons.Login_Client" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserLoginService.SubmitAsync">
                         continue
                     </Button>
                 </div>
+                <!--/login btn-->
             </EditForm>
-            <!--/login btn-->
             <!--third party login-->
             <div class="giz-third-parties-login">
-                <div class="giz-third-parties-login--text mb-4">or connect via your social network account</div>
+                <div class="giz-third-parties-login__text">Or</div>
                 <!--social icons-->
-                <div>
+                <div class="giz-third-parties-login__actions">
                     <IconButton SVGIcon="Icons.Facebook_Client" Variant="ButtonVariants.Outline" />
                     <IconButton SVGIcon="Icons.Google_Client" Variant="ButtonVariants.Outline" Class="mx-3" />
                     <IconButton SVGIcon="Icons.Twitter_Client" Variant="ButtonVariants.Outline" />
@@ -51,8 +58,7 @@ else
             <!--/third party login-->
         </CardBody>
         <CardFooter>
-            <div class="giz-no-account">don’t have an account?</div>
-            <div class="giz-footer-links"><a href="/createaccount" class="giz-white-text">create new account</a> | <a href="/resetpassword" class="giz-white-text">forgot password?</a></div>
+            <KeyboardLanguage />
         </CardFooter>
     </LoginCard>
 }
