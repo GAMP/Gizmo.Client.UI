@@ -9,7 +9,7 @@
 
         &__adv {
             background: url('../img/bg-img-2.png')no-repeat fixed;
-            background-size: cover;
+            background-size: contain;
             display: grid;
             grid-template-rows: min-content 1fr min-content;
 
@@ -120,6 +120,13 @@
     line-height: 30px;
 }
 
+giz-login-subtitle {
+    //Font
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 26px;
+}
+
 .giz-language-menu {
 
     button {
@@ -141,9 +148,21 @@
     margin-bottom: 0.75rem;
 }
 
+.giz-login-input-columns {
+    display: flex;
+    gap: 16px;
+
+    & > div {
+        flex: 1;
+    }
+}
+
 .giz-login-forgot-password {
     margin-bottom: 0.75rem;
     text-align: right;
+    position: relative;
+    z-index: 1;
+    float: right;
     //Font
     font-weight: 400;
     font-size: 14px;
@@ -154,21 +173,24 @@
     }
 }
 
-.giz-third-parties-login {
+.giz-alternative-login {
 
-    &__text {
+    &__separator {
         color: white;
         padding: 0 4.388rem;
         position: relative;
         text-align: center;
         background-color: #131313;
+        margin-bottom: 24px;
         //Font
         font-weight: 400;
         font-size: 16px;
         line-height: 20px;
-        /*span {
+
+        span {
+            position: relative;
             background-color: #131313;
-            z-index: 2;
+            padding: 0 8px;
         }
 
         &:before {
@@ -178,15 +200,13 @@
             top: 50%;
             left: 0;
             width: 100%;
-            z-index: 1;
-        }*/
+        }
     }
-}
 
-.giz-personalinfo-input {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-column-gap: 0.75rem;
+    &__actions {
+        display: flex;
+        justify-content: center;
+    }
 }
 
 .giz-no-account {

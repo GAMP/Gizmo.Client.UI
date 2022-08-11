@@ -1,0 +1,46 @@
+﻿@namespace Gizmo.Client.UI.Pages
+@inherits ComponentBase
+@layout _Layout_Login
+@using System.Threading;
+@using Gizmo.Web.Components
+@using Gizmo.Client.UI.Components
+@using Microsoft.AspNetCore.Components.Forms
+
+<LoginCard>
+    <CardHeader>
+        <div class="giz-login-new-user">Already a member? <a href="/">Sign In</a></div>
+    </CardHeader>
+    <CardBody>
+        <EditForm EditContext="@UserRegistrationService.EditContext">
+            <div class="giz-login-title">Sign Up</div>
+            <div class="giz-login-input">
+                <TextInput @bind-Value="UserRegistrationService.ViewState.Username" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Username" />
+            </div>
+             <div class="giz-login-input giz-login-input-columns">
+                <TextInput @bind-Value="UserRegistrationService.ViewState.NewPassword" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Password" />
+                <TextInput @bind-Value="UserRegistrationService.ViewState.RepeatPassword" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Confirm your password" />
+            </div>
+             <div class="giz-login-input giz-login-input-columns">
+                <TextInput TValue="string" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="First name" />
+                <TextInput TValue="string" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Last name" />
+            </div>
+             <div class="giz-login-input giz-login-input-columns">
+                <TextInput TValue="string" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Date of birth" />
+                <TextInput TValue="string" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Gender" />
+            </div>
+            <div class="giz-login-input">
+                <TextInput TValue="string" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Email address" />
+            </div>
+            <div class="giz-login-input">
+                <Button Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationService.SubmitAsync">
+                    Continue
+                </Button>
+            </div>
+        </EditForm>
+    </CardBody>
+    <CardFooter>
+        <KeyboardLanguage />
+    </CardFooter>
+</LoginCard>
+
+<UserAgreementDialog IsOpen="true" />

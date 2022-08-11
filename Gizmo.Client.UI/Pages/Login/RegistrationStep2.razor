@@ -1,0 +1,38 @@
+﻿@namespace Gizmo.Client.UI.Pages
+@inherits ComponentBase
+@layout _Layout_Login
+@using System.Threading;
+@using Gizmo.Web.Components
+@using Gizmo.Client.UI.Components
+@using Microsoft.AspNetCore.Components.Forms
+
+<LoginCard>
+    <CardHeader>
+        <div class="giz-login-new-user">Already a member? <a href="/">Sign In</a></div>
+    </CardHeader>
+    <CardBody>
+        <EditForm EditContext="@UserRegistrationStep2Service.EditContext">
+            <div class="giz-login-title">Sign Up</div>
+            <div class="giz-login-input">
+                <TextInput TValue="string" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Country/Region" />
+            </div>
+            <div class="giz-login-input">
+                <TextInput TValue="string" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Address" />
+            </div>
+            <div class="giz-login-input">
+                <TextInput TValue="string" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Post code" />
+            </div>
+            <div class="giz-login-input">
+                <TextInput TValue="string" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Home phone" />
+            </div>
+            <div class="giz-login-input">
+                <Button Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationStep2Service.SubmitAsync">
+                    Sign Up
+                </Button>
+            </div>
+        </EditForm>
+    </CardBody>
+    <CardFooter>
+        <KeyboardLanguage />
+    </CardFooter>
+</LoginCard>

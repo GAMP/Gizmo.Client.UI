@@ -22,38 +22,35 @@ else
 {
     <LoginCard>
         <CardHeader>
-            <div class="giz-login-new-user">Not a member? <a href="/createaccount">Sign up now</a></div>
+            <div class="giz-login-new-user">Not a member? <a href="/registration">Sign up now</a></div>
         </CardHeader>
         <CardBody>
              <EditForm EditContext="@UserLoginService.EditContext">
                 <div class="giz-login-title">Sign in</div>
                 <div class="giz-login-input">
-                    <TextInput UpdateOnInput="true" @bind-Value="UserLoginViewState.LoginName" Size="InputSizes.Large" IsFullWidth="true" Placeholder="Username" />
+                    <TextInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.LoginName" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Username" />
                 </div>
                 <div class="giz-login-forgot-password">
-                     <a href="/resetpassword">Forgot you password?</a>
+                     <a href="/passwordrecovery">Forgot you password?</a>
                 </div>
                 <div class="giz-login-input">
-                    <TextInput UpdateOnInput="true" @bind-Value="UserLoginViewState.Password" Size="InputSizes.Large" IsFullWidth="true" Type="password" Placeholder="Password" />
+                    <TextInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.Password" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Type="password" Label="Password" />
                 </div>
                 <!--login btn-->
                 <div class="giz-login-input">
                     <Button LeftSVGIcon="Icons.Login_Client" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserLoginService.SubmitAsync">
-                        continue
+                        Continue
                     </Button>
                 </div>
                 <!--/login btn-->
             </EditForm>
             <!--third party login-->
-            <div class="giz-third-parties-login">
-                <div class="giz-third-parties-login__text">Or</div>
-                <!--social icons-->
-                <div class="giz-third-parties-login__actions">
-                    <IconButton SVGIcon="Icons.Facebook_Client" Variant="ButtonVariants.Outline" />
-                    <IconButton SVGIcon="Icons.Google_Client" Variant="ButtonVariants.Outline" Class="mx-3" />
-                    <IconButton SVGIcon="Icons.Twitter_Client" Variant="ButtonVariants.Outline" />
+            <div class="giz-alternative-login">
+                <div class="giz-alternative-login__separator"><span>Or</span></div>
+                <div class="giz-alternative-login__actions">
+                    <Icon SVGIcon="Icons.QR" />
+                    <div>QR code</div>
                 </div>
-                <!--/social icons-->
             </div>
             <!--/third party login-->
         </CardBody>
