@@ -11,20 +11,20 @@
         <div class="giz-login-new-user">Already a member? <a href="/">Sign In</a></div>
     </CardHeader>
     <CardBody>
-        <EditForm EditContext="@UserRegistrationService.EditContext">
+        <EditForm EditContext="@UserRegistrationBasicFieldsService.EditContext">
             <div class="giz-login-title">Sign Up</div>
             <div class="giz-login-input">
-                <TextInput @bind-Value="UserRegistrationService.ViewState.Username" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Username" />
+                <TextInput @bind-Value="UserRegistrationBasicFieldsService.ViewState.Username" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Username" />
             </div>
-             <div class="giz-login-input giz-login-input-columns">
-                <TextInput @bind-Value="UserRegistrationService.ViewState.NewPassword" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Password" />
-                <TextInput @bind-Value="UserRegistrationService.ViewState.RepeatPassword" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Confirm your password" />
+            <div class="giz-login-input giz-login-input-columns">
+                <TextInput @bind-Value="UserRegistrationBasicFieldsService.ViewState.NewPassword" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Password" />
+                <TextInput @bind-Value="UserRegistrationBasicFieldsService.ViewState.RepeatPassword" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Confirm your password" />
             </div>
-             <div class="giz-login-input giz-login-input-columns">
+            <div class="giz-login-input giz-login-input-columns">
                 <TextInput TValue="string" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="First name" />
                 <TextInput TValue="string" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Last name" />
             </div>
-             <div class="giz-login-input giz-login-input-columns">
+            <div class="giz-login-input giz-login-input-columns">
                 <TextInput TValue="string" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Date of birth" />
                 <TextInput TValue="string" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Gender" />
             </div>
@@ -32,7 +32,7 @@
                 <TextInput TValue="string" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Email address" />
             </div>
             <div class="giz-login-input">
-                <Button Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationService.SubmitAsync">
+                <Button Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationBasicFieldsService.SubmitAsync">
                     Continue
                 </Button>
             </div>
@@ -42,5 +42,3 @@
         <KeyboardLanguage />
     </CardFooter>
 </LoginCard>
-
-<UserAgreementDialog IsOpen="true" />

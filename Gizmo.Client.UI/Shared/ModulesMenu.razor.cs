@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI
 {
-    public partial class LeftNavBar : ComponentBase
+    public partial class ModulesMenu : ComponentBase
     {
         #region PROPERTIES
 

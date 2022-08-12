@@ -4,34 +4,26 @@
 @using System.Threading;
 @using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
-@inject NavigationManager UriHelper
+@using Microsoft.AspNetCore.Components.Forms
 
-<LoginCard Text="to continue" Title="Enter confirmation code" ShowLanguageMenu="false" ShowCloseButton="true">
+<LoginCard>
+    <CardHeader>
+        <div class="giz-login-new-user">Already a member? <a href="/">Sign In</a></div>
+    </CardHeader>
     <CardBody>
-        <div class="mb-6">
-            <TextInput TValue="string" Size="InputSizes.Large" IsFullWidth="true" Placeholder="Enter your 10 digit code" />
-        </div>
-        <!--button-->
-        <div class="giz-btn mb-16">
-            <Button Size="ButtonSizes.ExtraLarge" Color="ButtonColors.Info" IsFullWidth="true" @onclick="@NavigateToPhoneNumber">continue</Button>
-        </div>
-        <!--/button-->
-        <div class="giz-login-content--footer">
-            <div class="giz-footer-text px-4 mb-3">
-                fill in the 10 digit code that was sent to your email
-                make sure to check your spam folder
+        <EditForm EditContext="@UserRegistrationConfirmationService.EditContext">
+            <div class="giz-login-title">Sign Up</div>
+            <div class="giz-login-input">
+                <TextInput @bind-Value="UserRegistrationConfirmationService.ViewState.ConfirmationCode" IsTransparent="true" Size="InputSizes.Large" IsFullWidth="true" Label="Enter you code" />
             </div>
-            <div class="giz-footer-links"><a href="#" class="giz-white-text">resent code</a></div>
-        </div>
+            <div class="giz-login-input">
+                <Button Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationConfirmationService.SubmitAsync">
+                    Continue
+                </Button>
+            </div>
+        </EditForm>
     </CardBody>
+    <CardFooter>
+        <KeyboardLanguage />
+    </CardFooter>
 </LoginCard>
-
-@code { 
-    
-void NavigateToPhoneNumber()
-{ UriHelper.NavigateTo("/confirmphonenumber"); }
-
-void NavigateToHome()
-{ UriHelper.NavigateTo("/"); }
-
-}

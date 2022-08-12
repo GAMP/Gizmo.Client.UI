@@ -22,7 +22,7 @@ else
 {
     <LoginCard>
         <CardHeader>
-            <div class="giz-login-new-user">Not a member? <a href="/registration">Sign up now</a></div>
+            <div class="giz-login-new-user">Not a member? <a @onclick="UserLoginService.OpenRegistration">Sign up now</a></div>
         </CardHeader>
         <CardBody>
              <EditForm EditContext="@UserLoginService.EditContext">
@@ -38,7 +38,7 @@ else
                 </div>
                 <!--login btn-->
                 <div class="giz-login-input">
-                    <Button LeftSVGIcon="Icons.Login_Client" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserLoginService.SubmitAsync">
+                    <Button LeftSVGIcon="Icons.Login_Client" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserLoginService.LoginAsync">
                         Continue
                     </Button>
                 </div>
