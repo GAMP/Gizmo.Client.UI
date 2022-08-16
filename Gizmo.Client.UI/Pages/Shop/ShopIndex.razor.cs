@@ -10,11 +10,11 @@ using System.Windows.Input;
 namespace Gizmo.Client.UI.Pages
 {
     [ModuleGuid(KnownModules.MODULE_SHOP)]
-    [PageUIModule(TitleLocalizationKey = "MODULE_PAGE_SHOP_TITLE", DescriptionLocalizationKey = "MODULE_PAGE_SHOP_DESCRIPTION"), ModuleDisplayOrder(4)]
+    [PageUIModule(TitleLocalizationKey = "MODULE_PAGE_SHOP_TITLE", DescriptionLocalizationKey = "MODULE_PAGE_SHOP_DESCRIPTION"), ModuleDisplayOrder(2)]
     [Route("/shop")]
-    public partial class Shop : ComponentBase
+    public partial class ShopIndex : ComponentBase
     {
-        public Shop()
+        public ShopIndex()
         {
             Random random = new Random();
 
@@ -91,7 +91,6 @@ namespace Gizmo.Client.UI.Pages
         private ICommand _placeOrderCommand;
         private int? _selectedProductGroupId;
         private ProductGroupViewModel _selectedProductGroup;
-        private ProductViewModel _selectedProduct;
         #endregion
 
         #region PROPERTIES
@@ -126,8 +125,6 @@ namespace Gizmo.Client.UI.Pages
         }
 
         public bool PaymentMethodSelectorIsOpen { get; set; }
-
-        public bool ProductDetailsIsOpen { get; set; }
 
         #endregion
 
@@ -225,12 +222,6 @@ namespace Gizmo.Client.UI.Pages
             {
                 Order.OrderLines.Remove(existingOrderLine);
             }
-        }
-
-        public void OpenDetails(int id)
-        {
-            _selectedProduct = Products.Where(a => a.Id == id).FirstOrDefault();
-            ProductDetailsIsOpen = true;
         }
 
         public void SelectPaymentMethod(int id)

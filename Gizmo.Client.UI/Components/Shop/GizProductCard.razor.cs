@@ -7,6 +7,9 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class GizProductCard : CustomDOMComponentBase
     {
+        [Inject]
+        NavigationManager NavigationManager { get; set; }
+
         [Parameter]
         public bool IsHoverable { get; set; }
 
@@ -16,17 +19,14 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<int> OnAddProduct { get; set; }
 
-        [Parameter]
-        public EventCallback<int> OnOpenDetails { get; set; }
-
         public async Task AddProduct()
         {
             await OnAddProduct.InvokeAsync(Product.Id);
         }
 
-        public async Task OpenDetails()
+        public void OpenDetails()
         {
-            await OnOpenDetails.InvokeAsync(Product.Id);
+            NavigationManager.NavigateTo($"/productdetails/{Product.Id}");
         }
     }
 }

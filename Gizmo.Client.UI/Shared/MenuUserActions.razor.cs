@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Shared
 {
-    public partial class MenuUserInfo : CustomDOMComponentBase
+    public partial class MenuUserActions : CustomDOMComponentBase
     {
         [Parameter]
         public UserViewModel User { get; set; }

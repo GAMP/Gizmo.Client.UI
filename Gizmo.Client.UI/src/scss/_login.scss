@@ -1,9 +1,9 @@
 //=============== Clien UI Login ================//
 
 .giz-main-container {
-    height: $viewport-height;
     display: grid;
     grid-template-columns: 1fr min-content;
+    height: 100vh;
 
     .giz-login {
 
@@ -207,6 +207,17 @@
     }
 }
 
+.giz-login-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(35, 35, 45, 0.9) 0%, rgba(42, 44, 53, 0.15) 100%);
+    backdrop-filter: blur(30px);
+}
+
+////
 .giz-no-account {
     @include font-9;
     margin-bottom: 0.625rem;
@@ -270,14 +281,4 @@
         @include font-20;
         letter-spacing: $letter-spacing-2;
     }
-}
-
-.giz-login-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, rgba(35, 35, 45, 0.9) 0%, rgba(42, 44, 53, 0.15) 100%);
-    backdrop-filter: blur(30px);
 }

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI
 {
-    public partial class ModulesMenu : ComponentBase
+    public partial class HeaderModulesMenu : ComponentBase
     {
         #region PROPERTIES
 

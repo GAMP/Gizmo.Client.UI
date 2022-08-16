@@ -3,82 +3,9 @@
 @using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
 
-<!--header-->
-<header id="giz-navbar" client-theme="true">
-    <nav>
-        <HeaderLogo />
-        <div class="giz-nav-container">
-            <!-- ul -->
-            <ul class="giz-nav-menu">
-                <li class="giz-nav-menu--item giz-nav-item-global-search">
-                    <GlobalSearch />
-                </li>
-            </ul>
-            <!-- /ul -->
-            <!-- ul -->
-            <ul class="giz-menu">
-                <!--navbar item-->
-                <li class="giz-menu--item">
-                    <div class="giz-menu--link">
-                        <Icon SVGIcon="Icons.Rocket_Client" Size="IconSizes.Small" Class="mr-3" />
-                        QUICK LAUNCH
-                    </div>
-                </li>
-                <li class="giz-menu--item menu-active-apps">
-                    <div class="giz-menu--link" @onclick="() => ToggleActiveApps()">
-                        <Icon SVGIcon="Icons.Apps_Client" Size="IconSizes.Small" Class="mr-3" />
-                        ACTIVE APPS
-                    </div>
-                    <!--dropdown-->
-                    <MenuActiveApplicationsContainer @bind-IsOpen="_isOpen" />
-                    <!--/dropdown-->
-                </li>
-                <li class="giz-menu--item giz-favorite-dropdown">
-                    <div class="giz-menu--link">
-                        <Icon SVGIcon="Icons.Heart_Client" Size="IconSizes.Small" Class="mr-3" />
-                        FAVORITES
-                    </div>
-                    <!--dropdown-->
-                    <MenuFavorites />
-                    <!--/dropdown-->
-                </li>
-                <li class="giz-menu--item giz-notification-dropdown">
-                    <div class="giz-menu--link">
-                        <Badge Size="BadgeSize.Small">
-                            <Icon SVGIcon="Icons.Bell_Client" Size="IconSizes.Small" />
-                        </Badge>
-                    </div>
-                    <!--dropdown-->
-                    <MenuNotificationsContainer />
-                    <!--/dropdown-->
-                </li>
-                <li class="giz-menu--item giz-user-dropdown giz-user-profile">
-                    <div class="giz-menu--avtar">
-                        <Avatar Image="@User.Picture" Variant="AvatarVariants.Circle" Class="mr-4" />
-
-                        <div class="giz-about-user">
-                            <div>PC 05</div>
-                            <div class="giz-about-user--user">@User.Username</div>
-                        </div>
-                        <div class="giz-timer-btn">
-                            <Button HasShadow="true" Class="timer-button">06:27</Button>
-                        </div>
-
-                        <!--svg-->
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none">
-                            <path d="M1 1L6 6L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        <!--/svg-->
-
-                        <!--dropdown menu>
-                        <MenuUserInfo User="@User" />
-                         <!-- /dropdown menu-->
-                    </div>
-                </li>
-                <!--/navbar item-->
-            </ul>
-            <!-- /ul -->
-        </div>
-    </nav>
-</header>
-<!--/header-->
+<div class="giz-header">
+    <HeaderLogo />
+    <HeaderModulesMenu />
+    <GlobalSearch />
+    <HeaderUserMenu />
+</div>

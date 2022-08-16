@@ -1,8 +1,41 @@
 //=============== Page Home ================//
 
-.giz-app-carousel-wrapper {
+.giz-home {
     display: grid;
-    grid-auto-flow: column;
-    grid-column-gap: 1.688rem;
+    grid-template-rows: min-content 1fr;
+    height: 100%;
+
+    &__header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        padding: 16px;
+
+        &__quick-launch {
+            background: rgba(255, 255, 255, 0.01);
+            box-shadow: inset 0px 0px 101px rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(60px);
+            border-radius: 16px;
+        }
+
+        &__ads {
+            background: rgba(255, 255, 255, 0.01);
+            box-shadow: inset 0px 0px 101px rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(60px);
+            border-radius: 16px;
+        }
+    }
+
+    &__body {
+        padding: 16px;
+    }
+}
+
+.giz-home__app-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(222px, 1fr));
+    grid-template-rows: minmax(200px, 1fr);
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
     justify-content: left;
 }

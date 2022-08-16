@@ -1,0 +1,57 @@
+﻿@namespace Gizmo.Client.UI.Pages
+@inherits ComponentBase
+@using Gizmo.Web.Components
+@using Gizmo.Client.UI.Components
+@using Gizmo.Client.UI.ViewModels
+
+<div class="giz-product-details">
+    <div class="giz-product-details__product">
+        <div class="giz-product-details__product__navigation">
+            Back
+        </div>
+        <div class="giz-product-details__product__info">
+            <div class="giz-product-details__product__info__image">
+                <img src="_content/Gizmo.Client.UI/img/@Product?.Image" alt="loading" />
+            </div>
+            <div class="giz-product-details__product__info__basic">
+                <div class="giz-product-details__product__info__basic__category">
+                    Beverages
+                </div>
+                <div class="giz-product-details__product__info__basic__title">
+                    @Product?.Name
+                </div>
+                <div class="giz-product-details__product__info__basic__description">
+                    @Product?.Description
+                </div>
+                <div class="giz-product-details__product__info__basic__action">
+                    @*<Button Size="ButtonSizes.Large" Command="@AddToCartCommand">Add to cart</Button>*@
+                    <Button Size="ButtonSizes.Large">Add to cart</Button>
+                </div>
+            </div>
+            <div class="giz-product-details__product__info__price">
+                2e
+            </div>
+        </div>
+        <div class="giz-product-details__product__details">
+            123
+        </div>
+        <div class="giz-product-details__product__related">
+            <div class="giz-product-details__product__related__header">
+                Related products
+            </div>
+                
+            <div class="giz-product-details__product__related__body">
+                @if (RelatedProducts != null)
+                {
+                    @foreach (var product in RelatedProducts)
+                    {
+                        <GizProductCard Product="@product" />
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <div class="giz-product-details__order">
+        <GizOrder Order="@Order" />
+    </div>
+</div>

@@ -1,0 +1,56 @@
+﻿@namespace Gizmo.Client.UI
+@inherits ComponentBase
+@using Gizmo.Web.Components
+@using Gizmo.Client.UI.Components
+@using Gizmo.Client.UI.ViewModels
+
+<div class="giz-header__user-menu">
+    <!--navbar item-->
+    <div class="giz-header__user-menu--item">
+        <div class="btn">
+
+        </div>
+    </div>
+    <div class="giz-header__user-menu--item">
+        <div class="btn">
+
+        </div>
+    </div>
+    <div class="giz-header__user-menu--item">
+        <div class="btn">
+
+        </div>
+    </div>
+    @*<div class="giz-header__user-menu--item menu-active-apps">
+        <div class="giz-menu--link" @onclick="() => ToggleActiveApps()">
+            <Icon SVGIcon="Icons.Apps_Client" Size="IconSizes.Small" Class="mr-3" />
+            ACTIVE APPS
+        </div>
+        <!--dropdown-->
+        <MenuActiveApplicationsContainer @bind-IsOpen="_isOpen" />
+        <!--/dropdown-->
+    </div>
+    <div class="giz-header__user-menu--item giz-notification-dropdown">
+        <div class="giz-menu--link">
+            <Badge Size="BadgeSize.Small">
+                <Icon SVGIcon="Icons.Bell_Client" Size="IconSizes.Small" />
+            </Badge>
+        </div>
+        <!--dropdown-->
+        <MenuNotificationsContainer />
+        <!--/dropdown-->
+    </div>*@
+    <div class="giz-header__user-menu--item giz-user-dropdown giz-user-profile">
+        <div class="giz-header__user-menu__button">
+            <Avatar Image="@User.Picture" Variant="AvatarVariants.Circle" />
+
+            <div>PC 05</div>
+
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none">
+                <path d="M1 1L6 6L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </div>
+        <MenuUserActions User="@User" />
+    </div>
+    <!--/navbar item-->
+</div>

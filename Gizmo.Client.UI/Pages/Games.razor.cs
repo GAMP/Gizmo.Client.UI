@@ -9,7 +9,7 @@ using System.Windows.Input;
 namespace Gizmo.Client.UI.Pages
 {
     [ModuleGuid(KnownModules.MODULE_GAMES)]
-    [PageUIModule(TitleLocalizationKey = "MODULE_PAGE_GAMES_TITLE", DescriptionLocalizationKey = "MODULE_PAGE_GAMES_TITLE"), ModuleDisplayOrder(2)]
+    [PageUIModule(TitleLocalizationKey = "MODULE_PAGE_GAMES_TITLE", DescriptionLocalizationKey = "MODULE_PAGE_GAMES_TITLE"), ModuleDisplayOrder(1)]
     [Route("/games")]
     public partial class Games : ComponentBase
     {

@@ -1,0 +1,39 @@
+﻿@namespace Gizmo.Client.UI.Pages
+@inherits ComponentBase
+@using Gizmo.Web.Components
+@using Gizmo.Client.UI.Components
+@using Gizmo.Client.UI.ViewModels
+
+<div class="giz-shop">
+    <div class="giz-shop__products">
+        <div class="giz-shop__products__tab">
+            @foreach (var productGroup in ProductGroups)
+            {
+                @*<ListItem Command="@SelectProductGroupCommand" CommandParameter="@productGroup.Id">*@
+                <div class="d-flex">
+                    <div class="mr-auto">
+                        @productGroup.Name
+                    </div>
+                    @if (Products != null)
+                    {
+                        <div class="giz-search-number">
+                            @Products.Where(a => a.ProductGroupId == productGroup.Id).Count()
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+        <div class="giz-shop__products__popular">Popular</div>
+        <div class="giz-shop__products__list">
+            @foreach (var product in Products.Where(a => !_selectedProductGroupId.HasValue || a.ProductGroupId == _selectedProductGroupId))
+            {
+                <GizProductCard Product="@product" IsHoverable="true" OnAddProduct="@AddProduct" />
+            }
+        </div>
+    </div>
+    <div class="giz-shop__order">
+        <GizOrder Order="@Order" />
+    </div>
+</div>
+
+<PaymentMethodSelectorDialog @bind-IsOpen="PaymentMethodSelectorIsOpen" OnSelectPaymentMethod="@SelectPaymentMethod" />
