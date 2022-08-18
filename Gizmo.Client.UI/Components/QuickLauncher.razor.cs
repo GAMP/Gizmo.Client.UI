@@ -2,11 +2,11 @@
 using Gizmo.Web.Components;
 using System.Collections.Generic;
 
-namespace Gizmo.Client.UI.Shared
+namespace Gizmo.Client.UI.Components
 {
-    public partial class MenuFavorites : CustomDOMComponentBase
+    public partial class QuickLauncher : CustomDOMComponentBase
     {
-        public MenuFavorites()
+        public QuickLauncher()
         {
             Favorites = new List<FavoriteViewModel>();
             Favorites.Add(new FavoriteViewModel() { Id = 1, Name = "Explorer", Icon = "_content/Gizmo.Client.UI/img/Places-folder-red-icon 1.png" });

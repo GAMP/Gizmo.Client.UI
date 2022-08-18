@@ -3,14 +3,21 @@
 @using Gizmo.Web.Components
 
 <div class="giz-order-item">
-    <div class="giz-order-item__info">
+    <div class="giz-order-item__description">
         @OrderLine.ProductName
-        <IconButton Variant="ButtonVariants.Fill" Size="ButtonSizes.Small" SVGIcon="Icons.Trash_Client" Class="trash-btn" @onclick="@(() => RemoveProduct())" />
     </div>
-    <div class="giz-order-item__amount">@OrderLine.Total.ToString("C")</div>
-    <div class="giz-order-item__buttons">
-        <button class="client-button giz-decrease-btn" @onclick="@(() => RemoveQuantity())">-</button>
-        <span>@OrderLine.Quantity</span>
-        <button class="client-button giz-increase-btn" @onclick="@(() => AddQuantity())">+</button>
+    <div class="giz-order-item__details">
+        <div class="giz-order-item__details__price">
+            @OrderLine.Total.ToString("C")
+        </div>
+        <div class="giz-order-item__details__points">
+            @OrderLine.PointsTotal.ToString("N0")
+            <PointsIcon />
+        </div>
+        <div class="giz-shop-quantity-picker">
+            <button class="giz-decrease-btn" @onclick="@(() => RemoveQuantity())">-</button>
+            <span>@OrderLine.Quantity</span>
+            <button class="giz-increase-btn" @onclick="@(() => AddQuantity())">+</button>
+        </div>
     </div>
 </div>

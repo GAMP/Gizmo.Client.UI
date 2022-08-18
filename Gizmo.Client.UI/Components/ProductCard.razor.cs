@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class GizProductCard : CustomDOMComponentBase
+    public partial class ProductCard : CustomDOMComponentBase
     {
         [Inject]
         NavigationManager NavigationManager { get; set; }

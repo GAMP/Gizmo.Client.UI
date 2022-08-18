@@ -1,86 +1,43 @@
 //=============== Page Apps ================//
 
-#giz-apps-sidebar {
+.giz-apps {
     display: grid;
-    grid-template-rows: 1fr 1fr;
-    max-height: 100%;
-    overflow: hidden;
+    grid-template-rows: min-content 1fr;
+    height: 100%;
 
-    .giz-apps-categories {
-        max-height: 100%;
-        overflow: hidden;
+    &__header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        padding: 16px;
 
-        .giz-apps-menu-list {
-            max-height: 100%;
-            overflow: hidden;
-            padding: 0.625rem 0.325rem 0.625rem 0.625rem;
+        &__quick-launch {
+            background: rgba(255, 255, 255, 0.01);
+            box-shadow: inset 0px 0px 101px rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(60px);
+            border-radius: 16px;
+        }
 
-            .giz-list-body {
-                max-height: 100%;
-                overflow-y: auto;
-                padding-right: 0.3rem;
-            }
-
-            &.giz-list--selectable {
-                .giz-list-item {
-                    &.giz-list-item-selected {
-                        border: 1px solid $black-color;
-                    }
-                }
-            }
+        &__ads {
+            background: rgba(255, 255, 255, 0.01);
+            box-shadow: inset 0px 0px 101px rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(60px);
+            border-radius: 16px;
         }
     }
 
-    .giz-apps-filters {
-        display: grid;
-        grid-template-rows: auto 1fr;
-        max-height: 100%;
-        overflow: hidden;
-
-        &-header {
-            display: flex;
-            justify-content: space-between;
-            @include open-sans-600;
-            font-size: $font-15;
-            line-height: $line-height-19;
-            letter-spacing: $letter-spacing-5;
-            padding: 3.125rem 0 2.5rem;
-        }
-
-        &-body {
-            max-height: 100%;
-            overflow-y: auto;
-        }
+    &__body {
+        padding: 16px;
+        height: 100%;
+        overflow: auto;
     }
 }
 
-#giz-apps-main {
+.giz-apps__app-wrapper {
     display: grid;
-    grid-template-rows: auto 1fr;
-    padding-top: 1.5rem;
-    padding-left: 2rem;
-    padding-right: 0.5rem;
-    height: 100%;
-    overflow: hidden;
-
-    .giz-apps-header {
-        @include font-18;
-        margin-bottom: 1.188rem;
-    }
-
-    .giz-apps-body {
-        padding-bottom: 1.5rem;
-        padding-right: 2rem;
-        max-height: 100%;
-        overflow-y: auto;
-
-        .giz-apps-wrapper {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-            grid-template-rows: minmax(200px, 1fr);
-            grid-column-gap: 1.688rem;
-            grid-row-gap: 1.875rem;
-            justify-content: left;
-        }
-    }
+    grid-template-columns: repeat(auto-fill, minmax(222px, 1fr));
+    grid-template-rows: minmax(200px, 1fr);
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+    justify-content: left;
 }

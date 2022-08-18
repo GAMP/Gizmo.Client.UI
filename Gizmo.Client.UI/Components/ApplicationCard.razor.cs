@@ -11,14 +11,14 @@ namespace Gizmo.Client.UI.Components
 
         #region PROPERTIES
 
+        [Inject]
+        NavigationManager NavigationManager { get; set; }
+
         [Parameter]
         public ApplicationViewModel Application { get; set; }
 
         [Parameter]
         public EventCallback<int> OnOpenDetails { get; set; }
-
-        [Parameter]
-        public EventCallback<int> OnOpenExecutableSelector { get; set; }
 
         [Parameter]
         public bool ShowDateAdded { get; set; }
@@ -32,9 +32,9 @@ namespace Gizmo.Client.UI.Components
             await OnOpenDetails.InvokeAsync(Application.Id);
         }
 
-        private async Task Execute()
+        private void Execute()
         {
-            await OnOpenExecutableSelector.InvokeAsync(Application.Id);
+            NavigationManager.NavigateTo($"/appdetails/{Application.Id}");
         }
 
         private void ShowWarning()

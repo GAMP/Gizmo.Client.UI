@@ -1,0 +1,33 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using Gizmo.Web.Components
+
+<div id="giz-user-info" class="pa-6">
+    <div class="giz-user">
+        <div class="giz-user--avtar">
+            <Avatar Image="@User.Picture" Size="AvatarSizes.Large" Variant="AvatarVariants.Circle" alt="loading" />
+
+            <div class="giz-about-user">
+                <div class="giz-about-user--title">user</div>
+                <div class="giz-about-user--name">@User.Username</div>
+                <div class="giz-about-user--detail">
+                    User since: <span>@User.RegistrationDate.ToShortDateString()</span>
+                </div>
+            </div>
+        </div>
+        <div class="giz-user-stats mb-7">
+            <div class="giz-user-stats-item">
+                <Icon SVGIcon="Icons.Coins_Client" Size="IconSizes.Medium" />
+                <div class="giz-user-stats--text"><div class="giz-title">BALANCE</div><div class="giz-numbers">@User.Balance.ToString("C")</div></div>
+            </div>
+            <div class="giz-user-stats-item">
+                <Icon SVGIcon="Icons.Clock_Client" Size="IconSizes.Medium" />
+                <div class="giz-user-stats--text"><div class="giz-title">time</div><div class="giz-numbers">@User.Time</div></div>
+            </div>
+            <div class="giz-user-stats-item">
+                <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.Medium" />
+                <div class="giz-user-stats--text"><div class="giz-title">points</div><div class="giz-numbers">@User.Points</div></div>
+            </div>
+        </div>
+    </div>
+</div>

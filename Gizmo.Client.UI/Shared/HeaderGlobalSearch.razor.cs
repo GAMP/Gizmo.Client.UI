@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Shared
 {
-    public partial class GlobalSearch : CustomDOMComponentBase
+    public partial class HeaderGlobalSearch : CustomDOMComponentBase
     {
         const int DEFAULT_DELAY = 500;
 
-        public GlobalSearch()
+        public HeaderGlobalSearch()
         {
             _deferredAction = new DeferredAction(Search);
             _delayTimeSpan = new TimeSpan(0, 0, 0, 0, _delay);

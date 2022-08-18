@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System.Threading.Tasks;
 
-namespace Gizmo.Client.UI.Shared
+namespace Gizmo.Client.UI.Components
 {
     public partial class CarouselNavigation : CustomDOMComponentBase
     {

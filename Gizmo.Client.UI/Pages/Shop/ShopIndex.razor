@@ -27,7 +27,7 @@
         <div class="giz-shop__products__list">
             @foreach (var product in Products.Where(a => !_selectedProductGroupId.HasValue || a.ProductGroupId == _selectedProductGroupId))
             {
-                <GizProductCard Product="@product" IsHoverable="true" OnAddProduct="@AddProduct" />
+                <ProductCard Product="@product" IsHoverable="true" OnAddProduct="@AddProduct" />
             }
         </div>
     </div>

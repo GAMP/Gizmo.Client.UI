@@ -14,9 +14,9 @@ namespace Gizmo.Client.UI.Pages
     [ModuleDisplayOrder(3)]
     [PageUIModule(TitleLocalizationKey = "MODULE_PAGE_APPS_TITLE", DescriptionLocalizationKey = "MODULE_PAGE_APPS_DESCRIPTION")]
     [DefaultRoute("/apps"), Route("/apps"), Route("/apps/{appId:int}")]
-    public partial class Apps : ComponentBase
+    public partial class AppsIndex : ComponentBase
     {
-        public Apps()
+        public AppsIndex()
         {
         }
 

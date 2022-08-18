@@ -5,31 +5,53 @@
 <div class="giz-app-card">
     <div class="giz-hoverable-card">
         <div class="hoverable-content">
-            <!--img-->
-            <div class="giz-img-top">
-                <img src="_content/Gizmo.Client.UI/img/@Application.Image" alt='loading' />
+            <div class="giz-app-card__content">
+                <div class="giz-app-card__content__image">
+                    <img src="_content/Gizmo.Client.UI/img/@Application.Image" alt='loading' />
+                </div>
+                <div class="giz-app-card__content__details">
+                    <div class="giz-app-card__title">
+                        @Application?.Name
+                    </div>
+                </div>
+                <div class="giz-app-card__content__footer">
+                    <div class="giz-app-card-text">
+                        @if (ShowDateAdded)
+                        {
+                            <div>
+                                Add date <span>@Application?.DateAdded.ToShortDateString()</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="d-flex align-center">
+                                @if (Application != null)
+                                {
+                                    <Rating @bind-Value="Application.Rate" />
+                                }
+                                else
+                                {
+                                    <Rating Value="0" IsReadOnly="true" />
+                                }
+                                <span class="giz-app-card__rating">@(Application?.Ratings ?? 0) Ratings</span>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
-            <!--/img-->
         </div>
         <div class="hovered-content-wrapper">
             <div class="hovered-content" @onclick="() => OpenDetails()">
                 <div class="d-flex">
-                    <!--store-->
                     <Tooltip Text="Including Store Account">
                         <IconButton SVGIcon="Icons.StoreApp_Client" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="store-btn" />
                     </Tooltip>
-                    <!--/store-->
-                    <!--heart-->
                     <IconButton SVGIcon="Icons.Heart_Client" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="ml-auto" />
-                    <!--/heart-->
                 </div>
                 <div>
-                    <!--button-->
-                    <Button Size="ButtonSizes.Large" HasShadow="true" IsFullWidth="true" @onclick="@(() => Execute())">LAUNCH</Button>
-                    <!--/button-->
+                    <Button Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => Execute())">LAUNCH</Button>
                 </div>
                 <div>
-                    <!--offer-->
                     <div class="d-flex">
                         <div class="giz-app-card-text">
                             <span class="giz-playing-indicator"></span>
@@ -37,39 +59,10 @@
                         </div>
                         <div class="giz-app-card__count ml-auto">@Application?.NowPlaying</div>
                     </div>
-                    <!--offer score-->
                 </div>
             </div>
         </div>
     </div>
-    <div class="giz-app-card__footer">
-        <!--card title-->
-        <div class="giz-app-card__title mt-4 mb-2">
-            @Application?.Name
-        </div>
-        <!--/card title-->
-        <div class="giz-app-card-text">
-            @if (ShowDateAdded)
-            {
-                <div>
-                    Add date <span>@Application?.DateAdded.ToShortDateString()</span>
-                </div>
-            }
-            else
-            {
-                <div class="d-flex align-center">
-                    @if (Application != null)
-                    {
-                        <Rating @bind-Value="Application.Rate" />
-                    }
-                    else
-                    {
-                        <Rating Value="0" IsReadOnly="true" />
-                    }
-                    <span class="giz-app-card__rating">@(Application?.Ratings ?? 0) Ratings</span>
-                </div>
-            }
-        </div>
-    </div>
+    
     <AlertDialog Message="winexe002piw974muaf65_ss8d6.bat was terminated unexpectedly." AlertType="AlertDialog.AlertTypes.Warning" @bind-IsOpen="_warningDialogIsOpen" />
 </div>

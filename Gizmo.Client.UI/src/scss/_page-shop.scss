@@ -7,8 +7,11 @@
     overflow: hidden;
 
     &__products {
+        display: grid;
+        grid-template-rows: min-content 1fr;
         height: 100%;
         overflow: hidden;
+        padding: 16px;
 
         &__tab {
             background: rgba(255, 255, 255, 0.01);
@@ -41,42 +44,6 @@
     }
 }
 
-#giz-shop-products-main {
-    display: grid;
-    grid-template-rows: auto 1fr;
-    padding-top: 1.5rem;
-    padding-left: 2rem;
-    padding-right: 0.5rem;
-    height: 100%;
-    overflow: hidden;
-
-    .giz-shop-products-header {
-        display: grid;
-        grid-template-columns: max-content max-content;
-        justify-content: space-between;
-
-        &--heading {
-            @include font-18;
-            margin-bottom: 1.25rem;
-        }
-
-        &--sort {
-            @include open-sans-600;
-            font-size: $font-14;
-            line-height: $line-height-17;
-            letter-spacing: $letter-spacing-5;
-
-            span {
-                color: $dim-white;
-                font-family: $font-family;
-                font-weight: $font-weight-400;
-            }
-        }
-    }
-}
-
-//== order menu
-
 .giz-order {
     display: grid;
     grid-template-rows: 1fr min-content min-content;
@@ -92,7 +59,8 @@
         padding: 24px;
 
         &__header {
-            border-bottom: 1px solid $border-color;
+            border-bottom: 1px solid rgba(246, 251, 253, 0.06);
+            padding-bottom: 4px;
             //Font
             font-weight: 500;
             font-size: 20px;
@@ -104,15 +72,40 @@
             max-height: 100%;
             overflow-y: auto;
 
-            .giz-order-items-wrapper {
+            .giz-order__items-wrapper {
                 display: block;
 
                 .giz-order-item {
+                    display: grid;
+                    grid-template-columns: 1fr 120px;
                     padding: 1.25rem 0;
-                    border-bottom: 1px solid $border-color;
+                    border-bottom: 1px solid rgba(246, 251, 253, 0.06);
+
+                    &__description {
+                        //Font
+                        font-weight: 500;
+                        font-size: 14px;
+                        line-height: 22px;
+                    }
+
+                    &__details {
+                        display: grid;
+                        grid-template-rows: min-content 1fr min-content;
+                        text-align: right;
+                        //Font
+                        font-weight: 500;
+                        font-size: 18px;
+                        line-height: 28px;
+
+                        &__price {
+                        }
+
+                        &__points {
+                        }
+                    }
 
                     &:last-child {
-                        border-bottom: none !important;
+                        border-bottom: none;
                     }
 
                     &__info {
@@ -202,6 +195,10 @@
         border-radius: 16px;
         padding: 24px;
 
+        &__header {
+            margin-bottom: 8px;
+        }
+
         .giz-order-notes {
             .giz-input-root {
                 min-height: 4.188rem;
@@ -212,33 +209,69 @@
     &__totals {
         background: #22272B;
         border-radius: 16px;
-        padding: 24px;
+        padding: 32px 24px;
 
         .giz-order-summary {
             display: grid;
             grid-template-columns: 1fr auto;
-            grid-row-gap: 0.625rem;
-            margin-top: 1.25rem;
-            color: $dim-white;
-            margin-bottom: 1rem;
+            grid-row-gap: 12px;
+            margin-bottom: 24px;
+
+            &-text-bold {
+                //Font
+                font-weight: 500;
+                font-size: 20px;
+                line-height: 30px;
+            }
+
+            &-number-bold {
+                text-align: right;
+                //Font
+                font-weight: 700;
+                font-size: 24px;
+                line-height: 30px;
+            }
 
             &-text {
-                @include font-10($letter-spacing-2);
-                text-shadow: $text-shadow-sm;
+                //Font
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 22px;
             }
 
             &-number {
-                @include font-13;
-                letter-spacing: $letter-spacing-5;
-                color: $white-color;
+                text-align: right;
+                //Font
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 22px;
             }
         }
     }
 }
 
-.trash-btn {
-    .giz-icon {
-        width: 14px;
-        height: 14px;
+
+.giz-shop-quantity-picker {
+    display: grid;
+    grid-template-columns: min-content 1fr min-content;
+    border: 1px solid #FFFFFF;
+    border-radius: 8px;
+    text-align: center;
+    color: #FFFFFF;
+    padding: 0 6px;
+    //Font
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 26px;
+
+    button {
+        background: none;
+        border: none;
+        color: #FFFFFF;
+        cursor: pointer;
+        //Font
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 26px;
     }
 }

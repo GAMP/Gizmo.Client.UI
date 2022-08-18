@@ -22,15 +22,15 @@
         <!--dropdown-->
         <div class="giz-global-search-dropdown" style="display: @(_openDropDown ? "block" : "none")">
             <!--dropdown body-->
-            <div class="giz-global-search-dropdown--body">
+            <div class="giz-global-search-dropdown__body">
                 <div class="giz-search-menu">
                     <div class="giz-heading">categories</div>
                     <div class="giz-type">
                         <span class="@(_resultApplications > 0 ? "" : "giz-text")">Games & Applications</span>
-                        <button class="client-button @(_resultApplications > 0 ? "giz-btn-secondary-dark" : "giz-btn-secondary-light")">@_resultApplications</button>
+                        <button class="@(_resultApplications > 0 ? "giz-btn-secondary-dark" : "giz-btn-secondary-light")">@_resultApplications</button>
 
                         <span class="@(_resultProducts > 0 ? "" : "giz-text")">Shop</span>
-                        <button class="client-button @(_resultProducts > 0 ? "giz-btn-secondary-dark" : "giz-btn-secondary-light")">@_resultProducts</button>
+                        <button class="@(_resultProducts > 0 ? "giz-btn-secondary-dark" : "giz-btn-secondary-light")">@_resultProducts</button>
                     </div>
                 </div>
 
@@ -42,7 +42,7 @@
 
                             @foreach (var result in Results.Take(3))
                             {
-                                <GlobalSearchResultCard Result="@result" />
+                                <HeaderGlobalSearchResultCard Result="@result" />
                             }
 
                             @if (Results.Count > 3)

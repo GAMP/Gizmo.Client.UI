@@ -1,112 +1,106 @@
 ﻿@namespace Gizmo.Client.UI.Pages
 @inherits ComponentBase
-@layout _Layout_Profile
 @using Gizmo.Web.Components
+@using Gizmo.Client.UI.Components
 
-<!--Basic info-->
-<section id="giz-basic-detail">
-    <div class="giz-user-detail">
-        <!--user detail heading-->
-        <div class="giz-user-detail--heading">
-            Basic information
-            <!--svg-->
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19" viewBox="0 0 20 19" fill="none">
-                <path d="M13.9792 3.76863L17.1111 6.97163C17.2431 7.10656 17.2431 7.32673 17.1111 7.46166L9.52778 15.217L6.30556 15.5828C5.875 15.6325 5.51042 15.2597 5.55903 14.8193L5.91667 11.524L13.5 3.76863C13.6319 3.63369 13.8472 3.63369 13.9792 3.76863ZM19.6042 2.95545L17.9097 1.22256C17.3819 0.682811 16.5243 0.682811 15.9931 1.22256L14.7639 2.47962C14.6319 2.61455 14.6319 2.83472 14.7639 2.96965L17.8958 6.17265C18.0278 6.30759 18.2431 6.30759 18.375 6.17265L19.6042 4.9156C20.1319 4.3723 20.1319 3.4952 19.6042 2.95545ZM13.3333 13.1077V16.7227H2.22222V5.35947H10.2014C10.3125 5.35947 10.4167 5.31331 10.4965 5.23519L11.8854 3.81479C12.1493 3.54491 11.9618 3.08684 11.5903 3.08684H1.66667C0.746528 3.08684 0 3.8503 0 4.79131V17.2908C0 18.2318 0.746528 18.9953 1.66667 18.9953H13.8889C14.809 18.9953 15.5556 18.2318 15.5556 17.2908V11.6874C15.5556 11.3074 15.1076 11.1192 14.8438 11.3855L13.4549 12.8059C13.3785 12.8876 13.3333 12.9941 13.3333 13.1077Z" fill="white" />
-            </svg>
-            <!--/svg-->
-        </div>
-        <!--/user detail heading-->
-        <!--user detail fields-->
-        <div class="giz-private-information">
-            <div class="giz-private-information--label">
-                First name:
+<div class="giz-profile">
+    <div class="giz-profile__body">
+        <ProfileHeader />
+    
+        <List CanClick="true" CanSelect="true" Class="giz-menu-list">
+            <ListItem Href="profile" Match=@NavLinkMatch.All>User Details</ListItem>
+            <ListItem Href="profile/history" Match=@NavLinkMatch.All>Purchase History</ListItem>
+            <ListItem Href="profile/deposits" Match=@NavLinkMatch.All>Deposits</ListItem>
+            <ListItem Href="profile/refills" Match=@NavLinkMatch.All>Time Refills</ListItem>
+            <ListItem Href="profile/notifications" Match=@NavLinkMatch.All>Notifications</ListItem>
+        </List>
+
+        <div>
+            <div class="giz-user-detail--heading">
+                Basic information
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19" viewBox="0 0 20 19" fill="none">
+                    <path d="M13.9792 3.76863L17.1111 6.97163C17.2431 7.10656 17.2431 7.32673 17.1111 7.46166L9.52778 15.217L6.30556 15.5828C5.875 15.6325 5.51042 15.2597 5.55903 14.8193L5.91667 11.524L13.5 3.76863C13.6319 3.63369 13.8472 3.63369 13.9792 3.76863ZM19.6042 2.95545L17.9097 1.22256C17.3819 0.682811 16.5243 0.682811 15.9931 1.22256L14.7639 2.47962C14.6319 2.61455 14.6319 2.83472 14.7639 2.96965L17.8958 6.17265C18.0278 6.30759 18.2431 6.30759 18.375 6.17265L19.6042 4.9156C20.1319 4.3723 20.1319 3.4952 19.6042 2.95545ZM13.3333 13.1077V16.7227H2.22222V5.35947H10.2014C10.3125 5.35947 10.4167 5.31331 10.4965 5.23519L11.8854 3.81479C12.1493 3.54491 11.9618 3.08684 11.5903 3.08684H1.66667C0.746528 3.08684 0 3.8503 0 4.79131V17.2908C0 18.2318 0.746528 18.9953 1.66667 18.9953H13.8889C14.809 18.9953 15.5556 18.2318 15.5556 17.2908V11.6874C15.5556 11.3074 15.1076 11.1192 14.8438 11.3855L13.4549 12.8059C13.3785 12.8876 13.3333 12.9941 13.3333 13.1077Z" fill="white" />
+                </svg>
             </div>
-            <div class="giz-private-information--text">
-                Johnathan
-            </div>
-            <div class="giz-private-information--label">
-                Last name:
-            </div>
-            <div class="giz-private-information--text">
-                Greene
-            </div>
-            <div class="giz-private-information--label">
-                Email:
-            </div>
-            <div class="giz-private-information--text">
-                jgreene80@gmail.com
-            </div>
-            <div class="giz-private-information--label">
-                Phone number:
-            </div>
-            <div class="giz-private-information--text">
-                0042 598 200 8446
-            </div>
-            <div class="giz-private-information--label">
-                Address:
-            </div>
-            <div class="giz-private-information--text giz-private-information--not-available">
-                N/A
-            </div>
-            <div class="giz-private-information--label">
-                Postcode:
-            </div>
-            <div class="giz-private-information--text giz-private-information--not-available">
-                N/A
-            </div>
-            <div class="giz-private-information--label">
-                Country:
-            </div>
-            <div class="giz-private-information--text">
-                <!--flag-->
-                <img src="https://i.postimg.cc/RVJGVJK1/Flag.png" alt="loading" />
-                <!--/flag-->
-                Greece
-            </div>
-        </div>
-        <!--/user detail fields-->
-        <!--user detail heading-->
-        <div class="giz-user-detail--heading">
-            Private information
-        </div>
-        <!--/user detail heading-->
-        <!--user detail fields-->
-        <div class="giz-private-information">
-            <div class="giz-private-information--label">
-                Password:
-            </div>
-            <div class="giz-private-information--text">
-                <!--input dots-->
-                <div class="giz-changepassword-input">
-                    <div class="giz-changepassword-input--dot"></div>
-                    <div class="giz-changepassword-input--dot"></div>
-                    <div class="giz-changepassword-input--dot"></div>
-                    <div class="giz-changepassword-input--dot"></div>
-                    <div class="giz-changepassword-input--dot"></div>
-                    <div class="giz-changepassword-input--dot"></div>
-                    <div class="giz-changepassword-input--dot"></div>
-                    <div class="giz-changepassword-input--dot"></div>
-                    <div class="giz-changepassword-input--dot"></div>
-                    <div class="giz-changepassword-input--dot"></div>
-                    <div class="giz-changepassword-input--dot"></div>
-                    <div class="giz-changepassword-input--dot"></div>
-                    <div class="giz-changepassword-input--dot"></div>
+            <div class="giz-private-information">
+                <div class="giz-private-information--label">
+                    First name:
                 </div>
-                <!--/input dots-->
+                <div class="giz-private-information--text">
+                    Johnathan
+                </div>
+                <div class="giz-private-information--label">
+                    Last name:
+                </div>
+                <div class="giz-private-information--text">
+                    Greene
+                </div>
+                <div class="giz-private-information--label">
+                    Email:
+                </div>
+                <div class="giz-private-information--text">
+                    jgreene80@gmail.com
+                </div>
+                <div class="giz-private-information--label">
+                    Phone number:
+                </div>
+                <div class="giz-private-information--text">
+                    0042 598 200 8446
+                </div>
+                <div class="giz-private-information--label">
+                    Address:
+                </div>
+                <div class="giz-private-information--text giz-private-information--not-available">
+                    N/A
+                </div>
+                <div class="giz-private-information--label">
+                    Postcode:
+                </div>
+                <div class="giz-private-information--text giz-private-information--not-available">
+                    N/A
+                </div>
+                <div class="giz-private-information--label">
+                    Country:
+                </div>
+                <div class="giz-private-information--text">
+                    <img src="https://i.postimg.cc/RVJGVJK1/Flag.png" alt="loading" />
+                    Greece
+                </div>
             </div>
-            <div class="giz-private-information--label">
-                Latest session:
+            <div class="giz-user-detail--heading">
+                Private information
             </div>
-            <div class="giz-private-information--text">
-                08/10/2020
+            <div class="giz-private-information">
+                <div class="giz-private-information--label">
+                    Password:
+                </div>
+                <div class="giz-private-information--text">
+                    <div class="giz-changepassword-input">
+                        <div class="giz-changepassword-input--dot"></div>
+                        <div class="giz-changepassword-input--dot"></div>
+                        <div class="giz-changepassword-input--dot"></div>
+                        <div class="giz-changepassword-input--dot"></div>
+                        <div class="giz-changepassword-input--dot"></div>
+                        <div class="giz-changepassword-input--dot"></div>
+                        <div class="giz-changepassword-input--dot"></div>
+                        <div class="giz-changepassword-input--dot"></div>
+                        <div class="giz-changepassword-input--dot"></div>
+                        <div class="giz-changepassword-input--dot"></div>
+                        <div class="giz-changepassword-input--dot"></div>
+                        <div class="giz-changepassword-input--dot"></div>
+                        <div class="giz-changepassword-input--dot"></div>
+                    </div>
+                </div>
+                <div class="giz-private-information--label">
+                    Latest session:
+                </div>
+                <div class="giz-private-information--text">
+                    08/10/2020
+                </div>
+            </div>
+            <div class="giz-changepassword-btn">
+                <Button Class="change-password-button">change password</Button>
             </div>
         </div>
-        <!--/user detail fields-->
-        <!--change password btn-->
-        <div class="giz-changepassword-btn">
-            <Button HasShadow="true" Class="change-password-button">change password</Button>
-        </div>
-        <!--change password btn-->
     </div>
-</section>
-<!--/Basic info-->
+</div>

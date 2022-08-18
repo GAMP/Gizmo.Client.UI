@@ -1,0 +1,38 @@
+﻿@namespace Gizmo.Client.UI.Pages
+@inherits ComponentBase
+@using Gizmo.Web.Components
+@using Gizmo.Client.UI.Components
+@using Gizmo.Client.UI.ViewModels
+
+<div class="giz-apps">
+    <div class="giz-apps__header">
+        <div class="giz-apps__header__quick-launch">
+            <QuickLauncher />
+        </div>
+        <div class="giz-apps__header__ads">
+            Ads
+        </div>
+    </div>
+    <div class="giz-apps__body">
+        <div class="giz-apps__body__ads">
+            <AdsCarousel Size="3" />
+        </div>
+        <div class="giz-apps__body__popular">
+            <div class="giz-section">
+                <div class="giz-section__header">
+                    Popular items
+                </div>
+                <div class="giz-section__body">
+                    <div class="giz-apps__app-wrapper">
+                        @foreach (var app in Applications)
+                        {
+                            <ApplicationCard Application="@app" ShowDateAdded="true" OnOpenDetails="@OpenDetails" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ExecutableSelectorDialog @bind-IsOpen="ExecutableSelectorIsOpen" />

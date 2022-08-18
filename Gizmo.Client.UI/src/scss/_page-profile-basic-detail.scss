@@ -1,66 +1,52 @@
 //=============== Page Profile ================//
 
-#giz-basic-detail {
-    padding: 2.5rem 1.813rem;
-    width: 33.5rem;
-    height: 100vh;
+.giz-profile {
+    display: flex;
+    justify-content: center;
 
-    .giz-user-detail {
+    &__body {
+        width: 1138px;
+    }
+}
 
-        &--heading {
-            font-size: $font-20;
-            line-height: $line-height-25;
-            @include open-sans-600;
-            border-bottom: 1px solid $border-dark-color;
-            padding-bottom: 1.375rem;
-            letter-spacing: $letter-spacing-5;
+.giz-private-information {
+    padding-top: 1.25rem;
+    padding-bottom: 3.75rem;
+    @include font-14;
+    @include open-sans-600;
+    letter-spacing: $letter-spacing-24;
+    display: grid;
+    grid-template-columns: .7fr 1fr;
+    grid-auto-flow: row dense;
+    grid-row-gap: 1.063rem;
+    grid-column-gap: 0.188rem;
 
-            svg {
-                vertical-align: baseline;
-                margin-left: 2.125rem;
+    &--text {
+        color: $light-gray;
+        font-weight: $font-weight-400;
+
+        .giz-changepassword-input {
+            display: flex;
+
+            &--dot {
+                height: 0.563rem;
+                width: 0.563rem;
+                background: $white-color;
+                border-radius: $rounded-circle;
+                margin-right: 0.188rem;
             }
         }
+    }
 
-        .giz-private-information {
-            padding-top: 1.25rem;
-            padding-bottom: 3.75rem;
-            @include font-14;
-            @include open-sans-600;
-            letter-spacing: $letter-spacing-24;
-            display: grid;
-            grid-template-columns: .7fr 1fr;
-            grid-auto-flow: row dense;
-            grid-row-gap: 1.063rem;
-            grid-column-gap: 0.188rem;
+    &--not-available {
+        color: $light-dim-gray-color !important;
+    }
+}
 
-            &--text {
-                color: $light-gray;
-                font-weight: $font-weight-400;
+.giz-changepassword-btn {
 
-                .giz-changepassword-input {
-                    display: flex;
-
-                    &--dot {
-                        height: 0.563rem;
-                        width: 0.563rem;
-                        background: $white-color;
-                        border-radius: $rounded-circle;
-                        margin-right: 0.188rem;
-                    }
-                }
-            }
-
-            &--not-available {
-                color: $light-dim-gray-color !important;
-            }
-        }
-
-        .giz-changepassword-btn {
-
-            .change-password-button {
-                padding: 0.625rem !important;
-                margin-top: 0.563rem;
-            }
-        }
+    .change-password-button {
+        padding: 0.625rem !important;
+        margin-top: 0.563rem;
     }
 }
