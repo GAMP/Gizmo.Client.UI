@@ -1,25 +1,219 @@
 //=============== Page Profile ================//
 
-#giz-user-info {
+.giz-profile {
+    display: flex;
+    justify-content: center;
+    margin-top: 72px;
 
-    .giz-user {
+    &__body {
+        width: 1138px;
+    }
 
-        &--avtar {
-            margin-bottom: 1.1rem;
+    &-navigation {
+        display: flex;
+        gap: 62px;
+        padding: 24px 32px;
+        border: 1px solid rgba(246, 251, 253, 0.06);
+        border-radius: 16px;
+        white-space: nowrap;
+
+        &-item {
+            height: 46px;
+            //Font
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 26px;
+
+            & > a {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                color: white;
+
+                svg {
+                    color: #FAFAFA;
+                    margin-right: 15px;
+                }
+
+                &.active {
+                    color: $primary-color;
+                    position: relative;
+
+                    svg {
+                        color: #0078D2;
+                    }
+
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 3px;
+                        background-color: $primary-color;
+                    }
+                }
+
+                & > span {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &-user-details {
+        margin-top: 40px;
+
+        &__header {
+            color: #FAFAFA;
+            margin-bottom: 24px;
+            //Font
+            font-weight: 500;
+            font-size: 24px;
+            line-height: 30px;
+        }
+    }
+
+    &-user-purchases {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        padding: 2.813rem 2.688rem;
+        height: 100%;
+
+        &__header {
+            color: #FAFAFA;
+            margin-bottom: 24px;
+            //Font
+            font-weight: 500;
+            font-size: 24px;
+            line-height: 30px;
         }
 
-        .giz-about-user {
-            flex-direction: $flex-column;
-            justify-content: flex-start;
-            margin-bottom: 0.938rem;
-        }
-
-        .giz-btn-wrapper {
-            display: grid;
-            grid-template-columns: auto auto;
-            grid-gap: 0.438rem;
-            margin-bottom: 1.875rem;
+        .giz-table-history {
+            height: 100%;
+            overflow-y: scroll;
         }
     }
 }
 
+.giz-user-information {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-flow: row dense;
+    grid-row-gap: 20px;
+    grid-column-gap: 60px;
+    color: rgba(255, 255, 255, 0.6);
+    //Font
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 26px;
+
+    &-text {
+        color: #FAFAFA;
+        //Font
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 26px;
+    }
+
+    &--not-available {
+        color: rgba(255, 255, 255, 0.24);
+        //Font
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 26px;
+    }
+}
+
+/*.giz-changepassword-input {
+    display: flex;
+
+    &--dot {
+        height: 0.563rem;
+        width: 0.563rem;
+        background: $white-color;
+        border-radius: $rounded-circle;
+        margin-right: 0.188rem;
+    }
+}
+
+.giz-changepassword-btn {
+
+    .change-password-button {
+        padding: 0.625rem !important;
+        margin-top: 0.563rem;
+    }
+}*/
+
+.giz-profile-header {
+
+    &__avatar {
+        display: grid;
+        grid-template-columns: min-content 1fr;
+        grid-column-gap: 16px;
+        margin-bottom: 24px;
+
+        &__about {
+            display: flex;
+            flex-direction: $flex-column;
+            justify-content: flex-end;
+            gap: 16px;
+
+            &__name {
+                color: #FAFAFA;
+                text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 8px rgba(0, 0, 0, 0.2);
+                //Font
+                font-weight: 500;
+                font-size: 36px;
+                line-height: 44px;
+            }
+
+            &__host {
+                color: rgba(255, 255, 255, 0.6);
+                text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2), 0px 1px 1px rgba(0, 0, 0, 0.2);
+                //Font
+                font-weight: 500;
+                font-size: 20px;
+                line-height: 30px;
+            }
+        }
+    }
+
+    &__stats {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 48px;
+
+        &-item {
+            display: flex;
+            align-items: $align-center;
+            border-right: solid 1px $border-black-color;
+            padding-right: 16px;
+
+            &:last-child {
+                border-right: none;
+            }
+
+            .giz-icon {
+                margin-right: 0.625rem;
+            }
+        }
+
+        &-text {
+
+            .giz-title {
+                @include font-10;
+                color: $dim-white;
+                text-shadow: $text-shadow-sm;
+                margin-bottom: 0.25rem;
+            }
+
+            .giz-numbers {
+                @include open-sans-600;
+                line-height: $line-height-16;
+                letter-spacing: $letter-spacing-24;
+            }
+        }
+    }
+}

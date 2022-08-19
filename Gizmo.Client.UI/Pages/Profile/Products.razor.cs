@@ -2,8 +2,8 @@
 
 namespace Gizmo.Client.UI.Pages
 {
-    [Route("/profile/refills")]
-    public partial class Refills : ComponentBase
+    [Route("/profile/products")]
+    public partial class Products : ComponentBase
     {
     }
 }

@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace Gizmo.Client.UI.Pages
 {
-    [Route("/profile/history")]
-    public partial class History : ComponentBase
+    [Route("/profile/purchases")]
+    public partial class Purchases : ComponentBase
     {
-        public History()
+        public Purchases()
         {
             GameStatistics = new List<PurchaseViewModel>();
             GameStatistics.Add(new PurchaseViewModel() { ProductName = "Espresso Coffee", Quantity = 1, Date = new DateTime(2020, 1, 2), Total = 2.50m, PaymentMethod = "Balance" });

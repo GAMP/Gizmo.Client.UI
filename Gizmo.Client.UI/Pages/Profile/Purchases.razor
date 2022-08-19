@@ -1,0 +1,69 @@
+﻿@namespace Gizmo.Client.UI.Pages
+@inherits ComponentBase
+@using Gizmo.Web.Components
+@using Gizmo.Client.UI.Components
+@using Gizmo.Client.UI.ViewModels
+
+<div class="giz-profile">
+    <div class="giz-profile__body">
+        <ProfileHeader />
+    
+        <ProfileNavigation />
+
+        <div class="giz-profile-user-purchases">
+            <div class="giz-profile-user-purchases__header">
+                Purchase History
+            </div>
+
+            <div class="giz-table-history giz-scrollbar--v">
+                <DataGrid ItemSource="@GameStatistics"
+                            Context="purchases"
+                            HasStickyHeader="true">
+                    <ChildContent>
+                        <DataGridColumn Field="@(nameof(PurchaseViewModel.ProductName))" TItemType="PurchaseViewModel" Context="purchase">
+                            <HeaderTemplate>
+                                item
+                            </HeaderTemplate>
+                            <CellTemplate>
+                                @purchase.ProductName
+                            </CellTemplate>
+                        </DataGridColumn>
+                        <DataGridColumn Field="@(nameof(PurchaseViewModel.Quantity))" TItemType="PurchaseViewModel" Context="purchase">
+                            <HeaderTemplate>
+                                amount
+                            </HeaderTemplate>
+                            <CellTemplate>
+                                @purchase.Quantity
+                            </CellTemplate>
+                        </DataGridColumn>
+                        <DataGridColumn Field="@(nameof(PurchaseViewModel.Date))" TItemType="PurchaseViewModel" Context="purchase">
+                            <HeaderTemplate>
+                                date
+                            </HeaderTemplate>
+                            <CellTemplate>
+                                @purchase.Date.ToShortDateString()
+                            </CellTemplate>
+                        </DataGridColumn>
+                        <DataGridColumn Field="@(nameof(PurchaseViewModel.Total))" TItemType="PurchaseViewModel" Context="purchase">
+                            <HeaderTemplate>
+                                payment
+                            </HeaderTemplate>
+                            <CellTemplate>
+                                @purchase.Total
+                            </CellTemplate>
+                        </DataGridColumn>
+                        <DataGridColumn Field="@(nameof(PurchaseViewModel.PaymentMethod))" TItemType="PurchaseViewModel" Context="purchase">
+                            <HeaderTemplate>
+                                method
+                            </HeaderTemplate>
+                            <CellTemplate>
+                                @purchase.PaymentMethod
+                            </CellTemplate>
+                        </DataGridColumn>
+                    </ChildContent>
+                </DataGrid>
+            </div>
+        </div>
+
+    </div>
+</div>
