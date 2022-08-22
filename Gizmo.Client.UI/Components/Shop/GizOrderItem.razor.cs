@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.ViewModels;
+﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
@@ -9,34 +10,27 @@ namespace Gizmo.Client.UI.Components
     {
         public GizOrderItem()
         {
-            OrderLine = new OrderLineViewModel();
-
-            OrderLine.ProductName = "Monster Energy Ultra Ripper 500ml";
-            OrderLine.Quantity = 1;
-            OrderLine.UnitPrice = 3.1m;
         }
+
+        [Inject]
+        UserCartService UserCartService { get; set; }
 
         [Parameter]
-        public OrderLineViewModel OrderLine { get; set; }
+        public UserCartProductViewState OrderLine { get; set; }
 
-        public async Task RemoveProduct()
+        public Task RemoveProduct()
         {
-            await OnRemoveProduct.InvokeAsync(OrderLine.ProductId);
+            return UserCartService.RemoveProductAsync(OrderLine.ProductId, null);
         }
 
-        public void RemoveQuantity()
+        public Task RemoveQuantity()
         {
-            if (OrderLine.Quantity > 1)
-                OrderLine.Quantity -= 1;
+            return UserCartService.RemoveProductAsync(OrderLine.ProductId, 1);
         }
 
-        public void AddQuantity()
+        public Task AddQuantity()
         {
-            OrderLine.Quantity += 1;
+            return UserCartService.AddProductAsyc(OrderLine.ProductId, 1);
         }
-
-        [Parameter]
-        public EventCallback<int> OnRemoveProduct { get; set; }
-
     }
 }

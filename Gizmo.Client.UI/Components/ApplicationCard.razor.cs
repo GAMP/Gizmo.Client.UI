@@ -27,14 +27,13 @@ namespace Gizmo.Client.UI.Components
 
         #region Methods
 
-        public async Task OpenDetails()
+        public void OpenDetails()
         {
-            await OnOpenDetails.InvokeAsync(Application.Id);
+            NavigationManager.NavigateTo($"/appdetails/{Application.Id}");
         }
 
         private void Execute()
         {
-            NavigationManager.NavigateTo($"/appdetails/{Application.Id}");
         }
 
         private void ShowWarning()

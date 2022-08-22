@@ -11,7 +11,7 @@ using System.Windows.Input;
 namespace Gizmo.Client.UI.Pages
 {
     [ModuleGuid(KnownModules.MODULE_APPS)]
-    [ModuleDisplayOrder(3)]
+    [ModuleDisplayOrder(1)]
     [PageUIModule(TitleLocalizationKey = "MODULE_PAGE_APPS_TITLE", DescriptionLocalizationKey = "MODULE_PAGE_APPS_DESCRIPTION")]
     [DefaultRoute("/apps"), Route("/apps"), Route("/apps/{appId:int}")]
     public partial class AppsIndex : ComponentBase

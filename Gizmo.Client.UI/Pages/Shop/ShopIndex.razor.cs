@@ -1,4 +1,6 @@
-﻿using Gizmo.Client.UI.ViewModels;
+﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
+using Gizmo.Client.UI.ViewModels;
 using Gizmo.UI;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -25,21 +27,21 @@ namespace Gizmo.Client.UI.Pages
             ProductGroups.Add(new ProductGroupViewModel() { Id = 4, Name = "Snacks" });
             ProductGroups.Add(new ProductGroupViewModel() { Id = 5, Name = "Time offers" });
 
-            ProductGroups.Add(new ProductGroupViewModel() { Id = 1, Name = "Coffee" });
-            ProductGroups.Add(new ProductGroupViewModel() { Id = 2, Name = "Beverages" });
-            ProductGroups.Add(new ProductGroupViewModel() { Id = 3, Name = "Sandwiches" });
-            ProductGroups.Add(new ProductGroupViewModel() { Id = 4, Name = "Snacks" });
-            ProductGroups.Add(new ProductGroupViewModel() { Id = 5, Name = "Time offers" });
-            ProductGroups.Add(new ProductGroupViewModel() { Id = 1, Name = "Coffee" });
-            ProductGroups.Add(new ProductGroupViewModel() { Id = 2, Name = "Beverages" });
-            ProductGroups.Add(new ProductGroupViewModel() { Id = 3, Name = "Sandwiches" });
-            ProductGroups.Add(new ProductGroupViewModel() { Id = 4, Name = "Snacks" });
-            ProductGroups.Add(new ProductGroupViewModel() { Id = 5, Name = "Time offers" });
-            ProductGroups.Add(new ProductGroupViewModel() { Id = 1, Name = "Coffee" });
-            ProductGroups.Add(new ProductGroupViewModel() { Id = 2, Name = "Beverages" });
-            ProductGroups.Add(new ProductGroupViewModel() { Id = 3, Name = "Sandwiches" });
-            ProductGroups.Add(new ProductGroupViewModel() { Id = 4, Name = "Snacks" });
-            ProductGroups.Add(new ProductGroupViewModel() { Id = 5, Name = "Time offers" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 6, Name = "Coffee" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 7, Name = "Beverages" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 8, Name = "Sandwiches" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 9, Name = "Snacks" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 10, Name = "Time offers" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 11, Name = "Coffee" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 12, Name = "Beverages" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 13, Name = "Sandwiches" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 14, Name = "Snacks" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 15, Name = "Time offers" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 16, Name = "Coffee" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 17, Name = "Beverages" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 18, Name = "Sandwiches" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 19, Name = "Snacks" });
+            ProductGroups.Add(new ProductGroupViewModel() { Id = 20, Name = "Time offers" });
 
             Products = Enumerable.Range(0, 18).Select(i => new ProductViewModel()
             {
@@ -67,22 +69,6 @@ namespace Gizmo.Client.UI.Pages
                 Ratings = random.Next(1, 500),
                 Rate = random.Next(1, 5)
             });
-
-            Order = new OrderViewModel();
-
-            var product = Products.Where(a => a.Id == 2).FirstOrDefault();
-
-            OrderLineViewModel orderLine = new OrderLineViewModel()
-            {
-                ProductId = product.Id,
-                ProductName = product.Name,
-                UnitPrice = product.Price,
-                UnitPointsPrice = product.PointsPrice,
-                UnitPointsAward = product.Points,
-                Quantity = 1
-            };
-
-            Order.OrderLines.Add(orderLine);
         }
 
         #region FIELDS
@@ -95,13 +81,14 @@ namespace Gizmo.Client.UI.Pages
 
         #region PROPERTIES
 
+        [Inject]
+        UserCartService UserCartService { get; set; }
+
         public List<ProductGroupViewModel> ProductGroups { get; set; }
 
         public ProductGroupViewModel SelectedCategory { get; set; }
 
         public ICollection<ProductViewModel> Products { get; set; }
-
-        public OrderViewModel Order { get; set; }
 
         public string SelectedSortOption { get; set; } = "Name";
 
@@ -187,48 +174,13 @@ namespace Gizmo.Client.UI.Pages
 
         #region METHODS
 
-        public void AddProduct(int id)
+        public Task AddProduct(int id)
         {
-            if (Order == null)
-                Order = new OrderViewModel();
-
-            var existingOrderLine = Order.OrderLines.Where(a => a.ProductId == id).FirstOrDefault();
-            if (existingOrderLine != null)
-            {
-                existingOrderLine.Quantity += 1;
-            }
-            else
-            {
-                var product = Products.Where(a => a.Id == id).FirstOrDefault();
-
-                OrderLineViewModel orderLine = new OrderLineViewModel()
-                {
-                    ProductId = product.Id,
-                    ProductName = product.Name,
-                    UnitPrice = product.Price,
-                    UnitPointsPrice = product.PointsPrice,
-                    UnitPointsAward = product.Points,
-                    Quantity = 1
-                };
-
-                Order.OrderLines.Add(orderLine);
-            }
-        }
-
-        public void RemoveProduct(int id)
-        {
-            var existingOrderLine = Order.OrderLines.Where(a => a.ProductId == id).FirstOrDefault();
-            if (existingOrderLine != null)
-            {
-                Order.OrderLines.Remove(existingOrderLine);
-            }
+            return UserCartService.AddProductAsyc(id);
         }
 
         public void SelectPaymentMethod(int id)
         {
-            //SEND THE ORDER.
-            Order = null;
-
             StateHasChanged();
         }
 

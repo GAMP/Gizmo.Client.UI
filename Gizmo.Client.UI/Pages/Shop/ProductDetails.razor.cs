@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.ViewModels;
+﻿using Gizmo.Client.UI.View.States;
+using Gizmo.Client.UI.ViewModels;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace Gizmo.Client.UI.Pages
                 Points = random.Next(1, 500),
             }).ToList();
 
-            Order = new OrderViewModel();
+            Order = new UserCartViewState();
         }
 
         [Parameter]
@@ -45,6 +46,6 @@ namespace Gizmo.Client.UI.Pages
 
         public ICollection<ProductViewModel> RelatedProducts { get; set; }
 
-        public OrderViewModel Order { get; set; }
+        public UserCartViewState Order { get; set; }
     }
 }

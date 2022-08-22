@@ -6,10 +6,10 @@
     <div class="giz-order__items">
         <div class="giz-order__items__header">My order</div>
         <div class="giz-order__items__body giz-scrollbar--v">
-            @if (Order != null && Order.OrderLines.Count > 0)
+            @if (UserCartService.ViewState.Products.Count() > 0)
             {
                 <div class="giz-order__items-wrapper">
-                    @foreach (var orderLine in Order.OrderLines)
+                    @foreach (var orderLine in UserCartService.ViewState.Products)
                     {
                         <GizOrderItem OrderLine="@orderLine" OnRemoveProduct="@RemoveProduct" />
                     }
@@ -35,18 +35,18 @@
     <div class="giz-order__totals">
         <div class="giz-order-summary">
             <div class="giz-order-summary-text-bold">Subtotal</div>
-            <div class="giz-order-summary-number-bold">@(Order?.Total.ToString("C") ?? (0).ToString("C"))</div>
+            <div class="giz-order-summary-number-bold">@UserCartService.ViewState.Total.ToString("C")</div>
             @*<div class="giz-order-summary-text">points</div>
             <div class="giz-order-summary-number">@(Order?.PointsTotal ?? 0)</div>*@
             <div class="giz-order-summary-text">Earned points</div>
             <div class="giz-order-summary-number">
-                @(Order?.PointsAwardTotal ?? 0)
+                @UserCartService.ViewState.AwardPoints
                 <PointsIcon />
             </div>
         </div>
         <div>
             @*<Button Size="ButtonSizes.Large" IsFullWidth="true" IsDisabled="@(Order == null || Order.OrderLines.Count == 0)" Command="@PlaceOrderCommand">place order</Button>*@
-            <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" IsDisabled="@(Order == null || Order.OrderLines.Count == 0)">place order</Button>
+            <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" IsDisabled="@(UserCartService.ViewState.Products.Count() == 0)">place order</Button>
         </div>
     </div>
 </div>
