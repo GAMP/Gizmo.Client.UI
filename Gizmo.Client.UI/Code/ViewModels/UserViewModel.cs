@@ -3,7 +3,7 @@ using System;
 
 namespace Gizmo.Client.UI.ViewModels
 {
-    public class UserViewModel : ViewModelBase
+    public class UserViewModel
     {
         public int Id { get; set; }
         public string Username { get; set; }

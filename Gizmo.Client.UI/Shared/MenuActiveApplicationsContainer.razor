@@ -4,20 +4,15 @@
 @using Gizmo.Client.UI.Components
 
 <Drawer @bind-IsOpen="IsOpen">
-    <div class="giz-active-apps-drawer">
-        <!--dropdown header-->
-        <div class="giz-active-apps-drawer-header">
-            <div class="giz-title">Manager</div>
+    <div class="giz-active-apps">
+        <div class="giz-active-apps__header">
             <div class="giz-heading">Active applications</div>
         </div>
-        <!--/dropdown header-->
-        <!--dropdown body-->
-        <div class="giz-active-apps-drawer-body giz-scrollbar--v">
-            @foreach (var executable in Executables)
+        <div class="giz-active-apps__body giz-scrollbar--v">
+            @foreach (var executable in ActiveApplicationsService.ViewState.Executables)
             {
                 <MenuActiveApplicationCard Executable="@executable" />
             }
         </div>
-        <!--/dropdown body-->
     </div>    
 </Drawer>

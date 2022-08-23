@@ -2,7 +2,7 @@
 
 namespace Gizmo.Client.UI.ViewModels
 {
-    public class ApplicationGroupViewModel : ViewModelBase
+    public class ApplicationGroupViewModel
     {
         public int Id { get; set; }
         public int? ParentGroupId { get; set; }

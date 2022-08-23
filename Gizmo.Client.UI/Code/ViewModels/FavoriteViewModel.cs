@@ -2,7 +2,7 @@
 
 namespace Gizmo.Client.UI.ViewModels
 {
-    public class FavoriteViewModel : ViewModelBase
+    public class FavoriteViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -14,7 +14,14 @@
     </div>
     <div class="giz-home__body">
         <div class="giz-home__body__ads">
-            <AdsCarousel Size="3" />
+            <ExpansionPanel>
+                <Header>
+                    Ads
+                </Header>
+                <ChildContent>
+                    <AdsCarousel Size="3" />
+                </ChildContent>
+            </ExpansionPanel>
         </div>
         <div class="giz-home__body__popular">
             <div class="giz-section">
@@ -23,9 +30,9 @@
                 </div>
                 <div class="giz-section__body">
                     <div class="giz-home__app-wrapper">
-                        @foreach (var app in NewApplications)
+                        @foreach (var app in HomePageService.ViewState.NewApplications)
                         {
-                            <ApplicationCard Application="@app" ShowDateAdded="true" OnOpenDetails="@OpenDetails" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
+                            <ApplicationCard Application="@app" ShowDateAdded="true" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
                         }
                     </div>
                 </div>

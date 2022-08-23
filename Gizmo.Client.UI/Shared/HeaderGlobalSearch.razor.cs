@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.ViewModels;
+﻿using Gizmo.Client.UI.View.States;
+using Gizmo.Client.UI.ViewModels;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -19,18 +20,6 @@ namespace Gizmo.Client.UI.Shared
             _delayTimeSpan = new TimeSpan(0, 0, 0, 0, _delay);
 
             Random random = new Random();
-
-            Applications = new List<ApplicationViewModel>();
-            Applications.Add(new ApplicationViewModel() { Id = 1, Name = "Grand Theft Auto IV", Image = "Gta-5.png", ApplicationGroupId = random.Next(1, 5), Ratings = random.Next(0, 100), Rate = random.Next(1, 5), NowPlaying = random.Next(0, 100) });
-            Applications.Add(new ApplicationViewModel() { Id = 2, Name = "Cyberpunk 2077", Image = "Cyber Punks.png", ApplicationGroupId = random.Next(1, 5), Ratings = random.Next(0, 100), Rate = random.Next(1, 5), NowPlaying = random.Next(0, 100) });
-            Applications.Add(new ApplicationViewModel() { Id = 3, Name = "Fortnite", Image = "Fortnite.png", ApplicationGroupId = random.Next(1, 5), Ratings = random.Next(0, 100), Rate = random.Next(1, 5), NowPlaying = random.Next(0, 100) });
-            Applications.Add(new ApplicationViewModel() { Id = 4, Name = "Minecraft", Image = "Minecraft.png", ApplicationGroupId = random.Next(1, 5), Ratings = random.Next(0, 100), Rate = random.Next(1, 5), NowPlaying = random.Next(0, 100) });
-            Applications.Add(new ApplicationViewModel() { Id = 5, Name = "League of Legends", Image = "League.png", ApplicationGroupId = random.Next(1, 5), Ratings = random.Next(0, 100), Rate = random.Next(1, 5), NowPlaying = random.Next(0, 100) });
-            Applications.Add(new ApplicationViewModel() { Id = 6, Name = "Steam", Image = "Steam.png", ApplicationGroupId = random.Next(1, 5), Ratings = random.Next(0, 100), Rate = random.Next(1, 5), NowPlaying = random.Next(0, 100) });
-            Applications.Add(new ApplicationViewModel() { Id = 7, Name = "Epic", Image = "Epic-games.png", ApplicationGroupId = random.Next(1, 5), Ratings = random.Next(0, 100), Rate = random.Next(1, 5), NowPlaying = random.Next(0, 100) });
-            Applications.Add(new ApplicationViewModel() { Id = 8, Name = "Valorant", Image = "Valorant.png", ApplicationGroupId = random.Next(1, 5), Ratings = random.Next(0, 100), Rate = random.Next(1, 5), NowPlaying = random.Next(0, 100) });
-            Applications.Add(new ApplicationViewModel() { Id = 9, Name = "Apex Legends", Image = "Apex.png", ApplicationGroupId = random.Next(1, 5), Ratings = random.Next(0, 100), Rate = random.Next(1, 5), NowPlaying = random.Next(0, 100) });
-            Applications.Add(new ApplicationViewModel() { Id = 10, Name = "Windows Apps", Image = "Window-apps.png", ApplicationGroupId = random.Next(1, 5), Ratings = random.Next(0, 100), Rate = random.Next(1, 5), NowPlaying = random.Next(0, 100) });
 
             Products = new List<ProductViewModel>();
             Products.Add(new ProductViewModel() { Id = 1, Name = "Mars Bar", Image = "Cola.png" });
@@ -61,8 +50,6 @@ namespace Gizmo.Client.UI.Shared
 
         [Parameter]
         public int MinimumCharacters { get; set; } = 1;
-
-        public List<ApplicationViewModel> Applications { get; set; }
 
         public List<ProductViewModel> Products { get; set; }
 
@@ -138,11 +125,11 @@ namespace Gizmo.Client.UI.Shared
 
             await Task.Delay(500);
 
-            foreach (var app in Applications.Where(a => a.Name.Contains(_text, StringComparison.InvariantCultureIgnoreCase)))
-            {
-                Results.Add(new SearchResultViewModel() { Type = SearchResultTypes.Application, Id = app.Id, Name = app.Name, Image = app.Image });
-                _resultApplications += 1;
-            }
+            //foreach (var app in Applications.Where(a => a.Name.Contains(_text, StringComparison.InvariantCultureIgnoreCase)))
+            //{
+            //    Results.Add(new SearchResultViewModel() { Type = SearchResultTypes.Application, Id = app.Id, Name = app.Name, Image = app.Image });
+            //    _resultApplications += 1;
+            //}
 
             foreach (var product in Products.Where(a => a.Name.Contains(_text, StringComparison.InvariantCultureIgnoreCase)))
             {

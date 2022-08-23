@@ -8,20 +8,11 @@
     <div class="giz-shop__products">
         <div class="giz-shop__products__tab">
             <ClientTab>
-                @foreach (var productGroup in ProductGroups)
+                @foreach (var productGroup in ShopService.ViewState.ProductGroups)
                 {
-                    @*<ClientTabItem Command="@SelectProductGroupCommand" CommandParameter="@productGroup.Id">*@
-                    <ClientTabItem Class="@(productGroup.Id == 1 ? "active" : "")">
-                        <div class="d-flex">
-                            <div class="mr-auto">
-                                @productGroup.Name
-                            </div>
-                            @if (Products != null)
-                            {
-                                <div class="giz-search-number">
-                                    @Products.Where(a => a.ProductGroupId == productGroup.Id).Count()
-                                </div>
-                            }
+                    <ClientTabItem Class="@(productGroup.Id == _selectedProductGroupId ? "active" : "")">
+                        <div @onclick=@(() => SelectProductGroup(productGroup.Id))>
+                            @productGroup.Name
                         </div>
                     </ClientTabItem>
                 }
@@ -29,7 +20,7 @@
         </div>
         <div class="giz-shop__products__popular">Popular</div>
         <div class="giz-shop__products__list">
-            @foreach (var product in Products.Where(a => !_selectedProductGroupId.HasValue || a.ProductGroupId == _selectedProductGroupId))
+            @foreach (var product in ShopService.ViewState.Products.Where(a => !_selectedProductGroupId.HasValue || a.ProductGroupId == _selectedProductGroupId))
             {
                 <ProductCard Product="@product" IsHoverable="true" OnAddProduct="@AddProduct" />
             }

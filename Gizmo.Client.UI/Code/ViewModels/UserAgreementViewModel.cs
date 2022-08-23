@@ -2,7 +2,7 @@
 
 namespace Gizmo.Client.UI.ViewModels
 {
-    public class UserAgreementViewModel : ViewModelBase
+    public class UserAgreementViewModel
     {
         public int Id { get; set; }
 

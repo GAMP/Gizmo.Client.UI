@@ -3,7 +3,7 @@ using System;
 
 namespace Gizmo.Client.UI.ViewModels
 {
-    public class PurchaseViewModel : ViewModelBase
+    public class PurchaseViewModel
     {
         public string ProductName { get; set; }
 

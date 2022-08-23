@@ -2,7 +2,7 @@
 
 namespace Gizmo.Client.UI.ViewModels
 {
-    public class GameStatisticsViewModel : ViewModelBase
+    public class GameStatisticsViewModel
     {
         public int Rank { get; set; }
 

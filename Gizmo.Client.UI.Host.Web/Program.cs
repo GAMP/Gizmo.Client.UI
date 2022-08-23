@@ -34,7 +34,9 @@ namespace Gizmo.Client.UI.Host.Web
             //add http client factory along with default http client
             hostBuilder.Services.AddHttpClient("Default", cfg => { cfg.BaseAddress = new Uri(hostBuilder.HostEnvironment.BaseAddress); });
 
-            hostBuilder.Services.AddClientServices();       
+            hostBuilder.Services.AddClientServices();
+
+            hostBuilder.Services.AddSingleton<IGizmoClient, TestClient>();
 
             var host = hostBuilder.Build();
 

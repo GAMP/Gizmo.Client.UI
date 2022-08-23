@@ -2,24 +2,22 @@
 
 .giz-drawer {
 
-    &__body {
+    &-content {
         display: none;
+        position: absolute;
         top: 0;
         right: -100%;
         z-index: 100;
-        height: $viewport-height;
-        background: linear-gradient( 180deg, rgba(9, 11, 16, 0.9)0%, rgba(44, 48, 63, 0.8)75%, rgba(37, 140, 246, 0.85)148%);
-        overflow: auto;
-        /*backdrop-filter: blur(20px);*/
-        box-shadow: $elevation-4;
-        position: absolute;
-        border: 1px solid $border-color;
+        height: 100vh;
+        background: #22272B;
         min-width: 10rem;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.08), 0px 8px 24px rgba(0, 0, 0, 0.32);
+        overflow: auto;
         transition: right 0.3s ease-in-out;
     }
 
     &--open {
-        .giz-drawer__body {
+        .giz-drawer-content {
             display: block;
             right: 0;
         }

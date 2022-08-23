@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.ViewModels;
+﻿using Gizmo.Client.UI.View.States;
+using Gizmo.Client.UI.ViewModels;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace Gizmo.Client.UI.Components
         public bool IsHoverable { get; set; }
 
         [Parameter]
-        public ProductViewModel Product { get; set; }
+        public ProductViewState Product { get; set; }
 
         [Parameter]
         public EventCallback<int> OnAddProduct { get; set; }

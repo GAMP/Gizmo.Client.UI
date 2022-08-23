@@ -3,78 +3,29 @@
 @using Gizmo.Web.Components
 
 <div class="giz-executable-card @(Executable?.Installing == true ? "giz-executable-card--active" : "")">
-    <Card>
-        <CardBody>
-            <div class="giz-executable-card__body">
-                @if (Executable != null)
-                {
-                    <div class="giz-executable-card__body__executable-image"><img src="@Executable.Image" />
-                        <div class="giz-executable-card__body__executable-status"><i class="giz-executable-card__body__executable-status__bullet"></i>24</div>
-                    </div>
-
-                    if (Executable.Installing)
-                    {
-                        <!--user action btn-->
-                        <div class="d-flex">
-                            <GizProgressButton Value="@Executable.InstallingPercentage" />
-                            <Menu OpenDirection="PopupOpenDirections.Cursor" Class="ml-2">
-                                <Activator>
-                                    <Button Size="ButtonSizes.Large" LeftSVGIcon="Icons.Settings_Client" Color="ButtonColors.Info"></Button>
-                                </Activator>
-                                <ChildContent>
-                                    <ListItem>
-                                        Autostart
-                                    </ListItem>
-                                    <ListItem SVGIcon="Icons.Repair_Client">
-                                        Repair
-                                    </ListItem>
-                                    <ListItem SVGIcon="Icons.Folder_Client">
-                                        <ChildContent>
-                                            Personal Files
-                                        </ChildContent>
-                                        <NestedList>
-                                            <ListItem>
-                                                -123
-                                            </ListItem>
-                                            <ListItem>
-                                                456
-                                            </ListItem>
-                                            <ListItem>
-                                                123
-                                            </ListItem>
-                                            <ListItem>
-                                                456
-                                            </ListItem>
-                                            <ListItem>
-                                                123
-                                            </ListItem>
-                                            <ListItem>
-                                                456
-                                            </ListItem>
-                                        </NestedList>
-                                    </ListItem>
-                                    <ListItem SVGIcon="Icons.Close_Client">
-                                        Terminate
-                                    </ListItem>
-                                </ChildContent>
-                            </Menu>
-                        </div>
-                        <!--/user action btn-->
-                    }
-                    else
-                    {
-                        <div class="giz-executable-card__body__details">
-                            <div class="giz-executable-card__body__details__group">
-                                Games
-                                <Icon SVGIcon="Icons.StoreApp_Client" Size="IconSizes.ExtraSmall" />
-                            </div>
-                            <div class="giz-executable-card__body__details__title">
-                                @Executable.Name
-                            </div>
-                        </div>
-                    }
-                }
+    @if (Executable != null)
+    {
+        <div class="giz-executable-card__executable-image"><img src="@Executable.Image" />
+            <div class="giz-executable-card__executable-status">
+                <i class="giz-executable-card__executable-status__bullet"></i>24
             </div>
-        </CardBody>
-    </Card>
+        </div>
+        
+        <div class="giz-executable-card__executable-title">
+            @Executable.Name
+        </div>
+
+        if (Executable.Installing)
+        {
+            <div class="giz-executable-card__executable-actions">
+                <ComboButton />
+            </div>
+        }
+        else
+        {
+            <div class="giz-executable-card__executable-actions">
+                <ComboButton />
+            </div>
+        }
+    }
 </div>

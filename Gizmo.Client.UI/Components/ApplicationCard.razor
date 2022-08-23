@@ -11,7 +11,7 @@
                 </div>
                 <div class="giz-app-card__content__details">
                     <div class="giz-app-card__title">
-                        @Application?.Name
+                        @Application?.Title
                     </div>
                 </div>
                 <div class="giz-app-card__content__footer">
@@ -19,7 +19,7 @@
                         @if (ShowDateAdded)
                         {
                             <div>
-                                Add date <span>@Application?.DateAdded.ToShortDateString()</span>
+                                @*Add date <span>@Application?.DateAdded.ToShortDateString()</span>*@
                             </div>
                         }
                         else
@@ -27,7 +27,7 @@
                             <div class="d-flex align-center">
                                 @if (Application != null)
                                 {
-                                    <Rating @bind-Value="Application.Rate" />
+                                    <Rating Value="@Application.Rate" />
                                 }
                                 else
                                 {
@@ -58,7 +58,7 @@
                         </div>
                     </div>
                     <div class="giz-app-card__content--hovered__body">
-                        <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => Execute())">LAUNCH</Button>
+                        <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="Execute">LAUNCH</Button>
                     </div>
                 </div>
             </div>

@@ -41,6 +41,8 @@
     }
 
     &__order {
+        height: 100%;
+        overflow: hidden;
     }
 }
 
@@ -48,19 +50,22 @@
     display: grid;
     grid-template-rows: 1fr min-content min-content;
     gap: 16px;
-    overflow: hidden;
     height: 100%;
+    overflow: hidden;
     min-width: 400px;
     padding: 16px;
 
     &__items {
+        display: grid;
+        grid-template-rows: min-content 1fr;
         background: #22272B;
         border-radius: 16px;
-        padding: 24px;
+        height: 100%;
+        overflow: hidden;
 
         &__header {
             border-bottom: 1px solid rgba(246, 251, 253, 0.06);
-            padding-bottom: 4px;
+            padding: 24px 24px 4px 24px;
             //Font
             font-weight: 500;
             font-size: 20px;
@@ -69,7 +74,8 @@
 
         &__body {
             position: relative;
-            max-height: 100%;
+            padding: 0 24px 4px 24px;
+            height: 100%;
             overflow-y: auto;
 
             .giz-order__items-wrapper {

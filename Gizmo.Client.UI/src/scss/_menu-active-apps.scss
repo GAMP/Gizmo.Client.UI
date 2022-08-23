@@ -1,60 +1,43 @@
 //=============== Menu Active Apps ================//
 
+.giz-active-apps {
+    &__header {
+        color: #E4E6EB;
+        padding: 8px 16px;
+        //Font
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 30px;
+    }
+
+    &__body {
+    }
+}
+
 .giz-active-app-card {
+    display: grid;
+    grid-template-columns: min-content 1fr min-content;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid #373839;
+    padding: 16px;
 
-    &-body {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        align-items: $align-center;
-        border-bottom: 1px solid $border-cinder-color;
-        padding: 1.625rem 1.5rem;
-
-        &-header {
-            display: flex;
-            align-items: $align-center;
-            @include font-16;
-            @include open-sans-600;
-
-            &-title {
-                color: $dim-white;
-                text-shadow: $text-shadow-sm;
-                margin-bottom: 0.375rem;
-                font-weight: normal;
-                @include font-10;
-            }
-
-            .giz-icon {
-                margin-right: 0.625rem;
-            }
-
-            img {
-                margin-right: 1rem;
-            }
+    &__info {
+        &__category {
+            color: rgba(255, 255, 255, 0.6);
+            opacity: 0.6;
+            //Font
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 18px;
         }
 
-        &-actions {
-            display: flex;
-            justify-self: right;
-        }
-    }
-
-    .giz-user-action-btn {
-        justify-self: right;
-        display: none;
-    }
-
-    &.active {
-        .giz-active-app-card-body {
-            position: relative;
-            background: linear-gradient(to right, rgba(44, 124, 244, 0.2) 0%, rgba(13, 16, 23, 0) 30%) !important;
-
-            &::before {
-                border-left: 2px solid $primary-color;
-                position: absolute;
-                left: 0;
-                height: $height-full;
-                content: "";
-            }
+        &__title {
+            color: #FAFAFA;
+            //Font
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 26px;
         }
     }
 }

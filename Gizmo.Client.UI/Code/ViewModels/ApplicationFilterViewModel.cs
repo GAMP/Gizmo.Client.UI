@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Gizmo.Client.UI.ViewModels
 {
-    public class ApplicationFilterViewModel : ViewModelBase
+    public class ApplicationFilterViewModel
     {
         private List<ApplicationFilterOptionViewModel> _options;
 

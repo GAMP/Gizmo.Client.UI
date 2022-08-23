@@ -2,7 +2,7 @@
 
 namespace Gizmo.Client.UI.ViewModels
 {
-    public class ProductViewModel : ViewModelBase
+    public class ProductViewModel
     {
         public int Id { get; set; }
 

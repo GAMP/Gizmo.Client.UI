@@ -1,4 +1,4 @@
-﻿using Gizmo.Client.UI.ViewModels;
+﻿using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
@@ -15,10 +15,10 @@ namespace Gizmo.Client.UI.Components
         NavigationManager NavigationManager { get; set; }
 
         [Parameter]
-        public ApplicationViewModel Application { get; set; }
+        public ApplicationViewState Application { get; set; }
 
         [Parameter]
-        public EventCallback<int> OnOpenDetails { get; set; }
+        public EventCallback<int> OnOpenExecutableSelector { get; set; }
 
         [Parameter]
         public bool ShowDateAdded { get; set; }
@@ -32,8 +32,9 @@ namespace Gizmo.Client.UI.Components
             NavigationManager.NavigateTo($"/appdetails/{Application.Id}");
         }
 
-        private void Execute()
+        private async Task Execute()
         {
+            await OnOpenExecutableSelector.InvokeAsync(Application.Id);
         }
 
         private void ShowWarning()

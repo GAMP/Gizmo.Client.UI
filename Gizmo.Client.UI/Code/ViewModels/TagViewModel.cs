@@ -2,7 +2,7 @@
 
 namespace Gizmo.Client.UI.ViewModels
 {
-    public class TagViewModel : ViewModelBase
+    public class TagViewModel
     {
         public int Id { get; set; }
 

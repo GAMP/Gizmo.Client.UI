@@ -1,4 +1,4 @@
-﻿using Gizmo.Client.UI.ViewModels;
+﻿using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 
@@ -7,6 +7,6 @@ namespace Gizmo.Client.UI.Shared
     public partial class MenuActiveApplicationCard : CustomDOMComponentBase
     {
         [Parameter]
-        public ExecutableViewModel Executable { get; set; }
+        public ExecutableViewState Executable { get; set; }
     }
 }

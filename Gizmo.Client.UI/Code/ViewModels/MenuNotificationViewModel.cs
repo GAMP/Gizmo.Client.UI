@@ -2,7 +2,7 @@
 
 namespace Gizmo.Client.UI.ViewModels
 {
-    public class MenuNotificationViewModel : ViewModelBase
+    public class MenuNotificationViewModel
     {
         public int Id { get; set; }
 

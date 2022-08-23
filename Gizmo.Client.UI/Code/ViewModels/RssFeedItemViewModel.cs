@@ -2,7 +2,7 @@
 
 namespace Gizmo.Client.UI.ViewModels
 {
-    public class RssFeedItemViewModel : ViewModelBase
+    public class RssFeedItemViewModel
     {
         public string Title { get; set; }
 
