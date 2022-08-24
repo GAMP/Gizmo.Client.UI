@@ -21,13 +21,13 @@
             </svg>
         </div>
     </div>
-    <div class="giz-header__user-menu-item">
-        <div class="user-menu-item-button--box">
+    <div class="giz-header__user-menu-item giz-notifications-dropdown">
+        <div class="user-menu-item-button--box" @onclick="() => ToggleNotifications()">
             <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M2.14995 18.725C1.71662 18.725 1.34595 18.571 1.03795 18.263C0.729285 17.9543 0.574951 17.5833 0.574951 17.15C0.574951 16.7167 0.729285 16.346 1.03795 16.038C1.34595 15.7293 1.71662 15.575 2.14995 15.575H2.84995V9.5C2.84995 7.88333 3.31262 6.43733 4.23795 5.162C5.16262 3.88733 6.39162 3.05833 7.92495 2.675V2.125C7.92495 1.54167 8.12495 1.05 8.52495 0.649999C8.92495 0.249999 9.41662 0.0499992 9.99995 0.0499992C10.5833 0.0499992 11.075 0.249999 11.475 0.649999C11.875 1.05 12.075 1.54167 12.075 2.125V2.675C13.625 3.05833 14.8583 3.88733 15.775 5.162C16.6916 6.43733 17.15 7.88333 17.15 9.5V15.575H17.875C18.3083 15.575 18.6793 15.7293 18.988 16.038C19.296 16.346 19.45 16.7167 19.45 17.15C19.45 17.5833 19.296 17.9543 18.988 18.263C18.6793 18.571 18.3083 18.725 17.875 18.725H2.14995ZM10.025 21.85C9.39162 21.85 8.84995 21.6293 8.39995 21.188C7.94995 20.746 7.72495 20.2083 7.72495 19.575H12.3C12.3 20.2083 12.0793 20.746 11.638 21.188C11.196 21.6293 10.6583 21.85 10.025 21.85Z" fill="white" fill-opacity="0.75"/>
             </svg>
         </div>
-        <MenuNotificationsContainer />
+        <MenuNotificationsContainer @bind-IsOpen="_activeAppsIsOpen" />
     </div>
     <div class="giz-header__user-menu-item giz-user-dropdown">
         <div class="giz-user-menu-button">
@@ -43,4 +43,4 @@
     </div>
 </div>
 
-<MenuActiveApplicationsContainer @bind-IsOpen="_isOpen" />
+<MenuActiveApplicationsContainer @bind-IsOpen="_activeAppsIsOpen" />

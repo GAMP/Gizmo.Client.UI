@@ -10,10 +10,50 @@
         </div>
         <div class="giz-active-app-card__info">
             <div class="giz-active-app-card__info__category">Gaming</div>
-            <div class="giz-active-app-card__info__title">@Executable.Name</div>
+            <div class="giz-active-app-card__info__title">@Executable.Caption</div>
         </div>
         <div class="giz-active-app-card__actions">
-            <ComboButton />
+            <ComboButton Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" OnClickMainButton="@OnClickMainButtonHandler">
+                <ChildContent>
+                    LAUNCH
+                </ChildContent>
+                <DropDownItems>
+                    <ListItem>
+                        Autostart
+                    </ListItem>
+                    <ListItem SVGIcon="Icons.Repair_Client">
+                        Repair
+                    </ListItem>
+                    <ListItem SVGIcon="Icons.Folder_Client">
+                        <ChildContent>
+                            Personal Files
+                        </ChildContent>
+                        <NestedList>
+                            <ListItem>
+                                -123
+                            </ListItem>
+                            <ListItem>
+                                456
+                            </ListItem>
+                            <ListItem>
+                                123
+                            </ListItem>
+                            <ListItem>
+                                456
+                            </ListItem>
+                            <ListItem>
+                                123
+                            </ListItem>
+                            <ListItem>
+                                456
+                            </ListItem>
+                        </NestedList>
+                    </ListItem>
+                    <ListItem SVGIcon="Icons.Close_Client">
+                        Terminate
+                    </ListItem>
+                </DropDownItems>
+            </ComboButton>
         </div>
     }
 </div>

@@ -1,10 +1,7 @@
 ﻿using Gizmo.Client.UI.View.Services;
-using Gizmo.Client.UI.ViewModels;
 using Gizmo.UI;
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.JSInterop;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
@@ -21,7 +18,13 @@ namespace Gizmo.Client.UI.Pages
         #region PROPERTIES
 
         [Inject]
+        protected IJSRuntime JsRuntime { get; set; }
+
+        [Inject]
         HomePageService HomePageService { get; set; }
+
+        [Inject]
+        ExecutableSelectorService ExecutableSelectorService { get; set; }
 
         public bool ExecutableSelectorIsOpen { get; set; }
 
@@ -31,9 +34,20 @@ namespace Gizmo.Client.UI.Pages
 
         public void OpenExecutableSelector(int id)
         {
+            ExecutableSelectorService.SetApplication(id);
             ExecutableSelectorIsOpen = true;
         }
 
         #endregion
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await base.OnAfterRenderAsync(firstRender);
+
+            if (firstRender)
+            {
+                await JsRuntime.InvokeVoidAsync("homeAdsAutoCollapse");
+            }
+        }
     }
 }

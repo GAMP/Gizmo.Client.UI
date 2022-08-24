@@ -2,11 +2,12 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
-<!--dropdown-->
 <div class="giz-dropdown-menu">
-    <!--notification-->
-    <div class="giz-menu-notifications-container">
-        <div class="giz-menu-notifications-container-wrapper giz-scrollbar--v">
+    <div class="giz-menu-notifications">
+        <div class="giz-menu-notifications__header">
+            Notifications
+        </div>
+        <div class="giz-menu-notifications__body giz-scrollbar--v">
 
             @if (Notifications != null && Notifications.Count > 0)
             {
@@ -17,22 +18,15 @@
             }
             else
             {
-                <!--no notification-->
                 <div class="giz-menu-notification-default-item">
                     <div class="giz-menu-notification-default-item-title">No new notifications.</div>
                     <div class="giz-menu-notification-default-item-text">When something new happens you’ll find it here.</div>
                 </div>
-                <!--/no notification-->
             }
 
         </div>
-        <!--notification btn-->
-        <div class="giz-menu-notifications-container-actions">
-            <Button Size="ButtonSizes.Large" IsFullWidth="true" Color="ButtonColors.Info" Class="mb-2" @onclick="@(() => MarkAllAsRead())">Mark as all read</Button>
-            <div class="giz-menu-notifications-container-actions-more">See older notifications.</div>
+        <div class="giz-menu-notifications__footer">
+            Mark as all read
         </div>
-        <!--/notification-btn-->
     </div>
-    <!--/notification-->
 </div>
-<!--/dropdown-->

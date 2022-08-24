@@ -6,9 +6,16 @@
 
 <div class="giz-app-details">
     <div class="giz-app-details__app">
-        <div class="giz-app-details__app__navigation">
-            Back
-        </div>
+        <NavLink href="apps" class="giz-app-details__app__navigation">
+            <div class="giz-app-details__app__navigation__icon">
+                <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3.4938 7.99988L9.34743 2.42872L7.96861 0.97998L0.310587 8.26846C-0.103212 8.66229 -0.103578 9.32214 0.309783 9.71643L7.96781 17.0211L9.34824 15.5739L3.50459 9.99988L19.9999 10.0009L20.0001 8.00094L11.7469 8.00041L3.4938 7.99988Z" fill="#FAFAFA"/>
+                </svg>
+            </div>
+            <div class="giz-app-details__app__navigation__label">
+                Back to Apps
+            </div>
+        </NavLink>
         <div class="giz-app-details__app__info">
             <div class="giz-app-details__app__info__image"> 
                 <img src="_content/Gizmo.Client.UI/img/@ApplicationDetailsPageService.ViewState.Application?.Image" alt="loading" />
@@ -26,7 +33,54 @@
                     @ApplicationDetailsPageService.ViewState.Application?.Description
                 </div>
                 <div class="giz-app-details__app__info__details__tags">
-                    <ComboButton Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true">LAUNCH</ComboButton>
+                    @if (ApplicationDetailsPageService.ViewState.Application.Executables.Count > 1)
+                    {
+                        <ComboButton Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" OnClickMainButton="@OnClickMainButtonHandler">
+                            <ChildContent>
+                                LAUNCH
+                            </ChildContent>
+                            <DropDownItems>
+                                <ListItem>
+                                    Autostart
+                                </ListItem>
+                                <ListItem SVGIcon="Icons.Repair_Client">
+                                    Repair
+                                </ListItem>
+                                <ListItem SVGIcon="Icons.Folder_Client">
+                                    <ChildContent>
+                                        Personal Files
+                                    </ChildContent>
+                                    <NestedList>
+                                        <ListItem>
+                                            -123
+                                        </ListItem>
+                                        <ListItem>
+                                            456
+                                        </ListItem>
+                                        <ListItem>
+                                            123
+                                        </ListItem>
+                                        <ListItem>
+                                            456
+                                        </ListItem>
+                                        <ListItem>
+                                            123
+                                        </ListItem>
+                                        <ListItem>
+                                            456
+                                        </ListItem>
+                                    </NestedList>
+                                </ListItem>
+                                <ListItem SVGIcon="Icons.Close_Client">
+                                    Terminate
+                                </ListItem>
+                            </DropDownItems>
+                        </ComboButton>
+                    }
+                    else
+                    {
+                        <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="OnClickMainButtonHandler">LAUNCH</Button>
+                    }
                     Tags
                 </div>
 
@@ -104,5 +158,4 @@
     </div>
 </div>
 
-@*<ApplicationDetailsDialog @bind-IsOpen="AppDetailsIsOpen" Application="@_selectedApplication" />
-<ExecutableSelectorDialog @bind-IsOpen="ExecutableSelectorIsOpen" />*@
+<ExecutableSelectorDialog @bind-IsOpen="ExecutableSelectorIsOpen" />

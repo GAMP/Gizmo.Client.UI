@@ -2,12 +2,10 @@
 using Gizmo.Client.UI.ViewModels;
 using Gizmo.UI;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace Gizmo.Client.UI.Pages
 {
@@ -22,18 +20,15 @@ namespace Gizmo.Client.UI.Pages
         }
 
         #region FIELDS
-        private ICommand _selectApplicationGroupCommand;
-        private int? _clickedApplicationGroupId;
-        private int? _selectedApplicationGroupId;
-        private ApplicationGroupViewModel _selectedApplicationGroup;
-        private bool _selectedGroupHasSubGroups;
-        private bool _clickedGroupHasSubGroups;
         #endregion
 
         #region PROPERTIES
 
         [Inject]
         ApplicationsPageService ApplicationsPageService { get; set; }
+
+        [Inject]
+        ExecutableSelectorService ExecutableSelectorService { get; set; }
 
         #region PARAMETERS
 
@@ -47,11 +42,9 @@ namespace Gizmo.Client.UI.Pages
             init;
         }
 
-        public bool AppDetailsIsOpen { get; set; }
+        #endregion
 
         public bool ExecutableSelectorIsOpen { get; set; }
-
-        #endregion
 
         public List<ApplicationGroupViewModel> ApplicationGroups { get; set; }
 
@@ -59,57 +52,7 @@ namespace Gizmo.Client.UI.Pages
 
         #endregion
 
-        #region COMMANDS
-
-        public ICommand SelectApplicationGroupCommand
-        {
-            get
-            {
-                if (_selectApplicationGroupCommand == null)
-                    _selectApplicationGroupCommand = new AsyncCommand<object, object>(SelectApplicationGroup);
-
-                return _selectApplicationGroupCommand;
-            }
-            set
-            {
-                _selectApplicationGroupCommand = value;
-            }
-        }
-
-        #endregion
-
-        #region COMMAND IMPLEMENTATION
-
-        private Task SelectApplicationGroup(object parameter)
-        {
-            _clickedApplicationGroupId = (int)parameter;
-
-            _clickedGroupHasSubGroups = ApplicationGroups.Where(a => a.ParentGroupId == _clickedApplicationGroupId).Count() > 0;
-
-            //If the clicked application group has subgroups then set it as selected to show the subgroups.
-            if (_clickedGroupHasSubGroups)
-            {
-                _selectedGroupHasSubGroups = _clickedGroupHasSubGroups;
-                _selectedApplicationGroupId = _clickedApplicationGroupId;
-                _selectedApplicationGroup = ApplicationGroups.Where(a => a.Id == _selectedApplicationGroupId).FirstOrDefault();
-            }
-
-            StateHasChanged();
-
-            return Task.CompletedTask;
-        }
-
-        #endregion
-
         #region EVENTS
-
-        protected Task OnClickBackButtonHandler(MouseEventArgs args)
-        {
-            _selectedApplicationGroupId = _selectedApplicationGroup.ParentGroupId;
-            _selectedApplicationGroup = ApplicationGroups.Where(a => a.Id == _selectedApplicationGroupId).FirstOrDefault();
-
-            return Task.CompletedTask;
-        }
 
         #endregion
 
@@ -117,6 +60,7 @@ namespace Gizmo.Client.UI.Pages
 
         public void OpenExecutableSelector(int id)
         {
+            ExecutableSelectorService.SetApplication(id);
             ExecutableSelectorIsOpen = true;
         }
 
@@ -161,8 +105,6 @@ namespace Gizmo.Client.UI.Pages
             ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 2, Name = "Rating", Options = options });
             ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 3, Name = "Type", Options = options });
             ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 4, Name = "Player mode", Options = options });
-
-            _clickedApplicationGroupId = category1.Id;
 
             return base.OnInitializedAsync();
         }

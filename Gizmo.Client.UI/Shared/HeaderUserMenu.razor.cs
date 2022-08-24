@@ -20,13 +20,19 @@ namespace Gizmo.Client.UI
             //User.Picture = "_content/Gizmo.Client.UI/img/Avatar-1.png";
         }
 
-        private bool _isOpen;
+        private bool _activeAppsIsOpen;
+        private bool _notificationsIsOpen;
 
         public UserViewModel User { get; set; }
 
         public void ToggleActiveApps()
         {
-            _isOpen = !_isOpen;
+            _activeAppsIsOpen = !_activeAppsIsOpen;
+        }
+
+        public void ToggleNotifications()
+        {
+            _notificationsIsOpen = !_notificationsIsOpen;
         }
     }
 }

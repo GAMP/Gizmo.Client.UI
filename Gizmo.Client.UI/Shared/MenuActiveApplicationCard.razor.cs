@@ -8,5 +8,10 @@ namespace Gizmo.Client.UI.Shared
     {
         [Parameter]
         public ExecutableViewState Executable { get; set; }
+
+        private void OnClickMainButtonHandler()
+        {
+
+        }
     }
 }

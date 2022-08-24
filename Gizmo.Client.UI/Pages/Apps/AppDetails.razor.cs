@@ -1,9 +1,5 @@
 ﻿using Gizmo.Client.UI.View.Services;
-using Gizmo.Client.UI.View.States;
-using Gizmo.Client.UI.ViewModels;
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
 
 namespace Gizmo.Client.UI.Pages
 {
@@ -14,10 +10,44 @@ namespace Gizmo.Client.UI.Pages
         {
         }
 
-        [Parameter]
-        public int ApplicationId { get; set; }
+        #region PROPERTIES
 
         [Inject]
         ApplicationDetailsPageService ApplicationDetailsPageService { get; set; }
+
+        [Inject]
+        ExecutableSelectorService ExecutableSelectorService { get; set; }
+
+        [Parameter]
+        public int ApplicationId { get; set; }
+
+        public bool ExecutableSelectorIsOpen { get; set; }
+
+        #endregion
+
+        #region METHODS
+
+        #endregion
+
+        private void OnClickMainButtonHandler()
+        {
+            if (ApplicationDetailsPageService.ViewState.Application.Executables.Count > 1)
+            {
+                ExecutableSelectorService.SetApplication(ApplicationId);
+                ExecutableSelectorIsOpen = true;
+            }
+            else
+            {
+                //TODO: A LAUNCH THE EXE?
+            }
+        }
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            ApplicationDetailsPageService.SetApplication(ApplicationId);
+        }
+
     }
 }
