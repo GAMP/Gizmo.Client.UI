@@ -2,58 +2,72 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
-<div class="giz-active-app-card @(Executable.Installing ? "active" : "")">
-    @if (Executable != null)
-    {
-        <div class="giz-active-app-card__image">
-            <img src="@Executable.Image" alt="loading" />
-        </div>
-        <div class="giz-active-app-card__info">
-            <div class="giz-active-app-card__info__category">Gaming</div>
-            <div class="giz-active-app-card__info__title">@Executable.Caption</div>
-        </div>
-        <div class="giz-active-app-card__actions">
-            <ComboButton Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" OnClickMainButton="@OnClickMainButtonHandler">
-                <ChildContent>
-                    LAUNCH
-                </ChildContent>
-                <DropDownItems>
-                    <ListItem>
-                        Autostart
-                    </ListItem>
-                    <ListItem SVGIcon="Icons.Repair_Client">
-                        Repair
-                    </ListItem>
-                    <ListItem SVGIcon="Icons.Folder_Client">
-                        <ChildContent>
-                            Personal Files
-                        </ChildContent>
-                        <NestedList>
-                            <ListItem>
-                                -123
-                            </ListItem>
-                            <ListItem>
-                                456
-                            </ListItem>
-                            <ListItem>
-                                123
-                            </ListItem>
-                            <ListItem>
-                                456
-                            </ListItem>
-                            <ListItem>
-                                123
-                            </ListItem>
-                            <ListItem>
-                                456
-                            </ListItem>
-                        </NestedList>
-                    </ListItem>
-                    <ListItem SVGIcon="Icons.Close_Client">
-                        Terminate
-                    </ListItem>
-                </DropDownItems>
-            </ComboButton>
-        </div>
-    }
+<div class="giz-active-app-card">
+    <div class="giz-active-app-card__image">
+        <img src="@Executable.Image" alt="loading" />
+    </div>
+    <div class="giz-active-app-card__info">
+        <div class="giz-active-app-card__info__category">Gaming</div>
+        <div class="giz-active-app-card__info__title">@Executable.Caption</div>
+    </div>
+    <div class="giz-active-app-card__actions">
+        <ComboButton Progress="@Executable.StatePercentage" Color="@(Executable.State == 3 ? ButtonColors.Danger : ButtonColors.Accent)" Variant="@(Executable.State == 2 ? ButtonVariants.Progress : ButtonVariants.Fill)" Size="ButtonSizes.Large" IsFullWidth="true" OnClickMainButton="@OnClickMainButtonHandler">
+            <ChildContent>
+                @switch (Executable.State)
+                {
+                    case 0:
+                        <div>Play</div>
+                        break;
+                            
+                    case 1:
+                        <GizSpinner />
+                        break;
+
+                    case 2:
+                        <div>Loading</div>
+                        break;
+
+                    case 3:
+                        <div>Terminate</div>
+                        break;
+                }
+            </ChildContent>
+            <DropDownItems>
+                <ListItem>
+                    Autostart
+                </ListItem>
+                <ListItem SVGIcon="Icons.Repair_Client">
+                    Repair
+                </ListItem>
+                <ListItem SVGIcon="Icons.Folder_Client">
+                    <ChildContent>
+                        Personal Files
+                    </ChildContent>
+                    <NestedList>
+                        <ListItem>
+                            -123
+                        </ListItem>
+                        <ListItem>
+                            456
+                        </ListItem>
+                        <ListItem>
+                            123
+                        </ListItem>
+                        <ListItem>
+                            456
+                        </ListItem>
+                        <ListItem>
+                            123
+                        </ListItem>
+                        <ListItem>
+                            456
+                        </ListItem>
+                    </NestedList>
+                </ListItem>
+                <ListItem SVGIcon="Icons.Close_Client">
+                    Terminate
+                </ListItem>
+            </DropDownItems>
+        </ComboButton>
+    </div>
 </div>
