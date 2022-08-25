@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Host.Web
 {
     public class TestClient : IGizmoClient
     {
-        public IEnumerable<ProductGroup> GetProductGroups(ProductGroupsFilter filter)
+        public async Task<PagedList<ProductGroup>> GetProductGroupsAsync(ProductGroupsFilter filter)
         {
             List<ProductGroup> productGroups = new List<ProductGroup>();
             productGroups.Add(new ProductGroup() { Id = 1, Name = "Coffee" });
@@ -32,10 +33,12 @@ namespace Gizmo.Client.UI.Host.Web
             productGroups.Add(new ProductGroup() { Id = 19, Name = "Snacks" });
             productGroups.Add(new ProductGroup() { Id = 20, Name = "Time offers" });
 
-            return productGroups;
+            var pagedList = new PagedList<ProductGroup>(productGroups, new PaginationMetadata());
+
+            return pagedList;
         }
 
-        public IEnumerable<Product> GetProducts(ProductsFilter filter)
+        public async Task<PagedList<Product>> GetProductsAsync(ProductsFilter filter)
         {
             Random random = new Random();
 
@@ -51,10 +54,12 @@ namespace Gizmo.Client.UI.Host.Web
                 ProductType = (ProductType)random.Next(0, 3),
             }).ToList();
 
-            return products;
+            var pagedList = new PagedList<Product>(products, new PaginationMetadata());
+
+            return pagedList;
         }
 
-        public IEnumerable<Application> GetApplications(ApplicationsFilter filter)
+        public async Task<PagedList<Application>> GetApplicationsAsync(ApplicationsFilter filter)
         {
             List<Application> applications = Enumerable.Range(0, 15).Select(i => new Application()
             {
@@ -64,10 +69,12 @@ namespace Gizmo.Client.UI.Host.Web
                 ReleaseDate = DateTime.Now
             }).ToList();
 
-            return applications;
+            var pagedList = new PagedList<Application>(applications, new PaginationMetadata());
+
+            return pagedList;
         }
 
-        public IEnumerable<ApplicationExecutable> GetApplicationExecutables(ApplicationExecutablesFilter filter)
+        public async Task<PagedList<ApplicationExecutable>> GetApplicationExecutablesAsync(ApplicationExecutablesFilter filter)
         {
             List<ApplicationExecutable> executables = new List<ApplicationExecutable>();
             executables.Add(new ApplicationExecutable() { Id = 1, Caption = "battlenet.exe" });
@@ -75,7 +82,9 @@ namespace Gizmo.Client.UI.Host.Web
             executables.Add(new ApplicationExecutable() { Id = 3, Caption = "Spotify"});
             executables.Add(new ApplicationExecutable() { Id = 4, Caption = "valve_steamclient.exe" });
 
-            return executables;
+            var pagedList = new PagedList<ApplicationExecutable>(executables, new PaginationMetadata());
+
+            return pagedList;
         }
 
     }

@@ -34,7 +34,7 @@ namespace Gizmo.Client.UI.Pages
 
         public void OpenExecutableSelector(int id)
         {
-            ExecutableSelectorService.SetApplication(id);
+            ExecutableSelectorService.LoadApplicationAsync(id);
             ExecutableSelectorIsOpen = true;
         }
 

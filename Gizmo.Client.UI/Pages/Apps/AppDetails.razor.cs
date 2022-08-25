@@ -33,7 +33,7 @@ namespace Gizmo.Client.UI.Pages
         {
             if (ApplicationDetailsPageService.ViewState.Application.Executables.Count > 1)
             {
-                ExecutableSelectorService.SetApplication(ApplicationId);
+                ExecutableSelectorService.LoadApplicationAsync(ApplicationId);
                 ExecutableSelectorIsOpen = true;
             }
             else
@@ -46,7 +46,7 @@ namespace Gizmo.Client.UI.Pages
         {
             base.OnInitialized();
 
-            ApplicationDetailsPageService.SetApplication(ApplicationId);
+            ApplicationDetailsPageService.LoadApplicationAsync(ApplicationId);
         }
 
     }
