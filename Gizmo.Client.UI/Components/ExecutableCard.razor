@@ -2,110 +2,75 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
-<div class="giz-executable-card @(Executable?.Installing == true ? "giz-executable-card--active" : "")">
-    @if (Executable != null)
-    {
-        <div class="giz-executable-card__executable-image"><img src="@Executable.Image" />
-            <div class="giz-executable-card__executable-status">
-                <i class="giz-executable-card__executable-status__bullet"></i>24
-            </div>
+<div class="giz-executable-card">
+    <div class="giz-executable-card__executable-image"><img src="@Executable.Image" />
+        <div class="giz-executable-card__executable-status">
+            <i class="giz-executable-card__executable-status__bullet"></i>24
         </div>
+    </div>
         
-        <div class="giz-executable-card__executable-title">
-            @Executable.Caption
-        </div>
+    <div class="giz-executable-card__executable-title">
+        @Executable.Caption
+    </div>
 
-        if (Executable.Installing)
-        {
-            <div class="giz-executable-card__executable-actions">
-                <ComboButton Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" OnClickMainButton="@OnClickMainButtonHandler">
+    <div class="giz-executable-card__executable-actions">
+        <ComboButton Progress="@Executable.StatePercentage" Color="@(Executable.State == 3 ? ButtonColors.Danger : ButtonColors.Accent)" Variant="@(Executable.State == 2 ? ButtonVariants.Progress : ButtonVariants.Fill)" Size="ButtonSizes.Large" IsFullWidth="true" OnClickMainButton="@OnClickMainButtonHandler">
+            <ChildContent>
+                @switch (Executable.State)
+                {
+                    case 0:
+                        <div>Play</div>
+                        break;
+                            
+                    case 1:
+                        <GizSpinner />
+                        break;
+
+                    case 2:
+                        <div>Loading</div>
+                        break;
+
+                    case 3:
+                        <div>Terminate</div>
+                        break;
+                }
+            </ChildContent>
+            <DropDownItems>
+                <ListItem>
+                    Autostart
+                </ListItem>
+                <ListItem SVGIcon="Icons.Repair_Client">
+                    Repair
+                </ListItem>
+                <ListItem SVGIcon="Icons.Folder_Client">
                     <ChildContent>
-                        LAUNCH
+                        Personal Files
                     </ChildContent>
-                    <DropDownItems>
+                    <NestedList>
                         <ListItem>
-                            Autostart
+                            -123
                         </ListItem>
-                        <ListItem SVGIcon="Icons.Repair_Client">
-                            Repair
-                        </ListItem>
-                        <ListItem SVGIcon="Icons.Folder_Client">
-                            <ChildContent>
-                                Personal Files
-                            </ChildContent>
-                            <NestedList>
-                                <ListItem>
-                                    -123
-                                </ListItem>
-                                <ListItem>
-                                    456
-                                </ListItem>
-                                <ListItem>
-                                    123
-                                </ListItem>
-                                <ListItem>
-                                    456
-                                </ListItem>
-                                <ListItem>
-                                    123
-                                </ListItem>
-                                <ListItem>
-                                    456
-                                </ListItem>
-                            </NestedList>
-                        </ListItem>
-                        <ListItem SVGIcon="Icons.Close_Client">
-                            Terminate
-                        </ListItem>
-                    </DropDownItems>
-                </ComboButton>
-            </div>
-        }
-        else
-        {
-            <div class="giz-executable-card__executable-actions">
-                <ComboButton Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" OnClickMainButton="@OnClickMainButtonHandler">
-                    <ChildContent>
-                        LAUNCH
-                    </ChildContent>
-                    <DropDownItems>
                         <ListItem>
-                            Autostart
+                            456
                         </ListItem>
-                        <ListItem SVGIcon="Icons.Repair_Client">
-                            Repair
+                        <ListItem>
+                            123
                         </ListItem>
-                        <ListItem SVGIcon="Icons.Folder_Client">
-                            <ChildContent>
-                                Personal Files
-                            </ChildContent>
-                            <NestedList>
-                                <ListItem>
-                                    -123
-                                </ListItem>
-                                <ListItem>
-                                    456
-                                </ListItem>
-                                <ListItem>
-                                    123
-                                </ListItem>
-                                <ListItem>
-                                    456
-                                </ListItem>
-                                <ListItem>
-                                    123
-                                </ListItem>
-                                <ListItem>
-                                    456
-                                </ListItem>
-                            </NestedList>
+                        <ListItem>
+                            456
                         </ListItem>
-                        <ListItem SVGIcon="Icons.Close_Client">
-                            Terminate
+                        <ListItem>
+                            123
                         </ListItem>
-                    </DropDownItems>
-                </ComboButton>
-            </div>
-        }
-    }
+                        <ListItem>
+                            456
+                        </ListItem>
+                    </NestedList>
+                </ListItem>
+                <ListItem SVGIcon="Icons.Close_Client">
+                    Terminate
+                </ListItem>
+            </DropDownItems>
+        </ComboButton>
+    </div>
 </div>
