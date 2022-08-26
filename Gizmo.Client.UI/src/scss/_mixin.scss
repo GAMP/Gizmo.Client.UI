@@ -1,316 +1,52 @@
 //== Client UI mixin ==//
 
-/*//=== Button ===//
-
-//== primary btn
-@mixin btn-primary {
-    background: $primary-color;
-    box-shadow: $elevation-1;
-    padding: 0.813rem 1.938rem;
+@mixin font-h1($font-weight: 500) {
+    font-weight: $font-weight;
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: unset;
+    font-family: $font-family-header;
 }
 
-//== info btn
-@mixin btn-info {
-    background: $info-color;
-    padding: 0.813rem 1.938rem;
+@mixin font-h5($font-weight: 500) {
+    font-weight: $font-weight;
+    font-size: 24px;
+    line-height: 30px;
+    letter-spacing: unset;
+    font-family: $font-family-header;
 }
 
-//== secondary light btn
-@mixin btn-secondary {
-    background: $secondary-color;
+@mixin font-s($font-weight: 500) {
+    font-weight: $font-weight;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: unset;
 }
 
-//== secondary light btn
-@mixin btn-secondary-light {
-    background: $secondary-light;
-    padding: 0px 0.375rem;
+@mixin font-m($font-weight: 500) {
+    font-weight: $font-weight;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: unset;
 }
 
-//== secondary dark btn
-@mixin btn-secondary-dark {
-    background: $secondary-dark;
-    padding: 0px 0.375rem;
+@mixin font-l($font-weight: 500) {
+    font-weight: $font-weight;
+    font-size: 16px;
+    line-height: 26px;
+    letter-spacing: unset;
 }
 
-//== dark graylish btn
-@mixin btn-dark-graylish {
-    background: $dark-grayish;
-    padding: 0.813rem;
+@mixin font-xl($font-weight: 500) {
+    font-weight: $font-weight;
+    font-size: 18px;
+    line-height: 28px;
+    letter-spacing: unset;
 }
 
-//== jet gray btn
-@mixin btn-jet-gray {
-    background: $jet-gray;
-    padding: 0.625rem;
-    border-radius: $rounded;
-    @include font-14;
-    letter-spacing: $letter-spacing-5;
+@mixin font-xxl($font-weight: 500) {
+    font-weight: $font-weight;
+    font-size: 20px;
+    line-height: 30px;
+    letter-spacing: unset;
 }
-
-//== cerise pink btn
-@mixin btn-cerise-pink {
-    background: $cerise-pink;
-    padding: 0.625rem;
-    border-radius: $rounded;
-    @include font-14;
-    letter-spacing: $letter-spacing-5;
-}
-
-//== warning dark btn
-@mixin btn-warning-dark {
-    background: $warning-dark;
-    padding: 0.625rem;
-    border-radius: $rounded;
-    @include font-14;
-    letter-spacing: $letter-spacing-5;
-}
-
-//== navy blue btn
-@mixin btn-navy-blue {
-    background: $navy-blue;
-    padding: 0.625rem;
-    border-radius: $rounded;
-    @include font-14;
-    letter-spacing: $letter-spacing-5;
-}*/
-
-//======= Client UI alerts =====//
-//== danger btn
-@mixin alert-danger($bg-color: $danger-color) {
-    background: $bg-color;
-    padding: 0.625rem;
-    border-radius: $rounded;
-    @include font-14;
-    letter-spacing: $letter-spacing-5;
-}
-
-//== warning btn
-@mixin alert-warning {
-    @include alert-danger($warning-color);
-}
-
-//== disable btn
-@mixin alert-disable {
-    @include alert-danger($blue-violet);
-}
-
-//=== font-size used in client UI ====//
-
-//== font size 9px
-@mixin font-9($line-height: $line-height-9,$letter-spacing:$letter-spacing-6) {
-    line-height: $line-height;
-    font-size: $font-9;
-    letter-spacing: $letter-spacing;
-    text-transform: $text-uppercase;
-}
-
-//== font size 10px
-@mixin font-10($letter-spacing:normal) {
-    font-size: $font-10;
-    line-height: $line-height-10;
-    text-transform: $text-uppercase;
-    letter-spacing:$letter-spacing;
-}
-
-//== font size 11px
-@mixin font-11 {
-    font-size: $font-11;
-    line-height: $line-height-11;
-}
-
-//== font size 12px
-@mixin font-12 {
-    font-size: $font-12;
-    line-height: $line-height-12;
-}
-
-//== font size 13px
-@mixin font-13 {
-    font-size: $font-13;
-    line-height: $line-height-13;
-}
-
-//== font size 14px
-@mixin font-14 {
-    font-size: $font-14;
-    line-height: $line-height-14;
-}
-
-//== font size 15px
-@mixin font-15 {
-    font-size: $font-15;
-    letter-spacing: $letter-spacing-5;
-}
-
-//== font size 16px
-@mixin font-16 {
-    font-size: $font-16;
-    color: $white-color;
-    line-height: $line-height-16;
-    letter-spacing: $letter-spacing-24;
-}
-
-//== font size 17px
-@mixin font-17 {
-    font-size: $font-17;
-    line-height: $line-height-17;
-}
-
-//== font size 18px
-@mixin font-18 {
-    font-size: $font-18;
-    letter-spacing: $letter-spacing-2;
-    line-height: $line-height-18;
-}
-
-//== font size 19px
-@mixin font-19 {
-    font-size: $font-19;
-    line-height: $line-height-19;
-}
-
-//== font size 20px
-@mixin font-20 {
-    font-size: $font-20;
-    letter-spacing: $letter-spacing-2;
-    line-height: $line-height-20;
-}
-
-//== font size 21px
-@mixin font-21 {
-    font-size: $font-21;
-    line-height: $line-height-21;
-}
-
-//== font size 22px
-@mixin font-22 {
-    font-size: $font-22;
-    line-height: $line-height-22;
-}
-
-//== font size 23px
-@mixin font-23 {
-    font-size: $font-23;
-    line-height: $line-height-23;
-}
-
-//== font size 24px
-@mixin font-24 {
-    font-size: $font-24;
-    line-height: $line-height-24;
-}
-
-//== font size 25px
-@mixin font-25 {
-    font-size: $font-25;
-    line-height: $line-height-25;
-}
-
-//== font size 26px
-@mixin font-26 {
-    font-size: $font-26;
-    line-height: $line-height-26;
-}
-
-//== font size 100px
-@mixin font-100 {
-    font-size: $font-100;
-    line-height: $line-height-100;
-    font-weight: $font-weight-800;
-}
-
-//== font-family
-//==open sans
-@mixin open-sans-600{
-    font-weight: $font-weight-600;
-}
-
-//=== background linear for login UI ===//
-
-//== primary linear
-@mixin primary-linear {
-    background: linear-gradient(360deg, rgba(20, 22, 28, 0) 0%, rgba(103, 141, 240, 0.3) 100%);
-    background-blend-mode: lighten;
-}
-
-//== royal blue
-@mixin royal-blue-linear {
-    background: linear-gradient(360deg, rgba(20, 22, 28, 0) 0%, rgba(103, 141, 240, 0.3) 100%);
-    background-blend-mode: lighten;
-}
-
-//== yellow linear
-@mixin yellow-linear {
-    background: linear-gradient(360deg, rgba(20, 28, 26, 0) 0%, rgba(239, 208, 98, 0.3) 100%);
-    background-blend-mode: lighten;
-}
-
-//== danger linear
-@mixin danger-color-linear {
-    background: linear-gradient(360deg, rgba(20, 22, 28, 0) 0%, rgba(226, 100, 130, 0.3) 100%);
-    background-blend-mode: lighten;
-}
-
-//== success linear
-@mixin success-color-linear {
-    background: linear-gradient(360deg, rgba(20, 28, 26, 0) 0%, rgba(98, 239, 205, 0.3) 100%);
-    background-blend-mode: lighten;
-}
-
-//== cyan linear
-@mixin cyan-color-linear {
-    background: linear-gradient(360deg, rgba(20, 22, 28, 0) 0%, rgba(91, 186, 240, 0.3) 100%);
-    background-blend-mode: lighten;
-}
-
-//=== Tooltip ===//
-@mixin tooltip{
-    position:relative;
-    display:inline-block;
-    cursor:$cursor-pointer;
-}
-
-@mixin tooltip-top {
-    background-color: $dark-black-pearl;
-    border-radius: $rounded;
-    min-width: 142px;
-    top: -7px;
-    left: 50%;
-    transform: translate(-50%, -100%);
-    padding: 0.625rem 1.25rem;
-    z-index: 10000;
-    visibility: hidden;
-    display: block;
-    position: absolute;
-    white-space: $nowrap-white-space;
-    @include font-12;
-    @include open-sans-600;
-    letter-spacing: $letter-spacing-25;
-    line-height: $line-height-21;
-    text-align: $text-align-left;
-    text-transform: $text-capitalize;
-
-    &::after {
-        content: "";
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        margin-left: -5px;
-        border-width: 5px;
-        border-style: solid;
-        border-color: $dark-black-pearl $transparent-color $transparent-color $transparent-color;
-    }
-}
-
-//=== vertical center ===//
-//== align center
-@mixin align-center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%, -50%);
-}
-
-
-

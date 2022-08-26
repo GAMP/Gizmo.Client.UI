@@ -3,7 +3,9 @@
 @using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
 
-<Drawer @bind-IsOpen="IsOpen">
+<div class="giz-dropdown-menu @(_isOpen ? "open" : "")"
+     id="@Id"
+     @ref="@Ref">
     <div class="giz-active-apps">
         <div class="giz-active-apps__header">
             <div class="giz-heading">Active applications</div>
@@ -14,5 +16,5 @@
                 <MenuActiveApplicationCard Executable="@executable" />
             }
         </div>
-    </div>    
-</Drawer>
+    </div>
+</div>

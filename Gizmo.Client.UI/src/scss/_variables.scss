@@ -1,187 +1,37 @@
 //=============== Client UI @import font family based on new theme pattern ================//
 
-@import url("https://fonts.googleapis.com/css2?family=Metrophobic&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400%3b500%3b600%3b700%3b800&display=swap');
-
 //=============== Client UI variable declare based on New theme pattern ================//
 
 //===============  (variable declare based on root font-size 16px) ================//
 
 //== font family
 
-$font-family: 'Noto Sans', sans-serif;
-$font-family-open-sans: 'Open Sans', sans-serif;
-$font-family-mark-pro: 'MarkPro', sans-serif;
-
-@font-face {
-    font-family: $font-family-mark-pro;
-    src: url(../font-family/FontFont_FF.Mark.Bold.otf);
-}
+$font-family-header: Rubik, sans-serif;
+$font-family-text: 'Noto Sans', sans-serif;
 
 //== common color
 
-$primary-color: #258cf6;
-$primary-dark: #2C94F4;
-$primary-dim-light: #289BDD;
-$primary-dim-color: #264F79;
-$primary-light-color: #8DA4CF;
-$secondary-color: rgba(55, 74, 97, 0.4);
-$secondary-light: rgba(46, 49, 58, 0.5);
-$secondary-dark: rgba(46, 49, 58, 1);
-$info-color: #153C7A;
-$success-color: #25AE7D;
-$success-light-color: #32E865;
-$success-dark-color: #39B153;
-$dark-color: rgba(9, 11, 16, 0.5);
-$dark-light-color: rgba(9, 11, 16, 0.1);
-$dark-jungle: #0E1015;
-$dark-grayish: #33353D;
-$jet-black: #1B1D25;
-$black-color: #000000;
-$black-forest: #1A1D25;
-$black-russian: #1B1E26;
-$onyx-black: #0D0E12;
-$midnight-black: #22262F;
-$black-mirage-color: #1C2129;
-$black-mirage-light-color: #1B1F28;
-$light-midnight-black: #2A2E3B;
-$dim-midnight-black: #2A2E3C;
-$metalic-black: #23262F;
-$dark-black-pearl: rgba(4, 5, 6, 1);
-$black-pearl: rgba(4, 5, 6, 0.65);
-$black-slate: rgba(20, 22, 28, 0.8);
-$danger-color:rgba(217, 61, 71, 0.85);
-$danger-light: #DC1C1C;
-$cerise-pink: #EC296F;
-$white-color: #FFFFFF;
-$dim-white: rgba(255, 255, 255, 0.6);
-$milky-white: #FEFEFF;
-$light-color: rgba(176, 187, 203, 0.08);
-$gray-color: rgba(44, 48, 63, 0.6);
-$gray-light-color: rgba(196, 204, 217, 0.5);
-$gray-nickel: #C4C4C4;
-$jet-gray: #66687E;
-$gray-dark: #c2c8d3;
-$gray-dim: #666A79;
-$slate-gray: #4a5560;
-$slate-light-gray: #D3D9E4;
-$smokey-gray: #697079;
-$light-smokey-grey: #CAD4E2;
-$light-slate-gray: rgba(73, 76, 86, 1);
-$blue-gray: rgba(198, 216, 242, 0.55);
-$dull-blue: #6785AC;
-$royal-blue: #4958DF;
-$curious-blue: #36A5C9;
-$navy-blue: #3380F2;
-$light-blue: #C6C9D8;
-$pastel-blue: #8CBFF3;
-$blue-charcoal-color: #0C131D;
-$dark-pastel-blue: #19314D;
-$light-navy-blue: #204D82;
-$light-blue-gray: rgba(186, 204, 238, 0.9);
-$dark-blue-gray: rgba(188, 204, 234, 0.85);
-$light-gray: #D0D9E3;
-$light-dim-gray-color: rgba(208, 217, 227, 0.4);
-$melrose-color: rgba(191, 200, 236, 0.4);
-$warning-color: rgba(215, 134, 40, 0.92);
-$warning-dark: #BB8B2D;
-$blue-violet: rgba(139, 61, 217, 0.85);
-$dim-blue-gray: #dee4fc99;
-$dim-light: rgba(176, 187, 203, 0.04);
-$gray-black: rgba(47, 50, 62, 0.9);
-$davy-gray: #4E5160;
-$davy-dark-gray: #4E535E;
-$santa-grey-color: #9EA1AC;
-$midnight-color: rgba(39, 49, 57, 0.5);
-$transparent-color: transparent;
-$crystal-light: rgba(98, 123, 156, 0.05);
-$border-color: #282B32;
-$border-dark-color: #303D4E;
-$border-light-color: #2a2f34;
-$border-dim: rgba(192, 204, 234, 0.25);
-$border-black-color: #242931;
-$border-dark-blue: #2C3847;
-$border-nile-blue: #263649;
-$border-cinder-color: #262C34;
-$border-bright-gray: #3C414A;
-$border-silver-gray: #343C47;
-$border-black-gray: #2C303A;
-$border-ship-gray: rgba(54, 63, 73, 0.75);
-$border-steel-gray: rgba(108, 124, 133, 0.55);
-$border-charcoal-gray: rgba(59, 62, 66, 0.5);
-$border-heather-gray: rgba(177, 191, 200, 0.35);
-$border-oslo-gray: rgba(140, 145, 156, 0.35);
+//Updated
+$primary-color: #3F8CFF;
 
-//== polysquare border color
-$border-dark-sky-blue: rgba(90, 145, 253, 0.4);
-$border-harvest-gold: rgba(238, 181, 115, 0.4);
-$border-denim-blue: rgba(115, 194, 238, 0.4);
-$border-green: rgba(206, 238, 115, 0.4);
-$border-red: rgba(238, 115, 115, 0.4);
-$border-blue: rgba(115, 172, 238, 0.4);
+$bg-alert: #F73B3B;
 
-//== typography
-//font size  (based on root font-size 16px)
-$font-9: 0.563rem;
-$font-10:0.625rem;
-$font-11:0.688rem;
-$font-12: 0.75rem;
-$font-13: 0.8125rem;
-$font-14: 0.875rem;
-$font-15: 0.9375rem;
-$font-16: 1rem;
-$font-17: 1.0625rem;
-$font-18: 1.125rem;
-$font-19: 1.1875rem;
-$font-20: 1.25rem;
-$font-21: 1.313rem;
-$font-22: 1.375rem;
-$font-23: 1.438rem;
-$font-24: 1.5rem;
-$font-25: 1.563rem;
-$font-26: 1.625rem;
-$font-100: 6.25rem;
-
-//letter-spacing
-$letter-spacing-1: -0.01rem;
-$letter-spacing-24: -0.015rem;
-$letter-spacing-25: -0.025rem;
-$letter-spacing-10: 0.05rem;
-$letter-spacing-8: -0.08px;
-$letter-spacing-2: -0.02rem;
-$letter-spacing-5: -0.005rem;
-$letter-spacing-6: 0.06rem;
-$letter-spacing-15:0.015rem;
-
-//line height  (based on root font-size 16px)
-$line-height-9: 0.563rem;
-$line-height-10: 0.625rem;
-$line-height-11: 0.688rem;
-$line-height-12: 0.75rem;
-$line-height-13: 0.8125rem;
-$line-height-14: 0.875rem;
-$line-height-15: 0.9375rem;
-$line-height-16: 1rem;
-$line-height-17: 1.0625rem;
-$line-height-18: 1.125rem;
-$line-height-19: 1.1875rem;
-$line-height-20: 1.25rem;
-$line-height-21: 1.313rem;
-$line-height-22: 1.375rem;
-$line-height-23: 1.438rem;
-$line-height-24: 1.5rem;
-$line-height-25: 1.563rem;
-$line-height-26: 1.625rem;
-$line-height-100: 6.25rem;
-
-//cursor
-$cursor-pointer: pointer;
-
-//list
-$list-unstyled: none;
-
-//text decoration
-$text-decoration: none;
+$typo-primary: #FAFAFA;
+$typo-secondary: rgba(255, 255, 255, 0.6);
+$typo-brand: #0091E6;
+$typo-ghost: rgba(255, 255, 255, 0.3);
+$typo-link: #0F9FFF;
+$typo-link-hover: #6FA5C8;
+$typo-link-mirror: #57BCFF;
+$typo-system: #636E83;
+$typo-normal: #009BF5;
+$typo-success: #10AE79;
+$typo-warning: #E68200;
+$typo-alert: #F73B3B;
+$typo-caution: #F8C735;
+$typo-critical: #62001D;
+//Old
+$unknown-color: orange;
 
 //vertical align
 $vertical-align-middle: middle;
@@ -193,183 +43,3 @@ $base-line-height: normal;
 $base-letter-spacing: normal;
 $base-color: #FAFAFA;
 $base-background: #0C0F11;
-
-//nowrap
-$nowrap-overflow: hidden;
-$nowrap-white-space: nowrap;
-$nowrap-text-overflow: ellipsis;
-
-//== box shadow (elevation)
-
-$elevation-0: none;
-$elevation-1: 0px 1px 12px rgba(37, 140, 246, 0.5);
-$elevation-2: 0px 5px 10px rgba(8, 8, 13, 0.3);
-$elevation-3: 0px 4px 8px rgba(4, 5, 6, 0.4);
-$elevation-4: 0px 5px 10px rgba(8, 8, 13, 0.3);
-$elevation-5: 0px 20px 15px 5px rgba(4, 5, 6, 0.4);
-$elevation-6: 0px 0px 7px 3px rgba(245, 6, 6, 0.25);
-
-//== text shadow
-$text-shadow-sm: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-//== height/width
-
-$width-full: 100%;
-$height-full: 100%;
-$min-height: 100vh;
-$viewport-height:100vh;
-
-//== border size
-
-$border-0: 0rem;
-$border: 1px solid #282B32;
-$border-top: 1px solid #282B32;
-$border-bottom: 1px solid #282B32;
-$border-start: 1px solid #282B32;
-$border-end: 1px solid #282B32;
-
-//== border radius
-
-$rounded-circle: 50%;
-$rounded-pill: 12.5rem;
-$rounded-pill-37: 2.313rem;
-$rounded-pill-19: 1.188rem;
-$rounded-0: 0rem;
-$rounded: 0.25rem;
-$rounded-sm: 0.188rem;
-$rounded-md:0.375rem;
-$rounded-5:0.313rem;
-$rounded-lg:0.5rem;
-$rounded-xl:0.625rem;
-$rounded-xxl: 0.75rem;
-
-//==outline
-
-$outline-0: 0rem;
-
-//== font weight
-
-$font-weight-400: 400;
-$font-weight-500: 500;
-$font-weight-600: 600;
-$font-weight-700: 700;
-$font-weight-800: 800;
-$font-weight-bold: bold;
-$font-weight-normal: normal;
-
-//== alignment
-
-$float-left: left;
-$float-right: right;
-$text-align-center: center;
-$text-align-left: left;
-$text-align-right: right;
-$text-align-justify: justify;
-
-//== text transform
-
-$text-lowercase: lowercase;
-$text-uppercase: uppercase;
-$text-capitalize: capitalize;
-
-//== flex
-
-$flex-row: row;
-$flex-row-reverse: row-reverse;
-$flex-column: column;
-$flex-column-reverse: column-reverse;
-$flex-wrap: wrap;
-$flex-nowrap: nowrap;
-$flex-wrap-reverse: wrap-reverse;
-$flex-fill: 1 1 auto;
-$flex-grow-0: 0;
-$flex-grow-1: 1;
-$flex-shrink-0: 0;
-$flex-shrink-1: 1;
-$align-start: flex-start;
-$align-end: flex-end;
-$align-center: center;
-$align-baseline: baseline;
-$align-stretch: stretch;
-$align-content-start: flex-start;
-$align-content-end: flex-end;
-$align-content-center: center;
-$align-content-space-between: space-between;
-$align-content-space-around: space-around;
-$align-content-stretch: stretch;
-$align-self-auto: auto;
-$align-self-start: flex-start;
-$align-self-end: flex-end;
-$align-self-center: center;
-$align-self-baseline: baseline;
-$align-self-stretch: stretch;
-$order-first: -1;
-$order-0: 0;
-$order-1: 1;
-$order-2: 2;
-$order-3: 3;
-$order-4: 4;
-$order-5: 5;
-$order-6: 6;
-$order-7: 7;
-$order-8: 8;
-$order-9: 9;
-$order-10: 10;
-$order-11: 11;
-$order-12: 12;
-$order-last: 13;
-
-//== spacing margin/padding (based on root font-size 16px)
-
-$spacer-0: 0rem;
-$spacer-4: 0.25rem;
-$spacer-8: 0.5rem;
-$spacer-12: 0.75rem;
-$spacer-16: 1rem;
-$spacer-20: 1.25rem;
-$spacer-24: 1.5rem;
-$spacer-28: 1.75rem;
-$spacer-32: 2rem;
-$spacer-36: 2.25rem;
-$spacer-40: 2.5rem;
-$spacer-44: 2.75rem;
-$spacer-48: 3rem;
-$spacer-52: 3.25rem;
-$spacer-56: 3.5rem;
-$spacer-60: 3.75rem;
-$spacer-64: 4rem;
-$spacer-auto: auto;
-
-//== spacing -negtive margin (based on root font-size 16px)
-
-$spacer-n4: -0.25rem;
-$spacer-n8: -0.5rem;
-$spacer-n12: -0.75rem;
-$spacer-n16: -1rem;
-$spacer-n20: -1.25rem;
-$spacer-n24: -1.5rem;
-$spacer-n28: -1.75rem;
-$spacer-n32: -2rem;
-$spacer-n36: -2.25rem;
-$spacer-n40: -2.5rem;
-$spacer-n44: -2.75rem;
-$spacer-n48: -3rem;
-$spacer-n52: -3.25rem;
-$spacer-n56: -3.50rem;
-$spacer-n60: -3.75rem;
-$spacer-n64: -4rem;
-
-// @extend/inheritance (common style properties)
-/*%gizmo-font-19-normal {
-    font-size: $font-19;
-    font-weight: $font-weight-500;
-    line-height: $line-height-24;
-    letter-spacing: $letter-spacing-8;
-}
-
-%gizmo-font-19-bold {
-    font-size: $font-19;
-    font-weight: $font-weight-bold;
-    line-height: $line-height-24;
-    letter-spacing: $letter-spacing-8;
-}*/

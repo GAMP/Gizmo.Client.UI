@@ -75,10 +75,7 @@
             display: flex;
             align-items: center;
             position: relative;
-            //Font
-            font-weight: 500;
-            font-size: 18px;
-            line-height: 28px;
+            @include font-xl($font-weight-normal);
 
             &__icon {
                 margin-right: 10px;
@@ -92,6 +89,7 @@
                 padding: 7px;
                 border-radius: 8px;
                 cursor: pointer;
+                height: 48px;
             }
         }
     }
@@ -100,13 +98,15 @@
 .giz-dropdown-menu {
     display: none;
     position: absolute;
-    top: 100%;
+    //TODO: top: 100%;
+    top: calc(100% + 8px);
     right: 0;
     z-index: 100;
-    white-space: nowrap;
 }
 
 .giz-user-dropdown {
+    white-space: nowrap;
+
     &:hover {
         .giz-user-menu-button {
             background: #1D334E;
@@ -136,9 +136,9 @@
     color: #E0E1E6;
     cursor: pointer;
     //Font
-    font-weight: 500;
     font-size: 15px;
     line-height: 20px;
+    font-weight: 500;
 
     &:hover {
         color: #0F7CFE;
@@ -181,14 +181,36 @@
         justify-content: center;
         align-items: center;
         cursor: pointer;
+        color: rgba(255, 255, 255, 0.75);
     }
 }
 
 .giz-notifications-dropdown {
-    &:hover {
-        .giz-dropdown-menu {
+    &.open {
+        .user-menu-item-button--box {
+            background: #1D334E;
+            color: #0F7CFE;
+        }
+    }
+
+    .giz-dropdown-menu {
+        &.open {
             display: block;
         }
     }
 }
 
+.giz-active-apps-dropdown {
+    &.open {
+        .user-menu-item-button--box {
+            background: #1D334E;
+            color: #0F7CFE;
+        }
+    }
+
+    .giz-dropdown-menu {
+        &.open {
+            display: block;
+        }
+    }
+}

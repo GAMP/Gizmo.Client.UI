@@ -5,19 +5,15 @@
     transform: translate(0%, 0%);
     right: 0;
     z-index: 1000;
-    background: $dark-color;
-    box-shadow: $elevation-4;
+    background: $unknown-color;
     backdrop-filter: blur(20px);
-    list-style: $list-unstyled;
     min-width: 11.563rem;
     margin-top: 0.438rem;
-    border: 1px solid $midnight-color;
+    border: 1px solid $unknown-color;
     display: none;
-    text-align: $text-align-left;
 
     &--item {
         padding: 0.625rem 0px;
-        letter-spacing: $letter-spacing-2;
 
         form {
             display: inline-block;
@@ -28,7 +24,7 @@
                 position: relative;
                 padding-left: 1.063rem;
                 margin-bottom: 0.75rem;
-                cursor: $cursor-pointer;
+                cursor: pointer;
                 -webkit-user-select: none;
                 -moz-user-select: none;
                 -ms-user-select: none;
@@ -37,7 +33,7 @@
                 input {
                     position: absolute;
                     opacity: 0;
-                    cursor: $cursor-pointer;
+                    cursor: pointer;
                     height: 0;
                     width: 0;
                 }
@@ -48,9 +44,6 @@
                     left: 0;
                     height: 0.875rem;
                     width: 0.875rem;
-                    background: $dark-light-color;
-                    border: 1px solid $border-bright-gray;
-                    border-radius: $rounded;
 
                     &:after {
                         content: "";
@@ -60,7 +53,7 @@
                         top: 1px;
                         width: 0.188rem;
                         height: 0.438rem;
-                        border: solid $white-color;
+                        border: solid white;
                         border-width: 0 1px 1px 0;
                         -webkit-transform: rotate(45deg);
                         -ms-transform: rotate(45deg);
@@ -69,7 +62,7 @@
                 }
 
                 input:checked ~ .giz-checkmark {
-                    background-color: $transparent-color;
+                    background-color: transparent;
                 }
 
                 input:checked ~ .giz-checkmark:after {
@@ -79,52 +72,49 @@
         }
 
         .giz-terminate {
-            stroke: $dim-white;
+            stroke: $unknown-color;
         }
 
         svg {
             margin: 0 0.688rem;
-            fill: $dim-white;
+            fill: $unknown-color;
         }
 
         .giz-icon-right {
-            float: $float-right;
+            float: right;
             margin-top: 0.188rem;
         }
 
         &:hover {
-            background: $midnight-color;
-            color: $white-color;
+            background: $unknown-color;
+            color: white;
 
             svg {
-                fill: $white-color !important;
+                fill: white !important;
             }
 
             .giz-terminate {
-                stroke: $white-color;
+                stroke: white;
             }
         }
 
         &:hover .giz-sub-dropdown--link {
-            color: $white-color;
+            color: white;
         }
     }
 
     &--link {
-        color: $dim-white;
-        @include open-sans-600;
-        @include font-13;
+        color: $unknown-color;
         display: inline-block;
     }
 
     &--btn {
-        border-top: 1px solid $border-black-gray;
         padding: 0.813rem 0.75rem;
         display: none;
 
         .giz-primary {
             padding: 0.75rem 0.813rem;
-            width: $width-full;
+            width: 100%;
         }
     }
 }

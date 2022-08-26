@@ -6,77 +6,73 @@
     background: #22272B;
     box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.08);
     border-radius: 0px 0px 8px 8px;
+    min-height: 533px;
+    width: 360px;
 
     &__header {
         color: #E4E6EB;
-        padding: 20px 24px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        //Font
-        font-weight: 700;
-        font-size: 24px;
-        line-height: 30px;
+        //padding: 8px 16px 16px 16px;
+        padding: 8px 16px;
+        //border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        @include font-h5($font-weight-bold);
 
         span {
             color: rgba(255, 255, 255, 0.75);
-            //Font
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 24px;
+            @include font-s($font-weight-light);
         }
+    }
+
+    &__body {
+        padding: 8px;
     }
 
     &__footer {
         text-align: center;
         color: #0F7CFE;
         padding: 11px;
-        //Font
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 26px;
+        @include font-l($font-weight-normal);
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
     }
 }
 
 .giz-menu-notification-item {
-    padding: 1.375rem;
-    border-bottom: 1px solid $border-nile-blue;
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    grid-template-rows: 1fr min-content;
+    gap: 4px;
+    padding: 8px;
+    //border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     position: relative;
+    //background: #373839;
+    //border-radius: 8px;
 
     &:last-child {
         border-bottom: none;
     }
 
-    &-title {
-        color: #FAFAFA;
-        //Font
-        font-weight: 700;
-        font-size: 16px;
-        line-height: 26px;
+    &__text {
+        @include font-m($font-weight-light);
     }
 
     &__icon {
-        position: absolute;
-        right: 26px;
-        top: 42px;
+        display: flex;
 
         svg {
             fill: $primary-color;
+            width: 12px;
+            height: 12px;
         }
     }
 
-    &__text {
-        color: #FAFAFA;
-        //Font
-        font-weight: 500;
-        font-size: 14px;
-        line-height: 22px;
+    &__details {
+        grid-column-start: 1;
+        grid-column-end: 3;
+        display: flex;
+        justify-content: space-between;
+        @include font-s($font-weight-light);
 
-        span {
-            color: rgba(255, 255, 255, 0.6);
-            //text-align: right;
-            //Font
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 18px;
+        &__time {
+            color: #2E89FF;
         }
     }
 }

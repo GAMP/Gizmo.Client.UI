@@ -67,7 +67,7 @@ namespace Gizmo.Client.UI.Pages
             return Task.CompletedTask;
         }
 
-        private Task SelectProductGroup(int productGroupId)
+        private Task SelectProductGroup(int? productGroupId)
         {
             _selectedProductGroupId = productGroupId;
 

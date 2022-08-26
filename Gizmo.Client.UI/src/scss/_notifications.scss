@@ -19,51 +19,36 @@
 }
 
 .giz-notification-card {
+    background: #22272B;
+    box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
     width: 24.063rem;
     padding: 2.063rem 1.813rem;
-    backdrop-filter: blur(20px);
-    border-radius: $rounded-xl;
-    background: linear-gradient( 180deg, rgba(90, 94, 107, 0) -12%, rgba(37, 140, 246, 0.45) 169%);
     position: relative;
-    border: 1px solid $border-color;
     overflow: hidden;
 
-    &::before {
-        content: "";
-        background: $dark-color;
-        position: absolute;
-        height: $height-full;
-        width: $width-full;
-        z-index: -1;
-        top: 0;
-        left: 0;
-    }
-
     &__header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 0.5rem;
+        display: grid;
+        grid-template-columns: 1fr min-content;
+        grid-template-rows: min-content min-content;
+        margin-bottom: 24px;
 
-        .giz-heading-text {
-            @include font-10($letter-spacing-15);
-            color: $primary-light-color;
+        &__title {
+            grid-row-start: 1;
+            grid-row-end: 2;
+            //Font
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 30px;
         }
 
-        .giz-terminate {
-            background: inherit;
+        &__subtitle {
+            grid-row-start: 2;
+            grid-row-end: 3;
+            //Font
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 26px;
         }
-    }
-
-    &__title {
-        @include font-18;
-        letter-spacing: $letter-spacing-2;
-        margin-bottom: 1.25rem;
-    }
-
-    &__text {
-        font-size: $font-15;
-        letter-spacing: $letter-spacing-24;
-        line-height: $line-height-20;
     }
 }

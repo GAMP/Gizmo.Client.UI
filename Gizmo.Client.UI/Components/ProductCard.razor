@@ -7,8 +7,19 @@
         <div class="hoverable-content">
             <div class="giz-product-card__content">
                 <div class="giz-product-card__content__image">
-                    @*<PolygonIcon />*@
-                    <img src="_content/Gizmo.Client.UI/img/@Product?.Image" alt='loading' />
+                    @if (@Product != null)
+                    {
+                        @switch (Product.ProductType)
+                        {
+                            case ProductType.Product:
+                                <img src="_content/Gizmo.Client.UI/img/@Product?.Image" alt='loading' />
+                                break;
+
+                            case ProductType.ProductTime:
+                                <PolygonIcon />
+                                break;
+                        }
+                    }
                 </div>
                 <div class="giz-product-card__content__details">
                     <div class="giz-product-card__price">

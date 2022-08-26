@@ -11,21 +11,33 @@
         grid-template-rows: min-content 1fr;
         height: 100%;
         overflow: hidden;
-        padding: 16px;
 
-        &__tab {
-            background: rgba(255, 255, 255, 0.01);
-            box-shadow: inset 0px 0px 101px rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(60px);
-            border-radius: 16px;
-            height: 66px;
+        &__header {
+            width: 100%;
+            overflow: auto;
             padding: 16px;
-            overflow: hidden;
-            display: flex;
-            gap: 10px;
+
+            &__tab {
+                background: rgba(255, 255, 255, 0.01);
+                box-shadow: inset 0px 0px 101px rgba(255, 255, 255, 0.06);
+                backdrop-filter: blur(60px);
+                border-radius: 16px;
+                height: 66px;
+                padding: 16px;
+                display: flex;
+                gap: 10px;
+                width: 100%;
+                overflow: hidden;
+            }
         }
 
-        &__popular {
+        &__body {
+            padding: 16px;
+            height: 100%;
+            overflow: auto;
+
+            &__ads {
+            }
         }
 
         &__list {
@@ -66,10 +78,7 @@
         &__header {
             border-bottom: 1px solid rgba(246, 251, 253, 0.06);
             padding: 24px 24px 4px 24px;
-            //Font
-            font-weight: 500;
-            font-size: 20px;
-            line-height: 30px;
+            @include font-xxl($font-weight-normal);
         }
 
         &__body {
@@ -88,20 +97,14 @@
                     border-bottom: 1px solid rgba(246, 251, 253, 0.06);
 
                     &__description {
-                        //Font
-                        font-weight: 500;
-                        font-size: 14px;
-                        line-height: 22px;
+                        @include font-m($font-weight-normal);
                     }
 
                     &__details {
                         display: grid;
                         grid-template-rows: min-content 1fr min-content;
                         text-align: right;
-                        //Font
-                        font-weight: 500;
-                        font-size: 18px;
-                        line-height: 28px;
+                        @include font-xl($font-weight-normal);
 
                         &__price {
                         }
@@ -118,13 +121,10 @@
                         display: grid;
                         grid-column-gap: 0.625rem;
                         grid-template-columns: 2fr .3fr;
-                        @include open-sans-600;
-                        @extend .giz-no-order-wrapper__title;
 
                         .giz-rounded-circle {
-                            background: $midnight-black;
-                            border-radius: $rounded-circle;
-                            text-align: $text-align-center;
+                            background: $unknown-color;
+                            text-align: center;
                             height: 1.875rem;
                             width: 1.875rem;
                             margin-top: 0.625rem;
@@ -133,18 +133,9 @@
 
                     &__amount {
                         margin: 1.25rem 0;
-                        @include open-sans-600;
-                        font-size: $font-13;
-                        line-height: $line-height-16;
-                        letter-spacing: $letter-spacing-5;
-                        color: $santa-grey-color;
                     }
 
                     &__buttons {
-                        font-size: $font-15;
-                        line-height: $line-height-19;
-                        letter-spacing: $letter-spacing-5;
-
                         span {
                             margin: 0 0.625rem;
                         }
@@ -156,41 +147,19 @@
                         .giz-decrease-btn {
                             padding: 0.063rem 0.5rem;
                         }
-
-                        button {
-                            background: $midnight-black;
-                            border-radius: $rounded;
-                            @extend .giz-order-item__buttons;
-
-                            &:hover {
-                                background: $davy-dark-gray;
-                            }
-
-                            &:focus {
-                                background: $davy-dark-gray;
-                            }
-                        }
                     }
                 }
             }
 
             .giz-no-order-wrapper {
-                @include align-center;
                 width: fit-content;
-                text-align: $text-align-center;
-                @include open-sans-600;
+                text-align: center;
 
                 &__title {
-                    font-size: $font-15;
-                    line-height: $line-height-19;
-                    letter-spacing: $letter-spacing-5;
                     margin-bottom: 0.625rem;
                 }
 
                 &__text {
-                    @include font-12;
-                    color: $davy-gray;
-                    letter-spacing: $letter-spacing-2;
                 }
             }
         }
@@ -224,33 +193,21 @@
             margin-bottom: 24px;
 
             &-text-bold {
-                //Font
-                font-weight: 500;
-                font-size: 20px;
-                line-height: 30px;
+                @include font-xxl($font-weight-normal);
             }
 
             &-number-bold {
                 text-align: right;
-                //Font
-                font-weight: 700;
-                font-size: 24px;
-                line-height: 30px;
+                @include font-h5($font-weight-bold);
             }
 
             &-text {
-                //Font
-                font-weight: 400;
-                font-size: 14px;
-                line-height: 22px;
+                @include font-m($font-weight-light);
             }
 
             &-number {
                 text-align: right;
-                //Font
-                font-weight: 400;
-                font-size: 14px;
-                line-height: 22px;
+                @include font-m($font-weight-light);
             }
         }
     }
@@ -265,10 +222,7 @@
     text-align: center;
     color: #FFFFFF;
     padding: 0 6px;
-    //Font
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 26px;
+    @include font-l($font-weight-normal);
 
     button {
         background: none;
@@ -276,9 +230,6 @@
         color: #FFFFFF;
         cursor: pointer;
         padding: 0 6px;
-        //Font
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 26px;
+        @include font-l($font-weight-normal);
     }
 }

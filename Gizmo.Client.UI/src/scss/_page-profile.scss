@@ -19,10 +19,7 @@
 
         &-item {
             height: 46px;
-            //Font
-            font-weight: 500;
-            font-size: 16px;
-            line-height: 26px;
+            @include font-l($font-weight-normal);
 
             & > a {
                 display: flex;
@@ -68,10 +65,7 @@
         &__header {
             color: #FAFAFA;
             margin-bottom: 24px;
-            //Font
-            font-weight: 500;
-            font-size: 24px;
-            line-height: 30px;
+            @include font-h5($font-weight-normal);
         }
     }
 
@@ -84,10 +78,7 @@
         &__header {
             color: #FAFAFA;
             margin-bottom: 24px;
-            //Font
-            font-weight: 500;
-            font-size: 24px;
-            line-height: 30px;
+            @include font-h5($font-weight-normal);
         }
 
         .giz-table-history {
@@ -104,25 +95,16 @@
     grid-row-gap: 20px;
     grid-column-gap: 60px;
     color: rgba(255, 255, 255, 0.6);
-    //Font
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 26px;
+    @include font-l($font-weight-normal);
 
     &-text {
         color: #FAFAFA;
-        //Font
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 26px;
+        @include font-l($font-weight-light);
     }
 
     &--not-available {
         color: rgba(255, 255, 255, 0.24);
-        //Font
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 26px;
+        @include font-l($font-weight-normal);
     }
 }
 
@@ -132,8 +114,6 @@
     &--dot {
         height: 0.563rem;
         width: 0.563rem;
-        background: $white-color;
-        border-radius: $rounded-circle;
         margin-right: 0.188rem;
     }
 }
@@ -156,7 +136,7 @@
 
         &__about {
             display: flex;
-            flex-direction: $flex-column;
+            flex-direction: column;
             justify-content: flex-end;
             gap: 16px;
 
@@ -164,18 +144,15 @@
                 color: #FAFAFA;
                 text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 8px rgba(0, 0, 0, 0.2);
                 //Font
-                font-weight: 500;
                 font-size: 36px;
                 line-height: 44px;
+                font-weight: 500;
             }
 
             &__host {
                 color: rgba(255, 255, 255, 0.6);
                 text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2), 0px 1px 1px rgba(0, 0, 0, 0.2);
-                //Font
-                font-weight: 500;
-                font-size: 20px;
-                line-height: 30px;
+                @include font-xxl($font-weight-normal);
             }
         }
     }
@@ -188,7 +165,6 @@
         &-item {
             display: flex;
             align-items: center;
-            border-right: solid 1px $border-black-color;
             padding-right: 16px;
 
             &:last-child {
@@ -203,16 +179,11 @@
         &-text {
 
             .giz-title {
-                @include font-10;
-                color: $dim-white;
-                text-shadow: $text-shadow-sm;
+                color: $unknown-color;
                 margin-bottom: 0.25rem;
             }
 
             .giz-numbers {
-                @include open-sans-600;
-                line-height: $line-height-16;
-                letter-spacing: $letter-spacing-24;
             }
         }
     }

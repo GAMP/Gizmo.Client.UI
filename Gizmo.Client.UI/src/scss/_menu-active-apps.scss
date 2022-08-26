@@ -1,13 +1,16 @@
 //=============== Menu Active Apps ================//
 
 .giz-active-apps {
+    display: grid;
+    grid-template-rows: min-content 1fr;
+    background: #22272B;
+    box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.08);
+    border-radius: 0px 0px 8px 8px;
+
     &__header {
         color: #E4E6EB;
         padding: 8px 16px;
-        //Font
-        font-weight: 700;
-        font-size: 24px;
-        line-height: 30px;
+        @include font-h5($font-weight-bold);
     }
 
     &__body {
@@ -26,18 +29,12 @@
         &__category {
             color: rgba(255, 255, 255, 0.6);
             opacity: 0.6;
-            //Font
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 18px;
+            @include font-s($font-weight-light);
         }
 
         &__title {
             color: #FAFAFA;
-            //Font
-            font-weight: 500;
-            font-size: 16px;
-            line-height: 26px;
+            @include font-l($font-weight-normal);
         }
     }
 }

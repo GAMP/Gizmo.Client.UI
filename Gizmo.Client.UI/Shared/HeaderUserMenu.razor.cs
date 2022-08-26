@@ -28,11 +28,21 @@ namespace Gizmo.Client.UI
         public void ToggleActiveApps()
         {
             _activeAppsIsOpen = !_activeAppsIsOpen;
+
+            if (_activeAppsIsOpen)
+            {
+                _notificationsIsOpen = false;
+            }
         }
 
         public void ToggleNotifications()
         {
             _notificationsIsOpen = !_notificationsIsOpen;
+
+            if (_notificationsIsOpen)
+            {
+                _activeAppsIsOpen = false;
+            }
         }
     }
 }

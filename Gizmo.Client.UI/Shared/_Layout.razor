@@ -4,6 +4,7 @@
 @using Microsoft.Extensions.Options
 
 @inject IOptions<ClientUIOptions> ClientUIOptions
+@inject IJSRuntime JsRuntime
 
 @if (!string.IsNullOrEmpty(ClientUIOptions.Value.Skin))
 {
@@ -12,7 +13,7 @@
     </HeadContent>
 }
 
-<main>
+<main @onclick="OnMainClick">
     <div class="giz-background">
         <img src="_content/Gizmo.Client.UI/img/background.jpg" />
     </div>
@@ -27,3 +28,11 @@
 </main>
 
 <NotificationsContainer />
+
+@code
+{
+    private async Task OnMainClick(MouseEventArgs e)
+    {
+        await JsRuntime.InvokeVoidAsync("closeOpenPopups", e);
+    }
+}

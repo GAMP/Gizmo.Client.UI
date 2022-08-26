@@ -2,7 +2,9 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
-<div class="giz-dropdown-menu">
+<div class="giz-dropdown-menu @(_isOpen ? "open" : "")"
+     id="@Id"
+     @ref="@Ref">
     <div class="giz-menu-notifications">
         <div class="giz-menu-notifications__header">
             Notifications

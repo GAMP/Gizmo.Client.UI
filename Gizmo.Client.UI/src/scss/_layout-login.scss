@@ -20,9 +20,9 @@
 
                 .giz-nav-title {
                     //Font
-                    font-weight: 700;
                     font-size: 36px;
                     line-height: 44px;
+                    font-weight: 700;
                 }
             }
 
@@ -52,18 +52,12 @@
     .giz-version {
         &__title {
             color: #808185;
-            //Font
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 18px;
+            @include font-s($font-weight-light);
         }
 
         &__version {
             color: white;
-            //Font
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 18px;
+            @include font-s($font-weight-light);
         }
     }
 }
@@ -82,10 +76,7 @@
     &__header {
         .giz-login-new-user {
             text-align: right;
-            //Font
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 20px;
+            @include font-m($font-weight-light);
 
             & > a {
                 color: #3F8CFF;
@@ -114,28 +105,18 @@
 
 .giz-login-title {
     margin-bottom: 20px;
-
-    //Font
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 30px;
+    @include font-h5($font-weight-bold);
 }
 
 .giz-login-subtitle {
     margin-bottom: 24px;
-
-    //Font
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 26px;
+    @include font-l($font-weight-light);
 }
 
 .giz-language-menu {
 
     button {
-        font-weight: $font-weight-400;
-        @include font-9($line-height-9,$letter-spacing-2);
-        color: $light-blue-gray;
+        color: $unknown-color;
         vertical-align: text-top;
 
         span {
@@ -165,10 +146,7 @@
     position: relative;
     z-index: 1;
     float: right;
-    //Font
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 22px;
+    @include font-m($font-weight-light);
 
     & > a {
         color: #57BCFF;
@@ -184,10 +162,7 @@
         text-align: center;
         background-color: #131313;
         margin-bottom: 24px;
-        //Font
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 20px;
+        @include font-l($font-weight-light);
 
         span {
             position: relative;
@@ -223,14 +198,11 @@
 
 ////
 .giz-no-account {
-    @include font-9;
     margin-bottom: 0.625rem;
-    color: $dark-blue-gray;
+    color: $unknown-color;
 }
 
 .giz-footer-links {
-    @include font-11;
-    letter-spacing: $letter-spacing-10;
 }
 
 .giz-login-status {
@@ -242,8 +214,7 @@
 }
 
 .giz-footer-text {
-    @include font-9($line-height-14);
-    color: $dark-blue-gray;
+    color: $unknown-color;
 }
 
 .giz-mobile-number-input {
@@ -251,10 +222,6 @@
     justify-content: space-between;
 
     button {
-        letter-spacing: $letter-spacing-2;
-        font-weight: $font-weight-400;
-        border: 1px solid $border-charcoal-gray;
-
         span {
             vertical-align: middle;
             margin: 0 0.375rem;
@@ -268,7 +235,7 @@
     grid-gap: 0.813rem;
 
     input {
-        text-align: $text-align-center;
+        text-align: center;
         /*background: $dim-midnight-black;*/
     }
 }
@@ -276,12 +243,9 @@
 .giz-animate-spinner {
 
     &-title {
-        @include font-10($letter-spacing-15);
-        color: $primary-light-color;
+        color: $unknown-color;
     }
 
     &-text {
-        @include font-20;
-        letter-spacing: $letter-spacing-2;
     }
 }

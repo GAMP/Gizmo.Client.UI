@@ -14,6 +14,7 @@
             height: 246px;
             border-radius: 8px 8px 0 0;
             overflow: hidden;
+            text-align: center;
 
             img {
                 width: 100%;
@@ -46,24 +47,17 @@
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        //Font
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 22px;
+        @include font-m($font-weight-light);
     }
 
     &__price {
-        //Font
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 26px;
+        @include font-l($font-weight-light);
 
         svg {
-            fill: $white-color;
+            fill: white;
         }
 
         .inactive {
-            fill: $melrose-color;
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using Gizmo.Client.UI.ViewModels;
 using Gizmo.Web.Components;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Shared
 {
@@ -17,7 +20,39 @@ namespace Gizmo.Client.UI.Shared
             Notifications.Add(new MenuNotificationViewModel() { Id = 4, Title = "Order #0075364 was successfuly paid from your account.", Time = "3 days ago" });
         }
 
+        private bool _isOpen { get; set; }
+
+        #region PROPERTIES
+
+        [Inject]
+        protected IJSRuntime JsRuntime { get; set; }
+
+        [Parameter]
+        public bool IsOpen
+        {
+            get
+            {
+                return _isOpen;
+            }
+            set
+            {
+                if (_isOpen == value)
+                    return;
+
+                _isOpen = value;
+
+                _ = IsOpenChanged.InvokeAsync(_isOpen);
+            }
+        }
+
+        [Parameter]
+        public EventCallback<bool> IsOpenChanged { get; set; }
+
         public List<MenuNotificationViewModel> Notifications { get; set; }
+
+        #endregion
+
+        #region METHODS
 
         private void MarkAllAsRead()
         {
@@ -32,5 +67,45 @@ namespace Gizmo.Client.UI.Shared
                 Notifications.Remove(existingNotification);
             }
         }
+
+        #endregion
+
+        protected override async Task OnInitializedAsync()
+        {
+            await base.OnInitializedAsync();
+
+            //await JsRuntime.InvokeVoidAsync("registerPopup", Ref);
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await base.OnAfterRenderAsync(firstRender);
+
+            if (firstRender)
+            {
+                await JsRuntime.InvokeVoidAsync("registerPopup", Ref);
+                ClosePopupEventInterop = new ClosePopupEventInterop(JsRuntime);
+                await ClosePopupEventInterop.SetupClosePopupEventCallback(args => ClosePopupHandler(args));
+            }
+        }
+
+        public override void Dispose()
+        {
+            ClosePopupEventInterop?.Dispose();
+            _ = JsRuntime.InvokeVoidAsync("unregisterPopup", Ref);
+
+            base.Dispose();
+        }
+
+        private ClosePopupEventInterop ClosePopupEventInterop { get; set; }
+
+        private Task ClosePopupHandler(string args)
+        {
+            if (args == Id)
+                IsOpen = false;
+
+            return Task.CompletedTask;
+        }
+
     }
 }

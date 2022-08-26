@@ -43,21 +43,15 @@
     }
 
     &-text {
-        font-size: $font-12;
-        line-height: $line-height-12;
-        letter-spacing: $letter-spacing-2;
-        @include open-sans-600;
         overflow: hidden;
 
         .inactive {
-            fill: $melrose-color;
         }
 
         .giz-playing-indicator {
             height: 0.5rem;
             width: 0.5rem;
-            background: $danger-light;
-            border-radius: $rounded-circle;
+            background: $unknown-color;
             margin-right: 0.188rem;
             display: inline-block;
         }
@@ -67,22 +61,15 @@
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        //Font
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 26px;
+        @include font-l($font-weight-light);
     }
 
     &__count {
-        @include font-12;
-        text-shadow: $text-shadow-sm;
-        font-weight: $font-weight-400;
     }
 
     &__rating {
-        color: $light-blue;
+        color: $unknown-color;
         letter-spacing: normal;
-        font-weight: $font-weight-400;
         margin-left: 0.625rem;
     }
 }
@@ -102,10 +89,7 @@
     border-radius: 12px;
     padding: 4px 8px;
     color: #FAFAFA;
-    //Font
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
+    @include font-s($font-weight-light);
 
     & > svg {
         margin-right: 4px;
@@ -120,10 +104,7 @@
     border-radius: 12px;
     padding: 4px 8px;
     color: #FAFAFA;
-    //Font
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
+    @include font-s($font-weight-light);
 
     & > svg {
         margin-right: 4px;

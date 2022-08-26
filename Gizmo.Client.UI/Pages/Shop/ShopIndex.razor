@@ -6,25 +6,86 @@
 
 <div class="giz-shop">
     <div class="giz-shop__products">
-        <div class="giz-shop__products__tab">
-            <ClientTab>
-                @foreach (var productGroup in ShopService.ViewState.ProductGroups)
-                {
-                    <ClientTabItem Class="@(productGroup.Id == _selectedProductGroupId ? "active" : "")">
-                        <div @onclick=@(() => SelectProductGroup(productGroup.Id))>
-                            @productGroup.Name
+        <div class="giz-shop__products__header">
+            <div class="giz-shop__products__header__tab">
+                <ClientTab>
+                    <ClientTabItem Class="@(!_selectedProductGroupId.HasValue ? "active" : "")">
+                        <div @onclick=@(() => SelectProductGroup(null))>
+                            All
                         </div>
                     </ClientTabItem>
-                }
-            </ClientTab>
+                    @if (ShopService.ViewState.ProductGroups != null)
+                    {
+                        @foreach (var productGroup in ShopService.ViewState.ProductGroups)
+                        {
+                            <ClientTabItem Class="@(productGroup.Id == _selectedProductGroupId ? "active" : "")">
+                                <div @onclick=@(() => SelectProductGroup(productGroup.Id))>
+                                    @productGroup.Name
+                                </div>
+                            </ClientTabItem>
+                        }
+                    }
+                </ClientTab>
+            </div>
         </div>
-        <div class="giz-shop__products__popular">Popular</div>
-        <div class="giz-shop__products__list">
-            @foreach (var product in ShopService.ViewState.Products.Where(a => !_selectedProductGroupId.HasValue || a.ProductGroupId == _selectedProductGroupId))
+        <div class="giz-shop__products__body giz-scrollbar--v">
+            <div class="giz-shop__products__body__ads">
+                <ExpansionPanel>
+                    <Header>
+                        Ads
+                    </Header>
+                    <ChildContent>
+                        <AdsCarousel Size="3" />
+                    </ChildContent>
+                </ExpansionPanel>
+            </div>
+        
+            @if (_selectedProductGroupId.HasValue)
             {
-                <ProductCard Product="@product" IsHoverable="true" OnAddProduct="@AddProduct" />
+                @if (ShopService.ViewState.ProductGroups != null)
+                {
+                    <div class="giz-section">
+                        <div class="giz-section__header">
+                            @ShopService.ViewState.ProductGroups.Where(a => a.Id == _selectedProductGroupId).Select(a => a.Name).FirstOrDefault()
+                        </div>
+                        <div class="giz-section__body">
+                            <div class="giz-shop__products__list">
+                                @foreach (var product in ShopService.ViewState.Products.Where(a => a.ProductGroupId == _selectedProductGroupId))
+                                {
+                                    <ProductCard Product="@product" IsHoverable="true" OnAddProduct="@AddProduct" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                @if (ShopService.ViewState.ProductGroups != null)
+                {
+                    @foreach (var productGroup in ShopService.ViewState.ProductGroups)
+                    {
+                        @if (ShopService.ViewState.Products.Where(a => a.ProductGroupId == productGroup.Id).Count() > 1)
+                        {
+                            <div class="giz-section">
+                                <div class="giz-section__header">
+                                    @productGroup.Name
+                                </div>
+                                <div class="giz-section__body">
+                                    <div class="giz-shop__products__list">
+                                        @foreach (var product in ShopService.ViewState.Products.Where(a => a.ProductGroupId == productGroup.Id))
+                                        {
+                                            <ProductCard Product="@product" IsHoverable="true" OnAddProduct="@AddProduct" />
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
             }
         </div>
+        
     </div>
     <div class="giz-shop__order">
         <GizOrder />

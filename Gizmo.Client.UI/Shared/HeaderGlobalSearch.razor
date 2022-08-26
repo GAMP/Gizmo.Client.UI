@@ -16,29 +16,24 @@
                @oninput="OnInputHandler"
                @onclick="OnClickHandler">
 
-        <IconButton SVGIcon="Icons.Close_Client" Size="ButtonSizes.Small" Variant="ButtonVariants.Text" IconColor="#a4a5a8" Class="mr-3" @onclick="@(() => Clear())"
+        <IconButton SVGIcon="Icons.Close_Client" Size="ButtonSizes.Small" Variant="ButtonVariants.Text" @onclick="@(() => Clear())"
                     Style="@CloseButtonStyleValue" />
 
-        <!--dropdown-->
         <div class="giz-global-search-dropdown" style="display: @(_openDropDown ? "block" : "none")">
-            <!--dropdown body-->
             <div class="giz-global-search-dropdown__body">
-                <div class="giz-search-menu">
-                    <div class="giz-heading">categories</div>
-                    <div class="giz-type">
-                        <span class="@(_resultApplications > 0 ? "" : "giz-text")">Games & Applications</span>
-                        <button class="@(_resultApplications > 0 ? "giz-btn-secondary-dark" : "giz-btn-secondary-light")">@_resultApplications</button>
-
-                        <span class="@(_resultProducts > 0 ? "" : "giz-text")">Shop</span>
-                        <button class="@(_resultProducts > 0 ? "giz-btn-secondary-dark" : "giz-btn-secondary-light")">@_resultProducts</button>
-                    </div>
-                </div>
 
                 @if (Results != null && Results.Count > 0)
                 {
-                    <div class="giz-search-menu-container">
-                        <div class="giz-heading">result</div>
-                        <div class="giz-search-wrapper">
+                    <div class="giz-global-search-section">
+                        <div class="giz-global-search-section__header">Games &amp; Apps</div>
+                        @*<div class="giz-type">
+                            <span class="@(_resultApplications > 0 ? "" : "giz-text")">Games & Applications</span>
+                            <button class="@(_resultApplications > 0 ? "giz-btn-secondary-dark" : "giz-btn-secondary-light")">@_resultApplications</button>
+
+                            <span class="@(_resultProducts > 0 ? "" : "giz-text")">Shop</span>
+                            <button class="@(_resultProducts > 0 ? "giz-btn-secondary-dark" : "giz-btn-secondary-light")">@_resultProducts</button>
+                        </div>*@
+                        <div class="giz-global-search-section__body">
 
                             @foreach (var result in Results.Take(3))
                             {
@@ -47,10 +42,10 @@
 
                             @if (Results.Count > 3)
                             {
-                                <div class="giz-apps-card">
-                                    <div class="giz-apps-card--overlay">
+                                <div class="giz-global-search-result-card">
+                                    <div class="giz-global-search-result-card__overlay">
                                         @*<img src="https://i.postimg.cc/BvJp6my3/box.png" alt="loading" />*@
-                                        <div class="giz-apps-card-more">
+                                        <div class="giz-global-search-result-card__overlay">
                                             <div>+@(Results.Count - 3) More</div>
                                             <div><a href="#">Show all</a></div>
                                         </div>
@@ -76,8 +71,6 @@
                 }
 
             </div>
-            <!--/dropdown body-->
         </div>
-        <!--/dropdown-->
     </div>
 </div>
