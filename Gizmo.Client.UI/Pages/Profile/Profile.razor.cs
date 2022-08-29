@@ -1,4 +1,5 @@
-﻿using Gizmo.UI;
+﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.UI;
 using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Pages
@@ -9,5 +10,7 @@ namespace Gizmo.Client.UI.Pages
     [Route("/profile")]
     public partial class Profile : ComponentBase
     {
+        [Inject]
+        UserService UserService { get; set; }
     }
 }

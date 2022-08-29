@@ -14,18 +14,27 @@
     }
 
     &__body {
+        border-collapse: collapse;
     }
 }
 
 .giz-active-app-card {
-    display: grid;
-    grid-template-columns: min-content 1fr min-content;
-    align-items: center;
-    gap: 16px;
-    border-bottom: 1px solid #373839;
     padding: 16px;
+    border-bottom: 1px solid #373839;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &__image {
+        height: 100%;
+        padding: 16px;
+    }
 
     &__info {
+        height: 100%;
+        padding: 16px;
+
         &__category {
             color: rgba(255, 255, 255, 0.6);
             opacity: 0.6;
@@ -36,5 +45,10 @@
             color: #FAFAFA;
             @include font-l($font-weight-normal);
         }
+    }
+
+    &__actions {
+        height: 100%;
+        padding: 16px;
     }
 }

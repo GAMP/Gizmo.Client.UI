@@ -98,14 +98,18 @@
 .giz-dropdown-menu {
     display: none;
     position: absolute;
-    //TODO: top: 100%;
-    top: calc(100% + 8px);
+    top: 100%;
+    //top: calc(100% + 8px);
     right: 0;
-    z-index: 100;
+    z-index: $header-dropdown-index;
 }
 
 .giz-user-dropdown {
     white-space: nowrap;
+
+    .giz-dropdown-menu {
+        min-width: 360px;
+    }
 
     &:hover {
         .giz-user-menu-button {

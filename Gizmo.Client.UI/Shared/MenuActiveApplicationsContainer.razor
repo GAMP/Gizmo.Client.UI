@@ -10,11 +10,11 @@
         <div class="giz-active-apps__header">
             <div class="giz-heading">Active applications</div>
         </div>
-        <div class="giz-active-apps__body giz-scrollbar--v">
+        <table class="giz-active-apps__body giz-scrollbar--v">
             @foreach (var executable in ActiveApplicationsService.ViewState.Executables)
             {
                 <MenuActiveApplicationCard Executable="@executable" />
             }
-        </div>
+        </table>
     </div>
 </div>

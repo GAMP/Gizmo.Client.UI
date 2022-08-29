@@ -4,25 +4,25 @@
 
 <div class="giz-profile-header">
     <div class="giz-profile-header__avatar">
-        <Avatar Image="@User.Picture" Size="AvatarSizes.ExtraLarge" Variant="AvatarVariants.Circle" alt="loading" />
+        <Avatar Image="@UserService.ViewState.Picture" Size="AvatarSizes.ExtraLarge" Variant="AvatarVariants.Circle" alt="loading" />
 
         <div class="giz-profile-header__avatar__about">
-            <div class="giz-profile-header__avatar__about__name">@User.Username</div>
+            <div class="giz-profile-header__avatar__about__name">@UserService.ViewState.Username</div>
             <div class="giz-profile-header__avatar__about__host">PC 05</div>
         </div>
     </div>
     <div class="giz-profile-header__stats">
         <div class="giz-profile-header__stats-item">
             <Icon SVGIcon="Icons.Coins_Client" Size="IconSizes.Medium" />
-            <div class="giz-profile-header__stats-text"><div class="giz-title">Balance</div><div class="giz-numbers">@User.Balance.ToString("C")</div></div>
+            <div class="giz-profile-header__stats-text"><div class="giz-title">Balance</div><div class="giz-numbers">@UserService.ViewState.Balance.ToString("C")</div></div>
         </div>
         <div class="giz-profile-header__stats-item">
             <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.Medium" />
-            <div class="giz-profile-header__stats-text"><div class="giz-title">Points</div><div class="giz-numbers">@User.Points</div></div>
+            <div class="giz-profile-header__stats-text"><div class="giz-title">Points</div><div class="giz-numbers">@UserService.ViewState.Points</div></div>
         </div>
         <div class="giz-profile-header__stats-item">
             <Icon SVGIcon="Icons.Clock_Client" Size="IconSizes.Medium" />
-            <div class="giz-profile-header__stats-text"><div class="giz-title">Time</div><div class="giz-numbers">@User.Time</div></div>
+            <div class="giz-profile-header__stats-text"><div class="giz-title">Time</div><div class="giz-numbers">@UserService.ViewState.Time</div></div>
         </div>
     </div>
 </div>

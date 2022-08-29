@@ -1,10 +1,8 @@
 ﻿@inherits LayoutComponentBase
 @using Gizmo.Client.UI.Components
-
 @using Microsoft.Extensions.Options
 
 @inject IOptions<ClientUIOptions> ClientUIOptions
-@inject IJSRuntime JsRuntime
 
 @if (!string.IsNullOrEmpty(ClientUIOptions.Value.Skin))
 {
@@ -29,10 +27,4 @@
 
 <NotificationsContainer />
 
-@code
-{
-    private async Task OnMainClick(MouseEventArgs e)
-    {
-        await JsRuntime.InvokeVoidAsync("closeOpenPopups", e);
-    }
-}
+<UserLock />

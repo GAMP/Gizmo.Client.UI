@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.View.States;
+﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.Client.UI.ViewModels;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -19,18 +20,8 @@ namespace Gizmo.Client.UI.Shared
             _deferredAction = new DeferredAction(Search);
             _delayTimeSpan = new TimeSpan(0, 0, 0, 0, _delay);
 
-            Random random = new Random();
-
-            Products = new List<ProductViewModel>();
-            Products.Add(new ProductViewModel() { Id = 1, Name = "Mars Bar", Image = "Cola.png" });
-            Products.Add(new ProductViewModel() { Id = 2, Name = "Snickers Bar", Image = "Cola.png" });
-            Products.Add(new ProductViewModel() { Id = 3, Name = "Pizza (Small)", Image = "Cola.png" });
-            Products.Add(new ProductViewModel() { Id = 4, Name = "Pizza and Cola", Image = "Cola.png" });
-            Products.Add(new ProductViewModel() { Id = 5, Name = "Coca Cola (Can)", Image = "Cola.png" });
-            Products.Add(new ProductViewModel() { Id = 6, Name = "Six Hours (6)", Image = "Cola.png" });
-            Products.Add(new ProductViewModel() { Id = 7, Name = "Six Hours (6 Weekends)", Image = "Cola.png" });
-
-            Results = new List<SearchResultViewModel>();
+            ProductResults = new List<SearchResultViewModel>();
+            ApplicationResults = new List<SearchResultViewModel>();
         }
 
         #region FIELDS
@@ -48,12 +39,18 @@ namespace Gizmo.Client.UI.Shared
 
         #region PROPERTIES
 
+        [Inject]
+        ApplicationsPageService ApplicationsPageService { get; set; }
+
+        [Inject]
+        ShopPageService ShopService { get; set; }
+
         [Parameter]
         public int MinimumCharacters { get; set; } = 1;
 
-        public List<ProductViewModel> Products { get; set; }
+        public List<SearchResultViewModel> ApplicationResults { get; set; }
 
-        public List<SearchResultViewModel> Results { get; set; }
+        public List<SearchResultViewModel> ProductResults { get; set; }
 
         #endregion
 
@@ -103,7 +100,8 @@ namespace Gizmo.Client.UI.Shared
 
         private void Clear()
         {
-            Results.Clear();
+            ApplicationResults.Clear();
+            ProductResults.Clear();
             _resultApplications = 0;
             _resultProducts = 0;
             _text = string.Empty;
@@ -115,7 +113,8 @@ namespace Gizmo.Client.UI.Shared
 
         private async Task Search()
         {
-            Results.Clear();
+            ApplicationResults.Clear();
+            ProductResults.Clear();
             _resultApplications = 0;
             _resultProducts = 0;
 
@@ -125,15 +124,15 @@ namespace Gizmo.Client.UI.Shared
 
             await Task.Delay(500);
 
-            //foreach (var app in Applications.Where(a => a.Name.Contains(_text, StringComparison.InvariantCultureIgnoreCase)))
-            //{
-            //    Results.Add(new SearchResultViewModel() { Type = SearchResultTypes.Application, Id = app.Id, Name = app.Name, Image = app.Image });
-            //    _resultApplications += 1;
-            //}
-
-            foreach (var product in Products.Where(a => a.Name.Contains(_text, StringComparison.InvariantCultureIgnoreCase)))
+            foreach (var app in ApplicationsPageService.ViewState.Applications.Where(a => a.Title.Contains(_text, StringComparison.InvariantCultureIgnoreCase)))
             {
-                Results.Add(new SearchResultViewModel() { Type = SearchResultTypes.Product, Id = product.Id, Name = product.Name, Image = product.Image });
+                ApplicationResults.Add(new SearchResultViewModel() { Type = SearchResultTypes.Application, Id = app.Id, Name = app.Title, Image = app.Image });
+                _resultApplications += 1;
+            }
+
+            foreach (var product in ShopService.ViewState.Products.Where(a => a.Name.Contains(_text, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                ProductResults.Add(new SearchResultViewModel() { Type = SearchResultTypes.Product, Id = product.Id, Name = product.Name, Image = product.Image });
                 _resultProducts += 1;
             }
 

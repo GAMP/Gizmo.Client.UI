@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.ViewModels;
+﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.ViewModels;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -8,8 +9,8 @@ namespace Gizmo.Client.UI.Shared
 {
     public partial class MenuUserActions : CustomDOMComponentBase
     {
-        [Parameter]
-        public UserViewModel User { get; set; }
+        [Inject]
+        UserService UserService { get; set; }
 
         protected Task OnClickPreviousButtonHandler(MouseEventArgs args)
         {

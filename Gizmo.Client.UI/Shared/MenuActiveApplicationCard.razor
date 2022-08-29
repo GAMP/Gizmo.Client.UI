@@ -2,15 +2,15 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
-<div class="giz-active-app-card">
-    <div class="giz-active-app-card__image">
+<tr class="giz-active-app-card">
+    <td class="giz-active-app-card__image">
         <img src="@Executable.Image" alt="loading" />
-    </div>
-    <div class="giz-active-app-card__info">
+    </td>
+    <td class="giz-active-app-card__info">
         <div class="giz-active-app-card__info__category">Gaming</div>
         <div class="giz-active-app-card__info__title">@Executable.Caption</div>
-    </div>
-    <div class="giz-active-app-card__actions">
+    </td>
+    <td class="giz-active-app-card__actions">
         <ComboButton Progress="@Executable.StatePercentage" Color="@(Executable.State == 3 ? ButtonColors.Danger : ButtonColors.Accent)" Variant="@(Executable.State == 2 ? ButtonVariants.Progress : ButtonVariants.Fill)" Size="ButtonSizes.Large" IsFullWidth="true" OnClickMainButton="@OnClickMainButtonHandler">
             <ChildContent>
                 @switch (Executable.State)
@@ -69,5 +69,5 @@
                 </ListItem>
             </DropDownItems>
         </ComboButton>
-    </div>
-</div>
+    </td>
+</tr>

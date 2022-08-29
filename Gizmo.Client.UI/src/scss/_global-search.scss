@@ -4,13 +4,41 @@
     display: inline-flex;
     align-items: center;
     position: relative;
-    width: 100%;
     background: rgba(250, 250, 250, 0.16);
     border-radius: 8px;
     height: 48px;
-    /*&:focus-within {
-        background: $jet-black;
-    }*/
+
+    &:hover {
+        width: 100%;
+
+        input {
+            display: block;
+        }
+
+        .giz-close-button {
+            display: block;
+        }
+    }
+
+    &:focus-within {
+        width: 100%;
+
+        input {
+            display: block;
+        }
+
+        .giz-close-button {
+            display: block;
+        }
+    }
+
+    & > svg {
+        width: 18px;
+        height: 18px;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+    //TODO: nonemtpy
 
     &.open {
         border-bottom-left-radius: 0px;
@@ -23,25 +51,32 @@
         border: none;
         outline: none;
         padding: 0.625rem;
-        width: 19.75rem;
+        width: 100%;
         color: #FAFAFA;
         @include font-l($font-weight-light);
+        display: none;
     }
 
-    .giz-terminate {
-        visibility: hidden;
+    .giz-close-button {
+        display: none;
     }
+    /*.giz-terminate {
+        visibility: hidden;
+    }*/
 
     .giz-global-search-dropdown {
-        min-height: 25rem;
-        //
         position: absolute;
         top: 100%;
         width: 100%;
+        z-index: $global-search-index;
         background: #22272B;
-        z-index: 1;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 0px 0px 16px 16px;
 
         &__body {
+            display: grid;
+            grid-template-rows: min-content min-content;
+            gap: 32px;
             padding: 32px;
         }
 
@@ -58,24 +93,28 @@
             &__body {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                grid-gap: 0.875rem;
+                grid-auto-flow: row dense;
+                grid-column-gap: 48px;
+                grid-row-gap: 24px;
             }
         }
     }
 }
 
 .giz-global-search-result-card {
+    display: grid;
+    grid-template-columns: min-content 1fr min-content;
+    align-items: center;
+    gap: 8px;
     word-break: break-word;
 
-    &__title {
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-
-    &__overlay {
-        position: relative;
-        width: 167px;
-        height: 239px;
+    &__image {
+        width: 48px;
+        height: 48px;
+        grid-row-start: 1;
+        grid-row-end: 3;
+        margin-right: 4px;
+        //
         background: #242731;
         border-radius: 4px;
 
@@ -94,5 +133,42 @@
             height: -moz-available;
             height: -webkit-fill-available;
         }
+    }
+
+    &__category {
+        grid-row-start: 1;
+        grid-row-end: 2;
+        color: rgba(255, 255, 255, 0.6);
+        @include font-s($font-weight-light);
+    }
+
+    &__title {
+        grid-row-start: 2;
+        grid-row-end: 3;
+        color: #FAFAFA;
+        @include font-m($font-weight-normal);
+    }
+
+    &__action {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        grid-row-start: 1;
+        grid-row-end: 3;
+    }
+}
+
+.giz-global-search-empty {
+    text-align: center;
+}
+
+.giz-global-search-no-results {
+    color: rgba(255, 255, 255, 0.6);
+
+    &__title {
+        @include font-xxl($font-weight-bold);
+    }
+
+    &__body {
+        @include font-l($font-weight-light);
     }
 }

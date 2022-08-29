@@ -1,0 +1,19 @@
+﻿@using Gizmo.Web.Components
+
+@if (UserService.ViewState.IsLocked)
+{
+    <div class="giz-user-lock-overlay">
+        <div class="giz-user-lock">
+            <div>Enter you PIN to access this profile</div>
+            <div>Profile Lock is currently on</div>
+            <div>
+                <TextInput TValue="string" />
+            </div>
+            <div>Buttons</div>
+            <div>
+                <Button @onclick="@(() => UserService.UnlockAsync())">Enter Code to Continue</Button>
+            </div>
+            <div>Forgot PIN</div>
+        </div>
+    </div>
+}

@@ -32,9 +32,9 @@ namespace Gizmo.Client.UI.Pages
 
         #region METHODS
 
-        public void OpenExecutableSelector(int id)
+        public async Task OpenExecutableSelector(int id)
         {
-            ExecutableSelectorService.LoadApplicationAsync(id);
+            await ExecutableSelectorService.LoadApplicationAsync(id);
             ExecutableSelectorIsOpen = true;
         }
 
