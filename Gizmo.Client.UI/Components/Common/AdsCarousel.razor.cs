@@ -1,10 +1,7 @@
-﻿using Gizmo.Web.Components;
+﻿using Gizmo.Client.UI.View.States;
+using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -13,7 +10,7 @@ namespace Gizmo.Client.UI.Components
         private int _selectedIndex;
 
         [Parameter]
-        public int Size { get; set; }
+        public ICollection<AdvertisementViewState> Advertisements { get; set; }
 
         [Parameter]
         public int SelectedIndex

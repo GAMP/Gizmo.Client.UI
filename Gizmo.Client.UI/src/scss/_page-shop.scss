@@ -38,6 +38,10 @@
 
             &__ads {
             }
+
+            .giz-section {
+                margin-top: 16px;
+            }
         }
 
         &__list {
@@ -78,7 +82,7 @@
         &__header {
             border-bottom: 1px solid rgba(246, 251, 253, 0.06);
             padding: 24px 24px 4px 24px;
-            @include font-xxl($font-weight-normal);
+            @include font-xxl($font-weight-regular);
         }
 
         &__body {
@@ -97,19 +101,58 @@
                     border-bottom: 1px solid rgba(246, 251, 253, 0.06);
 
                     &__description {
-                        @include font-m($font-weight-normal);
+                        @include font-m($font-weight-regular);
                     }
 
                     &__details {
                         display: grid;
                         grid-template-rows: min-content 1fr min-content;
+                        grid-template-columns: min-content 1fr;
+                        align-items: center;
                         text-align: right;
-                        @include font-xl($font-weight-normal);
+                        @include font-xl($font-weight-regular);
+
+                        &__price-radio {
+                            grid-column-start: 1;
+                            grid-column-end: 2;
+                            grid-row-start: 1;
+                            grid-row-end: 2;
+                        }
+
+                        &__points-radio {
+                            grid-column-start: 1;
+                            grid-column-end: 2;
+                            grid-row-start: 2;
+                            grid-row-end: 3;
+                        }
 
                         &__price {
+                            grid-column-start: 2;
+                            grid-column-end: 3;
+                            grid-row-start: 1;
+                            grid-row-end: 2;
                         }
 
                         &__points {
+                            grid-column-start: 2;
+                            grid-column-end: 3;
+                            grid-row-start: 2;
+                            grid-row-end: 3;
+                        }
+
+                        &__and {
+                            grid-column-start: 1;
+                            grid-column-end: 2;
+                            grid-row-start: 1;
+                            grid-row-end: 3;
+                        }
+
+                        .giz-shop-quantity-picker {
+                            grid-column-start: 1;
+                            grid-column-end: 3;
+                            grid-row-start: 3;
+                            grid-row-end: 4;
+                            margin-top: 8px;
                         }
                     }
 
@@ -151,15 +194,22 @@
                 }
             }
 
-            .giz-no-order-wrapper {
-                width: fit-content;
-                text-align: center;
-
-                &__title {
-                    margin-bottom: 0.625rem;
+            .giz-no-order {
+                &-wrapper {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    text-align: center;
+                    height: 100%;
                 }
 
-                &__text {
+                &-content {
+                    &__title {
+                        margin-bottom: 10px;
+                    }
+
+                    &__text {
+                    }
                 }
             }
         }
@@ -193,7 +243,7 @@
             margin-bottom: 24px;
 
             &-text-bold {
-                @include font-xxl($font-weight-normal);
+                @include font-xxl($font-weight-regular);
             }
 
             &-number-bold {
@@ -222,7 +272,7 @@
     text-align: center;
     color: #FFFFFF;
     padding: 0 6px;
-    @include font-l($font-weight-normal);
+    @include font-l($font-weight-regular);
 
     button {
         background: none;
@@ -230,6 +280,6 @@
         color: #FFFFFF;
         cursor: pointer;
         padding: 0 6px;
-        @include font-l($font-weight-normal);
+        @include font-l($font-weight-regular);
     }
 }

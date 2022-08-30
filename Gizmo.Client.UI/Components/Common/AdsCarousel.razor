@@ -4,18 +4,20 @@
 
 <div class="giz-ads-carousel">
     <div class="giz-ads-carousel__body">
-        @for (int i = 0; i < Size; i++)
+        @if (Advertisements != null && Advertisements.Count > 0)
         {
-            var local_i = i;
-            <AdsCarouselItem />
+            @foreach (var ad in Advertisements)
+            {
+                <AdsCarouselItem Advertisement="@ad" />
+            }
         }
     </div>
     <div class="giz-ads-carousel__navigation">
         <div class="giz-ads-carousel__navigation__indicators">
-            <AdsCarouselIndicator Size="@Size" />
+            <AdsCarouselIndicator Size="@(Advertisements?.Count ?? 0)" />
         </div>
         <div class="giz-ads-carousel__navigation__text">
-            Showing 2/8
+            Showing @_selectedIndex/@(Advertisements?.Count ?? 0)
         </div>
     </div>
 </div>

@@ -18,8 +18,10 @@
             else
             {
                 <div class="giz-no-order-wrapper">
-                    <div class="giz-no-order-wrapper__title">No products</div>
-                    <div class="giz-no-order-wrapper__text">Add products to get started</div>
+                    <div class="giz-no-order-content">
+                        <div class="giz-no-order-content__title">No products</div>
+                        <div class="giz-no-order-content__text">Add products to get started</div>
+                    </div>
                 </div>
             }
         </div>
@@ -28,7 +30,7 @@
     <div class="giz-order__notes">
         <div class="giz-order__notes__header">Order comments</div>
         <div class="giz-order__notes__body">
-            <TextInput TValue="string" IsTransparent="true" IsMultiLine="true" IsFullWidth="true" Placeholder="Add your note.." Class="giz-order-notes" />
+            <TextInput TValue="string" IsMultiLine="true" IsFullWidth="true" Placeholder="Add your note.." Class="giz-order-notes" />
         </div>
     </div>
 
@@ -46,7 +48,7 @@
         </div>
         <div>
             @*<Button Size="ButtonSizes.Large" IsFullWidth="true" IsDisabled="@(Order == null || Order.OrderLines.Count == 0)" Command="@PlaceOrderCommand">place order</Button>*@
-            <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" IsDisabled="@(UserCartService.ViewState.Products.Count() == 0)">place order</Button>
+            <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" IsDisabled="@(UserCartService.ViewState.Products.Count() == 0)">Place order</Button>
         </div>
     </div>
 </div>

@@ -85,9 +85,20 @@
             grid-template-rows: min-content 1fr;
 
             &__header {
+                display: flex;
+                justify-content: space-between;
                 margin-bottom: 8px;
                 color: #FAFAFA;
-                @include font-l($font-weight-normal);
+                @include font-l($font-weight-regular);
+
+                &__more {
+                    color: #0078D2;
+                    cursor: pointer;
+                    //Font
+                    font-weight: 400;
+                    font-size: 14px;
+                    line-height: 22px;
+                }
             }
 
             &__body {
@@ -146,7 +157,7 @@
         grid-row-start: 2;
         grid-row-end: 3;
         color: #FAFAFA;
-        @include font-m($font-weight-normal);
+        @include font-m($font-weight-regular);
     }
 
     &__action {

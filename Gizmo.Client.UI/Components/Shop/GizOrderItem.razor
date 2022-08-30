@@ -7,6 +7,15 @@
         @OrderLine.ProductName
     </div>
     <div class="giz-order-item__details">
+        @if (OrderLine.PurchaseOptions.HasFlag(PurchaseOptionType.Or))
+        {
+            <RadioButton GroupName="@GetPurchaseOptionsGroup()" Class="giz-order-item__details__price-radio" />
+            <RadioButton GroupName="@GetPurchaseOptionsGroup()" Class="giz-order-item__details__points-radio" />
+        }
+        else
+        {
+            <div class="giz-order-item__details__and">&amp;</div>
+        }
         <div class="giz-order-item__details__price">
             @OrderLine.TotalPrice.ToString("C")
         </div>

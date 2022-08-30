@@ -26,6 +26,9 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         ExecutableSelectorService ExecutableSelectorService { get; set; }
 
+        [Inject]
+        AdvertisementsService AdvertisementsService { get; set; }
+
         public bool ExecutableSelectorIsOpen { get; set; }
 
         #endregion

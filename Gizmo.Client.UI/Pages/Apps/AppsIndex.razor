@@ -20,7 +20,7 @@
                     Ads
                 </Header>
                 <ChildContent>
-                    <AdsCarousel Size="3" />
+                    <AdsCarousel Advertisements="@AdvertisementsService.ViewState.Advertisements" />
                 </ChildContent>
             </ExpansionPanel>
         </div>
@@ -29,7 +29,7 @@
                 <div class="giz-section__header">
                     <div>Popular items</div>
                     <div class="giz-apps-filters">
-                        <Select @bind-Value="_selectedApplicationGroupId" Label="Category:" IsTransparent="true" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
+                        <Select @bind-Value="_selectedApplicationGroupId" Label="Category:" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
                             @foreach (var appGroup in ApplicationsPageService.ViewState.Applications)
                             {
                                 <SelectItem TValue="int?" Value="@appGroup.Id" Text="@appGroup.Title" />

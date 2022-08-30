@@ -11,11 +11,11 @@
     </HeadContent>
 }
 
-<main @onclick="OnMainClick">
+<main @onclick="OnMainClick" client-theme="true">
     <div class="giz-background">
         <img src="_content/Gizmo.Client.UI/img/background.jpg" />
     </div>
-    <div class="giz-container" client-theme="true">
+    <div class="giz-container">
         <div class="giz-app__header">
             <Header />
         </div>
@@ -23,8 +23,9 @@
             @Body
         </div>
     </div>
+
+    <NotificationsContainer />
+
+    <UserLock />
+
 </main>
-
-<NotificationsContainer />
-
-<UserLock />

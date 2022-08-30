@@ -6,11 +6,11 @@ namespace Gizmo.Client.UI.Shared
     public partial class UserLock
     {
         [Inject]
-        UserService UserService { get; set; }
+        UserLockService UserLockService { get; set; }
 
         protected override void OnInitialized()
         {
-            this.SubscribeChange(UserService.ViewState);
+            this.SubscribeChange(UserLockService.ViewState);
             base.OnInitialized();
         }
     }

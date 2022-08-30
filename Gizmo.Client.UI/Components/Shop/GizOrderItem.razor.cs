@@ -18,6 +18,11 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public UserCartProductViewState OrderLine { get; set; }
 
+        public string GetPurchaseOptionsGroup()
+        {
+            return "PurchaseOptions_" + OrderLine.ProductId;
+        }
+
         public Task RemoveProduct()
         {
             return UserCartService.RemoveProductAsync(OrderLine.ProductId, null);

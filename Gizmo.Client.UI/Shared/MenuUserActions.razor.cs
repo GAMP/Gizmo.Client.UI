@@ -12,6 +12,9 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         UserService UserService { get; set; }
 
+        [Inject]
+        UserLockService UserLockService { get; set; }
+
         protected Task OnClickPreviousButtonHandler(MouseEventArgs args)
         {
             return Task.CompletedTask;

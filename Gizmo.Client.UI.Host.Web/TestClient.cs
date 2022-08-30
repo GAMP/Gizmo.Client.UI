@@ -52,6 +52,7 @@ namespace Gizmo.Client.UI.Host.Web
                 PointsPrice = random.Next(0, 100),
                 Points = random.Next(1, 500),
                 ProductType = (ProductType)random.Next(0, 3),
+                PurchaseOptions = (PurchaseOptionType)random.Next(0, 2),
             }).ToList();
 
             var pagedList = new PagedList<Product>(products, new PaginationMetadata());

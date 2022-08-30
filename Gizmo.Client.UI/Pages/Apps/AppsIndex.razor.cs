@@ -31,6 +31,9 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         ExecutableSelectorService ExecutableSelectorService { get; set; }
 
+        [Inject]
+        AdvertisementsService AdvertisementsService { get; set; }
+
         #region PARAMETERS
 
         /// <summary>

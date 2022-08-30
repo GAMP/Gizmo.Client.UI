@@ -20,6 +20,27 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<int> OnAddProduct { get; set; }
 
+        public string GetPrice()
+        {
+            string result = "";
+
+            if (Product != null)
+            {
+                result += Product.UnitPrice.ToString("C");
+
+                if (Product.PurchaseOptions.HasFlag(PurchaseOptionType.Or))
+                {
+                    result += " or " + Product.UnitPointsPrice;
+                }
+                else
+                {
+                    result += " and " + Product.UnitPointsPrice;
+                }
+            }
+
+            return result;
+        }
+
         public async Task AddProduct()
         {
             await OnAddProduct.InvokeAsync(Product.Id);
