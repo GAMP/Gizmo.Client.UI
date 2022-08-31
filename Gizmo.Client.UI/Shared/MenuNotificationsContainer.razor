@@ -11,24 +11,26 @@
         </div>
         <div class="giz-menu-notifications__body giz-scrollbar--v">
 
-            @if (Notifications != null && Notifications.Count > 0)
+            @if (NotificationsService.ViewState.Notifications != null && NotificationsService.ViewState.Notifications.Count > 0)
             {
-                @foreach (var notification in Notifications)
+                @foreach (var notification in NotificationsService.ViewState.Notifications)
                 {
-                    <MenuNotificationCard Notification="@notification" OnMarkAsRead="@MarkAsRead" />
+                    <MenuNotificationCard Notification="@notification" />
                 }
             }
             else
             {
-                <div class="giz-menu-notification-default-item">
-                    <div class="giz-menu-notification-default-item-title">No new notifications.</div>
-                    <div class="giz-menu-notification-default-item-text">When something new happens you’ll find it here.</div>
+                <div class="giz-menu-notification-default-item-wrapper">
+                    <div class="giz-menu-notification-default-item">
+                        <div class="giz-menu-notification-default-item-title">No new notifications.</div>
+                        <div class="giz-menu-notification-default-item-text">When something new happens you’ll find it here.</div>
+                    </div>
                 </div>
             }
 
         </div>
         <div class="giz-menu-notifications__footer">
-            Mark as all read
+            <div class="giz-menu-notifications__footer__action" @onclick="@(() => NotificationsService.MarkAllAsReadAsync())">Mark as all read</div>
         </div>
     </div>
 </div>

@@ -81,11 +81,6 @@ namespace Gizmo.Client.UI.Pages
 
         #region METHODS
 
-        public Task AddProduct(int id)
-        {
-            return UserCartService.AddProductAsyc(id);
-        }
-
         public void SelectPaymentMethod(int id)
         {
             StateHasChanged();

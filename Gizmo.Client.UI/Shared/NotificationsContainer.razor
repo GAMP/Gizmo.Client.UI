@@ -2,9 +2,9 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
-<div class="giz-notifications-container" client-theme="true">
-    @foreach (var notification in Notifications)
+<div class="giz-notifications-container">
+    @foreach (var notification in NotificationsService.ViewState.Notifications)
     {
-        <NotificationDialog Notification="@notification" OnCloseDialog="@CloseDialog" />
+        <NotificationDialog Notification="@notification" />
     }
 </div>

@@ -27,12 +27,16 @@
         <div class="giz-apps__body__popular">
             <div class="giz-section">
                 <div class="giz-section__header">
-                    <div>Popular items</div>
+                    @*<div>Popular items</div>*@
+                    <div class="giz-section__header__filters">
+                        <Chip CanClose="true">Counter Strike</Chip>
+                        <Chip CanClose="true">Test</Chip>
+                    </div>
                     <div class="giz-apps-filters">
                         <Select @bind-Value="_selectedApplicationGroupId" Label="Category:" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
-                            @foreach (var appGroup in ApplicationsPageService.ViewState.Applications)
+                            @foreach (var appGroup in ApplicationsPageService.ViewState.ApplicationGroups)
                             {
-                                <SelectItem TValue="int?" Value="@appGroup.Id" Text="@appGroup.Title" />
+                                <SelectItem TValue="int?" Value="@appGroup.Id" Text="@appGroup.Name" />
                             }
                         </Select>
                     </div>

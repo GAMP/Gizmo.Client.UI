@@ -1,12 +1,9 @@
 ﻿using Gizmo.Client.UI.View.Services;
-using Gizmo.Client.UI.View.States;
-using Gizmo.Client.UI.ViewModels;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Shared
@@ -19,9 +16,6 @@ namespace Gizmo.Client.UI.Shared
         {
             _deferredAction = new DeferredAction(Search);
             _delayTimeSpan = new TimeSpan(0, 0, 0, 0, _delay);
-
-            ProductResults = new List<SearchResultViewModel>();
-            ApplicationResults = new List<SearchResultViewModel>();
         }
 
         #region FIELDS
@@ -31,42 +25,37 @@ namespace Gizmo.Client.UI.Shared
         private TimeSpan _delayTimeSpan;
         private string _text;
         private bool _openDropDown;
-        private bool _loading;
-        private int _resultApplications;
-        private int _resultProducts;
 
         #endregion
 
         #region PROPERTIES
 
         [Inject]
-        ApplicationsPageService ApplicationsPageService { get; set; }
-
-        [Inject]
-        ShopPageService ShopService { get; set; }
+        SearchService SearchService { get; set; }
 
         [Parameter]
         public int MinimumCharacters { get; set; } = 1;
 
-        public List<SearchResultViewModel> ApplicationResults { get; set; }
-
-        public List<SearchResultViewModel> ProductResults { get; set; }
-
         #endregion
 
         #region EVENTS
+
+        private bool _hasFocus;
 
         protected Task OnFocusInHandler()
         {
             if (!string.IsNullOrEmpty(_text))
                 _openDropDown = true;
 
+            _hasFocus = true;
+
             return Task.CompletedTask;
         }
 
+
         protected Task OnFocusOutHandler()
         {
-            _openDropDown = false;
+            _hasFocus = false;
 
             return Task.CompletedTask;
         }
@@ -98,14 +87,11 @@ namespace Gizmo.Client.UI.Shared
             return Task.CompletedTask;
         }
 
-        private void Clear()
+        private async Task Clear()
         {
-            ApplicationResults.Clear();
-            ProductResults.Clear();
-            _resultApplications = 0;
-            _resultProducts = 0;
+            await SearchService.ClearResultsAsync();
+
             _text = string.Empty;
-            _loading = false;
             _openDropDown = false;
         }
 
@@ -113,30 +99,11 @@ namespace Gizmo.Client.UI.Shared
 
         private async Task Search()
         {
-            ApplicationResults.Clear();
-            ProductResults.Clear();
-            _resultApplications = 0;
-            _resultProducts = 0;
-
-            _loading = true;
+            await SearchService.ClearResultsAsync();
 
             StateHasChanged();
 
-            await Task.Delay(500);
-
-            foreach (var app in ApplicationsPageService.ViewState.Applications.Where(a => a.Title.Contains(_text, StringComparison.InvariantCultureIgnoreCase)))
-            {
-                ApplicationResults.Add(new SearchResultViewModel() { Type = SearchResultTypes.Application, Id = app.Id, Name = app.Title, Image = app.Image });
-                _resultApplications += 1;
-            }
-
-            foreach (var product in ShopService.ViewState.Products.Where(a => a.Name.Contains(_text, StringComparison.InvariantCultureIgnoreCase)))
-            {
-                ProductResults.Add(new SearchResultViewModel() { Type = SearchResultTypes.Product, Id = product.Id, Name = product.Name, Image = product.Image });
-                _resultProducts += 1;
-            }
-
-            _loading = false;
+            await SearchService.SearchAsync(_text);
 
             StateHasChanged();
         }
@@ -149,5 +116,39 @@ namespace Gizmo.Client.UI.Shared
 
         #endregion
 
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await base.OnAfterRenderAsync(firstRender);
+
+            if (firstRender)
+            {
+                await JsRuntime.InvokeVoidAsync("registerPopup", Ref);
+                ClosePopupEventInterop = new ClosePopupEventInterop(JsRuntime);
+                await ClosePopupEventInterop.SetupClosePopupEventCallback(args => ClosePopupHandler(args));
+            }
+        }
+
+        public override void Dispose()
+        {
+            ClosePopupEventInterop?.Dispose();
+            _ = JsRuntime.InvokeVoidAsync("unregisterPopup", Ref);
+
+            base.Dispose();
+        }
+
+        private ClosePopupEventInterop ClosePopupEventInterop { get; set; }
+
+        private Task ClosePopupHandler(string args)
+        {
+            if (!_hasFocus)
+            {
+                if (args == Id)
+                    _openDropDown = false;
+
+                StateHasChanged();
+            }
+
+            return Task.CompletedTask;
+        }
     }
 }

@@ -6,10 +6,10 @@
 <div class="quick-launcher">
     <QuickLauncherSwitch />
     <GizDock>
-        @foreach(var item in Favorites)
+        @foreach(var item in QuickLaunchService.ViewState.Executables)
         {
             <GizDockItem>
-                <img src="@item.Icon" alt="loading" />
+                <img src="@item.Image" alt="loading" />
             </GizDockItem>
         }
     </GizDock>

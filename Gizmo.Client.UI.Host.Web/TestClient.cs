@@ -60,6 +60,19 @@ namespace Gizmo.Client.UI.Host.Web
             return pagedList;
         }
 
+        public async Task<PagedList<ApplicationGroup>> GetApplicationGroupsAsync(ApplicationGroupsFilter filter)
+        {
+            List<ApplicationGroup> applicationGroups = Enumerable.Range(0, 4).Select(i => new ApplicationGroup()
+            {
+                Id = i + 1,
+                Name = $"Category ({i + 1})"
+            }).ToList();
+
+            var pagedList = new PagedList<ApplicationGroup>(applicationGroups, new PaginationMetadata());
+
+            return pagedList;
+        }
+
         public async Task<PagedList<Application>> GetApplicationsAsync(ApplicationsFilter filter)
         {
             List<Application> applications = Enumerable.Range(0, 15).Select(i => new Application()

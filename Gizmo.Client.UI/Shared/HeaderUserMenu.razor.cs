@@ -1,8 +1,5 @@
 ﻿using Gizmo.Client.UI.View.Services;
-using Gizmo.Client.UI.ViewModels;
-using Gizmo.Shared.UI.Services;
 using Microsoft.AspNetCore.Components;
-using System;
 
 namespace Gizmo.Client.UI
 {

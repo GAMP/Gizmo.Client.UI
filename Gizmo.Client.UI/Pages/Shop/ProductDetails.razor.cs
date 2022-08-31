@@ -16,6 +16,9 @@ namespace Gizmo.Client.UI.Pages
         }
 
         [Inject]
+        ProductDetailsPageService ProductDetailsPageService { get; set; }
+
+        [Inject]
         ShopPageService ShopService { get; set; }
 
         [Inject]
@@ -24,21 +27,16 @@ namespace Gizmo.Client.UI.Pages
         [Parameter]
         public int ProductId { get; set; }
 
-        public ProductViewState Product { get; set; }
-
-        public ICollection<ProductViewState> RelatedProducts { get; set; }
-
         public Task AddProduct(int id)
         {
             return UserCartService.AddProductAsyc(id);
         }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
-            base.OnInitialized();
+            await ProductDetailsPageService.LoadProductAsync(ProductId);
 
-            Product = ShopService.ViewState.Products.FirstOrDefault();
-            RelatedProducts = ShopService.ViewState.Products;
+            await base.OnInitializedAsync();
         }
     }
 }

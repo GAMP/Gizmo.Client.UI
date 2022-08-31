@@ -8,7 +8,7 @@
     border-radius: 0px 0px 8px 8px;
     min-height: 533px;
     width: 360px;
-
+    
     &__header {
         color: #E4E6EB;
         //padding: 8px 16px 16px 16px;
@@ -27,11 +27,16 @@
     }
 
     &__footer {
-        text-align: center;
+        display: flex;
+        justify-content: center;
         color: #0F7CFE;
         padding: 11px;
         @include font-l($font-weight-regular);
         border-top: 1px solid rgba(255, 255, 255, 0.2);
+
+        &__action {
+            cursor: pointer;
+        }
     }
 }
 
@@ -74,5 +79,34 @@
         &__time {
             color: #2E89FF;
         }
+
+        &__action {
+            cursor: pointer;
+        }
+    }
+}
+
+.giz-menu-notification-default-item {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+
+    &-wrapper {
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+
+    &-title {
+        //Font
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 26px;
+    }
+
+    &-text {
+        //Font
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 20px;
     }
 }

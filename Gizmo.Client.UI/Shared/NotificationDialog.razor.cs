@@ -1,21 +1,16 @@
-﻿using Gizmo.Client.UI.ViewModels;
+﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
-using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Shared
 {
     public partial class NotificationDialog : CustomDOMComponentBase
     {
-        [Parameter]
-        public EventCallback<int> OnCloseDialog { get; set; }
+        [Inject]
+        NotificationsService NotificationsService { get; set; }
 
         [Parameter]
-        public NotificationViewModel Notification { get; set; }
-
-        public async Task CloseDialog()
-        {
-            await OnCloseDialog.InvokeAsync(Notification.Id);
-        }
+        public NotificationViewState Notification { get; set; }
     }
 }

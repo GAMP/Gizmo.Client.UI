@@ -50,8 +50,6 @@ namespace Gizmo.Client.UI.Pages
 
         public bool ExecutableSelectorIsOpen { get; set; }
 
-        public List<ApplicationGroupViewModel> ApplicationGroups { get; set; }
-
         public List<ApplicationFilterViewModel> ApplicationFilters { get; set; }
 
         #endregion
@@ -72,32 +70,6 @@ namespace Gizmo.Client.UI.Pages
 
         protected override Task OnInitializedAsync()
         {
-            Random random = new Random();
-
-            ApplicationGroups = new List<ApplicationGroupViewModel>();
-
-            var category1 = new ApplicationGroupViewModel() { Id = 1, Name = "Adventure" };
-
-            ApplicationGroups.Add(category1);
-            ApplicationGroups.Add(new ApplicationGroupViewModel() { Id = 2, Name = "Online & MMOs" });
-            ApplicationGroups.Add(new ApplicationGroupViewModel() { Id = 3, Name = "FPS & Action" });
-            ApplicationGroups.Add(new ApplicationGroupViewModel() { Id = 4, Name = "Strategy" });
-            ApplicationGroups.Add(new ApplicationGroupViewModel() { Id = 5, Name = "Sports" });
-
-            ApplicationGroups.AddRange(Enumerable.Range(1, 8).Select(i => new ApplicationGroupViewModel()
-            {
-                Id = 10 + i,
-                ParentGroupId = 1,
-                Name = $"Subcategory {i}",
-            }).ToList());
-
-            ApplicationGroups.AddRange(Enumerable.Range(1, 8).Select(i => new ApplicationGroupViewModel()
-            {
-                Id = 20 + i,
-                ParentGroupId = 2,
-                Name = $"Subcategory2 {i}",
-            }).ToList());
-
             List<ApplicationFilterOptionViewModel> options = new List<ApplicationFilterOptionViewModel>();
             options.Add(new ApplicationFilterOptionViewModel() { Id = 1, Name = "Free to Play" });
             options.Add(new ApplicationFilterOptionViewModel() { Id = 2, Name = "Subscription Based" });

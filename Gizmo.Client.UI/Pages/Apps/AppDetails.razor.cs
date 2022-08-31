@@ -1,5 +1,6 @@
 ﻿using Gizmo.Client.UI.View.Services;
 using Microsoft.AspNetCore.Components;
+using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
 {
@@ -29,11 +30,11 @@ namespace Gizmo.Client.UI.Pages
 
         #endregion
 
-        private void OnClickMainButtonHandler()
+        private async Task OnClickMainButtonHandler()
         {
             if (ApplicationDetailsPageService.ViewState.Application.Executables.Count > 1)
             {
-                ExecutableSelectorService.LoadApplicationAsync(ApplicationId);
+                await ExecutableSelectorService.LoadApplicationAsync(ApplicationId);
                 ExecutableSelectorIsOpen = true;
             }
             else
@@ -42,12 +43,11 @@ namespace Gizmo.Client.UI.Pages
             }
         }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
-            base.OnInitialized();
+            await ApplicationDetailsPageService.LoadApplicationAsync(ApplicationId);
 
-            ApplicationDetailsPageService.LoadApplicationAsync(ApplicationId);
+            await base.OnInitializedAsync();
         }
-
     }
 }

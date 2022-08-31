@@ -18,17 +18,17 @@
         </NavLink>
         <div class="giz-product-details__product__info">
             <div class="giz-product-details__product__info__image">
-                <img src="_content/Gizmo.Client.UI/img/@Product?.Image" alt="loading" />
+                <img src="_content/Gizmo.Client.UI/img/@ProductDetailsPageService.ViewState.Product?.Image" alt="loading" />
             </div>
             <div class="giz-product-details__product__info__basic">
                 <div class="giz-product-details__product__info__basic__category">
                     Beverages
                 </div>
                 <div class="giz-product-details__product__info__basic__title">
-                    @Product?.Name
+                    @ProductDetailsPageService.ViewState.Product?.Name
                 </div>
                 <div class="giz-product-details__product__info__basic__description">
-                    @Product?.Description
+                    @ProductDetailsPageService.ViewState.Product?.Description
                 </div>
                 <div class="giz-product-details__product__info__basic__action">
                     <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" @onclick="@(() => AddProduct(ProductId))">Add to cart</Button>
@@ -47,11 +47,11 @@
             </div>
                 
             <div class="giz-product-details__product__related__body">
-                @if (RelatedProducts != null)
+                @if (ProductDetailsPageService.ViewState.RelatedProducts != null)
                 {
-                    @foreach (var product in RelatedProducts)
+                    @foreach (var product in ProductDetailsPageService.ViewState.RelatedProducts)
                     {
-                        <ProductCard Product="@product" IsHoverable="true" OnAddProduct="@AddProduct" />
+                        <ProductCard Product="@product" IsHoverable="true" />
                     }
                 }
             </div>

@@ -1,10 +1,7 @@
 ﻿using Gizmo.Client.UI.View.Services;
-using Gizmo.Client.UI.View.States;
-using Gizmo.Client.UI.ViewModels;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Shared
@@ -15,12 +12,9 @@ namespace Gizmo.Client.UI.Shared
         {
         }
 
-        private bool _isOpen { get; set; }
+        private bool _isOpen;
 
         #region PROPERTIES
-
-        [Inject]
-        protected IJSRuntime JsRuntime { get; set; }
 
         [Inject]
         ActiveApplicationsService ActiveApplicationsService { get; set; }

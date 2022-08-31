@@ -49,7 +49,7 @@ function closeOpenPopups(event) {
         if (popup.classList.contains('open')) {
             var bbox = popup.getBoundingClientRect();
             if (!isPointWithinRect(event.clientX, event.clientY, bbox.left, bbox.top, bbox.right, bbox.bottom)) {
-                popup.classList.remove('open');
+                //popup.classList.remove('open');
 
                 closePopupEventListenerReferences.forEach((item) => {
                     item.invokeMethodAsync('OnClosePopupEvent', popup.id);

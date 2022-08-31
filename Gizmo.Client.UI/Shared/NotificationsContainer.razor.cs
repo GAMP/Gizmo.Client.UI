@@ -1,7 +1,6 @@
-﻿using Gizmo.Client.UI.ViewModels;
+﻿using Gizmo.Client.UI.View.Services;
 using Gizmo.Web.Components;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Shared
 {
@@ -9,23 +8,15 @@ namespace Gizmo.Client.UI.Shared
     {
         public NotificationsContainer()
         {
-            Notifications = Enumerable.Range(1, 1).Select(i => new NotificationViewModel()
-            {
-                Id = i,
-                Title = $"Order on hold {i}",
-                Message = "Your order is on hold. You will be further be notified once order is accepted."
-            }).ToList();
         }
 
-        public ICollection<NotificationViewModel> Notifications { get; set; }
+        [Inject]
+        NotificationsService NotificationsService { get; set; }
 
-        public void CloseDialog(int id)
+        protected override void OnInitialized()
         {
-            var notificationToClose = Notifications.Where(a => a.Id == id).FirstOrDefault();
-            if (notificationToClose != null)
-            {
-                Notifications.Remove(notificationToClose);
-            }
+            this.SubscribeChange(NotificationsService.ViewState);
+            base.OnInitialized();
         }
     }
 }

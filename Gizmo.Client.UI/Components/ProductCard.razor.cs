@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.View.States;
+﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.Client.UI.ViewModels;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -11,14 +12,14 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         NavigationManager NavigationManager { get; set; }
 
+        [Inject]
+        UserCartService UserCartService { get; set; }
+
         [Parameter]
         public bool IsHoverable { get; set; }
 
         [Parameter]
         public ProductViewState Product { get; set; }
-
-        [Parameter]
-        public EventCallback<int> OnAddProduct { get; set; }
 
         public string GetPrice()
         {
@@ -39,11 +40,6 @@ namespace Gizmo.Client.UI.Components
             }
 
             return result;
-        }
-
-        public async Task AddProduct()
-        {
-            await OnAddProduct.InvokeAsync(Product.Id);
         }
 
         public void OpenDetails()

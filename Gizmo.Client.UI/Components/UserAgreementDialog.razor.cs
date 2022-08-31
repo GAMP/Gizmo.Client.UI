@@ -39,9 +39,6 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<bool> IsOpenChanged { get; set; }
 
-        [Parameter]
-        public UserAgreementViewModel UserAgreement { get; set; }
-
         #endregion
 
         #region METHODS
