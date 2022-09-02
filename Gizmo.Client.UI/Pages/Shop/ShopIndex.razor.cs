@@ -57,18 +57,7 @@ namespace Gizmo.Client.UI.Pages
             }
         }
 
-        public bool PaymentMethodSelectorIsOpen { get; set; }
-
         #endregion
-
-        private Task PlaceOrder()
-        {
-            PaymentMethodSelectorIsOpen = true;
-
-            StateHasChanged();
-
-            return Task.CompletedTask;
-        }
 
         private Task SelectProductGroup(int? productGroupId)
         {
@@ -78,15 +67,5 @@ namespace Gizmo.Client.UI.Pages
 
             return Task.CompletedTask;
         }
-
-        #region METHODS
-
-        public void SelectPaymentMethod(int id)
-        {
-            StateHasChanged();
-        }
-
-        #endregion
-
     }
 }

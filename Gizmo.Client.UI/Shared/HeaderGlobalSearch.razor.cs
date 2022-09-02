@@ -26,6 +26,8 @@ namespace Gizmo.Client.UI.Shared
         private string _text;
         private bool _openDropDown;
 
+        private bool _hasFocus;
+
         #endregion
 
         #region PROPERTIES
@@ -40,8 +42,6 @@ namespace Gizmo.Client.UI.Shared
 
         #region EVENTS
 
-        private bool _hasFocus;
-
         protected Task OnFocusInHandler()
         {
             if (!string.IsNullOrEmpty(_text))
@@ -51,7 +51,6 @@ namespace Gizmo.Client.UI.Shared
 
             return Task.CompletedTask;
         }
-
 
         protected Task OnFocusOutHandler()
         {
@@ -100,15 +99,16 @@ namespace Gizmo.Client.UI.Shared
         private async Task Search()
         {
             await SearchService.ClearResultsAsync();
-
-            StateHasChanged();
-
             await SearchService.SearchAsync(_text);
-
-            StateHasChanged();
         }
 
         #region CLASSMAPPERS
+
+        protected override void OnInitialized()
+        {
+            this.SubscribeChange(SearchService.ViewState);
+            base.OnInitialized();
+        }
 
         protected string CloseButtonStyleValue => new StyleMapper()
                  .If($"visibility: hidden", () => string.IsNullOrEmpty(_text))

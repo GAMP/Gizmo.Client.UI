@@ -1,29 +1,48 @@
 //=============== Payment Method Selector Dialog ================//
 
-.giz-payment-method-list {
-    display: grid;
-    grid-auto-flow: column;
-    grid-gap: 1.063rem;
+.giz-payment-method-selector-dialog {
+    .giz-client-dialog__body {
+        max-height: 445px;
+    }
 
-    &-item {
-        background: rgba(43, 59, 79, 0.19);
-        border-radius: 3px;
-        color: white;
-        padding: 8px;
-        cursor: pointer;
+    .giz-checkout {
+        height: 100%;
+        overflow: hidden;
+        display: grid;
+        grid-template-rows: 1fr min-content min-content min-content;
 
-        &:hover {
-            background: rgba(43, 59, 79, 0.7);
+        &__list {
+            height: 100%;
+            overflow: hidden;
         }
 
-        &__title {
-            margin-bottom: 0.25rem;
+        &__summary {
+            display: flex;
+            justify-content: space-between;
+            color: #FAFAFA;
+            //Font
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 22px;
         }
 
-        &__icon {
-            .giz-icon {
-                margin: 10px;
-            }
+        &__payment-method {
+            display: grid;
+            grid-template-columns: min-content 1fr;
+            white-space: nowrap;
+            color: #FAFAFA;
+            //Font
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 22px;
+        }
+
+        &__notes {
+            color: rgba(255, 255, 255, 0.3);
+            //Font
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 18px;
         }
     }
 }

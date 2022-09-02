@@ -47,8 +47,9 @@
             </div>
         </div>
         <div>
-            @*<Button Size="ButtonSizes.Large" IsFullWidth="true" IsDisabled="@(Order == null || Order.OrderLines.Count == 0)" Command="@PlaceOrderCommand">place order</Button>*@
-            <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" IsDisabled="@(UserCartService.ViewState.Products.Count() == 0)">Place order</Button>
+            <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" IsDisabled="@(UserCartService.ViewState.Products.Count() == 0)" @onclick="@(() => PlaceOrder())">Place order</Button>
         </div>
     </div>
 </div>
+
+<PaymentMethodSelectorDialog @bind-IsOpen="PaymentMethodSelectorIsOpen" OnSelectPaymentMethod="@SelectPaymentMethod" />

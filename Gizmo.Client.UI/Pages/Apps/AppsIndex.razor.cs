@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.Client.UI.ViewModels;
 using Gizmo.UI;
 using Microsoft.AspNetCore.Components;
@@ -34,6 +35,9 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         AdvertisementsService AdvertisementsService { get; set; }
 
+        [Inject]
+        SearchService SearchService { get; set; }
+
         #region PARAMETERS
 
         /// <summary>
@@ -59,6 +63,24 @@ namespace Gizmo.Client.UI.Pages
         #endregion
 
         #region METHODS
+
+        public IEnumerable<ApplicationViewState> GetFilteredApplications()
+        {
+            var result = ApplicationsPageService.ViewState.Applications.AsQueryable();
+            if (SearchService.ViewState.ShowAll)
+            {
+                var ids = SearchService.ViewState.ApplicationResults.Select(a => a.Id).ToList();
+
+                result = result.Where(a => ids.Contains(a.Id));
+            }
+
+            if (_selectedApplicationGroupId.HasValue)
+            {
+                result = result.Where(a => a.ApplicationGroupId == _selectedApplicationGroupId);
+            }
+
+            return result.ToList();
+        }
 
         public async Task OpenExecutableSelector(int id)
         {

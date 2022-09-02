@@ -75,10 +75,13 @@ namespace Gizmo.Client.UI.Host.Web
 
         public async Task<PagedList<Application>> GetApplicationsAsync(ApplicationsFilter filter)
         {
+            Random random = new Random();
+
             List<Application> applications = Enumerable.Range(0, 15).Select(i => new Application()
             {
                 Id = i + 1,
-                Title = $"Fortnite ({ i + 1 })",
+                ApplicationCategoryId = random.Next(1, 5),
+                Title = $"Fortnite ({i + 1})",
                 Description = "Fall Guys is a massively multiplayer party game with up to 60 players online in a free-for-all struggle through round after round of escalating chaos until one victor remains!",
                 ReleaseDate = DateTime.Now
             }).ToList();
