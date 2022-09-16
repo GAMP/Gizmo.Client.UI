@@ -1,9 +1,29 @@
 //=============== Client Tab ================//
 
 .giz-client-tab {
-    display: flex;
+    display: grid;
+    grid-template-columns: min-content 1fr min-content;
     gap: 16px;
+    align-items: center;
+    width: 100%;
     white-space: nowrap;
+
+    .giz-button {
+        width: 24px;
+        padding: unset;
+    }
+
+    &__wrapper {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    &__content {
+        display: flex;
+        gap: 16px;
+        height: 100%;
+        transition: margin 1s;
+    }
 
     &-item {
         color: #FAFAFA;

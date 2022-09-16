@@ -1,0 +1,121 @@
+﻿@inherits ComponentBase
+@using Gizmo.Web.Components
+@using Gizmo.Client.UI.Components
+@using Gizmo.Client.UI.ViewModels
+
+<div style="height: 100%; overflow: auto">
+
+    <div>
+        <CheckBox Label="Disabled" @bind-IsChecked="Disabled" />
+
+        <CheckBox Label="Outline" @bind-IsChecked="Outline" IsDisabled="@Disabled" />
+
+        @*<CheckBox Label="Shadow" @bind-IsChecked="Shadow" IsDisabled="@Disabled" />
+
+        <CheckBox Label="Transparent" @bind-IsChecked="Transparent" IsDisabled="@Disabled" />*@
+
+        <CheckBox Label="Full Width" @bind-IsChecked="FullWidth" IsDisabled="@Disabled" />
+    </div>
+
+    <div class="compo-test">
+        <TextInput Label="Test - Small" Size="InputSizes.Small" IsFullWidth="@FullWidth" IsDisabled="@Disabled" HasOutline="@Outline" HasShadow="@Shadow" IsTransparent="@Transparent" @bind-Value="Deposits" />
+    </div>
+    <div class="compo-test">
+        <TextInput Label="Test - Medium" Size="InputSizes.Normal" IsFullWidth="@FullWidth" IsDisabled="@Disabled" HasOutline="@Outline" HasShadow="@Shadow" IsTransparent="@Transparent" @bind-Value="Deposits" />
+    </div>
+    <div class="compo-test">
+        <TextInput Label="Test - Large" Size="InputSizes.Large" IsFullWidth="@FullWidth" IsDisabled="@Disabled" HasOutline="@Outline" HasShadow="@Shadow" IsTransparent="@Transparent" @bind-Value="Deposits" />
+    </div>
+    
+    <div class="compo-test">
+        <Select TValue="int" Label="Test - Small" Size="InputSizes.Small" IsFullWidth="@FullWidth" IsDisabled="@Disabled" HasOutline="@Outline" HasShadow="@Shadow" IsTransparent="@Transparent">
+            <SelectItem Value="0" Text="Name1" />
+            <SelectItem Value="1" Text="Name2" />
+            <SelectItem Value="2" Text="Name3" />
+        </Select>
+    </div>
+    
+    <div class="compo-test">
+        <Select @bind-Value="Variant" Label="Test - Medium" Size="InputSizes.Normal" IsFullWidth="@FullWidth" IsDisabled="@Disabled" HasOutline="@Outline" HasShadow="@Shadow" IsTransparent="@Transparent">
+            <SelectItem Value="ButtonVariants.Fill" Text="Fill" />
+            <SelectItem Value="ButtonVariants.Outline" Text="Outline" />
+            <SelectItem Value="ButtonVariants.Text" Text="Text" />
+            <SelectItem Value="ButtonVariants.Progress" Text="Progress" />
+        </Select>
+    </div>
+    
+    <div class="compo-test">
+        <Select @bind-Value="Color" Label="Test - Large" Size="InputSizes.Large" IsFullWidth="@FullWidth" IsDisabled="@Disabled" HasOutline="@Outline" HasShadow="@Shadow" IsTransparent="@Transparent">
+            <SelectItem Value="ButtonColors.Primary" Text="Primary" />
+            <SelectItem Value="ButtonColors.Secondary" Text="Secondary" />
+            <SelectItem Value="ButtonColors.Warning" Text="Warning" />
+            <SelectItem Value="ButtonColors.Danger" Text="Danger" />
+            <SelectItem Value="ButtonColors.Success" Text="Success" />
+            <SelectItem Value="ButtonColors.Info" Text="Info" />
+            <SelectItem Value="ButtonColors.Accent" Text="Accent" />
+        </Select>
+    </div>
+    
+    <div class="compo-test">
+        <Button Label="Test" Size="ButtonSizes.ExtraSmall" Variant="@Variant" Color="@Color" IsFullWidth="@FullWidth" IsDisabled="@Disabled" HasShadow="@Shadow">Test - Small</Button>
+    </div>
+    <div class="compo-test">
+        <Button Label="Test" Size="ButtonSizes.Small" Variant="@Variant" Color="@Color" IsFullWidth="@FullWidth" IsDisabled="@Disabled" HasShadow="@Shadow">Test - Small</Button>
+    </div>
+    <div class="compo-test">
+        <Button Label="Test" Size="ButtonSizes.Medium" Variant="@Variant" Color="@Color" IsFullWidth="@FullWidth" IsDisabled="@Disabled" HasShadow="@Shadow">Test - Medium</Button>
+    </div>
+    <div class="compo-test">
+        <Button Label="Test" Size="ButtonSizes.Large" Variant="@Variant" Color="@Color" IsFullWidth="@FullWidth" IsDisabled="@Disabled" HasShadow="@Shadow">Test - Large</Button>
+    </div>
+    <div class="compo-test">
+        <Button Label="Test" Size="ButtonSizes.ExtraLarge" Variant="@Variant" Color="@Color" IsFullWidth="@FullWidth" IsDisabled="@Disabled" HasShadow="@Shadow">Test - ExtraLarge</Button>
+    </div>
+
+    <div class="compo-test">
+        <IconButton SVGIcon="Icons.Close" Size="ButtonSizes.ExtraSmall" Variant="@Variant" Color="@Color" IsDisabled="@Disabled" HasShadow="@Shadow" />
+    </div>    
+    <div class="compo-test">
+        <IconButton SVGIcon="Icons.Close" Size="ButtonSizes.Small" Variant="@Variant" Color="@Color" IsDisabled="@Disabled" HasShadow="@Shadow" />
+    </div>
+    <div class="compo-test">
+        <IconButton SVGIcon="Icons.Close" Size="ButtonSizes.Medium" Variant="@Variant" Color="@Color" IsDisabled="@Disabled" HasShadow="@Shadow" />
+    </div>
+    <div class="compo-test">
+        <IconButton SVGIcon="Icons.Close" Size="ButtonSizes.Large" Variant="@Variant" Color="@Color" IsDisabled="@Disabled" HasShadow="@Shadow" />
+    </div>
+    <div class="compo-test">
+        <IconButton SVGIcon="Icons.Close" Size="ButtonSizes.ExtraLarge" Variant="@Variant" Color="@Color" IsDisabled="@Disabled" HasShadow="@Shadow" />
+    </div>
+    
+    <div>
+        <CircularProgressBar Size="CircularProgressBarSizes.ExtraSmall" Value="@Deposits" Color="blue" />
+    </div>
+    @*<div>
+        <CircularProgressBar Size="CircularProgressBarSizes.Small" Value="@Deposits" Color="blue" />
+    </div>
+    <div>
+        <CircularProgressBar Size="CircularProgressBarSizes.Medium" Value="@Deposits" Color="blue" />
+    </div>
+    <div>
+        <CircularProgressBar Size="CircularProgressBarSizes.Large" Value="@Deposits" Color="blue" />
+    </div>
+    <div>
+        <CircularProgressBar Size="CircularProgressBarSizes.ExtraLarge" Value="@Deposits" Color="blue" />
+    </div>*@
+    <div>
+        <Icon Size="IconSizes.ExtraSmall" SVGIcon="Icons.Close_Client" BackgroundStyle="IconBackgroundStyles.Circle" BackgroundColor="red" />
+    </div>
+    <div>
+        <Icon Size="IconSizes.Small" SVGIcon="Icons.Close_Client" BackgroundStyle="IconBackgroundStyles.Circle" BackgroundColor="red" />
+    </div>
+    <div>
+        <Icon Size="IconSizes.Medium" SVGIcon="Icons.Close_Client" BackgroundStyle="IconBackgroundStyles.Circle" BackgroundColor="red" />
+    </div>
+    <div>
+        <Icon Size="IconSizes.Large" SVGIcon="Icons.Close_Client" BackgroundStyle="IconBackgroundStyles.Circle" BackgroundColor="red" />
+    </div>
+    <div>
+        <Icon Size="IconSizes.ExtraLarge" SVGIcon="Icons.Close_Client" BackgroundStyle="IconBackgroundStyles.Circle" BackgroundColor="red" />
+    </div>
+</div>

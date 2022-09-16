@@ -14,7 +14,7 @@
     </div>
 
     <div class="giz-executable-card__executable-actions">
-        <ComboButton Progress="@Executable.StatePercentage" Color="@(Executable.State == 3 ? ButtonColors.Danger : ButtonColors.Accent)" Variant="@(Executable.State == 2 ? ButtonVariants.Progress : ButtonVariants.Fill)" Size="ButtonSizes.Large" IsFullWidth="true" OnClickMainButton="@OnClickMainButtonHandler">
+        <ComboButton Progress="@Executable.StatePercentage" Color="@(Executable.State == 3 ? ButtonColors.Danger : ButtonColors.Accent)" Variant="@(Executable.State == 2 ? ButtonVariants.Progress : ButtonVariants.Fill)" Size="ButtonSizes.Large" IsFullWidth="true" OnClickMainButton="@OnClickMainButtonHandler" OpenDirection="PopupOpenDirections.Cursor">
             <ChildContent>
                 @switch (Executable.State)
                 {

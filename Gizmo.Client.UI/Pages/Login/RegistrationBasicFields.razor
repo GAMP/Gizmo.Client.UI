@@ -17,7 +17,31 @@
                 <TextInput @bind-Value="UserRegistrationBasicFieldsService.ViewState.Username" Size="InputSizes.Large" IsFullWidth="true" Label="Username" />
             </div>
             <div class="giz-login-input giz-login-input-columns">
-                <TextInput @bind-Value="UserRegistrationBasicFieldsService.ViewState.NewPassword" Size="InputSizes.Large" IsFullWidth="true" Label="Password" />
+                <div class="giz-password-tooltip-root">
+                    <PasswordInput UpdateOnInput="true" @bind-Value="UserRegistrationBasicFieldsService.ViewState.NewPassword" Size="InputSizes.Large" IsFullWidth="true" Label="Password" />
+                    <div class="giz-password-tooltip">
+                        <CircularProgressBar Size="CircularProgressBarSizes.ExtraSmall" Color="yellow" Value="50" Class="giz-password-tooltip__icon" />
+                        <div class="giz-password-tooltip__body">
+                            <div class="giz-password-tooltip__body__title">
+                                Secure Password
+                            </div>
+                            <div class="giz-password-tooltip__body__messages">
+                                <div class="giz-password-tooltip-message">
+                                    8-24 characters
+                                </div>
+                                <div class="giz-password-tooltip-message">
+                                    At least 1 lowercace letter
+                                </div>
+                                <div class="giz-password-tooltip-message">
+                                    At least 1 uppercase letter
+                                </div>
+                                <div class="giz-password-tooltip-message">
+                                    At least 1 number
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <TextInput @bind-Value="UserRegistrationBasicFieldsService.ViewState.RepeatPassword" Size="InputSizes.Large" IsFullWidth="true" Label="Confirm your password" />
             </div>
             <div class="giz-login-input giz-login-input-columns">

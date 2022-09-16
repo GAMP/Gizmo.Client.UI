@@ -1,4 +1,6 @@
 ﻿using Gizmo.Web.Components;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -6,9 +8,12 @@ namespace Gizmo.Client.UI.Components
     {
         private int _selectedTabIndex = 0;
 
-        private void SelectTab(int index)
+        private void SelectTab(ICollection<Button> selectedItems)
         {
-            _selectedTabIndex = index;
+            if (selectedItems.Where(a => a.Name == "QuickLaunch").Any())
+                _selectedTabIndex = 0;
+            else
+                _selectedTabIndex = 1;
         }
     }
 }

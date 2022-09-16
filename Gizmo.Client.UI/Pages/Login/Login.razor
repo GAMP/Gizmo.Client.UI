@@ -27,6 +27,12 @@ else
         <CardBody>
              <EditForm EditContext="@UserLoginService.EditContext">
                 <div class="giz-login-title">Sign in</div>
+                <div>
+                    <ButtonGroup Class="giz-login-method">
+                        <Button>Phone number</Button>
+                        <Button>Username</Button>
+                    </ButtonGroup>
+                </div>
                 <div class="giz-login-input">
                     <TextInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.LoginName" Size="InputSizes.Large" IsFullWidth="true" Label="Username" />
                 </div>
@@ -34,7 +40,7 @@ else
                      <a href="/passwordrecovery">Forgot you password?</a>
                 </div>
                 <div class="giz-login-input">
-                    <TextInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.Password" Size="InputSizes.Large" IsFullWidth="true" Type="password" Label="Password" />
+                    <PasswordInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.Password" Size="InputSizes.Large" IsFullWidth="true" Label="Password" />
                 </div>
                 <div class="giz-login-input">
                     <Button Color="ButtonColors.Accent" LeftSVGIcon="Icons.Login_Client" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserLoginService.LoginAsync">Continue</Button>
