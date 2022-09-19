@@ -2,12 +2,14 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
-<div class="giz-client-tab">
-    <Button LeftSVGIcon="Icons.ArrowLeft" Size="ButtonSizes.ExtraSmall" />
+<div class="giz-client-tab"
+     id="@Id"
+     @ref="@Ref">
+    <Button Class="giz-client-tab__previous" LeftSVGIcon="Icons.ArrowLeft" Size="ButtonSizes.ExtraSmall" @onclick="OnClickPreviousButton" />
     <div class="giz-client-tab__wrapper">
         <div class="giz-client-tab__content">
             @ChildContent
         </div>
     </div>
-    <Button LeftSVGIcon="Icons.ArrowRight" Size="ButtonSizes.ExtraSmall" />
+    <Button Class="giz-client-tab__next" LeftSVGIcon="Icons.ArrowRight" Size="ButtonSizes.ExtraSmall" @onclick="OnClickNextButton" />
 </div>

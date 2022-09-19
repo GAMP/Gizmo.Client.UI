@@ -22,6 +22,7 @@ namespace Gizmo.Client.UI.Pages
 
         #region FIELDS
         private int? _selectedApplicationGroupId;
+        private List<int> _selectedApplicationGroups = new List<int>() { 1, 2 };
         #endregion
 
         #region PROPERTIES

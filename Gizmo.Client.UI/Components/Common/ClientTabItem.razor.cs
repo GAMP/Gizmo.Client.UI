@@ -7,5 +7,10 @@ namespace Gizmo.Client.UI.Components
     {
         [Parameter]
         public RenderFragment ChildContent { get; set; }
+
+        private async void OnClickHandler()
+        {
+            await InvokeVoidAsync("tabItemBringIntoView", Ref);
+        }
     }
 }

@@ -1,22 +1,39 @@
 ﻿var homeAdsCollapsed = false;
 
-function homeAdsAutoCollapse() {
+function resetAutoHideAds() {
+    homeAdsCollapsed = false;
+}
+
+function autoHideAds() {
     var container = document.querySelector('.giz-home__body');
     var expander = container.querySelector('.giz-expansion-panel');
 
-    var header = expander.querySelector('.giz-expansion-panel__header');
-    header.onclick = function () {
-        homeAdsCollapsed = false;
-    }
-
-    container.onscroll = function () {
-        if (!homeAdsCollapsed) {
-            if (expander.classList.contains('expanded')) {
-                expansionPanelToggle(expander);
-            }
-            homeAdsCollapsed = true;
+    if (!homeAdsCollapsed) {
+        if (expander.classList.contains('expanded')) {
+            expansionPanelToggle(expander);
         }
+        homeAdsCollapsed = true;
     }
+}
+
+function registerHomeAdsAutoCollapse() {
+    var container = document.querySelector('.giz-home__body');
+    var expander = container.querySelector('.giz-expansion-panel');
+    var header = expander.querySelector('.giz-expansion-panel__header');
+
+    header.addEventListener('click', resetAutoHideAds);
+    container.addEventListener('scroll', autoHideAds);
+}
+
+function unregisterHomeAdsAutoCollapse() {
+    var container = document.querySelector('.giz-home__body');
+    var expander = container.querySelector('.giz-expansion-panel');
+    var header = expander.querySelector('.giz-expansion-panel__header');
+
+    header.removeEventListener('click', resetAutoHideAds);
+    container.removeEventListener('scroll', autoHideAds);
+
+    resetAutoHideAds();
 }
 
 var registeredPopups = [];
@@ -69,5 +86,162 @@ function removeClosePopupEventEventListener(objRef) {
     var index = findElementIndexById(closePopupEventListenerReferences, objRef);
     if (index > -1) {
         closePopupEventListenerReferences.splice(index, 1);
+    }
+}
+
+
+var registeredTabs = [];
+
+function getRegisteredTab(element) {
+    for (var i = 0; i < registeredTabs.length; i++) {
+        if (registeredTabs[i].element == element)
+            return registeredTabs[i];
+    }
+}
+
+function registerTab(element) {
+    var registeredTab = getRegisteredTab(element);
+
+    if (!registeredTab) {
+        registeredTab = {
+            element: element,
+            scroll: 0
+        };
+        registeredTabs.push(registeredTab);
+    }
+
+    var wrapper = element.querySelector('.giz-client-tab__wrapper');
+    var content = wrapper.querySelector('.giz-client-tab__content');
+
+    var wrapperBox = wrapper.getBoundingClientRect();
+    var contentBox = content.getBoundingClientRect();
+
+    var previous = element.querySelector('.giz-client-tab__previous');
+    var next = element.querySelector('.giz-client-tab__next');
+
+    if (content.scrollWidth <= wrapperBox.width) {
+        previous.style.display = 'none';
+        next.style.display = 'none';
+    } else {
+        previous.disabled = true;
+        next.disabled = false;
+    }
+
+    return registeredTab;
+}
+
+function unregisterTab(element) {
+}
+
+function tabScrollPrevious(element) {
+    var registeredTab = getRegisteredTab(element);
+    if (!registeredTab) {
+        registeredTab = registerTab(element);
+    }
+
+    var wrapper = element.querySelector('.giz-client-tab__wrapper');
+    var content = wrapper.querySelector('.giz-client-tab__content');
+
+    var wrapperBox = wrapper.getBoundingClientRect();
+    var contentBox = content.getBoundingClientRect();
+
+    var previousScroll = registeredTab.scroll;
+
+    var previous = element.querySelector('.giz-client-tab__previous');
+    var next = element.querySelector('.giz-client-tab__next');
+
+    next.disabled = false;
+    var nextScroll = previousScroll - wrapperBox.width;
+    if (nextScroll < 0) {
+        nextScroll = 0;
+
+        previous.disabled = true;
+    } else {
+        previous.disabled = false;
+    }
+
+    registeredTab.scroll = nextScroll;
+    content.style.marginLeft = "-" + nextScroll + "px";
+}
+
+function tabScrollNext(element) {
+    var registeredTab = getRegisteredTab(element);
+    if (!registeredTab) {
+        registeredTab = registerTab(element);
+    }
+
+    var wrapper = element.querySelector('.giz-client-tab__wrapper');
+    var content = wrapper.querySelector('.giz-client-tab__content');
+
+    var wrapperBox = wrapper.getBoundingClientRect();
+    var contentBox = content.getBoundingClientRect();
+
+    var previousScroll = registeredTab.scroll;
+
+    var previous = element.querySelector('.giz-client-tab__previous');
+    var next = element.querySelector('.giz-client-tab__next');
+
+    previous.disabled = false;
+    var nextScroll = previousScroll + wrapperBox.width;
+    if (nextScroll >= content.scrollWidth - wrapperBox.width) {
+        nextScroll = content.scrollWidth - wrapperBox.width;
+
+        next.disabled = true;
+    } else {
+        next.disabled = false;
+    }
+
+    registeredTab.scroll = nextScroll;
+    content.style.marginLeft = "-" + nextScroll + "px";
+}
+
+function tabItemBringIntoView(element) {
+    var tab = element.parentElement.parentElement.parentElement;
+    var registeredTab = getRegisteredTab(tab);
+    if (!registeredTab) {
+        registeredTab = registerTab(tab);
+    }
+
+    var elementBox = element.getBoundingClientRect();
+    var content = element.parentElement;
+    var contentBox = content.getBoundingClientRect();
+    var wrapper = content.parentElement;
+    var wrapperBox = wrapper.getBoundingClientRect();
+
+    var previous = tab.querySelector('.giz-client-tab__previous');
+    var next = tab.querySelector('.giz-client-tab__next');
+
+    if (elementBox.left < wrapperBox.left) {
+        var previousScroll = registeredTab.scroll;
+
+        next.disabled = false;
+        var nextScroll = previousScroll - (wrapperBox.left - elementBox.left);
+        if (nextScroll <= 0) {
+            nextScroll = 0;
+
+            previous.disabled = true;
+        } else {
+            previous.disabled = false;
+        }
+
+        registeredTab.scroll = nextScroll;
+        content.style.marginLeft = "-" + nextScroll + "px";
+    }
+
+    if (elementBox.right > contentBox.right) {
+        var previousScroll = registeredTab.scroll;
+
+        previous.disabled = false;
+        var nextScroll = previousScroll + (elementBox.right - contentBox.right);
+        if (nextScroll > content.scrollWidth - wrapperBox.width) {
+            nextScroll = content.scrollWidth - wrapperBox.width;
+
+            next.disabled = true;
+        } else {
+            next.disabled = false;
+        }
+
+        registeredTab.scroll = nextScroll;
+        content.style.marginLeft = "-" + nextScroll + "px";
     }
 }

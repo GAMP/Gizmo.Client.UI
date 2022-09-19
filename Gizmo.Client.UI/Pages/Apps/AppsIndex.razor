@@ -38,6 +38,14 @@
                         <div>Popular items</div>
                     }
                     <div class="giz-apps-filters">
+                        <MultiSelect TValue="int" @bind-Value="_selectedApplicationGroups" Label="Category:" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
+                            @foreach (var appGroup in ApplicationsPageService.ViewState.ApplicationGroups)
+                            {
+                                <MultiSelectItem Value="@appGroup.Id" Text="@appGroup.Name" />
+                            }
+                        </MultiSelect>
+                    </div>
+                    <div class="giz-apps-filters">
                         <Select @bind-Value="_selectedApplicationGroupId" Label="Category:" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
                             @foreach (var appGroup in ApplicationsPageService.ViewState.ApplicationGroups)
                             {
