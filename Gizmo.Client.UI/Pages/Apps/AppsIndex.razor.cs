@@ -21,8 +21,9 @@ namespace Gizmo.Client.UI.Pages
         }
 
         #region FIELDS
+        private int? _selectedSortOptionId;
         private int? _selectedApplicationGroupId;
-        private List<int> _selectedApplicationGroups = new List<int>() { 1, 2 };
+        private List<int> _selectedApplicationFilters = new List<int>() { 1, 3 };
         #endregion
 
         #region PROPERTIES
@@ -55,11 +56,30 @@ namespace Gizmo.Client.UI.Pages
 
         public bool ExecutableSelectorIsOpen { get; set; }
 
+        public List<ApplicationSortOptionViewModel> ApplicationSortOptions { get; set; }
+
         public List<ApplicationFilterViewModel> ApplicationFilters { get; set; }
+
+        public List<int> SelectedApplicationFilters
+        {
+            get
+            {
+                return _selectedApplicationFilters;
+            }
+            set
+            {
+                _selectedApplicationFilters = value;
+            }
+        }
 
         #endregion
 
         #region EVENTS
+        
+        public void SelectedApplicationFiltersChanged(List<int> selectedApplicationFilters)
+        {
+            SelectedApplicationFilters = selectedApplicationFilters;
+        }
 
         #endregion
 
@@ -104,6 +124,11 @@ namespace Gizmo.Client.UI.Pages
             ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 2, Name = "Rating", Options = options });
             ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 3, Name = "Type", Options = options });
             ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 4, Name = "Player mode", Options = options });
+
+            ApplicationSortOptions = new List<ApplicationSortOptionViewModel>();
+            ApplicationSortOptions.Add(new ApplicationSortOptionViewModel() { Id = 1, Name = "Default" });
+            ApplicationSortOptions.Add(new ApplicationSortOptionViewModel() { Id = 2, Name = "Test 1" });
+            ApplicationSortOptions.Add(new ApplicationSortOptionViewModel() { Id = 3, Name = "Test 2" });
 
             return base.OnInitializedAsync();
         }

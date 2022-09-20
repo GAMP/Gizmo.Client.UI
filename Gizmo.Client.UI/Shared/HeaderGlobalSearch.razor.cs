@@ -42,6 +42,20 @@ namespace Gizmo.Client.UI.Shared
 
         #region EVENTS
 
+        protected Task OnInputKeyDownHandler(KeyboardEventArgs args)
+        {
+            switch (args.Key)
+            {
+                case "Enter":
+                    break;
+
+                default:
+                    break;
+            }
+
+            return Task.CompletedTask;
+        }
+
         protected Task OnFocusInHandler()
         {
             if (!string.IsNullOrEmpty(_text))

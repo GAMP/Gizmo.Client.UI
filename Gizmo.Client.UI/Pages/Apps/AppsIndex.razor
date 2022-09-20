@@ -38,20 +38,33 @@
                         <div>Popular items</div>
                     }
                     <div class="giz-apps-filters">
-                        <MultiSelect TValue="int" @bind-Value="_selectedApplicationGroups" Label="Category:" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
-                            @foreach (var appGroup in ApplicationsPageService.ViewState.ApplicationGroups)
+                        <Select @bind-Value="_selectedSortOptionId" Label="Sort by:" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
+                            @if (ApplicationSortOptions != null)
                             {
-                                <MultiSelectItem Value="@appGroup.Id" Text="@appGroup.Name" />
-                            }
-                        </MultiSelect>
-                    </div>
-                    <div class="giz-apps-filters">
-                        <Select @bind-Value="_selectedApplicationGroupId" Label="Category:" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
-                            @foreach (var appGroup in ApplicationsPageService.ViewState.ApplicationGroups)
-                            {
-                                <SelectItem TValue="int?" Value="@appGroup.Id" Text="@appGroup.Name" />
+                                @foreach (var sortOption in ApplicationSortOptions)
+                                {
+                                    <SelectItem TValue="int?" Value="@sortOption.Id" Text="@sortOption.Name" />
+                                }
                             }
                         </Select>
+                        <Select @bind-Value="_selectedApplicationGroupId" Label="Category:" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
+                            @if (ApplicationsPageService.ViewState.ApplicationGroups != null)
+                            {
+                                @foreach (var appGroup in ApplicationsPageService.ViewState.ApplicationGroups)
+                                {
+                                    <SelectItem TValue="int?" Value="@appGroup.Id" Text="@appGroup.Name" />
+                                }
+                            }
+                        </Select>
+                        <MultiSelect TValue="int" Value="@SelectedApplicationFilters" ValueChanged="@SelectedApplicationFiltersChanged" Label="Parameters:" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
+                            @if (ApplicationFilters != null)
+                            {
+                                @foreach (var filter in ApplicationFilters)
+                                {
+                                    <MultiSelectItem Value="@filter.Id" Text="@filter.Name" />
+                                }
+                            }
+                        </MultiSelect>
                     </div>
                 </div>
                 <div class="giz-section__body">

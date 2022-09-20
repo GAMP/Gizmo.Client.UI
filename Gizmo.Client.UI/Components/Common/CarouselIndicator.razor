@@ -2,10 +2,10 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
-<div class="giz-carousel__indicator">
+<div class="giz-carousel-indicator">
     @for (int i = 0; i < Size; i++)
     {
         var local_i = i;
-        <button type="button" class="giz-carousel__indicator-btn @(local_i == SelectedIndex ? "active": "")" @onclick="@(() => OnClickButton(local_i))"></button>
+        <div class="giz-carousel-indicator-button @(local_i == SelectedIndex ? "active": "")" @onclick="@(() => OnClickButton(local_i))"></div>
     }
 </div>

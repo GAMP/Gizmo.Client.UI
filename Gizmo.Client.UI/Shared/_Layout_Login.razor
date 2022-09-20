@@ -1,6 +1,8 @@
 ﻿@layout _EmptyLayout
 @inherits LayoutComponentBase
+@using Gizmo.Client.UI.ViewModels
 @using Microsoft.Extensions.Options
+@using Gizmo.Client.UI.Components
 
 @inject IOptions<ClientUIOptions> ClientUIOptions
 
@@ -20,7 +22,26 @@
             </div>
 
             <div class="giz-login__adv__body">
-                <!--carousel-->
+                <Carousel Title="Daily News" ShowIndicator="true">
+                    @if (NewsFeeds != null)
+                    {
+                        @foreach (var item in NewsFeeds)
+                        {
+                            <CarouselItem>
+                                @if (item.Type == NewsFeedTypes.Media)
+                                {
+                                    var mediaFeed = (MediaFeedViewModel)item;
+                                    <div class="giz-login-add">
+                                        <div class="giz-login-add__image">
+                                            <img src="@mediaFeed.Thumb" alt="Image" />
+                                        </div>
+                                        <div class="giz-login-add__text">@mediaFeed.Title</div>
+                                    </div>
+                                }
+                            </CarouselItem>
+                        }
+                    }
+                </Carousel>
             </div>
 
             <div class="giz-login__adv__footer">
