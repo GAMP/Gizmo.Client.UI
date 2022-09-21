@@ -2,6 +2,9 @@
 @using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
+@using Gizmo.Shared.UI.Services
+
+@inject ILocalizationService localizationService
 
 <div class="giz-global-search-result-card">
     <div class="giz-global-search-result-card__image">
@@ -10,6 +13,6 @@
     <div class="giz-global-search-result-card__category">Gaming</div>
     <div class="giz-global-search-result-card__title">@Result.Name</div>
     <div class="giz-global-search-result-card__action">
-        <Button Variant="ButtonVariants.Outline">@(Result.Type == View.SearchResultTypes.Application ? "Launch" : "Add to cart")</Button>
+        <Button Variant="ButtonVariants.Outline">@(Result.Type == View.SearchResultTypes.Application ? @localizationService.GetString("GIZ_LAUNCH") : @localizationService.GetString("GIZ_ADD_TO_CART"))</Button>
     </div>
 </div>

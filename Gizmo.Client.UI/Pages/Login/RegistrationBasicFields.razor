@@ -5,20 +5,23 @@
 @using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
 @using Microsoft.AspNetCore.Components.Forms
+@using Gizmo.Shared.UI.Services
+
+@inject ILocalizationService localizationService
 
 <LoginCard>
     <CardHeader>
-        <div class="giz-login-new-user">Already a member? <a href="/">Sign In</a></div>
+        <div class="giz-login-new-user">@localizationService.GetString("GIZ_ALREADY_A_MEMBER") <a href="/">@localizationService.GetString("GIZ_SIGN_IN")</a></div>
     </CardHeader>
     <CardBody>
         <EditForm EditContext="@UserRegistrationBasicFieldsService.EditContext">
-            <div class="giz-login-title">Sign Up</div>
+            <div class="giz-login-title">@localizationService.GetString("GIZ_SIGN_UP")</div>
             <div class="giz-login-input">
-                <TextInput @bind-Value="UserRegistrationBasicFieldsService.ViewState.Username" Size="InputSizes.Large" IsFullWidth="true" Label="Username" />
+                <TextInput @bind-Value="UserRegistrationBasicFieldsService.ViewState.Username" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USERNAME")" />
             </div>
             <div class="giz-login-input giz-login-input-columns">
                 <div class="giz-password-tooltip-root">
-                    <PasswordInput UpdateOnInput="true" @bind-Value="UserRegistrationBasicFieldsService.ViewState.NewPassword" Size="InputSizes.Large" IsFullWidth="true" Label="Password" />
+                    <PasswordInput UpdateOnInput="true" @bind-Value="UserRegistrationBasicFieldsService.ViewState.NewPassword" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_PASSWORD")" />
                     <div class="giz-password-tooltip">
                         <CircularProgressBar Size="CircularProgressBarSizes.ExtraSmall" Color="yellow" Value="50" Class="giz-password-tooltip__icon" />
                         <div class="giz-password-tooltip__body">
@@ -42,21 +45,21 @@
                         </div>
                     </div>
                 </div>
-                <TextInput @bind-Value="UserRegistrationBasicFieldsService.ViewState.RepeatPassword" Size="InputSizes.Large" IsFullWidth="true" Label="Confirm your password" />
+                <TextInput @bind-Value="UserRegistrationBasicFieldsService.ViewState.RepeatPassword" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_CONFIRM_PASSWORD")" />
             </div>
             <div class="giz-login-input giz-login-input-columns">
-                <TextInput TValue="string" Size="InputSizes.Large" IsFullWidth="true" Label="First name" />
-                <TextInput TValue="string" Size="InputSizes.Large" IsFullWidth="true" Label="Last name" />
+                <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_FIRST_NAME")" />
+                <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_LAST_NAME")" />
             </div>
             <div class="giz-login-input giz-login-input-columns">
-                <TextInput TValue="string" Size="InputSizes.Large" IsFullWidth="true" Label="Date of birth" />
-                <TextInput TValue="string" Size="InputSizes.Large" IsFullWidth="true" Label="Gender" />
+                <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_BIRTH_DATE")" />
+                <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GENDER")" />
             </div>
             <div class="giz-login-input">
-                <TextInput TValue="string" Size="InputSizes.Large" IsFullWidth="true" Label="Email address" />
+                <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_EMAIL_ADDRESS")" />
             </div>
             <div class="giz-login-input">
-                <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationBasicFieldsService.SubmitAsync">Continue</Button>
+                <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationBasicFieldsService.SubmitAsync">@localizationService.GetString("GIZ_CONTINUE")</Button>
             </div>
         </EditForm>
     </CardBody>

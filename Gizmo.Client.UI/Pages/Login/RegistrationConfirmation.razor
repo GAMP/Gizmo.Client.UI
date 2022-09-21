@@ -5,19 +5,22 @@
 @using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
 @using Microsoft.AspNetCore.Components.Forms
+@using Gizmo.Shared.UI.Services
+
+@inject ILocalizationService localizationService
 
 <LoginCard>
     <CardHeader>
-        <div class="giz-login-new-user">Already a member? <a href="/">Sign In</a></div>
+        <div class="giz-login-new-user">@localizationService.GetString("GIZ_ALREADY_A_MEMBER") <a href="/">@localizationService.GetString("GIZ_SIGN_IN")</a></div>
     </CardHeader>
     <CardBody>
         <EditForm EditContext="@UserRegistrationConfirmationService.EditContext">
-            <div class="giz-login-title">Sign Up</div>
+            <div class="giz-login-title">@localizationService.GetString("GIZ_SIGN_UP")</div>
             <div class="giz-login-input">
-                <TextInput @bind-Value="UserRegistrationConfirmationService.ViewState.ConfirmationCode" Size="InputSizes.Large" IsFullWidth="true" Label="Enter you code" />
+                <TextInput @bind-Value="UserRegistrationConfirmationService.ViewState.ConfirmationCode" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_ENTER_YOUR_CODE")" />
             </div>
             <div class="giz-login-input">
-                <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationConfirmationService.SubmitAsync">Continue</Button>
+                <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationConfirmationService.SubmitAsync">@localizationService.GetString("GIZ_CONTINUE")</Button>
             </div>
         </EditForm>
     </CardBody>

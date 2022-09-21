@@ -2,6 +2,7 @@
 using Gizmo.Client.UI.View.States;
 using Gizmo.Client.UI.ViewModels;
 using Gizmo.UI;
+using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Gizmo.Client.UI.Pages
     [ModuleDisplayOrder(1)]
     [PageUIModule(TitleLocalizationKey = "MODULE_PAGE_APPS_TITLE", DescriptionLocalizationKey = "MODULE_PAGE_APPS_DESCRIPTION")]
     [DefaultRoute("/apps"), Route("/apps"), Route("/apps/{appId:int}")]
-    public partial class AppsIndex : ComponentBase
+    public partial class AppsIndex : CustomDOMComponentBase
     {
         public AppsIndex()
         {
@@ -113,6 +114,8 @@ namespace Gizmo.Client.UI.Pages
 
         protected override Task OnInitializedAsync()
         {
+            this.SubscribeChange(SearchService.ViewState);
+
             List<ApplicationFilterOptionViewModel> options = new List<ApplicationFilterOptionViewModel>();
             options.Add(new ApplicationFilterOptionViewModel() { Id = 1, Name = "Free to Play" });
             options.Add(new ApplicationFilterOptionViewModel() { Id = 2, Name = "Subscription Based" });
@@ -133,5 +136,10 @@ namespace Gizmo.Client.UI.Pages
             return base.OnInitializedAsync();
         }
 
+        public override void Dispose()
+        {
+            this.UnsubscribeChange(SearchService.ViewState);
+            base.Dispose();
+        }
     }
 }

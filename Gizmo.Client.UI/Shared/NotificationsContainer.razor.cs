@@ -18,5 +18,11 @@ namespace Gizmo.Client.UI.Shared
             this.SubscribeChange(NotificationsService.ViewState);
             base.OnInitialized();
         }
+
+        public override void Dispose()
+        {
+            this.UnsubscribeChange(NotificationsService.ViewState);
+            base.Dispose();
+        }
     }
 }

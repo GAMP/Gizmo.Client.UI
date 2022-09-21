@@ -1,6 +1,9 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
+@using Gizmo.Shared.UI.Services
+
+@inject ILocalizationService localizationService 
 
 <div class="giz-order">
     <div class="giz-order__items">
@@ -19,8 +22,8 @@
             {
                 <div class="giz-no-order-wrapper">
                     <div class="giz-no-order-content">
-                        <div class="giz-no-order-content__title">No products</div>
-                        <div class="giz-no-order-content__text">Add products to get started</div>
+                        <div class="giz-no-order-content__title">@localizationService.GetString("GIZ_NO_PRODUCTS_MESSAGE")</div>
+                        <div class="giz-no-order-content__text">@localizationService.GetString("GIZ_NO_PRODUCTS_RETRY_MESSAGE")</div>
                     </div>
                 </div>
             }
@@ -28,15 +31,15 @@
     </div>
         
     <div class="giz-order__notes">
-        <div class="giz-order__notes__header">Order comments</div>
+        <div class="giz-order__notes__header">@localizationService.GetString("GIZ_ORDER_NOTE")</div>
         <div class="giz-order__notes__body">
-            <TextInput TValue="string" IsMultiLine="true" IsFullWidth="true" Placeholder="Add your note.." Class="giz-order-notes" />
+            <TextInput TValue="string" IsMultiLine="true" IsFullWidth="true" Placeholder="@localizationService.GetString("GIZ_ORDER_NOTE_PLACEHOLDER")" Class="giz-order-notes" />
         </div>
     </div>
 
     <div class="giz-order__totals">
         <div class="giz-order-summary">
-            <div class="giz-order-summary-text-bold">Subtotal</div>
+            <div class="giz-order-summary-text-bold">@localizationService.GetString("GIZ_SUBTOTAL")</div>
             <div class="giz-order-summary-number-bold">@UserCartService.ViewState.Total.ToString("C")</div>
             @*<div class="giz-order-summary-text">points</div>
             <div class="giz-order-summary-number">@(Order?.PointsTotal ?? 0)</div>*@
@@ -47,7 +50,7 @@
             </div>
         </div>
         <div>
-            <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" IsDisabled="@(UserCartService.ViewState.Products.Count() == 0)" @onclick="@(() => PlaceOrder())">Place order</Button>
+            <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" IsDisabled="@(UserCartService.ViewState.Products.Count() == 0)" @onclick="@(() => PlaceOrder())">@localizationService.GetString("GIZ_PLACE_ORDER")</Button>
         </div>
     </div>
 </div>

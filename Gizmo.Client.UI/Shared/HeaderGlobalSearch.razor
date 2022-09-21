@@ -3,6 +3,9 @@
 @using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
+@using Gizmo.Shared.UI.Services
+
+@inject ILocalizationService localizationService
 
 <div class="giz-header__global-search">
     <div class="giz-global-search @(_openDropDown ? "open" : "") @(!string.IsNullOrEmpty(_text) ? "nonemtpy" : "")">
@@ -35,11 +38,11 @@
                         <div class="giz-global-search-section">
                             <div class="giz-global-search-section__header">
 
-                                <div>Games &amp; Apps</div>
+                                <div>@localizationService.GetString("GIZ_GAMES_AND_APPS")</div>
 
                                 @if (SearchService.ViewState.ApplicationResults.Count > 10)
                                 {
-                                    <div class="giz-global-search-section__header__more" @onclick="@(() => SearchService.LoadAllResultsAsync(Gizmo.Client.UI.View.SearchResultTypes.Application))">See all</div>
+                                    <div class="giz-global-search-section__header__more" @onclick="@(() => SearchService.LoadAllResultsAsync(Gizmo.Client.UI.View.SearchResultTypes.Application))">@localizationService.GetString("GIZ_GLOBAL_SEARCH_SHOW_ALL")</div>
                                 }
                             </div>
                             <div class="giz-global-search-section__body">
@@ -61,7 +64,7 @@
 
                                 @if (SearchService.ViewState.ProductResults.Count > 10)
                                 {
-                                    <div class="giz-global-search-section__header__more" @onclick="@(() => SearchService.LoadAllResultsAsync(Gizmo.Client.UI.View.SearchResultTypes.Product))">See all</div>
+                                    <div class="giz-global-search-section__header__more" @onclick="@(() => SearchService.LoadAllResultsAsync(Gizmo.Client.UI.View.SearchResultTypes.Product))">@localizationService.GetString("GIZ_GLOBAL_SEARCH_SHOW_ALL")</div>
                                 }
                             </div>
                             <div class="giz-global-search-section__body">
@@ -85,8 +88,8 @@
                         else
                         {
                             <div class="giz-global-search-no-results">
-                                <div class="giz-global-search-no-results__title">We didn't find anything</div>
-                                <div class="giz-global-search-no-results__body">Try different keywords or make sure everything is spelled correctly.</div>
+                                <div class="giz-global-search-no-results__title">@localizationService.GetString("GIZ_GLOBAL_SEARCH_NO_RESULTS_MESSAGE")</div>
+                                <div class="giz-global-search-no-results__body">@localizationService.GetString("GIZ_GLOBAL_SEARCH_NO_RESULTS_RETRY_MESSAGE")</div>
                             </div>
                         }
                     </div>

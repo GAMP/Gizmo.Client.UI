@@ -1,5 +1,5 @@
 ﻿@namespace Gizmo.Client.UI.Pages
-@inherits ComponentBase
+@inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
@@ -15,7 +15,7 @@
     </div>
     <div class="giz-apps__body giz-scrollbar--v">
         <div class="giz-apps__body__ads">
-            <ExpansionPanel>
+            <ExpansionPanel InitCollapsed="@(SearchService.ViewState.ShowAllLocally || SearchService.ViewState.ShowAll)">
                 <Header>
                     Ads
                 </Header>
@@ -27,10 +27,15 @@
         <div class="giz-apps__body__popular">
             <div class="giz-section">
                 <div class="giz-section__header">
-                    @if (SearchService.ViewState.ShowAll)
+                    @if (SearchService.ViewState.ShowAllLocally || SearchService.ViewState.ShowAll)
                     {
                         <div class="giz-section__header__filters">
-                            <Chip CanClose="true" OnClose="@(() => SearchService.ClearResultsAsync())">@SearchService.ViewState.SearchPattern</Chip>
+                            <div>
+                                <div class="giz-section__header__filters__title">Results for</div>
+                                <div>
+                                    <Chip CanClose="true" OnClose="@(() => SearchService.ClearResultsAsync())">@SearchService.ViewState.SearchPattern</Chip>
+                                </div>
+                            </div>
                         </div>
                     }
                     else
@@ -38,7 +43,7 @@
                         <div>Popular items</div>
                     }
                     <div class="giz-apps-filters">
-                        <Select @bind-Value="_selectedSortOptionId" Label="Sort by:" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
+                        <Select Size="InputSizes.Small" @bind-Value="_selectedSortOptionId" Label="Sort by:" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
                             @if (ApplicationSortOptions != null)
                             {
                                 @foreach (var sortOption in ApplicationSortOptions)
@@ -47,7 +52,7 @@
                                 }
                             }
                         </Select>
-                        <Select @bind-Value="_selectedApplicationGroupId" Label="Category:" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
+                        <Select Size="InputSizes.Small" @bind-Value="_selectedApplicationGroupId" Label="Category:" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
                             @if (ApplicationsPageService.ViewState.ApplicationGroups != null)
                             {
                                 @foreach (var appGroup in ApplicationsPageService.ViewState.ApplicationGroups)
@@ -56,7 +61,7 @@
                                 }
                             }
                         </Select>
-                        <MultiSelect TValue="int" Value="@SelectedApplicationFilters" ValueChanged="@SelectedApplicationFiltersChanged" Label="Parameters:" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
+                        <MultiSelect Size="InputSizes.Small" TValue="int" Value="@SelectedApplicationFilters" ValueChanged="@SelectedApplicationFiltersChanged" Label="Parameters:" OpenDirection="PopupOpenDirections.Bottom" CanClearValue="true" MaximumHeight="200px">
                             @if (ApplicationFilters != null)
                             {
                                 @foreach (var filter in ApplicationFilters)

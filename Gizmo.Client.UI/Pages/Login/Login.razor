@@ -1,10 +1,13 @@
 ﻿@namespace Gizmo.Client.UI.Pages
-@inherits ComponentBase
+@inherits CustomDOMComponentBase
 @layout _Layout_Login
-@using System.Threading;
+@using System.Threading
 @using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
 @using Microsoft.AspNetCore.Components.Forms
+@using Gizmo.Shared.UI.Services
+
+@inject ILocalizationService localizationService
 
 @if (_logginIn)
 {
@@ -22,35 +25,35 @@ else
 {
     <LoginCard>
         <CardHeader>
-            <div class="giz-login-new-user">Not a member? <a @onclick="UserLoginService.OpenRegistration">Sign up now</a></div>
+            <div class="giz-login-new-user">@localizationService.GetString("GIZ_NOT_A_MEMBER") <a @onclick="UserLoginService.OpenRegistration">@localizationService.GetString("GIZ_SIGN_UP_NOW")</a></div>
         </CardHeader>
         <CardBody>
              <EditForm EditContext="@UserLoginService.EditContext">
-                <div class="giz-login-title">Sign in</div>
+                <div class="giz-login-title">@localizationService.GetString("GIZ_SIGN_IN")</div>
                 <div>
                     <ButtonGroup Class="giz-login-method">
-                        <Button IsSelected="true">Phone number</Button>
-                        <Button>Username</Button>
+                        <Button IsSelected="true">@localizationService.GetString("GIZ_PHONE_NUMBER")</Button>
+                        <Button>@localizationService.GetString("GIZ_USERNAME")</Button>
                     </ButtonGroup>
                 </div>
                 <div class="giz-login-input">
-                    <TextInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.LoginName" Size="InputSizes.Large" IsFullWidth="true" Label="Username" />
+                    <TextInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.LoginName" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USERNAME")" />
                 </div>
                 <div class="giz-login-forgot-password">
-                     <a href="/passwordrecovery">Forgot you password?</a>
+                     <a href="/passwordrecovery">@localizationService.GetString("GIZ_FORGOT_YOUR_PASSWORD")</a>
                 </div>
                 <div class="giz-login-input">
-                    <PasswordInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.Password" Size="InputSizes.Large" IsFullWidth="true" Label="Password" />
+                    <PasswordInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.Password" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_PASSWORD")" />
                 </div>
                 <div class="giz-login-input">
-                    <Button Color="ButtonColors.Accent" LeftSVGIcon="Icons.Login_Client" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserLoginService.LoginAsync">Continue</Button>
+                    <Button Color="ButtonColors.Accent" LeftSVGIcon="Icons.Login_Client" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserLoginService.LoginAsync">@localizationService.GetString("GIZ_CONTINUE")</Button>
                 </div>
             </EditForm>
             <div class="giz-alternative-login">
-                <div class="giz-alternative-login__separator"><span>Or</span></div>
+                <div class="giz-alternative-login__separator"><span>@localizationService.GetString("GIZ_OR")</span></div>
                 <div class="giz-alternative-login__actions">
                     <Icon SVGIcon="Icons.QR" />
-                    <div>QR code</div>
+                    <div>@localizationService.GetString("GIZ_QR_CODE")</div>
                 </div>
             </div>
         </CardBody>

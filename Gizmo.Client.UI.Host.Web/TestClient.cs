@@ -104,5 +104,17 @@ namespace Gizmo.Client.UI.Host.Web
             return pagedList;
         }
 
+        public async Task<PagedList<PaymentMethod>> GetPaymentMethodsAsync(PaymentMethodsFilter filter)
+        {
+            List<PaymentMethod> paymentMethods = Enumerable.Range(0, 4).Select(i => new PaymentMethod()
+            {
+                Id = i + 1,
+                Name = $"Payment method { i + 1 }"
+            }).ToList();
+
+            var pagedList = new PagedList<PaymentMethod>(paymentMethods, new PaginationMetadata());
+
+            return pagedList;
+        }
     }
 }

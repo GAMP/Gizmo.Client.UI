@@ -31,5 +31,11 @@ namespace Gizmo.Client.UI.Components
             this.SubscribeChange(UserCartService.ViewState);
             base.OnInitialized();
         }
+
+        public override void Dispose()
+        {
+            this.UnsubscribeChange(UserCartService.ViewState);
+            base.Dispose();
+        }
     }
 }

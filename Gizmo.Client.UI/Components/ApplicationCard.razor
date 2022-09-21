@@ -1,6 +1,9 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
+@using Gizmo.Shared.UI.Services
+
+@inject ILocalizationService localizationService
 
 <div class="giz-app-card">
     <div class="giz-hoverable-card">
@@ -58,7 +61,7 @@
                         </div>
                     </div>
                     <div class="giz-app-card__content--hovered__body">
-                        <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="Execute">LAUNCH</Button>
+                        <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="Execute">@localizationService.GetStringUpper("GIZ_LAUNCH")</Button>
                     </div>
                 </div>
             </div>

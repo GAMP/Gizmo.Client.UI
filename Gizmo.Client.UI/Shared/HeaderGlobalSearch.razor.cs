@@ -42,18 +42,24 @@ namespace Gizmo.Client.UI.Shared
 
         #region EVENTS
 
-        protected Task OnInputKeyDownHandler(KeyboardEventArgs args)
+        protected async Task OnInputKeyDownHandler(KeyboardEventArgs args)
         {
             switch (args.Key)
             {
                 case "Enter":
+
+                    await SearchService.ClearResultsAsync();
+                    //TODO: A IF WE KNOW THE CURRENT PAGE WE CAN LIMIT THE SEARCH.
+                    await SearchService.SearchAsync(_text);
+                    await SearchService.LoadAllResultsLocallyAsync();
+
+                    _openDropDown = false;
+
                     break;
 
                 default:
                     break;
             }
-
-            return Task.CompletedTask;
         }
 
         protected Task OnFocusInHandler()
@@ -144,6 +150,8 @@ namespace Gizmo.Client.UI.Shared
 
         public override void Dispose()
         {
+            this.UnsubscribeChange(SearchService.ViewState);
+
             ClosePopupEventInterop?.Dispose();
             _ = JsRuntime.InvokeVoidAsync("unregisterPopup", Ref);
 

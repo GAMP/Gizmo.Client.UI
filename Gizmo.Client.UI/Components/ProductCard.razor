@@ -1,6 +1,9 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
+@using Gizmo.Shared.UI.Services
+
+@inject ILocalizationService localizationService 
 
 <div class="giz-product-card @(Product?.ProductType == ProductType.Product ? "product" : 
                                Product?.ProductType == ProductType.ProductBundle ? "bundle" : 
@@ -130,7 +133,7 @@
                             }
                         </div>
                         <div class="giz-product-card__content--hovered__footer">
-                            <Button Color="ButtonColors.Accent" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="@(() => UserCartService.AddProductAsyc(Product.Id))">Add to cart</Button>
+                            <Button Color="ButtonColors.Accent" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="@(() => UserCartService.AddProductAsyc(Product.Id))">@localizationService.GetString("GIZ_ADD_TO_CART")</Button>
                         </div>
                     </div>
                 </div>

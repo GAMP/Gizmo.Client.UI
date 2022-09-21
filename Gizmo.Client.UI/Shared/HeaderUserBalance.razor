@@ -1,10 +1,13 @@
 ﻿@namespace Gizmo.Client.UI
-@inherits ComponentBase    
+@inherits ComponentBase
+@using Gizmo.Shared.UI.Services
+
+@inject ILocalizationService localizationService 
 
 @if (_hideBalance)
 {
     <div class="giz-header__user-menu-item">
-        <div>Balance Hidden</div>
+        <div>@localizationService.GetString("GIZ_BALANCE_IS_HIDDEN")</div>
     </div>
     <div class="giz-header__user-menu-item">
         <div class="user-menu-item-button" @onclick="@(() => ToggleBalanceVisibility())">

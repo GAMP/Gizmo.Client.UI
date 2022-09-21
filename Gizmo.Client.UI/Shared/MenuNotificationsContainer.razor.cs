@@ -65,6 +65,8 @@ namespace Gizmo.Client.UI.Shared
 
         public override void Dispose()
         {
+            this.UnsubscribeChange(NotificationsService.ViewState);
+
             ClosePopupEventInterop?.Dispose();
             _ = JsRuntime.InvokeVoidAsync("unregisterPopup", Ref);
 

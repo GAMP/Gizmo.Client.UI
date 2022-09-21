@@ -25,9 +25,9 @@
                 <div class="giz-checkout__payment-method">
                     <div class="giz-checkout__summary__payment-method__label">Payment method</div>
                     <Select TValue="int" OpenDirection="PopupOpenDirections.Bottom">
-                        @if (PaymentMethods != null)
+                        @if (PaymentMethodsService.ViewState.PaymentMethods != null)
                         {
-                            @foreach (var paymentMethod in PaymentMethods)
+                            @foreach (var paymentMethod in PaymentMethodsService.ViewState.PaymentMethods)
                             {
                                 <SelectItem Value="@paymentMethod.Id">@paymentMethod.Name</SelectItem>
                             }
