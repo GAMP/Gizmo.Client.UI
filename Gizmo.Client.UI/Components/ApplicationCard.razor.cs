@@ -9,6 +9,8 @@ namespace Gizmo.Client.UI.Components
     {
         private bool _warningDialogIsOpen;
 
+        private bool _clickHandled = false;
+
         #region PROPERTIES
 
         [Inject]
@@ -29,11 +31,19 @@ namespace Gizmo.Client.UI.Components
 
         public void OpenDetails()
         {
+            if (_clickHandled)
+            {
+                _clickHandled = false;
+                return;
+            }
+
             NavigationManager.NavigateTo($"/appdetails/{Application.Id}");
         }
 
         private async Task Execute()
         {
+            _clickHandled = true;
+
             await OnOpenExecutableSelector.InvokeAsync(Application.Id);
         }
 

@@ -9,13 +9,13 @@
 
 @inject ILocalizationService localizationService
 
-@if (_logginIn)
+@if (UserLoginService.ViewState.IsLogginIn)
 {
     <LoginCard>
         <CardBody>
             <div class="giz-login-status">
                 <GizSpinner />
-                <div class="giz-animate-spinner-title mt-10 mb-2">please wait</div>
+                <div class="giz-animate-spinner-title">please wait</div>
                 <div class="giz-animate-spinner-text">Loggin in now</div>
             </div>
         </CardBody>
@@ -31,13 +31,20 @@ else
              <EditForm EditContext="@UserLoginService.EditContext">
                 <div class="giz-login-title">@localizationService.GetString("GIZ_SIGN_IN")</div>
                 <div>
-                    <ButtonGroup Class="giz-login-method">
-                        <Button IsSelected="true">@localizationService.GetString("GIZ_PHONE_NUMBER")</Button>
-                        <Button>@localizationService.GetString("GIZ_USERNAME")</Button>
+                    <ButtonGroup Class="giz-login-method" SelectedItemsChanged="@SelectLoginType">
+                        <Button Name="Username" IsSelected="@(UserLoginService.ViewState.LoginType == View.UserLoginType.UsernameOrEmail)">@localizationService.GetString("GIZ_USERNAME")</Button>
+                        <Button Name="Phone" IsSelected="@(UserLoginService.ViewState.LoginType == View.UserLoginType.MobilePhone)">@localizationService.GetString("GIZ_PHONE_NUMBER")</Button>
                     </ButtonGroup>
                 </div>
                 <div class="giz-login-input">
-                    <TextInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.LoginName" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USERNAME")" />
+                    @if (UserLoginService.ViewState.LoginType == View.UserLoginType.UsernameOrEmail)
+                    {
+                        <TextInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.LoginName" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USERNAME")" />
+                    }
+                    else
+                    {
+                        <TextInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.LoginName" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_PHONE_NUMBER")" />
+                    }
                 </div>
                 <div class="giz-login-forgot-password">
                      <a href="/passwordrecovery">@localizationService.GetString("GIZ_FORGOT_YOUR_PASSWORD")</a>

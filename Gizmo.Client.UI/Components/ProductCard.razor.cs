@@ -9,6 +9,8 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class ProductCard : CustomDOMComponentBase
     {
+        private bool _clickHandled = false;
+
         [Inject]
         NavigationManager NavigationManager { get; set; }
 
@@ -44,7 +46,20 @@ namespace Gizmo.Client.UI.Components
 
         public void OpenDetails()
         {
+            if (_clickHandled)
+            {
+                _clickHandled = false;
+                return;
+            }
+
             NavigationManager.NavigateTo($"/productdetails/{Product.Id}");
+        }
+
+        public async Task AddProduct()
+        {
+            _clickHandled = true;
+
+            await UserCartService.AddProductAsyc(Product.Id);
         }
     }
 }

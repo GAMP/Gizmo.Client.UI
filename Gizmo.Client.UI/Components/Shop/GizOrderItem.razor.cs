@@ -37,5 +37,13 @@ namespace Gizmo.Client.UI.Components
         {
             return UserCartService.AddProductAsyc(OrderLine.ProductId, 1);
         }
+
+        public Task SetPayType(bool isChecked, OrderLinePayType payType)
+        {
+            if (isChecked)
+                return UserCartService.ChangeProductPayType(OrderLine.ProductId, payType);
+            else
+                return Task.CompletedTask;
+        }
     }
 }

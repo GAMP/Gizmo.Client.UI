@@ -9,8 +9,8 @@
     <div class="giz-order-item__details">
         @if (OrderLine.PurchaseOptions.HasFlag(PurchaseOptionType.Or))
         {
-            <RadioButton GroupName="@GetPurchaseOptionsGroup()" Class="giz-order-item__details__price-radio" />
-            <RadioButton GroupName="@GetPurchaseOptionsGroup()" Class="giz-order-item__details__points-radio" />
+            <RadioButton GroupName="@GetPurchaseOptionsGroup()" IsChecked="@(OrderLine.PayType == OrderLinePayType.Cash)" IsCheckedChanged="@((isChecked) => SetPayType(isChecked, OrderLinePayType.Cash))" Class="giz-order-item__details__price-radio" />
+            <RadioButton GroupName="@GetPurchaseOptionsGroup()" IsChecked="@(OrderLine.PayType == OrderLinePayType.Points)" IsCheckedChanged="@((isChecked) => SetPayType(isChecked, OrderLinePayType.Points))" Class="giz-order-item__details__points-radio" />
         }
         else
         {

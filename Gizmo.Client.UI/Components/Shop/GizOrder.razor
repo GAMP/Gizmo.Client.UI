@@ -40,13 +40,14 @@
     <div class="giz-order__totals">
         <div class="giz-order-summary">
             <div class="giz-order-summary-text-bold">@localizationService.GetString("GIZ_SUBTOTAL")</div>
-            <div class="giz-order-summary-number-bold">@UserCartService.ViewState.Total.ToString("C")</div>
-            @*<div class="giz-order-summary-text">points</div>
-            <div class="giz-order-summary-number">@(Order?.PointsTotal ?? 0)</div>*@
+            <div class="giz-order-summary-number-bold">
+                <div>@UserCartService.ViewState.Total.ToString("C")<span class="giz-order-summary-number-separator">&amp;</span>@(UserCartService?.ViewState.PointsTotal)</div>
+                <PointsIcon />
+            </div>
             <div class="giz-order-summary-text">Earned points</div>
             <div class="giz-order-summary-number">
-                @UserCartService.ViewState.AwardPoints
-                <PointsIcon />
+                @UserCartService.ViewState.PointsAward
+                <PointsAwardIcon />
             </div>
         </div>
         <div>

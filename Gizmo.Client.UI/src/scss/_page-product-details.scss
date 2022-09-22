@@ -13,6 +13,25 @@
         height: 100%;
         overflow: hidden;
 
+        &__bundled-products {
+            margin-top: 24px;
+            display: flex;
+            gap: 16px;
+
+            &-product {
+                width: 96px;
+                height: 96px;
+                background: rgba(0, 0, 0, 0.8);
+                border-radius: 8px;
+                overflow: hidden;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+
         &__navigation {
             display: flex;
             align-items: center;
@@ -30,7 +49,7 @@
 
         &__info {
             display: grid;
-            grid-template-columns: min-content 1fr 1fr;
+            grid-template-columns: min-content 1fr;
             gap: 40px;
 
             &__image {
@@ -66,16 +85,24 @@
                 &__description {
                     @include font-l($font-weight-light);
                 }
-            }
 
-            &__price {
-                @include font-h1($font-weight-bold);
+                &__action {
+                    display: flex;
+
+                    &__price {
+                        margin-left: 32px;
+                        margin-right: 120px;
+                        @include font-h1($font-weight-bold);
+                    }
+                }
             }
         }
 
         &__related {
+            margin-top: 40px;
+
             &__header {
-                margin-bottom: 32px;
+                margin-bottom: 24px;
                 @include font-h5($font-weight-bold);
             }
 

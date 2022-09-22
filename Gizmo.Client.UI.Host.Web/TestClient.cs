@@ -8,41 +8,34 @@ namespace Gizmo.Client.UI.Host.Web
 {
     public class TestClient : IGizmoClient
     {
-        public async Task<PagedList<ProductGroup>> GetProductGroupsAsync(ProductGroupsFilter filter)
-        {
-            List<ProductGroup> productGroups = new List<ProductGroup>();
-            productGroups.Add(new ProductGroup() { Id = 1, Name = "Coffee" });
-            productGroups.Add(new ProductGroup() { Id = 2, Name = "Beverages" });
-            productGroups.Add(new ProductGroup() { Id = 3, Name = "Sandwiches" });
-            productGroups.Add(new ProductGroup() { Id = 4, Name = "Snacks" });
-            productGroups.Add(new ProductGroup() { Id = 5, Name = "Time offers" });
-
-            productGroups.Add(new ProductGroup() { Id = 6, Name = "Coffee" });
-            productGroups.Add(new ProductGroup() { Id = 7, Name = "Beverages" });
-            productGroups.Add(new ProductGroup() { Id = 8, Name = "Sandwiches" });
-            productGroups.Add(new ProductGroup() { Id = 9, Name = "Snacks" });
-            productGroups.Add(new ProductGroup() { Id = 10, Name = "Time offers" });
-            productGroups.Add(new ProductGroup() { Id = 11, Name = "Coffee" });
-            productGroups.Add(new ProductGroup() { Id = 12, Name = "Beverages" });
-            productGroups.Add(new ProductGroup() { Id = 13, Name = "Sandwiches" });
-            productGroups.Add(new ProductGroup() { Id = 14, Name = "Snacks" });
-            productGroups.Add(new ProductGroup() { Id = 15, Name = "Time offers" });
-            productGroups.Add(new ProductGroup() { Id = 16, Name = "Coffee" });
-            productGroups.Add(new ProductGroup() { Id = 17, Name = "Beverages" });
-            productGroups.Add(new ProductGroup() { Id = 18, Name = "Sandwiches" });
-            productGroups.Add(new ProductGroup() { Id = 19, Name = "Snacks" });
-            productGroups.Add(new ProductGroup() { Id = 20, Name = "Time offers" });
-
-            var pagedList = new PagedList<ProductGroup>(productGroups, new PaginationMetadata());
-
-            return pagedList;
-        }
-
-        public async Task<PagedList<Product>> GetProductsAsync(ProductsFilter filter)
+        public TestClient()
         {
             Random random = new Random();
 
-            List<Product> products = Enumerable.Range(0, 18).Select(i => new Product()
+            _productGroups = new List<ProductGroup>();
+            _productGroups.Add(new ProductGroup() { Id = 1, Name = "Coffee" });
+            _productGroups.Add(new ProductGroup() { Id = 2, Name = "Beverages" });
+            _productGroups.Add(new ProductGroup() { Id = 3, Name = "Sandwiches" });
+            _productGroups.Add(new ProductGroup() { Id = 4, Name = "Snacks" });
+            _productGroups.Add(new ProductGroup() { Id = 5, Name = "Time offers" });
+
+            _productGroups.Add(new ProductGroup() { Id = 6, Name = "Coffee" });
+            _productGroups.Add(new ProductGroup() { Id = 7, Name = "Beverages" });
+            _productGroups.Add(new ProductGroup() { Id = 8, Name = "Sandwiches" });
+            _productGroups.Add(new ProductGroup() { Id = 9, Name = "Snacks" });
+            _productGroups.Add(new ProductGroup() { Id = 10, Name = "Time offers" });
+            _productGroups.Add(new ProductGroup() { Id = 11, Name = "Coffee" });
+            _productGroups.Add(new ProductGroup() { Id = 12, Name = "Beverages" });
+            _productGroups.Add(new ProductGroup() { Id = 13, Name = "Sandwiches" });
+            _productGroups.Add(new ProductGroup() { Id = 14, Name = "Snacks" });
+            _productGroups.Add(new ProductGroup() { Id = 15, Name = "Time offers" });
+            _productGroups.Add(new ProductGroup() { Id = 16, Name = "Coffee" });
+            _productGroups.Add(new ProductGroup() { Id = 17, Name = "Beverages" });
+            _productGroups.Add(new ProductGroup() { Id = 18, Name = "Sandwiches" });
+            _productGroups.Add(new ProductGroup() { Id = 19, Name = "Snacks" });
+            _productGroups.Add(new ProductGroup() { Id = 20, Name = "Time offers" });
+
+            _products = Enumerable.Range(0, 18).Select(i => new Product()
             {
                 Id = i + 1,
                 ProductGroupId = random.Next(1, 5),
@@ -54,8 +47,43 @@ namespace Gizmo.Client.UI.Host.Web
                 ProductType = (ProductType)random.Next(0, 3),
                 PurchaseOptions = (PurchaseOptionType)random.Next(0, 2),
             }).ToList();
+        }
 
-            var pagedList = new PagedList<Product>(products, new PaginationMetadata());
+        private List<ProductGroup> _productGroups;
+        private List<Product> _products;
+
+        public async Task<PagedList<ProductGroup>> GetProductGroupsAsync(ProductGroupsFilter filter)
+        {
+            var pagedList = new PagedList<ProductGroup>(_productGroups, new PaginationMetadata());
+
+            return pagedList;
+        }
+
+        public async Task<PagedList<Product>> GetProductsAsync(ProductsFilter filter)
+        {
+            var pagedList = new PagedList<Product>(_products, new PaginationMetadata());
+
+            return pagedList;
+        }
+
+        public async Task<Product> GetProductByIdAsync(int id, GetOptions? options = null)
+        {
+            return _products.Where(a => a.Id == id).FirstOrDefault();
+        }
+
+        public async Task<PagedList<BundledProduct>> GetBundledProducts(int id)
+        {
+            Random random = new Random();
+
+            var bundledProducts = Enumerable.Range(0, 5).Select(i => new BundledProduct()
+            {
+                Id = i + 1,
+                ProductId = random.Next(1, 5),
+                Quantity = random.Next(1, 5),
+                UnitPrice = random.Next(1, 5)
+            }).ToList();
+
+            var pagedList = new PagedList<BundledProduct>(bundledProducts, new PaginationMetadata());
 
             return pagedList;
         }
@@ -95,8 +123,8 @@ namespace Gizmo.Client.UI.Host.Web
         {
             List<ApplicationExecutable> executables = new List<ApplicationExecutable>();
             executables.Add(new ApplicationExecutable() { Id = 1, Caption = "battlenet.exe" });
-            executables.Add(new ApplicationExecutable() { Id = 2, Caption = "DOTA"});
-            executables.Add(new ApplicationExecutable() { Id = 3, Caption = "Spotify"});
+            executables.Add(new ApplicationExecutable() { Id = 2, Caption = "DOTA" });
+            executables.Add(new ApplicationExecutable() { Id = 3, Caption = "Spotify" });
             executables.Add(new ApplicationExecutable() { Id = 4, Caption = "valve_steamclient.exe" });
 
             var pagedList = new PagedList<ApplicationExecutable>(executables, new PaginationMetadata());
@@ -109,7 +137,7 @@ namespace Gizmo.Client.UI.Host.Web
             List<PaymentMethod> paymentMethods = Enumerable.Range(0, 4).Select(i => new PaymentMethod()
             {
                 Id = i + 1,
-                Name = $"Payment method { i + 1 }"
+                Name = $"Payment method {i + 1}"
             }).ToList();
 
             var pagedList = new PagedList<PaymentMethod>(paymentMethods, new PaginationMetadata());

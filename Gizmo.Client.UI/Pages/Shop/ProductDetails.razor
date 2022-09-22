@@ -31,16 +31,24 @@
                     @ProductDetailsPageService.ViewState.Product?.Description
                 </div>
                 <div class="giz-product-details__product__info__basic__action">
-                    <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" @onclick="@(() => AddProduct(ProductId))">Add to cart</Button>
+                    <div class="giz-product-details__product__info__basic__action__price">
+                        @ProductDetailsPageService.ViewState.Product?.UnitPrice.ToString("C2")
+                    </div>
+                    <Button LeftSVGIcon="Icons.ShoppingCart_Client" Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" @onclick="@(() => AddProduct(ProductId))">Add to cart</Button>
                 </div>
             </div>
-            <div class="giz-product-details__product__info__price">
-                2e
+        </div>
+        @if (@ProductDetailsPageService.ViewState.Product?.ProductType == ProductType.ProductBundle)
+        {
+            <div class="giz-product-details__product__bundled-products">
+                @foreach (var product in ProductDetailsPageService.ViewState.Product.BundledProducts)
+                {
+                    <div class="giz-product-details__product__bundled-products-product">
+                        <img src="_content/Gizmo.Client.UI/img/@ProductDetailsPageService.ViewState.Product?.Image" alt="loading" />
+                    </div>
+                }
             </div>
-        </div>
-        <div class="giz-product-details__product__details">
-            123
-        </div>
+        }
         <div class="giz-product-details__product__related">
             <div class="giz-product-details__product__related__header">
                 Related products

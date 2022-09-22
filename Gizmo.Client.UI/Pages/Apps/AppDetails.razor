@@ -32,10 +32,10 @@
                 <div class="giz-app-details__app__info__details__description">
                     @ApplicationDetailsPageService.ViewState.Application?.Description
                 </div>
-                <div class="giz-app-details__app__info__details__tags">
+                <div class="giz-app-details__app__info__details__executables">
                     @if (ApplicationDetailsPageService.ViewState.Application.Executables.Count > 1)
                     {
-                        <ComboButton Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" OnClickMainButton="@OnClickMainButtonHandler">
+                        <ComboButton Color="ButtonColors.Accent" Size="ButtonSizes.Large" OnClickMainButton="@OnClickMainButtonHandler">
                             <ChildContent>
                                 LAUNCH
                             </ChildContent>
@@ -81,7 +81,6 @@
                     {
                         <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => OnClickMainButtonHandler())">LAUNCH</Button>
                     }
-                    Tags
                 </div>
 
             </div>
@@ -91,19 +90,19 @@
                     Publisher
                 </div>
                 <div class="giz-app-details-card-brand-text">
-                    @*@ApplicationDetailsPageService.ViewState.Application?.Publisher*@
+                    @ApplicationDetailsPageService.ViewState.Application?.Publisher
                 </div>
                 <div class="giz-app-details-card-brand-title">
                     Release Date
                 </div>
                 <div class="giz-app-details-card-brand-text">
-                    @*@ApplicationDetailsPageService.ViewState.Application?.ReleaseDate.ToShortDateString()*@
+                    @ApplicationDetailsPageService.ViewState.Application?.ReleaseDate?.ToShortDateString()
                 </div>
                 <div class="giz-app-details-card-brand-title">
                     Date Added
                 </div>
                 <div class="giz-app-details-card-brand-text">
-                    @*@ApplicationDetailsPageService.ViewState.Application?.DateAdded.ToShortDateString()*@
+                    @ApplicationDetailsPageService.ViewState.Application?.DateAdded.ToShortDateString()
                 </div>
                 <div class="giz-app-details-card-brand-title">
                     Player Mode
@@ -142,12 +141,36 @@
                 </div>
             </div>
 
-            <div>                
-                <div class="giz-app-details__app__info__details__executables">
-                    Executables
+            <div class="giz-app-details__app__info__additional-content">
+                <div class="giz-app-details__app__info__additional-content__tags">
+                    Tags
                 </div>
-                <div class="giz-app-details__app__info__details__media">
-                    Media
+                <div class="giz-app-details__app__info__additional-content__tab">
+                    <ClientTab>
+                        <ClientTabItem Class="@(_selectedTabIndex == 0 ? "active" : "")">
+                            <div @onclick=@(() => SelectTab(0))>
+                                Announcements
+                            </div>
+                        </ClientTabItem>
+                        <ClientTabItem Class="@(_selectedTabIndex == 1 ? "active" : "")">
+                            <div @onclick=@(() => SelectTab(1))>
+                                Media
+                            </div>
+                        </ClientTabItem>
+                        <ClientTabItem Class="@(_selectedTabIndex == 2 ? "active" : "")">
+                            <div @onclick=@(() => SelectTab(2))>
+                                Links
+                            </div>
+                        </ClientTabItem>
+                        <ClientTabItem Class="@(_selectedTabIndex == 3 ? "active" : "")">
+                            <div @onclick=@(() => SelectTab(3))>
+                                Tutorials
+                            </div>
+                        </ClientTabItem>
+                    </ClientTab>
+                </div>
+                <div class="giz-app-details__app__info__additional-content__media">
+                    Images
                 </div>
             </div>
 

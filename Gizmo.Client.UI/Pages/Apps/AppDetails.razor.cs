@@ -11,6 +11,10 @@ namespace Gizmo.Client.UI.Pages
         {
         }
 
+        #region FIELDS
+        private int _selectedTabIndex;
+        #endregion
+
         #region PROPERTIES
 
         [Inject]
@@ -27,6 +31,15 @@ namespace Gizmo.Client.UI.Pages
         #endregion
 
         #region METHODS
+
+        private Task SelectTab(int tabIndex)
+        {
+            _selectedTabIndex = tabIndex;
+
+            StateHasChanged();
+
+            return Task.CompletedTask;
+        }
 
         #endregion
 
