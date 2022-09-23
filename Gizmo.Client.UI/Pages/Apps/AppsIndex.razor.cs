@@ -89,6 +89,7 @@ namespace Gizmo.Client.UI.Pages
         public IEnumerable<ApplicationViewState> GetFilteredApplications()
         {
             var result = ApplicationsPageService.ViewState.Applications.AsQueryable();
+
             if (SearchService.ViewState.ShowAll)
             {
                 var ids = SearchService.ViewState.ApplicationResults.Select(a => a.Id).ToList();

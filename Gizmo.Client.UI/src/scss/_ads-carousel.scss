@@ -10,9 +10,9 @@
     }
 
     &__body {
-        display: grid;
-        grid-template-columns: 2fr 1fr 1fr;
-        gap: 24px;
+        position: relative;
+        height: 365px;
+        overflow: hidden;
     }
 
     &__navigation {
@@ -25,8 +25,29 @@
     }
 
     &-item {
-        position: relative;
-        height: 365px;
+        position: absolute;
+        top: 0;
+        height: 100%;
+        display: none;
+
+        &.first {
+            display: inline-block;
+            position: relative;
+            left: 0;
+            width: calc(50% - 12px);
+        }
+
+        &.second {
+            display: inline-block;
+            left: calc(50% + 12px);
+            width: calc(25% - 18px);
+        }
+
+        &.third {
+            display: inline-block;
+            left: calc(75% + 18px);
+            width: calc(25% - 18px);
+        }
 
         &__image {
             width: 100%;
@@ -86,5 +107,67 @@
                 border: 4px solid #0078D2;
             }
         }
+    }
+
+    .slide-left-current {
+        animation-duration: 1s;
+        animation-name: ads-slide-left-current-anim;
+    }
+
+    .slide-left-second {
+        animation-duration: 1s;
+        animation-name: ads-slide-left-second-anim;
+    }
+
+    .slide-left-second {
+        animation-duration: 1s;
+        animation-name: ads-slide-left-third-anim;
+    }
+
+    .slide-left-next {
+        animation-duration: 1s;
+        animation-name: ads-slide-left-third-anim;
+    }
+}
+
+@keyframes ads-slide-left-current-anim {
+    from {
+        left: 0;
+    }
+
+    to {
+        left: -50%;
+    }
+}
+
+@keyframes ads-slide-left-second-anim {
+    from {
+        left: 50%;
+        width: 25%;
+    }
+
+    to {
+        left: 0;
+        width: 50%;
+    }
+}
+
+@keyframes ads-slide-left-third-anim {
+    from {
+        left: 75%;
+    }
+
+    to {
+        left: 50%;
+    }
+}
+
+@keyframes slide-left-next-anim {
+    from {
+        left: 100%;
+    }
+
+    to {
+        left: 75%;
     }
 }

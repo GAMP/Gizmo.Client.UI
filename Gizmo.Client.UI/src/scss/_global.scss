@@ -39,6 +39,54 @@ main {
 .giz-user-lock {
     color: #FAFAFA;
 
+    .giz-input-text {
+        .giz-input-root--outline {
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            border-bottom: 2px solid rgba(246, 251, 253, 0.28);
+            border-radius: 0;
+
+            &:hover {
+                border-top: none;
+                border-left: none;
+                border-right: none;
+                border-bottom: 2px solid rgba(246, 251, 253, 0.28);
+            }
+
+            &:focus-within {
+                border-top: none;
+                border-left: none;
+                border-right: none;
+                border-bottom: 2px solid #0091E6;
+            }
+
+            input {
+                text-align: center;
+                //Font
+                font-weight: 700;
+                font-size: 26px;
+                line-height: 34px;
+            }
+        }
+    }
+
+    &.error {
+        .giz-input-text {
+            .giz-input-root--outline {
+                border-bottom: 2px solid #F73B3B;
+
+                &:hover {
+                    border-bottom: 2px solid #F73B3B;
+                }
+
+                &:focus-within {
+                    border-bottom: 2px solid #F73B3B;
+                }
+            }
+        }
+    }
+
     &-overlay {
         position: absolute;
         top: 0;
@@ -76,13 +124,20 @@ main {
         line-height: 26px;
     }
 
-    &__code {
-        margin-bottom: 52px;
+    &__error {
+        margin-top: 4px;
+        margin-bottom: 24px;
+        color: #C74952;
+        //Font
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 22px
     }
 
     &__numpad {
         display: flex;
         gap: 4px;
+        margin-top: 52px;
         margin-bottom: 48px;
 
         & > .giz-button {

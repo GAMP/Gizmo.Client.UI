@@ -1,59 +1,65 @@
-﻿@using Gizmo.Web.Components
-@inherits CustomDOMComponentBase
+﻿@inherits CustomDOMComponentBase
+@using Gizmo.Web.Components
+@using Microsoft.AspNetCore.Components.Forms
 
 @if (UserLockService.ViewState.IsLocking)
 {
-    <div class="giz-user-lock-overlay">
-        <div class="giz-user-lock-wrapper">
-            <div class="giz-user-lock">
-                <div class="giz-user-lock__title">Profile Lock</div>
-                <div class="giz-user-lock__subtitle">Lock this profile by creating a 4-digit pin. Memorize or write it down.</div>
-                <div class="giz-user-lock__code">
-                    <TextInput TValue="string" />
-                </div>
-                <div class="giz-user-lock__numpad">
-                    @for (int i = 0; i <= 9; i++)
-                    {
-                        int local_i = i;
-                        <Button Color="ButtonColors.Primary" Size="ButtonSizes.ExtraLarge">@local_i</Button>
-                    }
-                    <Button Color="ButtonColors.Primary" Size="ButtonSizes.ExtraLarge">-</Button>
-                </div>
-                <div class="giz-user-lock__actions">
-                    <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.SetPasswordAsync())">Save</Button>
-                    <Button Color="ButtonColors.Accent" Variant="ButtonVariants.Outline" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.CancelLockAsync())">Cancel</Button>
-                </div>
-                <div class="giz-user-lock__note"></div>
-            </div>
-        </div>
-    </div>
-}
-else
-{
-    @if (UserLockService.ViewState.IsLocked)
-    {
+    <EditForm EditContext="@UserLockService.EditContext">
         <div class="giz-user-lock-overlay">
             <div class="giz-user-lock-wrapper">
                 <div class="giz-user-lock">
-                    <div class="giz-user-lock__title">Enter you PIN to access this profile</div>
-                    <div class="giz-user-lock__subtitle">Profile Lock is currently on</div>
+                    <div class="giz-user-lock__title">Profile Lock</div>
+                    <div class="giz-user-lock__subtitle">Lock this profile by creating a 4-digit pin. Memorize or write it down.</div>
                     <div class="giz-user-lock__code">
-                        <TextInput TValue="string" />
+                        <TextInput @bind-Value="UserLockService.ViewState.InputPassword" ValidationErrorStyle="ValidationErrorStyles.BorderOnly" UpdateOnInput="true" MaxLength="4" />
                     </div>
                     <div class="giz-user-lock__numpad">
                         @for (int i = 0; i <= 9; i++)
                         {
                             int local_i = i;
-                            <Button Color="ButtonColors.Primary" Size="ButtonSizes.ExtraLarge">@local_i</Button>
+                            <Button Color="ButtonColors.Primary" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.PutDigitAsync(local_i))">@local_i</Button>
                         }
-                        <Button Color="ButtonColors.Primary" Size="ButtonSizes.ExtraLarge">-</Button>
+                        <Button Color="ButtonColors.Primary" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.DeleteDigitAsync())" LeftSVGIcon="Icons.Backspace"></Button>
                     </div>
                     <div class="giz-user-lock__actions">
-                        <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.UnlockAsync())">Enter Code to Continue</Button>
+                        <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.SetPasswordAsync())">Save</Button>
+                        <Button Color="ButtonColors.Accent" Variant="ButtonVariants.Outline" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.CancelLockAsync())">Cancel</Button>
                     </div>
-                    <div class="giz-user-lock__note">Forgot PIN</div>
+                    <div class="giz-user-lock__note"></div>
                 </div>
             </div>
         </div>
+    </EditForm>
+}
+else
+{
+    @if (UserLockService.ViewState.IsLocked)
+    {
+        <EditForm EditContext="@UserLockService.EditContext">
+            <div class="giz-user-lock-overlay">
+                <div class="giz-user-lock-wrapper">
+                    <div class="giz-user-lock @(!string.IsNullOrEmpty(UserLockService.ViewState.Error) ? "error" : "")">
+                        <div class="giz-user-lock__title">Enter you PIN to access this profile</div>
+                        <div class="giz-user-lock__subtitle">Profile Lock is currently on</div>
+                        <div class="giz-user-lock__code">
+                            <TextInput @bind-Value="UserLockService.ViewState.InputPassword" ValidationErrorStyle="ValidationErrorStyles.BorderOnly" UpdateOnInput="true" MaxLength="4" />
+                        </div>
+                        <div class="giz-user-lock__error">@UserLockService.ViewState.Error</div>
+                        <div class="giz-user-lock__numpad">
+                            @for (int i = 0; i <= 9; i++)
+                            {
+                                int local_i = i;
+                                <Button Color="ButtonColors.Primary" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.PutDigitAsync(local_i))">@local_i</Button>
+                            }
+                            <Button Color="ButtonColors.Primary" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.DeleteDigitAsync())" LeftSVGIcon="Icons.Backspace"></Button>
+                        </div>
+                        <div class="giz-user-lock__actions">
+                            <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.UnlockAsync())">Enter Code to Continue</Button>
+                        </div>
+                        <div class="giz-user-lock__note">Forgot PIN</div>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
     }
 }

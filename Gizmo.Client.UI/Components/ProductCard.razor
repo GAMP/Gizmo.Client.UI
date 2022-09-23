@@ -13,21 +13,25 @@
     <div class="giz-hoverable-card">
         <div class="hoverable-content">
             <div class="giz-product-card__content">
-                <div class="giz-product-card__content__image">
-                    @if (@Product != null)
+                @if (@Product != null)
+                {
+                    @switch (Product.ProductType)
                     {
-                        @switch (Product.ProductType)
-                        {
-                            case ProductType.ProductTime:
+                        case ProductType.ProductTime:
+                            <div class="giz-product-card__content__image--time">
+                                <img src="_content/Gizmo.Client.UI/img/product_time.jpg" alt='loading' />
                                 <PolygonIcon />
-                                break;
+                            </div>
+                            break;
 
-                            default:
+                        default:
+                            <div class="giz-product-card__content__image">
                                 <img src="_content/Gizmo.Client.UI/img/@Product?.Image" alt='loading' />
-                                break;
-                        }
+                            </div>
+
+                            break;
                     }
-                </div>
+                }
                 <div class="giz-product-card__content__details">
                     <div class="giz-product-card__price">
                         @GetPrice()

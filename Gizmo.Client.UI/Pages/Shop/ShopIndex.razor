@@ -1,5 +1,5 @@
 ﻿@namespace Gizmo.Client.UI.Pages
-@inherits ComponentBase
+@inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
@@ -30,7 +30,7 @@
         </div>
         <div class="giz-shop__products__body giz-scrollbar--v">
             <div class="giz-shop__products__body__ads">
-                <ExpansionPanel>
+                <ExpansionPanel InitCollapsed="@(SearchService.ViewState.ShowAllLocally || SearchService.ViewState.ShowAll)">
                     <Header>
                         Ads
                     </Header>
@@ -40,46 +40,72 @@
                 </ExpansionPanel>
             </div>
         
-            @if (_selectedProductGroupId.HasValue)
+            @if (SearchService.ViewState.ShowAllLocally || SearchService.ViewState.ShowAll)
             {
-                @if (ShopService.ViewState.ProductGroups != null)
-                {
-                    <div class="giz-section">
-                        <div class="giz-section__header">
-                            @ShopService.ViewState.ProductGroups.Where(a => a.Id == _selectedProductGroupId).Select(a => a.Name).FirstOrDefault()
-                        </div>
-                        <div class="giz-section__body">
-                            <div class="giz-shop__products__list">
-                                @foreach (var product in ShopService.ViewState.Products.Where(a => a.ProductGroupId == _selectedProductGroupId))
-                                {
-                                    <ProductCard Product="@product" IsHoverable="true" />
-                                }
+                <div class="giz-section">
+                    <div class="giz-section__header">
+                        <div class="giz-section__header__filters">
+                            <div>
+                                <div class="giz-section__header__filters__title">Results for</div>
+                                <div>
+                                    <Chip CanClose="true" OnClose="@(() => SearchService.ClearResultsAsync())">@SearchService.ViewState.SearchPattern</Chip>
+                                </div>
                             </div>
                         </div>
                     </div>
-                }
+                    <div class="giz-section__body">
+                        <div class="giz-shop__products__list">
+                            @foreach (var product in GetFilteredProducts())
+                            {
+                                <ProductCard Product="@product" IsHoverable="true" />
+                            }
+                        </div>
+                    </div>
+                </div>
             }
             else
             {
-                @if (ShopService.ViewState.ProductGroups != null)
+                @if (_selectedProductGroupId.HasValue)
                 {
-                    @foreach (var productGroup in ShopService.ViewState.ProductGroups)
+                    @if (ShopService.ViewState.ProductGroups != null)
                     {
-                        @if (ShopService.ViewState.Products.Where(a => a.ProductGroupId == productGroup.Id).Count() > 1)
-                        {
-                            <div class="giz-section">
-                                <div class="giz-section__header">
-                                    @productGroup.Name
-                                </div>
-                                <div class="giz-section__body">
-                                    <div class="giz-shop__products__list">
-                                        @foreach (var product in ShopService.ViewState.Products.Where(a => a.ProductGroupId == productGroup.Id))
-                                        {
-                                            <ProductCard Product="@product" IsHoverable="true" />
-                                        }
-                                    </div>
+                        <div class="giz-section">
+                            <div class="giz-section__header">
+                                @ShopService.ViewState.ProductGroups.Where(a => a.Id == _selectedProductGroupId).Select(a => a.Name).FirstOrDefault()
+                            </div>
+                            <div class="giz-section__body">
+                                <div class="giz-shop__products__list">
+                                    @foreach (var product in ShopService.ViewState.Products.Where(a => a.ProductGroupId == _selectedProductGroupId))
+                                    {
+                                        <ProductCard Product="@product" IsHoverable="true" />
+                                    }
                                 </div>
                             </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    @if (ShopService.ViewState.ProductGroups != null)
+                    {
+                        @foreach (var productGroup in ShopService.ViewState.ProductGroups)
+                        {
+                            @if (ShopService.ViewState.Products.Where(a => a.ProductGroupId == productGroup.Id).Count() > 1)
+                            {
+                                <div class="giz-section">
+                                    <div class="giz-section__header">
+                                        @productGroup.Name
+                                    </div>
+                                    <div class="giz-section__body">
+                                        <div class="giz-shop__products__list">
+                                            @foreach (var product in ShopService.ViewState.Products.Where(a => a.ProductGroupId == productGroup.Id))
+                                            {
+                                                <ProductCard Product="@product" IsHoverable="true" />
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         }
                     }
                 }

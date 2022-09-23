@@ -4,17 +4,19 @@
 
 <div class="giz-ads-carousel">
     <div class="giz-ads-carousel__body">
-        @if (Advertisements != null && Advertisements.Count > 0)
-        {
-            @foreach (var ad in Advertisements)
+		<CascadingValue Value="@this" IsFixed="true">
+            @if (Advertisements != null && Advertisements.Count > 0)
             {
-                <AdsCarouselItem Advertisement="@ad" />
+                @foreach (var ad in Advertisements)
+                {
+                    <AdsCarouselItem Advertisement="@ad" />
+                }
             }
-        }
+		</CascadingValue>
     </div>
     <div class="giz-ads-carousel__navigation">
         <div class="giz-ads-carousel__navigation__indicators">
-            <AdsCarouselIndicator Size="@(Advertisements?.Count ?? 0)" />
+            <AdsCarouselIndicator Size="@(Advertisements?.Count ?? 0)" SelectedIndex="@SelectedIndex" SelectedIndexChanged="SelectedIndexChangedHandler" />
         </div>
         <div class="giz-ads-carousel__navigation__text">
             Showing @_selectedIndex/@(Advertisements?.Count ?? 0)
