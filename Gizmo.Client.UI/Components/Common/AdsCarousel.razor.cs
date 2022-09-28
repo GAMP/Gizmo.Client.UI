@@ -33,14 +33,45 @@ namespace Gizmo.Client.UI.Components
                 if (_selectedIndex == value)
                     return;
 
-                /*if (_selectedIndex < value)
+                if (_items.Count > 3)
                 {
-                    SlideLeft(value);
+                    if (_selectedIndex < value)
+                    {
+                        if (_selectedIndex == 0 && value == _items.Count - 1)
+                        {
+                            SlideRight(value);
+                        }
+                        else
+                        {
+                            if (_selectedIndex + 1 == value)
+                            {
+                                SlideLeft(value);
+                            }
+                            else
+                            {
+                                _ = FadeOut(value);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (_selectedIndex == _items.Count - 1 && value == 0)
+                        {
+                            SlideLeft(value);
+                        }
+                        else
+                        {
+                            if (_selectedIndex - 1 == value)
+                            {
+                                SlideRight(value);
+                            }
+                            else
+                            {
+                                _ = FadeOut(value);
+                            }
+                        }
+                    }
                 }
-                else
-                {
-                    SlideRight(value);
-                }*/
 
                 _selectedIndex = value;
                 SelectedIndexChanged.InvokeAsync(_selectedIndex);
@@ -59,6 +90,96 @@ namespace Gizmo.Client.UI.Components
             SelectedIndex = index;
         }
 
+        #endregion
+
+        #region METHODS
+
+        private async Task FadeOut(int index)
+        {
+            for (int i = 0; i < _items.Count; i++)
+            {
+                _items[i].FadeOut();
+            }
+
+            await Task.Delay(500);
+
+            if (_items != null && index >= 0 && _selectedIndex >= 0 && index < _items.Count && _selectedIndex < _items.Count)
+            {
+                for (int i = 0; i < _items.Count; i++)
+                {
+                    _items[i].Clear();
+                }
+
+                _items[index].FadeIn(1);
+
+                if (index + 1 < _items.Count)
+                    _items[index + 1].FadeIn(2);
+                else
+                    _items[index + 1 - _items.Count].FadeIn(2);
+
+                if (index + 2 < _items.Count)
+                    _items[index + 2].FadeIn(3);
+                else
+                    _items[_selectedIndex + 2 - _items.Count].FadeIn(3);
+            }
+        }
+
+        private void SlideLeft(int index)
+        {
+            if (_items != null && index >= 0 && _selectedIndex >= 0 && index < _items.Count && _selectedIndex < _items.Count)
+            {
+                for (int i = 0; i < _items.Count; i++)
+                {
+                    _items[i].Clear();
+                }
+
+                _items[_selectedIndex].SetIndex(1, -1);
+
+                if (_selectedIndex + 1 < _items.Count)
+                    _items[_selectedIndex + 1].SetIndex(2, -1);
+                else
+                    _items[_selectedIndex + 1 - _items.Count].SetIndex(2, -1);
+
+                if (_selectedIndex + 2 < _items.Count)
+                    _items[_selectedIndex + 2].SetIndex(3, -1);
+                else
+                    _items[_selectedIndex + 2 - _items.Count].SetIndex(3, -1);
+
+                if (_selectedIndex + 3 < _items.Count)
+                    _items[_selectedIndex + 3].SetIndex(4, -1);
+                else
+                    _items[_selectedIndex + 3 - _items.Count].SetIndex(4, -1);
+            }
+        }
+
+        private void SlideRight(int index)
+        {
+            if (_items != null && index >= 0 && _selectedIndex >= 0 && index < _items.Count && _selectedIndex < _items.Count)
+            {
+                for (int i = 0; i < _items.Count; i++)
+                {
+                    _items[i].Clear();
+                }
+
+                _items[index].SetIndex(1, 1);
+
+                if (index + 1 < _items.Count)
+                    _items[index + 1].SetIndex(2, 1);
+                else
+                    _items[index + 1 - _items.Count].SetIndex(2, 1);
+
+                if (index + 2 < _items.Count)
+                    _items[index + 2].SetIndex(3, 1);
+                else
+                    _items[index + 2 - _items.Count].SetIndex(3, 1);
+
+                if (index + 3 < _items.Count)
+                    _items[index + 3].SetIndex(4, 1);
+                else
+                    _items[index + 3 - _items.Count].SetIndex(4, 1);
+            }
+        }
+
         internal void Register(AdsCarouselItem item)
         {
             _items.Add(item);
@@ -75,11 +196,11 @@ namespace Gizmo.Client.UI.Components
 
         protected override Task OnFirstAfterRenderAsync()
         {
-            if (_items.Count > 0)
+            if (_items.Count > 3)
             {
-                _items[0].SetIndex(1);
-                _items[1].SetIndex(2);
-                _items[2].SetIndex(3);
+                _items[0].SetIndex(1, 0);
+                _items[1].SetIndex(2, 0);
+                _items[2].SetIndex(3, 0);
             }
 
             return base.OnFirstAfterRenderAsync();

@@ -30,7 +30,7 @@
         height: 100%;
         display: none;
 
-        &.first {
+        &.current {
             display: inline-block;
             position: relative;
             left: 0;
@@ -46,6 +46,12 @@
         &.third {
             display: inline-block;
             left: calc(75% + 18px);
+            width: calc(25% - 18px);
+        }
+
+        &.next {
+            display: inline-block;
+            left: 100%;
             width: calc(25% - 18px);
         }
 
@@ -110,23 +116,68 @@
     }
 
     .slide-left-current {
+        left: -50%;
         animation-duration: 1s;
         animation-name: ads-slide-left-current-anim;
     }
 
     .slide-left-second {
+        left: 0;
+        width: calc(50% - 12px);
         animation-duration: 1s;
         animation-name: ads-slide-left-second-anim;
     }
 
-    .slide-left-second {
+    .slide-left-third {
+        left: calc(50% + 12px);
+        width: calc(25% - 18px);
         animation-duration: 1s;
         animation-name: ads-slide-left-third-anim;
     }
 
     .slide-left-next {
+        left: calc(75% + 18px);
+        width: calc(25% - 18px);
         animation-duration: 1s;
-        animation-name: ads-slide-left-third-anim;
+        animation-name: ads-slide-left-next-anim;
+    }
+
+    .slide-right-current {
+        left: 0;
+        width: calc(50% - 12px);
+        animation-duration: 1s;
+        animation-name: ads-slide-right-current-anim;
+    }
+
+    .slide-right-second {
+        left: calc(50% + 12px);
+        width: calc(25% - 18px);
+        animation-duration: 1s;
+        animation-name: ads-slide-right-second-anim;
+    }
+
+    .slide-right-third {
+        left: calc(75% + 18px);
+        width: calc(25% - 18px);
+        animation-duration: 1s;
+        animation-name: ads-slide-right-third-anim;
+    }
+
+    .slide-right-next {
+        left: 100%;
+        animation-duration: 1s;
+        animation-name: ads-slide-right-next-anim;
+    }
+
+    .fade-out-previously {
+        //top: 100%;
+        animation-duration: 0.5s;
+        animation-name: ads-fade-out-previously-anim;
+    }
+
+    .fade-in-current {
+        animation-duration: 0.5s;
+        animation-name: ads-fade-in-current-anim;
     }
 }
 
@@ -142,32 +193,96 @@
 
 @keyframes ads-slide-left-second-anim {
     from {
-        left: 50%;
-        width: 25%;
+        left: calc(50% + 12px);
+        width: calc(25% - 18px);
     }
 
     to {
         left: 0;
-        width: 50%;
+        width: calc(50% - 12px);
     }
 }
 
 @keyframes ads-slide-left-third-anim {
     from {
-        left: 75%;
+        left: calc(75% + 18px);
     }
 
     to {
-        left: 50%;
+        left: calc(50% + 12px);
     }
 }
 
-@keyframes slide-left-next-anim {
+@keyframes ads-slide-left-next-anim {
     from {
         left: 100%;
     }
 
     to {
-        left: 75%;
+        left: calc(75% + 18px);
+    }
+}
+
+@keyframes ads-slide-right-current-anim {
+    from {
+        left: -50%;
+    }
+
+    to {
+        left: 0;
+    }
+}
+
+@keyframes ads-slide-right-second-anim {
+    from {
+        left: 0;
+        width: calc(50% - 12px);
+    }
+
+    to {
+        left: calc(50% + 12px);
+        width: calc(25% - 18px);
+    }
+}
+
+@keyframes ads-slide-right-third-anim {
+    from {
+        left: calc(50% + 12px);
+    }
+
+    to {
+        left: calc(75% + 18px);
+    }
+}
+
+@keyframes ads-slide-right-next-anim {
+    from {
+        left: calc(75% + 18px);
+    }
+
+    to {
+        left: 100%;
+    }
+}
+
+@keyframes ads-fade-out-previously-anim {
+    from {
+        //top: 0;
+        opacity: 1;
+    }
+
+    to {
+        //top: 100%;
+        opacity: 0;
+    }
+}
+
+@keyframes ads-fade-in-current-anim {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
     }
 }
