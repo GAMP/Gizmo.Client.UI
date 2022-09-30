@@ -1,5 +1,4 @@
 ﻿using Gizmo.Client.UI.Services;
-using Gizmo.Shared.UI.Services;
 using Gizmo.UI.Services;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
