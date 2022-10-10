@@ -1,9 +1,18 @@
 ﻿@namespace Gizmo.Client.UI.Shared
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
+@using Gizmo.Client.UI.Components
+@using Gizmo.Client.UI.ViewModels
 
 <div class="giz-dropdown-menu">
     <div class="giz-user-links">
+        
+        <div class="giz-user-links-item" @onclick="OnClickTopUpButtonHandler">
+            <div class="giz-user-links-item__icon">
+                <Icon SVGIcon="Icons.QR" />
+            </div>
+            <div class="giz-user-links-item-title">Top Up</div>
+        </div>
 
         <a href="/profile" class="giz-user-links-item">
             <div class="giz-user-links-item__icon">
@@ -53,3 +62,5 @@
 
     </div>
 </div>
+              
+<TopUpDialog @bind-IsOpen="TopUpIsOpen" />
