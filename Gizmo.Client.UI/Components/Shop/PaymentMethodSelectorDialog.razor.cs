@@ -17,6 +17,9 @@ namespace Gizmo.Client.UI.Components
         private bool _isOpen { get; set; }
 
         [Inject]
+        UserCartService UserCartService { get; set; }
+
+        [Inject]
         PaymentMethodsService PaymentMethodsService { get; set; }
 
         [Parameter]
@@ -40,19 +43,28 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<bool> IsOpenChanged { get; set; }
 
-        [Parameter]
-        public EventCallback<int> OnSelectPaymentMethod { get; set; }
-
-        private void CloseDialog()
+        private Task CloseDialog()
         {
             IsOpen = false;
+
+            if (UserCartService.ViewState.IsComplete)
+                return UserCartService.ResetAsync();
+
+            return Task.CompletedTask;
         }
 
-        private async Task SelectPaymentMethod(int id)
+        protected override void OnInitialized()
         {
-            await OnSelectPaymentMethod.InvokeAsync(id);
-            IsOpen = false;
+            this.SubscribeChange(UserCartService.ViewState);
+            this.SubscribeChange(PaymentMethodsService.ViewState);
+            base.OnInitialized();
         }
 
+        public override void Dispose()
+        {
+            this.UnsubscribeChange(UserCartService.ViewState);
+            this.SubscribeChange(PaymentMethodsService.ViewState);
+            base.Dispose();
+        }
     }
 }

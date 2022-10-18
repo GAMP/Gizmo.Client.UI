@@ -39,7 +39,7 @@ namespace Gizmo.Client.UI.Host.Web
             {
                 Id = i + 1,
                 ProductGroupId = random.Next(1, 5),
-                Name = $"Coca Cola 500ml",
+                Name = $"Coca Cola {i + 1} 500ml",
                 Description = "Iced coffee is a coffee beverage served cold. It may be prepared either by brewing coffee in the normal way and then serving it over ice.",
                 Price = random.Next(1, 5),
                 PointsPrice = random.Next(0, 100),
