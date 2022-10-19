@@ -21,7 +21,7 @@ namespace Gizmo.Client.UI.Pages
         }
 
         #region FIELDS
-        private int? _selectedSearchCategoryId;
+        private int _selectedSearchCategoryId;
         #endregion
 
         #region PROPERTIES
@@ -101,9 +101,9 @@ namespace Gizmo.Client.UI.Pages
             this.SubscribeChange(SearchService.ViewState);
 
             SearchCategories = new List<ApplicationSortOptionViewModel>();
-            SearchCategories.Add(new ApplicationSortOptionViewModel() { Id = 1, Name = "Games & apps + shop" });
-            SearchCategories.Add(new ApplicationSortOptionViewModel() { Id = 2, Name = "Games & apps" });
-            SearchCategories.Add(new ApplicationSortOptionViewModel() { Id = 3, Name = "Shop" });
+            SearchCategories.Add(new ApplicationSortOptionViewModel() { Id = 0, Name = "Games & apps + shop" });
+            SearchCategories.Add(new ApplicationSortOptionViewModel() { Id = 1, Name = "Games & apps" });
+            SearchCategories.Add(new ApplicationSortOptionViewModel() { Id = 2, Name = "Shop" });
 
             return base.OnInitializedAsync();
         }

@@ -18,47 +18,45 @@
             {
                 <div class="giz-checkout">
                     <div class="giz-checkout__list">
-                        <div>
-                            <DataGrid ItemSource="@UserCartService.ViewState.Products"
-                                      Context="products"
-                                      HasStickyHeader="true"
-                                      RerenderOnStateChange="true">
-                                <ChildContent>
-                                    <DataGridColumn Field="@(nameof(UserCartProductViewState.ProductName))" TItemType="UserCartProductViewState" Context="product">
-                                        <HeaderTemplate>
-                                            Product name
-                                        </HeaderTemplate>
-                                        <CellTemplate>
-                                            @product.ProductName
-                                        </CellTemplate>
-                                    </DataGridColumn>
-                                    <DataGridColumn Field="@(nameof(UserCartProductViewState.UnitPrice))" TItemType="UserCartProductViewState" Context="product">
-                                        <HeaderTemplate>
-                                            Price
-                                        </HeaderTemplate>
-                                        <CellTemplate>
-                                            @product.UnitPrice
-                                        </CellTemplate>
-                                    </DataGridColumn>
-                                    <DataGridColumn Field="@(nameof(UserCartProductViewState.Quantity))" TItemType="UserCartProductViewState" Context="product">
-                                        <HeaderTemplate>
-                                            Quantity
-                                        </HeaderTemplate>
-                                        <CellTemplate>
-                                            @product.Quantity
-                                        </CellTemplate>
-                                    </DataGridColumn>
-                                    <DataGridColumn Field="@(nameof(UserCartProductViewState.TotalPrice))" TItemType="UserCartProductViewState" Context="product">
-                                        <HeaderTemplate>
-                                            Subtotal
-                                        </HeaderTemplate>
-                                        <CellTemplate>
-                                            @product.TotalPrice
-                                        </CellTemplate>
-                                    </DataGridColumn>
-                                </ChildContent>
-                            </DataGrid>
-                        </div>
+                        <DataGrid ItemSource="@UserCartService.ViewState.Products"
+                                    Context="products"
+                                    HasStickyHeader="true"
+                                    RerenderOnStateChange="true">
+                            <ChildContent>
+                                <DataGridColumn Field="@(nameof(UserCartProductViewState.ProductName))" TItemType="UserCartProductViewState" Context="product">
+                                    <HeaderTemplate>
+                                        Product name
+                                    </HeaderTemplate>
+                                    <CellTemplate>
+                                        @product.ProductName
+                                    </CellTemplate>
+                                </DataGridColumn>
+                                <DataGridColumn Field="@(nameof(UserCartProductViewState.UnitPrice))" TItemType="UserCartProductViewState" Context="product">
+                                    <HeaderTemplate>
+                                        Price
+                                    </HeaderTemplate>
+                                    <CellTemplate>
+                                        @product.UnitPrice
+                                    </CellTemplate>
+                                </DataGridColumn>
+                                <DataGridColumn Field="@(nameof(UserCartProductViewState.Quantity))" TItemType="UserCartProductViewState" Context="product">
+                                    <HeaderTemplate>
+                                        Quantity
+                                    </HeaderTemplate>
+                                    <CellTemplate>
+                                        @product.Quantity
+                                    </CellTemplate>
+                                </DataGridColumn>
+                                <DataGridColumn Field="@(nameof(UserCartProductViewState.TotalPrice))" TItemType="UserCartProductViewState" Context="product">
+                                    <HeaderTemplate>
+                                        Subtotal
+                                    </HeaderTemplate>
+                                    <CellTemplate>
+                                        @product.TotalPrice
+                                    </CellTemplate>
+                                </DataGridColumn>
+                            </ChildContent>
+                        </DataGrid>
                     </div>
                     <div class="giz-checkout__summary">
                         <div class="giz-checkout__summary__total">Total</div>
