@@ -1,5 +1,7 @@
 ﻿using Gizmo.Client.UI.View.Services;
 using Microsoft.AspNetCore.Components;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
@@ -9,6 +11,7 @@ namespace Gizmo.Client.UI.Pages
     {
         public AppDetails()
         {
+            ApplicationMedia = Enumerable.Range(0, 5).Select(i => "app_media.png").ToList();
         }
 
         #region FIELDS
@@ -27,6 +30,8 @@ namespace Gizmo.Client.UI.Pages
         public int ApplicationId { get; set; }
 
         public bool ExecutableSelectorIsOpen { get; set; }
+
+        public List<string> ApplicationMedia { get; set; }
 
         #endregion
 

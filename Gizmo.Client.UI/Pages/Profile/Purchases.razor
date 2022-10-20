@@ -15,10 +15,11 @@
                 Purchase History
             </div>
 
-            <div class="giz-table-history giz-scrollbar--v">
+            <div class="giz-table-history">
                 <DataGrid ItemSource="@GameStatistics"
-                            Context="purchases"
-                            HasStickyHeader="true">
+                          Context="purchases"
+                          HasStickyHeader="true"
+                          Class="giz-scrollbar--v">
                     <ChildContent>
                         <DataGridColumn Field="@(nameof(PurchaseViewModel.ProductName))" TItemType="PurchaseViewModel" Context="purchase">
                             <HeaderTemplate>

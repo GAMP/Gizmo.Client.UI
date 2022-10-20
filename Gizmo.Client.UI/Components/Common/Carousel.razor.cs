@@ -10,6 +10,8 @@ namespace Gizmo.Client.UI.Components
     {
         #region FIELDS
 
+        private System.Threading.Timer _timer;
+        
         private List<CarouselItem> _items = new List<CarouselItem>();
 
         private int _selectedIndex = 0;
@@ -141,9 +143,27 @@ namespace Gizmo.Client.UI.Components
             _items.Remove(item);
         }
 
+        private void SlideNext(object stateInfo)
+        {
+            int newIndex = SelectedIndex + 1;
+            if (newIndex > _items.Count - 1)
+                newIndex = 0;
+
+            SelectedIndex = newIndex;
+
+            StateHasChanged();
+        }
+
         #endregion
 
         #region OVERRIDES
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            _timer = new System.Threading.Timer(SlideNext, new System.Threading.AutoResetEvent(false), 5000, 5000);
+        }
 
         protected override Task OnFirstAfterRenderAsync()
         {

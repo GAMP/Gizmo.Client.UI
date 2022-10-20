@@ -76,10 +76,16 @@ namespace Gizmo.Client.UI.Pages
         #endregion
 
         #region EVENTS
-        
+
         public void SelectedApplicationFiltersChanged(List<int> selectedApplicationFilters)
         {
             SelectedApplicationFilters = selectedApplicationFilters;
+        }
+
+        public void OnClearFiltersHandler(string value)
+        {
+            _selectedApplicationGroupId = null;
+            SelectedApplicationFilters.Clear();
         }
 
         #endregion
@@ -103,6 +109,18 @@ namespace Gizmo.Client.UI.Pages
             }
 
             return result.ToList();
+        }
+
+        public int GetNumberOfFilters()
+        {
+            int result = 0;
+
+            if (_selectedApplicationGroupId.HasValue)
+                result += 1;
+
+            result += SelectedApplicationFilters.Count;
+
+            return result;
         }
 
         public async Task OpenExecutableSelector(int id)

@@ -20,62 +20,68 @@
             <div class="giz-settings__content__header__subtitle">Additional Information</div>
         </div>
         <div class="giz-settings__content__body">
-
-            <div class="giz-settings-section">
-                <div class="giz-settings-section__header">Username</div>
-                <div>
+            
+            <ExpansionPanel>
+                <Header>Username</Header>
+                <ChildContent>
                     <div class="giz-login-input">
-                        <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="Other users will see your username" />
+                        <TextInput @bind-Value="@UserSettingsService.ViewState.Username" Size="InputSizes.Normal" IsFullWidth="true" Label="Other users will see your username" />
                     </div>
-                </div>
-            </div>
-
-            <div class="giz-settings-section">
-                <div class="giz-settings-section__header">Personal information</div>
-                <div>
+                </ChildContent>
+            </ExpansionPanel>
+            
+            <ExpansionPanel>
+                <Header>Personal information</Header>
+                <ChildContent>
                     <div class="giz-login-input giz-login-input-columns">
-                        <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="First name (optional)" />
-                        <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="Last name (optional)" />
+                        <TextInput @bind-Value="@UserSettingsService.ViewState.FirstName" Size="InputSizes.Normal" IsFullWidth="true" Label="First name (optional)" />
+                        <TextInput @bind-Value="@UserSettingsService.ViewState.LastName" Size="InputSizes.Normal" IsFullWidth="true" Label="Last name (optional)" />
                     </div>
             
                     <div class="giz-login-input giz-login-input-columns">
-                        <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="Date of birth" />
-                        <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="Gender" />
+                        <TextInput @bind-Value="@UserSettingsService.ViewState.BirthDate" Size="InputSizes.Normal" IsFullWidth="true" Label="Date of birth" />
+                        <Select @bind-Value="@UserSettingsService.ViewState.Sex" Size="InputSizes.Normal" IsFullWidth="true" Label="Gender" OpenDirection="PopupOpenDirections.Cursor">
+                            <SelectItem Value="@Sex.Unspecified" Text="Unspecified" />
+                            <SelectItem Value="@Sex.Male" Text="Male" />
+                            <SelectItem Value="@Sex.Female" Text="Female" />
+                        </Select>
                     </div>
             
                     <div class="giz-login-input">
-                        <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="Country/Region" />
+                        <TextInput @bind-Value="@UserSettingsService.ViewState.Country" Size="InputSizes.Normal" IsFullWidth="true" Label="Country/Region" />
                     </div>
             
                     <div class="giz-login-input">
-                        <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="Address (optional)" />
+                        <TextInput @bind-Value="@UserSettingsService.ViewState.Address" Size="InputSizes.Normal" IsFullWidth="true" Label="Address (optional)" />
                     </div>
-                </div>
-            </div>
-                
-            <div class="giz-settings-section">
-                <div class="giz-settings-section__header">Mail and phone numbers</div>
-                <div>
-                    <div class="giz-login-input">
-                        <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="Email address" />
-                    </div>
-            
-                    <div class="giz-login-input">
-                        <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="Main number" />
-                    </div>
-            
-                    <div class="giz-login-input">
-                        <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="Home phone (optional)" />
-                    </div>
-                </div>
-            </div>
+                </ChildContent>
+            </ExpansionPanel>
 
-            <div class="giz-settings-section">
-                <div class="giz-settings-section__header">Password</div>
-                <div class="giz-settings-change-password" @onclick="OnClickChangePasswordButtonHandler">
-                    Change password
-                </div>
-            </div>
+            <ExpansionPanel>
+                <Header>Mail and phone numbers</Header>
+                <ChildContent>
+                    <div class="giz-login-input">
+                        <TextInput @bind-Value="@UserSettingsService.ViewState.Email" Size="InputSizes.Normal" IsFullWidth="true" Label="Email address" />
+                    </div>
+            
+                    <div class="giz-login-input">
+                        <TextInput @bind-Value="@UserSettingsService.ViewState.MobilePhone" Size="InputSizes.Normal" IsFullWidth="true" Label="Main number" />
+                    </div>
+            
+                    <div class="giz-login-input">
+                        <TextInput @bind-Value="@UserSettingsService.ViewState.Phone" Size="InputSizes.Normal" IsFullWidth="true" Label="Home phone (optional)" />
+                    </div>
+                </ChildContent>
+            </ExpansionPanel>
+                        
+            <ExpansionPanel>
+                <Header>Password</Header>
+                <ChildContent>
+                    <div class="giz-settings-change-password" @onclick="OnClickChangePasswordButtonHandler">
+                        Change password
+                    </div>
+                </ChildContent>
+            </ExpansionPanel>
 
             <div>
                 <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => UserSettingsService.SubmitAsync())">Save Changes</Button>

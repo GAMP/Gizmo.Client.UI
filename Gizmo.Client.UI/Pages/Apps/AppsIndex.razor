@@ -43,6 +43,16 @@
                         <div>Popular items</div>
                     }
                     <div class="giz-apps-filters">
+                        @if (GetNumberOfFilters() > 0)
+                        {
+                            <Chip CanClose="true" OnClose="@OnClearFiltersHandler">
+                                <svg width="6" height="22" viewBox="0 0 6 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4.28564 1.21387C4.28564 0.937725 4.06179 0.713867 3.78564 0.713867H2.49993C2.22379 0.713867 1.99993 0.937725 1.99993 1.21387V11.6424C1.99993 11.9186 1.77607 12.1424 1.49993 12.1424H0.785644C0.509502 12.1424 0.285645 12.3663 0.285645 12.6424V15.071C0.285645 15.3472 0.509502 15.571 0.785645 15.571H5.49993C5.77607 15.571 5.99993 15.3472 5.99993 15.071V12.6424C5.99993 12.3663 5.77607 12.1424 5.49993 12.1424H4.78564C4.5095 12.1424 4.28564 11.9186 4.28564 11.6424V1.21387Z" fill="#0078D2"/>
+                                    <path d="M4.28564 17.7853C4.28564 17.5092 4.06179 17.2853 3.78564 17.2853H2.49993C2.22379 17.2853 1.99993 17.5092 1.99993 17.7853V20.7853C1.99993 21.0614 2.22379 21.2853 2.49993 21.2853H3.78564C4.06179 21.2853 4.28564 21.0614 4.28564 20.7853V17.7853Z" fill="#0078D2"/>
+                                </svg>
+                                <span>@GetNumberOfFilters()</span>
+                            </Chip>
+                        }
                         <Select Size="InputSizes.Small" @bind-Value="_selectedSortOptionId" Label="Sort by:" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
                             @if (ApplicationSortOptions != null)
                             {
