@@ -1,0 +1,63 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using Gizmo.Web.Components
+@using Microsoft.AspNetCore.Components.Forms
+@using Gizmo.UI.Services
+
+@inject ILocalizationService localizationService
+
+<SimpleDialog @bind-IsOpen="IsOpen" IsModal="true">
+    <div class="giz-client-dialog giz-change-mobile-dialog">
+        <div class="giz-client-dialog__header">
+            <div class="giz-client-dialog__header__title">Update number</div>
+            <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
+        </div>
+        @switch (UserChangeMobileService.ViewState.PageIndex)
+        {
+            case 0:
+
+                <div class="giz-client-dialog__body">
+                    <div class="giz-change-mobile-dialog-message">Enter the number you’d like to use. To make sure this number is yours, will send you a verification code.</div>
+                    <EditForm EditContext="@UserChangeMobileService.EditContext">
+                        <div class="giz-login-input">
+                            <TextInput @bind-Value="UserChangeMobileService.ViewState.MobilePhone" Size="InputSizes.Normal" IsFullWidth="true" Label="Phone number" />
+                        </div>
+                    </EditForm>
+                </div>
+                <div class="giz-client-dialog__footer">
+                    <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => UserChangeMobileService.SendConfirmationCodeAsync())">Get Code</Button>
+                </div>
+
+                break;
+
+            case 1:
+
+                <div class="giz-client-dialog__body">
+                    <div class="giz-change-mobile-dialog-message">We just sent you an SMS with a code. Enter it to verify your phone.</div>
+                    <div class="giz-change-mobile-dialog-mobile">TODO: A...</div>
+                    <EditForm EditContext="@UserChangeMobileService.EditContext">
+                        <div class="giz-login-input">
+                            <TextInput @bind-Value="UserChangeMobileService.ViewState.ConfirmationCode" Size="InputSizes.Normal" IsFullWidth="true" Label="Enter the code" />
+                        </div>
+                    </EditForm>
+                </div>
+                <div class="giz-client-dialog__footer">
+                    <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => UserChangeMobileService.VerifyAsync())">Verify</Button>
+                    <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => UserChangeMobileService.ResendAsync())">
+                        <ChildContent>
+                            <div>Re-send</div>
+                            <div class="giz-button-timer">4:59</div>
+                        </ChildContent>
+                    </Button>
+                </div>
+
+                break;
+                
+            case 2:
+                
+                <div>Well done!</div>
+
+                break;
+        }
+    </div>
+</SimpleDialog>

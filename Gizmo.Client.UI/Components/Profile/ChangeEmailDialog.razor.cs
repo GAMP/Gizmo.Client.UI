@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class ChangePasswordDialog : CustomDOMComponentBase
+    public partial class ChangeEmailDialog : CustomDOMComponentBase
     {
-        public ChangePasswordDialog()
+        public ChangeEmailDialog()
         {
         }
 
         private bool _isOpen { get; set; }
 
         [Inject]
-        UserChangePasswordService UserChangePasswordService { get; set; }
+        UserChangeEmailService UserChangeEmailService { get; set; }
 
         [Parameter]
         public bool IsOpen
@@ -41,8 +41,8 @@ namespace Gizmo.Client.UI.Components
         {
             IsOpen = false;
 
-            if (UserChangePasswordService.ViewState.IsComplete)
-                return UserChangePasswordService.ResetAsync();
+            if (UserChangeEmailService.ViewState.IsComplete)
+                return UserChangeEmailService.ResetAsync();
 
             return Task.CompletedTask;
         }

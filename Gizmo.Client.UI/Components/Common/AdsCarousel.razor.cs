@@ -83,6 +83,9 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<int> SelectedIndexChanged { get; set; }
 
+        [Parameter]
+        public int Interval { get; set; }
+
         #endregion
 
         #region EVENTS
@@ -207,11 +210,31 @@ namespace Gizmo.Client.UI.Components
 
         #region OVERRIDES
 
-        protected override void OnInitialized()
+        public override async Task SetParametersAsync(ParameterView parameters)
         {
-            base.OnInitialized();
+            await base.SetParametersAsync(parameters);
 
-            _timer = new System.Threading.Timer(SlideNext, new System.Threading.AutoResetEvent(false), 5000, 5000);
+            var intervalChanged = parameters.TryGetValue<int>(nameof(Interval), out var newInterval);
+            if (intervalChanged)
+            {
+                if (Interval > 0)
+                {
+                    if (_timer != null)
+                    {
+                        _timer.Dispose();
+                        _timer = null;
+                    }
+                    _timer = new System.Threading.Timer(SlideNext, new System.Threading.AutoResetEvent(false), Interval, Interval);
+                }
+                else
+                {
+                    if (_timer != null)
+                    {
+                        _timer.Dispose();
+                        _timer = null;
+                    }
+                }
+            }
         }
 
         protected override Task OnFirstAfterRenderAsync()

@@ -1,6 +1,8 @@
 ﻿using Gizmo.Client.UI.View.Services;
-using Gizmo.Client.UI.View.States;
+using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Gizmo.Client.UI.Pages
 {
@@ -9,5 +11,14 @@ namespace Gizmo.Client.UI.Pages
     {
         [Inject]
         UserPasswordRecoveryService UserPasswordRecoveryService { get; set; }
+
+        private void SelectRecoveryMethod(ICollection<Button> selectedItems)
+        {
+            if (selectedItems.Where(a => a.Name == "Email").Any())
+                UserPasswordRecoveryService.ViewState.Method = View.UserPasswordRecoveryMethod.Email;
+            else
+                UserPasswordRecoveryService.ViewState.Method = View.UserPasswordRecoveryMethod.MobilePhone;
+        }
+
     }
 }

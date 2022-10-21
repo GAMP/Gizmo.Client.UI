@@ -1,9 +1,10 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI
 {
-    public partial class HeaderUserMenu : ComponentBase
+    public partial class HeaderUserMenu : CustomDOMComponentBase
     {
         public HeaderUserMenu()
         {
@@ -14,6 +15,9 @@ namespace Gizmo.Client.UI
 
         [Inject]
         UserService UserService { get; set; }
+
+        [Inject]
+        NotificationsService NotificationsService { get; set; }
 
         public void ToggleActiveApps()
         {
@@ -34,5 +38,19 @@ namespace Gizmo.Client.UI
                 _activeAppsIsOpen = false;
             }
         }
+
+
+        protected override void OnInitialized()
+        {
+            this.SubscribeChange(NotificationsService.ViewState);
+            base.OnInitialized();
+        }
+
+        public override void Dispose()
+        {
+            this.UnsubscribeChange(NotificationsService.ViewState);
+            base.Dispose();
+        }
+
     }
 }

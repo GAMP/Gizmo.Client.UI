@@ -31,7 +31,7 @@ else
              <EditForm EditContext="@UserLoginService.EditContext">
                 <div class="giz-login-title">@localizationService.GetString("GIZ_SIGN_IN")</div>
                 <div>
-                    <ButtonGroup Class="giz-login-method" SelectedItemsChanged="@SelectLoginType">
+                    <ButtonGroup Class="giz-login-method" IsMandatory="true" SelectedItemsChanged="@SelectLoginType">
                         <Button Name="Username" IsSelected="@(UserLoginService.ViewState.LoginType == View.UserLoginType.UsernameOrEmail)">@localizationService.GetString("GIZ_USERNAME")</Button>
                         <Button Name="Phone" IsSelected="@(UserLoginService.ViewState.LoginType == View.UserLoginType.MobilePhone)">@localizationService.GetString("GIZ_PHONE_NUMBER")</Button>
                     </ButtonGroup>

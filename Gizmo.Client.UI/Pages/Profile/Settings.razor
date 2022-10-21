@@ -61,11 +61,25 @@
                 <Header>Mail and phone numbers</Header>
                 <ChildContent>
                     <div class="giz-login-input">
-                        <TextInput @bind-Value="@UserSettingsService.ViewState.Email" Size="InputSizes.Normal" IsFullWidth="true" Label="Email address" />
+                        <TextInput @bind-Value="@UserSettingsService.ViewState.Email" IsReadOnly="@(UserPasswordRecoveryMethodService.ViewState.Method == View.UserPasswordRecoveryMethod.Email)" Size="InputSizes.Normal" IsFullWidth="true" Label="Email address">
+                            <RightContent>
+                                @if (UserPasswordRecoveryMethodService.ViewState.Method == View.UserPasswordRecoveryMethod.Email)
+                                {
+                                    <div class="giz-settings-update-button" @onclick="OnClickUpdateEmailButtonHandler">Update</div>
+                                }
+                            </RightContent>
+                        </TextInput>
                     </div>
             
                     <div class="giz-login-input">
-                        <TextInput @bind-Value="@UserSettingsService.ViewState.MobilePhone" Size="InputSizes.Normal" IsFullWidth="true" Label="Main number" />
+                        <TextInput @bind-Value="@UserSettingsService.ViewState.MobilePhone" IsReadOnly="@(UserPasswordRecoveryMethodService.ViewState.Method == View.UserPasswordRecoveryMethod.MobilePhone)" Size="InputSizes.Normal" IsFullWidth="true" Label="Main number">
+                            <RightContent>
+                                @if (UserPasswordRecoveryMethodService.ViewState.Method == View.UserPasswordRecoveryMethod.MobilePhone)
+                                {
+                                    <div class="giz-settings-update-button" @onclick="OnClickUpdateMobileButtonHandler">Update</div>
+                                }
+                            </RightContent>
+                        </TextInput>
                     </div>
             
                     <div class="giz-login-input">
@@ -91,4 +105,6 @@
     </div>
 </div>
 
+<ChangeEmailDialog @bind-IsOpen="ChangeEmailIsOpen" />
+<ChangeMobileDialog @bind-IsOpen="ChangeMobileIsOpen" />
 <ChangePasswordDialog @bind-IsOpen="ChangePasswordIsOpen" />
