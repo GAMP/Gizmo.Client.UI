@@ -220,3 +220,45 @@ main {
         line-height: 22px;
     }
 }
+
+.expandable {
+    &.expanding {
+        overflow: hidden;
+        animation-name: giz-expandable-expanding-animation;
+        animation-timing-function: ease-in-out;
+        animation-duration: 0.4s;
+        animation-fill-mode: forwards;
+    }
+
+    &.collapsing {
+        overflow: hidden;
+        animation-name: giz-expandable-collapsing-animation;
+        animation-timing-function: ease-in-out;
+        animation-duration: 0.4s;
+        animation-fill-mode: forwards;
+    }
+}
+
+@keyframes giz-expandable-expanding-animation {
+    from {
+        height: 0;
+    }
+
+    to {
+        height: var(--abh);
+    }
+}
+
+@keyframes giz-expandable-collapsing-animation {
+    from {
+        height: var(--abh);
+    }
+
+    to {
+        height: 0;
+    }
+}
+
+.giz-ads-carousel {
+    padding-top: 16px;
+}
