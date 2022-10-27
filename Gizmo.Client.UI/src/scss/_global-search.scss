@@ -8,6 +8,8 @@
     background: rgba(250, 250, 250, 0.16);
     border-radius: 8px;
     height: 48px;
+    width: 48px;
+    transition: width ease-in-out 0.5s;
 
     .giz-animate-spinner {
         height: 64px;
@@ -71,9 +73,9 @@
         border: none;
         outline: none;
         padding: 0.625rem;
-        width: 100%;
         color: #FAFAFA;
         @include font-l($font-weight-light);
+        width: 100%;
         display: none;
     }
 
@@ -85,7 +87,6 @@
     }*/
 
     .giz-global-search-dropdown {
-        display: none;
         position: absolute;
         top: 100%;
         width: 100%;
@@ -93,6 +94,7 @@
         background: #22272B;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         border-radius: 0px 0px 16px 16px;
+        display: none;
 
         &__body {
             display: grid;
@@ -190,17 +192,5 @@
 
     &-empty {
         text-align: center;
-    }
-
-    &-no-results {
-        color: rgba(255, 255, 255, 0.6);
-
-        &__title {
-            @include font-xxl($font-weight-bold);
-        }
-
-        &__body {
-            @include font-l($font-weight-light);
-        }
     }
 }

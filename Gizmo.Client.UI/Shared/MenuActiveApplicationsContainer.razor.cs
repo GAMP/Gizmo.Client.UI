@@ -2,11 +2,12 @@
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Shared
 {
-    public partial class MenuActiveApplicationsContainer : CustomDOMComponentBase
+    public partial class MenuActiveApplicationsContainer : CustomDOMComponentBase, IAsyncDisposable
     {
         public MenuActiveApplicationsContainer()
         {
@@ -57,7 +58,6 @@ namespace Gizmo.Client.UI.Shared
         public override void Dispose()
         {
             ClosePopupEventInterop?.Dispose();
-            _ = JsRuntime.InvokeVoidAsync("unregisterPopup", Ref);
 
             base.Dispose();
         }
@@ -72,5 +72,15 @@ namespace Gizmo.Client.UI.Shared
             return Task.CompletedTask;
         }
 
+        #region IAsyncDisposable
+
+        public async ValueTask DisposeAsync()
+        {
+            await InvokeVoidAsync("unregisterPopup", Ref).ConfigureAwait(false);
+
+            Dispose();
+        }
+
+        #endregion
     }
 }

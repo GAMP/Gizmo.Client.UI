@@ -5,6 +5,7 @@ using Gizmo.UI;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace Gizmo.Client.UI.Pages
     [ModuleGuid(KnownModules.MODULE_HOME)]
     [PageUIModule(TitleLocalizationKey = "MODULE_PAGE_HOME_TITLE", DescriptionLocalizationKey = "MODULE_PAGE_HOME_TITLE"), ModuleDisplayOrder(0)]
     [Route("/home")]
-    public partial class Home : CustomDOMComponentBase
+    public partial class Home : CustomDOMComponentBase, IAsyncDisposable
     {
         public Home()
         {
@@ -112,9 +113,18 @@ namespace Gizmo.Client.UI.Pages
         {
             this.UnsubscribeChange(SearchService.ViewState);
 
-            _ = InvokeVoidAsync("unregisterHomeAdsAutoCollapse", Ref);
-
             base.Dispose();
         }
+
+        #region IAsyncDisposable
+
+        public async ValueTask DisposeAsync()
+        {
+            await InvokeVoidAsync("unregisterHomeAdsAutoCollapse", Ref).ConfigureAwait(false);
+
+            Dispose();
+        }
+
+        #endregion
     }
 }

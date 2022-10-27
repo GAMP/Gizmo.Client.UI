@@ -3,6 +3,9 @@
 @using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
+@using Gizmo.UI.Services
+
+@inject ILocalizationService localizationService 
 
 <div class="giz-shop">
     <div class="giz-shop__products">
@@ -11,7 +14,7 @@
                 <ClientTab>
                     <ClientTabItem Class="@(!_selectedProductGroupId.HasValue ? "active" : "")">
                         <div @onclick=@(() => SelectProductGroup(null))>
-                            All
+                            @localizationService.GetString("GIZ_GEN_ALL")
                         </div>
                     </ClientTabItem>
                     @if (ShopService.ViewState.ProductGroups != null)
@@ -35,7 +38,7 @@
                         Ads
                     </Header>
                     <ChildContent>
-                        <AdsCarousel Advertisements="@AdvertisementsService.ViewState.Advertisements" />
+                        <AdsCarousel Advertisements="@AdvertisementsService.ViewState.Advertisements" Interval="5000" />
                     </ChildContent>
                 </ExpansionPanel>
             </div>

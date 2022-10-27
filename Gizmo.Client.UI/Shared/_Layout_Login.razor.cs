@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.ViewModels;
+﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.ViewModels;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,10 @@ namespace Gizmo.Client.UI.Shared
                 NewsFeeds.Add(mediaItem);
             }
         }
+
+
+        [Inject]
+        HostService HostService { get; set; }
 
         public List<NewsFeedViewModel> NewsFeeds { get; set; }
     }

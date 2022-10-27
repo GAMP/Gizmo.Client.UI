@@ -1,10 +1,11 @@
 ﻿using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class ClientTab : CustomDOMComponentBase
+    public partial class ClientTab : CustomDOMComponentBase, IAsyncDisposable
     {
         [Parameter]
         public RenderFragment ChildContent { get; set; }
@@ -29,11 +30,15 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        public override void Dispose()
-        {
-            _ = InvokeVoidAsync("unregisterTab", Ref);
+        #region IAsyncDisposable
 
-            base.Dispose();
+        public async ValueTask DisposeAsync()
+        {
+            await InvokeVoidAsync("unregisterTab", Ref).ConfigureAwait(false);
+
+            Dispose();
         }
+
+        #endregion
     }
 }

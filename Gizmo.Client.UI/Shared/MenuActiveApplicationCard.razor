@@ -1,6 +1,9 @@
 ﻿@namespace Gizmo.Client.UI.Shared
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
+@using Gizmo.UI.Services
+
+@inject ILocalizationService localizationService
 
 <tr class="giz-active-app-card">
     <td class="giz-active-app-card__image">
@@ -16,7 +19,7 @@
                 @switch (Executable.State)
                 {
                     case 0:
-                        <div>Play</div>
+                        <div>@localizationService.GetString("GIZ_APPS_LAUNCH")</div>
                         break;
                             
                     case 1:
@@ -24,24 +27,24 @@
                         break;
 
                     case 2:
-                        <div>Loading</div>
+                        <div>@localizationService.GetString("GIZ_APPS_LOADING")</div>
                         break;
 
                     case 3:
-                        <div>Terminate</div>
+                        <div>@localizationService.GetString("GIZ_APPS_TERMINATE")</div>
                         break;
                 }
             </ChildContent>
             <DropDownItems>
                 <ListItem>
-                    Autostart
+                    @localizationService.GetString("GIZ_APPS_AUTO_START")
                 </ListItem>
                 <ListItem SVGIcon="Icons.Repair_Client">
-                    Repair
+                    @localizationService.GetString("GIZ_APPS_REPAIR")Repair
                 </ListItem>
                 <ListItem SVGIcon="Icons.Folder_Client">
                     <ChildContent>
-                        Personal Files
+                        @localizationService.GetString("GIZ_APPS_PERSONAL_FILES")
                     </ChildContent>
                     <NestedList>
                         <ListItem>
@@ -65,7 +68,7 @@
                     </NestedList>
                 </ListItem>
                 <ListItem SVGIcon="Icons.Close_Client">
-                    Terminate
+                    @localizationService.GetString("GIZ_APPS_TERMINATE")
                 </ListItem>
             </DropDownItems>
         </ComboButton>

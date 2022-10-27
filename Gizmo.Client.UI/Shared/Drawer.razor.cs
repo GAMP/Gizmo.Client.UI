@@ -27,7 +27,7 @@ namespace Gizmo.Client.UI.Shared
                     return;
 
                 _isOpen = value;
-                IsOpenChanged.InvokeAsync(_isOpen);
+                _ = IsOpenChanged.InvokeAsync(_isOpen);
             }
         }
 

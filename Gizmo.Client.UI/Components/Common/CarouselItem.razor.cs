@@ -27,7 +27,7 @@ namespace Gizmo.Client.UI.Components
             _slideDirection = -1;
 
             if (changeState)
-                StateHasChanged();
+                InvokeAsync(StateHasChanged);
         }
 
         internal void SlideRight(bool current)

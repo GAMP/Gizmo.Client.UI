@@ -1,13 +1,16 @@
 ﻿@namespace Gizmo.Client.UI.Shared
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
+@using Gizmo.UI.Services
+
+@inject ILocalizationService localizationService
 
 <div class="giz-dropdown-menu @(_isOpen ? "open" : "")"
      id="@Id"
      @ref="@Ref">
     <div class="giz-menu-notifications">
         <div class="giz-menu-notifications__header">
-            Notifications
+            @localizationService.GetString("GIZ_NOTIFICATIONS_TITLE")
         </div>
         <div class="giz-menu-notifications__body giz-scrollbar--v">
 
@@ -21,16 +24,16 @@
             else
             {
                 <div class="giz-menu-notification-default-item-wrapper">
-                    <div class="giz-menu-notification-default-item">
-                        <div class="giz-menu-notification-default-item-title">No new notifications.</div>
-                        <div class="giz-menu-notification-default-item-text">When something new happens you’ll find it here.</div>
+                    <div class="giz-empty-state">
+                        <div class="giz-empty-state__title">@localizationService.GetString("GIZ_NOTIFICATIONS_NO_NEW_NOTIFICATIONS")</div>
+                        <div class="giz-empty-state__text">@localizationService.GetString("GIZ_NOTIFICATIONS_NO_NEW_NOTIFICATIONS_MESSAGE")</div>
                     </div>
                 </div>
             }
 
         </div>
         <div class="giz-menu-notifications__footer">
-            <div class="giz-menu-notifications__footer__action" @onclick="@(() => NotificationsService.MarkAllAsReadAsync())">Mark as all read</div>
+            <div class="giz-menu-notifications__footer__action" @onclick="@(() => NotificationsService.MarkAllAsReadAsync())">@localizationService.GetString("GIZ_NOTIFICATIONS_MARK_ALL_AS_READ")</div>
         </div>
     </div>
 </div>

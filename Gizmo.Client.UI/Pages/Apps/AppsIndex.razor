@@ -3,6 +3,9 @@
 @using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
+@using Gizmo.UI.Services
+
+@inject ILocalizationService localizationService
 
 <div class="giz-apps">
     <div class="giz-apps__header">
@@ -20,7 +23,7 @@
                     Ads
                 </Header>
                 <ChildContent>
-                    <AdsCarousel Advertisements="@AdvertisementsService.ViewState.Advertisements" />
+                    <AdsCarousel Advertisements="@AdvertisementsService.ViewState.Advertisements" Interval="5000" />
                 </ChildContent>
             </ExpansionPanel>
         </div>
@@ -31,7 +34,7 @@
                     {
                         <div class="giz-section__header__filters">
                             <div>
-                                <div class="giz-section__header__filters__title">Results for</div>
+                                <div class="giz-section__header__filters__title">@localizationService.GetString("GIZ_GEN_RESULTS_FOR")</div>
                                 <div>
                                     <Chip CanClose="true" OnClose="@(() => SearchService.ClearResultsAsync())">@SearchService.ViewState.SearchPattern</Chip>
                                 </div>
@@ -40,7 +43,7 @@
                     }
                     else
                     {
-                        <div>Popular items</div>
+                        <div>@localizationService.GetString("GIZ_GEN_POPULAR_ITEMS")</div>
                     }
                     <div class="giz-apps-filters">
                         @if (GetNumberOfFilters() > 0)
@@ -53,7 +56,7 @@
                                 <span>@GetNumberOfFilters()</span>
                             </Chip>
                         }
-                        <Select Size="InputSizes.Small" @bind-Value="_selectedSortOptionId" Label="Sort by:" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
+                        <Select Size="InputSizes.Small" @bind-Value="_selectedSortOptionId" Label="@localizationService.GetString("GIZ_GEN_SORT_BY")" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
                             @if (ApplicationSortOptions != null)
                             {
                                 @foreach (var sortOption in ApplicationSortOptions)
@@ -62,7 +65,7 @@
                                 }
                             }
                         </Select>
-                        <Select Size="InputSizes.Small" @bind-Value="_selectedApplicationGroupId" Label="Category:" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
+                        <Select Size="InputSizes.Small" @bind-Value="_selectedApplicationGroupId" Label="@localizationService.GetString("GIZ_APPS_CATEGORY")" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
                             @if (ApplicationsPageService.ViewState.ApplicationGroups != null)
                             {
                                 @foreach (var appGroup in ApplicationsPageService.ViewState.ApplicationGroups)
@@ -71,7 +74,7 @@
                                 }
                             }
                         </Select>
-                        <MultiSelect Size="InputSizes.Small" TValue="int" Value="@SelectedApplicationFilters" ValueChanged="@SelectedApplicationFiltersChanged" Label="Parameters:" OpenDirection="PopupOpenDirections.Bottom" CanClearValue="true" MaximumHeight="200px">
+                        <MultiSelect Size="InputSizes.Small" TValue="int" Value="@SelectedApplicationFilters" ValueChanged="@SelectedApplicationFiltersChanged" Label="@localizationService.GetString("GIZ_APPS_PARAMETERS")" OpenDirection="PopupOpenDirections.Bottom" CanClearValue="true" MaximumHeight="200px">
                             @if (ApplicationFilters != null)
                             {
                                 @foreach (var filter in ApplicationFilters)

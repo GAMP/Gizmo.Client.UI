@@ -28,7 +28,6 @@ namespace Gizmo.Client.UI.Components
                     return;
 
                 _isOpen = value;
-
                 _ = IsOpenChanged.InvokeAsync(_isOpen);
             }
         }

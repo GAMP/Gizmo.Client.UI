@@ -1,6 +1,9 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
+@using Gizmo.UI.Services
+
+@inject ILocalizationService localizationService
 
 <div class="@Class @ClassName">
     <div class="giz-ads-carousel-item__image">
@@ -15,7 +18,7 @@
                 @Advertisement.Description
             </div>
             <div class="giz-ads-carousel-item__content__actions">
-                <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large">View details</Button>
+                <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large">@localizationService.GetString("GIZ_GEN_VIEW_DETAILS")</Button>
             </div>
         </div>
     </div>

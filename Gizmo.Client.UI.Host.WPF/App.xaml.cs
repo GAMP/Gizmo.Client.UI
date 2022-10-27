@@ -19,7 +19,7 @@ namespace Gizmo.Client.UI.Host.WPF
 
             var hostBuilder = new HostBuilder();
 
-            string skinBasePath = @"D:\My Documents\Visual Studio 2015\Projects\Gizmo\Gizmo.Client.UI\Gizmo.Client.UI.Host.WPF\bin\Release\net6.0-windows\publish";
+            string skinBasePath = @"D:\Files\Projects\Gizmo\Gizmo\Gizmo.Client.UI\Gizmo.Client.UI.Host.WPF\bin\Debug\net6.0-windows";
             string appSettingsFile = Path.Combine(skinBasePath, @"skin.json");
 
 
@@ -31,6 +31,7 @@ namespace Gizmo.Client.UI.Host.WPF
 
                 serviceCollection.AddClientOptions(context.Configuration);
                 serviceCollection.AddClientServices();
+                serviceCollection.AddSingleton<IGizmoClient, TestClient>();
                 serviceCollection.AddSingleton<IHostWindow, HostWindow>();
               
             }).ConfigureLogging(loggingBuilder =>

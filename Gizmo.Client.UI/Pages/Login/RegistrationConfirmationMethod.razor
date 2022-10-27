@@ -11,27 +11,27 @@
 
 <LoginCard>
     <CardHeader>
-        <div class="giz-login-new-user">@localizationService.GetString("GIZ_ALREADY_A_MEMBER") <a href="/">@localizationService.GetString("GIZ_SIGN_IN")</a></div>
+        <div class="giz-login-new-user">@localizationService.GetString("GIZ_LOGIN_ALREADY_A_MEMBER") <a href="/">@localizationService.GetString("GIZ_REGISTRATION_SIGN_ΙΝ")</a></div>
     </CardHeader>
     <CardBody>
         <EditForm EditContext="@UserRegistrationConfirmationMethodService.EditContext">
-            <div class="giz-login-title">@localizationService.GetString("GIZ_SIGN_UP")</div>
+            <div class="giz-login-title">@localizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
             @if (UserRegistrationConfirmationMethodService.ViewState.ConfirmationMethod == View.UserRegistrationMethod.Email)
             {
-                <div class="giz-login-subtitle">Enter your email</div>
+                <div class="giz-login-subtitle">@localizationService.GetString("GIZ_REGISTRATION_ENTER_YOUR_EMAIL")</div>
                 <div class="giz-login-input">
-                    <TextInput @bind-Value="UserRegistrationConfirmationMethodService.ViewState.Email" Size="InputSizes.Normal" IsFullWidth="true" Label="Email address"/>
+                    <TextInput @bind-Value="UserRegistrationConfirmationMethodService.ViewState.Email" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")"/>
                 </div>
             }
             @if (UserRegistrationConfirmationMethodService.ViewState.ConfirmationMethod == View.UserRegistrationMethod.MobilePhone)
             {
-                <div class="giz-login-subtitle">Enter your mobile phone</div>
+                <div class="giz-login-subtitle">@localizationService.GetString("GIZ_REGISTRATION_ENTER_YOUR_MOBILE_PHONE")</div>
                 <div class="giz-login-input">
                     <TextInput @bind-Value="UserRegistrationConfirmationMethodService.ViewState.MobilePhone" Size="InputSizes.Normal" IsFullWidth="true" Label="Mobile phone"/>
                 </div>
             }
             <div class="giz-login-input">
-                <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationConfirmationMethodService.SubmitAsync">@localizationService.GetString("GIZ_CONTINUE")</Button>
+                <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationConfirmationMethodService.SubmitAsync">@localizationService.GetString("GIZ_GEN_CONTINUE")</Button>
             </div>
         </EditForm>
     </CardBody>

@@ -2,6 +2,9 @@
 @using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
+@using Gizmo.UI.Services
+
+@inject ILocalizationService localizationService 
 
 <div class="giz-home">
     <div class="giz-home__header">
@@ -66,7 +69,7 @@
             <div class="giz-home__body__popular">
                 <div class="giz-section">
                     <div class="giz-section__header">
-                        Popular items
+                        @localizationService.GetString("GIZ_GEN_POPULAR_ITEMS")
                     </div>
                     <div class="giz-section__body">
                         <div class="giz-home__app-wrapper">

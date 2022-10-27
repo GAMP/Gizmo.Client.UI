@@ -76,7 +76,7 @@ namespace Gizmo.Client.UI.Components
                 }
 
                 _selectedIndex = value;
-                SelectedIndexChanged.InvokeAsync(_selectedIndex);
+                _ = SelectedIndexChanged.InvokeAsync(_selectedIndex);
             }
         }
 
@@ -203,7 +203,7 @@ namespace Gizmo.Client.UI.Components
 
             SelectedIndex = newIndex;
 
-            StateHasChanged();
+            InvokeAsync(StateHasChanged);
         }
 
         #endregion

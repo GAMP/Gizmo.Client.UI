@@ -7,7 +7,7 @@
 
 <div class="giz-order">
     <div class="giz-order__items">
-        <div class="giz-order__items__header">My order</div>
+        <div class="giz-order__items__header">@localizationService.GetString("GIZ_SHOP_ORDER_TITLE")</div>
         <div class="giz-order__items__body giz-scrollbar--v">
             @if (UserCartService.ViewState.Products.Count() > 0)
             {
@@ -21,9 +21,9 @@
             else
             {
                 <div class="giz-no-order-wrapper">
-                    <div class="giz-no-order-content">
-                        <div class="giz-no-order-content__title">@localizationService.GetString("GIZ_NO_PRODUCTS_MESSAGE")</div>
-                        <div class="giz-no-order-content__text">@localizationService.GetString("GIZ_NO_PRODUCTS_RETRY_MESSAGE")</div>
+                    <div class="giz-empty-state">
+                        <div class="giz-empty-state__title">@localizationService.GetString("GIZ_SHOP_NO_PRODUCTS_MESSAGE")</div>
+                        <div class="giz-empty-state__text">@localizationService.GetString("GIZ_SHOP_NO_PRODUCTS_RETRY_MESSAGE")</div>
                     </div>
                 </div>
             }
@@ -31,27 +31,27 @@
     </div>
         
     <div class="giz-order__notes">
-        <div class="giz-order__notes__header">@localizationService.GetString("GIZ_ORDER_NOTE")</div>
+        <div class="giz-order__notes__header">@localizationService.GetString("GIZ_SHOP_ORDER_NOTE")</div>
         <div class="giz-order__notes__body">
-            <TextInput TValue="string" IsMultiLine="true" IsFullWidth="true" Placeholder="@localizationService.GetString("GIZ_ORDER_NOTE_PLACEHOLDER")" Class="giz-order-notes" />
+            <TextInput TValue="string" IsMultiLine="true" IsFullWidth="true" Placeholder="@localizationService.GetString("GIZ_SHOP_ORDER_NOTE_PLACEHOLDER")" Class="giz-order-notes" />
         </div>
     </div>
 
     <div class="giz-order__totals">
         <div class="giz-order-summary">
-            <div class="giz-order-summary-text-bold">@localizationService.GetString("GIZ_SUBTOTAL")</div>
+            <div class="giz-order-summary-text-bold">@localizationService.GetString("GIZ_SHOP_SUBTOTAL")</div>
             <div class="giz-order-summary-number-bold">
                 <div>@UserCartService.ViewState.Total.ToString("C")<span class="giz-order-summary-number-separator">&amp;</span>@(UserCartService?.ViewState.PointsTotal)</div>
                 <PointsIcon />
             </div>
-            <div class="giz-order-summary-text">Earned points</div>
+            <div class="giz-order-summary-text">@localizationService.GetString("GIZ_SHOP_EARNED_POINTS")</div>
             <div class="giz-order-summary-number">
                 @UserCartService.ViewState.PointsAward
                 <PointsAwardIcon />
             </div>
         </div>
         <div>
-            <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" IsDisabled="@(UserCartService.ViewState.Products.Count() == 0)" @onclick="@(() => PlaceOrder())">@localizationService.GetString("GIZ_PLACE_ORDER")</Button>
+            <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" IsDisabled="@(UserCartService.ViewState.Products.Count() == 0)" @onclick="@(() => PlaceOrder())">@localizationService.GetString("GIZ_SHOP_PLACE_ORDER")</Button>
         </div>
     </div>
 </div>

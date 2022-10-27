@@ -1,6 +1,9 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
+@using Gizmo.UI.Services
+
+@inject ILocalizationService localizationService
 
 <div class="giz-executable-card">
     <div class="giz-executable-card__executable-image"><img src="@Executable.Image" />
@@ -19,7 +22,7 @@
                 @switch (Executable.State)
                 {
                     case 0:
-                        <div>Play</div>
+                        <div>@localizationService.GetString("GIZ_APPS_LAUNCH")</div>
                         break;
                             
                     case 1:
@@ -27,11 +30,11 @@
                         break;
 
                     case 2:
-                        <div>Loading</div>
+                        <div>@localizationService.GetString("GIZ_APPS_LOADING")</div>
                         break;
 
                     case 3:
-                        <div>Terminate</div>
+                        <div>@localizationService.GetString("GIZ_APPS_TERMINATE")</div>
                         break;
                 }
             </ChildContent>

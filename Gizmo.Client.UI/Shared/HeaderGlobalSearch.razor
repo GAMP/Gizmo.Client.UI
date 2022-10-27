@@ -16,7 +16,7 @@
 
         <input type="text"
                value="@_text"
-               placeholder="Search games, apps, shop"
+               placeholder="@localizationService.GetString("GIZ_GLOBAL_SEARCH_PLACEHOLDER")"
                @onfocusin="OnFocusInHandler"
                @onfocusout="OnFocusOutHandler"
                @oninput="OnInputHandler"
@@ -38,7 +38,7 @@
                         <div class="giz-global-search-section">
                             <div class="giz-global-search-section__header">
 
-                                <div>@localizationService.GetString("GIZ_GAMES_AND_APPS")</div>
+                                <div>@localizationService.GetString("GIZ_GLOBAL_SEARCH_GAMES_AND_APPS")</div>
 
                                 @if (SearchService.ViewState.ApplicationResults.Count > 10)
                                 {
@@ -60,7 +60,7 @@
                         <div class="giz-global-search-section">
                             <div class="giz-global-search-section__header">
 
-                                <div>Shop</div>
+                                <div>@localizationService.GetString("GIZ_GLOBAL_SEARCH_SHOP")</div>
 
                                 @if (SearchService.ViewState.ProductResults.Count > 10)
                                 {
@@ -83,13 +83,15 @@
                     <div class="giz-global-search-empty">
                         @if (SearchService.ViewState.IsLoading)
                         {
-                            <GizSpinner />
+                            <div class="giz-loader">
+                                <GizSpinner />
+                            </div>
                         }
                         else
                         {
-                            <div class="giz-global-search-no-results">
-                                <div class="giz-global-search-no-results__title">@localizationService.GetString("GIZ_GLOBAL_SEARCH_NO_RESULTS_MESSAGE")</div>
-                                <div class="giz-global-search-no-results__body">@localizationService.GetString("GIZ_GLOBAL_SEARCH_NO_RESULTS_RETRY_MESSAGE")</div>
+                            <div class="giz-empty-state">
+                                <div class="giz-empty-state__title">@localizationService.GetString("GIZ_GLOBAL_SEARCH_NO_RESULTS_MESSAGE")</div>
+                                <div class="giz-empty-state__text">@localizationService.GetString("GIZ_GLOBAL_SEARCH_NO_RESULTS_RETRY_MESSAGE")</div>
                             </div>
                         }
                     </div>

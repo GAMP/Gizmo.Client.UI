@@ -3,6 +3,9 @@
 @using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
+@using Gizmo.UI.Services
+
+@inject ILocalizationService localizationService
 
 <div class="giz-app-details">
     <div class="giz-app-details__app">
@@ -37,18 +40,18 @@
                     {
                         <ComboButton Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" OnClickMainButton="@OnClickMainButtonHandler">
                             <ChildContent>
-                                LAUNCH
+                                @localizationService.GetString("GIZ_APPS_LAUNCH")
                             </ChildContent>
                             <DropDownItems>
                                 <ListItem>
-                                    Autostart
+                                    @localizationService.GetString("GIZ_APPS_AUTO_START")
                                 </ListItem>
                                 <ListItem SVGIcon="Icons.Repair_Client">
-                                    Repair
+                                    @localizationService.GetString("GIZ_APPS_REPAIR")
                                 </ListItem>
                                 <ListItem SVGIcon="Icons.Folder_Client">
                                     <ChildContent>
-                                        Personal Files
+                                        @localizationService.GetString("GIZ_APPS_PERSONAL_FILES")
                                     </ChildContent>
                                     <NestedList>
                                         <ListItem>
@@ -72,14 +75,14 @@
                                     </NestedList>
                                 </ListItem>
                                 <ListItem SVGIcon="Icons.Close_Client">
-                                    Terminate
+                                    @localizationService.GetString("GIZ_APPS_TERMINATE")
                                 </ListItem>
                             </DropDownItems>
                         </ComboButton>
                     }
                     else
                     {
-                        <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => OnClickMainButtonHandler())">LAUNCH</Button>
+                        <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => OnClickMainButtonHandler())">@localizationService.GetString("GIZ_APPS_LAUNCH")</Button>
                     }
                 </div>
 
@@ -87,25 +90,25 @@
 
             <div class="giz-app-details-card-brand-info">
                 <div class="giz-app-details-card-brand-title">
-                    Publisher
+                    @localizationService.GetString("GIZ_APPS_PUBLISHER")
                 </div>
                 <div class="giz-app-details-card-brand-text">
                     @ApplicationDetailsPageService.ViewState.Application?.Publisher
                 </div>
                 <div class="giz-app-details-card-brand-title">
-                    Release Date
+                    @localizationService.GetString("GIZ_APPS_RELEASE_DATE")
                 </div>
                 <div class="giz-app-details-card-brand-text">
                     @ApplicationDetailsPageService.ViewState.Application?.ReleaseDate?.ToShortDateString()
                 </div>
                 <div class="giz-app-details-card-brand-title">
-                    Date Added
+                    @localizationService.GetString("GIZ_APPS_DATE_ADDED")
                 </div>
                 <div class="giz-app-details-card-brand-text">
                     @ApplicationDetailsPageService.ViewState.Application?.DateAdded.ToShortDateString()
                 </div>
                 <div class="giz-app-details-card-brand-title">
-                    Player Mode
+                    @localizationService.GetString("GIZ_APPS_PLAYER_MODE")
                 </div>
                 <div class="giz-app-details-card-brand-text">
                     <div class="d-flex align-center" style="justify-content: flex-end;">
@@ -149,23 +152,27 @@
                     <ClientTab>
                         <ClientTabItem Class="@(_selectedTabIndex == 0 ? "active" : "")">
                             <div @onclick=@(() => SelectTab(0))>
-                                Media
+                                @localizationService.GetString("GIZ_APPS_MEDIA")
                             </div>
                         </ClientTabItem>
                         <ClientTabItem Class="@(_selectedTabIndex == 1 ? "active" : "")">
                             <div @onclick=@(() => SelectTab(1))>
-                                Links
+                                @localizationService.GetString("GIZ_APPS_LINKS")
                             </div>
                         </ClientTabItem>
                     </ClientTab>
                 </div>
                 <div class="giz-app-details__app__info__additional-content__media">
-                    @foreach (var item in ApplicationMedia)
-                    {
-                        <div class="giz-app-media-item">
-                            <img src="_content/Gizmo.Client.UI/img/@item" alt="loading" />
-                        </div>
-                    }
+                    <ClientTab>
+                        @foreach (var item in ApplicationMedia)
+                        {
+                            <ClientTabItem>
+                                <div class="giz-app-media-item">
+                                    <img src="_content/Gizmo.Client.UI/img/@item" alt="loading" />
+                                </div>
+                            </ClientTabItem>
+                        }
+                    </ClientTab>
                 </div>
             </div>
 

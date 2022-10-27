@@ -11,25 +11,25 @@
 
 <LoginCard>
     <CardHeader>
-        <div class="giz-login-new-user">@localizationService.GetString("GIZ_ALREADY_A_MEMBER") <a href="/">@localizationService.GetString("GIZ_SIGN_IN")</a></div>
+        <div class="giz-login-new-user">@localizationService.GetString("GIZ_LOGIN_ALREADY_A_MEMBER") <a href="/">@localizationService.GetString("GIZ_REGISTRATION_SIGN_ΙΝ")</a></div>
     </CardHeader>
     <CardBody>
         <EditForm EditContext="@UserRegistrationAdditionalFieldsService.EditContext">
-            <div class="giz-login-title">@localizationService.GetString("GIZ_SIGN_UP")</div>
+            <div class="giz-login-title">@localizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
             <div class="giz-login-input">
-                <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_COUNTRY_REGION")" />
+                <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_COUNTRY_REGION")" />
             </div>
             <div class="giz-login-input">
-                <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_ADDRESS")" />
+                <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_ADDRESS")" />
             </div>
             <div class="giz-login-input">
-                <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_POST_CODE")" />
+                <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_POST_CODE")" />
             </div>
             <div class="giz-login-input">
-                <TextInput @bind-Value="UserRegistrationAdditionalFieldsService.ViewState.HomePhone" TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_HOME_PHONE")" />
+                <TextInput @bind-Value="UserRegistrationAdditionalFieldsService.ViewState.HomePhone" TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_HOME_PHONE")" />
             </div>
             <div class="giz-login-input">
-                <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationAdditionalFieldsService.SubmitAsync">@localizationService.GetString("GIZ_SIGN_UP")</Button>
+                <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationAdditionalFieldsService.SubmitAsync">@localizationService.GetString("GIZ_REGISTRATION_SIGN_UP_BUTTON")</Button>
             </div>
         </EditForm>
     </CardBody>

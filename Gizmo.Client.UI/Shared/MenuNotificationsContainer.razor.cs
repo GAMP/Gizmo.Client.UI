@@ -3,13 +3,14 @@ using Gizmo.Client.UI.ViewModels;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Shared
 {
-    public partial class MenuNotificationsContainer : CustomDOMComponentBase
+    public partial class MenuNotificationsContainer : CustomDOMComponentBase, IAsyncDisposable
     {
         public MenuNotificationsContainer()
         {
@@ -35,7 +36,6 @@ namespace Gizmo.Client.UI.Shared
                     return;
 
                 _isOpen = value;
-
                 _ = IsOpenChanged.InvokeAsync(_isOpen);
             }
         }
@@ -68,7 +68,6 @@ namespace Gizmo.Client.UI.Shared
             this.UnsubscribeChange(NotificationsService.ViewState);
 
             ClosePopupEventInterop?.Dispose();
-            _ = JsRuntime.InvokeVoidAsync("unregisterPopup", Ref);
 
             base.Dispose();
         }
@@ -83,5 +82,15 @@ namespace Gizmo.Client.UI.Shared
             return Task.CompletedTask;
         }
 
+        #region IAsyncDisposable
+
+        public async ValueTask DisposeAsync()
+        {
+            await InvokeVoidAsync("unregisterPopup", Ref).ConfigureAwait(false);
+
+            Dispose();
+        }
+
+        #endregion
     }
 }

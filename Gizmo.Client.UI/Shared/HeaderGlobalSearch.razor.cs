@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Shared
 {
-    public partial class HeaderGlobalSearch : CustomDOMComponentBase
+    public partial class HeaderGlobalSearch : CustomDOMComponentBase, IAsyncDisposable
     {
         const int DEFAULT_DELAY = 500;
 
@@ -153,7 +153,6 @@ namespace Gizmo.Client.UI.Shared
             this.UnsubscribeChange(SearchService.ViewState);
 
             ClosePopupEventInterop?.Dispose();
-            _ = JsRuntime.InvokeVoidAsync("unregisterPopup", Ref);
 
             base.Dispose();
         }
@@ -172,5 +171,16 @@ namespace Gizmo.Client.UI.Shared
 
             return Task.CompletedTask;
         }
+
+        #region IAsyncDisposable
+
+        public async ValueTask DisposeAsync()
+        {
+            await InvokeVoidAsync("unregisterPopup", Ref).ConfigureAwait(false);
+
+            Dispose();
+        }
+
+        #endregion
     }
 }

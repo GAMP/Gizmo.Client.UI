@@ -23,7 +23,7 @@ namespace Gizmo.Client.UI.Components
             _slideDirection = 0;
             _fade = 0;
 
-            StateHasChanged();
+            InvokeAsync(StateHasChanged);
         }
 
         public void SetIndex(int index, int slideDirection)
@@ -31,14 +31,14 @@ namespace Gizmo.Client.UI.Components
             _index = index;
             _slideDirection = slideDirection;
 
-            StateHasChanged();
+            InvokeAsync(StateHasChanged);
         }
 
         public void FadeOut()
         {
             _fade = -1;
 
-            StateHasChanged();
+            InvokeAsync(StateHasChanged);
         }
 
         public void FadeIn(int index)
@@ -46,7 +46,7 @@ namespace Gizmo.Client.UI.Components
             _index = index;
             _fade = 1;
 
-            StateHasChanged();
+            InvokeAsync(StateHasChanged);
         }
 
         #region OVERRIDE

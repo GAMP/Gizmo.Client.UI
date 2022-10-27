@@ -18,11 +18,11 @@
         <div class="giz-login__adv">
             <div class="giz-login__adv__header">
                 <div class="giz-nav-logo"><div><img src="https://i.postimg.cc/ZqR6bSr5/Logo.png" alt="loading"></div></div>
-                <div class="giz-nav-title">05</div>
+                <div class="giz-nav-title">@HostService.ViewState.HostNumber</div>
             </div>
 
             <div class="giz-login__adv__body">
-                <Carousel Title="Daily News" ShowIndicator="true">
+                <Carousel Title="Daily News" ShowIndicator="true" Interval="5000">
                     @if (NewsFeeds != null)
                     {
                         @foreach (var item in NewsFeeds)
@@ -64,7 +64,19 @@
         </div>
         <div class="giz-login__login">
             @Body
-            @*<div class="giz-login-overlay"></div>*@
+            @if (HostService.ViewState.IsLocked)
+            {
+                <div class="giz-login-overlay">
+                    <div class="giz-host-locked">
+                        <div class="giz-host-locked__message">
+                            <svg width="23" height="29" viewBox="0 0 23 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3.0663 28.3335C2.44443 28.3335 1.9167 28.1167 1.4831 27.6831C1.05003 27.25 0.833496 26.7223 0.833496 26.0999V12.0335C0.833496 11.4111 1.05003 10.8831 1.4831 10.4495C1.9167 10.0164 2.44443 9.7999 3.0663 9.7999H5.0663V6.7663C5.0663 4.9887 5.69403 3.47216 6.9495 2.2167C8.2055 0.961229 9.7223 0.333496 11.4999 0.333496C13.2775 0.333496 14.7943 0.961229 16.0503 2.2167C17.3058 3.47216 17.9335 4.9887 17.9335 6.7663V9.7999H19.9335C20.5554 9.7999 21.0831 10.0164 21.5167 10.4495C21.9498 10.8831 22.1663 11.4111 22.1663 12.0335V26.0999C22.1663 26.7223 21.9498 27.25 21.5167 27.6831C21.0831 28.1167 20.5554 28.3335 19.9335 28.3335H3.0663ZM7.2663 9.7999H15.7335V6.7663C15.7335 5.6111 15.3223 4.6223 14.4999 3.7999C13.6775 2.9775 12.6775 2.5663 11.4999 2.5663C10.3223 2.5663 9.3223 2.9775 8.4999 3.7999C7.6775 4.6223 7.2663 5.6111 7.2663 6.7663V9.7999ZM11.4999 21.6663C12.2108 21.6663 12.822 21.4164 13.3335 20.9167C13.8444 20.4164 14.0999 19.8108 14.0999 19.0999C14.0999 18.4108 13.8444 17.7996 13.3335 17.2663C12.822 16.733 12.2108 16.4663 11.4999 16.4663C10.789 16.4663 10.1778 16.733 9.6663 17.2663C9.15536 17.7996 8.8999 18.422 8.8999 19.1335C8.8999 19.822 9.15536 20.4164 9.6663 20.9167C10.1778 21.4164 10.789 21.6663 11.4999 21.6663Z" fill="#FAFAFA"/>
+                            </svg>
+                            <div>Locked</div>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </main>

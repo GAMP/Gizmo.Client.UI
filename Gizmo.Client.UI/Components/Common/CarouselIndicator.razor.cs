@@ -23,7 +23,7 @@ namespace Gizmo.Client.UI.Components
                     return;
 
                 _selectedIndex = value;
-                SelectedIndexChanged.InvokeAsync(_selectedIndex);
+                _ = SelectedIndexChanged.InvokeAsync(_selectedIndex);
             }
         }
 
