@@ -245,3 +245,61 @@ function tabItemBringIntoView(element) {
         content.style.marginLeft = "-" + nextScroll + "px";
     }
 }
+
+var expandingOperations = [];
+
+function expandElement(element) {
+    if (element) {
+        window.console.log("expand");
+        if (expandingOperations[element]) {
+            clearTimeout(expandingOperations[element]);
+            expandingOperations[element] = null;
+        }
+
+        if (element.classList.contains('collapsing')) {
+            element.classList.remove('collapsing');
+        }
+
+        element.classList.add('open');
+
+        var height = element.getBoundingClientRect().height;
+
+        element.style.setProperty('--abh', height + 'px');
+        element.classList.add('expanding');
+
+        var expandingTimeout = setTimeout(function () {
+            element.classList.remove('expanding');
+            expandingOperations[element] = null;
+        }, 500, element);
+
+        expandingOperations[element] = expandingTimeout;
+    }
+}
+
+function collapseElement(element) {
+    if (element) {
+        window.console.log("collapse");
+        if (expandingOperations[element]) {
+            clearTimeout(expandingOperations[element]);
+            expandingOperations[element] = null;
+        }
+
+        if (element.classList.contains('open')) {
+            if (element.classList.contains('expanding')) {
+                element.classList.remove('expanding');
+            }
+            var height = element.getBoundingClientRect().height;
+
+            element.style.setProperty('--abh', height + 'px');
+            element.classList.add('collapsing');
+
+            var expandingTimeout = setTimeout(function () {
+                element.classList.remove('open');
+                element.classList.remove('collapsing');
+                expandingOperations[element] = null;
+            }, 500, element);
+
+            expandingOperations[element] = expandingTimeout;
+        }
+    }
+}

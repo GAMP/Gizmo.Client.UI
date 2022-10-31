@@ -20,6 +20,8 @@ namespace Gizmo.Client.UI.Pages
 
         public bool ChangePasswordIsOpen { get; set; }
 
+        public bool ChangePictureIsOpen { get; set; }
+
         private void OnClickUpdateEmailButtonHandler()
         {
             ChangePasswordIsOpen = true;
@@ -33,6 +35,11 @@ namespace Gizmo.Client.UI.Pages
         private void OnClickChangePasswordButtonHandler()
         {
             ChangePasswordIsOpen = true;
+        }
+
+        private void OnClickChangePictureButtonHandler()
+        {
+            ChangePictureIsOpen = true;
         }
     }
 }

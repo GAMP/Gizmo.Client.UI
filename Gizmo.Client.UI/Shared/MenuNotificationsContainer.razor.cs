@@ -12,11 +12,23 @@ namespace Gizmo.Client.UI.Shared
 {
     public partial class MenuNotificationsContainer : CustomDOMComponentBase, IAsyncDisposable
     {
+        const int DEFAULT_DELAY =  500;
+        
         public MenuNotificationsContainer()
         {
+            _fadeInDeferredAction = new DeferredAction(FadeIn);
+            _fadeOutDeferredAction = new DeferredAction(FadeOut);
+            _delayTimeSpan = new TimeSpan(0, 0, 0, 0, _delay);
         }
 
-        private bool _isOpen { get; set; }
+        private bool _isOpen;
+        private bool _isFadingIn;
+        private bool _isFadingOut;
+
+        private DeferredAction _fadeInDeferredAction;
+        private DeferredAction _fadeOutDeferredAction;
+        private int _delay = DEFAULT_DELAY;
+        private TimeSpan _delayTimeSpan;
 
         #region PROPERTIES
 
@@ -32,11 +44,39 @@ namespace Gizmo.Client.UI.Shared
             }
             set
             {
-                if (_isOpen == value)
+                if (_isOpen == value && !_isFadingOut)
                     return;
 
-                _isOpen = value;
-                _ = IsOpenChanged.InvokeAsync(_isOpen);
+                if (value)
+                {
+                    if (_isFadingOut)
+                    {
+                        _isFadingOut = false;
+                        _fadeOutDeferredAction.Cancel();
+                    }
+
+                    _isOpen = value;
+                    _ = IsOpenChanged.InvokeAsync(_isOpen);
+                    _ = InvokeVoidAsync("expandElement", Ref);
+
+                    _isFadingIn = true;
+                    _fadeInDeferredAction.Defer(_delayTimeSpan);
+                }
+                else
+                {
+                    if (_isFadingIn)
+                    {
+                        _isFadingIn = false;
+                        _fadeInDeferredAction.Cancel();
+                    }
+
+                    if (!_isFadingOut)
+                    {
+                        _isFadingOut = true;
+                        _fadeOutDeferredAction.Defer(_delayTimeSpan);
+                        _ = InvokeVoidAsync("collapseElement", Ref);
+                    }
+                }
             }
         }
 
@@ -44,6 +84,30 @@ namespace Gizmo.Client.UI.Shared
         public EventCallback<bool> IsOpenChanged { get; set; }
 
         #endregion
+
+        private Task FadeIn()
+        {
+            _isFadingIn = false;
+
+            return Task.CompletedTask;
+        }
+
+        private Task FadeOut()
+        {
+            InvokeAsync(Close);
+
+            return Task.CompletedTask;
+        }
+
+        private Task Close()
+        {
+            _isOpen = false;
+            _isFadingOut = false;
+
+            //StateHasChanged();
+
+            return IsOpenChanged.InvokeAsync(_isOpen);
+        }
 
         protected override void OnInitialized()
         {

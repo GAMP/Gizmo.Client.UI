@@ -45,7 +45,6 @@ namespace Gizmo.Client.UI.Components
                 return UserChangeMobileService.ResetAsync();
 
             return Task.CompletedTask;
-
         }
     }
 }
