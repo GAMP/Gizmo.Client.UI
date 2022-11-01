@@ -10,6 +10,9 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public RenderFragment ChildContent { get; set; }
 
+        [Parameter]
+        public TabControlsPositions ControlsPosition { get; set; } = TabControlsPositions.External;
+
         private async void OnClickPreviousButton()
         {
             await InvokeVoidAsync("tabScrollPrevious", Ref);
@@ -29,6 +32,15 @@ namespace Gizmo.Client.UI.Components
                 await InvokeVoidAsync("registerTab", Ref);
             }
         }
+
+        #region CLASSMAPPERS
+
+        protected string ClassName => new ClassMapper()
+                 .Add("giz-client-tab")
+                 .If("giz-client-tab--internal", () => ControlsPosition == TabControlsPositions.Internal)
+                 .AsString();
+
+        #endregion
 
         #region IAsyncDisposable
 

@@ -13,34 +13,34 @@ namespace Gizmo.Client.UI.Host.Web
             Random random = new Random();
 
             _productGroups = new List<ProductGroup>();
-            _productGroups.Add(new ProductGroup() { Id = 1, Name = "Coffee" });
-            _productGroups.Add(new ProductGroup() { Id = 2, Name = "Beverages" });
-            _productGroups.Add(new ProductGroup() { Id = 3, Name = "Sandwiches" });
-            _productGroups.Add(new ProductGroup() { Id = 4, Name = "Snacks" });
-            _productGroups.Add(new ProductGroup() { Id = 5, Name = "Time offers" });
+            _productGroups.Add(new ProductGroup() { Id = 1, Name = "#Coffee" });
+            _productGroups.Add(new ProductGroup() { Id = 2, Name = "#Beverages" });
+            _productGroups.Add(new ProductGroup() { Id = 3, Name = "#Sandwiches" });
+            _productGroups.Add(new ProductGroup() { Id = 4, Name = "#Snacks" });
+            _productGroups.Add(new ProductGroup() { Id = 5, Name = "#Time offers" });
 
-            _productGroups.Add(new ProductGroup() { Id = 6, Name = "Coffee" });
-            _productGroups.Add(new ProductGroup() { Id = 7, Name = "Beverages" });
-            _productGroups.Add(new ProductGroup() { Id = 8, Name = "Sandwiches" });
-            _productGroups.Add(new ProductGroup() { Id = 9, Name = "Snacks" });
-            _productGroups.Add(new ProductGroup() { Id = 10, Name = "Time offers" });
-            _productGroups.Add(new ProductGroup() { Id = 11, Name = "Coffee" });
-            _productGroups.Add(new ProductGroup() { Id = 12, Name = "Beverages" });
-            _productGroups.Add(new ProductGroup() { Id = 13, Name = "Sandwiches" });
-            _productGroups.Add(new ProductGroup() { Id = 14, Name = "Snacks" });
-            _productGroups.Add(new ProductGroup() { Id = 15, Name = "Time offers" });
-            _productGroups.Add(new ProductGroup() { Id = 16, Name = "Coffee" });
-            _productGroups.Add(new ProductGroup() { Id = 17, Name = "Beverages" });
-            _productGroups.Add(new ProductGroup() { Id = 18, Name = "Sandwiches" });
-            _productGroups.Add(new ProductGroup() { Id = 19, Name = "Snacks" });
-            _productGroups.Add(new ProductGroup() { Id = 20, Name = "Time offers" });
+            _productGroups.Add(new ProductGroup() { Id = 6, Name = "#Coffee" });
+            _productGroups.Add(new ProductGroup() { Id = 7, Name = "#Beverages" });
+            _productGroups.Add(new ProductGroup() { Id = 8, Name = "#Sandwiches" });
+            _productGroups.Add(new ProductGroup() { Id = 9, Name = "#Snacks" });
+            _productGroups.Add(new ProductGroup() { Id = 10, Name = "#Time offers" });
+            _productGroups.Add(new ProductGroup() { Id = 11, Name = "#Coffee" });
+            _productGroups.Add(new ProductGroup() { Id = 12, Name = "#Beverages" });
+            _productGroups.Add(new ProductGroup() { Id = 13, Name = "#Sandwiches" });
+            _productGroups.Add(new ProductGroup() { Id = 14, Name = "#Snacks" });
+            _productGroups.Add(new ProductGroup() { Id = 15, Name = "#Time offers" });
+            _productGroups.Add(new ProductGroup() { Id = 16, Name = "#Coffee" });
+            _productGroups.Add(new ProductGroup() { Id = 17, Name = "#Beverages" });
+            _productGroups.Add(new ProductGroup() { Id = 18, Name = "#Sandwiches" });
+            _productGroups.Add(new ProductGroup() { Id = 19, Name = "#Snacks" });
+            _productGroups.Add(new ProductGroup() { Id = 20, Name = "#Time offers" });
 
             _products = Enumerable.Range(0, 18).Select(i => new Product()
             {
                 Id = i + 1,
                 ProductGroupId = random.Next(1, 5),
-                Name = $"Coca Cola {i + 1} 500ml",
-                Description = "Iced coffee is a coffee beverage served cold. It may be prepared either by brewing coffee in the normal way and then serving it over ice.",
+                Name = $"#Coca Cola {i + 1} 500ml",
+                Description = "#Iced coffee is a coffee beverage served cold. It may be prepared either by brewing coffee in the normal way and then serving it over ice.",
                 Price = random.Next(1, 5),
                 PointsPrice = random.Next(0, 100),
                 Points = random.Next(1, 500),
@@ -109,8 +109,8 @@ namespace Gizmo.Client.UI.Host.Web
             {
                 Id = i + 1,
                 ApplicationCategoryId = random.Next(1, 5),
-                Title = $"Fortnite ({i + 1})",
-                Description = "Fall Guys is a massively multiplayer party game with up to 60 players online in a free-for-all struggle through round after round of escalating chaos until one victor remains!",
+                Title = $"#Fortnite ({i + 1})",
+                Description = "#Fall Guys is a massively multiplayer party game with up to 60 players online in a free-for-all struggle through round after round of escalating chaos until one victor remains!",
                 ReleaseDate = DateTime.Now
             }).ToList();
 
@@ -122,10 +122,10 @@ namespace Gizmo.Client.UI.Host.Web
         public async Task<PagedList<ApplicationExecutable>> GetApplicationExecutablesAsync(ApplicationExecutablesFilter filter)
         {
             List<ApplicationExecutable> executables = new List<ApplicationExecutable>();
-            executables.Add(new ApplicationExecutable() { Id = 1, Caption = "battlenet.exe" });
-            executables.Add(new ApplicationExecutable() { Id = 2, Caption = "DOTA" });
-            executables.Add(new ApplicationExecutable() { Id = 3, Caption = "Spotify" });
-            executables.Add(new ApplicationExecutable() { Id = 4, Caption = "valve_steamclient.exe" });
+            executables.Add(new ApplicationExecutable() { Id = 1, Caption = "#battlenet.exe" });
+            executables.Add(new ApplicationExecutable() { Id = 2, Caption = "#DOTA" });
+            executables.Add(new ApplicationExecutable() { Id = 3, Caption = "#Spotify" });
+            executables.Add(new ApplicationExecutable() { Id = 4, Caption = "#valve_steamclient.exe" });
 
             var pagedList = new PagedList<ApplicationExecutable>(executables, new PaginationMetadata());
 
@@ -137,7 +137,7 @@ namespace Gizmo.Client.UI.Host.Web
             List<PaymentMethod> paymentMethods = Enumerable.Range(0, 4).Select(i => new PaymentMethod()
             {
                 Id = i + 1,
-                Name = $"Payment method {i + 1}"
+                Name = $"#Payment method {i + 1}"
             }).ToList();
 
             var pagedList = new PagedList<PaymentMethod>(paymentMethods, new PaginationMetadata());

@@ -250,7 +250,6 @@ var expandingOperations = [];
 
 function expandElement(element) {
     if (element) {
-        window.console.log("expand");
         if (expandingOperations[element]) {
             clearTimeout(expandingOperations[element]);
             expandingOperations[element] = null;
@@ -278,7 +277,6 @@ function expandElement(element) {
 
 function collapseElement(element) {
     if (element) {
-        window.console.log("collapse");
         if (expandingOperations[element]) {
             clearTimeout(expandingOperations[element]);
             expandingOperations[element] = null;
