@@ -52,7 +52,7 @@ function jsCompile() {
             ext: {
                 min: '.min.js'
             },
-            ignoreFiles: ['-min.js']
+            ignoreFiles: ['-min.js','interop.js']
         }))
         .pipe(dest('wwwroot/js'));
 }
