@@ -25,7 +25,7 @@
                 <Header>@localizationService.GetString("GIZ_GEN_USERNAME")</Header>
                 <ChildContent>
                     <div class="giz-login-input">
-                        <TextInput @bind-Value="@UserSettingsService.ViewState.Username" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_USERNAME_MESSAGE")" />
+                        <TextInput @bind-Value="@UserSettingsService.ViewState.Username" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_USERNAME_MESSAGE")" />
                     </div>
                 </ChildContent>
             </ExpansionPanel>
@@ -34,13 +34,13 @@
                 <Header>@localizationService.GetString("GIZ_USER_PERSONAL_INFORMATION")</Header>
                 <ChildContent>
                     <div class="giz-login-input giz-login-input-columns">
-                        <TextInput @bind-Value="@UserSettingsService.ViewState.FirstName" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_FIRST_NAME")" />
-                        <TextInput @bind-Value="@UserSettingsService.ViewState.LastName" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_LAST_NAME")" />
+                        <TextInput @bind-Value="@UserSettingsService.ViewState.FirstName" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_FIRST_NAME")" />
+                        <TextInput @bind-Value="@UserSettingsService.ViewState.LastName" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_LAST_NAME")" />
                     </div>
             
                     <div class="giz-login-input giz-login-input-columns">
-                        <TextInput @bind-Value="@UserSettingsService.ViewState.BirthDate" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_BIRTH_DATE")" />
-                        <Select @bind-Value="@UserSettingsService.ViewState.Sex" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_GENDER")" OpenDirection="PopupOpenDirections.Cursor">
+                        <TextInput @bind-Value="@UserSettingsService.ViewState.BirthDate" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_BIRTH_DATE")" />
+                        <Select @bind-Value="@UserSettingsService.ViewState.Sex" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_GENDER")" OpenDirection="PopupOpenDirections.Cursor">
                             <SelectItem Value="@Sex.Unspecified" Text="Unspecified" />
                             <SelectItem Value="@Sex.Male" Text="Male" />
                             <SelectItem Value="@Sex.Female" Text="Female" />
@@ -48,11 +48,11 @@
                     </div>
             
                     <div class="giz-login-input">
-                        <TextInput @bind-Value="@UserSettingsService.ViewState.Country" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_COUNTRY_REGION")" />
+                        <TextInput @bind-Value="@UserSettingsService.ViewState.Country" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_COUNTRY_REGION")" />
                     </div>
             
                     <div class="giz-login-input">
-                        <TextInput @bind-Value="@UserSettingsService.ViewState.Address" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_ADDRESS")" />
+                        <TextInput @bind-Value="@UserSettingsService.ViewState.Address" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_ADDRESS")" />
                     </div>
                 </ChildContent>
             </ExpansionPanel>
@@ -61,7 +61,7 @@
                 <Header>@localizationService.GetString("GIZ_USER_MAIL_AND_PHONE_NUMBERS")</Header>
                 <ChildContent>
                     <div class="giz-login-input">
-                        <TextInput @bind-Value="@UserSettingsService.ViewState.Email" IsReadOnly="@(UserPasswordRecoveryMethodService.ViewState.Method == View.UserPasswordRecoveryMethod.Email)" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")">
+                        <TextInput @bind-Value="@UserSettingsService.ViewState.Email" IsReadOnly="@(UserPasswordRecoveryMethodService.ViewState.Method == View.UserPasswordRecoveryMethod.Email)" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")">
                             <RightContent>
                                 @if (UserPasswordRecoveryMethodService.ViewState.Method == View.UserPasswordRecoveryMethod.Email)
                                 {
@@ -72,7 +72,7 @@
                     </div>
             
                     <div class="giz-login-input">
-                        <TextInput @bind-Value="@UserSettingsService.ViewState.MobilePhone" IsReadOnly="@(UserPasswordRecoveryMethodService.ViewState.Method == View.UserPasswordRecoveryMethod.MobilePhone)" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_MOBILE_PHONE")">
+                        <TextInput @bind-Value="@UserSettingsService.ViewState.MobilePhone" IsReadOnly="@(UserPasswordRecoveryMethodService.ViewState.Method == View.UserPasswordRecoveryMethod.MobilePhone)" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_MOBILE_PHONE")">
                             <RightContent>
                                 @if (UserPasswordRecoveryMethodService.ViewState.Method == View.UserPasswordRecoveryMethod.MobilePhone)
                                 {
@@ -83,7 +83,7 @@
                     </div>
             
                     <div class="giz-login-input">
-                        <TextInput @bind-Value="@UserSettingsService.ViewState.Phone" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_HOME_PHONE")" />
+                        <TextInput @bind-Value="@UserSettingsService.ViewState.Phone" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_HOME_PHONE")" />
                     </div>
                 </ChildContent>
             </ExpansionPanel>
