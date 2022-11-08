@@ -40,18 +40,18 @@ else
                 <div class="giz-login-input">
                     @if (UserLoginService.ViewState.LoginType == View.UserLoginType.UsernameOrEmail)
                     {
-                        <TextInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.LoginName" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_USERNAME")" />
+                        <TextInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.LoginName" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_USERNAME")" />
                     }
                     else
                     {
-                        <MaskedTextInput Mask="###.###-###!###" @bind-Value="UserLoginService.ViewState.LoginName" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
+                        <MaskedTextInput Mask="###.###-###!###" @bind-Value="UserLoginService.ViewState.LoginName" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
                     }
                 </div>
                 <div class="giz-login-forgot-password">
                      <a href="/passwordrecovery">@localizationService.GetString("GIZ_LOGIN_FORGOT_YOUR_PASSWORD")</a>
                 </div>
                 <div class="giz-login-input">
-                    <PasswordInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.Password" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PASSWORD")" />
+                    <PasswordInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.Password" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PASSWORD")" />
                 </div>
                 <div class="giz-login-input">
                     <Button Color="ButtonColors.Accent" LeftSVGIcon="Icons.Login_Client" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserLoginService.LoginAsync">@localizationService.GetString("GIZ_GEN_CONTINUE")</Button>

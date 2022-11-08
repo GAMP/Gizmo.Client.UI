@@ -17,14 +17,30 @@
         <CheckBox Label="Full Width" @bind-IsChecked="FullWidth" IsDisabled="@Disabled" />
     </div>
 
-    <div class="compo-test">
+    @*<div class="compo-test">
         <TextInput Label="Test - Small" Size="InputSizes.Small" IsFullWidth="@FullWidth" IsDisabled="@Disabled" HasOutline="@Outline" HasShadow="@Shadow" IsTransparent="@Transparent" @bind-Value="Deposits" />
     </div>
     <div class="compo-test">
         <TextInput Label="Test - Medium" Size="InputSizes.Normal" IsFullWidth="@FullWidth" IsDisabled="@Disabled" HasOutline="@Outline" HasShadow="@Shadow" IsTransparent="@Transparent" @bind-Value="Deposits" />
     </div>
     <div class="compo-test">
-        <TextInput Label="Test - Large" Size="InputSizes.Large" IsFullWidth="@FullWidth" IsDisabled="@Disabled" HasOutline="@Outline" HasShadow="@Shadow" IsTransparent="@Transparent" @bind-Value="Deposits" />
+        <TextInput Label="Test - Large" Size="InputSizes.Large" IsFullWidth="@FullWidth" IsDisabled="@Disabled" HasOutline="@Outline" HasShadow="@Shadow" IsTransparent="@Transparent" @bind-Value="Mask" />
+    </div>*@
+
+    <div class="compo-test">
+        <MaskedPhoneInput Label="Test - Large" Size="InputSizes.Large" IsFullWidth="@FullWidth" IsDisabled="@Disabled" HasOutline="@Outline" HasShadow="@Shadow" IsTransparent="@Transparent" OpenDirection="PopupOpenDirections.Cursor" Mask="@Mask" @bind-Value="Phone" Countries="@Countries" @bind-SelectedCountry="SelectedCountry" />
+    </div>
+
+    <div class="compo-test">
+        <MaskedTextInput Label="Test - Large" Size="InputSizes.Large" IsFullWidth="@FullWidth" IsDisabled="@Disabled" HasOutline="@Outline" HasShadow="@Shadow" IsTransparent="@Transparent" Mask="@Mask" @bind-Value="Phone" />
+    </div>
+    
+    <div class="compo-test">
+        <MaskedDateInput Label="Test - Large" Size="InputSizes.Large" IsFullWidth="@FullWidth" IsDisabled="@Disabled" HasOutline="@Outline" HasShadow="@Shadow" IsTransparent="@Transparent" @bind-Value="BirthDate" />
+    </div>
+
+    <div>
+        @BirthDate
     </div>
     
     <div class="compo-test">
@@ -36,7 +52,7 @@
     </div>
     
     <div class="compo-test">
-        <Select @bind-Value="Variant" Label="Test - Medium" Size="InputSizes.Normal" IsFullWidth="@FullWidth" IsDisabled="@Disabled" HasOutline="@Outline" HasShadow="@Shadow" IsTransparent="@Transparent">
+        <Select @bind-Value="Variant" Label="Test - Medium" Size="InputSizes.Medium" IsFullWidth="@FullWidth" IsDisabled="@Disabled" HasOutline="@Outline" HasShadow="@Shadow" IsTransparent="@Transparent">
             <SelectItem Value="ButtonVariants.Fill" Text="Fill" />
             <SelectItem Value="ButtonVariants.Outline" Text="Outline" />
             <SelectItem Value="ButtonVariants.Text" Text="Text" />

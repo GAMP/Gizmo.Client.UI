@@ -17,16 +17,16 @@
         <EditForm EditContext="@UserRegistrationAdditionalFieldsService.EditContext">
             <div class="giz-login-title">@localizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
             <div class="giz-login-input">
-                <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_COUNTRY_REGION")" />
+                <TextInput TValue="string" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_COUNTRY_REGION")" />
             </div>
             <div class="giz-login-input">
-                <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_ADDRESS")" />
+                <TextInput TValue="string" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_ADDRESS")" />
             </div>
             <div class="giz-login-input">
-                <TextInput TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_POST_CODE")" />
+                <TextInput TValue="string" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_POST_CODE")" />
             </div>
             <div class="giz-login-input">
-                <TextInput @bind-Value="UserRegistrationAdditionalFieldsService.ViewState.HomePhone" TValue="string" Size="InputSizes.Normal" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_HOME_PHONE")" />
+                <MaskedPhoneInput Mask="###.###-###!###" @bind-Value="UserRegistrationAdditionalFieldsService.ViewState.HomePhone" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_HOME_PHONE")" Countries="@Countries" @bind-SelectedCountry="SelectedCountry" OpenDirection="PopupOpenDirections.Cursor" />
             </div>
             <div class="giz-login-input">
                 <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationAdditionalFieldsService.SubmitAsync">@localizationService.GetString("GIZ_REGISTRATION_SIGN_UP_BUTTON")</Button>
