@@ -106,7 +106,7 @@ namespace Gizmo.Client.UI.Host.WPF
         {
             Random random = new Random();
 
-            List<Application> applications = Enumerable.Range(0, 15).Select(i => new Application()
+            List<Application> applications = Enumerable.Range(0, 1000).Select(i => new Application()
             {
                 Id = i + 1,
                 ApplicationCategoryId = random.Next(1, 5),

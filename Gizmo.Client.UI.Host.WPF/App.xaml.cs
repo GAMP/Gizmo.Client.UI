@@ -3,6 +3,7 @@ using Gizmo.UI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 using System.IO;
 using System.Windows;
 
@@ -18,13 +19,12 @@ namespace Gizmo.Client.UI.Host.WPF
             base.OnStartup(e);
 
             var hostBuilder = new HostBuilder();
-
-            string skinBasePath = @"D:\Files\Projects\Gizmo\Gizmo\Gizmo.Client.UI\Gizmo.Client.UI.Host.WPF\bin\Debug\net6.0-windows";
-            string appSettingsFile = Path.Combine(skinBasePath, @"skin.json");
+            string appSettingsFile = Path.Combine(Environment.CurrentDirectory, @"skin.json");
 
 
             hostBuilder.ConfigureServices((context, serviceCollection) =>
             {
+                serviceCollection.AddMemoryCache();
                 serviceCollection.AddLogging();
                 serviceCollection.AddBlazorWebViewDeveloperTools();
                 serviceCollection.AddWpfBlazorWebView();
