@@ -1,5 +1,6 @@
 ﻿@namespace Gizmo.Client.UI.Shared
 @inherits CustomDOMComponentBase
+@using Gizmo.Client.UI.Components
 @using Gizmo.Web.Components
 @using Gizmo.UI.Services
 
@@ -7,7 +8,14 @@
 
 <tr class="giz-active-app-card">
     <td class="giz-active-app-card__image">
-        <img src="@Executable.Image" alt="loading" />
+        @if (Executable.ImageId.HasValue)
+        {
+            <GizImage ImageType="Gizmo.UI.ImageType.Executable" ImageId="@Executable.ImageId.Value" />
+        }
+        else
+        {
+            <img src="_content/Gizmo.Client.UI/img/Chrome-icon_1.png" alt='loading' />
+        }
     </td>
     <td class="giz-active-app-card__info">
         <div class="giz-active-app-card__info__category">Gaming</div>
@@ -40,7 +48,7 @@
                     @localizationService.GetString("GIZ_APPS_AUTO_START")
                 </ListItem>
                 <ListItem SVGIcon="Icons.Repair_Client">
-                    @localizationService.GetString("GIZ_APPS_REPAIR")Repair
+                    @localizationService.GetString("GIZ_APPS_REPAIR")
                 </ListItem>
                 <ListItem SVGIcon="Icons.Folder_Client">
                     <ChildContent>

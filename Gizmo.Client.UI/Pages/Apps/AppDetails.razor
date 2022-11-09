@@ -20,8 +20,15 @@
             </div>
         </NavLink>
         <div class="giz-app-details__app__info">
-            <div class="giz-app-details__app__info__image"> 
-                <img src="_content/Gizmo.Client.UI/img/@ApplicationDetailsPageService.ViewState.Application?.Image" alt="loading" />
+            <div class="giz-app-details__app__info__image">
+                @if (ApplicationDetailsPageService.ViewState.Application.ImageId.HasValue)
+                {
+                    <GizImage ImageType="Gizmo.UI.ImageType.Application" ImageId="@ApplicationDetailsPageService.ViewState.Application.ImageId.Value" />
+                }
+                else
+                {
+                    <img src="_content/Gizmo.Client.UI/img/Apex.png" alt="loading" />
+                }
             </div>
 
             <div class="giz-app-details__app__info__details">

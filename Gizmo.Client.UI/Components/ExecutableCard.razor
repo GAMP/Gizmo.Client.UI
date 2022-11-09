@@ -6,7 +6,15 @@
 @inject ILocalizationService localizationService
 
 <div class="giz-executable-card">
-    <div class="giz-executable-card__executable-image"><img src="@Executable.Image" />
+    <div class="giz-executable-card__executable-image">
+        @if (Executable.ImageId.HasValue)
+        {
+            <GizImage ImageType="Gizmo.UI.ImageType.Executable" ImageId="@Executable.ImageId.Value" />
+        }
+        else
+        {
+            <img src="_content/Gizmo.Client.UI/img/Chrome-icon_1.png" alt='loading' />
+        }
         <div class="giz-executable-card__executable-status">
             <i class="giz-executable-card__executable-status__bullet"></i>24
         </div>

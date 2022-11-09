@@ -4,11 +4,14 @@
     display: grid;
     grid-template-rows: min-content 1fr min-content;
     background: #22272B;
-    box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.08);
-    border-radius: 0px 0px 8px 8px;
-    min-height: 533px;
     width: 360px;
-    
+    min-height: 533px;
+    border-radius: 0px 0px 8px 8px;
+    box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.08);
+    //box-shadow: 0px 8px 32px rgba(150, 0, 0, 0.8);
+    max-height: 100%;
+    overflow: hidden;
+
     &__header {
         color: #E4E6EB;
         //padding: 8px 16px 16px 16px;
@@ -24,6 +27,7 @@
 
     &__body {
         padding: 8px;
+        overflow: auto;
     }
 
     &__footer {
@@ -49,7 +53,11 @@
     //border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     position: relative;
     //background: #373839;
-    //border-radius: 8px;
+    border-radius: 8px;
+
+    &:hover {
+        background: #373839;
+    }
 
     &:last-child {
         border-bottom: none;

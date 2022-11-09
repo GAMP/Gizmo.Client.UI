@@ -13,11 +13,13 @@
         <div class="giz-active-apps__header">
             <div class="giz-heading">@localizationService.GetString("GIZ_ACTIVE_APPS_TITLE")</div>
         </div>
-        <table class="giz-active-apps__body giz-scrollbar--v">
-            @foreach (var executable in ActiveApplicationsService.ViewState.Executables)
-            {
-                <MenuActiveApplicationCard Executable="@executable" />
-            }
-        </table>
+        <div class="giz-active-apps__body giz-scrollbar--v">
+            <table>
+                @foreach (var executable in ActiveApplicationsService.ViewState.Executables)
+                {
+                    <MenuActiveApplicationCard Executable="@executable" />
+                }
+            </table>
+        </div>
     </div>
 </div>

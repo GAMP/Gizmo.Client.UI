@@ -8,7 +8,7 @@ namespace Gizmo.Client.UI
     /// <summary>
     /// Page module display item template.
     /// </summary>
-    public partial class PageModuleNavLinkTemplate : ComponentBase
+    public partial class HeaderModulesMenuItem : ComponentBase
     {
         #region FIELDS
         private UIPageModuleMetadata _metaData; 

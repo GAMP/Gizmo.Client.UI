@@ -12,6 +12,7 @@ namespace Gizmo.Client.UI
 
         private bool _activeAppsIsOpen;
         private bool _notificationsIsOpen;
+        private bool _userLinksIsOpen;
 
         [Inject]
         UserService UserService { get; set; }
@@ -26,6 +27,7 @@ namespace Gizmo.Client.UI
             if (_activeAppsIsOpen)
             {
                 _notificationsIsOpen = false;
+                _userLinksIsOpen = false;
             }
         }
 
@@ -36,9 +38,20 @@ namespace Gizmo.Client.UI
             if (_notificationsIsOpen)
             {
                 _activeAppsIsOpen = false;
+                _userLinksIsOpen = false;
             }
         }
 
+        public void ToggleUserLinks()
+        {
+            _userLinksIsOpen = !_userLinksIsOpen;
+
+            if (_userLinksIsOpen)
+            {
+                _activeAppsIsOpen = false;
+                _notificationsIsOpen = false;
+            }
+        }
 
         protected override void OnInitialized()
         {

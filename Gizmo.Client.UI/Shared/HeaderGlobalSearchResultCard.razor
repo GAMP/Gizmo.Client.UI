@@ -8,7 +8,28 @@
 
 <div class="giz-global-search-result-card">
     <div class="giz-global-search-result-card__image">
-        <img src="_content/Gizmo.Client.UI/img/@Result.Image" alt="loading" />
+        @if (Result.Type == View.SearchResultTypes.Application)
+        {
+            @if (Result.ImageId.HasValue)
+            {
+                <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Result.ImageId.Value" />
+            }
+            else
+            {
+                <img src="_content/Gizmo.Client.UI/img/Apex.png" alt='loading' />
+            }
+        }
+        else
+        {
+            @if (Result.ImageId.HasValue)
+            {
+                <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Result.ImageId.Value" />
+            }
+            else
+            {
+                <img src="_content/Gizmo.Client.UI/img/Cola.png" alt='loading' />
+            } 
+        }
     </div>
     <div class="giz-global-search-result-card__category">Gaming</div>
     <div class="giz-global-search-result-card__title">@Result.Name</div>

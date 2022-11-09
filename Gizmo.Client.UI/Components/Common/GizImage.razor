@@ -1,4 +1,12 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits ComponentBase
-<img id="image" @ref="ElementReference" />
+
+@if (_loaded)
+{
+    <img @ref="ElementReference" />
+}
+else
+{
+    <div>Loading</div>
+}
 

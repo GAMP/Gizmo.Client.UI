@@ -2,23 +2,23 @@
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Shared
 {
-    public partial class MenuNotificationsContainer : CustomDOMComponentBase, IAsyncDisposable
-    {        
-        public MenuNotificationsContainer()
+    public partial class MenuUserLinks : CustomDOMComponentBase
+    {
+        public MenuUserLinks()
         {
         }
 
         private bool _isOpen;
 
-        #region PROPERTIES
+        [Inject]
+        UserService UserService { get; set; }
 
         [Inject]
-        NotificationsService NotificationsService { get; set; }
+        UserLockService UserLockService { get; set; }
 
         [Parameter]
         public bool IsOpen
@@ -40,12 +40,11 @@ namespace Gizmo.Client.UI.Shared
         [Parameter]
         public EventCallback<bool> IsOpenChanged { get; set; }
 
-        #endregion
+        public bool TopUpIsOpen { get; set; }
 
-        protected override void OnInitialized()
+        private void OnClickTopUpButtonHandler()
         {
-            this.SubscribeChange(NotificationsService.ViewState);
-            base.OnInitialized();
+            TopUpIsOpen = true;
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -62,8 +61,6 @@ namespace Gizmo.Client.UI.Shared
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(NotificationsService.ViewState);
-
             ClosePopupEventInterop?.Dispose();
 
             base.Dispose();

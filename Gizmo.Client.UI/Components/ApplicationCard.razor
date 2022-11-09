@@ -10,7 +10,14 @@
         <div class="hoverable-content">
             <div class="giz-app-card__content">
                 <div class="giz-app-card__content__image">
-                    <img src="_content/Gizmo.Client.UI/img/@Application.Image" alt='loading' />
+                    @if (Application.ImageId.HasValue)
+                    {
+                        <GizImage ImageType="Gizmo.UI.ImageType.Application" ImageId="@Application.ImageId.Value" />
+                    }
+                    else
+                    {
+                        <img src="_content/Gizmo.Client.UI/img/Apex.png" alt='loading' />
+                    }
                 </div>
                 <div class="giz-app-card__content__details">
                     <div class="giz-app-card__title">

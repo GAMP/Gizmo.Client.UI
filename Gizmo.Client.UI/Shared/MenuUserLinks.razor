@@ -7,7 +7,9 @@
 
 @inject ILocalizationService localizationService
 
-<div class="giz-dropdown-menu">
+<div class="giz-dropdown-menu @(_isOpen ? "open" : "")"
+     id="@Id"
+     @ref="@Ref">
     <div class="giz-user-links">
         
         <div class="giz-user-links-item" @onclick="OnClickTopUpButtonHandler">

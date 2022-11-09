@@ -9,12 +9,17 @@ using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class GizImage : ComponentBase , IDisposable
+    public partial class GizImage : ComponentBase, IDisposable
     {
         #region CONSTRUCTOR
         public GizImage()
         { }
         #endregion
+
+        private bool _loaded = false;
+
+        private ImageType _previousImageType;
+        private int _previousImageId;
 
         #region PROPERTIES
 
@@ -58,22 +63,40 @@ namespace Gizmo.Client.UI.Components
         #endregion
 
         #region FIELDS
-        readonly CancellationTokenSource _cancellationTokenSource = new(); 
+        readonly CancellationTokenSource _cancellationTokenSource = new();
         #endregion
 
         #region OVERRIDES
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        public override async Task SetParametersAsync(ParameterView parameters)
         {
-            await base.OnAfterRenderAsync(firstRender);
+            await base.SetParametersAsync(parameters);
 
-            if (firstRender)
+            var imageTypeChanged = _previousImageType != ImageType;
+            var imageIdChanged = _previousImageId != ImageId;
+
+
+            if (imageTypeChanged || imageIdChanged)
             {
+                _loaded = false;
+
+                _previousImageType = ImageType;
+                _previousImageId = ImageId;
+
+                StateHasChanged();
+
                 try
                 {
                     using (Stream imageStream = await ImageService.ImageStreamGetAsync(ImageType, ImageId, _cancellationTokenSource.Token))
-                    using (var streamReference = new DotNetStreamReference(imageStream))
-                        await JS.InvokeVoidAsync("ClientFunctions.SetImageSourceAsync", ElementReference, streamReference);
+                    {
+                        using (var streamReference = new DotNetStreamReference(imageStream))
+                        {
+                            _loaded = true;
+                            StateHasChanged();
+
+                            await JS.InvokeVoidAsync("ClientFunctions.SetImageSourceAsync", ElementReference, streamReference);
+                        }
+                    }
                 }
                 catch (OperationCanceledException)
                 {

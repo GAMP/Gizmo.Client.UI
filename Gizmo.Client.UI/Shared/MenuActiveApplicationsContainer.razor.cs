@@ -33,7 +33,6 @@ namespace Gizmo.Client.UI.Shared
                     return;
 
                 _isOpen = value;
-
                 _ = IsOpenChanged.InvokeAsync(_isOpen);
             }
         }
@@ -42,6 +41,12 @@ namespace Gizmo.Client.UI.Shared
         public EventCallback<bool> IsOpenChanged { get; set; }
 
         #endregion
+
+        protected override void OnInitialized()
+        {
+            this.SubscribeChange(ActiveApplicationsService.ViewState);
+            base.OnInitialized();
+        }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -57,6 +62,8 @@ namespace Gizmo.Client.UI.Shared
 
         public override void Dispose()
         {
+            this.UnsubscribeChange(ActiveApplicationsService.ViewState);
+
             ClosePopupEventInterop?.Dispose();
 
             base.Dispose();
