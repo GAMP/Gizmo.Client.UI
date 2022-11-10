@@ -26,7 +26,14 @@ else
     <LoginCard>
         <CardHeader>
             <div class="giz-login-new-user">@localizationService.GetString("GIZ_LOGIN_NOT_A_MEMBER") <a @onclick="UserLoginService.OpenRegistration">@localizationService.GetString("GIZ_LOGIN_SIGN_UP_NOW")</a></div>
-            <Alert AlertType="AlertTypes.Warning" Title="This computer is reserved at 33:000 p.m." Text="If you log in now, you will be automatically logged out at the specified time" />
+            @if (UserLoginService.ViewState.HasLoginErrors)
+            {
+                <Toast AlertType="AlertTypes.Danger" Text="We couldn’t find an account matching the username and password you entered. Please check your username and password and try again. Recover your password or create an account" />
+            }
+            else
+            {
+                <Alert AlertType="AlertTypes.Warning" Title="This computer is reserved at 33:000 p.m." Text="If you log in now, you will be automatically logged out at the specified time"  />
+            }
         </CardHeader>
         <CardBody>
              <EditForm EditContext="@UserLoginService.EditContext">
@@ -57,15 +64,18 @@ else
                     <Button Color="ButtonColors.Accent" LeftSVGIcon="Icons.Login_Client" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserLoginService.LoginAsync">@localizationService.GetString("GIZ_GEN_CONTINUE")</Button>
                 </div>
             </EditForm>
-            <div class="giz-alternative-login">
-                <div class="giz-alternative-login__separator"><span>@localizationService.GetString("GIZ_LOGIN_OR")</span></div>
-                <div class="giz-alternative-login__actions">
-                    <Icon SVGIcon="Icons.QR" />
-                    <div>@localizationService.GetString("GIZ_LOGIN_QR_CODE")</div>
-                </div>
-            </div>
         </CardBody>
         <CardFooter>
+            @if (HostService.ViewState.IsQrLoginEnabled)
+            {
+                <div class="giz-alternative-login">
+                    <div class="giz-alternative-login__separator"><span>@localizationService.GetString("GIZ_LOGIN_OR")</span></div>
+                    <div class="giz-alternative-login__actions">
+                        <Icon SVGIcon="Icons.QR" />
+                        <div>@localizationService.GetString("GIZ_LOGIN_QR_CODE")</div>
+                    </div>
+                </div>
+            }
             <KeyboardLanguage />
         </CardFooter>
     </LoginCard>

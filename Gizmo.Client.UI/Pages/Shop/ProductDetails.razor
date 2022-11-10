@@ -21,7 +21,14 @@
         </NavLink>
         <div class="giz-product-details__product__info">
             <div class="giz-product-details__product__info__image">
-                <img src="_content/Gizmo.Client.UI/img/@ProductDetailsPageService.ViewState.Product?.ImageId" alt="loading" />
+                @if (ProductDetailsPageService.ViewState.Product?.ImageId.HasValue == true)
+                {
+                    <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ProductDetailsPageService.ViewState.Product.ImageId.Value" />
+                }
+                else
+                {
+                    <img src="_content/Gizmo.Client.UI/img/Cola.png" alt='loading' />
+                }
             </div>
             <div class="giz-product-details__product__info__basic">
                 <div class="giz-product-details__product__info__basic__category">

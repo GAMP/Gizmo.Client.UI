@@ -12,8 +12,12 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         UserLoginService UserLoginService { get; set; }
 
+        [Inject]
+        HostService HostService { get; set; }
+
         private void SelectLoginType(ICollection<Button> selectedItems)
         {
+            //TODO: A CALL SERVICE TO CHANGE LOGIN TYPE AND CLEAR INPUT.
             if (selectedItems.Where(a => a.Name == "Username").Any())
                 UserLoginService.ViewState.LoginType = View.UserLoginType.UsernameOrEmail;
             else

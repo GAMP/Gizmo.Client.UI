@@ -15,6 +15,8 @@ namespace Gizmo.Client.UI.Shared
 
         private bool _isOpen;
 
+        protected bool _shouldRender;
+
         #region PROPERTIES
 
         [Inject]
@@ -48,11 +50,35 @@ namespace Gizmo.Client.UI.Shared
             base.OnInitialized();
         }
 
+        protected override bool ShouldRender()
+        {
+            return _shouldRender;
+        }
+
+        public override async Task SetParametersAsync(ParameterView parameters)
+        {
+            if (parameters.TryGetValue<bool>(nameof(IsOpen), out var newIsOpen))
+            {
+                var isOpenChanged = IsOpen != newIsOpen;
+                if (isOpenChanged)
+                {
+                    _shouldRender = true;
+                }
+            }
+
+            await base.SetParametersAsync(parameters);
+        }
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            if (firstRender)
+            if (!firstRender)
+            {
+                _shouldRender = false;
+                await InvokeVoidAsync("writeLine", $"Render {this.ToString()}");
+            }
+            else
             {
                 await JsRuntime.InvokeVoidAsync("registerPopup", Ref);
                 ClosePopupEventInterop = new ClosePopupEventInterop(JsRuntime);
@@ -74,7 +100,11 @@ namespace Gizmo.Client.UI.Shared
         private Task ClosePopupHandler(string args)
         {
             if (args == Id)
+            {
+                _shouldRender = true;
+
                 IsOpen = false;
+            }
 
             return Task.CompletedTask;
         }

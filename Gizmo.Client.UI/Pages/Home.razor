@@ -73,9 +73,9 @@
                     </div>
                     <div class="giz-section__body">
                         <div class="giz-home__app-wrapper">
-                            @foreach (var app in HomePageService.ViewState.NewApplications)
+                            @foreach (var product in HomePageService.ViewState.PopularProducts)
                             {
-                                <ApplicationCard Application="@app" ShowDateAdded="true" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
+                                <ProductCard Product="@product" IsHoverable="true"></ProductCard>
                             }
                         </div>
                     </div>

@@ -15,8 +15,16 @@
 <main client-theme="true">
     <div class="giz-main-container">
         <div class="giz-login__adv">
+            <div class="giz-login__adv__background">
+                <img src="_content/Gizmo.Client.UI/img/bg-img-2.png" alt="loading">
+            </div>
+
             <div class="giz-login__adv__header">
-                <div class="giz-nav-logo"><div><img src="https://i.postimg.cc/ZqR6bSr5/Logo.png" alt="loading"></div></div>
+                <div class="giz-nav-logo">
+                    @*<div>
+                        <img alt="loading">
+                    </div>*@
+                </div>
                 <div class="giz-nav-title">@HostService.ViewState.HostNumber</div>
             </div>
 
@@ -53,7 +61,7 @@
                 </div>
 
                 <div class="giz-server">
-                    <Gizmo.Web.Components.Icon SVGIcon="Web.Components.Icons.DNS" Class="giz-server__icon" />
+                    <Gizmo.Web.Components.Icon SVGIcon="Web.Components.Icons.DNS" Class="@(!HostService.ViewState.IsConnected ? "giz-server__icon disconnected" : "giz-server__icon")" />
                     <div class="giz-version">
                         <div class="giz-version__title">Version</div>
                         <div class="giz-version__version">2.457.002A</div>
