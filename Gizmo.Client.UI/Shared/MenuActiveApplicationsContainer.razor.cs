@@ -52,11 +52,10 @@ namespace Gizmo.Client.UI.Shared
             base.OnInitialized();
         }
 
-        //TODO: A UNCOMMENT AND CLICK NOTIFICATIONS OR USER DROPDOWN TO SEE THE DIFFERENCE.
-        //protected override bool ShouldRender()
-        //{
-        //    return _shouldRender;
-        //}
+        protected override bool ShouldRender()
+        {
+            return _shouldRender;
+        }
 
         public override async Task SetParametersAsync(ParameterView parameters)
         {

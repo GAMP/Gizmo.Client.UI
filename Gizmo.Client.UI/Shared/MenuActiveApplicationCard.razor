@@ -22,14 +22,19 @@
         <div class="giz-active-app-card__info__title">@Executable.Caption</div>
     </td>
     <td class="giz-active-app-card__actions">
-        <ComboButton Progress="@Executable.StatePercentage" Color="@(Executable.State == 3 ? ButtonColors.Danger : ButtonColors.Accent)" Variant="@(Executable.State == 2 ? ButtonVariants.Progress : ButtonVariants.Fill)" Size="ButtonSizes.Large" IsFullWidth="true" OnClickMainButton="@OnClickMainButtonHandler" OpenDirection="PopupOpenDirections.Cursor">
+        <ComboButton Progress="@Executable.StatePercentage" Color="@(Executable.State == 3 ? ButtonColors.Danger : ButtonColors.Accent)" Variant="@(Executable.State == 2 ? ButtonVariants.Progress : ButtonVariants.Fill)" Size="ButtonSizes.Large" IsFullWidth="true" OnClickMainButton="@OnClickMainButtonHandler" OpenDirection="PopupOpenDirections.Cursor"
+                     Text="@(Executable.State == 0 ? localizationService.GetString("GIZ_APPS_LAUNCH") : 
+                             Executable.State == 2 ? localizationService.GetString("GIZ_APPS_LOADING") :
+                             Executable.State == 3 ? localizationService.GetString("GIZ_APPS_TERMINATE") : ""
+                             )"
+                    >
             <ChildContent>
                 @switch (Executable.State)
                 {
                     case 0:
                         <div>@localizationService.GetString("GIZ_APPS_LAUNCH")</div>
                         break;
-                            
+                        
                     case 1:
                         <GizSpinner />
                         break;

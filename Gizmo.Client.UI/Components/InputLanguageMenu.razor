@@ -1,0 +1,25 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using Gizmo.Web.Components
+@using Gizmo.Client.UI.View.States
+@using Microsoft.AspNetCore.Components.Forms
+@using Gizmo.UI.Services
+
+<Select TValue="RegionViewState" Value="InputLanguagesService.ViewState.SelectedRegion" ValueChanged="@ValueChangedHandler" Size="InputSizes.Small" OpenDirection="PopupOpenDirections.Top" Class="giz-input-language-menu">
+    @if (InputLanguagesService.ViewState.Regions != null)
+    {
+        @foreach (var region in InputLanguagesService.ViewState.Regions)
+        {
+            <SelectItem Value="@region">
+                <div class="giz-country">
+                    <div class="giz-country-flag">
+                        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2.41699 11.833C1.93099 11.833 1.51766 11.663 1.17699 11.323C0.836992 10.9823 0.666992 10.569 0.666992 10.083V1.938C0.666992 1.45133 0.836992 1.03467 1.17699 0.688C1.51766 0.340667 1.93099 0.167 2.41699 0.167H15.583C16.069 0.167 16.4823 0.340667 16.823 0.688C17.163 1.03467 17.333 1.45133 17.333 1.938V10.083C17.333 10.569 17.163 10.9823 16.823 11.323C16.4823 11.663 16.069 11.833 15.583 11.833H2.41699ZM8.16699 4.333H9.83299V2.667H8.16699V4.333ZM8.16699 6.833H9.83299V5.167H8.16699V6.833ZM5.66699 4.333H7.33299V2.667H5.66699V4.333ZM5.66699 6.833H7.33299V5.167H5.66699V6.833ZM3.16699 6.833H4.83299V5.167H3.16699V6.833ZM3.16699 4.333H4.83299V2.667H3.16699V4.333ZM6.49999 9.333H11.5C11.736 9.333 11.934 9.25333 12.094 9.094C12.2533 8.934 12.333 8.736 12.333 8.5C12.333 8.264 12.2533 8.066 12.094 7.906C11.934 7.74667 11.736 7.667 11.5 7.667H6.49999C6.26399 7.667 6.06599 7.74667 5.90599 7.906C5.74666 8.066 5.66699 8.264 5.66699 8.5C5.66699 8.736 5.74666 8.934 5.90599 9.094C6.06599 9.25333 6.26399 9.333 6.49999 9.333ZM10.667 6.833H12.333V5.167H10.667V6.833ZM10.667 4.333H12.333V2.667H10.667V4.333ZM13.167 6.833H14.833V5.167H13.167V6.833ZM13.167 4.333H14.833V2.667H13.167V4.333Z" fill="white"/>
+                        </svg>
+                    </div>
+                    <div>@region.TwoLetterISORegionName</div>
+                </div>
+            </SelectItem>
+        }
+    }
+</Select>

@@ -46,7 +46,7 @@ namespace Gizmo.Client.UI.Shared
 
         protected override void OnInitialized()
         {
-            this.SubscribeChange(NotificationsService.ViewState);
+            this.SubscribeChange(NotificationsService.ViewState); //TODO: A WE NEED TO UPDATE _shouldRender FROM SubscribeChange.
             base.OnInitialized();
         }
 
