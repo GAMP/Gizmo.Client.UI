@@ -29,7 +29,18 @@
                 <div class="giz-top-up-dialog__summary">@TopUpService.ViewState.Amount.ToString("C") @localizationService.GetString("GIZ_TOP_UP_WILL_BE_CREDITED")</div>
             </div>
             <div class="giz-client-dialog__footer">
-                <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => TopUpService.SubmitAsync())">@localizationService.GetString("GIZ_TOP_UP_PLACE_NEXT")</Button>
+                <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => TopUpService.SubmitAsync())">
+                    <ChildContent>
+                        @if (TopUpService.ViewState.IsLoading)
+                        {
+                            <GizSpinner />
+                        }
+                        else
+                        {
+                            <div>@localizationService.GetString("GIZ_TOP_UP_PLACE_NEXT")</div>
+                        }
+                    </ChildContent>
+                </Button>
             </div>
         }
         else

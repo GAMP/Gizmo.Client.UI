@@ -85,7 +85,16 @@
                     </div>
                     <div class="giz-checkout__actions">
                         <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="() => CloseDialog()">@localizationService.GetString("GIZ_GEN_CANCEL")</Button>
-                        <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" @onclick="() => UserCartService.SubmitAsync()">@localizationService.GetString("GIZ_SHOP_PLACE_ORDER")</Button>
+                        <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" @onclick="() => UserCartService.SubmitAsync()">
+                            @if (UserCartService.ViewState.IsLoading)
+                            {
+                                <GizSpinner />
+                            }
+                            else
+                            {
+                                <div>@localizationService.GetString("GIZ_SHOP_PLACE_ORDER")</div>
+                            }
+                        </Button>
                     </div>
                 </div>
             }

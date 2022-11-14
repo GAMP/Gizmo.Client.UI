@@ -9,23 +9,10 @@
 
 @inject ILocalizationService localizationService
 
-@if (UserLoginService.ViewState.IsLogginIn)
-{
-    <LoginCard>
-        <CardBody>
-            <div class="giz-loader">
-                <GizSpinner />
-                <div class="giz-loader__title">please wait</div>
-                <div class="giz-loader__text">Loggin in now</div>
-            </div>
-        </CardBody>
-    </LoginCard>
-}
-else
-{
-    <LoginCard>
-        <CardHeader>
-            <div class="giz-login-new-user">@localizationService.GetString("GIZ_LOGIN_NOT_A_MEMBER") <a @onclick="UserLoginService.OpenRegistration">@localizationService.GetString("GIZ_LOGIN_SIGN_UP_NOW")</a></div>
+<LoginCard>
+    <CardHeader>
+        <div class="giz-login-new-user">@localizationService.GetString("GIZ_LOGIN_NOT_A_MEMBER") <a @onclick="UserLoginService.OpenRegistration">@localizationService.GetString("GIZ_LOGIN_SIGN_UP_NOW")</a></div>
+        <div class="giz-login-alerts">
             @if (UserLoginService.ViewState.HasLoginErrors)
             {
                 <Toast AlertType="AlertTypes.Danger" Text="We couldn’t find an account matching the username and password you entered. Please check your username and password and try again. Recover your password or create an account" />
@@ -34,49 +21,57 @@ else
             {
                 <Alert AlertType="AlertTypes.Warning" Title="This computer is reserved at 33:000 p.m." Text="If you log in now, you will be automatically logged out at the specified time"  />
             }
-        </CardHeader>
-        <CardBody>
-             <EditForm EditContext="@UserLoginService.EditContext">
-                <div class="giz-login-title">@localizationService.GetString("GIZ_LOGIN_SIGN_IN_TITLE")</div>
-                <div>
-                    <ButtonGroup Class="giz-login-method" IsMandatory="true" SelectedItemsChanged="@SelectLoginType">
-                        <Button Name="Username" IsSelected="@(UserLoginService.ViewState.LoginType == View.UserLoginType.UsernameOrEmail)">@localizationService.GetString("GIZ_GEN_USERNAME")</Button>
-                        <Button Name="Phone" IsSelected="@(UserLoginService.ViewState.LoginType == View.UserLoginType.MobilePhone)">@localizationService.GetString("GIZ_GEN_PHONE_NUMBER")</Button>
-                    </ButtonGroup>
-                </div>
-                <div class="giz-login-input">
-                    @if (UserLoginService.ViewState.LoginType == View.UserLoginType.UsernameOrEmail)
+        </div>
+    </CardHeader>
+    <CardBody>
+            <EditForm EditContext="@UserLoginService.EditContext">
+            <div class="giz-login-title">@localizationService.GetString("GIZ_LOGIN_SIGN_IN_TITLE")</div>
+            <div>
+                <ButtonGroup Class="giz-login-method" IsMandatory="true" SelectedItemsChanged="@SelectLoginType">
+                    <Button Name="Username" IsSelected="@(UserLoginService.ViewState.LoginType == View.UserLoginType.UsernameOrEmail)">@localizationService.GetString("GIZ_GEN_USERNAME")</Button>
+                    <Button Name="Phone" IsSelected="@(UserLoginService.ViewState.LoginType == View.UserLoginType.MobilePhone)">@localizationService.GetString("GIZ_GEN_PHONE_NUMBER")</Button>
+                </ButtonGroup>
+            </div>
+            <div class="giz-login-input">
+                @if (UserLoginService.ViewState.LoginType == View.UserLoginType.UsernameOrEmail)
+                {
+                    <TextInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.LoginName" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_USERNAME")" />
+                }
+                else
+                {
+                    <MaskedTextInput Mask="###.###-###!###" @bind-Value="UserLoginService.ViewState.LoginName" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
+                }
+            </div>
+            <div class="giz-login-forgot-password">
+                    <a href="/passwordrecovery">@localizationService.GetString("GIZ_LOGIN_FORGOT_YOUR_PASSWORD")</a>
+            </div>
+            <div class="giz-login-input">
+                <PasswordInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.Password" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PASSWORD")" />
+            </div>
+            <div class="giz-login-input">
+                <Button Color="ButtonColors.Accent" LeftSVGIcon="@(!UserLoginService.ViewState.IsLogginIn ? Icons.Login_Client : null)" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserLoginService.LoginAsync">
+                    @if (UserLoginService.ViewState.IsLogginIn)
                     {
-                        <TextInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.LoginName" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_USERNAME")" />
+                        <GizSpinner />
                     }
                     else
                     {
-                        <MaskedTextInput Mask="###.###-###!###" @bind-Value="UserLoginService.ViewState.LoginName" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
+                        <div>@localizationService.GetString("GIZ_GEN_CONTINUE")</div>
                     }
+                </Button>
+            </div>
+        </EditForm>
+    </CardBody>
+    <CardFooter>
+        @if (HostService.ViewState.IsQrLoginEnabled)
+        {
+            <div class="giz-alternative-login">
+                <div class="giz-alternative-login__separator"><span>@localizationService.GetString("GIZ_LOGIN_OR")</span></div>
+                <div class="giz-alternative-login__qr">
+                    <QRIcon />
                 </div>
-                <div class="giz-login-forgot-password">
-                     <a href="/passwordrecovery">@localizationService.GetString("GIZ_LOGIN_FORGOT_YOUR_PASSWORD")</a>
-                </div>
-                <div class="giz-login-input">
-                    <PasswordInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.Password" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PASSWORD")" />
-                </div>
-                <div class="giz-login-input">
-                    <Button Color="ButtonColors.Accent" LeftSVGIcon="Icons.Login_Client" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserLoginService.LoginAsync">@localizationService.GetString("GIZ_GEN_CONTINUE")</Button>
-                </div>
-            </EditForm>
-        </CardBody>
-        <CardFooter>
-            @if (HostService.ViewState.IsQrLoginEnabled)
-            {
-                <div class="giz-alternative-login">
-                    <div class="giz-alternative-login__separator"><span>@localizationService.GetString("GIZ_LOGIN_OR")</span></div>
-                    <div class="giz-alternative-login__actions">
-                        <Icon SVGIcon="Icons.QR" />
-                        <div>@localizationService.GetString("GIZ_LOGIN_QR_CODE")</div>
-                    </div>
-                </div>
-            }
-            <InputLanguageMenu />
-        </CardFooter>
-    </LoginCard>
-}
+            </div>
+        }
+        <InputLanguageMenu />
+    </CardFooter>
+</LoginCard>

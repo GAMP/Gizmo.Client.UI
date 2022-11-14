@@ -64,13 +64,16 @@ function closeOpenPopups(event) {
     registeredPopups.forEach(function (value, index, array) {
         const popup = value.element;
         if (popup.classList.contains('open')) {
-            var bbox = popup.getBoundingClientRect();
-            if (!isPointWithinRect(event.clientX, event.clientY, bbox.left, bbox.top, bbox.right, bbox.bottom)) {
-                //popup.classList.remove('open');
+            var popupContent = popup.querySelector('.giz-dropdown-menu__content');
+            if (popupContent) {
+                var bbox = popupContent.getBoundingClientRect();
+                if (!isPointWithinRect(event.clientX, event.clientY, bbox.left, bbox.top, bbox.right, bbox.bottom)) {
+                    //popup.classList.remove('open');
 
-                closePopupEventListenerReferences.forEach((item) => {
-                    item.invokeMethodAsync('OnClosePopupEvent', popup.id);
-                });
+                    closePopupEventListenerReferences.forEach((item) => {
+                        item.invokeMethodAsync('OnClosePopupEvent', popup.id);
+                    });
+                }
             }
         }
     });

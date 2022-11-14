@@ -50,7 +50,36 @@ namespace Gizmo.Client.UI.Shared
 
         private void OnClickTopUpButtonHandler()
         {
+            _shouldRender = true;
+
+            IsOpen = false;
+
             TopUpIsOpen = true;
+        }
+
+        private Task OnClickUserLockButtonHandler()
+        {
+            _shouldRender = true;
+
+            IsOpen = false;
+
+            return UserLockService.LockAsync();
+        }
+
+        private Task OnClickUserLogoutButtonHandler()
+        {
+            _shouldRender = true;
+
+            IsOpen = false;
+
+            return UserService.LogοutAsync();
+        }
+
+        private void OnClickLinkHandler()
+        {
+            _shouldRender = true;
+
+            IsOpen = false;
         }
 
         #region OVERRIDES

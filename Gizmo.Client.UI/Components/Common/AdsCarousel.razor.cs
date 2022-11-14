@@ -249,6 +249,17 @@ namespace Gizmo.Client.UI.Components
             return base.OnFirstAfterRenderAsync();
         }
 
+        public override void Dispose()
+        {
+            if (_timer != null)
+            {
+                _timer.Dispose();
+                _timer = null;
+            }
+
+            base.Dispose();
+        }
+
         #endregion
     }
 }
