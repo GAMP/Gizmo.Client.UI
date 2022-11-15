@@ -31,7 +31,18 @@
                 </div>
             }
             <div class="giz-login-input">
-                <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationConfirmationMethodService.SubmitAsync">@localizationService.GetString("GIZ_GEN_CONTINUE")</Button>
+                <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationConfirmationMethodService.SubmitAsync">
+                    <ChildContent>
+                        @if (UserRegistrationConfirmationMethodService.ViewState.IsLoading)
+                        {
+                            <GizSpinner />
+                        }
+                        else
+                        {
+                            <div>@localizationService.GetString("GIZ_GEN_CONTINUE")</div>
+                        }
+                    </ChildContent>
+                </Button>
             </div>
         </EditForm>
     </CardBody>

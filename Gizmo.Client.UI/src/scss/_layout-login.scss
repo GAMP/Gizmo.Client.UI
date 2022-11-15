@@ -33,7 +33,7 @@
                 z-index: 1;
 
                 .giz-nav-title {
-                    //Font
+                    //Font ?
                     font-size: 36px;
                     line-height: 44px;
                     font-weight: 700;
@@ -253,10 +253,7 @@
         justify-content: center;
         align-items: center;
         color: #FAFAFA;
-        //Font
-        font-weight: 700;
-        font-size: 32px;
-        line-height: 40px;
+        @include font-h1($font-weight-bold);
 
         &__message {
             display: flex;
@@ -285,17 +282,12 @@
 
     &__body {
         &__title {
-            //Font
-            font-weight: 500;
-            font-size: 14px;
-            line-height: 22px;
+
+            @include font-m($font-weight-regular);
         }
 
         &__messages {
-            //Font
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 22px;
+            @include font-m($font-weight-light);
         }
     }
 
@@ -331,7 +323,7 @@
         flex: 1;
         border-radius: 8px;
         color: rgba(255, 255, 255, 0.8);
-        //Font
+        //Font ?
         font-weight: 500;
         font-size: 16px;
         line-height: 20px;
@@ -364,10 +356,7 @@
         text-align: center;
         color: rgba(255, 255, 255, 0.6);
         text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2), 0px 1px 1px rgba(0, 0, 0, 0.2);
-        //Font
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 22px;
+        @include font-m($font-weight-light);
     }
 }
 
@@ -405,5 +394,20 @@
     input {
         text-align: center;
         /*background: $dim-midnight-black;*/
+    }
+}
+
+.giz-resend-button {
+    position: relative;
+
+    &__time {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translate(0, -50%);
+        //Font
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 18px;
     }
 }

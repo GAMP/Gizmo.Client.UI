@@ -25,7 +25,18 @@
                     </EditForm>
                 </div>
                 <div class="giz-client-dialog__footer">
-                    <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => UserChangeMobileService.SendConfirmationCodeAsync())">Get Code</Button>
+                    <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => UserChangeMobileService.SendConfirmationCodeAsync())">
+                        <ChildContent>
+                            @if (UserChangeMobileService.ViewState.IsLoading)
+                            {
+                                <GizSpinner />
+                            }
+                            else
+                            {
+                                <div>Get Code</div>
+                            }
+                        </ChildContent>
+                    </Button>
                 </div>
 
                 break;
@@ -43,11 +54,13 @@
                 </div>
                 <div class="giz-client-dialog__footer">
                     <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => UserChangeMobileService.VerifyAsync())">Verify</Button>
-                    <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => UserChangeMobileService.ResendAsync())">
-                        <ChildContent>
-                            <div>Re-send</div>
-                            <div class="giz-button-timer">4:59</div>
-                        </ChildContent>
+                    <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => UserChangeMobileService.ResendAsync())" Class="giz-resend-button">
+                        <div>
+                            <div>
+                                @localizationService.GetString("GIZ_GEN_RESEND")
+                            </div>
+                            <div class="giz-resend-button__time">4:59</div>
+                        </div>
                     </Button>
                 </div>
 

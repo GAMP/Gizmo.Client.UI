@@ -1,0 +1,82 @@
+//=============== News Rotator ================//
+
+.giz-news-rotator {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    &-item {
+        display: grid;
+        grid-template-columns: min-content 1fr;
+        align-items: center;
+        gap: 10px;
+        visibility: hidden;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+
+        &__image {
+            width: 48px;
+            height: 48px;
+            border-radius: 9px;
+            overflow: hidden;
+
+            & > img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        &__message {
+            //Font
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 22px;
+        }
+
+        &--current {
+            visibility: visible;
+        }
+
+        &--next {
+            visibility: visible;
+        }
+
+        &.fade-out {
+            left: -100%;
+            animation-duration: 2s;
+            animation-name: rotator-fade-out-current-anim;
+        }
+
+        &.fade-in {
+            animation-duration: 2s;
+            animation-name: rotator-fade-in-next-anim;
+        }
+    }
+}
+
+@keyframes rotator-fade-out-current-anim {
+    0% {
+        left: 0;
+        opacity: 1;
+    }
+    50% {
+        left: -100%;
+        opacity: 0;
+    }
+}
+
+@keyframes rotator-fade-in-next-anim {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

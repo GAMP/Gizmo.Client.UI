@@ -8,5 +8,8 @@ namespace Gizmo.Client.UI.Pages
     {
         [Inject]
         UserRegistrationConfirmationService UserRegistrationConfirmationService { get; set; }
+
+        [Inject]
+        UserRegistrationConfirmationMethodService UserRegistrationConfirmationMethodService { get; set; }
     }
 }
