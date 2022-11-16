@@ -1,5 +1,4 @@
-﻿using Gizmo.Client.UI.ViewModels;
-using Gizmo.Web.Components;
+﻿using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Components

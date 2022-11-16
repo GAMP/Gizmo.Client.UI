@@ -2,10 +2,11 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 @using Gizmo.UI.Services
+@using Gizmo.Client.UI.Shared
 
 @inject ILocalizationService localizationService
 
-<SimpleDialog @bind-IsOpen="IsOpen" IsModal="true" MaximumWidth="600px">
+<HostedDialog>
     <div class="giz-client-dialog giz-user-agreement-dialog">
         <div class="giz-client-dialog__header">
             <div class="giz-client-dialog__header__title">Privacy Policy and Terms of Use</div>
@@ -25,4 +26,4 @@
             <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="() => CloseDialog()">@localizationService.GetString("GIZ_GEN_CONTINUE")</Button>
         </div>
     </div>
-</SimpleDialog>
+</HostedDialog>

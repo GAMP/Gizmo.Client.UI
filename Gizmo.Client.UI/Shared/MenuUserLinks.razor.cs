@@ -1,7 +1,12 @@
-﻿using Gizmo.Client.UI.View.Services;
+﻿using Gizmo.Client.UI.Components;
+using Gizmo.Client.UI.View.Services;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Collections.Generic;
+using System.Threading;
+using System;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Shared
@@ -24,6 +29,9 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         UserLockService UserLockService { get; set; }
 
+        [Inject()]
+        DialogService DialogService { get; set; }
+
         [Parameter]
         public bool IsOpen
         {
@@ -44,17 +52,30 @@ namespace Gizmo.Client.UI.Shared
         [Parameter]
         public EventCallback<bool> IsOpenChanged { get; set; }
 
-        public bool TopUpIsOpen { get; set; }
+        //public bool TopUpIsOpen { get; set; }
 
         #endregion
 
-        private void OnClickTopUpButtonHandler()
+        private async Task OnClickTopUpButtonHandler()
         {
             _shouldRender = true;
 
             IsOpen = false;
 
-            TopUpIsOpen = true;
+            //TopUpIsOpen = true;
+
+            CancellationTokenSource tcs = new CancellationTokenSource();
+            var s = await DialogService.ShowDialogAsync<TopUpDialog>(new Dictionary<string, object>(), default, default, default);
+            if (s.Result == DialogAddResult.Success)
+            {
+                try
+                {
+                    var result = await s.WaitForDialogResultAsync();
+                }
+                catch (OperationCanceledException)
+                {
+                }
+            }
         }
 
         private Task OnClickUserLockButtonHandler()
