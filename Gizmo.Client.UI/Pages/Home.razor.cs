@@ -2,6 +2,7 @@
 using Gizmo.Client.UI.View.States;
 using Gizmo.Client.UI.ViewModels;
 using Gizmo.UI;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -44,6 +45,12 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         ShopPageService ShopPageService { get; set; }
+
+        [Inject()]
+        DialogService DialogService
+        {
+            get; set;
+        }
 
         public bool ExecutableSelectorIsOpen { get; set; }
 
@@ -97,7 +104,7 @@ namespace Gizmo.Client.UI.Pages
             }
         }
 
-        protected override Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
             this.SubscribeChange(SearchService.ViewState);
 
@@ -106,7 +113,9 @@ namespace Gizmo.Client.UI.Pages
             SearchCategories.Add(new ApplicationSortOptionViewModel() { Id = 1, Name = "Games & apps" });
             SearchCategories.Add(new ApplicationSortOptionViewModel() { Id = 2, Name = "Shop" });
 
-            return base.OnInitializedAsync();
+          
+
+             await base.OnInitializedAsync();
         }
 
         public override void Dispose()

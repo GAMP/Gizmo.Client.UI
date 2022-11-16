@@ -1,5 +1,6 @@
 ﻿using Gizmo.Client.UI.Services;
 using Gizmo.UI;
+using Gizmo.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
