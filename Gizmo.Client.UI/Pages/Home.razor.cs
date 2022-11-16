@@ -47,7 +47,7 @@ namespace Gizmo.Client.UI.Pages
         ShopPageService ShopPageService { get; set; }
 
         [Inject()]
-        DialogService DialogService
+        IDialogService DialogService
         {
             get; set;
         }

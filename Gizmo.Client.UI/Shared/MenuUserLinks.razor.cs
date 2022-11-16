@@ -30,7 +30,7 @@ namespace Gizmo.Client.UI.Shared
         UserLockService UserLockService { get; set; }
 
         [Inject()]
-        DialogService DialogService { get; set; }
+        IDialogService DialogService { get; set; }
 
         [Parameter]
         public bool IsOpen

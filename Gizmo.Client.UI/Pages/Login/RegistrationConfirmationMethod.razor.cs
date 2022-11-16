@@ -17,7 +17,7 @@ namespace Gizmo.Client.UI.Pages
         UserRegistrationConfirmationMethodService UserRegistrationConfirmationMethodService { get; set; }
 
         [Inject()]
-        DialogService DialogService { get; set; }
+        IDialogService DialogService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
