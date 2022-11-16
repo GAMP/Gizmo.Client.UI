@@ -11,40 +11,18 @@ namespace Gizmo.Client.UI.Components
         {
         }
 
-        private bool _isOpen { get; set; }
-
         [Inject]
         UserChangePasswordService UserChangePasswordService { get; set; }
 
         [Parameter]
-        public bool IsOpen
+        public EventCallback CancelCallback { get; set; }
+
+        private async Task CloseDialog()
         {
-            get
-            {
-                return _isOpen;
-            }
-            set
-            {
-                if (_isOpen == value)
-                    return;
-
-                _isOpen = value;
-
-                _ = IsOpenChanged.InvokeAsync(_isOpen);
-            }
-        }
-
-        [Parameter]
-        public EventCallback<bool> IsOpenChanged { get; set; }
-
-        private Task CloseDialog()
-        {
-            IsOpen = false;
+            await CancelCallback.InvokeAsync();
 
             if (UserChangePasswordService.ViewState.IsComplete)
-                return UserChangePasswordService.ResetAsync();
-
-            return Task.CompletedTask;
+                await UserChangePasswordService.ResetAsync();
         }
     }
 }

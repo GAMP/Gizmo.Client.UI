@@ -1,4 +1,6 @@
-﻿using Gizmo.Client.UI.View.Services;
+﻿using Gizmo.Client.UI.Components;
+using Gizmo.Client.UI.Services;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Client.UI.ViewModels;
 using Gizmo.UI;
@@ -47,12 +49,7 @@ namespace Gizmo.Client.UI.Pages
         ShopPageService ShopPageService { get; set; }
 
         [Inject()]
-        IDialogService DialogService
-        {
-            get; set;
-        }
-
-        public bool ExecutableSelectorIsOpen { get; set; }
+        IClientDialogService DialogService { get; set; }
 
         public List<ApplicationSortOptionViewModel> SearchCategories { get; set; }
 
@@ -63,7 +60,18 @@ namespace Gizmo.Client.UI.Pages
         public async Task OpenExecutableSelector(int id)
         {
             await ExecutableSelectorService.LoadApplicationAsync(id);
-            ExecutableSelectorIsOpen = true;
+
+            var s = await DialogService.ShowExecutableSelectorDialogAsync();
+            if (s.Result == DialogAddResult.Success)
+            {
+                try
+                {
+                    var result = await s.WaitForDialogResultAsync();
+                }
+                catch (OperationCanceledException)
+                {
+                }
+            }
         }
 
         public IEnumerable<ApplicationViewState> GetFilteredApplications()

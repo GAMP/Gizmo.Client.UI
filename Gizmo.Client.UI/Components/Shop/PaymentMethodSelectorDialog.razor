@@ -7,7 +7,7 @@
 
 @inject ILocalizationService localizationService
 
-<SimpleDialog @bind-IsOpen="IsOpen" IsModal="true" MaximumWidth="600px">
+<HostedDialog>
     <div class="giz-client-dialog giz-payment-method-selector-dialog">
         <div class="giz-client-dialog__header">
             @if (!@UserCartService.ViewState.IsComplete)
@@ -134,4 +134,4 @@
             }
         </div>
     </div>
-</SimpleDialog>
+</HostedDialog>

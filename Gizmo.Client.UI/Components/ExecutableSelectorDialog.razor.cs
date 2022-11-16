@@ -1,6 +1,7 @@
 ﻿using Gizmo.Client.UI.View.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -10,35 +11,15 @@ namespace Gizmo.Client.UI.Components
         {
         }
 
-        private bool _isOpen { get; set; }
-
         [Inject]
         ExecutableSelectorService ExecutableSelectorService { get; set; }
 
         [Parameter]
-        public bool IsOpen
+        public EventCallback CancelCallback { get; set; }
+
+        private Task CloseDialog()
         {
-            get
-            {
-                return _isOpen;
-            }
-            set
-            {
-                if (_isOpen == value)
-                    return;
-
-                _isOpen = value;
-
-                _ = IsOpenChanged.InvokeAsync(_isOpen);
-            }
-        }
-
-        [Parameter]
-        public EventCallback<bool> IsOpenChanged { get; set; }
-
-        private void CloseDialog()
-        {
-            IsOpen = false;
+            return CancelCallback.InvokeAsync();
         }
     }
 }

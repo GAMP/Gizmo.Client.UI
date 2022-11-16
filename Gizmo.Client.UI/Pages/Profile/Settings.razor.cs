@@ -1,6 +1,10 @@
-﻿using Gizmo.Client.UI.View.Services;
+﻿using Gizmo.Client.UI.Services;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.UI;
+using Gizmo.UI.Services;
 using Microsoft.AspNetCore.Components;
+using System;
+using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
 {
@@ -14,32 +18,67 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         UserPasswordRecoveryMethodService UserPasswordRecoveryMethodService { get; set; }
 
-        public bool ChangeEmailIsOpen { get; set; }
+        [Inject()]
+        IClientDialogService DialogService { get; set; }
 
-        public bool ChangeMobileIsOpen { get; set; }
-
-        public bool ChangePasswordIsOpen { get; set; }
-
-        public bool ChangePictureIsOpen { get; set; }
-
-        private void OnClickUpdateEmailButtonHandler()
+        private async Task OnClickUpdateEmailButtonHandler()
         {
-            ChangePasswordIsOpen = true;
+            var s = await DialogService.ShowChangeEmailDialogAsync();
+            if (s.Result == DialogAddResult.Success)
+            {
+                try
+                {
+                    var result = await s.WaitForDialogResultAsync();
+                }
+                catch (OperationCanceledException)
+                {
+                }
+            }
         }
 
-        private void OnClickUpdateMobileButtonHandler()
+        private async Task OnClickUpdateMobileButtonHandler()
         {
-            ChangeEmailIsOpen = true;
+            var s = await DialogService.ShowChangeMobileDialogAsync();
+            if (s.Result == DialogAddResult.Success)
+            {
+                try
+                {
+                    var result = await s.WaitForDialogResultAsync();
+                }
+                catch (OperationCanceledException)
+                {
+                }
+            }
         }
 
-        private void OnClickChangePasswordButtonHandler()
+        private async Task OnClickChangePasswordButtonHandler()
         {
-            ChangePasswordIsOpen = true;
+            var s = await DialogService.ShowChangePasswordDialogAsync();
+            if (s.Result == DialogAddResult.Success)
+            {
+                try
+                {
+                    var result = await s.WaitForDialogResultAsync();
+                }
+                catch (OperationCanceledException)
+                {
+                }
+            }
         }
 
-        private void OnClickChangePictureButtonHandler()
+        private async Task OnClickChangePictureButtonHandler()
         {
-            ChangePictureIsOpen = true;
+            var s = await DialogService.ShowChangePictureDialogAsync();
+            if (s.Result == DialogAddResult.Success)
+            {
+                try
+                {
+                    var result = await s.WaitForDialogResultAsync();
+                }
+                catch (OperationCanceledException)
+                {
+                }
+            }
         }
     }
 }

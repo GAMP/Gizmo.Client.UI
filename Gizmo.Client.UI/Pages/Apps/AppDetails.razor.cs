@@ -1,5 +1,9 @@
-﻿using Gizmo.Client.UI.View.Services;
+﻿using Gizmo.Client.UI.Components;
+using Gizmo.Client.UI.Services;
+using Gizmo.Client.UI.View.Services;
+using Gizmo.UI.Services;
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,10 +30,11 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         ExecutableSelectorService ExecutableSelectorService { get; set; }
 
+        [Inject()]
+        IClientDialogService DialogService { get; set; }
+
         [Parameter]
         public int ApplicationId { get; set; }
-
-        public bool ExecutableSelectorIsOpen { get; set; }
 
         public List<string> ApplicationMedia { get; set; }
 
@@ -53,7 +58,18 @@ namespace Gizmo.Client.UI.Pages
             if (ApplicationDetailsPageService.ViewState.Application.Executables.Count > 1)
             {
                 await ExecutableSelectorService.LoadApplicationAsync(ApplicationId);
-                ExecutableSelectorIsOpen = true;
+
+                var s = await DialogService.ShowExecutableSelectorDialogAsync();
+                if (s.Result == DialogAddResult.Success)
+                {
+                    try
+                    {
+                        var result = await s.WaitForDialogResultAsync();
+                    }
+                    catch (OperationCanceledException)
+                    {
+                    }
+                }
             }
             else
             {

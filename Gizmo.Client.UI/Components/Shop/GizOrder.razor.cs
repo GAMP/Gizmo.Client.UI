@@ -1,7 +1,12 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using System.Collections.Generic;
+using System.Threading;
+using System;
 using System.Threading.Tasks;
+using Gizmo.Client.UI.Services;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -10,20 +15,22 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         UserCartService UserCartService { get; set; }
 
-        public bool PaymentMethodSelectorIsOpen { get; set; }
+        [Inject()]
+        IClientDialogService DialogService { get; set; }
 
-        private Task PlaceOrder()
+        private async Task PlaceOrder()
         {
-            PaymentMethodSelectorIsOpen = true;
-
-            StateHasChanged();
-
-            return Task.CompletedTask;
-        }
-
-        public void SelectPaymentMethod(int id)
-        {
-            StateHasChanged();
+            var s = await DialogService.ShowCheckoutDialogAsync();
+            if (s.Result == DialogAddResult.Success)
+            {
+                try
+                {
+                    var result = await s.WaitForDialogResultAsync();
+                }
+                catch (OperationCanceledException)
+                {
+                }
+            }
         }
 
         protected override void OnInitialized()

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System;
 using System.Threading.Tasks;
+using Gizmo.Client.UI.Services;
 
 namespace Gizmo.Client.UI.Shared
 {
@@ -30,7 +31,7 @@ namespace Gizmo.Client.UI.Shared
         UserLockService UserLockService { get; set; }
 
         [Inject()]
-        IDialogService DialogService { get; set; }
+        IClientDialogService DialogService { get; set; }
 
         [Parameter]
         public bool IsOpen
@@ -52,8 +53,6 @@ namespace Gizmo.Client.UI.Shared
         [Parameter]
         public EventCallback<bool> IsOpenChanged { get; set; }
 
-        //public bool TopUpIsOpen { get; set; }
-
         #endregion
 
         private async Task OnClickTopUpButtonHandler()
@@ -62,10 +61,7 @@ namespace Gizmo.Client.UI.Shared
 
             IsOpen = false;
 
-            //TopUpIsOpen = true;
-
-            CancellationTokenSource tcs = new CancellationTokenSource();
-            var s = await DialogService.ShowDialogAsync<TopUpDialog>(new Dictionary<string, object>(), default, default, default);
+            var s = await DialogService.ShowTopUpDialogAsync();
             if (s.Result == DialogAddResult.Success)
             {
                 try

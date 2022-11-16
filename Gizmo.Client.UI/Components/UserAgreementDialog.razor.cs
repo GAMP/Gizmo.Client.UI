@@ -1,5 +1,6 @@
 ﻿using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -9,42 +10,18 @@ namespace Gizmo.Client.UI.Components
         {
         }
 
-        #region FIELDS
-
-        private bool _isOpen { get; set; }
-
-        #endregion
-
         #region PROPERTIES
 
         [Parameter]
-        public bool IsOpen
-        {
-            get
-            {
-                return _isOpen;
-            }
-            set
-            {
-                if (_isOpen == value)
-                    return;
-
-                _isOpen = value;
-
-                _ = IsOpenChanged.InvokeAsync(_isOpen);
-            }
-        }
-
-        [Parameter]
-        public EventCallback<bool> IsOpenChanged { get; set; }
+        public EventCallback CancelCallback { get; set; }
 
         #endregion
 
         #region METHODS
 
-        private void CloseDialog()
+        private Task CloseDialog()
         {
-            IsOpen = false;
+            return CancelCallback.InvokeAsync();
         }
 
         #endregion

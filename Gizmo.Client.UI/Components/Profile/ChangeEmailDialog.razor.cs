@@ -11,40 +11,19 @@ namespace Gizmo.Client.UI.Components
         {
         }
 
-        private bool _isOpen { get; set; }
-
         [Inject]
         UserChangeEmailService UserChangeEmailService { get; set; }
 
-        [Parameter]
-        public bool IsOpen
-        {
-            get
-            {
-                return _isOpen;
-            }
-            set
-            {
-                if (_isOpen == value)
-                    return;
-
-                _isOpen = value;
-
-                _ = IsOpenChanged.InvokeAsync(_isOpen);
-            }
-        }
 
         [Parameter]
-        public EventCallback<bool> IsOpenChanged { get; set; }
+        public EventCallback CancelCallback { get; set; }
 
-        private Task CloseDialog()
+        private async Task CloseDialog()
         {
-            IsOpen = false;
+            await CancelCallback.InvokeAsync();
 
             if (UserChangeEmailService.ViewState.IsComplete)
-                return UserChangeEmailService.ResetAsync();
-
-            return Task.CompletedTask;
+                await UserChangeEmailService.ResetAsync();
         }
     }
 }

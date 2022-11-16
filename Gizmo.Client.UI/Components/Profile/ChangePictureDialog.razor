@@ -6,7 +6,7 @@
 
 @inject ILocalizationService localizationService
 
-<SimpleDialog @bind-IsOpen="IsOpen" IsModal="true">
+<HostedDialog>
     <div class="giz-client-dialog giz-change-picture-dialog">
         <div class="giz-client-dialog__header">
             <div class="giz-client-dialog__header__title">Profile picture</div>
@@ -14,6 +14,7 @@
         </div>
         <div class="giz-client-dialog__body">
             <div class="giz-change-picture-dialog-image">
+                <img src="@Image" />
                 <Button Size="ButtonSizes.ExtraSmall" LeftSVGIcon="Icons.Trash2_Client" Class="giz-change-picture-dialog-image-delete-button" />
             </div>
             <div>
@@ -34,4 +35,4 @@
             <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="false">Save</Button>
         </div>
     </div>
-</SimpleDialog>
+</HostedDialog>

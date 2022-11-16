@@ -32,6 +32,10 @@ namespace Gizmo.Client.UI.Host.WPF
 
                 serviceCollection.AddClientOptions(context.Configuration);
                 serviceCollection.AddClientServices();
+
+                serviceCollection.AddSingleton<IClientDialogService, ClientDialogService>();
+                serviceCollection.AddSingleton<IDialogService>(sp => sp.GetRequiredService<IClientDialogService>());
+
                 serviceCollection.AddSingleton<IGizmoClient, TestClient>();
                 serviceCollection.AddSingleton<IHostWindow, HostWindow>();
               

@@ -1,10 +1,8 @@
-﻿using Gizmo.Client.UI.View.Services;
-using Gizmo.Web.Components;
+﻿using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
@@ -15,43 +13,23 @@ namespace Gizmo.Client.UI.Components
         {
         }
 
-        private bool _isOpen;
-
-        private bool shouldRender;
+        private bool _shouldRender;
 
         [Parameter]
-        public bool IsOpen
-        {
-            get
-            {
-                return _isOpen;
-            }
-            set
-            {
-                if (_isOpen == value)
-                    return;
+        public EventCallback CancelCallback { get; set; }
 
-                _isOpen = value;
-
-                _ = IsOpenChanged.InvokeAsync(_isOpen);
-            }
-        }
-
-        [Parameter]
-        public EventCallback<bool> IsOpenChanged { get; set; }
+        public string Image { get; set; }
 
         private Task CloseDialog()
         {
-            IsOpen = false;
-
-            return Task.CompletedTask;
+            return CancelCallback.InvokeAsync();
         }
 
-        private Task OnInputFileChange(InputFileChangeEventArgs e)
+        private async Task OnInputFileChange(InputFileChangeEventArgs e)
         {
-            shouldRender = false;
+            _shouldRender = false;
             int maxAllowedFiles = 1;
-            long maxFileSize = 1024 * 15;
+            long maxFileSize = 1024 * 1024 * 4;
             var upload = false;
 
             using var content = new MultipartFormDataContent();
@@ -62,9 +40,15 @@ namespace Gizmo.Client.UI.Components
                 {
                     var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
 
-                    fileContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+                    var fileType = e.File.ContentType;
+                    var buffer = new byte[e.File.Size];
 
-                    content.Add(fileContent, "\"files\"", file.Name);
+                    await e.File.OpenReadStream().ReadAsync(buffer);
+
+                    Image = $"data:{fileType};base64,{Convert.ToBase64String(buffer)}";
+
+                    //fileContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+                    //content.Add(fileContent, "\"files\"", file.Name);
 
                     upload = true;
                 }
@@ -77,8 +61,6 @@ namespace Gizmo.Client.UI.Components
             {
                 //var response = await Http.PostAsync("/Filesave", content);
             }
-
-            return Task.CompletedTask;
         }
     }
 }

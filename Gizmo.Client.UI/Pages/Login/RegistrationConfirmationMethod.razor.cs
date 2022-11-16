@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System;
 using System.Threading.Tasks;
+using Gizmo.Client.UI.Services;
 
 namespace Gizmo.Client.UI.Pages
 {
@@ -17,14 +18,13 @@ namespace Gizmo.Client.UI.Pages
         UserRegistrationConfirmationMethodService UserRegistrationConfirmationMethodService { get; set; }
 
         [Inject()]
-        IDialogService DialogService { get; set; }
+        IClientDialogService DialogService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
 
-            CancellationTokenSource tcs = new CancellationTokenSource();
-            var s = await DialogService.ShowDialogAsync<UserAgreementDialog>(new Dictionary<string, object>(), default, default, default);
+            var s = await DialogService.ShowUserAgreementDialogAsync();
             if (s.Result == DialogAddResult.Success)
             {
                 try

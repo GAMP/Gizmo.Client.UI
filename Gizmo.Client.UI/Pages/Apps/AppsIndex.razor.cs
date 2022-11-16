@@ -1,7 +1,10 @@
-﻿using Gizmo.Client.UI.View.Services;
+﻿using Gizmo.Client.UI.Components;
+using Gizmo.Client.UI.Services;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Client.UI.ViewModels;
 using Gizmo.UI;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -41,6 +44,9 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         SearchService SearchService { get; set; }
 
+        [Inject()]
+        IClientDialogService DialogService { get; set; }
+
         #region PARAMETERS
 
         /// <summary>
@@ -54,8 +60,6 @@ namespace Gizmo.Client.UI.Pages
         }
 
         #endregion
-
-        public bool ExecutableSelectorIsOpen { get; set; }
 
         public List<ApplicationSortOptionViewModel> ApplicationSortOptions { get; set; }
 
@@ -126,7 +130,18 @@ namespace Gizmo.Client.UI.Pages
         public async Task OpenExecutableSelector(int id)
         {
             await ExecutableSelectorService.LoadApplicationAsync(id);
-            ExecutableSelectorIsOpen = true;
+
+            var s = await DialogService.ShowExecutableSelectorDialogAsync();
+            if (s.Result == DialogAddResult.Success)
+            {
+                try
+                {
+                    var result = await s.WaitForDialogResultAsync();
+                }
+                catch (OperationCanceledException)
+                {
+                }
+            }
         }
 
         #endregion
