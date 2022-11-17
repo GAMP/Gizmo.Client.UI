@@ -31,7 +31,7 @@ namespace Gizmo.Client.UI.Shared
         UserLockService UserLockService { get; set; }
 
         [Inject()]
-        IClientDialogService DialogService { get; set; }
+        TopUpService TopUpService { get; set; }
 
         [Parameter]
         public bool IsOpen
@@ -61,7 +61,9 @@ namespace Gizmo.Client.UI.Shared
 
             IsOpen = false;
 
-            var s = await DialogService.ShowTopUpDialogAsync();
+            await TopUpService.ShowDialogAsync();
+
+            /*var s = await DialogService.ShowTopUpDialogAsync();
             if (s.Result == DialogAddResult.Success)
             {
                 try
@@ -71,7 +73,7 @@ namespace Gizmo.Client.UI.Shared
                 catch (OperationCanceledException)
                 {
                 }
-            }
+            }*/
         }
 
         private Task OnClickUserLockButtonHandler()
