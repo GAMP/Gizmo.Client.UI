@@ -3,6 +3,7 @@
 @using Gizmo.Web.Components
 @using Microsoft.AspNetCore.Components.Forms
 @using Gizmo.UI.Services
+@using Gizmo.Client.UI.Shared
 
 @inject ILocalizationService localizationService
 
@@ -20,7 +21,7 @@
                     <div class="giz-change-mobile-dialog-message">Enter the number you’d like to use. To make sure this number is yours, will send you a verification code.</div>
                     <EditForm EditContext="@UserChangeMobileService.EditContext">
                         <div class="giz-form-input">
-                            <TextInput @bind-Value="UserChangeMobileService.ViewState.MobilePhone" Size="InputSizes.Medium" IsFullWidth="true" Label="Phone number" />
+                            <MaskedPhoneInput Mask="###.###-###!###" @bind-Value="UserChangeMobileService.ViewState.MobilePhone" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PHONE_NUMBER")" Countries="@Countries" @bind-SelectedCountry="SelectedCountry" OpenDirection="PopupOpenDirections.Cursor" />
                         </div>
                     </EditForm>
                 </div>
@@ -54,12 +55,12 @@
                 </div>
                 <div class="giz-client-dialog__footer">
                     <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => UserChangeMobileService.VerifyAsync())">Verify</Button>
-                    <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => UserChangeMobileService.ResendAsync())" Class="giz-resend-button">
+                    <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" IsFullWidth="true" IsDisabled="@(!UserChangeMobileService.ViewState.CanResend)" @onclick="@(() => UserChangeMobileService.ResendAsync())" Class="giz-resend-button">
                         <div>
                             <div>
                                 @localizationService.GetString("GIZ_GEN_RESEND")
                             </div>
-                            <div class="giz-resend-button__time">4:59</div>
+                            <div class="giz-resend-button__time">@string.Format("{0:mm\\:ss}", UserChangeMobileService.ViewState.ResendTimeLeft)</div>
                         </div>
                     </Button>
                 </div>

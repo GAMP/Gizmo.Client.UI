@@ -15,9 +15,9 @@ namespace Gizmo.Client.UI.Pages
         private void SelectRecoveryMethod(ICollection<Button> selectedItems)
         {
             if (selectedItems.Where(a => a.Name == "Email").Any())
-                UserPasswordRecoveryService.ViewState.Method = View.UserPasswordRecoveryMethod.Email;
+                UserPasswordRecoveryService.SetRecoveryMethod(View.UserPasswordRecoveryMethod.Email);
             else
-                UserPasswordRecoveryService.ViewState.Method = View.UserPasswordRecoveryMethod.MobilePhone;
+                UserPasswordRecoveryService.SetRecoveryMethod(View.UserPasswordRecoveryMethod.MobilePhone);
         }
 
     }

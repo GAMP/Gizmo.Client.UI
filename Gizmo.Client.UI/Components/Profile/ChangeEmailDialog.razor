@@ -54,12 +54,12 @@
                 </div>
                 <div class="giz-client-dialog__footer">
                     <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => UserChangeEmailService.VerifyAsync())">Verify</Button>
-                    <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => UserChangeEmailService.ResendAsync())" Class="giz-resend-button">
+                    <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" IsFullWidth="true" IsDisabled="@(!UserChangeEmailService.ViewState.CanResend)" @onclick="@(() => UserChangeEmailService.ResendAsync())" Class="giz-resend-button">
                         <div>
                             <div>
                                 @localizationService.GetString("GIZ_GEN_RESEND")
                             </div>
-                            <div class="giz-resend-button__time">4:59</div>
+                            <div class="giz-resend-button__time">@string.Format("{0:mm\\:ss}", UserChangeEmailService.ViewState.ResendTimeLeft)</div>
                         </div>
                     </Button>
                 </div>

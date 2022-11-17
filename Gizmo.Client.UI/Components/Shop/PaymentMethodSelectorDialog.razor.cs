@@ -1,6 +1,7 @@
 ﻿using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Client.UI.ViewModels;
+using Gizmo.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
@@ -24,6 +25,11 @@ namespace Gizmo.Client.UI.Components
 
         [Parameter]
         public EventCallback CancelCallback { get; set; }
+
+        private void ValueChangedHandler(int? value)
+        {
+            UserCartService.SetOrderPaymentMethod(value);
+        }
 
         private async Task CloseDialog()
         {

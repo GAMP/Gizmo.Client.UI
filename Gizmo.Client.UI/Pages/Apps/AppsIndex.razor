@@ -56,16 +56,16 @@
                                 <span>@GetNumberOfFilters()</span>
                             </Chip>
                         }
-                        <Select Size="InputSizes.Small" @bind-Value="_selectedSortOptionId" Label="@localizationService.GetString("GIZ_GEN_SORT_BY")" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
+                        <Select Size="InputSizes.Small" @bind-Value="_selectedSortOptionId" Label="@localizationService.GetString("GIZ_GEN_SORT_BY")" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px" PopupClass="giz-scrollbar--v">
                             @if (ApplicationSortOptions != null)
                             {
                                 @foreach (var sortOption in ApplicationSortOptions)
                                 {
-                                    <SelectItem TValue="int?" Value="@sortOption.Id" Text="@sortOption.Name" />
+                                    <SelectItem Value="@sortOption.Id" Text="@sortOption.Name" />
                                 }
                             }
                         </Select>
-                        <Select Size="InputSizes.Small" @bind-Value="_selectedApplicationGroupId" Label="@localizationService.GetString("GIZ_APPS_CATEGORY")" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px">
+                        <Select Size="InputSizes.Small" @bind-Value="_selectedApplicationGroupId" Label="@localizationService.GetString("GIZ_APPS_CATEGORY")" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px" PopupClass="giz-scrollbar--v">
                             @if (ApplicationsPageService.ViewState.ApplicationGroups != null)
                             {
                                 @foreach (var appGroup in ApplicationsPageService.ViewState.ApplicationGroups)

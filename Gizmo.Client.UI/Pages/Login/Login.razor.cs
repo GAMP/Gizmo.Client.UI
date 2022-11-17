@@ -19,9 +19,9 @@ namespace Gizmo.Client.UI.Pages
         {
             //TODO: A CALL SERVICE TO CHANGE LOGIN TYPE AND CLEAR INPUT.
             if (selectedItems.Where(a => a.Name == "Username").Any())
-                UserLoginService.ViewState.LoginType = View.UserLoginType.UsernameOrEmail;
+                UserLoginService.SetLoginMethod(View.UserLoginType.UsernameOrEmail);
             else
-                UserLoginService.ViewState.LoginType = View.UserLoginType.MobilePhone;
+                UserLoginService.SetLoginMethod(View.UserLoginType.MobilePhone);
         }
 
         protected override void OnInitialized()

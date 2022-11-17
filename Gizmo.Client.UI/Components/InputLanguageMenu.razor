@@ -5,7 +5,7 @@
 @using Microsoft.AspNetCore.Components.Forms
 @using Gizmo.UI.Services
 
-<Select TValue="RegionViewState" Value="InputLanguagesService.ViewState.SelectedRegion" ValueChanged="@ValueChangedHandler" Size="InputSizes.Small" OpenDirection="PopupOpenDirections.Top" Class="giz-input-language-menu">
+<Select TValue="RegionViewState" Value="InputLanguagesService.ViewState.SelectedRegion" ValueChanged="@ValueChangedHandler" Size="InputSizes.Small" OpenDirection="PopupOpenDirections.Top" Class="giz-input-language-menu" PopupClass="giz-scrollbar--v">
     @if (InputLanguagesService.ViewState.Regions != null)
     {
         @foreach (var region in InputLanguagesService.ViewState.Regions)

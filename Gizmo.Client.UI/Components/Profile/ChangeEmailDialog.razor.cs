@@ -25,5 +25,17 @@ namespace Gizmo.Client.UI.Components
             if (UserChangeEmailService.ViewState.IsComplete)
                 await UserChangeEmailService.ResetAsync();
         }
+
+        protected override void OnInitialized()
+        {
+            this.SubscribeChange(UserChangeEmailService.ViewState);
+            base.OnInitialized();
+        }
+
+        public override void Dispose()
+        {
+            this.UnsubscribeChange(UserChangeEmailService.ViewState);
+            base.Dispose();
+        }
     }
 }

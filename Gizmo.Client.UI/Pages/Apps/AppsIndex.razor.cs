@@ -25,7 +25,7 @@ namespace Gizmo.Client.UI.Pages
         }
 
         #region FIELDS
-        private int? _selectedSortOptionId;
+        private int _selectedSortOptionId = 1;
         private int? _selectedApplicationGroupId;
         private List<int> _selectedApplicationFilters = new List<int>() { 1, 3 };
         #endregion
@@ -163,9 +163,12 @@ namespace Gizmo.Client.UI.Pages
             ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 4, Name = "Player mode", Options = options });
 
             ApplicationSortOptions = new List<ApplicationSortOptionViewModel>();
-            ApplicationSortOptions.Add(new ApplicationSortOptionViewModel() { Id = 1, Name = "Default" });
-            ApplicationSortOptions.Add(new ApplicationSortOptionViewModel() { Id = 2, Name = "Test 1" });
-            ApplicationSortOptions.Add(new ApplicationSortOptionViewModel() { Id = 3, Name = "Test 2" });
+            ApplicationSortOptions.Add(new ApplicationSortOptionViewModel() { Id = 1, Name = "Popularity" });
+            ApplicationSortOptions.Add(new ApplicationSortOptionViewModel() { Id = 2, Name = "Add date" });
+            ApplicationSortOptions.Add(new ApplicationSortOptionViewModel() { Id = 3, Name = "Title" });
+            ApplicationSortOptions.Add(new ApplicationSortOptionViewModel() { Id = 4, Name = "Use" });
+            ApplicationSortOptions.Add(new ApplicationSortOptionViewModel() { Id = 5, Name = "Rating" });
+            ApplicationSortOptions.Add(new ApplicationSortOptionViewModel() { Id = 6, Name = "Release Date" });
 
             return base.OnInitializedAsync();
         }
