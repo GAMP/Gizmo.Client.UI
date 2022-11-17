@@ -17,7 +17,6 @@ namespace Gizmo.Client.UI.Pages
 
         private void SelectLoginType(ICollection<Button> selectedItems)
         {
-            //TODO: A CALL SERVICE TO CHANGE LOGIN TYPE AND CLEAR INPUT.
             if (selectedItems.Where(a => a.Name == "Username").Any())
                 UserLoginService.SetLoginMethod(View.UserLoginType.UsernameOrEmail);
             else

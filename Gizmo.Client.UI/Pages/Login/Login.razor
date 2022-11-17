@@ -67,7 +67,7 @@
         {
             <div class="giz-alternative-login">
                 <div class="giz-alternative-login__separator"><span>@localizationService.GetString("GIZ_LOGIN_OR")</span></div>
-                <div class="giz-alternative-login__qr">
+                <div class="giz-alternative-login__qr" @onclick="@(() => HostService.SetHostLockStateAsync(true))">
                     <QRIcon />
                 </div>
             </div>

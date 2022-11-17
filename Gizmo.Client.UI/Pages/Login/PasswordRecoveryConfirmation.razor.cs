@@ -9,5 +9,8 @@ namespace Gizmo.Client.UI.Pages
     {
         [Inject]
         UserPasswordRecoveryConfirmationService UserPasswordRecoveryConfirmationService { get; set; }
+
+        [Inject]
+        UserLoginService UserLoginService { get; set; }
     }
 }

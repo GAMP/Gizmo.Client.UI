@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Gizmo.Client.UI.Shared
 {
-    public partial class _Layout_Login : LayoutComponentBase
+    public partial class _Layout_Login : LayoutComponentBase, IDisposable
     {
         public _Layout_Login()
         {
@@ -42,5 +42,16 @@ namespace Gizmo.Client.UI.Shared
         HostService HostService { get; set; }
 
         public List<NewsFeedViewModel> NewsFeeds { get; set; }
+
+        protected override void OnInitialized()
+        {
+            this.SubscribeChange(HostService.ViewState);
+            base.OnInitialized();
+        }
+
+        public void Dispose()
+        {
+            this.UnsubscribeChange(HostService.ViewState);
+        }
     }
 }
