@@ -11,7 +11,7 @@
         <div class="giz-client-dialog__header">
             <div class="giz-client-dialog__header__title">Privacy Policy and Terms of Use</div>
             <div class="giz-client-dialog__header__subtitle">Subheading text</div>
-            <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
+            <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="CloseDialogAsync" />
         </div>
         <div class="giz-client-dialog__body giz-scrollbar--v">
             <div>
@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="giz-client-dialog__footer">
-            <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="() => CloseDialog()">@localizationService.GetString("GIZ_GEN_CONTINUE")</Button>
+            <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="AcceptCurrentAgreementAsync">@localizationService.GetString("GIZ_GEN_CONTINUE")</Button>
         </div>
     </div>
 </HostedDialog>

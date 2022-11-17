@@ -19,18 +19,18 @@
             @if (UserRegistrationConfirmationMethodService.ViewState.ConfirmationMethod == View.UserRegistrationMethod.Email)
             {
                 <div class="giz-login-subtitle">@localizationService.GetString("GIZ_REGISTRATION_ENTER_YOUR_EMAIL")</div>
-                <div class="giz-login-input">
+                <div class="giz-form-input">
                     <TextInput @bind-Value="UserRegistrationConfirmationMethodService.ViewState.Email" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")"/>
                 </div>
             }
             @if (UserRegistrationConfirmationMethodService.ViewState.ConfirmationMethod == View.UserRegistrationMethod.MobilePhone)
             {
                 <div class="giz-login-subtitle">@localizationService.GetString("GIZ_REGISTRATION_ENTER_YOUR_MOBILE_PHONE")</div>
-                <div class="giz-login-input">
+                <div class="giz-form-input">
                     <TextInput @bind-Value="UserRegistrationConfirmationMethodService.ViewState.MobilePhone" Size="InputSizes.Medium" IsFullWidth="true" Label="Mobile phone"/>
                 </div>
             }
-            <div class="giz-login-input">
+            <div class="giz-form-input">
                 <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationConfirmationMethodService.SubmitAsync">
                     <ChildContent>
                         @if (UserRegistrationConfirmationMethodService.ViewState.IsLoading)

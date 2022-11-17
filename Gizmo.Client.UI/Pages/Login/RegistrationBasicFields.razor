@@ -16,10 +16,10 @@
     <CardBody>
         <EditForm EditContext="@UserRegistrationBasicFieldsService.EditContext">
             <div class="giz-login-title">@localizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
-            <div class="giz-login-input">
+            <div class="giz-form-input">
                 <TextInput @bind-Value="UserRegistrationBasicFieldsService.ViewState.Username" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_USERNAME")" />
             </div>
-            <div class="giz-login-input giz-login-input-columns">
+            <div class="giz-form-input giz-form-input-columns">
                 <div class="giz-password-tooltip-root">
                     <PasswordInput UpdateOnInput="true" @bind-Value="UserRegistrationBasicFieldsService.ViewState.NewPassword" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PASSWORD")" />
                     <div class="giz-password-tooltip">
@@ -47,18 +47,18 @@
                 </div>
                 <TextInput @bind-Value="UserRegistrationBasicFieldsService.ViewState.RepeatPassword" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_CONFIRM_PASSWORD")" />
             </div>
-            <div class="giz-login-input giz-login-input-columns">
+            <div class="giz-form-input giz-form-input-columns">
                 <TextInput TValue="string" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_FIRST_NAME")" />
                 <TextInput TValue="string" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_LAST_NAME")" />
             </div>
-            <div class="giz-login-input giz-login-input-columns">
+            <div class="giz-form-input giz-form-input-columns">
                 <MaskedDateInput TValue="string" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_BIRTH_DATE")" />
                 <TextInput TValue="string" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_GENDER")" />
             </div>
-            <div class="giz-login-input">
+            <div class="giz-form-input">
                 <TextInput TValue="string" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")" />
             </div>
-            <div class="giz-login-input">
+            <div class="giz-form-input">
                 <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationBasicFieldsService.SubmitAsync">@localizationService.GetString("GIZ_GEN_CONTINUE")</Button>
             </div>
         </EditForm>

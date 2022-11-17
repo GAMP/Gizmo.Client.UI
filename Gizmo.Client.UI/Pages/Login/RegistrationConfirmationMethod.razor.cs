@@ -19,22 +19,5 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject()]
         IClientDialogService DialogService { get; set; }
-
-        protected override async Task OnInitializedAsync()
-        {
-            await base.OnInitializedAsync();
-
-            var s = await DialogService.ShowUserAgreementDialogAsync();
-            if (s.Result == DialogAddResult.Success)
-            {
-                try
-                {
-                    var result = await s.WaitForDialogResultAsync();
-                }
-                catch (OperationCanceledException)
-                {
-                }
-            }
-        }
     }
 }

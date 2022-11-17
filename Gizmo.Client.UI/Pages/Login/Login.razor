@@ -11,7 +11,7 @@
 
 <LoginCard>
     <CardHeader>
-        <div class="giz-login-new-user">@localizationService.GetString("GIZ_LOGIN_NOT_A_MEMBER") <a @onclick="UserLoginService.OpenRegistration">@localizationService.GetString("GIZ_LOGIN_SIGN_UP_NOW")</a></div>
+        <div class="giz-login-new-user">@localizationService.GetString("GIZ_LOGIN_NOT_A_MEMBER") <a @onclick="UserLoginService.OpenRegistrationAsync">@localizationService.GetString("GIZ_LOGIN_SIGN_UP_NOW")</a></div>
         <div class="giz-login-alerts">
             @if (UserLoginService.ViewState.HasLoginErrors)
             {
@@ -32,7 +32,7 @@
                     <Button Name="Phone" IsSelected="@(UserLoginService.ViewState.LoginType == View.UserLoginType.MobilePhone)">@localizationService.GetString("GIZ_GEN_PHONE_NUMBER")</Button>
                 </ButtonGroup>
             </div>
-            <div class="giz-login-input">
+            <div class="giz-form-input">
                 @if (UserLoginService.ViewState.LoginType == View.UserLoginType.UsernameOrEmail)
                 {
                     <TextInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.LoginName" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_USERNAME")" />
@@ -45,10 +45,10 @@
             <div class="giz-login-forgot-password">
                     <a href="/passwordrecovery">@localizationService.GetString("GIZ_LOGIN_FORGOT_YOUR_PASSWORD")</a>
             </div>
-            <div class="giz-login-input">
+            <div class="giz-form-input">
                 <PasswordInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.Password" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PASSWORD")" />
             </div>
-            <div class="giz-login-input">
+            <div class="giz-form-input">
                 <Button Color="ButtonColors.Accent" LeftSVGIcon="@(!UserLoginService.ViewState.IsLogginIn ? Icons.Login_Client : null)" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserLoginService.LoginAsync">
                     @if (UserLoginService.ViewState.IsLogginIn)
                     {

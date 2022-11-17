@@ -16,13 +16,13 @@
     <CardBody>
         <EditForm EditContext="@UserRegistrationConfirmationService.EditContext">
             <div class="giz-login-title">@localizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
-            <div class="giz-login-input">
+            <div class="giz-form-input">
                 <TextInput @bind-Value="UserRegistrationConfirmationService.ViewState.ConfirmationCode" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_PASSWORD_RECOVERY_ENTER_YOUR_CODE")" />
             </div>
-            <div class="giz-login-input">
+            <div class="giz-form-input">
                 <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationConfirmationService.SubmitAsync">@localizationService.GetString("GIZ_GEN_CONTINUE")</Button>
             </div>
-            <div class="giz-login-input">
+            <div class="giz-form-input">
                 <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" IsDisabled="@(!UserRegistrationConfirmationMethodService.ViewState.CanResend)" @onclick="@UserRegistrationConfirmationService.SubmitAsync" Class="giz-resend-button">
                     <div>
                         <div>

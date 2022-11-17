@@ -1,4 +1,6 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.UI.Services;
+using Gizmo.Web.Api.Models;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
@@ -17,7 +19,7 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback CancelCallback { get; set; }
 
-        private Task CloseDialog()
+        private Task CloseDialogAsync()
         {
             return CancelCallback.InvokeAsync();
         }

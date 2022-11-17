@@ -16,22 +16,22 @@ namespace Gizmo.Client.UI.Services
 
         public Task<ShowDialogResult<EmptyDialogResult>> ShowCheckoutDialogAsync(CancellationToken cancellationToken = default)
         {
-            return ShowDialogAsync<PaymentMethodSelectorDialog>(new Dictionary<string, object>(), default, default, default);
+            return ShowDialogAsync<PaymentMethodSelectorDialog>(new Dictionary<string, object>(), default, default, cancellationToken);
         }
 
         public Task<ShowDialogResult<EmptyDialogResult>> ShowExecutableSelectorDialogAsync(CancellationToken cancellationToken = default)
         {
-            return ShowDialogAsync<ExecutableSelectorDialog>(new Dictionary<string, object>(), default, default, default);
+            return ShowDialogAsync<ExecutableSelectorDialog>(new Dictionary<string, object>(), default, default, cancellationToken);
         }
 
-        public Task<ShowDialogResult<EmptyDialogResult>> ShowUserAgreementDialogAsync(CancellationToken cancellationToken = default)
+        public Task<ShowDialogResult<UserAgreementResult>> ShowUserAgreementDialogAsync(CancellationToken cancellationToken = default)
         {
-            return ShowDialogAsync<UserAgreementDialog>(new Dictionary<string, object>(), default, default, default);
+            return ShowDialogAsync<UserAgreementDialog, UserAgreementResult>(new Dictionary<string, object>(), default, default, cancellationToken);
         }
 
         public Task<ShowDialogResult<EmptyDialogResult>> ShowTopUpDialogAsync(CancellationToken cancellationToken = default)
         {
-            return ShowDialogAsync<TopUpDialog>(new Dictionary<string, object>(), default, default, default);
+            return ShowDialogAsync<TopUpDialog>(new Dictionary<string, object>(), default, default, cancellationToken);
         }
 
         public Task<ShowDialogResult<EmptyDialogResult>> ShowChangeEmailDialogAsync(CancellationToken cancellationToken = default)
@@ -41,17 +41,17 @@ namespace Gizmo.Client.UI.Services
 
         public Task<ShowDialogResult<EmptyDialogResult>> ShowChangeMobileDialogAsync(CancellationToken cancellationToken = default)
         {
-            return ShowDialogAsync<ChangeMobileDialog>(new Dictionary<string, object>(), default, default, default);
+            return ShowDialogAsync<ChangeMobileDialog>(new Dictionary<string, object>(), default, default, cancellationToken);
         }
 
         public Task<ShowDialogResult<EmptyDialogResult>> ShowChangePasswordDialogAsync(CancellationToken cancellationToken = default)
         {
-            return ShowDialogAsync<ChangePasswordDialog>(new Dictionary<string, object>(), default, default, default);
+            return ShowDialogAsync<ChangePasswordDialog>(new Dictionary<string, object>(), default, default, cancellationToken);
         }
 
         public Task<ShowDialogResult<EmptyDialogResult>> ShowChangePictureDialogAsync(CancellationToken cancellationToken = default)
         {
-            return ShowDialogAsync<ChangePictureDialog>(new Dictionary<string, object>(), default, default, default);
+            return ShowDialogAsync<ChangePictureDialog>(new Dictionary<string, object>(), default, default, cancellationToken);
         }
     }
 }
