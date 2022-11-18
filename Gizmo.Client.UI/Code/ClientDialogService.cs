@@ -53,5 +53,10 @@ namespace Gizmo.Client.UI.Services
         {
             return ShowDialogAsync<ChangePictureDialog>(new Dictionary<string, object>(), default, default, cancellationToken);
         }
+
+        public Task<ShowDialogResult<EmptyDialogResult>> ShowPaymentDialogAsync(CancellationToken cancellationToken = default)
+        {
+            return ShowDialogAsync<PaymentDialog>(new Dictionary<string, object>(), default, default, cancellationToken);
+        }
     }
 }

@@ -1,0 +1,21 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using Gizmo.Web.Components
+@using Gizmo.UI.Services
+
+@inject ILocalizationService localizationService
+
+<HostedDialog>
+    <div class="giz-client-dialog giz-payment-dialog">
+        <div class="giz-client-dialog__header">
+            <div class="giz-client-dialog__header__title">Test</div>
+            <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
+        </div>
+        <div class="giz-client-dialog__body">
+            <iframe width="560" height="315" src="https://blazor.net" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="giz-client-dialog__footer">
+
+        </div>
+    </div>
+</HostedDialog>
