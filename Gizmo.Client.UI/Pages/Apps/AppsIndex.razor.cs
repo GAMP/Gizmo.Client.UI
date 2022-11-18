@@ -109,7 +109,7 @@ namespace Gizmo.Client.UI.Pages
 
             if (_selectedApplicationGroupId.HasValue)
             {
-                result = result.Where(a => a.ApplicationGroupId == _selectedApplicationGroupId);
+                result = result.Where(a => a.ApplicationCategoryId == _selectedApplicationGroupId);
             }
 
             return result.ToList();
@@ -146,9 +146,12 @@ namespace Gizmo.Client.UI.Pages
 
         #endregion
 
-        protected override Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
+            this.SubscribeChange(ApplicationsPageService.ViewState);
             this.SubscribeChange(SearchService.ViewState);
+
+            await ApplicationsPageService.LoadApplicationsAsync();
 
             List<ApplicationFilterOptionViewModel> options = new List<ApplicationFilterOptionViewModel>();
             options.Add(new ApplicationFilterOptionViewModel() { Id = 1, Name = "Free to Play" });
@@ -170,12 +173,14 @@ namespace Gizmo.Client.UI.Pages
             ApplicationSortOptions.Add(new ApplicationSortOptionViewModel() { Id = 5, Name = "Rating" });
             ApplicationSortOptions.Add(new ApplicationSortOptionViewModel() { Id = 6, Name = "Release Date" });
 
-            return base.OnInitializedAsync();
+            await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
             this.UnsubscribeChange(SearchService.ViewState);
+            this.UnsubscribeChange(ApplicationsPageService.ViewState);
+
             base.Dispose();
         }
     }

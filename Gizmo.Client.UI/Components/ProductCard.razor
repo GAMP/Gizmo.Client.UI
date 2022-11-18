@@ -76,9 +76,11 @@
                                                 </svg>
                                                 <div>Bundle includes:</div>
                                             </div>
-                                            <div class="giz-timeline-item"><div class="giz-bundle-product-details"><ProductIcon />30 min</div></div>
-                                            <div class="giz-timeline-item"><div class="giz-bundle-product-details"><ProductIcon />Energy drink Adrenaline Rush</div></div>
-                                            <div class="giz-timeline-item"><div class="giz-bundle-product-details"><ProductIcon />Humburger</div></div>
+
+                                            @foreach (var bundledProduct in Product.BundledProducts)
+                                            {
+                                                <div class="giz-timeline-item"><div class="giz-bundle-product-details"><ProductIcon />@bundledProduct.Name</div></div>
+                                            }
                                         </div>
 
                                         break;

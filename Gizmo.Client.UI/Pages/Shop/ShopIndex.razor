@@ -12,7 +12,7 @@
         <div class="giz-shop__products__header">
             <div class="giz-shop__products__header__tab">
                 <ClientTab>
-                    <ClientTabItem Class="@(!_selectedProductGroupId.HasValue ? "active" : "")">
+                    <ClientTabItem Class="@(!ShopService.ViewState.SelectedProductGroupId.HasValue ? "active" : "")">
                         <div @onclick=@(() => SelectProductGroup(null))>
                             @localizationService.GetString("GIZ_GEN_ALL")
                         </div>
@@ -21,7 +21,7 @@
                     {
                         @foreach (var productGroup in ShopService.ViewState.ProductGroups)
                         {
-                            <ClientTabItem Class="@(productGroup.Id == _selectedProductGroupId ? "active" : "")">
+                            <ClientTabItem Class="@(productGroup.Id == ShopService.ViewState.SelectedProductGroupId ? "active" : "")">
                                 <div @onclick=@(() => SelectProductGroup(productGroup.Id))>
                                     @productGroup.Name
                                 </div>
@@ -58,7 +58,7 @@
                     </div>
                     <div class="giz-section__body">
                         <div class="giz-shop__products__list">
-                            @foreach (var product in GetFilteredProducts())
+                            @foreach (var product in ShopService.ViewState.Products)
                             {
                                 <ProductCard Product="@product" IsHoverable="true" />
                             }
@@ -68,17 +68,17 @@
             }
             else
             {
-                @if (_selectedProductGroupId.HasValue)
+                @if (ShopService.ViewState.SelectedProductGroupId.HasValue)
                 {
                     @if (ShopService.ViewState.ProductGroups != null)
                     {
                         <div class="giz-section">
                             <div class="giz-section__header">
-                                @ShopService.ViewState.ProductGroups.Where(a => a.Id == _selectedProductGroupId).Select(a => a.Name).FirstOrDefault()
+                                @ShopService.ViewState.ProductGroups.Where(a => a.Id == ShopService.ViewState.SelectedProductGroupId).Select(a => a.Name).FirstOrDefault()
                             </div>
                             <div class="giz-section__body">
                                 <div class="giz-shop__products__list">
-                                    @foreach (var product in ShopService.ViewState.Products.Where(a => a.ProductGroupId == _selectedProductGroupId))
+                                    @foreach (var product in ShopService.ViewState.Products.Where(a => a.ProductGroupId == ShopService.ViewState.SelectedProductGroupId))
                                     {
                                         <ProductCard Product="@product" IsHoverable="true" />
                                     }

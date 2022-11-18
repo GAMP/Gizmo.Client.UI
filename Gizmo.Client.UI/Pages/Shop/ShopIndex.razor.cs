@@ -23,7 +23,6 @@ namespace Gizmo.Client.UI.Pages
 
         #region FIELDS
         private List<string> _sortOptions;
-        private int? _selectedProductGroupId;
         #endregion
 
         #region PROPERTIES
@@ -65,7 +64,7 @@ namespace Gizmo.Client.UI.Pages
 
         #region METHODS
 
-        public IEnumerable<ProductViewState> GetFilteredProducts()
+        /*public IEnumerable<ProductViewState> GetFilteredProducts()
         {
             var result = ShopService.ViewState.Products.AsQueryable();
 
@@ -82,28 +81,30 @@ namespace Gizmo.Client.UI.Pages
             }
 
             return result.ToList();
-        }
+        }*/
 
         #endregion
 
         private Task SelectProductGroup(int? productGroupId)
         {
-            _selectedProductGroupId = productGroupId;
-
-            StateHasChanged();
-
-            return Task.CompletedTask;
+            return ShopService.SetSelectedProductGroup(productGroupId);
         }
 
-        protected override Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
+            this.SubscribeChange(ShopService.ViewState);
             this.SubscribeChange(SearchService.ViewState);
-            return base.OnInitializedAsync();
+
+            await ShopService.LoadProductsAsync();
+
+            await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
             this.UnsubscribeChange(SearchService.ViewState);
+            this.UnsubscribeChange(ShopService.ViewState);
+
             base.Dispose();
         }
     }

@@ -114,7 +114,10 @@ namespace Gizmo.Client.UI.Pages
 
         protected override async Task OnInitializedAsync()
         {
+            this.SubscribeChange(HomePageService.ViewState);
             this.SubscribeChange(SearchService.ViewState);
+
+            await HomePageService.LoadPopularProductsAsync();
 
             SearchCategories = new List<ApplicationSortOptionViewModel>();
             SearchCategories.Add(new ApplicationSortOptionViewModel() { Id = 0, Name = "Games & apps + shop" });
@@ -129,6 +132,7 @@ namespace Gizmo.Client.UI.Pages
         public override void Dispose()
         {
             this.UnsubscribeChange(SearchService.ViewState);
+            this.UnsubscribeChange(HomePageService.ViewState);
 
             base.Dispose();
         }
