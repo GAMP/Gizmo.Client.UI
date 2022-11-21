@@ -1,4 +1,5 @@
-﻿using Gizmo.UI.Services;
+﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
@@ -13,6 +14,9 @@ namespace Gizmo.Client.UI.Components
 
         #region PROPERTIES
 
+        [Inject]
+        UserAgreementsService UserAgreementsService { get; set; }
+
         [Parameter]
         public EventCallback CancelCallback { get; set; }
 
@@ -23,14 +27,14 @@ namespace Gizmo.Client.UI.Components
 
         #region METHODS
 
-        private Task CloseDialogAsync()
+        private async Task CloseDialogAsync()
         {
-            return CancelCallback.InvokeAsync();
+            await CancelCallback.InvokeAsync();
         }
 
-        private Task AcceptCurrentAgreementAsync()
+        private async Task AcceptCurrentAgreementAsync()
         {
-            return ResultCallback.InvokeAsync(new UserAgreementResult());
+            await ResultCallback.InvokeAsync(new UserAgreementResult());
         }
 
         #endregion
