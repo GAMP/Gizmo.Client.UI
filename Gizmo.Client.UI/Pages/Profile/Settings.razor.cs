@@ -2,6 +2,7 @@
 using Gizmo.Client.UI.View.Services;
 using Gizmo.UI;
 using Gizmo.UI.Services;
+using Gizmo.Web.Api.Models;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
@@ -79,6 +80,13 @@ namespace Gizmo.Client.UI.Pages
                 {
                 }
             }
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            await UserSettingsService.LoadAsync();
+
+            await base.OnInitializedAsync();
         }
     }
 }

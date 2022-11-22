@@ -15,6 +15,9 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         UserLoginService UserLoginService { get; set; }
 
+        [Inject]
+        HostService HostService { get; set; }
+
         private void SelectRecoveryMethod(ICollection<Button> selectedItems)
         {
             if (selectedItems.Where(a => a.Name == "Email").Any())

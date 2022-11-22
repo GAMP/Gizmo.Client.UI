@@ -12,5 +12,8 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         UserLoginService UserLoginService { get; set; }
+
+        [Inject]
+        HostService HostService { get; set; }
     }
 }

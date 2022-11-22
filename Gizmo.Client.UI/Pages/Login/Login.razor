@@ -12,7 +12,10 @@
 <LoginCard>
     <CardHeader>
         <div class="giz-login-links">
-            <div class="giz-login-new-user">@localizationService.GetString("GIZ_LOGIN_NOT_A_MEMBER") <a @onclick="UserLoginService.OpenRegistrationAsync">@localizationService.GetString("GIZ_LOGIN_SIGN_UP_NOW")</a></div>
+            @if (HostService.HostConfigurationViewState.CanSignUp)
+            {
+                <div class="giz-login-new-user">@localizationService.GetString("GIZ_LOGIN_NOT_A_MEMBER") <a @onclick="UserLoginService.OpenRegistrationAsync">@localizationService.GetString("GIZ_LOGIN_SIGN_UP_NOW")</a></div>
+            }
         </div>
         <div class="giz-login-alerts">
             @if (UserLoginService.ViewState.HasLoginErrors)
@@ -21,7 +24,10 @@
             }
             else
             {
-                <Alert AlertType="AlertTypes.Warning" Title="This computer is reserved at 33:000 p.m." Text="If you log in now, you will be automatically logged out at the specified time"  />
+                @if (HostService.ReservationViewState.IsPending)@*TODO: A*@
+                {
+                    <Alert AlertType="AlertTypes.Warning" Title="This computer is reserved at 33:000 p.m." Text="If you log in now, you will be automatically logged out at the specified time"  />
+                }
             }
         </div>
     </CardHeader>
@@ -44,9 +50,12 @@
                     <MaskedTextInput Mask="###.###-###!###" @bind-Value="UserLoginService.ViewState.LoginName" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
                 }
             </div>
-            <div class="giz-login-forgot-password">
+            @if (HostService.HostConfigurationViewState.CanRecoverPassword)
+            {
+                <div class="giz-login-forgot-password">
                     <a href="/passwordrecovery">@localizationService.GetString("GIZ_LOGIN_FORGOT_YOUR_PASSWORD")</a>
-            </div>
+                </div>
+            }
             <div class="giz-form-input">
                 <PasswordInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.Password" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PASSWORD")" />
             </div>
