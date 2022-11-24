@@ -166,7 +166,7 @@ namespace Gizmo.Client.UI.Shared
                 if (args == Id)
                     _openDropDown = false;
 
-                StateHasChanged();
+                InvokeAsync(StateHasChanged);
             }
 
             return Task.CompletedTask;

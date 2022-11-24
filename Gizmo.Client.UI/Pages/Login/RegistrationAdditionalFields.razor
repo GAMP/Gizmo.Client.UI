@@ -31,7 +31,7 @@
                 <TextInput TValue="string" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_POST_CODE")" />
             </div>
             <div class="giz-form-input">
-                <MaskedPhoneInput Mask="###.###-###!###" @bind-Value="UserRegistrationAdditionalFieldsService.ViewState.HomePhone" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_HOME_PHONE")" Countries="@Countries" @bind-SelectedCountry="SelectedCountry" OpenDirection="PopupOpenDirections.Cursor" />
+                <MaskedTextInput Mask="###-###-###" @bind-Value="UserRegistrationAdditionalFieldsService.ViewState.HomePhone" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_MOBILE_PHONE")" />
             </div>
             <div class="giz-form-input">
                 <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationAdditionalFieldsService.SubmitAsync">@localizationService.GetString("GIZ_REGISTRATION_SIGN_UP_BUTTON")</Button>

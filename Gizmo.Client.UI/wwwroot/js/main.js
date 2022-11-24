@@ -304,3 +304,18 @@ function collapseElement(element) {
         }
     }
 }
+
+/*window.addEventListener("load", (event) => {
+    console.log("page is fully loaded");
+});
+
+window.addEventListener("mousedown", (event) => {
+    console.log(event.button);
+
+    if (event.button == 3 || event.button == 4) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        event.stopPropagation();
+        console.log("try");
+    }
+});*/

@@ -18,7 +18,7 @@
             }
         </div>
         <div class="giz-login-alerts">
-            @if (UserLoginService.ViewState.HasLoginErrors)
+            @if (UserLoginService.ViewState.HasLoginError)
             {
                 <Toast AlertType="AlertTypes.Danger" Text="We couldn’t find an account matching the username and password you entered. Please check your username and password and try again. Recover your password or create an account" />
             }
@@ -47,7 +47,7 @@
                 }
                 else
                 {
-                    <MaskedTextInput Mask="###.###-###!###" @bind-Value="UserLoginService.ViewState.LoginName" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
+                    <MaskedTextInput Mask="###-###-###" @bind-Value="UserLoginService.ViewState.LoginName" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
                 }
             </div>
             @if (HostService.HostConfigurationViewState.CanRecoverPassword)
@@ -57,7 +57,7 @@
                 </div>
             }
             <div class="giz-form-input">
-                <PasswordInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.Password" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PASSWORD")" />
+                <PasswordInput UpdateOnInput="true" @bind-Value="UserLoginService.ViewState.Password" @bind-IsPasswordVisible="UserLoginService.ViewState.IsPasswordVisible" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PASSWORD")" />
             </div>
             <div class="giz-form-input">
                 <Button Color="ButtonColors.Accent" LeftSVGIcon="@(!UserLoginService.ViewState.IsLogginIn ? Icons.Login_Client : null)" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserLoginService.LoginAsync">

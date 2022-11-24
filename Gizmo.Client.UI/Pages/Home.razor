@@ -6,85 +6,87 @@
 
 @inject ILocalizationService localizationService 
 
-<div class="giz-home">
-    <div class="giz-home__header">
-        <div class="giz-home__header__quick-launch">
-            <QuickLauncher />
+<div class="giz-home-wrapper">
+    <div class="giz-home">
+        <div class="giz-home__header">
+            <div class="giz-home__header__quick-launch">
+                <QuickLauncher />
+            </div>
+            <div class="giz-home__header__ads">
+                <NewsRotator Interval="3000">
+                    <NewsRotatorItem />
+                    <NewsRotatorItem />
+                    <NewsRotatorItem />
+                </NewsRotator>
+            </div>
         </div>
-        <div class="giz-home__header__ads">
-            <NewsRotator Interval="3000">
-                <NewsRotatorItem />
-                <NewsRotatorItem />
-                <NewsRotatorItem />
-            </NewsRotator>
-        </div>
-    </div>
-    <div class="giz-home__body giz-scrollbar--v">
-        <div class="giz-home__body__ads">
-            <ExpansionPanel InitCollapsed="@SearchService.ViewState.ShowAllLocally">
-                <Header>
-                    Ads
-                </Header>
-                <ChildContent>
-                    <AdsCarousel Advertisements="@AdvertisementsService.ViewState.Advertisements" Interval="5000" />
-                </ChildContent>
-            </ExpansionPanel>
-        </div>
-        @if (SearchService.ViewState.ShowAllLocally)
-        {
-            <div class="giz-home__body__results">
-                <div class="giz-section">
-                    <div class="giz-section__header">
-                        <div class="giz-section__header__filters">
-                            <Select Size="InputSizes.Small" @bind-Value="_selectedSearchCategoryId" Label="Category:" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px" PopupClass="giz-scrollbar--v">
-                                @if (SearchCategories != null)
-                                {
-                                    @foreach (var searchCategories in SearchCategories)
+        <div class="giz-home__body giz-scrollbar--v">
+            <div class="giz-home__body__ads">
+                <ExpansionPanel InitCollapsed="@SearchService.ViewState.ShowAllLocally">
+                    <Header>
+                        Ads
+                    </Header>
+                    <ChildContent>
+                        <AdsCarousel Advertisements="@AdvertisementsService.ViewState.Advertisements" Interval="5000" />
+                    </ChildContent>
+                </ExpansionPanel>
+            </div>
+            @if (SearchService.ViewState.ShowAllLocally)
+            {
+                <div class="giz-home__body__results">
+                    <div class="giz-section">
+                        <div class="giz-section__header">
+                            <div class="giz-section__header__filters">
+                                <Select Size="InputSizes.Small" @bind-Value="_selectedSearchCategoryId" Label="Category:" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px" PopupClass="giz-scrollbar--v">
+                                    @if (SearchCategories != null)
                                     {
-                                        <SelectItem Value="@searchCategories.Id" Text="@searchCategories.Name" />
+                                        @foreach (var searchCategories in SearchCategories)
+                                        {
+                                            <SelectItem Value="@searchCategories.Id" Text="@searchCategories.Name" />
+                                        }
                                     }
-                                }
-                            </Select>
-                            <div>
-                                <div class="giz-section__header__filters__title">Results for</div>
+                                </Select>
                                 <div>
-                                    <Chip CanClose="true" OnClose="@(() => SearchService.ClearResultsAsync())">@SearchService.ViewState.SearchPattern</Chip>
+                                    <div class="giz-section__header__filters__title">Results for</div>
+                                    <div>
+                                        <Chip CanClose="true" OnClose="@(() => SearchService.ClearResultsAsync())">@SearchService.ViewState.SearchPattern</Chip>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="giz-section__body">
-                        <div class="giz-home__app-wrapper">
-                            @foreach (var app in GetFilteredApplications())
-                            {
-                                <ApplicationCard Application="@app" ShowDateAdded="true" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
-                            }
-                            @foreach (var product in GetFilteredProducts())
-                            {
-                                <ProductCard Product="@product" IsHoverable="true" />
-                            }
+                        <div class="giz-section__body">
+                            <div class="giz-home__app-wrapper">
+                                @foreach (var app in GetFilteredApplications())
+                                {
+                                    <ApplicationCard Application="@app" ShowDateAdded="true" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
+                                }
+                                @foreach (var product in GetFilteredProducts())
+                                {
+                                    <ProductCard Product="@product" IsHoverable="true" />
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        }
-        else
-        {
-            <div class="giz-home__body__popular">
-                <div class="giz-section">
-                    <div class="giz-section__header">
-                        @localizationService.GetString("GIZ_GEN_POPULAR_ITEMS")
-                    </div>
-                    <div class="giz-section__body">
-                        <div class="giz-home__app-wrapper">
-                            @foreach (var product in HomePageService.ViewState.PopularProducts)
-                            {
-                                <ProductCard Product="@product" IsHoverable="true"></ProductCard>
-                            }
+            }
+            else
+            {
+                <div class="giz-home__body__popular">
+                    <div class="giz-section">
+                        <div class="giz-section__header">
+                            @localizationService.GetString("GIZ_GEN_POPULAR_ITEMS")
+                        </div>
+                        <div class="giz-section__body">
+                            <div class="giz-home__app-wrapper">
+                                @foreach (var product in HomePageService.ViewState.PopularProducts)
+                                {
+                                    <ProductCard Product="@product" IsHoverable="true"></ProductCard>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
 </div>

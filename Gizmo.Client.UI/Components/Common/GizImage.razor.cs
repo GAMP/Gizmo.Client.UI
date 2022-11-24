@@ -75,7 +75,6 @@ namespace Gizmo.Client.UI.Components
             var imageTypeChanged = _previousImageType != ImageType;
             var imageIdChanged = _previousImageId != ImageId;
 
-
             if (imageTypeChanged || imageIdChanged)
             {
                 _loaded = false;

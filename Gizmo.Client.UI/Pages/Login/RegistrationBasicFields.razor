@@ -55,7 +55,11 @@
             </div>
             <div class="giz-form-input giz-form-input-columns">
                 <MaskedDateInput TValue="string" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_BIRTH_DATE")" />
-                <TextInput TValue="string" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_GENDER")" />
+                <Select TValue="Sex" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_GENDER")" OpenDirection="PopupOpenDirections.Cursor" PopupClass="giz-scrollbar--v">
+                    <SelectItem Value="@Sex.Unspecified" Text="Unspecified" />
+                    <SelectItem Value="@Sex.Male" Text="Male" />
+                    <SelectItem Value="@Sex.Female" Text="Female" />
+                </Select>
             </div>
             <div class="giz-form-input">
                 <TextInput TValue="string" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")" />

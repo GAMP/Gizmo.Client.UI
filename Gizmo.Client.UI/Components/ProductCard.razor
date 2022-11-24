@@ -3,146 +3,20 @@
 @using Gizmo.Web.Components
 @using Gizmo.UI.Services
 
-@inject ILocalizationService localizationService 
+@if (Product != null)
+{
+    @switch (Product.ProductType)
+    {
+        case ProductType.Product:
+            <ProductSimpleCard Product="@Product" IsHoverable="@IsHoverable" />
+            break;
 
-<div class="giz-product-card @(Product?.ProductType == ProductType.Product ? "product" : 
-                               Product?.ProductType == ProductType.ProductBundle ? "bundle" : 
-                               Product?.ProductType == ProductType.ProductTime ? "time" :
-                               "")"
-     @onclick="OpenDetails">
-    <div class="giz-hoverable-card">
-        <div class="hoverable-content">
-            <div class="giz-product-card__content">
-                @if (@Product != null)
-                {
-                    @switch (Product.ProductType)
-                    {
-                        case ProductType.ProductTime:
-                            <div class="giz-product-card__content__image--time">
-                                <img src="_content/Gizmo.Client.UI/img/product_time.jpg" alt='loading' />
-                                <PolygonIcon />
-                            </div>
-                            break;
+        case ProductType.ProductBundle:
+            <ProductBundleCard Product="@Product" IsHoverable="@IsHoverable" />
+            break;
 
-                        default:
-                            <div class="giz-product-card__content__image">
-                                @if (Product.ImageId.HasValue)
-                                {
-                                    <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Product.ImageId.Value" />
-                                }
-                                else
-                                {
-                                    <img src="_content/Gizmo.Client.UI/img/Cola.png" alt='loading' />
-                                }
-                            </div>
-
-                            break;
-                    }
-                }
-                <div class="giz-product-card__content__details">
-                    <div class="giz-product-card__price">
-                        @GetPrice()
-                        <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.ExtraSmall" />
-                    </div>
-                    <div class="giz-product-card__title">
-                        @Product?.Name
-                    </div>
-                </div>
-                <div class="giz-product-card__content__footer">
-                    <Button Class="giz-product-card-primary-button" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="AddProduct" Text="@localizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
-                    @if (Product?.ProductType == ProductType.Product)
-                    {
-                        <Button Class="giz-product-card-alternative-button" Color="ButtonColors.Accent" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="AddProduct" Text="@localizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
-                    }
-                </div>
-            </div>
-        </div>
-        @if (IsHoverable)
-        {
-            <div class="hovered-content-wrapper">
-                <div class="hovered-content">
-                    <div class="giz-product-card__content--hovered">
-                        <div class="giz-product-card__content--hovered__header">
-                            @if (@Product != null)
-                            {
-                                @switch (Product.ProductType)
-                                {
-                                    case ProductType.ProductBundle:
-                                    
-                                        <div class="giz-timeline">
-                                            <div class="giz-timeline-header">
-                                                <svg width="5" height="6" viewBox="0 0 5 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M2.18013 0.633067C2.37701 0.514934 2.62299 0.514934 2.81987 0.633067L4.31987 1.53307C4.50714 1.64543 4.62172 1.8478 4.62172 2.06619V3.93381C4.62172 4.1522 4.50714 4.35457 4.31987 4.46693L2.81987 5.36693C2.62299 5.48507 2.37701 5.48507 2.18013 5.36693L0.680127 4.46693C0.49286 4.35457 0.378277 4.1522 0.378277 3.93381V2.06619C0.378277 1.8478 0.49286 1.64543 0.680126 1.53307L2.18013 0.633067Z" stroke="white" stroke-opacity="0.6" stroke-width="0.756554" stroke-linejoin="round"/>
-                                                </svg>
-                                                <div>Bundle includes:</div>
-                                            </div>
-
-                                            @foreach (var bundledProduct in Product.BundledProducts)
-                                            {
-                                                <div class="giz-timeline-item"><div class="giz-bundle-product-details"><ProductIcon />@bundledProduct.Name</div></div>
-                                            }
-                                        </div>
-
-                                        break;
-
-                                    case ProductType.ProductTime:
-                                    
-                                        <div class="giz-timeline">
-                                            <div class="giz-timeline-header">
-                                                <svg width="5" height="6" viewBox="0 0 5 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M2.18013 0.633067C2.37701 0.514934 2.62299 0.514934 2.81987 0.633067L4.31987 1.53307C4.50714 1.64543 4.62172 1.8478 4.62172 2.06619V3.93381C4.62172 4.1522 4.50714 4.35457 4.31987 4.46693L2.81987 5.36693C2.62299 5.48507 2.37701 5.48507 2.18013 5.36693L0.680127 4.46693C0.49286 4.35457 0.378277 4.1522 0.378277 3.93381V2.06619C0.378277 1.8478 0.49286 1.64543 0.680126 1.53307L2.18013 0.633067Z" stroke="white" stroke-opacity="0.6" stroke-width="0.756554" stroke-linejoin="round"/>
-                                                </svg>
-                                                <div>Package description:</div>
-                                            </div>
-                                            <div class="giz-timeline-item">
-                                                <div class="giz-time-product-details">
-                                                    <ProductIcon />
-                                                    <span>30 min</span>
-                                                </div>
-                                            </div>
-                                            <div class="giz-timeline-item"><div class="giz-time-product-details">Action period<span>10:00 - 12:00</span></div></div>
-                                            <div class="giz-timeline-item"><div class="giz-time-product-details">Product life time<span>3 hours</span></div></div>
-                                        </div>
-
-                                        break;
-
-                                    default:
-                                        break;
-                                }
-                            }
-                            <div class="giz-product-card-b1">
-                                <PointsAwardIcon />
-                            </div>
-                        </div>
-                        <div class="giz-product-card__content--hovered__body">
-                            @if (@Product != null)
-                            {
-                                @switch (Product.ProductType)
-                                {
-                                    case ProductType.Product:
-                                        <div>Product</div>
-                                        break;
-                                
-                                    default:
-                                        <div class="giz-product-card__content--hovered__body__details">
-                                            <div class="giz-product-card__price">
-                                                @GetPrice()
-                                                <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.ExtraSmall" />
-                                            </div>
-                                            <div class="giz-product-card__title">
-                                                @Product?.Name
-                                            </div>
-                                        </div>
-                                        break;
-                                }
-                            }
-                        </div>
-                        <div class="giz-product-card__content--hovered__footer">
-                            <Button Color="ButtonColors.Accent" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="AddProduct">@localizationService.GetString("GIZ_SHOP_ADD_TO_CART")</Button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-</div>
+        case ProductType.ProductTime:
+            <ProductTimeCard Product="@Product" IsHoverable="@IsHoverable" />
+            break;
+    }
+}

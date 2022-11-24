@@ -4,6 +4,14 @@
     display: grid;
     grid-template-rows: min-content 1fr;
     height: 100%;
+    flex-grow: 1;
+    max-width: 1920px;
+
+    &-wrapper {
+        display: flex;
+        justify-content: center;
+        height: 100%;
+    }
 
     &__header {
         display: grid;
@@ -16,6 +24,8 @@
             box-shadow: inset 0px 0px 101px rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(60px);
             border-radius: 16px;
+            max-width: 100%;
+            overflow: hidden;
         }
 
         &__ads {
