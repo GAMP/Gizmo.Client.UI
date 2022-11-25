@@ -11,7 +11,7 @@ using Gizmo.Client.UI.Services;
 
 namespace Gizmo.Client.UI.Pages
 {
-    [Route("/registrationconfirmationmethod")]
+    [Route(ClientRoutes.RegistrationConfirmationMethodRoute)]
     public partial class RegistrationConfirmationMethod : ComponentBase
     {
         [Inject]

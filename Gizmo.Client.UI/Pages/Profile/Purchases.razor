@@ -3,6 +3,7 @@
 @using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
+@using Gizmo.Client.UI.View.States
 
 <div class="giz-profile">
     <div class="giz-profile__body">
@@ -16,49 +17,57 @@
             </div>
 
             <div class="giz-table-history">
-                <DataGrid ItemSource="@GameStatistics"
+                <DataGrid ItemSource="@PurchasesService.ViewState.Purchases"
                           Context="purchases"
                           HasStickyHeader="true"
                           Class="giz-scrollbar--v">
                     <ChildContent>
-                        <DataGridColumn Field="@(nameof(PurchaseViewModel.ProductName))" TItemType="PurchaseViewModel" Context="purchase">
+                        <DataGridColumn Field="@(nameof(PurchaseViewState.ProductName))" TItemType="PurchaseViewState" Context="purchase">
                             <HeaderTemplate>
-                                item
+                                Order
                             </HeaderTemplate>
                             <CellTemplate>
                                 @purchase.ProductName
                             </CellTemplate>
                         </DataGridColumn>
-                        <DataGridColumn Field="@(nameof(PurchaseViewModel.Quantity))" TItemType="PurchaseViewModel" Context="purchase">
+                        <DataGridColumn Field="@(nameof(PurchaseViewState.ProductName))" TItemType="PurchaseViewState" Context="purchase">
                             <HeaderTemplate>
-                                amount
+                                Order status
                             </HeaderTemplate>
                             <CellTemplate>
-                                @purchase.Quantity
+                                @purchase.ProductName
                             </CellTemplate>
                         </DataGridColumn>
-                        <DataGridColumn Field="@(nameof(PurchaseViewModel.Date))" TItemType="PurchaseViewModel" Context="purchase">
+                        <DataGridColumn Field="@(nameof(PurchaseViewState.OrderDate))" TItemType="PurchaseViewState" Context="purchase">
                             <HeaderTemplate>
-                                date
+                                Date
                             </HeaderTemplate>
                             <CellTemplate>
-                                @purchase.Date.ToShortDateString()
+                                @purchase.OrderDate.ToString()
                             </CellTemplate>
                         </DataGridColumn>
-                        <DataGridColumn Field="@(nameof(PurchaseViewModel.Total))" TItemType="PurchaseViewModel" Context="purchase">
+                        <DataGridColumn Field="@(nameof(PurchaseViewState.PaymentMethod))" TItemType="PurchaseViewState" Context="purchase">
                             <HeaderTemplate>
-                                payment
+                                Payment method
+                            </HeaderTemplate>
+                            <CellTemplate>
+                                @purchase.PaymentMethod
+                            </CellTemplate>
+                        </DataGridColumn>
+                        <DataGridColumn Field="@(nameof(PurchaseViewState.Total))" TItemType="PurchaseViewState" Context="purchase">
+                            <HeaderTemplate>
+                                Order price
                             </HeaderTemplate>
                             <CellTemplate>
                                 @purchase.Total
                             </CellTemplate>
                         </DataGridColumn>
-                        <DataGridColumn Field="@(nameof(PurchaseViewModel.PaymentMethod))" TItemType="PurchaseViewModel" Context="purchase">
+                        <DataGridColumn Field="@(nameof(PurchaseViewState.Total))" TItemType="PurchaseViewState" Context="purchase">
                             <HeaderTemplate>
-                                method
+                                Payment status
                             </HeaderTemplate>
                             <CellTemplate>
-                                @purchase.PaymentMethod
+                                @purchase.Total
                             </CellTemplate>
                         </DataGridColumn>
                     </ChildContent>

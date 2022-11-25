@@ -1,10 +1,11 @@
 ﻿using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
+using Gizmo.UI.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Pages
 {
-    [Route("/passwordrecoveryconfirmation")]
+    [Route(ClientRoutes.PasswordRecoveryConfirmationRoute)]
     public partial class PasswordRecoveryConfirmation : ComponentBase
     {
         [Inject]
@@ -15,5 +16,8 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         HostService HostService { get; set; }
+
+        [Inject]
+        NavigationService NavigationService { get; set; }
     }
 }

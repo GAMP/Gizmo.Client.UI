@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Pages
 {
-    [DefaultRoute("/profile", DefaultRouteMatch = NavlinkMatch.Prefix)]
-    [Route("/profile")]
+    [DefaultRoute(ClientRoutes.UserProfileRoute, DefaultRouteMatch = NavlinkMatch.Prefix)]
+    [Route(ClientRoutes.UserProfileRoute)]
     public partial class Profile : ComponentBase
     {
         [Inject]

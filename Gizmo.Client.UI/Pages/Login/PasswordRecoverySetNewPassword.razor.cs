@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Pages
 {
-    [Route("/passwordrecoverysetnewpassword")]
+    [Route(ClientRoutes.PasswordRecoverySetNewPasswordRoute)]
     public partial class PasswordRecoverySetNewPassword : ComponentBase
     {
         [Inject]

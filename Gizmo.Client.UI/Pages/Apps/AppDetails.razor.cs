@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
 {
-    [Route("/appdetails/{ApplicationId:int}")]
+    [Route(ClientRoutes.ApplicationDetailsRoute)]
     public partial class AppDetails : ComponentBase
     {
         public AppDetails()

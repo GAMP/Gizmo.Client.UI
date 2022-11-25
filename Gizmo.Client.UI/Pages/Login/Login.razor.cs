@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Gizmo.Client.UI.Pages
 {
-    [Route("/")]
+    [Route(ClientRoutes.LoginRoute)]
     public partial class Login : CustomDOMComponentBase
     {
         [Inject]

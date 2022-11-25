@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 
 namespace Gizmo.Client.UI.Pages
 {
-    [Route("/passwordrecovery")]
+    [Route(ClientRoutes.PasswordRecoveryRoute)]
     public partial class PasswordRecovery : ComponentBase
     {
         [Inject]
@@ -17,6 +18,9 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         HostService HostService { get; set; }
+
+        [Inject]
+        NavigationService NavigationService { get; set; }
 
         private void SelectRecoveryMethod(ICollection<Button> selectedItems)
         {

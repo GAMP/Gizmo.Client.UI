@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
 {
-    [DefaultRoute("/settings", DefaultRouteMatch = NavlinkMatch.Prefix)]
-    [Route("/settings")]
+    [DefaultRoute(ClientRoutes.UserSettingsRoute, DefaultRouteMatch = NavlinkMatch.Prefix)]
+    [Route(ClientRoutes.UserSettingsRoute)]
     public partial class Settings : ComponentBase
     {
         [Inject]

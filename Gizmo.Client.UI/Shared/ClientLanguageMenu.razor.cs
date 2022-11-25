@@ -13,9 +13,9 @@ namespace Gizmo.Client.UI.Shared
             get; init;
         }
 
-        private void ValueChangedHandler(RegionViewState value)
+        private void ValueChangedHandler(LanguageViewState value)
         {
-            ClientLanguagesService.SetCurrentRegionAsync(value.TwoLetterISORegionName);
+            ClientLanguagesService.SetCurrentLanguageAsync(value.TwoLetterName);
         }
 
         protected override void OnInitialized()

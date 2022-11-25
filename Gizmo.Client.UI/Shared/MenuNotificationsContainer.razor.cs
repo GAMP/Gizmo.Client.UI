@@ -76,7 +76,7 @@ namespace Gizmo.Client.UI.Shared
             if (!firstRender)
             {
                 _shouldRender = false;
-                await InvokeVoidAsync("writeLine", $"Render {this.ToString()}");
+                await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
             }
             else
             {

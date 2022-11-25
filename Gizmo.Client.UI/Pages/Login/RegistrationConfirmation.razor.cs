@@ -1,10 +1,11 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Pages
 {
-    [Route("/registrationconfirmation")]
+    [Route(ClientRoutes.RegistrationConfirmationRoute)]
     public partial class RegistrationConfirmation : CustomDOMComponentBase
     {
         [Inject]
@@ -12,6 +13,9 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         UserRegistrationConfirmationMethodService UserRegistrationConfirmationMethodService { get; set; }
+
+        [Inject]
+        NavigationService NavigationService { get; set; }
 
         protected override void OnInitialized()
         {

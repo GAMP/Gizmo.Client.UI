@@ -1,10 +1,11 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.UI.Services;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 
 namespace Gizmo.Client.UI.Pages
 {
-    [Route("/registrationadditionalfields")]
+    [Route(ClientRoutes.RegistrationAdditionalFieldsRoute)]
     public partial class RegistrationAdditionalFields : ComponentBase
     {
         public RegistrationAdditionalFields()
@@ -50,6 +51,9 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         UserRegistrationAdditionalFieldsService UserRegistrationAdditionalFieldsService { get; set; }
+
+        [Inject]
+        NavigationService NavigationService { get; set; }
 
         public List<Gizmo.Web.Components.Country> Countries { get; set; }
 

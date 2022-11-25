@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
 {
-    [Route("/productdetails/{ProductId:int}")]
+    [Route(ClientRoutes.ProductDetailsRoute)]
     public partial class ProductDetails : ComponentBase
     {
         public ProductDetails()

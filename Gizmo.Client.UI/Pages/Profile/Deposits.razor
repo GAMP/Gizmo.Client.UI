@@ -2,15 +2,69 @@
 @inherits ComponentBase
 @using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
+@using Gizmo.Client.UI.View.States
 
 <div class="giz-profile">
     <div class="giz-profile__body">
         <ProfileHeader />
     
         <ProfileNavigation />
+        
+        <div class="giz-profile-user-purchases">
+            <div class="giz-profile-user-purchases__header">
+                Available time
+            </div>
 
-        <div>
-
+            <div class="giz-table-history">
+                <DataGrid ItemSource="@DepositTransactionsService.ViewState.DepositTransactions"
+                          Context="depositTranscations"
+                          HasStickyHeader="true"
+                          Class="giz-scrollbar--v">
+                    <ChildContent>
+                        <DataGridColumn Field="@(nameof(DepositTransactionViewState.Amount))" TItemType="DepositTransactionViewState" Context="depositTranscation">
+                            <HeaderTemplate>
+                                Order
+                            </HeaderTemplate>
+                            <CellTemplate>
+                                @depositTranscation.Amount
+                            </CellTemplate>
+                        </DataGridColumn>
+                        <DataGridColumn Field="@(nameof(DepositTransactionViewState.Amount))" TItemType="DepositTransactionViewState" Context="depositTranscation">
+                            <HeaderTemplate>
+                                Type
+                            </HeaderTemplate>
+                            <CellTemplate>
+                                @depositTranscation.Amount
+                            </CellTemplate>
+                        </DataGridColumn>
+                        <DataGridColumn Field="@(nameof(DepositTransactionViewState.Amount))" TItemType="DepositTransactionViewState" Context="depositTranscation">
+                            <HeaderTemplate>
+                                Amount
+                            </HeaderTemplate>
+                            <CellTemplate>
+                                @depositTranscation.Amount
+                            </CellTemplate>
+                        </DataGridColumn>
+                        <DataGridColumn Field="@(nameof(DepositTransactionViewState.Amount))" TItemType="DepositTransactionViewState" Context="depositTranscation">
+                            <HeaderTemplate>
+                                Balance
+                            </HeaderTemplate>
+                            <CellTemplate>
+                                @depositTranscation.Amount
+                            </CellTemplate>
+                        </DataGridColumn>
+                        <DataGridColumn Field="@(nameof(DepositTransactionViewState.Amount))" TItemType="DepositTransactionViewState" Context="depositTranscation">
+                            <HeaderTemplate>
+                                Payment method
+                            </HeaderTemplate>
+                            <CellTemplate>
+                                @depositTranscation.Amount
+                            </CellTemplate>
+                        </DataGridColumn>
+                    </ChildContent>
+                </DataGrid>
+            </div>
         </div>
+
     </div>
 </div>

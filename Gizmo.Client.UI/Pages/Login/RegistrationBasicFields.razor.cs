@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Pages
 {
-    [Route("/registrationbasicfields")]
+    [Route(ClientRoutes.RegistrationBasicFieldsRoute)]
     public partial class RegistrationBasicFields : ComponentBase
     {
         [Inject]

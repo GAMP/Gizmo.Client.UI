@@ -2,6 +2,7 @@
 @inherits ComponentBase
 @using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
+@using Gizmo.Client.UI.View.States
 
 <div class="giz-profile">
     <div class="giz-profile__body">
@@ -9,8 +10,61 @@
     
         <ProfileNavigation />
 
-        <div>
+        <div class="giz-profile-user-purchases">
+            <div class="giz-profile-user-purchases__header">
+                Available time
+            </div>
 
+            <div class="giz-table-history">
+                <DataGrid ItemSource="@TimeProductsService.ViewState.TimeProducts"
+                          Context="timeProducts"
+                          HasStickyHeader="true"
+                          Class="giz-scrollbar--v">
+                    <ChildContent>
+                        <DataGridColumn Field="@(nameof(TimeProductViewState.Title))" TItemType="TimeProductViewState" Context="timeProduct">
+                            <HeaderTemplate>
+                                Title
+                            </HeaderTemplate>
+                            <CellTemplate>
+                                @timeProduct.Title
+                            </CellTemplate>
+                        </DataGridColumn>
+                        <DataGridColumn Field="@(nameof(TimeProductViewState.Title))" TItemType="TimeProductViewState" Context="timeProduct">
+                            <HeaderTemplate>
+                                Time
+                            </HeaderTemplate>
+                            <CellTemplate>
+                                @timeProduct.Title
+                            </CellTemplate>
+                        </DataGridColumn>
+                        <DataGridColumn Field="@(nameof(TimeProductViewState.Title))" TItemType="TimeProductViewState" Context="timeProduct">
+                            <HeaderTemplate>
+                                Life time
+                            </HeaderTemplate>
+                            <CellTemplate>
+                                @timeProduct.Title
+                            </CellTemplate>
+                        </DataGridColumn>
+                        <DataGridColumn Field="@(nameof(TimeProductViewState.Title))" TItemType="TimeProductViewState" Context="timeProduct">
+                            <HeaderTemplate>
+                                Purchase date
+                            </HeaderTemplate>
+                            <CellTemplate>
+                                @timeProduct.Title
+                            </CellTemplate>
+                        </DataGridColumn>
+                        <DataGridColumn Field="@(nameof(TimeProductViewState.Title))" TItemType="TimeProductViewState" Context="timeProduct">
+                            <HeaderTemplate>
+                                Receipt
+                            </HeaderTemplate>
+                            <CellTemplate>
+                                @timeProduct.Title
+                            </CellTemplate>
+                        </DataGridColumn>
+                    </ChildContent>
+                </DataGrid>
+            </div>
         </div>
+
     </div>
 </div>
