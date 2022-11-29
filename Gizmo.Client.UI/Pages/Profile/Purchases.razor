@@ -4,6 +4,10 @@
 @using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
 @using Gizmo.Client.UI.View.States
+@using Gizmo
+@using Gizmo.UI.Services
+
+@inject ILocalizationService localizationService
 
 <div class="giz-profile">
     <div class="giz-profile__body">
@@ -21,6 +25,31 @@
                           Context="purchases"
                           HasStickyHeader="true"
                           Class="giz-scrollbar--v">
+                    <DetailTemplate>
+                        <div class="purchase-details">
+                            <table class="purchase-details__products">
+                                @if (purchases.ProductType == ProductType.ProductBundle)
+                                {
+                                    @foreach (var product in purchases.BundledProducts)
+                                    {
+                                        <tr><td class="purchase-details-name">Bundle item</td><td>quantity</td><td>price</td></tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr><td class="purchase-details-name">Bundle item</td><td>quantity</td><td>price</td></tr>
+                                }
+                            </table>
+                            <table class="purchase-details__details">
+                                <tr><td class="purchase-details-title">Order comments:</td><td>Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat d...</td></tr>
+                                <tr><td class="purchase-details-points">Points</td><td>???</td></tr>
+                                <tr><td class="purchase-details-title">Charged:</td><td>Paid so far?</td></tr>
+                                <tr><td class="purchase-details-title">Operator:</td><td>georgecht09</td></tr>@*TODO: A ???*@
+                                <tr><td class="purchase-details-invoice">Invoice</td><td></td></tr>@*TODO: A ???*@
+                                <tr><td><Button Color="ButtonColors.Accent" Text="Repeat order" /></td><td></td></tr>
+                            </table>
+                        </div>
+                    </DetailTemplate>
                     <ChildContent>
                         <DataGridColumn Field="@(nameof(PurchaseViewState.ProductName))" TItemType="PurchaseViewState" Context="purchase">
                             <HeaderTemplate>
@@ -30,12 +59,30 @@
                                 @purchase.ProductName
                             </CellTemplate>
                         </DataGridColumn>
-                        <DataGridColumn Field="@(nameof(PurchaseViewState.ProductName))" TItemType="PurchaseViewState" Context="purchase">
+                        <DataGridColumn Field="@(nameof(PurchaseViewState.OrderStatus))" TItemType="PurchaseViewState" Context="purchase">
                             <HeaderTemplate>
                                 Order status
                             </HeaderTemplate>
                             <CellTemplate>
-                                @purchase.ProductName
+                                @switch (purchase.OrderStatus)
+                                {
+                                    case OrderStatus.OnHold:
+                                        <div class="order-on-hold">@localizationService.GetString("ORDER_STATUS_ON_HOLD")</div>
+                                        @*TODO: A ADD ENUM TO localizationService*@
+                                        break;
+
+                                    case OrderStatus.Completed:
+                                        <div class="order-completed">@localizationService.GetString("ORDER_STATUS_COMPLETED")</div>
+                                        break;
+
+                                    case OrderStatus.Canceled:
+                                        <div class="order-canceled">@localizationService.GetString("ORDER_STATUS_CANCELED")</div>
+                                        break;
+
+                                    case OrderStatus.Accepted:
+                                        <div class="order-accepted">@localizationService.GetString("ORDER_STATUS_ACCEPTED")</div>
+                                        break;
+                                }
                             </CellTemplate>
                         </DataGridColumn>
                         <DataGridColumn Field="@(nameof(PurchaseViewState.OrderDate))" TItemType="PurchaseViewState" Context="purchase">

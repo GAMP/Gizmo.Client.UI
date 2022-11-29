@@ -21,20 +21,20 @@
                           HasStickyHeader="true"
                           Class="giz-scrollbar--v">
                     <ChildContent>
-                        <DataGridColumn Field="@(nameof(DepositTransactionViewState.Amount))" TItemType="DepositTransactionViewState" Context="depositTranscation">
+                        <DataGridColumn Field="@(nameof(DepositTransactionViewState.TransactionDate))" TItemType="DepositTransactionViewState" Context="depositTranscation">
                             <HeaderTemplate>
-                                Order
+                                Time
                             </HeaderTemplate>
                             <CellTemplate>
-                                @depositTranscation.Amount
+                                @depositTranscation.TransactionDate.ToString()
                             </CellTemplate>
                         </DataGridColumn>
-                        <DataGridColumn Field="@(nameof(DepositTransactionViewState.Amount))" TItemType="DepositTransactionViewState" Context="depositTranscation">
+                        <DataGridColumn Field="@(nameof(DepositTransactionViewState.DepositTransactionType))" TItemType="DepositTransactionViewState" Context="depositTranscation">
                             <HeaderTemplate>
                                 Type
                             </HeaderTemplate>
                             <CellTemplate>
-                                @depositTranscation.Amount
+                                @depositTranscation.DepositTransactionType
                             </CellTemplate>
                         </DataGridColumn>
                         <DataGridColumn Field="@(nameof(DepositTransactionViewState.Amount))" TItemType="DepositTransactionViewState" Context="depositTranscation">
@@ -42,7 +42,9 @@
                                 Amount
                             </HeaderTemplate>
                             <CellTemplate>
-                                @depositTranscation.Amount
+                                <div class="@(depositTranscation.DepositTransactionType == DepositTransactionType.Deposit ? "purchase-details-deposit" : depositTranscation.DepositTransactionType == DepositTransactionType.Withdraw ? "purchase-details-withdraw" : "")">
+                                    @depositTranscation.Amount.ToString("C")
+                                </div>
                             </CellTemplate>
                         </DataGridColumn>
                         <DataGridColumn Field="@(nameof(DepositTransactionViewState.Amount))" TItemType="DepositTransactionViewState" Context="depositTranscation">
@@ -50,7 +52,7 @@
                                 Balance
                             </HeaderTemplate>
                             <CellTemplate>
-                                @depositTranscation.Amount
+                                @depositTranscation.Amount.ToString("C")
                             </CellTemplate>
                         </DataGridColumn>
                         <DataGridColumn Field="@(nameof(DepositTransactionViewState.Amount))" TItemType="DepositTransactionViewState" Context="depositTranscation">
