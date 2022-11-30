@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -61,5 +62,19 @@ namespace Gizmo.Client.UI.Components
         }
 
         #endregion
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (!firstRender)
+            {
+                await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
+            }
+            else
+            {
+                //await InvokeVoidAsync("writeLine", $"Render {this.ToString()}");
+            }
+
+            await base.OnAfterRenderAsync(firstRender);
+        }
     }
 }

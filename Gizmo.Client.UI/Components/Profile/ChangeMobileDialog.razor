@@ -20,8 +20,11 @@
                 <div class="giz-client-dialog__body">
                     <div class="giz-change-mobile-dialog-message">Enter the number you’d like to use. To make sure this number is yours, will send you a verification code.</div>
                     <EditForm EditContext="@UserChangeMobileService.EditContext">
+                        <div class="giz-registration-form-input">
+                            <CountrySelect TValue="Country" Countries="@Countries" @bind-SelectedCountry="@SelectedCountry" Size="InputSizes.Medium" IsFullWidth="true" Label="Country" OpenDirection="PopupOpenDirections.Cursor" Class="giz-input-language-menu" PopupClass="giz-scrollbar--v" />
+                        </div>
                         <div class="giz-form-input">
-                            <MaskedPhoneInput Mask="###.###-###!###" @bind-Value="UserChangeMobileService.ViewState.MobilePhone" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PHONE_NUMBER")" Countries="@Countries" @bind-SelectedCountry="SelectedCountry" OpenDirection="PopupOpenDirections.Cursor" />
+                            <MaskedTextInput Mask="###-###-###" @bind-Value="UserChangeMobileService.ViewState.MobilePhone" Size="InputSizes.Medium" IsFullWidth="true" Label="Phone number" />
                         </div>
                     </EditForm>
                 </div>

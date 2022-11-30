@@ -1,7 +1,11 @@
-﻿using Gizmo.Web.Components;
+﻿using Gizmo.Client.UI.View.States;
+using Gizmo.Web.Api.Models;
+using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -54,6 +58,20 @@ namespace Gizmo.Client.UI.Components
         }
 
         #region OVERRIDE
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (!firstRender)
+            {
+                await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
+            }
+            else
+            {
+                //await InvokeVoidAsync("writeLine", $"Render {this.ToString()}");
+            }
+
+            await base.OnAfterRenderAsync(firstRender);
+        }
 
         protected override void OnInitialized()
         {
