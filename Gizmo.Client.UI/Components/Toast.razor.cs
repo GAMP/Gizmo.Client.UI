@@ -15,6 +15,9 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public string Text { get; set; }
 
+        [Parameter]
+        public bool CanClose { get; set; }
+
         #region CLASSMAPPERS
 
         protected string ClassName => new ClassMapper()

@@ -36,7 +36,14 @@
                     </div>
                 </div>
                 <div class="giz-product-card__content__footer">
-                    <Button Class="giz-product-card-primary-button" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="AddProduct" Text="@localizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
+                    @if (Product.CartProduct == null)
+                    {
+                        <Button Class="giz-product-card-primary-button" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="AddProduct" Text="@localizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
+                    }
+                    else
+                    {
+                        <QuantityPicker Quantity="@Product.CartProduct.Quantity" OnAddQuantityButtonClick="@OnAddQuantityButtonClickHandler" OnRemoveQuantityButtonClick="@OnRemoveQuantityButtonClickHandler" />
+                    }
                 </div>
             </div>
         </div>
@@ -92,7 +99,14 @@
 
                         </div>
                         <div class="giz-product-card__content--hovered__footer">
-                            <Button Color="ButtonColors.Accent" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="AddProduct">@localizationService.GetString("GIZ_SHOP_ADD_TO_CART")</Button>
+                            @if (Product.CartProduct == null)
+                            {
+                                <Button Color="ButtonColors.Accent" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="AddProduct">@localizationService.GetString("GIZ_SHOP_ADD_TO_CART")</Button>
+                            }
+                            else
+                            {
+                                <QuantityPicker Quantity="@Product.CartProduct.Quantity" OnAddQuantityButtonClick="@OnAddQuantityButtonClickHandler" OnRemoveQuantityButtonClick="@OnRemoveQuantityButtonClickHandler" />
+                            }
                         </div>
                     </div>
                 </div>

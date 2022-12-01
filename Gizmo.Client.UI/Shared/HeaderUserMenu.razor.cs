@@ -55,13 +55,17 @@ namespace Gizmo.Client.UI
 
         protected override void OnInitialized()
         {
+            this.SubscribeChange(UserService.ViewState);
             this.SubscribeChange(NotificationsService.ViewState);
+
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
             this.UnsubscribeChange(NotificationsService.ViewState);
+            this.UnsubscribeChange(UserService.ViewState);
+
             base.Dispose();
         }
 

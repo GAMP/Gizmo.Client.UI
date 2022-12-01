@@ -1,7 +1,8 @@
 //=============== Toast ================//
 
 .giz-toast {
-    display: flex;
+    display: grid;
+    grid-template-columns: min-content 1fr min-content;
     border-radius: 8px;
     padding: 16px;
     gap: 16px;
@@ -27,7 +28,7 @@
     }
 
     &--danger {
-        background: #EE505A;
+        background: #FF2E5A;
         color: #FFFFFF;
     }
 
@@ -39,5 +40,13 @@
     &--accent {
         background: #D9E8FF;
         color: #3F8CFF;
+    }
+
+    .close-btn {
+        background-color: transparent;
+
+        &:hover {
+            background-color: transparent;
+        }
     }
 }

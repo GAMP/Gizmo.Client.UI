@@ -1,10 +1,7 @@
-﻿using Gizmo.Client.UI.View.States;
-using Gizmo.Web.Api.Models;
-using Gizmo.Web.Components;
+﻿using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
@@ -13,6 +10,11 @@ namespace Gizmo.Client.UI.Components
     {
         private bool _scaled;
         private bool _halfScaled;
+
+        private bool _isOpen;
+
+        private double _top;
+        private double _left;
 
         [CascadingParameter]
         protected GizDock Parent { get; set; }
@@ -39,6 +41,8 @@ namespace Gizmo.Client.UI.Components
         internal void Scale()
         {
             _scaled = true;
+
+            _isOpen = true;
         }
 
         internal void HalfScale()
@@ -50,6 +54,7 @@ namespace Gizmo.Client.UI.Components
 
         internal void Reset(bool changeState = false)
         {
+            _isOpen = false;
             _scaled = false;
             _halfScaled = false;
 
@@ -104,6 +109,16 @@ namespace Gizmo.Client.UI.Components
                 .If("scaled", () => _scaled)
                 .If("half-scaled", () => _halfScaled)
                 .AsString();
+
+        protected string StyleValue => new StyleMapper()
+                .Add($"top: {_top.ToString(System.Globalization.CultureInfo.InvariantCulture)}px")
+                .Add($"left: {_left.ToString(System.Globalization.CultureInfo.InvariantCulture)}px")
+                .AsString();
+
+        protected string TooltipWrapperClassName => new ClassMapper()
+                 .Add("giz-dock-item-tooltip-wrapper")
+                 .If("giz-dock-item-tooltip--visible", () => _isOpen)
+                 .AsString();
 
         #endregion
     }

@@ -22,10 +22,15 @@
         <EditForm EditContext="@UserRegistrationConfirmationService.EditContext">
             <div class="giz-login-title">@localizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
             <div class="giz-form-input">
-                <TextInput @bind-Value="UserRegistrationConfirmationService.ViewState.ConfirmationCode" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_PASSWORD_RECOVERY_ENTER_YOUR_CODE")" />
+                <TextInput UpdateOnInput="true" Placeholder="123 456" @bind-Value="UserRegistrationConfirmationService.ViewState.ConfirmationCode" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_PASSWORD_RECOVERY_ENTER_YOUR_CODE")" />
             </div>
             <div class="giz-form-input">
-                <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationConfirmationService.SubmitAsync">@localizationService.GetString("GIZ_GEN_CONTINUE")</Button>
+                <Button Text="Confirm"
+                        IsDisabled="@(!(UserRegistrationConfirmationService.ViewState.IsValid == true))"
+                        Color="ButtonColors.Accent"
+                        Size="ButtonSizes.ExtraLarge"
+                        IsFullWidth="true"
+                        @onclick="@UserRegistrationConfirmationService.SubmitAsync" />
             </div>
             <div>
                 <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" IsDisabled="@(!UserRegistrationConfirmationMethodService.ViewState.CanResend)" @onclick="@UserRegistrationConfirmationService.SubmitAsync" Class="giz-resend-button">

@@ -3,6 +3,7 @@ using Gizmo.Client.UI.View.States;
 using Gizmo.Client.UI.ViewModels;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -42,6 +43,16 @@ namespace Gizmo.Client.UI.Components
             _clickHandled = true;
 
             await UserCartService.AddProductAsyc(Product.Id);
+        }
+
+        public Task OnAddQuantityButtonClickHandler(MouseEventArgs args)
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task OnRemoveQuantityButtonClickHandler(MouseEventArgs args)
+        {
+            return Task.CompletedTask;
         }
 
         #region OVERRIDES

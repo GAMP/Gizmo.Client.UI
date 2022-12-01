@@ -26,6 +26,9 @@ namespace Gizmo.Client.UI.Pages
 
         #region FIELDS
         private int _selectedSearchCategoryId;
+        private int _selectedSortOptionId = 1;
+        private int? _selectedApplicationGroupId;
+        private List<int> _selectedApplicationFilters = new List<int>() { 1, 3 };
         #endregion
 
         #region PROPERTIES
@@ -53,7 +56,28 @@ namespace Gizmo.Client.UI.Pages
 
         public List<ApplicationSortOptionViewModel> SearchCategories { get; set; }
 
+        public List<ApplicationSortOptionViewModel> ApplicationSortOptions { get; set; }
+
+        public List<ApplicationFilterViewModel> ApplicationFilters { get; set; }
+
+        public List<int> SelectedApplicationFilters
+        {
+            get
+            {
+                return _selectedApplicationFilters;
+            }
+            set
+            {
+                _selectedApplicationFilters = value;
+            }
+        }
+
         #endregion
+
+        public void SelectedApplicationFiltersChanged(List<int> selectedApplicationFilters)
+        {
+            SelectedApplicationFilters = selectedApplicationFilters;
+        }
 
         #region METHODS
 
@@ -124,9 +148,29 @@ namespace Gizmo.Client.UI.Pages
             SearchCategories.Add(new ApplicationSortOptionViewModel() { Id = 1, Name = "Games & apps" });
             SearchCategories.Add(new ApplicationSortOptionViewModel() { Id = 2, Name = "Shop" });
 
-          
 
-             await base.OnInitializedAsync();
+
+            List<ApplicationFilterOptionViewModel> options = new List<ApplicationFilterOptionViewModel>();
+            options.Add(new ApplicationFilterOptionViewModel() { Id = 1, Name = "Free to Play" });
+            options.Add(new ApplicationFilterOptionViewModel() { Id = 2, Name = "Subscription Based" });
+            options.Add(new ApplicationFilterOptionViewModel() { Id = 3, Name = "Multiple" });
+            options.Add(new ApplicationFilterOptionViewModel() { Id = 4, Name = "All" });
+
+            ApplicationFilters = new List<ApplicationFilterViewModel>();
+            ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 1, Name = "Access", Options = options });
+            ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 2, Name = "Rating", Options = options });
+            ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 3, Name = "Type", Options = options });
+            ApplicationFilters.Add(new ApplicationFilterViewModel() { Id = 4, Name = "Player mode", Options = options });
+
+            ApplicationSortOptions = new List<ApplicationSortOptionViewModel>();
+            ApplicationSortOptions.Add(new ApplicationSortOptionViewModel() { Id = 1, Name = "Popularity" });
+            ApplicationSortOptions.Add(new ApplicationSortOptionViewModel() { Id = 2, Name = "Add date" });
+            ApplicationSortOptions.Add(new ApplicationSortOptionViewModel() { Id = 3, Name = "Title" });
+            ApplicationSortOptions.Add(new ApplicationSortOptionViewModel() { Id = 4, Name = "Use" });
+            ApplicationSortOptions.Add(new ApplicationSortOptionViewModel() { Id = 5, Name = "Rating" });
+            ApplicationSortOptions.Add(new ApplicationSortOptionViewModel() { Id = 6, Name = "Release Date" });
+
+            await base.OnInitializedAsync();
         }
 
         public override void Dispose()
