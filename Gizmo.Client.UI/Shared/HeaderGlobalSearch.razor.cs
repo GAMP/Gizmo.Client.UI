@@ -28,6 +28,8 @@ namespace Gizmo.Client.UI.Shared
 
         private bool _hasFocus;
 
+        private ElementReference _inputElement;
+
         #endregion
 
         #region PROPERTIES
@@ -41,6 +43,11 @@ namespace Gizmo.Client.UI.Shared
         #endregion
 
         #region EVENTS
+
+        protected async Task OnFocusHandler()
+        {
+            await _inputElement.FocusAsync();
+        }
 
         protected async Task OnInputKeyDownHandler(KeyboardEventArgs args)
         {

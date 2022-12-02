@@ -13,9 +13,6 @@ namespace Gizmo.Client.UI.Components
 
         private bool _isOpen;
 
-        private double _top;
-        private double _left;
-
         [CascadingParameter]
         protected GizDock Parent { get; set; }
 
@@ -109,16 +106,6 @@ namespace Gizmo.Client.UI.Components
                 .If("scaled", () => _scaled)
                 .If("half-scaled", () => _halfScaled)
                 .AsString();
-
-        protected string StyleValue => new StyleMapper()
-                .Add($"top: {_top.ToString(System.Globalization.CultureInfo.InvariantCulture)}px")
-                .Add($"left: {_left.ToString(System.Globalization.CultureInfo.InvariantCulture)}px")
-                .AsString();
-
-        protected string TooltipWrapperClassName => new ClassMapper()
-                 .Add("giz-dock-item-tooltip-wrapper")
-                 .If("giz-dock-item-tooltip--visible", () => _isOpen)
-                 .AsString();
 
         #endregion
     }

@@ -61,7 +61,7 @@
                                     <span>@GetNumberOfFilters()</span>
                                 </Chip>
                             }
-                            <Select ValidationErrorStyle="ValidationErrorStyles.BorderOnly" Size="InputSizes.Small" @bind-Value="_selectedSortOptionId" Label="@localizationService.GetString("GIZ_GEN_SORT_BY")" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px" Class="@(_selectedSortOptionId != 1 ? "app-filter--filled" : "")" PopupClass="giz-scrollbar--v">
+                            <Select LeftSVGIcon="Icons.Sort_Client" HandleSVGIcon="Icons.Select_Client" ValidationErrorStyle="ValidationErrorStyles.BorderOnly" Size="InputSizes.Small" @bind-Value="_selectedSortOptionId" Label="@localizationService.GetString("GIZ_GEN_SORT_BY")" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px" Class="@(_selectedSortOptionId != 1 ? "app-filter--filled" : "app-filter--default")" PopupClass="giz-scrollbar--v">
                                 @if (ApplicationSortOptions != null)
                                 {
                                     @foreach (var sortOption in ApplicationSortOptions)
@@ -70,7 +70,7 @@
                                     }
                                 }
                             </Select>
-                            <Select ValidationErrorStyle="ValidationErrorStyles.BorderOnly" Placeholder="All games and apps" Size="InputSizes.Small" @bind-Value="_selectedApplicationGroupId" Label="@localizationService.GetString("GIZ_APPS_CATEGORY")" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px" Class="@(_selectedApplicationGroupId.HasValue ? "app-filter--filled" : "")" PopupClass="giz-scrollbar--v">
+                            <Select HandleSVGIcon="Icons.Select_Client" ValidationErrorStyle="ValidationErrorStyles.BorderOnly" Placeholder="All games and apps" Size="InputSizes.Small" @bind-Value="_selectedApplicationGroupId" Label="@localizationService.GetString("GIZ_APPS_CATEGORY")" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="200px" Class="@(_selectedApplicationGroupId.HasValue ? "app-filter--filled" : "app-filter--default")" PopupClass="giz-scrollbar--v">
                                 @if (ApplicationsPageService.ViewState.ApplicationGroups != null)
                                 {
                                     @foreach (var appGroup in ApplicationsPageService.ViewState.ApplicationGroups)
@@ -79,7 +79,7 @@
                                     }
                                 }
                             </Select>
-                            <MultiSelect ValidationErrorStyle="ValidationErrorStyles.BorderOnly" Placeholder="Select something" Size="InputSizes.Small" TValue="int" Value="@SelectedApplicationFilters" ValueChanged="@SelectedApplicationFiltersChanged" Label="@localizationService.GetString("GIZ_APPS_PARAMETERS")" OpenDirection="PopupOpenDirections.Bottom" CanClearValue="true" MaximumHeight="200px" Class="@(SelectedApplicationFilters?.Count > 0 ? "app-filter--filled" : "")">
+                            <MultiSelect HandleSVGIcon="Icons.Select_Client" ValidationErrorStyle="ValidationErrorStyles.BorderOnly" Placeholder="Select something" Size="InputSizes.Small" TValue="int" Value="@SelectedApplicationFilters" ValueChanged="@SelectedApplicationFiltersChanged" Label="@localizationService.GetString("GIZ_APPS_PARAMETERS")" OpenDirection="PopupOpenDirections.Bottom" CanClearValue="true" MaximumHeight="200px" Class="@(SelectedApplicationFilters?.Count > 0 ? "app-filter--filled" : "app-filter--default")">
                                 @if (ApplicationFilters != null)
                                 {
                                     @foreach (var filter in ApplicationFilters)

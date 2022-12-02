@@ -69,7 +69,7 @@
                     <div class="giz-checkout__payment-method">
                         <div class="giz-checkout__summary__payment-method__label">@localizationService.GetString("GIZ_SHOP_PAYMENT_METHOD")</div>
                         <EditForm EditContext="@UserCartService.EditContext">
-                            <Select TValue="int?" Value="@UserCartService.ViewState.PaymentMethodId" ValueChanged="@ValueChangedHandler" Size="InputSizes.Small" IsFullWidth="true" OpenDirection="PopupOpenDirections.Cursor" PopupClass="giz-scrollbar--v">
+                            <Select HandleSVGIcon="Icons.Select_Client" TValue="int?" Value="@UserCartService.ViewState.PaymentMethodId" ValueChanged="@ValueChangedHandler" Size="InputSizes.Small" IsFullWidth="true" OpenDirection="PopupOpenDirections.Cursor" PopupClass="giz-scrollbar--v">
                                 @if (PaymentMethodsService.ViewState.PaymentMethods != null)
                                 {
                                     @foreach (var paymentMethod in PaymentMethodsService.ViewState.PaymentMethods)

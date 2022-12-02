@@ -6,7 +6,7 @@
 <div class="quick-launcher">
     <QuickLauncherSwitch />
     <GizDock>
-        @foreach(var item in QuickLaunchService.ViewState.Executables)
+        @foreach(var item in QuickLaunchService.ViewState.Executables.Take(10))
         {
             <GizDockItem>
                 @if (item.ImageId.HasValue)

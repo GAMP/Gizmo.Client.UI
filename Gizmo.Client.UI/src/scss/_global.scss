@@ -262,10 +262,7 @@ main {
     border-radius: 4px;
     padding: 3px 8px;
     text-align: center;
-    //Font
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
+    @include font-s($font-weight-light);
 }
 
 .order-completed {
@@ -274,10 +271,7 @@ main {
     border-radius: 4px;
     padding: 3px 8px;
     text-align: center;
-    //Font
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
+    @include font-s($font-weight-light);
 }
 
 .order-canceled {
@@ -286,10 +280,7 @@ main {
     border-radius: 4px;
     padding: 3px 8px;
     text-align: center;
-    //Font
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
+    @include font-s($font-weight-light);
 }
 
 .order-accepted {
@@ -298,42 +289,27 @@ main {
     border-radius: 4px;
     padding: 3px 8px;
     text-align: center;
-    //Font
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
+    @include font-s($font-weight-light);
 }
 
 .purchase-details {
     display: flex;
     align-items: flex-start;
     color: #FAFAFA;
-    //Font
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
+    @include font-s($font-weight-light);
 
     &-title {
         color: rgba(255, 255, 255, 0.6);
-        //Font
-        font-weight: 400;
-        font-size: 12px;
-        line-height: 18px;
+        @include font-s($font-weight-light);
     }
 
     &-name {
         color: #57BCFF;
-        //Font
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 22px;
+        @include font-m($font-weight-light);
     }
 
     &-points {
-        //Font
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 22px;
+        @include font-m($font-weight-light);
     }
 }
 
@@ -349,6 +325,23 @@ main {
     .giz-input-root {
         background: #0b1a24;
         border-color: #0b1a24;
+        color: #0078D2;
+
+        .giz-icon {
+            svg {
+                color: #3F8CFF;
+            }
+        }
+
+        input {
+            color: #0078D2;
+        }
+    }
+}
+
+.giz-input-select.app-filter--default {
+    .giz-input-root {
+        opacity: 0.6;
     }
 }
 
@@ -356,6 +349,7 @@ main {
     .giz-input-root {
         background: #0b1a24;
         border-color: #0b1a24;
+        color: #0078D2;
 
         .giz-input-icon-right {
             svg {
@@ -380,4 +374,17 @@ main {
             }
         }
     }
+}
+
+.giz-input-multi-select.app-filter--default {
+    .giz-input-root {
+        opacity: 0.6;
+    }
+}
+
+.user-agreement {
+    //Font
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 26px;
 }

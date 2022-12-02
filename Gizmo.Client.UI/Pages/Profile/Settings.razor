@@ -21,14 +21,14 @@
         </div>
         <div class="giz-settings__content__body">
             
-            <ExpansionPanel>
-                <Header>@localizationService.GetString("GIZ_GEN_USERNAME")</Header>
-                <ChildContent>
+            <div class="giz-section">
+                <div class="giz-section__header">@localizationService.GetString("GIZ_GEN_USERNAME")</div>
+                <div class="giz-section__body">
                     <div class="giz-form-input">
                         <TextInput @bind-Value="@UserSettingsService.ViewState.Username" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_USERNAME_MESSAGE")" />
                     </div>
-                </ChildContent>
-            </ExpansionPanel>
+                </div>
+            </div>
             
             <ExpansionPanel>
                 <Header>@localizationService.GetString("GIZ_USER_PERSONAL_INFORMATION")</Header>
@@ -40,7 +40,7 @@
             
                     <div class="giz-form-input giz-form-input-columns">
                         <MaskedDateInput @bind-Value="@UserSettingsService.ViewState.BirthDate" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_BIRTH_DATE")" />
-                        <Select @bind-Value="@UserSettingsService.ViewState.Sex" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_GENDER")" OpenDirection="PopupOpenDirections.Cursor" PopupClass="giz-scrollbar--v">
+                        <Select HandleSVGIcon="Icons.Select_Client" @bind-Value="@UserSettingsService.ViewState.Sex" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_GENDER")" OpenDirection="PopupOpenDirections.Cursor" PopupClass="giz-scrollbar--v">
                             <SelectItem Value="@Sex.Unspecified" Text="Unspecified" />
                             <SelectItem Value="@Sex.Male" Text="Male" />
                             <SelectItem Value="@Sex.Female" Text="Female" />
