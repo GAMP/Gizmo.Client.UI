@@ -21,8 +21,12 @@
             background: #2B2D33;
             box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
             border-radius: 8px;
-            padding: 16px;
+            padding: 12px;
             white-space: nowrap;
+            min-width: 234px;
+            display: grid;
+            grid-template-rows: min-content auto min-content;
+            gap: 4px;
 
             &-wrapper {
                 position: absolute;
@@ -37,12 +41,19 @@
             }
 
             &__header {
+                @include font-s($font-weight-bold);
             }
 
             &__body {
+                @include font-s($font-weight-light);
             }
 
             &__actions {
+                justify-self: right;
+
+                .giz-button {
+                    padding: 0 17px;
+                }
             }
         }
 

@@ -23,6 +23,11 @@ namespace Gizmo.Client.UI.Pages
                 UserLoginService.SetLoginMethod(View.UserLoginType.MobilePhone);
         }
 
+        public void OnCloseButtonClickHandler()
+        {
+            UserLoginService.Reset();
+        }
+
         protected override void OnInitialized()
         {
             this.SubscribeChange(UserLoginService.ViewState);

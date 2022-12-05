@@ -57,6 +57,37 @@
                 align-items: center;
                 padding: 0 0 26px 46px;
                 z-index: 1;
+
+                .giz-client-language-menu {
+                    display: flex;
+                    align-items: center;
+                    margin-right: 15px;
+                    //margin-right: 27px;
+
+                    .giz-input-root {
+                        width: unset;
+                        border: 1px solid transparent;
+
+                        &:hover {
+                            border: 2px solid rgba(246, 251, 253, 0.52);
+
+                            &.giz-input-root--small {
+                                padding: 9px 12px;
+                            }
+                        }
+
+                        .giz-input-icon-right {
+                            display: none;
+                        }
+                    }
+
+                    .giz-input-select__dropdown--full-width {
+                        width: unset;
+                    }
+                    /*svg {
+                        margin-right: 6px;
+                    }*/
+                }
             }
         }
 
@@ -181,29 +212,6 @@
     }
 }
 
-.giz-client-language-menu {
-    display: flex;
-    align-items: center;
-    margin-right: 15px;
-    //margin-right: 27px;
-
-    .giz-input-root {
-        width: unset;
-        border: 1px solid transparent;
-
-        .giz-input-icon-right {
-            display: none;
-        }
-    }
-
-    .giz-input-select__dropdown--full-width {
-        width: unset;
-    }
-    /*svg {
-        margin-right: 6px;
-    }*/
-}
-
 .giz-login-forgot-password {
     margin-bottom: 4px;
     text-align: right;
@@ -240,7 +248,7 @@
 
         &:before {
             content: '';
-            border: 1px solid rgba(177, 191, 200, 0.35);
+            border-bottom: 1px solid rgba(177, 191, 200, 0.35);
             position: absolute;
             top: 50%;
             left: 0;
@@ -255,6 +263,10 @@
         align-items: center;
 
         &-description {
+            display: grid;
+            grid-template-rows: auto auto;
+            gap: 16px;
+
             &__title {
                 //Font rub
                 font-weight: 700;
@@ -412,7 +424,7 @@
 
     &__time {
         position: absolute;
-        right: 0;
+        right: 24px;
         top: 50%;
         transform: translate(0, -50%);
         @include font-s($font-weight-light);

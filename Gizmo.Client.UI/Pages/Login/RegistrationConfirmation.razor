@@ -32,15 +32,14 @@
                         IsFullWidth="true"
                         @onclick="@UserRegistrationConfirmationService.SubmitAsync" />
             </div>
-            <div>
-                <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" IsDisabled="@(!UserRegistrationConfirmationMethodService.ViewState.CanResend)" @onclick="@UserRegistrationConfirmationService.SubmitAsync" Class="giz-resend-button">
-                    <div>
-                        <div>
-                            @localizationService.GetString("GIZ_GEN_RESEND")
-                        </div>
-                        <div class="giz-resend-button__time">@string.Format("{0:mm\\:ss}", UserRegistrationConfirmationMethodService.ViewState.ResendTimeLeft)</div>
-                    </div>
-                </Button>
+            <div class="giz-resend-button">
+                <Button Variant="ButtonVariants.Outline"
+                        Size="ButtonSizes.ExtraLarge"
+                        IsFullWidth="true"
+                        IsDisabled="@(!UserRegistrationConfirmationMethodService.ViewState.CanResend)"
+                        Text="@localizationService.GetString("GIZ_GEN_RESEND")"
+                        @onclick="@UserRegistrationConfirmationService.SubmitAsync" />
+                <div class="giz-resend-button__time">@string.Format("{0:mm\\:ss}", UserRegistrationConfirmationMethodService.ViewState.ResendTimeLeft)</div>
             </div>
         </EditForm>
     </CardBody>

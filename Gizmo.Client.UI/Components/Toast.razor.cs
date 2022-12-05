@@ -1,6 +1,8 @@
 ﻿using Gizmo.Web.Components;
 using Gizmo.Web.Components.Extensions;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -17,6 +19,14 @@ namespace Gizmo.Client.UI.Components
 
         [Parameter]
         public bool CanClose { get; set; }
+
+        [Parameter]
+        public EventCallback<MouseEventArgs> OnCloseButtonClick { get; set; }
+
+        public Task OnCloseButtonClickHandler(MouseEventArgs args)
+        {
+            return OnCloseButtonClick.InvokeAsync(args);
+        }
 
         #region CLASSMAPPERS
 

@@ -1,10 +1,12 @@
 ﻿using Gizmo.Client.UI.View.Services;
 using Gizmo.Web.Api.Models;
 using Gizmo.Web.Components;
+using Gizmo.Web.Components.Extensions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +19,9 @@ namespace Gizmo.Client.UI.Components
         public int Quantity { get; set; }
 
         [Parameter]
+        public ButtonSizes Size { get; set; } = ButtonSizes.Medium;
+
+        [Parameter]
         public EventCallback<MouseEventArgs> OnAddQuantityButtonClick { get; set; }
 
         [Parameter]
@@ -24,12 +29,22 @@ namespace Gizmo.Client.UI.Components
 
         public Task RemoveQuantity(MouseEventArgs args)
         {
-            return OnAddQuantityButtonClick.InvokeAsync(args);
+            return OnRemoveQuantityButtonClick.InvokeAsync(args);
         }
 
         public Task AddQuantity(MouseEventArgs args)
         {
-            return OnRemoveQuantityButtonClick.InvokeAsync(args);
+            return OnAddQuantityButtonClick.InvokeAsync(args);
         }
+
+        #region CLASSMAPPERS
+
+        protected string ClassName => new ClassMapper()
+                 .Add("giz-shop-quantity-picker")
+                 .Add($"giz-shop-quantity-picker--{Size.ToDescriptionString()}")
+                 .AsString();
+
+        #endregion
+
     }
 }

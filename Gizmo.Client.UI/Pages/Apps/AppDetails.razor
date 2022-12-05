@@ -45,7 +45,7 @@
                 <div class="giz-app-details__app__info__details__executables">
                     @if (ApplicationDetailsPageService.ViewState.Application.Executables.Count > 1)
                     {
-                        <ComboButton Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" OnClickMainButton="@OnClickMainButtonHandler">
+                        <ComboButton Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" OnClickMainButton="@OnClickMainButtonHandler">
                             <ChildContent>
                                 @localizationService.GetString("GIZ_APPS_LAUNCH")
                             </ChildContent>
@@ -89,7 +89,7 @@
                     }
                     else
                     {
-                        <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => OnClickMainButtonHandler())">@localizationService.GetString("GIZ_APPS_LAUNCH")</Button>
+                        <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => OnClickMainButtonHandler())">@localizationService.GetString("GIZ_APPS_LAUNCH")</Button>
                     }
                 </div>
 

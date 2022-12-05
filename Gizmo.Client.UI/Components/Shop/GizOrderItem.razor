@@ -23,10 +23,6 @@
             @OrderLine.TotalPointsPrice?.ToString("N0")
             <PointsIcon />
         </div>
-        <div class="giz-shop-quantity-picker">
-            <button class="giz-decrease-btn" @onclick="@(() => RemoveQuantity())">-</button>
-            <span>@OrderLine.Quantity</span>
-            <button class="giz-increase-btn" @onclick="@(() => AddQuantity())">+</button>
-        </div>
+        <QuantityPicker Size="ButtonSizes.Small" Quantity="@OrderLine.Quantity" OnAddQuantityButtonClick="@(() => AddQuantity())" OnRemoveQuantityButtonClick="@(() => RemoveQuantity())" />
     </div>
 </div>
