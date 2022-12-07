@@ -27,7 +27,9 @@
                 height: 100%;
                 color: white;
 
-                svg {
+                .giz-icon--large {
+                    width: 3.0rem;
+                    height: 3.0rem;
                     color: #FAFAFA;
                 }
 
@@ -35,7 +37,7 @@
                     color: $primary-color;
                     position: relative;
 
-                    svg {
+                    .giz-icon--large {
                         color: #0078D2;
                     }
 
@@ -79,7 +81,13 @@
             @include font-xl($font-weight-regular);
 
             &__icon {
+                display: flex;
                 margin-right: 1.0rem;
+
+                .giz-icon--small {
+                    width: 2.0rem;
+                    height: 2.0rem;
+                }
             }
 
             & > .giz-user-menu-button {
@@ -88,7 +96,7 @@
                 align-items: center;
                 gap: 1.0rem;
                 white-space: nowrap;
-                padding: 0.7rem;
+                padding: 0 0.7rem;
                 border-radius: 0.8rem;
                 cursor: pointer;
                 height: 4.8rem;
@@ -97,6 +105,11 @@
                 border: none;
                 color: #FAFAFA;
                 @include font-xl($font-weight-regular);
+
+                .giz-icon--extra-large {
+                    width: 4.0rem;
+                    height: 4.0rem;
+                }
             }
         }
     }
@@ -112,12 +125,17 @@
     &.open {
         .giz-user-menu-button {
             background: #1D334E;
-            box-shadow: inset 0px 0px 101px rgba(255, 255, 255, 0.06);
+            box-shadow: inset 0 0 10.1rem rgba(255, 255, 255, 0.06);
+
+            .giz-icon {
+                color: #0F7CFE;
+            }
         }
     }
 }
 
 .user-menu-item-button {
+    display: flex;
     cursor: pointer;
 
     &--box {

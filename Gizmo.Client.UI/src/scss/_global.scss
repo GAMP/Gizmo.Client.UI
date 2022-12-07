@@ -44,29 +44,29 @@ main {
             border-top: none;
             border-left: none;
             border-right: none;
-            border-bottom: 2px solid rgba(246, 251, 253, 0.28);
+            border-bottom: 0.2rem solid rgba(246, 251, 253, 0.28);
             border-radius: 0;
 
             &:hover {
                 border-top: none;
                 border-left: none;
                 border-right: none;
-                border-bottom: 2px solid rgba(246, 251, 253, 0.28);
+                border-bottom: 0.2rem solid rgba(246, 251, 253, 0.28);
             }
 
             &:focus-within {
                 border-top: none;
                 border-left: none;
                 border-right: none;
-                border-bottom: 2px solid #0091E6;
+                border-bottom: 0.2rem solid #0091E6;
             }
 
             input {
                 text-align: center;
                 //Font ?
                 font-weight: 700;
-                font-size: 26px;
-                line-height: 34px;
+                font-size: 2.6rem;
+                line-height: 3.4rem;
             }
         }
     }
@@ -74,14 +74,14 @@ main {
     &.error {
         .giz-input-text {
             .giz-input-root--outline {
-                border-bottom: 2px solid #F73B3B;
+                border-bottom: 0.2rem solid #F73B3B;
 
                 &:hover {
-                    border-bottom: 2px solid #F73B3B;
+                    border-bottom: 0.2rem solid #F73B3B;
                 }
 
                 &:focus-within {
-                    border-bottom: 2px solid #F73B3B;
+                    border-bottom: 0.2rem solid #F73B3B;
                 }
             }
         }
@@ -94,7 +94,7 @@ main {
         width: 100%;
         height: 100%;
         background: linear-gradient(180deg, rgba(35, 35, 45, 0.9) 0%, rgba(42, 44, 53, 0.15) 100%);
-        backdrop-filter: blur(30px);
+        backdrop-filter: blur(3.0rem);
         z-index: $lock-overlay-index;
     }
 
@@ -107,37 +107,37 @@ main {
     }
 
     &__title {
-        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 8px 24px rgba(0, 0, 0, 0.2);
-        margin-bottom: 12px;
+        text-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25), 0 0.8rem 2.4rem rgba(0, 0, 0, 0.2);
+        margin-bottom: 1.2rem;
         @include font-h1($font-weight-bold);
     }
 
     &__subtitle {
-        text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2), 0px 2px 4px rgba(0, 0, 0, 0.2);
-        margin-bottom: 52px;
+        text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.2rem 0.4rem rgba(0, 0, 0, 0.2);
+        margin-bottom: 5.2rem;
         @include font-l($font-weight-light);
     }
 
     &__error {
-        margin-top: 4px;
-        margin-bottom: 24px;
+        margin-top: 0.4rem;
+        margin-bottom: 2.4rem;
         color: #C74952;
         @include font-m($font-weight-light);
     }
 
     &__numpad {
         display: flex;
-        gap: 4px;
-        margin-top: 52px;
-        margin-bottom: 48px;
+        gap: 0.4rem;
+        margin-top: 5.2rem;
+        margin-bottom: 4.8rem;
 
         & > .giz-button {
-            width: 48px;
+            width: 4.8rem;
         }
     }
 
     &__actions {
-        margin-bottom: 32px;
+        margin-bottom: 3.2rem;
     }
 
     &__note {
@@ -147,7 +147,7 @@ main {
 }
 
 .compo-test {
-    margin-bottom: 20px;
+    margin-bottom: 2.0rem;
 }
 
 .giz-empty-state {
@@ -163,7 +163,7 @@ main {
     }
 
     &__text {
-        margin-top: 20px;
+        margin-top: 2.0rem;
         color: rgba(255, 255, 255, 0.6);
         @include font-m($font-weight-light);
     }
@@ -177,7 +177,7 @@ main {
     align-items: center;
 
     .giz-animate-spinner {
-        height: 32px;
+        height: 3.2rem;
 
         .giz-spinner {
             color: #0078D2;
@@ -186,13 +186,13 @@ main {
 
     &__title {
         color: #FAFAFA;
-        margin-top: 20px;
+        margin-top: 2.0rem;
         @include font-xxl($font-weight-bold);
     }
 
     &__text {
         color: rgba(255, 255, 255, 0.6);
-        margin-top: 20px;
+        margin-top: 2.0rem;
         @include font-m($font-weight-light);
     }
 }
@@ -236,20 +236,20 @@ main {
 }
 
 .giz-ads-carousel {
-    padding-top: 16px;
+    padding-top: 1.6rem;
 }
 
 .giz-registration-form-input {
-    margin-bottom: 4px;
+    margin-bottom: 0.4rem;
 }
 
 .giz-form-input {
-    margin-bottom: 16px;
+    margin-bottom: 1.6rem;
 }
 
 .giz-form-input-columns {
     display: flex;
-    gap: 16px;
+    gap: 1.6rem;
 
     & > div {
         flex: 1;
@@ -259,8 +259,8 @@ main {
 .order-on-hold {
     background-color: #F38B01;
     color: #FAFAFA;
-    border-radius: 4px;
-    padding: 3px 8px;
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.8rem;
     text-align: center;
     @include font-s($font-weight-light);
 }
@@ -268,8 +268,8 @@ main {
 .order-completed {
     background-color: #24C38E;
     color: #FAFAFA;
-    border-radius: 4px;
-    padding: 3px 8px;
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.8rem;
     text-align: center;
     @include font-s($font-weight-light);
 }
@@ -277,8 +277,8 @@ main {
 .order-canceled {
     background-color: #33000F;
     color: #FAFAFA;
-    border-radius: 4px;
-    padding: 3px 8px;
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.8rem;
     text-align: center;
     @include font-s($font-weight-light);
 }
@@ -286,8 +286,8 @@ main {
 .order-accepted {
     background-color: #F2C94C;
     color: #FAFAFA;
-    border-radius: 4px;
-    padding: 3px 8px;
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.8rem;
     text-align: center;
     @include font-s($font-weight-light);
 }
@@ -361,15 +361,15 @@ main {
             .giz-icon {
                 background: rgba(0, 120, 210, 0.4);
                 border-radius: 50%;
-                width: 16px;
-                height: 16px;
+                width: 1.6rem;
+                height: 1.6rem;
                 display: inline-flex;
                 justify-content: center;
 
                 svg {
                     color: #0b1a24;
-                    width: 10px;
-                    height: 10px;
+                    width: 1.0rem;
+                    height: 1.0rem;
                 }
             }
         }
@@ -384,4 +384,11 @@ main {
 
 .user-agreement {
     @include font-l($font-weight-light);
+}
+
+.giz-country-flag {
+    .giz-icon--small {
+        width: 2.0rem;
+        height: 2.0rem;
+    }
 }

@@ -19,12 +19,12 @@
         display: flex;
         gap: 6.2rem;
         padding: 2.4rem 3.2rem;
-        border: 1px solid rgba(246, 251, 253, 0.06);
+        border: 0.1rem solid rgba(246, 251, 253, 0.06);
         border-radius: 1.6rem;
         white-space: nowrap;
 
         &-item {
-            height: 46rem;
+            height: 4.6rem;
             @include font-l($font-weight-regular);
 
             .giz-icon--medium {
@@ -79,7 +79,7 @@
             margin-bottom: 2.4rem;
             @include font-h5($font-weight-regular);
 
-            svg {
+            .giz-icon {
                 margin-left: 1.8rem;
             }
         }
@@ -141,7 +141,7 @@
 
             &__name {
                 color: #FAFAFA;
-                text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 8px rgba(0, 0, 0, 0.2);
+                text-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25), 0 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
                 //Font ?
                 font-size: 3.6rem;
                 line-height: 4.4rem;
@@ -150,7 +150,7 @@
 
             &__host {
                 color: rgba(255, 255, 255, 0.6);
-                text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2), 0px 1px 1px rgba(0, 0, 0, 0.2);
+                text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
                 @include font-xxl($font-weight-regular);
             }
         }
@@ -180,13 +180,13 @@
 
             .giz-title {
                 color: rgba(255, 255, 255, 0.6);
-                text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2), 0px 1px 1px rgba(0, 0, 0, 0.2);
+                text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
                 @include font-s($font-weight-light);
             }
 
             .giz-numbers {
                 color: #FAFAFA;
-                text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2), 0px 1px 1px rgba(0, 0, 0, 0.2);
+                text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
                 @include font-xxl($font-weight-regular);
             }
         }
@@ -235,7 +235,31 @@
         &__header {
             text-align: center;
             padding-bottom: 2.0rem;
-            border-bottom: 1px solid rgba(246, 251, 253, 0.06);
+            border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
+
+            &__icon {
+                .giz-icon--extra-large {
+                    width: 11.2rem;
+                    height: 11.2rem;
+                    position: relative;
+
+                    &:after {
+                        position: absolute;
+                        top: 1.0rem;
+                        left: 1.0rem;
+                        width: calc(100% - 2.0rem);
+                        height: calc(100% - 2.0rem);
+                        border-radius: 50%;
+                        content: '';
+                        background: #101419;
+                    }
+
+                    svg {
+                        z-index: 1;
+                        color: #2E3D4F;
+                    }
+                }
+            }
 
             &__title {
                 margin-top: 3.2rem;
@@ -245,7 +269,7 @@
 
             &__subtitle {
                 color: rgba(250, 250, 250, 0.6);
-                text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2), 0px 1px 1px rgba(0, 0, 0, 0.2);
+                text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
                 //Font ?
                 font-style: normal;
                 font-weight: 500;
@@ -262,7 +286,7 @@
 .giz-settings-change-password {
     display: inline-block;
     color: #0F9FFF;
-    border-bottom: 1px solid #0F9FFF;
+    border-bottom: 0.1rem solid #0F9FFF;
     cursor: pointer;
     @include font-l($font-weight-light);
 }
