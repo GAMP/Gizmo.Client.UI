@@ -13,6 +13,7 @@ namespace Gizmo.Client.UI.Components
         private System.Threading.Timer _timer;
 
         private List<AdsCarouselItem> _items = new List<AdsCarouselItem>();
+        private List<AdsCarouselItem> _duplicates = new List<AdsCarouselItem>();
 
         private int _selectedIndex;
 
@@ -35,44 +36,9 @@ namespace Gizmo.Client.UI.Components
                 if (_selectedIndex == value)
                     return;
 
-                if (_items.Count > 3)
+                if (_items.Count > 2)
                 {
-                    if (_selectedIndex < value)
-                    {
-                        if (_selectedIndex == 0 && value == _items.Count - 1)
-                        {
-                            SlideRight(value);
-                        }
-                        else
-                        {
-                            if (_selectedIndex + 1 == value)
-                            {
-                                SlideLeft(value);
-                            }
-                            else
-                            {
-                                _ = FadeOut(value);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (_selectedIndex == _items.Count - 1 && value == 0)
-                        {
-                            SlideLeft(value);
-                        }
-                        else
-                        {
-                            if (_selectedIndex - 1 == value)
-                            {
-                                SlideRight(value);
-                            }
-                            else
-                            {
-                                _ = FadeOut(value);
-                            }
-                        }
-                    }
+                    _ = FadeOut(value);
                 }
 
                 _selectedIndex = value;
@@ -99,100 +65,87 @@ namespace Gizmo.Client.UI.Components
 
         #region METHODS
 
+        bool _duplicatesActive = false;
+
         private async Task FadeOut(int index)
         {
             for (int i = 0; i < _items.Count; i++)
             {
-                _items[i].FadeOut();
+                if (!_duplicatesActive)
+                    _items[i].FadeOut();
+                else
+                    _duplicates[i].FadeOut();
             }
-
-            await Task.Delay(500);
 
             if (_items != null && index >= 0 && _selectedIndex >= 0 && index < _items.Count && _selectedIndex < _items.Count)
             {
-                for (int i = 0; i < _items.Count; i++)
+                if (!_duplicatesActive)
                 {
-                    _items[i].Clear();
+                    _duplicates[GetItemIndex(index, -1)].FadeIn(1);
+                    _duplicates[index].FadeIn(2);
+                    _duplicates[GetItemIndex(index, 1)].FadeIn(3);
                 }
-
-                _items[index].FadeIn(1);
-
-                if (index + 1 < _items.Count)
-                    _items[index + 1].FadeIn(2);
                 else
-                    _items[index + 1 - _items.Count].FadeIn(2);
-
-                if (index + 2 < _items.Count)
-                    _items[index + 2].FadeIn(3);
-                else
-                    _items[_selectedIndex + 2 - _items.Count].FadeIn(3);
+                {
+                    _items[GetItemIndex(index, -1)].FadeIn(1);
+                    _items[index].FadeIn(2);
+                    _items[GetItemIndex(index, 1)].FadeIn(3);
+                }
             }
-        }
 
-        private void SlideLeft(int index)
-        {
-            if (_items != null && index >= 0 && _selectedIndex >= 0 && index < _items.Count && _selectedIndex < _items.Count)
+            _duplicatesActive = !_duplicatesActive;
+
+            await Task.Delay(1000);
+
+            for (int i = 0; i < _items.Count; i++)
             {
-                for (int i = 0; i < _items.Count; i++)
-                {
+                if (!_duplicatesActive)
+                    _duplicates[i].Clear();
+                else
                     _items[i].Clear();
-                }
-
-                _items[_selectedIndex].SetIndex(1, -1);
-
-                if (_selectedIndex + 1 < _items.Count)
-                    _items[_selectedIndex + 1].SetIndex(2, -1);
-                else
-                    _items[_selectedIndex + 1 - _items.Count].SetIndex(2, -1);
-
-                if (_selectedIndex + 2 < _items.Count)
-                    _items[_selectedIndex + 2].SetIndex(3, -1);
-                else
-                    _items[_selectedIndex + 2 - _items.Count].SetIndex(3, -1);
-
-                if (_selectedIndex + 3 < _items.Count)
-                    _items[_selectedIndex + 3].SetIndex(4, -1);
-                else
-                    _items[_selectedIndex + 3 - _items.Count].SetIndex(4, -1);
             }
         }
 
-        private void SlideRight(int index)
+        private int GetItemIndex(int index, int direction)
         {
-            if (_items != null && index >= 0 && _selectedIndex >= 0 && index < _items.Count && _selectedIndex < _items.Count)
+            if (direction == 1)
             {
-                for (int i = 0; i < _items.Count; i++)
+                if (index == _items.Count - 1)
                 {
-                    _items[i].Clear();
+                    return 0;
                 }
-
-                _items[index].SetIndex(1, 1);
-
-                if (index + 1 < _items.Count)
-                    _items[index + 1].SetIndex(2, 1);
                 else
-                    _items[index + 1 - _items.Count].SetIndex(2, 1);
-
-                if (index + 2 < _items.Count)
-                    _items[index + 2].SetIndex(3, 1);
+                {
+                    return index + 1;
+                }
+            }
+            else
+            {
+                if (index == 0)
+                {
+                    return _items.Count - 1;
+                }
                 else
-                    _items[index + 2 - _items.Count].SetIndex(3, 1);
-
-                if (index + 3 < _items.Count)
-                    _items[index + 3].SetIndex(4, 1);
-                else
-                    _items[index + 3 - _items.Count].SetIndex(4, 1);
+                {
+                    return index - 1;
+                }
             }
         }
 
-        internal void Register(AdsCarouselItem item)
+        internal void Register(AdsCarouselItem item, bool duplicate)
         {
-            _items.Add(item);
+            if (!duplicate)
+                _items.Add(item);
+            else
+                _duplicates.Add(item);
         }
 
-        internal void Unregister(AdsCarouselItem item)
+        internal void Unregister(AdsCarouselItem item, bool duplicate)
         {
-            _items.Remove(item);
+            if (!duplicate)
+                _items.Remove(item);
+            else
+                _duplicates.Remove(item);
         }
 
         private void SlideNext(object stateInfo)
@@ -239,11 +192,11 @@ namespace Gizmo.Client.UI.Components
 
         protected override Task OnFirstAfterRenderAsync()
         {
-            if (_items.Count > 3)
+            if (_items.Count > 2)
             {
-                _items[0].SetIndex(1, 0);
-                _items[1].SetIndex(2, 0);
-                _items[2].SetIndex(3, 0);
+                _items[2].FadeIn(1);
+                _items[0].FadeIn(2);
+                _items[1].FadeIn(3);
             }
 
             return base.OnFirstAfterRenderAsync();

@@ -103,8 +103,8 @@ namespace Gizmo.Client.UI.Components
 
         protected string ClassName => new ClassMapper()
                 .Add("giz-dock-item")
-                .If("scaled", () => _scaled)
-                .If("half-scaled", () => _halfScaled)
+                //.If("scaled", () => _scaled)
+                //.If("half-scaled", () => _halfScaled)
                 .AsString();
 
         #endregion

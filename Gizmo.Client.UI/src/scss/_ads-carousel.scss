@@ -3,6 +3,9 @@
 .giz-ads-carousel {
     display: grid;
     grid-template-rows: min-content 1fr min-content;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
 
     &__header {
         margin-bottom: 1.6rem;
@@ -11,48 +14,100 @@
 
     &__body {
         position: relative;
-        height: 36.5rem;
+        height: 40.0rem;
         overflow: hidden;
     }
 
     &__navigation {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        align-items: center;
         margin-top: 2.1rem;
-        color: rgba(255, 255, 255, 0.3);
-        @include font-s($font-weight-regular);
     }
 
     &-item {
         position: absolute;
-        top: 0;
-        height: 100%;
+        border-radius: 4.0rem;
+        overflow: hidden;
         display: none;
 
-        &.current {
-            display: inline-block;
-            position: relative;
-            left: 0;
-            width: calc(50% - 1.2rem);
+        &.single {
+        }
+
+        &.first {
         }
 
         &.second {
-            display: inline-block;
-            left: calc(50% + 1.2rem);
-            width: calc(25% - 1.8rem);
         }
 
-        &.third {
+        &.previous {
             display: inline-block;
-            left: calc(75% + 1.8rem);
-            width: calc(25% - 1.8rem);
+            width: 72.2rem;
+            height: 38.0rem;
+            top: 1.0rem;
+            right: calc(50% + 3.4rem);
+            transform: translateX(-50%);
+            mask-image: linear-gradient(to left, rgba(0,0,0,1), rgba(0,0,0,1), rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0));
+            cursor: pointer;
+
+            &:after {
+                content: '';
+                background-color: black;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0.2;
+            }
+
+            &:hover {
+                &:after {
+                    opacity: 0;
+                }
+            }
+
+            .giz-ads-carousel-item__content-wrapper {
+                visibility: hidden;
+            }
+        }
+
+        &.current {
+            display: inline-block;
+            width: 76.0rem;
+            height: 40.0rem;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         &.next {
             display: inline-block;
-            left: 100%;
-            width: calc(25% - 1.8rem);
+            width: 72.2rem;
+            height: 38.0rem;
+            top: 1.0rem;
+            left: calc(50% + 3.4rem);
+            transform: translateX(50%);
+            mask-image: linear-gradient(to right, rgba(0,0,0,1), rgba(0,0,0,1), rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0));
+            cursor: pointer;
+
+            &:after {
+                content: '';
+                background-color: black;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0.2;
+            }
+
+            &:hover {
+                &:after {
+                    opacity: 0;
+                }
+            }
+
+            .giz-ads-carousel-item__content-wrapper {
+                visibility: hidden;
+            }
         }
 
         &__image {
@@ -69,6 +124,10 @@
             display: grid;
             grid-template-rows: min-content 1fr min-content;
             height: 100%;
+            overflow: hidden;
+            //white-space: nowrap;
+            text-overflow: ellipsis;
+            @include font-m($font-weight-light);
 
             &-wrapper {
                 position: absolute;
@@ -76,20 +135,7 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                padding: 8.6rem 3.2rem 6.5rem 3.2rem;
-            }
-
-            &__title {
-                margin-bottom: 2.4rem;
-                @include font-h5($font-weight-bold);
-            }
-
-            &__text {
-                overflow: hidden;
-                //white-space: nowrap;
-                text-overflow: ellipsis;
-                margin-bottom: 3.2rem;
-                @include font-m($font-weight-light);
+                //padding: 8.6rem 3.2rem 6.5rem 3.2rem;
             }
         }
     }
@@ -115,164 +161,25 @@
         }
     }
 
-    .slide-left-current {
-        left: -50%;
-        animation-duration: 1s;
-        animation-name: ads-slide-left-current-anim;
-    }
-
-    .slide-left-second {
-        left: 0;
-        width: calc(50% - 1.2rem);
-        animation-duration: 1s;
-        animation-name: ads-slide-left-second-anim;
-    }
-
-    .slide-left-third {
-        left: calc(50% + 1.2rem);
-        width: calc(25% - 1.8rem);
-        animation-duration: 1s;
-        animation-name: ads-slide-left-third-anim;
-    }
-
-    .slide-left-next {
-        left: calc(75% + 1.8rem);
-        width: calc(25% - 1.8rem);
-        animation-duration: 1s;
-        animation-name: ads-slide-left-next-anim;
-    }
-
-    .slide-right-current {
-        left: 0;
-        width: calc(50% - 1.2rem);
-        animation-duration: 1s;
-        animation-name: ads-slide-right-current-anim;
-    }
-
-    .slide-right-second {
-        left: calc(50% + 1.2rem);
-        width: calc(25% - 1.8rem);
-        animation-duration: 1s;
-        animation-name: ads-slide-right-second-anim;
-    }
-
-    .slide-right-third {
-        left: calc(75% + 1.8rem);
-        width: calc(25% - 1.8rem);
-        animation-duration: 1s;
-        animation-name: ads-slide-right-third-anim;
-    }
-
-    .slide-right-next {
-        left: 100%;
-        animation-duration: 1s;
-        animation-name: ads-slide-right-next-anim;
-    }
-
     .fade-out-previously {
-        //top: 100%;
-        animation-duration: 0.5s;
+        animation-duration: 1s;
         animation-name: ads-fade-out-previously-anim;
+        animation-timing-function: ease-in-out;
     }
 
     .fade-in-current {
-        animation-duration: 0.5s;
+        animation-duration: 1s;
         animation-name: ads-fade-in-current-anim;
+        animation-timing-function: ease-in-out;
     }
-}
-
-@keyframes ads-slide-left-current-anim {
-    from {
-        left: 0;
-    }
-
-    to {
-        left: -50%;
-    }
-}
-
-@keyframes ads-slide-left-second-anim {
-    from {
-        left: calc(50% + 1.2rem);
-        width: calc(25% - 1.8rem);
-    }
-
-    to {
-        left: 0;
-        width: calc(50% - 1.2rem);
-    }
-}
-
-@keyframes ads-slide-left-third-anim {
-    from {
-        left: calc(75% + 1.8rem);
-    }
-
-    to {
-        left: calc(50% + 1.2rem);
-    }
-}
-
-@keyframes ads-slide-left-next-anim {
-    from {
-        left: 100%;
-    }
-
-    to {
-        left: calc(75% + 1.8rem);
-    }
-}
-
-@keyframes ads-slide-right-current-anim {
-    from {
-        left: -50%;
-    }
-
-    to {
-        left: 0;
-    }
-}
-
-@keyframes ads-slide-right-second-anim {
-    from {
-        left: 0;
-        width: calc(50% - 1.2rem);
-    }
-
-    to {
-        left: calc(50% + 1.2rem);
-        width: calc(25% - 1.8rem);
-    }
-}
-
-@keyframes ads-slide-right-third-anim {
-    from {
-        left: calc(50% + 1.2rem);
-    }
-
-    to {
-        left: calc(75% + 1.8rem);
-    }
-}
-
-@keyframes ads-slide-right-next-anim {
-    from {
-        left: calc(75% + 1.8rem);
-    }
-
-    to {
-        left: 100%;
-    }
-}
+}    
 
 @keyframes ads-fade-out-previously-anim {
     from {
-        //top: 0;
         opacity: 1;
     }
 
     to {
-        //top: 100%;
         opacity: 0;
     }
 }
