@@ -4,12 +4,16 @@
 @using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
 
-<div class="@Class @ClassName">
+<div class="@Class @ClassName"
+	 @onmouseover="OnMouseOverHandler"
+	 @onmouseout="OnMouseOutHandler">
 	<div class="giz-dock-item-content">
 		@ChildContent
 	</div>
 
-	<div class="giz-dock-item-tooltip-wrapper @(_isOpen ? "giz-dock-item-tooltip-wrapper--visible" : "")">
+	<div class="giz-dock-item-tooltip-wrapper @(_isOpen ? "giz-dock-item-tooltip-wrapper--visible" : "")"
+		 @onmouseover="OnMouseOverTooltipHandler"
+		 @onmouseout="OnMouseOutTooltipHandler">
 		<div class="giz-dock-item-tooltip">
 			<div class="giz-dock-item-tooltip__header">
 				Teamspeak 3 Client

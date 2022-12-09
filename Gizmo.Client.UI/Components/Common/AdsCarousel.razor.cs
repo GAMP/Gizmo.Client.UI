@@ -1,6 +1,7 @@
 ﻿using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,14 +9,18 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class AdsCarousel : CustomDOMComponentBase
     {
+        const int ANIMATION_TIME = 1000;
+
         #region FIELDS
 
-        private System.Threading.Timer _timer;
+        private System.Timers.Timer _timer;
 
         private List<AdsCarouselItem> _items = new List<AdsCarouselItem>();
         private List<AdsCarouselItem> _duplicates = new List<AdsCarouselItem>();
 
         private int _selectedIndex;
+
+        private bool _duplicatesActive = false;
 
         #endregion
 
@@ -65,7 +70,10 @@ namespace Gizmo.Client.UI.Components
 
         #region METHODS
 
-        bool _duplicatesActive = false;
+        private void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            SlideNext(sender);
+        }
 
         private async Task FadeOut(int index)
         {
@@ -95,7 +103,7 @@ namespace Gizmo.Client.UI.Components
 
             _duplicatesActive = !_duplicatesActive;
 
-            await Task.Delay(1000);
+            await Task.Delay(ANIMATION_TIME);
 
             for (int i = 0; i < _items.Count; i++)
             {
@@ -159,6 +167,26 @@ namespace Gizmo.Client.UI.Components
             InvokeAsync(StateHasChanged);
         }
 
+        internal void SetCurrent(AdvertisementViewState advertisement)
+        {
+            for (int i = 0; i < _items.Count; i++)
+            {
+                if (_items[i].Advertisement == advertisement)
+                {
+                    if (_selectedIndex == i)
+                        return;
+
+                    _timer.Stop();
+
+                    SelectedIndex = i;
+
+                    InvokeAsync(StateHasChanged);
+
+                    _timer.Start();
+                }
+            }
+        }
+
         #endregion
 
         #region OVERRIDES
@@ -174,15 +202,21 @@ namespace Gizmo.Client.UI.Components
                 {
                     if (_timer != null)
                     {
+                        _timer.Elapsed -= timer_Elapsed;
+                        _timer.Stop();
                         _timer.Dispose();
                         _timer = null;
                     }
-                    _timer = new System.Threading.Timer(SlideNext, new System.Threading.AutoResetEvent(false), Interval, Interval);
+                    _timer = new System.Timers.Timer(Interval);
+                    _timer.Elapsed += timer_Elapsed;
+                    _timer.Start();
                 }
                 else
                 {
                     if (_timer != null)
                     {
+                        _timer.Elapsed -= timer_Elapsed;
+                        _timer.Stop();
                         _timer.Dispose();
                         _timer = null;
                     }
@@ -206,6 +240,8 @@ namespace Gizmo.Client.UI.Components
         {
             if (_timer != null)
             {
+                _timer.Elapsed -= timer_Elapsed;
+                _timer.Stop();
                 _timer.Dispose();
                 _timer = null;
             }

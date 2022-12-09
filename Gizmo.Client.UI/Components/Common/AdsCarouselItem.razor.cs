@@ -49,6 +49,11 @@ namespace Gizmo.Client.UI.Components
             InvokeAsync(StateHasChanged);
         }
 
+        private void OnClickHandler()
+        {
+            Parent.SetCurrent(Advertisement); 
+        }
+
         #region OVERRIDE
 
         protected override void OnInitialized()

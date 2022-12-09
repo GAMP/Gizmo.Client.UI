@@ -8,63 +8,112 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class GizDockItem : CustomDOMComponentBase
     {
+        const int OPEN_DEFAULT_DELAY = 2000;
+        const int CLOSE_DEFAULT_DELAY = 200;
+
+        #region CONSTRUCTOR
+        public GizDockItem()
+        {
+            _openDeferredAction = new DeferredAction(Open);
+            _openDelayTimeSpan = new TimeSpan(0, 0, 0, 0, _openDelay);
+
+            _closeDeferredAction = new DeferredAction(Close);
+            _closeDelayTimeSpan = new TimeSpan(0, 0, 0, 0, _closeDelay);
+        }
+        #endregion
+
+        #region FIELDS
+
         private bool _scaled;
         private bool _halfScaled;
 
+        private DeferredAction _openDeferredAction;
+        private int _openDelay = OPEN_DEFAULT_DELAY;
+        private TimeSpan _openDelayTimeSpan;
+
+        private DeferredAction _closeDeferredAction;
+        private int _closeDelay = CLOSE_DEFAULT_DELAY;
+        private TimeSpan _closeDelayTimeSpan;
+
         private bool _isOpen;
 
-        [CascadingParameter]
-        protected GizDock Parent { get; set; }
+        private bool _preventClose;
+
+        protected bool _shouldRender;
+
+        #endregion
 
         [Parameter]
         public RenderFragment ChildContent { get; set; }
 
         public void OnMouseOverHandler(MouseEventArgs args)
         {
-            if (Parent != null)
-            {
-                Parent.Activate(this);
-            }
+            _preventClose = true;
+
+            _openDeferredAction.Defer(_openDelayTimeSpan);
+
+            InvokeVoidAsync("writeLine", $"OnMouseOverHandler {this.ToString()}");
         }
 
         public void OnMouseOutHandler(MouseEventArgs args)
         {
-            if (Parent != null)
-            {
-                Parent.Deactivate(this);
-            }
+            _preventClose = false;
+
+            _closeDeferredAction.Defer(_closeDelayTimeSpan);
         }
 
-        internal void Scale()
+        public void OnMouseOverTooltipHandler(MouseEventArgs args)
         {
-            _scaled = true;
+            _preventClose = true;
+        }
 
+        public void OnMouseOutTooltipHandler(MouseEventArgs args)
+        {
+            _preventClose = false;
+
+            _closeDeferredAction.Defer(_closeDelayTimeSpan);
+        }
+
+        private Task Open()
+        {
             _isOpen = true;
+
+            _shouldRender = true;
+
+            return InvokeAsync(StateHasChanged);
         }
 
-        internal void HalfScale()
+        private Task Close()
         {
-            _halfScaled = true;
+            if (!_preventClose)
+            {
+                _openDeferredAction.Cancel();
 
-            StateHasChanged();
-        }
+                if (_isOpen)
+                {
+                    _isOpen = false;
 
-        internal void Reset(bool changeState = false)
-        {
-            _isOpen = false;
-            _scaled = false;
-            _halfScaled = false;
+                    _shouldRender = true;
 
-            if (changeState)
-                StateHasChanged();
+                    return InvokeAsync(StateHasChanged);
+                }
+            }
+
+            return Task.CompletedTask;
         }
 
         #region OVERRIDE
+
+        protected override bool ShouldRender()
+        {
+            return _shouldRender;
+        }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (!firstRender)
             {
+                _shouldRender = false;
                 await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
             }
             else
@@ -75,36 +124,12 @@ namespace Gizmo.Client.UI.Components
             await base.OnAfterRenderAsync(firstRender);
         }
 
-        protected override void OnInitialized()
-        {
-            if (Parent != null)
-            {
-                Parent.Register(this);
-            }
-        }
-
-        public override void Dispose()
-        {
-            try
-            {
-                if (Parent != null)
-                {
-                    Parent.Unregister(this);
-                }
-            }
-            catch (Exception) { }
-
-            base.Dispose();
-        }
-
         #endregion
 
         #region CLASSMAPPERS
 
         protected string ClassName => new ClassMapper()
                 .Add("giz-dock-item")
-                //.If("scaled", () => _scaled)
-                //.If("half-scaled", () => _halfScaled)
                 .AsString();
 
         #endregion

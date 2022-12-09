@@ -33,33 +33,33 @@ namespace Gizmo.Client.UI.Components
             _items.Remove(item);
         }
 
-        internal void Activate(GizDockItem item)
-        {
-            var index = _items.IndexOf(item);
-            if (index > 0)
-            {
-                _items[index - 1].HalfScale();
-            }
-            if (index < _items.Count - 1)
-            {
-                _items[index + 1].HalfScale();
-            }
-            item.Scale();
-        }
+        //internal void Activate(GizDockItem item)
+        //{
+        //    var index = _items.IndexOf(item);
+        //    if (index > 0)
+        //    {
+        //        _items[index - 1].HalfScale();
+        //    }
+        //    if (index < _items.Count - 1)
+        //    {
+        //        _items[index + 1].HalfScale();
+        //    }
+        //    item.Scale();
+        //}
 
-        internal void Deactivate(GizDockItem item)
-        {
-            var index = _items.IndexOf(item);
-            if (index > 0)
-            {
-                _items[index - 1].Reset(true);
-            }
-            if (index < _items.Count - 1)
-            {
-                _items[index + 1].Reset(true);
-            }
-            item.Reset();
-        }
+        //internal void Deactivate(GizDockItem item)
+        //{
+        //    var index = _items.IndexOf(item);
+        //    if (index > 0)
+        //    {
+        //        _items[index - 1].Reset(true);
+        //    }
+        //    if (index < _items.Count - 1)
+        //    {
+        //        _items[index + 1].Reset(true);
+        //    }
+        //    item.Reset();
+        //}
 
         #endregion
 
