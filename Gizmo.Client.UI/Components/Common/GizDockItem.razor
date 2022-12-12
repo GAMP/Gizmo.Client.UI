@@ -8,7 +8,31 @@
 	 @onmouseover="OnMouseOverHandler"
 	 @onmouseout="OnMouseOutHandler">
 	<div class="giz-dock-item-content">
-		@ChildContent
+		@if (Executable.ImageId.HasValue)
+        {
+			<GizImage ImageType="Gizmo.UI.ImageType.Executable" ImageId="@Executable.ImageId.Value" />
+        }
+        else
+        {
+            <img src="_content/Gizmo.Client.UI/img/Chrome-icon_1.png" alt="loading" />
+        }
+	</div>
+
+	<div class="giz-dock-item-state">
+		@switch (Executable.State)
+		{
+			case 1:
+				<GizSpinner />
+				break;
+
+			case 2:
+				<CircularProgressBar Size="CircularProgressBarSizes.ExtraSmall" Value="@Executable.StatePercentage" />
+				break;
+
+			case 3:
+				<div class="running"></div>
+				break;
+		}
 	</div>
 
 	<div class="giz-dock-item-tooltip-wrapper @(_isOpen ? "giz-dock-item-tooltip-wrapper--visible" : "")"

@@ -6,18 +6,9 @@
 <div class="quick-launcher">
     <QuickLauncherSwitch />
     <GizDock>
-        @foreach(var item in QuickLaunchService.ViewState.Executables.Take(10))
+        @foreach (var item in QuickLaunchService.ViewState.Executables.Take(10))
         {
-            <GizDockItem>
-                @if (item.ImageId.HasValue)
-                {
-                    <GizImage ImageType="Gizmo.UI.ImageType.Executable" ImageId="@item.ImageId.Value" />
-                }
-                else
-                {
-                    <img src="_content/Gizmo.Client.UI/img/Chrome-icon_1.png" alt="loading" />
-                }
-            </GizDockItem>
+            <GizDockItem Executable="@item" />
         }
     </GizDock>
 </div>

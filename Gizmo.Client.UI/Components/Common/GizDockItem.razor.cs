@@ -1,4 +1,5 @@
-﻿using Gizmo.Web.Components;
+﻿using Gizmo.Client.UI.View.States;
+using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System;
@@ -41,7 +42,7 @@ namespace Gizmo.Client.UI.Components
         #endregion
 
         [Parameter]
-        public RenderFragment ChildContent { get; set; }
+        public ExecutableViewState Executable { get; set; }
 
         public void OnMouseOverHandler(MouseEventArgs args)
         {
