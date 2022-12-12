@@ -21,7 +21,7 @@
                     <div class="giz-change-mobile-dialog-message">Enter the number you’d like to use. To make sure this number is yours, will send you a verification code.</div>
                     <EditForm EditContext="@UserChangeMobileService.EditContext">
                         <div class="giz-registration-form-input">
-                            <CountrySelect HandleSVGIcon="Icons.Select_Client" TValue="Country" Countries="@Countries" @bind-SelectedCountry="@SelectedCountry" Size="InputSizes.Medium" IsFullWidth="true" Label="Country" OpenDirection="PopupOpenDirections.Cursor" Class="giz-input-language-menu" PopupClass="giz-scrollbar--v" />
+                            <IconSelect HandleSVGIcon="Icons.Select_Client" TValue="IconSelectCountry" ItemSource="@Countries" @bind-SelectedItem="@SelectedCountry" Size="InputSizes.Medium" IsFullWidth="true" Label="Country" OpenDirection="PopupOpenDirections.Cursor" Class="giz-input-language-menu" PopupClass="giz-scrollbar--v" />
                         </div>
                         <div class="giz-form-input">
                             <MaskedTextInput Mask="###-###-###" @bind-Value="UserChangeMobileService.ViewState.MobilePhone" Size="InputSizes.Medium" IsFullWidth="true" Label="Phone number" />

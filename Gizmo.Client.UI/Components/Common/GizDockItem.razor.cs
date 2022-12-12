@@ -24,9 +24,6 @@ namespace Gizmo.Client.UI.Components
 
         #region FIELDS
 
-        private bool _scaled;
-        private bool _halfScaled;
-
         private DeferredAction _openDeferredAction;
         private int _openDelay = OPEN_DEFAULT_DELAY;
         private TimeSpan _openDelayTimeSpan;
