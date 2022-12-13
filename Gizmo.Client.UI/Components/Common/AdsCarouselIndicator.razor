@@ -2,10 +2,28 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 
-<div class="giz-ads-carousel-indicator">
-    @for (int i = 0; i < Size; i++)
+<div class="giz-ads-carousel-indicators">
+
+    <div class="giz-ads-carousel-indicators-button">
+        <IconButton Variant="ButtonVariants.Text" Size="ButtonSizes.Small" SVGIcon="Icons.ArrowBack_Client" />
+    </div>
+
+    @if (Size < Maximum)
     {
-        var local_i = i;
-        <div class="giz-ads-carousel-indicator-button @(local_i == SelectedIndex ? "active": "")" @onclick="@(() => OnClickButton(local_i))"></div>
+        <div class="giz-ads-carousel-indicators-list" style="width: @GetIndicatorListSize().ToString(System.Globalization.CultureInfo.InvariantCulture)rem;">
+            @for (int i = 0; i < Size; i++)
+            {
+                var local_i = i;
+                <div class="giz-ads-carousel-indicator @GetIndicatorClass(local_i)"
+                     style="left: @GetIndicatorPosition(local_i).ToString(System.Globalization.CultureInfo.InvariantCulture)rem;"
+                     @onclick="@(() => OnClickButton(local_i))">
+                </div>
+            }
+        </div>
     }
+
+    <div class="giz-ads-carousel-indicators-button">
+        <IconButton Variant="ButtonVariants.Text" Size="ButtonSizes.Small" SVGIcon="Icons.ArrowForward_Client" />
+    </div>
+
 </div>

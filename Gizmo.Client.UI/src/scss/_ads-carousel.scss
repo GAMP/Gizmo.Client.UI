@@ -140,23 +140,47 @@
         }
     }
 
-    &-indicator {
+    &-indicators {
         display: flex;
         justify-content: center;
         align-items: center;
         gap: 3.2rem;
 
         &-button {
-            box-sizing: content-box;
-            width: 0.8rem;
-            height: 0.8rem;
-            border-radius: 50%;
-            background: rgba(250, 250, 250, 0.16);
-            cursor: pointer;
+        }
 
-            &.active {
+        &-list {
+            position: relative;
+            height: 1.6rem;
+        }
+    }
+
+    &-indicator {
+        position: absolute;
+        box-sizing: content-box;
+        width: 1.6rem;
+        height: 1.6rem;
+        border-radius: 50%;
+        cursor: pointer;
+        float: left;
+        background: transparent;
+
+        &:after {
+            position: absolute;
+            border-radius: 50%;
+            content: '';
+            top: 0.4rem;
+            left: 0.4rem;
+            width: calc(100% - 0.8rem);
+            height: calc(100% - 0.8rem);
+            background: rgba(250, 250, 250, 0.16);
+        }
+
+        &.active {
+            background: #0078D2;
+
+            &:after {
                 background: #FAFAFA;
-                border: 0.4rem solid #0078D2;
             }
         }
     }
@@ -191,5 +215,42 @@
 
     to {
         opacity: 1;
+    }
+}
+
+
+.giz-ads-carousel-indicator {
+    &.current {
+        animation-duration: 1s;
+        animation-name: ads-indicator-current-anim;
+        //animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards;
+    }
+
+    &.next {
+        animation-duration: 1s;
+        animation-name: ads-indicator-next-anim;
+        //animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards;
+    }
+}
+
+@keyframes ads-indicator-current-anim {
+    from {
+        margin-left: 0;
+    }
+
+    to {
+        margin-left: 2.3rem;
+    }
+}
+
+@keyframes ads-indicator-next-anim {
+    from {
+        margin-left: 0;
+    }
+
+    to {
+        margin-left: -2.3rem;
     }
 }
