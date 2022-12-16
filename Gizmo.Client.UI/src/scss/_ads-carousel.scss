@@ -64,7 +64,7 @@
                 }
             }
 
-            .giz-ads-carousel-item__content-wrapper {
+            .giz-ads-carousel-item__content {
                 visibility: hidden;
             }
         }
@@ -105,7 +105,7 @@
                 }
             }
 
-            .giz-ads-carousel-item__content-wrapper {
+            .giz-ads-carousel-item__content {
                 visibility: hidden;
             }
         }
@@ -121,21 +121,28 @@
         }
 
         &__content {
-            display: grid;
-            grid-template-rows: min-content 1fr min-content;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
             overflow: hidden;
             //white-space: nowrap;
             text-overflow: ellipsis;
             @include font-m($font-weight-light);
 
-            &-wrapper {
+            &__body {
+            }
+
+            &__actions {
                 position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                //padding: 8.6rem 3.2rem 6.5rem 3.2rem;
+                bottom: 6.4rem;
+                left: 3.2rem;
+
+                .giz-button {
+                    background-color: rgba(250, 250, 250, 0.25);
+                    padding: 0.9rem 8.8rem;
+                }
             }
         }
     }
@@ -144,9 +151,22 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 3.2rem;
+        gap: 1.4rem;
 
         &-button {
+            .giz-icon-button--small {
+                width: 2.4rem;
+                height: 2.4rem;
+                min-width: 2.4rem;
+                min-height: 2.4rem;
+                color: #999999;
+
+                svg {
+                    path {
+                        stroke: #999999;
+                    }
+                }
+            }
         }
 
         &-list {
@@ -162,7 +182,6 @@
         height: 1.6rem;
         border-radius: 50%;
         cursor: pointer;
-        float: left;
         background: transparent;
 
         &:after {

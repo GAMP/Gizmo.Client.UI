@@ -167,6 +167,17 @@ namespace Gizmo.Client.UI.Components
             InvokeAsync(StateHasChanged);
         }
 
+        internal void SetCurrentIndex(int index)
+        {
+            _timer.Stop();
+
+            SelectedIndex = index;
+
+            InvokeAsync(StateHasChanged);
+
+            _timer.Start();
+        }
+
         internal void SetCurrent(AdvertisementViewState advertisement)
         {
             for (int i = 0; i < _items.Count; i++)
@@ -183,6 +194,8 @@ namespace Gizmo.Client.UI.Components
                     InvokeAsync(StateHasChanged);
 
                     _timer.Start();
+
+                    return;
                 }
             }
         }

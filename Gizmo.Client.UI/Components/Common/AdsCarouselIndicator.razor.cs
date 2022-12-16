@@ -6,8 +6,15 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class AdsCarouselIndicator : CustomDOMComponentBase
     {
+        private const decimal INDICATOR_BORDER = 0;
+        private const decimal INDICATOR_DIMENSIONS = 16;
+        private const decimal SPACE_BETWEEN = 16;
+
         private int _selectedIndex;
         private int _direction;
+
+        [CascadingParameter]
+        protected AdsCarousel Parent { get; set; }
 
         [Parameter]
         public int Size { get; set; }
@@ -49,7 +56,23 @@ namespace Gizmo.Client.UI.Components
 
         public void OnClickButton(int index)
         {
-            SelectedIndex = index;
+            Parent?.SetCurrentIndex(index);
+        }
+
+        public void OnClickPreviousButtonHandler()
+        {
+            if (SelectedIndex > 0)
+                Parent?.SetCurrentIndex(SelectedIndex - 1);
+            else
+                Parent?.SetCurrentIndex(Size - 1);
+        }
+
+        public void OnClickNextButtonHandler()
+        {
+            if (SelectedIndex < Size - 1)
+                Parent?.SetCurrentIndex(SelectedIndex + 1);
+            else
+                Parent?.SetCurrentIndex(0);
         }
 
         private string GetIndicatorClass(int index)
@@ -82,10 +105,6 @@ namespace Gizmo.Client.UI.Components
 
             return result;
         }
-
-        private const decimal INDICATOR_BORDER = 2;
-        private const decimal INDICATOR_DIMENSIONS = 16;
-        private const decimal SPACE_BETWEEN = 16;
 
         private decimal GetIndicatorListSize()
         {

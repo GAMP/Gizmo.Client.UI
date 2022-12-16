@@ -3,8 +3,8 @@
 @using Gizmo.Web.Components
 
 <div class="giz-ads-carousel">
-    <div class="giz-ads-carousel__body">
-		<CascadingValue Value="@this" IsFixed="true">
+    <CascadingValue Value="@this" IsFixed="true">
+        <div class="giz-ads-carousel__body">
             @if (Advertisements != null && Advertisements.Count > 0)
             {
                 @foreach (var ad in Advertisements)
@@ -20,11 +20,11 @@
                     } 
                 }
             }
-		</CascadingValue>
-    </div>
-    <div class="giz-ads-carousel__navigation">
-        <div class="giz-ads-carousel__navigation__indicators">
-            <AdsCarouselIndicator Maximum="5" Size="@(Advertisements?.Count ?? 0)" SelectedIndex="@SelectedIndex" SelectedIndexChanged="SelectedIndexChangedHandler" />
         </div>
-    </div>
+        <div class="giz-ads-carousel__navigation">
+            <div class="giz-ads-carousel__navigation__indicators">
+                <AdsCarouselIndicator Maximum="5" Size="@(Advertisements?.Count ?? 0)" SelectedIndex="@SelectedIndex" SelectedIndexChanged="SelectedIndexChangedHandler" />
+            </div>
+        </div>
+    </CascadingValue>
 </div>
