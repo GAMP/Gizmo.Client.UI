@@ -33,22 +33,28 @@
     <div class="giz-order__notes">
         <div class="giz-order__notes__header">@localizationService.GetString("GIZ_SHOP_ORDER_NOTE")</div>
         <div class="giz-order__notes__body">
-            <TextInput @bind-Value="@UserCartService.ViewState.Notes" IsMultiLine="true" IsFullWidth="true" Placeholder="@localizationService.GetString("GIZ_SHOP_ORDER_NOTE_PLACEHOLDER")" Class="giz-order-notes" />
+            <TextInput IsTransparent="true" ValidationErrorStyle="ValidationErrorStyles.BorderOnly" @bind-Value="@UserCartService.ViewState.Notes" IsMultiLine="true" IsFullWidth="true" Placeholder="@localizationService.GetString("GIZ_SHOP_ORDER_NOTE_PLACEHOLDER")" Class="giz-order-notes" />
         </div>
     </div>
 
     <div class="giz-order__totals">
         <div class="giz-order-summary">
             <div class="giz-order-summary-text-bold">@localizationService.GetString("GIZ_SHOP_SUBTOTAL")</div>
-            <div class="giz-order-summary-number-bold">
-                <div>@UserCartService.ViewState.Total.ToString("C")<span class="giz-order-summary-number-separator">&amp;</span>@(UserCartService?.ViewState.PointsTotal)</div>
-                <PointsIcon />
-            </div>
             <div class="giz-order-summary-text">@localizationService.GetString("GIZ_SHOP_EARNED_POINTS")</div>
-            <div class="giz-order-summary-number">
-                @UserCartService.ViewState.PointsAward
-                <PointsAwardIcon />
-            </div>
+            <div class="giz-order-summary-total @(UserCartService?.ViewState.PointsTotal == 0 ? "giz-order-summary-total--no-icon" : "")">@UserCartService.ViewState.Total.ToString("C")<span class="giz-order-summary-number-separator">&amp;</span>@(UserCartService?.ViewState.PointsTotal)</div>
+            @if (UserCartService?.ViewState.PointsTotal == 0)
+            {
+                <div class="giz-order-summary-points">
+                    <div class="giz-order-summary-points-award">@UserCartService.ViewState.PointsAward</div>
+                    <div class="giz-order-summary-points-award-icon"><PointsAwardIcon /></div>
+                </div>
+            }
+            else
+            {
+                <div class="giz-order-summary-points-total-icon"><PointsIcon /></div>
+                <div class="giz-order-summary-points-award">@UserCartService.ViewState.PointsAward</div>
+                <div class="giz-order-summary-points-award-icon"><PointsAwardIcon /></div>
+            }
         </div>
         <div>
             <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" IsDisabled="@(UserCartService.ViewState.Products.Count() == 0)" @onclick="@(() => PlaceOrder())" Text="@localizationService.GetString("GIZ_SHOP_PLACE_ORDER")" />

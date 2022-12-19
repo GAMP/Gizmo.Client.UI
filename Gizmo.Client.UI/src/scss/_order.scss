@@ -134,12 +134,33 @@
 
         .giz-order-summary {
             display: grid;
-            grid-template-columns: 1fr auto;
-            grid-row-gap: 1.2rem;
+            grid-template-columns: 1fr max-content min-content;
+            grid-row-gap: 1.8rem;
+            grid-column-gap: 0.4rem;
             margin-bottom: 2.4rem;
 
-            &-text-bold {
+            .giz-order-summary-text-bold {
+                grid-row-start: 1;
+                grid-row-end: 2;
                 @include font-xxl($font-weight-regular);
+            }
+
+            .giz-order-summary-total {
+                grid-row-start: 1;
+                grid-row-end: 2;
+                @include font-h5($font-weight-bold);
+
+                &--no-icon {
+                    grid-column-start: 2;
+                    grid-column-end: 4;
+                }
+            }
+
+            .giz-order-summary-points-total-icon {
+                grid-row-start: 1;
+                grid-row-end: 2;
+                display: flex;
+                align-items: center;
             }
 
             &-number-bold {
@@ -158,12 +179,39 @@
             }
 
             &-text {
+                grid-row-start: 2;
+                grid-row-end: 3;
+                grid-column-start: 1;
+                grid-column-end: 2;
                 @include font-m($font-weight-light);
             }
 
-            &-number {
+            .giz-order-summary-points-award {
+                grid-row-start: 2;
+                grid-row-end: 3;
+                grid-column-start: 2;
+                grid-column-end: 3;
                 text-align: right;
                 @include font-m($font-weight-light);
+            }
+
+            .giz-order-summary-points-award-icon {
+                grid-row-start: 2;
+                grid-row-end: 3;
+                grid-column-start: 3;
+                grid-column-end: 4;
+                display: flex;
+                align-items: center;
+            }
+
+            .giz-order-summary-points {
+                grid-row-start: 2;
+                grid-row-end: 3;
+                grid-column-start: 3;
+                grid-column-end: 4;
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
             }
         }
     }

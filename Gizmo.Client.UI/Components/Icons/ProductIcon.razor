@@ -1,23 +1,55 @@
 ﻿@namespace Gizmo.Client.UI.Components
+@using Gizmo.Web.Components
 
-<svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_dd_3224_2634)">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M11.9686 11.3046L5.22913 13.1491L2.28571 1.92857L9.02513 0.0840013C9.93713 -0.165713 10.6994 0.284001 10.9434 1.21486L13.076 9.34457C13.3211 10.276 12.8806 11.0549 11.9686 11.3046ZM7.53771 10.7103L10.288 9.95772L10.0668 9.11486L7.31656 9.86743L7.53771 10.7103ZM9.08571 3.99143C8.83371 3.03029 7.86171 2.46057 6.91542 2.71943C5.96971 2.97829 5.40685 3.968 5.65885 4.92914C5.91085 5.89086 6.88285 6.46 7.82913 6.20114C8.77485 5.94229 9.33828 4.95257 9.08571 3.99143ZM10.7263 7.128L5.77485 8.48286L5.99599 9.32629L10.9474 7.97143L10.7263 7.128Z" fill="#FFAC33"/>
+<svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg" class="giz-product-icon">
+<g filter="url(#@FilterId)"
+transform="translate(1.5)">
+<path fill-rule="evenodd"
+clip-rule="evenodd"
+d="M 11.9686,12.8045 5.2292,14.6491 2.28577,3.42854 9.0252,1.58397 c 0.912,-0.24971 1.6743,0.2 1.9183,1.13086 l 2.1326,8.12967 c 0.2451,0.9315 -0.1955,1.7103 -1.1075,1.96 z M 7.53777,12.2103 10.2881,11.4577 10.0669,10.6148 7.31662,11.3674 Z m 1.548,-6.7189 C 8.83377,4.53026 7.86177,3.96054 6.91548,4.2194 5.96977,4.47826 5.40691,5.46797 5.65891,6.42911 c 0.252,0.96172 1.224,1.53086 2.17029,1.272 C 8.77491,7.44226 9.33834,6.45254 9.08577,5.4914 Z M 10.7263,8.62797 5.77491,9.98283 5.99605,10.8263 10.9475,9.4714 Z"
+fill="#ffac33" />
 </g>
 <defs>
-<filter id="filter0_dd_3224_2634" x="0.285706" y="0.0158386" width="14.8573" height="17.1333" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset dy="1"/>
-<feGaussianBlur stdDeviation="0.5"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3224_2634"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset dy="2"/>
-<feGaussianBlur stdDeviation="1"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"/>
-<feBlend mode="normal" in2="effect1_dropShadow_3224_2634" result="effect2_dropShadow_3224_2634"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_3224_2634" result="shape"/>
+<filter id="@FilterId"
+x="0.28576699"
+y="1.51581"
+width="14.8573"
+height="17.133301"
+filterUnits="userSpaceOnUse"
+color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0"
+result="BackgroundImageFix" />
+<feColorMatrix in="SourceAlpha"
+type="matrix"
+values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+result="hardAlpha" />
+<feOffset dy="1" />
+<feGaussianBlur stdDeviation="0.5" />
+<feColorMatrix type="matrix"
+values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
+<feBlend mode="normal"
+in2="BackgroundImageFix"
+result="effect1_dropShadow_2467_70942" />
+<feColorMatrix in="SourceAlpha"
+type="matrix"
+values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+result="hardAlpha" />
+<feOffset dy="2" />
+<feGaussianBlur stdDeviation="1" />
+<feColorMatrix type="matrix"
+values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
+<feBlend mode="normal"
+in2="effect1_dropShadow_2467_70942"
+result="effect2_dropShadow_2467_70942" />
+<feBlend mode="normal"
+in="SourceGraphic"
+in2="effect2_dropShadow_2467_70942"
+result="shape" />
 </filter>
 </defs>
 </svg>
+
+@code
+{
+    public string FilterId { get; set; } = ComponentIdGenerator.Generate();
+}
