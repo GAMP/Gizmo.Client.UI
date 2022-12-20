@@ -24,9 +24,66 @@
                 <DataGrid ItemSource="@PurchasesService.ViewState.Purchases"
                           Context="purchases"
                           HasStickyHeader="true"
+                          DetailTemplateCustomColumns="true"
                           Class="giz-scrollbar--v">
                     <DetailTemplate>
-                        <div class="purchase-details">
+                        <td colspan="2">
+                            <div class="purchase-details__products">
+                                @if (purchases.ProductType == ProductType.ProductBundle)
+                                {
+                                    @foreach (var product in purchases.BundledProducts)
+                                    {
+                                        <div class="purchase-details-name">Bundle item</div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="purchase-details-name">Bundle item</div>
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            <div class ="purchase-details__quantities">
+                                @if (purchases.ProductType == ProductType.ProductBundle)
+                                {
+                                    @foreach (var product in purchases.BundledProducts)
+                                    {
+                                        <div class="purchase-details-quantity">Bundle item</div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="purchase-details-quantity">Bundle item</div>
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            <div class="purchase-details__prices">
+                                @if (purchases.ProductType == ProductType.ProductBundle)
+                                {
+                                    @foreach (var product in purchases.BundledProducts)
+                                    {
+                                        <div class="purchase-details-price">Bundle item</div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="purchase-details-price">Bundle item</div>
+                                }
+                            </div>
+                        </td>
+                        <td colspan="2">
+                            <div class="purchase-details__details">
+                                <div class="purchase-details-title">Order comments:</div>
+                                <div>Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat d...</div>
+                                <div class="purchase-details-points">Points</div><div>???</div>
+                                <div class="purchase-details-title">Charged:</div><div>Paid so far?</div>
+                                <div class="purchase-details-title">Operator:</div><div>georgecht09</div>
+                                <div class="purchase-details-invoice">Invoice</div>
+                                <div class="purchase-details-action"><Button Color="ButtonColors.Accent" Text="Repeat order" /></div>
+                            </div>
+                        </td>
+                        @*<div class="purchase-details">
                             <table class="purchase-details__products">
                                 @if (purchases.ProductType == ProductType.ProductBundle)
                                 {
@@ -40,15 +97,8 @@
                                     <tr><td class="purchase-details-name">Bundle item</td><td>quantity</td><td>price</td></tr>
                                 }
                             </table>
-                            <table class="purchase-details__details">
-                                <tr><td class="purchase-details-title">Order comments:</td><td>Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat d...</td></tr>
-                                <tr><td class="purchase-details-points">Points</td><td>???</td></tr>
-                                <tr><td class="purchase-details-title">Charged:</td><td>Paid so far?</td></tr>
-                                <tr><td class="purchase-details-title">Operator:</td><td>georgecht09</td></tr>@*TODO: A ???*@
-                                <tr><td class="purchase-details-invoice">Invoice</td><td></td></tr>@*TODO: A ???*@
-                                <tr><td><Button Color="ButtonColors.Accent" Text="Repeat order" /></td><td></td></tr>
-                            </table>
-                        </div>
+                            
+                        </div>*@
                     </DetailTemplate>
                     <ChildContent>
                         <DataGridColumn Field="@(nameof(PurchaseViewState.ProductName))" TItemType="PurchaseViewState" Context="purchase">
@@ -59,7 +109,7 @@
                                 @purchase.ProductName
                             </CellTemplate>
                         </DataGridColumn>
-                        <DataGridColumn Field="@(nameof(PurchaseViewState.OrderStatus))" TItemType="PurchaseViewState" Context="purchase">
+                        <DataGridColumn Style="width: 16.0rem" Field="@(nameof(PurchaseViewState.OrderStatus))" TItemType="PurchaseViewState" Context="purchase">
                             <HeaderTemplate>
                                 Order status
                             </HeaderTemplate>
@@ -85,7 +135,7 @@
                                 }
                             </CellTemplate>
                         </DataGridColumn>
-                        <DataGridColumn Field="@(nameof(PurchaseViewState.OrderDate))" TItemType="PurchaseViewState" Context="purchase">
+                        <DataGridColumn Style="width: 20.0rem" Field="@(nameof(PurchaseViewState.OrderDate))" TItemType="PurchaseViewState" Context="purchase">
                             <HeaderTemplate>
                                 Date
                             </HeaderTemplate>
@@ -93,7 +143,7 @@
                                 @purchase.OrderDate.ToString()
                             </CellTemplate>
                         </DataGridColumn>
-                        <DataGridColumn Field="@(nameof(PurchaseViewState.PaymentMethod))" TItemType="PurchaseViewState" Context="purchase">
+                        <DataGridColumn Style="width: 16.0rem" Field="@(nameof(PurchaseViewState.PaymentMethod))" TItemType="PurchaseViewState" Context="purchase">
                             <HeaderTemplate>
                                 Payment method
                             </HeaderTemplate>
@@ -101,7 +151,7 @@
                                 @purchase.PaymentMethod
                             </CellTemplate>
                         </DataGridColumn>
-                        <DataGridColumn Field="@(nameof(PurchaseViewState.Total))" TItemType="PurchaseViewState" Context="purchase">
+                        <DataGridColumn Style="width: 28.0rem" Field="@(nameof(PurchaseViewState.Total))" TItemType="PurchaseViewState" Context="purchase">
                             <HeaderTemplate>
                                 Order price
                             </HeaderTemplate>
@@ -109,7 +159,7 @@
                                 @purchase.Total
                             </CellTemplate>
                         </DataGridColumn>
-                        <DataGridColumn Field="@(nameof(PurchaseViewState.Total))" TItemType="PurchaseViewState" Context="purchase">
+                        <DataGridColumn Style="width: 16.0rem" Field="@(nameof(PurchaseViewState.Total))" TItemType="PurchaseViewState" Context="purchase">
                             <HeaderTemplate>
                                 Payment status
                             </HeaderTemplate>

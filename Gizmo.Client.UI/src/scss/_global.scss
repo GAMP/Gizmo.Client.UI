@@ -293,12 +293,10 @@ main {
 }
 
 .purchase-details {
-    display: flex;
-    align-items: flex-start;
-    color: #FAFAFA;
-    @include font-s($font-weight-light);
 
     &-title {
+        grid-column-start: 1;
+        grid-column-end: 2;
         color: rgba(255, 255, 255, 0.6);
         @include font-s($font-weight-light);
     }
@@ -310,6 +308,49 @@ main {
 
     &-points {
         @include font-m($font-weight-light);
+    }
+
+    &-invoice {
+        grid-column-start: 1;
+        grid-column-end: 2;
+        color: #0F9FFF;
+        @include font-m($font-weight-light);
+    }
+
+    &__quantities {
+        color: #FAFAFA;
+        @include font-s($font-weight-light);
+    }
+
+    &__prices {
+        color: #FAFAFA;
+        @include font-s($font-weight-light);
+    }
+
+    &__details {
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-column-gap: 1.6rem;
+        grid-row-gap: 1.0rem;
+        margin-bottom: 0.8rem;
+        color: #FAFAFA;
+        @include font-s($font-weight-light);
+    }
+
+    &-action {
+        grid-column-start: 1;
+        grid-column-end: 2;
+    }
+}
+
+.giz-data-grid {
+    .giz-data-grid-row-detail {
+        background-color: #0C0F11;
+
+        td {
+            padding: 0.8rem;
+            vertical-align: top;
+        }
     }
 }
 

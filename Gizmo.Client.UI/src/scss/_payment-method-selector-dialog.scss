@@ -15,21 +15,38 @@
         display: grid;
         grid-template-rows: 1fr min-content min-content min-content;
 
+        .giz-input-select {
+            .giz-input-root {
+                background: #201F1F;
+            }
+        }
+
         &__list {
             height: 100%;
             overflow: hidden;
 
             .giz-data-grid {
+                color: rgba(255, 255, 255, 0.6);
+                @include font-m($font-weight-light);
+
                 thead {
                     th {
-                        background-color: #22272b;
                         color: rgba(255, 255, 255, 0.6);
                         @include font-s($font-weight-regular);
                     }
                 }
 
-                color: rgba(255, 255, 255, 0.6);
-                @include font-m($font-weight-light);
+                & > tbody > tr:not(.giz-data-grid-row-detail) {
+                    td {
+                        border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
+                    }
+
+                    &:last-child {
+                        td {
+                            border-bottom: unset;
+                        }
+                    }
+                }
             }
         }
 
