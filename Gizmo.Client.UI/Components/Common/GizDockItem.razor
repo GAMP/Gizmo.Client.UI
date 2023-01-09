@@ -22,11 +22,11 @@
 		@switch (Executable.State)
 		{
 			case 1:
-				<GizSpinner />
+				<ProgressBar IsIndeterminate="true" />
 				break;
 
 			case 2:
-				<CircularProgressBar Size="CircularProgressBarSizes.ExtraSmall" Value="@Executable.StatePercentage" />
+				<ProgressBar Value="@Executable.StatePercentage" />
 				break;
 
 			case 3:

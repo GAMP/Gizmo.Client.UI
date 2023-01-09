@@ -13,11 +13,11 @@
         </button>
         <MenuActiveApplicationsContainer @bind-IsOpen="_activeAppsIsOpen" />
     </div>
-    <div class="giz-header__user-menu-item">
+    @*<div class="giz-header__user-menu-item">
         <button class="user-menu-item-button--box">
             <Icon SVGIcon="Icons.ContactSupport_Client" />
         </button>
-    </div>
+    </div>*@
     <div class="giz-header__user-menu-item giz-notifications-dropdown @(_notificationsIsOpen ? "open" : "")">
         <Badge Label="@NotificationsService.ViewState.Notifications?.Count.ToString()" IsVisible="@(NotificationsService.ViewState.Notifications?.Count > 0)">
             <button class="user-menu-item-button--box" @onclick="() => ToggleNotifications()" @onclick:stopPropagation="true">
