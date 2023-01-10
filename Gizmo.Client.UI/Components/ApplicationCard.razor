@@ -26,26 +26,18 @@
                 </div>
                 <div class="giz-app-card__content__footer">
                     <div class="giz-app-card-text">
-                        @if (ShowDateAdded)
-                        {
-                            <div>
-                                @*Add date <span>@Application?.DateAdded.ToShortDateString()</span>*@
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="d-flex align-center">
-                                @if (Application != null)
-                                {
-                                    <Rating Value="@Application.Rate" />
-                                }
-                                else
-                                {
-                                    <Rating Value="0" IsReadOnly="true" />
-                                }
-                                <span class="giz-app-card__rating">@(Application?.Ratings ?? 0) Ratings</span>
-                            </div>
-                        }
+                        <div class="giz-app-card__content__footer-category">Shooter</div>
+                        @*<div class="d-flex align-center">
+                            @if (Application != null)
+                            {
+                                <Rating Value="@Application.Rate" />
+                            }
+                            else
+                            {
+                                <Rating Value="0" IsReadOnly="true" />
+                            }
+                            <span class="giz-app-card__rating">@(Application?.Ratings ?? 0) Ratings</span>
+                        </div>*@
                     </div>
                 </div>
             </div>

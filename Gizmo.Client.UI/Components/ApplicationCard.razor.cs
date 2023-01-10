@@ -22,9 +22,6 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<int> OnOpenExecutableSelector { get; set; }
 
-        [Parameter]
-        public bool ShowDateAdded { get; set; }
-
         #endregion
 
         #region Methods

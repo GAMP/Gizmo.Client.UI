@@ -64,24 +64,24 @@ namespace Gizmo.Client.UI.Pages
 
         #region METHODS
 
-        /*public IEnumerable<ProductViewState> GetFilteredProducts()
+        public IEnumerable<ProductViewState> GetFilteredProducts()
         {
             var result = ShopService.ViewState.Products.AsQueryable();
 
-            if (SearchService.ViewState.ShowAll)
+            if (SearchService.ViewState.ShowAllLocally || SearchService.ViewState.ShowAll)
             {
                 var ids = SearchService.ViewState.ProductResults.Select(a => a.Id).ToList();
 
                 result = result.Where(a => ids.Contains(a.Id));
             }
 
-            if (_selectedProductGroupId.HasValue)
+            if (ShopService.ViewState.SelectedProductGroupId.HasValue)
             {
-                result = result.Where(a => a.ProductGroupId == _selectedProductGroupId);
+                result = result.Where(a => a.ProductGroupId == ShopService.ViewState.SelectedProductGroupId.Value);
             }
 
             return result.ToList();
-        }*/
+        }
 
         #endregion
 

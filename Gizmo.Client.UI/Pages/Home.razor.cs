@@ -101,7 +101,7 @@ namespace Gizmo.Client.UI.Pages
         public IEnumerable<ApplicationViewState> GetFilteredApplications()
         {
             var result = ApplicationsPageService.ViewState.Applications.AsQueryable();
-            if (SearchService.ViewState.ShowAll)
+            if (SearchService.ViewState.ShowAllLocally || SearchService.ViewState.ShowAll)
             {
                 var ids = SearchService.ViewState.ApplicationResults.Select(a => a.Id).ToList();
 
@@ -114,7 +114,7 @@ namespace Gizmo.Client.UI.Pages
         public IEnumerable<ProductViewState> GetFilteredProducts()
         {
             var result = ShopPageService.ViewState.Products.AsQueryable();
-            if (SearchService.ViewState.ShowAll)
+            if (SearchService.ViewState.ShowAllLocally || SearchService.ViewState.ShowAll)
             {
                 var ids = SearchService.ViewState.ProductResults.Select(a => a.Id).ToList();
 

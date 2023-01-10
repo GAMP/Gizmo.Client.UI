@@ -58,12 +58,23 @@
                             </div>
                         </div>
                         <div class="giz-section__body">
-                            <div class="giz-shop__products__list">
-                                @foreach (var product in ShopService.ViewState.Products)
-                                {
-                                    <ProductCard Product="@product" IsHoverable="true" />
-                                }
-                            </div>
+                            @if (GetFilteredProducts().Count() > 0)
+                            {
+                                <div class="giz-shop__products__list">
+                                    @foreach (var product in GetFilteredProducts())
+                                    {
+                                        <ProductCard Product="@product" IsHoverable="true" />
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="global-search-no-results">
+                                    @*TODO ShopService.ViewState.SelectedProductGroupId.HasValue*@
+                                    <div class="global-search-no-results__header">No match found for <span class="global-search-pattern">@SearchService.ViewState.SearchPattern</span></div>
+                                    <div class="global-search-no-results__body">Try formulating your request differently</div>
+                                </div>
+                            }
                         </div>
                     </div>
                 }

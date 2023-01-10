@@ -88,12 +88,22 @@
                         </div>
                     </div>
                     <div class="giz-section__body">
-                        <div class="giz-apps__app-wrapper">
-                            @foreach (var app in GetFilteredApplications())
-                            {
-                                <ApplicationCard Application="@app" ShowDateAdded="true" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
-                            }
-                        </div>
+                        @if (GetFilteredApplications().Count() > 0)
+                        {
+                            <div class="giz-apps__app-wrapper">
+                                @foreach (var app in GetFilteredApplications())
+                                {
+                                    <ApplicationCard Application="@app" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="global-search-no-results">
+                                <div class="global-search-no-results__header">No match found for <span class="global-search-pattern">@SearchService.ViewState.SearchPattern</span></div>
+                                <div class="global-search-no-results__body">Try formulating your request differently</div>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
