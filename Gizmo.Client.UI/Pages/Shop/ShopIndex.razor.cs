@@ -68,9 +68,9 @@ namespace Gizmo.Client.UI.Pages
         {
             var result = ShopService.ViewState.Products.AsQueryable();
 
-            if (SearchService.ViewState.ShowAllLocally || SearchService.ViewState.ShowAll)
+            if (SearchService.ViewState.ShowAll)
             {
-                var ids = SearchService.ViewState.ProductResults.Select(a => a.Id).ToList();
+                var ids = SearchService.ViewState.AppliedProductResults.Select(a => a.Id).ToList();
 
                 result = result.Where(a => ids.Contains(a.Id));
             }

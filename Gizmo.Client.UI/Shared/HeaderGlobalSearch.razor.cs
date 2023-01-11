@@ -23,8 +23,6 @@ namespace Gizmo.Client.UI.Shared
         private DeferredAction _deferredAction;
         private int _delay = DEFAULT_DELAY;
         private TimeSpan _delayTimeSpan;
-        private string _text;
-        private bool _openDropDown;
 
         private bool _hasFocus;
 
@@ -38,7 +36,7 @@ namespace Gizmo.Client.UI.Shared
         SearchService SearchService { get; set; }
 
         [Parameter]
-        public int MinimumCharacters { get; set; } = 1;
+        public int MinimumCharacters { get; set; } = 0;
 
         #endregion
 
@@ -55,25 +53,18 @@ namespace Gizmo.Client.UI.Shared
             {
                 case "Enter":
 
-                    await SearchService.ClearResultsAsync();
-                    //TODO: A IF WE KNOW THE CURRENT PAGE WE CAN LIMIT THE SEARCH.
-                    await SearchService.SearchAsync(_text);
-                    await SearchService.LoadAllResultsLocallyAsync();
-
-                    _openDropDown = false;
+                    await SearchService.ProcessEnterAsync();
 
                     break;
 
                 default:
+
                     break;
             }
         }
 
         protected Task OnFocusInHandler()
         {
-            if (!string.IsNullOrEmpty(_text))
-                _openDropDown = true;
-
             _hasFocus = true;
 
             return Task.CompletedTask;
@@ -86,47 +77,33 @@ namespace Gizmo.Client.UI.Shared
             return Task.CompletedTask;
         }
 
-        protected Task OnInputHandler(ChangeEventArgs args)
+        protected async Task OnInputHandler(ChangeEventArgs args)
         {
             var newValue = args?.Value as string;
 
-            if (newValue != _text)
+            if (newValue != SearchService.ViewState.SearchPattern)
             {
-                _text = newValue;
+                await SearchService.UpdateSearchPatternAsync(newValue);
+                await SearchService.OpenSearchAsync();
 
-                if (!_openDropDown)
-                {
-                    _openDropDown = true;
-                }
-
-                if (MinimumCharacters == 0 || (MinimumCharacters > 0 && _text.Length >= MinimumCharacters))
+                if (SearchService.ViewState.SearchPattern.Length == 0 || SearchService.ViewState.SearchPattern.Length >= MinimumCharacters)
                 {
                     _deferredAction.Defer(_delayTimeSpan);
                 }
             }
-
-            return Task.CompletedTask;
-        }
-
-        protected Task OnClickHandler(MouseEventArgs args)
-        {
-            return Task.CompletedTask;
         }
 
         private async Task Clear()
         {
             await SearchService.ClearResultsAsync();
-
-            _text = string.Empty;
-            _openDropDown = false;
+            await SearchService.CloseSearchAsync();
         }
 
         #endregion
 
         private async Task Search()
         {
-            await SearchService.ClearResultsAsync();
-            await SearchService.SearchAsync(_text);
+            await SearchService.SearchAsync();
         }
 
         #region CLASSMAPPERS
@@ -138,7 +115,7 @@ namespace Gizmo.Client.UI.Shared
         }
 
         protected string CloseButtonStyleValue => new StyleMapper()
-                 .If($"visibility: hidden", () => string.IsNullOrEmpty(_text))
+                 .If($"visibility: hidden", () => string.IsNullOrEmpty(SearchService.ViewState.SearchPattern))
                  .AsString();
 
         #endregion
@@ -166,17 +143,16 @@ namespace Gizmo.Client.UI.Shared
 
         private ClosePopupEventInterop ClosePopupEventInterop { get; set; }
 
-        private Task ClosePopupHandler(string args)
+        private async Task ClosePopupHandler(string args)
         {
             if (!_hasFocus)
             {
                 if (args == Id)
-                    _openDropDown = false;
-
-                InvokeAsync(StateHasChanged);
+                {
+                    await SearchService.ClearResultsAsync();
+                    await SearchService.CloseSearchAsync();
+                }
             }
-
-            return Task.CompletedTask;
         }
 
         #region IAsyncDisposable

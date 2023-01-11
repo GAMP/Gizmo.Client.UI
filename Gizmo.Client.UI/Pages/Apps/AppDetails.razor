@@ -41,7 +41,7 @@
                     @ApplicationDetailsPageService.ViewState.Application?.Description
                 </div>
                 <div class="giz-app-details__app__info__details__executables">
-                    @if (ApplicationDetailsPageService.ViewState.Application.Executables.Count > 1)
+                    @if (ApplicationDetailsPageService.ViewState.Application.Executables.Count == 1)
                     {
                         <ComboButton Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" OnClickMainButton="@OnClickMainButtonHandler">
                             <ChildContent>
@@ -85,7 +85,7 @@
                             </DropDownItems>
                         </ComboButton>
                     }
-                    else
+                    else if (ApplicationDetailsPageService.ViewState.Application.Executables.Count > 1)
                     {
                         <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => OnClickMainButtonHandler())">@localizationService.GetString("GIZ_APPS_LAUNCH")</Button>
                     }

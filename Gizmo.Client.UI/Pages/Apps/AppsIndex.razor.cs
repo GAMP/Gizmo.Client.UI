@@ -100,9 +100,9 @@ namespace Gizmo.Client.UI.Pages
         {
             var result = ApplicationsPageService.ViewState.Applications.AsQueryable();
 
-            if (SearchService.ViewState.ShowAllLocally || SearchService.ViewState.ShowAll)
+            if (SearchService.ViewState.ShowAll)
             {
-                var ids = SearchService.ViewState.ApplicationResults.Select(a => a.Id).ToList();
+                var ids = SearchService.ViewState.AppliedApplicationResults.Select(a => a.Id).ToList();
 
                 result = result.Where(a => ids.Contains(a.Id));
             }

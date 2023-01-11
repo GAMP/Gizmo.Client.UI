@@ -19,7 +19,7 @@ namespace Gizmo.Client.UI.Shared
 
         private Task OnClickActionButtonHandler()
         {
-            if (Result.Type == View.SearchResultTypes.Application)
+            if (Result.Type == View.SearchResultTypes.Applications)
             {
                 //TODO: A LAUNCH APPLICATION
                 return Task.CompletedTask;

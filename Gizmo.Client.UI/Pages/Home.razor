@@ -22,7 +22,7 @@
         </div>
         <div class="giz-home__body giz-scrollbar--v">
             <div class="giz-home__body__ads">
-                <ExpansionPanel InitCollapsed="@SearchService.ViewState.ShowAllLocally">
+                <ExpansionPanel>
                     <Header>
                         Ads
                     </Header>
@@ -31,104 +31,21 @@
                     </ChildContent>
                 </ExpansionPanel>
             </div>
-            @if (SearchService.ViewState.ShowAllLocally)
-            {
-                <div class="giz-home__body__results">
-                    <div class="giz-section">
-                        <div class="giz-section__header">
-                            <div class="giz-section__header__filters">
-                                <Select HandleSVGIcon="Icons.Select_Client" Size="InputSizes.Small" @bind-Value="_selectedSearchCategoryId" Label="Category:" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="20.0rem" Class="@(_selectedSearchCategoryId != 0 ? "app-filter--filled" : "app-filter--default")" PopupClass="giz-scrollbar--v">
-                                    @if (SearchCategories != null)
-                                    {
-                                        @foreach (var searchCategories in SearchCategories)
-                                        {
-                                            <SelectItem Value="@searchCategories.Id" Text="@searchCategories.Name" />
-                                        }
-                                    }
-                                </Select>
-                                <div>
-                                    <div class="giz-section__header__filters__title">Results for</div>
-                                    <div>
-                                        <Chip CanClose="true" OnClose="@(() => SearchService.ClearResultsAsync())">@SearchService.ViewState.SearchPattern</Chip>
-                                    </div>
-                                </div>
-                            </div>
-                            @if (_selectedSearchCategoryId == 1)
+            <div class="giz-home__body__popular">
+                <div class="giz-section">
+                    <div class="giz-section__header">
+                        @localizationService.GetString("GIZ_GEN_POPULAR_ITEMS")
+                    </div>
+                    <div class="giz-section__body">
+                        <div class="giz-home__app-wrapper">
+                            @foreach (var product in HomePageService.ViewState.PopularProducts)
                             {
-                                <div class="giz-apps-filters">
-                                    <Select LeftSVGIcon="Icons.Sort_Client" HandleSVGIcon="Icons.Select_Client" ValidationErrorStyle="ValidationErrorStyles.BorderOnly" Size="InputSizes.Small" @bind-Value="_selectedSortOptionId" Label="@localizationService.GetString("GIZ_GEN_SORT_BY")" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="20.0rem" Class="@(_selectedSortOptionId != 1 ? "app-filter--filled" : "app-filter--default")" PopupClass="giz-scrollbar--v">
-                                        @if (ApplicationSortOptions != null)
-                                        {
-                                            @foreach (var sortOption in ApplicationSortOptions)
-                                            {
-                                                <SelectItem Value="@sortOption.Id" Text="@sortOption.Name" />
-                                            }
-                                        }
-                                    </Select>
-                                    <Select HandleSVGIcon="Icons.Select_Client" ValidationErrorStyle="ValidationErrorStyles.BorderOnly" Placeholder="All games and apps" Size="InputSizes.Small" @bind-Value="_selectedApplicationGroupId" Label="@localizationService.GetString("GIZ_APPS_CATEGORY")" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="20.0rem" Class="@(_selectedApplicationGroupId.HasValue ? "app-filter--filled" : "app-filter--default")" PopupClass="giz-scrollbar--v">
-                                        @if (ApplicationsPageService.ViewState.ApplicationGroups != null)
-                                        {
-                                            @foreach (var appGroup in ApplicationsPageService.ViewState.ApplicationGroups)
-                                            {
-                                                <SelectItem TValue="int?" Value="@appGroup.Id" Text="@appGroup.Name" />
-                                            }
-                                        }
-                                    </Select>
-                                    <MultiSelect HandleSVGIcon="Icons.Select_Client" ValidationErrorStyle="ValidationErrorStyles.BorderOnly" Placeholder="Select something" Size="InputSizes.Small" TValue="int" Value="@SelectedApplicationFilters" ValueChanged="@SelectedApplicationFiltersChanged" Label="@localizationService.GetString("GIZ_APPS_PARAMETERS")" OpenDirection="PopupOpenDirections.Bottom" CanClearValue="true" MaximumHeight="20.0rem" Class="@(SelectedApplicationFilters?.Count > 0 ? "app-filter--filled" : "app-filter--default")">
-                                        @if (ApplicationFilters != null)
-                                        {
-                                            @foreach (var filter in ApplicationFilters)
-                                            {
-                                                <MultiSelectItem Value="@filter.Id" Text="@filter.Name" />
-                                            }
-                                        }
-                                    </MultiSelect>
-                                </div>
-                            }
-                        </div>
-                        <div class="giz-section__body">
-                            @if (GetFilteredApplications().Count() > 0 || GetFilteredProducts().Count() > 0)
-                            {
-                                <div class="giz-home__app-wrapper">
-                                    @foreach (var app in GetFilteredApplications())
-                                    {
-                                        <ApplicationCard Application="@app" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
-                                    }
-                                    @foreach (var product in GetFilteredProducts())
-                                    {
-                                        <ProductCard Product="@product" IsHoverable="true" />
-                                    }
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="global-search-no-results">
-                                    <div class="global-search-no-results__header">No match found for <span class="global-search-pattern">@SearchService.ViewState.SearchPattern</span></div>
-                                    <div class="global-search-no-results__body">Try formulating your request differently</div>
-                                </div>
+                                <ProductCard Product="@product" IsHoverable="true"></ProductCard>
                             }
                         </div>
                     </div>
                 </div>
-            }
-            else
-            {
-                <div class="giz-home__body__popular">
-                    <div class="giz-section">
-                        <div class="giz-section__header">
-                            @localizationService.GetString("GIZ_GEN_POPULAR_ITEMS")
-                        </div>
-                        <div class="giz-section__body">
-                            <div class="giz-home__app-wrapper">
-                                @foreach (var product in HomePageService.ViewState.PopularProducts)
-                                {
-                                    <ProductCard Product="@product" IsHoverable="true"></ProductCard>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
+            </div>
         </div>
     </div>
 </div>

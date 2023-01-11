@@ -4,11 +4,23 @@
 @using Gizmo.Client.UI.Components
 
 <div class="quick-launcher">
-    <QuickLauncherSwitch />
-    <GizDock>
-        @foreach (var item in QuickLaunchService.ViewState.Executables.Take(10))
-        {
-            <GizDockItem Executable="@item" />
-        }
-    </GizDock>
+    <QuickLauncherSwitch SelectedTabIndex="@UserQuickLaunchService.ViewState.SelectedTabIndex" SelectedTabIndexChanged="@SelectedTabIndexChanged" />
+    @if (UserQuickLaunchService.ViewState.SelectedTabIndex == 0)
+    {
+        <GizDock>
+            @foreach (var item in QuickLaunchService.ViewState.Executables.Take(10))
+            {
+                <GizDockItem Executable="@item" />
+            }
+        </GizDock>
+    }
+    else
+    {
+        <GizDock>
+            @foreach (var item in FavoritesService.ViewState.Executables.Take(5))
+            {
+                <GizDockItem Executable="@item" />
+            }
+        </GizDock>
+    }
 </div>
