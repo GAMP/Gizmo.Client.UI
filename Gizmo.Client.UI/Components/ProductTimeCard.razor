@@ -47,68 +47,65 @@
                 </div>
             </div>
         </div>
-        @if (IsHoverable)
-        {
-            <div class="hovered-content-wrapper">
-                <div class="hovered-content">
-                    <div class="giz-product-card__content--hovered">
-                        <div class="giz-product-card__content--hovered__header">
+        <div class="hovered-content-wrapper">
+            <div class="hovered-content">
+                <div class="giz-product-card__content--hovered">
+                    <div class="giz-product-card__content--hovered__header">
 
-                            <div class="giz-timeline">
-                                <div class="giz-timeline-header">
-                                    <HexagonIcon />
-                                    <div>Package description:</div>
-                                </div>
-                                <div class="giz-timeline-item">
-                                    <div class="giz-time-product-details">
-                                        <ProductIcon />
-                                        <span>30 min</span>
-                                    </div>
-                                </div>
-                                <div class="giz-timeline-item"><div class="giz-time-product-details">Action period<span>10:00 - 12:00</span></div></div>
-                                <div class="giz-timeline-item"><div class="giz-time-product-details">Product life time<span>3 hours</span></div></div>
+                        <div class="giz-timeline">
+                            <div class="giz-timeline-header">
+                                <HexagonIcon />
+                                <div>Package description:</div>
                             </div>
-
-                            <div class="giz-product-card-b1">
-                                <PointsAwardIcon />
+                            <div class="giz-timeline-item">
+                                <div class="giz-time-product-details">
+                                    <ProductIcon />
+                                    <span>30 min</span>
+                                </div>
                             </div>
+                            <div class="giz-timeline-item"><div class="giz-time-product-details">Action period<span>10:00 - 12:00</span></div></div>
+                            <div class="giz-timeline-item"><div class="giz-time-product-details">Product life time<span>3 hours</span></div></div>
                         </div>
-                        <div class="giz-product-card__content--hovered__body">
+
+                        <div class="giz-product-card-b1">
+                            <PointsAwardIcon />
+                        </div>
+                    </div>
+                    <div class="giz-product-card__content--hovered__body">
                             
-                            <div class="giz-product-card__content--hovered__body__details">
-                                <div class="giz-product-card__price">
-                                    <span>@Product.UnitPrice.ToString("C")</span>
+                        <div class="giz-product-card__content--hovered__body__details">
+                            <div class="giz-product-card__price">
+                                <span>@Product.UnitPrice.ToString("C")</span>
 
-                                    @if (Product.PurchaseOptions.HasFlag(PurchaseOptionType.Or))
-                                    {
-                                        <span> or @Product.UnitPointsPrice</span>
-                                        <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.ExtraSmall" />
-                                    }
-                                    else
-                                    {
-                                        <span>and @Product.UnitPointsPrice</span>
-                                        <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.ExtraSmall" />
-                                    }
-                                </div>
-                                <div class="giz-product-card__title">
-                                    @Product.Name
-                                </div>
+                                @if (Product.PurchaseOptions.HasFlag(PurchaseOptionType.Or))
+                                {
+                                    <span> or @Product.UnitPointsPrice</span>
+                                    <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.ExtraSmall" />
+                                }
+                                else
+                                {
+                                    <span>and @Product.UnitPointsPrice</span>
+                                    <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.ExtraSmall" />
+                                }
                             </div>
+                            <div class="giz-product-card__title">
+                                @Product.Name
+                            </div>
+                        </div>
 
-                        </div>
-                        <div class="giz-product-card__content--hovered__footer">
-                            @if (Product.CartProduct == null)
-                            {
-                                <Button Color="ButtonColors.Accent" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="AddProduct">@localizationService.GetString("GIZ_SHOP_ADD_TO_CART")</Button>
-                            }
-                            else
-                            {
-                                <QuantityPicker Size="ButtonSizes.Medium" Quantity="@Product.CartProduct.Quantity" OnAddQuantityButtonClick="@OnAddQuantityButtonClickHandler" OnRemoveQuantityButtonClick="@OnRemoveQuantityButtonClickHandler" />
-                            }
-                        </div>
+                    </div>
+                    <div class="giz-product-card__content--hovered__footer">
+                        @if (Product.CartProduct == null)
+                        {
+                            <Button Color="ButtonColors.Accent" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="AddProduct">@localizationService.GetString("GIZ_SHOP_ADD_TO_CART")</Button>
+                        }
+                        else
+                        {
+                            <QuantityPicker Size="ButtonSizes.Medium" Quantity="@Product.CartProduct.Quantity" OnAddQuantityButtonClick="@OnAddQuantityButtonClickHandler" OnRemoveQuantityButtonClick="@OnRemoveQuantityButtonClickHandler" />
+                        }
                     </div>
                 </div>
             </div>
-        }
+        </div>
     </div>
 </div>

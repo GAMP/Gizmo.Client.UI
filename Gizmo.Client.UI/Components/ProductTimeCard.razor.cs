@@ -22,9 +22,6 @@ namespace Gizmo.Client.UI.Components
         UserCartService UserCartService { get; set; }
 
         [Parameter]
-        public bool IsHoverable { get; set; }
-
-        [Parameter]
         public ProductViewState Product { get; set; }
 
         public void OpenDetails()

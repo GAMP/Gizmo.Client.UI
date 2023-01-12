@@ -63,7 +63,7 @@
                                 <div class="giz-shop__products__list">
                                     @foreach (var product in GetFilteredProducts())
                                     {
-                                        <ProductCard Product="@product" IsHoverable="true" />
+                                        <ProductCard Product="@product" />
                                     }
                                 </div>
                             }
@@ -92,7 +92,7 @@
                                     <div class="giz-shop__products__list">
                                         @foreach (var product in ShopService.ViewState.Products.Where(a => a.ProductGroupId == ShopService.ViewState.SelectedProductGroupId))
                                         {
-                                            <ProductCard Product="@product" IsHoverable="true" />
+                                            <ProductCard Product="@product" />
                                         }
                                     </div>
                                 </div>
@@ -115,7 +115,7 @@
                                             <div class="giz-shop__products__list">
                                                 @foreach (var product in ShopService.ViewState.Products.Where(a => a.ProductGroupId == productGroup.Id))
                                                 {
-                                                    <ProductCard Product="@product" IsHoverable="true" />
+                                                    <ProductCard Product="@product" />
                                                 }
                                             </div>
                                         </div>

@@ -8,8 +8,5 @@ namespace Gizmo.Client.UI.Components
     {
         [Parameter]
         public ProductViewState Product { get; set; }
-
-        [Parameter]
-        public bool IsHoverable { get; set; }
     }
 }
