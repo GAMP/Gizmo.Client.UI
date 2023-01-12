@@ -7,6 +7,9 @@ namespace Gizmo.Client.UI.Pages
     public partial class RegistrationBasicFields : ComponentBase
     {
         [Inject]
+        UserRegistrationConfirmationMethodService UserRegistrationConfirmationMethodService { get; set; }
+
+        [Inject]
         UserRegistrationBasicFieldsService UserRegistrationBasicFieldsService { get; set; }
     }
 }

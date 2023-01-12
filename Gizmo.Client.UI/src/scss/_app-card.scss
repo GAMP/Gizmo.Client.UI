@@ -1,9 +1,22 @@
 //=============== Application Card ================//
 
 .giz-app-card {
+    position: relative;
     background: #22272B;
     border-radius: 0.8rem;
     overflow: hidden;
+
+    &:hover {
+        background: #050607;
+
+        .giz-app-card__action {
+            display: flex;
+        }
+
+        .giz-app-card__content__image__hovered {
+            background: rgba(0, 0, 0, 0.84);
+        }
+    }
 
     &__content {
         display: grid;
@@ -12,6 +25,7 @@
         height: 100%;
 
         &__image {
+            position: relative;
             height: 33.3rem;
             border-radius: 0.8rem 0.8rem 0 0;
             overflow: hidden;
@@ -20,6 +34,22 @@
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
+            }
+
+            &__hovered {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 2;
+                padding: 1.6rem 1.6rem 0 1.6rem;
+
+                &__header {
+                    display: flex;
+                    justify-content: space-between;
+                    width: 100%;
+                }
             }
         }
 
@@ -55,6 +85,18 @@
                 justify-content: space-between;
             }
         }
+    }
+
+    &__action {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        padding: 1.6rem;
+        display: none;
+        align-items: center;
     }
 
     &-text {

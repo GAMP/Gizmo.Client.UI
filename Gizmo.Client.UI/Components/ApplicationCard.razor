@@ -5,64 +5,56 @@
 
 @inject ILocalizationService localizationService
 
-<div class="giz-app-card">
-    <div class="giz-hoverable-card" @onclick="() => OpenDetails()">
-        <div class="hoverable-content">
-            <div class="giz-app-card__content">
-                <div class="giz-app-card__content__image">
-                    @if (Application.ImageId.HasValue)
+<div class="giz-app-card" @onclick="() => OpenDetails()">
+    <div class="giz-app-card__content">
+        <div class="giz-app-card__content__image">
+            <div class="giz-app-card__content__image__hovered">
+                <div class="giz-app-card__content__image__hovered__header">
+                    <div class="giz-app-card-b1">
+                        <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="4" cy="4" r="4" fill="white"/>
+                        </svg>
+                        <div>24</div>
+                    </div>
+                    <div class="giz-app-card-b2">
+                        <Icon SVGIcon="Icons.Shield_Client" />
+                        <div>24</div>
+                    </div>
+                </div>
+            </div>
+            @if (Application.ImageId.HasValue)
+            {
+                <GizImage ImageType="Gizmo.UI.ImageType.Application" ImageId="@Application.ImageId.Value" />
+            }
+            else
+            {
+                <img src="_content/Gizmo.Client.UI/img/Apex.png" alt='loading' />
+            }
+        </div>
+        <div class="giz-app-card__content__details">
+            <div class="giz-app-card__title">
+                @Application?.Title
+            </div>
+        </div>
+        <div class="giz-app-card__content__footer">
+            <div class="giz-app-card-text">
+                <div class="giz-app-card__content__footer-category">Shooter</div>
+                @*<div class="d-flex align-center">
+                    @if (Application != null)
                     {
-                        <GizImage ImageType="Gizmo.UI.ImageType.Application" ImageId="@Application.ImageId.Value" />
+                        <Rating Value="@Application.Rate" />
                     }
                     else
                     {
-                        <img src="_content/Gizmo.Client.UI/img/Apex.png" alt='loading' />
+                        <Rating Value="0" IsReadOnly="true" />
                     }
-                </div>
-                <div class="giz-app-card__content__details">
-                    <div class="giz-app-card__title">
-                        @Application?.Title
-                    </div>
-                </div>
-                <div class="giz-app-card__content__footer">
-                    <div class="giz-app-card-text">
-                        <div class="giz-app-card__content__footer-category">Shooter</div>
-                        @*<div class="d-flex align-center">
-                            @if (Application != null)
-                            {
-                                <Rating Value="@Application.Rate" />
-                            }
-                            else
-                            {
-                                <Rating Value="0" IsReadOnly="true" />
-                            }
-                            <span class="giz-app-card__rating">@(Application?.Ratings ?? 0) Ratings</span>
-                        </div>*@
-                    </div>
-                </div>
+                    <span class="giz-app-card__rating">@(Application?.Ratings ?? 0) Ratings</span>
+                </div>*@
             </div>
         </div>
-        <div class="hovered-content-wrapper">
-            <div class="hovered-content">
-                <div class="giz-app-card__content--hovered">
-                    <div class="giz-app-card__content--hovered__header">
-                        <div class="giz-app-card-b1">
-                            <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="4" cy="4" r="4" fill="white"/>
-                            </svg>
-                            <div>24</div>
-                        </div>
-                        <div class="giz-app-card-b2">
-                            <Icon SVGIcon="Icons.Shield_Client" />
-                            <div>24</div>
-                        </div>
-                    </div>
-                    <div class="giz-app-card__content--hovered__body">
-                        <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="Execute">@localizationService.GetStringUpper("GIZ_APPS_LAUNCH")</Button>
-                    </div>
-                </div>
-            </div>
-        </div>
+    </div>
+    <div class="giz-app-card__action">
+        <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="Execute">@localizationService.GetStringUpper("GIZ_APPS_LAUNCH")</Button>
     </div>
     
     <AlertDialog Message="winexe002piw974muaf65_ss8d6.bat was terminated unexpectedly." AlertType="AlertDialog.AlertTypes.Warning" @bind-IsOpen="_warningDialogIsOpen" />

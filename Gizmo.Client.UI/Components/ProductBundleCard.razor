@@ -7,47 +7,66 @@
 
 <div class="giz-product-card bundle"
      @onclick="OpenDetails">
-    <div class="giz-hoverable-card">
-        <div class="hoverable-content">
-            <div class="giz-product-card__content">
+    <div class="giz-product-card__content">
               
-                <div class="giz-product-card__content__image">
-                    @if (Product.ImageId.HasValue)
+        <div class="giz-product-card__content__image">
+            <div class="giz-product-card__content__image__hovered">
+                <div class="giz-product-card__content__image__hovered__header">
+
+                    <div>
+                        <div class="giz-timeline">
+                            <div class="giz-timeline-header">
+                                <HexagonIcon />
+                                <div>Bundle includes:</div>
+                            </div>
+
+                            @foreach (var bundledProduct in Product.BundledProducts)
+                            {
+                                <div class="giz-timeline-item"><div class="giz-bundle-product-details"><ProductIcon />@bundledProduct.Name</div></div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="giz-product-card-b1">
+                        <PointsAwardIcon />
+                    </div>
+
+                </div>
+            </div>
+            @if (Product.ImageId.HasValue)
+            {
+                <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Product.ImageId.Value" />
+            }
+            else
+            {
+                <img src="_content/Gizmo.Client.UI/img/Cola2.png" alt='loading' />
+            }
+        </div>
+
+        <div class="giz-product-card__content__details">
+            <div class="giz-product-card__price">
+                @if (Product != null)
+                {
+                    <span>@Product.UnitPrice.ToString("C")</span>
+
+                    @if (Product.PurchaseOptions.HasFlag(PurchaseOptionType.Or))
                     {
-                        <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Product.ImageId.Value" />
+                        <span> or @Product.UnitPointsPrice</span>
+                        <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.ExtraSmall" />
                     }
                     else
                     {
-                        <img src="_content/Gizmo.Client.UI/img/Cola2.png" alt='loading' />
+                        <span>and @Product.UnitPointsPrice</span>
+                        <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.ExtraSmall" />
                     }
-                </div>
-
-                <div class="giz-product-card__content__details">
-                    <div class="giz-product-card__price">
-                        @if (Product != null)
-                        {
-                            <span>@Product.UnitPrice.ToString("C")</span>
-
-                            @if (Product.PurchaseOptions.HasFlag(PurchaseOptionType.Or))
-                            {
-                                <span> or @Product.UnitPointsPrice</span>
-                                <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.ExtraSmall" />
-                            }
-                            else
-                            {
-                                <span>and @Product.UnitPointsPrice</span>
-                                <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.ExtraSmall" />
-                            }
-                        }                        
-                    </div>
-                    <div class="giz-product-card__title">
-                        @Product.Name
-                    </div>
-                </div>
-                <div class="giz-product-card__content__footer">
-                    <Button Class="giz-product-card-primary-button" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="AddProduct" Text="@localizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
-                </div>
+                }                        
             </div>
+            <div class="giz-product-card__title">
+                @Product.Name
+            </div>
+        </div>
+        <div class="giz-product-card__content__footer">
+            <Button Color="ButtonColors.Accent" Class="giz-product-card-primary-button" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="AddProduct" Text="@localizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
         </div>
     </div>
 </div>

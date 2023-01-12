@@ -61,9 +61,12 @@
                     <SelectItem Value="@Sex.Female" Text="Female" />
                 </Select>
             </div>
-            <div class="giz-form-input">
-                <TextInput TValue="string" Size="InputSizes.Small" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")" />
-            </div>
+            @if (UserRegistrationConfirmationMethodService.ViewState.ConfirmationMethod != View.UserRegistrationMethod.Email)@*TODO:*@
+            {
+                <div class="giz-form-input">
+                    <TextInput TValue="string" Size="InputSizes.Small" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")" />
+                </div>
+            }
             <div>
                 <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@UserRegistrationBasicFieldsService.SubmitAsync">@localizationService.GetString("GIZ_GEN_CONTINUE")</Button>
             </div>

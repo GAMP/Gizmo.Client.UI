@@ -1,44 +1,37 @@
 //============= Product Card ===============//
 
 .giz-product-card {
+    position: relative;
     background: #22272B;
     border-radius: 0.8rem;
     overflow: hidden;
 
+    .giz-button--fill.accent.giz-product-card-primary-button {
+        background-color: rgba(250, 250, 250, 0.16);
+    }
+
+    &:hover {
+        background: #050607;
+
+        .giz-product-card__content__image__hovered {
+            background: rgba(0, 0, 0, 0.84);
+
+            .giz-timeline {
+                display: block;
+            }
+        }
+
+        .giz-button--fill.accent.giz-product-card-primary-button {
+            background: #0078d2;
+        }
+    }
+
     &.product {
-        .giz-hoverable-card {
-            &:hover {
-                .hovered-content-wrapper {
-                    display: none;
-                }
+        &:hover {
+            background: #22272B;
 
-                .giz-product-card-primary-button {
-                    display: none;
-                }
-
-                .giz-product-card-alternative-button {
-                    display: block;
-                }
-            }
-        }
-    }
-
-    &.bundle {
-        .giz-hoverable-card {
-            &:hover {
-                .giz-product-card__content__details {
-                    visibility: hidden;
-                }
-            }
-        }
-    }
-
-    &.time {
-        .giz-hoverable-card {
-            &:hover {
-                .giz-product-card__content__details {
-                    visibility: hidden;
-                }
+            .giz-product-card__content__image__hovered {
+                background: unset;
             }
         }
     }
@@ -50,24 +43,44 @@
         height: 100%;
 
         &__image {
+            position: relative;
             height: 24.6rem;
             border-radius: 0.8rem 0.8rem 0 0;
             overflow: hidden;
-            text-align: center;
 
             img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
             }
+
+            &__hovered {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 2;
+                padding: 1.6rem 1.6rem 0 1.6rem;
+
+                &__header {
+                    display: flex;
+                    justify-content: space-between;
+                    width: 100%;
+                    height: 100%;
+                }
+
+                .giz-timeline {
+                    display: none;
+                }
+            }
         }
 
         &__image--time {
+            position: relative;
             height: 24.6rem;
             border-radius: 0.8rem 0.8rem 0 0;
             overflow: hidden;
-            text-align: center;
-            position: relative;
 
             &:after {
                 content: '';
@@ -79,12 +92,12 @@
                 background-color: rgba(0, 0, 0, 0.84);
             }
 
-            img {
+            & > img {
                 width: 100%;
                 height: 100%;
             }
 
-            svg {
+            & > svg {
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -100,34 +113,6 @@
 
         &__footer {
             padding: 1.6rem;
-        }
-
-        &--hovered {
-            display: grid;
-            gap: 1.2rem;
-            grid-template-rows: min-content 1fr min-content;
-            align-items: center;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-
-            &__header {
-                display: flex;
-                justify-content: space-between;
-                height: 24.6rem;
-                padding: 1.6rem;
-                width: 100%;
-                overflow: hidden;
-            }
-
-            &__body {
-                height: 100%;
-                padding: 0 1.6rem;
-            }
-
-            &__footer {
-                padding: 1.6rem;
-            }
         }
     }
 
