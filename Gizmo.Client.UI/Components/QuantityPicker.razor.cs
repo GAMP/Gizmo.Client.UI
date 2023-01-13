@@ -27,6 +27,9 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<MouseEventArgs> OnRemoveQuantityButtonClick { get; set; }
 
+        [Parameter]
+        public EventCallback<MouseEventArgs> OnClick { get; set; }
+
         public Task RemoveQuantity(MouseEventArgs args)
         {
             return OnRemoveQuantityButtonClick.InvokeAsync(args);
@@ -35,6 +38,11 @@ namespace Gizmo.Client.UI.Components
         public Task AddQuantity(MouseEventArgs args)
         {
             return OnAddQuantityButtonClick.InvokeAsync(args);
+        }
+
+        public Task OnClickHandler(MouseEventArgs args)
+        {
+            return OnClick.InvokeAsync(args);
         }
 
         #region CLASSMAPPERS

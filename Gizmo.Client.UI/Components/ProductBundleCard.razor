@@ -66,7 +66,14 @@
             </div>
         </div>
         <div class="giz-product-card__content__footer">
-            <Button Color="ButtonColors.Accent" Class="giz-product-card-primary-button" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="AddProduct" Text="@localizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
+            @if (Product.CartProduct.UserCartProduct == null)
+            {
+                <Button Color="ButtonColors.Accent" Class="giz-product-card-primary-button" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="AddProduct" Text="@localizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
+            }
+            else
+            {
+                <ProductQuantityPicker UserCartProductViewState="@Product.CartProduct.UserCartProduct" @onclick="Ignore" />
+            }
         </div>
     </div>
 </div>

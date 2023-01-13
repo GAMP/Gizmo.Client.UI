@@ -1,6 +1,8 @@
 ﻿using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Client.UI.ViewModels;
+using Gizmo.Web.Api.Models;
+using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 namespace Gizmo.Client.UI.Pages
 {
     [Route(ClientRoutes.ProductDetailsRoute)]
-    public partial class ProductDetails : ComponentBase
+    public partial class ProductDetails : CustomDOMComponentBase
     {
         public ProductDetails()
         {
@@ -36,7 +38,15 @@ namespace Gizmo.Client.UI.Pages
         {
             await ProductDetailsPageService.LoadProductAsync(ProductId);
 
+            this.SubscribeChange(ProductDetailsPageService.ViewState.Product.CartProduct);
+
             await base.OnInitializedAsync();
+        }
+
+        public override void Dispose()
+        {
+            this.UnsubscribeChange(ProductDetailsPageService.ViewState.Product.CartProduct);
+            base.Dispose();
         }
     }
 }

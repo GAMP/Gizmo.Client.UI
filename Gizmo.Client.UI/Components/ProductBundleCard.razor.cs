@@ -41,6 +41,11 @@ namespace Gizmo.Client.UI.Components
             await UserCartService.AddProductAsyc(Product.Id);
         }
 
+        public void Ignore()
+        {
+            _clickHandled = true;
+        }
+
         #region OVERRIDES
 
         public override async Task SetParametersAsync(ParameterView parameters)
@@ -75,6 +80,18 @@ namespace Gizmo.Client.UI.Components
             }
 
             await base.OnAfterRenderAsync(firstRender);
+        }
+
+        protected override void OnInitialized()
+        {
+            this.SubscribeChange(Product.CartProduct);
+            base.OnInitialized();
+        }
+
+        public override void Dispose()
+        {
+            this.UnsubscribeChange(Product.CartProduct);
+            base.Dispose();
         }
 
         #endregion

@@ -42,14 +42,9 @@ namespace Gizmo.Client.UI.Components
             await UserCartService.AddProductAsyc(Product.Id);
         }
 
-        public Task OnAddQuantityButtonClickHandler(MouseEventArgs args)
+        public void Ignore()
         {
-            return Task.CompletedTask;
-        }
-
-        public Task OnRemoveQuantityButtonClickHandler(MouseEventArgs args)
-        {
-            return Task.CompletedTask;
+            _clickHandled = true;
         }
 
         #region OVERRIDES
@@ -86,6 +81,18 @@ namespace Gizmo.Client.UI.Components
             }
 
             await base.OnAfterRenderAsync(firstRender);
+        }
+
+        protected override void OnInitialized()
+        {
+            this.SubscribeChange(Product.CartProduct);
+            base.OnInitialized();
+        }
+
+        public override void Dispose()
+        {
+            this.UnsubscribeChange(Product.CartProduct);
+            base.Dispose();
         }
 
         #endregion

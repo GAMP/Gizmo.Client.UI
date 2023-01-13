@@ -23,31 +23,10 @@
             </div>
             <div class="giz-registration-form-input giz-form-input-columns">
                 <div class="giz-password-tooltip-root">
-                    <PasswordInput UpdateOnInput="true" @bind-Value="UserRegistrationBasicFieldsService.ViewState.NewPassword" Size="InputSizes.Small" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PASSWORD")" />
-                    <div class="giz-password-tooltip">
-                        <CircularProgressBar Size="CircularProgressBarSizes.Small" Color="yellow" Value="50" Class="giz-password-tooltip__icon" />
-                        <div class="giz-password-tooltip__body">
-                            <div class="giz-password-tooltip__body__title">
-                                Secure Password
-                            </div>
-                            <div class="giz-password-tooltip__body__messages">
-                                <div class="giz-password-tooltip-message">
-                                    8-24 characters
-                                </div>
-                                <div class="giz-password-tooltip-message">
-                                    At least 1 lowercace letter
-                                </div>
-                                <div class="giz-password-tooltip-message">
-                                    At least 1 uppercase letter
-                                </div>
-                                <div class="giz-password-tooltip-message">
-                                    At least 1 number
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <PasswordInput ShowRevealButton="true" UpdateOnInput="true" @bind-Value="UserRegistrationBasicFieldsService.ViewState.NewPassword" Size="InputSizes.Small" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PASSWORD")" />
+                    <PasswordTooltip Password="@UserRegistrationBasicFieldsService.ViewState.NewPassword" />
                 </div>
-                <TextInput @bind-Value="UserRegistrationBasicFieldsService.ViewState.RepeatPassword" Size="InputSizes.Small" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_CONFIRM_PASSWORD")" />
+                <PasswordInput @bind-Value="UserRegistrationBasicFieldsService.ViewState.RepeatPassword" Size="InputSizes.Small" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_CONFIRM_PASSWORD")" />
             </div>
             <div class="giz-registration-form-input giz-form-input-columns">
                 <TextInput TValue="string" Size="InputSizes.Small" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_FIRST_NAME")" />
