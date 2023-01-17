@@ -43,7 +43,7 @@ namespace Gizmo.Client.UI.Components
 
                 if (_items.Count > 2)
                 {
-                    _ = FadeOut(value);
+                    FadeOut(value);
                 }
 
                 _selectedIndex = value;
@@ -75,7 +75,7 @@ namespace Gizmo.Client.UI.Components
             SlideNext(sender);
         }
 
-        private async Task FadeOut(int index)
+        private void FadeOut(int index)
         {
             for (int i = 0; i < _items.Count; i++)
             {
@@ -102,16 +102,6 @@ namespace Gizmo.Client.UI.Components
             }
 
             _duplicatesActive = !_duplicatesActive;
-
-            await Task.Delay(ANIMATION_TIME);
-
-            for (int i = 0; i < _items.Count; i++)
-            {
-                if (!_duplicatesActive)
-                    _duplicates[i].Clear();
-                else
-                    _items[i].Clear();
-            }
         }
 
         private int GetItemIndex(int index, int direction)

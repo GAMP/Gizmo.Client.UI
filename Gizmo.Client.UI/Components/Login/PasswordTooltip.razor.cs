@@ -1,6 +1,7 @@
 ﻿using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -15,26 +16,6 @@ namespace Gizmo.Client.UI.Components
 
         [Parameter]
         public string Password { get; set; }
-
-        private string GetColor()
-        {
-            Calculate();
-
-            switch (_rulesPassed)
-            {
-                case 2:
-                    return "#F2994A";
-
-                case 3:
-                    return "#F2C94C";
-
-                case 4:
-                    return "#219653"; //TODO: A ICON
-
-                default:
-                    return "#EB5757";
-            }
-        }
 
         private void Calculate()
         {
@@ -74,6 +55,24 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
+        private string GetColor()
+        {
+            switch (_rulesPassed)
+            {
+                case 2:
+                    return "#F2994A";
+
+                case 3:
+                    return "#F2C94C";
+
+                case 4:
+                    return "#219653"; //TODO: A ICON
+
+                default:
+                    return "#EB5757";
+            }
+        }
+
         private string GetPasswordDescription()
         {
             if (_rulesPassed == 4)
@@ -83,6 +82,14 @@ namespace Gizmo.Client.UI.Components
                 return "Password is too short";
 
             return "Password is too easy";
+        }
+
+
+        protected override async Task OnParametersSetAsync()
+        {
+            Calculate();
+
+            await base.OnParametersSetAsync();
         }
     }
 }

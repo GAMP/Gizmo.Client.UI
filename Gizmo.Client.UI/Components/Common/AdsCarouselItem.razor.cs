@@ -2,6 +2,7 @@
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System;
+using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -23,13 +24,6 @@ namespace Gizmo.Client.UI.Components
         {
             _index = 0;
             _fade = 0;
-
-            InvokeAsync(StateHasChanged);
-        }
-
-        public void SetIndex(int index)
-        {
-            _index = index;
 
             InvokeAsync(StateHasChanged);
         }

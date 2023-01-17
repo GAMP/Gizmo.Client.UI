@@ -127,7 +127,6 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            //white-space: nowrap;
             text-overflow: ellipsis;
             @include font-m($font-weight-light);
 
@@ -205,15 +204,19 @@
     }
 
     .fade-out-previously {
+        pointer-events: none;
         animation-duration: 1s;
         animation-name: ads-fade-out-previously-anim;
         animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards;
     }
 
     .fade-in-current {
+        pointer-events: all;
         animation-duration: 1s;
         animation-name: ads-fade-in-current-anim;
         animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards;
     }
 }    
 
@@ -242,14 +245,12 @@
     &.current {
         animation-duration: 1s;
         animation-name: ads-indicator-current-anim;
-        //animation-timing-function: ease-in-out;
         animation-fill-mode: forwards;
     }
 
     &.next {
         animation-duration: 1s;
         animation-name: ads-indicator-next-anim;
-        //animation-timing-function: ease-in-out;
         animation-fill-mode: forwards;
     }
 }
