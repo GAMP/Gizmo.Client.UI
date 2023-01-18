@@ -13,7 +13,7 @@
         }
         else
         {
-            <img src="_content/Gizmo.Client.UI/img/Chrome-icon_1.png" alt='loading' />
+            <img src="_content/Gizmo.Client.UI/img/no-exe-image.png" alt='loading' />
         }
         <div class="giz-executable-card__executable-status">
             <i class="giz-executable-card__executable-status__bullet"></i>24
@@ -25,63 +25,6 @@
     </div>
 
     <div class="giz-executable-card__executable-actions">
-        <ComboButton Progress="@Executable.StatePercentage" Color="@(Executable.State == 3 ? ButtonColors.Danger : ButtonColors.Accent)" Variant="@(Executable.State == 2 ? ButtonVariants.Progress : ButtonVariants.Fill)" Size="ButtonSizes.Large" IsFullWidth="true" OnClickMainButton="@OnClickMainButtonHandler" OpenDirection="PopupOpenDirections.Cursor">
-            <ChildContent>
-                @switch (Executable.State)
-                {
-                    case 0:
-                        <div>@localizationService.GetString("GIZ_APPS_LAUNCH")</div>
-                        break;
-                            
-                    case 1:
-                        <GizSpinner />
-                        break;
-
-                    case 2:
-                        <div>@localizationService.GetString("GIZ_APPS_LOADING")</div>
-                        break;
-
-                    case 3:
-                        <div>@localizationService.GetString("GIZ_APPS_TERMINATE")</div>
-                        break;
-                }
-            </ChildContent>
-            <DropDownItems>
-                <ListItem>
-                    <CheckBox Label="@localizationService.GetString("GIZ_APPS_AUTO_START")" Class="giz-app-autostart" />
-                </ListItem>
-                <ListItem SVGIcon="Icons.Restart_Client">
-                    Repair
-                </ListItem>
-                <ListItem SVGIcon="Icons.FolderShared_Client">
-                    <ChildContent>
-                        Personal Files
-                    </ChildContent>
-                    <NestedList>
-                        <ListItem>
-                            -123
-                        </ListItem>
-                        <ListItem>
-                            456
-                        </ListItem>
-                        <ListItem>
-                            123
-                        </ListItem>
-                        <ListItem>
-                            456
-                        </ListItem>
-                        <ListItem>
-                            123
-                        </ListItem>
-                        <ListItem>
-                            456
-                        </ListItem>
-                    </NestedList>
-                </ListItem>
-                <ListItem SVGIcon="Icons.Terminate_Client">
-                    Terminate
-                </ListItem>
-            </DropDownItems>
-        </ComboButton>
+        <ExecutableLaunchButton Executable="@Executable" Size="ButtonSizes.Large" IsFullWidth="true" OnClickMainButton="@OnClickMainButtonHandler" />
     </div>
 </div>

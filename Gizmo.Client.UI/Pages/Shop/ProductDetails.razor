@@ -15,7 +15,7 @@
                     <Icon SVGIcon="Icons.ArrowLeftLong_Client" />
                 </div>
                 <div class="giz-product-details__product__navigation__label">
-                    Back to Shop
+                    @localizationService.GetString("GIZ_GEN_BACK_TO", localizationService.GetString("MODULE_PAGE_SHOP_TITLE"))
                 </div>
             </NavLink>
             <div class="giz-product-details__product__info">
@@ -26,12 +26,12 @@
                     }
                     else
                     {
-                        <img src="_content/Gizmo.Client.UI/img/Cola2.png" alt='loading' />
+                        <img src="_content/Gizmo.Client.UI/img/no-product-image.png" alt='loading' />
                     }
                 </div>
                 <div class="giz-product-details__product__info__basic">
                     <div class="giz-product-details__product__info__basic__category">
-                        Beverages
+                        @ProductDetailsPageService.ViewState.Product?.ProductGroupName
                     </div>
                     <div class="giz-product-details__product__info__basic__title">
                         @ProductDetailsPageService.ViewState.Product?.Name
@@ -63,14 +63,21 @@
                     @foreach (var product in ProductDetailsPageService.ViewState.Product.BundledProducts)
                     {
                         <div class="giz-product-details__product__bundled-products-product">
-                            <img src="_content/Gizmo.Client.UI/img/@ProductDetailsPageService.ViewState.Product?.ImageId" alt="loading" />
+                            @if (ProductDetailsPageService.ViewState.Product?.ImageId.HasValue == true)
+                            {
+                                <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ProductDetailsPageService.ViewState.Product.ImageId.Value" />
+                            }
+                            else
+                            {
+                                <img src="_content/Gizmo.Client.UI/img/no-product-image.png" alt='loading' />
+                            }
                         </div>
                     }
                 </div>
             }
             <div class="giz-product-details__product__related">
                 <div class="giz-product-details__product__related__header">
-                    Related products
+                    @localizationService.GetString("GIZ_SHOP_RELATED_PRODUCTS")
                 </div>
                 
                 <div class="giz-product-details__product__related__body">

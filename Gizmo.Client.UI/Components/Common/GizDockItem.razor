@@ -1,5 +1,6 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
+@using Gizmo.Client.UI.View;
 @using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
@@ -21,15 +22,15 @@
 	<div class="giz-dock-item-state">
 		@switch (Executable.State)
 		{
-			case 1:
+			case ExecutableState.Loading:
 				<ProgressBar IsIndeterminate="true" />
 				break;
 
-			case 2:
+			case ExecutableState.Deployment:
 				<ProgressBar Value="@Executable.StatePercentage" />
 				break;
 
-			case 3:
+			case ExecutableState.Running:
 				<div class="running"></div>
 				break;
 		}

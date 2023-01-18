@@ -14,7 +14,7 @@
                 <Icon SVGIcon="Icons.ArrowLeftLong_Client" />
             </div>
             <div class="giz-app-details__app__navigation__label">
-                Back to Apps
+                @localizationService.GetString("GIZ_GEN_BACK_TO", localizationService.GetString("MODULE_PAGE_APPS_TITLE"))
             </div>
         </NavLink>
         <div class="giz-app-details__app__info">
@@ -25,14 +25,14 @@
                 }
                 else
                 {
-                    <img src="_content/Gizmo.Client.UI/img/Apex.png" alt="loading" />
+                    <img src="_content/Gizmo.Client.UI/img/no-app-image.png" alt="loading" />
                 }
             </div>
 
             <div class="giz-app-details__app__info__details">
                 
                 <div class="giz-app-details__app__info__details__category">
-                    Category
+                    @ApplicationDetailsPageService.ViewState.Application?.ApplicationGroupName
                 </div>
                 <div class="giz-app-details__app__info__details__title">
                     @ApplicationDetailsPageService.ViewState.Application?.Title
@@ -43,47 +43,7 @@
                 <div class="giz-app-details__app__info__details__executables">
                     @if (ApplicationDetailsPageService.ViewState.Application.Executables.Count == 1)
                     {
-                        <ComboButton Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" OnClickMainButton="@OnClickMainButtonHandler">
-                            <ChildContent>
-                                @localizationService.GetString("GIZ_APPS_LAUNCH")
-                            </ChildContent>
-                            <DropDownItems>
-                                <ListItem>
-                                    <CheckBox Label="@localizationService.GetString("GIZ_APPS_AUTO_START")" Class="giz-app-autostart" />
-                                </ListItem>
-                                <ListItem SVGIcon="Icons.Restart_Client">
-                                    @localizationService.GetString("GIZ_APPS_REPAIR")
-                                </ListItem>
-                                <ListItem SVGIcon="Icons.FolderShared_Client">
-                                    <ChildContent>
-                                        @localizationService.GetString("GIZ_APPS_PERSONAL_FILES")
-                                    </ChildContent>
-                                    <NestedList>
-                                        <ListItem>
-                                            -123
-                                        </ListItem>
-                                        <ListItem>
-                                            456
-                                        </ListItem>
-                                        <ListItem>
-                                            123
-                                        </ListItem>
-                                        <ListItem>
-                                            456
-                                        </ListItem>
-                                        <ListItem>
-                                            123
-                                        </ListItem>
-                                        <ListItem>
-                                            456
-                                        </ListItem>
-                                    </NestedList>
-                                </ListItem>
-                                <ListItem SVGIcon="Icons.Terminate_Client">
-                                    @localizationService.GetString("GIZ_APPS_TERMINATE")
-                                </ListItem>
-                            </DropDownItems>
-                        </ComboButton>
+                        <ExecutableLaunchButton Executable="@ApplicationDetailsPageService.ViewState.Application.Executables[0]" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" />
                     }
                     else if (ApplicationDetailsPageService.ViewState.Application.Executables.Count > 1)
                     {

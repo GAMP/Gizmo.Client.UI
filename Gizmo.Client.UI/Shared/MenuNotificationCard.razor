@@ -7,14 +7,14 @@
 @inject ILocalizationService localizationService
 
 <div class="giz-menu-notification-item">
-    <div class="giz-menu-notification-item__text">Order #0075364 was successfuly paid from your account.</div>
+    <div class="giz-menu-notification-item__text">@Notification.Message</div>
     <div class="giz-menu-notification-item__icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
             <circle cx="4" cy="4" r="4" />
         </svg>
     </div>
     <div class="giz-menu-notification-item__details">
-        <div class="giz-menu-notification-item__details__time">1 hour ago</div>
+        <div class="giz-menu-notification-item__details__time">@Notification.Time</div>
         <div class="giz-menu-notification-item__details__action" @onclick="@(() => NotificationsService.MarkAsReadAsync(Notification.Id))">
             <div>@localizationService.GetString("GIZ_NOTIFICATIONS_MARK_AS_READ")</div>
             <CheckIcon />

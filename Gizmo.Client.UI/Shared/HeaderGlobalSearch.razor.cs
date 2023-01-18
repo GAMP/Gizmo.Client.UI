@@ -57,6 +57,14 @@ namespace Gizmo.Client.UI.Shared
 
                     break;
 
+                case "ArrowUp":
+
+                    break;
+
+                case "ArrowDown":
+
+                    break;
+
                 default:
 
                     break;

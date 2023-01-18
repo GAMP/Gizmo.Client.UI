@@ -28,7 +28,7 @@
             }
             else
             {
-                <img src="_content/Gizmo.Client.UI/img/Apex.png" alt='loading' />
+                <img src="_content/Gizmo.Client.UI/img/no-app-image.png" alt='loading' />
             }
         </div>
         <div class="giz-app-card__content__details">
@@ -38,24 +38,11 @@
         </div>
         <div class="giz-app-card__content__footer">
             <div class="giz-app-card-text">
-                <div class="giz-app-card__content__footer-category">Shooter</div>
-                @*<div class="d-flex align-center">
-                    @if (Application != null)
-                    {
-                        <Rating Value="@Application.Rate" />
-                    }
-                    else
-                    {
-                        <Rating Value="0" IsReadOnly="true" />
-                    }
-                    <span class="giz-app-card__rating">@(Application?.Ratings ?? 0) Ratings</span>
-                </div>*@
+                <div class="giz-app-card__content__footer-category">@Application?.ApplicationGroupName</div>
             </div>
         </div>
     </div>
     <div class="giz-app-card__action">
         <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="Execute">@localizationService.GetStringUpper("GIZ_APPS_LAUNCH")</Button>
     </div>
-    
-    <AlertDialog Message="winexe002piw974muaf65_ss8d6.bat was terminated unexpectedly." AlertType="AlertDialog.AlertTypes.Warning" @bind-IsOpen="_warningDialogIsOpen" />
 </div>

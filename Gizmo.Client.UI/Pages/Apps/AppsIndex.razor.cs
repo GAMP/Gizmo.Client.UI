@@ -109,7 +109,7 @@ namespace Gizmo.Client.UI.Pages
 
             if (_selectedApplicationGroupId.HasValue)
             {
-                result = result.Where(a => a.ApplicationCategoryId == _selectedApplicationGroupId);
+                result = result.Where(a => a.ApplicationGroupId == _selectedApplicationGroupId);
             }
 
             return result.ToList();
