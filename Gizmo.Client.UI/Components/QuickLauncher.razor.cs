@@ -42,13 +42,17 @@ namespace Gizmo.Client.UI.Components
         protected override void OnInitialized()
         {
             this.SubscribeChange(UserQuickLaunchService.ViewState);
-            base.OnInitialized();
+			this.SubscribeChange(QuickLaunchService.ViewState);
+			this.SubscribeChange(FavoritesService.ViewState);
+			base.OnInitialized();
         }
 
         public override void Dispose()
         {
             this.UnsubscribeChange(UserQuickLaunchService.ViewState);
-            base.Dispose();
+			this.UnsubscribeChange(QuickLaunchService.ViewState);
+			this.UnsubscribeChange(FavoritesService.ViewState);
+			base.Dispose();
         }
     }
 }

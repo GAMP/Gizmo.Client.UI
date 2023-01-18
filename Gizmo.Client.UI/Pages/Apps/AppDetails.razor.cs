@@ -2,6 +2,7 @@
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.UI.Services;
+using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 namespace Gizmo.Client.UI.Pages
 {
     [Route(ClientRoutes.ApplicationDetailsRoute)]
-    public partial class AppDetails : ComponentBase
+    public partial class AppDetails : CustomDOMComponentBase
     {
         public AppDetails()
         {
@@ -29,6 +30,9 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         ExecutableSelectorService ExecutableSelectorService { get; set; }
+
+        [Inject]
+        public ActiveApplicationsService ActiveApplicationsService { get; set; }
 
         [Inject()]
         IClientDialogService DialogService { get; set; }
@@ -55,7 +59,24 @@ namespace Gizmo.Client.UI.Pages
 
         private async Task OnClickMainButtonHandler()
         {
-            if (ApplicationDetailsPageService.ViewState.Application.Executables.Count > 1)
+            if (ApplicationDetailsPageService.ViewState.Application.Executables.Count == 1)
+            {
+                var executable = ApplicationDetailsPageService.ViewState.Application.Executables[0];
+
+                switch (executable.State)
+                {
+                    case View.ExecutableState.None:
+                        await ActiveApplicationsService.RunExecutableAsyc(executable.Id);
+
+                        break;
+
+                    default:
+                        await ActiveApplicationsService.TerminateExecutableAsyc(executable.Id);
+
+                        break;
+                }
+            }
+            else if (ApplicationDetailsPageService.ViewState.Application.Executables.Count > 1)
             {
                 await ExecutableSelectorService.LoadApplicationAsync(ApplicationId);
 
@@ -71,17 +92,28 @@ namespace Gizmo.Client.UI.Pages
                     }
                 }
             }
-            else
-            {
-                //TODO: A LAUNCH THE EXE?
-            }
         }
 
         protected override async Task OnInitializedAsync()
         {
             await ApplicationDetailsPageService.LoadApplicationAsync(ApplicationId);
 
+            if (ApplicationDetailsPageService.ViewState.Application.Executables.Count == 1)
+            {
+                this.SubscribeChange(ApplicationDetailsPageService.ViewState.Application.Executables[0]);
+            }
+
             await base.OnInitializedAsync();
+        }
+
+        public override void Dispose()
+        {
+            if (ApplicationDetailsPageService.ViewState.Application.Executables.Count == 1)
+            {
+                this.UnsubscribeChange(ApplicationDetailsPageService.ViewState.Application.Executables[0]);
+            }
+
+            base.Dispose();
         }
     }
 }

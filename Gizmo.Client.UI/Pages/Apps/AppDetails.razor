@@ -1,5 +1,5 @@
 ﻿@namespace Gizmo.Client.UI.Pages
-@inherits ComponentBase
+@inherits CustomDOMComponentBase
 @using Gizmo.Web.Components
 @using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
@@ -43,7 +43,7 @@
                 <div class="giz-app-details__app__info__details__executables">
                     @if (ApplicationDetailsPageService.ViewState.Application.Executables.Count == 1)
                     {
-                        <ExecutableLaunchButton Executable="@ApplicationDetailsPageService.ViewState.Application.Executables[0]" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" />
+                        <ExecutableLaunchButton Executable="@ApplicationDetailsPageService.ViewState.Application.Executables[0]" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" OnClickMainButton="@(() => OnClickMainButtonHandler())" />
                     }
                     else if (ApplicationDetailsPageService.ViewState.Application.Executables.Count > 1)
                     {

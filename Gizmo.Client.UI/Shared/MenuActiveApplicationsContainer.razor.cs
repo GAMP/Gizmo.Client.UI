@@ -53,9 +53,9 @@ namespace Gizmo.Client.UI.Shared
         }
 
         protected override bool ShouldRender()
-        {
-            return _shouldRender;
-        }
+		{
+			return true; //TODO: A _shouldRender
+		}
 
         public override async Task SetParametersAsync(ParameterView parameters)
         {
