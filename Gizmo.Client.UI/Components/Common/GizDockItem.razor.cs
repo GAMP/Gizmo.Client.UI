@@ -1,9 +1,12 @@
-﻿using Gizmo.Client.UI.View.States;
+﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -37,12 +40,29 @@ namespace Gizmo.Client.UI.Components
 
         private bool _preventClose;
 
+        private ExecutableViewState _previousExecutable;
+
         protected bool _shouldRender;
 
         #endregion
 
+        [Inject]
+        public ActiveApplicationsService ActiveApplicationsService { get; set; }
+
         [Parameter]
         public ExecutableViewState Executable { get; set; }
+
+        public Task OnClickHandler(MouseEventArgs args)
+        {
+            switch (Executable.State)
+            {
+                case View.ExecutableState.None:
+                    return ActiveApplicationsService.RunExecutableAsyc(Executable.Id);
+
+                default:
+                    return ActiveApplicationsService.TerminateExecutableAsyc(Executable.Id);
+            }
+        }
 
         public void OnMouseOverHandler(MouseEventArgs args)
         {
@@ -50,7 +70,7 @@ namespace Gizmo.Client.UI.Components
 
             _openDeferredAction.Defer(_openDelayTimeSpan);
 
-            InvokeVoidAsync("writeLine", $"OnMouseOverHandler {this.ToString()}");
+            //InvokeVoidAsync("writeLine", $"OnMouseOverHandler {this.ToString()}");
         }
 
         public void OnMouseOutHandler(MouseEventArgs args)
@@ -102,9 +122,42 @@ namespace Gizmo.Client.UI.Components
 
         #region OVERRIDE
 
+        protected override async Task OnParametersSetAsync()
+        {
+            bool executableChanged = !EqualityComparer<ExecutableViewState>.Default.Equals(_previousExecutable, Executable);
+
+            if (executableChanged)
+            {
+                if (_previousExecutable != null)
+                {
+                    //Remove handler
+                    this.UnsubscribeChange(_previousExecutable);
+                }
+                if (Executable != null)
+                {
+                    //Add handler
+                    this.SubscribeChange(Executable); //TODO: A WE NEED TO UPDATE _shouldRender FROM SubscribeChange.
+                }
+            }
+
+            _previousExecutable = Executable;
+
+            await base.OnParametersSetAsync();
+        }
+
+        public override void Dispose()
+        {
+            if (Executable != null)
+            {
+                this.UnsubscribeChange(Executable);
+            }
+
+            base.Dispose();
+        }
+
         protected override bool ShouldRender()
         {
-            return _shouldRender;
+            return true; //TODO: A _shouldRender
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)

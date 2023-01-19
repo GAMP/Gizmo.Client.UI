@@ -29,18 +29,18 @@ namespace Gizmo.Client.UI.Components
             return Task.CompletedTask;
 		}
 
-		protected override async Task OnAfterRenderAsync(bool firstRender)
-		{
-			if (!firstRender)
-			{
-				await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
-			}
-			else
-			{
-				await InvokeVoidAsync("writeLine", $"Render {this.ToString()}");
-			}
+		//protected override async Task OnAfterRenderAsync(bool firstRender)
+		//{
+		//	if (!firstRender)
+		//	{
+		//		await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
+		//	}
+		//	else
+		//	{
+		//		await InvokeVoidAsync("writeLine", $"Render {this.ToString()}");
+		//	}
 
-			await base.OnAfterRenderAsync(firstRender);
-		}
+		//	await base.OnAfterRenderAsync(firstRender);
+		//}
 	}
 }

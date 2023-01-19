@@ -40,19 +40,19 @@ namespace Gizmo.Client.UI.Components
 			base.Dispose();
 		}
 
-		protected override async Task OnAfterRenderAsync(bool firstRender)
-		{
-			if (!firstRender)
-			{
-				await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
-			}
-			else
-			{
-				await InvokeVoidAsync("writeLine", $"Render {this.ToString()}");
-			}
+		//protected override async Task OnAfterRenderAsync(bool firstRender)
+		//{
+		//	if (!firstRender)
+		//	{
+		//		await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
+		//	}
+		//	else
+		//	{
+		//		await InvokeVoidAsync("writeLine", $"Render {this.ToString()}");
+		//	}
 
-			await base.OnAfterRenderAsync(firstRender);
-		}
+		//	await base.OnAfterRenderAsync(firstRender);
+		//}
 
 		#endregion
 	}

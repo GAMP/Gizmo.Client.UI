@@ -82,6 +82,10 @@ namespace Gizmo.Client.UI.Pages
             }
         }
 
+        public void OnCloseButtonClickHandler()
+        {
+        }
+
         protected override async Task OnInitializedAsync()
         {
             await UserSettingsService.LoadAsync();
