@@ -7,8 +7,6 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class ApplicationCard : CustomDOMComponentBase
     {
-        private bool _warningDialogIsOpen;
-
         private bool _clickHandled = false;
 
         #region PROPERTIES
@@ -42,11 +40,6 @@ namespace Gizmo.Client.UI.Components
             _clickHandled = true;
 
             await OnOpenExecutableSelector.InvokeAsync(Application.Id);
-        }
-
-        private void ShowWarning()
-        {
-            _warningDialogIsOpen = true;
         }
 
         #endregion
