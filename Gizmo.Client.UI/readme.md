@@ -21,7 +21,7 @@
 
 * Visual Studio 2022 - Task Runner Explorer
   If Task Runner Explorer cannot load Gulpfile.js with error: ".. could not find a binding for your current environment: ...",
-  you can try to move the $(PATH) above the $(VSInstalledExternalTools) under Tools->Options...->Projects and Solutions->Web Package Management
+  you can try to move the \$(PATH) above the \$(VSInstalledExternalTools) under Tools->Options...->Projects and Solutions->Web Package Management
   and restart Visual Studio.
 
 
