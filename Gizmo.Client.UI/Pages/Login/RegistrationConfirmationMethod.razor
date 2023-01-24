@@ -22,17 +22,36 @@
             {
                 <div class="giz-login-subtitle--sign-up">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim</div>
                 <div class="giz-form-input">
-                    <TextInput @bind-Value="UserRegistrationConfirmationMethodService.ViewState.Email" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")"/>
+                    <TextInput Value="@UserRegistrationConfirmationMethodService.ViewState.Email"
+                               ValueChanged="@((string value) => UserRegistrationConfirmationMethodService.SetEmail(value))"
+                               Size="InputSizes.Medium"
+                               IsFullWidth="true"
+                               Label="@localizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")"/>
                 </div>
             }
             @if (UserRegistrationConfirmationMethodService.ViewState.ConfirmationMethod == View.UserRegistrationMethod.MobilePhone)
             {
                 <div class="giz-login-subtitle--sign-up">Please confirm your country code and enter your phone number to create an account.</div>
                 <div class="giz-registration-form-input">
-                    <IconSelect Placeholder="Search" HandleSVGIcon="Icons.Select_Client" TValue="IconSelectCountry" ItemSource="@Countries" @bind-SelectedItem="@SelectedCountry" Size="InputSizes.Medium" IsFullWidth="true" Label="Country" OpenDirection="PopupOpenDirections.Bottom" Class="giz-input-language-menu" PopupClass="giz-scrollbar--v" />
+                    <IconSelect Placeholder="Search"
+                                HandleSVGIcon="Icons.Select_Client"
+                                TValue="IconSelectCountry"
+                                ItemSource="@Countries"
+                                @bind-SelectedItem="@SelectedCountry"
+                                Size="InputSizes.Medium"
+                                IsFullWidth="true"
+                                Label="Country"
+                                OpenDirection="PopupOpenDirections.Bottom"
+                                Class="giz-input-language-menu"
+                                PopupClass="giz-scrollbar--v" />
                 </div>
                 <div class="giz-form-input">
-                    <MaskedTextInput Mask="###-###-###" @bind-Value="UserRegistrationConfirmationMethodService.ViewState.MobilePhone" Size="InputSizes.Medium" IsFullWidth="true" Label="Phone number" />
+                    <MaskedTextInput Mask="###-###-###"
+                                     Value="@UserRegistrationConfirmationMethodService.ViewState.MobilePhone"
+                                     ValueChanged="@((string value) => UserRegistrationConfirmationMethodService.SetMobilePhone(value))"
+                                     Size="InputSizes.Medium"
+                                     IsFullWidth="true"
+                                     Label="Phone number" />
                 </div>
             }
             <div>

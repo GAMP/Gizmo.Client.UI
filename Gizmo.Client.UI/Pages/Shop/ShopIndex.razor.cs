@@ -34,9 +34,6 @@ namespace Gizmo.Client.UI.Pages
         UserCartService UserCartService { get; set; }
 
         [Inject]
-        AdvertisementsService AdvertisementsService { get; set; }
-
-        [Inject]
         SearchService SearchService { get; set; }
 
         public string SelectedSortOption { get; set; } = "Name";

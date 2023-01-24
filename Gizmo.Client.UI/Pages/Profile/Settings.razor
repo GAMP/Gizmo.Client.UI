@@ -23,7 +23,11 @@
                 <div class="giz-section__header">@localizationService.GetString("GIZ_GEN_USERNAME")</div>
                 <div class="giz-section__body">
                     <div class="giz-form-input">
-                        <TextInput @bind-Value="@UserSettingsService.ViewState.Username" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_USERNAME_MESSAGE")" />
+                        <TextInput Value="@UserSettingsService.ViewState.Username"
+                                   ValueChanged="@((string value) => UserSettingsService.SetUsername(value))"
+                                   Size="InputSizes.Medium"
+                                   IsFullWidth="true"
+                                   Label="@localizationService.GetString("GIZ_USER_USERNAME_MESSAGE")" />
                     </div>
                 </div>
             </div>
@@ -32,13 +36,30 @@
                 <Header>@localizationService.GetString("GIZ_USER_PERSONAL_INFORMATION")</Header>
                 <ChildContent>
                     <div class="giz-form-input giz-form-input-columns">
-                        <TextInput @bind-Value="@UserSettingsService.ViewState.FirstName" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_FIRST_NAME")" />
-                        <TextInput @bind-Value="@UserSettingsService.ViewState.LastName" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_LAST_NAME")" />
+                        <TextInput Value="@UserSettingsService.ViewState.FirstName"
+                                   ValueChanged="@((string value) => UserSettingsService.SetFirstName(value))"
+                                   Size="InputSizes.Medium"
+                                   IsFullWidth="true"
+                                   Label="@localizationService.GetString("GIZ_USER_FIRST_NAME")" />
+                        <TextInput Value="@UserSettingsService.ViewState.LastName"
+                                   ValueChanged="@((string value) => UserSettingsService.SetLastName(value))"
+                                   Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_LAST_NAME")" />
                     </div>
             
                     <div class="giz-form-input giz-form-input-columns">
-                        <MaskedDateInput @bind-Value="@UserSettingsService.ViewState.BirthDate" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_BIRTH_DATE")" />
-                        <Select HandleSVGIcon="Icons.Select_Client" @bind-Value="@UserSettingsService.ViewState.Sex" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_GENDER")" OpenDirection="PopupOpenDirections.Cursor" PopupClass="giz-scrollbar--v">
+                        <MaskedDateInput Value="@UserSettingsService.ViewState.BirthDate"
+                                         ValueChanged="@((DateTime? value) => UserSettingsService.SetBirthDate(value))"
+                                         Size="InputSizes.Medium"
+                                         IsFullWidth="true"
+                                         Label="@localizationService.GetString("GIZ_USER_BIRTH_DATE")" />
+                        <Select HandleSVGIcon="Icons.Select_Client"
+                                Value="@UserSettingsService.ViewState.Sex"
+                                ValueChanged="@((Sex value) => UserSettingsService.SetSex(value))"
+                                Size="InputSizes.Medium"
+                                IsFullWidth="true"
+                                Label="@localizationService.GetString("GIZ_USER_GENDER")"
+                                OpenDirection="PopupOpenDirections.Cursor"
+                                PopupClass="giz-scrollbar--v">
                             <SelectItem Value="@Sex.Unspecified" Text="Unspecified" />
                             <SelectItem Value="@Sex.Male" Text="Male" />
                             <SelectItem Value="@Sex.Female" Text="Female" />
@@ -46,11 +67,19 @@
                     </div>
             
                     <div class="giz-form-input">
-                        <TextInput @bind-Value="@UserSettingsService.ViewState.Country" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_COUNTRY_REGION")" />
+                        <TextInput Value="@UserSettingsService.ViewState.Country"
+                                   ValueChanged="@((string value) => UserSettingsService.SetCountry(value))"
+                                   Size="InputSizes.Medium"
+                                   IsFullWidth="true"
+                                   Label="@localizationService.GetString("GIZ_USER_COUNTRY_REGION")" />
                     </div>
             
                     <div class="giz-form-input">
-                        <TextInput @bind-Value="@UserSettingsService.ViewState.Address" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_ADDRESS")" />
+                        <TextInput Value="@UserSettingsService.ViewState.Address"
+                                   ValueChanged="@((string value) => UserSettingsService.SetAddress(value))"
+                                   Size="InputSizes.Medium"
+                                   IsFullWidth="true"
+                                   Label="@localizationService.GetString("GIZ_USER_ADDRESS")" />
                     </div>
                 </ChildContent>
             </ExpansionPanel>
@@ -59,7 +88,12 @@
                 <Header>@localizationService.GetString("GIZ_USER_MAIL_AND_PHONE_NUMBERS")</Header>
                 <ChildContent>
                     <div class="giz-form-input">
-                        <TextInput @bind-Value="@UserSettingsService.ViewState.Email" IsReadOnly="@(UserPasswordRecoveryMethodService.ViewState.Method == View.UserPasswordRecoveryMethod.Email)" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")">
+                        <TextInput Value="@UserSettingsService.ViewState.Email"
+                                   ValueChanged="@((string value) => UserSettingsService.SetEmail(value))"
+                                   IsReadOnly="@(UserPasswordRecoveryMethodService.ViewState.Method == View.UserPasswordRecoveryMethod.Email)"
+                                   Size="InputSizes.Medium"
+                                   IsFullWidth="true"
+                                   Label="@localizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")">
                             <RightContent>
                                 @if (UserPasswordRecoveryMethodService.ViewState.Method == View.UserPasswordRecoveryMethod.Email)
                                 {
@@ -70,7 +104,12 @@
                     </div>
             
                     <div class="giz-form-input">
-                        <TextInput @bind-Value="@UserSettingsService.ViewState.MobilePhone" IsReadOnly="@(UserPasswordRecoveryMethodService.ViewState.Method == View.UserPasswordRecoveryMethod.MobilePhone)" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_MOBILE_PHONE")">
+                        <TextInput Value="@UserSettingsService.ViewState.MobilePhone" 
+                                   ValueChanged="@((string value) => UserSettingsService.SetMobilePhone(value))"
+                                   IsReadOnly="@(UserPasswordRecoveryMethodService.ViewState.Method == View.UserPasswordRecoveryMethod.MobilePhone)"
+                                   Size="InputSizes.Medium"
+                                   IsFullWidth="true"
+                                   Label="@localizationService.GetString("GIZ_GEN_MOBILE_PHONE")">
                             <RightContent>
                                 @if (UserPasswordRecoveryMethodService.ViewState.Method == View.UserPasswordRecoveryMethod.MobilePhone)
                                 {
@@ -81,7 +120,11 @@
                     </div>
             
                     <div class="giz-form-input">
-                        <TextInput @bind-Value="@UserSettingsService.ViewState.Phone" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_HOME_PHONE")" />
+                        <TextInput Value="@UserSettingsService.ViewState.Phone" 
+                                   ValueChanged="@((string value) => UserSettingsService.SetPhone(value))"
+                                   Size="InputSizes.Medium"
+                                   IsFullWidth="true"
+                                   Label="@localizationService.GetString("GIZ_USER_HOME_PHONE")" />
                     </div>
                 </ChildContent>
             </ExpansionPanel>

@@ -33,7 +33,14 @@
     <div class="giz-order__notes">
         <div class="giz-order__notes__header">@localizationService.GetString("GIZ_SHOP_ORDER_NOTE")</div>
         <div class="giz-order__notes__body">
-            <TextInput IsTransparent="true" ValidationErrorStyle="ValidationErrorStyles.BorderOnly" @bind-Value="@UserCartService.ViewState.Notes" IsMultiLine="true" IsFullWidth="true" Placeholder="@localizationService.GetString("GIZ_SHOP_ORDER_NOTE_PLACEHOLDER")" Class="giz-order-notes" />
+            <TextInput IsTransparent="true"
+                       ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
+                       Value="@UserCartService.ViewState.Notes"
+                       ValueChanged="@((string value) => UserCartService.SetNotes(value))"
+                       IsMultiLine="true"
+                       IsFullWidth="true"
+                       Placeholder="@localizationService.GetString("GIZ_SHOP_ORDER_NOTE_PLACEHOLDER")"
+                       Class="giz-order-notes" />
         </div>
     </div>
 
