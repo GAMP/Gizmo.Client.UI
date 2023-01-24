@@ -39,9 +39,6 @@ namespace Gizmo.Client.UI.Pages
         ExecutableSelectorService ExecutableSelectorService { get; set; }
 
         [Inject]
-        AdvertisementsService AdvertisementsService { get; set; }
-
-        [Inject]
         SearchService SearchService { get; set; }
 
         [Inject()]

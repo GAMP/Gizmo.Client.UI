@@ -19,18 +19,38 @@
         <EditForm EditContext="@UserRegistrationBasicFieldsService.EditContext">
             <div class="giz-login-title">@localizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
             <div class="giz-registration-form-input">
-                <TextInput @bind-Value="UserRegistrationBasicFieldsService.ViewState.Username" Size="InputSizes.Small" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_USERNAME")" />
+                <TextInput Value="@UserRegistrationBasicFieldsService.ViewState.Username"
+                           ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetUsername(value))"
+                           Size="InputSizes.Small"
+                           IsFullWidth="true"
+                           Label="@localizationService.GetString("GIZ_GEN_USERNAME")" />
             </div>
             <div class="giz-registration-form-input giz-form-input-columns">
                 <div class="giz-password-tooltip-root">
-                    <PasswordInput ShowRevealButton="true" UpdateOnInput="true" @bind-Value="UserRegistrationBasicFieldsService.ViewState.NewPassword" Size="InputSizes.Small" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_PASSWORD")" />
+                    <PasswordInput ShowRevealButton="true"
+                                   UpdateOnInput="true"
+                                   Value="@UserRegistrationBasicFieldsService.ViewState.NewPassword"
+                                   ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetNewPassword(value))"
+                                   Size="InputSizes.Small"
+                                   IsFullWidth="true"
+                                   Label="@localizationService.GetString("GIZ_GEN_PASSWORD")" />
                     <PasswordTooltip Password="@UserRegistrationBasicFieldsService.ViewState.NewPassword" />
                 </div>
-                <PasswordInput @bind-Value="UserRegistrationBasicFieldsService.ViewState.RepeatPassword" Size="InputSizes.Small" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_CONFIRM_PASSWORD")" />
+                <PasswordInput Value="@UserRegistrationBasicFieldsService.ViewState.RepeatPassword"
+                               ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetRepeatPassword(value))"
+                               Size="InputSizes.Small"
+                               IsFullWidth="true"
+                               Label="@localizationService.GetString("GIZ_GEN_CONFIRM_PASSWORD")" />
             </div>
             <div class="giz-registration-form-input giz-form-input-columns">
-                <TextInput TValue="string" Size="InputSizes.Small" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_FIRST_NAME")" />
-                <TextInput TValue="string" Size="InputSizes.Small" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_LAST_NAME")" />
+                <TextInput TValue="string"
+                           Size="InputSizes.Small"
+                           IsFullWidth="true"
+                           Label="@localizationService.GetString("GIZ_USER_FIRST_NAME")" />
+                <TextInput TValue="string"
+                           Size="InputSizes.Small"
+                           IsFullWidth="true"
+                           Label="@localizationService.GetString("GIZ_USER_LAST_NAME")" />
             </div>
             <div class="giz-registration-form-input giz-form-input-columns">
                 <MaskedDateInput TValue="string" Size="InputSizes.Small" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_BIRTH_DATE")" />

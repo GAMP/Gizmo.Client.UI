@@ -22,7 +22,13 @@
         <EditForm EditContext="@UserRegistrationConfirmationService.EditContext">
             <div class="giz-login-title">@localizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
             <div class="giz-form-input">
-                <TextInput UpdateOnInput="true" Placeholder="123 456" @bind-Value="UserRegistrationConfirmationService.ViewState.ConfirmationCode" Size="InputSizes.Medium" IsFullWidth="true" Label="@localizationService.GetString("GIZ_PASSWORD_RECOVERY_ENTER_YOUR_CODE")" />
+                <TextInput UpdateOnInput="true"
+                           Placeholder="123 456"
+                           Value="@UserRegistrationConfirmationService.ViewState.ConfirmationCode"
+                           ValueChanged="@((string value) => UserRegistrationConfirmationService.SetConfirmationCode(value))"
+                           Size="InputSizes.Medium"
+                           IsFullWidth="true"
+                           Label="@localizationService.GetString("GIZ_PASSWORD_RECOVERY_ENTER_YOUR_CODE")" />
             </div>
             <div class="giz-form-input">
                 <Button Text="Confirm"

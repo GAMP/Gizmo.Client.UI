@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.View.States;
+﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -26,8 +27,8 @@ namespace Gizmo.Client.UI.Components
 
         #region PROPERTIES
 
-        [Parameter]
-        public ICollection<AdvertisementViewState> Advertisements { get; set; }
+        [Inject]
+        AdvertisementsService AdvertisementsService { get; set; }
 
         [Parameter]
         public int SelectedIndex
@@ -239,8 +240,17 @@ namespace Gizmo.Client.UI.Components
             return base.OnFirstAfterRenderAsync();
         }
 
+        protected override async Task OnInitializedAsync()
+        {
+            this.SubscribeChange(AdvertisementsService.ViewState);
+
+            await base.OnInitializedAsync();
+        }
+
         public override void Dispose()
         {
+            this.UnsubscribeChange(AdvertisementsService.ViewState);
+
             if (_timer != null)
             {
                 _timer.Elapsed -= timer_Elapsed;
