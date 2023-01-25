@@ -1,6 +1,8 @@
 ﻿using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.ViewModels;
+using Gizmo.UI.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +39,11 @@ namespace Gizmo.Client.UI.Shared
             }
         }
 
+        [Inject]
+        IOptions<ClientUIOptions> ClientUIOptions { get; set; }
+
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
 
         [Inject]
         HostService HostService { get; set; }

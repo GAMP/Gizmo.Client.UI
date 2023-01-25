@@ -66,6 +66,9 @@ namespace Gizmo.Client.UI.Pages
         }
 
         [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
         UserRegistrationConfirmationMethodService UserRegistrationConfirmationMethodService { get; set; }
 
         [Inject()]

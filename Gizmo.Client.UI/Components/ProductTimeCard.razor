@@ -1,9 +1,5 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
-@using Gizmo.Web.Components
-@using Gizmo.UI.Services
-
-@inject ILocalizationService localizationService 
 
 <div class="giz-product-card time"
      @onclick="OpenDetails">
@@ -17,7 +13,7 @@
                         <div class="giz-timeline">
                             <div class="giz-timeline-header">
                                 <HexagonIcon />
-                                <div>@localizationService.GetString("GIZ_SHOP_CARD_TIME_PRODUCT_DESCRIPTION")</div>
+                                <div>@LocalizationService.GetString("GIZ_SHOP_CARD_TIME_PRODUCT_DESCRIPTION")</div>
                             </div>
                             <div class="giz-timeline-item">
                                 <div class="giz-time-product-details">
@@ -25,8 +21,8 @@
                                     <span>30 min</span>
                                 </div>
                             </div>
-                            <div class="giz-timeline-item"><div class="giz-time-product-details">@localizationService.GetString("GIZ_SHOP_CARD_TIME_PRODUCT_ACTION_PERIOD")<span>10:00 - 12:00</span></div></div>
-                            <div class="giz-timeline-item"><div class="giz-time-product-details">@localizationService.GetString("GIZ_SHOP_CARD_TIME_PRODUCT_LIFE_TIME")<span>3 hours</span></div></div>
+                            <div class="giz-timeline-item"><div class="giz-time-product-details">@LocalizationService.GetString("GIZ_SHOP_CARD_TIME_PRODUCT_ACTION_PERIOD")<span>10:00 - 12:00</span></div></div>
+                            <div class="giz-timeline-item"><div class="giz-time-product-details">@LocalizationService.GetString("GIZ_SHOP_CARD_TIME_PRODUCT_LIFE_TIME")<span>3 hours</span></div></div>
                         </div>
                     </div>
 
@@ -71,7 +67,7 @@
         <div class="giz-product-card__content__footer">
             @if (Product.CartProduct.UserCartProduct == null)
             {
-                <Button Color="ButtonColors.Accent" Class="giz-product-card-primary-button" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="AddProduct" Text="@localizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
+                <Button Color="ButtonColors.Accent" Class="giz-product-card-primary-button" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="AddProduct" Text="@LocalizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
             }
             else
             {

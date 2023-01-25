@@ -1,9 +1,5 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
-@using Gizmo.Web.Components
-@using Gizmo.UI.Services
-
-@inject ILocalizationService localizationService 
 
 <div class="giz-profile-header">
     <div class="giz-profile-header__avatar">
@@ -20,7 +16,7 @@
             <Icon SVGIcon="Icons.AccountBalance_Client" />
 
             <div class="giz-profile-header__stats-text">
-                <div class="giz-title">@localizationService.GetString("GIZ_GEN_BALANCE")</div>
+                <div class="giz-title">@LocalizationService.GetString("GIZ_GEN_BALANCE")</div>
                 <div class="giz-numbers">@UserService.UserBalanceViewState.Balance.ToString("C")
                 </div>
             </div>
@@ -30,7 +26,7 @@
             <PointsIcon />
 
             <div class="giz-profile-header__stats-text">
-                <div class="giz-title">@localizationService.GetString("GIZ_GEN_POINTS")</div>
+                <div class="giz-title">@LocalizationService.GetString("GIZ_GEN_POINTS")</div>
                 <div class="giz-numbers">@UserService.UserBalanceViewState.PointsBalance</div>
             </div>
         </div>
@@ -39,7 +35,7 @@
             <Icon SVGIcon="Icons.Schedule_Client" />
 
             <div class="giz-profile-header__stats-text">
-                <div class="giz-title">@localizationService.GetString("GIZ_GEN_TIME")</div>
+                <div class="giz-title">@LocalizationService.GetString("GIZ_GEN_TIME")</div>
                 <div class="giz-numbers">@UserService.UserBalanceViewState.Time</div>
             </div>
         </div>

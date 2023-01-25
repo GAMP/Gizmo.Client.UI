@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -18,6 +19,9 @@ namespace Gizmo.Client.UI.Shared
         protected bool _shouldRender;
 
         #region PROPERTIES
+
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
 
         [Inject]
         ActiveApplicationsService ActiveApplicationsService { get; set; }

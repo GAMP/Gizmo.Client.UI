@@ -1,17 +1,12 @@
 ﻿@namespace Gizmo.Client.UI.Shared
 @inherits CustomDOMComponentBase
-@using Gizmo.Web.Components
-@using Gizmo.Client.UI.Components
-@using Gizmo.UI.Services
-
-@inject ILocalizationService localizationService 
 
 <div class="giz-dropdown-menu @(_isOpen ? "open" : "")"
      id="@Id"
      @ref="@Ref">
     <div class="giz-dropdown-menu__content giz-active-apps">
         <div class="giz-active-apps__header">
-            <div class="giz-heading">@localizationService.GetString("GIZ_ACTIVE_APPS_TITLE")</div>
+            <div class="giz-heading">@LocalizationService.GetString("GIZ_ACTIVE_APPS_TITLE")</div>
         </div>
         <div class="giz-active-apps__body giz-scrollbar--v">
             <table>

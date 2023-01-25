@@ -2,31 +2,27 @@
 @inherits ComponentBase
 @layout _Layout_Login
 @using System.Threading;
-@using Gizmo.Web.Components
-@using Gizmo.Client.UI.Components
 @using Microsoft.AspNetCore.Components.Forms
-@using Gizmo.UI.Services
-
-@inject ILocalizationService localizationService
 
 <LoginCard>
     <CardHeader>
         <div class="giz-login-links">
-            <div class="giz-login-new-user">@localizationService.GetString("GIZ_LOGIN_ALREADY_A_MEMBER") <a href="@ClientRoutes.LoginRoute">@localizationService.GetString("GIZ_REGISTRATION_SIGN_ΙΝ")</a></div>
+            <div class="giz-login-new-user">@LocalizationService.GetString("GIZ_LOGIN_ALREADY_A_MEMBER") <a href="@ClientRoutes.LoginRoute">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_ΙΝ")</a></div>
         </div>
     </CardHeader>
     <CardBody>
         <EditForm EditContext="@UserRegistrationConfirmationMethodService.EditContext">
-            <div class="giz-login-title">@localizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
+            <div class="giz-login-title">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
             @if (UserRegistrationConfirmationMethodService.ViewState.ConfirmationMethod == View.UserRegistrationMethod.Email)
             {
                 <div class="giz-login-subtitle--sign-up">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim</div>
                 <div class="giz-form-input">
                     <TextInput Value="@UserRegistrationConfirmationMethodService.ViewState.Email"
                                ValueChanged="@((string value) => UserRegistrationConfirmationMethodService.SetEmail(value))"
+                               ValueExpression="@(() => UserRegistrationConfirmationMethodService.ViewState.Email)"
                                Size="InputSizes.Medium"
                                IsFullWidth="true"
-                               Label="@localizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")"/>
+                               Label="@LocalizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")"/>
                 </div>
             }
             @if (UserRegistrationConfirmationMethodService.ViewState.ConfirmationMethod == View.UserRegistrationMethod.MobilePhone)
@@ -49,6 +45,7 @@
                     <MaskedTextInput Mask="###-###-###"
                                      Value="@UserRegistrationConfirmationMethodService.ViewState.MobilePhone"
                                      ValueChanged="@((string value) => UserRegistrationConfirmationMethodService.SetMobilePhone(value))"
+                                     ValueExpression="@(() => UserRegistrationConfirmationMethodService.ViewState.MobilePhone)"
                                      Size="InputSizes.Medium"
                                      IsFullWidth="true"
                                      Label="Phone number" />
@@ -63,7 +60,7 @@
                         }
                         else
                         {
-                            <div>@localizationService.GetString("GIZ_VERIFICATION_SEND_CODE")</div>
+                            <div>@LocalizationService.GetString("GIZ_VERIFICATION_SEND_CODE")</div>
                         }
                     </ChildContent>
                 </Button>

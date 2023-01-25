@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.States;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -10,6 +11,9 @@ namespace Gizmo.Client.UI.Components
     {
         private int _index;
         private int _fade;
+
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
 
         [CascadingParameter]
         protected AdsCarousel Parent { get; set; }

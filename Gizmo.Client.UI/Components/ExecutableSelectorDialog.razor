@@ -1,14 +1,10 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
-@using Gizmo.Web.Components
-@using Gizmo.UI.Services
-
-@inject ILocalizationService localizationService
 
 <HostedDialog>
     <div class="giz-client-dialog giz-executable-selector-dialog">
         <div class="giz-client-dialog__header">
-            <div class="giz-client-dialog__header__title">@localizationService.GetString("GIZ_APPS_SELECT_EXE")</div>
+            <div class="giz-client-dialog__header__title">@LocalizationService.GetString("GIZ_APPS_SELECT_EXE")</div>
             <div class="giz-client-dialog__header__subtitle">@ExecutableSelectorService.ViewState.Application?.Title</div>
             <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="CloseDialogAsync" />
         </div>

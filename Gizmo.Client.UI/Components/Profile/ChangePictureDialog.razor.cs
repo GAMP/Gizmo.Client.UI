@@ -1,4 +1,5 @@
-﻿using Gizmo.Web.Components;
+﻿using Gizmo.UI.Services;
+using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
@@ -14,6 +15,9 @@ namespace Gizmo.Client.UI.Components
         }
 
         private bool _shouldRender;
+
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
 
         [Parameter]
         public EventCallback CancelCallback { get; set; }

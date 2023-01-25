@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.States;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
@@ -7,6 +8,9 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class ExecutableLaunchButton : CustomDOMComponentBase
     {
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
         [Parameter]
         public ExecutableViewState Executable { get; set; }
 

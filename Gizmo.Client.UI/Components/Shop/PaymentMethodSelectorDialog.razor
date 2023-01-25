@@ -1,18 +1,14 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
-@using Gizmo.Web.Components
 @using Gizmo.Client.UI.View.States
 @using Microsoft.AspNetCore.Components.Forms
-@using Gizmo.UI.Services
-
-@inject ILocalizationService localizationService
 
 <HostedDialog>
     <div class="giz-client-dialog giz-payment-method-selector-dialog">
         <div class="giz-client-dialog__header">
             @if (!@UserCartService.ViewState.IsComplete)
             {
-                <div class="giz-client-dialog__header__title">@localizationService.GetString("GIZ_SHOP_CHECKOUT_TITLE")</div>
+                <div class="giz-client-dialog__header__title">@LocalizationService.GetString("GIZ_SHOP_CHECKOUT_TITLE")</div>
             }
             <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
         </div>
@@ -29,7 +25,7 @@
                             <ChildContent>
                                 <DataGridColumn Field="@(nameof(UserCartProductViewState.ProductName))" TItemType="UserCartProductViewState" Context="product">
                                     <HeaderTemplate>
-                                        @localizationService.GetString("GIZ_SHOP_PRODUCT_NAME")
+                                        @LocalizationService.GetString("GIZ_SHOP_PRODUCT_NAME")
                                     </HeaderTemplate>
                                     <CellTemplate>
                                         @product.ProductName
@@ -37,7 +33,7 @@
                                 </DataGridColumn>
                                 <DataGridColumn Field="@(nameof(UserCartProductViewState.UnitPrice))" TItemType="UserCartProductViewState" Context="product">
                                     <HeaderTemplate>
-                                        @localizationService.GetString("GIZ_SHOP_PRICE")
+                                        @LocalizationService.GetString("GIZ_SHOP_PRICE")
                                     </HeaderTemplate>
                                     <CellTemplate>
                                         @product.UnitPrice
@@ -45,7 +41,7 @@
                                 </DataGridColumn>
                                 <DataGridColumn Field="@(nameof(UserCartProductViewState.Quantity))" TItemType="UserCartProductViewState" Context="product">
                                     <HeaderTemplate>
-                                        @localizationService.GetString("GIZ_SHOP_QUANTITY")
+                                        @LocalizationService.GetString("GIZ_SHOP_QUANTITY")
                                     </HeaderTemplate>
                                     <CellTemplate>
                                         @product.Quantity
@@ -53,7 +49,7 @@
                                 </DataGridColumn>
                                 <DataGridColumn Field="@(nameof(UserCartProductViewState.TotalPrice))" TItemType="UserCartProductViewState" Context="product">
                                     <HeaderTemplate>
-                                        @localizationService.GetString("GIZ_SHOP_SUBTOTAL")
+                                        @LocalizationService.GetString("GIZ_SHOP_SUBTOTAL")
                                     </HeaderTemplate>
                                     <CellTemplate>
                                         @product.TotalPrice
@@ -63,13 +59,22 @@
                         </DataGrid>
                     </div>
                     <div class="giz-checkout__summary">
-                        <div class="giz-checkout__summary__total">@localizationService.GetString("GIZ_SHOP_TOTAL")</div>
+                        <div class="giz-checkout__summary__total">@LocalizationService.GetString("GIZ_SHOP_TOTAL")</div>
                         <div class="giz-checkout__summary__amount">$5 and 2 {icon point}</div>
                     </div>
                     <div class="giz-checkout__payment-method">
-                        <div class="giz-checkout__summary__payment-method__label">@localizationService.GetString("GIZ_SHOP_PAYMENT_METHOD")</div>
+                        <div class="giz-checkout__summary__payment-method__label">@LocalizationService.GetString("GIZ_SHOP_PAYMENT_METHOD")</div>
                         <EditForm EditContext="@UserCartService.EditContext">
-                            <Select IsTransparent="true" ValidationErrorStyle="ValidationErrorStyles.BorderOnly" HandleSVGIcon="Icons.Select_Client" TValue="int?" Value="@UserCartService.ViewState.PaymentMethodId" ValueChanged="@ValueChangedHandler" Size="InputSizes.Small" IsFullWidth="true" OpenDirection="PopupOpenDirections.Cursor" PopupClass="giz-scrollbar--v">
+                            <Select IsTransparent="true"
+                                    ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
+                                    HandleSVGIcon="Icons.Select_Client"
+                                    TValue="int?"
+                                    Value="@UserCartService.ViewState.PaymentMethodId"
+                                    ValueChanged="@ValueChangedHandler"
+                                    Size="InputSizes.Small"
+                                    IsFullWidth="true"
+                                    OpenDirection="PopupOpenDirections.Cursor"
+                                    PopupClass="giz-scrollbar--v">
                                 @if (PaymentMethodsService.ViewState.PaymentMethods != null)
                                 {
                                     @foreach (var paymentMethod in PaymentMethodsService.ViewState.PaymentMethods)
@@ -81,10 +86,10 @@
                         </EditForm>
                     </div>
                     <div class="giz-checkout__notes">
-                        @localizationService.GetString("GIZ_SHOP_CHECKOUT_MESSAGE")
+                        @LocalizationService.GetString("GIZ_SHOP_CHECKOUT_MESSAGE")
                     </div>
                     <div class="giz-checkout__actions">
-                        <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="() => CloseDialog()">@localizationService.GetString("GIZ_GEN_CANCEL")</Button>
+                        <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="() => CloseDialog()">@LocalizationService.GetString("GIZ_GEN_CANCEL")</Button>
                         <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" @onclick="() => UserCartService.SubmitAsync()">
                             <ChildContent>
                                 @if (UserCartService.ViewState.IsLoading)
@@ -93,7 +98,7 @@
                                 }
                                 else
                                 {
-                                    <div>@localizationService.GetString("GIZ_SHOP_PLACE_ORDER")</div>
+                                    <div>@LocalizationService.GetString("GIZ_SHOP_PLACE_ORDER")</div>
                                 }
                             </ChildContent>
                         </Button>
@@ -128,9 +133,9 @@
                         </defs>
                         </svg>
                     </div>
-                    <div class="giz-checkout-complete__message">@localizationService.GetString("GIZ_SHOP_CHECKOUT_COMPLETE_MESSAGE")</div>
-                    <div class="giz-checkout-complete__actions"><Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="() => CloseDialog()">@localizationService.GetString("GIZ_GEN_BACK_TO_SHOP")</Button></div>
-                    <div class="giz-checkout-complete__notes">@localizationService.GetString("GIZ_SHOP_CHECKOUT_COMPLETE_NOTE")</div>
+                    <div class="giz-checkout-complete__message">@LocalizationService.GetString("GIZ_SHOP_CHECKOUT_COMPLETE_MESSAGE")</div>
+                    <div class="giz-checkout-complete__actions"><Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="() => CloseDialog()">@LocalizationService.GetString("GIZ_GEN_BACK_TO", LocalizationService.GetString("MODULE_PAGE_SHOP_TITLE"))</Button></div>
+                    <div class="giz-checkout-complete__notes">@LocalizationService.GetString("GIZ_SHOP_CHECKOUT_COMPLETE_NOTE")</div>
                 </div>
             }
         </div>

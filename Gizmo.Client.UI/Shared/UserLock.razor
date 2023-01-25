@@ -1,5 +1,4 @@
 ﻿@inherits CustomDOMComponentBase
-@using Gizmo.Web.Components
 @using Microsoft.AspNetCore.Components.Forms
 
 @if (UserLockService.ViewState.IsLocking)
@@ -14,6 +13,7 @@
                         <TextInput IsTransparent="true"
                                    Value="@UserLockService.ViewState.InputPassword"
                                    ValueChanged="@((string value) => UserLockService.SetInputPassword(value))"
+                                   ValueExpression="@(() => UserLockService.ViewState.InputPassword)"
                                    ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
                                    UpdateOnInput="true"
                                    MaxLength="4" />
@@ -50,6 +50,7 @@ else
                             <TextInput IsTransparent="true"
                                        Value="@UserLockService.ViewState.InputPassword"
                                        ValueChanged="@((string value) => UserLockService.SetInputPassword(value))"
+                                       ValueExpression="@(() => UserLockService.ViewState.InputPassword)"
                                        ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
                                        UpdateOnInput="true"
                                        MaxLength="4" />

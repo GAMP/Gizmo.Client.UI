@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -31,6 +32,9 @@ namespace Gizmo.Client.UI.Shared
         #endregion
 
         #region PROPERTIES
+
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
 
         [Inject]
         SearchService SearchService { get; set; }

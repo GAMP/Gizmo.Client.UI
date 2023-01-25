@@ -15,6 +15,9 @@ namespace Gizmo.Client.UI.Components
         }
 
         [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
         TopUpService TopUpService { get; set; }
 
         [Parameter]

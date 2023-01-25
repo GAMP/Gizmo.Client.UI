@@ -1,20 +1,16 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
-@using Gizmo.Web.Components
-@using Gizmo.UI.Services
-
-@inject ILocalizationService localizationService
 
 <HostedDialog>
     <div class="giz-client-dialog giz-top-up-dialog">
         <div class="giz-client-dialog__header">
-            <div class="giz-client-dialog__header__title">@localizationService.GetString("GIZ_TOP_UP_TITLE")</div>
+            <div class="giz-client-dialog__header__title">@LocalizationService.GetString("GIZ_TOP_UP_TITLE")</div>
             <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
         </div>
         @if (TopUpService.ViewState.PageIndex == 0)
         {
             <div class="giz-client-dialog__body">
-                <div>@localizationService.GetString("GIZ_TOP_UP_QUICK_SELECT")</div>
+                <div>@LocalizationService.GetString("GIZ_TOP_UP_QUICK_SELECT")</div>
                 <div>
                     <ButtonGroup>
                         @foreach (var preset in TopUpService.ViewState.Presets)
@@ -29,9 +25,10 @@
                                IsFullWidth="true"
                                Value="@TopUpService.ViewState.Amount"
                                ValueChanged="@((decimal value) => TopUpService.SetAmount(value))"
-                               Label="@localizationService.GetString("GIZ_TOP_UP_OR_ENTER_AMOUNT")" />
+                               ValueExpression="@(() => TopUpService.ViewState.Amount)"
+                               Label="@LocalizationService.GetString("GIZ_TOP_UP_OR_ENTER_AMOUNT")" />
                 </div>
-                <div class="giz-top-up-dialog__summary">@TopUpService.ViewState.Amount.ToString("C") @localizationService.GetString("GIZ_TOP_UP_WILL_BE_CREDITED")</div>
+                <div class="giz-top-up-dialog__summary">@TopUpService.ViewState.Amount.ToString("C") @LocalizationService.GetString("GIZ_TOP_UP_WILL_BE_CREDITED")</div>
             </div>
             <div class="giz-client-dialog__footer">
                 <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => TopUpService.SubmitAsync())">
@@ -42,7 +39,7 @@
                         }
                         else
                         {
-                            <div>@localizationService.GetString("GIZ_TOP_UP_PLACE_NEXT")</div>
+                            <div>@LocalizationService.GetString("GIZ_TOP_UP_PLACE_NEXT")</div>
                         }
                     </ChildContent>
                 </Button>
@@ -52,9 +49,9 @@
         {
             <div class="giz-client-dialog__body">
                 <div>???</div>
-                <div class="giz-top-up-dialog__submitted__summary">@localizationService.GetString("GIZ_TOP_UP_TO_BE_PAID") @TopUpService.ViewState.Amount.ToString("C")</div>
+                <div class="giz-top-up-dialog__submitted__summary">@LocalizationService.GetString("GIZ_TOP_UP_TO_BE_PAID") @TopUpService.ViewState.Amount.ToString("C")</div>
                 <div class="giz-top-up-dialog__submitted__qr">
-                    <div class="giz-top-up-dialog__submitted__qr__label">@localizationService.GetString("GIZ_TOP_UP_QR_CODE")</div>
+                    <div class="giz-top-up-dialog__submitted__qr__label">@LocalizationService.GetString("GIZ_TOP_UP_QR_CODE")</div>
                     <div class="giz-top-up-dialog__submitted__qr__image">
                         <QRIcon />
                     </div>
@@ -62,8 +59,8 @@
             </div>
             <div class="giz-client-dialog__footer">
                 <div class="giz-top-up-dialog__submitted__action">
-                    <div class="giz-top-up-dialog__submitted__action__label">@localizationService.GetString("GIZ_TOP_UP_OR")</div>
-                    <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => TopUpService.PayFromPC())">@localizationService.GetString("GIZ_TOP_UP_PAY_FROM_PC")</Button>
+                    <div class="giz-top-up-dialog__submitted__action__label">@LocalizationService.GetString("GIZ_TOP_UP_OR")</div>
+                    <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => TopUpService.PayFromPC())">@LocalizationService.GetString("GIZ_TOP_UP_PAY_FROM_PC")</Button>
                 </div>
             </div>
         }

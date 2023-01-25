@@ -11,6 +11,9 @@ namespace Gizmo.Client.UI.Pages
     public partial class PasswordRecovery : ComponentBase
     {
         [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
         UserPasswordRecoveryService UserPasswordRecoveryService { get; set; }
 
         [Inject]

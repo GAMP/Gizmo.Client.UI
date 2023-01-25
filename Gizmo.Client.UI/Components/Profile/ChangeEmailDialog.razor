@@ -1,15 +1,11 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
-@using Gizmo.Web.Components
 @using Microsoft.AspNetCore.Components.Forms
-@using Gizmo.UI.Services
-
-@inject ILocalizationService localizationService
 
 <HostedDialog>
     <div class="giz-client-dialog giz-change-email-dialog">
         <div class="giz-client-dialog__header">
-            <div class="giz-client-dialog__header__title">@localizationService.GetString("GIZ_CHANGE_EMAIL_TITLE")</div>
+            <div class="giz-client-dialog__header__title">@LocalizationService.GetString("GIZ_CHANGE_EMAIL_TITLE")</div>
             <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
         </div>
         @switch (UserChangeEmailService.ViewState.PageIndex)
@@ -23,6 +19,7 @@
                             <TextInput IsTransparent="true"
                                        Value="@UserChangeEmailService.ViewState.Email"
                                        ValueChanged="@((string value) => UserChangeEmailService.SetEmail(value))"
+                                       ValueExpression="@(() => UserChangeEmailService.ViewState.Email)"
                                        Size="InputSizes.Medium"
                                        IsFullWidth="true"
                                        Label="Email" />
@@ -55,6 +52,7 @@
                         <div class="giz-form-input">
                             <TextInput Value="@UserChangeEmailService.ViewState.ConfirmationCode"
                                        ValueChanged="@((string value) => UserChangeEmailService.SetConfirmationCode(value))"
+                                       ValueExpression="@(() => UserChangeEmailService.ViewState.ConfirmationCode)"
                                        Size="InputSizes.Medium"
                                        IsFullWidth="true"
                                        Label="Enter the code" />
@@ -69,7 +67,7 @@
                                 Size="ButtonSizes.Large"
                                 IsFullWidth="true"
                                 IsDisabled="@(!UserChangeEmailService.ViewState.CanResend)"
-                                Text="@localizationService.GetString("GIZ_GEN_RESEND")"
+                                Text="@LocalizationService.GetString("GIZ_GEN_RESEND")"
                                 @onclick="@(() => UserChangeEmailService.ResendAsync())" />
                         <div class="giz-resend-button__time">@string.Format("{0:mm\\:ss}", UserChangeEmailService.ViewState.ResendTimeLeft)</div>
                     </div>

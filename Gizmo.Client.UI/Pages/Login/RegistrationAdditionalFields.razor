@@ -2,12 +2,7 @@
 @inherits ComponentBase
 @layout _Layout_Login
 @using System.Threading;
-@using Gizmo.Web.Components
-@using Gizmo.Client.UI.Components
 @using Microsoft.AspNetCore.Components.Forms
-@using Gizmo.UI.Services
-
-@inject ILocalizationService localizationService
 
 <LoginCard>
     <CardHeader>
@@ -15,47 +10,57 @@
             <div class="giz-back-button" @onclick="@(() => NavigationService.NavigateTo(ClientRoutes.RegistrationBasicFieldsRoute))">
                 <Icon SVGIcon="Icons.ArrowLeft_Client" Size="IconSizes.ExtraSmall" />
             </div>
-            <div class="giz-login-new-user">@localizationService.GetString("GIZ_LOGIN_ALREADY_A_MEMBER") <a href="@ClientRoutes.LoginRoute">@localizationService.GetString("GIZ_REGISTRATION_SIGN_ΙΝ")</a></div>
+            <div class="giz-login-new-user">@LocalizationService.GetString("GIZ_LOGIN_ALREADY_A_MEMBER") <a href="@ClientRoutes.LoginRoute">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_ΙΝ")</a></div>
         </div>
     </CardHeader>
     <CardBody>
         <EditForm EditContext="@UserRegistrationAdditionalFieldsService.EditContext">
-            <div class="giz-login-title">@localizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
-            @if (UserRegistrationConfirmationMethodService.ViewState.ConfirmationMethod != View.UserRegistrationMethod.MobilePhone)@*TODO:*@
+            <div class="giz-login-title">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
+            @if (UserRegistrationAdditionalFieldsService.ViewState.DefaultUserGroupRequiredInfo.Mobile)
+            {
+                @if (UserRegistrationConfirmationMethodService.ViewState.ConfirmationMethod != View.UserRegistrationMethod.MobilePhone)@*TODO:*@
+                {
+                    <div class="giz-registration-form-input">
+                        <IconSelect Placeholder="Search"
+                                    HandleSVGIcon="Icons.Select_Client"
+                                    TValue="IconSelectCountry"
+                                    ItemSource="@Countries"
+                                    @bind-SelectedItem="@SelectedCountry"
+                                    Size="InputSizes.Small"
+                                    IsFullWidth="true"
+                                    Label="@LocalizationService.GetString("GIZ_USER_COUNTRY_REGION")"
+                                    OpenDirection="PopupOpenDirections.Bottom"
+                                    Class="giz-input-language-menu"
+                                    PopupClass="giz-scrollbar--v" />
+                    </div>
+                }
+            }
+            @if (UserRegistrationAdditionalFieldsService.ViewState.DefaultUserGroupRequiredInfo.Address)
             {
                 <div class="giz-registration-form-input">
-                    <IconSelect Placeholder="Search"
-                                HandleSVGIcon="Icons.Select_Client"
-                                TValue="IconSelectCountry"
-                                ItemSource="@Countries"
-                                @bind-SelectedItem="@SelectedCountry"
-                                Size="InputSizes.Small"
-                                IsFullWidth="true"
-                                Label="@localizationService.GetString("GIZ_USER_COUNTRY_REGION")"
-                                OpenDirection="PopupOpenDirections.Bottom"
-                                Class="giz-input-language-menu"
-                                PopupClass="giz-scrollbar--v" />
+                    <TextInput TValue="string" Size="InputSizes.Small" IsFullWidth="true" Label="@LocalizationService.GetString("GIZ_USER_ADDRESS")" />
                 </div>
             }
-            <div class="giz-registration-form-input">
-                <TextInput TValue="string" Size="InputSizes.Small" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_ADDRESS")" />
-            </div>
-            <div class="giz-registration-form-input">
-                <TextInput TValue="string" Size="InputSizes.Small" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_POST_CODE")" />
-            </div>
+            @if (UserRegistrationAdditionalFieldsService.ViewState.DefaultUserGroupRequiredInfo.PostCode)
+            {
+                <div class="giz-registration-form-input">
+                    <TextInput TValue="string" Size="InputSizes.Small" IsFullWidth="true" Label="@LocalizationService.GetString("GIZ_USER_POST_CODE")" />
+                </div>
+            }
             @if (UserRegistrationConfirmationMethodService.ViewState.ConfirmationMethod != View.UserRegistrationMethod.MobilePhone)@*TODO:*@
             {
                 <div class="giz-registration-form-input">
                     <MaskedTextInput Mask="###-###-###"
                                      Value="@UserRegistrationAdditionalFieldsService.ViewState.HomePhone"
                                      ValueChanged="@((string value) => UserRegistrationAdditionalFieldsService.SetHomePhone(value))"
+                                     ValueExpression="@(() => UserRegistrationAdditionalFieldsService.ViewState.HomePhone)"
                                      Size="InputSizes.Small"
                                      IsFullWidth="true"
-                                     Label="@localizationService.GetString("GIZ_GEN_MOBILE_PHONE")" />
+                                     Label="@LocalizationService.GetString("GIZ_GEN_MOBILE_PHONE")" />
                 </div>
             }
             <div>
-                <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@UserRegistrationAdditionalFieldsService.SubmitAsync">@localizationService.GetString("GIZ_REGISTRATION_SIGN_UP_BUTTON")</Button>
+                <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@UserRegistrationAdditionalFieldsService.SubmitAsync">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_BUTTON")</Button>
             </div>
         </EditForm>
     </CardBody>

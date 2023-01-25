@@ -2,6 +2,7 @@
 using Gizmo.Client.UI.View.States;
 using Gizmo.Client.UI.ViewModels;
 using Gizmo.UI;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -26,6 +27,9 @@ namespace Gizmo.Client.UI.Pages
         #endregion
 
         #region PROPERTIES
+
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
 
         [Inject]
         ShopPageService ShopService { get; set; }

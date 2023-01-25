@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.States;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
@@ -10,6 +11,9 @@ namespace Gizmo.Client.UI.Components
         private bool _clickHandled = false;
 
         #region PROPERTIES
+
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
 
         [Inject]
         NavigationManager NavigationManager { get; set; }

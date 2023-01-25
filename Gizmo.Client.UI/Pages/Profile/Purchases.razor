@@ -1,13 +1,8 @@
 ﻿@namespace Gizmo.Client.UI.Pages
 @inherits ComponentBase
-@using Gizmo.Web.Components
-@using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
 @using Gizmo.Client.UI.View.States
 @using Gizmo
-@using Gizmo.UI.Services
-
-@inject ILocalizationService localizationService
 
 <div class="giz-profile">
     <div class="giz-profile__body">
@@ -116,20 +111,20 @@
                                 @switch (purchase.OrderStatus)
                                 {
                                     case OrderStatus.OnHold:
-                                        <div class="order-on-hold">@localizationService.GetString("ORDER_STATUS_ON_HOLD")</div>
-                                        @*TODO: A ADD ENUM TO localizationService*@
+                                        <div class="order-on-hold">@LocalizationService.GetString("ORDER_STATUS_ON_HOLD")</div>
+                                        @*TODO: A ADD ENUM TO LocalizationService*@
                                         break;
 
                                     case OrderStatus.Completed:
-                                        <div class="order-completed">@localizationService.GetString("ORDER_STATUS_COMPLETED")</div>
+                                        <div class="order-completed">@LocalizationService.GetString("ORDER_STATUS_COMPLETED")</div>
                                         break;
 
                                     case OrderStatus.Canceled:
-                                        <div class="order-canceled">@localizationService.GetString("ORDER_STATUS_CANCELED")</div>
+                                        <div class="order-canceled">@LocalizationService.GetString("ORDER_STATUS_CANCELED")</div>
                                         break;
 
                                     case OrderStatus.Accepted:
-                                        <div class="order-accepted">@localizationService.GetString("ORDER_STATUS_ACCEPTED")</div>
+                                        <div class="order-accepted">@LocalizationService.GetString("ORDER_STATUS_ACCEPTED")</div>
                                         break;
                                 }
                             </CellTemplate>

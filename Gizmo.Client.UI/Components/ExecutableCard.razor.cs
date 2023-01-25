@@ -1,5 +1,6 @@
 ﻿using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
@@ -7,8 +8,11 @@ using System.Threading.Tasks;
 namespace Gizmo.Client.UI.Components
 {
 	public partial class ExecutableCard : CustomDOMComponentBase
-	{
-		[Inject]
+    {
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
 		public ActiveApplicationsService ActiveApplicationsService { get; set; }
 
 		[Parameter]

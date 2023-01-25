@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
@@ -56,6 +57,9 @@ namespace Gizmo.Client.UI.Components
 
             SelectedCountry = Countries.Where(a => a.Id == 3).FirstOrDefault();
         }
+
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
 
         [Inject]
         UserChangeMobileService UserChangeMobileService { get; set; }

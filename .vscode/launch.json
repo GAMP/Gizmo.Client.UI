@@ -1,0 +1,37 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+
+    {
+      "name": "Debug Server Gizmo.Client.UI.Host.Web",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build web app",
+      "program": "dotnet",
+      "args": ["run"],
+      "cwd": "${workspaceFolder}/Gizmo.Client.UI.Host.Web",
+      "internalConsoleOptions": "openOnSessionStart",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    {
+      "name": "Debug Client Gizmo.Client.UI.Host.Web",
+      "type": "msedge",
+      "request": "launch",
+      "timeout": 30000,
+      "url": "http://localhost:5000",
+      "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}"
+    }
+    // {
+    //   "name": "Gizmo.Client.UI.Host.Web",
+    //   "type": "blazorwasm",
+    //   "request": "launch",
+    //   "preLaunchTask": "build web app",
+    //   "cwd": "${workspaceFolder}/Gizmo.Client.UI.Host.Web",
+    //   //"program": "${workspaceFolder}/Gizmo.Client.UI.Host.Web/bin/Debug/net6.0/Gizmo.Client.UI.Host.Web.dll",
+    //   "url": "http://localhost:60205",
+    //   "browser": "edge"
+    // }
+  ]
+}

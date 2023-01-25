@@ -14,6 +14,9 @@ namespace Gizmo.Client.UI.Pages
     public partial class Settings : ComponentBase
     {
         [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
         UserSettingsService UserSettingsService { get; set; }
 
         [Inject]
