@@ -1,0 +1,57 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+          "name": "Gizmo.Client.UI.Host.Web Console",
+          "type": "coreclr",
+          "request": "launch",
+          "preLaunchTask": "build web app",
+          "program": "${workspaceFolder}/Gizmo.Client.UI.Host.Web/bin/Debug/net6.0/Gizmo.Client.UI.Host.Web.dll",
+          "args": [],
+          "cwd": "${workspaceFolder}/Gizmo.Client.UI.Host.Web",
+          "stopAtEntry": false,
+          "internalConsoleOptions": "openOnSessionStart",
+          "launchBrowser": {
+            "enabled": true,
+            "args": "${auto-detect-url}",
+            "windows": {
+              "command": "cmd.exe",
+              "args": "/C start ${auto-detect-url}"
+            },
+            "osx": {
+              "command": "open"
+            },
+            "linux": {
+              "command": "xdg-open"
+            }
+          },
+          "env": {
+            "ASPNETCORE_ENVIRONMENT": "Development"
+          },
+        //   "sourceFileMap": {
+        //     "/Views": "${workspaceFolder}/Views"
+        //   }
+        },
+        // {
+        //     "name": "Launch Edge",
+        //     "request": "launch",
+        //     "type": "msedge",
+        //     "url": "http://localhost:8080",
+        //     "webRoot": "${workspaceFolder}"
+        // },
+        // {
+        //     "name": "Docker .NET Core Attach (Preview)",
+        //     "type": "docker",
+        //     "request": "attach",
+        //     "platform": "netCore",
+        //     "sourceFileMap": {
+        //         "/src": "${workspaceFolder}"
+        //     }
+        // },
+        // {
+        //     "type": "blazorwasm",
+        //     "name": "Launch and Debug Blazor WebAssembly Application",
+        //     "request": "launch"
+        // }
+    ]
+}
