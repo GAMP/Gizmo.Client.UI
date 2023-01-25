@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
@@ -10,6 +11,9 @@ namespace Gizmo.Client.UI.Components
         public ChangePasswordDialog()
         {
         }
+
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
 
         [Inject]
         UserChangePasswordService UserChangePasswordService { get; set; }

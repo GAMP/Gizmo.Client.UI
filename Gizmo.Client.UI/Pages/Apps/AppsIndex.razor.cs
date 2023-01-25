@@ -33,6 +33,9 @@ namespace Gizmo.Client.UI.Pages
         #region PROPERTIES
 
         [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
         ApplicationsPageService ApplicationsPageService { get; set; }
 
         [Inject]

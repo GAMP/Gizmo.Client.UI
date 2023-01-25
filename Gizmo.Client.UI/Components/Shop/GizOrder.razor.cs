@@ -13,6 +13,9 @@ namespace Gizmo.Client.UI.Components
     public partial class GizOrder : CustomDOMComponentBase
     {
         [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
         UserCartService UserCartService { get; set; }
 
         [Inject()]

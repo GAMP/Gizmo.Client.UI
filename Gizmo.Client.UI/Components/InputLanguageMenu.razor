@@ -1,11 +1,17 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
-@using Gizmo.Web.Components
 @using Gizmo.Client.UI.View.States
 @using Microsoft.AspNetCore.Components.Forms
-@using Gizmo.UI.Services
 
-<Select HandleSVGIcon="Icons.Select_Client" ValidationErrorStyle="ValidationErrorStyles.BorderOnly" TValue="RegionViewState" Value="InputLanguagesService.ViewState.SelectedRegion" ValueChanged="@ValueChangedHandler" Size="InputSizes.Small" OpenDirection="PopupOpenDirections.Top" Class="giz-input-language-menu" PopupClass="giz-scrollbar--v">
+<Select HandleSVGIcon="Icons.Select_Client"
+        ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
+        TValue="RegionViewState"
+        Value="InputLanguagesService.ViewState.SelectedRegion"
+        ValueChanged="@ValueChangedHandler"
+        Size="InputSizes.Small"
+        OpenDirection="PopupOpenDirections.Top"
+        Class="giz-input-language-menu"
+        PopupClass="giz-scrollbar--v">
     @if (InputLanguagesService.ViewState.Regions != null)
     {
         @foreach (var region in InputLanguagesService.ViewState.Regions)

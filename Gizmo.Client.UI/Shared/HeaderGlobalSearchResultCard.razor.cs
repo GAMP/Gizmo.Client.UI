@@ -15,6 +15,9 @@ namespace Gizmo.Client.UI.Shared
         protected bool _shouldRender;
 
         [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
         NavigationService NavigationService { get; set; }
 
         [Inject]

@@ -14,6 +14,9 @@ namespace Gizmo.Client.UI.Components
         }
 
         [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
         ExecutableSelectorService ExecutableSelectorService { get; set; }
 
         [Parameter]

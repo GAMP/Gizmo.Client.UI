@@ -10,6 +10,9 @@ namespace Gizmo.Client.UI.Pages
     public partial class PasswordRecoveryConfirmation : CustomDOMComponentBase
     {
         [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
         UserPasswordRecoveryConfirmationService UserPasswordRecoveryConfirmationService { get; set; }
 
         [Inject]

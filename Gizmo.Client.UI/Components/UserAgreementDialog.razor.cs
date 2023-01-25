@@ -15,6 +15,9 @@ namespace Gizmo.Client.UI.Components
         #region PROPERTIES
 
         [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
         UserAgreementsService UserAgreementsService { get; set; }
 
         [Parameter]

@@ -1,11 +1,6 @@
 ﻿@namespace Gizmo.Client.UI.Pages
 @inherits CustomDOMComponentBase
-@using Gizmo.Web.Components
-@using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
-@using Gizmo.UI.Services
-
-@inject ILocalizationService localizationService 
 
 <div class="giz-product-details-wrapper">
     <div class="giz-product-details">
@@ -15,7 +10,7 @@
                     <Icon SVGIcon="Icons.ArrowLeftLong_Client" />
                 </div>
                 <div class="giz-product-details__product__navigation__label">
-                    @localizationService.GetString("GIZ_GEN_BACK_TO", localizationService.GetString("MODULE_PAGE_SHOP_TITLE"))
+                    @LocalizationService.GetString("GIZ_GEN_BACK_TO", LocalizationService.GetString("MODULE_PAGE_SHOP_TITLE"))
                 </div>
             </NavLink>
             <div class="giz-product-details__product__info">
@@ -47,7 +42,7 @@
                         {
                             @if (ProductDetailsPageService.ViewState.Product.CartProduct.UserCartProduct == null)
                             {
-                                <Button LeftSVGIcon="Icons.ShoppingCart_Client" Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" @onclick="@(() => AddProduct(ProductId))" Text="@localizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
+                                <Button LeftSVGIcon="Icons.ShoppingCart_Client" Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" @onclick="@(() => AddProduct(ProductId))" Text="@LocalizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
                             }
                             else
                             {
@@ -77,7 +72,7 @@
             }
             <div class="giz-product-details__product__related">
                 <div class="giz-product-details__product__related__header">
-                    @localizationService.GetString("GIZ_SHOP_RELATED_PRODUCTS")
+                    @LocalizationService.GetString("GIZ_SHOP_RELATED_PRODUCTS")
                 </div>
                 
                 <div class="giz-product-details__product__related__body">

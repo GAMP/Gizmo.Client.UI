@@ -25,6 +25,9 @@ namespace Gizmo.Client.UI.Shared
         #region PROPERTIES
 
         [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
         UserService UserService { get; set; }
 
         [Inject]

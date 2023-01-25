@@ -1,11 +1,6 @@
 ﻿@namespace Gizmo.Client.UI.Shared
 @inherits CustomDOMComponentBase
-@using Gizmo.Web.Components
-@using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
-@using Gizmo.UI.Services
-
-@inject ILocalizationService localizationService
 
 <div class="giz-dropdown-menu @(_isOpen ? "open" : "")"
      id="@Id"
@@ -16,42 +11,42 @@
             <div class="giz-user-links-item__icon">
                 <Icon SVGIcon="Icons.QR" />
             </div>
-            <div class="giz-user-links-item-title">@localizationService.GetString("GIZ_USER_MENU_TOP_UP")</div>
+            <div class="giz-user-links-item-title">@LocalizationService.GetString("GIZ_USER_MENU_TOP_UP")</div>
         </div>
 
         <a href="@ClientRoutes.UserProfileRoute" class="giz-user-links-item" @onclick="OnClickLinkHandler">
             <div class="giz-user-links-item__icon">
                 <Icon SVGIcon="Icons.User_Client" />
             </div>
-            <div class="giz-user-links-item-title">@localizationService.GetString("GIZ_USER_MENU_PROFILE")</div>
+            <div class="giz-user-links-item-title">@LocalizationService.GetString("GIZ_USER_MENU_PROFILE")</div>
         </a>
                
         <a href="@ClientRoutes.UserSettingsRoute" class="giz-user-links-item" @onclick="OnClickLinkHandler">
             <div class="giz-user-links-item__icon">
                 <Icon SVGIcon="Icons.Settings_Client" />
             </div>
-            <div class="giz-user-links-item-title">@localizationService.GetString("GIZ_USER_MENU_SETTINGS")</div>
+            <div class="giz-user-links-item-title">@LocalizationService.GetString("GIZ_USER_MENU_SETTINGS")</div>
         </a>
                 
         @*<div class="giz-user-links-item">
             <div class="giz-user-links-item__icon">
                 <Icon SVGIcon="Icons.Help_Client" />
             </div>
-            <div class="giz-user-links-item-title">@localizationService.GetString("GIZ_USER_MENU_HELP")</div>
+            <div class="giz-user-links-item-title">@LocalizationService.GetString("GIZ_USER_MENU_HELP")</div>
         </div>*@
                 
         <div class="giz-user-links-item" @onclick="OnClickUserLockButtonHandler">
             <div class="giz-user-links-item__icon">
                 <Icon SVGIcon="Icons.Lock_Client" />
             </div>
-            <div class="giz-user-links-item-title">@localizationService.GetString("GIZ_USER_MENU_LOCK_PC")</div>
+            <div class="giz-user-links-item-title">@LocalizationService.GetString("GIZ_USER_MENU_LOCK_PC")</div>
         </div>
                 
         <div class="giz-user-links-item" @onclick="OnClickUserLogoutButtonHandler">
             <div class="giz-user-links-item__icon">
                 <Icon SVGIcon="Icons.Logout_Client" />
             </div>
-            <div class="giz-user-links-item-title">@localizationService.GetString("GIZ_USER_MENU_LOGOUT")</div>
+            <div class="giz-user-links-item-title">@LocalizationService.GetString("GIZ_USER_MENU_LOGOUT")</div>
         </div>
 
     </div>

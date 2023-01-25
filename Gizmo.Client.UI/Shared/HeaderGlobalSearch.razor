@@ -1,11 +1,6 @@
 ﻿@namespace Gizmo.Client.UI.Shared
 @inherits CustomDOMComponentBase
-@using Gizmo.Web.Components
-@using Gizmo.Client.UI.Components
 @using Gizmo.Client.UI.ViewModels
-@using Gizmo.UI.Services
-
-@inject ILocalizationService localizationService
 
 <div class="giz-header__global-search">
     <div class="giz-global-search @(SearchService.ViewState.OpenDropDown ? "open" : "") @(!string.IsNullOrEmpty(SearchService.ViewState.SearchPattern) ? "nonemtpy" : "")" tabindex="0" @onfocusin="OnFocusHandler">
@@ -14,7 +9,7 @@
 
         <input type="text"
                value="@SearchService.ViewState.SearchPattern"
-               placeholder="@localizationService.GetString("GIZ_GLOBAL_SEARCH_PLACEHOLDER")"
+               placeholder="@LocalizationService.GetString("GIZ_GLOBAL_SEARCH_PLACEHOLDER")"
                @ref="_inputElement"
                @onfocusin="OnFocusInHandler"
                @onfocusout="OnFocusOutHandler"
@@ -36,11 +31,11 @@
                         <div class="giz-global-search-section">
                             <div class="giz-global-search-section__header">
 
-                                <div>@localizationService.GetString("GIZ_GLOBAL_SEARCH_GAMES_AND_APPS")</div>
+                                <div>@LocalizationService.GetString("GIZ_GLOBAL_SEARCH_GAMES_AND_APPS")</div>
 
                                 @if (SearchService.ViewState.ApplicationResults.Count > 10)
                                 {
-                                    <div class="giz-global-search-section__header__more" @onclick="@(() => SearchService.ViewAllResultsAsync(Gizmo.Client.UI.View.SearchResultTypes.Applications))">@localizationService.GetString("GIZ_GLOBAL_SEARCH_SHOW_ALL")</div>
+                                    <div class="giz-global-search-section__header__more" @onclick="@(() => SearchService.ViewAllResultsAsync(Gizmo.Client.UI.View.SearchResultTypes.Applications))">@LocalizationService.GetString("GIZ_GLOBAL_SEARCH_SHOW_ALL")</div>
                                 }
                             </div>
                             <div class="giz-global-search-section__body">
@@ -58,11 +53,11 @@
                         <div class="giz-global-search-section">
                             <div class="giz-global-search-section__header">
 
-                                <div>@localizationService.GetString("GIZ_GLOBAL_SEARCH_SHOP")</div>
+                                <div>@LocalizationService.GetString("GIZ_GLOBAL_SEARCH_SHOP")</div>
 
                                 @if (SearchService.ViewState.ProductResults.Count > 10)
                                 {
-                                    <div class="giz-global-search-section__header__more" @onclick="@(() => SearchService.ViewAllResultsAsync(Gizmo.Client.UI.View.SearchResultTypes.Products))">@localizationService.GetString("GIZ_GLOBAL_SEARCH_SHOW_ALL")</div>
+                                    <div class="giz-global-search-section__header__more" @onclick="@(() => SearchService.ViewAllResultsAsync(Gizmo.Client.UI.View.SearchResultTypes.Products))">@LocalizationService.GetString("GIZ_GLOBAL_SEARCH_SHOW_ALL")</div>
                                 }
                             </div>
                             <div class="giz-global-search-section__body">
@@ -88,8 +83,8 @@
                         else
                         {
                             <div class="giz-empty-state">
-                                <div class="giz-empty-state__title">@localizationService.GetString("GIZ_GLOBAL_SEARCH_NO_RESULTS_MESSAGE")</div>
-                                <div class="giz-empty-state__text">@localizationService.GetString("GIZ_GLOBAL_SEARCH_NO_RESULTS_RETRY_MESSAGE")</div>
+                                <div class="giz-empty-state__title">@LocalizationService.GetString("GIZ_GLOBAL_SEARCH_NO_RESULTS_MESSAGE")</div>
+                                <div class="giz-empty-state__text">@LocalizationService.GetString("GIZ_GLOBAL_SEARCH_NO_RESULTS_RETRY_MESSAGE")</div>
                             </div>
                         }
                     </div>

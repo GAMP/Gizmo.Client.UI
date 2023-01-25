@@ -1,6 +1,7 @@
 ﻿using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Client.UI.ViewModels;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -14,6 +15,9 @@ namespace Gizmo.Client.UI.Components
         private bool _clickHandled = false;
 
         protected bool _shouldRender;
+
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
 
         [Inject]
         NavigationManager NavigationManager { get; set; }

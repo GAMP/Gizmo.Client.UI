@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
@@ -9,6 +10,9 @@ namespace Gizmo.Client.UI.Pages
     [Route(ClientRoutes.LoginRoute)]
     public partial class Login : CustomDOMComponentBase
     {
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
         [Inject]
         UserLoginService UserLoginService { get; set; }
 

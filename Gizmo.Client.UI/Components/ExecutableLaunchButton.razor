@@ -1,10 +1,6 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 @using Gizmo.Client.UI.View;
-@using Gizmo.Web.Components
-@using Gizmo.UI.Services
-
-@inject ILocalizationService localizationService
 
 <ComboButton Progress="@Executable.StatePercentage"
              Color="@(Executable.State == ExecutableState.Running ? ButtonColors.Danger : ButtonColors.Accent)"
@@ -13,15 +9,15 @@
              IsFullWidth="@IsFullWidth"
              OnClickMainButton="@OnClickMainButtonHandler"
              OpenDirection="PopupOpenDirections.Cursor"
-             Text="@(Executable.State == ExecutableState.None ? localizationService.GetString("GIZ_APPS_LAUNCH") :
-                     Executable.State == ExecutableState.Deployment ? localizationService.GetString("GIZ_APPS_LOADING") :
-                     Executable.State == ExecutableState.Running ? localizationService.GetString("GIZ_APPS_TERMINATE") : ""
+             Text="@(Executable.State == ExecutableState.None ? LocalizationService.GetString("GIZ_APPS_LAUNCH") :
+                     Executable.State == ExecutableState.Deployment ? LocalizationService.GetString("GIZ_APPS_LOADING") :
+                     Executable.State == ExecutableState.Running ? LocalizationService.GetString("GIZ_APPS_TERMINATE") : ""
                      )">
     <ChildContent>
         @switch (Executable.State)
         {
             case ExecutableState.None:
-                <div>@localizationService.GetString("GIZ_APPS_LAUNCH")</div>
+                <div>@LocalizationService.GetString("GIZ_APPS_LAUNCH")</div>
                 break;
 
             case ExecutableState.Loading:
@@ -29,24 +25,24 @@
                 break;
 
             case ExecutableState.Deployment:
-                <div>@localizationService.GetString("GIZ_APPS_LOADING")</div>
+                <div>@LocalizationService.GetString("GIZ_APPS_LOADING")</div>
                 break;
 
             case ExecutableState.Running:
-                <div>@localizationService.GetString("GIZ_APPS_TERMINATE")</div>
+                <div>@LocalizationService.GetString("GIZ_APPS_TERMINATE")</div>
                 break;
         }
     </ChildContent>
     <DropDownItems>
         <ListItem>
-            <CheckBox Label="@localizationService.GetString("GIZ_APPS_AUTO_START")" Class="giz-app-autostart" />
+            <CheckBox Label="@LocalizationService.GetString("GIZ_APPS_AUTO_START")" Class="giz-app-autostart" />
         </ListItem>
         <ListItem SVGIcon="Icons.Restart_Client">
-            @localizationService.GetString("GIZ_APPS_REPAIR")
+            @LocalizationService.GetString("GIZ_APPS_REPAIR")
         </ListItem>
         <ListItem SVGIcon="Icons.FolderShared_Client">
             <ChildContent>
-                @localizationService.GetString("GIZ_APPS_PERSONAL_FILES")
+                @LocalizationService.GetString("GIZ_APPS_PERSONAL_FILES")
             </ChildContent>
             <NestedList>
                 @if (Executable.PersonalFiles != null)
@@ -59,7 +55,7 @@
             </NestedList>
         </ListItem>
         <ListItem SVGIcon="Icons.Terminate_Client">
-            @localizationService.GetString("GIZ_APPS_TERMINATE")
+            @LocalizationService.GetString("GIZ_APPS_TERMINATE")
         </ListItem>
     </DropDownItems>
 </ComboButton>

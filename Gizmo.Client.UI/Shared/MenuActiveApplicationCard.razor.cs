@@ -1,5 +1,6 @@
 ﻿using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
@@ -11,7 +12,10 @@ namespace Gizmo.Client.UI.Shared
 	{
 		protected bool _shouldRender;
 
-		[Inject]
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
 		public ActiveApplicationsService ActiveApplicationsService { get; set; }
 
 		[Parameter]

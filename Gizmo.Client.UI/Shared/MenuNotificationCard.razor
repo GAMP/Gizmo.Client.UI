@@ -1,10 +1,5 @@
 ﻿@namespace Gizmo.Client.UI.Shared
 @inherits CustomDOMComponentBase
-@using Gizmo.Web.Components
-@using Gizmo.Client.UI.Components
-@using Gizmo.UI.Services
-
-@inject ILocalizationService localizationService
 
 <div class="giz-menu-notification-item">
     <div class="giz-menu-notification-item__text">@Notification.Message</div>
@@ -16,7 +11,7 @@
     <div class="giz-menu-notification-item__details">
         <div class="giz-menu-notification-item__details__time">@Notification.Time</div>
         <div class="giz-menu-notification-item__details__action" @onclick="@(() => NotificationsService.MarkAsReadAsync(Notification.Id))">
-            <div>@localizationService.GetString("GIZ_NOTIFICATIONS_MARK_AS_READ")</div>
+            <div>@LocalizationService.GetString("GIZ_NOTIFICATIONS_MARK_AS_READ")</div>
             <CheckIcon />
         </div>
     </div>

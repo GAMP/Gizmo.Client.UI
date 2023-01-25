@@ -1,11 +1,5 @@
 ﻿@namespace Gizmo.Client.UI.Pages
 @inherits CustomDOMComponentBase
-@using Gizmo.Web.Components
-@using Gizmo.Client.UI.Components
-@using Gizmo.Client.UI.ViewModels
-@using Gizmo.UI.Services
-
-@inject ILocalizationService localizationService
 
 <div class="giz-app-details">
     <div class="giz-app-details__app">
@@ -14,7 +8,7 @@
                 <Icon SVGIcon="Icons.ArrowLeftLong_Client" />
             </div>
             <div class="giz-app-details__app__navigation__label">
-                @localizationService.GetString("GIZ_GEN_BACK_TO", localizationService.GetString("MODULE_PAGE_APPS_TITLE"))
+                @LocalizationService.GetString("GIZ_GEN_BACK_TO", LocalizationService.GetString("MODULE_PAGE_APPS_TITLE"))
             </div>
         </NavLink>
         <div class="giz-app-details__app__info">
@@ -47,7 +41,7 @@
                     }
                     else if (ApplicationDetailsPageService.ViewState.Application.Executables.Count > 1)
                     {
-                        <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => OnClickMainButtonHandler())">@localizationService.GetString("GIZ_APPS_LAUNCH")</Button>
+                        <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => OnClickMainButtonHandler())">@LocalizationService.GetString("GIZ_APPS_LAUNCH")</Button>
                     }
                 </div>
 
@@ -55,25 +49,25 @@
 
             <div class="giz-app-details-card-brand-info">
                 <div class="giz-app-details-card-brand-title">
-                    @localizationService.GetString("GIZ_APPS_PUBLISHER")
+                    @LocalizationService.GetString("GIZ_APPS_PUBLISHER")
                 </div>
                 <div class="giz-app-details-card-brand-text">
                     @ApplicationDetailsPageService.ViewState.Application?.Publisher
                 </div>
                 <div class="giz-app-details-card-brand-title">
-                    @localizationService.GetString("GIZ_APPS_RELEASE_DATE")
+                    @LocalizationService.GetString("GIZ_APPS_RELEASE_DATE")
                 </div>
                 <div class="giz-app-details-card-brand-text">
                     @ApplicationDetailsPageService.ViewState.Application?.ReleaseDate?.ToShortDateString()
                 </div>
                 <div class="giz-app-details-card-brand-title">
-                    @localizationService.GetString("GIZ_APPS_DATE_ADDED")
+                    @LocalizationService.GetString("GIZ_APPS_DATE_ADDED")
                 </div>
                 <div class="giz-app-details-card-brand-text">
                     @ApplicationDetailsPageService.ViewState.Application?.DateAdded.ToShortDateString()
                 </div>
                 <div class="giz-app-details-card-brand-title">
-                    @localizationService.GetString("GIZ_APPS_PLAYER_MODE")
+                    @LocalizationService.GetString("GIZ_APPS_PLAYER_MODE")
                 </div>
                 <div class="giz-app-details-card-brand-text">
                     <div class="d-flex align-center" style="justify-content: flex-end;">
@@ -90,12 +84,12 @@
                     <ClientTab>
                         <ClientTabItem Class="@(_selectedTabIndex == 0 ? "active" : "")">
                             <div @onclick=@(() => SelectTab(0))>
-                                @localizationService.GetString("GIZ_APPS_MEDIA")
+                                @LocalizationService.GetString("GIZ_APPS_MEDIA")
                             </div>
                         </ClientTabItem>
                         <ClientTabItem Class="@(_selectedTabIndex == 1 ? "active" : "")">
                             <div @onclick=@(() => SelectTab(1))>
-                                @localizationService.GetString("GIZ_APPS_LINKS")
+                                @LocalizationService.GetString("GIZ_APPS_LINKS")
                             </div>
                         </ClientTabItem>
                     </ClientTab>

@@ -1,9 +1,5 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
-@using Gizmo.Web.Components
-@using Gizmo.UI.Services
-
-@inject ILocalizationService localizationService 
 
 <div class="giz-product-card bundle"
      @onclick="OpenDetails">
@@ -77,7 +73,7 @@
         <div class="giz-product-card__content__footer">
             @if (Product.CartProduct.UserCartProduct == null)
             {
-                <Button Color="ButtonColors.Accent" Class="giz-product-card-primary-button" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="AddProduct" Text="@localizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
+                <Button Color="ButtonColors.Accent" Class="giz-product-card-primary-button" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="AddProduct" Text="@LocalizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
             }
             else
             {

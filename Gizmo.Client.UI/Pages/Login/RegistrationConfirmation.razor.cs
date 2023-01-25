@@ -9,6 +9,9 @@ namespace Gizmo.Client.UI.Pages
     public partial class RegistrationConfirmation : CustomDOMComponentBase
     {
         [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
         UserRegistrationConfirmationService UserRegistrationConfirmationService { get; set; }
 
         [Inject]

@@ -2,28 +2,24 @@
 @inherits ComponentBase
 @layout _Layout_Login
 @using System.Threading;
-@using Gizmo.Web.Components
-@using Gizmo.Client.UI.Components
 @using Microsoft.AspNetCore.Components.Forms
-@using Gizmo.UI.Services
-
-@inject ILocalizationService localizationService
 
 <LoginCard>
     <CardHeader>
         <div class="giz-login-links">
-            <div class="giz-login-new-user">@localizationService.GetString("GIZ_LOGIN_ALREADY_A_MEMBER") <a href="@ClientRoutes.LoginRoute">@localizationService.GetString("GIZ_REGISTRATION_SIGN_ΙΝ")</a></div>
+            <div class="giz-login-new-user">@LocalizationService.GetString("GIZ_LOGIN_ALREADY_A_MEMBER") <a href="@ClientRoutes.LoginRoute">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_ΙΝ")</a></div>
         </div>
     </CardHeader>
     <CardBody>
         <EditForm EditContext="@UserRegistrationBasicFieldsService.EditContext">
-            <div class="giz-login-title">@localizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
+            <div class="giz-login-title">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
             <div class="giz-registration-form-input">
                 <TextInput Value="@UserRegistrationBasicFieldsService.ViewState.Username"
                            ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetUsername(value))"
+                           ValueExpression="@(() => UserRegistrationBasicFieldsService.ViewState.Username)"
                            Size="InputSizes.Small"
                            IsFullWidth="true"
-                           Label="@localizationService.GetString("GIZ_GEN_USERNAME")" />
+                           Label="@LocalizationService.GetString("GIZ_GEN_USERNAME")" />
             </div>
             <div class="giz-registration-form-input giz-form-input-columns">
                 <div class="giz-password-tooltip-root">
@@ -31,43 +27,60 @@
                                    UpdateOnInput="true"
                                    Value="@UserRegistrationBasicFieldsService.ViewState.NewPassword"
                                    ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetNewPassword(value))"
+                                   ValueExpression="@(() => UserRegistrationBasicFieldsService.ViewState.NewPassword)"
                                    Size="InputSizes.Small"
                                    IsFullWidth="true"
-                                   Label="@localizationService.GetString("GIZ_GEN_PASSWORD")" />
+                                   Label="@LocalizationService.GetString("GIZ_GEN_PASSWORD")" />
                     <PasswordTooltip Password="@UserRegistrationBasicFieldsService.ViewState.NewPassword" />
                 </div>
                 <PasswordInput Value="@UserRegistrationBasicFieldsService.ViewState.RepeatPassword"
                                ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetRepeatPassword(value))"
+                               ValueExpression="@(() => UserRegistrationBasicFieldsService.ViewState.RepeatPassword)"
                                Size="InputSizes.Small"
                                IsFullWidth="true"
-                               Label="@localizationService.GetString("GIZ_GEN_CONFIRM_PASSWORD")" />
+                               Label="@LocalizationService.GetString("GIZ_GEN_CONFIRM_PASSWORD")" />
             </div>
             <div class="giz-registration-form-input giz-form-input-columns">
-                <TextInput TValue="string"
-                           Size="InputSizes.Small"
-                           IsFullWidth="true"
-                           Label="@localizationService.GetString("GIZ_USER_FIRST_NAME")" />
-                <TextInput TValue="string"
-                           Size="InputSizes.Small"
-                           IsFullWidth="true"
-                           Label="@localizationService.GetString("GIZ_USER_LAST_NAME")" />
+                @if (UserRegistrationBasicFieldsService.ViewState.DefaultUserGroupRequiredInfo.FirstName)
+                {
+                    <TextInput TValue="string"
+                               Size="InputSizes.Small"
+                               IsFullWidth="true"
+                               Label="@LocalizationService.GetString("GIZ_USER_FIRST_NAME")" />
+                }
+                @if (UserRegistrationBasicFieldsService.ViewState.DefaultUserGroupRequiredInfo.LastName)
+                {
+                    <TextInput TValue="string"
+                               Size="InputSizes.Small"
+                               IsFullWidth="true"
+                               Label="@LocalizationService.GetString("GIZ_USER_LAST_NAME")" />
+                }
             </div>
             <div class="giz-registration-form-input giz-form-input-columns">
-                <MaskedDateInput TValue="string" Size="InputSizes.Small" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_BIRTH_DATE")" />
-                <Select HandleSVGIcon="Icons.Select_Client" TValue="Sex" Size="InputSizes.Small" IsFullWidth="true" Label="@localizationService.GetString("GIZ_USER_GENDER")" OpenDirection="PopupOpenDirections.Cursor" PopupClass="giz-scrollbar--v">
-                    <SelectItem Value="@Sex.Unspecified" Text="Unspecified" />
-                    <SelectItem Value="@Sex.Male" Text="Male" />
-                    <SelectItem Value="@Sex.Female" Text="Female" />
-                </Select>
+                @if (UserRegistrationBasicFieldsService.ViewState.DefaultUserGroupRequiredInfo.BirthDate)
+                {
+                    <MaskedDateInput TValue="string" Size="InputSizes.Small" IsFullWidth="true" Label="@LocalizationService.GetString("GIZ_USER_BIRTH_DATE")" />
+                }
+                @if (UserRegistrationBasicFieldsService.ViewState.DefaultUserGroupRequiredInfo.Sex)
+                {
+                    <Select HandleSVGIcon="Icons.Select_Client" TValue="Sex" Size="InputSizes.Small" IsFullWidth="true" Label="@LocalizationService.GetString("GIZ_USER_GENDER")" OpenDirection="PopupOpenDirections.Cursor" PopupClass="giz-scrollbar--v">
+                        <SelectItem Value="@Sex.Unspecified" Text="Unspecified" />
+                        <SelectItem Value="@Sex.Male" Text="Male" />
+                        <SelectItem Value="@Sex.Female" Text="Female" />
+                    </Select>
+                }
             </div>
-            @if (UserRegistrationConfirmationMethodService.ViewState.ConfirmationMethod != View.UserRegistrationMethod.Email)@*TODO:*@
+            @if (UserRegistrationBasicFieldsService.ViewState.DefaultUserGroupRequiredInfo.Email)
             {
-                <div class="giz-form-input">
-                    <TextInput TValue="string" Size="InputSizes.Small" IsFullWidth="true" Label="@localizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")" />
-                </div>
+                @if (UserRegistrationConfirmationMethodService.ViewState.ConfirmationMethod != View.UserRegistrationMethod.Email)@*TODO:*@
+                {
+                    <div class="giz-form-input">
+                        <TextInput TValue="string" Size="InputSizes.Small" IsFullWidth="true" Label="@LocalizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")" />
+                    </div>
+                }
             }
             <div>
-                <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@UserRegistrationBasicFieldsService.SubmitAsync">@localizationService.GetString("GIZ_GEN_CONTINUE")</Button>
+                <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@UserRegistrationBasicFieldsService.SubmitAsync">@LocalizationService.GetString("GIZ_GEN_CONTINUE")</Button>
             </div>
         </EditForm>
     </CardBody>

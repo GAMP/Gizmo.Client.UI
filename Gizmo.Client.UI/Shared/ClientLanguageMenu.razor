@@ -1,11 +1,17 @@
 ﻿@namespace Gizmo.Client.UI.Shared
 @inherits CustomDOMComponentBase
-@using Gizmo.Web.Components
 @using Gizmo.Client.UI.View.States
 @using Microsoft.AspNetCore.Components.Forms
-@using Gizmo.UI.Services
 
-<Select HandleSVGIcon="Icons.Select_Client" ValidationErrorStyle="ValidationErrorStyles.BorderOnly" TValue="LanguageViewState" Value="ClientLanguagesService.ViewState.SelectedLanguage" ValueChanged="@ValueChangedHandler" Size="InputSizes.Small" OpenDirection="PopupOpenDirections.Top" Class="giz-client-language-menu" PopupClass="giz-scrollbar--v">
+<Select HandleSVGIcon="Icons.Select_Client"
+        ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
+        TValue="LanguageViewState"
+        Value="ClientLanguagesService.ViewState.SelectedLanguage"
+        ValueChanged="@ValueChangedHandler"
+        Size="InputSizes.Small"
+        OpenDirection="PopupOpenDirections.Top"
+        Class="giz-client-language-menu"
+        PopupClass="giz-scrollbar--v">
     @if (ClientLanguagesService.ViewState.Languages != null)
     {
         @foreach (var language in ClientLanguagesService.ViewState.Languages)

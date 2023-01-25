@@ -29,6 +29,9 @@ namespace Gizmo.Client.UI.Pages
         #region PROPERTIES
 
         [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
         HomePageService HomePageService { get; set; }
 
         [Inject]
