@@ -45,6 +45,22 @@
   It will not effect (Gizmo.Web.Components) and other web projects too.
   and woking with proper way.
 
+# Using Debug in the VSCode for the Gizmo.Client.UI.Host.Web
+* Firstly, you need the following VSCode extensions:
+  * **Task Explorer** for the gulp tasks
+  > https://marketplace.visualstudio.com/items?itemName=spmeesseman.vscode-taskexplorer
+  * **C#** for the blazor app debugging
+  > https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp
+  * **Microsoft.AspNetCore.Razor.VSCode.BlazorWasmDebuggingExtension** for the blazor app debugging
+  > https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.blazorwasm-companion
+
+* Second, you need to execute gulp tasks (it can be once)
+* For the launching app, you must have **edge** or **chrome** browser. You can choose the browser in the *./.vscode/launch.json.configurations[1].type: "chrome"*
+* Then you need to move to the *Run and Debug* menu (ctrl+shift+D) and launch:
+  1. **Debug Server Gizmo.Client.UI.Host.Web** for the start of the server
+  2. **Debug Client Gizmo.Client.UI.Host.Web** for the start of the client
+* If you use a Linux os, then after stopping the server, the port from the *./.vscode/launch.json.configurations[1].url:* can be unfree. To free it, you can execute the following command:
+  > lsof -ti tcp:<port_no> | xargs kill
  
   
 
