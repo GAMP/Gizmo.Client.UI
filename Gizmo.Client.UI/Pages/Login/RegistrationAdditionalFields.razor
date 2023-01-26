@@ -16,7 +16,7 @@
     <CardBody>
         <EditForm EditContext="@UserRegistrationAdditionalFieldsService.EditContext">
             <div class="giz-login-title">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
-            @if (UserRegistrationAdditionalFieldsService.ViewState.DefaultUserGroupRequiredInfo.Mobile)
+            @if (UserRegistrationAdditionalFieldsService.ViewState.DefaultUserGroupRequiredInfo.Country)
             {
                 @if (UserRegistrationConfirmationMethodService.ViewState.ConfirmationMethod != View.UserRegistrationMethod.MobilePhone)@*TODO:*@
                 {
@@ -38,26 +38,39 @@
             @if (UserRegistrationAdditionalFieldsService.ViewState.DefaultUserGroupRequiredInfo.Address)
             {
                 <div class="giz-registration-form-input">
-                    <TextInput TValue="string" Size="InputSizes.Small" IsFullWidth="true" Label="@LocalizationService.GetString("GIZ_USER_ADDRESS")" />
+                    <TextInput Value="@UserRegistrationAdditionalFieldsService.ViewState.Address"
+                               ValueChanged="@((string value) => UserRegistrationAdditionalFieldsService.SetAddress(value))"
+                               ValueExpression="@(() => UserRegistrationAdditionalFieldsService.ViewState.Address)"
+                               Size="InputSizes.Small"
+                               IsFullWidth="true"
+                               Label="@LocalizationService.GetString("GIZ_USER_ADDRESS")" />
                 </div>
             }
             @if (UserRegistrationAdditionalFieldsService.ViewState.DefaultUserGroupRequiredInfo.PostCode)
             {
                 <div class="giz-registration-form-input">
-                    <TextInput TValue="string" Size="InputSizes.Small" IsFullWidth="true" Label="@LocalizationService.GetString("GIZ_USER_POST_CODE")" />
+                    <TextInput Value="@UserRegistrationAdditionalFieldsService.ViewState.PostCode"
+                               ValueChanged="@((string value) => UserRegistrationAdditionalFieldsService.SetPostCode(value))"
+                               ValueExpression="@(() => UserRegistrationAdditionalFieldsService.ViewState.PostCode)"
+                               Size="InputSizes.Small"
+                               IsFullWidth="true"
+                               Label="@LocalizationService.GetString("GIZ_USER_POST_CODE")" />
                 </div>
             }
-            @if (UserRegistrationConfirmationMethodService.ViewState.ConfirmationMethod != View.UserRegistrationMethod.MobilePhone)@*TODO:*@
+            @if (UserRegistrationAdditionalFieldsService.ViewState.DefaultUserGroupRequiredInfo.Mobile)
             {
-                <div class="giz-registration-form-input">
-                    <MaskedTextInput Mask="###-###-###"
-                                     Value="@UserRegistrationAdditionalFieldsService.ViewState.HomePhone"
-                                     ValueChanged="@((string value) => UserRegistrationAdditionalFieldsService.SetHomePhone(value))"
-                                     ValueExpression="@(() => UserRegistrationAdditionalFieldsService.ViewState.HomePhone)"
-                                     Size="InputSizes.Small"
-                                     IsFullWidth="true"
-                                     Label="@LocalizationService.GetString("GIZ_GEN_MOBILE_PHONE")" />
-                </div>
+                @if (UserRegistrationConfirmationMethodService.ViewState.ConfirmationMethod != View.UserRegistrationMethod.MobilePhone)
+                {
+                    <div class="giz-registration-form-input">
+                        <MaskedTextInput Mask="###-###-###"
+                                         Value="@UserRegistrationAdditionalFieldsService.ViewState.MobilePhone"
+                                         ValueChanged="@((string value) => UserRegistrationAdditionalFieldsService.SetMobilePhone(value))"
+                                         ValueExpression="@(() => UserRegistrationAdditionalFieldsService.ViewState.MobilePhone)"
+                                         Size="InputSizes.Small"
+                                         IsFullWidth="true"
+                                         Label="@LocalizationService.GetString("GIZ_GEN_MOBILE_PHONE")" />
+                    </div>
+                }
             }
             <div>
                 <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@UserRegistrationAdditionalFieldsService.SubmitAsync">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_BUTTON")</Button>

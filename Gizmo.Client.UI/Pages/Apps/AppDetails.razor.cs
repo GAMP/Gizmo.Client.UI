@@ -41,6 +41,7 @@ namespace Gizmo.Client.UI.Pages
         IClientDialogService DialogService { get; set; }
 
         [Parameter]
+        [SupplyParameterFromQuery]
         public int ApplicationId { get; set; }
 
         public List<string> ApplicationMedia { get; set; }
@@ -99,8 +100,6 @@ namespace Gizmo.Client.UI.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            await ApplicationDetailsPageService.LoadApplicationAsync(ApplicationId);
-
             if (ApplicationDetailsPageService.ViewState.Application.Executables.Count == 1)
             {
                 this.SubscribeChange(ApplicationDetailsPageService.ViewState.Application.Executables[0]);

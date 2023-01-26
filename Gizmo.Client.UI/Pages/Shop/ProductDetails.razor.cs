@@ -1,12 +1,7 @@
 ﻿using Gizmo.Client.UI.View.Services;
-using Gizmo.Client.UI.View.States;
-using Gizmo.Client.UI.ViewModels;
 using Gizmo.UI.Services;
-using Gizmo.Web.Api.Models;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
@@ -31,6 +26,7 @@ namespace Gizmo.Client.UI.Pages
         UserCartService UserCartService { get; set; }
 
         [Parameter]
+        [SupplyParameterFromQuery]
         public int ProductId { get; set; }
 
         public Task AddProduct(int id)
@@ -40,10 +36,7 @@ namespace Gizmo.Client.UI.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            await ProductDetailsPageService.LoadProductAsync(ProductId);
-
             this.SubscribeChange(ProductDetailsPageService.ViewState.Product.CartProduct);
-
             await base.OnInitializedAsync();
         }
 

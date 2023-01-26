@@ -65,18 +65,6 @@ namespace Gizmo.Client.UI.Shared
             IsOpen = false;
 
             await TopUpService.ShowDialogAsync();
-
-            /*var s = await DialogService.ShowTopUpDialogAsync();
-            if (s.Result == DialogAddResult.Success)
-            {
-                try
-                {
-                    var result = await s.WaitForDialogResultAsync();
-                }
-                catch (OperationCanceledException)
-                {
-                }
-            }*/
         }
 
         private Task OnClickUserLockButtonHandler()

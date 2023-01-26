@@ -19,15 +19,18 @@
                         }
                     </ButtonGroup>
                 </div>
-                <div>
-                    <TextInput IsTransparent="true"
-                               Size="InputSizes.Small"
-                               IsFullWidth="true"
-                               Value="@TopUpService.ViewState.Amount"
-                               ValueChanged="@((decimal value) => TopUpService.SetAmount(value))"
-                               ValueExpression="@(() => TopUpService.ViewState.Amount)"
-                               Label="@LocalizationService.GetString("GIZ_TOP_UP_OR_ENTER_AMOUNT")" />
-                </div>
+                @if (TopUpService.ViewState.AllowCustomValue)
+                {
+                    <div>
+                        <TextInput IsTransparent="true"
+                                   Size="InputSizes.Small"
+                                   IsFullWidth="true"
+                                   Value="@TopUpService.ViewState.Amount"
+                                   ValueChanged="@((decimal value) => TopUpService.SetAmount(value))"
+                                   ValueExpression="@(() => TopUpService.ViewState.Amount)"
+                                   Label="@LocalizationService.GetString("GIZ_TOP_UP_OR_ENTER_AMOUNT")" />
+                    </div>
+                }
                 <div class="giz-top-up-dialog__summary">@TopUpService.ViewState.Amount.ToString("C") @LocalizationService.GetString("GIZ_TOP_UP_WILL_BE_CREDITED")</div>
             </div>
             <div class="giz-client-dialog__footer">

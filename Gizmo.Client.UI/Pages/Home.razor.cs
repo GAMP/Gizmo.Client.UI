@@ -77,7 +77,7 @@ namespace Gizmo.Client.UI.Pages
         {
             this.SubscribeChange(HomePageService.ViewState);
 
-            await HomePageService.LoadPopularProductsAsync();
+            //await HomePageService.LoadPopularProductsAsync();
 
             await base.OnInitializedAsync();
         }

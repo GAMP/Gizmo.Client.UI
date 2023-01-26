@@ -36,11 +36,11 @@ namespace Gizmo.Client.UI.Shared
         {
             if (Result.Type == View.SearchResultTypes.Applications)
             {
-                NavigationService.NavigateTo(ClientRoutes.ApplicationDetailsRoute.Replace("{ApplicationId:int}", Result.Id.ToString()));
+                NavigationService.NavigateTo(ClientRoutes.ApplicationDetailsRoute + $"?ApplicationId={ Result.Id.ToString() }");
             }
             else
             {
-                NavigationService.NavigateTo(ClientRoutes.ProductDetailsRoute.Replace("{ProductId:int}", Result.Id.ToString()));
+                NavigationService.NavigateTo(ClientRoutes.ProductDetailsRoute + $"?ProductId={ Result.Id.ToString() }");
             }
         }
 

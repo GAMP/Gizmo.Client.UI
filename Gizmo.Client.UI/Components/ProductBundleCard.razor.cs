@@ -19,7 +19,7 @@ namespace Gizmo.Client.UI.Components
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        NavigationManager NavigationManager { get; set; }
+        NavigationService NavigationService { get; set; }
 
         [Inject]
         UserCartService UserCartService { get; set; }
@@ -35,7 +35,7 @@ namespace Gizmo.Client.UI.Components
                 return;
             }
 
-            NavigationManager.NavigateTo($"/productdetails/{Product.Id}");
+            NavigationService.NavigateTo(ClientRoutes.ProductDetailsRoute + $"?ProductId={ Product.Id.ToString() }");
         }
 
         public async Task AddProduct()

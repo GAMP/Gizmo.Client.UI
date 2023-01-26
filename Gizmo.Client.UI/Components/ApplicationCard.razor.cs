@@ -16,7 +16,7 @@ namespace Gizmo.Client.UI.Components
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        NavigationManager NavigationManager { get; set; }
+        NavigationService NavigationService { get; set; }
 
         [Parameter]
         public ApplicationViewState Application { get; set; }
@@ -36,7 +36,7 @@ namespace Gizmo.Client.UI.Components
                 return;
             }
 
-            NavigationManager.NavigateTo($"/appdetails/{Application.Id}");
+            NavigationService.NavigateTo(ClientRoutes.ApplicationDetailsRoute + $"?ApplicationId={Application.Id.ToString()}");
         }
 
         private async Task Execute()
