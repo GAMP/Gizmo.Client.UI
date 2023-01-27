@@ -10,7 +10,7 @@ namespace Gizmo.Client.UI.Host.WPF
     /// </summary>
     public partial class HostWindow : Window , IHostWindow
     {
-        public HostWindow(DesktopComponentDiscoveryService componentDiscoveryService)
+        public HostWindow(DesktopUICompositionService componentDiscoveryService)
         {
             InitializeComponent();
 
@@ -20,17 +20,17 @@ namespace Gizmo.Client.UI.Host.WPF
 
         private void ComponentDiscoveryService_Initialized(object sender, System.EventArgs e)
         {
-            UpdateValues((DesktopComponentDiscoveryService)sender);
+            UpdateValues((DesktopUICompositionService)sender);
         }
 
-        private void UpdateValues(DesktopComponentDiscoveryService componentDiscoveryService)
+        private void UpdateValues(DesktopUICompositionService componentDiscoveryService)
         {
             var rootComponent = componentDiscoveryService.RootComponentType;
             if(rootComponent!=null)
             {
                 //set component type based on the settings found by discovery service
                 _ROOT_COMPONENT.ComponentType = rootComponent;
-
+                 
                 _BLAZOR_WEB_VIEW.HostPage = Path.Combine(componentDiscoveryService.BasePath, @"wwwroot\index.html");
             }           
         }

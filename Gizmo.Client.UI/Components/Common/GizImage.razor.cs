@@ -30,7 +30,7 @@ namespace Gizmo.Client.UI.Components
         }
 
         [Inject()]
-        private ImageService ImageService
+        private IImageService ImageService
         {
             get;
             init;

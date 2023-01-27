@@ -20,8 +20,7 @@ namespace Gizmo.Client.UI.Host.WPF
             base.OnStartup(e);
 
             var hostBuilder = new HostBuilder();
-            string appSettingsFile = Path.Combine(Environment.CurrentDirectory, @"skin.json");
-
+        
 
             hostBuilder.ConfigureServices((context, serviceCollection) =>
             {
@@ -33,8 +32,7 @@ namespace Gizmo.Client.UI.Host.WPF
                 serviceCollection.AddClientOptions(context.Configuration);
                 serviceCollection.AddClientServices();
 
-                serviceCollection.AddSingleton<IClientDialogService, ClientDialogService>();
-                serviceCollection.AddSingleton<IDialogService>(sp => sp.GetRequiredService<IClientDialogService>());
+                serviceCollection.AddDialogSerive<IClientDialogService>();
 
                 serviceCollection.AddSingleton<IGizmoClient, TestClient>();
                 serviceCollection.AddSingleton<IHostWindow, HostWindow>();
@@ -56,12 +54,16 @@ namespace Gizmo.Client.UI.Host.WPF
 
             //get host window
             var hostWindow = (HostWindow)host.Services.GetRequiredService<IHostWindow>();
-            var ds = host.Services.GetRequiredService<DesktopComponentDiscoveryService>();
 
-            //initialize services
-            await host.Services.InitializeClientServices();
+            var ds = host.Services.GetRequiredService<DesktopUICompositionService>();
+
+            string appSettingsFile = Path.Combine(@"C:\Users\Dabuzz\Desktop\Skin", @"composition.json");
 
             await ds.SetConfigurationSourceAsync(appSettingsFile);
+            await ds.InitializeAsync(default);
+
+            //initialize services
+            await host.Services.InitializeClientServices();        
 
             //show host window
             hostWindow.Show();

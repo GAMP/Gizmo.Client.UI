@@ -19,7 +19,7 @@ namespace Gizmo.Client.UI
         /// Component discovery service.
         /// </summary>
         [Inject()]
-        public IComponentDiscoveryService ComponentDiscoveryService
+        public IUICompositionService ComponentDiscoveryService
         {
             get;
             protected set;

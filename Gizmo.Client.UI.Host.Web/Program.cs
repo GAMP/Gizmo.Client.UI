@@ -5,7 +5,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Components.Web;
-using Gizmo.UI.Services;
+using Gizmo.UI;
 
 namespace Gizmo.Client.UI.Host.Web
 {
@@ -38,7 +38,7 @@ namespace Gizmo.Client.UI.Host.Web
             hostBuilder.Services.AddClientServices();
 
             hostBuilder.Services.AddSingleton<IClientDialogService, ClientDialogService>();
-            hostBuilder.Services.AddSingleton<IDialogService>(sp => sp.GetRequiredService<IClientDialogService>());
+            hostBuilder.Services.AddDialogSerive<IClientDialogService>();
 
             hostBuilder.Services.AddSingleton<IGizmoClient, TestClient>();
 
