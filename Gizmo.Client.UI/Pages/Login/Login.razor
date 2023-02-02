@@ -42,6 +42,7 @@
                                Value="@UserLoginService.ViewState.LoginName"
                                ValueChanged="@((string value) => UserLoginService.SetLoginName(value))"
                                ValueExpression="@(() => UserLoginService.ViewState.LoginName)"
+                               ValidateFunction="@UserLoginService.UsernameCharacterIsValid"
                                Size="InputSizes.Medium"
                                IsFullWidth="true"
                                Label="@LocalizationService.GetString("GIZ_GEN_USERNAME")" />
