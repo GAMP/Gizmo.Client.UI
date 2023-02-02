@@ -14,7 +14,8 @@
         <EditForm EditContext="@UserRegistrationBasicFieldsService.EditContext">
             <div class="giz-login-title">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
             <div class="giz-registration-form-input">
-                <TextInput Value="@UserRegistrationBasicFieldsService.ViewState.Username"
+                <TextInput UpdateOnInput="true"
+                           Value="@UserRegistrationBasicFieldsService.ViewState.Username"
                            ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetUsername(value))"
                            ValueExpression="@(() => UserRegistrationBasicFieldsService.ViewState.Username)"
                            Size="InputSizes.Small"
