@@ -1,33 +1,51 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
-	<PropertyGroup>
-		<OutputType>WinExe</OutputType>
-		<TargetFramework>net6.0-windows</TargetFramework>
-		<UseWPF>true</UseWPF>
-		<!--Fixes duplicate file error on publish (.NET6 BUG)-->
-		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
-	</PropertyGroup>
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <!--Fixes duplicate file error on publish (.NET6 BUG)-->
+    <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="6.0.408" />
-		<PackageReference Include="Microsoft.AspNetCore.Localization" Version="2.2.0" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
-		<PackageReference Include="System.Resources.ResourceManager" Version="4.3.0" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="6.0.408" />
+    <PackageReference Include="Microsoft.AspNetCore.Localization" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+    <PackageReference Include="System.Resources.ResourceManager" Version="4.3.0" />
+  </ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="wwwroot\" />
-	</ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
 
-	<ItemGroup>
-	  <None Include="composition.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	</ItemGroup>
+  <ItemGroup>
+    <None Include="composition.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\Gizmo.Client.UI\Gizmo.Client.UI.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Gizmo.Client.UI\Gizmo.Client.UI.csproj" />
+  </ItemGroup>
+  
+  <Target Name="CleanPublishOutput" AfterTargets="Publish">
+    <ItemGroup>
+      <Files Include="$(PublishDir)*.pdb"/>
+      <Files Include="$(PublishDir)*.exe"/>
+      <Files Include="$(PublishDir)*.dll"/>
+      <Files Include="$(PublishDir)*.json"/>
+      <FilesToDelete Include="@(Files)" Condition="%(Filename) != 'Gizmo.Client.UI' and %(Filename) != 'composition' and %(Filename) != 'Gizmo.Web.Components' "/>
+      <DirsToClean Include="$([System.IO.Directory]::GetDirectories('$(PublishDir)'))"/>
+    </ItemGroup>
+
+    <!--remove leftorver pdb files-->
+    <Delete Files="$(PublishDir)Gizmo.Client.UI.pdb;$(PublishDir)Gizmo.Web.Components.pdb" />
+    <!--delete files-->
+    <Delete Files="@(FilesToDelete)"/>
+    <!--delete directories-->
+    <RemoveDir Directories="@(DirsToClean)" Condition="%(Filename) != 'wwwroot' " />
+  </Target>
 
 </Project>
