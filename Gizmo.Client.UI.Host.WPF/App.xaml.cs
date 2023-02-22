@@ -57,7 +57,7 @@ namespace Gizmo.Client.UI.Host.WPF
 
             var ds = host.Services.GetRequiredService<DesktopUICompositionService>();
 
-            string appSettingsFile = Path.Combine(@"C:\Users\Dabuzz\Desktop\Skin", @"composition.json");
+            string appSettingsFile = Path.Combine(Environment.CurrentDirectory, @"composition.json");
 
             await ds.SetConfigurationSourceAsync(appSettingsFile);
             await ds.InitializeAsync(default);
