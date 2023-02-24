@@ -17,8 +17,8 @@
                         {
                             @foreach (var productGroup in ShopService.ViewState.ProductGroups)
                             {
-                                <ClientTabItem Class="@(productGroup.Id == ShopService.ViewState.SelectedProductGroupId ? "active" : "")">
-                                    <div @onclick=@(() => ShopService.SetSelectedProductGroup(productGroup.Id))>
+                                <ClientTabItem Class="@(productGroup.ProductGroupId == ShopService.ViewState.SelectedProductGroupId ? "active" : "")">
+                                    <div @onclick=@(() => ShopService.SetSelectedProductGroup(productGroup.ProductGroupId))>
                                         @productGroup.Name
                                     </div>
                                 </ClientTabItem>
@@ -81,7 +81,7 @@
                         {
                             <div class="giz-section">
                                 <div class="giz-section__header">
-                                    @ShopService.ViewState.ProductGroups.Where(a => a.Id == ShopService.ViewState.SelectedProductGroupId).Select(a => a.Name).FirstOrDefault()
+                                    @ShopService.ViewState.ProductGroups.Where(a => a.ProductGroupId == ShopService.ViewState.SelectedProductGroupId).Select(a => a.Name).FirstOrDefault()
                                 </div>
                                 <div class="giz-section__body">
                                     <div class="giz-shop__products__list">
@@ -100,7 +100,7 @@
                         {
                             @foreach (var productGroup in ShopService.ViewState.ProductGroups)
                             {
-                                @if (ShopService.ViewState.Products.Where(a => a.ProductGroupId == productGroup.Id).Count() > 1)
+                                @if (ShopService.ViewState.Products.Where(a => a.ProductGroupId == productGroup.ProductGroupId).Count() > 1)
                                 {
                                     <div class="giz-section">
                                         <div class="giz-section__header">
@@ -108,7 +108,7 @@
                                         </div>
                                         <div class="giz-section__body">
                                             <div class="giz-shop__products__list">
-                                                @foreach (var product in ShopService.ViewState.Products.Where(a => a.ProductGroupId == productGroup.Id))
+                                                @foreach (var product in ShopService.ViewState.Products.Where(a => a.ProductGroupId == productGroup.ProductGroupId))
                                                 {
                                                     <ProductCard Product="@product" />
                                                 }
