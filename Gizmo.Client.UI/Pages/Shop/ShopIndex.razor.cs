@@ -75,28 +75,22 @@ namespace Gizmo.Client.UI.Pages
 
                 result = result.Where(a => ids.Contains(a.Id));
             }
-
-            if (ShopService.ViewState.SelectedProductGroupId.HasValue)
+            else if (ShopService.ViewState.SelectedUserProductGroupId.HasValue)
             {
-                result = result.Where(a => a.ProductGroupId == ShopService.ViewState.SelectedProductGroupId.Value);
+                result = result.Where(a => a.ProductGroupId == ShopService.ViewState.SelectedUserProductGroupId.Value);
             }
 
-            return result.ToList();
+            return result;
         }
 
         #endregion
-
-        private Task SelectProductGroup(int? productGroupId)
-        {
-            return ShopService.SetSelectedProductGroup(productGroupId);
-        }
 
         protected override async Task OnInitializedAsync()
         {
             this.SubscribeChange(ShopService.ViewState);
             this.SubscribeChange(SearchService.ViewState);
 
-            await ShopService.LoadProductsAsync();
+            //await ShopService.LoadProductsAsync();
 
             await base.OnInitializedAsync();
         }
