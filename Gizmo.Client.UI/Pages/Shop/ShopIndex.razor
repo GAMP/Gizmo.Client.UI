@@ -41,6 +41,8 @@
 
                 @if (SearchService.ViewState.ShowAll)
                 {
+                    var filteredProducts = GetFilteredProducts();
+
                     <div class="giz-section">
                         <div class="giz-section__header">
                             <div class="giz-section__header__filters">
@@ -53,10 +55,10 @@
                             </div>
                         </div>
                         <div class="giz-section__body">
-                            @if (GetFilteredProducts().Count() > 0)
+                            @if (filteredProducts.Length > 0)
                             {
                                 <div class="giz-shop__products__list">
-                                    @foreach (var product in GetFilteredProducts())
+                                    @foreach (var product in filteredProducts)
                                     {
                                         <ProductCard Product="@product" />
                                     }
