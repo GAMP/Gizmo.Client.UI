@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Gizmo.Client.UI.View.Services;
@@ -31,6 +32,8 @@ namespace Gizmo.Client.UI.Pages
         SearchService SearchService { get; set; }
 
         #endregion
+
+
 
         #region METHODS
 

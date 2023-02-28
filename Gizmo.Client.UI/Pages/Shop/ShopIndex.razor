@@ -77,45 +77,21 @@
                 }
                 else
                 {
-                    @if (ShopService.ViewState.SelectedUserProductGroupId.HasValue)
+                    @foreach (var productGroup in ShopService.ViewState.SelectedProductGroups)
                     {
-                        var selectedProducts = ShopService.ViewState.Products.Where(x => x.ProductGroupId == ShopService.ViewState.SelectedUserProductGroupId.Value);
-
-                        @if (selectedProducts.Any())
-                        {
-                            <div class="giz-section">
-                                <div class="giz-section__header">
-                                    @selectedProducts.First().ProductGroupName
-                                </div>
-                                <div class="giz-section__body">
-                                    <div class="giz-shop__products__list">
-                                        @foreach (var product in selectedProducts)
-                                        {
-                                            <ProductCard Product="@product" />
-                                        }
-                                    </div>
+                        <div class="giz-section">
+                            <div class="giz-section__header">
+                                @productGroup.Key
+                            </div>
+                            <div class="giz-section__body">
+                                <div class="giz-shop__products__list">
+                                    @foreach (var product in productGroup)
+                                    {
+                                        <ProductCard Product="@product" />
+                                    }
                                 </div>
                             </div>
-                        }
-                    }
-                    else
-                    {
-                        @foreach (var productGroup in ShopService.ViewState.Products.GroupBy(x => x.ProductGroupName))
-                        {
-                            <div class="giz-section">
-                                <div class="giz-section__header">
-                                    @productGroup.Key
-                                </div>
-                                <div class="giz-section__body">
-                                    <div class="giz-shop__products__list">
-                                        @foreach (var product in productGroup)
-                                        {
-                                            <ProductCard Product="@product" />
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        }
+                        </div>
                     }
                 }
             </div>
