@@ -9,7 +9,7 @@
                 <div class="giz-shop__products__header__tab">
                     <ClientTab>
                         <ClientTabItem Class="@(!ShopService.ViewState.SelectedUserProductGroupId.HasValue ? "active" : "")">
-                            <div @onclick=@(() => ShopService.SetSelectedProductGroup(null))>
+                            <div @onclick=@(() => ShopService.SetSelectedProductsGroupIdAsync(null))>
                                 @LocalizationService.GetString("GIZ_GEN_ALL")
                             </div>
                         </ClientTabItem>
@@ -18,7 +18,7 @@
                             @foreach (var productGroup in ShopService.ViewState.UserProductGroups)
                             {
                                 <ClientTabItem Class="@(productGroup.ProductGroupId == ShopService.ViewState.SelectedUserProductGroupId ? "active" : "")">
-                                    <div @onclick=@(() => ShopService.SetSelectedProductGroup(productGroup.ProductGroupId))>
+                                    <div @onclick=@(() => ShopService.SetSelectedProductsGroupIdAsync(productGroup.ProductGroupId))>
                                         @productGroup.Name
                                     </div>
                                 </ClientTabItem>
@@ -29,7 +29,7 @@
             </div>
             <div class="giz-shop__products__body giz-scrollbar--v">
                 <div class="giz-shop__products__body__ads">
-                    <ExpansionPanel InitCollapsed="@(SearchService.ViewState.ShowAll)">
+                    <ExpansionPanel>
                         <Header>
                             @LocalizationService.GetString("GIZ_GEN_ADS")
                         </Header>
@@ -38,61 +38,21 @@
                         </ChildContent>
                     </ExpansionPanel>
                 </div>
-
-                @if (SearchService.ViewState.ShowAll)
+                @foreach (var productGroup in ShopService.ViewState.UserGroupedProducts)
                 {
-                    var filteredProducts = GetFilteredProducts();
-
                     <div class="giz-section">
                         <div class="giz-section__header">
-                            <div class="giz-section__header__filters">
-                                <div>
-                                    <div class="giz-section__header__filters__title">Results for</div>
-                                    <div>
-                                        <Chip CanClose="true" OnClose="@(() => SearchService.ClearResultsAsync())">@SearchService.ViewState.AppliedSearchPattern</Chip>
-                                    </div>
-                                </div>
-                            </div>
+                            @productGroup.Key
                         </div>
                         <div class="giz-section__body">
-                            @if (filteredProducts.Length > 0)
-                            {
-                                <div class="giz-shop__products__list">
-                                    @foreach (var product in filteredProducts)
-                                    {
-                                        <ProductCard Product="@product" />
-                                    }
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="global-search-no-results">
-                                    @*TODO ShopService.ViewState.SelectedProductGroupId.HasValue*@
-                                    <div class="global-search-no-results__header">No match found for <span class="global-search-pattern">@SearchService.ViewState.AppliedSearchPattern</span></div>
-                                    <div class="global-search-no-results__body">Try formulating your request differently</div>
-                                </div>
-                            }
+                            <div class="giz-shop__products__list">
+                                @foreach (var product in productGroup)
+                                {
+                                    <ProductCard Product="@product" />
+                                }
+                            </div>
                         </div>
                     </div>
-                }
-                else
-                {
-                    @foreach (var productGroup in ShopService.ViewState.ProductGroups)
-                    {
-                        <div class="giz-section">
-                            <div class="giz-section__header">
-                                @productGroup.Key
-                            </div>
-                            <div class="giz-section__body">
-                                <div class="giz-shop__products__list">
-                                    @foreach (var product in productGroup)
-                                    {
-                                        <ProductCard Product="@product" />
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    }
                 }
             </div>
 

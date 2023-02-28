@@ -28,47 +28,17 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         UserCartService UserCartService { get; set; }
 
-        [Inject]
-        SearchService SearchService { get; set; }
-
-        #endregion
-
-
-
-        #region METHODS
-
-        private ProductViewState[] GetFilteredProducts()
-        {
-            var result = ShopService.ViewState.Products;
-
-            if (SearchService.ViewState.ShowAll)
-            {
-                var ids = SearchService.ViewState.AppliedProductResults.Select(a => a.Id).ToList();
-
-                result = result.Where(a => ids.Contains(a.Id));
-            }
-
-            if (ShopService.ViewState.SelectedUserProductGroupId.HasValue)
-            {
-                result = result.Where(a => a.ProductGroupId == ShopService.ViewState.SelectedUserProductGroupId.Value);
-            }
-
-            return result.ToArray();
-        }
-
         #endregion
 
         protected override async Task OnInitializedAsync()
         {
             this.SubscribeChange(ShopService.ViewState);
-            this.SubscribeChange(SearchService.ViewState);
 
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(SearchService.ViewState);
             this.UnsubscribeChange(ShopService.ViewState);
 
             base.Dispose();
