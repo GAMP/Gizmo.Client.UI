@@ -9,7 +9,7 @@
                 <div class="giz-shop__products__header__tab">
                     <ClientTab>
                         <ClientTabItem Class="@(!ShopService.ViewState.SelectedUserProductGroupId.HasValue ? "active" : "")">
-                            <div @onclick=@(() => ShopService.SetSelectedProductsGroupIdAsync(null))>
+                            <div @onclick=@(() => ShopService.UpdateUserGroupedProductsAsync(null))>
                                 @LocalizationService.GetString("GIZ_GEN_ALL")
                             </div>
                         </ClientTabItem>
@@ -18,7 +18,7 @@
                             @foreach (var productGroup in ShopService.ViewState.UserProductGroups)
                             {
                                 <ClientTabItem Class="@(productGroup.ProductGroupId == ShopService.ViewState.SelectedUserProductGroupId ? "active" : "")">
-                                    <div @onclick=@(() => ShopService.SetSelectedProductsGroupIdAsync(productGroup.ProductGroupId))>
+                                    <div @onclick=@(() => ShopService.UpdateUserGroupedProductsAsync(productGroup.ProductGroupId))>
                                         @productGroup.Name
                                     </div>
                                 </ClientTabItem>

@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using Gizmo.Client.UI.View.Services;
-using Gizmo.Client.UI.View.States;
 using Gizmo.UI;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
@@ -33,6 +30,7 @@ namespace Gizmo.Client.UI.Pages
         protected override async Task OnInitializedAsync()
         {
             this.SubscribeChange(ShopService.ViewState);
+            this.SubscribeChange(UserCartService.ViewState);
 
             await base.OnInitializedAsync();
         }
@@ -40,6 +38,7 @@ namespace Gizmo.Client.UI.Pages
         public override void Dispose()
         {
             this.UnsubscribeChange(ShopService.ViewState);
+            this.UnsubscribeChange(UserCartService.ViewState);
 
             base.Dispose();
         }
