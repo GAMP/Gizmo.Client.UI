@@ -64,7 +64,7 @@ namespace Gizmo.Client.UI.Shared
             }
             else
             {
-                await UserCartService.AddProductAsyc(Result.Id);
+                await UserCartService.AddProductAsync(Result.Id);
             }
         }
 

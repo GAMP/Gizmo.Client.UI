@@ -1,11 +1,14 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 
-@if (Quantity == 0)
+@if (ProductItemViewState is not null)
 {
-    <Button Color="ButtonColors.Accent" Class="giz-product-card-primary-button" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="@OnAddQuantityButtonClickHandler" Text="@LocalizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
-}
-else
-{
-    <QuantityPicker Size="@Size" Quantity="@Quantity" OnAddQuantityButtonClick="@OnAddQuantityButtonClickHandler" OnRemoveQuantityButtonClick="@OnRemoveQuantityButtonClickHandler" />
+    @if (ProductItemViewState.Quantity == 0)
+    {
+        <Button Color="ButtonColors.Accent" Class="giz-product-card-primary-button" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="OnAddQuantityButtonClickHandlerAsync" Text="@LocalizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
+    }
+    else
+    {
+        <QuantityPicker Size="@PikerSize" Quantity="@ProductItemViewState.Quantity" OnAddQuantityButtonClick="OnAddQuantityButtonClickHandlerAsync" OnRemoveQuantityButtonClick="OnRemoveQuantityButtonClickHandler" />
+    }
 }

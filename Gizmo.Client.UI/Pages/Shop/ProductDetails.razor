@@ -38,17 +38,8 @@
                         <div class="giz-product-details__product__info__basic__action__price">
                             @ProductDetailsPageService.ViewState.Product?.UnitPrice.ToString("C2")
                         </div>
-                        @if (ProductDetailsPageService.ViewState.Product != null)
-                        {
-                            @if (ProductDetailsPageService.ViewState.Product.CartProduct.UserCartProduct == null)
-                            {
-                                <Button LeftSVGIcon="Icons.ShoppingCart_Client" Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" @onclick="@(() => AddProduct(ProductId))" Text="@LocalizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
-                            }
-                            else
-                            {
-                                <ProductQuantityPicker Size="ButtonSizes.Large" UserCartProductViewState="@ProductDetailsPageService.ViewState.Product.CartProduct.UserCartProduct" />
-                            }
-                        }
+                        <ProductQuantityPicker ProductId="ProductId" PikerSize="ButtonSizes.Large" />
+                        @*<Button LeftSVGIcon="Icons.ShoppingCart_Client" Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" @onclick="OnAddQuantityButtonClickHandlerAsync" Text="@LocalizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />*@
                     </div>
                 </div>
             </div>
@@ -74,7 +65,7 @@
                 <div class="giz-product-details__product__related__header">
                     @LocalizationService.GetString("GIZ_SHOP_RELATED_PRODUCTS")
                 </div>
-                
+
                 <div class="giz-product-details__product__related__body">
                     @if (ProductDetailsPageService.ViewState.RelatedProducts != null)
                     {

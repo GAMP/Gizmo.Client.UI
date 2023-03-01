@@ -1,8 +1,10 @@
-﻿using Gizmo.Client.UI.View.Services;
+﻿using System.Threading.Tasks;
+
+using Gizmo.Client.UI.View.Services;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
+
 using Microsoft.AspNetCore.Components;
-using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
 {
@@ -19,20 +21,9 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         ProductDetailsPageService ProductDetailsPageService { get; set; }
 
-        [Inject]
-        ShopPageService ShopService { get; set; }
-
-        [Inject]
-        UserCartService UserCartService { get; set; }
-
         [Parameter]
         [SupplyParameterFromQuery]
         public int ProductId { get; set; }
-
-        public Task AddProduct(int id)
-        {
-            return UserCartService.AddProductAsyc(id);
-        }
 
         protected override async Task OnInitializedAsync()
         {

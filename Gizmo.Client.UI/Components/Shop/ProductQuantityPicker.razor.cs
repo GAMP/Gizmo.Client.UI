@@ -1,8 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+
 using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -20,34 +22,25 @@ namespace Gizmo.Client.UI.Components
         public int ProductId { get; set; }
 
         [Parameter]
-        public ButtonSizes Size { get; set; } = ButtonSizes.Medium;
+        public ButtonSizes PikerSize { get; set; } = ButtonSizes.Medium;
 
-        int Quantity { get; set; }
+        UserCartProductItemViewState ProductItemViewState { get; set; }
 
-        public async Task OnAddQuantityButtonClickHandler(MouseEventArgs _)
+        public Task OnAddQuantityButtonClickHandlerAsync(MouseEventArgs _) => 
+            UserCartService.AddProductAsync(ProductId, 1);
+        public Task OnRemoveQuantityButtonClickHandler(MouseEventArgs _) => 
+            UserCartService.RemoveProductAsync(ProductId, 1);
+
+        protected override async Task OnInitializedAsync()
         {
-            //Quantity++;
-            await UserCartService.AddProductAsyc(ProductId, 1);
-        }
-        public async Task OnRemoveQuantityButtonClickHandler(MouseEventArgs _)
-        {
-            //Quantity--;
-            await UserCartService.RemoveProductAsync(ProductId, 1);
-        }
+            ProductItemViewState = await UserCartService.GetCartProductItemViewStateAsync(ProductId);
 
-        private void UpdateQuantity(object _, EventArgs __) =>
-            Quantity = UserCartService.ViewState.UserCartProducts.TryGetValue(ProductId, out var product) ? product.Quantity : 0;
-
-        protected override void OnInitialized()
-        {
-            UpdateQuantity(this, EventArgs.Empty);
-
-            UserCartService.ViewState.UserCartProducts[ProductId].OnChange += UpdateQuantity;
+            this.SubscribeChange(ProductItemViewState);
             base.OnInitialized();
         }
         public override void Dispose()
         {
-            UserCartService.ViewState.UserCartProducts[ProductId].OnChange -= UpdateQuantity;
+            this.UnsubscribeChange(ProductItemViewState);
             base.Dispose();
         }
     }

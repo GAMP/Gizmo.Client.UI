@@ -22,6 +22,9 @@
             @OrderLine.TotalPointsPrice?.ToString("N0")
             <PointsIcon />
         </div>
-        <QuantityPicker Size="ButtonSizes.Small" Quantity="@OrderLine.Quantity" OnAddQuantityButtonClick="@(() => AddQuantity())" OnRemoveQuantityButtonClick="@(() => RemoveQuantity())" />
+        @if (ProductItemViewState is not null)
+        {
+            <QuantityPicker Size="ButtonSizes.Small" Quantity="@ProductItemViewState.Quantity" OnAddQuantityButtonClick="OnAddQuantityButtonClickHandlerAsync" OnRemoveQuantityButtonClick="OnRemoveQuantityButtonClickHandler" />
+        }
     </div>
 </div>

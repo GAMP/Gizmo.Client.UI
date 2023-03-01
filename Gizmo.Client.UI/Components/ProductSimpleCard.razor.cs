@@ -41,7 +41,7 @@ namespace Gizmo.Client.UI.Components
         {
             _clickHandled = true;
 
-            await UserCartService.AddProductAsyc(Product.Id);
+            await UserCartService.AddProductAsync(Product.Id);
         }
 
         public void Ignore()
