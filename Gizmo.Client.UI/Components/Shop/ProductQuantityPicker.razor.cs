@@ -1,51 +1,53 @@
-﻿using Gizmo.Client.UI.View.Services;
-using Gizmo.Client.UI.View.States;
-using Gizmo.Web.Api.Models;
+﻿using System;
+using System.Threading.Tasks;
+using Gizmo.Client.UI.View.Services;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
     public partial class ProductQuantityPicker : CustomDOMComponentBase
     {
-        [Parameter]
-        public UserCartProductViewState UserCartProductViewState { get; set; }
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
 
         [Inject]
         UserCartService UserCartService { get; set; }
 
         [Parameter]
-        public ButtonSizes Size { get; set; } = ButtonSizes.Medium;
+        public int ProductId { get; set; }
 
         [Parameter]
-        public EventCallback<MouseEventArgs> OnClick { get; set; }
+        public ButtonSizes Size { get; set; } = ButtonSizes.Medium;
 
-        public Task OnAddQuantityButtonClickHandler(MouseEventArgs args)
+        int Quantity { get; set; }
+
+        public async Task OnAddQuantityButtonClickHandler(MouseEventArgs _)
         {
-            return UserCartService.AddProductAsyc(UserCartProductViewState.ProductId, 1);
+            //Quantity++;
+            await UserCartService.AddProductAsyc(ProductId, 1);
+        }
+        public async Task OnRemoveQuantityButtonClickHandler(MouseEventArgs _)
+        {
+            //Quantity--;
+            await UserCartService.RemoveProductAsync(ProductId, 1);
         }
 
-        public Task OnRemoveQuantityButtonClickHandler(MouseEventArgs args)
-        {
-            return UserCartService.RemoveProductAsync(UserCartProductViewState.ProductId, 1);
-        }
-
-        public Task OnClickHandler(MouseEventArgs args)
-        {
-            return OnClick.InvokeAsync(args);
-        }
+        private void UpdateQuantity(object _, EventArgs __) =>
+            Quantity = UserCartService.ViewState.UserCartProducts.TryGetValue(ProductId, out var product) ? product.Quantity : 0;
 
         protected override void OnInitialized()
         {
-            this.SubscribeChange(UserCartProductViewState);
+            UpdateQuantity(this, EventArgs.Empty);
+
+            UserCartService.ViewState.UserCartProducts[ProductId].OnChange += UpdateQuantity;
             base.OnInitialized();
         }
-
         public override void Dispose()
         {
-            this.UnsubscribeChange(UserCartProductViewState);
+            UserCartService.ViewState.UserCartProducts[ProductId].OnChange -= UpdateQuantity;
             base.Dispose();
         }
     }

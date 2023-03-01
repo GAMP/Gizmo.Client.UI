@@ -1,12 +1,10 @@
-﻿using Gizmo.Client.UI.View.Services;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
-using Gizmo.Client.UI.ViewModels;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -36,7 +34,7 @@ namespace Gizmo.Client.UI.Components
                 return;
             }
 
-            NavigationService.NavigateTo(ClientRoutes.ProductDetailsRoute + $"?ProductId={ Product.Id.ToString() }");
+            NavigationService.NavigateTo(ClientRoutes.ProductDetailsRoute + $"?ProductId={Product.Id}");
         }
 
         public async Task AddProduct()
@@ -77,7 +75,7 @@ namespace Gizmo.Client.UI.Components
             if (!firstRender)
             {
                 _shouldRender = false;
-                await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
+                await InvokeVoidAsync("writeLine", $"ReRender {this}");
             }
             else
             {
@@ -89,13 +87,13 @@ namespace Gizmo.Client.UI.Components
 
         protected override void OnInitialized()
         {
-            this.SubscribeChange(Product.CartProduct);
+            //this.SubscribeChange(Product.CartProduct);
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(Product.CartProduct);
+            //this.UnsubscribeChange(Product.CartProduct);
             base.Dispose();
         }
 
