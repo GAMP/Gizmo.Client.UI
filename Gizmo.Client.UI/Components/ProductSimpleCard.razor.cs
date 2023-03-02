@@ -15,9 +15,6 @@ namespace Gizmo.Client.UI.Components
         protected bool _shouldRender;
 
         [Inject]
-        ILocalizationService LocalizationService { get; set; }
-
-        [Inject]
         NavigationService NavigationService { get; set; }
 
         [Inject]
@@ -35,13 +32,6 @@ namespace Gizmo.Client.UI.Components
             }
 
             NavigationService.NavigateTo(ClientRoutes.ProductDetailsRoute + $"?ProductId={Product.Id}");
-        }
-
-        public async Task AddProduct()
-        {
-            _clickHandled = true;
-
-            await UserCartService.AddProductAsync(Product.Id);
         }
 
         public void Ignore()

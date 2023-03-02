@@ -2,7 +2,6 @@
 
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
-using Gizmo.UI;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 
@@ -14,6 +13,7 @@ namespace Gizmo.Client.UI.Components
     public partial class ProductQuantityPicker : CustomDOMComponentBase
     {
         private int _previousProductId;
+        private UserCartProductItemViewState _productItemViewState;
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -30,17 +30,16 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<MouseEventArgs> OnClick { get; set; }
 
-        UserCartProductItemViewState ProductItemViewState { get; set; }
 
         public async Task OnAddQuantityButtonClickHandlerAsync(MouseEventArgs args)
         {
-            await UserCartService.AddProductAsync(ProductId, 1);
+            await UserCartService.AddUserCartProductAsync(ProductId, 1);
             await OnClick.InvokeAsync(args);
         }
 
         public async Task OnRemoveQuantityButtonClickHandler(MouseEventArgs args)
         {
-            await UserCartService.RemoveProductAsync(ProductId, 1);
+            await UserCartService.RemoveUserCartProductAsync(ProductId, 1);
             await OnClick.InvokeAsync(args);
         }
 
@@ -54,29 +53,22 @@ namespace Gizmo.Client.UI.Components
             {
                 _previousProductId = ProductId;
 
-                if (ProductItemViewState != null)
+                if (_productItemViewState != null)
                 {
                     //The same component used again with a different product id.
                     //We have to unbind from the old product.
-                    this.UnsubscribeChange(ProductItemViewState);
+                    this.UnsubscribeChange(_productItemViewState);
                 }
 
                 //We have to bind to the new product.
-                ProductItemViewState = await UserCartService.GetCartProductItemViewStateAsync(ProductId);
-                this.SubscribeChange(ProductItemViewState);
+                _productItemViewState = await UserCartService.GetCartProductItemViewStateAsync(ProductId);
+                this.SubscribeChange(_productItemViewState);
             }
         }
 
-        protected override Task OnInitializedAsync()
-        {
-            //ProductItemViewState = await UserCartService.GetCartProductItemViewStateAsync(ProductId);
-
-            //this.SubscribeChange(ProductItemViewState);
-            return base.OnInitializedAsync();
-        }
         public override void Dispose()
         {
-            this.UnsubscribeChange(ProductItemViewState);
+            this.UnsubscribeChange(_productItemViewState);
             base.Dispose();
         }
     }

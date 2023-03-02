@@ -22,9 +22,9 @@
             @OrderLine.TotalPointsPrice?.ToString("N0")
             <PointsIcon />
         </div>
-        @if (ProductItemViewState is not null)
+        @if (_productItemViewState is not null)
         {
-            <QuantityPicker Size="ButtonSizes.Small" Quantity="@ProductItemViewState.Quantity" OnAddQuantityButtonClick="OnAddQuantityButtonClickHandlerAsync" OnRemoveQuantityButtonClick="OnRemoveQuantityButtonClickHandler" />
+            <QuantityPicker Size="ButtonSizes.Small" Quantity="@_productItemViewState.Quantity" OnAddQuantityButtonClick="OnAddQuantityButtonClickHandlerAsync" OnRemoveQuantityButtonClick="OnRemoveQuantityButtonClickHandler" />
         }
     </div>
 </div>

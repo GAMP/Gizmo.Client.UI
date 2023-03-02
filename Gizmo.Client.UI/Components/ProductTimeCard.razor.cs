@@ -20,9 +20,6 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         NavigationService NavigationService { get; set; }
 
-        [Inject]
-        UserCartService UserCartService { get; set; }
-
         [Parameter]
         public ProductViewState Product { get; set; }
 
@@ -35,13 +32,6 @@ namespace Gizmo.Client.UI.Components
             }
 
             NavigationService.NavigateTo(ClientRoutes.ProductDetailsRoute + $"?ProductId={Product.Id}");
-        }
-
-        public async Task AddProduct()
-        {
-            _clickHandled = true;
-
-            await UserCartService.AddProductAsync(Product.Id);
         }
 
         public void Ignore()
