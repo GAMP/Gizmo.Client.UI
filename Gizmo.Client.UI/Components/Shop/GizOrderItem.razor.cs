@@ -12,6 +12,7 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class GizOrderItem : CustomDOMComponentBase
     {
+        private UserCartProductViewState _previousOrderLine;
 
         [Inject]
         UserCartService UserCartService { get; set; }
@@ -40,12 +41,35 @@ namespace Gizmo.Client.UI.Components
                 return Task.CompletedTask;
         }
 
-        protected override async Task OnInitializedAsync()
+        public override async Task SetParametersAsync(ParameterView parameters)
         {
-            ProductItemViewState = await UserCartService.GetCartProductItemViewStateAsync(OrderLine.ProductId);
+            await base.SetParametersAsync(parameters);
 
-            this.SubscribeChange(ProductItemViewState);
-            base.OnInitialized();
+            var orderLineChanged = _previousOrderLine != OrderLine;
+
+            if (orderLineChanged)
+            {
+                _previousOrderLine = OrderLine;
+
+                if (ProductItemViewState != null)
+                {
+                    //The same component used again with a different order line.
+                    //We have to unbind from the old product.
+                    this.UnsubscribeChange(ProductItemViewState);
+                }
+
+                //We have to bind to the new product.
+                ProductItemViewState = await UserCartService.GetCartProductItemViewStateAsync(OrderLine.ProductId);
+                this.SubscribeChange(ProductItemViewState);
+            }
+        }
+
+        protected override Task OnInitializedAsync()
+        {
+            //ProductItemViewState = await UserCartService.GetCartProductItemViewStateAsync(OrderLine.ProductId);
+
+            //this.SubscribeChange(ProductItemViewState);
+            return base.OnInitializedAsync();
         }
         public override void Dispose()
         {
