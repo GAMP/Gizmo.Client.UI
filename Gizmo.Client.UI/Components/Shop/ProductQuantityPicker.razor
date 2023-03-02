@@ -9,6 +9,6 @@
     }
     else
     {
-        <QuantityPicker Size="@PikerSize" Quantity="@ProductItemViewState.Quantity" OnAddQuantityButtonClick="OnAddQuantityButtonClickHandlerAsync" OnRemoveQuantityButtonClick="OnRemoveQuantityButtonClickHandler" />
+        <QuantityPicker Size="@PikerSize" Quantity="@ProductItemViewState.Quantity" OnAddQuantityButtonClick="OnAddQuantityButtonClickHandlerAsync" OnRemoveQuantityButtonClick="OnRemoveQuantityButtonClickHandler" OnClick="@((args) => OnClick.InvokeAsync(args))" />
     }
 }
