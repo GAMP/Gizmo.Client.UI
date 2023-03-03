@@ -23,7 +23,7 @@
                                     RerenderOnStateChange="true"
                                     Class="giz-scrollbar--v">
                             <ChildContent>
-                                <DataGridColumn Field="@(nameof(UserCartProductViewState.ProductName))" TItemType="UserCartProductViewState" Context="product">
+                                @*TODO: AAA CANNOT HAVE 2 DIFFERENT SOURCES FOR THE DATAGRID <DataGridColumn Field="@(nameof(UserProductViewState.ProductName))" TItemType="UserProductViewState" Context="product">
                                     <HeaderTemplate>
                                         @LocalizationService.GetString("GIZ_SHOP_PRODUCT_NAME")
                                     </HeaderTemplate>
@@ -31,15 +31,15 @@
                                         @product.ProductName
                                     </CellTemplate>
                                 </DataGridColumn>
-                                <DataGridColumn Field="@(nameof(UserCartProductViewState.UnitPrice))" TItemType="UserCartProductViewState" Context="product">
+                                <DataGridColumn Field="@(nameof(UserProductViewState.UnitPrice))" TItemType="UserProductViewState" Context="product">
                                     <HeaderTemplate>
                                         @LocalizationService.GetString("GIZ_SHOP_PRICE")
                                     </HeaderTemplate>
                                     <CellTemplate>
                                         @product.UnitPrice
                                     </CellTemplate>
-                                </DataGridColumn>
-                                <DataGridColumn Field="@(nameof(UserCartProductViewState.Quantity))" TItemType="UserCartProductViewState" Context="product">
+                                </DataGridColumn>*@
+                                <DataGridColumn Field="@(nameof(UserCartProductItemViewState.Quantity))" TItemType="UserCartProductItemViewState" Context="product">
                                     <HeaderTemplate>
                                         @LocalizationService.GetString("GIZ_SHOP_QUANTITY")
                                     </HeaderTemplate>
@@ -47,7 +47,7 @@
                                         @product.Quantity
                                     </CellTemplate>
                                 </DataGridColumn>
-                                <DataGridColumn Field="@(nameof(UserCartProductViewState.TotalPrice))" TItemType="UserCartProductViewState" Context="product">
+                                <DataGridColumn Field="@(nameof(UserCartProductItemViewState.TotalPrice))" TItemType="UserCartProductItemViewState" Context="product">
                                     <HeaderTemplate>
                                         @LocalizationService.GetString("GIZ_SHOP_SUBTOTAL")
                                     </HeaderTemplate>

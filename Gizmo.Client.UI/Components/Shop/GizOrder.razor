@@ -10,7 +10,7 @@
                 <div class="giz-order__items-wrapper">
                     @foreach (var orderLine in UserCartService.ViewState.Products)
                     {
-                        <GizOrderItem OrderLine="@orderLine" />
+                        <GizOrderItem ProductItemViewState="@orderLine" />
                     }
                 </div>
             }
@@ -45,7 +45,7 @@
         <div class="giz-order-summary">
             <div class="giz-order-summary-text-bold">@LocalizationService.GetString("GIZ_SHOP_SUBTOTAL")</div>
             <div class="giz-order-summary-text">@LocalizationService.GetString("GIZ_SHOP_EARNED_POINTS")</div>
-            <div class="giz-order-summary-total @(UserCartService?.ViewState.PointsTotal == 0 ? "giz-order-summary-total--no-icon" : "")">@UserCartService.ViewState.Total.ToString("C")<span class="giz-order-summary-number-separator">&amp;</span>@(UserCartService?.ViewState.PointsTotal)</div>
+            @*TODO: AAA WE CANNOT HAVE CALCULATED FIELDS IN THE VIEW STATE SO WE HAVE TO CREATE THE PROPERTIES AND UPDATE THEM BY HAND <div class="giz-order-summary-total @(UserCartService?.ViewState.PointsTotal == 0 ? "giz-order-summary-total--no-icon" : "")">@UserCartService.ViewState.Total.ToString("C")<span class="giz-order-summary-number-separator">&amp;</span>@(UserCartService?.ViewState.PointsTotal)</div>
             @if (UserCartService?.ViewState.PointsTotal == 0)
             {
                 <div class="giz-order-summary-points">
@@ -58,7 +58,7 @@
                 <div class="giz-order-summary-points-total-icon"><PointsIcon /></div>
                 <div class="giz-order-summary-points-award">@UserCartService.ViewState.PointsAward</div>
                 <div class="giz-order-summary-points-award-icon"><PointsAwardIcon /></div>
-            }
+            }*@
         </div>
         <div>
             <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" IsDisabled="@(UserCartService.ViewState.Products.Count() == 0)" @onclick="@(() => PlaceOrder())" Text="@LocalizationService.GetString("GIZ_SHOP_PLACE_ORDER")" />

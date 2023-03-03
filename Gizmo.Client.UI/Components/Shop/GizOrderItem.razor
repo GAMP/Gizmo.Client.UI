@@ -3,28 +3,25 @@
 
 <div class="giz-order-item">
     <div class="giz-order-item__description">
-        @OrderLine.ProductName
+        @_product?.Name
     </div>
     <div class="giz-order-item__details">
-        @if (OrderLine.PurchaseOptions.HasFlag(PurchaseOptionType.Or))
+        @if (_product?.PurchaseOptions.HasFlag(PurchaseOptionType.Or) == true)
         {
-            <RadioButton GroupName="@GetPurchaseOptionsGroup()" IsChecked="@(OrderLine.PayType == OrderLinePayType.Cash)" IsCheckedChanged="@((isChecked) => SetPayType(isChecked, OrderLinePayType.Cash))" Class="giz-order-item__details__price-radio" />
-            <RadioButton GroupName="@GetPurchaseOptionsGroup()" IsChecked="@(OrderLine.PayType == OrderLinePayType.Points)" IsCheckedChanged="@((isChecked) => SetPayType(isChecked, OrderLinePayType.Points))" Class="giz-order-item__details__points-radio" />
+            <RadioButton GroupName="@GetPurchaseOptionsGroup()" IsChecked="@(ProductItemViewState.PayType == OrderLinePayType.Cash)" IsCheckedChanged="@((isChecked) => SetPayType(isChecked, OrderLinePayType.Cash))" Class="giz-order-item__details__price-radio" />
+            <RadioButton GroupName="@GetPurchaseOptionsGroup()" IsChecked="@(ProductItemViewState.PayType == OrderLinePayType.Points)" IsCheckedChanged="@((isChecked) => SetPayType(isChecked, OrderLinePayType.Points))" Class="giz-order-item__details__points-radio" />
         }
         else
         {
             <div class="giz-order-item__details__and">&amp;</div>
         }
         <div class="giz-order-item__details__price">
-            @OrderLine.TotalPrice.ToString("C")
+            @ProductItemViewState.TotalPrice.ToString("C")
         </div>
         <div class="giz-order-item__details__points">
-            @OrderLine.TotalPointsPrice?.ToString("N0")
+            @ProductItemViewState.TotalPointsPrice?.ToString("N0")
             <PointsIcon />
         </div>
-        @if (_productItemViewState is not null)
-        {
-            <QuantityPicker Size="ButtonSizes.Small" Quantity="@_productItemViewState.Quantity" OnAddQuantityButtonClick="OnAddQuantityButtonClickHandlerAsync" OnRemoveQuantityButtonClick="OnRemoveQuantityButtonClickHandler" />
-        }
+        <QuantityPicker Size="ButtonSizes.Small" Quantity="@ProductItemViewState.Quantity" OnAddQuantityButtonClick="OnAddQuantityButtonClickHandlerAsync" OnRemoveQuantityButtonClick="OnRemoveQuantityButtonClickHandler" />
     </div>
 </div>
