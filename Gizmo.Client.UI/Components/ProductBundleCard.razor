@@ -18,8 +18,7 @@
 
                             @foreach (var bundledProduct in Product.BundledProducts)
                             {
-                                @*TODO: AAA FIND PRODUCT NAME FROM LOOKUP?*@
-                                <div class="giz-timeline-item"><div class="giz-bundle-product-details"><ProductIcon />@bundledProduct.Id</div></div>
+                                <div class="giz-timeline-item"><div class="giz-bundle-product-details"><ProductIcon />@(UserProductViewStateLookupService.GetStateAsync(bundledProduct.Id).GetAwaiter().GetResult().Name)</div></div>
                             }
                         </div>
                     </div>

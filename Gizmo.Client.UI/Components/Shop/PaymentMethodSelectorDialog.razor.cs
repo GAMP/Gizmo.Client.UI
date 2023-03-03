@@ -27,6 +27,9 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         PaymentMethodsService PaymentMethodsService { get; set; }
 
+        [Inject]
+        UserProductViewStateLookupService UserProductViewStateLookupService { get; set; }
+
         [Parameter]
         public EventCallback CancelCallback { get; set; }
 
