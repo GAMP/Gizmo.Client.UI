@@ -18,7 +18,7 @@
 
                             @foreach (var bundledProduct in Product.BundledProducts)
                             {
-                                <div class="giz-timeline-item"><div class="giz-bundle-product-details"><ProductIcon />@(UserProductViewStateLookupService.GetStateAsync(bundledProduct.Id).GetAwaiter().GetResult().Name)</div></div>
+                                <ProductBundleCardBundledProduct ProductId="@bundledProduct.Id" />
                             }
                         </div>
                     </div>

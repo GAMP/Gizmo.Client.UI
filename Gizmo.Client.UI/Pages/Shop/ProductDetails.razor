@@ -26,7 +26,10 @@
                 </div>
                 <div class="giz-product-details__product__info__basic">
                     <div class="giz-product-details__product__info__basic__category">
-                        @ProductDetailsPageService.ViewState.Product?.ProductGroupName
+                        @if (ProductDetailsPageService.ViewState.Product != null)
+                        {
+                            @(UserProductGroupViewStateLookupService.GetStateAsync(ProductDetailsPageService.ViewState.Product.ProductGroupId).GetAwaiter().GetResult().Name)
+                        }
                     </div>
                     <div class="giz-product-details__product__info__basic__title">
                         @ProductDetailsPageService.ViewState.Product?.Name

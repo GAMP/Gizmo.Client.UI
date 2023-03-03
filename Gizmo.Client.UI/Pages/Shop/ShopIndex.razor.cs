@@ -27,6 +27,9 @@ namespace Gizmo.Client.UI.Pages
 
         #endregion
 
+        [Inject]
+        UserProductGroupViewStateLookupService UserProductGroupViewStateLookupService { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             this.SubscribeChange(ShopService.ViewState);

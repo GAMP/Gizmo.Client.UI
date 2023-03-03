@@ -42,7 +42,7 @@
                 {
                     <div class="giz-section">
                         <div class="giz-section__header">
-                            @productGroup.Key
+                            @(UserProductGroupViewStateLookupService.GetStateAsync(productGroup.Key).GetAwaiter().GetResult().Name)
                         </div>
                         <div class="giz-section__body">
                             <div class="giz-shop__products__list">

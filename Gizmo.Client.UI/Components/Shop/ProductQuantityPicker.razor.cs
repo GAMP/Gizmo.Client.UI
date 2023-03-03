@@ -68,7 +68,10 @@ namespace Gizmo.Client.UI.Components
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(_productItemViewState);
+            if (_productItemViewState != null)
+            {
+                this.UnsubscribeChange(_productItemViewState);
+            }
             base.Dispose();
         }
     }
