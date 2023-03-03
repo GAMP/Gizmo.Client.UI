@@ -21,7 +21,7 @@ namespace Gizmo.Client.UI.Components
         UserCartService UserCartService { get; set; }
 
         [Parameter]
-        public ProductViewState Product { get; set; }
+        public UserProductViewState Product { get; set; }
 
         public void OpenDetails()
         {
@@ -43,9 +43,9 @@ namespace Gizmo.Client.UI.Components
 
         public override async Task SetParametersAsync(ParameterView parameters)
         {
-            if (parameters.TryGetValue<ProductViewState>(nameof(Product), out var newProduct))
+            if (parameters.TryGetValue<UserProductViewState>(nameof(Product), out var newProduct))
             {
-                var productChanged = !EqualityComparer<ProductViewState>.Default.Equals(Product, newProduct);
+                var productChanged = !EqualityComparer<UserProductViewState>.Default.Equals(Product, newProduct);
                 if (productChanged)
                 {
                     _shouldRender = true;

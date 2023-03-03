@@ -35,11 +35,11 @@
                     @ApplicationDetailsPageService.ViewState.Application?.Description
                 </div>
                 <div class="giz-app-details__app__info__details__executables">
-                    @if (ApplicationDetailsPageService.ViewState.Application.Executables.Count == 1)
+                    @if (ApplicationDetailsPageService.ViewState.Application.Executables.Count() == 1)
                     {
-                        <ExecutableLaunchButton Executable="@ApplicationDetailsPageService.ViewState.Application.Executables[0]" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" OnClickMainButton="@(() => OnClickMainButtonHandler())" />
+                        <ExecutableLaunchButton Executable="@ApplicationDetailsPageService.ViewState.Application.Executables.First()" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" OnClickMainButton="@(() => OnClickMainButtonHandler())" />
                     }
-                    else if (ApplicationDetailsPageService.ViewState.Application.Executables.Count > 1)
+                    else if (ApplicationDetailsPageService.ViewState.Application.Executables.Count() > 1)
                     {
                         <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => OnClickMainButtonHandler())">@LocalizationService.GetString("GIZ_APPS_LAUNCH")</Button>
                     }

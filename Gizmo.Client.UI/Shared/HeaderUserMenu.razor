@@ -16,7 +16,7 @@
         </button>
     </div>*@
     <div class="giz-header__user-menu-item giz-notifications-dropdown @(_notificationsIsOpen ? "open" : "")">
-        <Badge Label="@NotificationsService.ViewState.Notifications?.Count.ToString()" IsVisible="@(NotificationsService.ViewState.Notifications?.Count > 0)">
+        <Badge Label="@NotificationsService.ViewState.Notifications?.Count().ToString()" IsVisible="@(NotificationsService.ViewState.Notifications?.Count() > 0)">
             <button class="user-menu-item-button--box" @onclick="() => ToggleNotifications()" @onclick:stopPropagation="true">
                 <Icon SVGIcon="Icons.Notifications_Client" />
             </button>

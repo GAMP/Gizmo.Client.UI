@@ -63,9 +63,9 @@ namespace Gizmo.Client.UI.Pages
 
         private async Task OnClickMainButtonHandler()
         {
-            if (ApplicationDetailsPageService.ViewState.Application.Executables.Count == 1)
+            if (ApplicationDetailsPageService.ViewState.Application.Executables.Count() == 1)
             {
-                var executable = ApplicationDetailsPageService.ViewState.Application.Executables[0];
+                var executable = ApplicationDetailsPageService.ViewState.Application.Executables.First();
 
                 switch (executable.State)
                 {
@@ -80,7 +80,7 @@ namespace Gizmo.Client.UI.Pages
                         break;
                 }
             }
-            else if (ApplicationDetailsPageService.ViewState.Application.Executables.Count > 1)
+            else if (ApplicationDetailsPageService.ViewState.Application.Executables.Count() > 1)
             {
                 await ExecutableSelectorService.LoadApplicationAsync(ApplicationId);
 
@@ -100,9 +100,9 @@ namespace Gizmo.Client.UI.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            if (ApplicationDetailsPageService.ViewState.Application.Executables.Count == 1)
+            if (ApplicationDetailsPageService.ViewState.Application.Executables.Count() == 1)
             {
-                this.SubscribeChange(ApplicationDetailsPageService.ViewState.Application.Executables[0]);
+                this.SubscribeChange(ApplicationDetailsPageService.ViewState.Application.Executables.First());
             }
 
             await base.OnInitializedAsync();
@@ -110,9 +110,9 @@ namespace Gizmo.Client.UI.Pages
 
         public override void Dispose()
         {
-            if (ApplicationDetailsPageService.ViewState.Application.Executables.Count == 1)
+            if (ApplicationDetailsPageService.ViewState.Application.Executables.Count() == 1)
             {
-                this.UnsubscribeChange(ApplicationDetailsPageService.ViewState.Application.Executables[0]);
+                this.UnsubscribeChange(ApplicationDetailsPageService.ViewState.Application.Executables.First());
             }
 
             base.Dispose();

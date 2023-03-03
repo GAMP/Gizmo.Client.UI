@@ -11,12 +11,15 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class GizOrderItem : CustomDOMComponentBase
     {
-        private UserProductViewState _product; //TODO: A GET THE PRODUCT FROM LOOKUP?
+        private UserProductViewState _product;
 
         private UserCartProductItemViewState _previousProductItemViewState;
 
         [Inject]
         UserCartService UserCartService { get; set; }
+
+        [Inject]
+        UserProductViewStateLookupService UserProductViewStateLookupService { get; set; }
 
         [Parameter]
         public UserCartProductItemViewState ProductItemViewState { get; set; }
@@ -56,6 +59,8 @@ namespace Gizmo.Client.UI.Components
                 }
 
                 _previousProductItemViewState = ProductItemViewState;
+
+                _product = await UserProductViewStateLookupService.GetStateAsync(ProductItemViewState.ProductId);
 
                 //We have to bind to the new product.
                 this.SubscribeChange(ProductItemViewState);

@@ -4,14 +4,14 @@
 <div class="giz-ads-carousel">
     <CascadingValue Value="@this" IsFixed="true">
         <div class="giz-ads-carousel__body">
-            @if (AdvertisementsService.ViewState.Advertisements != null && AdvertisementsService.ViewState.Advertisements.Count > 0)
+            @if (AdvertisementsService.ViewState.Advertisements != null && AdvertisementsService.ViewState.Advertisements.Count() > 0)
             {
                 @foreach (var ad in AdvertisementsService.ViewState.Advertisements)
                 {
                     <AdsCarouselItem Advertisement="@ad" />
                 }
 
-                @if (AdvertisementsService.ViewState.Advertisements.Count > 2)
+                @if (AdvertisementsService.ViewState.Advertisements.Count() > 2)
                 {
                     @foreach (var ad in AdvertisementsService.ViewState.Advertisements)
                     {
@@ -22,7 +22,7 @@
         </div>
         <div class="giz-ads-carousel__navigation">
             <div class="giz-ads-carousel__navigation__indicators">
-                <AdsCarouselIndicator Maximum="5" Size="@(AdvertisementsService.ViewState.Advertisements?.Count ?? 0)" SelectedIndex="@SelectedIndex" SelectedIndexChanged="SelectedIndexChangedHandler" />
+                <AdsCarouselIndicator Maximum="5" Size="@(AdvertisementsService.ViewState.Advertisements?.Count() ?? 0)" SelectedIndex="@SelectedIndex" SelectedIndexChanged="SelectedIndexChangedHandler" />
             </div>
         </div>
     </CascadingValue>

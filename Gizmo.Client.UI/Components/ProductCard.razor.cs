@@ -7,6 +7,6 @@ namespace Gizmo.Client.UI.Components
     public partial class ProductCard : CustomDOMComponentBase
     {
         [Parameter]
-        public ProductViewState Product { get; set; }
+        public UserProductViewState Product { get; set; }
     }
 }
