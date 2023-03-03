@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.View.States;
+﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -11,6 +12,7 @@ namespace Gizmo.Client.UI.Components
     {
         private int _index;
         private int _fade;
+        private AdvertisementViewState _advertisementViewState;
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -18,8 +20,12 @@ namespace Gizmo.Client.UI.Components
         [CascadingParameter]
         protected AdsCarousel Parent { get; set; }
 
+        [Inject]
+        AdvertisementsService AdvertisementsService { get; set; }
+
         [Parameter]
-        public AdvertisementViewState Advertisement { get; set; }
+        public int AdvertisementId { get; set; }
+
 
         [Parameter]
         public bool Duplicate { get; set; }
@@ -49,13 +55,17 @@ namespace Gizmo.Client.UI.Components
 
         private void OnClickHandler()
         {
-            Parent.SetCurrent(Advertisement); 
+            Parent.SetCurrent(_advertisementViewState); 
         }
 
         #region OVERRIDE
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
+            _advertisementViewState = await AdvertisementsService.GetAdvertisementViewStateAsync(AdvertisementId);
+
+            this.SubscribeChange(_advertisementViewState);
+
             if (Parent != null)
             {
                 Parent.Register(this, Duplicate);
@@ -64,6 +74,8 @@ namespace Gizmo.Client.UI.Components
 
         public override void Dispose()
         {
+            this.UnsubscribeChange(_advertisementViewState);
+
             try
             {
                 if (Parent != null)

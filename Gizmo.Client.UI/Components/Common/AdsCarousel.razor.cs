@@ -1,10 +1,11 @@
-﻿using Gizmo.Client.UI.View.Services;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
+
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -16,8 +17,8 @@ namespace Gizmo.Client.UI.Components
 
         private System.Timers.Timer _timer;
 
-        private List<AdsCarouselItem> _items = new List<AdsCarouselItem>();
-        private List<AdsCarouselItem> _duplicates = new List<AdsCarouselItem>();
+        private readonly List<AdsCarouselItem> _items = new();
+        private readonly List<AdsCarouselItem> _duplicates = new();
 
         private int _selectedIndex;
 
@@ -173,7 +174,7 @@ namespace Gizmo.Client.UI.Components
         {
             for (int i = 0; i < _items.Count; i++)
             {
-                if (_items[i].Advertisement == advertisement)
+                if (_items[i].AdvertisementId == advertisement.Id)
                 {
                     if (_selectedIndex == i)
                         return;
