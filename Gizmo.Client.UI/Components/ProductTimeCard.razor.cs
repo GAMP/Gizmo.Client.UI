@@ -75,18 +75,6 @@ namespace Gizmo.Client.UI.Components
             await base.OnAfterRenderAsync(firstRender);
         }
 
-        protected override void OnInitialized()
-        {
-            //this.SubscribeChange(Product.CartProduct);
-            base.OnInitialized();
-        }
-
-        public override void Dispose()
-        {
-            //this.UnsubscribeChange(Product.CartProduct);
-            base.Dispose();
-        }
-
         #endregion
     }
 }

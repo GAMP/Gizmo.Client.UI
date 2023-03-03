@@ -25,11 +25,11 @@ namespace Gizmo.Client.UI.Components
         UserCartService UserCartService { get; set; }
 
         [Inject]
-        PaymentMethodsService PaymentMethodsService { get; set; }
-
-        [Inject]
         UserProductViewStateLookupService UserProductViewStateLookupService { get; set; }
 
+        [Inject]
+        PaymentMethodViewStateLookupService PaymentMethodViewStateLookupService { get; set; }
+        
         [Parameter]
         public EventCallback CancelCallback { get; set; }
 
@@ -49,14 +49,12 @@ namespace Gizmo.Client.UI.Components
         protected override void OnInitialized()
         {
             this.SubscribeChange(UserCartService.ViewState);
-            this.SubscribeChange(PaymentMethodsService.ViewState);
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
             this.UnsubscribeChange(UserCartService.ViewState);
-            this.SubscribeChange(PaymentMethodsService.ViewState);
             base.Dispose();
         }
     }

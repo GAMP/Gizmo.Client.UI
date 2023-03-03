@@ -75,9 +75,9 @@
                                     IsFullWidth="true"
                                     OpenDirection="PopupOpenDirections.Cursor"
                                     PopupClass="giz-scrollbar--v">
-                                @if (PaymentMethodsService.ViewState.PaymentMethods != null)
+                                @if (PaymentMethodViewStateLookupService != null)
                                 {
-                                    @foreach (var paymentMethod in PaymentMethodsService.ViewState.PaymentMethods)
+                                    @foreach (var paymentMethod in PaymentMethodViewStateLookupService.GetStatesAsync().GetAwaiter().GetResult())
                                     {
                                         <SelectItem TValue="int?" Value="@paymentMethod.Id">@paymentMethod.Name</SelectItem>
                                     }

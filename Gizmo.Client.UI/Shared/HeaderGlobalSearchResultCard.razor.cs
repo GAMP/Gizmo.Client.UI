@@ -12,6 +12,8 @@ namespace Gizmo.Client.UI.Shared
 {
     public partial class HeaderGlobalSearchResultCard : CustomDOMComponentBase
     {
+        private bool _clickHandled = false;
+
         protected bool _shouldRender;
 
         [Inject]
@@ -34,6 +36,12 @@ namespace Gizmo.Client.UI.Shared
 
         private void OnClickHandler()
         {
+            if (_clickHandled)
+            {
+                _clickHandled = false;
+                return;
+            }
+
             if (Result.Type == View.SearchResultTypes.Applications)
             {
                 NavigationService.NavigateTo(ClientRoutes.ApplicationDetailsRoute + $"?ApplicationId={ Result.Id.ToString() }");
@@ -46,6 +54,8 @@ namespace Gizmo.Client.UI.Shared
 
         private async Task OnClickActionButtonHandler()
         {
+            _clickHandled = true;
+
             if (Result.Type == View.SearchResultTypes.Applications)
             {
                 await ExecutableSelectorService.LoadApplicationAsync(Result.Id);

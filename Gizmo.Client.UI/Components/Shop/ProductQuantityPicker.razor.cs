@@ -30,7 +30,6 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<MouseEventArgs> OnClick { get; set; }
 
-
         public async Task OnAddQuantityButtonClickHandlerAsync(MouseEventArgs args)
         {
             await UserCartService.AddUserCartProductAsync(ProductId, 1);
