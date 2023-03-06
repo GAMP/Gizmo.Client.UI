@@ -26,7 +26,29 @@
                     @((MarkupString)_advertisementViewState.Body)
                 </div>
                 <div class="giz-ads-carousel-item__content__actions">
-                    <Button Size="ButtonSizes.Large" Text="@LocalizationService.GetString("GIZ_GEN_VIEW_DETAILS")" />
+                    @if(_advertisementViewState.Command is not null)
+                    {
+                        switch (_advertisementViewState.Command.CommandType)
+                        {
+                            case AdvertisementCommandType.AddToCart:
+                                {
+                                    <ProductQuantityPicker ProductId="@_advertisementViewState.Command.PathId" />
+                                    break;
+                                }
+                            case AdvertisementCommandType.Launch:
+                                {
+                                    break;
+                                }
+                            case AdvertisementCommandType.Navigate:
+                                {
+                                    break;
+                                }
+                        }
+                    }
+                    else
+                    {
+                        <Button Size="ButtonSizes.Large" Text="@LocalizationService.GetString("GIZ_GEN_VIEW_DETAILS")" />
+                    }
                 </div>
             </div>
         }
