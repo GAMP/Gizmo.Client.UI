@@ -25,7 +25,7 @@ namespace Gizmo.Client.UI.Components
         public int ProductId { get; set; }
 
         [Parameter]
-        public ButtonSizes PikerSize { get; set; } = ButtonSizes.Medium;
+        public ButtonSizes PickerSize { get; set; } = ButtonSizes.Medium;
 
         [Parameter]
         public EventCallback<MouseEventArgs> OnClick { get; set; }
