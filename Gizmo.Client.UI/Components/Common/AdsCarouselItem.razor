@@ -3,10 +3,11 @@
 
 <div class="@Class @ClassName" @onclick="OnClickHandler">
 
-    <div class="giz-ads-carousel-item__content">
         @if (_advertisementViewState.IsCustomTemplate)
         {
-            @((MarkupString)_advertisementViewState.Body)
+            <div class="giz-ads-carousel-item__content">
+                @((MarkupString)_advertisementViewState.Body)
+            </div>
         }
         else
         {
@@ -20,12 +21,13 @@
                     <img src="_content/Gizmo.Client.UI/img/@_advertisementViewState.ThumbnailUrl" alt='loading' />
                 }
             </div>
-            <div class="giz-ads-carousel-item__content__body">
-                @((MarkupString)_advertisementViewState.Body)
-            </div>
-            <div class="giz-ads-carousel-item__content__actions">
-                <Button Size="ButtonSizes.Large" Text="@LocalizationService.GetString("GIZ_GEN_VIEW_DETAILS")" />
+            <div class="giz-ads-carousel-item__content">
+                <div class="giz-ads-carousel-item__content__body">
+                    @((MarkupString)_advertisementViewState.Body)
+                </div>
+                <div class="giz-ads-carousel-item__content__actions">
+                    <Button Size="ButtonSizes.Large" Text="@LocalizationService.GetString("GIZ_GEN_VIEW_DETAILS")" />
+                </div>
             </div>
         }
-    </div>
 </div>
