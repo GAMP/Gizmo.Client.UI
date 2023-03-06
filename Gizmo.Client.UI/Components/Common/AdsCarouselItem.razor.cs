@@ -1,10 +1,11 @@
-﻿using Gizmo.Client.UI.View.Services;
+﻿using System.Threading.Tasks;
+
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
+
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -14,35 +15,36 @@ namespace Gizmo.Client.UI.Components
         private int _fade;
         private AdvertisementViewState _advertisementViewState;
 
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
-        [CascadingParameter]
-        protected AdsCarousel Parent { get; set; }
-
         [Inject]
         AdvertisementsService AdvertisementsService { get; set; }
+       
+        [CascadingParameter]
+        protected AdsCarousel Parent { get; set; }
 
         [Parameter]
         public int AdvertisementId { get; set; }
 
-
         [Parameter]
         public bool Duplicate { get; set; }
+
 
         internal void Clear()
         {
             _index = 0;
             _fade = 0;
 
-            InvokeAsync(StateHasChanged);
+            StateHasChanged();
         }
 
         public void FadeOut()
         {
             _fade = -1;
 
-            InvokeAsync(StateHasChanged);
+            StateHasChanged();
         }
 
         public void FadeIn(int index)
@@ -50,12 +52,12 @@ namespace Gizmo.Client.UI.Components
             _index = index;
             _fade = 1;
 
-            InvokeAsync(StateHasChanged);
+            StateHasChanged();
         }
 
         private void OnClickHandler()
         {
-            Parent.SetCurrent(_advertisementViewState); 
+            Parent?.SetCurrent(AdvertisementId);
         }
 
         #region OVERRIDE
@@ -66,24 +68,14 @@ namespace Gizmo.Client.UI.Components
 
             this.SubscribeChange(_advertisementViewState);
 
-            if (Parent != null)
-            {
-                Parent.Register(this, Duplicate);
-            }
+            Parent?.Register(this, Duplicate);
         }
 
         public override void Dispose()
         {
             this.UnsubscribeChange(_advertisementViewState);
 
-            try
-            {
-                if (Parent != null)
-                {
-                    Parent.Unregister(this, Duplicate);
-                }
-            }
-            catch (Exception) { }
+            Parent?.Unregister(this, Duplicate);
 
             base.Dispose();
         }

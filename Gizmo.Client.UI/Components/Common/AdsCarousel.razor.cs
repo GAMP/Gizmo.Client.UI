@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Timers;
 
 using Gizmo.Client.UI.View.Services;
-using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 
 using Microsoft.AspNetCore.Components;
@@ -15,7 +15,7 @@ namespace Gizmo.Client.UI.Components
 
         #region FIELDS
 
-        private System.Timers.Timer _timer;
+        private Timer _timer;
 
         private readonly List<AdsCarouselItem> _items = new();
         private readonly List<AdsCarouselItem> _duplicates = new();
@@ -72,9 +72,9 @@ namespace Gizmo.Client.UI.Components
 
         #region METHODS
 
-        private void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private void timer_Elapsed(object _, ElapsedEventArgs __)
         {
-            SlideNext(sender);
+            SlideNext();
         }
 
         private void FadeOut(int index)
@@ -148,7 +148,7 @@ namespace Gizmo.Client.UI.Components
                 _duplicates.Remove(item);
         }
 
-        private void SlideNext(object stateInfo)
+        private void SlideNext()
         {
             int newIndex = SelectedIndex + 1;
             if (newIndex > _items.Count - 1)
@@ -156,7 +156,7 @@ namespace Gizmo.Client.UI.Components
 
             SelectedIndex = newIndex;
 
-            InvokeAsync(StateHasChanged);
+            StateHasChanged();
         }
 
         internal void SetCurrentIndex(int index)
@@ -165,16 +165,16 @@ namespace Gizmo.Client.UI.Components
 
             SelectedIndex = index;
 
-            InvokeAsync(StateHasChanged);
+            StateHasChanged();
 
             _timer.Start();
         }
 
-        internal void SetCurrent(AdvertisementViewState advertisement)
+        internal void SetCurrent(int advertisementId)
         {
             for (int i = 0; i < _items.Count; i++)
             {
-                if (_items[i].AdvertisementId == advertisement.Id)
+                if (_items[i].AdvertisementId == advertisementId)
                 {
                     if (_selectedIndex == i)
                         return;
@@ -183,7 +183,7 @@ namespace Gizmo.Client.UI.Components
 
                     SelectedIndex = i;
 
-                    InvokeAsync(StateHasChanged);
+                    StateHasChanged();
 
                     _timer.Start();
 

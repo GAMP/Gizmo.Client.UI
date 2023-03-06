@@ -10,18 +10,18 @@
                 <AdsCarouselItem AdvertisementId="@item.Id" @key="item.Id" />
             }
 
-            @if (AdvertisementsService.ViewState.Advertisements.Count() > 2)
+            @if (AdvertisementsService.ViewState.AdvertisementsCount > 2)
             {
                 @foreach (var item in AdvertisementsService.ViewState.Advertisements)
                 {
-                    <AdsCarouselItem AdvertisementId="@item.Id" Duplicate="true" @key="item.Id" />
+                    <AdsCarouselItem AdvertisementId="@item.Id" Duplicate="true" />
                 }
             }
 
         </div>
         <div class="giz-ads-carousel__navigation">
             <div class="giz-ads-carousel__navigation__indicators">
-                <AdsCarouselIndicator Maximum="5" Size="@(AdvertisementsService.ViewState.Advertisements?.Count() ?? 0)" SelectedIndex="@SelectedIndex" SelectedIndexChanged="SelectedIndexChangedHandler" />
+                <AdsCarouselIndicator Maximum="5" Size="@(AdvertisementsService.ViewState.AdvertisementsCount)" SelectedIndex="@SelectedIndex" SelectedIndexChanged="SelectedIndexChangedHandler" />
             </div>
         </div>
     </CascadingValue>
