@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System;
+using System.Threading.Tasks;
 
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -6,6 +8,7 @@ using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -21,6 +24,9 @@ namespace Gizmo.Client.UI.Components
 
         [Inject]
         AdvertisementsService AdvertisementsService { get; set; }
+
+        [Inject]
+        IJSRuntime JSRuntime { get; set; }
        
         [CascadingParameter]
         protected AdsCarousel Parent { get; set; }
@@ -59,6 +65,8 @@ namespace Gizmo.Client.UI.Components
         {
             Parent?.SetCurrent(AdvertisementId);
         }
+        private async Task ViewDetailsAsync() => 
+            await JSRuntime.InvokeAsync<object>("open", CancellationToken.None, _advertisementViewState.Url);
 
         #region OVERRIDE
 
