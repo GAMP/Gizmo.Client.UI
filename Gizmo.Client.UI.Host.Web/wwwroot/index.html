@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-
+  <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>Client UI (WEB)</title>
     <base href="/" />
 
     <!-- shared component css file always link above the client.UI css file -->
-    <link href="_content/Gizmo.Web.Components/css/main.min.css" rel="stylesheet" />
+    <link
+      href="_content/Gizmo.Web.Components/css/main.min.css"
+      rel="stylesheet"
+    />
 
     <!-- client.Ui css file alway link below the component css file  -->
     <link href="_content/Gizmo.Client.UI/css/main.min.css" rel="stylesheet" />
+  </head>
 
-</head>
-
-<body>
+  <body>
     <div id="app">Loading...</div>
     <script src="_framework/blazor.webassembly.js"></script>
     <script src="_content/Gizmo.Web.Components/js/main.js"></script>
     <script src="_content/Gizmo.Client.UI/js/main.js"></script>
     <script src="_content/Gizmo.Client.UI/js/interop.js"></script>
     <script>
-        //set client functions interop to window
-        window.ClientFunctions = ClientFunctions;
+      //set client functions interop to window
+      window.ClientFunctions = ClientFunctions;
     </script>
-</body>
-
+  </body>
 </html>

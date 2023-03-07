@@ -1,10 +1,11 @@
-﻿using Gizmo.Client.UI.Components;
-using Gizmo.UI.Services;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Gizmo.Client.UI.Components;
+using Gizmo.Client.UI.View.States;
+using Gizmo.UI.Services;
+using Microsoft.Extensions.Logging;
 
 namespace Gizmo.Client.UI.Services
 {
@@ -57,6 +58,14 @@ namespace Gizmo.Client.UI.Services
         public Task<ShowDialogResult<EmptyDialogResult>> ShowPaymentDialogAsync(CancellationToken cancellationToken = default)
         {
             return ShowDialogAsync<PaymentDialog>(new Dictionary<string, object>(), default, default, cancellationToken);
+        }
+        public Task<ShowDialogResult<EmptyDialogResult>> ShowAdvertisementDialogAsync(AdvertisementViewState state, CancellationToken cancellationToken = default)
+        {
+            var stateParams = new Dictionary<string, object>()
+            {
+                {nameof(AdvertisementViewState), state}
+            };
+            return ShowDialogAsync<AdsCarouselItemDialog>(stateParams, default, default, cancellationToken);
         }
     }
 }

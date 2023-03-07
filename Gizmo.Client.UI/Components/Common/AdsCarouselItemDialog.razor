@@ -1,0 +1,24 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<HostedDialog>
+    <div class="giz-client-dialog giz-user-agreement-dialog">
+        <div class="giz-client-dialog__header">
+            <div class="giz-client-dialog__header__title">Video</div>
+            <div class="giz-client-dialog__header__subtitle">YouTube Video</div>
+            <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="CloseDialogAsync" />
+        </div>
+        <div class="giz-client-dialog__body giz-scrollbar--v">
+            <div class="user-agreement">
+                <iframe
+                    style="position:relative; z-index:9999; width: 100%; height: 100%; border: none;"
+                    src="@AdvertisementViewState.MediaUrl"
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </div>
+</HostedDialog>

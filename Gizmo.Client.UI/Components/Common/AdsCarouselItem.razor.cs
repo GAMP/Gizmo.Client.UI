@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using System;
 using System.Threading.Tasks;
 
 using Gizmo.Client.UI.View.Services;
@@ -27,7 +26,7 @@ namespace Gizmo.Client.UI.Components
 
         [Inject]
         IJSRuntime JSRuntime { get; set; }
-       
+
         [CascadingParameter]
         protected AdsCarousel Parent { get; set; }
 
@@ -36,7 +35,6 @@ namespace Gizmo.Client.UI.Components
 
         [Parameter]
         public bool Duplicate { get; set; }
-
 
         internal void Clear()
         {
@@ -65,7 +63,12 @@ namespace Gizmo.Client.UI.Components
         {
             Parent?.SetCurrent(AdvertisementId);
         }
-        private async Task ViewDetailsAsync() => 
+
+        private async Task ShowMediaSync()
+        {
+            await AdvertisementsService.ShowMediaSync(_advertisementViewState);
+        }
+        private async Task ViewDetailsAsync() =>
             await JSRuntime.InvokeAsync<object>("open", CancellationToken.None, _advertisementViewState.Url);
 
         #region OVERRIDE
