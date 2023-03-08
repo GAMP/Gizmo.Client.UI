@@ -59,10 +59,10 @@ namespace Gizmo.Client.UI.Components
             StateHasChanged();
         }
 
-        private void OnClickHandler() => 
+        private void OnClickHandler() =>
             Parent?.SetCurrent(AdvertisementId);
 
-        private async Task ShowMediaSync() => 
+        private async Task ShowMediaSync() =>
             await AdvertisementsService.ShowMediaSync(_advertisementViewState);
 
         private async Task ViewDetailsAsync() =>

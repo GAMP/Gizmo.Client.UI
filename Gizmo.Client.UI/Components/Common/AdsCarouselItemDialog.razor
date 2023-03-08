@@ -2,19 +2,38 @@
 @inherits CustomDOMComponentBase
 
 <HostedDialog>
-    <div class="giz-client-dialog giz-carousel-item-dialog">
+    <div class="giz-client-dialog giz-ads-carousel-item-dialog">
         <div class="giz-client-dialog__header">
             <div class="giz-client-dialog__header__title">@AdvertisementViewState.Title</div>
-            <div class="giz-client-dialog__header__subtitle">@AdvertisementViewState.MediaUrl</div>
+            <div class="giz-client-dialog__header__subtitle">@AdvertisementViewState.MediaUrlType</div>
             <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CancelCallback.InvokeAsync()" />
         </div>
-        <iframe 
-                class="giz-carousel-item-dialog-farme"
-                src="@AdvertisementViewState.MediaUrl"
-                title="YouTube video player"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen>
-        </iframe>
+        <div class="giz-ads-carousel-item-dialog-farme" >
+            @switch (AdvertisementViewState.MediaUrlType)
+            {
+                case AdvertisementMediaUrlType.YouTube:
+                {
+                    <iframe 
+                            style="width:100%;height:100%"
+                            src="@AdvertisementViewState.MediaUrl"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                    </iframe>
+                    break;
+                }
+                default:
+                {
+                    <video
+                        style="width:100%;height:100%" 
+                        src="@AdvertisementViewState.MediaUrl" 
+                        controls
+                        autoplay>
+                        Your browser does not support the video tag.
+                    </video> 
+                    break;
+                }
+            }
+        </div>
     </div>
 </HostedDialog>
