@@ -6,7 +6,7 @@
         <div class="giz-app-card__content__image">
             <div class="giz-app-card__content__image__hovered">
                 <div class="giz-app-card__content__image__hovered__header">
-                    <div class="giz-app-card-b1">
+                    @*<div class="giz-app-card-b1">
                         <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="4" cy="4" r="4" fill="white"/>
                         </svg>
@@ -15,7 +15,7 @@
                     <div class="giz-app-card-b2">
                         <Icon SVGIcon="Icons.Shield_Client" />
                         <div>24</div>
-                    </div>
+                    </div>*@
                 </div>
             </div>
             @if (Application.ImageId.HasValue)
@@ -34,7 +34,12 @@
         </div>
         <div class="giz-app-card__content__footer">
             <div class="giz-app-card-text">
-                <div class="giz-app-card__content__footer-category">@Application?.ApplicationGroupName</div>
+                <div class="giz-app-card__content__footer-category">
+                    @if (Application != null)
+                    {
+                        @(AppCategoryViewStateLookupService.GetStateAsync(Application.ApplicationCategoryId).GetAwaiter().GetResult().Name)
+                    }
+                </div>
             </div>
         </div>
     </div>

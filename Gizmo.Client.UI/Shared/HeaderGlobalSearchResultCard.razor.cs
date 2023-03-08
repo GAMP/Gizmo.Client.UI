@@ -23,9 +23,6 @@ namespace Gizmo.Client.UI.Shared
         NavigationService NavigationService { get; set; }
 
         [Inject]
-        ExecutableSelectorService ExecutableSelectorService { get; set; }
-
-        [Inject]
         UserCartService UserCartService { get; set; }
 
         [Inject()]
@@ -58,9 +55,7 @@ namespace Gizmo.Client.UI.Shared
 
             if (Result.Type == View.SearchResultTypes.Applications)
             {
-                await ExecutableSelectorService.LoadApplicationAsync(Result.Id);
-
-                var s = await DialogService.ShowExecutableSelectorDialogAsync();
+                var s = await DialogService.ShowExecutableSelectorDialogAsync(Result.Id);
                 if (s.Result == DialogAddResult.Success)
                 {
                     try

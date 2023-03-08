@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.View.States;
+﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -13,13 +14,16 @@ namespace Gizmo.Client.UI.Components
         #region PROPERTIES
 
         [Inject]
+        AppCategoryViewStateLookupService AppCategoryViewStateLookupService { get; set; }
+
+        [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
         NavigationService NavigationService { get; set; }
 
         [Parameter]
-        public ApplicationViewState Application { get; set; }
+        public AppViewState Application { get; set; }
 
         [Parameter]
         public EventCallback<int> OnOpenExecutableSelector { get; set; }
@@ -36,14 +40,14 @@ namespace Gizmo.Client.UI.Components
                 return;
             }
 
-            NavigationService.NavigateTo(ClientRoutes.ApplicationDetailsRoute + $"?ApplicationId={Application.Id.ToString()}");
+            NavigationService.NavigateTo(ClientRoutes.ApplicationDetailsRoute + $"?ApplicationId={Application.ApplicationId.ToString()}");
         }
 
         private async Task Execute()
         {
             _clickHandled = true;
 
-            await OnOpenExecutableSelector.InvokeAsync(Application.Id);
+            await OnOpenExecutableSelector.InvokeAsync(Application.ApplicationId);
         }
 
         #endregion

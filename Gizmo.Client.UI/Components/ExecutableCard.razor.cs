@@ -7,57 +7,52 @@ using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
-	public partial class ExecutableCard : CustomDOMComponentBase
+    public partial class ExecutableCard : CustomDOMComponentBase
     {
+        private AppExeViewState _previousExecutable;
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-		public ActiveApplicationsService ActiveApplicationsService { get; set; }
+        public ActiveApplicationsService ActiveApplicationsService { get; set; }
 
-		[Parameter]
-		public ExecutableViewState Executable { get; set; }
+        [Parameter]
+        public AppExeViewState Executable { get; set; }
 
-		private Task OnClickMainButtonHandler()
-		{
-			switch (Executable.State)
-			{
-				case View.ExecutableState.None:
-					return ActiveApplicationsService.RunExecutableAsyc(Executable.Id);
+        #region OVERRIDES
 
-				default:
-					return ActiveApplicationsService.TerminateExecutableAsyc(Executable.Id);
-			}
-		}
+        protected override async Task OnParametersSetAsync()
+        {
+            await base.OnParametersSetAsync();
 
-		#region OVERRIDES
+            var executableChanged = _previousExecutable != Executable;
 
-		protected override void OnInitialized()
-		{
-			this.SubscribeChange(Executable);
-			base.OnInitialized();
-		}
+            if (executableChanged)
+            {
+                if (_previousExecutable != null)
+                {
+                    //The same component used again with a different executable.
+                    //We have to unbind from the old executable.
+                    this.UnsubscribeChange(_previousExecutable);
+                }
 
-		public override void Dispose()
-		{
-			this.UnsubscribeChange(Executable);
-			base.Dispose();
-		}
+                _previousExecutable = Executable;
 
-		//protected override async Task OnAfterRenderAsync(bool firstRender)
-		//{
-		//	if (!firstRender)
-		//	{
-		//		await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
-		//	}
-		//	else
-		//	{
-		//		await InvokeVoidAsync("writeLine", $"Render {this.ToString()}");
-		//	}
+                //We have to bind to the new executable.
+                this.SubscribeChange(Executable);
+            }
+        }
 
-		//	await base.OnAfterRenderAsync(firstRender);
-		//}
+        public override void Dispose()
+        {
+            if (Executable != null)
+            {
+                this.UnsubscribeChange(Executable);
+            }
+            base.Dispose();
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

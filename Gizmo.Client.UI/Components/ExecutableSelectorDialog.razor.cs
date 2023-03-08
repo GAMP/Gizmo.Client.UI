@@ -14,10 +14,16 @@ namespace Gizmo.Client.UI.Components
         }
 
         [Inject]
-        ILocalizationService LocalizationService { get; set; }
+        AppViewStateLookupService AppViewStateLookupService { get; set; }
 
         [Inject]
-        ExecutableSelectorService ExecutableSelectorService { get; set; }
+        AppExeViewStateLookupService AppExeViewStateLookupService { get; set; }
+
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
+        [Parameter]
+        public int ApplicationId { get; set; }
 
         [Parameter]
         public EventCallback CancelCallback { get; set; }

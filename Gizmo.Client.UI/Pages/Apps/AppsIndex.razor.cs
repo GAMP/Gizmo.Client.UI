@@ -33,13 +33,13 @@ namespace Gizmo.Client.UI.Pages
         #region PROPERTIES
 
         [Inject]
+        AppCategoryViewStateLookupService AppCategoryViewStateLookupService { get; set; }
+
+        [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
         ApplicationsPageService ApplicationsPageService { get; set; }
-
-        [Inject]
-        ExecutableSelectorService ExecutableSelectorService { get; set; }
 
         [Inject]
         SearchService SearchService { get; set; }
@@ -96,7 +96,7 @@ namespace Gizmo.Client.UI.Pages
 
         #region METHODS
 
-        public IEnumerable<ApplicationViewState> GetFilteredApplications()
+        public IEnumerable<AppViewState> GetFilteredApplications()
         {
             var result = ApplicationsPageService.ViewState.Applications.AsQueryable();
 
@@ -104,12 +104,12 @@ namespace Gizmo.Client.UI.Pages
             {
                 var ids = SearchService.ViewState.AppliedApplicationResults.Select(a => a.Id).ToList();
 
-                result = result.Where(a => ids.Contains(a.Id));
+                result = result.Where(a => ids.Contains(a.ApplicationId));
             }
 
             if (_selectedApplicationGroupId.HasValue)
             {
-                result = result.Where(a => a.ApplicationGroupId == _selectedApplicationGroupId);
+                result = result.Where(a => a.ApplicationCategoryId == _selectedApplicationGroupId);
             }
 
             return result.ToList();
@@ -129,9 +129,7 @@ namespace Gizmo.Client.UI.Pages
 
         public async Task OpenExecutableSelector(int id)
         {
-            await ExecutableSelectorService.LoadApplicationAsync(id);
-
-            var s = await DialogService.ShowExecutableSelectorDialogAsync();
+            var s = await DialogService.ShowExecutableSelectorDialogAsync(id);
             if (s.Result == DialogAddResult.Success)
             {
                 try
@@ -151,7 +149,7 @@ namespace Gizmo.Client.UI.Pages
             this.SubscribeChange(ApplicationsPageService.ViewState);
             this.SubscribeChange(SearchService.ViewState);
 
-            await ApplicationsPageService.LoadApplicationsAsync();
+            //await ApplicationsPageService.LoadApplicationsAsync();
 
             List<ApplicationFilterOptionViewModel> options = new List<ApplicationFilterOptionViewModel>();
             options.Add(new ApplicationFilterOptionViewModel() { Id = 1, Name = "Free to Play" });

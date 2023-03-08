@@ -34,9 +34,6 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         HomePageService HomePageService { get; set; }
 
-        [Inject]
-        ExecutableSelectorService ExecutableSelectorService { get; set; }
-
         [Inject()]
         IClientDialogService DialogService { get; set; }
 
@@ -46,9 +43,7 @@ namespace Gizmo.Client.UI.Pages
 
         public async Task OpenExecutableSelector(int id)
         {
-            await ExecutableSelectorService.LoadApplicationAsync(id);
-
-            var s = await DialogService.ShowExecutableSelectorDialogAsync();
+            var s = await DialogService.ShowExecutableSelectorDialogAsync(id);
             if (s.Result == DialogAddResult.Success)
             {
                 try

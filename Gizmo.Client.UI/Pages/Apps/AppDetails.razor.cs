@@ -26,13 +26,16 @@ namespace Gizmo.Client.UI.Pages
         #region PROPERTIES
 
         [Inject]
+        AppCategoryViewStateLookupService AppCategoryViewStateLookupService { get; set; }
+
+        [Inject]
+        AppEnterprisesViewStateLookupService AppEnterprisesViewStateLookupService { get; set; }
+
+        [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
         ApplicationDetailsPageService ApplicationDetailsPageService { get; set; }
-
-        [Inject]
-        ExecutableSelectorService ExecutableSelectorService { get; set; }
 
         [Inject]
         public ActiveApplicationsService ActiveApplicationsService { get; set; }
@@ -63,57 +66,35 @@ namespace Gizmo.Client.UI.Pages
 
         private async Task OnClickMainButtonHandler()
         {
-            if (ApplicationDetailsPageService.ViewState.Application.Executables.Count() == 1)
+            var s = await DialogService.ShowExecutableSelectorDialogAsync(ApplicationId);
+            if (s.Result == DialogAddResult.Success)
             {
-                var executable = ApplicationDetailsPageService.ViewState.Application.Executables.First();
-
-                switch (executable.State)
+                try
                 {
-                    case View.ExecutableState.None:
-                        await ActiveApplicationsService.RunExecutableAsyc(executable.Id);
-
-                        break;
-
-                    default:
-                        await ActiveApplicationsService.TerminateExecutableAsyc(executable.Id);
-
-                        break;
+                    var result = await s.WaitForDialogResultAsync();
                 }
-            }
-            else if (ApplicationDetailsPageService.ViewState.Application.Executables.Count() > 1)
-            {
-                await ExecutableSelectorService.LoadApplicationAsync(ApplicationId);
-
-                var s = await DialogService.ShowExecutableSelectorDialogAsync();
-                if (s.Result == DialogAddResult.Success)
+                catch (OperationCanceledException)
                 {
-                    try
-                    {
-                        var result = await s.WaitForDialogResultAsync();
-                    }
-                    catch (OperationCanceledException)
-                    {
-                    }
                 }
             }
         }
 
         protected override async Task OnInitializedAsync()
         {
-            if (ApplicationDetailsPageService.ViewState.Application.Executables.Count() == 1)
-            {
-                this.SubscribeChange(ApplicationDetailsPageService.ViewState.Application.Executables.First());
-            }
+            //if (ApplicationDetailsPageService.ViewState.Application.Executables.Count() == 1)
+            //{
+            //    this.SubscribeChange(ApplicationDetailsPageService.ViewState.Application.Executables.First());
+            //}
 
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
-            if (ApplicationDetailsPageService.ViewState.Application.Executables.Count() == 1)
-            {
-                this.UnsubscribeChange(ApplicationDetailsPageService.ViewState.Application.Executables.First());
-            }
+            //if (ApplicationDetailsPageService.ViewState.Application.Executables.Count() == 1)
+            //{
+            //    this.UnsubscribeChange(ApplicationDetailsPageService.ViewState.Application.Executables.First());
+            //}
 
             base.Dispose();
         }
