@@ -9,10 +9,6 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class ExecutableSelectorDialog : CustomDOMComponentBase
     {
-        public ExecutableSelectorDialog()
-        {
-        }
-
         [Inject]
         AppViewStateLookupService AppViewStateLookupService { get; set; }
 

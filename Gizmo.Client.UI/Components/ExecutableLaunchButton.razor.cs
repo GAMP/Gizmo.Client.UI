@@ -8,8 +8,7 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class ExecutableLaunchButton : CustomDOMComponentBase
     {
-        private int _previousExecutableId;
-        private AppExeExecutionViewState _appExeExecutionViewState { get; set; }
+        private AppExeExecutionViewState _appExeExecutionViewState;
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -36,35 +35,16 @@ namespace Gizmo.Client.UI.Components
             return Task.CompletedTask;
         }
 
-        protected override async Task OnParametersSetAsync()
+        protected override async Task OnInitializedAsync()
         {
-            await base.OnParametersSetAsync();
-
-            var executableIdChanged = _previousExecutableId != ExecutableId;
-
-            if (executableIdChanged)
-            {
-                if (_appExeExecutionViewState != null)
-                {
-                    //The same component used again with a different executable id.
-                    //We have to unbind from the old executable.
-                    this.UnsubscribeChange(_appExeExecutionViewState);
-                }
-
-                _previousExecutableId = ExecutableId;
-
-                //We have to bind to the new executable.
-                _appExeExecutionViewState = new AppExeExecutionViewState(); //TODO: AAA FIND EXECUTION STATE
-                this.SubscribeChange(_appExeExecutionViewState);
-            }
+            _appExeExecutionViewState = new AppExeExecutionViewState(); //TODO: AAA FIND EXECUTION STATE
+            this.SubscribeChange(_appExeExecutionViewState);
+            await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
-            if (_appExeExecutionViewState != null)
-            {
-                this.UnsubscribeChange(_appExeExecutionViewState);
-            }
+            this.UnsubscribeChange(_appExeExecutionViewState);
             base.Dispose();
         }
     }

@@ -13,7 +13,7 @@
 
                 @foreach (var executable in @AppExeViewStateLookupService.GetStatesAsync().GetAwaiter().GetResult().Where(a => a.ApplicationId == ApplicationId))
                 {
-                    <ExecutableCard Executable="@executable" @key="@executable.ExecutableId" />
+                    <ExecutableCard Executable="@executable" @key="executable.ExecutableId" />
                 }
 
             </div>
