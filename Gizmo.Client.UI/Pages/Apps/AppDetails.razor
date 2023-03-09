@@ -40,7 +40,7 @@
                 <div class="giz-app-details__app__info__details__executables">
                     @if (ApplicationDetailsPageService.ViewState.Executables.Count() == 1)
                     {
-                        <ExecutableLaunchButton ExecutableId="@ApplicationDetailsPageService.ViewState.Executables.Select(a => a.ExecutableId).First()" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" />
+                        <ExecutableLaunchButton @key="ApplicationDetailsPageService.ViewState.Executables.Select(a => a.ExecutableId).First()" ExecutableId="@ApplicationDetailsPageService.ViewState.Executables.Select(a => a.ExecutableId).First()" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" />
                     }
                     else if (ApplicationDetailsPageService.ViewState.Executables.Count() > 1)
                     {
@@ -101,16 +101,7 @@
                     </ClientTab>
                 </div>
                 <div class="giz-app-details__app__info__additional-content__media">
-                    <ClientTab ControlsPosition="TabControlsPositions.Internal">
-                        @foreach (var item in ApplicationMedia)
-                        {
-                            <ClientTabItem>
-                                <div class="giz-app-media-item">
-                                    <img src="_content/Gizmo.Client.UI/img/@item" alt="loading" />
-                                </div>
-                            </ClientTabItem>
-                        }
-                    </ClientTab>
+                    @*<AppDetailsLinks ApplicationId="@ApplicationId" @key="ApplicationId" />*@
                 </div>
             </div>
 

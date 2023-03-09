@@ -14,11 +14,6 @@ namespace Gizmo.Client.UI.Pages
     [Route(ClientRoutes.ApplicationDetailsRoute)]
     public partial class AppDetails : CustomDOMComponentBase
     {
-        public AppDetails()
-        {
-            ApplicationMedia = Enumerable.Range(0, 5).Select(i => "app_media.png").ToList();
-        }
-
         #region FIELDS
         private int _selectedTabIndex;
         #endregion
@@ -46,8 +41,6 @@ namespace Gizmo.Client.UI.Pages
         [Parameter]
         [SupplyParameterFromQuery]
         public int ApplicationId { get; set; }
-
-        public List<string> ApplicationMedia { get; set; }
 
         #endregion
 

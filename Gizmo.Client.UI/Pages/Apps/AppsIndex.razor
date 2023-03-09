@@ -105,7 +105,7 @@
                             <div class="giz-apps__app-wrapper">
                                 @foreach (var app in GetFilteredApplications())
                                 {
-                                    <ApplicationCard Application="@app" @key="app.ApplicationId" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
+                                    <ApplicationCard @key="app.ApplicationId" Application="@app" OnOpenExecutableSelector="@OpenExecutableSelector" />
                                 }
                             </div>
                         }
