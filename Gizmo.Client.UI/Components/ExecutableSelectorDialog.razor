@@ -11,7 +11,7 @@
         <div class="giz-client-dialog__body giz-scrollbar--v">
             <div class="giz-executable-list">
 
-                @foreach (var executable in @AppExeViewStateLookupService.GetStatesAsync().GetAwaiter().GetResult().Where(a => a.ApplicationId == ApplicationId))
+                @foreach (var executable in _executables)
                 {
                     <ExecutableCard Executable="@executable" @key="executable.ExecutableId" />
                 }

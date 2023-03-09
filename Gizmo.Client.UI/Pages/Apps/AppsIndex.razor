@@ -71,7 +71,7 @@
                                     MaximumHeight="20.0rem"
                                     Class="@(_selectedApplicationGroupId.HasValue ? "app-filter--filled" : "app-filter--default")"
                                     PopupClass="giz-scrollbar--v">
-                                @foreach (var appGroup in AppCategoryViewStateLookupService.GetStatesAsync().GetAwaiter().GetResult())
+                                @foreach (var appGroup in ViewState.AppCategories)
                                 {
                                     <SelectItem TValue="int?" Value="@appGroup.AppCategoryId" Text="@appGroup.Name" />
                                 }

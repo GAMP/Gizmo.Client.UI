@@ -1,8 +1,11 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Api.Models;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
@@ -23,6 +26,15 @@ namespace Gizmo.Client.UI.Components
 
         [Parameter]
         public EventCallback CancelCallback { get; set; }
+
+
+        private IEnumerable<AppExeViewState> _executables;
+
+        protected override async Task OnParametersSetAsync()
+        {
+            _executables = await AppExeViewStateLookupService.GetStatesAsync();
+            _executables = _executables.Where(exe=>exe.ApplicationId == ApplicationId);
+        }
 
         private Task CloseDialogAsync()
         {

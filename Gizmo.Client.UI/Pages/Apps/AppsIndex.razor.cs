@@ -47,6 +47,10 @@ namespace Gizmo.Client.UI.Pages
         [Inject()]
         IClientDialogService DialogService { get; set; }
 
+        [Inject()]
+        public ApplicationsPageViewState ViewState { get; set; }
+
+
         #region PARAMETERS
 
         /// <summary>
