@@ -24,7 +24,7 @@ namespace Gizmo.Client.UI.Pages
         AppCategoryViewStateLookupService AppCategoryViewStateLookupService { get; set; }
 
         [Inject]
-        AppEnterprisesViewStateLookupService AppEnterprisesViewStateLookupService { get; set; }
+        AppEnterpriseViewStateLookupService AppEnterpriseViewStateLookupService { get; set; }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
