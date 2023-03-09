@@ -28,36 +28,27 @@
             </div>
                 @if(_advertisementViewState.MediaUrlType != AdvertisementMediaUrlType.None)
                 {
-                    <IconButton 
-                        Class="giz-ads-carousel-item__content__media" 
-                        Size="ButtonSizes.ExtraLarge" 
-                        Color="ButtonColors.Info"
-                        SVGIcon="Icons.Video" 
-                        @onclick="ShowMediaSync"/>
+                        <IconButton
+                            Class="giz-ads-carousel-item__content__media" 
+                            Size="ButtonSizes.ExtraLarge" 
+                            Color="ButtonColors.Info"
+                            SVGIcon="Icons.Video" 
+                            @onclick="ShowMediaSync"/>
                 }
                 <div class="giz-ads-carousel-item__content__actions">
                     @if (_advertisementViewState.Command is not null)
                     {
-                        switch (_advertisementViewState.Command.CommandType)
-                        {
-                            case AdvertisementCommandType.AddToCart:
-                                {
-                                    <ProductQuantityPicker PikerSize="ButtonSizes.Large" ProductId="@_advertisementViewState.Command.PathId" />
-                                    break;
-                                }
-                            case AdvertisementCommandType.Launch:
-                                {
-                                    break;
-                                }
-                            case AdvertisementCommandType.Navigate:
-                                {
-                                    break;
-                                }
-                        }
+                        <Button 
+                            Size="ButtonSizes.Large" 
+                            Text="@_advertisementViewState.Command.Name" 
+                            @onclick="ExecuteCommandAsync" />
                     }
                     else if (_advertisementViewState.Url is not null)
                     {
-                        <Button Size="ButtonSizes.Large" Text="@LocalizationService.GetString("GIZ_GEN_VIEW_DETAILS")" @onclick="ViewDetailsAsync" />
+                        <Button 
+                            Size="ButtonSizes.Large" 
+                            Text="@LocalizationService.GetString("GIZ_GEN_VIEW_DETAILS")" 
+                            @onclick="ViewDetailsAsync" />
                     }
                 </div>
         </div>

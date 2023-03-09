@@ -25,6 +25,9 @@ namespace Gizmo.Client.UI.Components
         AdvertisementsService AdvertisementsService { get; set; }
 
         [Inject]
+        ViewServiceCommandProvider ViewServiceCommandProvider { get; set; }
+
+        [Inject]
         IJSRuntime JSRuntime { get; set; }
 
         [CascadingParameter]
@@ -62,11 +65,18 @@ namespace Gizmo.Client.UI.Components
         private void OnClickHandler() =>
             Parent?.SetCurrent(AdvertisementId);
 
-        private async Task ShowMediaSync() =>
-            await AdvertisementsService.ShowMediaSync(_advertisementViewState);
+        private Task ShowMediaSync() =>
+            AdvertisementsService.ShowMediaSync(_advertisementViewState);
 
-        private async Task ViewDetailsAsync() =>
-            await JSRuntime.InvokeAsync<object>("open", CancellationToken.None, _advertisementViewState.Url);
+        private async Task ViewDetailsAsync()
+        {
+            if (_advertisementViewState.Url is not null)
+                await JSRuntime.InvokeAsync<object>("open", CancellationToken.None, _advertisementViewState.Url);
+        }
+
+        private Task ExecuteCommandAsync() => _advertisementViewState.Command is not null
+            ? ViewServiceCommandProvider.ExecuteAsync(_advertisementViewState.Command)
+            : Task.CompletedTask;
 
         #region OVERRIDE
 
