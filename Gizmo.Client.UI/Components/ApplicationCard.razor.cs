@@ -14,9 +14,6 @@ namespace Gizmo.Client.UI.Components
         #region PROPERTIES
 
         [Inject]
-        AppCategoryViewStateLookupService AppCategoryViewStateLookupService { get; set; }
-
-        [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]

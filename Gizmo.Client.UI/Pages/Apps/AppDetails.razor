@@ -24,13 +24,10 @@
             </div>
 
             <div class="giz-app-details__app__info__details">
-                
-                <div class="giz-app-details__app__info__details__category">
-                    @if (ApplicationDetailsPageService.ViewState.Application != null)
-                    {
-                        @(AppCategoryViewStateLookupService.GetStateAsync(ApplicationDetailsPageService.ViewState.Application.ApplicationCategoryId).GetAwaiter().GetResult().Name)
-                    }
-                </div>
+                @if (ApplicationDetailsPageService.ViewState.Application != null)
+                {
+                    <AppDetailsAppCategory @key="ApplicationDetailsPageService.ViewState.Application.ApplicationCategoryId" ApplicationCategoryId="@ApplicationDetailsPageService.ViewState.Application.ApplicationCategoryId" />
+                }
                 <div class="giz-app-details__app__info__details__title">
                     @ApplicationDetailsPageService.ViewState.Application?.Title
                 </div>
@@ -57,7 +54,7 @@
                 <div class="giz-app-details-card-brand-text">
                     @if (ApplicationDetailsPageService.ViewState.Application?.PublisherId != null)
                     {
-                        @(AppEnterpriseViewStateLookupService.GetStateAsync(ApplicationDetailsPageService.ViewState.Application.PublisherId.Value).GetAwaiter().GetResult().Name)
+                        <AppDetailsAppPublisher @key="ApplicationDetailsPageService.ViewState.Application.PublisherId.Value" PublisherId="@ApplicationDetailsPageService.ViewState.Application.PublisherId.Value" />
                     }
                 </div>
                 <div class="giz-app-details-card-brand-title">

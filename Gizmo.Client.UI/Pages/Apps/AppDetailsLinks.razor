@@ -2,7 +2,7 @@
 @inherits CustomDOMComponentBase
 
 <ClientTab ControlsPosition="TabControlsPositions.Internal">
-    @foreach (var link in @AppLinkViewStateLookupService.GetStatesAsync().GetAwaiter().GetResult().Where(a => a.ApplicationId == ApplicationId))
+    @foreach (var link in _appLinksViewState)
     {
         <AppDetailsLink Link="@link" @key="link.AppLinkId" />
     }

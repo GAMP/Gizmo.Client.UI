@@ -34,12 +34,10 @@
         </div>
         <div class="giz-app-card__content__footer">
             <div class="giz-app-card-text">
-                <div class="giz-app-card__content__footer-category">
-                    @if (Application != null)
-                    {
-                        @(AppCategoryViewStateLookupService.GetStateAsync(Application.ApplicationCategoryId).GetAwaiter().GetResult().Name)
-                    }
-                </div>
+                @if (Application != null)
+                {
+                    <ApplicationCardCategory @key="Application.ApplicationCategoryId" ApplicationCategoryId="@Application.ApplicationCategoryId" />
+                }
             </div>
         </div>
     </div>

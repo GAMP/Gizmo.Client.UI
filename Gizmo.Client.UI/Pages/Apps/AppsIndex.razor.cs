@@ -20,20 +20,12 @@ namespace Gizmo.Client.UI.Pages
     [DefaultRoute(ClientRoutes.ApplicationsRoute), Route(ClientRoutes.ApplicationsRoute)]
     public partial class AppsIndex : CustomDOMComponentBase
     {
-        public AppsIndex()
-        {
-        }
-
         #region FIELDS
         private int _selectedSortOptionId = 1;
-        private int? _selectedApplicationGroupId;
         private List<int> _selectedApplicationFilters = new List<int>() { 1, 3 };
         #endregion
 
         #region PROPERTIES
-
-        [Inject]
-        AppCategoryViewStateLookupService AppCategoryViewStateLookupService { get; set; }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -41,15 +33,11 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         ApplicationsPageService ApplicationsPageService { get; set; }
 
-        [Inject]
-        SearchService SearchService { get; set; }
-
-        [Inject()]
-        IClientDialogService DialogService { get; set; }
-
         [Inject()]
         public ApplicationsPageViewState ViewState { get; set; }
 
+        [Inject()]
+        IClientDialogService DialogService { get; set; }
 
         #region PARAMETERS
 
@@ -57,11 +45,7 @@ namespace Gizmo.Client.UI.Pages
         /// Application id url parameter.
         /// </summary>
         [Parameter()]
-        public int? AppId
-        {
-            get;
-            init;
-        }
+        public int? AppId { get; init; }
 
         #endregion
 
@@ -90,46 +74,40 @@ namespace Gizmo.Client.UI.Pages
             SelectedApplicationFilters = selectedApplicationFilters;
         }
 
-        public void OnClearFiltersHandler(string value)
-        {
-            _selectedApplicationGroupId = null;
-            SelectedApplicationFilters.Clear();
-        }
-
         #endregion
 
         #region METHODS
 
-        public IEnumerable<AppViewState> GetFilteredApplications()
-        {
-            var result = ApplicationsPageService.ViewState.Applications.AsQueryable();
+        //public IEnumerable<AppViewState> GetFilteredApplications()
+        //{
+        //    var result = ApplicationsPageService.ViewState.Applications.AsQueryable();
 
-            if (SearchService.ViewState.ShowAll)
-            {
-                var ids = SearchService.ViewState.AppliedApplicationResults.Select(a => a.Id).ToList();
+        //    if (SearchService.ViewState.ShowAll)
+        //    {
+        //        var ids = SearchService.ViewState.AppliedApplicationResults.Select(a => a.Id).ToList();
 
-                result = result.Where(a => ids.Contains(a.ApplicationId));
-            }
+        //        result = result.Where(a => ids.Contains(a.ApplicationId));
+        //    }
 
-            if (_selectedApplicationGroupId.HasValue)
-            {
-                result = result.Where(a => a.ApplicationCategoryId == _selectedApplicationGroupId);
-            }
+        //    if (_selectedApplicationGroupId.HasValue)
+        //    {
+        //        result = result.Where(a => a.ApplicationCategoryId == _selectedApplicationGroupId);
+        //    }
 
-            return result.ToList();
-        }
+        //    return result.ToList();
+        //}
 
-        public int GetNumberOfFilters()
-        {
-            int result = 0;
+        //public int GetNumberOfFilters()
+        //{
+        //    int result = 0;
 
-            if (_selectedApplicationGroupId.HasValue)
-                result += 1;
+        //    if (_selectedApplicationGroupId.HasValue)
+        //        result += 1;
 
-            result += SelectedApplicationFilters.Count;
+        //    result += SelectedApplicationFilters.Count;
 
-            return result;
-        }
+        //    return result;
+        //}
 
         public async Task OpenExecutableSelector(int id)
         {
@@ -151,7 +129,6 @@ namespace Gizmo.Client.UI.Pages
         protected override async Task OnInitializedAsync()
         {
             this.SubscribeChange(ApplicationsPageService.ViewState);
-            this.SubscribeChange(SearchService.ViewState);
 
             //await ApplicationsPageService.LoadApplicationsAsync();
 
@@ -180,7 +157,6 @@ namespace Gizmo.Client.UI.Pages
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(SearchService.ViewState);
             this.UnsubscribeChange(ApplicationsPageService.ViewState);
 
             base.Dispose();
