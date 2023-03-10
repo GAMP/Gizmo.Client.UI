@@ -15,9 +15,9 @@
             </NavLink>
             <div class="giz-product-details__product__info">
                 <div class="giz-product-details__product__info__image">
-                    @if (ProductDetailsPageService.ViewState.Product?.ImageId.HasValue == true)
+                    @if (ProductDetailsPageService.ViewState.Product?.DefaultImageId.HasValue == true)
                     {
-                        <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ProductDetailsPageService.ViewState.Product.ImageId.Value" />
+                        <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ProductDetailsPageService.ViewState.Product.DefaultImageId.Value" />
                     }
                     else
                     {
@@ -48,9 +48,9 @@
                     @foreach (var product in ProductDetailsPageService.ViewState.Product.BundledProducts)
                     {
                         <div class="giz-product-details__product__bundled-products-product">
-                            @if (ProductDetailsPageService.ViewState.Product?.ImageId.HasValue == true)
+                            @if (ProductDetailsPageService.ViewState.Product?.DefaultImageId.HasValue == true)
                             {
-                                <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ProductDetailsPageService.ViewState.Product.ImageId.Value" />
+                                <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ProductDetailsPageService.ViewState.Product.DefaultImageId.Value" />
                             }
                             else
                             {
