@@ -19,13 +19,6 @@ namespace Gizmo.Client.UI.Pages
         {
         }
 
-        #region FIELDS
-        private int _selectedSearchCategoryId;
-        private int _selectedSortOptionId = 1;
-        private int? _selectedApplicationGroupId;
-        private List<int> _selectedApplicationFilters = new List<int>() { 1, 3 };
-        #endregion
-
         #region PROPERTIES
 
         [Inject]
@@ -33,9 +26,6 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         HomePageService HomePageService { get; set; }
-
-        [Inject]
-        ExecutableSelectorService ExecutableSelectorService { get; set; }
 
         [Inject()]
         IClientDialogService DialogService { get; set; }
@@ -46,9 +36,7 @@ namespace Gizmo.Client.UI.Pages
 
         public async Task OpenExecutableSelector(int id)
         {
-            await ExecutableSelectorService.LoadApplicationAsync(id);
-
-            var s = await DialogService.ShowExecutableSelectorDialogAsync();
+            var s = await DialogService.ShowExecutableSelectorDialogAsync(id);
             if (s.Result == DialogAddResult.Success)
             {
                 try

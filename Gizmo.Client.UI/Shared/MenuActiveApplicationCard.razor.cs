@@ -19,18 +19,19 @@ namespace Gizmo.Client.UI.Shared
 		public ActiveApplicationsService ActiveApplicationsService { get; set; }
 
 		[Parameter]
-		public ExecutableViewState Executable { get; set; }
+		public AppExeViewState Executable { get; set; }
 
 		private Task OnClickMainButtonHandler()
 		{
-			switch (Executable.State)
-			{
-				case View.ExecutableState.None:
-					return ActiveApplicationsService.RunExecutableAsyc(Executable.Id);
+            //switch (Executable.State)
+            //{
+            //	case View.ExecutableState.None:
+            //		return ActiveApplicationsService.RunExecutableAsyc(Executable.ExecutableId);
 
-				default:
-					return ActiveApplicationsService.TerminateExecutableAsyc(Executable.Id);
-			}
+            //	default:
+            //		return ActiveApplicationsService.TerminateExecutableAsyc(Executable.ExecutableId);
+            //}
+            return Task.CompletedTask;
 		}
 
 		#region OVERRIDES
@@ -49,9 +50,9 @@ namespace Gizmo.Client.UI.Shared
 
 		public override async Task SetParametersAsync(ParameterView parameters)
 		{
-			if (parameters.TryGetValue<ExecutableViewState>(nameof(Executable), out var newExecutable))
+			if (parameters.TryGetValue<AppExeViewState>(nameof(Executable), out var newExecutable))
 			{
-				var executableChanged = !EqualityComparer<ExecutableViewState>.Default.Equals(Executable, newExecutable);
+				var executableChanged = !EqualityComparer<AppExeViewState>.Default.Equals(Executable, newExecutable);
 				if (executableChanged)
 				{
 					_shouldRender = true;

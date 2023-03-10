@@ -2,19 +2,19 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Client.UI.View;
 
-<ComboButton Progress="@Executable.StatePercentage"
-             Color="@(Executable.State == ExecutableState.Running ? ButtonColors.Danger : ButtonColors.Accent)"
-             Variant="@(Executable.State == ExecutableState.Deployment ? ButtonVariants.Progress : ButtonVariants.Fill)"
+<ComboButton Progress="@_appExeExecutionViewState.StatePercentage"
+             Color="@(_appExeExecutionViewState.State == ExecutableState.Running ? ButtonColors.Danger : ButtonColors.Accent)"
+             Variant="@(_appExeExecutionViewState.State == ExecutableState.Deployment ? ButtonVariants.Progress : ButtonVariants.Fill)"
              Size="@Size"
              IsFullWidth="@IsFullWidth"
              OnClickMainButton="@OnClickMainButtonHandler"
              OpenDirection="PopupOpenDirections.Cursor"
-             Text="@(Executable.State == ExecutableState.None ? LocalizationService.GetString("GIZ_APPS_LAUNCH") :
-                     Executable.State == ExecutableState.Deployment ? LocalizationService.GetString("GIZ_APPS_LOADING") :
-                     Executable.State == ExecutableState.Running ? LocalizationService.GetString("GIZ_APPS_TERMINATE") : ""
+             Text="@(_appExeExecutionViewState.State == ExecutableState.None ? LocalizationService.GetString("GIZ_APPS_LAUNCH") :
+                     _appExeExecutionViewState.State == ExecutableState.Deployment ? LocalizationService.GetString("GIZ_APPS_LOADING") :
+                     _appExeExecutionViewState.State == ExecutableState.Running ? LocalizationService.GetString("GIZ_APPS_TERMINATE") : ""
                      )">
     <ChildContent>
-        @switch (Executable.State)
+        @switch (_appExeExecutionViewState.State)
         {
             case ExecutableState.None:
                 <div>@LocalizationService.GetString("GIZ_APPS_LAUNCH")</div>
@@ -45,13 +45,7 @@
                 @LocalizationService.GetString("GIZ_APPS_PERSONAL_FILES")
             </ChildContent>
             <NestedList>
-                @if (Executable.PersonalFiles != null)
-                {
-                    @foreach (var personalFile in Executable.PersonalFiles)
-                    {
-                        <ListItem OnClick="@(() => OnClickPersonalFileButtonHandler(personalFile))">@personalFile</ListItem>
-                    }
-                }
+                <ExecutableLaunchButtonPersonalFiles ExecutableId="@ExecutableId" @key="ExecutableId" />
             </NestedList>
         </ListItem>
         <ListItem SVGIcon="Icons.Terminate_Client">

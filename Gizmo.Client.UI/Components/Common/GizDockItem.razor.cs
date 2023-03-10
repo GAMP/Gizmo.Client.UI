@@ -40,7 +40,7 @@ namespace Gizmo.Client.UI.Components
 
         private bool _preventClose;
 
-        private ExecutableViewState _previousExecutable;
+        private AppExeViewState _previousExecutable;
 
         protected bool _shouldRender;
 
@@ -50,18 +50,19 @@ namespace Gizmo.Client.UI.Components
         public ActiveApplicationsService ActiveApplicationsService { get; set; }
 
         [Parameter]
-        public ExecutableViewState Executable { get; set; }
+        public AppExeViewState Executable { get; set; }
 
         public Task OnClickHandler(MouseEventArgs args)
         {
-            switch (Executable.State)
-            {
-                case View.ExecutableState.None:
-                    return ActiveApplicationsService.RunExecutableAsyc(Executable.Id);
+            //switch (Executable.State)
+            //{
+            //    case View.ExecutableState.None:
+            //        return ActiveApplicationsService.RunExecutableAsyc(Executable.ExecutableId);
 
-                default:
-                    return ActiveApplicationsService.TerminateExecutableAsyc(Executable.Id);
-            }
+            //    default:
+            //        return ActiveApplicationsService.TerminateExecutableAsyc(Executable.ExecutableId);
+            //}
+            return Task.CompletedTask;
         }
 
         public void OnMouseOverHandler(MouseEventArgs args)
@@ -124,7 +125,7 @@ namespace Gizmo.Client.UI.Components
 
         protected override async Task OnParametersSetAsync()
         {
-            bool executableChanged = !EqualityComparer<ExecutableViewState>.Default.Equals(_previousExecutable, Executable);
+            bool executableChanged = !EqualityComparer<AppExeViewState>.Default.Equals(_previousExecutable, Executable);
 
             if (executableChanged)
             {

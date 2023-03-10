@@ -1,0 +1,11 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using Gizmo.Client.UI.View;
+
+@if (_appExeViewState != null)
+{
+    @foreach (var personalFile in _appExeViewState.PersonalFiles)
+    {
+        <ExecutableLaunchButtonPersonalFile PersonalFileId="@personalFile.PersonalFileId" @key="personalFile.PersonalFileId" />
+    }
+}

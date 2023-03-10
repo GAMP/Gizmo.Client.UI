@@ -5,18 +5,15 @@
     <div class="giz-client-dialog giz-executable-selector-dialog">
         <div class="giz-client-dialog__header">
             <div class="giz-client-dialog__header__title">@LocalizationService.GetString("GIZ_APPS_SELECT_EXE")</div>
-            <div class="giz-client-dialog__header__subtitle">@ExecutableSelectorService.ViewState.Application?.Title</div>
+            <ExecutableSelectorDialogApplication ApplicationId="@ApplicationId" @key="ApplicationId" />
             <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="CloseDialogAsync" />
         </div>
         <div class="giz-client-dialog__body giz-scrollbar--v">
             <div class="giz-executable-list">
-                
-                @if (ExecutableSelectorService.ViewState.Application?.Executables != null)
+
+                @foreach (var executable in _executables)
                 {
-                    @foreach (var executable in ExecutableSelectorService.ViewState.Application.Executables)
-                    {
-                        <ExecutableCard Executable="@executable" />
-                    }
+                    <ExecutableCard Executable="@executable" @key="executable.ExecutableId" />
                 }
 
             </div>

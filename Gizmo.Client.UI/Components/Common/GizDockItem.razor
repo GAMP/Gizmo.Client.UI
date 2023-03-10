@@ -17,22 +17,7 @@
         }
 	</div>
 
-	<div class="giz-dock-item-state">
-		@switch (Executable.State)
-		{
-			case ExecutableState.Loading:
-				<ProgressBar IsIndeterminate="true" />
-				break;
-
-			case ExecutableState.Deployment:
-				<ProgressBar Value="@Executable.StatePercentage" />
-				break;
-
-			case ExecutableState.Running:
-				<div class="running"></div>
-				break;
-		}
-	</div>
+    <GizDockItemExecutionState @key="Executable.ExecutableId" />
 
 	<div class="giz-dock-item-tooltip-wrapper @(_isOpen ? "giz-dock-item-tooltip-wrapper--visible" : "")"
 		 @onmouseover="OnMouseOverTooltipHandler"

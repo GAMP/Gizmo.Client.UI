@@ -23,16 +23,13 @@ namespace Gizmo.Client.UI.Shared
         NavigationService NavigationService { get; set; }
 
         [Inject]
-        ExecutableSelectorService ExecutableSelectorService { get; set; }
-
-        [Inject]
         UserCartService UserCartService { get; set; }
 
         [Inject()]
         IClientDialogService DialogService { get; set; }
 
         [Parameter]
-        public SearchResultViewState Result { get; set; }
+        public GlobalSearchResultViewState Result { get; set; }
 
         private void OnClickHandler()
         {
@@ -58,9 +55,7 @@ namespace Gizmo.Client.UI.Shared
 
             if (Result.Type == View.SearchResultTypes.Applications)
             {
-                await ExecutableSelectorService.LoadApplicationAsync(Result.Id);
-
-                var s = await DialogService.ShowExecutableSelectorDialogAsync();
+                var s = await DialogService.ShowExecutableSelectorDialogAsync(Result.Id);
                 if (s.Result == DialogAddResult.Success)
                 {
                     try
@@ -82,9 +77,9 @@ namespace Gizmo.Client.UI.Shared
 
         public override async Task SetParametersAsync(ParameterView parameters)
         {
-            if (parameters.TryGetValue<SearchResultViewState>(nameof(Result), out var newResult))
+            if (parameters.TryGetValue<GlobalSearchResultViewState>(nameof(Result), out var newResult))
             {
-                var resultChanged = !EqualityComparer<SearchResultViewState>.Default.Equals(Result, newResult);
+                var resultChanged = !EqualityComparer<GlobalSearchResultViewState>.Default.Equals(Result, newResult);
                 if (resultChanged)
                 {
                     _shouldRender = true;

@@ -17,7 +17,7 @@
         </div>
         <div class="giz-apps__body giz-scrollbar--v">
             <div class="giz-apps__body__ads">
-                <ExpansionPanel InitCollapsed="@(SearchService.ViewState.ShowAll)">
+                <ExpansionPanel InitCollapsed="@(!string.IsNullOrEmpty(ViewState.SearchPattern))">
                     <Header>
                         @LocalizationService.GetString("GIZ_GEN_ADS")
                     </Header>
@@ -29,13 +29,13 @@
             <div class="giz-apps__body__popular">
                 <div class="giz-section">
                     <div class="giz-section__header">
-                        @if (SearchService.ViewState.ShowAll)
+                        @if (!string.IsNullOrEmpty(ViewState.SearchPattern))
                         {
                             <div class="giz-section__header__filters">
                                 <div>
                                     <div class="giz-section__header__filters__title">@LocalizationService.GetString("GIZ_GEN_RESULTS_FOR")</div>
                                     <div>
-                                        <Chip CanClose="true" OnClose="@(() => SearchService.ClearResultsAsync())">@SearchService.ViewState.AppliedSearchPattern</Chip>
+                                        <Chip CanClose="true" OnClose="@(() => ApplicationsPageService.ClearSearchPattern())">@ViewState.SearchPattern</Chip>
                                     </div>
                                 </div>
                             </div>
@@ -45,38 +45,45 @@
                             <div>@LocalizationService.GetString("GIZ_GEN_POPULAR_ITEMS")</div>
                         }
                         <div class="giz-apps-filters">
-                            @if (GetNumberOfFilters() > 0)
+                            @if (ViewState.TotalFilters > 0)
                             {
-                                <Chip CanClose="true" OnClose="@OnClearFiltersHandler">
+                                <Chip CanClose="true" OnClose="@(() => ApplicationsPageService.ClearAllFilters())">
                                     <FiltersIcon />
-                                    <span>@GetNumberOfFilters()</span>
+                                    <span>@ViewState.TotalFilters</span>
                                 </Chip>
                             }
-                            <Select LeftSVGIcon="Icons.Sort_Client" HandleSVGIcon="Icons.Select_Client" ValidationErrorStyle="ValidationErrorStyles.BorderOnly" Size="InputSizes.Small" @bind-Value="_selectedSortOptionId" Label="@LocalizationService.GetString("GIZ_GEN_SORT_BY")" OpenDirection="PopupOpenDirections.Bottom" MaximumHeight="20.0rem" Class="@(_selectedSortOptionId != 1 ? "app-filter--filled" : "app-filter--default")" PopupClass="giz-scrollbar--v">
-                                @if (ApplicationSortOptions != null)
+                            <Select LeftSVGIcon="Icons.Sort_Client"
+                                    HandleSVGIcon="Icons.Select_Client"
+                                    ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
+                                    Size="InputSizes.Small"
+                                    TValue="int"
+                                    Value="@ViewState.SelectedSortingOption"
+                                    ValueChanged="@((value) => ApplicationsPageService.SetSelectedSortingOption(value))"
+                                    Label="@LocalizationService.GetString("GIZ_GEN_SORT_BY")"
+                                    OpenDirection="PopupOpenDirections.Bottom"
+                                    MaximumHeight="20.0rem"
+                                    Class="@(ViewState.SelectedSortingOption != 0 ? "app-filter--filled" : "app-filter--default")"
+                                    PopupClass="giz-scrollbar--v">
+                                @foreach (var item in ApplicationsPageService.ViewState.SortingOptions)
                                 {
-                                    @foreach (var sortOption in ApplicationSortOptions)
-                                    {
-                                        <SelectItem Value="@sortOption.Id" Text="@sortOption.Name" />
-                                    }
+                                    <SelectItem Value="@item.Id" Text="@item.Name" />
                                 }
                             </Select>
                             <Select HandleSVGIcon="Icons.Select_Client"
                                     ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
                                     Placeholder="All games and apps"
                                     Size="InputSizes.Small"
-                                    @bind-Value="_selectedApplicationGroupId"
+                                    TValue="int?"
+                                    Value="@ViewState.SelectedCategoryId"
+                                    ValueChanged="@((value) => @ApplicationsPageService.SetSelectedApplicationCategory(value))"
                                     Label="@LocalizationService.GetString("GIZ_APPS_CATEGORY")"
                                     OpenDirection="PopupOpenDirections.Bottom"
                                     MaximumHeight="20.0rem"
-                                    Class="@(_selectedApplicationGroupId.HasValue ? "app-filter--filled" : "app-filter--default")"
+                                    Class="@(ViewState.SelectedCategoryId.HasValue ? "app-filter--filled" : "app-filter--default")"
                                     PopupClass="giz-scrollbar--v">
-                                @if (ApplicationsPageService.ViewState.ApplicationGroups != null)
+                                @foreach (var item in ViewState.AppCategories)
                                 {
-                                    @foreach (var appGroup in ApplicationsPageService.ViewState.ApplicationGroups)
-                                    {
-                                        <SelectItem TValue="int?" Value="@appGroup.Id" Text="@appGroup.Name" />
-                                    }
+                                    <SelectItem TValue="int?" Value="@item.AppCategoryId" Text="@item.Name" />
                                 }
                             </Select>
                             <MultiSelect HandleSVGIcon="Icons.Select_Client"
@@ -84,38 +91,35 @@
                                          Placeholder="Select something"
                                          Size="InputSizes.Small"
                                          TValue="int"
-                                         Value="@SelectedApplicationFilters"
-                                         ValueChanged="@SelectedApplicationFiltersChanged"
+                                         Value="@ViewState.SelectedExecutableModes.ToList()"
+                                         ValueChanged="@((value) => ApplicationsPageService.SetSelectedSelectedExecutableModes(value))"
                                          Label="@LocalizationService.GetString("GIZ_APPS_PARAMETERS")"
                                          OpenDirection="PopupOpenDirections.Bottom"
                                          CanClearValue="true"
                                          MaximumHeight="20.0rem"
-                                         Class="@(SelectedApplicationFilters?.Count > 0 ? "app-filter--filled" : "app-filter--default")"
+                                         Class="@(ViewState.SelectedExecutableModes.Count() > 0 ? "app-filter--filled" : "app-filter--default")"
                                          PopupClass="giz-scrollbar--v">
-                                @if (ApplicationFilters != null)
+                                @foreach (var item in ViewState.ExecutableModes)
                                 {
-                                    @foreach (var filter in ApplicationFilters)
-                                    {
-                                        <MultiSelectItem Value="@filter.Id" Text="@filter.Name" />
-                                    }
+                                    <MultiSelectItem Value="@item.Id" Text="@item.Name" />
                                 }
                             </MultiSelect>
                         </div>
                     </div>
                     <div class="giz-section__body">
-                        @if (GetFilteredApplications().Count() > 0)
+                        @if (ViewState.Applications.Count() > 0)
                         {
                             <div class="giz-apps__app-wrapper">
-                                @foreach (var app in GetFilteredApplications())
+                                @foreach (var app in ViewState.Applications)
                                 {
-                                    <ApplicationCard Application="@app" OnOpenExecutableSelector="@OpenExecutableSelector"></ApplicationCard>
+                                    <ApplicationCard @key="app.ApplicationId" Application="@app" OnOpenExecutableSelector="@OpenExecutableSelector" />
                                 }
                             </div>
                         }
                         else
                         {
                             <div class="global-search-no-results">
-                                <div class="global-search-no-results__header">No match found for <span class="global-search-pattern">@SearchService.ViewState.AppliedSearchPattern</span></div>
+                                <div class="global-search-no-results__header">No match found for <span class="global-search-pattern">@ViewState.SearchPattern</span></div>
                                 <div class="global-search-no-results__body">Try formulating your request differently</div>
                             </div>
                         }

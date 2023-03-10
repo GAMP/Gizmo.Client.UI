@@ -13,7 +13,7 @@
         </NavLink>
         <div class="giz-app-details__app__info">
             <div class="giz-app-details__app__info__image">
-                @if (ApplicationDetailsPageService.ViewState.Application.ImageId.HasValue)
+                @if (ApplicationDetailsPageService.ViewState.Application?.ImageId.HasValue == true)
                 {
                     <GizImage ImageType="Gizmo.UI.ImageType.Application" ImageId="@ApplicationDetailsPageService.ViewState.Application.ImageId.Value" />
                 }
@@ -24,10 +24,10 @@
             </div>
 
             <div class="giz-app-details__app__info__details">
-                
-                <div class="giz-app-details__app__info__details__category">
-                    @ApplicationDetailsPageService.ViewState.Application?.ApplicationGroupName
-                </div>
+                @if (ApplicationDetailsPageService.ViewState.Application != null)
+                {
+                    <AppDetailsAppCategory @key="ApplicationDetailsPageService.ViewState.Application.ApplicationCategoryId" ApplicationCategoryId="@ApplicationDetailsPageService.ViewState.Application.ApplicationCategoryId" />
+                }
                 <div class="giz-app-details__app__info__details__title">
                     @ApplicationDetailsPageService.ViewState.Application?.Title
                 </div>
@@ -35,11 +35,11 @@
                     @ApplicationDetailsPageService.ViewState.Application?.Description
                 </div>
                 <div class="giz-app-details__app__info__details__executables">
-                    @if (ApplicationDetailsPageService.ViewState.Application.Executables.Count() == 1)
+                    @if (ApplicationDetailsPageService.ViewState.Executables.Count() == 1)
                     {
-                        <ExecutableLaunchButton Executable="@ApplicationDetailsPageService.ViewState.Application.Executables.First()" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" OnClickMainButton="@(() => OnClickMainButtonHandler())" />
+                        <ExecutableLaunchButton @key="ApplicationDetailsPageService.ViewState.Executables.Select(a => a.ExecutableId).First()" ExecutableId="@ApplicationDetailsPageService.ViewState.Executables.Select(a => a.ExecutableId).First()" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" />
                     }
-                    else if (ApplicationDetailsPageService.ViewState.Application.Executables.Count() > 1)
+                    else if (ApplicationDetailsPageService.ViewState.Executables.Count() > 1)
                     {
                         <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => OnClickMainButtonHandler())">@LocalizationService.GetString("GIZ_APPS_LAUNCH")</Button>
                     }
@@ -52,7 +52,10 @@
                     @LocalizationService.GetString("GIZ_APPS_PUBLISHER")
                 </div>
                 <div class="giz-app-details-card-brand-text">
-                    @ApplicationDetailsPageService.ViewState.Application?.Publisher
+                    @if (ApplicationDetailsPageService.ViewState.Application?.PublisherId != null)
+                    {
+                        <AppDetailsAppPublisher @key="ApplicationDetailsPageService.ViewState.Application.PublisherId.Value" PublisherId="@ApplicationDetailsPageService.ViewState.Application.PublisherId.Value" />
+                    }
                 </div>
                 <div class="giz-app-details-card-brand-title">
                     @LocalizationService.GetString("GIZ_APPS_RELEASE_DATE")
@@ -64,16 +67,16 @@
                     @LocalizationService.GetString("GIZ_APPS_DATE_ADDED")
                 </div>
                 <div class="giz-app-details-card-brand-text">
-                    @ApplicationDetailsPageService.ViewState.Application?.DateAdded.ToShortDateString()
+                    @ApplicationDetailsPageService.ViewState.Application?.AddDate.ToShortDateString()
                 </div>
-                <div class="giz-app-details-card-brand-title">
+                @*<div class="giz-app-details-card-brand-title">
                     @LocalizationService.GetString("GIZ_APPS_PLAYER_MODE")
                 </div>
                 <div class="giz-app-details-card-brand-text">
                     <div class="d-flex align-center" style="justify-content: flex-end;">
                         Single Player
                     </div>
-                </div>
+                </div>*@
             </div>
 
             <div class="giz-app-details__app__info__additional-content">
@@ -95,16 +98,7 @@
                     </ClientTab>
                 </div>
                 <div class="giz-app-details__app__info__additional-content__media">
-                    <ClientTab ControlsPosition="TabControlsPositions.Internal">
-                        @foreach (var item in ApplicationMedia)
-                        {
-                            <ClientTabItem>
-                                <div class="giz-app-media-item">
-                                    <img src="_content/Gizmo.Client.UI/img/@item" alt="loading" />
-                                </div>
-                            </ClientTabItem>
-                        }
-                    </ClientTab>
+                    <AppDetailsLinks ApplicationId="@ApplicationId" @key="ApplicationId" />
                 </div>
             </div>
 

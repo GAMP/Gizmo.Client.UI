@@ -1,37 +1,32 @@
 ﻿using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
-using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class ExecutableCard : CustomDOMComponentBase
+    public partial class ExecutableSelectorDialogApplication : CustomDOMComponentBase
     {
-        [Inject]
-        ILocalizationService LocalizationService { get; set; }
+        private AppViewState _appViewState;
 
         [Inject]
-        public ActiveApplicationsService ActiveApplicationsService { get; set; }
+        AppViewStateLookupService AppViewStateLookupService { get; set; }
 
         [Parameter]
-        public AppExeViewState Executable { get; set; }
-
-        #region OVERRIDES
+        public int ApplicationId { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            this.SubscribeChange(Executable);
+            _appViewState = await AppViewStateLookupService.GetStateAsync(ApplicationId);
+            this.SubscribeChange(_appViewState);
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(Executable);
+            this.UnsubscribeChange(_appViewState);
             base.Dispose();
         }
-
-        #endregion
     }
 }

@@ -8,11 +8,13 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class ExecutableLaunchButton : CustomDOMComponentBase
     {
+        private AppExeExecutionViewState _appExeExecutionViewState;
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Parameter]
-        public ExecutableViewState Executable { get; set; }
+        public int ExecutableId { get; set; }
 
         [Parameter]
         public ButtonSizes Size { get; set; } = ButtonSizes.Medium;
@@ -20,31 +22,30 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public bool IsFullWidth { get; set; }
 
-        [Parameter]
-        public EventCallback OnClickMainButton { get; set; }
-
         private Task OnClickMainButtonHandler()
         {
-            return OnClickMainButton.InvokeAsync();
-        }
-        
-        private Task OnClickPersonalFileButtonHandler(string value)
-        {
+            //switch (Executable.State)
+            //{
+            //	case View.ExecutableState.None:
+            //		return ActiveApplicationsService.RunExecutableAsyc(Executable.ExecutableId);
+
+            //	default:
+            //		return ActiveApplicationsService.TerminateExecutableAsyc(Executable.ExecutableId);
+            //}
             return Task.CompletedTask;
-		}
+        }
 
-		//protected override async Task OnAfterRenderAsync(bool firstRender)
-		//{
-		//	if (!firstRender)
-		//	{
-		//		await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
-		//	}
-		//	else
-		//	{
-		//		await InvokeVoidAsync("writeLine", $"Render {this.ToString()}");
-		//	}
+        protected override async Task OnInitializedAsync()
+        {
+            _appExeExecutionViewState = new AppExeExecutionViewState(); //TODO: AAA FIND EXECUTION STATE
+            this.SubscribeChange(_appExeExecutionViewState);
+            await base.OnInitializedAsync();
+        }
 
-		//	await base.OnAfterRenderAsync(firstRender);
-		//}
-	}
+        public override void Dispose()
+        {
+            this.UnsubscribeChange(_appExeExecutionViewState);
+            base.Dispose();
+        }
+    }
 }

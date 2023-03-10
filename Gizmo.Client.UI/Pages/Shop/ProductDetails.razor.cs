@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -17,7 +18,7 @@ namespace Gizmo.Client.UI.Pages
         }
 
         private UserCartProductItemViewState _productItemViewState;
-
+        private UserProductGroupViewState _userProductGroupViewState;
         private int _previousProductId;
 
         [Inject]
@@ -36,13 +37,11 @@ namespace Gizmo.Client.UI.Pages
         [SupplyParameterFromQuery]
         public int ProductId { get; set; }
 
-        public override async Task SetParametersAsync(ParameterView parameters)
+        protected override async Task OnParametersSetAsync()
         {
-            await base.SetParametersAsync(parameters);
+            var productChanged = _previousProductId != ProductId;
 
-            var orderLineChanged = _previousProductId != ProductId;
-
-            if (orderLineChanged)
+            if (productChanged)
             {
                 if (_productItemViewState != null)
                 {
@@ -54,10 +53,13 @@ namespace Gizmo.Client.UI.Pages
                 _previousProductId = ProductId;
 
                 _productItemViewState = await UserCartProductItemViewStateLookupService.GetStateAsync(ProductId);
+                _userProductGroupViewState = await UserProductGroupViewStateLookupService.GetStateAsync(ProductDetailsPageService.ViewState.Product.ProductGroupId);
 
                 //We have to bind to the new product.
                 this.SubscribeChange(_productItemViewState);
             }
+
+            await base.OnParametersSetAsync();
         }
 
         public override void Dispose()
