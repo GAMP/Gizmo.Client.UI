@@ -20,12 +20,14 @@ namespace Gizmo.Client.UI.Components
         {
             _appCategoryViewState = await AppCategoryViewStateLookupService.GetStateAsync(ApplicationCategoryId);
             this.SubscribeChange(_appCategoryViewState);
+
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
             this.UnsubscribeChange(_appCategoryViewState);
+
             base.Dispose();
         }
     }

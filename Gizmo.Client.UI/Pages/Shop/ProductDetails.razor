@@ -26,10 +26,7 @@
                 </div>
                 <div class="giz-product-details__product__info__basic">
                     <div class="giz-product-details__product__info__basic__category">
-                        @if (ProductDetailsPageService.ViewState.Product != null)
-                        {
-                            @(UserProductGroupViewStateLookupService.GetStateAsync(ProductDetailsPageService.ViewState.Product.ProductGroupId).GetAwaiter().GetResult().Name)
-                        }
+                        @_userProductGroupViewState.Name
                     </div>
                     <div class="giz-product-details__product__info__basic__title">
                         @ProductDetailsPageService.ViewState.Product?.Name
@@ -41,7 +38,7 @@
                         <div class="giz-product-details__product__info__basic__action__price">
                             @ProductDetailsPageService.ViewState.Product?.UnitPrice.ToString("C2")
                         </div>
-                        <ProductQuantityPicker ProductId="@ProductId" PikerSize="ButtonSizes.Large" />
+                        <ProductQuantityPicker @key="ProductId" ProductId="@ProductId" PikerSize="ButtonSizes.Large" />
                     </div>
                 </div>
             </div>
@@ -73,7 +70,7 @@
                     {
                         @foreach (var product in ProductDetailsPageService.ViewState.RelatedProducts)
                         {
-                            <ProductCard Product="@product" />
+                            <ProductCard @key="product.Id" Product="@product" />
                         }
                     }
                 </div>

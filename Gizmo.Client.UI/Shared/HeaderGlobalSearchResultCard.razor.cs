@@ -29,7 +29,7 @@ namespace Gizmo.Client.UI.Shared
         IClientDialogService DialogService { get; set; }
 
         [Parameter]
-        public SearchResultViewState Result { get; set; }
+        public GlobalSearchResultViewState Result { get; set; }
 
         private void OnClickHandler()
         {
@@ -77,9 +77,9 @@ namespace Gizmo.Client.UI.Shared
 
         public override async Task SetParametersAsync(ParameterView parameters)
         {
-            if (parameters.TryGetValue<SearchResultViewState>(nameof(Result), out var newResult))
+            if (parameters.TryGetValue<GlobalSearchResultViewState>(nameof(Result), out var newResult))
             {
-                var resultChanged = !EqualityComparer<SearchResultViewState>.Default.Equals(Result, newResult);
+                var resultChanged = !EqualityComparer<GlobalSearchResultViewState>.Default.Equals(Result, newResult);
                 if (resultChanged)
                 {
                     _shouldRender = true;

@@ -30,12 +30,14 @@ namespace Gizmo.Client.UI.Components
         {
             _personalFileViewState = await PersonalFileViewStateLookupService.GetStateAsync(PersonalFileId);
             this.SubscribeChange(_personalFileViewState);
+
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
             this.UnsubscribeChange(_personalFileViewState);
+
             base.Dispose();
         }
     }

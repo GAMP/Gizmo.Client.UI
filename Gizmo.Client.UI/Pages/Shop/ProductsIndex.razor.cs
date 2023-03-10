@@ -1,6 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
@@ -12,15 +15,17 @@ namespace Gizmo.Client.UI.Pages
     [ModuleGuid(KnownModules.MODULE_SHOP)]
     [PageUIModule(TitleLocalizationKey = "MODULE_PAGE_SHOP_TITLE", DescriptionLocalizationKey = "MODULE_PAGE_SHOP_DESCRIPTION"), ModuleDisplayOrder(2)]
     [Route(ClientRoutes.ShopRoute)]
-    public partial class ShopIndex : CustomDOMComponentBase
+    public partial class ProductsIndex : CustomDOMComponentBase
     {
+        private Dictionary<int, UserProductGroupViewState> _userProductGroups;
+
         #region PROPERTIES
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        ShopPageService ShopService { get; set; }
+        ProductsPageService ShopService { get; set; }
 
         [Inject]
         UserCartService UserCartService { get; set; }
@@ -34,6 +39,10 @@ namespace Gizmo.Client.UI.Pages
         {
             this.SubscribeChange(ShopService.ViewState);
             this.SubscribeChange(UserCartService.ViewState);
+
+            var productGroups = await UserProductGroupViewStateLookupService.GetStatesAsync();
+
+            _userProductGroups = productGroups.ToDictionary(key => key.ProductGroupId, value => value);
 
             await base.OnInitializedAsync();
         }

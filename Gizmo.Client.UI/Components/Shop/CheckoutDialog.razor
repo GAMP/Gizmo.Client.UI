@@ -28,7 +28,7 @@
                                         @LocalizationService.GetString("GIZ_SHOP_PRODUCT_NAME")
                                     </HeaderTemplate>
                                     <CellTemplate>
-                                        @(UserProductViewStateLookupService.GetStateAsync(product.ProductId).GetAwaiter().GetResult().Name)
+                                        <CheckoutDialogProductName @key="product.ProductId" ProductId="@product.ProductId" />
                                     </CellTemplate>
                                 </DataGridColumn>
                                 <DataGridColumn Field="@(nameof(UserCartProductItemViewState.ProductId))" TItemType="UserCartProductItemViewState" Context="product">
@@ -36,7 +36,7 @@
                                         @LocalizationService.GetString("GIZ_SHOP_PRICE")
                                     </HeaderTemplate>
                                     <CellTemplate>
-                                        @(UserProductViewStateLookupService.GetStateAsync(product.ProductId).GetAwaiter().GetResult().UnitPrice)
+                                        <CheckoutDialogProductUnitPrice @key="product.ProductId" ProductId="@product.ProductId" />
                                     </CellTemplate>
                                 </DataGridColumn>
                                 <DataGridColumn Field="@(nameof(UserCartProductItemViewState.Quantity))" TItemType="UserCartProductItemViewState" Context="product">
@@ -52,7 +52,7 @@
                                         @LocalizationService.GetString("GIZ_SHOP_SUBTOTAL")
                                     </HeaderTemplate>
                                     <CellTemplate>
-                                        @product.TotalPrice
+                                        @product.TotalPrice.ToString("C")
                                     </CellTemplate>
                                 </DataGridColumn>
                             </ChildContent>
@@ -77,7 +77,7 @@
                                     PopupClass="giz-scrollbar--v">
                                 @if (PaymentMethodViewStateLookupService != null)
                                 {
-                                    @foreach (var paymentMethod in PaymentMethodViewStateLookupService.GetStatesAsync().GetAwaiter().GetResult())
+                                    @foreach (var paymentMethod in _paymentMethods)
                                     {
                                         <SelectItem TValue="int?" Value="@paymentMethod.Id">@paymentMethod.Name</SelectItem>
                                     }

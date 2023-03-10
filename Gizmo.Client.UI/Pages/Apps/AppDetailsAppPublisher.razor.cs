@@ -23,12 +23,14 @@ namespace Gizmo.Client.UI.Pages
         {
             _appEnterpriseViewState = await AppEnterpriseViewStateLookupService.GetStateAsync(PublisherId);
             this.SubscribeChange(_appEnterpriseViewState);
+
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
             this.UnsubscribeChange(_appEnterpriseViewState);
+
             base.Dispose();
         }
     }

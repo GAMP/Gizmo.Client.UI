@@ -30,7 +30,7 @@ namespace Gizmo.Client.UI.Pages
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        ApplicationDetailsPageService ApplicationDetailsPageService { get; set; }
+        AppDetailsPageService ApplicationDetailsPageService { get; set; }
 
         [Inject]
         public ActiveApplicationsService ActiveApplicationsService { get; set; }

@@ -13,8 +13,6 @@ namespace Gizmo.Client.UI.Components
     {
         private UserProductViewState _product;
 
-        private UserCartProductItemViewState _previousProductItemViewState;
-
         [Inject]
         UserCartService UserCartService { get; set; }
 
@@ -43,36 +41,18 @@ namespace Gizmo.Client.UI.Components
                 return Task.CompletedTask;
         }
 
-        public override async Task SetParametersAsync(ParameterView parameters)
+        protected override async Task OnInitializedAsync()
         {
-            await base.SetParametersAsync(parameters);
+            this.SubscribeChange(ProductItemViewState);
 
-            var orderLineChanged = _previousProductItemViewState != ProductItemViewState;
+            _product = await UserProductViewStateLookupService.GetStateAsync(ProductItemViewState.ProductId);
 
-            if (orderLineChanged)
-            {
-                if (_previousProductItemViewState != null)
-                {
-                    //The same component used again with a different order line.
-                    //We have to unbind from the old product.
-                    this.UnsubscribeChange(_previousProductItemViewState);
-                }
-
-                _previousProductItemViewState = ProductItemViewState;
-
-                _product = await UserProductViewStateLookupService.GetStateAsync(ProductItemViewState.ProductId);
-
-                //We have to bind to the new product.
-                this.SubscribeChange(ProductItemViewState);
-            }
+            await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
-            if (ProductItemViewState != null)
-            {
-                this.UnsubscribeChange(ProductItemViewState);
-            }
+            this.UnsubscribeChange(ProductItemViewState);
 
             base.Dispose();
         }

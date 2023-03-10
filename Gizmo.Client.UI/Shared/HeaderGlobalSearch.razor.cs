@@ -37,7 +37,7 @@ namespace Gizmo.Client.UI.Shared
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        SearchService SearchService { get; set; }
+        GlobalSearchService SearchService { get; set; }
 
         [Parameter]
         public int MinimumCharacters { get; set; } = 0;

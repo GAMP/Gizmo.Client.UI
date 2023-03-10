@@ -16,7 +16,7 @@ namespace Gizmo.Client.UI.Services
 
         public Task<ShowDialogResult<EmptyDialogResult>> ShowCheckoutDialogAsync(CancellationToken cancellationToken = default)
         {
-            return ShowDialogAsync<PaymentMethodSelectorDialog>(new Dictionary<string, object>(), default, default, cancellationToken);
+            return ShowDialogAsync<CheckoutDialog>(new Dictionary<string, object>(), default, default, cancellationToken);
         }
 
         public Task<ShowDialogResult<EmptyDialogResult>> ShowExecutableSelectorDialogAsync(int applicationId, CancellationToken cancellationToken = default)

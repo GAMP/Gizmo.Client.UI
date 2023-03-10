@@ -10,7 +10,7 @@
                 <div class="giz-order__items-wrapper">
                     @foreach (var orderLine in UserCartService.ViewState.Products)
                     {
-                        <GizOrderItem ProductItemViewState="@orderLine" />
+                        <GizOrderItem @key="orderLine" ProductItemViewState="@orderLine" />
                     }
                 </div>
             }

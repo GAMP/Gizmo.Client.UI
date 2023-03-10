@@ -10,13 +10,11 @@ using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class PaymentMethodSelectorDialog : CustomDOMComponentBase
+    public partial class CheckoutDialog : CustomDOMComponentBase
     {
-        public PaymentMethodSelectorDialog()
-        {
-        }
-
         private bool _isOpen { get; set; }
+
+        private IEnumerable<PaymentMethodViewState> _paymentMethods;
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -25,11 +23,8 @@ namespace Gizmo.Client.UI.Components
         UserCartService UserCartService { get; set; }
 
         [Inject]
-        UserProductViewStateLookupService UserProductViewStateLookupService { get; set; }
-
-        [Inject]
         PaymentMethodViewStateLookupService PaymentMethodViewStateLookupService { get; set; }
-        
+
         [Parameter]
         public EventCallback CancelCallback { get; set; }
 
@@ -46,10 +41,13 @@ namespace Gizmo.Client.UI.Components
                 await UserCartService.ResetAsync();
         }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             this.SubscribeChange(UserCartService.ViewState);
-            base.OnInitialized();
+
+            _paymentMethods = await PaymentMethodViewStateLookupService.GetStatesAsync();
+
+            await base.OnInitializedAsync();
         }
 
         public override void Dispose()
