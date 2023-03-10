@@ -156,7 +156,7 @@ namespace Gizmo.Client.UI.Components
 
             SelectedIndex = newIndex;
 
-            StateHasChanged();
+            InvokeAsync(StateHasChanged);
         }
 
         internal void SetCurrentIndex(int index)
@@ -165,7 +165,7 @@ namespace Gizmo.Client.UI.Components
 
             SelectedIndex = index;
 
-            StateHasChanged();
+            InvokeAsync(StateHasChanged);
 
             _timer.Start();
         }
@@ -183,7 +183,7 @@ namespace Gizmo.Client.UI.Components
 
                     SelectedIndex = i;
 
-                    StateHasChanged();
+                    InvokeAsync(StateHasChanged);
 
                     _timer.Start();
 

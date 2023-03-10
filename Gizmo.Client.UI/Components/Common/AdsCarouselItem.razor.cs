@@ -44,14 +44,14 @@ namespace Gizmo.Client.UI.Components
             _index = 0;
             _fade = 0;
 
-            StateHasChanged();
+            InvokeAsync(StateHasChanged);
         }
 
         public void FadeOut()
         {
             _fade = -1;
 
-            StateHasChanged();
+            InvokeAsync(StateHasChanged);
         }
 
         public void FadeIn(int index)
@@ -59,7 +59,7 @@ namespace Gizmo.Client.UI.Components
             _index = index;
             _fade = 1;
 
-            StateHasChanged();
+            InvokeAsync(StateHasChanged);
         }
 
         private void OnClickHandler() =>
