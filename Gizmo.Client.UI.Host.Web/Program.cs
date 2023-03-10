@@ -1,4 +1,4 @@
-using Gizmo.Client.UI.Services;
+﻿using Gizmo.Client.UI.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -41,6 +41,7 @@ namespace Gizmo.Client.UI.Host.Web
             hostBuilder.Services.AddDialogSerive<IClientDialogService>();
 
             hostBuilder.Services.AddSingleton<IGizmoClient, TestClient>();
+            hostBuilder.Services.AddSingleton<IImageService,ImageService>();
 
             var host = hostBuilder.Build();
 
