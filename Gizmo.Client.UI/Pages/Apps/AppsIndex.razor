@@ -56,17 +56,17 @@
                                     HandleSVGIcon="Icons.Select_Client"
                                     ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
                                     Size="InputSizes.Small"
-                                    TValue="int"
+                                    TValue="ApplicationSortingOption"
                                     Value="@ViewState.SelectedSortingOption"
                                     ValueChanged="@((value) => ApplicationsPageService.SetSelectedSortingOption(value))"
                                     Label="@LocalizationService.GetString("GIZ_GEN_SORT_BY")"
                                     OpenDirection="PopupOpenDirections.Bottom"
                                     MaximumHeight="20.0rem"
-                                    Class="@(ViewState.SelectedSortingOption != 0 ? "app-filter--filled" : "app-filter--default")"
+                                    Class="@(ViewState.SelectedSortingOption != ApplicationSortingOption.Popularity ? "app-filter--filled" : "app-filter--default")"
                                     PopupClass="giz-scrollbar--v">
                                 @foreach (var item in ApplicationsPageService.ViewState.SortingOptions)
                                 {
-                                    <SelectItem Value="@item.Id" Text="@item.Name" />
+                                    <SelectItem Value="@item.Value" Text="@item.DisplayName" />
                                 }
                             </Select>
                             <Select HandleSVGIcon="Icons.Select_Client"
@@ -90,7 +90,7 @@
                                          ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
                                          Placeholder="Select something"
                                          Size="InputSizes.Small"
-                                         TValue="int"
+                                         TValue="ApplicationModes"
                                          Value="@ViewState.SelectedExecutableModes.ToList()"
                                          ValueChanged="@((value) => ApplicationsPageService.SetSelectedSelectedExecutableModes(value))"
                                          Label="@LocalizationService.GetString("GIZ_APPS_PARAMETERS")"
@@ -101,7 +101,7 @@
                                          PopupClass="giz-scrollbar--v">
                                 @foreach (var item in ViewState.ExecutableModes)
                                 {
-                                    <MultiSelectItem Value="@item.Id" Text="@item.Name" />
+                                    <MultiSelectItem Value="@item.Value" Text="@item.DisplayName" />
                                 }
                             </MultiSelect>
                         </div>
