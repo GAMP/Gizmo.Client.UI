@@ -1,4 +1,5 @@
 ﻿@inherits CustomDOMComponentBase
+@using Microsoft.AspNetCore.Components.Web.Virtualization
 
 <div class="giz-home-wrapper">
     <div class="giz-home">
@@ -31,12 +32,17 @@
                         @LocalizationService.GetString("GIZ_GEN_POPULAR_ITEMS")
                     </div>
                     <div class="giz-section__body">
-                        <div class="giz-home__app-wrapper">
+                        @* <div class="giz-home__app-wrapper">
                             @foreach (var product in ViewState.PopularProducts)
                             {
                                 <ProductCard Product="@product"></ProductCard>
                             }
-                        </div>
+                        </div> *@
+                        <Virtualize Items="ViewState.PopularProducts.ToArray()" Context="product" ItemSize="100" >
+                            <div class="product-wrapper">
+                                <ProductCard @key="product.Id" Product="product"/>
+                            </div>
+                        </Virtualize>
                     </div>
                 </div>
             </div>
