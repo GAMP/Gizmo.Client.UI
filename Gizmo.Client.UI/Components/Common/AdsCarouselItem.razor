@@ -1,17 +1,56 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 
-<div class="@Class @ClassName"
-     @onclick="OnClickHandler">
-    <div class="giz-ads-carousel-item__image">
-        <img src="_content/Gizmo.Client.UI/img/@Advertisement.ThumbnailUrl" alt='loading' />
-    </div>
-    <div class="giz-ads-carousel-item__content">
-        <div class="giz-ads-carousel-item__content__body">
-            @((MarkupString)@Advertisement.Body)
+<div class="@Class @ClassName" @onclick="OnClickHandler">
+
+    @if (_advertisementViewState.IsCustomTemplate)
+    {
+        <div class="giz-ads-carousel-item__content">
+            @((MarkupString)_advertisementViewState.Body)
         </div>
-        <div class="giz-ads-carousel-item__content__actions">
-            <Button Size="ButtonSizes.Large" Text="@LocalizationService.GetString("GIZ_GEN_VIEW_DETAILS")" />
+    }
+    else
+    {
+        <div class="giz-ads-carousel-item__image">
+            @if (_advertisementViewState.ThumbnailUrl is not null)
+            {
+                <img src="@_advertisementViewState.ThumbnailUrl" alt='loading' />
+            }
+            else
+            {
+                <img src="_content/Gizmo.Client.UI/img/carousel_3.jpg" alt='loading' />
+            }
         </div>
-    </div>
+        
+        <div class="giz-ads-carousel-item__content">
+            <div class="giz-ads-carousel-item__content__body">
+                @((MarkupString)_advertisementViewState.Body)
+            </div>
+                @if(_advertisementViewState.MediaUrlType != AdvertisementMediaUrlType.None)
+                {
+                        <IconButton
+                            Class="giz-ads-carousel-item__content__media" 
+                            Size="ButtonSizes.ExtraLarge" 
+                            Color="ButtonColors.Info"
+                            SVGIcon="Icons.Video" 
+                            @onclick="ShowMediaDialogAsync"/>
+                }
+                <div class="giz-ads-carousel-item__content__actions">
+                    @if (_advertisementViewState.Command is not null)
+                    {
+                        <Button 
+                            Size="ButtonSizes.Large" 
+                            Text="@_advertisementViewState.Command.Name" 
+                            @onclick="ExecuteCommandAsync" />
+                    }
+                    else if (_advertisementViewState.Url is not null)
+                    {
+                        <Button 
+                            Size="ButtonSizes.Large" 
+                            Text="@LocalizationService.GetString("GIZ_GEN_VIEW_DETAILS")" 
+                            @onclick="ViewDetailsAsync" />
+                    }
+                </div>
+        </div>
+    }
 </div>

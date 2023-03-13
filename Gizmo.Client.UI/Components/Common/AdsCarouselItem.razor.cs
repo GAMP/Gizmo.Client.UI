@@ -1,9 +1,13 @@
-﻿using Gizmo.Client.UI.View.States;
+﻿using System.Threading;
+using System.Threading.Tasks;
+
+using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
+
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Threading.Tasks;
+using Microsoft.JSInterop;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -11,15 +15,26 @@ namespace Gizmo.Client.UI.Components
     {
         private int _index;
         private int _fade;
+        private AdvertisementViewState _advertisementViewState;
+
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
+        AdvertisementsService AdvertisementsService { get; set; }
+
+        [Inject]
+        CommandProviderService CommandProviderService { get; set; }
+
+        [Inject]
+        IJSRuntime JSRuntime { get; set; }
 
         [CascadingParameter]
         protected AdsCarousel Parent { get; set; }
 
         [Parameter]
-        public AdvertisementViewState Advertisement { get; set; }
+        public int AdvertisementId { get; set; }
 
         [Parameter]
         public bool Duplicate { get; set; }
@@ -47,31 +62,38 @@ namespace Gizmo.Client.UI.Components
             InvokeAsync(StateHasChanged);
         }
 
-        private void OnClickHandler()
+        private void OnClickHandler() =>
+            Parent?.SetCurrent(AdvertisementId);
+
+        private Task ShowMediaDialogAsync() =>
+            AdvertisementsService.ShowMediaSync(_advertisementViewState);
+
+        private async Task ViewDetailsAsync()
         {
-            Parent.SetCurrent(Advertisement); 
+            if (_advertisementViewState.Url is not null)
+                await JSRuntime.InvokeAsync<object>("open", CancellationToken.None, _advertisementViewState.Url);
         }
+
+        private Task ExecuteCommandAsync() => _advertisementViewState.Command is not null
+            ? CommandProviderService.ExecuteCommandAsync(_advertisementViewState.Command)
+            : Task.CompletedTask;
 
         #region OVERRIDE
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
-            if (Parent != null)
-            {
-                Parent.Register(this, Duplicate);
-            }
+            _advertisementViewState = await AdvertisementsService.GetAdvertisementViewStateAsync(AdvertisementId);
+
+            this.SubscribeChange(_advertisementViewState);
+
+            Parent?.Register(this, Duplicate);
         }
 
         public override void Dispose()
         {
-            try
-            {
-                if (Parent != null)
-                {
-                    Parent.Unregister(this, Duplicate);
-                }
-            }
-            catch (Exception) { }
+            this.UnsubscribeChange(_advertisementViewState);
+
+            Parent?.Unregister(this, Duplicate);
 
             base.Dispose();
         }

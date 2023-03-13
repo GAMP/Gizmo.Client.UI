@@ -1,278 +1,308 @@
 //=============== Ads Carousel ================//
 
 .giz-ads-carousel {
-    display: grid;
-    grid-template-rows: min-content 1fr min-content;
+  display: grid;
+  grid-template-rows: min-content 1fr min-content;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+
+  &__header {
+    margin-bottom: 1.6rem;
+    @include font-h5($font-weight-bold);
+  }
+
+  &__body {
     position: relative;
+    height: 40rem;
     overflow: hidden;
-    width: 100%;
+  }
 
-    &__header {
-        margin-bottom: 1.6rem;
-        @include font-h5($font-weight-bold);
+  &__navigation {
+    margin-top: 2.1rem;
+  }
+
+  &-item {
+    position: absolute;
+    border-radius: 4rem;
+    overflow: hidden;
+    display: none;
+
+    &.single {
     }
 
-    &__body {
-        position: relative;
-        height: 40.0rem;
-        overflow: hidden;
+    &.first {
     }
 
-    &__navigation {
-        margin-top: 2.1rem;
+    &.second {
     }
 
-    &-item {
+    &.previous {
+      display: inline-block;
+      width: 72.2rem;
+      height: 38rem;
+      top: 1rem;
+      right: calc(50% + 3.4rem);
+      transform: translateX(-50%);
+      mask-image: linear-gradient(
+        to left,
+        rgba(0, 0, 0, 1),
+        rgba(0, 0, 0, 1),
+        rgba(0, 0, 0, 1),
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0)
+      );
+      cursor: pointer;
+
+      &:after {
+        content: "";
+        background-color: black;
         position: absolute;
-        border-radius: 4.0rem;
-        overflow: hidden;
-        display: none;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.2;
+        transition: opacity 0.2s;
+      }
 
-        &.single {
-        }
-
-        &.first {
-        }
-
-        &.second {
-        }
-
-        &.previous {
-            display: inline-block;
-            width: 72.2rem;
-            height: 38.0rem;
-            top: 1.0rem;
-            right: calc(50% + 3.4rem);
-            transform: translateX(-50%);
-            mask-image: linear-gradient(to left, rgba(0,0,0,1), rgba(0,0,0,1), rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0));
-            cursor: pointer;
-
-            &:after {
-                content: '';
-                background-color: black;
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                opacity: 0.2;
-                transition: opacity 0.2s;
-            }
-
-            &:hover {
-                &:after {
-                    opacity: 0;
-                }
-            }
-
-            .giz-ads-carousel-item__content {
-                visibility: hidden;
-            }
-        }
-
-        &.current {
-            display: inline-block;
-            width: 76.0rem;
-            height: 40.0rem;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        &.next {
-            display: inline-block;
-            width: 72.2rem;
-            height: 38.0rem;
-            top: 1.0rem;
-            left: calc(50% + 3.4rem);
-            transform: translateX(50%);
-            mask-image: linear-gradient(to right, rgba(0,0,0,1), rgba(0,0,0,1), rgba(0,0,0,1), rgba(0,0,0,0.2), rgba(0,0,0,0));
-            cursor: pointer;
-
-            &:after {
-                content: '';
-                background-color: black;
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                opacity: 0.2;
-                transition: opacity 0.2s;
-            }
-
-            &:hover {
-                &:after {
-                    opacity: 0;
-                }
-            }
-
-            .giz-ads-carousel-item__content {
-                visibility: hidden;
-            }
-        }
-
-        &__image {
-            width: 100%;
-            height: 100%;
-
-            img {
-                width: 100%;
-                height: 100%;
-            }
-        }
-
-        &__content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            @include font-m($font-weight-light);
-
-            &__body {
-            }
-
-            &__actions {
-                position: absolute;
-                bottom: 6.4rem;
-                left: 3.2rem;
-
-                .giz-button {
-                    background-color: rgba(250, 250, 250, 0.25);
-                    padding: 0.9rem 8.8rem;
-                }
-            }
-        }
-    }
-
-    &-indicators {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 1.4rem;
-
-        &-button {
-            .giz-icon-button--small {
-                width: 2.4rem;
-                height: 2.4rem;
-                min-width: 2.4rem;
-                min-height: 2.4rem;
-                color: #999999;
-
-                svg {
-                    path {
-                        stroke: #999999;
-                    }
-                }
-            }
-        }
-
-        &-list {
-            position: relative;
-            height: 1.6rem;
-        }
-    }
-
-    &-indicator {
-        position: absolute;
-        box-sizing: content-box;
-        width: 1.6rem;
-        height: 1.6rem;
-        border-radius: 50%;
-        cursor: pointer;
-        background-color: transparent;
-
+      &:hover {
         &:after {
-            position: absolute;
-            border-radius: 50%;
-            content: '';
-            top: 0.4rem;
-            left: 0.4rem;
-            width: calc(100% - 0.8rem);
-            height: calc(100% - 0.8rem);
-            background-color: rgba(250, 250, 250, 0.16);
+          opacity: 0;
         }
+      }
 
-        &.active {
-            background-color: #0078D2;
-
-            &:after {
-                background-color: #FAFAFA;
-            }
-        }
+      .giz-ads-carousel-item__content {
+        visibility: hidden;
+      }
     }
 
-    .fade-out-previously {
-        pointer-events: none;
-        animation-duration: 1s;
-        animation-name: ads-fade-out-previously-anim;
-        animation-timing-function: ease-in-out;
-        animation-fill-mode: forwards;
-    }
-
-    .fade-in-current {
-        pointer-events: all;
-        animation-duration: 1s;
-        animation-name: ads-fade-in-current-anim;
-        animation-timing-function: ease-in-out;
-        animation-fill-mode: forwards;
-    }
-}    
-
-@keyframes ads-fade-out-previously-anim {
-    from {
-        opacity: 1;
-    }
-
-    to {
-        opacity: 0;
-    }
-}
-
-@keyframes ads-fade-in-current-anim {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-
-.giz-ads-carousel-indicator {
     &.current {
-        animation-duration: 1s;
-        animation-name: ads-indicator-current-anim;
-        animation-fill-mode: forwards;
+      display: inline-block;
+      width: 76rem;
+      height: 40rem;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     &.next {
-        animation-duration: 1s;
-        animation-name: ads-indicator-next-anim;
-        animation-fill-mode: forwards;
+      display: inline-block;
+      width: 72.2rem;
+      height: 38rem;
+      top: 1rem;
+      left: calc(50% + 3.4rem);
+      transform: translateX(50%);
+      mask-image: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 1),
+        rgba(0, 0, 0, 1),
+        rgba(0, 0, 0, 1),
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0)
+      );
+      cursor: pointer;
+
+      &:after {
+        content: "";
+        background-color: black;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.2;
+        transition: opacity 0.2s;
+      }
+
+      &:hover {
+        &:after {
+          opacity: 0;
+        }
+      }
+
+      .giz-ads-carousel-item__content {
+        visibility: hidden;
+      }
     }
+
+    &__image {
+      width: 100%;
+      height: 100%;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    &__content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      @include font-m($font-weight-light);
+
+      &__body {
+      }
+
+      &__media {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      &__actions {
+        position: absolute;
+        bottom: 6.4rem;
+        left: 3.2rem;
+
+        .giz-button {
+          background-color: rgba(250, 250, 250, 0.25);
+          padding: 0.9rem 8.8rem;
+        }
+      }
+    }
+  }
+
+  &-indicators {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.4rem;
+
+    &-button {
+      .giz-icon-button--small {
+        width: 2.4rem;
+        height: 2.4rem;
+        min-width: 2.4rem;
+        min-height: 2.4rem;
+        color: #999999;
+
+        svg {
+          path {
+            stroke: #999999;
+          }
+        }
+      }
+    }
+
+    &-list {
+      position: relative;
+      height: 1.6rem;
+    }
+  }
+
+  &-indicator {
+    position: absolute;
+    box-sizing: content-box;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: transparent;
+
+    &:after {
+      position: absolute;
+      border-radius: 50%;
+      content: "";
+      top: 0.4rem;
+      left: 0.4rem;
+      width: calc(100% - 0.8rem);
+      height: calc(100% - 0.8rem);
+      background-color: rgba(250, 250, 250, 0.16);
+    }
+
+    &.active {
+      background-color: #0078d2;
+
+      &:after {
+        background-color: #fafafa;
+      }
+    }
+  }
+
+  .fade-out-previously {
+    pointer-events: none;
+    animation-duration: 1s;
+    animation-name: ads-fade-out-previously-anim;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  .fade-in-current {
+    pointer-events: all;
+    animation-duration: 1s;
+    animation-name: ads-fade-in-current-anim;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+  }
+}
+
+@keyframes ads-fade-out-previously-anim {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes ads-fade-in-current-anim {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.giz-ads-carousel-indicator {
+  &.current {
+    animation-duration: 1s;
+    animation-name: ads-indicator-current-anim;
+    animation-fill-mode: forwards;
+  }
+
+  &.next {
+    animation-duration: 1s;
+    animation-name: ads-indicator-next-anim;
+    animation-fill-mode: forwards;
+  }
 }
 
 @keyframes ads-indicator-current-anim {
-    from {
-        margin-left: 0;
-    }
+  from {
+    margin-left: 0;
+  }
 
-    to {
-        margin-left: 2.3rem;
-    }
+  to {
+    margin-left: 2.3rem;
+  }
 }
 
 @keyframes ads-indicator-next-anim {
-    from {
-        margin-left: 0;
-    }
+  from {
+    margin-left: 0;
+  }
 
-    to {
-        margin-left: -2.3rem;
-    }
+  to {
+    margin-left: -2.3rem;
+  }
+}
+
+.giz-ads-carousel-item-dialog {
+  width: 120rem;
+  height: 80rem;
+}
+
+.giz-ads-carousel-item-dialog-farme {
+  width: 100%;
+  height: 100%;
 }
