@@ -8,7 +8,7 @@
             <div class="giz-client-dialog__header__title">Update number</div>
             <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
         </div>
-        @switch (UserChangeMobileService.ViewState.PageIndex)
+        @switch (ViewState.PageIndex)
         {
             case 0:
 
@@ -31,9 +31,9 @@
                         <div class="giz-form-input">
                             <MaskedTextInput IsTransparent="true"
                                              Mask="###-###-###"
-                                             Value="@UserChangeMobileService.ViewState.MobilePhone"
+                                             Value="@ViewState.MobilePhone"
                                              ValueChanged="@((string value) => UserChangeMobileService.SetMobilePhone(value))"
-                                             ValueExpression="@(() => UserChangeMobileService.ViewState.MobilePhone)"
+                                             ValueExpression="@(() => ViewState.MobilePhone)"
                                              Size="InputSizes.Medium"
                                              IsFullWidth="true"
                                              Label="Phone number" />
@@ -43,7 +43,7 @@
                 <div class="giz-client-dialog__footer">
                     <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => UserChangeMobileService.SendConfirmationCodeAsync())">
                         <ChildContent>
-                            @if (UserChangeMobileService.ViewState.IsLoading)
+                            @if (ViewState.IsLoading)
                             {
                                 <GizSpinner />
                             }
@@ -65,9 +65,9 @@
                     <EditForm EditContext="@UserChangeMobileService.EditContext">
                         <div class="giz-form-input">
                             <TextInput IsTransparent="true"
-                                       Value="@UserChangeMobileService.ViewState.ConfirmationCode"
+                                       Value="@ViewState.ConfirmationCode"
                                        ValueChanged="@((string value) => UserChangeMobileService.SetConfirmationCode(value))"
-                                       ValueExpression="@(() => UserChangeMobileService.ViewState.ConfirmationCode)"
+                                       ValueExpression="@(() => ViewState.ConfirmationCode)"
                                        Size="InputSizes.Medium"
                                        IsFullWidth="true"
                                        Label="Enter the code" />
@@ -80,10 +80,10 @@
                         <Button Variant="ButtonVariants.Outline"
                                 Size="ButtonSizes.Large"
                                 IsFullWidth="true"
-                                IsDisabled="@(!UserChangeMobileService.ViewState.CanResend)"
+                                IsDisabled="@(!ViewState.CanResend)"
                                 Text="@LocalizationService.GetString("GIZ_GEN_RESEND")"
                                 @onclick="@(() => UserChangeMobileService.ResendAsync())" />
-                        <div class="giz-resend-button__time">@string.Format("{0:mm\\:ss}", UserChangeMobileService.ViewState.ResendTimeLeft)</div>
+                        <div class="giz-resend-button__time">@string.Format("{0:mm\\:ss}", ViewState.ResendTimeLeft)</div>
                     </div>
                 </div>
 

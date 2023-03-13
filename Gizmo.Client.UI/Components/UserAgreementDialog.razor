@@ -9,7 +9,7 @@
             <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="CloseDialogAsync" />
         </div>
         <div class="giz-client-dialog__body giz-scrollbar--v">
-            <div class="user-agreement">@UserAgreementsService.ViewState.CurrentUserAgreement.Agreement</div>
+            <div class="user-agreement">@ViewState.CurrentUserAgreement.Agreement</div>
         </div>
         <div class="giz-client-dialog__footer">
             <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="AcceptCurrentAgreementAsync">@LocalizationService.GetString("GIZ_GEN_CONTINUE")</Button>

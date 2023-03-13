@@ -13,9 +13,9 @@
             }
         </div>
         <div class="giz-login-alerts">
-            @if (UserLoginService.ViewState.HasLoginError)
+            @if (ViewState.HasLoginError)
             {
-                <Toast CanClose="true" OnCloseButtonClick="OnCloseButtonClickHandler" AlertType="AlertTypes.Danger" Text="@UserLoginService.ViewState.LoginError" />
+                <Toast CanClose="true" OnCloseButtonClick="OnCloseButtonClickHandler" AlertType="AlertTypes.Danger" Text="@ViewState.LoginError" />
             }
             else
             {
@@ -31,17 +31,17 @@
             <div class="giz-login-title">@LocalizationService.GetString("GIZ_LOGIN_SIGN_IN_TITLE")</div>
             <div>
                 <ButtonGroup Class="giz-login-method" IsMandatory="true" SelectedItemsChanged="@SelectLoginType">
-                    <Button Name="Username" IsSelected="@(UserLoginService.ViewState.LoginType == View.UserLoginType.UsernameOrEmail)">@LocalizationService.GetString("GIZ_GEN_USERNAME")</Button>
-                    <Button Name="Phone" IsSelected="@(UserLoginService.ViewState.LoginType == View.UserLoginType.MobilePhone)">@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")</Button>
+                    <Button Name="Username" IsSelected="@(ViewState.LoginType == View.UserLoginType.UsernameOrEmail)">@LocalizationService.GetString("GIZ_GEN_USERNAME")</Button>
+                    <Button Name="Phone" IsSelected="@(ViewState.LoginType == View.UserLoginType.MobilePhone)">@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")</Button>
                 </ButtonGroup>
             </div>
             <div class="giz-form-input">
-                @if (UserLoginService.ViewState.LoginType == View.UserLoginType.UsernameOrEmail)
+                @if (ViewState.LoginType == View.UserLoginType.UsernameOrEmail)
                 {
                     <TextInput UpdateOnInput="true"
-                               Value="@UserLoginService.ViewState.LoginName"
+                               Value="@ViewState.LoginName"
                                ValueChanged="@((string value) => UserLoginService.SetLoginName(value))"
-                               ValueExpression="@(() => UserLoginService.ViewState.LoginName)"
+                               ValueExpression="@(() => ViewState.LoginName)"
                                ValidateFunction="@UserLoginService.UsernameCharacterIsValid"
                                Size="InputSizes.Medium"
                                IsFullWidth="true"
@@ -50,9 +50,9 @@
                 else
                 {
                     <MaskedTextInput Mask="###-###-###"
-                                     Value="@UserLoginService.ViewState.LoginName"
+                                     Value="@ViewState.LoginName"
                                      ValueChanged="@((string value) => UserLoginService.SetLoginName(value))"
-                                     ValueExpression="@(() => UserLoginService.ViewState.LoginName)"
+                                     ValueExpression="@(() => ViewState.LoginName)"
                                      Size="InputSizes.Medium"
                                      IsFullWidth="true"
                                      Label="@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
@@ -66,18 +66,18 @@
             }
             <div class="giz-form-input">
                 <PasswordInput ShowRevealButton="true"
-                               UpdateOnInput="true" Value="@UserLoginService.ViewState.Password"
+                               UpdateOnInput="true" Value="@ViewState.Password"
                                ValueChanged="@((string value) => UserLoginService.SetPassword(value))"
-                               ValueExpression="@(() => UserLoginService.ViewState.Password)"
-                               IsPasswordVisible="@UserLoginService.ViewState.IsPasswordVisible"
+                               ValueExpression="@(() => ViewState.Password)"
+                               IsPasswordVisible="@ViewState.IsPasswordVisible"
                                IsPasswordVisibleChanged="@((bool value) => UserLoginService.SetPasswordVisible(value))"
                                Size="InputSizes.Medium"
                                IsFullWidth="true"
                                Label="@LocalizationService.GetString("GIZ_GEN_PASSWORD")" />
             </div>
             <div>
-                <Button Color="ButtonColors.Accent" LeftSVGIcon="@(!UserLoginService.ViewState.IsLogginIn ? Icons.Login_Client : null)" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserLoginService.LoginAsync">
-                    @if (UserLoginService.ViewState.IsLogginIn)
+                <Button Color="ButtonColors.Accent" LeftSVGIcon="@(!ViewState.IsLogginIn ? Icons.Login_Client : null)" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserLoginService.LoginAsync">
+                    @if (ViewState.IsLogginIn)
                     {
                         <GizSpinner />
                     }

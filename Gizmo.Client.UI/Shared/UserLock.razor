@@ -1,7 +1,7 @@
 ﻿@inherits CustomDOMComponentBase
 @using Microsoft.AspNetCore.Components.Forms
 
-@if (UserLockService.ViewState.IsLocking)
+@if (ViewState.IsLocking)
 {
     <EditForm EditContext="@UserLockService.EditContext">
         <div class="giz-user-lock-overlay open">
@@ -11,9 +11,9 @@
                     <div class="giz-user-lock__subtitle">Lock this profile by creating a 4-digit pin. Memorize or write it down.</div>
                     <div class="giz-user-lock__code">
                         <TextInput IsTransparent="true"
-                                   Value="@UserLockService.ViewState.InputPassword"
+                                   Value="@ViewState.InputPassword"
                                    ValueChanged="@((string value) => UserLockService.SetInputPassword(value))"
-                                   ValueExpression="@(() => UserLockService.ViewState.InputPassword)"
+                                   ValueExpression="@(() => ViewState.InputPassword)"
                                    ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
                                    UpdateOnInput="true"
                                    MaxLength="4" />
@@ -38,24 +38,24 @@
 }
 else
 {
-    @if (UserLockService.ViewState.IsLocked)
+    @if (ViewState.IsLocked)
     {
         <EditForm EditContext="@UserLockService.EditContext">
             <div class="giz-user-lock-overlay open">
                 <div class="giz-user-lock-wrapper">
-                    <div class="giz-user-lock @(!string.IsNullOrEmpty(UserLockService.ViewState.Error) ? "error" : "")">
+                    <div class="giz-user-lock @(!string.IsNullOrEmpty(ViewState.Error) ? "error" : "")">
                         <div class="giz-user-lock__title">Enter you PIN to access this profile</div>
                         <div class="giz-user-lock__subtitle">Profile Lock is currently on</div>
                         <div class="giz-user-lock__code">
                             <TextInput IsTransparent="true"
-                                       Value="@UserLockService.ViewState.InputPassword"
+                                       Value="@ViewState.InputPassword"
                                        ValueChanged="@((string value) => UserLockService.SetInputPassword(value))"
-                                       ValueExpression="@(() => UserLockService.ViewState.InputPassword)"
+                                       ValueExpression="@(() => ViewState.InputPassword)"
                                        ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
                                        UpdateOnInput="true"
                                        MaxLength="4" />
                         </div>
-                        <div class="giz-user-lock__error">@UserLockService.ViewState.Error</div>
+                        <div class="giz-user-lock__error">@ViewState.Error</div>
                         <div class="giz-user-lock__numpad">
                             @for (int i = 0; i <= 9; i++)
                             {

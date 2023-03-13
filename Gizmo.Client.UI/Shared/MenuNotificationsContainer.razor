@@ -10,9 +10,9 @@
         </div>
         <div class="giz-menu-notifications__body giz-scrollbar--v">
 
-            @if (NotificationsService.ViewState.Notifications != null && NotificationsService.ViewState.Notifications.Count() > 0)
+            @if (ViewState.Notifications != null && ViewState.Notifications.Count() > 0)
             {
-                @foreach (var notification in NotificationsService.ViewState.Notifications)
+                @foreach (var notification in ViewState.Notifications)
                 {
                     <MenuNotificationCard Notification="@notification" />
                 }

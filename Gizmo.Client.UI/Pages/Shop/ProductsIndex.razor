@@ -8,16 +8,16 @@
             <div class="giz-shop__products__header">
                 <div class="giz-shop__products__header__tab">
                     <ClientTab>
-                        <ClientTabItem Class="@(!ShopService.ViewState.SelectedUserProductGroupId.HasValue ? "active" : "")">
+                        <ClientTabItem Class="@(!ViewState.SelectedUserProductGroupId.HasValue ? "active" : "")">
                             <div @onclick=@(() => ShopService.UpdateUserGroupedProductsAsync(null))>
                                 @LocalizationService.GetString("GIZ_GEN_ALL")
                             </div>
                         </ClientTabItem>
-                        @if (ShopService.ViewState.UserProductGroups != null)
+                        @if (ViewState.UserProductGroups != null)
                         {
-                            @foreach (var productGroup in ShopService.ViewState.UserProductGroups)
+                            @foreach (var productGroup in ViewState.UserProductGroups)
                             {
-                                <ClientTabItem Class="@(productGroup.ProductGroupId == ShopService.ViewState.SelectedUserProductGroupId ? "active" : "")">
+                                <ClientTabItem Class="@(productGroup.ProductGroupId == ViewState.SelectedUserProductGroupId ? "active" : "")">
                                     <div @onclick=@(() => ShopService.UpdateUserGroupedProductsAsync(productGroup.ProductGroupId))>
                                         @productGroup.Name
                                     </div>
@@ -38,7 +38,7 @@
                         </ChildContent>
                     </ExpansionPanel>
                 </div>
-                @foreach (var productGroup in ShopService.ViewState.UserGroupedProducts)
+                @foreach (var productGroup in ViewState.UserGroupedProducts)
                 {
                     <div class="giz-section">
                         <ProductsIndexSectionHeader @key="productGroup.Key" ProductGroupId="@productGroup.Key" />

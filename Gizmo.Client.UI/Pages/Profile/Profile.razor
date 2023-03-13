@@ -1,5 +1,5 @@
 ﻿@namespace Gizmo.Client.UI.Pages
-@inherits ComponentBase
+@inherits CustomDOMComponentBase
 
 <div class="giz-profile">
     <div class="giz-profile__body">
@@ -17,25 +17,25 @@
                     @LocalizationService.GetString("GIZ_USER_FIRST_NAME")
                 </div>
                 <div class="giz-user-information--text">
-                    @UserService.ViewState.FirstName
+                    @ViewState.FirstName
                 </div>
                 <div class="giz-user-information--label">
                     @LocalizationService.GetString("GIZ_USER_LAST_NAME")
                 </div>
                 <div class="giz-user-information--text">
-                    @UserService.ViewState.LastName
+                    @ViewState.LastName
                 </div>
                 <div class="giz-user-information--label">
                     @LocalizationService.GetString("GIZ_GEN_EMAIL")
                 </div>
                 <div class="giz-user-information--text">
-                    @UserService.ViewState.Email
+                    @ViewState.Email
                 </div>
                 <div class="giz-user-information--label">
                     @LocalizationService.GetString("GIZ_USER_HOME_PHONE")
                 </div>
                 <div class="giz-user-information--text">
-                    @UserService.ViewState.Phone
+                    @ViewState.Phone
                 </div>
                 <div class="giz-user-information--label">
                     @LocalizationService.GetString("GIZ_USER_GENDER")
@@ -47,20 +47,20 @@
                     @LocalizationService.GetString("GIZ_USER_BIRTH_DATE")
                 </div>
                 <div class="giz-user-information--text">
-                    @UserService.ViewState.BirthDate
+                    @ViewState.BirthDate
                 </div>
                 <div class="giz-user-information--label">
                     @LocalizationService.GetString("GIZ_USER_COUNTRY_REGION")
                 </div>
                 <div class="giz-user-information--text">
                     <img src="https://i.postimg.cc/RVJGVJK1/Flag.png" alt="loading" />@*TODO: A*@
-                    @UserService.ViewState.Country
+                    @ViewState.Country
                 </div>
                 <div class="giz-user-information--label">
                     @LocalizationService.GetString("GIZ_USER_ADDRESS")
                 </div>
                 <div class="giz-user-information--text giz-user-information--not-available">
-                    @UserService.ViewState.Address
+                    @ViewState.Address
                 </div>
                 <div class="giz-user-information--label">
                     @LocalizationService.GetString("GIZ_USER_POST_CODE")

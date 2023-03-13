@@ -6,15 +6,15 @@
 <Select HandleSVGIcon="Icons.Select_Client"
         ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
         TValue="RegionViewState"
-        Value="InputLanguagesService.ViewState.SelectedRegion"
+        Value="ViewState.SelectedRegion"
         ValueChanged="@ValueChangedHandler"
         Size="InputSizes.Small"
         OpenDirection="PopupOpenDirections.Top"
         Class="giz-input-language-menu"
         PopupClass="giz-scrollbar--v">
-    @if (InputLanguagesService.ViewState.Regions != null)
+    @if (ViewState.Regions != null)
     {
-        @foreach (var region in InputLanguagesService.ViewState.Regions)
+        @foreach (var region in ViewState.Regions)
         {
             <SelectItem Value="@region">
                 <div class="giz-icon-select-item">

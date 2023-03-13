@@ -3,41 +3,12 @@
 
 <div class="giz-profile-header">
     <div class="giz-profile-header__avatar">
-        <Avatar Image="@UserService.ViewState.Picture" Size="AvatarSizes.ExtraLarge" Variant="AvatarVariants.Circle" alt="loading" />
+        <ProfileHeaderUserAvatar />
 
         <div class="giz-profile-header__avatar__about">
-            <div class="giz-profile-header__avatar__about__name">@UserService.ViewState.Username</div>
+            <ProfileHeaderUserName />
             <div class="giz-profile-header__avatar__about__host">PC 05</div>
         </div>
     </div>
-    <div class="giz-profile-header__stats">
-        <div class="giz-profile-header__stats-item">
-
-            <Icon SVGIcon="Icons.AccountBalance_Client" />
-
-            <div class="giz-profile-header__stats-text">
-                <div class="giz-title">@LocalizationService.GetString("GIZ_GEN_BALANCE")</div>
-                <div class="giz-numbers">@UserService.UserBalanceViewState.Balance.ToString("C")
-                </div>
-            </div>
-        </div>
-        <div class="giz-profile-header__stats-item">
-            
-            <PointsIcon />
-
-            <div class="giz-profile-header__stats-text">
-                <div class="giz-title">@LocalizationService.GetString("GIZ_GEN_POINTS")</div>
-                <div class="giz-numbers">@UserService.UserBalanceViewState.PointsBalance</div>
-            </div>
-        </div>
-        <div class="giz-profile-header__stats-item">
-
-            <Icon SVGIcon="Icons.Schedule_Client" />
-
-            <div class="giz-profile-header__stats-text">
-                <div class="giz-title">@LocalizationService.GetString("GIZ_GEN_TIME")</div>
-                <div class="giz-numbers">@UserService.UserBalanceViewState.Time</div>
-            </div>
-        </div>
-    </div>
+    <ProfileHeaderStats />
 </div>

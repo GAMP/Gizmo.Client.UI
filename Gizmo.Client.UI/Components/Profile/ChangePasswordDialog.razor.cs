@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -18,6 +19,9 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         UserChangePasswordService UserChangePasswordService { get; set; }
 
+        [Inject]
+        UserChangePasswordViewState ViewState { get; set; }
+
         [Parameter]
         public EventCallback CancelCallback { get; set; }
 
@@ -25,8 +29,22 @@ namespace Gizmo.Client.UI.Components
         {
             await CancelCallback.InvokeAsync();
 
-            if (UserChangePasswordService.ViewState.IsComplete)
+            if (ViewState.IsComplete)
                 await UserChangePasswordService.ResetAsync();
+        }
+
+        protected override void OnInitialized()
+        {
+            this.SubscribeChange(ViewState);
+
+            base.OnInitialized();
+        }
+
+        public override void Dispose()
+        {
+            this.UnsubscribeChange(ViewState);
+
+            base.Dispose();
         }
     }
 }

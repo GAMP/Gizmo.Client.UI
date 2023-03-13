@@ -1,5 +1,5 @@
 ﻿@namespace Gizmo.Client.UI.Pages
-@inherits ComponentBase
+@inherits CustomDOMComponentBase
 @using System.Threading;
 
 <div class="giz-settings giz-scrollbar--v">
@@ -17,9 +17,9 @@
                 <div class="giz-section__header">@LocalizationService.GetString("GIZ_GEN_USERNAME")</div>
                 <div class="giz-section__body">
                     <div class="giz-form-input">
-                        <TextInput Value="@UserSettingsService.ViewState.Username"
+                        <TextInput Value="@ViewState.Username"
                                    ValueChanged="@((string value) => UserSettingsService.SetUsername(value))"
-                                   ValueExpression="@(() => UserSettingsService.ViewState.Username)"
+                                   ValueExpression="@(() => ViewState.Username)"
                                    Size="InputSizes.Medium"
                                    IsFullWidth="true"
                                    Label="@LocalizationService.GetString("GIZ_USER_USERNAME_MESSAGE")" />
@@ -31,29 +31,29 @@
                 <Header>@LocalizationService.GetString("GIZ_USER_PERSONAL_INFORMATION")</Header>
                 <ChildContent>
                     <div class="giz-form-input giz-form-input-columns">
-                        <TextInput Value="@UserSettingsService.ViewState.FirstName"
+                        <TextInput Value="@ViewState.FirstName"
                                    ValueChanged="@((string value) => UserSettingsService.SetFirstName(value))"
-                                   ValueExpression="@(() => UserSettingsService.ViewState.FirstName)"
+                                   ValueExpression="@(() => ViewState.FirstName)"
                                    Size="InputSizes.Medium"
                                    IsFullWidth="true"
                                    Label="@LocalizationService.GetString("GIZ_USER_FIRST_NAME")" />
-                        <TextInput Value="@UserSettingsService.ViewState.LastName"
+                        <TextInput Value="@ViewState.LastName"
                                    ValueChanged="@((string value) => UserSettingsService.SetLastName(value))"
-                                   ValueExpression="@(() => UserSettingsService.ViewState.LastName)"
+                                   ValueExpression="@(() => ViewState.LastName)"
                                    Size="InputSizes.Medium" IsFullWidth="true" Label="@LocalizationService.GetString("GIZ_USER_LAST_NAME")" />
                     </div>
             
                     <div class="giz-form-input giz-form-input-columns">
-                        <MaskedDateInput Value="@UserSettingsService.ViewState.BirthDate"
+                        <MaskedDateInput Value="@ViewState.BirthDate"
                                          ValueChanged="@((DateTime? value) => UserSettingsService.SetBirthDate(value))"
-                                         ValueExpression="@(() => UserSettingsService.ViewState.BirthDate)"
+                                         ValueExpression="@(() => ViewState.BirthDate)"
                                          Size="InputSizes.Medium"
                                          IsFullWidth="true"
                                          Label="@LocalizationService.GetString("GIZ_USER_BIRTH_DATE")" />
                         <Select HandleSVGIcon="Icons.Select_Client"
-                                Value="@UserSettingsService.ViewState.Sex"
+                                Value="@ViewState.Sex"
                                 ValueChanged="@((Sex value) => UserSettingsService.SetSex(value))"
-                                ValueExpression="@(() => UserSettingsService.ViewState.Sex)"
+                                ValueExpression="@(() => ViewState.Sex)"
                                 Size="InputSizes.Medium"
                                 IsFullWidth="true"
                                 Label="@LocalizationService.GetString("GIZ_USER_GENDER")"
@@ -66,18 +66,18 @@
                     </div>
             
                     <div class="giz-form-input">
-                        <TextInput Value="@UserSettingsService.ViewState.Country"
+                        <TextInput Value="@ViewState.Country"
                                    ValueChanged="@((string value) => UserSettingsService.SetCountry(value))"
-                                   ValueExpression="@(() => UserSettingsService.ViewState.Country)"
+                                   ValueExpression="@(() => ViewState.Country)"
                                    Size="InputSizes.Medium"
                                    IsFullWidth="true"
                                    Label="@LocalizationService.GetString("GIZ_USER_COUNTRY_REGION")" />
                     </div>
             
                     <div class="giz-form-input">
-                        <TextInput Value="@UserSettingsService.ViewState.Address"
+                        <TextInput Value="@ViewState.Address"
                                    ValueChanged="@((string value) => UserSettingsService.SetAddress(value))"
-                                   ValueExpression="@(() => UserSettingsService.ViewState.Address)"
+                                   ValueExpression="@(() => ViewState.Address)"
                                    Size="InputSizes.Medium"
                                    IsFullWidth="true"
                                    Label="@LocalizationService.GetString("GIZ_USER_ADDRESS")" />
@@ -89,15 +89,15 @@
                 <Header>@LocalizationService.GetString("GIZ_USER_MAIL_AND_PHONE_NUMBERS")</Header>
                 <ChildContent>
                     <div class="giz-form-input">
-                        <TextInput Value="@UserSettingsService.ViewState.Email"
+                        <TextInput Value="@ViewState.Email"
                                    ValueChanged="@((string value) => UserSettingsService.SetEmail(value))"
-                                   ValueExpression="@(() => UserSettingsService.ViewState.Email)"
-                                   IsReadOnly="@(UserPasswordRecoveryMethodService.ViewState.Method == View.UserPasswordRecoveryMethod.Email)"
+                                   ValueExpression="@(() => ViewState.Email)"
+                                   IsReadOnly="@(UserPasswordRecoveryMethodViewState.Method == View.UserPasswordRecoveryMethod.Email)"
                                    Size="InputSizes.Medium"
                                    IsFullWidth="true"
                                    Label="@LocalizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")">
                             <RightContent>
-                                @if (UserPasswordRecoveryMethodService.ViewState.Method == View.UserPasswordRecoveryMethod.Email)
+                                @if (UserPasswordRecoveryMethodViewState.Method == View.UserPasswordRecoveryMethod.Email)
                                 {
                                     <div class="giz-settings-update-button" @onclick="OnClickUpdateEmailButtonHandler">@LocalizationService.GetString("GIZ_GEN_UPDATE")</div>
                                 }
@@ -106,15 +106,15 @@
                     </div>
             
                     <div class="giz-form-input">
-                        <TextInput Value="@UserSettingsService.ViewState.MobilePhone" 
+                        <TextInput Value="@ViewState.MobilePhone" 
                                    ValueChanged="@((string value) => UserSettingsService.SetMobilePhone(value))"
-                                   ValueExpression="@(() => UserSettingsService.ViewState.MobilePhone)"
-                                   IsReadOnly="@(UserPasswordRecoveryMethodService.ViewState.Method == View.UserPasswordRecoveryMethod.MobilePhone)"
+                                   ValueExpression="@(() => ViewState.MobilePhone)"
+                                   IsReadOnly="@(UserPasswordRecoveryMethodViewState.Method == View.UserPasswordRecoveryMethod.MobilePhone)"
                                    Size="InputSizes.Medium"
                                    IsFullWidth="true"
                                    Label="@LocalizationService.GetString("GIZ_GEN_MOBILE_PHONE")">
                             <RightContent>
-                                @if (UserPasswordRecoveryMethodService.ViewState.Method == View.UserPasswordRecoveryMethod.MobilePhone)
+                                @if (UserPasswordRecoveryMethodViewState.Method == View.UserPasswordRecoveryMethod.MobilePhone)
                                 {
                                     <div class="giz-settings-update-button" @onclick="OnClickUpdateMobileButtonHandler">@LocalizationService.GetString("GIZ_GEN_UPDATE")</div>
                                 }
@@ -123,9 +123,9 @@
                     </div>
             
                     <div class="giz-form-input">
-                        <TextInput Value="@UserSettingsService.ViewState.Phone" 
+                        <TextInput Value="@ViewState.Phone" 
                                    ValueChanged="@((string value) => UserSettingsService.SetPhone(value))"
-                                   ValueExpression="@(() => UserSettingsService.ViewState.Phone)"
+                                   ValueExpression="@(() => ViewState.Phone)"
                                    Size="InputSizes.Medium"
                                    IsFullWidth="true"
                                    Label="@LocalizationService.GetString("GIZ_USER_HOME_PHONE")" />

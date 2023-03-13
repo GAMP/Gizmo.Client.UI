@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
@@ -15,10 +16,7 @@ namespace Gizmo.Client.UI.Components
         UserQuickLaunchService UserQuickLaunchService { get; set; }
 
         [Inject]
-        QuickLaunchService QuickLaunchService { get; set; }
-
-        [Inject]
-        FavoritesService FavoritesService { get; set; }
+        UserQuickLaunchViewState ViewState { get; set; }
 
         private void SelectedTabIndexChanged(int selectedTabIndex)
         {
@@ -41,17 +39,15 @@ namespace Gizmo.Client.UI.Components
 
         protected override void OnInitialized()
         {
-            this.SubscribeChange(UserQuickLaunchService.ViewState);
-			this.SubscribeChange(QuickLaunchService.ViewState);
-			this.SubscribeChange(FavoritesService.ViewState);
+            this.SubscribeChange(ViewState);
+
 			base.OnInitialized();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(UserQuickLaunchService.ViewState);
-			this.UnsubscribeChange(QuickLaunchService.ViewState);
-			this.UnsubscribeChange(FavoritesService.ViewState);
+            this.UnsubscribeChange(ViewState);
+
 			base.Dispose();
         }
     }

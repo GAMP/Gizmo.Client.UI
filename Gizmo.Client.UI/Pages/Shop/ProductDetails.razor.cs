@@ -33,6 +33,9 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         ProductDetailsPageService ProductDetailsPageService { get; set; }
 
+        [Inject]
+        ProductDetailsPageViewState ViewState { get; set; }
+
         [Parameter]
         [SupplyParameterFromQuery]
         public int ProductId { get; set; }
@@ -53,7 +56,7 @@ namespace Gizmo.Client.UI.Pages
                 _previousProductId = ProductId;
 
                 _productItemViewState = await UserCartProductItemViewStateLookupService.GetStateAsync(ProductId);
-                _userProductGroupViewState = await UserProductGroupViewStateLookupService.GetStateAsync(ProductDetailsPageService.ViewState.Product.ProductGroupId);
+                _userProductGroupViewState = await UserProductGroupViewStateLookupService.GetStateAsync(ViewState.Product.ProductGroupId);
 
                 //We have to bind to the new product.
                 this.SubscribeChange(_productItemViewState);

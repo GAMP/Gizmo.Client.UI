@@ -4,34 +4,12 @@
 <div class="giz-header__user-menu">
     <HeaderUserBalance />
 
-    <div class="giz-header__user-menu-item giz-active-apps-dropdown @(_activeAppsIsOpen ? "open" : "")">
-        <button class="user-menu-item-button--box" @onclick="() => ToggleActiveApps()" @onclick:stopPropagation="true">
-            <Icon SVGIcon="Icons.GridView_Client" />
-        </button>
-        <MenuActiveApplicationsContainer @bind-IsOpen="_activeAppsIsOpen" />
-    </div>
+    <HeaderUserMenuActiveApps @bind-IsOpen="_activeAppsIsOpen" @onclick="ToggleActiveApps" />
     @*<div class="giz-header__user-menu-item">
         <button class="user-menu-item-button--box">
             <Icon SVGIcon="Icons.ContactSupport_Client" />
         </button>
     </div>*@
-    <div class="giz-header__user-menu-item giz-notifications-dropdown @(_notificationsIsOpen ? "open" : "")">
-        <Badge Label="@NotificationsService.ViewState.Notifications?.Count().ToString()" IsVisible="@(NotificationsService.ViewState.Notifications?.Count() > 0)">
-            <button class="user-menu-item-button--box" @onclick="() => ToggleNotifications()" @onclick:stopPropagation="true">
-                <Icon SVGIcon="Icons.Notifications_Client" />
-            </button>
-        </Badge>
-        <MenuNotificationsContainer @bind-IsOpen="_notificationsIsOpen" />
-    </div>
-    <div class="giz-header__user-menu-item giz-user-dropdown @(_userLinksIsOpen ? "open" : "")">
-        <button class="giz-user-menu-button" @onclick="() => ToggleUserLinks()" @onclick:stopPropagation="true">
-            <Avatar Image="@UserService.ViewState.Picture" Variant="AvatarVariants.Circle" Size="AvatarSizes.Small" />
-
-            <div>PC 05</div>
-
-            <Icon Size="IconSizes.ExtraLarge" SVGIcon="Icons.Select_Client" />
-
-        </button>
-        <MenuUserLinks @bind-IsOpen="_userLinksIsOpen" />
-    </div>
+    <HeaderUserMenuNotifications @bind-IsOpen="_notificationsIsOpen" @onclick="ToggleNotifications" />
+    <HeaderUserMenuUserLinks @bind-IsOpen="_userLinksIsOpen" @onclick="ToggleUserLinks" />
 </div>

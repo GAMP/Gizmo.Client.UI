@@ -1,15 +1,13 @@
-﻿using Gizmo.Client.UI.View.Services;
-using Gizmo.Client.UI.ViewModels;
+﻿using Gizmo.Client.UI.ViewModels;
 using Gizmo.UI.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Gizmo.Client.UI.Shared
 {
-    public partial class _Layout_Login : LayoutComponentBase, IDisposable
+    public partial class _Layout_Login : LayoutComponentBase
     {
         public _Layout_Login()
         {
@@ -45,20 +43,6 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
-        [Inject]
-        HostService HostService { get; set; }
-
         public List<NewsFeedViewModel> NewsFeeds { get; set; }
-
-        protected override void OnInitialized()
-        {
-            this.SubscribeChange(HostService.ViewState);
-            base.OnInitialized();
-        }
-
-        public void Dispose()
-        {
-            this.UnsubscribeChange(HostService.ViewState);
-        }
     }
 }

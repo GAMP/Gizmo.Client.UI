@@ -26,7 +26,7 @@ namespace Gizmo.Client.UI.Pages
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        AppsPageService ApplicationsPageService { get; set; }
+        AppsPageService AppsPageService { get; set; }
 
         [Inject()]
         public AppsPageViewState ViewState { get; set; }
@@ -67,14 +67,14 @@ namespace Gizmo.Client.UI.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            this.SubscribeChange(ApplicationsPageService.ViewState);
+            this.SubscribeChange(ViewState);
 
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(ApplicationsPageService.ViewState);
+            this.UnsubscribeChange(ViewState);
 
             base.Dispose();
         }

@@ -1,8 +1,10 @@
 ﻿using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI;
 using Gizmo.UI.Services;
 using Gizmo.Web.Api.Models;
+using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
@@ -11,7 +13,7 @@ namespace Gizmo.Client.UI.Pages
 {
     [DefaultRoute(ClientRoutes.UserSettingsRoute, DefaultRouteMatch = NavlinkMatch.Prefix)]
     [Route(ClientRoutes.UserSettingsRoute)]
-    public partial class Settings : ComponentBase
+    public partial class Settings : CustomDOMComponentBase
     {
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -20,7 +22,10 @@ namespace Gizmo.Client.UI.Pages
         UserSettingsService UserSettingsService { get; set; }
 
         [Inject]
-        UserPasswordRecoveryMethodService UserPasswordRecoveryMethodService { get; set; }
+        UserSettingsViewState ViewState { get; set; }
+
+        [Inject]
+        UserPasswordRecoveryMethodViewState UserPasswordRecoveryMethodViewState { get; set; }
 
         [Inject()]
         IClientDialogService DialogService { get; set; }
@@ -93,7 +98,16 @@ namespace Gizmo.Client.UI.Pages
         {
             await UserSettingsService.LoadAsync();
 
+            this.SubscribeChange(ViewState);
+
             await base.OnInitializedAsync();
+        }
+
+        public override void Dispose()
+        {
+            this.UnsubscribeChange(ViewState);
+
+            base.Dispose();
         }
     }
 }

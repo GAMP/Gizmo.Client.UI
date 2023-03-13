@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -26,6 +27,9 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         ActiveApplicationsService ActiveApplicationsService { get; set; }
 
+        [Inject]
+        ActiveApplicationsViewState ViewState { get; set; }
+
         [Parameter]
         public bool IsOpen
         {
@@ -52,7 +56,8 @@ namespace Gizmo.Client.UI.Shared
 
         protected override void OnInitialized()
         {
-            this.SubscribeChange(ActiveApplicationsService.ViewState); //TODO: A WE NEED TO UPDATE _shouldRender FROM SubscribeChange.
+            this.SubscribeChange(ViewState); //TODO: A WE NEED TO UPDATE _shouldRender FROM SubscribeChange.
+
             base.OnInitialized();
         }
 
@@ -94,7 +99,7 @@ namespace Gizmo.Client.UI.Shared
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(ActiveApplicationsService.ViewState);
+            this.UnsubscribeChange(ViewState);
 
             ClosePopupEventInterop?.Dispose();
 

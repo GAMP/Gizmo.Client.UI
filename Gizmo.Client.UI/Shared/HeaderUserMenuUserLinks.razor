@@ -1,0 +1,14 @@
+﻿@namespace Gizmo.Client.UI
+@inherits CustomDOMComponentBase
+
+<div class="giz-header__user-menu-item giz-user-dropdown @(IsOpen ? "open" : "")">
+    <button class="giz-user-menu-button" @onclick="(args) => OnClick.InvokeAsync(args)" @onclick:stopPropagation="true">
+        <HeaderUserMenuUserAvatar />
+
+        <div>PC 05</div>
+
+        <Icon Size="IconSizes.ExtraLarge" SVGIcon="Icons.Select_Client" />
+
+    </button>
+    <MenuUserLinks @bind-IsOpen="IsOpen" />
+</div>

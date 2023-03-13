@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -37,7 +38,10 @@ namespace Gizmo.Client.UI.Shared
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        GlobalSearchService SearchService { get; set; }
+        GlobalSearchService GlobalSearchService { get; set; }
+
+        [Inject]
+        GlobalSearchViewState ViewState { get; set; }
 
         [Parameter]
         public int MinimumCharacters { get; set; } = 0;
@@ -57,7 +61,7 @@ namespace Gizmo.Client.UI.Shared
             {
                 case "Enter":
 
-                    await SearchService.ProcessEnterAsync();
+                    await GlobalSearchService.ProcessEnterAsync();
 
                     break;
 
@@ -93,12 +97,12 @@ namespace Gizmo.Client.UI.Shared
         {
             var newValue = args?.Value as string;
 
-            if (newValue != SearchService.ViewState.SearchPattern)
+            if (newValue != ViewState.SearchPattern)
             {
-                await SearchService.UpdateSearchPatternAsync(newValue);
-                await SearchService.OpenSearchAsync();
+                await GlobalSearchService.UpdateSearchPatternAsync(newValue);
+                await GlobalSearchService.OpenSearchAsync();
 
-                if (SearchService.ViewState.SearchPattern.Length == 0 || SearchService.ViewState.SearchPattern.Length >= MinimumCharacters)
+                if (ViewState.SearchPattern.Length == 0 || ViewState.SearchPattern.Length >= MinimumCharacters)
                 {
                     _deferredAction.Defer(_delayTimeSpan);
                 }
@@ -107,27 +111,27 @@ namespace Gizmo.Client.UI.Shared
 
         private async Task Clear()
         {
-            await SearchService.ClearResultsAsync();
-            await SearchService.CloseSearchAsync();
+            await GlobalSearchService.ClearResultsAsync();
+            await GlobalSearchService.CloseSearchAsync();
         }
 
         #endregion
 
         private async Task Search()
         {
-            await SearchService.SearchAsync();
+            await GlobalSearchService.SearchAsync();
         }
 
         #region CLASSMAPPERS
 
         protected override void OnInitialized()
         {
-            this.SubscribeChange(SearchService.ViewState);
+            this.SubscribeChange(ViewState);
             base.OnInitialized();
         }
 
         protected string CloseButtonStyleValue => new StyleMapper()
-                 .If($"visibility: hidden", () => string.IsNullOrEmpty(SearchService.ViewState.SearchPattern))
+                 .If($"visibility: hidden", () => string.IsNullOrEmpty(ViewState.SearchPattern))
                  .AsString();
 
         #endregion
@@ -146,7 +150,7 @@ namespace Gizmo.Client.UI.Shared
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(SearchService.ViewState);
+            this.UnsubscribeChange(ViewState);
 
             ClosePopupEventInterop?.Dispose();
 
@@ -161,8 +165,8 @@ namespace Gizmo.Client.UI.Shared
             {
                 if (args == Id)
                 {
-                    await SearchService.ClearResultsAsync();
-                    await SearchService.CloseSearchAsync();
+                    await GlobalSearchService.ClearResultsAsync();
+                    await GlobalSearchService.CloseSearchAsync();
                 }
             }
         }

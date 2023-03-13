@@ -1,5 +1,5 @@
 ﻿@namespace Gizmo.Client.UI.Pages
-@inherits ComponentBase
+@inherits CustomDOMComponentBase
 @layout _Layout_Login
 @using System.Threading;
 @using Microsoft.AspNetCore.Components.Forms
@@ -13,19 +13,19 @@
     <CardBody>
         <EditForm EditContext="@UserRegistrationConfirmationMethodService.EditContext">
             <div class="giz-login-title">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
-            @if (UserRegistrationConfirmationMethodService.ViewState.ConfirmationMethod == View.UserRegistrationMethod.Email)
+            @if (ViewState.ConfirmationMethod == View.UserRegistrationMethod.Email)
             {
                 <div class="giz-login-subtitle--sign-up">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim</div>
                 <div class="giz-form-input">
-                    <TextInput Value="@UserRegistrationConfirmationMethodService.ViewState.Email"
+                    <TextInput Value="@ViewState.Email"
                                ValueChanged="@((string value) => UserRegistrationConfirmationMethodService.SetEmail(value))"
-                               ValueExpression="@(() => UserRegistrationConfirmationMethodService.ViewState.Email)"
+                               ValueExpression="@(() => ViewState.Email)"
                                Size="InputSizes.Medium"
                                IsFullWidth="true"
                                Label="@LocalizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")"/>
                 </div>
             }
-            @if (UserRegistrationConfirmationMethodService.ViewState.ConfirmationMethod == View.UserRegistrationMethod.MobilePhone)
+            @if (ViewState.ConfirmationMethod == View.UserRegistrationMethod.MobilePhone)
             {
                 <div class="giz-login-subtitle--sign-up">Please confirm your country code and enter your phone number to create an account.</div>
                 <div class="giz-registration-form-input">
@@ -43,9 +43,9 @@
                 </div>
                 <div class="giz-form-input">
                     <MaskedTextInput Mask="###-###-###"
-                                     Value="@UserRegistrationConfirmationMethodService.ViewState.MobilePhone"
+                                     Value="@ViewState.MobilePhone"
                                      ValueChanged="@((string value) => UserRegistrationConfirmationMethodService.SetMobilePhone(value))"
-                                     ValueExpression="@(() => UserRegistrationConfirmationMethodService.ViewState.MobilePhone)"
+                                     ValueExpression="@(() => ViewState.MobilePhone)"
                                      Size="InputSizes.Medium"
                                      IsFullWidth="true"
                                      Label="Phone number" />
@@ -54,7 +54,7 @@
             <div>
                 <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationConfirmationMethodService.SubmitAsync">
                     <ChildContent>
-                        @if (UserRegistrationConfirmationMethodService.ViewState.IsLoading)
+                        @if (ViewState.IsLoading)
                         {
                             <GizSpinner />
                         }

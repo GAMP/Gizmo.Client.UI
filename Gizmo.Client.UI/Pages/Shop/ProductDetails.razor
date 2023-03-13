@@ -15,9 +15,9 @@
             </NavLink>
             <div class="giz-product-details__product__info">
                 <div class="giz-product-details__product__info__image">
-                    @if (ProductDetailsPageService.ViewState.Product?.DefaultImageId.HasValue == true)
+                    @if (ViewState.Product?.DefaultImageId.HasValue == true)
                     {
-                        <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ProductDetailsPageService.ViewState.Product.DefaultImageId.Value" />
+                        <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ViewState.Product.DefaultImageId.Value" />
                     }
                     else
                     {
@@ -29,28 +29,28 @@
                         @_userProductGroupViewState.Name
                     </div>
                     <div class="giz-product-details__product__info__basic__title">
-                        @ProductDetailsPageService.ViewState.Product?.Name
+                        @ViewState.Product?.Name
                     </div>
                     <div class="giz-product-details__product__info__basic__description">
-                        @ProductDetailsPageService.ViewState.Product?.Description
+                        @ViewState.Product?.Description
                     </div>
                     <div class="giz-product-details__product__info__basic__action">
                         <div class="giz-product-details__product__info__basic__action__price">
-                            @ProductDetailsPageService.ViewState.Product?.UnitPrice.ToString("C2")
+                            @ViewState.Product?.UnitPrice.ToString("C2")
                         </div>
                         <ProductQuantityPicker @key="ProductId" ProductId="@ProductId" PikerSize="ButtonSizes.Large" />
                     </div>
                 </div>
             </div>
-            @if (@ProductDetailsPageService.ViewState.Product?.ProductType == ProductType.ProductBundle)
+            @if (@ViewState.Product?.ProductType == ProductType.ProductBundle)
             {
                 <div class="giz-product-details__product__bundled-products">
-                    @foreach (var product in ProductDetailsPageService.ViewState.Product.BundledProducts)
+                    @foreach (var product in ViewState.Product.BundledProducts)
                     {
                         <div class="giz-product-details__product__bundled-products-product">
-                            @if (ProductDetailsPageService.ViewState.Product?.DefaultImageId.HasValue == true)
+                            @if (ViewState.Product?.DefaultImageId.HasValue == true)
                             {
-                                <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ProductDetailsPageService.ViewState.Product.DefaultImageId.Value" />
+                                <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ViewState.Product.DefaultImageId.Value" />
                             }
                             else
                             {
@@ -66,9 +66,9 @@
                 </div>
 
                 <div class="giz-product-details__product__related__body">
-                    @if (ProductDetailsPageService.ViewState.RelatedProducts != null)
+                    @if (ViewState.RelatedProducts != null)
                     {
-                        @foreach (var product in ProductDetailsPageService.ViewState.RelatedProducts)
+                        @foreach (var product in ViewState.RelatedProducts)
                         {
                             <ProductCard @key="product.Id" Product="@product" />
                         }

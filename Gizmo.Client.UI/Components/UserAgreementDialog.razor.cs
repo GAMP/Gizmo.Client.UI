@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -8,10 +9,6 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class UserAgreementDialog : CustomDOMComponentBase
     {
-        public UserAgreementDialog()
-        {
-        }
-
         #region PROPERTIES
 
         [Inject]
@@ -19,6 +16,9 @@ namespace Gizmo.Client.UI.Components
 
         [Inject]
         UserAgreementsService UserAgreementsService { get; set; }
+
+        [Inject]
+        UserAgreementsViewState ViewState { get; set; }
 
         [Parameter]
         public EventCallback CancelCallback { get; set; }
@@ -41,5 +41,19 @@ namespace Gizmo.Client.UI.Components
         }
 
         #endregion
+
+        protected override void OnInitialized()
+        {
+            this.SubscribeChange(ViewState);
+
+            base.OnInitialized();
+        }
+
+        public override void Dispose()
+        {
+            this.UnsubscribeChange(ViewState);
+
+            base.Dispose();
+        }
     }
 }

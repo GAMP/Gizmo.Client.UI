@@ -19,30 +19,22 @@
             <div class="giz-form-input">
                 <TextInput UpdateOnInput="true"
                            Placeholder="123 456"
-                           Value="@UserRegistrationConfirmationService.ViewState.ConfirmationCode"
+                           Value="@ViewState.ConfirmationCode"
                            ValueChanged="@((string value) => UserRegistrationConfirmationService.SetConfirmationCode(value))"
-                           ValueExpression="@(() => UserRegistrationConfirmationService.ViewState.ConfirmationCode)"
+                           ValueExpression="@(() => ViewState.ConfirmationCode)"
                            Size="InputSizes.Medium"
                            IsFullWidth="true"
                            Label="@LocalizationService.GetString("GIZ_PASSWORD_RECOVERY_ENTER_YOUR_CODE")" />
             </div>
             <div class="giz-form-input">
                 <Button Text="Confirm"
-                        IsDisabled="@(!(UserRegistrationConfirmationService.ViewState.IsValid == true))"
+                        IsDisabled="@(!(ViewState.IsValid == true))"
                         Color="ButtonColors.Accent"
                         Size="ButtonSizes.ExtraLarge"
                         IsFullWidth="true"
                         @onclick="@UserRegistrationConfirmationService.SubmitAsync" />
             </div>
-            <div class="giz-resend-button">
-                <Button Variant="ButtonVariants.Outline"
-                        Size="ButtonSizes.ExtraLarge"
-                        IsFullWidth="true"
-                        IsDisabled="@(!UserRegistrationConfirmationMethodService.ViewState.CanResend)"
-                        Text="@LocalizationService.GetString("GIZ_GEN_RESEND")"
-                        @onclick="@UserRegistrationConfirmationService.SubmitAsync" />
-                <div class="giz-resend-button__time">@string.Format("{0:mm\\:ss}", UserRegistrationConfirmationMethodService.ViewState.ResendTimeLeft)</div>
-            </div>
+            <RegistrationConfirmationResendButton />
         </EditForm>
     </CardBody>
     <CardFooter>

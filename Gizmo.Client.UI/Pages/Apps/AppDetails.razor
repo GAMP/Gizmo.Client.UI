@@ -13,9 +13,9 @@
         </NavLink>
         <div class="giz-app-details__app__info">
             <div class="giz-app-details__app__info__image">
-                @if (ApplicationDetailsPageService.ViewState.Application?.ImageId.HasValue == true)
+                @if (ViewState.Application?.ImageId.HasValue == true)
                 {
-                    <GizImage ImageType="Gizmo.UI.ImageType.Application" ImageId="@ApplicationDetailsPageService.ViewState.Application.ImageId.Value" />
+                    <GizImage ImageType="Gizmo.UI.ImageType.Application" ImageId="@ViewState.Application.ImageId.Value" />
                 }
                 else
                 {
@@ -24,22 +24,22 @@
             </div>
 
             <div class="giz-app-details__app__info__details">
-                @if (ApplicationDetailsPageService.ViewState.Application != null)
+                @if (ViewState.Application != null)
                 {
-                    <AppDetailsAppCategory @key="ApplicationDetailsPageService.ViewState.Application.ApplicationCategoryId" ApplicationCategoryId="@ApplicationDetailsPageService.ViewState.Application.ApplicationCategoryId" />
+                    <AppDetailsAppCategory @key="ViewState.Application.ApplicationCategoryId" ApplicationCategoryId="@ViewState.Application.ApplicationCategoryId" />
                 }
                 <div class="giz-app-details__app__info__details__title">
-                    @ApplicationDetailsPageService.ViewState.Application?.Title
+                    @ViewState.Application?.Title
                 </div>
                 <div class="giz-app-details__app__info__details__description">
-                    @ApplicationDetailsPageService.ViewState.Application?.Description
+                    @ViewState.Application?.Description
                 </div>
                 <div class="giz-app-details__app__info__details__executables">
-                    @if (ApplicationDetailsPageService.ViewState.Executables.Count() == 1)
+                    @if (ViewState.Executables.Count() == 1)
                     {
-                        <ExecutableLaunchButton @key="ApplicationDetailsPageService.ViewState.Executables.Select(a => a.ExecutableId).First()" ExecutableId="@ApplicationDetailsPageService.ViewState.Executables.Select(a => a.ExecutableId).First()" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" />
+                        <ExecutableLaunchButton @key="ViewState.Executables.Select(a => a.ExecutableId).First()" ExecutableId="@ViewState.Executables.Select(a => a.ExecutableId).First()" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" />
                     }
-                    else if (ApplicationDetailsPageService.ViewState.Executables.Count() > 1)
+                    else if (ViewState.Executables.Count() > 1)
                     {
                         <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => OnClickMainButtonHandler())">@LocalizationService.GetString("GIZ_APPS_LAUNCH")</Button>
                     }
@@ -52,22 +52,22 @@
                     @LocalizationService.GetString("GIZ_APPS_PUBLISHER")
                 </div>
                 <div class="giz-app-details-card-brand-text">
-                    @if (ApplicationDetailsPageService.ViewState.Application?.PublisherId != null)
+                    @if (ViewState.Application?.PublisherId != null)
                     {
-                        <AppDetailsAppPublisher @key="ApplicationDetailsPageService.ViewState.Application.PublisherId.Value" PublisherId="@ApplicationDetailsPageService.ViewState.Application.PublisherId.Value" />
+                        <AppDetailsAppPublisher @key="ViewState.Application.PublisherId.Value" PublisherId="@ViewState.Application.PublisherId.Value" />
                     }
                 </div>
                 <div class="giz-app-details-card-brand-title">
                     @LocalizationService.GetString("GIZ_APPS_RELEASE_DATE")
                 </div>
                 <div class="giz-app-details-card-brand-text">
-                    @ApplicationDetailsPageService.ViewState.Application?.ReleaseDate?.ToShortDateString()
+                    @ViewState.Application?.ReleaseDate?.ToShortDateString()
                 </div>
                 <div class="giz-app-details-card-brand-title">
                     @LocalizationService.GetString("GIZ_APPS_DATE_ADDED")
                 </div>
                 <div class="giz-app-details-card-brand-text">
-                    @ApplicationDetailsPageService.ViewState.Application?.AddDate.ToShortDateString()
+                    @ViewState.Application?.AddDate.ToShortDateString()
                 </div>
                 @*<div class="giz-app-details-card-brand-title">
                     @LocalizationService.GetString("GIZ_APPS_PLAYER_MODE")

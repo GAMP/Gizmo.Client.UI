@@ -1,0 +1,9 @@
+﻿@namespace Gizmo.Client.UI
+@inherits CustomDOMComponentBase
+
+<div class="giz-header__user-menu-item giz-active-apps-dropdown @(IsOpen ? "open" : "")">
+    <button class="user-menu-item-button--box" @onclick="(args) => OnClick.InvokeAsync(args)" @onclick:stopPropagation="true">
+        <Icon SVGIcon="Icons.GridView_Client" />
+    </button>
+    <MenuActiveApplicationsContainer @bind-IsOpen="IsOpen" />
+</div>

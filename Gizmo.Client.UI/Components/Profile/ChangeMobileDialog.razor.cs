@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -64,6 +65,9 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         UserChangeMobileService UserChangeMobileService { get; set; }
 
+        [Inject]
+        UserChangeMobileViewState ViewState { get; set; }
+        
         [Parameter]
         public EventCallback CancelCallback { get; set; }
 
@@ -75,19 +79,21 @@ namespace Gizmo.Client.UI.Components
         {
             await CancelCallback.InvokeAsync();
 
-            if (UserChangeMobileService.ViewState.IsComplete)
+            if (ViewState.IsComplete)
                 await UserChangeMobileService.ResetAsync();
         }
 
         protected override void OnInitialized()
         {
-            this.SubscribeChange(UserChangeMobileService.ViewState);
+            this.SubscribeChange(ViewState);
+
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(UserChangeMobileService.ViewState);
+            this.UnsubscribeChange(ViewState);
+
             base.Dispose();
         }
     }

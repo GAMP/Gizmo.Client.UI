@@ -5,20 +5,20 @@ using Microsoft.AspNetCore.Components;
 using System.Threading;
 using System;
 using System.Threading.Tasks;
+using Gizmo.Client.UI.View.States;
 
 namespace Gizmo.Client.UI.Components
 {
     public partial class TopUpDialog : CustomDOMComponentBase
     {
-        public TopUpDialog()
-        {
-        }
-
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
         TopUpService TopUpService { get; set; }
+
+        [Inject]
+        TopUpViewState ViewState { get; set; }
 
         [Parameter]
         public EventCallback CancelCallback { get; set; }
@@ -26,6 +26,20 @@ namespace Gizmo.Client.UI.Components
         private Task CloseDialog()
         {
             return CancelCallback.InvokeAsync();
+        }
+
+        protected override void OnInitialized()
+        {
+            this.SubscribeChange(ViewState);
+
+            base.OnInitialized();
+        }
+
+        public override void Dispose()
+        {
+            this.UnsubscribeChange(ViewState);
+
+            base.Dispose();
         }
     }
 }

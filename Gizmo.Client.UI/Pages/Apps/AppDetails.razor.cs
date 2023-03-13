@@ -1,6 +1,7 @@
 ﻿using Gizmo.Client.UI.Components;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -30,7 +31,10 @@ namespace Gizmo.Client.UI.Pages
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        AppDetailsPageService ApplicationDetailsPageService { get; set; }
+        AppDetailsPageService AppDetailsPageService { get; set; }
+
+        [Inject]
+        AppDetailsPageViewState ViewState { get; set; }
 
         [Inject]
         public ActiveApplicationsService ActiveApplicationsService { get; set; }
@@ -72,22 +76,16 @@ namespace Gizmo.Client.UI.Pages
             }
         }
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            //if (ApplicationDetailsPageService.ViewState.Application.Executables.Count() == 1)
-            //{
-            //    this.SubscribeChange(ApplicationDetailsPageService.ViewState.Application.Executables.First());
-            //}
+            this.SubscribeChange(ViewState);
 
-            await base.OnInitializedAsync();
+            base.OnInitialized();
         }
 
         public override void Dispose()
         {
-            //if (ApplicationDetailsPageService.ViewState.Application.Executables.Count() == 1)
-            //{
-            //    this.UnsubscribeChange(ApplicationDetailsPageService.ViewState.Application.Executables.First());
-            //}
+            this.UnsubscribeChange(ViewState);
 
             base.Dispose();
         }

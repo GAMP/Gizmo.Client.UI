@@ -1,5 +1,7 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
+using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +9,7 @@ using System.Linq;
 namespace Gizmo.Client.UI.Pages
 {
     [Route(ClientRoutes.RegistrationAdditionalFieldsRoute)]
-    public partial class RegistrationAdditionalFields : ComponentBase
+    public partial class RegistrationAdditionalFields : CustomDOMComponentBase
     {
         public RegistrationAdditionalFields()
         {
@@ -64,7 +66,13 @@ namespace Gizmo.Client.UI.Pages
         UserRegistrationConfirmationMethodService UserRegistrationConfirmationMethodService { get; set; }
 
         [Inject]
+        UserRegistrationConfirmationMethodViewState UserRegistrationConfirmationMethodViewState { get; set; }
+
+        [Inject]
         UserRegistrationAdditionalFieldsService UserRegistrationAdditionalFieldsService { get; set; }
+
+        [Inject]
+        UserRegistrationAdditionalFieldsViewState ViewState { get; set; }
 
         [Inject]
         NavigationService NavigationService { get; set; }
@@ -73,5 +81,18 @@ namespace Gizmo.Client.UI.Pages
 
         public IconSelectCountry SelectedCountry { get; set; }
 
+        protected override void OnInitialized()
+        {
+            this.SubscribeChange(ViewState);
+
+            base.OnInitialized();
+        }
+
+        public override void Dispose()
+        {
+            this.UnsubscribeChange(ViewState);
+
+            base.Dispose();
+        }
     }
 }

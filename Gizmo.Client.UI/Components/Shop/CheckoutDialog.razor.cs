@@ -23,6 +23,9 @@ namespace Gizmo.Client.UI.Components
         UserCartService UserCartService { get; set; }
 
         [Inject]
+        UserCartViewState ViewState { get; set; }
+
+        [Inject]
         PaymentMethodViewStateLookupService PaymentMethodViewStateLookupService { get; set; }
 
         [Parameter]
@@ -37,13 +40,13 @@ namespace Gizmo.Client.UI.Components
         {
             await CancelCallback.InvokeAsync();
 
-            if (UserCartService.ViewState.IsComplete)
+            if (ViewState.IsComplete)
                 await UserCartService.ResetAsync();
         }
 
         protected override async Task OnInitializedAsync()
         {
-            this.SubscribeChange(UserCartService.ViewState);
+            this.SubscribeChange(ViewState);
 
             _paymentMethods = await PaymentMethodViewStateLookupService.GetStatesAsync();
 
@@ -52,7 +55,8 @@ namespace Gizmo.Client.UI.Components
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(UserCartService.ViewState);
+            this.UnsubscribeChange(ViewState);
+
             base.Dispose();
         }
     }

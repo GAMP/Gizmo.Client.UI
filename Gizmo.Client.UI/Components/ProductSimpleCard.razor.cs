@@ -20,6 +20,9 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         UserCartService UserCartService { get; set; }
 
+        [Inject]
+        UserCartViewState ViewState { get; set; }
+
         [Parameter]
         public UserProductViewState Product { get; set; }
 
@@ -77,13 +80,15 @@ namespace Gizmo.Client.UI.Components
 
         protected override void OnInitialized()
         {
-            this.SubscribeChange(UserCartService.ViewState);
+            this.SubscribeChange(ViewState);
+
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(UserCartService.ViewState);
+            this.UnsubscribeChange(ViewState);
+
             base.Dispose();
         }
 

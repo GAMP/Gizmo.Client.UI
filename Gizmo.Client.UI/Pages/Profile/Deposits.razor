@@ -1,5 +1,5 @@
 ﻿@namespace Gizmo.Client.UI.Pages
-@inherits ComponentBase
+@inherits CustomDOMComponentBase
 @using Gizmo.Client.UI.View.States
 
 <div class="giz-profile">
@@ -14,7 +14,7 @@
             </div>
 
             <div class="giz-table-history">
-                <DataGrid ItemSource="@DepositTransactionsService.ViewState.DepositTransactions.ToList()"
+                <DataGrid ItemSource="@ViewState.DepositTransactions.ToList()"
                           Context="depositTranscations"
                           HasStickyHeader="true"
                           Class="giz-scrollbar--v">

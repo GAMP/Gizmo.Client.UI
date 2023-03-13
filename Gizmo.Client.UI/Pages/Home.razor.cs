@@ -1,5 +1,6 @@
 ﻿using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
@@ -26,6 +27,9 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         HomePageService HomePageService { get; set; }
+
+        [Inject]
+        HomePageViewState ViewState { get; set; }
 
         [Inject()]
         IClientDialogService DialogService { get; set; }
@@ -63,16 +67,14 @@ namespace Gizmo.Client.UI.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            this.SubscribeChange(HomePageService.ViewState);
-
-            //await HomePageService.LoadPopularProductsAsync();
+            this.SubscribeChange(ViewState);
 
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(HomePageService.ViewState);
+            this.UnsubscribeChange(ViewState);
 
             base.Dispose();
         }

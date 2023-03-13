@@ -28,17 +28,16 @@ namespace Gizmo.Client.UI.Pages
         ProductsPageService ShopService { get; set; }
 
         [Inject]
-        UserCartService UserCartService { get; set; }
-
-        #endregion
+        ProductsPageViewState ViewState { get; set; }
 
         [Inject]
         UserProductGroupViewStateLookupService UserProductGroupViewStateLookupService { get; set; }
 
+        #endregion
+
         protected override async Task OnInitializedAsync()
         {
-            this.SubscribeChange(ShopService.ViewState);
-            this.SubscribeChange(UserCartService.ViewState);
+            this.SubscribeChange(ViewState);
 
             var productGroups = await UserProductGroupViewStateLookupService.GetStatesAsync();
 
@@ -49,8 +48,7 @@ namespace Gizmo.Client.UI.Pages
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(ShopService.ViewState);
-            this.UnsubscribeChange(UserCartService.ViewState);
+            this.UnsubscribeChange(ViewState);
 
             base.Dispose();
         }

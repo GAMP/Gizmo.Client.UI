@@ -1,0 +1,15 @@
+﻿@namespace Gizmo.Client.UI.Pages
+@inherits CustomDOMComponentBase
+@layout _Layout_Login
+@using System.Threading;
+@using Microsoft.AspNetCore.Components.Forms
+
+<div class="giz-resend-button">
+    <Button Variant="ButtonVariants.Outline"
+            Size="ButtonSizes.ExtraLarge"
+            IsFullWidth="true"
+            IsDisabled="@(!ViewState.CanResend)"
+            Text="@LocalizationService.GetString("GIZ_GEN_RESEND")"
+            @onclick="@UserRegistrationConfirmationService.SubmitAsync" />
+    <div class="giz-resend-button__time">@string.Format("{0:mm\\:ss}", ViewState.ResendTimeLeft)</div>
+</div>

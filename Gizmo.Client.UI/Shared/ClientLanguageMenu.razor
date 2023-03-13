@@ -6,15 +6,15 @@
 <Select HandleSVGIcon="Icons.Select_Client"
         ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
         TValue="LanguageViewState"
-        Value="ClientLanguagesService.ViewState.SelectedLanguage"
+        Value="ViewState.SelectedLanguage"
         ValueChanged="@ValueChangedHandler"
         Size="InputSizes.Small"
         OpenDirection="PopupOpenDirections.Top"
         Class="giz-client-language-menu"
         PopupClass="giz-scrollbar--v">
-    @if (ClientLanguagesService.ViewState.Languages != null)
+    @if (ViewState.Languages != null)
     {
-        @foreach (var language in ClientLanguagesService.ViewState.Languages)
+        @foreach (var language in ViewState.Languages)
         {
             <SelectItem Value="@language">
                 <div class="giz-icon-select-item">

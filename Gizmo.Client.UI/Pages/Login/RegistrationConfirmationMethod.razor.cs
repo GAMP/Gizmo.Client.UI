@@ -15,7 +15,7 @@ using System.Linq;
 namespace Gizmo.Client.UI.Pages
 {
     [Route(ClientRoutes.RegistrationConfirmationMethodRoute)]
-    public partial class RegistrationConfirmationMethod : ComponentBase
+    public partial class RegistrationConfirmationMethod : CustomDOMComponentBase
     {
         public RegistrationConfirmationMethod()
         {
@@ -71,6 +71,9 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         UserRegistrationConfirmationMethodService UserRegistrationConfirmationMethodService { get; set; }
 
+        [Inject]
+        UserRegistrationConfirmationMethodViewState ViewState { get; set; }
+
         [Inject()]
         IClientDialogService DialogService { get; set; }
 
@@ -81,6 +84,20 @@ namespace Gizmo.Client.UI.Pages
         protected void SetSelectedCountry(int id)
         {
             SelectedCountry = Countries.Where(a => a.Id == id).FirstOrDefault();
+        }
+
+        protected override void OnInitialized()
+        {
+            this.SubscribeChange(ViewState);
+
+            base.OnInitialized();
+        }
+
+        public override void Dispose()
+        {
+            this.UnsubscribeChange(ViewState);
+
+            base.Dispose();
         }
     }
 }

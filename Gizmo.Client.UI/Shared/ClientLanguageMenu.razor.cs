@@ -7,11 +7,11 @@ namespace Gizmo.Client.UI.Shared
 {
     public partial class ClientLanguageMenu : CustomDOMComponentBase
     {
-        [Inject()]
-        public ClientLanguagesService ClientLanguagesService
-        {
-            get; init;
-        }
+        [Inject]
+        public ClientLanguagesService ClientLanguagesService { get; set; }
+
+        [Inject]
+        public ClientLanguagesViewState ViewState { get; set; }
 
         private void ValueChangedHandler(LanguageViewState value)
         {
@@ -20,13 +20,15 @@ namespace Gizmo.Client.UI.Shared
 
         protected override void OnInitialized()
         {
-            this.SubscribeChange(ClientLanguagesService.ViewState);
+            this.SubscribeChange(ViewState);
+
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(ClientLanguagesService.ViewState);
+            this.UnsubscribeChange(ViewState);
+
             base.Dispose();
         }
     }

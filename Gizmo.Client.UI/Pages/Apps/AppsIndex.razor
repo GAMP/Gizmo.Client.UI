@@ -35,7 +35,7 @@
                                 <div>
                                     <div class="giz-section__header__filters__title">@LocalizationService.GetString("GIZ_GEN_RESULTS_FOR")</div>
                                     <div>
-                                        <Chip CanClose="true" OnClose="@(() => ApplicationsPageService.ClearSearchPattern())">@ViewState.SearchPattern</Chip>
+                                        <Chip CanClose="true" OnClose="@(() => AppsPageService.ClearSearchPattern())">@ViewState.SearchPattern</Chip>
                                     </div>
                                 </div>
                             </div>
@@ -47,7 +47,7 @@
                         <div class="giz-apps-filters">
                             @if (ViewState.TotalFilters > 0)
                             {
-                                <Chip CanClose="true" OnClose="@(() => ApplicationsPageService.ClearAllFilters())">
+                                <Chip CanClose="true" OnClose="@(() => AppsPageService.ClearAllFilters())">
                                     <FiltersIcon />
                                     <span>@ViewState.TotalFilters</span>
                                 </Chip>
@@ -58,13 +58,13 @@
                                     Size="InputSizes.Small"
                                     TValue="ApplicationSortingOption"
                                     Value="@ViewState.SelectedSortingOption"
-                                    ValueChanged="@((value) => ApplicationsPageService.SetSelectedSortingOption(value))"
+                                    ValueChanged="@((value) => AppsPageService.SetSelectedSortingOption(value))"
                                     Label="@LocalizationService.GetString("GIZ_GEN_SORT_BY")"
                                     OpenDirection="PopupOpenDirections.Bottom"
                                     MaximumHeight="20.0rem"
                                     Class="@(ViewState.SelectedSortingOption != ApplicationSortingOption.Popularity ? "app-filter--filled" : "app-filter--default")"
                                     PopupClass="giz-scrollbar--v">
-                                @foreach (var item in ApplicationsPageService.ViewState.SortingOptions)
+                                @foreach (var item in ViewState.SortingOptions)
                                 {
                                     <SelectItem Value="@item.Value" Text="@item.DisplayName" />
                                 }
@@ -75,7 +75,7 @@
                                     Size="InputSizes.Small"
                                     TValue="int?"
                                     Value="@ViewState.SelectedCategoryId"
-                                    ValueChanged="@((value) => @ApplicationsPageService.SetSelectedApplicationCategory(value))"
+                                    ValueChanged="@((value) => AppsPageService.SetSelectedApplicationCategory(value))"
                                     Label="@LocalizationService.GetString("GIZ_APPS_CATEGORY")"
                                     OpenDirection="PopupOpenDirections.Bottom"
                                     MaximumHeight="20.0rem"
@@ -92,7 +92,7 @@
                                          Size="InputSizes.Small"
                                          TValue="ApplicationModes"
                                          Value="@ViewState.SelectedExecutableModes.ToList()"
-                                         ValueChanged="@((value) => ApplicationsPageService.SetSelectedSelectedExecutableModes(value))"
+                                         ValueChanged="@((value) => AppsPageService.SetSelectedSelectedExecutableModes(value))"
                                          Label="@LocalizationService.GetString("GIZ_APPS_PARAMETERS")"
                                          OpenDirection="PopupOpenDirections.Bottom"
                                          CanClearValue="true"

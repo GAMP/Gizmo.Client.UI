@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -15,20 +16,22 @@ namespace Gizmo.Client.UI.Pages
         UserRegistrationConfirmationService UserRegistrationConfirmationService { get; set; }
 
         [Inject]
-        UserRegistrationConfirmationMethodService UserRegistrationConfirmationMethodService { get; set; }
+        UserRegistrationConfirmationViewState ViewState { get; set; }
 
         [Inject]
         NavigationService NavigationService { get; set; }
 
         protected override void OnInitialized()
         {
-            this.SubscribeChange(UserRegistrationConfirmationMethodService.ViewState);
+            this.SubscribeChange(ViewState);
+
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(UserRegistrationConfirmationMethodService.ViewState);
+            this.UnsubscribeChange(ViewState);
+
             base.Dispose();
         }
     }

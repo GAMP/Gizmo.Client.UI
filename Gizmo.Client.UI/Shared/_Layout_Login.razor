@@ -22,7 +22,7 @@
                         <img alt="loading">
                     </div>*@
                 </div>
-                <div class="giz-nav-title">@HostService.ViewState.HostNumber</div>
+                <Layout_LoginHostNumber />
             </div>
 
             <div class="giz-login__adv__body">
@@ -52,7 +52,7 @@
                 <ClientLanguageMenu />
 
                 <div class="giz-server">
-                    <Gizmo.Web.Components.Icon SVGIcon="Web.Components.Icons.DNS" Class="@(!HostService.ViewState.IsConnected ? "giz-server__icon disconnected" : "giz-server__icon")" />
+                    <Layout_LoginServerConnection />
                     <div class="giz-version">
                         <div class="giz-version__title">@LocalizationService.GetString("GIZ_SYSTEM_VERSION")</div>
                         <div class="giz-version__version">2.457.002A</div>
@@ -65,15 +65,5 @@
         </div>
     </div>
     <DialogHost />
-    @if (HostService.ViewState.IsLocked)
-    {
-        <div class="giz-login-overlay" @onclick="@(() => HostService.SetHostLockStateAsync(false))">
-            <div class="giz-host-locked">
-                <div class="giz-host-locked__message">
-                    <Icon Size="IconSizes.Large" SVGIcon="Icons.Lock_Client" />
-                    <div>@LocalizationService.GetString("GIZ_SYSTEM_LOCKED")</div>
-                </div>
-            </div>
-        </div>
-    }
+    <Layout_LoginLock />
 </main>

@@ -8,10 +8,10 @@ namespace Gizmo.Client.UI.Components
     public partial class InputLanguageMenu : CustomDOMComponentBase
     {
         [Inject()]
-        public InputLanguagesService InputLanguagesService
-        {
-            get; init;
-        }
+        public InputLanguagesService InputLanguagesService { get; set; }
+
+        [Inject()]
+        public InputLanguagesViewState ViewState { get; set; }
 
         private void ValueChangedHandler(RegionViewState value)
         {
@@ -20,13 +20,15 @@ namespace Gizmo.Client.UI.Components
 
         protected override void OnInitialized()
         {
-            this.SubscribeChange(InputLanguagesService.ViewState);
+            this.SubscribeChange(ViewState);
+
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(InputLanguagesService.ViewState);
+            this.UnsubscribeChange(ViewState);
+
             base.Dispose();
         }
     }
