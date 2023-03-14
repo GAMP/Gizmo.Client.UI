@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Timers;
 
 using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 
 using Microsoft.AspNetCore.Components;
@@ -30,6 +31,9 @@ namespace Gizmo.Client.UI.Components
 
         [Inject]
         AdvertisementsService AdvertisementsService { get; set; }
+
+        [Inject]
+        AdvertisementsViewState ViewState { get; set; }
 
         [Parameter]
         public int SelectedIndex
@@ -241,16 +245,16 @@ namespace Gizmo.Client.UI.Components
             return base.OnFirstAfterRenderAsync();
         }
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            this.SubscribeChange(AdvertisementsService.ViewState);
+            this.SubscribeChange(ViewState);
 
-            await base.OnInitializedAsync();
+            base.OnInitialized();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(AdvertisementsService.ViewState);
+            this.UnsubscribeChange(ViewState);
 
             if (_timer != null)
             {

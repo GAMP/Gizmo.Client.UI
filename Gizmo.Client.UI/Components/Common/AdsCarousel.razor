@@ -5,14 +5,14 @@
     <CascadingValue Value="@this" IsFixed="true">
         <div class="giz-ads-carousel__body">
 
-            @foreach (var item in AdvertisementsService.ViewState.Advertisements)
+            @foreach (var item in ViewState.Advertisements)
             {
                 <AdsCarouselItem AdvertisementId="@item.Id"/>
             }
 
-            @if (AdvertisementsService.ViewState.AdvertisementsCount > 2)
+            @if (ViewState.AdvertisementsCount > 2)
             {
-                @foreach (var item in AdvertisementsService.ViewState.Advertisements)
+                @foreach (var item in ViewState.Advertisements)
                 {
                     <AdsCarouselItem AdvertisementId="@item.Id" Duplicate="true" />
                 }
@@ -21,7 +21,7 @@
         </div>
         <div class="giz-ads-carousel__navigation">
             <div class="giz-ads-carousel__navigation__indicators">
-                <AdsCarouselIndicator Maximum="5" Size="@(AdvertisementsService.ViewState.AdvertisementsCount)" SelectedIndex="@SelectedIndex" SelectedIndexChanged="SelectedIndexChangedHandler" />
+                <AdsCarouselIndicator Maximum="5" Size="@(ViewState.AdvertisementsCount)" SelectedIndex="@SelectedIndex" SelectedIndexChanged="SelectedIndexChangedHandler" />
             </div>
         </div>
     </CascadingValue>

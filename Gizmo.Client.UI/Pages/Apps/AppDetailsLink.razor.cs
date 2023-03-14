@@ -14,15 +14,17 @@ namespace Gizmo.Client.UI.Pages
 
         #endregion
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             this.SubscribeChange(Link);
-            await base.OnInitializedAsync();
+
+            base.OnInitialized();
         }
 
         public override void Dispose()
         {
             this.UnsubscribeChange(Link);
+
             base.Dispose();
         }
     }

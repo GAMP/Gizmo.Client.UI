@@ -59,10 +59,10 @@ namespace Gizmo.Client.UI.Shared
             base.OnInitialized();
         }
 
-        //protected override bool ShouldRender()
-        //{
-        //    return _shouldRender;
-        //}
+        protected override bool ShouldRender()
+        {
+            return true; //TODO: A _shouldRender
+        }
 
         public override async Task SetParametersAsync(ParameterView parameters)
         {

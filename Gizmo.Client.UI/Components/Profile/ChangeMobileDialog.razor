@@ -5,7 +5,7 @@
 <HostedDialog>
     <div class="giz-client-dialog giz-change-mobile-dialog">
         <div class="giz-client-dialog__header">
-            <div class="giz-client-dialog__header__title">Update number</div>
+            <div class="giz-client-dialog__header__title">@LocalizationService.GetString("UPDATE_NUMBER")</div>
             <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
         </div>
         @switch (ViewState.PageIndex)
@@ -13,7 +13,7 @@
             case 0:
 
                 <div class="giz-client-dialog__body">
-                    <div class="giz-change-mobile-dialog-message">Enter the number you’d like to use. To make sure this number is yours, will send you a verification code.</div>
+                    <div class="giz-change-mobile-dialog-message">@LocalizationService.GetString("UPDATE_NUMBER_MESSAGE")</div>
                     <EditForm EditContext="@UserChangeMobileService.EditContext">
                         <div class="giz-registration-form-input">
                             <IconSelect IsTransparent="true"
@@ -23,7 +23,7 @@
                                         @bind-SelectedItem="@SelectedCountry"
                                         Size="InputSizes.Medium"
                                         IsFullWidth="true"
-                                        Label="Country"
+                                        Label="@LocalizationService.GetString("GIZ_USER_COUNTRY")"
                                         OpenDirection="PopupOpenDirections.Cursor"
                                         Class="giz-input-language-menu"
                                         PopupClass="giz-scrollbar--v" />
@@ -36,7 +36,7 @@
                                              ValueExpression="@(() => ViewState.MobilePhone)"
                                              Size="InputSizes.Medium"
                                              IsFullWidth="true"
-                                             Label="Phone number" />
+                                             Label="@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
                         </div>
                     </EditForm>
                 </div>
@@ -49,7 +49,7 @@
                             }
                             else
                             {
-                                <div>Get Code</div>
+                                <div>@LocalizationService.GetString("GET_CODE")</div>
                             }
                         </ChildContent>
                     </Button>
@@ -60,7 +60,7 @@
             case 1:
 
                 <div class="giz-client-dialog__body">
-                    <div class="giz-change-mobile-dialog-message">We just sent you an SMS with a code. Enter it to verify your phone.</div>
+                    <div class="giz-change-mobile-dialog-message">@LocalizationService.GetString("UPDATE_NUMBER_SUCCESS_MESSAGE")</div>
                     <div class="giz-change-mobile-dialog-mobile">TODO: A...</div>
                     <EditForm EditContext="@UserChangeMobileService.EditContext">
                         <div class="giz-form-input">
@@ -70,12 +70,12 @@
                                        ValueExpression="@(() => ViewState.ConfirmationCode)"
                                        Size="InputSizes.Medium"
                                        IsFullWidth="true"
-                                       Label="Enter the code" />
+                                       Label="@LocalizationService.GetString("ENTER_THE_CODE")" />
                         </div>
                     </EditForm>
                 </div>
                 <div class="giz-client-dialog__footer">
-                    <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => UserChangeMobileService.VerifyAsync())">Verify</Button>
+                    <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => UserChangeMobileService.VerifyAsync())">@LocalizationService.GetString("GIZ_GEN_VERIFY")</Button>
                     <div class="giz-resend-button">
                         <Button Variant="ButtonVariants.Outline"
                                 Size="ButtonSizes.Large"
