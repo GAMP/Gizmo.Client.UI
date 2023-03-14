@@ -43,12 +43,13 @@
                     <div class="giz-section">
                         <ProductsIndexSectionHeader @key="productGroup.Key" ProductGroupId="@productGroup.Key" />
                         <div class="giz-section__body">
-                            <div class="giz-shop__products__list">
-                                @foreach (var product in productGroup)
-                                {
-                                    <ProductCard @key="product.Id" Product="@product" />
-                                }
-                            </div>
+                                <ProductCards Products="productGroup"/>
+                            @*<div class="giz-shop__products__list">
+                                    @foreach (var product in productGroup)
+                                    {
+                                        <ProductCard @key="product.Id" Product="@product" />
+                                    }
+                                </div>*@
                         </div>
                     </div>
                 }

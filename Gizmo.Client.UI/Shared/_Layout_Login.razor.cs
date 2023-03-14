@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.ViewModels;
+﻿using Gizmo.Client.UI.View.States;
+using Gizmo.Client.UI.ViewModels;
 using Gizmo.UI.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
@@ -35,6 +36,15 @@ namespace Gizmo.Client.UI.Shared
 
                 NewsFeeds.Add(mediaItem);
             }
+        }
+
+        /// <summary>
+        /// Gets client version view state.
+        /// </summary>
+        [Inject()]
+        private ClientVersionViewState ClientVersionViewState
+        {
+            get; set;
         }
 
         [Inject]
