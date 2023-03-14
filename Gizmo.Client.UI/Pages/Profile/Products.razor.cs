@@ -15,13 +15,11 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         TimeProductsViewState ViewState { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            await TimeProductsService.LoadTimeProductsAsync();
-
             this.SubscribeChange(ViewState);
 
-            await base.OnInitializedAsync();
+            base.OnInitialized();
         }
 
         public override void Dispose()

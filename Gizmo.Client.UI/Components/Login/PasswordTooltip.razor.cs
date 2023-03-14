@@ -76,12 +76,12 @@ namespace Gizmo.Client.UI.Components
         private string GetPasswordDescription()
         {
             if (_rulesPassed == 4)
-                return "Secure Password";
+                return "Secure Password"; //TODO: A TRANSLATION
 
             if (!_lengthRulePassed)
-                return "Password is too short";
+                return "Password is too short"; //TODO: A TRANSLATION
 
-            return "Password is too easy";
+            return "Password is too easy"; //TODO: A TRANSLATION
         }
 
 

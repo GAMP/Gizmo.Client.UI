@@ -50,9 +50,9 @@ namespace Gizmo.Client.UI.Shared
 		}
 
 		protected override bool ShouldRender()
-		{
-			return _shouldRender;
-		}
+        {
+            return true; //TODO: A _shouldRender
+        }
 
 		protected override async Task OnAfterRenderAsync(bool firstRender)
 		{

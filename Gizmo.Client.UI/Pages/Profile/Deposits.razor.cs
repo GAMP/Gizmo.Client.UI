@@ -15,13 +15,6 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         DepositTransactionsViewState ViewState { get; set; }
 
-        protected override async Task OnInitializedAsync()
-        {
-            await DepositTransactionsService.LoadDepositTransactionsAsync();
-
-            await base.OnInitializedAsync();
-        }
-
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);

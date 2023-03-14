@@ -13,25 +13,18 @@
         }
         else
         {
-            <img src="_content/Gizmo.Client.UI/img/Chrome-icon_1.png" alt="loading" />
+            <img src="_content/Gizmo.Client.UI/img/no-exe-image.png" alt="loading" />
         }
 	</div>
 
     <GizDockItemExecutionState @key="Executable.ExecutableId" />
 
-	<div class="giz-dock-item-tooltip-wrapper @(_isOpen ? "giz-dock-item-tooltip-wrapper--visible" : "")"
-		 @onmouseover="OnMouseOverTooltipHandler"
-		 @onmouseout="OnMouseOutTooltipHandler">
-		<div class="giz-dock-item-tooltip">
-			<div class="giz-dock-item-tooltip__header">
-				Teamspeak 3 Client
-			</div>
-			<div class="giz-dock-item-tooltip__body">
-				Teamspeak
-			</div>
-			<div class="giz-dock-item-tooltip__actions">
-				<Button Variant="ButtonVariants.Outline" Text="Details" />
-			</div>
-		</div>
-	</div>
+    <div class="giz-dock-item-tooltip-wrapper @(_isOpen ? "giz-dock-item-tooltip-wrapper--visible" : "")"
+         @onmouseover="OnMouseOverTooltipHandler"
+         @onmouseout="OnMouseOutTooltipHandler">
+
+        <GizDockItemTooltip Executable="@Executable" />
+
+    </div>
+	
 </div>

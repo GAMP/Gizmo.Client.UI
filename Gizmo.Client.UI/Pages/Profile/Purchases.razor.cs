@@ -22,13 +22,11 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         PurchasesViewState ViewState { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            await PurchasesService.LoadPurchasesAsync();
-
             this.SubscribeChange(ViewState);
 
-            await base.OnInitializedAsync();
+            base.OnInitialized();
         }
 
         public override void Dispose()
