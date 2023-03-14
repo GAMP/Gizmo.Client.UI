@@ -26,12 +26,14 @@ namespace Gizmo.Client.UI.Shared
 		protected override void OnInitialized()
 		{
 			this.SubscribeChange(Notification); //TODO: A WE NEED TO UPDATE _shouldRender FROM SubscribeChange.
+
 			base.OnInitialized();
 		}
 
 		public override void Dispose()
 		{
 			this.UnsubscribeChange(Notification);
+
 			base.Dispose();
 		}
 

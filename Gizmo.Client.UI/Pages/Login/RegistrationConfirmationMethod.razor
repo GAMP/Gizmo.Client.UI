@@ -27,16 +27,16 @@
             }
             @if (ViewState.ConfirmationMethod == View.UserRegistrationMethod.MobilePhone)
             {
-                <div class="giz-login-subtitle--sign-up">Please confirm your country code and enter your phone number to create an account.</div>
+                <div class="giz-login-subtitle--sign-up">@LocalizationService.GetString("GIZ_REGISTRATION_MOBILE_CONFIRMATION_MESSAGE")</div>
                 <div class="giz-registration-form-input">
-                    <IconSelect Placeholder="Search"
+                    <IconSelect Placeholder="@LocalizationService.GetString("GIN_GEN_SEARCH")"
                                 HandleSVGIcon="Icons.Select_Client"
                                 TValue="IconSelectCountry"
                                 ItemSource="@Countries"
                                 @bind-SelectedItem="@SelectedCountry"
                                 Size="InputSizes.Medium"
                                 IsFullWidth="true"
-                                Label="Country"
+                                Label="@LocalizationService.GetString("GIZ_USER_COUNTRY")"
                                 OpenDirection="PopupOpenDirections.Bottom"
                                 Class="giz-input-language-menu"
                                 PopupClass="giz-scrollbar--v" />
@@ -48,7 +48,7 @@
                                      ValueExpression="@(() => ViewState.MobilePhone)"
                                      Size="InputSizes.Medium"
                                      IsFullWidth="true"
-                                     Label="Phone number" />
+                                     Label="@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
                 </div>
             }
             <div>

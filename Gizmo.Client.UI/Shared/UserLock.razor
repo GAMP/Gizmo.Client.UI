@@ -7,8 +7,8 @@
         <div class="giz-user-lock-overlay open">
             <div class="giz-user-lock-wrapper">
                 <div class="giz-user-lock">
-                    <div class="giz-user-lock__title">Profile Lock</div>
-                    <div class="giz-user-lock__subtitle">Lock this profile by creating a 4-digit pin. Memorize or write it down.</div>
+                    <div class="giz-user-lock__title">@LocalizationService.GetString("USER_LOCK_SCREEN_TITLE")</div>
+                    <div class="giz-user-lock__subtitle">@LocalizationService.GetString("USER_LOCK_SCREEN_SUBTITLE")</div>
                     <div class="giz-user-lock__code">
                         <TextInput IsTransparent="true"
                                    Value="@ViewState.InputPassword"
@@ -27,8 +27,8 @@
                         <Button Color="ButtonColors.Primary" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.DeleteDigitAsync())" LeftSVGIcon="Icons.Backspace"></Button>
                     </div>
                     <div class="giz-user-lock__actions">
-                        <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.SetPasswordAsync())">Save</Button>
-                        <Button Color="ButtonColors.Accent" Variant="ButtonVariants.Outline" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.CancelLockAsync())">Cancel</Button>
+                        <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.SetPasswordAsync())">@LocalizationService.GetString("GIZ_GEN_SAVE")</Button>
+                        <Button Color="ButtonColors.Accent" Variant="ButtonVariants.Outline" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.CancelLockAsync())">@LocalizationService.GetString("GIZ_GEN_CANCEL")</Button>
                     </div>
                     <div class="giz-user-lock__note"></div>
                 </div>
@@ -44,8 +44,8 @@ else
             <div class="giz-user-lock-overlay open">
                 <div class="giz-user-lock-wrapper">
                     <div class="giz-user-lock @(!string.IsNullOrEmpty(ViewState.Error) ? "error" : "")">
-                        <div class="giz-user-lock__title">Enter you PIN to access this profile</div>
-                        <div class="giz-user-lock__subtitle">Profile Lock is currently on</div>
+                        <div class="giz-user-lock__title">@LocalizationService.GetString("USER_LOCK_SCREEN_LOCKED_TITLE")</div>
+                        <div class="giz-user-lock__subtitle">@LocalizationService.GetString("USER_LOCK_SCREEN_LOCKED_SUBTITLE")</div>
                         <div class="giz-user-lock__code">
                             <TextInput IsTransparent="true"
                                        Value="@ViewState.InputPassword"
@@ -65,9 +65,9 @@ else
                             <Button Color="ButtonColors.Primary" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.DeleteDigitAsync())" LeftSVGIcon="Icons.Backspace"></Button>
                         </div>
                         <div class="giz-user-lock__actions">
-                            <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.UnlockAsync())">Enter Code to Continue</Button>
+                            <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.UnlockAsync())">@LocalizationService.GetString("USER_LOCK_SCREEN_ENTER_CODE")</Button>
                         </div>
-                        <div class="giz-user-lock__note">Forgot PIN</div>
+                        <div class="giz-user-lock__note">@LocalizationService.GetString("USER_LOCK_SCREEN_FORGOT_PIN")</div>
                     </div>
                 </div>
             </div>

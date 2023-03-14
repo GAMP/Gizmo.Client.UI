@@ -67,11 +67,11 @@ namespace Gizmo.Client.UI.Pages
 
         #endregion
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
 
-            await base.OnInitializedAsync();
+            base.OnInitialized();
         }
 
         public override void Dispose()

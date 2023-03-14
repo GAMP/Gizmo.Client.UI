@@ -1,5 +1,6 @@
 ﻿using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 
@@ -7,6 +8,9 @@ namespace Gizmo.Client.UI.Shared
 {
     public partial class UserLock : CustomDOMComponentBase
     {
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
         [Inject]
         UserLockService UserLockService { get; set; }
 
