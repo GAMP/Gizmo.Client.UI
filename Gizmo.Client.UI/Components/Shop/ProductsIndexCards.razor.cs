@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class ProductCards : CustomDOMComponentBase
+    public partial class ProductsIndexCards : CustomDOMComponentBase
     {
         [Parameter]
         public IEnumerable<UserProductViewState> Products { get; set; } = Enumerable.Empty<UserProductViewState>();

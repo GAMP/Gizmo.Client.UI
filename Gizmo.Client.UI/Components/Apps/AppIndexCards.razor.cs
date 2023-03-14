@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class ApplicationCards : CustomDOMComponentBase
+    public partial class AppIndexCards : CustomDOMComponentBase
     {
         [Inject()]
         IClientDialogService DialogService { get; set; }

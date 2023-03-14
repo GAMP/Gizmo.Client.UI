@@ -2,8 +2,8 @@
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @inherits CustomDOMComponentBase
 
-<Virtualize Items="Products.Chunk(6).ToArray()" Context="chunkedProducts">
-    <div class="virtual-chunk-grid">
+<Virtualize Items="Products.Chunk(7).ToArray()" Context="chunkedProducts">
+    <div class="virtual-chunk-grid home">
         @for (int i = 0; i < chunkedProducts.Length; i++)
         {
             <ProductCard @key="chunkedProducts[i].Id" Product="chunkedProducts[i]" />

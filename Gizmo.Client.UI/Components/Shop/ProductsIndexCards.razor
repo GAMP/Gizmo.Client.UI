@@ -1,0 +1,12 @@
+﻿@namespace Gizmo.Client.UI.Components
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@inherits CustomDOMComponentBase
+
+<Virtualize Items="Products.Chunk(4).ToArray()" Context="chunkedProducts">
+    <div class="virtual-chunk-grid shop">
+        @for (int i = 0; i < chunkedProducts.Length; i++)
+        {
+            <ProductCard @key="chunkedProducts[i].Id" Product="chunkedProducts[i]" />
+        }
+    </div>
+</Virtualize>
