@@ -48,20 +48,22 @@ namespace Gizmo.Client.UI.Pages
 
         #region METHODS
 
-        public async Task OpenExecutableSelector(int id)
-        {
-            var s = await DialogService.ShowExecutableSelectorDialogAsync(id);
-            if (s.Result == DialogAddResult.Success)
-            {
-                try
-                {
-                    var result = await s.WaitForDialogResultAsync();
-                }
-                catch (OperationCanceledException)
-                {
-                }
-            }
-        }
+        //TODO: To delete
+
+        //public async Task OpenExecutableSelector(int id)
+        //{
+        //    var s = await DialogService.ShowExecutableSelectorDialogAsync(id);
+        //    if (s.Result == DialogAddResult.Success)
+        //    {
+        //        try
+        //        {
+        //            var result = await s.WaitForDialogResultAsync();
+        //        }
+        //        catch (OperationCanceledException)
+        //        {
+        //        }
+        //    }
+        //}
 
         #endregion
 

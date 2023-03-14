@@ -107,14 +107,15 @@
                         </div>
                     </div>
                     <div class="giz-section__body">
-                        @if (ViewState.Applications.Count() > 0)
+                        @if (ViewState.Applications.Any())
                         {
-                            <div class="giz-apps__app-wrapper">
-                                @foreach (var app in ViewState.Applications)
-                                {
-                                    <ApplicationCard @key="app.ApplicationId" Application="@app" OnOpenExecutableSelector="@OpenExecutableSelector" />
-                                }
-                            </div>
+                            <ApplicationCards Applications="ViewState.Applications"/>
+                            @*<div class="giz-apps__app-wrapper">
+                                    @foreach (var app in ViewState.Applications)
+                                    {
+                                        <ApplicationCard @key="app.ApplicationId" Application="@app" OnOpenExecutableSelector="@OpenExecutableSelector" />
+                                    }
+                                </div>*@
                         }
                         else
                         {
