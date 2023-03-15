@@ -26,7 +26,16 @@
             } 
         }
     </div>
-    <div class="giz-global-search-result-card__category">Gaming</div>
+    <div class="giz-global-search-result-card__category">
+        @if (Result.Type == View.SearchResultTypes.Applications)
+        {
+            <HeaderGlobalSearchResultCardAppCategory @key="Result" ApplicationCategoryId="@Result.CategoryId" />
+        }
+        else
+        {
+            <HeaderGlobalSearchResultCardProductGroup @key="Result" ProductGroupId="@Result.CategoryId" />
+        }
+    </div>
     <div class="giz-global-search-result-card__title">@Result.Name</div>
     <div class="giz-global-search-result-card__action">
         <Button Variant="ButtonVariants.Outline" @onclick="OnClickActionButtonHandler">@(Result.Type == View.SearchResultTypes.Applications ? @LocalizationService.GetString("GIZ_GLOBAL_SEARCH_LAUNCH") : @LocalizationService.GetString("GIZ_GLOBAL_SEARCH_ADD_TO_CART"))</Button>

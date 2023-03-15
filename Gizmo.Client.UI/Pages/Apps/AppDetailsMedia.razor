@@ -1,0 +1,9 @@
+﻿@namespace Gizmo.Client.UI.Pages
+@inherits CustomDOMComponentBase
+
+<ClientTab ControlsPosition="TabControlsPositions.Internal">
+    @foreach (var link in _appLinksViewState)
+    {
+        <AppDetailsLink Link="@link" @key="link.AppLinkId" />
+    }
+</ClientTab>

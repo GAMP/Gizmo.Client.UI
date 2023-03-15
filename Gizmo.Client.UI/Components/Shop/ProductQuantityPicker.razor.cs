@@ -24,7 +24,10 @@ namespace Gizmo.Client.UI.Components
         public int ProductId { get; set; }
 
         [Parameter]
-        public ButtonSizes PikerSize { get; set; } = ButtonSizes.Medium;
+        public ButtonSizes Size { get; set; } = ButtonSizes.Medium;
+
+        [Parameter]
+        public bool IsFullWidth { get; set; } = true;
 
         [Parameter]
         public EventCallback<MouseEventArgs> OnClick { get; set; }

@@ -101,7 +101,14 @@
                     </ClientTab>
                 </div>
                 <div class="giz-app-details__app__info__additional-content__media">
-                    <AppDetailsLinks ApplicationId="@ApplicationId" @key="ApplicationId" />
+                    @if (_selectedTabIndex == 0)
+                    {
+                        <AppDetailsMedia ApplicationId="@ApplicationId" @key="ApplicationId" />
+                    }
+                    else
+                    {
+                        <AppDetailsLinks ApplicationId="@ApplicationId" @key="ApplicationId" />
+                    }
                 </div>
             </div>
 

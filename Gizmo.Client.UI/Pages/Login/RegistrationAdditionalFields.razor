@@ -16,7 +16,7 @@
     <CardBody>
         <EditForm EditContext="@UserRegistrationAdditionalFieldsService.EditContext">
             <div class="giz-login-title">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
-            @if (ViewState.DefaultUserGroupRequiredInfo.Country)
+            @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.Country)
             {
                 @if (UserRegistrationConfirmationMethodViewState.ConfirmationMethod != View.UserRegistrationMethod.MobilePhone)@*TODO:*@
                 {
@@ -35,7 +35,7 @@
                     </div>
                 }
             }
-            @if (ViewState.DefaultUserGroupRequiredInfo.Address)
+            @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.Address)
             {
                 <div class="giz-registration-form-input">
                     <TextInput Value="@ViewState.Address"
@@ -46,7 +46,7 @@
                                Label="@LocalizationService.GetString("GIZ_USER_ADDRESS")" />
                 </div>
             }
-            @if (ViewState.DefaultUserGroupRequiredInfo.PostCode)
+            @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.PostCode)
             {
                 <div class="giz-registration-form-input">
                     <TextInput Value="@ViewState.PostCode"
@@ -57,7 +57,7 @@
                                Label="@LocalizationService.GetString("GIZ_USER_POST_CODE")" />
                 </div>
             }
-            @if (ViewState.DefaultUserGroupRequiredInfo.Mobile)
+            @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.Mobile)
             {
                 @if (UserRegistrationConfirmationMethodViewState.ConfirmationMethod != View.UserRegistrationMethod.MobilePhone)
                 {
