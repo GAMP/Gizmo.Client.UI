@@ -1,25 +1,26 @@
 //=============== Spinner ================//
 
 .giz-animate-spinner {
+  height: 100%;
+
+  svg {
     height: 100%;
+    width: 100%;
+    color: #ffffff;
+    vertical-align: baseline;
+  }
 
-    svg {
-        height: 100%;
-        color: #FFFFFF;
-        vertical-align: baseline;
+  .giz-spinner {
+    animation: rotator 1s linear infinite;
+  }
+
+  @keyframes rotator {
+    0% {
+      transform: rotate(0deg);
     }
 
-    .giz-spinner {
-        animation: rotator 1s linear infinite;
+    100% {
+      transform: rotate(360deg);
     }
-
-    @keyframes rotator {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
-    }
+  }
 }

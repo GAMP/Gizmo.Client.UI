@@ -1,4 +1,16 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits ComponentBase
 
-<img @ref="ElementReference" alt="Loading..." />
+@if(Placeholder is not null)
+{
+    <span>
+        @Placeholder
+    </span>
+}
+else
+{
+    <span class="giz-animate-spinner">
+        <SpinnerIcon />
+    </span>
+}
+<img @ref="ElementReference" hidden/>
