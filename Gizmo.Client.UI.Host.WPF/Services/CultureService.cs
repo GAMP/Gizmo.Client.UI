@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
-using Gizmo.Client.Interfaces;
+using Gizmo.UI;
 
 namespace Gizmo.Client.UI.Host.WPF
 {

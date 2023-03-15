@@ -1,16 +1,11 @@
-﻿using Gizmo.Client.Interfaces;
-using Gizmo.Client.UI.Services;
+﻿using Gizmo.Client.UI.Services;
 using Gizmo.UI;
-using Gizmo.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Globalization;
 using System.IO;
-using System.Threading;
 using System.Windows;
-using System.Windows.Input;
 
 namespace Gizmo.Client.UI.Host.WPF
 {
