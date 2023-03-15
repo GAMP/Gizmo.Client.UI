@@ -1,12 +1,11 @@
-﻿using Gizmo.Client.UI.Services;
+﻿using System;
+using System.Threading.Tasks;
+using Gizmo.Client.UI.Services;
+using Gizmo.UI;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Components.Web;
-using Gizmo.UI;
-using Gizmo.Client.Interfaces;
 
 namespace Gizmo.Client.UI.Host.Web
 {
@@ -23,7 +22,7 @@ namespace Gizmo.Client.UI.Host.Web
 
             hostBuilder.Configuration.AddClientConfigurationSource();
             hostBuilder.Services.AddClientOptions(hostBuilder.Configuration);
-  
+
             #endregion
 
             #region LOGGING
@@ -44,13 +43,13 @@ namespace Gizmo.Client.UI.Host.Web
             hostBuilder.Services.AddSingleton<IInputLanguageService, InputLanguagesService>();
             hostBuilder.Services.AddSingleton<ICultureService, CultureService>();
             hostBuilder.Services.AddSingleton<IGizmoClient, TestClient>();
-            hostBuilder.Services.AddSingleton<IImageService,ImageService>();
+            hostBuilder.Services.AddSingleton<IImageService, ImageService>();
 
             var host = hostBuilder.Build();
 
-            await host.Services.InitializeClientServices();     
+            await host.Services.InitializeClientServices();
 
             await host.RunAsync();
         }
-    }    
+    }
 }
