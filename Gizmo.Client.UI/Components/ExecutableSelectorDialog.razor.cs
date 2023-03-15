@@ -27,7 +27,7 @@ namespace Gizmo.Client.UI.Components
         public EventCallback CancelCallback { get; set; }
 
 
-        private IEnumerable<AppExeViewState> _executables;
+        private IEnumerable<AppExeViewState> _executables = Enumerable.Empty<AppExeViewState>();
 
         protected override async Task OnParametersSetAsync()
         {

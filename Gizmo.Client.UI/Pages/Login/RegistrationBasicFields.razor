@@ -42,14 +42,14 @@
                                Label="@LocalizationService.GetString("GIZ_GEN_CONFIRM_PASSWORD")" />
             </div>
             <div class="giz-registration-form-input giz-form-input-columns">
-                @if (ViewState.DefaultUserGroupRequiredInfo.FirstName)
+                @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.FirstName)
                 {
                     <TextInput TValue="string"
                                Size="InputSizes.Small"
                                IsFullWidth="true"
                                Label="@LocalizationService.GetString("GIZ_USER_FIRST_NAME")" />
                 }
-                @if (ViewState.DefaultUserGroupRequiredInfo.LastName)
+                @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.LastName)
                 {
                     <TextInput TValue="string"
                                Size="InputSizes.Small"
@@ -58,11 +58,11 @@
                 }
             </div>
             <div class="giz-registration-form-input giz-form-input-columns">
-                @if (ViewState.DefaultUserGroupRequiredInfo.BirthDate)
+                @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.BirthDate)
                 {
                     <MaskedDateInput TValue="string" Size="InputSizes.Small" IsFullWidth="true" Label="@LocalizationService.GetString("GIZ_USER_BIRTH_DATE")" />
                 }
-                @if (ViewState.DefaultUserGroupRequiredInfo.Sex)
+                @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.Sex)
                 {
                     <Select HandleSVGIcon="Icons.Select_Client" TValue="Sex" Size="InputSizes.Small" IsFullWidth="true" Label="@LocalizationService.GetString("GIZ_USER_GENDER")" OpenDirection="PopupOpenDirections.Cursor" PopupClass="giz-scrollbar--v">
                         <SelectItem Value="@Sex.Unspecified" Text="Unspecified" />
@@ -71,7 +71,7 @@
                     </Select>
                 }
             </div>
-            @if (ViewState.DefaultUserGroupRequiredInfo.Email)
+            @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.Email)
             {
                 @if (UserRegistrationConfirmationMethodViewState.ConfirmationMethod != View.UserRegistrationMethod.Email)@*TODO:*@
                 {

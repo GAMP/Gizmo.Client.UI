@@ -5,10 +5,10 @@
 {
     @if (_productItemViewState.Quantity == 0)
     {
-        <Button Color="ButtonColors.Accent" Class="giz-product-card-primary-button" Size="ButtonSizes.Medium" IsFullWidth="true" @onclick="OnAddQuantityButtonClickHandlerAsync" Text="@LocalizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
+        <Button Color="ButtonColors.Accent" Class="giz-product-card-primary-button" Size="@Size" IsFullWidth="@IsFullWidth" @onclick="OnAddQuantityButtonClickHandlerAsync" Text="@LocalizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
     }
     else
     {
-        <QuantityPicker Size="@PikerSize" Quantity="@_productItemViewState.Quantity" OnAddQuantityButtonClick="OnAddQuantityButtonClickHandlerAsync" OnRemoveQuantityButtonClick="OnRemoveQuantityButtonClickHandler" OnClick="@((args) => OnClick.InvokeAsync(args))" />
+        <QuantityPicker Size="@Size" Quantity="@_productItemViewState.Quantity" OnAddQuantityButtonClick="OnAddQuantityButtonClickHandlerAsync" OnRemoveQuantityButtonClick="OnRemoveQuantityButtonClickHandler" OnClick="@((args) => OnClick.InvokeAsync(args))" />
     }
 }

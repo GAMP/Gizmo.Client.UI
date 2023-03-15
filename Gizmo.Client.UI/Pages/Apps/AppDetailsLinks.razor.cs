@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gizmo.Client.UI.View.Services;
@@ -10,7 +11,7 @@ namespace Gizmo.Client.UI.Pages
 {
     public partial class AppDetailsLinks : CustomDOMComponentBase
     {
-        private IEnumerable<AppLinkViewState> _appLinksViewState;
+        private IEnumerable<AppLinkViewState> _appLinksViewState = Enumerable.Empty<AppLinkViewState>();
 
         #region PROPERTIES
 
@@ -24,10 +25,17 @@ namespace Gizmo.Client.UI.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            var appLinks = await AppLinkViewStateLookupService.GetStatesAsync();
-            _appLinksViewState = appLinks.Where(exe => exe.ApplicationId == ApplicationId);
+            try
+            {
+                var appLinks = await AppLinkViewStateLookupService.GetStatesAsync();
+                _appLinksViewState = appLinks.Where(exe => exe.ApplicationId == ApplicationId);
 
-            await base.OnInitializedAsync();
-        }
+                await base.OnInitializedAsync();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }   
     }
 }

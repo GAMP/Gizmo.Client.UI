@@ -60,7 +60,7 @@
                     </div>
                     <div class="giz-checkout__summary">
                         <div class="giz-checkout__summary__total">@LocalizationService.GetString("GIZ_SHOP_TOTAL")</div>
-                        <div class="giz-checkout__summary__amount">$5 and 2 {icon point}</div>
+                        <div class="giz-checkout__summary__amount"><span>@ViewState.Total.ToString("C") @LocalizationService.GetString("GIZ_GEN_AND") @ViewState.PointsTotal</span><PointsIcon /></div>
                     </div>
                     <div class="giz-checkout__payment-method">
                         <div class="giz-checkout__summary__payment-method__label">@LocalizationService.GetString("GIZ_SHOP_PAYMENT_METHOD")</div>

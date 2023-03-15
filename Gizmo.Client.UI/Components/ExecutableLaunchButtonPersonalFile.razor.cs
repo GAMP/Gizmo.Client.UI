@@ -21,6 +21,13 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public int PersonalFileId { get; set; }
 
+        [Inject()]
+        public PersonalFileViewState PersonalFileViewState
+        {
+            get { return _personalFileViewState; }
+            private set { _personalFileViewState = value; }
+        }
+
         private Task OnClickPersonalFileButtonHandler()
         {
             return Task.CompletedTask;
