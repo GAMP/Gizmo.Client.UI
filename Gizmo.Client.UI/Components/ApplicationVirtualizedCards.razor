@@ -1,9 +1,10 @@
 ﻿@namespace Gizmo.Client.UI.Components
+@using Gizmo.Client.UI.View.States;
 @using Microsoft.AspNetCore.Components.Web.Virtualization
-@inherits CustomDOMComponentBase
+@inherits CustomVirtualizedDOMComponentBase<AppViewState>
 
-<Virtualize Items="Applications.Chunk(7).ToArray()" Context="chunkedApps">
-    <div class="virtual-chunk-grid app">
+<Virtualize Items="Items.Chunk(ColumnsCount).ToArray()" Context="chunkedApps">
+    <div class="virtual-chunk-grid" style="@_gridColumnsStyle">
         @for (int i = 0; i < chunkedApps.Length; i++)
         {
             <ApplicationCard @key="chunkedApps[i].ApplicationId" Application="chunkedApps[i]" OnOpenExecutableSelector="OpenExecutableSelector" />

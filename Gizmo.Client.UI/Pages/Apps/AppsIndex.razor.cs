@@ -1,16 +1,11 @@
-﻿using Gizmo.Client.UI.Components;
-using Gizmo.Client.UI.Services;
+﻿using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
-using Gizmo.Client.UI.ViewModels;
 using Gizmo.UI;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
+
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
 {
@@ -43,27 +38,6 @@ namespace Gizmo.Client.UI.Pages
         public int? AppId { get; init; }
 
         #endregion
-
-        #endregion
-
-        #region METHODS
-
-        //TODO: To delete
-
-        //public async Task OpenExecutableSelector(int id)
-        //{
-        //    var s = await DialogService.ShowExecutableSelectorDialogAsync(id);
-        //    if (s.Result == DialogAddResult.Success)
-        //    {
-        //        try
-        //        {
-        //            var result = await s.WaitForDialogResultAsync();
-        //        }
-        //        catch (OperationCanceledException)
-        //        {
-        //        }
-        //    }
-        //}
 
         #endregion
 

@@ -31,13 +31,7 @@
                         @LocalizationService.GetString("GIZ_GEN_POPULAR_ITEMS")
                     </div>
                     <div class="giz-section__body">
-                        <HomeIndexCards Products="ViewState.PopularProducts" />
-                     @* <div class="giz-home__app-wrapper">
-                            @foreach (var product in ViewState.PopularProducts)
-                                {
-                                    <ProductCard Product="@product"></ProductCard>
-                                }
-                        </div> *@
+                        <ProductVirtualizedCards Items="ViewState.PopularProducts" ColumnsCount="ViewState.CardsColumsCount" />
                     </div>
                 </div>
             </div>

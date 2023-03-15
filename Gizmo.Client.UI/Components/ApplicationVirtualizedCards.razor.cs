@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 using Gizmo.Client.UI.Services;
@@ -12,13 +10,10 @@ using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class AppIndexCards : CustomDOMComponentBase
+    public partial class ApplicationVirtualizedCards : CustomVirtualizedDOMComponentBase<AppViewState>
     {
-        [Inject()]
+        [Inject]
         IClientDialogService DialogService { get; set; }
-
-        [Parameter]
-        public IEnumerable<AppViewState> Applications { get; set; } = Enumerable.Empty<AppViewState>();
 
         public async Task OpenExecutableSelector(int id)
         {
