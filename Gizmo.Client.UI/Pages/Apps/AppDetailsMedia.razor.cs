@@ -10,7 +10,7 @@ namespace Gizmo.Client.UI.Pages
 {
     public partial class AppDetailsMedia : CustomDOMComponentBase
     {
-        private IEnumerable<AppLinkViewState> _appLinksViewState;
+        private IEnumerable<AppLinkViewState> _appLinksViewState = Enumerable.Empty<AppLinkViewState>();
 
         #region PROPERTIES
 
