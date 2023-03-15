@@ -20,6 +20,13 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public int ExecutableId { get; set; }
 
+        [Inject()]
+        public AppExeViewState ViewState
+        {
+            get { return _appExeViewState;}
+            private set { _appExeViewState = value; }
+        }
+
         protected override async Task OnInitializedAsync()
         {
             _appExeViewState = await AppExeViewStateLookupService.GetStateAsync(ExecutableId);
