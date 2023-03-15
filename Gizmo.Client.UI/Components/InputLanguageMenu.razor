@@ -5,23 +5,23 @@
 
 <Select HandleSVGIcon="Icons.Select_Client"
         ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
-        TValue="RegionViewState"
-        Value="ViewState.SelectedRegion"
+        TValue="LanguageViewState"
+        Value="ViewState.SelectedLanguage"
         ValueChanged="@ValueChangedHandler"
         Size="InputSizes.Small"
         OpenDirection="PopupOpenDirections.Top"
         Class="giz-input-language-menu"
         PopupClass="giz-scrollbar--v">
-    @if (ViewState.Regions != null)
+    @if (ViewState.Languages != null)
     {
-        @foreach (var region in ViewState.Regions)
+        @foreach (var region in ViewState.Languages)
         {
             <SelectItem Value="@region">
                 <div class="giz-icon-select-item">
                     <div class="giz-icon-select-item__flag">
                         <Icon Size="IconSizes.Small" SVGIcon="Icons.Keyboard_Client" />
                     </div>
-                    <div>@region.TwoLetterISORegionName</div>
+                    <div>@region.TwoLetterName</div>
                 </div>
             </SelectItem>
         }

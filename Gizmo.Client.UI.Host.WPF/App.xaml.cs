@@ -1,12 +1,16 @@
-﻿using Gizmo.Client.UI.Services;
+﻿using Gizmo.Client.Interfaces;
+using Gizmo.Client.UI.Services;
 using Gizmo.UI;
 using Gizmo.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Globalization;
 using System.IO;
+using System.Threading;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Gizmo.Client.UI.Host.WPF
 {
@@ -36,6 +40,8 @@ namespace Gizmo.Client.UI.Host.WPF
 
                 serviceCollection.AddSingleton<IGizmoClient, TestClient>();
                 serviceCollection.AddSingleton<IImageService, ImageService>();
+                serviceCollection.AddSingleton<IInputLanguageService, InputLanguagesService>();
+                serviceCollection.AddSingleton<ICultureService, CultureService>();
                 serviceCollection.AddSingleton<IHostWindow, HostWindow>();
               
             }).ConfigureLogging(loggingBuilder =>
@@ -49,6 +55,7 @@ namespace Gizmo.Client.UI.Host.WPF
                 configurationBuilder.AddClientConfigurationSource();
             });
 
+           
             var host = hostBuilder.Build();
 
             Resources.Add("services", host.Services);
@@ -68,7 +75,7 @@ namespace Gizmo.Client.UI.Host.WPF
 
             //show host window
             hostWindow.Show();
-
+            
             await host.StartAsync();
         }
     }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Components.Web;
 using Gizmo.UI;
+using Gizmo.Client.Interfaces;
 
 namespace Gizmo.Client.UI.Host.Web
 {
@@ -40,6 +41,8 @@ namespace Gizmo.Client.UI.Host.Web
             hostBuilder.Services.AddSingleton<IClientDialogService, ClientDialogService>();
             hostBuilder.Services.AddDialogSerive<IClientDialogService>();
 
+            hostBuilder.Services.AddSingleton<IInputLanguageService, InputLanguagesService>();
+            hostBuilder.Services.AddSingleton<ICultureService, CultureService>();
             hostBuilder.Services.AddSingleton<IGizmoClient, TestClient>();
             hostBuilder.Services.AddSingleton<IImageService,ImageService>();
 
