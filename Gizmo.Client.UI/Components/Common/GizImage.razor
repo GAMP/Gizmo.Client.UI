@@ -1,16 +1,59 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits ComponentBase
 
-@if(Placeholder is not null)
+@switch(_imageResultStatusCode)
 {
-    <span>
-        @Placeholder
-    </span>
+    case 0:
+    {
+        if(LoadingPlaceholder is not null)
+        {
+            <span>
+                @LoadingPlaceholder
+            </span>
+        }
+        else
+        {
+            <span class="giz-animate-spinner">
+                <SpinnerIcon />
+            </span>
+        }
+
+        break;
+    }
+    case 1:
+    {
+        if(EmptyResultPlaceholder is not null)
+        {
+            <span>
+                @EmptyResultPlaceholder
+            </span>
+        }
+        else
+        {
+            <span style="display:flex;justify-content:center">
+                Image is empty.
+            </span>
+        }
+        
+        break;
+    }
+    case 2:
+    {
+        if(ErrorPlaceholder is not null)
+        {
+            <span>
+                @ErrorPlaceholder
+            </span>
+        }
+        else
+        {
+            <span style="display:flex;justify-content:center">
+                Image loading error.
+            </span>
+        }
+        
+        break;
+    }
 }
-else
-{
-    <span class="giz-animate-spinner">
-        <SpinnerIcon />
-    </span>
-}
+
 <img @ref="ElementReference" hidden/>

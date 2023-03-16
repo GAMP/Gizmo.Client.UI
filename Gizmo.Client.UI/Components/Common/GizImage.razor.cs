@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Gizmo.UI;
@@ -32,12 +33,21 @@ namespace Gizmo.Client.UI.Components
         public int ImageId { get; set; }
 
         [Parameter]
-        public RenderFragment Placeholder { get; set; }
+        public RenderFragment LoadingPlaceholder { get; set; }
+        [Parameter]
+        public RenderFragment EmptyResultPlaceholder { get; set; }
+        [Parameter]
+        public RenderFragment ErrorPlaceholder { get; set; }
 
         #endregion
 
         #region FIELDS
-
+        /// <summary>
+        /// 0 - Loading
+        /// 1 - EmptyResult
+        /// 2 - Error
+        /// </summary>
+        private byte _imageResultStatusCode;
         private ImageType _previousImageType;
         private int _previousImageId;
         readonly CancellationTokenSource _cancellationTokenSource = new();
@@ -55,6 +65,8 @@ namespace Gizmo.Client.UI.Components
 
             if (imageTypeChanged || imageIdChanged)
             {
+                _imageResultStatusCode = 0;
+
                 _previousImageType = ImageType;
                 _previousImageId = ImageId;
 
@@ -62,12 +74,23 @@ namespace Gizmo.Client.UI.Components
                 {
                     using var imageStream = await ImageService.ImageStreamGetAsync(ImageType, ImageId, _cancellationTokenSource.Token);
 
+                    if (imageStream is null || imageStream == Stream.Null)
+                    {
+                        _imageResultStatusCode = 1;
+
+                        await InvokeAsync(StateHasChanged);
+
+                        return;
+                    }
+
                     using var streamReference = new DotNetStreamReference(imageStream);
 
                     await JS.InvokeVoidAsync("ClientFunctions.SetImageSourceAsync", ElementReference, streamReference);
                 }
-                catch (OperationCanceledException)
+                catch (Exception)
                 {
+                    _imageResultStatusCode = 2;
+                    await InvokeAsync(StateHasChanged);
                 }
             }
         }
