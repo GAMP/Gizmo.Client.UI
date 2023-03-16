@@ -40,7 +40,7 @@ namespace Gizmo.Client.UI.Components
 
         private async Task OnClickMainButtonHandler()
         {
-            await AppExecutionService.ExecutAsync(_appExeExecutionViewState.AppExeId,default);
+            await AppExecutionService.AppExeExecuteAsync(_appExeExecutionViewState.AppExeId,default);
         }
 
         protected override async Task OnInitializedAsync()
