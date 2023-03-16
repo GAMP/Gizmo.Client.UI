@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.View.States;
+﻿using Gizmo.Client.UI.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -13,6 +14,9 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
+        [Inject()]
+        AppExecutionService AppExecutionService { get; set; }
+
         [Parameter]
         public int ExecutableId { get; set; }
 
@@ -22,17 +26,9 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public bool IsFullWidth { get; set; }
 
-        private Task OnClickMainButtonHandler()
+        private async Task OnClickMainButtonHandler()
         {
-            //switch (Executable.State)
-            //{
-            //	case View.ExecutableState.None:
-            //		return ActiveApplicationsService.RunExecutableAsyc(Executable.ExecutableId);
-
-            //	default:
-            //		return ActiveApplicationsService.TerminateExecutableAsyc(Executable.ExecutableId);
-            //}
-            return Task.CompletedTask;
+            await AppExecutionService.ExecutAsync(_appExeExecutionViewState.AppExeId,default);
         }
 
         protected override async Task OnInitializedAsync()
