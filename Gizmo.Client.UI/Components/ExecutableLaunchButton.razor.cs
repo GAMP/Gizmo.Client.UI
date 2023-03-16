@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.Services;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
@@ -17,6 +18,17 @@ namespace Gizmo.Client.UI.Components
         [Inject()]
         AppExecutionService AppExecutionService { get; set; }
 
+        [Inject()]
+        AppExeExecutionViewStateLookupService AppExeExecutionViewStateLookupService { get; set; }
+
+        [Inject()]
+        AppExeExecutionViewState ViewState
+        {
+            get { return _appExeExecutionViewState; }
+            set { _appExeExecutionViewState = value; }
+        }
+        
+
         [Parameter]
         public int ExecutableId { get; set; }
 
@@ -33,7 +45,7 @@ namespace Gizmo.Client.UI.Components
 
         protected override async Task OnInitializedAsync()
         {
-            _appExeExecutionViewState = new AppExeExecutionViewState(); //TODO: AAA FIND EXECUTION STATE
+            _appExeExecutionViewState = await AppExeExecutionViewStateLookupService.GetStateAsync(ExecutableId);
             this.SubscribeChange(_appExeExecutionViewState);
             await base.OnInitializedAsync();
         }
