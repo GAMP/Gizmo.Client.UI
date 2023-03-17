@@ -44,14 +44,18 @@
             <div class="giz-registration-form-input giz-form-input-columns">
                 @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.FirstName)
                 {
-                    <TextInput TValue="string"
+                    <TextInput Value="@ViewState.FirstName"
+                               ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetFirstName(value))"
+                               ValueExpression="@(() => ViewState.FirstName)"
                                Size="InputSizes.Small"
                                IsFullWidth="true"
                                Label="@LocalizationService.GetString("GIZ_USER_FIRST_NAME")" />
                 }
                 @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.LastName)
                 {
-                    <TextInput TValue="string"
+                    <TextInput Value="@ViewState.LastName"
+                               ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetLastName(value))"
+                               ValueExpression="@(() => ViewState.LastName)"
                                Size="InputSizes.Small"
                                IsFullWidth="true"
                                Label="@LocalizationService.GetString("GIZ_USER_LAST_NAME")" />
@@ -60,23 +64,41 @@
             <div class="giz-registration-form-input giz-form-input-columns">
                 @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.BirthDate)
                 {
-                    <MaskedDateInput TValue="string" Size="InputSizes.Small" IsFullWidth="true" Label="@LocalizationService.GetString("GIZ_USER_BIRTH_DATE")" />
+                    <MaskedDateInput Value="@ViewState.BirthDate"
+                                     ValueChanged="@((DateTime? value) => UserRegistrationBasicFieldsService.SetBirthDate(value))"
+                                     ValueExpression="@(() => ViewState.BirthDate)"
+                                     Size="InputSizes.Small"
+                                     IsFullWidth="true"
+                                     Label="@LocalizationService.GetString("GIZ_USER_BIRTH_DATE")" />
                 }
                 @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.Sex)
                 {
-                    <Select HandleSVGIcon="Icons.Select_Client" TValue="Sex" Size="InputSizes.Small" IsFullWidth="true" Label="@LocalizationService.GetString("GIZ_USER_GENDER")" OpenDirection="PopupOpenDirections.Cursor" PopupClass="giz-scrollbar--v">
-                        <SelectItem Value="@Sex.Unspecified" Text="Unspecified" />
-                        <SelectItem Value="@Sex.Male" Text="Male" />
-                        <SelectItem Value="@Sex.Female" Text="Female" />
+                    <Select Value="@ViewState.Sex"
+                            ValueChanged="@((Sex value) => UserRegistrationBasicFieldsService.SetSex(value))"
+                            ValueExpression="@(() => ViewState.Sex)"
+                            Size="InputSizes.Small"
+                            HandleSVGIcon="Icons.Select_Client"
+                            IsFullWidth="true"
+                            Label="@LocalizationService.GetString("GIZ_USER_GENDER")"
+                            OpenDirection="PopupOpenDirections.Cursor"
+                            PopupClass="giz-scrollbar--v">
+                        <SelectItem Value="@Sex.Unspecified" Text="@LocalizationService.GetString("SEX_UNSPECIFIED")" />
+                        <SelectItem Value="@Sex.Male" Text="@LocalizationService.GetString("SEX_MALE")" />
+                        <SelectItem Value="@Sex.Female" Text="@LocalizationService.GetString("SEX_FEMALE")" />
                     </Select>
                 }
             </div>
             @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.Email)
             {
-                @if (UserRegistrationConfirmationMethodViewState.ConfirmationMethod != View.UserRegistrationMethod.Email)@*TODO:*@
+                @if (UserRegistrationViewState.ConfirmationMethod != View.UserRegistrationMethod.Email)
                 {
                     <div class="giz-form-input">
-                        <TextInput TValue="string" Size="InputSizes.Small" IsFullWidth="true" Label="@LocalizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")" />
+                        <TextInput Value="@ViewState.Email"
+                                   ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetEmail(value))"
+                                   ValueExpression="@(() => ViewState.Email)"
+                                   Size="InputSizes.Small"
+                                   IsFullWidth="true"
+                                   Label="@LocalizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")" />
                     </div>
                 }
             }

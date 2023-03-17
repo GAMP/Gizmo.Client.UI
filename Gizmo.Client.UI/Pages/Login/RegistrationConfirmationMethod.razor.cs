@@ -61,8 +61,6 @@ namespace Gizmo.Client.UI.Pages
             {
                 item.Display = item.Text + " " + item.PhonePrefix;
             }
-
-            SelectedCountry = Countries.Where(a => a.Id == 3).FirstOrDefault();
         }
 
         [Inject]
@@ -74,16 +72,42 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         UserRegistrationConfirmationMethodViewState ViewState { get; set; }
 
+        [Inject]
+        UserRegistrationViewState UserRegistrationViewState { get; set; }
+
         [Inject()]
         IClientDialogService DialogService { get; set; }
 
         public List<IconSelectCountry> Countries { get; set; }
 
-        public IconSelectCountry SelectedCountry { get; set; }
-
-        protected void SetSelectedCountry(int id)
+        public IconSelectCountry GetSelectedCountry()
         {
-            SelectedCountry = Countries.Where(a => a.Id == id).FirstOrDefault();
+            if (string.IsNullOrEmpty(ViewState.Country))
+            {
+                return null;
+            }
+            else
+            {
+                return Countries.Where(a => a.Text == ViewState.Country).FirstOrDefault();
+            }
+        }
+
+        protected void SetSelectedCountry(IconSelectCountry value)
+        {
+            if (value == null)
+            {
+                UserRegistrationConfirmationMethodService.SetCountry(null);
+            }
+            else
+            {
+                UserRegistrationConfirmationMethodService.SetCountry(value.Text);
+
+                //TODO: AAA PHONE PREFIX ON UI?
+                /*if (string.IsNullOrEmpty(ViewState.MobilePhone))
+                {
+                    UserRegistrationConfirmationMethodService.SetMobilePhone(value.PhonePrefix);
+                }*/
+            }
         }
 
         protected override void OnInitialized()
