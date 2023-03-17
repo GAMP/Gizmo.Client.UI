@@ -24,9 +24,6 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         UserSettingsViewState ViewState { get; set; }
 
-        [Inject]
-        UserPasswordRecoveryMethodViewState UserPasswordRecoveryMethodViewState { get; set; }
-
         [Inject()]
         IClientDialogService DialogService { get; set; }
 

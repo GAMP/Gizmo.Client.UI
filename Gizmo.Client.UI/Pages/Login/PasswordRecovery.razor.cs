@@ -32,9 +32,9 @@ namespace Gizmo.Client.UI.Pages
         private void SelectRecoveryMethod(ICollection<Button> selectedItems)
         {
             if (selectedItems.Where(a => a.Name == "Email").Any())
-                UserPasswordRecoveryService.SetRecoveryMethod(View.UserPasswordRecoveryMethod.Email);
+                UserPasswordRecoveryService.SetSelectedRecoveryMethod(View.UserPasswordRecoveryMethod.Email);
             else
-                UserPasswordRecoveryService.SetRecoveryMethod(View.UserPasswordRecoveryMethod.MobilePhone);
+                UserPasswordRecoveryService.SetSelectedRecoveryMethod(View.UserPasswordRecoveryMethod.MobilePhone);
         }
 
         protected override void OnInitialized()

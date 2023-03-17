@@ -26,13 +26,13 @@
                 <div class="giz-password-tooltip-root">
                     <PasswordInput ShowRevealButton="true"
                                    UpdateOnInput="true"
-                                   Value="@ViewState.NewPassword"
-                                   ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetNewPassword(value))"
-                                   ValueExpression="@(() => ViewState.NewPassword)"
+                                   Value="@ViewState.Password"
+                                   ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetPassword(value))"
+                                   ValueExpression="@(() => ViewState.Password)"
                                    Size="InputSizes.Small"
                                    IsFullWidth="true"
                                    Label="@LocalizationService.GetString("GIZ_GEN_PASSWORD")" />
-                    <PasswordTooltip Password="@ViewState.NewPassword" />
+                    <PasswordTooltip Password="@ViewState.Password" />
                 </div>
                 <PasswordInput Value="@ViewState.RepeatPassword"
                                ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetRepeatPassword(value))"
