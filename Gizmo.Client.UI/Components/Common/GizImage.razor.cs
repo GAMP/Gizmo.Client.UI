@@ -30,7 +30,7 @@ namespace Gizmo.Client.UI.Components
         /// Gets or sets image id.
         /// </summary>
         [Parameter]
-        public int ImageId { get; set; }
+        public int? ImageId { get; set; }
 
         [Parameter]
         public RenderFragment LoadingPlaceholder { get; set; }
@@ -60,19 +60,28 @@ namespace Gizmo.Client.UI.Components
         {
             await base.SetParametersAsync(parameters);
 
+            if (!ImageId.HasValue)
+            {
+                _imageResultStatusCode = 1;
+
+                await InvokeAsync(StateHasChanged);
+
+                return;
+            }
+
             var imageTypeChanged = _previousImageType != ImageType;
-            var imageIdChanged = _previousImageId != ImageId;
+            var imageIdChanged = _previousImageId != ImageId.Value;
 
             if (imageTypeChanged || imageIdChanged)
             {
                 _imageResultStatusCode = 0;
 
                 _previousImageType = ImageType;
-                _previousImageId = ImageId;
+                _previousImageId = ImageId.Value;
 
                 try
                 {
-                    using var imageStream = await ImageService.ImageStreamGetAsync(ImageType, ImageId, _cancellationTokenSource.Token);
+                    using var imageStream = await ImageService.ImageStreamGetAsync(ImageType, ImageId.Value, _cancellationTokenSource.Token);
 
                     if (imageStream is null || imageStream == Stream.Null)
                     {

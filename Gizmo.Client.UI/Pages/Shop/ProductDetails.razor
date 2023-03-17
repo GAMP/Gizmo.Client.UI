@@ -15,14 +15,11 @@
             </NavLink>
             <div class="giz-product-details__product__info">
                 <div class="giz-product-details__product__info__image">
-                    @if (ViewState.Product?.DefaultImageId.HasValue == true)
-                    {
-                        <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ViewState.Product.DefaultImageId.Value" />
-                    }
-                    else
-                    {
-                        <img src="_content/Gizmo.Client.UI/img/no-product-image.png" alt='loading' />
-                    }
+                    <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ViewState.Product?.DefaultImageId">
+                        <EmptyResultPlaceholder>
+                            <img src="_content/Gizmo.Client.UI/img/no-product-image.png" alt='loading' />
+                        </EmptyResultPlaceholder>
+                    </GizImage>
                 </div>
                 <div class="giz-product-details__product__info__basic">
                     <div class="giz-product-details__product__info__basic__category">
@@ -48,14 +45,11 @@
                     @foreach (var product in ViewState.Product.BundledProducts)
                     {
                         <div class="giz-product-details__product__bundled-products-product">
-                            @if (ViewState.Product?.DefaultImageId.HasValue == true)
-                            {
-                                <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ViewState.Product.DefaultImageId.Value" />
-                            }
-                            else
-                            {
-                                <img src="_content/Gizmo.Client.UI/img/no-product-image.png" alt='loading' />
-                            }
+                            <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ViewState.Product.DefaultImageId">
+                                <EmptyResultPlaceholder>
+                                    <img src="_content/Gizmo.Client.UI/img/no-product-image.png" alt='loading' />
+                                </EmptyResultPlaceholder>
+                            </GizImage>
                         </div>
                     }
                 </div>

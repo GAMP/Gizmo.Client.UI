@@ -1,63 +1,32 @@
-﻿using Gizmo.Client.UI.Services;
+﻿using System.Threading.Tasks;
+using Gizmo.Client.UI.Services;
 using Gizmo.UI.Services;
 using Microsoft.AspNetCore.Components;
-using System.Threading.Tasks;
 
-namespace Gizmo.Client.UI
+namespace Gizmo.Client.UI;
+
+public partial class App : ComponentBase
 {
-    public partial class App : ComponentBase
+    #region PROPERTIES
+
+    /// <summary>
+    /// Component discovery service.
+    /// </summary>
+    [Inject] public IUICompositionService ComponentDiscoveryService { get; protected set; }
+    [Inject] private NavigationManager NavigationManager { get; set; }
+    [Inject] private NavigationService NavigationService { get; set; }
+    [Inject] private JSInteropService JSInteropService { get; set; }
+
+    #endregion
+
+    protected override void OnInitialized() =>
+        NavigationService.AssociateNavigtionManager(NavigationManager);
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        #region CONSTRUTCOR
-        public App() : base()
-        {
-        }
-        #endregion
+        if (firstRender)
+            await JSInteropService.InitializeAsync(default);
 
-        #region PROPERTIES
-
-        /// <summary>
-        /// Component discovery service.
-        /// </summary>
-        [Inject()]
-        public IUICompositionService ComponentDiscoveryService
-        {
-            get;
-            protected set;
-        }
-
-        [Inject()]
-        private NavigationManager NavigationManager
-        {
-            get; set;
-        }
-
-        [Inject()]
-        private NavigationService NavigationService
-        {
-            get; set;
-        }
-
-        [Inject()]
-        private JSInteropService JSInteropService
-        {
-            get;
-            set;
-        }
-
-        #endregion
-
-        protected override void OnInitialized()
-        {
-            base.OnInitialized();
-            NavigationService.AssociateNavigtionManager(NavigationManager);
-        }
-        protected async override Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (firstRender)
-                await JSInteropService.InitializeAsync(default);
-
-            await base.OnAfterRenderAsync(firstRender);
-        }
+        await base.OnAfterRenderAsync(firstRender);
     }
-
 }
