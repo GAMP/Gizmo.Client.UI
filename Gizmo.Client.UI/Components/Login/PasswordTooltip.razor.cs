@@ -26,6 +26,9 @@ namespace Gizmo.Client.UI.Components
             _upperRulePassed = false;
             _numberRulePassed = false;
 
+            if (string.IsNullOrEmpty(Password))
+                return;
+
             if (Password.Length >= 8)
             {
                 _rulesPassed += 1;
