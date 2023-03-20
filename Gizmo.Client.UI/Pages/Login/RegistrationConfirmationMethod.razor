@@ -43,13 +43,15 @@
                                 PopupClass="giz-scrollbar--v" />
                 </div>
                 <div class="giz-form-input">
-                    <MaskedTextInput Mask="###-###-###"
-                                     Value="@ViewState.MobilePhone"
-                                     ValueChanged="@((string value) => UserRegistrationConfirmationMethodService.SetMobilePhone(value))"
-                                     ValueExpression="@(() => ViewState.MobilePhone)"
-                                     Size="InputSizes.Medium"
-                                     IsFullWidth="true"
-                                     Label="@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
+                    <MaskedPhoneInput Mask="###-###-###"
+                                      Prefix="@ViewState.Prefix"
+                                      AllowMore="@(string.IsNullOrEmpty(ViewState.Prefix) || ViewState.Prefix == "+")"
+                                      Value="@ViewState.MobilePhone"
+                                      ValueChanged="@((string value) => UserRegistrationConfirmationMethodService.SetMobilePhone(value))"
+                                      ValueExpression="@(() => ViewState.MobilePhone)"
+                                      Size="InputSizes.Medium"
+                                      IsFullWidth="true"
+                                      Label="@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
                 </div>
             }
             <div>

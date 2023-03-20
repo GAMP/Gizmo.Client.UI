@@ -97,16 +97,12 @@ namespace Gizmo.Client.UI.Pages
             if (value == null)
             {
                 UserRegistrationConfirmationMethodService.SetCountry(null);
+                UserRegistrationConfirmationMethodService.SetPrefix(null);
             }
             else
             {
                 UserRegistrationConfirmationMethodService.SetCountry(value.Text);
-
-                //TODO: AAA PHONE PREFIX ON UI?
-                /*if (string.IsNullOrEmpty(ViewState.MobilePhone))
-                {
-                    UserRegistrationConfirmationMethodService.SetMobilePhone(value.PhonePrefix);
-                }*/
+                UserRegistrationConfirmationMethodService.SetPrefix(value.PhonePrefix);
             }
         }
 

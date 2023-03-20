@@ -20,7 +20,8 @@
                                         HandleSVGIcon="Icons.Select_Client"
                                         TValue="IconSelectCountry"
                                         ItemSource="@Countries"
-                                        @bind-SelectedItem="@SelectedCountry"
+                                        SelectedItem="@GetSelectedCountry()"
+                                        SelectedItemChanged="@SetSelectedCountry"
                                         Size="InputSizes.Medium"
                                         IsFullWidth="true"
                                         Label="@LocalizationService.GetString("GIZ_USER_COUNTRY")"
@@ -29,14 +30,16 @@
                                         PopupClass="giz-scrollbar--v" />
                         </div>
                         <div class="giz-form-input">
-                            <MaskedTextInput IsTransparent="true"
-                                             Mask="###-###-###"
-                                             Value="@ViewState.MobilePhone"
-                                             ValueChanged="@((string value) => UserChangeMobileService.SetMobilePhone(value))"
-                                             ValueExpression="@(() => ViewState.MobilePhone)"
-                                             Size="InputSizes.Medium"
-                                             IsFullWidth="true"
-                                             Label="@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
+                            <MaskedPhoneInput IsTransparent="true"
+                                              Mask="###-###-###"
+                                              Prefix="@ViewState.Prefix"
+                                              AllowMore="@(string.IsNullOrEmpty(ViewState.Prefix) || ViewState.Prefix == "+")"
+                                              Value="@ViewState.MobilePhone"
+                                              ValueChanged="@((string value) => UserChangeMobileService.SetMobilePhone(value))"
+                                              ValueExpression="@(() => ViewState.MobilePhone)"
+                                              Size="InputSizes.Medium"
+                                              IsFullWidth="true"
+                                              Label="@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
                         </div>
                     </EditForm>
                 </div>

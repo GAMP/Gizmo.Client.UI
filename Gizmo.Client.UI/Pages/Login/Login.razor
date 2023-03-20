@@ -49,13 +49,14 @@
                 }
                 else
                 {
-                    <MaskedTextInput Mask="###-###-###"
-                                     Value="@ViewState.LoginName"
-                                     ValueChanged="@((string value) => UserLoginService.SetLoginName(value))"
-                                     ValueExpression="@(() => ViewState.LoginName)"
-                                     Size="InputSizes.Medium"
-                                     IsFullWidth="true"
-                                     Label="@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
+                    <MaskedPhoneInput Mask="###-###-###"
+                                      AllowMore="true"
+                                      Value="@ViewState.LoginName"
+                                      ValueChanged="@((string value) => UserLoginService.SetLoginName(value))"
+                                      ValueExpression="@(() => ViewState.LoginName)"
+                                      Size="InputSizes.Medium"
+                                      IsFullWidth="true"
+                                      Label="@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
                 }
             </div>
             @if (HostService.HostConfigurationViewState.CanRecoverPassword)
