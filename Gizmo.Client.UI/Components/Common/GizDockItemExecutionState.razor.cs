@@ -13,6 +13,19 @@ namespace Gizmo.Client.UI.Components
         [Inject()]
         AppExeExecutionViewStateLookupService AppExeExecutionViewStateLookupService { get; set; }
 
+        [Inject()]
+        AppExeExecutionViewState ViewState
+        {
+            get
+            {
+                return _appExeExecutionViewState;
+            }
+            set
+            {
+                _appExeExecutionViewState = value;
+            }
+        }
+
         [Parameter]
         public int ExecutableId { get; set; }
 
