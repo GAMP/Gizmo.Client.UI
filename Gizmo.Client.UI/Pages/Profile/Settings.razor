@@ -92,12 +92,12 @@
                         <TextInput Value="@ViewState.Email"
                                    ValueChanged="@((string value) => UserSettingsService.SetEmail(value))"
                                    ValueExpression="@(() => ViewState.Email)"
-                                   IsReadOnly="@(ViewState.ConfirmationMethod == View.UserRegistrationMethod.Email)"
+                                   IsReadOnly="@(ViewState.ConfirmationMethod == RegistrationVerificationMethod.Email)"
                                    Size="InputSizes.Medium"
                                    IsFullWidth="true"
                                    Label="@LocalizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")">
                             <RightContent>
-                                @if (ViewState.ConfirmationMethod == View.UserRegistrationMethod.Email)
+                                @if (ViewState.ConfirmationMethod == RegistrationVerificationMethod.Email)
                                 {
                                     <div class="giz-settings-update-button" @onclick="OnClickUpdateEmailButtonHandler">@LocalizationService.GetString("GIZ_GEN_UPDATE")</div>
                                 }
@@ -109,12 +109,12 @@
                         <TextInput Value="@ViewState.MobilePhone" 
                                    ValueChanged="@((string value) => UserSettingsService.SetMobilePhone(value))"
                                    ValueExpression="@(() => ViewState.MobilePhone)"
-                                   IsReadOnly="@(ViewState.ConfirmationMethod == View.UserRegistrationMethod.MobilePhone)"
+                                   IsReadOnly="@(ViewState.ConfirmationMethod == RegistrationVerificationMethod.MobilePhone)"
                                    Size="InputSizes.Medium"
                                    IsFullWidth="true"
                                    Label="@LocalizationService.GetString("GIZ_GEN_MOBILE_PHONE")">
                             <RightContent>
-                                @if (ViewState.ConfirmationMethod == View.UserRegistrationMethod.MobilePhone)
+                                @if (ViewState.ConfirmationMethod == RegistrationVerificationMethod.MobilePhone)
                                 {
                                     <div class="giz-settings-update-button" @onclick="OnClickUpdateMobileButtonHandler">@LocalizationService.GetString("GIZ_GEN_UPDATE")</div>
                                 }

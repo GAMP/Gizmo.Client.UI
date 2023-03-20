@@ -18,14 +18,15 @@
             <div class="giz-login-title">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
             @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.Country)
             {
-                @if (UserRegistrationViewState.ConfirmationMethod != View.UserRegistrationMethod.MobilePhone)
+                @if (UserRegistrationViewState.ConfirmationMethod != RegistrationVerificationMethod.MobilePhone)
                 {
                     <div class="giz-registration-form-input">
                         <IconSelect Placeholder="Search"
                                     HandleSVGIcon="Icons.Select_Client"
                                     TValue="IconSelectCountry"
                                     ItemSource="@Countries"
-                                    @bind-SelectedItem="@SelectedCountry"
+                                    SelectedItem="@GetSelectedCountry()"
+                                    SelectedItemChanged="@SetSelectedCountry"
                                     Size="InputSizes.Small"
                                     IsFullWidth="true"
                                     Label="@LocalizationService.GetString("GIZ_USER_COUNTRY_REGION")"
@@ -59,16 +60,18 @@
             }
             @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.Mobile)
             {
-                @if (UserRegistrationViewState.ConfirmationMethod != View.UserRegistrationMethod.MobilePhone)
+                @if (UserRegistrationViewState.ConfirmationMethod != RegistrationVerificationMethod.MobilePhone)
                 {
                     <div class="giz-registration-form-input">
-                        <MaskedTextInput Mask="###-###-###"
-                                         Value="@ViewState.MobilePhone"
-                                         ValueChanged="@((string value) => UserRegistrationAdditionalFieldsService.SetMobilePhone(value))"
-                                         ValueExpression="@(() => ViewState.MobilePhone)"
-                                         Size="InputSizes.Small"
-                                         IsFullWidth="true"
-                                         Label="@LocalizationService.GetString("GIZ_GEN_MOBILE_PHONE")" />
+                        <MaskedPhoneInput Mask="###-###-###"
+                                          Prefix="@ViewState.Prefix"
+                                          AllowMore="@(string.IsNullOrEmpty(ViewState.Prefix) || ViewState.Prefix == "+")"
+                                          Value="@ViewState.MobilePhone"
+                                          ValueChanged="@((string value) => UserRegistrationAdditionalFieldsService.SetMobilePhone(value))"
+                                          ValueExpression="@(() => ViewState.MobilePhone)"
+                                          Size="InputSizes.Small"
+                                          IsFullWidth="true"
+                                          Label="@LocalizationService.GetString("GIZ_GEN_MOBILE_PHONE")" />
                     </div>
                 }
             }

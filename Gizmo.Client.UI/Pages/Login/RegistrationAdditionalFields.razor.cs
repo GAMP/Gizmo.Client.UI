@@ -55,8 +55,6 @@ namespace Gizmo.Client.UI.Pages
             {
                 item.Display = item.Text + " " + item.PhonePrefix;
             }
-
-            SelectedCountry = Countries.Where(a => a.Id == 3).FirstOrDefault();
         }
 
         [Inject]
@@ -82,7 +80,31 @@ namespace Gizmo.Client.UI.Pages
 
         public List<IconSelectCountry> Countries { get; set; }
 
-        public IconSelectCountry SelectedCountry { get; set; }
+        public IconSelectCountry GetSelectedCountry()
+        {
+            if (string.IsNullOrEmpty(ViewState.Country))
+            {
+                return null;
+            }
+            else
+            {
+                return Countries.Where(a => a.Text == ViewState.Country).FirstOrDefault();
+            }
+        }
+
+        protected void SetSelectedCountry(IconSelectCountry value)
+        {
+            if (value == null)
+            {
+                UserRegistrationAdditionalFieldsService.SetCountry(null);
+                UserRegistrationAdditionalFieldsService.SetPrefix(null);
+            }
+            else
+            {
+                UserRegistrationAdditionalFieldsService.SetCountry(value.Text);
+                UserRegistrationAdditionalFieldsService.SetPrefix(value.PhonePrefix);
+            }
+        }
 
         protected override void OnInitialized()
         {

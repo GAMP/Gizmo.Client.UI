@@ -55,8 +55,6 @@ namespace Gizmo.Client.UI.Components
             {
                 item.Display = item.Text + " " + item.PhonePrefix;
             }
-
-            SelectedCountry = Countries.Where(a => a.Id == 3).FirstOrDefault();
         }
 
         [Inject]
@@ -73,7 +71,31 @@ namespace Gizmo.Client.UI.Components
 
         public List<IconSelectCountry> Countries { get; set; }
 
-        public IconSelectCountry SelectedCountry { get; set; }
+        public IconSelectCountry GetSelectedCountry()
+        {
+            if (string.IsNullOrEmpty(ViewState.Country))
+            {
+                return null;
+            }
+            else
+            {
+                return Countries.Where(a => a.Text == ViewState.Country).FirstOrDefault();
+            }
+        }
+
+        protected void SetSelectedCountry(IconSelectCountry value)
+        {
+            if (value == null)
+            {
+                UserChangeMobileService.SetCountry(null);
+                UserChangeMobileService.SetPrefix(null);
+            }
+            else
+            {
+                UserChangeMobileService.SetCountry(value.Text);
+                UserChangeMobileService.SetPrefix(value.PhonePrefix);
+            }
+        }
 
         private async Task CloseDialog()
         {
