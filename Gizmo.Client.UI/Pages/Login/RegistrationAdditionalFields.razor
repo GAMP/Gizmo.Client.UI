@@ -18,7 +18,7 @@
             <div class="giz-login-title">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
             @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.Country)
             {
-                @if (UserRegistrationViewState.ConfirmationMethod != View.UserRegistrationMethod.MobilePhone)
+                @if (UserRegistrationViewState.ConfirmationMethod != RegistrationVerificationMethod.MobilePhone)
                 {
                     <div class="giz-registration-form-input">
                         <IconSelect Placeholder="Search"
@@ -60,7 +60,7 @@
             }
             @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.Mobile)
             {
-                @if (UserRegistrationViewState.ConfirmationMethod != View.UserRegistrationMethod.MobilePhone)
+                @if (UserRegistrationViewState.ConfirmationMethod != RegistrationVerificationMethod.MobilePhone)
                 {
                     <div class="giz-registration-form-input">
                         <MaskedPhoneInput Mask="###-###-###"

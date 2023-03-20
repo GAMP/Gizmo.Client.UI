@@ -96,13 +96,13 @@ namespace Gizmo.Client.UI.Pages
         {
             if (value == null)
             {
-                UserRegistrationConfirmationMethodService.SetCountry(null);
-                UserRegistrationConfirmationMethodService.SetPrefix(null);
+                UserRegistrationAdditionalFieldsService.SetCountry(null);
+                UserRegistrationAdditionalFieldsService.SetPrefix(null);
             }
             else
             {
-                UserRegistrationConfirmationMethodService.SetCountry(value.Text);
-                UserRegistrationConfirmationMethodService.SetPrefix(value.PhonePrefix);
+                UserRegistrationAdditionalFieldsService.SetCountry(value.Text);
+                UserRegistrationAdditionalFieldsService.SetPrefix(value.PhonePrefix);
             }
         }
 

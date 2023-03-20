@@ -13,7 +13,7 @@
     <CardBody>
         <EditForm EditContext="@UserRegistrationConfirmationMethodService.EditContext">
             <div class="giz-login-title">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
-            @if (UserRegistrationViewState.ConfirmationMethod == View.UserRegistrationMethod.Email)
+            @if (UserRegistrationViewState.ConfirmationMethod == RegistrationVerificationMethod.Email)
             {
                 <div class="giz-login-subtitle--sign-up">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim</div>
                 <div class="giz-form-input">
@@ -25,7 +25,7 @@
                                Label="@LocalizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")"/>
                 </div>
             }
-            @if (UserRegistrationViewState.ConfirmationMethod == View.UserRegistrationMethod.MobilePhone)
+            @if (UserRegistrationViewState.ConfirmationMethod == RegistrationVerificationMethod.MobilePhone)
             {
                 <div class="giz-login-subtitle--sign-up">@LocalizationService.GetString("GIZ_REGISTRATION_MOBILE_CONFIRMATION_MESSAGE")</div>
                 <div class="giz-registration-form-input">
