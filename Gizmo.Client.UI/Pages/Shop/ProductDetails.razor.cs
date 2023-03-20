@@ -33,6 +33,20 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         ProductDetailsPageService ProductDetailsPageService { get; set; }
 
+        [Inject()]
+        UserCartProductItemViewState ProductItemViewState
+        {
+            get { return _productItemViewState; }
+            set { _productItemViewState = value; }
+        }
+
+        [Inject()]
+        UserProductGroupViewState ProductGroupViewState
+        {
+            get { return _userProductGroupViewState; }
+            set { _userProductGroupViewState = value; }
+        }
+
         [Inject]
         ProductDetailsPageViewState ViewState { get; set; }
 
