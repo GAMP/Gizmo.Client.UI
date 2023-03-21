@@ -16,7 +16,7 @@ namespace Gizmo.Client.UI.Shared
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-		public ActiveApplicationsService ActiveApplicationsService { get; set; }
+		public ActiveApplicationsViewStateService ActiveApplicationsService { get; set; }
 
 		[Parameter]
 		public AppExeViewState Executable { get; set; }

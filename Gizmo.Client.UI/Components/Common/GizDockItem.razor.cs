@@ -47,7 +47,7 @@ namespace Gizmo.Client.UI.Components
         #endregion
 
         [Inject]
-        public ActiveApplicationsService ActiveApplicationsService { get; set; }
+        public ActiveApplicationsViewStateService ActiveApplicationsService { get; set; }
 
         [Parameter]
         public AppExeViewState Executable { get; set; }
