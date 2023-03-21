@@ -17,50 +17,66 @@
                     @LocalizationService.GetString("GIZ_USER_FIRST_NAME")
                 </div>
                 <div class="giz-user-information--text">
-                    @ViewState.FirstName
+                    @ViewState?.FirstName
                 </div>
                 <div class="giz-user-information--label">
                     @LocalizationService.GetString("GIZ_USER_LAST_NAME")
                 </div>
                 <div class="giz-user-information--text">
-                    @ViewState.LastName
+                    @ViewState?.LastName
                 </div>
                 <div class="giz-user-information--label">
                     @LocalizationService.GetString("GIZ_GEN_EMAIL")
                 </div>
                 <div class="giz-user-information--text">
-                    @ViewState.Email
+                    @ViewState?.Email
                 </div>
                 <div class="giz-user-information--label">
                     @LocalizationService.GetString("GIZ_USER_HOME_PHONE")
                 </div>
                 <div class="giz-user-information--text">
-                    @ViewState.Phone
+                    @ViewState?.Phone
                 </div>
                 <div class="giz-user-information--label">
                     @LocalizationService.GetString("GIZ_USER_GENDER")
                 </div>
                 <div class="giz-user-information--text">
-                    Male@*TODO: A*@
+                    @if (ViewState != null)
+                    {
+                        switch (ViewState.Sex)
+                        {
+                            case Sex.Unspecified:
+                                @LocalizationService.GetString("SEX_UNSPECIFIED")
+                                break;
+
+                            case Sex.Male:
+                                @LocalizationService.GetString("SEX_MALE")
+                                break;
+
+                            case Sex.Female:
+                                @LocalizationService.GetString("SEX_FEMALE")
+                                break;
+                        }
+                    }
                 </div>
                 <div class="giz-user-information--label">
                     @LocalizationService.GetString("GIZ_USER_BIRTH_DATE")
                 </div>
                 <div class="giz-user-information--text">
-                    @ViewState.BirthDate
+                    @ViewState?.BirthDate
                 </div>
                 <div class="giz-user-information--label">
                     @LocalizationService.GetString("GIZ_USER_COUNTRY_REGION")
                 </div>
                 <div class="giz-user-information--text">
                     <img src="https://i.postimg.cc/RVJGVJK1/Flag.png" alt="loading" />@*TODO: A*@
-                    @ViewState.Country
+                    @ViewState?.Country
                 </div>
                 <div class="giz-user-information--label">
                     @LocalizationService.GetString("GIZ_USER_ADDRESS")
                 </div>
                 <div class="giz-user-information--text giz-user-information--not-available">
-                    @ViewState.Address
+                    @ViewState?.Address
                 </div>
                 <div class="giz-user-information--label">
                     @LocalizationService.GetString("GIZ_USER_POST_CODE")

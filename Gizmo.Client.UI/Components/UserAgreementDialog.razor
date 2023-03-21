@@ -4,15 +4,27 @@
 <HostedDialog>
     <div class="giz-client-dialog giz-user-agreement-dialog">
         <div class="giz-client-dialog__header">
-            <div class="giz-client-dialog__header__title">Privacy Policy and Terms of Use</div>
-            <div class="giz-client-dialog__header__subtitle">Subheading text</div>
+            <div class="giz-client-dialog__header__title">Privacy Policy and Terms of Use</div>@*TODO: A*@
+            <div class="giz-client-dialog__header__subtitle">@ViewState.CurrentUserAgreement.Name</div>
             <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="CloseDialogAsync" />
         </div>
         <div class="giz-client-dialog__body giz-scrollbar--v">
             <div class="user-agreement">@ViewState.CurrentUserAgreement.Agreement</div>
         </div>
         <div class="giz-client-dialog__footer">
-            <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="AcceptCurrentAgreementAsync">@LocalizationService.GetString("GIZ_GEN_CONTINUE")</Button>
+            <div class="giz-user-agreement-checkboxes">
+                <CheckBox Label="I have read and agree to the terms of service."
+                          IsChecked="@(ViewState.CurrentUserAgreement.AcceptState == UserAgreementAcceptState.Accepted)"
+                          IsCheckedChanged="@ChangeAcceptState"
+                          Class="@(ViewState.CurrentUserAgreement.IsRejectable ? "" : "giz-user-agreement-checkbox--required")" />
+            </div>
+            <Button IsDisabled="@(!ViewState.CurrentUserAgreement.IsRejectable && ViewState.CurrentUserAgreement.AcceptState != UserAgreementAcceptState.Accepted)"
+                    Color="ButtonColors.Accent"
+                    Size="ButtonSizes.ExtraLarge"
+                    IsFullWidth="true"
+                    @onclick="GetNextUserAgreementAsync">
+                @LocalizationService.GetString("GIZ_GEN_CONTINUE")
+            </Button>
         </div>
     </div>
 </HostedDialog>

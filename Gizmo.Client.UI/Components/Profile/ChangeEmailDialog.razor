@@ -13,7 +13,7 @@
             case 0:
 
                 <div class="giz-client-dialog__body">
-                    <div class="giz-change-email-dialog-message">Enter the number you’d like to use. To make sure this number is yours, will send you a verification code.</div>
+                    <div class="giz-change-email-dialog-message">@LocalizationService.GetString("UPDATE_EMAIL_MESSAGE")</div>
                     <EditForm EditContext="@UserChangeEmailService.EditContext">
                         <div class="giz-form-input">
                             <TextInput IsTransparent="true"
@@ -22,7 +22,7 @@
                                        ValueExpression="@(() => ViewState.Email)"
                                        Size="InputSizes.Medium"
                                        IsFullWidth="true"
-                                       Label="Email" />
+                                       Label="@LocalizationService.GetString("FIELD_EMAIL")" />
                         </div>
                     </EditForm>
                 </div>
@@ -35,7 +35,7 @@
                             }
                             else
                             {
-                                <div>Get Code</div>
+                                <div>@LocalizationService.GetString("GET_CODE")</div>
                             }
                         </ChildContent>
                     </Button>
@@ -46,7 +46,7 @@
             case 1:
 
                 <div class="giz-client-dialog__body">
-                    <div class="giz-change-email-dialog-message">We just sent you an SMS with a code. Enter it to verify your phone.</div>
+                    <div class="giz-change-email-dialog-message">@LocalizationService.GetString("UPDATE_EMAIL_SUCCESS_MESSAGE")</div>
                     <div class="giz-change-email-dialog-email">TODO: A...</div>
                     <EditForm EditContext="@UserChangeEmailService.EditContext">
                         <div class="giz-form-input">

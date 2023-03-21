@@ -24,16 +24,16 @@ else
         <div class="giz-header__user-menu-item__icon">
             <Icon Size="IconSizes.Small" SVGIcon="Icons.Schedule_Client" />
         </div>
-        <div>@UserService.UserBalanceViewState.Time</div>
+        <div>@UserBalanceViewState.Time</div>
     </div>
     <div class="giz-header__user-menu-item">
         <div class="giz-header__user-menu-item__icon">
             <CoinIcon />
         </div>
-        <div>@UserService.UserBalanceViewState.PointsBalance</div>
+        <div>@UserBalanceViewState.PointsBalance</div>
     </div>
     <div class="giz-header__user-menu-item">
-        <div>@UserService.UserBalanceViewState.Balance.ToString("C")</div>
+        <div>@UserBalanceViewState.Balance.ToString("C")</div>
     </div>
     <div class="giz-header__user-menu-item">
         <div class="user-menu-item-button" @onclick="@(() => ToggleBalanceVisibility())">

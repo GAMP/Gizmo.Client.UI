@@ -1,4 +1,5 @@
-﻿using Gizmo.Web.Components;
+﻿using Gizmo.UI.Services;
+using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -13,6 +14,9 @@ namespace Gizmo.Client.UI.Components
         private bool _lowerRulePassed = false;
         private bool _upperRulePassed = false;
         private bool _numberRulePassed = false;
+
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
 
         [Parameter]
         public string Password { get; set; }
@@ -76,15 +80,15 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        private string GetPasswordDescription()
+        private string GetPasswordMessage()
         {
             if (_rulesPassed == 4)
-                return "Secure Password"; //TODO: A TRANSLATION
+                return LocalizationService.GetString("GIZ_PASSWORD_MESSAGE_SECURE");
 
             if (!_lengthRulePassed)
-                return "Password is too short"; //TODO: A TRANSLATION
+                return LocalizationService.GetString("GIZ_PASSWORD_MESSAGE_TOO_SHORT");
 
-            return "Password is too easy"; //TODO: A TRANSLATION
+            return LocalizationService.GetString("GIZ_PASSWORD_MESSAGE_TOO_EASY");
         }
 
 

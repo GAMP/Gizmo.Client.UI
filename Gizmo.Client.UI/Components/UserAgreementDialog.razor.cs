@@ -30,12 +30,24 @@ namespace Gizmo.Client.UI.Components
 
         #region METHODS
 
+        private void ChangeAcceptState(bool value)
+        {
+            if (value)
+            {
+                UserAgreementsService.SetCurrentUserAgreementState(UserAgreementAcceptState.Accepted);
+            }
+            else
+            {
+                UserAgreementsService.SetCurrentUserAgreementState(UserAgreementAcceptState.Rejected);
+            }
+        }
+
         private async Task CloseDialogAsync()
         {
             await CancelCallback.InvokeAsync();
         }
 
-        private async Task AcceptCurrentAgreementAsync()
+        private async Task GetNextUserAgreementAsync()
         {
             await ResultCallback.InvokeAsync(new UserAgreementResult());
         }

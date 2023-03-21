@@ -70,7 +70,7 @@ namespace Gizmo.Client.UI.Pages
                 _previousProductId = ProductId;
 
                 _productItemViewState = await UserCartProductItemViewStateLookupService.GetStateAsync(ProductId);
-                _userProductGroupViewState = await UserProductGroupViewStateLookupService.GetStateAsync(ViewState.Product.ProductGroupId);
+                _userProductGroupViewState = await UserProductGroupViewStateLookupService.GetStateAsync(ViewState.Product.ProductGroupId); //TODO: A CHECK
 
                 //We have to bind to the new product.
                 this.SubscribeChange(_productItemViewState);

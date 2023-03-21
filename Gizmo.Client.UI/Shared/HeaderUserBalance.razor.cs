@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Microsoft.AspNetCore.Components;
 
@@ -12,7 +13,7 @@ namespace Gizmo.Client.UI
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        UserService UserService { get; set; }
+        UserBalanceViewState UserBalanceViewState { get; set; }
 
         private void ToggleBalanceVisibility()
         {
