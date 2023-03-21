@@ -38,7 +38,7 @@ namespace Gizmo.Client.UI.Components
             await CancelCallback.InvokeAsync();
         }
 
-        private async Task GetNextUserAgreementAsync()
+        private async Task ContinueAsync()
         {
             await ResultCallback.InvokeAsync(new UserAgreementResult());
         }
