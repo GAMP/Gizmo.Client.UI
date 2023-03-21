@@ -1,11 +1,13 @@
-﻿using Gizmo.Client.UI.View.Services;
+﻿using System;
+using System.Threading.Tasks;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI
 {
-    public partial class HeaderUserBalance : ComponentBase
+    public partial class HeaderUserBalance : ComponentBase , IDisposable
     {
         private bool _hideBalance;
 
@@ -18,6 +20,17 @@ namespace Gizmo.Client.UI
         private void ToggleBalanceVisibility()
         {
             _hideBalance = !_hideBalance;
+        }
+
+        protected override Task OnInitializedAsync()
+        {
+            this.SubscribeChange(UserBalanceViewState);
+            return base.OnInitializedAsync();
+        }
+
+        public void Dispose()
+        {
+            this.UnsubscribeChange(UserBalanceViewState);
         }
     }
 }
