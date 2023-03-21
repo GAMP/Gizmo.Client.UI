@@ -1,6 +1,4 @@
-﻿using Gizmo.Client.UI.View.Services;
-using Gizmo.Client.UI.View.States;
-using Gizmo.UI.Services;
+﻿using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
@@ -9,16 +7,21 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class UserAgreementDialog : CustomDOMComponentBase
     {
+        private bool _accepted;
+
         #region PROPERTIES
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
-        [Inject]
-        UserAgreementsService UserAgreementsService { get; set; }
+        [Parameter]
+        public string Name { get; set; }
 
-        [Inject]
-        UserAgreementsViewState ViewState { get; set; }
+        [Parameter]
+        public string Agreement { get; set; }
+
+        [Parameter]
+        public bool IsRejectable { get; set; }
 
         [Parameter]
         public EventCallback CancelCallback { get; set; }
@@ -29,18 +32,6 @@ namespace Gizmo.Client.UI.Components
         #endregion
 
         #region METHODS
-
-        private void ChangeAcceptState(bool value)
-        {
-            if (value)
-            {
-                UserAgreementsService.SetCurrentUserAgreementState(UserAgreementAcceptState.Accepted);
-            }
-            else
-            {
-                UserAgreementsService.SetCurrentUserAgreementState(UserAgreementAcceptState.Rejected);
-            }
-        }
 
         private async Task CloseDialogAsync()
         {
@@ -54,18 +45,11 @@ namespace Gizmo.Client.UI.Components
 
         #endregion
 
-        protected override void OnInitialized()
+        protected override void OnParametersSet()
         {
-            this.SubscribeChange(ViewState);
+            base.OnParametersSet();
 
-            base.OnInitialized();
-        }
-
-        public override void Dispose()
-        {
-            this.UnsubscribeChange(ViewState);
-
-            base.Dispose();
+            _accepted = false;
         }
     }
 }

@@ -5,20 +5,20 @@
     <div class="giz-client-dialog giz-user-agreement-dialog">
         <div class="giz-client-dialog__header">
             <div class="giz-client-dialog__header__title">Privacy Policy and Terms of Use</div>@*TODO: A*@
-            <div class="giz-client-dialog__header__subtitle">@ViewState.CurrentUserAgreement.Name</div>
+            <div class="giz-client-dialog__header__subtitle">@Name</div>
             <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="CloseDialogAsync" />
         </div>
         <div class="giz-client-dialog__body giz-scrollbar--v">
-            <div class="user-agreement">@ViewState.CurrentUserAgreement.Agreement</div>
+            <div class="user-agreement">@Agreement</div>
         </div>
         <div class="giz-client-dialog__footer">
             <div class="giz-user-agreement-checkboxes">
                 <CheckBox Label="I have read and agree to the terms of service."
-                          IsChecked="@(ViewState.CurrentUserAgreement.AcceptState == UserAgreementAcceptState.Accepted)"
-                          IsCheckedChanged="@ChangeAcceptState"
-                          Class="@(ViewState.CurrentUserAgreement.IsRejectable ? "" : "giz-user-agreement-checkbox--required")" />
+                          IsChecked="@_accepted"
+                          IsCheckedChanged="@((value) => { _accepted = value; } )"
+                          Class="@(IsRejectable ? "" : "giz-user-agreement-checkbox--required")" />
             </div>
-            <Button IsDisabled="@(!ViewState.CurrentUserAgreement.IsRejectable && ViewState.CurrentUserAgreement.AcceptState != UserAgreementAcceptState.Accepted)"
+            <Button IsDisabled="@(!IsRejectable && !_accepted)"
                     Color="ButtonColors.Accent"
                     Size="ButtonSizes.ExtraLarge"
                     IsFullWidth="true"
