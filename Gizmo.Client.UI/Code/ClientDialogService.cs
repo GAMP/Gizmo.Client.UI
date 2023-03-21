@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Gizmo.Client.UI.Components;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Microsoft.Extensions.Logging;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Gizmo.Client.UI.Services
 {
@@ -25,9 +27,9 @@ namespace Gizmo.Client.UI.Services
             return ShowDialogAsync<ExecutableSelectorDialog>(new Dictionary<string, object>() { { "ApplicationId", applicationId } }, default, default, cancellationToken);
         }
 
-        public Task<ShowDialogResult<UserAgreementResult>> ShowUserAgreementDialogAsync(CancellationToken cancellationToken = default)
+        public Task<ShowDialogResult<UserAgreementResult>> ShowUserAgreementDialogAsync(UserAgreementDialogParameters userAgreementDialogParameters, CancellationToken cancellationToken = default)
         {
-            return ShowDialogAsync<UserAgreementDialog, UserAgreementResult>(new Dictionary<string, object>(), default, default, cancellationToken);
+            return ShowDialogAsync<UserAgreementDialog, UserAgreementResult>(userAgreementDialogParameters.ToDictionary(), default, default, cancellationToken);
         }
 
         public Task<ShowDialogResult<EmptyDialogResult>> ShowTopUpDialogAsync(CancellationToken cancellationToken = default)
