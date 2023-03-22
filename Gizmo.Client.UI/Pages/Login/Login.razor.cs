@@ -23,6 +23,9 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         HostService HostService { get; set; }
 
+        [Inject]
+        UserPasswordRecoveryMethodServiceViewState UserPasswordRecoveryMethodServiceViewState { get; set; }
+
         private void SelectLoginType(ICollection<Button> selectedItems)
         {
             if (selectedItems.Where(a => a.Name == "Username").Any())

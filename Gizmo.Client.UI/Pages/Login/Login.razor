@@ -61,7 +61,7 @@
                                       Label="@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
                 }
             </div>
-            @if (HostService.HostConfigurationViewState.CanRecoverPassword)
+            @if (UserPasswordRecoveryMethodServiceViewState.AvailabledRecoveryMethod != UserRecoveryMethod.None)
             {
                 <div class="giz-login-forgot-password">
                     <a href="@ClientRoutes.PasswordRecoveryRoute">@LocalizationService.GetString("GIZ_LOGIN_FORGOT_YOUR_PASSWORD")</a>
