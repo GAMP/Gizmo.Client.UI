@@ -63,9 +63,9 @@
                 @if (UserRegistrationViewState.ConfirmationMethod != RegistrationVerificationMethod.MobilePhone)
                 {
                     <div class="giz-registration-form-input">
-                        <MaskedPhoneInput Mask="###-###-###"
+                        <MaskedPhoneInput Mask="###-###-####"
                                           Prefix="@ViewState.Prefix"
-                                          AllowMore="@(string.IsNullOrEmpty(ViewState.Prefix) || ViewState.Prefix == "+")"
+                                          AllowMoreDigits="@(string.IsNullOrEmpty(ViewState.Prefix) || ViewState.Prefix == "+")"
                                           Value="@ViewState.MobilePhone"
                                           ValueChanged="@((string value) => UserRegistrationAdditionalFieldsService.SetMobilePhone(value))"
                                           ValueExpression="@(() => ViewState.MobilePhone)"

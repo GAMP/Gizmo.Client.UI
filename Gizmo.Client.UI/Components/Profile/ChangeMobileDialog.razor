@@ -31,9 +31,9 @@
                         </div>
                         <div class="giz-form-input">
                             <MaskedPhoneInput IsTransparent="true"
-                                              Mask="###-###-###"
+                                              Mask="###-###-####"
                                               Prefix="@ViewState.Prefix"
-                                              AllowMore="@(string.IsNullOrEmpty(ViewState.Prefix) || ViewState.Prefix == "+")"
+                                              AllowMoreDigits="@(string.IsNullOrEmpty(ViewState.Prefix) || ViewState.Prefix == "+")"
                                               Value="@ViewState.MobilePhone"
                                               ValueChanged="@((string value) => UserChangeMobileService.SetMobilePhone(value))"
                                               ValueExpression="@(() => ViewState.MobilePhone)"
