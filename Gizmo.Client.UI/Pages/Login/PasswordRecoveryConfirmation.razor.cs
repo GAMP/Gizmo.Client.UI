@@ -14,8 +14,12 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         UserPasswordRecoveryConfirmationService UserPasswordRecoveryConfirmationService { get; set; }
+
         [Inject]
         UserPasswordRecoveryConfirmationViewState ViewState { get; set; }
+
+        [Inject]
+        UserPasswordRecoveryViewState UserPasswordRecoveryViewState { get; set; }
 
         [Inject]
         UserLoginService UserLoginService { get; set; }
