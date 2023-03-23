@@ -75,6 +75,9 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         UserRegistrationViewState UserRegistrationViewState { get; set; }
 
+        [Inject]
+        UserVerificationViewState UserVerificationViewState { get; set; }
+
         [Inject()]
         IClientDialogService DialogService { get; set; }
 
@@ -109,12 +112,14 @@ namespace Gizmo.Client.UI.Pages
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
+            this.SubscribeChange(UserVerificationViewState);
 
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
+            this.UnsubscribeChange(UserVerificationViewState);
             this.UnsubscribeChange(ViewState);
 
             base.Dispose();

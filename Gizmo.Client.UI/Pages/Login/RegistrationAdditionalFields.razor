@@ -12,6 +12,12 @@
             </div>
             <div class="giz-login-new-user">@LocalizationService.GetString("GIZ_LOGIN_ALREADY_A_MEMBER") <a href="@ClientRoutes.LoginRoute">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_ΙΝ")</a></div>
         </div>
+        <div class="giz-login-alerts">
+            @if (ViewState.HasError)
+            {
+                <Toast CanClose="true" AlertType="AlertTypes.Danger" Text="@ViewState.ErrorMessage" />
+            }
+        </div>
     </CardHeader>
     <CardBody>
         <EditForm EditContext="@UserRegistrationAdditionalFieldsService.EditContext">
@@ -76,7 +82,22 @@
                 }
             }
             <div>
-                <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@UserRegistrationAdditionalFieldsService.SubmitAsync">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_BUTTON")</Button>
+                <Button IsDisabled="@(ViewState.IsLoading)"
+                        Color="ButtonColors.Accent"
+                        Size="ButtonSizes.Large"
+                        IsFullWidth="true"
+                        @onclick="@UserRegistrationAdditionalFieldsService.SubmitAsync">
+                    <ChildContent>
+                        @if (ViewState.IsLoading)
+                        {
+                            <GizSpinner />
+                        }
+                        else
+                        {
+                            <div>@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_BUTTON")</div>
+                        }
+                    </ChildContent>
+                </Button>
             </div>
         </EditForm>
     </CardBody>

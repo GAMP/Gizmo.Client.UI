@@ -12,6 +12,12 @@
             </div>
             <div class="giz-login-new-user">@LocalizationService.GetString("GIZ_LOGIN_ALREADY_A_MEMBER") <a href="@ClientRoutes.LoginRoute">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_ΙΝ")</a></div>
         </div>
+        <div class="giz-login-alerts">
+            @if (ViewState.HasError)
+            {
+                <Toast CanClose="true" AlertType="AlertTypes.Danger" Text="@ViewState.ErrorMessage" />
+            }
+        </div>
     </CardHeader>
     <CardBody>
         <EditForm EditContext="@UserRegistrationConfirmationService.EditContext">
@@ -22,19 +28,41 @@
                            Value="@ViewState.ConfirmationCode"
                            ValueChanged="@((string value) => UserRegistrationConfirmationService.SetConfirmationCode(value))"
                            ValueExpression="@(() => ViewState.ConfirmationCode)"
+                           IsDisabled="@ViewState.IsLoading"
                            Size="InputSizes.Medium"
                            IsFullWidth="true"
                            Label="@LocalizationService.GetString("GIZ_PASSWORD_RECOVERY_ENTER_YOUR_CODE")" />
             </div>
             <div class="giz-form-input">
-                <Button Text="Confirm"
-                        IsDisabled="@(!(ViewState.IsValid == true))"
+                <Button IsDisabled="@(!(ViewState.IsValid == true))"
                         Color="ButtonColors.Accent"
                         Size="ButtonSizes.ExtraLarge"
                         IsFullWidth="true"
-                        @onclick="@UserRegistrationConfirmationService.SubmitAsync" />
+                        @onclick="@UserRegistrationConfirmationService.SubmitAsync">
+                    <ChildContent>
+                        @if (ViewState.IsLoading)
+                        {
+                            <GizSpinner />
+                        }
+                        else
+                        {
+                            <div>@LocalizationService.GetString("GIZ_GEN_CONFIRM")</div>
+                        }
+                    </ChildContent>
+                </Button>
             </div>
-            <RegistrationConfirmationResendButton />
+            @if (UserVerificationFallbackViewState.IsSMSFallbackAvailable)
+            {
+                <div class="giz-resend-button">
+                    <Button Variant="ButtonVariants.Outline"
+                        Size="ButtonSizes.ExtraLarge"
+                        IsFullWidth="true"
+                        IsDisabled="@UserVerificationFallbackViewState.IsVerificationFallbackLocked"
+                        Text="@LocalizationService.GetString("GIZ_GEN_RESEND")"
+                        @onclick="@UserRegistrationConfirmationService.SubmitAsync" />
+                    <div class="giz-resend-button__time">@string.Format("{0:mm\\:ss}", UserVerificationFallbackViewState.Countdown)</div>
+                </div>
+            }
         </EditForm>
     </CardBody>
     <CardFooter>

@@ -34,7 +34,11 @@
                 <div class="giz-top-up-dialog__summary">@ViewState.Amount.ToString("C") @LocalizationService.GetString("GIZ_TOP_UP_WILL_BE_CREDITED")</div>
             </div>
             <div class="giz-client-dialog__footer">
-                <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => TopUpService.SubmitAsync())">
+                <Button IsDisabled="@(ViewState.IsLoading)" 
+                        Color="ButtonColors.Accent"
+                        Size="ButtonSizes.ExtraLarge"
+                        IsFullWidth="true"
+                        @onclick="@(() => TopUpService.SubmitAsync())">
                     <ChildContent>
                         @if (ViewState.IsLoading)
                         {
