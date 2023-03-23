@@ -90,7 +90,10 @@
                     </div>
                     <div class="giz-checkout__actions">
                         <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="() => CloseDialog()">@LocalizationService.GetString("GIZ_GEN_CANCEL")</Button>
-                        <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" @onclick="() => UserCartService.SubmitAsync()">
+                        <Button IsDisabled="@(ViewState.IsLoading)"
+                                Color="ButtonColors.Accent"
+                                Size="ButtonSizes.Large"
+                                @onclick="() => UserCartService.SubmitAsync()">
                             <ChildContent>
                                 @if (ViewState.IsLoading)
                                 {

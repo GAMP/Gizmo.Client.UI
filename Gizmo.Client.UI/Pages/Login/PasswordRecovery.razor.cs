@@ -18,6 +18,9 @@ namespace Gizmo.Client.UI.Pages
         UserPasswordRecoveryService UserPasswordRecoveryService { get; set; }
 
         [Inject]
+        UserVerificationViewState UserVerificationViewState { get; set; }
+
+        [Inject]
         UserPasswordRecoveryViewState ViewState { get; set; }
 
         [Inject]
@@ -40,12 +43,14 @@ namespace Gizmo.Client.UI.Pages
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
+            this.SubscribeChange(UserVerificationViewState);
 
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
+            this.UnsubscribeChange(UserVerificationViewState);
             this.UnsubscribeChange(ViewState);
 
             base.Dispose();
