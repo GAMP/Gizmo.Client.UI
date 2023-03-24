@@ -27,7 +27,11 @@
                     </EditForm>
                 </div>
                 <div class="giz-client-dialog__footer">
-                    <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => UserChangeEmailService.SendConfirmationCodeAsync())">
+                    <Button IsDisabled="@(ViewState.IsLoading)"
+                            Color="ButtonColors.Accent"
+                            Size="ButtonSizes.Large"
+                            IsFullWidth="true"
+                            @onclick="@(() => UserChangeEmailService.SendConfirmationCodeAsync())">
                         <ChildContent>
                             @if (ViewState.IsLoading)
                             {

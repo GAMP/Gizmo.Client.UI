@@ -9,6 +9,12 @@
         <div class="giz-login-links">
             <div class="giz-login-new-user">@LocalizationService.GetString("GIZ_LOGIN_ALREADY_A_MEMBER") <a href="@ClientRoutes.LoginRoute">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_ΙΝ")</a></div>
         </div>
+        <div class="giz-login-alerts">
+            @if (ViewState.HasError)
+            {
+                <Toast CanClose="true" AlertType="AlertTypes.Danger" Text="@ViewState.ErrorMessage" />
+            }
+        </div>
     </CardHeader>
     <CardBody>
         <EditForm EditContext="@UserRegistrationConfirmationMethodService.EditContext">
@@ -20,6 +26,7 @@
                     <TextInput Value="@ViewState.Email"
                                ValueChanged="@((string value) => UserRegistrationConfirmationMethodService.SetEmail(value))"
                                ValueExpression="@(() => ViewState.Email)"
+                               IsDisabled="@ViewState.IsLoading"
                                Size="InputSizes.Medium"
                                IsFullWidth="true"
                                Label="@LocalizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")"/>
@@ -35,6 +42,7 @@
                                 ItemSource="@Countries"
                                 SelectedItem="@GetSelectedCountry()"
                                 SelectedItemChanged="@SetSelectedCountry"
+                                IsDisabled="@ViewState.IsLoading"
                                 Size="InputSizes.Medium"
                                 IsFullWidth="true"
                                 Label="@LocalizationService.GetString("GIZ_USER_COUNTRY")"
@@ -49,13 +57,18 @@
                                       Value="@ViewState.MobilePhone"
                                       ValueChanged="@((string value) => UserRegistrationConfirmationMethodService.SetMobilePhone(value))"
                                       ValueExpression="@(() => ViewState.MobilePhone)"
+                                      IsDisabled="@ViewState.IsLoading"
                                       Size="InputSizes.Medium"
                                       IsFullWidth="true"
                                       Label="@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
                 </div>
             }
             <div>
-                <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserRegistrationConfirmationMethodService.SubmitAsync">
+                <Button IsDisabled="@(ViewState.IsLoading || UserVerificationViewState.IsVerificationLocked)"
+                        Color="ButtonColors.Accent"
+                        Size="ButtonSizes.ExtraLarge"
+                        IsFullWidth="true"
+                        @onclick="@(() => UserRegistrationConfirmationMethodService.SubmitAsync())">
                     <ChildContent>
                         @if (ViewState.IsLoading)
                         {
@@ -64,6 +77,10 @@
                         else
                         {
                             <div>@LocalizationService.GetString("GIZ_VERIFICATION_SEND_CODE")</div>
+                            @if (UserVerificationViewState.IsVerificationLocked)
+                            {
+                                <div class="giz-resend-button__time">@string.Format("{0:mm\\:ss}", UserVerificationViewState.Countdown)</div>
+                            }
                         }
                     </ChildContent>
                 </Button>
