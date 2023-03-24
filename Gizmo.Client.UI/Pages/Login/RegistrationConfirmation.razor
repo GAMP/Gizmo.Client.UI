@@ -22,6 +22,7 @@
     <CardBody>
         <EditForm EditContext="@UserRegistrationConfirmationService.EditContext">
             <div class="giz-login-title">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
+            <div class="giz-login-subtitle">@ViewState.ConfirmationCodeMessage</div>
             <div class="giz-form-input">
                 <TextInput UpdateOnInput="true"
                            Placeholder="123 456"
@@ -34,11 +35,11 @@
                            Label="@LocalizationService.GetString("GIZ_PASSWORD_RECOVERY_ENTER_YOUR_CODE")" />
             </div>
             <div class="giz-form-input">
-                <Button IsDisabled="@(!(ViewState.IsValid == true))"
+                <Button IsDisabled="@(!(ViewState.IsValid == true) || ViewState.IsLoading)"
                         Color="ButtonColors.Accent"
                         Size="ButtonSizes.ExtraLarge"
                         IsFullWidth="true"
-                        @onclick="@UserRegistrationConfirmationService.SubmitAsync">
+                        @onclick="@UserRegistrationConfirmationService.ConfirmAsync">
                     <ChildContent>
                         @if (ViewState.IsLoading)
                         {
@@ -55,12 +56,16 @@
             {
                 <div class="giz-resend-button">
                     <Button Variant="ButtonVariants.Outline"
-                        Size="ButtonSizes.ExtraLarge"
-                        IsFullWidth="true"
-                        IsDisabled="@UserVerificationFallbackViewState.IsVerificationFallbackLocked"
-                        Text="@LocalizationService.GetString("GIZ_GEN_RESEND")"
-                        @onclick="@UserRegistrationConfirmationService.SubmitAsync" />
-                    <div class="giz-resend-button__time">@string.Format("{0:mm\\:ss}", UserVerificationFallbackViewState.Countdown)</div>
+                            Size="ButtonSizes.ExtraLarge"
+                            IsFullWidth="true"
+                            IsDisabled="@(ViewState.IsLoading || UserVerificationFallbackViewState.IsVerificationFallbackLocked)"
+                            @onclick="@UserRegistrationConfirmationService.SMSFallbackAsync">
+                        <div>@LocalizationService.GetString("UI_RETRY_WITH_SMS")</div>
+                        @if (UserVerificationFallbackViewState.IsVerificationFallbackLocked)
+                        {
+                            <div class="giz-resend-button__time">@string.Format("{0:mm\\:ss}", UserVerificationFallbackViewState.Countdown)</div>
+                        }
+                    </Button>
                 </div>
             }
         </EditForm>
