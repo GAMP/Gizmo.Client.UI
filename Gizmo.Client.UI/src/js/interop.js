@@ -33,7 +33,7 @@
 
     imageElement.onload = () => {
       URL.revokeObjectURL(url);
-      imageElement.previousSibling.remove();
+      imageElement.previousSibling?.remove();
       imageElement.removeAttribute("hidden");
     };
 
