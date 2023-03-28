@@ -1,5 +1,6 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
+@using System.Globalization
 
 <div class="giz-profile-header__stats">
     <div class="giz-profile-header__stats-item">
@@ -8,7 +9,7 @@
 
         <div class="giz-profile-header__stats-text">
             <div class="giz-title">@LocalizationService.GetString("GIZ_GEN_BALANCE")</div>
-            <div class="giz-numbers">@ViewState.Balance.ToString("C")
+            <div class="giz-numbers">@ViewState.Balance.ToString("C", CultureInfo.CurrentCulture)
             </div>
         </div>
     </div>

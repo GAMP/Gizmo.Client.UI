@@ -1,5 +1,6 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
+@using System.Globalization
 
 <div class="giz-order-item">
     <div class="giz-order-item__description">
@@ -16,7 +17,7 @@
             <div class="giz-order-item__details__and">&amp;</div>
         }
         <div class="giz-order-item__details__price">
-            @ProductItemViewState.TotalPrice.ToString("C")
+            @ProductItemViewState.TotalPrice.ToString("C", CultureInfo.CurrentCulture)
         </div>
         <div class="giz-order-item__details__points">
             @ProductItemViewState.TotalPointsPrice?.ToString("N0")

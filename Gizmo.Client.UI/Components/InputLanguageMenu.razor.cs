@@ -16,7 +16,7 @@ namespace Gizmo.Client.UI.Components
 
         private Task ValueChangedHandler(LanguageViewState value)
         {
-            return InputLanguagesService.SetCurrentRegionAsync(value.TwoLetterName);
+            return InputLanguagesService.SetCurrentRegionAsync(value.Culture.TwoLetterISOLanguageName);
         }
 
         protected override void OnInitialized()

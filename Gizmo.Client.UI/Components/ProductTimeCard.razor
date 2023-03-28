@@ -1,5 +1,6 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
+@using System.Globalization
 
 <div class="giz-product-card time"
      @onclick="OpenDetails">
@@ -36,7 +37,7 @@
 
         <div class="giz-product-card__content__details">
             <div class="giz-product-card__price">
-                <span>@Product.UnitPrice.ToString("C")</span>
+                <span>@Product.UnitPrice.ToString("C", CultureInfo.CurrentCulture)</span>
 
                 @if (Product.PurchaseOptions.HasFlag(PurchaseOptionType.Or))
                 {

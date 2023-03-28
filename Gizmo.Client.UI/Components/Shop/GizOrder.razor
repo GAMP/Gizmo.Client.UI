@@ -1,5 +1,6 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
+@using System.Globalization
 
 <div class="giz-order">
     <div class="giz-order__items">
@@ -45,7 +46,7 @@
         <div class="giz-order-summary">
             <div class="giz-order-summary-text-bold">@LocalizationService.GetString("GIZ_SHOP_SUBTOTAL")</div>
             <div class="giz-order-summary-text">@LocalizationService.GetString("GIZ_SHOP_EARNED_POINTS")</div>
-            <div class="giz-order-summary-total @(ViewState.PointsTotal == 0 ? "giz-order-summary-total--no-icon" : "")">@ViewState.Total.ToString("C")<span class="giz-order-summary-number-separator">&amp;</span>@(ViewState.PointsTotal)</div>
+            <div class="giz-order-summary-total @(ViewState.PointsTotal == 0 ? "giz-order-summary-total--no-icon" : "")">@ViewState.Total.ToString("C", CultureInfo.CurrentCulture)<span class="giz-order-summary-number-separator">&amp;</span>@(ViewState.PointsTotal)</div>
             @if (ViewState.PointsTotal == 0)
             {
                 <div class="giz-order-summary-points">

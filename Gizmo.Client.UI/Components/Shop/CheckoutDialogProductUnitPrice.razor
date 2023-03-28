@@ -2,5 +2,6 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Client.UI.View.States
 @using Microsoft.AspNetCore.Components.Forms
+@using System.Globalization
 
-@_userProductViewState.UnitPrice.ToString("C")
+@_userProductViewState.UnitPrice.ToString("C", CultureInfo.CurrentCulture)

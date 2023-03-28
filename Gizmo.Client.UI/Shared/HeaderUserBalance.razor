@@ -1,5 +1,6 @@
 ﻿@namespace Gizmo.Client.UI
 @inherits ComponentBase
+@using System.Globalization
 
 @if (_hideBalance)
 {
@@ -33,7 +34,7 @@ else
         <div>@UserBalanceViewState.PointsBalance</div>
     </div>
     <div class="giz-header__user-menu-item">
-        <div>@UserBalanceViewState.Balance.ToString("C")</div>
+        <div>@UserBalanceViewState.Balance.ToString("C", CultureInfo.CurrentCulture)</div>
     </div>
     <div class="giz-header__user-menu-item">
         <div class="user-menu-item-button" @onclick="@(() => ToggleBalanceVisibility())">

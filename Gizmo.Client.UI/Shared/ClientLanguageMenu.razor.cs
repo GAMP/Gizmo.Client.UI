@@ -15,7 +15,7 @@ namespace Gizmo.Client.UI.Shared
 
         private void ValueChangedHandler(LanguageViewState value)
         {
-            ClientLanguagesService.SetCurrentLanguageAsync(value.TwoLetterName);
+            ClientLanguagesService.SetCurrentLanguageAsync(value.Culture.TwoLetterISOLanguageName);
         }
 
         protected override void OnInitialized()

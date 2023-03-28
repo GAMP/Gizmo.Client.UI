@@ -1,6 +1,7 @@
 ﻿@namespace Gizmo.Client.UI.Pages
 @inherits CustomDOMComponentBase
 @using Gizmo.Client.UI.View.States
+@using System.Globalization
 
 <div class="giz-profile">
     <div class="giz-profile__body">
@@ -41,7 +42,7 @@
                             </HeaderTemplate>
                             <CellTemplate>
                                 <div class="@(depositTranscation.DepositTransactionType == DepositTransactionType.Deposit ? "purchase-details-deposit" : depositTranscation.DepositTransactionType == DepositTransactionType.Withdraw ? "purchase-details-withdraw" : "")">
-                                    @depositTranscation.Amount.ToString("C")
+                                    @depositTranscation.Amount.ToString("C", CultureInfo.CurrentCulture)
                                 </div>
                             </CellTemplate>
                         </DataGridColumn>
@@ -50,7 +51,7 @@
                                 Balance
                             </HeaderTemplate>
                             <CellTemplate>
-                                @depositTranscation.Amount.ToString("C")
+                                @depositTranscation.Amount.ToString("C", CultureInfo.CurrentCulture)
                             </CellTemplate>
                         </DataGridColumn>
                         <DataGridColumn Field="@(nameof(DepositTransactionViewState.Amount))" TItemType="DepositTransactionViewState" Context="depositTranscation">

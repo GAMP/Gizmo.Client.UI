@@ -14,7 +14,12 @@ namespace Gizmo.Client.UI.Host.WPF
         /// <param name="culture">Culture.</param>
         public async Task SetCurrentUICultureAsync(CultureInfo culture)
         {
-            await Application.Current?.Dispatcher.InvokeAsync(new Action(() => { CultureInfo.CurrentUICulture = culture; }));
+            await Application.Current?.Dispatcher.InvokeAsync(new Action(() => 
+            {
+                CultureInfo.DefaultThreadCurrentCulture = culture;
+                CultureInfo.DefaultThreadCurrentUICulture = culture;
+                CultureInfo.CurrentUICulture = culture; 
+            }));
         }
     }
 }

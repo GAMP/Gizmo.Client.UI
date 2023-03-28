@@ -2,6 +2,7 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Client.UI.View.States
 @using Microsoft.AspNetCore.Components.Forms
+@using System.Globalization
 
 <HostedDialog>
     <div class="giz-client-dialog giz-payment-method-selector-dialog">
@@ -52,7 +53,7 @@
                                         @LocalizationService.GetString("GIZ_SHOP_SUBTOTAL")
                                     </HeaderTemplate>
                                     <CellTemplate>
-                                        @product.TotalPrice.ToString("C")
+                                        @product.TotalPrice.ToString("C", CultureInfo.CurrentCulture)
                                     </CellTemplate>
                                 </DataGridColumn>
                             </ChildContent>
@@ -60,7 +61,7 @@
                     </div>
                     <div class="giz-checkout__summary">
                         <div class="giz-checkout__summary__total">@LocalizationService.GetString("GIZ_SHOP_TOTAL")</div>
-                        <div class="giz-checkout__summary__amount"><span>@ViewState.Total.ToString("C") @LocalizationService.GetString("GIZ_GEN_AND") @ViewState.PointsTotal</span><PointsIcon /></div>
+                        <div class="giz-checkout__summary__amount"><span>@ViewState.Total.ToString("C", CultureInfo.CurrentCulture) @LocalizationService.GetString("GIZ_GEN_AND") @ViewState.PointsTotal</span><PointsIcon /></div>
                     </div>
                     <div class="giz-checkout__payment-method">
                         <div class="giz-checkout__summary__payment-method__label">@LocalizationService.GetString("GIZ_SHOP_PAYMENT_METHOD")</div>
