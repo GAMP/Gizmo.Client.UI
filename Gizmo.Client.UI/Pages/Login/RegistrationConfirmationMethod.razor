@@ -64,7 +64,7 @@
                 </div>
             }
             <div>
-                <Button IsDisabled="@(ViewState.IsLoading || UserVerificationViewState.IsVerificationLocked)"
+                <Button IsDisabled="@(ViewState.IsValid == false || ViewState.IsLoading || UserVerificationViewState.IsVerificationLocked)"
                         Color="ButtonColors.Accent"
                         Size="ButtonSizes.ExtraLarge"
                         IsFullWidth="true"

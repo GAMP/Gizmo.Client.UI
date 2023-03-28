@@ -40,7 +40,8 @@
                                    Label="@LocalizationService.GetString("GIZ_GEN_PASSWORD")" />
                     <PasswordTooltip Password="@ViewState.Password" />
                 </div>
-                <PasswordInput Value="@ViewState.RepeatPassword"
+                <PasswordInput UpdateOnInput="true"
+                               Value="@ViewState.RepeatPassword"
                                ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetRepeatPassword(value))"
                                ValueExpression="@(() => ViewState.RepeatPassword)"
                                Size="InputSizes.Small"
@@ -99,7 +100,8 @@
                 @if (UserRegistrationViewState.ConfirmationMethod != RegistrationVerificationMethod.Email)
                 {
                     <div class="giz-form-input">
-                        <TextInput Value="@ViewState.Email"
+                        <TextInput UpdateOnInput="true"
+                                   Value="@ViewState.Email"
                                    ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetEmail(value))"
                                    ValueExpression="@(() => ViewState.Email)"
                                    Size="InputSizes.Small"
@@ -109,7 +111,11 @@
                 }
             }
             <div>
-                <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@UserRegistrationBasicFieldsService.SubmitAsync">@LocalizationService.GetString("GIZ_GEN_CONTINUE")</Button>
+                <Button IsDisabled="@(ViewState.IsValid == false)"
+                        Color="ButtonColors.Accent"
+                        Size="ButtonSizes.Large"
+                        IsFullWidth="true"
+                        @onclick="@UserRegistrationBasicFieldsService.SubmitAsync">@LocalizationService.GetString("GIZ_GEN_CONTINUE")</Button>
             </div>
         </EditForm>
     </CardBody>
