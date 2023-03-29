@@ -31,7 +31,7 @@ namespace Gizmo.Client.UI.Pages
         UserProductGroupViewStateLookupService UserProductGroupViewStateLookupService { get; set; }
 
         [Inject]
-        ProductDetailsPageService ProductDetailsPageService { get; set; }
+        ProductDetailsPageViewStateService ProductDetailsPageService { get; set; }
 
         [Inject()]
         UserCartProductItemViewState ProductItemViewState

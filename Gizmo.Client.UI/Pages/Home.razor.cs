@@ -26,7 +26,7 @@ namespace Gizmo.Client.UI.Pages
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        HomePageService HomePageService { get; set; }
+        HomePageViewStateService HomePageService { get; set; }
 
         [Inject]
         HomePageViewState ViewState { get; set; }

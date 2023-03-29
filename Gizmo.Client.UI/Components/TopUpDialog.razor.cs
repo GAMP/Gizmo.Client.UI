@@ -15,7 +15,7 @@ namespace Gizmo.Client.UI.Components
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        TopUpService TopUpService { get; set; }
+        TopUpViewStateService TopUpService { get; set; }
 
         [Inject]
         TopUpViewState ViewState { get; set; }
