@@ -12,7 +12,7 @@ namespace Gizmo.Client.UI.Shared
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        HostService HostService { get; set; }
+        HostViewStateService HostService { get; set; }
 
         [Inject]
         HostViewState ViewState { get; set; }

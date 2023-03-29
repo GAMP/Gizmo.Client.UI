@@ -30,7 +30,7 @@ namespace Gizmo.Client.UI.Components
         #region PROPERTIES
 
         [Inject]
-        AdvertisementsService AdvertisementsService { get; set; }
+        AdvertisementsViewStateService AdvertisementsService { get; set; }
 
         [Inject]
         AdvertisementsViewState ViewState { get; set; }

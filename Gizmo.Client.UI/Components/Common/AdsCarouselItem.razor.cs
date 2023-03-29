@@ -22,7 +22,7 @@ namespace Gizmo.Client.UI.Components
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        AdvertisementsService AdvertisementsService { get; set; }
+        AdvertisementsViewStateService AdvertisementsService { get; set; }
 
         [Inject]
         CommandProviderService CommandProviderService { get; set; }

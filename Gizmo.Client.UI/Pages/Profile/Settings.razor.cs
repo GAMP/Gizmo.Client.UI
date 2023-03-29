@@ -19,7 +19,7 @@ namespace Gizmo.Client.UI.Pages
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        UserSettingsService UserSettingsService { get; set; }
+        UserSettingsViewStateService UserSettingsService { get; set; }
 
         [Inject]
         UserSettingsViewState ViewState { get; set; }

@@ -10,7 +10,7 @@ namespace Gizmo.Client.UI.Pages
     public partial class Products : CustomDOMComponentBase
     {
         [Inject]
-        TimeProductsService TimeProductsService { get; set; }
+        TimeProductsViewStateService TimeProductsService { get; set; }
 
         [Inject]
         TimeProductsViewState ViewState { get; set; }

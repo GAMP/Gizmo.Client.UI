@@ -28,13 +28,13 @@ namespace Gizmo.Client.UI.Shared
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        UserService UserService { get; set; }
+        UserViewStateService UserService { get; set; }
 
         [Inject]
-        UserLockService UserLockService { get; set; }
+        UserLockViewStateService UserLockService { get; set; }
 
         [Inject()]
-        TopUpService TopUpService { get; set; }
+        TopUpViewStateService TopUpService { get; set; }
 
         [Parameter]
         public bool IsOpen

@@ -68,7 +68,7 @@ namespace Gizmo.Client.UI.Components
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        UserChangeMobileService UserChangeMobileService { get; set; }
+        UserChangeMobileViewStateService UserChangeMobileService { get; set; }
 
         [Inject]
         UserChangeMobileViewState ViewState { get; set; }

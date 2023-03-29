@@ -17,7 +17,7 @@ namespace Gizmo.Client.UI.Components
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        UserChangeEmailService UserChangeEmailService { get; set; }
+        UserChangeEmailViewStateService UserChangeEmailService { get; set; }
 
         [Inject]
         UserChangeEmailViewState ViewState { get; set; }

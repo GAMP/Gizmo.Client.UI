@@ -38,7 +38,7 @@ namespace Gizmo.Client.UI.Shared
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        GlobalSearchService GlobalSearchService { get; set; }
+        GlobalSearchViewStateService GlobalSearchService { get; set; }
 
         [Inject]
         GlobalSearchViewState ViewState { get; set; }

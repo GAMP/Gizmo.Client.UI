@@ -8,7 +8,7 @@ namespace Gizmo.Client.UI.Shared
     public partial class Layout_LoginServerConnection : CustomDOMComponentBase
     {
         [Inject]
-        HostService HostService { get; set; }
+        HostViewStateService HostService { get; set; }
 
         [Inject]
         HostViewState ViewState { get; set; }

@@ -16,10 +16,10 @@ namespace Gizmo.Client.UI.Pages
         UserRegistrationViewState UserRegistrationViewState { get; set; }
 
         [Inject]
-        UserRegistrationConfirmationMethodService UserRegistrationConfirmationMethodService { get; set; }
+        UserRegistrationConfirmationMethodViewStateService UserRegistrationConfirmationMethodService { get; set; }
 
         [Inject]
-        UserRegistrationBasicFieldsService UserRegistrationBasicFieldsService { get; set; }
+        UserRegistrationBasicFieldsViewStateService UserRegistrationBasicFieldsService { get; set; }
 
         [Inject]
         UserRegistrationBasicFieldsViewState ViewState { get; set; }

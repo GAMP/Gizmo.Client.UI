@@ -21,7 +21,7 @@ namespace Gizmo.Client.UI.Components
         NavigationService NavigationService { get; set; }
 
         [Inject]
-        UserCartService UserCartService { get; set; }
+        UserCartViewStateService UserCartService { get; set; }
 
         [Inject]
         UserCartViewState ViewState { get; set; }

@@ -31,7 +31,7 @@ namespace Gizmo.Client.UI.Pages
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        AppDetailsPageService AppDetailsPageService { get; set; }
+        AppDetailsPageViewStateService AppDetailsPageService { get; set; }
 
         [Inject]
         AppDetailsPageViewState ViewState { get; set; }
