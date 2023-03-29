@@ -40,8 +40,8 @@ namespace Gizmo.Client.UI.Host.Web
             hostBuilder.Services.AddSingleton<IClientDialogService, ClientDialogService>();
             hostBuilder.Services.AddDialogSerive<IClientDialogService>();
 
-            hostBuilder.Services.AddSingleton<CultureInputService>();
-            hostBuilder.Services.AddSingleton<CultureOutputService>();
+            hostBuilder.Services.AddSingleton<ICultureInputService, CultureInputService>();
+            hostBuilder.Services.AddSingleton<ICultureOutputService, CultureOutputService>();
 
             hostBuilder.Services.AddSingleton<IGizmoClient, TestClient>();
             hostBuilder.Services.AddSingleton<IImageService, ImageService>();

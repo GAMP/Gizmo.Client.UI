@@ -10,7 +10,7 @@ using Gizmo.UI;
 
 namespace Gizmo.Client.UI.Host.WPF
 {
-    public sealed class CultureOutputService : ICultureService
+    public sealed class CultureOutputService : ICultureOutputService
     {
         public IEnumerable<CultureInfo> AveliableCultures => InputLanguageManager.Current.AvailableInputLanguages.OfType<CultureInfo>();
 

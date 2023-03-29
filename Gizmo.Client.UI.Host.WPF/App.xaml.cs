@@ -35,8 +35,8 @@ namespace Gizmo.Client.UI.Host.WPF
 
                 serviceCollection.AddSingleton<IGizmoClient, TestClient>();
                 serviceCollection.AddSingleton<IImageService, ImageService>();
-                serviceCollection.AddSingleton<CultureInputService>();
-                serviceCollection.AddSingleton<CultureOutputService>();
+                serviceCollection.AddSingleton<ICultureInputService, CultureInputService>();
+                serviceCollection.AddSingleton<ICultureOutputService, CultureOutputService>();
                 serviceCollection.AddSingleton<IHostWindow, HostWindow>();
               
             }).ConfigureLogging(loggingBuilder =>
