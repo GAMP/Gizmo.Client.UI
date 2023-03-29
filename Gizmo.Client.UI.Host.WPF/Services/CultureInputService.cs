@@ -9,7 +9,7 @@ using Gizmo.UI;
 
 namespace Gizmo.Client.UI.Host.WPF
 {
-    public sealed class CultureInputService : ICultureService
+    public sealed class CultureInputService : ICultureInputService
     {
         public CultureInputService() 
         {
