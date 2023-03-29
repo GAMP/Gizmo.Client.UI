@@ -20,7 +20,7 @@ namespace Gizmo.Client.UI.Host.WPF
         {
         }
 
-        public IEnumerable<CultureInfo> AveliableCultures => InputLanguageManager.Current.AvailableInputLanguages.OfType<CultureInfo>();
+        public IEnumerable<CultureInfo> AvailableCultures => InputLanguageManager.Current.AvailableInputLanguages.OfType<CultureInfo>();
 
 
         public async Task SetCurrentCultureAsync(CultureInfo culture)
@@ -28,8 +28,8 @@ namespace Gizmo.Client.UI.Host.WPF
             await Application.Current?.Dispatcher.InvokeAsync(() => InputLanguageManager.Current.CurrentInputLanguage = culture);
         }
 
-        public CultureInfo GetCurrentCulture(string twoLetterISOLanguageName) =>
-            AveliableCultures.FirstOrDefault(x => x.TwoLetterISOLanguageName == twoLetterISOLanguageName)
+        public CultureInfo GetCulture(IEnumerable<CultureInfo> cultures, string twoLetterISOLanguageName) =>
+            cultures.FirstOrDefault(x => x.TwoLetterISOLanguageName == twoLetterISOLanguageName)
             ?? CultureInfo.CurrentCulture;
     }
 }

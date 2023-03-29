@@ -4,15 +4,21 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 
 using Gizmo.UI;
+using Gizmo.UI.Services;
 
 namespace Gizmo.Client.UI.Host.WPF
 {
     public sealed class CultureOutputService : ICultureOutputService
     {
-        public IEnumerable<CultureInfo> AveliableCultures => InputLanguageManager.Current.AvailableInputLanguages.OfType<CultureInfo>();
+        private readonly ILocalizationService _localizationService;
+        public CultureOutputService(ILocalizationService localizationService) => _localizationService = localizationService;
+        
+        public IEnumerable<CultureInfo> AvailableCultures => 
+            _localizationService.SupportedCultures
+                .DistinctBy(x => x.TwoLetterISOLanguageName)
+                .Select(x => new CultureInfo(x.Name));
 
         /// <summary>
         /// Sets current UI culture.
@@ -22,14 +28,12 @@ namespace Gizmo.Client.UI.Host.WPF
         {
             await Application.Current?.Dispatcher.InvokeAsync(new Action(() => 
             {
-                CultureInfo.DefaultThreadCurrentCulture = culture;
-                CultureInfo.DefaultThreadCurrentUICulture = culture;
                 CultureInfo.CurrentUICulture = culture; 
             }));
         }
 
-        public CultureInfo GetCurrentCulture(string twoLetterISOLanguageName) =>
-            AveliableCultures.FirstOrDefault(x => x.TwoLetterISOLanguageName == twoLetterISOLanguageName)
+        public CultureInfo GetCulture(IEnumerable<CultureInfo> cultures, string twoLetterISOLanguageName) =>
+            cultures.FirstOrDefault(x => x.TwoLetterISOLanguageName == twoLetterISOLanguageName)
             ?? CultureInfo.CurrentCulture;
     }
 }

@@ -60,9 +60,11 @@ namespace Gizmo.Client.UI.Host.WPF
 
             var ds = host.Services.GetRequiredService<DesktopUICompositionService>();
 
-            string appSettingsFile = Path.Combine(Environment.CurrentDirectory, @"composition.json");
+            string compositionFile = Path.Combine(Environment.CurrentDirectory, @"composition.json");
+            string optionsFile = Path.Combine(Environment.CurrentDirectory, @"options.json");
 
-            await ds.SetConfigurationSourceAsync(appSettingsFile);
+            await ds.SetConfigurationSourceAsync(compositionFile);
+            await ds.SetOptionsConfigurationSourceAsync(optionsFile);
             await ds.InitializeAsync(default);
 
             //initialize services
