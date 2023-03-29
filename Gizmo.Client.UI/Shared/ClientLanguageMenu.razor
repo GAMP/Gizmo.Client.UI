@@ -2,28 +2,27 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Client.UI.View.States
 @using Microsoft.AspNetCore.Components.Forms
+@using System.Globalization
 
 <Select HandleSVGIcon="Icons.Select_Client"
         ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
-        TValue="LanguageViewState"
-        Value="ViewState.SelectedLanguage"
+        TValue="CultureInfo"
+        Value="ViewState.CurrentCulture"
         ValueChanged="@ValueChangedHandler"
         Size="InputSizes.Small"
         OpenDirection="PopupOpenDirections.Top"
         Class="giz-client-language-menu"
         PopupClass="giz-scrollbar--v">
-    @if (ViewState.Languages != null)
-    {
-        @foreach (var language in ViewState.Languages)
+        
+        @foreach (var culture in ViewState.AveliableCultures)
         {
-            <SelectItem Value="@language">
+            <SelectItem Value="@culture">
                 <div class="giz-icon-select-item">
                     <div class="giz-icon-select-item__icon">
                         <Icon Size="IconSizes.Small" SVGIcon="Icons.Language_Client" />
                     </div>
-                    <div>@language.Culture.TwoLetterISOLanguageName</div>
+                    <div>@culture.TwoLetterISOLanguageName</div>
                 </div>
             </SelectItem>
         }
-    }
 </Select>

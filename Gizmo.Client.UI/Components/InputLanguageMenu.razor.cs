@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Globalization;
+using System.Threading.Tasks;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
@@ -8,15 +9,15 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class InputLanguageMenu : CustomDOMComponentBase
     {
-        [Inject()]
-        public InputLanguagesViewStateService InputLanguagesService { get; set; }
+        [Inject]
+        public CultureInputViewStateService CultureService { get; set; }
 
-        [Inject()]
-        public InputLanguagesViewState ViewState { get; set; }
+        [Inject]
+        public CultureInputViewState ViewState { get; set; }
 
-        private Task ValueChangedHandler(LanguageViewState value)
+        private Task ValueChangedHandler(CultureInfo culture)
         {
-            return InputLanguagesService.SetCurrentRegionAsync(value.Culture.TwoLetterISOLanguageName);
+            return CultureService.SetCurrentInputCultureAsync(culture.TwoLetterISOLanguageName);
         }
 
         protected override void OnInitialized()

@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.View.Services;
+﻿using System.Globalization;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -8,14 +9,14 @@ namespace Gizmo.Client.UI.Shared
     public partial class ClientLanguageMenu : CustomDOMComponentBase
     {
         [Inject]
-        public ClientLanguagesViewStateService ClientLanguagesService { get; set; }
+        public CultureClientViewStateService CultureService { get; set; }
 
         [Inject]
-        public ClientLanguagesViewState ViewState { get; set; }
+        public CultureClientViewState ViewState { get; set; }
 
-        private void ValueChangedHandler(LanguageViewState value)
+        private void ValueChangedHandler(CultureInfo culture)
         {
-            ClientLanguagesService.SetCurrentLanguageAsync(value.Culture.TwoLetterISOLanguageName);
+            CultureService.SetCurrentCultureAsync(culture.TwoLetterISOLanguageName);
         }
 
         protected override void OnInitialized()
