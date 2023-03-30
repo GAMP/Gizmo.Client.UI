@@ -9,9 +9,9 @@ using Gizmo.UI;
 
 namespace Gizmo.Client.UI.Host.WPF
 {
-    public sealed class InputLenguageService : IInputLenguageService
+    public sealed class WpfInputLenguageService : IInputLanguageService
     {
-        public InputLenguageService()
+        public WpfInputLenguageService()
         {
             InputLanguageManager.Current.InputLanguageChanged += Current_InputLanguageChanged;
         }
@@ -23,9 +23,14 @@ namespace Gizmo.Client.UI.Host.WPF
         public IEnumerable<CultureInfo> AvailableLanguages => InputLanguageManager.Current.AvailableInputLanguages.OfType<CultureInfo>();
 
 
-        public async Task SetCurrentLanguageAsync(CultureInfo culture)
+        public async Task SetCurrentInputLanguageAsync(CultureInfo culture)
         {
             await Application.Current?.Dispatcher.InvokeAsync(() => InputLanguageManager.Current.CurrentInputLanguage = culture);
+        }
+
+        public CultureInfo GetLanguage(string twoLetterISOLanguageName)
+        {
+            return AvailableLanguages.FirstOrDefault(x => x.TwoLetterISOLanguageName == twoLetterISOLanguageName);
         }
     }
 }

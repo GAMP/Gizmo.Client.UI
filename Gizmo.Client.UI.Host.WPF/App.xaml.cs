@@ -1,8 +1,10 @@
 ﻿using Gizmo.Client.UI.Services;
 using Gizmo.UI;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+
 using System;
 using System.IO;
 using System.Windows;
@@ -35,8 +37,9 @@ namespace Gizmo.Client.UI.Host.WPF
 
                 serviceCollection.AddSingleton<IGizmoClient, TestClient>();
                 serviceCollection.AddSingleton<IImageService, ImageService>();
-                serviceCollection.AddSingleton<ICultureInputService, CultureInputService>();
-                serviceCollection.AddSingleton<ICultureOutputService, CultureOutputService>();
+
+                serviceCollection.AddSingleton<IInputLanguageService, WpfInputLenguageService>();
+                
                 serviceCollection.AddSingleton<IHostWindow, HostWindow>();
               
             }).ConfigureLogging(loggingBuilder =>
