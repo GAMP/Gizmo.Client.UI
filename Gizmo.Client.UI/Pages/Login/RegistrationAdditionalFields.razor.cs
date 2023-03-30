@@ -4,6 +4,7 @@ using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ namespace Gizmo.Client.UI.Pages
     [Route(ClientRoutes.RegistrationAdditionalFieldsRoute)]
     public partial class RegistrationAdditionalFields : CustomDOMComponentBase
     {
+        private bool _isLoaded;
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
@@ -37,7 +40,12 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         NavigationService NavigationService { get; set; }
 
-        public List<IconSelectCountry> Countries { get; set; }
+        public List<IconSelectCountry> Countries { get; set; } = new List<IconSelectCountry>();
+
+        public void OnClickClearValueButtonHandler(MouseEventArgs args)
+        {
+            SetSelectedCountry(Countries.Where(a => a.PhonePrefix == "+").FirstOrDefault());
+        }
 
         public IconSelectCountry GetSelectedCountry()
         {
@@ -78,12 +86,15 @@ namespace Gizmo.Client.UI.Pages
 
             foreach (var country in countries)
             {
-                Countries.Add(new IconSelectCountry()
+                foreach (var suffix in country.CallingCodeSuffixes)
                 {
-                    Text = country.NativeName,
-                    PhonePrefix = country.CallingCodeRoot + (country.CallingCodeSuffixes.Count() == 1 ? country.CallingCodeSuffixes.First() : ""),
-                    Icon = country.FlagSvg
-                });
+                    Countries.Add(new IconSelectCountry()
+                    {
+                        Text = country.NativeName,
+                        PhonePrefix = country.CallingCodeRoot + suffix,
+                        Icon = country.FlagSvg
+                    });
+                }
             }
 
             var other = new IconSelectCountry()
@@ -115,6 +126,8 @@ namespace Gizmo.Client.UI.Pages
                 defaultItem = other;
 
             SetSelectedCountry(defaultItem);
+
+            _isLoaded = true;
 
             await base.OnInitializedAsync();
         }

@@ -28,6 +28,10 @@
                 {
                     <div class="giz-registration-form-input">
                         <IconSelect Placeholder="Search"
+                                    IsVirtualized="false"
+                                    IsLoading="@(!_isLoaded)"
+                                    CanClearValue="@(!(GetSelectedCountry()?.PhonePrefix == "+"))"
+                                    OnClickClearValueButton="OnClickClearValueButtonHandler"
                                     HandleSVGIcon="Icons.Select_Client"
                                     TValue="IconSelectCountry"
                                     ItemSource="@Countries"
@@ -37,6 +41,7 @@
                                     IsFullWidth="true"
                                     Label="@LocalizationService.GetString("GIZ_USER_COUNTRY_REGION")"
                                     OpenDirection="PopupOpenDirections.Bottom"
+                                    MaximumHeight="20.0rem"
                                     Class="giz-input-language-menu"
                                     PopupClass="giz-scrollbar--v" />
                     </div>

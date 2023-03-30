@@ -7,6 +7,7 @@ using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using System.Linq;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Gizmo.Client.UI.Pages
 {
@@ -37,6 +38,11 @@ namespace Gizmo.Client.UI.Pages
         IClientDialogService DialogService { get; set; }
 
         public List<IconSelectCountry> Countries { get; set; } = new List<IconSelectCountry>();
+
+        public void OnClickClearValueButtonHandler(MouseEventArgs args)
+        {
+            SetSelectedCountry(Countries.Where(a => a.PhonePrefix == "+").FirstOrDefault());
+        }
 
         public IconSelectCountry GetSelectedCountry()
         {
@@ -78,12 +84,15 @@ namespace Gizmo.Client.UI.Pages
 
             foreach (var country in countries)
             {
-                Countries.Add(new IconSelectCountry()
+                foreach (var suffix in country.CallingCodeSuffixes)
                 {
-                    Text = country.NativeName,
-                    PhonePrefix = country.CallingCodeRoot + (country.CallingCodeSuffixes.Count() == 1 ? country.CallingCodeSuffixes.First() : ""),
-                    Icon = country.FlagSvg
-                });
+                    Countries.Add(new IconSelectCountry()
+                    {
+                        Text = country.NativeName,
+                        PhonePrefix = country.CallingCodeRoot + suffix,
+                        Icon = country.FlagSvg
+                    });
+                }
             }
 
             var other = new IconSelectCountry()

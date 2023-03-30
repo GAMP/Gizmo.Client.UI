@@ -16,7 +16,12 @@
                     <div class="giz-change-mobile-dialog-message">@LocalizationService.GetString("UPDATE_NUMBER_MESSAGE")</div>
                     <EditForm EditContext="@UserChangeMobileService.EditContext">
                         <div class="giz-registration-form-input">
-                            <IconSelect IsTransparent="true"
+                            <IconSelect Placeholder="@LocalizationService.GetString("GIN_GEN_SEARCH")"
+                                        IsVirtualized="false"
+                                        IsLoading="@(!_isLoaded)" 
+                                        CanClearValue="@(!(GetSelectedCountry()?.PhonePrefix == "+"))"
+                                        OnClickClearValueButton="OnClickClearValueButtonHandler"
+                                        IsTransparent="true"
                                         HandleSVGIcon="Icons.Select_Client"
                                         TValue="IconSelectCountry"
                                         ItemSource="@Countries"
@@ -26,6 +31,7 @@
                                         IsFullWidth="true"
                                         Label="@LocalizationService.GetString("GIZ_USER_COUNTRY")"
                                         OpenDirection="PopupOpenDirections.Cursor"
+                                        MaximumHeight="20.0rem"
                                         Class="giz-input-language-menu"
                                         PopupClass="giz-scrollbar--v" />
                         </div>

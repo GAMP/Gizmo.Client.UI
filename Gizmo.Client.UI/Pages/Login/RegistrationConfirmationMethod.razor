@@ -39,6 +39,8 @@
                     <IconSelect Placeholder="@LocalizationService.GetString("GIN_GEN_SEARCH")"
                                 IsVirtualized="false"
                                 IsLoading="@(!_isLoaded)"
+                                CanClearValue="@(!(GetSelectedCountry()?.PhonePrefix == "+"))"
+                                OnClickClearValueButton="OnClickClearValueButtonHandler"
                                 HandleSVGIcon="Icons.Select_Client"
                                 TValue="IconSelectCountry"
                                 ItemSource="@Countries"
