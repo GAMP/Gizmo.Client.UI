@@ -13,9 +13,7 @@ namespace Gizmo.Client.UI.Pages
     [Route(ClientRoutes.RegistrationConfirmationMethodRoute)]
     public partial class RegistrationConfirmationMethod : CustomDOMComponentBase
     {
-        public RegistrationConfirmationMethod()
-        {
-        }
+        private bool _isLoaded;
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -84,21 +82,41 @@ namespace Gizmo.Client.UI.Pages
                 {
                     Text = country.NativeName,
                     PhonePrefix = country.CallingCodeRoot + (country.CallingCodeSuffixes.Count() == 1 ? country.CallingCodeSuffixes.First() : ""),
-                    //Icon = country.FlagSvg
+                    Icon = country.FlagSvg
                 });
             }
 
-            Countries.Add(new IconSelectCountry()
+            var other = new IconSelectCountry()
             {
                 Text = "Other",
                 PhonePrefix = "+",
-                Icon = "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><g clip-path=\"url(#clip0_2031_59693)\"><path d=\"M8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16Z\" fill=\"white\"/><path d=\"M16 7.99996C16 4.56025 13.829 1.6279 10.7826 0.497559V15.5024C13.829 14.372 16 11.4397 16 7.99996Z\" fill=\"white\"/><path d=\"M0 7.99996C0 11.4397 2.171 14.372 5.21741 15.5024V0.497559C2.171 1.6279 0 4.56025 0 7.99996Z\" fill=\"white\"/></g><defs><clipPath id=\"clip0_2031_59693\"><rect width=\"16\" height=\"16\" fill=\"white\"/></clipPath></defs></svg>"
-            });
+                Icon = "_content/Gizmo.Client.UI/img/no-flag-image.svg"
+            };
+
+            Countries.Add(other);
 
             foreach (var item in Countries)
             {
                 item.Display = item.Text + " " + item.PhonePrefix;
             }
+
+            //Render the list first.
+            await InvokeAsync(StateHasChanged);
+
+            IconSelectCountry defaultItem = null;
+            var defaultCountry = await CountryInformationService.GetCurrentCountryInfoAsync();
+
+            if (defaultCountry != null && defaultCountry.CallingCodeSuffixes.Count() > 0)
+            {
+                defaultItem = Countries.Where(a => a.PhonePrefix == defaultCountry.CallingCodeRoot + defaultCountry.CallingCodeSuffixes.First()).FirstOrDefault();
+            }
+
+            if (defaultItem == null)
+                defaultItem = other;
+
+            SetSelectedCountry(defaultItem);
+
+            _isLoaded = true;
 
             await base.OnInitializedAsync();
         }
