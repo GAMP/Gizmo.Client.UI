@@ -7,22 +7,22 @@
 <Select HandleSVGIcon="Icons.Select_Client"
         ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
         TValue="CultureInfo"
-        Value="ViewState.CurrentCulture"
+        Value="ViewState.CurrentInputLanguage"
         ValueChanged="@ValueChangedHandler"
         Size="InputSizes.Small"
         OpenDirection="PopupOpenDirections.Top"
         Class="giz-input-language-menu"
         PopupClass="giz-scrollbar--v">
-
-        @foreach (var culture in ViewState.AvailableCultures)
-        {
-            <SelectItem Value="@culture">
-                <div class="giz-icon-select-item">
-                    <div class="giz-icon-select-item__flag">
-                        <Icon Size="IconSizes.Small" SVGIcon="Icons.Keyboard_Client" />
+        @if(ViewState.CurrentInputLanguage is not null)
+            foreach (var culture in ViewState.AvailableInputLanguages)
+            {
+                <SelectItem Value="@culture">
+                    <div class="giz-icon-select-item">
+                        <div class="giz-icon-select-item__flag">
+                            <Icon Size="IconSizes.Small" SVGIcon="Icons.Keyboard_Client" />
+                        </div>
+                        <div>@culture.TwoLetterISOLanguageName</div>
                     </div>
-                    <div>@culture.TwoLetterISOLanguageName</div>
-                </div>
-            </SelectItem>
-        }
+                </SelectItem>
+            }
 </Select>

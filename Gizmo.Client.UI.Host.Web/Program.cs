@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+
 using Gizmo.Client.UI.Services;
 using Gizmo.UI;
+
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,8 +42,7 @@ namespace Gizmo.Client.UI.Host.Web
             hostBuilder.Services.AddSingleton<IClientDialogService, ClientDialogService>();
             hostBuilder.Services.AddDialogSerive<IClientDialogService>();
 
-            hostBuilder.Services.AddSingleton<ICultureInputService, CultureInputService>();
-            hostBuilder.Services.AddSingleton<ICultureOutputService, CultureOutputService>();
+            hostBuilder.Services.AddSingleton<IInputLanguageService, WebInputLenguageService>();
 
             hostBuilder.Services.AddSingleton<IGizmoClient, TestClient>();
             hostBuilder.Services.AddSingleton<IImageService, ImageService>();

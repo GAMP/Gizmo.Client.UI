@@ -10,14 +10,14 @@ namespace Gizmo.Client.UI.Components
     public partial class InputLanguageMenu : CustomDOMComponentBase
     {
         [Inject]
-        public CultureInputViewStateService CultureService { get; set; }
+        public InputLanguageViewStateService LanguageService { get; set; }
 
         [Inject]
-        public CultureInputViewState ViewState { get; set; }
+        public InputLanguageViewState ViewState { get; set; }
 
         private Task ValueChangedHandler(CultureInfo culture)
         {
-            return CultureService.SetCurrentInputCultureAsync(culture.TwoLetterISOLanguageName);
+            return LanguageService.SetCurrentInputLanguageAsync(culture.TwoLetterISOLanguageName);
         }
 
         protected override void OnInitialized()
