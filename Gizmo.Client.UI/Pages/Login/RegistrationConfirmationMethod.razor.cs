@@ -7,13 +7,14 @@ using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using System.Linq;
-using System.Diagnostics.Metrics;
 
 namespace Gizmo.Client.UI.Pages
 {
     [Route(ClientRoutes.RegistrationConfirmationMethodRoute)]
     public partial class RegistrationConfirmationMethod : CustomDOMComponentBase
     {
+        private bool _isLoaded;
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
@@ -114,6 +115,8 @@ namespace Gizmo.Client.UI.Pages
                 defaultItem = other;
 
             SetSelectedCountry(defaultItem);
+
+            _isLoaded = true;
 
             await base.OnInitializedAsync();
         }
