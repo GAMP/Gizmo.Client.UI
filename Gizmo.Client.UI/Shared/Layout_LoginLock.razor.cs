@@ -11,11 +11,11 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
-        [Inject]
-        HostNumberViewStateService HostService { get; set; }
+        [Inject()]
+        HostUserLockViewStateService HostUserLockService { get; set; }
 
         [Inject]
-        HostNumberViewState ViewState { get; set; }
+        HostUserLockViewState ViewState { get; set; }
 
         protected override void OnInitialized()
         {

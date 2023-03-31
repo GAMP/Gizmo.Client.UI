@@ -3,7 +3,7 @@
 
 @if (ViewState.IsLocked)
 {
-    <div class="giz-login-overlay" @onclick="@(() => HostService.SetHostLockStateAsync(false))">
+    <div class="giz-login-overlay" @onclick="@(() => HostUserLockService.SetHostLockStateAsync(false))">
         <div class="giz-host-locked">
             <div class="giz-host-locked__message">
                 <Icon Size="IconSizes.Large" SVGIcon="Icons.Lock_Client" />

@@ -19,6 +19,15 @@ namespace Gizmo.Client.UI.Pages
         UserPasswordRecoveryConfirmationViewStateService UserPasswordRecoveryConfirmationService { get; set; }
 
         [Inject]
+        UserLoginViewStateService UserLoginService { get; set; }
+
+        [Inject]
+        HostNumberViewStateService HostService { get; set; }
+
+        [Inject]
+        NavigationService NavigationService { get; set; }
+
+        [Inject]
         UserPasswordRecoveryConfirmationViewState ViewState { get; set; }
 
         [Inject]
@@ -27,14 +36,12 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         UserVerificationFallbackViewState UserVerificationFallbackViewState { get; set; }
 
-        [Inject]
-        UserLoginViewStateService UserLoginService { get; set; }
+        [Inject()]
+        HostConfigurationViewState HostConfigurationViewState
+        {
+            get; init;
+        }
 
-        [Inject]
-        HostNumberViewStateService HostService { get; set; }
-
-        [Inject]
-        NavigationService NavigationService { get; set; }
 
         protected override void OnInitialized()
         {

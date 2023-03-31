@@ -7,7 +7,7 @@
 <LoginCard>
     <CardHeader>
         <div class="giz-login-links">
-            @if (HostService.HostConfigurationViewState.CanSignUp)
+            @if (HostConfigurationViewState.CanSignUp)
             {
                 <div class="giz-login-new-user">@LocalizationService.GetString("GIZ_LOGIN_NOT_A_MEMBER") <a @onclick="UserLoginService.OpenRegistrationAsync">@LocalizationService.GetString("GIZ_LOGIN_SIGN_UP_NOW")</a></div>
             }
@@ -21,7 +21,7 @@
             {
                 @if (HostReservationViewState.IsPending)@*TODO: A*@
                 {
-                    <Alert AlertType="AlertTypes.Warning" Title="@LocalizationService.GetString("GIZ_LOGIN_RESERVATION_WARNING_TITLE", HostService.ReservationViewState.StartTime.ToShortTimeString())" Text="@LocalizationService.GetString("GIZ_LOGIN_RESERVATION_WARNING_MESSAGE")" />
+                    <Alert AlertType="AlertTypes.Warning" Title="@LocalizationService.GetString("GIZ_LOGIN_RESERVATION_WARNING_TITLE", HostReservationViewState.StartTime.ToShortTimeString())" Text="@LocalizationService.GetString("GIZ_LOGIN_RESERVATION_WARNING_MESSAGE")" />
                 }
             }
         </div>
@@ -94,11 +94,11 @@
         </EditForm>
     </CardBody>
     <CardFooter>
-        @if (HostService.HostConfigurationViewState.CanSignInWithQR)
+        @if (HostConfigurationViewState.CanSignInWithQR)
         {
             <div class="giz-alternative-login">
                 <div class="giz-alternative-login__separator"><span>@LocalizationService.GetString("GIZ_LOGIN_OR")</span></div>
-                <div class="giz-alternative-login__qr" @onclick="@(() => HostService.SetHostLockStateAsync(true))">
+                <div class="giz-alternative-login__qr" @onclick="@(() => HostUserLockService.SetHostLockStateAsync(true))">
                     <div class="giz-alternative-login__qr-description">
                         <div class="giz-alternative-login__qr-description__title">@LocalizationService.GetString("GIZ_LOGIN_QR_TITLE")</div>
                         <div class="giz-alternative-login__qr-description__subtitle">@LocalizationService.GetString("GIZ_LOGIN_QR_MESSAGE")</div>

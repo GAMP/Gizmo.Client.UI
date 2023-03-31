@@ -27,8 +27,15 @@ namespace Gizmo.Client.UI.Pages
             set;
         }
 
+        [Inject()]
+        HostConfigurationViewState HostConfigurationViewState
+        {
+            get;init;
+        }
+
         [Inject]
-        HostNumberViewStateService HostService { get; set; }
+        HostUserLockViewStateService HostUserLockService { get; set; }
+
 
         [Inject]
         UserPasswordRecoveryMethodServiceViewState UserPasswordRecoveryMethodServiceViewState { get; set; }

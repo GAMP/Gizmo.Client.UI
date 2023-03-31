@@ -16,17 +16,21 @@ namespace Gizmo.Client.UI.Pages
         UserPasswordRecoverySetNewPasswordViewStateService UserPasswordRecoverySetNewPasswordService { get; set; }
 
         [Inject]
-        UserPasswordRecoverySetNewPasswordViewState ViewState { get; set; }
-
-        [Inject]
         UserLoginViewStateService UserLoginService { get; set; }
 
         [Inject]
-        HostNumberViewStateService HostService { get; set; }
+        UserPasswordRecoverySetNewPasswordViewState ViewState { get; set; }
+
+        [Inject()]
+        HostConfigurationViewState HostConfigurationViewState
+        {
+            get; init;
+        }
 
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
+            this.SubscribeChange(HostConfigurationViewState);
 
             base.OnInitialized();
         }
@@ -34,6 +38,7 @@ namespace Gizmo.Client.UI.Pages
         public override void Dispose()
         {
             this.UnsubscribeChange(ViewState);
+            this.UnsubscribeChange(HostConfigurationViewState);
 
             base.Dispose();
         }
