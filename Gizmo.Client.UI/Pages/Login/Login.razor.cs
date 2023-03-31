@@ -20,6 +20,13 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         UserLoginViewState ViewState { get; set; }
 
+        [Inject()]
+        HostReservationViewState HostReservationViewState 
+        {
+            get; 
+            set;
+        }
+
         [Inject]
         HostNumberViewStateService HostService { get; set; }
 

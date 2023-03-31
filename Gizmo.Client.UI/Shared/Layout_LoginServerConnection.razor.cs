@@ -7,7 +7,7 @@ namespace Gizmo.Client.UI.Shared
     public partial class Layout_LoginServerConnection : CustomDOMComponentBase
     {
         [Inject]
-        ConnectionViewState ViewState { get; set; }
+        ClientConnectionViewState ViewState { get; set; }
 
         protected override void OnInitialized()
         {
