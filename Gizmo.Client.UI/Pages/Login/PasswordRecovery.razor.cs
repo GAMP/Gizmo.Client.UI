@@ -27,7 +27,7 @@ namespace Gizmo.Client.UI.Pages
         UserLoginViewStateService UserLoginService { get; set; }
 
         [Inject]
-        HostViewStateService HostService { get; set; }
+        HostNumberViewStateService HostService { get; set; }
 
         [Inject]
         NavigationService NavigationService { get; set; }

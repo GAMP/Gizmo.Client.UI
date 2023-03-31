@@ -8,7 +8,7 @@ namespace Gizmo.Client.UI.Shared
     public partial class Layout_LoginHostNumber : CustomDOMComponentBase
     {
         [Inject]
-        HostViewState ViewState { get; set; }
+        HostNumberViewState ViewState { get; set; }
 
         protected override void OnInitialized()
         {

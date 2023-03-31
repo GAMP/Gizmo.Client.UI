@@ -12,10 +12,10 @@ namespace Gizmo.Client.UI.Shared
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        HostViewStateService HostService { get; set; }
+        HostNumberViewStateService HostService { get; set; }
 
         [Inject]
-        HostViewState ViewState { get; set; }
+        HostNumberViewState ViewState { get; set; }
 
         protected override void OnInitialized()
         {

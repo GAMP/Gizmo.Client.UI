@@ -22,7 +22,7 @@ namespace Gizmo.Client.UI.Pages
         UserLoginViewStateService UserLoginService { get; set; }
 
         [Inject]
-        HostViewStateService HostService { get; set; }
+        HostNumberViewStateService HostService { get; set; }
 
         protected override void OnInitialized()
         {
