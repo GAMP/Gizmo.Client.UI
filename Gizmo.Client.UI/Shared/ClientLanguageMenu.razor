@@ -14,15 +14,16 @@
         Class="giz-client-language-menu"
         PopupClass="giz-scrollbar--v">
         
-        @foreach (var culture in ViewState.AvailableCultures)
-        {
-            <SelectItem Value="@culture">
-                <div class="giz-icon-select-item">
-                    <div class="giz-icon-select-item__icon">
-                        <Icon Size="IconSizes.Small" SVGIcon="Icons.Language_Client" />
-                    </div>
-                    <div>@culture.TwoLetterISOLanguageName</div>
+    @foreach (var culture in ViewState.AvailableCultures)
+    {
+        <SelectItem Value="@culture">
+            <div class="giz-input-language-menu-item">
+            <div class="giz-input-language-menu-item__flag">
+                    <Icon Size="IconSizes.Small" SVGIcon="Icons.Language_Client" />
                 </div>
-            </SelectItem>
-        }
+                <div>@culture.TwoLetterISOLanguageName</div>
+            </div>
+        </SelectItem>
+    }
+
 </Select>

@@ -4,25 +4,43 @@
 @using Microsoft.AspNetCore.Components.Forms
 @using System.Globalization
 
-<Select HandleSVGIcon="Icons.Select_Client"
-        ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
-        TValue="CultureInfo"
-        Value="ViewState.CurrentInputLanguage"
-        ValueChanged="@ValueChangedHandler"
-        Size="InputSizes.Small"
-        OpenDirection="PopupOpenDirections.Top"
-        Class="giz-input-language-menu"
-        PopupClass="giz-scrollbar--v">
-        @if(ViewState.CurrentInputLanguage is not null)
-            foreach (var culture in ViewState.AvailableInputLanguages)
+@if (ViewState.CurrentInputLanguage is not null && ViewState.AvailableInputLanguages.Count() > 0)
+{
+    @if (ViewState.AvailableInputLanguages.Count() == 1)
+    {
+        <div class="giz-input-language-menu">
+            <div class="giz-input-language-menu-item">
+                <div class="giz-input-language-menu-item__flag">
+                    <Icon Size="IconSizes.Small" SVGIcon="Icons.Keyboard_Client" />
+                </div>
+                <div>@ViewState.AvailableInputLanguages.First().TwoLetterISOLanguageName</div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <Select HandleSVGIcon="Icons.Select_Client"
+                ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
+                TValue="CultureInfo"
+                Value="ViewState.CurrentInputLanguage"
+                ValueChanged="@ValueChangedHandler"
+                Size="InputSizes.Small"
+                OpenDirection="PopupOpenDirections.Top"
+                Class="giz-input-language-menu"
+                PopupClass="giz-scrollbar--v">
+
+            @foreach (var culture in ViewState.AvailableInputLanguages)
             {
                 <SelectItem Value="@culture">
-                    <div class="giz-icon-select-item">
-                        <div class="giz-icon-select-item__flag">
+                    <div class="giz-input-language-menu-item">
+                        <div class="giz-input-language-menu-item__flag">
                             <Icon Size="IconSizes.Small" SVGIcon="Icons.Keyboard_Client" />
                         </div>
                         <div>@culture.TwoLetterISOLanguageName</div>
                     </div>
                 </SelectItem>
             }
-</Select>
+
+        </Select>
+    }
+}

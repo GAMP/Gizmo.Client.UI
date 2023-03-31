@@ -76,6 +76,14 @@
                             }
                         }
 
+                        &:focus-within {
+                            border: 0.2rem solid rgba(246, 251, 253, 0.52);
+
+                            &.giz-input-root--small {
+                                padding: 0.9rem 1.2rem;
+                            }
+                        }
+
                         .giz-input-icon-right {
                             display: none;
                         }
@@ -187,26 +195,6 @@
         grid-template-rows: 1fr min-content;
         height: 100%;
         align-items: end;
-
-        .giz-input-language-menu {
-            justify-self: end;
-            margin-bottom: 1.6rem;
-
-            .giz-input-root {
-                width: unset;
-                border: 0.1rem solid transparent;
-
-                .giz-input-icon-right {
-                    display: none;
-                }
-            }
-
-            .giz-input-select__dropdown--full-width {
-                width: unset;
-                left: unset;
-                right: 0;
-            }
-        }
     }
 }
 
@@ -423,6 +411,57 @@
         color: rgba(255, 255, 255, 0.6);
         text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
         @include font-m($font-weight-light);
+    }
+}
+
+.giz-input-language-menu {
+    justify-self: end;
+    margin-bottom: 1.6rem;
+    margin-right: 4.6rem;
+    color: #d5d5d6;
+    @include font-m($font-weight-light);
+
+    &-item {
+        display: flex;
+        gap: 0.6rem;
+
+        &__flag {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .giz-input-control {
+        .giz-input-root {
+            width: unset;
+            border: 0.1rem solid transparent;
+
+            &:hover {
+                border: 0.2rem solid rgba(246, 251, 253, 0.52);
+
+                &.giz-input-root--small {
+                    padding: 0.9rem 1.2rem;
+                }
+            }
+
+            &:focus-within {
+                border: 0.2rem solid rgba(246, 251, 253, 0.52);
+
+                &.giz-input-root--small {
+                    padding: 0.9rem 1.2rem;
+                }
+            }
+
+            .giz-input-icon-right {
+                display: none;
+            }
+        }
+    }
+
+    .giz-input-select__dropdown--full-width {
+        width: unset;
+        left: unset;
+        right: 0;
     }
 }
 
