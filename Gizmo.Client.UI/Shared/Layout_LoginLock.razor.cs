@@ -11,11 +11,8 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
-        [Inject()]
-        HostUserLockViewStateService HostUserLockService { get; set; }
-
         [Inject]
-        HostUserLockViewState ViewState { get; set; }
+        HostLockViewState ViewState { get; set; }
 
         protected override void OnInitialized()
         {

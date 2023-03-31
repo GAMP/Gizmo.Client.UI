@@ -34,7 +34,7 @@ namespace Gizmo.Client.UI.Pages
         }
 
         [Inject]
-        HostUserLockViewStateService HostUserLockService { get; set; }
+        HostLockViewStateService HostUserLockService { get; set; }
 
 
         [Inject]
