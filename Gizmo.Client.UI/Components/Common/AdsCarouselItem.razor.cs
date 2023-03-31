@@ -13,6 +13,8 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class AdsCarouselItem : CustomDOMComponentBase
     {
+        private bool _clickHandled = false;
+
         private int _index;
         private int _fade;
         private AdvertisementViewState _advertisementViewState;
@@ -62,21 +64,42 @@ namespace Gizmo.Client.UI.Components
             InvokeAsync(StateHasChanged);
         }
 
-        private void OnClickHandler() =>
-            Parent?.SetCurrent(AdvertisementId);
+        private Task OnClickHandler()
+        {
+            if (_clickHandled)
+            {
+                _clickHandled = false;
+                return Task.CompletedTask;
+            }
+
+            if (!string.IsNullOrEmpty(_advertisementViewState.MediaUrl))
+            {
+                return ShowMediaDialogAsync();
+            }
+
+            return Task.CompletedTask;
+        }
 
         private Task ShowMediaDialogAsync() =>
             AdvertisementsService.ShowMediaSync(_advertisementViewState);
 
         private async Task ViewDetailsAsync()
         {
+            _clickHandled = true;
+
             if (_advertisementViewState.Url is not null)
                 await JSRuntime.InvokeAsync<object>("open", CancellationToken.None, _advertisementViewState.Url);
         }
 
-        private Task ExecuteCommandAsync() => _advertisementViewState.Command is not null
-            ? CommandProviderService.ExecuteCommandAsync(_advertisementViewState.Command)
-            : Task.CompletedTask;
+        private Task ExecuteCommandAsync()
+        {
+            _clickHandled = true;
+
+            if (_advertisementViewState.Command is not null)
+                return CommandProviderService.ExecuteCommandAsync(_advertisementViewState.Command);
+
+            return Task.CompletedTask;
+        }
 
         #region OVERRIDE
 
@@ -104,6 +127,7 @@ namespace Gizmo.Client.UI.Components
 
         protected string ClassName => new ClassMapper()
                 .Add("giz-ads-carousel-item")
+                .If("giz-ads-media", () => _advertisementViewState.MediaUrlType != AdvertisementMediaUrlType.None && _advertisementViewState.MediaUrlType != AdvertisementMediaUrlType.Custom)
                 .If("previous", () => _index == 1)
                 .If("current", () => _index == 2)
                 .If("next", () => _index == 3)

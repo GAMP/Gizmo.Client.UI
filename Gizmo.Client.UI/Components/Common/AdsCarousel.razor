@@ -1,9 +1,11 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 
-<div class="giz-ads-carousel">
+<div class="giz-ads-carousel @(ViewState.AdvertisementsCount < 3 ? "giz-ads-carousel--simple" : "")">
     <CascadingValue Value="@this" IsFixed="true">
-        <div class="giz-ads-carousel__body">
+        <div class="giz-ads-carousel__body"
+             @onmouseover="OnMouseOverHandler"
+             @onmouseout="OnMouseOutHandler">
 
             @foreach (var item in ViewState.Advertisements)
             {
@@ -19,10 +21,13 @@
             }
 
         </div>
-        <div class="giz-ads-carousel__navigation">
-            <div class="giz-ads-carousel__navigation__indicators">
-                <AdsCarouselIndicator Maximum="5" Size="@(ViewState.AdvertisementsCount)" SelectedIndex="@SelectedIndex" SelectedIndexChanged="SelectedIndexChangedHandler" />
+        @if (ViewState.AdvertisementsCount > 2)
+        {
+            <div class="giz-ads-carousel__navigation">
+                <div class="giz-ads-carousel__navigation__indicators">
+                    <AdsCarouselIndicator Maximum="5" Size="@(ViewState.AdvertisementsCount)" SelectedIndex="@SelectedIndex" SelectedIndexChanged="SelectedIndexChangedHandler" />
+                </div>
             </div>
-        </div>
+        }
     </CascadingValue>
 </div>

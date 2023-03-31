@@ -7,6 +7,7 @@ using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -70,6 +71,17 @@ namespace Gizmo.Client.UI.Components
         public void SelectedIndexChangedHandler(int index)
         {
             SelectedIndex = index;
+        }
+
+        public void OnMouseOverHandler(MouseEventArgs args)
+        {
+
+            _timer.Stop();
+        }
+
+        public void OnMouseOutHandler(MouseEventArgs args)
+        {
+            _timer.Start();
         }
 
         #endregion
