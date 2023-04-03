@@ -25,6 +25,10 @@
                 </div>
             }
         </div>
+        <div class="giz-order__items__footer">
+            <Button IsDisabled="@(ViewState.Products.Count() == 0)" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" LeftSVGIcon="Icons.Trash3_Client" Text="Clear" @onclick="@(() => UserCartService.ClearUserCartProductsAsync())" />
+            @*TODO: A TRANSLATE*@
+        </div>
     </div>
         
     <div class="giz-order__notes">
@@ -51,14 +55,14 @@
             {
                 <div class="giz-order-summary-points">
                     <div class="giz-order-summary-points-award">@ViewState.PointsAward</div>
-                    <div class="giz-order-summary-points-award-icon"><PointsAwardIcon /></div>
+                    <div class="giz-order-summary-points-award-icon"><PointsAward2Icon /></div>
                 </div>
             }
             else
             {
-                <div class="giz-order-summary-points-total-icon"><PointsIcon /></div>
+                <div class="giz-order-summary-points-total-icon"><Points2Icon /></div>
                 <div class="giz-order-summary-points-award">@ViewState.PointsAward</div>
-                <div class="giz-order-summary-points-award-icon"><PointsAwardIcon /></div>
+                <div class="giz-order-summary-points-award-icon"><PointsAward2Icon /></div>
             }
         </div>
         <div>
