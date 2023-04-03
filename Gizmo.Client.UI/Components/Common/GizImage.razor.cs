@@ -32,10 +32,24 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public int? ImageId { get; set; }
 
+        /// <summary>
+        /// This placeholder is shown when image is loading.
+        /// If not set, default loading placeholder is shown.
+        /// </summary>
         [Parameter]
         public RenderFragment LoadingPlaceholder { get; set; }
+
+        /// <summary>
+        /// This placeholder is shown when image is not found or ImageId is null.
+        /// If not set, default empty result placeholder is shown.
+        /// </summary>
         [Parameter]
         public RenderFragment EmptyResultPlaceholder { get; set; }
+
+        /// <summary>
+        /// This placeholder is shown when was an error while loading image.
+        /// If not set, default error placeholder is shown.
+        /// </summary>
         [Parameter]
         public RenderFragment ErrorPlaceholder { get; set; }
 
