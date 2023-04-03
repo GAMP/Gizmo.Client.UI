@@ -22,6 +22,9 @@ namespace Gizmo.Client.UI.Components
         public ButtonSizes Size { get; set; } = ButtonSizes.Medium;
 
         [Parameter]
+        public int Minimum { get; set; } = 0;
+
+        [Parameter]
         public EventCallback<MouseEventArgs> OnAddQuantityButtonClick { get; set; }
 
         [Parameter]

@@ -21,8 +21,13 @@
         </div>
         <div class="giz-order-item__details__points">
             @ProductItemViewState.TotalPointsPrice?.ToString("N0")
-            <PointsIcon />
+            <Points2Icon />
         </div>
-        <QuantityPicker Size="ButtonSizes.Small" Quantity="@ProductItemViewState.Quantity" OnAddQuantityButtonClick="OnAddQuantityButtonClickHandlerAsync" OnRemoveQuantityButtonClick="OnRemoveQuantityButtonClickHandler" />
+    </div>
+    <div class="giz-order-item__remove">
+        <IconButton Variant="ButtonVariants.Text" Size="ButtonSizes.Small" SVGIcon="Icons.Trash3_Client" @onclick="@(() => UserCartService.DeleteUserCartProductAsync(ProductItemViewState.ProductId))" />
+    </div>
+    <div class="giz-order-item__quantity">
+        <QuantityPicker Minimum="1" Size="ButtonSizes.Small" Quantity="@ProductItemViewState.Quantity" OnAddQuantityButtonClick="OnAddQuantityButtonClickHandlerAsync" OnRemoveQuantityButtonClick="OnRemoveQuantityButtonClickHandler" />
     </div>
 </div>

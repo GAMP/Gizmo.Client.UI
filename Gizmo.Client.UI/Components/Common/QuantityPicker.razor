@@ -2,7 +2,7 @@
 @inherits CustomDOMComponentBase
 
 <div class="@Class @ClassName" @onclick="OnClickHandler">
-    <button class="giz-decrease-btn" @onclick="RemoveQuantity">-</button>
+    <Button IsDisabled="@(Quantity == Minimum)" Variant="ButtonVariants.Text" Size="@(Size == ButtonSizes.Small ? ButtonSizes.ExtraSmall : ButtonSizes.Small)" Text="-" Class="giz-decrease-btn" @onclick="RemoveQuantity" />
     <span>@Quantity</span>
-    <button class="giz-increase-btn" @onclick="AddQuantity">+</button>
+    <Button Variant="ButtonVariants.Text" Size="@(Size == ButtonSizes.Small ? ButtonSizes.ExtraSmall : ButtonSizes.Small)" Text="+" Class="giz-increase-btn" @onclick="AddQuantity" />
 </div>

@@ -17,7 +17,9 @@
                 <div class="giz-product-details__product__info__image">
                     <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ViewState.Product?.DefaultImageId">
                         <EmptyResultPlaceholder>
-                            <img src="_content/Gizmo.Client.UI/img/no-product-image.png" alt='loading' />
+                            <div class="giz-default-image">
+                                <img src="_content/Gizmo.Client.UI/img/no-product-image.svg" alt='loading' />
+                            </div>
                         </EmptyResultPlaceholder>
                     </GizImage>
                 </div>
@@ -35,7 +37,7 @@
                         <div class="giz-product-details__product__info__basic__action__price">
                             @ViewState.Product?.UnitPrice.ToString("C2")
                         </div>
-                        <ProductQuantityPicker @key="ProductId" ProductId="@ProductId" Size="ButtonSizes.Large" IsFullWidth="false" />
+                        <ProductQuantityPicker @key="ProductId" ProductId="@ProductId" Size="ButtonSizes.ExtraLarge" IsFullWidth="false" />
                     </div>
                 </div>
             </div>
@@ -47,7 +49,9 @@
                         <div class="giz-product-details__product__bundled-products-product">
                             <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ViewState.Product.DefaultImageId">
                                 <EmptyResultPlaceholder>
-                                    <img src="_content/Gizmo.Client.UI/img/no-product-image.png" alt='loading' />
+                                    <div class="giz-default-image">
+                                        <img src="_content/Gizmo.Client.UI/img/no-product-image.svg" alt='loading' />
+                                    </div>
                                 </EmptyResultPlaceholder>
                             </GizImage>
                         </div>

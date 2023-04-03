@@ -18,7 +18,7 @@
         &__header {
             border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
             padding: 2.4rem 2.4rem 0.4rem 2.4rem;
-            @include font-xxl($font-weight-regular);
+            @include font-xl($font-weight-regular);
         }
 
         &__body {
@@ -33,6 +33,7 @@
                 .giz-order-item {
                     display: grid;
                     grid-template-columns: 1fr 12.0rem;
+                    gap: 1.2rem;
                     padding: 1.5rem 0;
                     border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
 
@@ -44,6 +45,7 @@
                         display: grid;
                         grid-template-rows: min-content 1fr min-content;
                         grid-template-columns: min-content 1fr;
+                        gap: 0.4rem;
                         align-items: center;
                         text-align: right;
                         @include font-xl($font-weight-regular);
@@ -108,6 +110,21 @@
                 }
             }
         }
+
+        &__footer {
+            display: flex;
+            align-items: center;
+            padding: 2.0rem 2.4rem;
+            /*color: rgba(255, 255, 255, 0.6);
+            @include font-m($font-weight-regular);*/
+            .giz-button {
+                .giz-icon--small {
+                    width: 2rem;
+                    height: 2rem;
+                    margin-right: 1rem;
+                }
+            }
+        }
     }
 
     &__notes {
@@ -142,7 +159,7 @@
             .giz-order-summary-text-bold {
                 grid-row-start: 1;
                 grid-row-end: 2;
-                @include font-xxl($font-weight-regular);
+                @include font-xl($font-weight-regular);
             }
 
             .giz-order-summary-total {
