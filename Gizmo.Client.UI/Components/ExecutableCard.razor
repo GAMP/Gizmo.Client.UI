@@ -3,14 +3,15 @@
 
 <div class="giz-executable-card">
     <div class="giz-executable-card__executable-image">
-        @if (Executable.ImageId.HasValue)
-        {
-            <GizImage ImageType="Gizmo.UI.ImageType.Executable" ImageId="@Executable.ImageId.Value" />
-        }
-        else
-        {
-            <img src="_content/Gizmo.Client.UI/img/no-exe-image.png" alt='loading' />
-        }
+        
+        <GizImage ImageType="Gizmo.UI.ImageType.Executable" ImageId="@Executable.ImageId">
+            <EmptyResultPlaceholder>
+                <div class="giz-default-image">
+                    <img src="_content/Gizmo.Client.UI/img/no-exe-image.png" alt='loading' />
+                </div>
+            </EmptyResultPlaceholder>
+        </GizImage>
+        
         @*<div class="giz-executable-card__executable-status">
             <i class="giz-executable-card__executable-status__bullet"></i>24
         </div>*@

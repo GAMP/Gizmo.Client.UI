@@ -18,16 +18,15 @@
                     </div>*@
                 </div>
             </div>
-            @if (Application.ImageId.HasValue)
-            {
-                <GizImage @key="Application.ApplicationId" ImageType="Gizmo.UI.ImageType.Application" ImageId="@Application.ImageId.Value" />
-            }
-            else
-            {
-                <div class="giz-default-image">
-                    <img src="_content/Gizmo.Client.UI/img/no-app-image.svg" alt='loading' />
-                </div>
-            }
+
+            <GizImage @key="Application.ApplicationId" ImageType="Gizmo.UI.ImageType.Application" ImageId="@Application.ImageId">
+                <EmptyResultPlaceholder>
+                    <div class="giz-default-image">
+                        <img src="_content/Gizmo.Client.UI/img/no-app-image.svg" alt='loading' />
+                    </div>
+                </EmptyResultPlaceholder>
+            </GizImage>
+
         </div>
         <div class="giz-app-card__content__details">
             <div class="giz-app-card__title">

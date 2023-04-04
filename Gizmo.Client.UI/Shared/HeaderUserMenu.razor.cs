@@ -1,15 +1,25 @@
-﻿using Gizmo.Client.UI.View.Services;
-using Gizmo.Client.UI.View.States;
-using Gizmo.Web.Components;
-using Microsoft.AspNetCore.Components;
+﻿using Gizmo.Web.Components;
 
 namespace Gizmo.Client.UI
 {
     public partial class HeaderUserMenu : CustomDOMComponentBase
     {
+        private bool _topUpIsOpen;
         private bool _activeAppsIsOpen;
         private bool _notificationsIsOpen;
         private bool _userLinksIsOpen;
+
+        public void ToggleTopUp()
+        {
+            _topUpIsOpen = !_topUpIsOpen;
+
+            if (_topUpIsOpen)
+            {
+                _activeAppsIsOpen = false;
+                _notificationsIsOpen = false;
+                _userLinksIsOpen = false;
+            }
+        }
 
         public void ToggleActiveApps()
         {
@@ -17,6 +27,7 @@ namespace Gizmo.Client.UI
 
             if (_activeAppsIsOpen)
             {
+                _topUpIsOpen = false;
                 _notificationsIsOpen = false;
                 _userLinksIsOpen = false;
             }
@@ -28,6 +39,7 @@ namespace Gizmo.Client.UI
 
             if (_notificationsIsOpen)
             {
+                _topUpIsOpen = false;
                 _activeAppsIsOpen = false;
                 _userLinksIsOpen = false;
             }
@@ -39,6 +51,7 @@ namespace Gizmo.Client.UI
 
             if (_userLinksIsOpen)
             {
+                _topUpIsOpen = false;
                 _activeAppsIsOpen = false;
                 _notificationsIsOpen = false;
             }

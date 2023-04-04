@@ -1,11 +1,11 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits ComponentBase
 
-@switch(_imageResultStatusCode)
+@switch (_imageResultStatusCode)
 {
     case 0:
     {
-        if(LoadingPlaceholder is not null)
+        if (LoadingPlaceholder is not null)
         {
             <span>
                 @LoadingPlaceholder
@@ -20,11 +20,9 @@
     }
     case 1:
     {
-        if(EmptyResultPlaceholder is not null)
+        if (EmptyResultPlaceholder is not null)
         {
-            <span>
-                @EmptyResultPlaceholder
-            </span>
+            @EmptyResultPlaceholder
         }
         else
         {
@@ -37,11 +35,9 @@
     }
     case 2:
     {
-        if(ErrorPlaceholder is not null)
+        if (ErrorPlaceholder is not null)
         {
-            <span>
-                @ErrorPlaceholder
-            </span>
+            @ErrorPlaceholder
         }
         else
         {
@@ -54,4 +50,4 @@
     }
 }
 
-<img @ref="ElementReference" hidden/>
+<img @ref="ElementReference" hidden />

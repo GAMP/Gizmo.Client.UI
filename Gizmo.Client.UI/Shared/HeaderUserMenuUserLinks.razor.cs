@@ -6,8 +6,24 @@ namespace Gizmo.Client.UI
 {
     public partial class HeaderUserMenuUserLinks : CustomDOMComponentBase
     {
+        private bool _isOpen;
+
         [Parameter]
-        public bool IsOpen { get; set; }
+        public bool IsOpen
+        {
+            get
+            {
+                return _isOpen;
+            }
+            set
+            {
+                if (_isOpen == value)
+                    return;
+
+                _isOpen = value;
+                _ = IsOpenChanged.InvokeAsync(_isOpen);
+            }
+        }
 
         [Parameter]
         public EventCallback<bool> IsOpenChanged { get; set; }

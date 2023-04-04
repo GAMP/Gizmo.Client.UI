@@ -1,0 +1,73 @@
+﻿@namespace Gizmo.Client.UI
+@inherits CustomDOMComponentBase
+@using System.Globalization
+
+<div class="giz-dropdown-menu @(_isOpen ? "open" : "")"
+     id="@Id"
+     @ref="@Ref">
+    <div class="giz-dropdown-menu__content giz-top-up">
+        @if (ViewState.PageIndex == 0)
+        {
+            <div class="giz-top-up-dialog__body">
+                <div>@LocalizationService.GetString("GIZ_TOP_UP_QUICK_SELECT")</div>
+                <div>
+                    <ButtonGroup>
+                        @foreach (var preset in ViewState.Presets)
+                        {
+                            <Button Size="ButtonSizes.Large" Name="@preset.ToString()" IsSelected="@(@preset == ViewState.Amount)" @onclick="@(() => TopUpService.SelectPreset(@preset))">@preset.ToString("C", CultureInfo.CurrentCulture)</Button>
+                        }
+                    </ButtonGroup>
+                </div>
+                @if (ViewState.AllowCustomValue)
+                {
+                    <div>
+                        <TextInput IsTransparent="true"
+                                   Size="InputSizes.Small"
+                                   IsFullWidth="true"
+                                   Value="@ViewState.Amount"
+                                   ValueChanged="@((decimal value) => TopUpService.SetAmount(value))"
+                                   ValueExpression="@(() => ViewState.Amount)"
+                                   Label="@LocalizationService.GetString("GIZ_TOP_UP_OR_ENTER_AMOUNT")" />
+                    </div>
+                }
+                <div class="giz-top-up-dialog__summary">@ViewState.Amount.ToString("C", CultureInfo.CurrentCulture) @LocalizationService.GetString("GIZ_TOP_UP_WILL_BE_CREDITED")</div>
+            </div>
+            <div class="giz-top-up-dialog__footer">
+                <Button IsDisabled="@(ViewState.IsLoading)" 
+                        Color="ButtonColors.Accent"
+                        Size="ButtonSizes.ExtraLarge"
+                        IsFullWidth="true"
+                        @onclick="@(() => TopUpService.SubmitAsync())">
+                    <ChildContent>
+                        @if (ViewState.IsLoading)
+                        {
+                            <Spinner />
+                        }
+                        else
+                        {
+                            <div>@LocalizationService.GetString("GIZ_TOP_UP_PLACE_NEXT")</div>
+                        }
+                    </ChildContent>
+                </Button>
+            </div>
+        }
+        else
+        {
+            <div class="giz-top-up-dialog__body">
+                <div class="giz-top-up-dialog__submitted__summary">@LocalizationService.GetString("GIZ_TOP_UP_TO_BE_PAID") @ViewState.Amount.ToString("C", CultureInfo.CurrentCulture)</div>
+                <div class="giz-top-up-dialog__submitted__qr">
+                    <div class="giz-top-up-dialog__submitted__qr__label">@LocalizationService.GetString("GIZ_TOP_UP_QR_CODE")</div>
+                    <div class="giz-top-up-dialog__submitted__qr__image">
+                        <QRIcon />
+                    </div>
+                </div>
+            </div>
+            <div class="giz-top-up-dialog__footer">
+                <div class="giz-top-up-dialog__submitted__action">
+                    <div class="giz-top-up-dialog__submitted__action__label">@LocalizationService.GetString("GIZ_TOP_UP_OR")</div>
+                    <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => TopUpService.PayFromPC())">@LocalizationService.GetString("GIZ_TOP_UP_PAY_FROM_PC")</Button>
+                </div>
+            </div>
+        }
+    </div>
+</div>

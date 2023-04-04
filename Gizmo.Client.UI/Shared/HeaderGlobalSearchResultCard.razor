@@ -5,29 +5,27 @@
     <div class="giz-global-search-result-card__image">
         @if (Result.Type == View.SearchResultTypes.Applications)
         {
-            @if (Result.ImageId.HasValue)
-            {
-                <GizImage ImageType="Gizmo.UI.ImageType.Application" ImageId="@Result.ImageId.Value" />
-            }
-            else
-            {
-                <div class="giz-default-image">
-                    <img src="_content/Gizmo.Client.UI/img/no-app-image.svg" alt='loading' />
-                </div>
-            }
+
+            <GizImage ImageType="Gizmo.UI.ImageType.Application" ImageId="@Result.ImageId">
+                <EmptyResultPlaceholder>
+                    <div class="giz-default-image">
+                        <img src="_content/Gizmo.Client.UI/img/no-app-image.svg" alt='loading' />
+                    </div>
+                </EmptyResultPlaceholder>
+            </GizImage>
+
         }
         else
         {
-            @if (Result.ImageId.HasValue)
-            {
-                <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Result.ImageId.Value" />
-            }
-            else
-            {
-                <div class="giz-default-image">
-                    <img src="_content/Gizmo.Client.UI/img/no-product-image.svg" alt='loading' />
-                </div>
-            } 
+
+            <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Result.ImageId">
+                <EmptyResultPlaceholder>
+                    <div class="giz-default-image">
+                        <img src="_content/Gizmo.Client.UI/img/no-product-image.svg" alt='loading' />
+                    </div>
+                </EmptyResultPlaceholder>
+            </GizImage>
+
         }
     </div>
     <div class="giz-global-search-result-card__category">

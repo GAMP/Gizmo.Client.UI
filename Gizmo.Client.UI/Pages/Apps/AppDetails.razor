@@ -13,16 +13,15 @@
         </NavLink>
         <div class="giz-app-details__app__info">
             <div class="giz-app-details__app__info__image">
-                @if (ViewState.Application?.ImageId.HasValue == true)
-                {
-                    <GizImage ImageType="Gizmo.UI.ImageType.Application" ImageId="@ViewState.Application.ImageId.Value" />
-                }
-                else
-                {
-                    <div class="giz-default-image">
-                        <img src="_content/Gizmo.Client.UI/img/no-app-image.svg" alt='loading' />
-                    </div>
-                }
+
+                <GizImage ImageType="Gizmo.UI.ImageType.Application" ImageId="@ViewState.Application.ImageId">
+                    <EmptyResultPlaceholder>
+                        <div class="giz-default-image">
+                            <img src="_content/Gizmo.Client.UI/img/no-app-image.svg" alt='loading' />
+                        </div>
+                    </EmptyResultPlaceholder>
+                </GizImage>
+
             </div>
 
             <div class="giz-app-details__app__info__details">

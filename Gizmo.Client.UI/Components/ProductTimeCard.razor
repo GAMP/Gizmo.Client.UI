@@ -31,8 +31,16 @@
 
                 </div>
             </div>
-            <img src="_content/Gizmo.Client.UI/img/product_time.jpg" alt='loading' />
-            <PolygonIcon />
+            @if (Product.DefaultImageId.HasValue)
+            {
+                <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Product.DefaultImageId.Value" />
+            }
+            else
+            {
+                <div class="giz-default-image">
+                    <img src="_content/Gizmo.Client.UI/img/product-time-blue.svg" alt='loading' />
+                </div>
+            }
         </div>
 
         <div class="giz-product-card__content__details">
