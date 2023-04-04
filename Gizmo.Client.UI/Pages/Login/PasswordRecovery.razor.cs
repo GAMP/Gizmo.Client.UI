@@ -27,7 +27,7 @@ namespace Gizmo.Client.UI.Pages
         UserPasswordRecoveryViewState ViewState { get; set; }
 
         [Inject()]
-        HostConfigurationViewState HostConfigurationViewState
+        SignUpConfigurationViewState HostConfigurationViewState
         {
             get;init;
         }
