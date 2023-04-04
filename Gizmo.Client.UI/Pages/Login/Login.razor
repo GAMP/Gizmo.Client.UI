@@ -7,7 +7,7 @@
 <LoginCard>
     <CardHeader>
         <div class="giz-login-links">
-            @if (SignUpConfigurationViewState.CanSignUp)
+            @if (UserRegisterConfigurationViewState.IsEnabled)
             {
                 <div class="giz-login-new-user">@LocalizationService.GetString("GIZ_LOGIN_NOT_A_MEMBER") <a @onclick="UserLoginService.OpenRegistrationAsync">@LocalizationService.GetString("GIZ_LOGIN_SIGN_UP_NOW")</a></div>
             }
@@ -94,7 +94,7 @@
         </EditForm>
     </CardBody>
     <CardFooter>
-        @if (SignInConfigurationViewState.CanSignInWithQR)
+        @if (UserLoginConfigurationViewState.IsQrLoginEnabled)
         {
             <div class="giz-alternative-login">
                 <div class="giz-alternative-login__separator"><span>@LocalizationService.GetString("GIZ_LOGIN_OR")</span></div>

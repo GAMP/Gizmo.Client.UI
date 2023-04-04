@@ -28,13 +28,13 @@ namespace Gizmo.Client.UI.Pages
         }
 
         [Inject()]
-        SignUpConfigurationViewState SignUpConfigurationViewState
+        UserRegistrationConfigurationViewState UserRegisterConfigurationViewState
         {
             get;init;
         }
 
         [Inject()]
-        SignInConfigurationViewState SignInConfigurationViewState
+        UserLoginConfigurationViewState UserLoginConfigurationViewState
         {
             get;init;
         }

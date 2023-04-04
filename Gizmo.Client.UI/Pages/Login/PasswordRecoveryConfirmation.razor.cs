@@ -37,7 +37,7 @@ namespace Gizmo.Client.UI.Pages
         UserVerificationFallbackViewState UserVerificationFallbackViewState { get; set; }
 
         [Inject()]
-        SignUpConfigurationViewState HostConfigurationViewState
+        UserRegistrationConfigurationViewState UserRegisterConfigurationViewState
         {
             get; init;
         }
