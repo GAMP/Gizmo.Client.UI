@@ -1,6 +1,7 @@
 ﻿@namespace Gizmo.Client.UI
 @inherits CustomDOMComponentBase
 @using System.Globalization
+@using Microsoft.AspNetCore.Components.Forms
 
 <div class="giz-dropdown-menu @(_isOpen ? "open" : "")"
      id="@Id"
@@ -20,20 +21,24 @@
                 </div>
                 @if (ViewState.AllowCustomValue)
                 {
-                    <div>
-                        <TextInput IsTransparent="true"
-                                   Size="InputSizes.Small"
-                                   IsFullWidth="true"
-                                   Value="@ViewState.Amount"
-                                   ValueChanged="@((decimal value) => TopUpService.SetAmount(value))"
-                                   ValueExpression="@(() => ViewState.Amount)"
-                                   Label="@LocalizationService.GetString("GIZ_TOP_UP_OR_ENTER_AMOUNT")" />
-                    </div>
+                    <EditForm EditContext="@TopUpService.EditContext">
+                        <div>
+                            <TextInput IsTransparent="true"
+                                       Size="InputSizes.Small"
+                                       IsFullWidth="true"
+                                       UpdateOnInput="true"
+                                       TValue="decimal?"
+                                       Value="@ViewState.Amount"
+                                       ValueChanged="@((value) => TopUpService.SetAmount(value))"
+                                       ValueExpression="@(() => ViewState.Amount)"
+                                       Label="@LocalizationService.GetString("GIZ_TOP_UP_OR_ENTER_AMOUNT")" />
+                        </div>
+                    </EditForm>
                 }
-                <div class="giz-top-up__summary"><span class="giz-top-up__summary__amount">@ViewState.Amount.ToString("C", CultureInfo.CurrentCulture)</span> @LocalizationService.GetString("GIZ_TOP_UP_WILL_BE_CREDITED")</div>
+                <div class="giz-top-up__summary"><span class="giz-top-up__summary__amount">@((ViewState.Amount ?? 0).ToString("C", CultureInfo.CurrentCulture))</span> @LocalizationService.GetString("GIZ_TOP_UP_WILL_BE_CREDITED")</div>
             </div>
             <div class="giz-top-up__footer">
-                <Button IsDisabled="@(ViewState.IsLoading)" 
+                <Button IsDisabled="@(ViewState.IsValid == false || ViewState.IsLoading)"
                         Color="ButtonColors.Accent"
                         Size="ButtonSizes.ExtraLarge"
                         IsFullWidth="true"
@@ -54,7 +59,7 @@
         else
         {
             <div class="giz-top-up__body">
-                <div class="giz-top-up__submitted__summary">@LocalizationService.GetString("GIZ_TOP_UP_TO_BE_PAID") <span class="giz-top-up__submitted__summary__amount">@ViewState.Amount.ToString("C", CultureInfo.CurrentCulture)</span></div>
+                <div class="giz-top-up__submitted__summary">@LocalizationService.GetString("GIZ_TOP_UP_TO_BE_PAID") <span class="giz-top-up__submitted__summary__amount">@((ViewState.Amount ?? 0).ToString("C", CultureInfo.CurrentCulture))</span></div>
                 <div class="giz-top-up__submitted__qr">
                     <div class="giz-top-up__submitted__qr__label">@LocalizationService.GetString("GIZ_TOP_UP_QR_CODE")</div>
                     <div class="giz-top-up__submitted__qr__image">
@@ -66,6 +71,9 @@
                 <div class="giz-top-up__submitted__action">
                     <div class="giz-top-up__submitted__action__label">@LocalizationService.GetString("GIZ_TOP_UP_OR")</div>
                     <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => TopUpService.PayFromPC())">@LocalizationService.GetString("GIZ_TOP_UP_PAY_FROM_PC")</Button>
+                </div>
+                <div class="giz-top-up-clear-button">
+                    <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => TopUpService.Clear())">@LocalizationService.GetString("GIZ_TOP_UP_CLEAR")</Button>
                 </div>
             </div>
         }

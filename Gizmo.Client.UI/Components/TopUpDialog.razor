@@ -26,13 +26,14 @@
                         <TextInput IsTransparent="true"
                                    Size="InputSizes.Small"
                                    IsFullWidth="true"
+                                   TValue="decimal?"
                                    Value="@ViewState.Amount"
-                                   ValueChanged="@((decimal value) => TopUpService.SetAmount(value))"
+                                   ValueChanged="@((value) => TopUpService.SetAmount(value))"
                                    ValueExpression="@(() => ViewState.Amount)"
                                    Label="@LocalizationService.GetString("GIZ_TOP_UP_OR_ENTER_AMOUNT")" />
                     </div>
                 }
-                <div class="giz-top-up-dialog__summary">@ViewState.Amount.ToString("C", CultureInfo.CurrentCulture) @LocalizationService.GetString("GIZ_TOP_UP_WILL_BE_CREDITED")</div>
+                <div class="giz-top-up-dialog__summary">@((ViewState.Amount ?? 0).ToString("C", CultureInfo.CurrentCulture)) @LocalizationService.GetString("GIZ_TOP_UP_WILL_BE_CREDITED")</div>
             </div>
             <div class="giz-client-dialog__footer">
                 <Button IsDisabled="@(ViewState.IsLoading)" 
@@ -57,7 +58,7 @@
         {
             <div class="giz-client-dialog__body">
                 <div>???</div>
-                <div class="giz-top-up-dialog__submitted__summary">@LocalizationService.GetString("GIZ_TOP_UP_TO_BE_PAID") @ViewState.Amount.ToString("C", CultureInfo.CurrentCulture)</div>
+                <div class="giz-top-up-dialog__submitted__summary">@LocalizationService.GetString("GIZ_TOP_UP_TO_BE_PAID") @((ViewState.Amount ?? 0).ToString("C", CultureInfo.CurrentCulture))</div>
                 <div class="giz-top-up-dialog__submitted__qr">
                     <div class="giz-top-up-dialog__submitted__qr__label">@LocalizationService.GetString("GIZ_TOP_UP_QR_CODE")</div>
                     <div class="giz-top-up-dialog__submitted__qr__image">

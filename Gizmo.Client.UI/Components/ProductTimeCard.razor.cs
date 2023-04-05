@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -37,6 +38,53 @@ namespace Gizmo.Client.UI.Components
         public void Ignore()
         {
             _clickHandled = true;
+        }
+
+        public string GetTimeNumber()
+        {
+            string result = "0";
+
+            if (Product.TimeProduct.Minutes < 60)
+            {
+                result = Product.TimeProduct.Minutes.ToString();
+            }
+            else
+            {
+                TimeSpan timeSpan = TimeSpan.FromMinutes(Product.TimeProduct.Minutes);
+                result = timeSpan.Hours.ToString();
+            }
+
+            return result;
+        }
+
+        public string GetTimeText()
+        {
+            string result = "";
+
+            if (Product.TimeProduct.Minutes < 60)
+            {
+                result = LocalizationService.GetString("GIZ_TIME_PRODUCT_MINUTES");
+            }
+            else
+            {
+                TimeSpan timeSpan = TimeSpan.FromMinutes(Product.TimeProduct.Minutes);
+
+                if (Product.TimeProduct.Minutes >= 60 && Product.TimeProduct.Minutes < 120)
+                {
+                    result = LocalizationService.GetString("GIZ_TIME_PRODUCT_HOUR");
+                }
+                else
+                {
+                    result = LocalizationService.GetString("GIZ_TIME_PRODUCT_HOURS");
+                }
+
+                if (timeSpan.Minutes > 0)
+                {
+                    result += "+";
+                }
+            }
+
+            return result;
         }
 
         #region OVERRIDES

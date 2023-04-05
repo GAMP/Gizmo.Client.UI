@@ -75,13 +75,18 @@ namespace Gizmo.Client.UI.Components
 
         public void OnMouseOverHandler(MouseEventArgs args)
         {
-
-            _timer.Stop();
+            if (_timer != null)
+            {
+                _timer.Stop();
+            }
         }
 
         public void OnMouseOutHandler(MouseEventArgs args)
         {
-            _timer.Start();
+            if (_timer != null)
+            {
+                _timer.Start();
+            }
         }
 
         #endregion
@@ -177,13 +182,19 @@ namespace Gizmo.Client.UI.Components
 
         internal void SetCurrentIndex(int index)
         {
-            _timer.Stop();
+            if (_timer != null)
+            {
+                _timer.Stop();
+            }
 
             SelectedIndex = index;
 
             InvokeAsync(StateHasChanged);
 
-            _timer.Start();
+            if (_timer != null)
+            {
+                _timer.Start();
+            }
         }
 
         internal void SetCurrent(int advertisementId)
@@ -195,13 +206,19 @@ namespace Gizmo.Client.UI.Components
                     if (_selectedIndex == i)
                         return;
 
-                    _timer.Stop();
+                    if (_timer != null)
+                    {
+                        _timer.Stop();
+                    }
 
                     SelectedIndex = i;
 
                     InvokeAsync(StateHasChanged);
 
-                    _timer.Start();
+                    if (_timer != null)
+                    {
+                        _timer.Start();
+                    }
 
                     return;
                 }
