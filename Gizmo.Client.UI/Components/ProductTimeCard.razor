@@ -31,16 +31,21 @@
 
                 </div>
             </div>
-            @if (Product.DefaultImageId.HasValue)
-            {
-                <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Product.DefaultImageId.Value" />
-            }
-            else
-            {
-                <div class="giz-default-image">
-                    <img src="_content/Gizmo.Client.UI/img/product-time-blue.svg" alt='loading' />
-                </div>
-            }
+
+            <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Product.DefaultImageId">
+                <EmptyResultPlaceholder>
+                    <div class="giz-product-card-time-info">
+                        <div class="giz-default-image">
+                            <img src="_content/Gizmo.Client.UI/img/product-time-blue.svg" alt='loading' />
+                        </div>
+                        <div class="giz-product-card-time-info__time">
+                            <div class="giz-product-card-time-info__time__number">30</div>
+                            <div class="giz-product-card-time-info__time__text">Min</div>
+                        </div>
+                    </div>
+                </EmptyResultPlaceholder>
+            </GizImage>
+
         </div>
 
         <div class="giz-product-card__content__details">

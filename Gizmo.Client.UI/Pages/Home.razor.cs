@@ -16,10 +16,6 @@ namespace Gizmo.Client.UI.Pages
     [Route(ClientRoutes.HomeRoute)]
     public partial class Home : CustomDOMComponentBase, IAsyncDisposable
     {
-        public Home()
-        {
-        }
-
         #region PROPERTIES
 
         [Inject]
@@ -30,6 +26,12 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         HomePageViewState ViewState { get; set; }
+
+        [Inject]
+        AdvertisementsViewStateService AdvertisementsViewStateService { get; set; }
+
+        [Inject]
+        AdvertisementsViewState AdvertisementsViewState { get; set; }
 
         [Inject()]
         IClientDialogService DialogService { get; set; }

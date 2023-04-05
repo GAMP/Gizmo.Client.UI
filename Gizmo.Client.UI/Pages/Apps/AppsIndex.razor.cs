@@ -26,6 +26,12 @@ namespace Gizmo.Client.UI.Pages
         [Inject()]
         public AppsPageViewState ViewState { get; set; }
 
+        [Inject]
+        AdvertisementsViewStateService AdvertisementsViewStateService { get; set; }
+
+        [Inject]
+        AdvertisementsViewState AdvertisementsViewState { get; set; }
+
         [Inject()]
         IClientDialogService DialogService { get; set; }
 

@@ -31,6 +31,12 @@ namespace Gizmo.Client.UI.Pages
         ProductsPageViewState ViewState { get; set; }
 
         [Inject]
+        AdvertisementsViewStateService AdvertisementsViewStateService { get; set; }
+
+        [Inject]
+        AdvertisementsViewState AdvertisementsViewState { get; set; }
+
+        [Inject]
         UserProductGroupViewStateLookupService UserProductGroupViewStateLookupService { get; set; }
 
         #endregion

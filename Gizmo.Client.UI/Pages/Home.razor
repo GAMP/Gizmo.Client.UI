@@ -16,7 +16,7 @@
         </div>
         <div class="giz-home__body giz-scrollbar--v">
             <div class="giz-home__body__ads">
-                <ExpansionPanel>
+                <ExpansionPanel IsCollapsed="@AdvertisementsViewState.IsCollapsed" IsCollapsedChanged="@((value) => AdvertisementsViewStateService.SetCollapsed(value))">
                     <Header>
                         @LocalizationService.GetString("GIZ_GEN_ADS")
                     </Header>

@@ -251,3 +251,34 @@
         margin-right: 0.8rem;
     }
 }
+
+.giz-product-card-time-info {
+    height: 100%;
+    position: relative;
+
+    &__time {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        display: grid;
+        grid-template-rows: min-content min-content;
+        justify-content: center;
+        margin-bottom: 1.6rem;
+
+        &__number {
+            text-align: center;
+            text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 8px rgba(0, 0, 0, 0.2);
+            //Font
+            font-family: $font-family-header;
+            font-weight: 300;
+            font-size: 42px;
+            line-height: 50px;
+        }
+
+        &__text {
+            text-align: center;
+            @include font-m($font-weight-bold);
+        }
+    }
+}

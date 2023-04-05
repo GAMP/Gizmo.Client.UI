@@ -8,7 +8,7 @@
     <div class="giz-dropdown-menu__content giz-top-up">
         @if (ViewState.PageIndex == 0)
         {
-            <div class="giz-top-up-dialog__body">
+            <div class="giz-top-up__body">
                 <div>@LocalizationService.GetString("GIZ_TOP_UP_QUICK_SELECT")</div>
                 <div>
                     <ButtonGroup>
@@ -30,9 +30,9 @@
                                    Label="@LocalizationService.GetString("GIZ_TOP_UP_OR_ENTER_AMOUNT")" />
                     </div>
                 }
-                <div class="giz-top-up-dialog__summary">@ViewState.Amount.ToString("C", CultureInfo.CurrentCulture) @LocalizationService.GetString("GIZ_TOP_UP_WILL_BE_CREDITED")</div>
+                <div class="giz-top-up__summary"><span class="giz-top-up__summary__amount">@ViewState.Amount.ToString("C", CultureInfo.CurrentCulture)</span> @LocalizationService.GetString("GIZ_TOP_UP_WILL_BE_CREDITED")</div>
             </div>
-            <div class="giz-top-up-dialog__footer">
+            <div class="giz-top-up__footer">
                 <Button IsDisabled="@(ViewState.IsLoading)" 
                         Color="ButtonColors.Accent"
                         Size="ButtonSizes.ExtraLarge"
@@ -53,18 +53,18 @@
         }
         else
         {
-            <div class="giz-top-up-dialog__body">
-                <div class="giz-top-up-dialog__submitted__summary">@LocalizationService.GetString("GIZ_TOP_UP_TO_BE_PAID") @ViewState.Amount.ToString("C", CultureInfo.CurrentCulture)</div>
-                <div class="giz-top-up-dialog__submitted__qr">
-                    <div class="giz-top-up-dialog__submitted__qr__label">@LocalizationService.GetString("GIZ_TOP_UP_QR_CODE")</div>
-                    <div class="giz-top-up-dialog__submitted__qr__image">
+            <div class="giz-top-up__body">
+                <div class="giz-top-up__submitted__summary">@LocalizationService.GetString("GIZ_TOP_UP_TO_BE_PAID") <span class="giz-top-up__submitted__summary__amount">@ViewState.Amount.ToString("C", CultureInfo.CurrentCulture)</span></div>
+                <div class="giz-top-up__submitted__qr">
+                    <div class="giz-top-up__submitted__qr__label">@LocalizationService.GetString("GIZ_TOP_UP_QR_CODE")</div>
+                    <div class="giz-top-up__submitted__qr__image">
                         <QRIcon />
                     </div>
                 </div>
             </div>
-            <div class="giz-top-up-dialog__footer">
-                <div class="giz-top-up-dialog__submitted__action">
-                    <div class="giz-top-up-dialog__submitted__action__label">@LocalizationService.GetString("GIZ_TOP_UP_OR")</div>
+            <div class="giz-top-up__footer">
+                <div class="giz-top-up__submitted__action">
+                    <div class="giz-top-up__submitted__action__label">@LocalizationService.GetString("GIZ_TOP_UP_OR")</div>
                     <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => TopUpService.PayFromPC())">@LocalizationService.GetString("GIZ_TOP_UP_PAY_FROM_PC")</Button>
                 </div>
             </div>
