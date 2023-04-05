@@ -1,13 +1,11 @@
-﻿using Gizmo.Client.UI.Services;
+﻿using System;
+using System.IO;
+using System.Windows;
+using Gizmo.Client.UI.Services;
 using Gizmo.UI;
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
-using System;
-using System.IO;
-using System.Windows;
 
 namespace Gizmo.Client.UI.Host.WPF
 {
@@ -21,7 +19,7 @@ namespace Gizmo.Client.UI.Host.WPF
             base.OnStartup(e);
 
             var hostBuilder = new HostBuilder();
-        
+
 
             hostBuilder.ConfigureServices((context, serviceCollection) =>
             {
@@ -33,15 +31,15 @@ namespace Gizmo.Client.UI.Host.WPF
                 serviceCollection.AddClientOptions(context.Configuration);
                 serviceCollection.AddClientServices();
 
-                serviceCollection.AddDialogSerive<IClientDialogService>();
+                serviceCollection.AddDialogService<IClientDialogService>();
 
                 serviceCollection.AddSingleton<IGizmoClient, TestClient>();
                 serviceCollection.AddSingleton<IImageService, ImageService>();
 
                 serviceCollection.AddSingleton<IInputLanguageService, WpfInputLenguageService>();
-                
+
                 serviceCollection.AddSingleton<IHostWindow, HostWindow>();
-              
+
             }).ConfigureLogging(loggingBuilder =>
             {
                 loggingBuilder.AddConsole();
@@ -53,7 +51,7 @@ namespace Gizmo.Client.UI.Host.WPF
                 configurationBuilder.AddClientConfigurationSource();
             });
 
-           
+
             var host = hostBuilder.Build();
 
             Resources.Add("services", host.Services);
@@ -71,11 +69,11 @@ namespace Gizmo.Client.UI.Host.WPF
             await ds.InitializeAsync(default);
 
             //initialize services
-            await host.Services.InitializeClientServices();        
+            await host.Services.InitializeClientServices();
 
             //show host window
             hostWindow.Show();
-            
+
             await host.StartAsync();
         }
     }

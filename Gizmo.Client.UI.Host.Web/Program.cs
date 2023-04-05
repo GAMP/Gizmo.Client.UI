@@ -40,7 +40,7 @@ namespace Gizmo.Client.UI.Host.Web
             hostBuilder.Services.AddClientServices();
 
             hostBuilder.Services.AddSingleton<IClientDialogService, ClientDialogService>();
-            hostBuilder.Services.AddDialogSerive<IClientDialogService>();
+            hostBuilder.Services.AddDialogService<IClientDialogService>();
 
             hostBuilder.Services.AddSingleton<IInputLanguageService, WebInputLenguageService>();
 
