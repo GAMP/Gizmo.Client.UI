@@ -52,6 +52,11 @@ namespace Gizmo.Client.UI.Components
             {
                 TimeSpan timeSpan = TimeSpan.FromMinutes(Product.TimeProduct.Minutes);
                 result = timeSpan.Hours.ToString();
+
+                if (timeSpan.Minutes > 0)
+                {
+                    result += "+";
+                }
             }
 
             return result;
@@ -76,11 +81,6 @@ namespace Gizmo.Client.UI.Components
                 else
                 {
                     result = LocalizationService.GetString("GIZ_TIME_PRODUCT_HOURS");
-                }
-
-                if (timeSpan.Minutes > 0)
-                {
-                    result += "+";
                 }
             }
 

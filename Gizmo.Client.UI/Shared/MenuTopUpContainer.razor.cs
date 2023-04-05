@@ -38,9 +38,6 @@ namespace Gizmo.Client.UI
 
                 _isOpen = value;
                 _ = IsOpenChanged.InvokeAsync(_isOpen);
-
-                if (_isOpen)
-                    _ = TopUpService.LoadAsync(); //TODO: AAA
             }
         }
 
