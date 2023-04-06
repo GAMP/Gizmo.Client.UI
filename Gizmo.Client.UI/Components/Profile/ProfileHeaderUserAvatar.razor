@@ -1,4 +1,11 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 
-<Avatar Image="@ViewState.Picture" Size="AvatarSizes.ExtraLarge" Variant="AvatarVariants.Circle" alt="loading" />
+@if (ViewState.Picture != null)
+{
+    <Avatar Image="@ViewState.Picture" Size="AvatarSizes.ExtraLarge" Variant="AvatarVariants.Circle" alt="loading" />
+}
+else
+{
+    <Icon Size="IconSizes.ExtraLarge" SVGIcon="Icons.AccountCircle_Client" />
+}

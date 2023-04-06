@@ -6,7 +6,14 @@
     <div class="giz-settings__content">
         <div class="giz-settings__content__header">
             <div class="giz-settings__content__header__icon" @onclick="OnClickChangePictureButtonHandler">
-                <Icon Size="IconSizes.ExtraLarge" SVGIcon="Icons.AccountCircle_Client" />
+                @if (ViewState.Picture != null)
+                {
+                    <Avatar Image="@ViewState.Picture" Size="AvatarSizes.ExtraLarge" Variant="AvatarVariants.Circle" alt="loading" />
+                }
+                else
+                {
+                    <Icon Size="IconSizes.ExtraLarge" SVGIcon="Icons.AccountCircle_Client" />
+                }
             </div>
             <div class="giz-settings__content__header__title">@LocalizationService.GetString("GIZ_USER_SETTINGS_TITLE")</div>
             <div class="giz-settings__content__header__subtitle">@LocalizationService.GetString("GIZ_USER_ADDITIONAL_INFORMATION")</div>

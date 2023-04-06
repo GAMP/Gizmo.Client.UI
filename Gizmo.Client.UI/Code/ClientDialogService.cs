@@ -32,10 +32,10 @@ namespace Gizmo.Client.UI.Services
             return ShowDialogAsync<UserAgreementDialog, UserAgreementResult>(userAgreementDialogParameters.ToDictionary(), default, default, cancellationToken);
         }
 
-        public Task<ShowDialogResult<EmptyDialogResult>> ShowTopUpDialogAsync(CancellationToken cancellationToken = default)
-        {
-            return ShowDialogAsync<TopUpDialog>(new Dictionary<string, object>(), default, default, cancellationToken);
-        }
+        //public Task<ShowDialogResult<EmptyDialogResult>> ShowTopUpDialogAsync(CancellationToken cancellationToken = default)
+        //{
+        //    return ShowDialogAsync<TopUpDialog>(new Dictionary<string, object>(), default, default, cancellationToken);
+        //}
 
         public Task<ShowDialogResult<EmptyDialogResult>> ShowChangeEmailDialogAsync(CancellationToken cancellationToken = default)
         {
@@ -57,10 +57,11 @@ namespace Gizmo.Client.UI.Services
             return ShowDialogAsync<ChangePictureDialog>(new Dictionary<string, object>(), default, default, cancellationToken);
         }
 
-        public Task<ShowDialogResult<EmptyDialogResult>> ShowPaymentDialogAsync(CancellationToken cancellationToken = default)
+        public Task<ShowDialogResult<EmptyDialogResult>> ShowPaymentDialogAsync(PaymentDialogParameters paymentDialogParameters, CancellationToken cancellationToken = default)
         {
-            return ShowDialogAsync<PaymentDialog>(new Dictionary<string, object>(), default, default, cancellationToken);
+            return ShowDialogAsync<PaymentDialog>(paymentDialogParameters.ToDictionary(), default, default, cancellationToken);
         }
+
         public Task<ShowDialogResult<EmptyDialogResult>> ShowAdvertisementDialogAsync(AdvertisementViewState state, CancellationToken cancellationToken = default)
         {
             var stateParams = new Dictionary<string, object>()

@@ -8,12 +8,11 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class PaymentDialog : CustomDOMComponentBase
     {
-        public PaymentDialog()
-        {
-        }
-
         [Inject]
         ILocalizationService LocalizationService { get; set; }
+
+        [Parameter]
+        public string Url { get; set; }
 
         [Parameter]
         public EventCallback CancelCallback { get; set; }

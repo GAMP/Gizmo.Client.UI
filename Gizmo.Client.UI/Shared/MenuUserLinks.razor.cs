@@ -58,14 +58,14 @@ namespace Gizmo.Client.UI.Shared
 
         #endregion
 
-        private async Task OnClickTopUpButtonHandler()
-        {
-            _shouldRender = true;
+        //private async Task OnClickTopUpButtonHandler()
+        //{
+        //    _shouldRender = true;
 
-            IsOpen = false;
+        //    IsOpen = false;
 
-            await TopUpService.ShowDialogAsync();
-        }
+        //    await TopUpService.ShowDialogAsync();
+        //}
 
         private Task OnClickUserLockButtonHandler()
         {
