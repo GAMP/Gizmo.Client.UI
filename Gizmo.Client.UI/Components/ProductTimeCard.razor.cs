@@ -62,6 +62,28 @@ namespace Gizmo.Client.UI.Components
             return result;
         }
 
+        public string GetTimeImage()
+        {
+            string result = "product-time-default-1.svg";
+
+            TimeSpan timeSpan = TimeSpan.FromMinutes(Product.TimeProduct.Minutes);
+
+            if (timeSpan.Hours > 12)
+            {
+                result = "product-time-default-24.svg";
+            }
+            else if (timeSpan.Hours > 6)
+            {
+                result = "product-time-default-11.svg";
+            }
+            else if (timeSpan.Hours > 3)
+            {
+                result = "product-time-default-4.svg";
+            }
+
+            return result;
+        }
+
         public string GetTimeText()
         {
             string result = "";

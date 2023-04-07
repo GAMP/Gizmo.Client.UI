@@ -38,6 +38,29 @@
                         </ChildContent>
                     </ExpansionPanel>
                 </div>
+                @if (!string.IsNullOrEmpty(ViewState.SearchPattern))
+                {
+                    <div class="giz-section">
+                        <div class="giz-section__header__filters">
+                            <div>
+                                <div class="giz-section__header__filters__title">@LocalizationService.GetString("GIZ_GEN_RESULTS_FOR")</div>
+                                <div>
+                                    <Chip CanClose="true" OnClose="@(() => ShopService.ClearSearchPattern() )">@ViewState.SearchPattern</Chip>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (ViewState.UserGroupedProducts.Count() == 0)
+                    {
+                        <div class="giz-section__body">
+                            <div class="global-search-no-results">
+                                <div class="global-search-no-results__header">@LocalizationService.GetString("GIZ_NO_MATCH_FOUND_FOR") <span class="global-search-pattern">@ViewState.SearchPattern</span></div>
+                                <div class="global-search-no-results__body">@LocalizationService.GetString("GIZ_NO_MATCH_FOUND_MESSAGE")</div>
+                            </div>
+                        </div>
+                    }
+                }
                 @foreach (var productGroup in ViewState.UserGroupedProducts)
                 {
                     <div class="giz-section">
