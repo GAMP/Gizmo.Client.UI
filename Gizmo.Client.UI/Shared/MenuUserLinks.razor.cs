@@ -34,7 +34,7 @@ namespace Gizmo.Client.UI.Shared
         UserLockViewStateService UserLockService { get; set; }
 
         [Inject()]
-        TopUpViewStateService TopUpService { get; set; }
+        UserOnlineDepositViewStateService UserOnlineDepositViewStateService { get; set; }
 
         [Parameter]
         public bool IsOpen
@@ -57,15 +57,6 @@ namespace Gizmo.Client.UI.Shared
         public EventCallback<bool> IsOpenChanged { get; set; }
 
         #endregion
-
-        //private async Task OnClickTopUpButtonHandler()
-        //{
-        //    _shouldRender = true;
-
-        //    IsOpen = false;
-
-        //    await TopUpService.ShowDialogAsync();
-        //}
 
         private Task OnClickUserLockButtonHandler()
         {

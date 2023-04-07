@@ -32,11 +32,6 @@ namespace Gizmo.Client.UI.Services
             return ShowDialogAsync<UserAgreementDialog, UserAgreementResult>(userAgreementDialogParameters.ToDictionary(), default, default, cancellationToken);
         }
 
-        //public Task<ShowDialogResult<EmptyDialogResult>> ShowTopUpDialogAsync(CancellationToken cancellationToken = default)
-        //{
-        //    return ShowDialogAsync<TopUpDialog>(new Dictionary<string, object>(), default, default, cancellationToken);
-        //}
-
         public Task<ShowDialogResult<EmptyDialogResult>> ShowChangeEmailDialogAsync(CancellationToken cancellationToken = default)
         {
             return ShowDialogAsync<ChangeEmailDialog>(new Dictionary<string, object>(), default, default, default);

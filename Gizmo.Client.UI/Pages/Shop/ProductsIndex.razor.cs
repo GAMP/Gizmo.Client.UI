@@ -41,6 +41,16 @@ namespace Gizmo.Client.UI.Pages
 
         #endregion
 
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await base.OnAfterRenderAsync(firstRender);
+
+            if (firstRender)
+            {
+                await InvokeVoidAsync("registerAdsAutoCollapse");
+            }
+        }
+
         protected override async Task OnInitializedAsync()
         {
             this.SubscribeChange(ViewState);
@@ -58,5 +68,16 @@ namespace Gizmo.Client.UI.Pages
 
             base.Dispose();
         }
+
+        #region IAsyncDisposable
+
+        public async ValueTask DisposeAsync()
+        {
+            await InvokeVoidAsync("unregisterAdsAutoCollapse", Ref).ConfigureAwait(false);
+
+            Dispose();
+        }
+
+        #endregion
     }
 }

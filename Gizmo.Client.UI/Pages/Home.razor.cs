@@ -63,7 +63,7 @@ namespace Gizmo.Client.UI.Pages
 
             if (firstRender)
             {
-                await InvokeVoidAsync("registerHomeAdsAutoCollapse");
+                await InvokeVoidAsync("registerAdsAutoCollapse");
             }
         }
 
@@ -85,7 +85,7 @@ namespace Gizmo.Client.UI.Pages
 
         public async ValueTask DisposeAsync()
         {
-            await InvokeVoidAsync("unregisterHomeAdsAutoCollapse", Ref).ConfigureAwait(false);
+            await InvokeVoidAsync("unregisterAdsAutoCollapse", Ref).ConfigureAwait(false);
 
             Dispose();
         }

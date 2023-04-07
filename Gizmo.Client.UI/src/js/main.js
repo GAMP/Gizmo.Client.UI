@@ -1,31 +1,37 @@
-﻿var homeAdsCollapsed = false;
+﻿var adsCollapsed = false;
 
 function resetAutoHideAds() {
-    homeAdsCollapsed = false;
+    adsCollapsed = false;
 }
 
 function autoHideAds() {
-    var container = document.querySelector('.giz-home__body');
+    var container = document.querySelector('.giz-ads-container');
     var expander = container.querySelector('.giz-expansion-panel');
 
-    if (!homeAdsCollapsed) {
+    if (!adsCollapsed) {
         if (expander.classList.contains('expanded')) {
             expansionPanelToggle(expander);
         }
-        homeAdsCollapsed = true;
+        adsCollapsed = true;
     }
 }
 
-function registerHomeAdsAutoCollapse() {
-    var container = document.querySelector('.giz-home__body');
+function registerAdsAutoCollapse() {
+    var container = document.querySelector('.giz-ads-container');
     var expander = container.querySelector('.giz-expansion-panel');
+
+    if (expander.classList.contains('expanded'))
+        adsCollapsed = false;
+    else
+        adsCollapsed = true;
+    
     var header = expander.querySelector('.giz-expansion-panel__header');
 
     header.addEventListener('click', resetAutoHideAds);
     container.addEventListener('scroll', autoHideAds);
 }
 
-function unregisterHomeAdsAutoCollapse() {
+function unregisterAdsAutoCollapse() {
     var container = document.querySelector('.giz-home__body');
     var expander = container.querySelector('.giz-expansion-panel');
     var header = expander.querySelector('.giz-expansion-panel__header');

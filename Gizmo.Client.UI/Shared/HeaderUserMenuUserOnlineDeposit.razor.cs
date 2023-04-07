@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace Gizmo.Client.UI
 {
-    public partial class HeaderUserMenuTopUp : CustomDOMComponentBase
+    public partial class HeaderUserMenuUserOnlineDeposit : CustomDOMComponentBase
     {
         private bool _isOpen;
 

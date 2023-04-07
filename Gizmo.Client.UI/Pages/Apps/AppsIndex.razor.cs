@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.Services;
+﻿using System.Threading.Tasks;
+using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI;
@@ -47,6 +48,16 @@ namespace Gizmo.Client.UI.Pages
 
         #endregion
 
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await base.OnAfterRenderAsync(firstRender);
+
+            if (firstRender)
+            {
+                await InvokeVoidAsync("registerAdsAutoCollapse");
+            }
+        }
+
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
@@ -60,5 +71,16 @@ namespace Gizmo.Client.UI.Pages
 
             base.Dispose();
         }
+
+        #region IAsyncDisposable
+
+        public async ValueTask DisposeAsync()
+        {
+            await InvokeVoidAsync("unregisterAdsAutoCollapse", Ref).ConfigureAwait(false);
+
+            Dispose();
+        }
+
+        #endregion
     }
 }

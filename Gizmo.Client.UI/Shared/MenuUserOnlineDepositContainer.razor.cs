@@ -9,20 +9,23 @@ using Microsoft.JSInterop;
 
 namespace Gizmo.Client.UI
 {
-    public partial class MenuTopUpContainer : CustomDOMComponentBase
+    public partial class MenuUserOnlineDepositContainer : CustomDOMComponentBase
     {
         private bool _isOpen;
 
         protected bool _shouldRender;
 
         [Inject]
+        IJSRuntime JSRuntime { get; set; }
+
+        [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        TopUpViewStateService TopUpService { get; set; }
+        UserOnlineDepositViewStateService UserOnlineDepositViewStateService { get; set; }
 
         [Inject]
-        TopUpViewState ViewState { get; set; }
+        UserOnlineDepositViewState ViewState { get; set; }
 
         [Parameter]
         public bool IsOpen
@@ -46,6 +49,12 @@ namespace Gizmo.Client.UI
 
         [Parameter]
         public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+        private async Task PayFromPC()
+        {
+            if (ViewState.PaymentUrl is not null)
+                await JSRuntime.InvokeVoidAsync("open", ViewState.PaymentUrl);
+        }
 
         protected override void OnInitialized()
         {

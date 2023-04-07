@@ -6,19 +6,19 @@ namespace Gizmo.Client.UI
 {
     public partial class HeaderUserMenu : CustomDOMComponentBase
     {
-        private bool _topUpIsOpen;
+        private bool _userOnlineDepositIsOpen;
         private bool _activeAppsIsOpen;
         private bool _notificationsIsOpen;
         private bool _userLinksIsOpen;
 
         [Inject]
-        public TopUpViewState TopUpViewState { get; set; }
+        public UserOnlineDepositViewState UserOnlineDepositViewState { get; set; }
 
-        public void ToggleTopUp()
+        public void ToggleUserOnlineDeposit()
         {
-            _topUpIsOpen = !_topUpIsOpen;
+            _userOnlineDepositIsOpen = !_userOnlineDepositIsOpen;
 
-            if (_topUpIsOpen)
+            if (_userOnlineDepositIsOpen)
             {
                 _activeAppsIsOpen = false;
                 _notificationsIsOpen = false;
@@ -32,7 +32,7 @@ namespace Gizmo.Client.UI
 
             if (_activeAppsIsOpen)
             {
-                _topUpIsOpen = false;
+                _userOnlineDepositIsOpen = false;
                 _notificationsIsOpen = false;
                 _userLinksIsOpen = false;
             }
@@ -44,7 +44,7 @@ namespace Gizmo.Client.UI
 
             if (_notificationsIsOpen)
             {
-                _topUpIsOpen = false;
+                _userOnlineDepositIsOpen = false;
                 _activeAppsIsOpen = false;
                 _userLinksIsOpen = false;
             }
@@ -56,7 +56,7 @@ namespace Gizmo.Client.UI
 
             if (_userLinksIsOpen)
             {
-                _topUpIsOpen = false;
+                _userOnlineDepositIsOpen = false;
                 _activeAppsIsOpen = false;
                 _notificationsIsOpen = false;
             }
