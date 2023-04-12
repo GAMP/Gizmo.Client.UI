@@ -16,16 +16,19 @@
             </div>
         </div>
         <div class="giz-apps__body giz-ads-container giz-scrollbar--v">
-            <div class="giz-apps__body__ads">
-                <ExpansionPanel IsCollapsed="@AdvertisementsViewState.IsCollapsed" IsCollapsedChanged="@((value) => AdvertisementsViewStateService.SetCollapsed(value))">
-                    <Header>
-                        @LocalizationService.GetString("GIZ_GEN_ADS")
-                    </Header>
-                    <ChildContent>
-                        <AdsCarousel Interval="5000" />
-                    </ChildContent>
-                </ExpansionPanel>
-            </div>
+            @if (AdvertisementsViewState.Advertisements.Count() > 0)
+            {
+                <div class="giz-apps__body__ads">
+                    <ExpansionPanel IsCollapsed="@AdvertisementsViewState.IsCollapsed" IsCollapsedChanged="@((value) => AdvertisementsViewStateService.SetCollapsed(value))">
+                        <Header>
+                            @LocalizationService.GetString("GIZ_GEN_ADS")
+                        </Header>
+                        <ChildContent>
+                            <AdsCarousel Interval="5000" />
+                        </ChildContent>
+                    </ExpansionPanel>
+                </div>
+            }
             <div class="giz-apps__body__popular">
                 <div class="giz-section">
                     <div class="giz-section__header">

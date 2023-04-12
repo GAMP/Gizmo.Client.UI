@@ -1,0 +1,26 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using System.Globalization
+
+@if (Product.UnitPrice > 0)
+{
+    <span>@Product.UnitPrice.ToString("C", CultureInfo.CurrentCulture)</span>
+}
+
+@if (Product.UnitPrice > 0 && Product.UnitPointsPrice > 0)
+{
+    @if (Product.PurchaseOptions.HasFlag(PurchaseOptionType.Or))
+    {
+        <span>@(" " + LocalizationService.GetString("GIZ_GEN_OR") + " ")</span>
+    }
+    else
+    {
+        <span>@(" " + LocalizationService.GetString("GIZ_GEN_AND") + " ")</span>
+    }
+}
+
+@if (Product.UnitPointsPrice > 0)
+{
+    <span>@Product.UnitPointsPrice</span>
+    <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.ExtraSmall" />
+}

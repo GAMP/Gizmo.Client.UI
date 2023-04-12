@@ -32,18 +32,7 @@
 
         <div class="giz-product-card__content__details">
             <div class="giz-product-card__price">
-                <span>@Product.UnitPrice.ToString("C", CultureInfo.CurrentCulture)</span>
-
-                @if (Product.PurchaseOptions.HasFlag(PurchaseOptionType.Or))
-                {
-                    <span> or @Product.UnitPointsPrice</span>
-                    <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.ExtraSmall" />
-                }
-                else
-                {
-                    <span>and @Product.UnitPointsPrice</span>
-                    <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.ExtraSmall" />
-                }
+                <ProductCardPrice @key="Product.Id" Product="@Product" />
             </div>
             <div class="giz-product-card__title">
                 @Product.Name

@@ -28,16 +28,19 @@
                 </div>
             </div>
             <div class="giz-shop__products__body giz-ads-container giz-scrollbar--v">
-                <div class="giz-shop__products__body__ads">
-                    <ExpansionPanel IsCollapsed="@AdvertisementsViewState.IsCollapsed" IsCollapsedChanged="@((value) => AdvertisementsViewStateService.SetCollapsed(value))">
-                        <Header>
-                            @LocalizationService.GetString("GIZ_GEN_ADS")
-                        </Header>
-                        <ChildContent>
-                            <AdsCarousel Interval="5000" />
-                        </ChildContent>
-                    </ExpansionPanel>
-                </div>
+                @if (AdvertisementsViewState.Advertisements.Count() > 0)
+                {
+                    <div class="giz-shop__products__body__ads">
+                        <ExpansionPanel IsCollapsed="@AdvertisementsViewState.IsCollapsed" IsCollapsedChanged="@((value) => AdvertisementsViewStateService.SetCollapsed(value))">
+                            <Header>
+                                @LocalizationService.GetString("GIZ_GEN_ADS")
+                            </Header>
+                            <ChildContent>
+                                <AdsCarousel Interval="5000" />
+                            </ChildContent>
+                        </ExpansionPanel>
+                    </div>
+                }
                 @if (!string.IsNullOrEmpty(ViewState.SearchPattern))
                 {
                     <div class="giz-section">

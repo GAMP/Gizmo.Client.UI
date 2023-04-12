@@ -18,7 +18,12 @@ function autoHideAds() {
 
 function registerAdsAutoCollapse() {
     var container = document.querySelector('.giz-ads-container');
+    if (!container)
+        return;
+
     var expander = container.querySelector('.giz-expansion-panel');
+    if (!expander)
+        return;
 
     if (expander.classList.contains('expanded'))
         adsCollapsed = false;
@@ -26,6 +31,8 @@ function registerAdsAutoCollapse() {
         adsCollapsed = true;
     
     var header = expander.querySelector('.giz-expansion-panel__header');
+    if (!header)
+        return;
 
     header.addEventListener('click', resetAutoHideAds);
     container.addEventListener('scroll', autoHideAds);
@@ -33,8 +40,16 @@ function registerAdsAutoCollapse() {
 
 function unregisterAdsAutoCollapse() {
     var container = document.querySelector('.giz-home__body');
+    if (!container)
+        return;
+
     var expander = container.querySelector('.giz-expansion-panel');
+    if (!expander)
+        return;
+
     var header = expander.querySelector('.giz-expansion-panel__header');
+    if (!header)
+        return;
 
     header.removeEventListener('click', resetAutoHideAds);
     container.removeEventListener('scroll', autoHideAds);
