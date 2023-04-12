@@ -2,25 +2,32 @@
 @inherits CustomDOMComponentBase
 @using System.Globalization
 
-@if (Product.UnitPrice > 0)
+@if (Product.UnitPrice == 0 && (Product.UnitPointsPrice ?? 0) == 0)
 {
-    <span>@Product.UnitPrice.ToString("C", CultureInfo.CurrentCulture)</span>
+    <span>@LocalizationService.GetString("PURCHASE_OPTION_FREE")</span>
 }
-
-@if (Product.UnitPrice > 0 && Product.UnitPointsPrice > 0)
+else
 {
-    @if (Product.PurchaseOptions.HasFlag(PurchaseOptionType.Or))
+    @if (Product.UnitPrice > 0)
     {
-        <span>@(" " + LocalizationService.GetString("GIZ_GEN_OR") + " ")</span>
+        <span>@Product.UnitPrice.ToString("C", CultureInfo.CurrentCulture)</span>
     }
-    else
-    {
-        <span>@(" " + LocalizationService.GetString("GIZ_GEN_AND") + " ")</span>
-    }
-}
 
-@if (Product.UnitPointsPrice > 0)
-{
-    <span>@Product.UnitPointsPrice</span>
-    <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.ExtraSmall" />
+    @if (Product.UnitPrice > 0 && Product.UnitPointsPrice > 0)
+    {
+        @if (Product.PurchaseOptions.HasFlag(PurchaseOptionType.Or))
+        {
+            <span>@(" " + LocalizationService.GetString("PURCHASE_OPTION_OR") + " ")</span>
+        }
+        else
+        {
+            <span>@(" " + LocalizationService.GetString("PURCHASE_OPTION_AND") + " ")</span>
+        }
+    }
+
+    @if (Product.UnitPointsPrice > 0)
+    {
+        <span>@Product.UnitPointsPrice</span>
+        <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.ExtraSmall" />
+    }
 }
