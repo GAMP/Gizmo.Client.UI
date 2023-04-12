@@ -2,10 +2,17 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Client.UI.View;
 
-@if (_appExeViewState != null)
+@if (_appExeViewState != null && _appExeViewState.PersonalFiles.Count() > 0)
 {
-    @foreach (var personalFile in _appExeViewState.PersonalFiles)
-    {
-        <ExecutableLaunchButtonPersonalFile PersonalFileId="@personalFile.PersonalFileId" @key="personalFile.PersonalFileId" />
-    }
+    <ListItem SVGIcon="Icons.FolderShared_Client">
+        <ChildContent>
+            @LocalizationService.GetString("GIZ_APPS_PERSONAL_FILES")
+        </ChildContent>
+        <NestedList>
+            @foreach (var personalFile in _appExeViewState.PersonalFiles)
+            {
+                <ExecutableLaunchButtonPersonalFile PersonalFileId="@personalFile.PersonalFileId" @key="personalFile.PersonalFileId" />
+            }
+        </NestedList>
+    </ListItem>
 }
