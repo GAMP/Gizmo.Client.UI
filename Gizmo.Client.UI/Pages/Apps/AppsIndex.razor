@@ -42,7 +42,32 @@
                         }
                         else
                         {
-                            <div>@LocalizationService.GetString("GIZ_GEN_POPULAR_ITEMS")</div>
+                            @switch (ViewState.SelectedSortingOption)
+                            {
+                                case ApplicationSortingOption.Popularity:
+
+                                    <div>@LocalizationService.GetString("GIZ_APPS_POPULAR_ITEMS")</div>
+
+                                    break;
+
+                                case ApplicationSortingOption.AddDate:
+
+                                    <div>@LocalizationService.GetString("GIZ_APPS_RECENTLY_ADDED")</div>
+
+                                    break;
+
+                                case ApplicationSortingOption.ReleaseDate:
+
+                                    <div>@LocalizationService.GetString("GIZ_APPS_NEW_RELEASES")</div>
+
+                                    break;
+
+                                case ApplicationSortingOption.Title:
+
+                                    <div>@LocalizationService.GetString("GIZ_APPS_ALL_ITEMS")</div>
+
+                                    break;
+                            }
                         }
                         <div class="giz-apps-filters">
                             @if (ViewState.TotalFilters > 0)
@@ -62,7 +87,7 @@
                                     Label="@LocalizationService.GetString("GIZ_GEN_SORT_BY")"
                                     OpenDirection="PopupOpenDirections.Bottom"
                                     MaximumHeight="20.0rem"
-                                    Class="@(ViewState.SelectedSortingOption != ApplicationSortingOption.Title ? "app-filter--filled" : "app-filter--default")"
+                                    Class="@(ViewState.SelectedSortingOption != ApplicationSortingOption.Popularity ? "app-filter--filled" : "app-filter--default")"
                                     PopupClass="giz-scrollbar--v">
                                 @foreach (var item in ViewState.SortingOptions)
                                 {
