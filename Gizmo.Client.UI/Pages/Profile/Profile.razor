@@ -7,74 +7,75 @@
     
         <ProfileNavigation />
 
-        <div class="giz-profile-section">
-            <div class="giz-profile-section__header">
-                @LocalizationService.GetString("GIZ_USER_BASIC_INFORMATION")
-            </div>
-            <div class="giz-profile-section__body">
+        <div>
+            <div class="giz-profile-section">
+                <div class="giz-profile-section__header">
+                    @LocalizationService.GetString("GIZ_USER_BASIC_INFO")
+                </div>
+                <div class="giz-profile-section__body">
 
-                <div class="giz-profile-section-item">
-                    <div class="giz-profile-section-item__avatar">
-                        @if (ViewState.Picture != null)
-                        {
-                            <Avatar Image="@ViewState.Picture" Size="AvatarSizes.Large" Variant="AvatarVariants.Circle" alt="loading" />
-                        }
-                        else
-                        {
-                            <Icon Size="IconSizes.Large" SVGIcon="Icons.AccountCircle_Client" />
-                        }
-                    </div>
-                    <div class="giz-profile-section-item__info">
-                        <div class="giz-profile-section-item__info__text">ViewState.Username</div>
-                        <div class="giz-profile-section-item__info__text--name">ViewState.FirstName ViewState.LastName</div>
-                    </div>
-                    <div>
-                        <Button Variant="ButtonVariants.Outline" LeftSVGIcon="Icons.Edit_Client" @onclick="OnClickUpdateProfileButtonHandler" />
+                    <div class="giz-profile-section-item">
+                        <div class="giz-profile-section-item__avatar">
+                            @if (ViewState.Picture != null)
+                            {
+                                <Avatar Image="@ViewState.Picture" Variant="AvatarVariants.Circle" Class="giz-user-avatar" />
+                            }
+                            else
+                            {
+                                <Icon SVGIcon="Icons.AccountCircle_Client" Class="giz-user-avatar" />
+                            }
+                        </div>
+                        <div class="giz-profile-section-item__info">
+                            <div class="giz-profile-section-item__info__text">ViewState.Username</div>
+                            <div class="giz-profile-section-item__info__text--name">ViewState.FirstName ViewState.LastName</div>
+                        </div>
+                        <div>
+                            <Button Variant="ButtonVariants.Outline" LeftSVGIcon="Icons.Edit_Client" @onclick="OnClickUpdateProfileButtonHandler" />
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="giz-profile-section">
-            <div class="giz-profile-section__header">
-                @LocalizationService.GetString("GIZ_USER_CONTACT_INFO")
-            </div>
-            <div class="giz-profile-section__body">
-
-                <div class="giz-profile-section-item">
-                    <div class="giz-profile-section-item__icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 20C3.45 20 2.97917 19.8042 2.5875 19.4125C2.19583 19.0208 2 18.55 2 18V6C2 5.45 2.19583 4.97917 2.5875 4.5875C2.97917 4.19583 3.45 4 4 4H20C20.55 4 21.0208 4.19583 21.4125 4.5875C21.8042 4.97917 22 5.45 22 6V18C22 18.55 21.8042 19.0208 21.4125 19.4125C21.0208 19.8042 20.55 20 20 20H4ZM12 12.825C12.0833 12.825 12.1708 12.8125 12.2625 12.7875C12.3542 12.7625 12.4417 12.725 12.525 12.675L19.6 8.25C19.7333 8.16667 19.8333 8.0625 19.9 7.9375C19.9667 7.8125 20 7.675 20 7.525C20 7.19167 19.8583 6.94167 19.575 6.775C19.2917 6.60833 19 6.61667 18.7 6.8L12 11L5.3 6.8C5 6.61667 4.70833 6.6125 4.425 6.7875C4.14167 6.9625 4 7.20833 4 7.525C4 7.69167 4.03333 7.8375 4.1 7.9625C4.16667 8.0875 4.26667 8.18333 4.4 8.25L11.475 12.675C11.5583 12.725 11.6458 12.7625 11.7375 12.7875C11.8292 12.8125 11.9167 12.825 12 12.825Z" fill="#FAFAFA" />
-                        </svg>
-                    </div>
-                    <div class="giz-profile-section-item__info">
-                        <div class="giz-profile-section-item__info__title">Email address</div>
-                        <div class="giz-profile-section-item__info__text">ViewState.Email</div>
-                    </div>
-                    <div>
-                        <Button Variant="ButtonVariants.Outline" LeftSVGIcon="Icons.Edit_Client" @onclick="OnClickUpdateEmailButtonHandler" />
-                    </div>
+            <div class="giz-profile-section">
+                <div class="giz-profile-section__header">
+                    @LocalizationService.GetString("GIZ_USER_CONTACT_INFO")
                 </div>
+                <div class="giz-profile-section__body">
 
-                <div class="giz-profile-section-item">
-                    <div class="giz-profile-section-item__icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M7 23C6.45 23 5.97917 22.8042 5.5875 22.4125C5.19583 22.0208 5 21.55 5 21V3C5 2.45 5.19583 1.97917 5.5875 1.5875C5.97917 1.19583 6.45 1 7 1H17C17.55 1 18.0208 1.19583 18.4125 1.5875C18.8042 1.97917 19 2.45 19 3V21C19 21.55 18.8042 22.0208 18.4125 22.4125C18.0208 22.8042 17.55 23 17 23H7ZM7 18H17V6H7V18Z" fill="#FAFAFA" />
-                        </svg>
+                    <div class="giz-profile-section-item">
+                        <div class="giz-profile-section-item__icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 20C3.45 20 2.97917 19.8042 2.5875 19.4125C2.19583 19.0208 2 18.55 2 18V6C2 5.45 2.19583 4.97917 2.5875 4.5875C2.97917 4.19583 3.45 4 4 4H20C20.55 4 21.0208 4.19583 21.4125 4.5875C21.8042 4.97917 22 5.45 22 6V18C22 18.55 21.8042 19.0208 21.4125 19.4125C21.0208 19.8042 20.55 20 20 20H4ZM12 12.825C12.0833 12.825 12.1708 12.8125 12.2625 12.7875C12.3542 12.7625 12.4417 12.725 12.525 12.675L19.6 8.25C19.7333 8.16667 19.8333 8.0625 19.9 7.9375C19.9667 7.8125 20 7.675 20 7.525C20 7.19167 19.8583 6.94167 19.575 6.775C19.2917 6.60833 19 6.61667 18.7 6.8L12 11L5.3 6.8C5 6.61667 4.70833 6.6125 4.425 6.7875C4.14167 6.9625 4 7.20833 4 7.525C4 7.69167 4.03333 7.8375 4.1 7.9625C4.16667 8.0875 4.26667 8.18333 4.4 8.25L11.475 12.675C11.5583 12.725 11.6458 12.7625 11.7375 12.7875C11.8292 12.8125 11.9167 12.825 12 12.825Z" fill="#FAFAFA" />
+                            </svg>
+                        </div>
+                        <div class="giz-profile-section-item__info">
+                            <div class="giz-profile-section-item__info__title">@LocalizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")</div>
+                            <div class="giz-profile-section-item__info__text">ViewState.Email</div>
+                        </div>
+                        <div>
+                            @*<Button Variant="ButtonVariants.Outline" LeftSVGIcon="Icons.Edit_Client" @onclick="OnClickUpdateEmailButtonHandler" />*@
+                        </div>
                     </div>
-                    <div class="giz-profile-section-item__info">
-                        <div class="giz-profile-section-item__info__title">Phone</div>
-                        <div class="giz-profile-section-item__info__text">ViewState.MobilePhone</div>
+
+                    <div class="giz-profile-section-item">
+                        <div class="giz-profile-section-item__icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 23C6.45 23 5.97917 22.8042 5.5875 22.4125C5.19583 22.0208 5 21.55 5 21V3C5 2.45 5.19583 1.97917 5.5875 1.5875C5.97917 1.19583 6.45 1 7 1H17C17.55 1 18.0208 1.19583 18.4125 1.5875C18.8042 1.97917 19 2.45 19 3V21C19 21.55 18.8042 22.0208 18.4125 22.4125C18.0208 22.8042 17.55 23 17 23H7ZM7 18H17V6H7V18Z" fill="#FAFAFA" />
+                            </svg>
+                        </div>
+                        <div class="giz-profile-section-item__info">
+                            <div class="giz-profile-section-item__info__title">@LocalizationService.GetString("GIZ_GEN_PHONE")</div>
+                            <div class="giz-profile-section-item__info__text">ViewState.MobilePhone</div>
+                        </div>
+                        <div>
+                            @*<Button Variant="ButtonVariants.Outline" LeftSVGIcon="Icons.Edit_Client" @onclick="OnClickUpdateMobileButtonHandler" />*@
+                        </div>
                     </div>
-                    <div>
-                        <Button Variant="ButtonVariants.Outline" LeftSVGIcon="Icons.Edit_Client" @onclick="OnClickUpdateMobileButtonHandler" />
-                    </div>
+
                 </div>
-
             </div>
-        </div>
 
-        <div class="giz-profile-section">
+            <div class="giz-profile-section">
             <div class="giz-profile-section__header">
                 @LocalizationService.GetString("GIZ_USER_SECURITY")
             </div>
@@ -92,6 +93,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </div>

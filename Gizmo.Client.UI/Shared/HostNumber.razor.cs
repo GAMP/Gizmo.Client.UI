@@ -1,11 +1,10 @@
-﻿using Gizmo.Client.UI.View.Services;
-using Gizmo.Client.UI.View.States;
+﻿using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Shared
 {
-    public partial class Layout_LoginHostNumber : CustomDOMComponentBase
+    public partial class HostNumber : CustomDOMComponentBase
     {
         [Inject]
         HostNumberViewState ViewState { get; set; }

@@ -3,4 +3,133 @@
 @using Microsoft.AspNetCore.Components.Forms
 
 <HostedDialog>
+    <div class="giz-client-dialog giz-change-profile-dialog">
+        <div class="giz-client-dialog__header">
+            <div class="giz-client-dialog__header__title">@LocalizationService.GetString("GIZ_USER_BASIC_INFO")</div>
+            <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
+        </div>
+
+        @switch (ViewState.PageIndex)
+        {
+            case 0:
+
+                <div class="giz-client-dialog__body">
+                    <EditForm EditContext="@UserChangeProfileViewStateService.EditContext">
+                        <div class="giz-change-profile-section">
+                            <div class="giz-change-profile-section__header">Profile picture and username</div>
+                            <div class="giz-change-profile-section__body">
+                                <div class="giz-change-profile-group">
+                                    <div>
+                                        <TextInput IsTransparent="true"
+                                                   Value="@ViewState.Username"
+                                                   ValueChanged="@((string value) => UserChangeProfileViewStateService.SetUsername(value))"
+                                                   ValueExpression="@(() => ViewState.Username)"
+                                                   Size="InputSizes.Small"
+                                                   IsFullWidth="true"
+                                                   Label="@LocalizationService.GetString("ENTER_THE_CODE")" />
+                                    </div>
+                                    <div>
+                                        @if (ViewState.Picture != null)
+                                        {
+                                            <Avatar Image="@ViewState.Picture" Variant="AvatarVariants.Circle" Class="giz-user-avatar" />
+                                        }
+                                        else
+                                        {
+                                            <Icon SVGIcon="Icons.AccountCircle_Client" Class="giz-user-avatar" />
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="giz-change-profile-section">
+                            <div class="giz-change-profile-section__header">Personal information</div>
+                            <div class="giz-change-profile-section__body">
+                                <div class="giz-change-profile-group">
+                                    <div>
+                                        <TextInput IsTransparent="true"
+                                                   Value="@ViewState.FirstName"
+                                                   ValueChanged="@((string value) => UserChangeProfileViewStateService.SetFirstName(value))"
+                                                   ValueExpression="@(() => ViewState.FirstName)"
+                                                   Size="InputSizes.Small"
+                                                   IsFullWidth="true"
+                                                   Label="@LocalizationService.GetString("ENTER_THE_CODE")" />
+                                    </div>
+                                    <div>
+                                        <TextInput IsTransparent="true"
+                                                   Value="@ViewState.LastName"
+                                                   ValueChanged="@((string value) => UserChangeProfileViewStateService.SetLastName(value))"
+                                                   ValueExpression="@(() => ViewState.LastName)"
+                                                   Size="InputSizes.Small"
+                                                   IsFullWidth="true"
+                                                   Label="@LocalizationService.GetString("ENTER_THE_CODE")" />
+                                    </div>
+                                    <div>
+                                        <MaskedDateInput IsTransparent="true"
+                                                         Value="@ViewState.BirthDate"
+                                                         ValueChanged="@((DateTime? value) => UserChangeProfileViewStateService.SetBirthDate(value))"
+                                                         ValueExpression="@(() => ViewState.BirthDate)"
+                                                         Size="InputSizes.Small"
+                                                         IsFullWidth="true"
+                                                         Label="@LocalizationService.GetString("GIZ_USER_BIRTH_DATE")" />
+                                    </div>
+                                    <div>
+                                        <Select IsTransparent="true"
+                                                HandleSVGIcon="Icons.Select_Client"
+                                                Value="@ViewState.Sex"
+                                                ValueChanged="@((Sex value) => UserChangeProfileViewStateService.SetSex(value))"
+                                                ValueExpression="@(() => ViewState.Sex)"
+                                                Size="InputSizes.Small"
+                                                IsFullWidth="true"
+                                                Label="@LocalizationService.GetString("GIZ_USER_GENDER")"
+                                                OpenDirection="PopupOpenDirections.Cursor"
+                                                PopupClass="giz-scrollbar--v">
+                                            <SelectItem Value="@Sex.Unspecified" Text="Unspecified" />
+                                            <SelectItem Value="@Sex.Male" Text="Male" />
+                                            <SelectItem Value="@Sex.Female" Text="Female" />
+                                        </Select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="giz-change-profile-section">
+                            <div class="giz-change-profile-section__header">Location</div>
+                            <div class="giz-change-profile-section__body">
+                                <IconSelect IsTransparent="true"
+                                            Placeholder="@LocalizationService.GetString("GIN_GEN_SEARCH")"
+                                            IsVirtualized="false"
+                                            IsLoading="@(!_isLoaded)"
+                                            CanClearValue="@(!(GetSelectedCountry()?.PhonePrefix == "+"))"
+                                            OnClickClearValueButton="OnClickClearValueButtonHandler"
+                                            HandleSVGIcon="Icons.Select_Client"
+                                            TValue="IconSelectCountry"
+                                            ItemSource="@Countries"
+                                            SelectedItem="@GetSelectedCountry()"
+                                            SelectedItemChanged="@SetSelectedCountry"
+                                            IsDisabled="@ViewState.IsLoading"
+                                            Size="InputSizes.Small"
+                                            IsFullWidth="true"
+                                            Label="@LocalizationService.GetString("GIZ_USER_COUNTRY")"
+                                            OpenDirection="PopupOpenDirections.Cursor"
+                                            MaximumHeight="20.0rem"
+                                            PopupClass="giz-scrollbar--v" />
+                            </div>
+                        </div>
+                    </EditForm>
+                </div>
+                <div class="giz-client-dialog__footer">
+                    <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => UserChangeProfileViewStateService.SubmitAsync())" Text="@LocalizationService.GetString("GIZ_GEN_SAVE")" />
+                </div>
+
+                break;
+
+            case 1:
+
+                <div>Well done!</div>
+
+                break;
+        }
+
+    </div>
 </HostedDialog>

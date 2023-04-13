@@ -9,10 +9,6 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class ChangePasswordDialog : CustomDOMComponentBase
     {
-        public ChangePasswordDialog()
-        {
-        }
-
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
@@ -29,7 +25,7 @@ namespace Gizmo.Client.UI.Components
         {
             await CancelCallback.InvokeAsync();
 
-            if (ViewState.IsComplete)
+            if (ViewState.PageIndex == 1)
                 await UserChangePasswordService.ResetAsync();
         }
 
