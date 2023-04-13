@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Gizmo.Client.UI.Components;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Microsoft.Extensions.Logging;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Gizmo.Client.UI.Services
 {
@@ -30,6 +28,11 @@ namespace Gizmo.Client.UI.Services
         public Task<ShowDialogResult<UserAgreementResult>> ShowUserAgreementDialogAsync(UserAgreementDialogParameters userAgreementDialogParameters, CancellationToken cancellationToken = default)
         {
             return ShowDialogAsync<UserAgreementDialog, UserAgreementResult>(userAgreementDialogParameters.ToDictionary(), default, default, cancellationToken);
+        }
+
+        public Task<ShowDialogResult<EmptyDialogResult>> ShowChangeProfileDialogAsync(CancellationToken cancellationToken = default)
+        {
+            return ShowDialogAsync<ChangeProfileDialog>(new Dictionary<string, object>(), default, default, default);
         }
 
         public Task<ShowDialogResult<EmptyDialogResult>> ShowChangeEmailDialogAsync(CancellationToken cancellationToken = default)
