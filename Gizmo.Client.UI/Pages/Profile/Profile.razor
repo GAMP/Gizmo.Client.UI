@@ -7,7 +7,7 @@
     
         <ProfileNavigation />
 
-        <div>
+        <div class="giz-profile-sections">
             <div class="giz-profile-section">
                 <div class="giz-profile-section__header">
                     @LocalizationService.GetString("GIZ_USER_BASIC_INFO")
@@ -26,8 +26,8 @@
                             }
                         </div>
                         <div class="giz-profile-section-item__info">
-                            <div class="giz-profile-section-item__info__text">ViewState.Username</div>
-                            <div class="giz-profile-section-item__info__text--name">ViewState.FirstName ViewState.LastName</div>
+                            <div class="giz-profile-section-item__info__text">@ViewState.Username</div>
+                            <div class="giz-profile-section-item__info__text--name">@ViewState.FirstName @ViewState.LastName</div>
                         </div>
                         <div>
                             <Button Variant="ButtonVariants.Outline" LeftSVGIcon="Icons.Edit_Client" @onclick="OnClickUpdateProfileButtonHandler" />
@@ -50,7 +50,7 @@
                         </div>
                         <div class="giz-profile-section-item__info">
                             <div class="giz-profile-section-item__info__title">@LocalizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")</div>
-                            <div class="giz-profile-section-item__info__text">ViewState.Email</div>
+                            <div class="giz-profile-section-item__info__text">@ViewState.Email</div>
                         </div>
                         <div>
                             @*<Button Variant="ButtonVariants.Outline" LeftSVGIcon="Icons.Edit_Client" @onclick="OnClickUpdateEmailButtonHandler" />*@
@@ -65,7 +65,7 @@
                         </div>
                         <div class="giz-profile-section-item__info">
                             <div class="giz-profile-section-item__info__title">@LocalizationService.GetString("GIZ_GEN_PHONE")</div>
-                            <div class="giz-profile-section-item__info__text">ViewState.MobilePhone</div>
+                            <div class="giz-profile-section-item__info__text">@ViewState.MobilePhone</div>
                         </div>
                         <div>
                             @*<Button Variant="ButtonVariants.Outline" LeftSVGIcon="Icons.Edit_Client" @onclick="OnClickUpdateMobileButtonHandler" />*@

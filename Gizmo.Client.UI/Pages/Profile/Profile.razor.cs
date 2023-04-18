@@ -3,7 +3,6 @@ using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI;
 using Gizmo.UI.Services;
-using Gizmo.Web.Api.Models;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -19,10 +18,10 @@ namespace Gizmo.Client.UI.Pages
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        UserViewStateService UserService { get; set; }
+        UserProfileViewStateService UserService { get; set; }
 
         [Inject]
-        UserViewState ViewState { get; set; }
+        UserProfileViewState ViewState { get; set; }
 
         [Inject()]
         IClientDialogService DialogService { get; set; }

@@ -1,4 +1,5 @@
 .giz-change-profile {
+
     &-dialog {
         color: #FAFAFA;
         width: 60.0rem;
@@ -6,6 +7,15 @@
         .giz-user-avatar {
             width: 11.2rem;
             height: 11.2rem;
+        }
+
+        .giz-input-control {
+            .giz-input-label {
+                //Font
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 18px;
+            }
         }
     }
 
@@ -28,5 +38,25 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 1.6rem;
+        align-items: center;
+
+        &__username {
+            .giz-input-control {
+                .giz-input-label {
+                    //Font
+                    font-weight: 400;
+                    font-size: 14px;
+                    line-height: 22px;
+                }
+            }
+        }
+
+        &__avatar {
+            justify-self: center;
+
+            svg {
+                color: rgba(250, 250, 250, 0.16);
+            }
+        }
     }
 }

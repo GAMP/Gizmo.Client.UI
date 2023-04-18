@@ -12,6 +12,10 @@
         height: 5.6rem;
     }
 
+    &-sections {
+        width: 61.3rem;
+    }
+
     &-section {
         margin-top: 4rem;
 
@@ -182,73 +186,62 @@
 }
 
 .giz-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+    margin-bottom: 4.8rem;
 
-    &__avatar {
-        display: grid;
-        grid-template-columns: min-content 1fr;
-        grid-column-gap: 1.6rem;
-        margin-bottom: 2.4rem;
-
-        .giz-user-avatar {
-            width: 9.6rem;
-            height: 9.6rem;
-        }
-
-        &__about {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            gap: 1.6rem;
-
-            &__name {
-                color: #FAFAFA;
-                text-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25), 0 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
-                //Font ?
-                font-size: 3.6rem;
-                line-height: 4.4rem;
-                font-weight: 500;
-            }
-
-            &__host {
-                color: rgba(255, 255, 255, 0.6);
-                text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
-                @include font-xxl($font-weight-regular);
-            }
-        }
+    .giz-user-avatar {
+        width: 11.2rem;
+        height: 11.2rem;
     }
 
-    &__stats {
-        display: flex;
+    &__info {
+        display: grid;
+        grid-template-rows: min-content min-content;
         gap: 1.6rem;
-        margin-bottom: 4.8rem;
 
-        &-item {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            padding-right: 1.6rem;
-
-            &:last-child {
-                border-right: none;
-            }
-
-            .giz-icon {
-                margin-right: 1.0rem;
-            }
+        &__username {
+            color: #FAFAFA;
+            text-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25), 0 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
+            //Font
+            font-weight: 500;
+            font-size: 24px;
+            line-height: 30px;
         }
 
-        &-text {
+        &__stats {
+            display: flex;
+            gap: 1.6rem;
 
-            .giz-title {
-                color: rgba(255, 255, 255, 0.6);
-                text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
-                @include font-s($font-weight-light);
+            &-item {
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+                padding-right: 1.6rem;
+
+                &:last-child {
+                    border-right: none;
+                }
+
+                .giz-icon {
+                    margin-right: 1.0rem;
+                }
             }
 
-            .giz-numbers {
-                color: #FAFAFA;
-                text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
-                @include font-xxl($font-weight-regular);
+            &-text {
+
+                .giz-title {
+                    color: rgba(255, 255, 255, 0.6);
+                    text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
+                    @include font-s($font-weight-light);
+                }
+
+                .giz-numbers {
+                    color: #FAFAFA;
+                    text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
+                    @include font-xxl($font-weight-regular);
+                }
             }
         }
     }

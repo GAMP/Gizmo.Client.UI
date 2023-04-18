@@ -19,16 +19,16 @@
                             <div class="giz-change-profile-section__header">Profile picture and username</div>
                             <div class="giz-change-profile-section__body">
                                 <div class="giz-change-profile-group">
-                                    <div>
+                                    <div class="giz-change-profile-group__username">
                                         <TextInput IsTransparent="true"
                                                    Value="@ViewState.Username"
                                                    ValueChanged="@((string value) => UserChangeProfileViewStateService.SetUsername(value))"
                                                    ValueExpression="@(() => ViewState.Username)"
                                                    Size="InputSizes.Small"
                                                    IsFullWidth="true"
-                                                   Label="@LocalizationService.GetString("ENTER_THE_CODE")" />
+                                           Label="@LocalizationService.GetString("GIZ_GEN_USERNAME")" />
                                     </div>
-                                    <div>
+                                    <div class="giz-change-profile-group__avatar">
                                         @if (ViewState.Picture != null)
                                         {
                                             <Avatar Image="@ViewState.Picture" Variant="AvatarVariants.Circle" Class="giz-user-avatar" />
@@ -53,7 +53,7 @@
                                                    ValueExpression="@(() => ViewState.FirstName)"
                                                    Size="InputSizes.Small"
                                                    IsFullWidth="true"
-                                                   Label="@LocalizationService.GetString("ENTER_THE_CODE")" />
+                                           Label="@LocalizationService.GetString("GIZ_USER_FIRST_NAME")" />
                                     </div>
                                     <div>
                                         <TextInput IsTransparent="true"
@@ -62,7 +62,7 @@
                                                    ValueExpression="@(() => ViewState.LastName)"
                                                    Size="InputSizes.Small"
                                                    IsFullWidth="true"
-                                                   Label="@LocalizationService.GetString("ENTER_THE_CODE")" />
+                                           Label="@LocalizationService.GetString("GIZ_USER_LAST_NAME")" />
                                     </div>
                                     <div>
                                         <MaskedDateInput IsTransparent="true"
@@ -119,7 +119,7 @@
                     </EditForm>
                 </div>
                 <div class="giz-client-dialog__footer">
-                    <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => UserChangeProfileViewStateService.SubmitAsync())" Text="@LocalizationService.GetString("GIZ_GEN_SAVE")" />
+                    <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="@(() => UserChangeProfileViewStateService.SubmitAsync())" Text="@LocalizationService.GetString("GIZ_GEN_SAVE")" />
                 </div>
 
                 break;
