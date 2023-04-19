@@ -1,0 +1,48 @@
+//=============== ChipGroup ================//
+
+.giz-chip-group {
+    [#{$client-theme-comp-attr}] & {
+        .giz-chip {
+            margin-right: 1rem;
+
+            &:last-child {
+                margin-right: 0px;
+            }
+
+            &.disabled {
+                color: $unknown-color;
+            }
+        }
+
+        &.primary {
+            .giz-chip {
+                &.selected {
+                    color: white;
+                    background-color: $primary-color-theme-client;
+                    box-shadow: $elevation-1-theme-client;
+                }
+            }
+        }
+
+        &.secondary {
+            .giz-chip {
+                &.selected {
+                    color: white;
+                    background-color: $unknown-color;
+                }
+            }
+        }
+
+        &.info {
+            .giz-chip {
+                &.selected {
+                    color: white;
+                    background-color: $unknown-color;
+                }
+            }
+        }
+
+        &.disabled {
+        }
+    }
+}

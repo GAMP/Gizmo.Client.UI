@@ -1,0 +1,42 @@
+//=============== gizmo menu classes ================//
+
+.giz-menu {
+    [#{$client-theme-comp-attr}] & {
+
+        &__dropdown {
+
+            & > .giz-list.giz-list--right {
+                position: absolute;
+                left: 0;
+                width: max-content;
+            }
+
+            & > .giz-list.giz-list--left {
+                position: absolute;
+                right: 0;
+                width: max-content;
+            }
+
+            .giz-list {
+                padding: unset;
+                border-radius: unset;
+                border: 0.1rem solid $unknown-color;
+                box-shadow: $elevation-4-theme-client;
+                background-color: rgba(9, 11, 16, 0.9);
+
+                .giz-list-item {
+                    border-radius: unset;
+                    background-color: unset;
+                    color: white;
+
+                    &:hover {
+                        background-color: $unknown-color;
+                    }
+
+                    .giz-list-item__icon {
+                    }
+                }
+            }
+        }
+    }
+}

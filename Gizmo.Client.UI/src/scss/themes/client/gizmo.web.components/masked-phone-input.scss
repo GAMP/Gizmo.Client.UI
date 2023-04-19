@@ -1,0 +1,43 @@
+//=============== MaskedPhoneInput ================//
+
+.giz-masked-phone-input {
+    [#{$client-theme-comp-attr}] & {
+        input {
+            font-family: $font-family-text-theme-client;
+            @include font-l-theme-client($font-weight-light-theme-client);
+        }
+
+        .giz-input-wrapper {
+            .giz-phone-prefix {
+                margin-right: 0.5rem;
+            }
+        }
+
+        .giz-mask {
+            color: rgba(255, 255, 255, 0.35);
+            //FontF
+            font-family: $font-family-text-theme-client;
+            @include font-l-theme-client($font-weight-light-theme-client);
+        }
+
+        .giz-input-root {
+            &--small {
+                .giz-mask {
+                    @include font-m-theme-client($font-weight-light-theme-client);
+                }
+            }
+
+            &--medium {
+                .giz-mask {
+                    @include font-l-theme-client($font-weight-light-theme-client);
+                }
+            }
+
+            &--large {
+                .giz-mask {
+                    @include font-l-theme-client($font-weight-light-theme-client);
+                }
+            }
+        }
+    }
+}

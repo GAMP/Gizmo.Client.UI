@@ -1,0 +1,238 @@
+//=============== GizInput ================//
+
+.giz-input-control {
+    [#{$client-theme-comp-attr}] & {
+        .giz-input-label {
+            margin-bottom: 0.4rem;
+            @include font-m-theme-client($font-weight-light-theme-client);
+        }
+
+        .giz-input-root {
+            color: #D5D5D6;
+            width: 20.0rem;
+
+            &--full-width {
+                width: 100%;
+            }
+
+            svg {
+                color: #D5D5D6;
+                vertical-align: baseline;
+            }
+
+            &.disabled, &[disabled] {
+                pointer-events: none;
+                //Default Theme
+                color: rgba(255, 255, 255, 0.6);
+                background-color: rgba(250, 250, 250, 0.16);
+                border: 0.1rem solid transparent;
+            }
+
+            input {
+                color: #D5D5D6;
+
+                &.disabled, &[disabled] {
+                    pointer-events: none;
+                    color: rgba(255, 255, 255, 0.24);
+                    //Default Theme
+                    //background-color: transparent;
+                    //background-color: #0C0F11;
+                    //background-color: initial;
+                }
+            }
+
+            &--outline {
+                border: 1px solid rgba(246, 251, 253, 0.28);
+                border-radius: 0.8rem;
+                //background-color: transparent;
+                background-color: #0C0F11;
+
+                &:hover {
+                    border: 0.2rem solid rgba(246, 251, 253, 0.52);
+
+                    &.giz-input-root--small {
+                        padding: 0.7rem 1.2rem;
+                    }
+
+                    &.giz-input-root--medium {
+                        padding: 0.9rem 1.1rem;
+                    }
+
+                    &.giz-input-root--large {
+                        padding: 1.3rem 1.2rem;
+                    }
+                }
+
+                &:focus-within {
+                    border: 0.2rem solid #0091E6;
+
+                    &.giz-input-root--small {
+                        padding: 0.7rem 1.2rem;
+                    }
+
+                    &.giz-input-root--medium {
+                        padding: 0.9rem 1.1rem;
+                    }
+
+                    &.giz-input-root--large {
+                        padding: 1.3rem 1.2rem;
+                    }
+                }
+            }
+
+            &--small {
+                @include font-m-theme-client($font-weight-light-theme-client);
+
+                input {
+                    @include font-m-theme-client($font-weight-light-theme-client);
+                }
+            }
+
+            &--medium {
+                @include font-l-theme-client($font-weight-light-theme-client);
+
+                input {
+                    @include font-l-theme-client($font-weight-light-theme-client);
+                }
+            }
+
+            &--large {
+                @include font-l-theme-client($font-weight-light-theme-client);
+
+                input {
+                    @include font-l-theme-client($font-weight-light-theme-client);
+                }
+            }
+
+            &--filled {
+                //background-color: transparent;
+                background-color: #0C0F11;
+            }
+
+            &--transparent {
+                background-color: transparent;
+            }
+
+            &--small {
+                //DESIGNER'S L
+                border-radius: 0.8rem;
+                height: 4.0rem;
+                padding: 0.8rem 1.3rem;
+
+                input {
+                }
+
+                .giz-input-icon-left, .giz-input-icon-right {
+                    .giz-icon {
+                        width: 2.0rem;
+                        height: 2.0rem;
+                    }
+                }
+            }
+
+            &--medium {
+                //DESIGNER'S XL
+                border-radius: 0.8rem;
+                height: 4.8rem;
+                padding: 1.0rem 1.2rem;
+
+                input {
+                }
+
+                .giz-input-icon-left, .giz-input-icon-right {
+                    .giz-icon {
+                        width: 2.4rem;
+                        height: 2.4rem;
+                    }
+                }
+            }
+
+            &--large {
+                //DESIGNER'S XXL
+                border-radius: 0.8rem;
+                height: 5.2rem;
+                padding: 1.4rem 1.3rem;
+
+                input {
+                }
+
+                .giz-input-icon-left, .giz-input-icon-right {
+                    .giz-icon {
+                        width: 2.4rem;
+                        height: 2.4rem;
+                    }
+                }
+            }
+        }
+
+        &--invalid {
+            color: $typo-alert-theme-client;
+
+            input {
+                color: $typo-alert-theme-client;
+            }
+
+            .giz-input-root--outline {
+                border: 0.1rem solid $bg-alert-theme-client;
+
+                &:hover {
+                    border: 0.1rem solid $bg-alert-theme-client;
+
+                    &.giz-input-root--small {
+                        padding: 0.8rem 1.3rem;
+                    }
+
+                    &.giz-input-root--medium {
+                        padding: 1.0rem 1.2rem;
+                    }
+
+                    &.giz-input-root--large {
+                        padding: 1.4rem 1.3rem;
+                    }
+                }
+
+                &:focus-within {
+                    border: 0.2rem solid $bg-alert-theme-client;
+
+                    &.giz-input-root--small {
+                        padding: 0.7rem 1.2rem;
+                    }
+
+                    &.giz-input-root--medium {
+                        padding: 0.9rem 1.1rem;
+                    }
+
+                    &.giz-input-root--large {
+                        padding: 1.3rem 1.2rem;
+                    }
+                }
+            }
+
+            .giz-input-root--shadow {
+                box-shadow: unset;
+
+                &:hover {
+                    box-shadow: unset;
+                }
+
+                &:focus-within {
+                    box-shadow: unset;
+                }
+            }
+        }
+    }
+}
+
+.giz-input-validation-label {
+    [#{$client-theme-comp-attr}] & {
+        min-height: 2.2rem;
+        margin-top: 0.4rem;
+        @include font-m-theme-client($font-weight-light-theme-client);
+
+        &-root {
+            &--outline {
+                transition: border-color 0.2s;
+            }
+        }
+    }
+}

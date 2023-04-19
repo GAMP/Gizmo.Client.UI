@@ -1,0 +1,93 @@
+//=============== IconButton ================//
+
+.giz-icon-button {
+    [#{$client-theme-comp-attr}] & {
+        color: white;
+        border: none;
+        border-radius: 50%;
+
+        &--fill {
+            background-color: rgba(0, 120, 210, 0.4);
+
+            &:hover {
+                background-color: rgba(0, 120, 210, 0.4);
+            }
+
+            &:active:not(.giz-button-shadow) {
+                //Remove shadow from default theme.
+                box-shadow: unset;
+            }
+
+            &:active {
+                background-color: rgba(0, 120, 210, 0.4);
+            }
+
+            &.disabled, &[disabled] {
+            }
+        }
+
+        &--outline {
+            background-color: $unknown-color;
+            border: 0.1rem solid $unknown-color;
+
+            &:hover {
+                background-color: $unknown-color;
+            }
+
+            &:active:not(.giz-button-shadow) {
+                //Remove shadow from default theme.
+                box-shadow: unset;
+            }
+
+            &:active {
+                background-color: $unknown-color;
+            }
+        }
+
+        &--text {
+            background-color: initial;
+            color: #AAABAD;
+
+            &:hover {
+                background-color: transparent;
+                color: #FFFFFF;
+            }
+
+            &:active:not(.giz-button-shadow) {
+                //Remove shadow from default theme.
+                box-shadow: unset;
+            }
+
+            &:active {
+                background-color: transparent;
+                color: #FFFFFF;
+            }
+
+            &.disabled, &[disabled] {
+                border: none;
+                pointer-events: none;
+            }
+        }
+
+        &--extra-small {
+            width: 1.6rem;
+            height: 1.6rem;
+            min-width: 1.6rem;
+            min-height: 1.6rem;
+        }
+
+        &--small {
+            width: 3.0rem;
+            height: 3.0rem;
+            min-width: 3.0rem;
+            min-height: 3.0rem;
+        }
+
+        &--medium {
+            width: 4.9rem;
+            height: 4.9rem;
+            min-width: 4.9rem;
+            min-height: 4.9rem;
+        }
+    }
+}

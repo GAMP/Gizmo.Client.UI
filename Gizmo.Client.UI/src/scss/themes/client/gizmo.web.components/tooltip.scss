@@ -1,0 +1,37 @@
+//=============== Tooltip ================//
+
+.giz-tooltip {
+    [#{$client-theme-comp-attr}] & {
+        background-color: $unknown-color;
+
+        &--top {
+            transform: translate(-50%, calc(-1rem));
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                margin-left: -0.5rem;
+                border-width: 0.5rem;
+                border-style: solid;
+                border-color: $unknown-color transparent transparent transparent;
+            }
+        }
+
+        &--bottom {
+            transform: translate(-50%, calc(1rem));
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: -1rem;
+                left: 50%;
+                margin-left: -0.5rem;
+                border-width: 0.5rem;
+                border-style: solid;
+                border-color: transparent transparent $unknown-color transparent;
+            }
+        }
+    }
+}

@@ -1,0 +1,238 @@
+//=============== Button ================//
+
+.giz-button {
+    [#{$client-theme-comp-attr}] & {
+        border-radius: 0.8rem;
+        color: white;
+        border: none;
+        //outline: $outline-0;
+        text-align: center;
+        //FontF
+        font-family: $font-family-text-theme-client;
+        @include font-l-theme-client($font-weight-regular-theme-client);
+
+        &__progress {
+            background-color: #3F8CFF;
+
+            &-wrapper {
+                border-radius: 0.8rem;
+            }
+        }
+
+        &--group-button {
+        }
+
+        &--fill {
+            &:active:not(.giz-button-shadow) {
+                //Remove shadow from default theme.
+                box-shadow: unset;
+            }
+
+            &.disabled, &[disabled] {
+                background-color: rgba(250, 250, 250, 0.16);
+                color: rgba(255, 255, 255, 0.24);
+            }
+
+            &.warning {
+            }
+
+            &.primary:not(.disabled) {
+                background-color: rgba(250, 250, 250, 0.16);
+
+                &:hover {
+                    background-color: #0091FF;
+                }
+
+                &.giz-button-shadow {
+                    box-shadow: $elevation-1-theme-client;
+                }
+            }
+
+            &.secondary {
+                background-color: $unknown-color;
+            }
+
+            &.info {
+                background-color: $unknown-color;
+            }
+
+            &.danger {
+                background-color: #B81423;
+
+                &:hover {
+                    background-color: #E01325;
+                }
+
+                &.disabled, &[disabled] {
+                }
+            }
+
+            &.accent:not(.disabled) {
+                background-color: #0078D2;
+
+                &:hover {
+                    background-color: #0091FF;
+                }
+            }
+        }
+
+        &--outline {
+            background-color: unset;
+            border: 0.2rem solid rgba(246, 251, 253, 0.28);
+            color: #FFFFFF;
+
+            &:hover {
+                border: 0.2rem solid #0091E6;
+                color: #0091E6;
+            }
+
+            &:active {
+            }
+
+            &.disabled, &[disabled] {
+                opacity: 0.3;
+                border: 0.2rem solid rgba(213, 213, 214, 0.5);
+            }
+        }
+
+        &--text {
+            background-color: unset;
+            color: #FFFFFF;
+
+            &:hover {
+                color: #0091FF;
+            }
+
+            &:active {
+            }
+
+            &.disabled, &[disabled] {
+                color: rgba(255, 255, 255, 0.24);
+            }
+        }
+
+        &--progress {
+            &:active:not(.giz-button-shadow) {
+                //Remove shadow from default theme.
+                box-shadow: unset;
+            }
+
+            &.disabled, &[disabled] {
+                background-color: rgba(250, 250, 250, 0.16);
+                color: rgba(255, 255, 255, 0.24);
+            }
+
+            &.warning {
+            }
+
+            &.primary:not(.disabled) {
+                background-color: rgba(250, 250, 250, 0.16);
+
+                &:hover {
+                    background-color: #0091FF;
+                }
+
+                &.giz-button-shadow {
+                    box-shadow: $elevation-1-theme-client;
+                }
+            }
+
+            &.secondary {
+                background-color: $unknown-color;
+            }
+
+            &.info {
+                background-color: $unknown-color;
+            }
+
+            &.danger {
+                &.disabled, &[disabled] {
+                }
+            }
+
+            &.accent:not(.disabled) {
+                background-color: rgba(63, 140, 255, 0.5);
+
+                &:hover {
+                    background-color: rgba(63, 140, 255, 0.5);
+                }
+            }
+        }
+
+        &--extra-small {
+            height: 2.4rem;
+            padding: 0.3rem;
+            border-radius: 0.4rem;
+            @include font-s-theme-client($font-weight-regular-theme-client);
+
+            .giz-icon--small {
+                width: 1.0rem;
+                height: 1.0rem;
+            }
+        }
+
+        &--small {
+            height: 3.2rem;
+            padding: 0.5rem;
+            border-radius: 0.8rem;
+            @include font-m-theme-client($font-weight-regular-theme-client);
+
+            .giz-icon--small {
+                width: 1.0rem;
+                height: 1.0rem;
+            }
+        }
+
+        &--medium {
+            height: 3.6rem;
+            padding: 0.7rem;
+            border-radius: 0.8rem;
+            @include font-m-theme-client($font-weight-regular-theme-client);
+
+            .giz-icon--medium {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+        }
+
+        &--large {
+            height: 4.0rem;
+            padding: 0.9rem;
+            border-radius: 0.8rem;
+            @include font-m-theme-client($font-weight-regular-theme-client);
+
+            .giz-icon--large {
+                width: 2.0rem;
+                height: 2.0rem;
+            }
+        }
+
+        &--extra-large {
+            height: 4.8rem;
+            padding: 1.1rem;
+            border-radius: 0.8rem;
+            @include font-l-theme-client($font-weight-regular-theme-client);
+
+            .giz-icon--extra-large {
+                width: 2.0rem;
+                height: 2.0rem;
+            }
+        }
+
+        &.disabled, &[disabled] {
+        }
+
+        .giz-button-icon-left {
+            margin-right: 0.8rem;
+        }
+
+        .giz-button-icon-right {
+            float: right;
+            margin-left: 0.8rem;
+        }
+
+        &.giz-button-icon-right {
+            text-align: left;
+        }
+    }
+}
