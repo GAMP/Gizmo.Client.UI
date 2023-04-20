@@ -60,9 +60,9 @@ function jsCompile() {
 //sass file change watch function
 function watchTask() {
     gulp.watch('src/scss/*.scss', sassCompile);
-    gulp.watch('src/scss/*/*.scss', sassCompile);
+    gulp.watch('src/scss/**/*.scss', sassCompile);
     gulp.watch('src/js/*.js', jsCompile);
-    gulp.watch('src/js/*/*.js', jsCompile);
+    gulp.watch('src/js/**/*.js', jsCompile);
 }
 
 //this watch task will run on project open and will monitor sass file changes

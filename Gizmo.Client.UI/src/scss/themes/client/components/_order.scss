@@ -1,0 +1,235 @@
+.giz-order {
+    display: grid;
+    grid-template-rows: 1fr min-content min-content;
+    gap: 1.6rem;
+    height: 100%;
+    overflow: hidden;
+    min-width: 49.2rem;
+    padding: 1.6rem;
+
+    &__items {
+        display: grid;
+        grid-template-rows: min-content 1fr;
+        background-color: #22272B;
+        border-radius: 1.6rem;
+        height: 100%;
+        overflow: hidden;
+
+        &__header {
+            border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
+            padding: 2.4rem 2.4rem 0.4rem 2.4rem;
+            @include font-xl-theme-client($font-weight-regular-theme-client);
+        }
+
+        &__body {
+            position: relative;
+            padding: 0 2.4rem 0.4rem 2.4rem;
+            height: 100%;
+            overflow-y: auto;
+
+            .giz-order__items-wrapper {
+                display: block;
+
+                .giz-order-item {
+                    display: grid;
+                    grid-template-columns: 1fr 12.0rem;
+                    gap: 1.2rem;
+                    padding: 1.5rem 0;
+                    border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
+
+                    &__description {
+                        @include font-m-theme-client($font-weight-regular-theme-client);
+                    }
+
+                    &__details {
+                        display: grid;
+                        grid-template-rows: min-content 1fr min-content;
+                        grid-template-columns: min-content 1fr;
+                        gap: 0.4rem;
+                        align-items: center;
+                        text-align: right;
+                        @include font-xl-theme-client($font-weight-regular-theme-client);
+
+                        &__price-radio {
+                            grid-column-start: 1;
+                            grid-column-end: 2;
+                            grid-row-start: 1;
+                            grid-row-end: 2;
+                        }
+
+                        &__points-radio {
+                            grid-column-start: 1;
+                            grid-column-end: 2;
+                            grid-row-start: 2;
+                            grid-row-end: 3;
+                        }
+
+                        &__price {
+                            grid-column-start: 2;
+                            grid-column-end: 3;
+                            grid-row-start: 1;
+                            grid-row-end: 2;
+                        }
+
+                        &__points {
+                            grid-column-start: 2;
+                            grid-column-end: 3;
+                            grid-row-start: 2;
+                            grid-row-end: 3;
+                        }
+
+                        &__and {
+                            grid-column-start: 1;
+                            grid-column-end: 2;
+                            grid-row-start: 1;
+                            grid-row-end: 3;
+                        }
+
+                        .giz-shop-quantity-picker {
+                            grid-column-start: 1;
+                            grid-column-end: 3;
+                            grid-row-start: 3;
+                            grid-row-end: 4;
+                            margin-top: 0.8rem;
+                        }
+                    }
+
+                    &:last-child {
+                        border-bottom: none;
+                    }
+                }
+            }
+
+            .giz-no-order {
+                &-wrapper {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    text-align: center;
+                    height: 100%;
+                }
+            }
+        }
+
+        &__footer {
+            display: flex;
+            align-items: center;
+            padding: 2.0rem 2.4rem;
+            box-shadow: 0px -3px 50px rgba(0, 0, 0, 0.25);
+            /*color: rgba(255, 255, 255, 0.6);
+            @include font-m-theme-client($font-weight-regular-theme-client);*/
+            .giz-button {
+                color: rgb(170, 171, 173);
+
+                .giz-icon--small {
+                    width: 2rem;
+                    height: 2rem;
+                    margin-right: 1rem;
+                }
+            }
+        }
+    }
+
+    &__notes {
+        background-color: #22272B;
+        border-radius: 1.6rem;
+        padding: 2.4rem;
+
+        &__header {
+            margin-bottom: 0.8rem;
+            @include font-m-theme-client($font-weight-light-theme-client);
+        }
+
+        .giz-order-notes {
+            .giz-input-root {
+                min-height: 9.8rem;
+            }
+        }
+    }
+
+    &__totals {
+        background-color: #22272B;
+        border-radius: 1.6rem;
+        padding: 3.2rem 2.4rem;
+
+        .giz-order-summary {
+            display: grid;
+            grid-template-columns: 1fr min-content;
+            grid-row-gap: 1.8rem;
+            grid-column-gap: 0.4rem;
+            margin-bottom: 2.4rem;
+            align-items: center;
+            white-space: nowrap;
+
+            .giz-order-summary-text-bold {
+                @include font-xl-theme-client($font-weight-regular-theme-client);
+            }
+
+            .giz-order-summary-total {
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+                @include font-h5-theme-client($font-weight-bold-theme-client);
+
+                svg {
+                    width: 2.4rem;
+                    height: 2.4rem;
+                }
+            }
+
+            .giz-order-summary-points-total-icon {
+                display: flex;
+                align-items: center;
+            }
+
+            &-number-bold {
+                display: flex;
+                align-items: center;
+                text-align: right;
+                @include font-h5-theme-client($font-weight-bold-theme-client);
+            }
+
+            &-number-separator {
+                font-weight: 500;
+                font-size: 1.8rem;
+                line-height: 2.8rem;
+                letter-spacing: initial;
+                margin: 0 1.5rem;
+            }
+
+            &-text {
+                @include font-m-theme-client($font-weight-light-theme-client);
+            }
+
+            .giz-order-summary-points-award {
+                justify-self: end;
+                @include font-m-theme-client($font-weight-light-theme-client);
+            }
+
+            .giz-order-summary-points {
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+            }
+        }
+    }
+}
+
+.giz-empty-state {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+
+    &__title {
+        color: #FAFAFA;
+        @include font-xxl-theme-client($font-weight-bold-theme-client);
+    }
+
+    &__text {
+        margin-top: 2.0rem;
+        color: rgba(255, 255, 255, 0.6);
+        @include font-m-theme-client($font-weight-light-theme-client);
+    }
+}

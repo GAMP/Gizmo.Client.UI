@@ -1,0 +1,81 @@
+//=============== Client Tab ================//
+
+.giz-client-tab {
+    position: relative;
+    display: grid;
+    grid-template-columns: min-content 1fr min-content;
+    gap: 1.6rem;
+    align-items: center;
+    width: 100%;
+    white-space: nowrap;
+    min-height: 3.4rem;
+
+    .giz-button {
+        width: 2.4rem;
+        padding: unset;
+    }
+
+    &--internal {
+        grid-template-columns: 1fr;
+
+        .giz-button.giz-button--fill.primary:not(.disabled) {
+            width: 3.2rem;
+            height: 3.2rem;
+            background-color: rgba(50, 53, 54, 0.75);
+            border-radius: 0.8rem;
+
+            .giz-icon--extra-small {
+                width: 2.4rem;
+                height: 2.4rem;
+            }
+        }
+
+        .giz-client-tab__previous {
+            position: absolute;
+            left: 0;
+        }
+
+        .giz-client-tab__next {
+            position: absolute;
+            right: 0;
+        }
+    }
+
+    &__wrapper {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    &__content {
+        display: flex;
+        gap: 1.6rem;
+        height: 100%;
+        transition: margin 1s;
+    }
+
+    &-item {
+        color: #FAFAFA;
+        cursor: pointer;
+        @include font-m-theme-client($font-weight-light-theme-client);
+
+        &.active {
+            color: $primary-color-theme-client;
+            position: relative;
+
+            svg {
+                color: #0078D2;
+            }
+
+            &::before {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 0.3rem;
+                background-color: $primary-color-theme-client;
+                border-radius: 0.2rem;
+            }
+        }
+    }
+}

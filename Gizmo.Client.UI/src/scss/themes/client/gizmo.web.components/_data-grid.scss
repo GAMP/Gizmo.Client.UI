@@ -1,0 +1,66 @@
+//=============== DataGrid ================//
+
+.giz-data-grid {
+    [#{$client-theme-comp-attr}] & {
+        border-collapse: separate;
+        border-spacing: 0;
+        background-color: #22272B;
+        color: unset;
+
+        & > thead td, & > thead th {
+            color: #AAABAD;
+            padding: 1.1rem 0.8rem;
+            height: unset;
+            @include font-s-theme-client($font-weight-light-theme-client);
+            background-color: #22272B;
+            border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
+        }
+
+        & > tbody > tr:not(.giz-data-grid-row-detail) {
+            border-top: 0.1rem solid #22272B;
+            height: unset;
+            @include font-m-theme-client($font-weight-light-theme-client);
+
+            &:hover {
+                background-color: #22272B;
+
+                & > td {
+                    &:first-child {
+                        border-left: unset;
+                    }
+
+                    &:last-child {
+                        border-right: unset;
+                    }
+                }
+            }
+
+            &:last-child {
+                border-bottom: 0.1rem solid #22272B;
+            }
+
+            & > td {
+                padding: 1.1rem 0.8rem;
+                border-top: unset;
+                border-bottom: unset;
+
+                &:first-child {
+                    border-left: unset;
+                }
+
+                &:last-child {
+                    border-right: unset;
+                }
+            }
+        }
+
+        .giz-data-grid-row-detail {
+            background-color: #0C0F11;
+
+            td {
+                padding: 0.8rem;
+                vertical-align: top;
+            }
+        }
+    }
+}

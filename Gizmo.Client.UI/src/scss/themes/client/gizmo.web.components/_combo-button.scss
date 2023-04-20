@@ -1,0 +1,78 @@
+//=============== ComboButton ================//
+
+.giz-combo-button {
+    [#{$client-theme-comp-attr}] & {
+        gap: 0.2rem;
+
+        .giz-icon--medium {
+            width: 2.0rem;
+            height: 2.0rem;
+        }
+
+        & > .left-button {
+            border-bottom-right-radius: 0px !important;
+            border-top-right-radius: 0px !important;
+
+            .giz-button__progress {
+                &-wrapper {
+                    border-bottom-right-radius: 0px !important;
+                    border-top-right-radius: 0px !important;
+                }
+            }
+        }
+
+        & > .right-button {
+            border-bottom-left-radius: 0px !important;
+            border-top-left-radius: 0px !important;
+        }
+
+        .giz-popup {
+            padding-top: 0.4rem;
+        }
+
+        .giz-combo-button__dropdown {
+            background-color: unset;
+            border: unset;
+
+            .giz-list {
+                background-color: #201F1F;
+                box-shadow: 0 0.4rem 2.0rem rgba(0, 0, 0, 0.08);
+                border-radius: 0.8rem;
+                color: #E4E6EB;
+                padding: 0.8rem 0;
+
+                .giz-list-item {
+                    padding: 0.9rem 1.6rem;
+                    color: #E4E6EB;
+                    border-radius: 0;
+                    @include font-m-theme-client($font-weight-light-theme-client);
+
+                    &.active {
+                        background-color: #373839;
+                        color: #E4E6EB;
+                    }
+                }
+
+                &.giz-list--selectable {
+                    .giz-list-item {
+                        &.selected {
+                            //Default Theme
+                            background-color: #373839;
+                            color: #E4E6EB;
+                        }
+                    }
+                }
+
+                &.giz-list--clickable {
+                    .giz-list-item {
+                        &:hover {
+                            //Default Theme
+                            background-color: #373839;
+                            color: #E4E6EB;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

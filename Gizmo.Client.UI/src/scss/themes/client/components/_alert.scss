@@ -1,0 +1,47 @@
+//=============== Alert ================//
+
+.giz-alert {
+    display: flex;
+    border-radius: 0.8rem;
+    padding: 1.6rem;
+    gap: 1.6rem;
+
+    &__body {
+        display: grid;
+        grid-template-rows: min-content 1fr;
+        gap: 0.8rem;
+
+        &__title {
+            @include font-m-theme-client($font-weight-regular-theme-client);
+        }
+
+        &__text {
+            @include font-m-theme-client($font-weight-light-theme-client);
+        }
+    }
+
+    &--warning {
+        background-color: #FEF3EC;
+        color: #CB662F;
+    }
+
+    &--success {
+        background-color: #E8F7F4;
+        color: #008E7D;
+    }
+
+    &--danger {
+        background-color: #FDEEEE;
+        color: #C74952;
+    }
+
+    &--info {
+        background-color: #F4F4F4;
+        color: #2B2D33;
+    }
+
+    &--accent {
+        background-color: #D9E8FF;
+        color: #3F8CFF;
+    }
+}

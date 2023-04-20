@@ -1,0 +1,79 @@
+//=============== Toast ================//
+
+.giz-toast {
+    display: grid;
+    grid-template-columns: min-content 1fr min-content;
+    border-radius: 0.8rem;
+    padding: 1.6rem;
+    gap: 1.6rem;
+
+    a {
+        color: #FFFFFF;
+
+        &:link {
+            text-decoration: underline;
+        }
+
+        &:visited {
+            text-decoration: underline;
+        }
+
+        &:hover {
+            text-decoration: underline;
+        }
+
+        &:active {
+            text-decoration: underline;
+        }
+    }
+
+    &__body {
+        display: grid;
+        grid-template-rows: min-content 1fr;
+        gap: 0.8rem;
+
+        &__title {
+            @include font-m-theme-client($font-weight-regular-theme-client);
+        }
+
+        &__text {
+            @include font-m-theme-client($font-weight-light-theme-client);
+        }
+    }
+
+    &--warning {
+        background-color: #F88545;
+        color: #FFFFFF;
+    }
+
+    &--success {
+        background-color: #19B28D;
+        color: #FFFFFF;
+    }
+
+    &--danger {
+        background-color: #FF2E5A;
+        color: #FFFFFF;
+    }
+
+    &--info {
+        background-color: #2B2D33;
+        color: #FFFFFF;
+    }
+
+    &--accent {
+        background-color: #3F8CFF;
+        color: #FFFFFF;
+    }
+
+    .close-btn {
+        /*width: 2.0rem;
+        height: 2.0rem;
+        color: #FACED1;*/
+        background-color: transparent;
+
+        &:hover {
+            background-color: transparent;
+        }
+    }
+}

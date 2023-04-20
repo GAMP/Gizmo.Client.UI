@@ -1,0 +1,88 @@
+//=============== Menu Active Apps ================//
+
+.giz-active-apps {
+    display: grid;
+    grid-template-rows: min-content 1fr;
+    //grid-template-columns: max-content;
+    background-color: #22272B;
+    border-radius: 0 0 0.8rem 0.8rem;
+    box-shadow: 0px 32px 64px rgba(0, 0, 0, 0.37), 0px 2px 21px rgba(0, 0, 0, 0.37);
+    max-height: 100%;
+    overflow: hidden;
+    min-width: 36.8rem;
+    width: max-content;
+
+    &__header {
+        color: #E4E6EB;
+        padding: 0.8rem 1.6rem;
+        white-space: nowrap;
+        @include font-h5-theme-client($font-weight-bold-theme-client);
+    }
+
+    &__body {
+        min-height: 10.0rem;
+        max-height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        & > table {
+            padding: 0;
+            margin: 0;
+            border: 0;
+            border-collapse: collapse;
+            border-spacing: 0;
+
+            & > tr {
+                padding: 0;
+                margin: 0;
+                border: 0;
+            }
+
+            & > td {
+                padding: 0;
+                margin: 0;
+                border: 0;
+            }
+        }
+    }
+}
+
+.giz-active-app-card {
+    padding: 1.6rem;
+    border-bottom: 0.1rem solid #373839;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &__image {
+        height: 100%;
+        padding: 1.6rem;
+
+        img {
+            width: 4.0rem;
+            height: 4.0rem;
+        }
+    }
+
+    &__info {
+        height: 100%;
+        padding: 1.6rem;
+
+        &__category {
+            color: rgba(255, 255, 255, 0.6);
+            opacity: 0.6;
+            @include font-s-theme-client($font-weight-light-theme-client);
+        }
+
+        &__title {
+            color: #FAFAFA;
+            @include font-l-theme-client($font-weight-regular-theme-client);
+        }
+    }
+
+    &__actions {
+        height: 100%;
+        padding: 1.6rem;
+    }
+}

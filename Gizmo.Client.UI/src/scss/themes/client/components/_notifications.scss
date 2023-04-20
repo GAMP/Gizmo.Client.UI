@@ -1,0 +1,46 @@
+//============= Notifications ===============//
+
+.giz-notifications-container {
+    z-index: $notifications-index;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 4.0rem 2.8rem;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 1.0rem;
+    height: calc(100vh - 7.5rem);
+    overflow-y: auto;
+    pointer-events: none;
+}
+
+.giz-notification-dialog {
+    pointer-events: all;
+}
+
+.giz-notification-card {
+    background-color: #22272B;
+    box-shadow: 0 0.8rem 3.2rem rgba(0, 0, 0, 0.08);
+    border-radius: 1.6rem;
+    position: relative;
+    overflow: hidden;
+
+    &__header {
+        display: grid;
+        grid-template-columns: 1fr min-content;
+        grid-template-rows: min-content min-content;
+        margin-bottom: 2.4rem;
+
+        &__title {
+            grid-row-start: 1;
+            grid-row-end: 2;
+            @include font-h5-theme-client($font-weight-bold-theme-client);
+        }
+
+        &__subtitle {
+            grid-row-start: 2;
+            grid-row-end: 3;
+            @include font-l-theme-client($font-weight-light-theme-client);
+        }
+    }
+}

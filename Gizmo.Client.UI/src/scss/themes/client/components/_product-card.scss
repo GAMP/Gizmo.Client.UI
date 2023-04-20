@@ -1,0 +1,291 @@
+//============= Product Card ===============//
+
+.giz-product-card {
+    position: relative;
+    background-color: #22272B;
+    border-radius: 0.8rem;
+    overflow: hidden;
+    transition: background-color 0.2s;
+
+    .giz-button--fill.accent.giz-product-card-primary-button {
+        background-color: rgba(250, 250, 250, 0.16);
+    }
+
+    &:hover {
+        background-color: #050607;
+
+        .giz-product-card__content__image__hovered {
+            background-color: rgba(0, 0, 0, 0.84);
+
+            .giz-timeline {
+                display: block;
+            }
+        }
+
+        .giz-button--fill.accent.giz-product-card-primary-button {
+            background-color: #0078d2;
+        }
+    }
+
+    &.product {
+        &:hover {
+            background-color: #22272B;
+
+            .giz-product-card__content__image__hovered {
+                background-color: unset;
+            }
+        }
+    }
+
+    &__content {
+        display: grid;
+        grid-template-rows: min-content 1fr min-content;
+        height: 100%;
+
+        &__image {
+            position: relative;
+            height: 24.6rem;
+            background-color: #161A1D;
+            
+            & > img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 0.9rem 0.9rem 0 0;
+            }
+
+            &__hovered {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 2;
+                padding: 1.6rem 1.6rem 0 1.6rem;
+                transition: background-color 0.2s;
+
+                &__header {
+                    display: flex;
+                    justify-content: space-between;
+                    width: 100%;
+                    height: 100%;
+                }
+
+                .giz-timeline {
+                    display: none;
+                }
+            }
+        }
+
+        &__image--time {
+            position: relative;
+            height: 24.6rem;
+            border-radius: 0.8rem 0.8rem 0 0;
+            overflow: hidden;
+
+            /*&:after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.84);
+            }*/
+
+            & > img {
+                width: 100%;
+                height: 100%;
+            }
+
+            & > svg {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 1;
+            }
+        }
+
+        &__details {
+            display: flex;
+            flex-direction: column;
+            padding: 0 1.6rem;
+            margin: 1.2rem 0 0 0;
+        }
+
+        &__footer {
+            padding: 1.6rem;
+        }
+    }
+
+    &__title {
+        flex-grow: 1;
+        color: rgba(255, 255, 255, 0.6);
+        @include font-m-theme-client($font-weight-light-theme-client);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        //white-space: nowrap;
+        max-height: 44px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    &__host-group {
+        display: flex;
+        margin-top: auto;
+
+        &__content {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0 0.6rem;
+            background-color: rgba(250, 250, 250, 0.16);
+            border-radius: 0.5rem;
+            color: rgba(255, 255, 255, 0.75);
+            @include font-s-theme-client($font-weight-light-theme-client);
+        }
+    }
+
+    &__price {
+        @include font-l-theme-client($font-weight-light-theme-client);
+
+        svg {
+            fill: white;
+        }
+
+        .inactive {
+        }
+    }
+}
+
+.giz-product-card-alternative-button {
+    display: none;
+}
+
+.giz-timeline {
+    position: relative;
+    overflow: hidden;
+
+    &-header {
+        display: flex;
+        align-items: center;
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 1.2rem;
+        position: relative;
+        @include font-s-theme-client($font-weight-light-theme-client);
+
+        svg {
+            margin-right: 0.4rem;
+        }
+
+        &:after {
+            content: '';
+            border-left: 0.1rem solid rgba(255, 255, 255, 0.6);
+            position: absolute;
+            top: calc(50% + 0.5rem);
+            left: 0.2rem;
+            height: calc(100% + 0.3rem);
+        }
+    }
+
+    &-item {
+        color: #FFAC33;
+        margin-bottom: 1.6rem;
+        position: relative;
+        @include font-s-theme-client($font-weight-regular-theme-client);
+
+        & > div {
+            margin-left: 0.9rem;
+        }
+
+        &:before {
+            content: '';
+            background-color: rgba(255, 255, 255, 0.6);
+            border: 0.1rem solid rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            width: 0.2rem;
+            height: 0.2rem;
+            position: absolute;
+            top: 50%;
+            left: 0.1rem;
+            transform: translate(0, -50%);
+        }
+
+        &:after {
+            content: '';
+            border-left: 0.1rem solid rgba(255, 255, 255, 0.6);
+            position: absolute;
+            top: calc(50% + 0.4rem);
+            left: 0.2rem;
+            height: calc(100% + 0.8rem);
+        }
+
+        &:last-child {
+            &:after {
+                height: 102.4rem;
+            }
+        }
+    }
+}
+
+.giz-time-product-details {
+    color: #FAFAFA;
+    @include font-s-theme-client($font-weight-light-theme-client);
+
+    span {
+        margin-left: 0.8rem;
+        color: #FFAC33;
+        @include font-s-theme-client($font-weight-regular-theme-client);
+    }
+}
+
+.giz-bundle-product-details {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    svg {
+        margin-right: 0.8rem;
+    }
+}
+
+.giz-product-card-time-info {
+    height: 100%;
+    position: relative;
+
+    & > .giz-default-image {
+        align-items: start;
+        height: unset;
+        margin-top: 3.6rem;
+    }
+
+    &__time {
+        //position: absolute;
+        //bottom: 0;
+        //left: 0;
+        //width: 100%;
+        margin-top: 2rem;
+        display: grid;
+        grid-template-rows: min-content min-content;
+        justify-content: center;
+        //margin-bottom: 1.6rem;
+
+        &__number {
+            text-align: center;
+            //text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 8px rgba(0, 0, 0, 0.2);
+            //Font
+            font-family: $font-family-header-theme-client;
+            font-weight: 700;
+            font-size: 42px;
+            line-height: 50px;
+        }
+
+        &__text {
+            text-align: center;
+            @include font-m-theme-client($font-weight-regular-theme-client);
+        }
+    }
+}

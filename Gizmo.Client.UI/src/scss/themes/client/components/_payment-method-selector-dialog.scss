@@ -1,0 +1,108 @@
+//=============== Payment Method Selector Dialog ================//
+
+.giz-payment-method-selector-dialog {
+    width: 60.0rem;
+
+    .giz-client-dialog {
+        &__body {
+            max-height: 44.5rem;
+        }
+    }
+
+    .giz-checkout {
+        height: 100%;
+        overflow: hidden;
+        display: grid;
+        grid-template-rows: 1fr min-content min-content min-content;
+
+        .giz-select {
+            .giz-input-root {
+                background-color: #201F1F;
+            }
+        }
+
+        &__list {
+            height: 100%;
+            overflow: hidden;
+
+            .giz-data-grid {
+                color: rgba(255, 255, 255, 0.6);
+                @include font-m-theme-client($font-weight-light-theme-client);
+
+                thead {
+                    th {
+                        color: rgba(255, 255, 255, 0.6);
+                        @include font-s-theme-client($font-weight-regular-theme-client);
+                    }
+                }
+
+                & > tbody > tr:not(.giz-data-grid-row-detail) {
+                    td {
+                        border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
+                    }
+
+                    &:last-child {
+                        td {
+                            border-bottom: unset;
+                        }
+                    }
+                }
+            }
+        }
+
+        &__summary {
+            display: flex;
+            justify-content: space-between;
+            color: #FAFAFA;
+            padding-top: 1.2rem;
+            border-top: 0.1rem solid rgba(246, 251, 253, 0.06);
+            @include font-m-theme-client($font-weight-bold-theme-client);
+        }
+
+        &__payment-method {
+            display: grid;
+            grid-template-columns: min-content 1fr;
+            align-items: center;
+            gap: 1.4rem;
+            white-space: nowrap;
+            color: #FAFAFA;
+            margin-top: 1.2rem;
+            padding-top: 1.2rem;
+            border-top: 0.1rem solid rgba(246, 251, 253, 0.06);
+            @include font-m-theme-client($font-weight-bold-theme-client);
+        }
+
+        &__notes {
+            color: rgba(255, 255, 255, 0.3);
+            margin-top: 3.4rem;
+            padding-top: 2.4rem;
+            padding-bottom: 2.4rem;
+            border-top: 0.1rem solid rgba(246, 251, 253, 0.06);
+            @include font-s-theme-client($font-weight-light-theme-client);
+        }
+
+        &__actions {
+            display: flex;
+            gap: 1.6rem;
+            justify-content: flex-end;
+        }
+    }
+
+    .giz-checkout-complete {
+        text-align: center;
+
+        &__message {
+            margin-top: 2.4rem;
+            @include font-h5-theme-client($font-weight-bold-theme-client);
+        }
+
+        &__actions {
+            margin-top: 2.4rem;
+        }
+
+        &__notes {
+            margin-top: 9.6rem;
+            @include font-s-theme-client($font-weight-light-theme-client);
+        }
+    }
+}

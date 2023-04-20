@@ -1,0 +1,117 @@
+
+
+.giz-user-lock {
+    color: #FAFAFA;
+
+    .giz-input-text {
+        .giz-input-root--outline {
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            border-bottom: 0.2rem solid rgba(246, 251, 253, 0.28);
+            border-radius: 0;
+
+            &:hover {
+                border-top: none;
+                border-left: none;
+                border-right: none;
+                border-bottom: 0.2rem solid rgba(246, 251, 253, 0.28);
+            }
+
+            &:focus-within {
+                border-top: none;
+                border-left: none;
+                border-right: none;
+                border-bottom: 0.2rem solid #0091E6;
+            }
+
+            input {
+                text-align: center;
+                //Font ?
+                font-weight: 700;
+                font-size: 2.6rem;
+                line-height: 3.4rem;
+            }
+        }
+    }
+
+    &.error {
+        .giz-input-text {
+            .giz-input-root--outline {
+                border-bottom: 0.2rem solid #F73B3B;
+
+                &:hover {
+                    border-bottom: 0.2rem solid #F73B3B;
+                }
+
+                &:focus-within {
+                    border-bottom: 0.2rem solid #F73B3B;
+                }
+            }
+        }
+    }
+
+    &-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(180deg, rgba(35, 35, 45, 0.9) 0%, rgba(42, 44, 53, 0.15) 100%);
+        backdrop-filter: blur(3.0rem);
+        z-index: $lock-overlay-index;
+        opacity: 0;
+        transition: opacity 0.5s;
+
+        &.open {
+            opacity: 1;
+        }
+    }
+
+    &-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        text-align: center;
+    }
+
+    &__title {
+        text-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25), 0 0.8rem 2.4rem rgba(0, 0, 0, 0.2);
+        margin-bottom: 1.2rem;
+        @include font-h1-theme-client($font-weight-bold-theme-client);
+    }
+
+    &__subtitle {
+        text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.2rem 0.4rem rgba(0, 0, 0, 0.2);
+        margin-bottom: 5.2rem;
+        @include font-l-theme-client($font-weight-light-theme-client);
+    }
+
+    &__error {
+        margin-top: 0.4rem;
+        margin-bottom: 2.4rem;
+        color: #C74952;
+        @include font-m-theme-client($font-weight-light-theme-client);
+    }
+
+    &__numpad {
+        display: flex;
+        gap: 0.4rem;
+        margin-top: 5.2rem;
+        margin-bottom: 4.8rem;
+
+        & > .giz-button {
+            width: 4.8rem;
+        }
+    }
+
+    &__actions {
+        margin-bottom: 3.2rem;
+    }
+
+    &__note {
+        color: #FFFFFF;
+        @include font-l-theme-client($font-weight-regular-theme-client);
+    }
+}

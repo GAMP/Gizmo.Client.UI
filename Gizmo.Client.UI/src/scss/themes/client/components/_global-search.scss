@@ -1,0 +1,239 @@
+//=============== Global Search ================//
+
+.giz-global-search {
+    display: grid;
+    grid-template-columns: min-content 1fr min-content;
+    align-items: center;
+    position: relative;
+    background-color: rgba(250, 250, 250, 0.16);
+    border-radius: 0.8rem;
+    height: 4.8rem;
+    width: 4.8rem;
+    transition: width ease-in-out 0.5s, border-color 0.3s;
+    border: 0.2rem solid transparent;
+
+    .giz-animate-spinner {
+        height: 6.4rem;
+    }
+
+    &:hover {
+        width: 34.4rem;
+
+        input {
+            display: block;
+        }
+
+        .giz-close-button {
+            display: block;
+        }
+    }
+
+    &.nonemtpy {
+        width: 34.4rem;
+
+        input {
+            display: block;
+        }
+
+        .giz-close-button {
+            display: block;
+        }
+    }
+
+    &:focus-within {
+        width: 34.4rem;
+        border: 0.2rem solid #0078D2;
+
+        input {
+            display: block;
+        }
+
+        .giz-close-button {
+            display: block;
+        }
+    }
+
+    & > .giz-icon {
+        margin-left: 1.0rem;
+        margin-right: 1.0rem;
+    }
+
+    &.open {
+        .giz-global-search-dropdown {
+            display: block;
+        }
+    }
+
+    input {
+        color: white;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        color: #FAFAFA;
+        @include font-l-theme-client($font-weight-light-theme-client);
+        width: 100%;
+        display: none;
+    }
+
+    .giz-close-button {
+        display: none;
+        margin: 0.7rem;
+    }
+
+    .giz-global-search-dropdown {
+        position: absolute;
+        top: 100%;
+        width: 80.9rem;
+        z-index: $global-search-index;
+        background-color: #22272B;
+        box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
+        border-radius: 0 0 1.6rem 1.6rem;
+        display: none;
+        margin-top: 0.9rem;
+
+        &__body {
+            display: grid;
+            grid-template-rows: min-content min-content;
+            gap: 3.2rem;
+            padding: 3.2rem;
+        }
+
+        .giz-global-search-section {
+            display: grid;
+            grid-template-rows: min-content 1fr;
+
+            &__header {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 0.8rem;
+                color: #FAFAFA;
+                @include font-l-theme-client($font-weight-regular-theme-client);
+
+                &__more {
+                    color: #0078D2;
+                    cursor: pointer;
+                    @include font-m-theme-client($font-weight-light-theme-client);
+                }
+            }
+
+            &__body {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-auto-flow: row dense;
+                grid-column-gap: 3.6rem;
+                //grid-row-gap: 2.4rem;
+            }
+        }
+    }
+
+    &-result-card {
+        display: grid;
+        grid-template-columns: min-content 1fr max-content;
+        align-items: center;
+        column-gap: 0.8rem;
+        row-gap: 0.8rem;
+        word-break: break-word;
+        border-radius: 0.8rem;
+        padding: 1.2rem;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.0605);
+        }
+
+        &__image {
+            width: 4.8rem;
+            height: 4.8rem;
+            grid-row-start: 1;
+            grid-row-end: 3;
+            margin-right: 0.4rem;
+            //
+            background-color: #242731;
+            border-radius: 0.4rem;
+
+            &__more {
+                text-align: center;
+
+                a {
+                    color: $unknown-color;
+                    text-transform: none;
+                }
+            }
+
+            img {
+                width: -moz-available;
+                width: -webkit-fill-available;
+                height: -moz-available;
+                height: -webkit-fill-available;
+            }
+        }
+
+        &__category {
+            grid-row-start: 1;
+            grid-row-end: 2;
+            color: rgba(255, 255, 255, 0.6);
+            @include font-s-theme-client($font-weight-light-theme-client);
+        }
+
+        &__title {
+            grid-row-start: 2;
+            grid-row-end: 3;
+            color: #FAFAFA;
+            @include font-m-theme-client($font-weight-regular-theme-client);
+        }
+
+        &__action {
+            grid-row-start: 1;
+            grid-row-end: 3;
+        }
+    }
+
+    &-empty {
+        text-align: center;
+    }
+}
+
+.global-search-no-results {
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+
+    &__header {
+        @include font-xxl-theme-client($font-weight-bold-theme-client);
+
+        .global-search-pattern {
+            color: #FFFFFF;
+        }
+    }
+
+    &__body {
+        margin-top: 2.0rem;
+        @include font-m-theme-client($font-weight-light-theme-client);
+    }
+}
+
+.giz-loader {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+
+    .giz-animate-spinner {
+        height: 3.2rem;
+
+        .giz-spinner {
+            color: #0078D2;
+        }
+    }
+
+    &__title {
+        color: #FAFAFA;
+        margin-top: 2.0rem;
+        @include font-xxl-theme-client($font-weight-bold-theme-client);
+    }
+
+    &__text {
+        color: rgba(255, 255, 255, 0.6);
+        margin-top: 2.0rem;
+        @include font-m-theme-client($font-weight-light-theme-client);
+    }
+}

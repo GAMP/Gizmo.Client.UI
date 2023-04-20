@@ -1,0 +1,41 @@
+//============= Client UI User agreement dialog ===========//
+
+.giz-user-agreement-dialog {
+    max-width: 60.0rem;
+
+    .giz-client-dialog__header__subtitle {
+        color: #808185;
+        margin-top: 1.2rem;
+    }
+
+    .user-agreement {
+        @include font-l-theme-client($font-weight-light-theme-client);
+    }
+
+    .giz-client-dialog__body {
+        max-height: 24.0rem;
+        position: relative;
+        /*&:after {
+            content: '';
+            display: inline-block;
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            background: linear-gradient(180deg, rgba(34, 39, 43, 0) 86.67%, #22272B 100%), transparent;
+        }*/
+    }
+
+    .giz-user-agreement-checkboxes {
+        margin-bottom: 2.4rem;
+    }
+
+    .giz-user-agreement-checkbox--required {
+        input + label:before {
+            border-color: #EE505A;
+            background: #FDEEEE;
+        }
+    }
+}

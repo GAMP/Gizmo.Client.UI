@@ -1,0 +1,55 @@
+.giz-change-picture-dialog {
+    color: #FAFAFA;
+    width: 60.0rem;
+
+    &-image {
+        position: relative;
+        width: 26.0rem;
+        height: 26.0rem;
+
+        &-delete-button.giz-button--fill.primary:not(.disabled) {
+            position: absolute;
+            top: 1.6rem;
+            left: 1.6rem;
+            width: 2.4rem;
+            background-color: #FFFFFF;
+            color: black;
+
+            .giz-icon--extra-small {
+                width: 1.4rem;
+                height: 1.4rem;
+            }
+        }
+    }
+
+    .giz-input-label {
+        color: #FFFFFF;
+        margin-bottom: 0.4rem;
+        @include font-s-theme-client($font-weight-light-theme-client);
+    }
+
+    .giz-input-control {
+        .giz-input-label {
+            color: #FFFFFF;
+            margin-bottom: 0.4rem;
+            @include font-s-theme-client($font-weight-light-theme-client);
+        }
+    }
+
+    &-message {
+        color: rgba(255, 255, 255, 0.75);
+        margin-bottom: 2.4rem;
+        @include font-s-theme-client($font-weight-light-theme-client);
+    }
+
+    & > .giz-client-dialog__body {
+        display: grid;
+        grid-template-columns: min-content 1fr;
+    }
+
+    & > .giz-client-dialog__footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1.6rem;
+    }
+}

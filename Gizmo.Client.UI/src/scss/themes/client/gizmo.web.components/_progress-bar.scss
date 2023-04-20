@@ -1,0 +1,56 @@
+//=============== ProgressBar ================//
+
+.giz-progress-bar {
+    height: 0.3rem;
+    //width: 4.0rem;
+    border-radius: 0.8rem;
+
+    &__background {
+        background-color: #E9EAEA;
+        border-radius: 0.8rem;
+    }
+
+    &__value-bar {
+        background-color: #0078D2;
+        border-radius: 0.8rem;
+    }
+
+    &:after {
+        //background: linear-gradient( -45deg, rgba(255, 255, 255, .24) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .24) 50%, rgba(255, 255, 255, .24) 75%, transparent 75%, transparent );
+        //background-size: 0.5rem 0.5rem;
+    }
+
+    &--indeterminate {
+        .giz-progress-bar__value-bar {
+            width: 0.9rem;
+            animation: giz-progress-bar-indeterminate-animation 0.8s linear infinite;
+        }
+    }
+    /*@keyframes giz-progress-bar-indeterminate-animation {
+        0% {
+            transform: translateX(0);
+        }
+
+        50% {
+            transform: translateX(2.4rem);
+        }
+
+        100% {
+            transform: translateX(0);
+        }
+    }*/
+
+    @keyframes giz-progress-bar-indeterminate-animation {
+        0% {
+            transform: translateX(-0.5rem);
+        }
+
+        50% {
+            transform: translateX(-0.5rem);
+        }
+
+        100% {
+            transform: translateX(4rem);
+        }
+    }
+}
