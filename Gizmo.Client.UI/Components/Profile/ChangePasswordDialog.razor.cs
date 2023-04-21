@@ -24,9 +24,6 @@ namespace Gizmo.Client.UI.Components
         private async Task CloseDialog()
         {
             await CancelCallback.InvokeAsync();
-
-            if (ViewState.PageIndex == 1)
-                await UserChangePasswordService.ResetAsync();
         }
 
         protected override void OnInitialized()

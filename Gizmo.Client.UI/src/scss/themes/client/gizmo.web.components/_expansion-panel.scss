@@ -5,57 +5,8 @@
         &__header {
             &__content {
                 @include font-h5-theme-client($font-weight-bold-theme-client);
-                //Button
-                background-color: transparent;
-                border: none;
                 color: #FAFAFA;
             }
         }
-
-        &.expanded {
-            .giz-expansion-panel-arrow {
-                transform: rotate(180deg);
-            }
-        }
-
-        &.expanding {
-            .giz-expansion-panel__body {
-                overflow: hidden;
-                animation-name: giz-expansion-panel-expanding-animation;
-                animation-timing-function: ease-in-out;
-                animation-duration: 0.4s;
-                animation-fill-mode: forwards;
-            }
-        }
-
-        &.collapsing {
-            .giz-expansion-panel__body {
-                overflow: hidden;
-                animation-name: giz-expansion-panel-collapsing-animation;
-                animation-timing-function: ease-in-out;
-                animation-duration: 0.4s;
-                animation-fill-mode: forwards;
-            }
-        }
-    }
-}
-
-@keyframes giz-expansion-panel-expanding-animation {
-    from {
-        height: 0;
-    }
-
-    to {
-        height: var(--abh);
-    }
-}
-
-@keyframes giz-expansion-panel-collapsing-animation {
-    from {
-        height: var(--abh);
-    }
-
-    to {
-        height: 0;
     }
 }
