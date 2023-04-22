@@ -22,7 +22,7 @@ namespace Gizmo.Client.UI
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        UserOnlineDepositViewStateService UserOnlineDepositViewStateService { get; set; }
+        UserOnlineDepositViewService UserOnlineDepositViewStateService { get; set; }
 
         [Inject]
         UserOnlineDepositViewState ViewState { get; set; }

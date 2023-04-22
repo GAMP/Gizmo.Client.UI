@@ -31,13 +31,13 @@ namespace Gizmo.Client.UI.Pages
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        AppDetailsPageViewStateService AppDetailsPageService { get; set; }
+        AppDetailsPageViewService AppDetailsPageService { get; set; }
 
         [Inject]
         AppDetailsPageViewState ViewState { get; set; }
 
         [Inject]
-        public ActiveApplicationsViewStateService ActiveApplicationsService { get; set; }
+        public ActiveApplicationsViewService ActiveApplicationsService { get; set; }
 
         [Inject()]
         IClientDialogService DialogService { get; set; }

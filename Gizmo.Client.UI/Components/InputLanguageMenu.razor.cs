@@ -10,7 +10,7 @@ namespace Gizmo.Client.UI.Components
     public partial class InputLanguageMenu : CustomDOMComponentBase
     {
         [Inject]
-        public InputLanguageViewStateService LanguageService { get; set; }
+        public InputLanguageViewService LanguageService { get; set; }
 
         [Inject]
         public InputLanguageViewState ViewState { get; set; }

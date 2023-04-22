@@ -22,13 +22,13 @@ namespace Gizmo.Client.UI.Pages
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        AppsPageViewStateService AppsPageService { get; set; }
+        AppsPageViewService AppsPageService { get; set; }
 
         [Inject()]
         public AppsPageViewState ViewState { get; set; }
 
         [Inject]
-        AdvertisementsViewStateService AdvertisementsViewStateService { get; set; }
+        AdvertisementsViewService AdvertisementsViewStateService { get; set; }
 
         [Inject]
         AdvertisementsViewState AdvertisementsViewState { get; set; }

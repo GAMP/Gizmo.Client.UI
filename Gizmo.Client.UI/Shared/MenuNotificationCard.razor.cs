@@ -16,7 +16,7 @@ namespace Gizmo.Client.UI.Shared
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        NotificationsViewStateService NotificationsService { get; set; }
+        NotificationsViewService NotificationsService { get; set; }
 
         [Parameter]
         public NotificationViewState Notification { get; set; }

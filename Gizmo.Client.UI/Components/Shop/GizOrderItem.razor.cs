@@ -14,7 +14,7 @@ namespace Gizmo.Client.UI.Components
         private UserProductViewState _product;
 
         [Inject]
-        UserCartViewStateService UserCartService { get; set; }
+        UserCartViewService UserCartService { get; set; }
 
         [Inject]
         UserProductViewStateLookupService UserProductViewStateLookupService { get; set; }

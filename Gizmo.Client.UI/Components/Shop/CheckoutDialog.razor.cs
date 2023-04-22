@@ -20,7 +20,7 @@ namespace Gizmo.Client.UI.Components
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        UserCartViewStateService UserCartService { get; set; }
+        UserCartViewService UserCartService { get; set; }
 
         [Inject]
         UserCartViewState ViewState { get; set; }

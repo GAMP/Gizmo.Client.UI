@@ -13,7 +13,7 @@ namespace Gizmo.Client.UI.Components
         }
 
         [Inject]
-        UserQuickLaunchViewStateService UserQuickLaunchService { get; set; }
+        UserQuickLaunchViewService UserQuickLaunchService { get; set; }
 
         [Inject]
         UserQuickLaunchViewState ViewState { get; set; }

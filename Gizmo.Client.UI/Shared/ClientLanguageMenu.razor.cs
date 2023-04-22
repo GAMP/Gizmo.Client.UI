@@ -9,7 +9,7 @@ namespace Gizmo.Client.UI.Shared
     public partial class ClientLanguageMenu : CustomDOMComponentBase
     {
         [Inject]
-        public ClientLocalizationViewStateService CultureService { get; set; }
+        public ClientLocalizationViewService CultureService { get; set; }
 
         [Inject]
         public ClientLocalizationViewState ViewState { get; set; }

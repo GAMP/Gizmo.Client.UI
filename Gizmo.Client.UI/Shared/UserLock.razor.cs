@@ -12,7 +12,7 @@ namespace Gizmo.Client.UI.Shared
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        UserLockViewStateService UserLockService { get; set; }
+        UserLockViewService UserLockService { get; set; }
 
         [Inject]
         UserLockViewState ViewState { get; set; }

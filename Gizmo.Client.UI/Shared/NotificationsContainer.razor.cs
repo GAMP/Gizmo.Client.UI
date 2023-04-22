@@ -8,7 +8,7 @@ namespace Gizmo.Client.UI.Shared
     public partial class NotificationsContainer : CustomDOMComponentBase
     {
         [Inject]
-        NotificationsViewStateService NotificationsService { get; set; }
+        NotificationsViewService NotificationsService { get; set; }
 
         [Inject]
         NotificationsViewState ViewState { get; set; }

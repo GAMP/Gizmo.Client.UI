@@ -10,7 +10,7 @@ namespace Gizmo.Client.UI.Pages
     public partial class Deposits : CustomDOMComponentBase
     {
         [Inject]
-        DepositTransactionsViewStateService DepositTransactionsService { get; set; }
+        DepositTransactionsViewService DepositTransactionsService { get; set; }
 
         [Inject]
         DepositTransactionsViewState ViewState { get; set; }

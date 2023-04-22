@@ -23,7 +23,7 @@ namespace Gizmo.Client.UI.Shared
         NavigationService NavigationService { get; set; }
 
         [Inject]
-        UserCartViewStateService UserCartService { get; set; }
+        UserCartViewService UserCartService { get; set; }
 
         [Inject()]
         IClientDialogService DialogService { get; set; }

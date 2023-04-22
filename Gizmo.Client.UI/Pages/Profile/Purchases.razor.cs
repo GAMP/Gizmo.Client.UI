@@ -17,7 +17,7 @@ namespace Gizmo.Client.UI.Pages
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        PurchasesViewStateService PurchasesService { get; set; }
+        PurchasesViewService PurchasesService { get; set; }
 
         [Inject]
         PurchasesViewState ViewState { get; set; }

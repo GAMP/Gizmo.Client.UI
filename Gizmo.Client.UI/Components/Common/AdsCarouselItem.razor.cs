@@ -24,7 +24,7 @@ namespace Gizmo.Client.UI.Components
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        AdvertisementsViewStateService AdvertisementsService { get; set; }
+        AdvertisementsViewService AdvertisementsService { get; set; }
 
         [Inject]
         CommandProviderService CommandProviderService { get; set; }

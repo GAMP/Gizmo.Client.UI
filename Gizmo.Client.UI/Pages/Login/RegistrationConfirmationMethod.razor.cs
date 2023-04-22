@@ -23,7 +23,7 @@ namespace Gizmo.Client.UI.Pages
         CountryInformationService CountryInformationService { get; set; }
         
         [Inject]
-        UserRegistrationConfirmationMethodViewStateService UserRegistrationConfirmationMethodService { get; set; }
+        UserRegistrationConfirmationMethodViewService UserRegistrationConfirmationMethodService { get; set; }
 
         [Inject]
         UserRegistrationConfirmationMethodViewState ViewState { get; set; }

@@ -15,13 +15,13 @@ namespace Gizmo.Client.UI.Pages
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        UserPasswordRecoveryViewStateService UserPasswordRecoveryService { get; set; }
+        UserPasswordRecoveryViewService UserPasswordRecoveryService { get; set; }
 
         [Inject]
         UserVerificationViewState UserVerificationViewState { get; set; }
 
         [Inject]
-        UserLoginViewStateService UserLoginService { get; set; }
+        UserLoginViewService UserLoginService { get; set; }
 
         [Inject]
         UserPasswordRecoveryViewState ViewState { get; set; }

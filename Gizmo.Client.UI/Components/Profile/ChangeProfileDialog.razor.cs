@@ -22,7 +22,7 @@ namespace Gizmo.Client.UI.Components
         CountryInformationService CountryInformationService { get; set; }
 
         [Inject]
-        UserChangeProfileViewStateService UserChangeProfileViewStateService { get; set; }
+        UserChangeProfileViewService UserChangeProfileViewStateService { get; set; }
 
         [Inject]
         UserChangeProfileViewState ViewState { get; set; }
