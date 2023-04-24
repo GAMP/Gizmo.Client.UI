@@ -2,6 +2,7 @@
 using Gizmo.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Gizmo.Client.UI.Shared
 {
@@ -11,6 +12,14 @@ namespace Gizmo.Client.UI.Shared
 
         [Inject()]
         DialogHostViewState ViewState { get; init; }
+
+        protected void OnClickDialogHandler(MouseEventArgs args)
+        {
+            if (ViewState.Current != null && ViewState.Current.DisplayOptions.CloseOnClick)
+            {
+                ViewState.Current.CancelAsync();
+            }
+        }
 
         protected override void OnInitialized()
         {

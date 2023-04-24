@@ -19,11 +19,17 @@ namespace Gizmo.Client.UI.Components
         UserChangePasswordViewState ViewState { get; set; }
 
         [Parameter]
+        public DialogDisplayOptions DisplayOptions { get; set; }
+
+        [Parameter]
         public EventCallback CancelCallback { get; set; }
+
+        [Parameter]
+        public EventCallback<EmptyDialogResult> ResultCallback { get; set; }
 
         private async Task CloseDialog()
         {
-            await CancelCallback.InvokeAsync();
+            await ResultCallback.InvokeAsync();
         }
 
         protected override void OnInitialized()

@@ -30,8 +30,28 @@
         background-color: #22272b;
         display: none;
 
+        &--media {
+            cursor: pointer;
+        }
+
+        &-dialog {
+            width: 120rem;
+            height: 80rem;
+
+            &-frame {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        &-command {
+            visibility: hidden;
+            pointer-events: all;
+            z-index: 1;
+        }
+
         &:hover {
-            .giz-ads-command {
+            .giz-ads-carousel-item-command {
                 visibility: visible;
             }
         }
@@ -315,24 +335,4 @@
     to {
         margin-left: -2.3rem;
     }
-}
-
-.giz-ads-carousel-item-dialog {
-    width: 120rem;
-    height: 80rem;
-}
-
-.giz-ads-carousel-item-dialog-farme {
-    width: 100%;
-    height: 100%;
-}
-
-.giz-ads-command {
-    visibility: hidden;
-    pointer-events: all;
-    z-index: 1;
-}
-
-.giz-ads-media {
-    cursor: pointer;
 }

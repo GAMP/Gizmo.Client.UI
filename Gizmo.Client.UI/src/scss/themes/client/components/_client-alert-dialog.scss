@@ -1,0 +1,61 @@
+//=============== Client Alert Dialog ================//
+
+.giz-client-alert-dialog {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+    color: #FAFAFA;
+    width: 100%;
+    overflow: hidden;
+    align-items: center;
+
+    &--success {
+        .giz-client-alert-dialog__icon {
+            background-color: #E8F7F4;
+
+            .giz-icon {
+                color: #008E7D;
+            }
+        }
+    }
+
+    &--error {
+        .giz-client-alert-dialog__icon {
+            //background-color: #FFEFEF;
+            background-color: #FDEEEE;
+
+            .giz-icon {
+                //color: #FC9696;
+                color: #C74952;
+            }
+        }
+    }
+
+    &__icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 5.6rem;
+        height: 5.6rem;
+        border-radius: 50%;
+    }
+
+    &__header {
+        //Font font-family: 'Rubik';
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 30px;
+    }
+
+    &__body {
+        text-align: center;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        @include font-l-theme-client($font-weight-light-theme-client);
+    }
+
+    &__actions {
+        margin-bottom: 3.2rem;
+    }
+}

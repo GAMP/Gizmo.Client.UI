@@ -22,37 +22,65 @@ namespace Gizmo.Client.UI.Services
 
         public Task<ShowDialogResult<EmptyDialogResult>> ShowExecutableSelectorDialogAsync(int applicationId, CancellationToken cancellationToken = default)
         {
-            return ShowDialogAsync<ExecutableSelectorDialog>(new Dictionary<string, object>() { { "ApplicationId", applicationId } }, default, default, cancellationToken);
+            return ShowDialogAsync<ExecutableSelectorDialog>(new Dictionary<string, object>() { { "ApplicationId", applicationId } }, new DialogDisplayOptions()
+            {
+                Closable = true,
+                CloseOnClick = true
+            }, default, cancellationToken);
         }
 
         public Task<ShowDialogResult<UserAgreementResult>> ShowUserAgreementDialogAsync(UserAgreementDialogParameters userAgreementDialogParameters, CancellationToken cancellationToken = default)
         {
-            return ShowDialogAsync<UserAgreementDialog, UserAgreementResult>(userAgreementDialogParameters.ToDictionary(), default, default, cancellationToken);
+            return ShowDialogAsync<UserAgreementDialog, UserAgreementResult>(userAgreementDialogParameters.ToDictionary(), new DialogDisplayOptions()
+            {
+                Closable = true,
+                CloseOnClick = false
+            }, default, cancellationToken);
         }
 
         public Task<ShowDialogResult<EmptyDialogResult>> ShowChangeProfileDialogAsync(CancellationToken cancellationToken = default)
         {
-            return ShowDialogAsync<ChangeProfileDialog>(new Dictionary<string, object>(), default, default, default);
+            return ShowDialogAsync<ChangeProfileDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()
+            {
+                Closable = true,
+                CloseOnClick = false
+            }, default, default);
         }
 
         public Task<ShowDialogResult<EmptyDialogResult>> ShowChangeEmailDialogAsync(CancellationToken cancellationToken = default)
         {
-            return ShowDialogAsync<ChangeEmailDialog>(new Dictionary<string, object>(), default, default, default);
+            return ShowDialogAsync<ChangeEmailDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()
+            {
+                Closable = true,
+                CloseOnClick = false
+            }, default, default);
         }
 
         public Task<ShowDialogResult<EmptyDialogResult>> ShowChangeMobileDialogAsync(CancellationToken cancellationToken = default)
         {
-            return ShowDialogAsync<ChangeMobileDialog>(new Dictionary<string, object>(), default, default, cancellationToken);
+            return ShowDialogAsync<ChangeMobileDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()
+            {
+                Closable = true,
+                CloseOnClick = false
+            }, default, cancellationToken);
         }
 
         public Task<ShowDialogResult<EmptyDialogResult>> ShowChangePasswordDialogAsync(CancellationToken cancellationToken = default)
         {
-            return ShowDialogAsync<ChangePasswordDialog>(new Dictionary<string, object>(), default, default, cancellationToken);
+            return ShowDialogAsync<ChangePasswordDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()
+            {
+                Closable = true,
+                CloseOnClick = false
+            }, default, cancellationToken);
         }
 
         public Task<ShowDialogResult<EmptyDialogResult>> ShowChangePictureDialogAsync(CancellationToken cancellationToken = default)
         {
-            return ShowDialogAsync<ChangePictureDialog>(new Dictionary<string, object>(), default, default, cancellationToken);
+            return ShowDialogAsync<ChangePictureDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()
+            {
+                Closable = true,
+                CloseOnClick = false
+            }, default, cancellationToken);
         }
 
         public Task<ShowDialogResult<EmptyDialogResult>> ShowPaymentDialogAsync(PaymentDialogParameters paymentDialogParameters, CancellationToken cancellationToken = default)
@@ -66,7 +94,11 @@ namespace Gizmo.Client.UI.Services
             {
                 {nameof(AdvertisementViewState), state}
             };
-            return ShowDialogAsync<AdsCarouselItemDialog>(stateParams, default, default, cancellationToken);
+            return ShowDialogAsync<AdsCarouselItemDialog>(stateParams, new DialogDisplayOptions()
+            {
+                Closable = true,
+                CloseOnClick = true
+            }, default, cancellationToken);
         }
     }
 }
