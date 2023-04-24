@@ -101,6 +101,36 @@ namespace Gizmo.Client.UI.Components
             return Task.CompletedTask;
         }
 
+        private Icons? GetCommandIcon()
+        {
+            if (_advertisementViewState.Command != null)
+            {
+                switch (_advertisementViewState.Command.Type)
+                {
+                    case ViewServiceCommandType.Add:
+                        return Icons.ShoppingCart_Client;
+                }
+            }
+            return Icons.Open_Client;
+        }
+
+        private string GetCommandName()
+        {
+            if (_advertisementViewState.Command != null)
+            {
+                switch (_advertisementViewState.Command.Type)
+                {
+                    case ViewServiceCommandType.Add:
+                        return "Add to cart"; //TODO: AAA TRANSLATE
+
+                    case ViewServiceCommandType.Launch:
+                        return "Launch"; //TODO: AAA TRANSLATE
+                }
+            }
+
+            return "View details"; //TODO: AAA TRANSLATE
+        }
+
         #region OVERRIDE
 
         protected override async Task OnInitializedAsync()
