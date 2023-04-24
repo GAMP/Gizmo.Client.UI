@@ -13,9 +13,9 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class ChangeProfileDialog : CustomDOMComponentBase
     {
+        private bool _countriesLoaded;
+        private CountryInfo _defaultCountry = null;
         private bool _isLoaded;
-        private bool _isUserCountryLoaded;
-
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -76,9 +76,9 @@ namespace Gizmo.Client.UI.Components
             await ResultCallback.InvokeAsync();
         }
 
-        private async Task LoadUserCountryAsync()
+        private void LoadUserCountry()
         {
-            if (ViewState.IsInitialized == true && _isLoaded)
+            if (ViewState.IsInitialized == true && _countriesLoaded)
             {
                 var userCountry = Countries.Where(a => a.Text == ViewState.Country).FirstOrDefault();
                 if (userCountry != null)
@@ -88,11 +88,10 @@ namespace Gizmo.Client.UI.Components
                 else
                 {
                     IconSelectCountry defaultItem = null;
-                    var defaultCountry = await CountryInformationService.GetCurrentCountryInfoAsync();
 
-                    if (defaultCountry != null && defaultCountry.CallingCodeSuffixes.Count() > 0)
+                    if (_defaultCountry != null && _defaultCountry.CallingCodeSuffixes.Count() > 0)
                     {
-                        defaultItem = Countries.Where(a => a.PhonePrefix == defaultCountry.CallingCodeRoot + defaultCountry.CallingCodeSuffixes.First()).FirstOrDefault();
+                        defaultItem = Countries.Where(a => a.PhonePrefix == _defaultCountry.CallingCodeRoot + _defaultCountry.CallingCodeSuffixes.First()).FirstOrDefault();
                     }
 
                     if (defaultItem == null)
@@ -103,7 +102,7 @@ namespace Gizmo.Client.UI.Components
 
                     SetSelectedCountry(defaultItem);
                 }
-                _isUserCountryLoaded = true;
+                _isLoaded = true;
             }
         }
 
@@ -148,18 +147,20 @@ namespace Gizmo.Client.UI.Components
             //Render the list first.
             await InvokeAsync(StateHasChanged);
 
-            await LoadUserCountryAsync();
+            //_defaultCountry = await CountryInformationService.GetCurrentCountryInfoAsync();
 
-            _isLoaded = true;
+            LoadUserCountry();
+
+            _countriesLoaded = true;
 
             await base.OnInitializedAsync();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (!_isUserCountryLoaded)
+            if (!_isLoaded)
             {
-                await LoadUserCountryAsync();
+                LoadUserCountry();
             }
 
             await base.OnAfterRenderAsync(firstRender);

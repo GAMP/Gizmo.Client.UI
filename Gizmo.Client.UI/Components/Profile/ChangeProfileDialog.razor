@@ -27,6 +27,7 @@
                                                Size="InputSizes.Small"
                                                IsFullWidth="true"
                                                Label="@LocalizationService.GetString("GIZ_GEN_USERNAME")" />
+                                    <div class="giz-change-profile-group__username__tip">Other users will see your username</div>
                                 </div>
                                 <div class="giz-change-profile-group__avatar">
                                     @if (ViewState.Picture != null)
@@ -141,8 +142,8 @@
                     <div class="giz-client-alert-dialog__icon">
                         <Icon Size="IconSizes.Large" SVGIcon="Icons.Close_Client" />
                     </div>
-                    <div class="giz-client-alert-dialog__body">
-                        @ViewState.ErrorMessage
+                    <div class="giz-client-alert-dialog__body giz-scrollbar--v">
+                        <div class="giz-client-alert-message">@ViewState.ErrorMessage</div>
                     </div>
                     <div class="giz-client-alert-dialog__footer">
                         <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="@(() => CloseDialog())" Text="@LocalizationService.GetString("GIZ_GEN_CLOSE")" />
