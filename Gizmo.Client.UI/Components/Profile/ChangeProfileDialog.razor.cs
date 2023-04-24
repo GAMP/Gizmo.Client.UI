@@ -14,6 +14,8 @@ namespace Gizmo.Client.UI.Components
     public partial class ChangeProfileDialog : CustomDOMComponentBase
     {
         private bool _isLoaded;
+        private bool _isUserCountryLoaded;
+
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -74,6 +76,37 @@ namespace Gizmo.Client.UI.Components
             await ResultCallback.InvokeAsync();
         }
 
+        private async Task LoadUserCountryAsync()
+        {
+            if (ViewState.IsInitialized == true && _isLoaded)
+            {
+                var userCountry = Countries.Where(a => a.Text == ViewState.Country).FirstOrDefault();
+                if (userCountry != null)
+                {
+                    SetSelectedCountry(userCountry);
+                }
+                else
+                {
+                    IconSelectCountry defaultItem = null;
+                    var defaultCountry = await CountryInformationService.GetCurrentCountryInfoAsync();
+
+                    if (defaultCountry != null && defaultCountry.CallingCodeSuffixes.Count() > 0)
+                    {
+                        defaultItem = Countries.Where(a => a.PhonePrefix == defaultCountry.CallingCodeRoot + defaultCountry.CallingCodeSuffixes.First()).FirstOrDefault();
+                    }
+
+                    if (defaultItem == null)
+                    {
+                        var other = Countries.Where(a => a.Text == "Other").FirstOrDefault();
+                        defaultItem = other;
+                    }
+
+                    SetSelectedCountry(defaultItem);
+                }
+                _isUserCountryLoaded = true;
+            }
+        }
+
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
@@ -115,22 +148,21 @@ namespace Gizmo.Client.UI.Components
             //Render the list first.
             await InvokeAsync(StateHasChanged);
 
-            IconSelectCountry defaultItem = null;
-            var defaultCountry = await CountryInformationService.GetCurrentCountryInfoAsync();
-
-            if (defaultCountry != null && defaultCountry.CallingCodeSuffixes.Count() > 0)
-            {
-                defaultItem = Countries.Where(a => a.PhonePrefix == defaultCountry.CallingCodeRoot + defaultCountry.CallingCodeSuffixes.First()).FirstOrDefault();
-            }
-
-            if (defaultItem == null)
-                defaultItem = other;
-
-            SetSelectedCountry(defaultItem);
+            await LoadUserCountryAsync();
 
             _isLoaded = true;
 
             await base.OnInitializedAsync();
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (!_isUserCountryLoaded)
+            {
+                await LoadUserCountryAsync();
+            }
+
+            await base.OnAfterRenderAsync(firstRender);
         }
 
         public override void Dispose()
