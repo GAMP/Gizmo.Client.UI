@@ -80,8 +80,12 @@ namespace Gizmo.Client.UI.Components
             return Task.CompletedTask;
         }
 
-        private Task ShowMediaDialogAsync() =>
-            AdvertisementsService.ShowMediaSync(_advertisementViewState);
+        private Task ShowMediaDialogAsync()
+        {
+            _clickHandled = true;
+
+            return AdvertisementsService.ShowMediaSync(_advertisementViewState);
+        }
 
         private async Task ViewDetailsAsync()
         {
@@ -157,7 +161,7 @@ namespace Gizmo.Client.UI.Components
 
         protected string ClassName => new ClassMapper()
                 .Add("giz-ads-carousel-item")
-                .If("giz-ads-carousel-item---media", () => _advertisementViewState.MediaUrlType != AdvertisementMediaUrlType.None && _advertisementViewState.MediaUrlType != AdvertisementMediaUrlType.Custom)
+                .If("giz-ads-carousel-item--media", () => _advertisementViewState.MediaUrlType != AdvertisementMediaUrlType.None)
                 .If("previous", () => _index == 1)
                 .If("current", () => _index == 2)
                 .If("next", () => _index == 3)

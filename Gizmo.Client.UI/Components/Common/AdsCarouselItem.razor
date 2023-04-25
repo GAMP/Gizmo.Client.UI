@@ -14,7 +14,8 @@
         <div class="giz-ads-carousel-item__image">
             @if (_advertisementViewState.ThumbnailUrl is not null)
             {
-                <img src="@_advertisementViewState.ThumbnailUrl" />
+                <img src="@_advertisementViewState.ThumbnailUrl" onerror='this.style.display = "none"' />
+                <img src="_content/Gizmo.Client.UI/img/broken-image.svg" alt='loading' class="giz-broken-image" />
             }
         </div>
         

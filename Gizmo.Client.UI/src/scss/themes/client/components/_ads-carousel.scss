@@ -35,8 +35,10 @@
         }
 
         &-dialog {
-            width: 120rem;
-            height: 80rem;
+            &.giz-client-dialog {
+                width: 120rem;
+                height: 80rem;
+            }
 
             &-frame {
                 width: 100%;
@@ -139,22 +141,38 @@
         }
 
         &__image {
+            position: relative;
             width: 100%;
             height: 100%;
+            //border-radius: 0.8rem;
+            //overflow: hidden;
 
             img {
+                position: absolute;
+                top: 0;
+                left: 0;
                 width: 100%;
                 height: 100%;
-                position: relative;
-                border: none solid transparent;
+                z-index: 2;
 
-                &:before {
+                &:after {
                     content: '';
                     position: absolute;
+                    top: 0;
+                    left: 0;
                     width: 100%;
                     height: 100%;
                     background-color: #22272b;
                 }
+            }
+
+            .giz-broken-image {
+                width: unset;
+                height: unset;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 1;
             }
         }
 
@@ -167,6 +185,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             padding: 1rem;
+            z-index: 3;
             @include font-m-theme-client($font-weight-light-theme-client);
 
             &__body {
@@ -206,10 +225,20 @@
 
                                     &:active {
                                         background-color: rgba(250, 250, 250, 0.23);
+
+                                        .giz-icon {
+                                            svg {
+                                                opacity: 0.9;
+                                            }
+                                        }
                                     }
 
                                     .giz-icon {
                                         margin-right: 0;
+
+                                        svg {
+                                            opacity: 0.75;
+                                        }
                                     }
                                 }
                             }
@@ -298,6 +327,10 @@
         animation-name: ads-fade-out-previously-anim;
         animation-timing-function: ease-in-out;
         animation-fill-mode: forwards;
+
+        .giz-ads-carousel-item__content__actions {
+            display: none;
+        }
     }
 
     .fade-in-current {
