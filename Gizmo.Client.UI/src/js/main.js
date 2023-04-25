@@ -1,14 +1,68 @@
-﻿var adsCollapsed = false;
+﻿function appsSticky() {
+    var container = document.querySelector('.giz-apps__body__content');
+    if (!container)
+        return;
+
+    var sectionHeader = container.querySelector('.giz-section__header');
+    if (!sectionHeader)
+        return;
+
+    if (sectionHeader.getBoundingClientRect().top - container.getBoundingClientRect().top == 0) {
+        sectionHeader.style.visibility = 'hidden';
+        container.classList.add('giz-apps__body__content--stuck');
+
+        var parent = container.closest('.giz-apps__body');
+        if (!parent)
+            return;
+
+        var stuck = parent.querySelector('.giz-section--stuck');
+        if (!stuck)
+            return;
+
+        stuck.classList.add('visible');
+    } else {
+        sectionHeader.style.visibility = 'visible';
+        container.classList.remove('giz-apps__body__content--stuck');
+
+        var parent = container.closest('.giz-apps__body');
+        if (!parent)
+            return;
+
+        var stuck = parent.querySelector('.giz-section--stuck');
+        if (!stuck)
+            return;
+
+        stuck.classList.remove('visible');
+    }
+}
+
+function registerAppsSticky() {
+    var container = document.querySelector('.giz-apps__body__content');
+    if (!container)
+        return;
+
+    container.addEventListener('scroll', appsSticky);
+}
+
+function unregisterAppsSticky() {
+    var container = document.querySelector('.giz-apps__body__content');
+    if (!container)
+        return;
+
+    container.removeEventListener('scroll', appsSticky);
+}
+
+var adsCollapsed = false;
 
 function resetAutoHideAds() {
     adsCollapsed = false;
 }
 
 function autoHideAds() {
-    var container = document.querySelector('.giz-ads-container');
-    var expander = container.querySelector('.giz-expansion-panel');
-
     if (!adsCollapsed) {
+        var container = document.querySelector('.giz-ads-container');
+        var expander = container.querySelector('.giz-expansion-panel');
+
         if (expander.classList.contains('expanded')) {
             expansionPanelToggle(expander);
         }

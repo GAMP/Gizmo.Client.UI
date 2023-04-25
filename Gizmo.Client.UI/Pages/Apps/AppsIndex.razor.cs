@@ -55,6 +55,7 @@ namespace Gizmo.Client.UI.Pages
             if (firstRender)
             {
                 await InvokeVoidAsync("registerAdsAutoCollapse");
+                await InvokeVoidAsync("registerAppsSticky");
             }
         }
 
@@ -76,6 +77,7 @@ namespace Gizmo.Client.UI.Pages
 
         public async ValueTask DisposeAsync()
         {
+            await InvokeVoidAsync("unregisterAppsSticky", Ref).ConfigureAwait(false);
             await InvokeVoidAsync("unregisterAdsAutoCollapse", Ref).ConfigureAwait(false);
 
             Dispose();

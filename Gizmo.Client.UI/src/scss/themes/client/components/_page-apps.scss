@@ -39,14 +39,23 @@
     }
 
     &__body {
-        margin-top: 1.6rem;
-        padding: 0 1.6rem;
-        height: 100%;
-        overflow: auto;
-        //clip-path: inset(8.2rem 0 0 0);
+        position: relative;
+        overflow: hidden;
 
-        &__popular {
+        &__content {
             margin-top: 1.6rem;
+            padding: 0 1.6rem;
+            height: 100%;
+            overflow: auto;
+
+            &--stuck {
+                //clip-path: inset(8.2rem 0 0 0);
+                clip-path: polygon(0% 0%, 0 8.2rem, 0 8.2rem, 0 0, 100% 0, 100% 100%, 0 100%, 0 8.2rem, calc(100% - 1rem) 8.2rem, calc(100% - 1rem) 0);
+            }
+
+            &__popular {
+                margin-top: 1.6rem;
+            }
         }
     }
 
@@ -74,6 +83,19 @@
 
             &.hidden {
                 display: none;
+            }
+        }
+
+        &--stuck {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.6rem 2.4rem 1.6rem 1.6rem;
+            display: none;
+
+            &.visible {
+                display: block;
             }
         }
     }
