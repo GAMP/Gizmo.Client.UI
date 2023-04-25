@@ -39,9 +39,11 @@
     }
 
     &__body {
-        padding: 1.6rem;
+        margin-top: 1.6rem;
+        padding: 0 1.6rem;
         height: 100%;
         overflow: auto;
+        //clip-path: inset(8.2rem 0 0 0);
 
         &__popular {
             margin-top: 1.6rem;
@@ -59,6 +61,21 @@
 
     .giz-ads-carousel-item__content__text {
         max-width: 34.4rem;
+    }
+
+    .giz-section {
+        &__header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            margin-bottom: 0;
+            padding-bottom: 1.6rem;
+            //background: #0c0f11;
+
+            &.hidden {
+                display: none;
+            }
+        }
     }
 }
 

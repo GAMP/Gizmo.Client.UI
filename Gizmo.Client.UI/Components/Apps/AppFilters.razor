@@ -1,0 +1,104 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+@if (!string.IsNullOrEmpty(ViewState.SearchPattern))
+{
+    <div class="giz-section__header__filters">
+        <div>
+            <div class="giz-section__header__filters__title">@LocalizationService.GetString("GIZ_GEN_RESULTS_FOR")</div>
+            <div>
+                <Chip CanClose="true" OnClose="@(() => AppsPageService.ClearSearchPattern())">@ViewState.SearchPattern</Chip>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    @switch (ViewState.SelectedSortingOption)
+    {
+        case ApplicationSortingOption.Popularity:
+
+            <div>@LocalizationService.GetString("GIZ_APPS_POPULAR_ITEMS")</div>
+
+            break;
+
+        case ApplicationSortingOption.AddDate:
+
+            <div>@LocalizationService.GetString("GIZ_APPS_RECENTLY_ADDED")</div>
+
+            break;
+
+        case ApplicationSortingOption.ReleaseDate:
+
+            <div>@LocalizationService.GetString("GIZ_APPS_NEW_RELEASES")</div>
+
+            break;
+
+        case ApplicationSortingOption.Title:
+
+            <div>@LocalizationService.GetString("GIZ_APPS_ALL_ITEMS")</div>
+
+            break;
+    }
+}
+<div class="giz-apps-filters">
+    @if (ViewState.TotalFilters > 0)
+    {
+        <Chip CanClose="true" OnClose="@(() => AppsPageService.ClearAllFilters())">
+            <FiltersIcon />
+            <span>@ViewState.TotalFilters</span>
+        </Chip>
+    }
+    <Select LeftSVGIcon="Icons.Sort_Client"
+            HandleSVGIcon="Icons.Select_Client"
+            ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
+            Size="InputSizes.Small"
+            TValue="ApplicationSortingOption"
+            Value="@ViewState.SelectedSortingOption"
+            ValueChanged="@((value) => AppsPageService.SetSelectedSortingOption(value))"
+            Label="@LocalizationService.GetString("GIZ_GEN_SORT_BY")"
+            OpenDirection="PopupOpenDirections.Bottom"
+            MaximumHeight="20.0rem"
+            Class="@(ViewState.SelectedSortingOption != ApplicationSortingOption.Popularity ? "app-filter--filled" : "app-filter--default")"
+            PopupClass="giz-scrollbar--v">
+        @foreach (var item in ViewState.SortingOptions)
+        {
+            <SelectItem Value="@item.Value" Text="@item.DisplayName" />
+        }
+    </Select>
+    <Select HandleSVGIcon="Icons.Select_Client"
+            ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
+            Placeholder="@LocalizationService.GetString("ALL_GAMES_AND_APPS")"
+            Size="InputSizes.Small"
+            TValue="int?"
+            Value="@ViewState.SelectedCategoryId"
+            ValueChanged="@((value) => AppsPageService.SetSelectedApplicationCategory(value))"
+            Label="@LocalizationService.GetString("GIZ_APPS_CATEGORY")"
+            OpenDirection="PopupOpenDirections.Bottom"
+            MaximumHeight="20.0rem"
+            Class="@(ViewState.SelectedCategoryId.HasValue ? "app-filter--filled" : "app-filter--default")"
+            PopupClass="giz-scrollbar--v">
+        @foreach (var item in ViewState.AppCategories)
+        {
+            <SelectItem TValue="int?" Value="@item.AppCategoryId" Text="@item.Name" />
+        }
+    </Select>
+    <MultiSelect HandleSVGIcon="Icons.Select_Client"
+                 ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
+                 Placeholder="@LocalizationService.GetString("SELECT_SOMETHING")"
+                 Size="InputSizes.Small"
+                 TValue="ApplicationModes"
+                 Value="@ViewState.SelectedExecutableModes.ToList()"
+                 ValueChanged="@((value) => AppsPageService.SetSelectedSelectedExecutableModes(value))"
+                 Label="@LocalizationService.GetString("GIZ_APPS_PARAMETERS")"
+                 OpenDirection="PopupOpenDirections.Bottom"
+                 CanClearValue="true"
+                 MaximumHeight="20.0rem"
+                 Class="@(ViewState.SelectedExecutableModes.Count() > 0 ? "app-filter--filled" : "app-filter--default")"
+                 PopupClass="giz-scrollbar--v">
+        @foreach (var item in ViewState.ExecutableModes)
+        {
+            <MultiSelectItem Value="@item.Value" Text="@item.DisplayName" />
+        }
+    </MultiSelect>
+</div>
