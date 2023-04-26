@@ -1,6 +1,8 @@
 ﻿@namespace Gizmo.Client.UI.Shared
 @inherits CustomDOMComponentBase
 
-<div class="giz-dialog__content">
+<div class="giz-dialog__content"
+     @onclick="OnClickDialogHandler"
+     @onclick:stopPropagation="true">
     @ChildContent
 </div>
