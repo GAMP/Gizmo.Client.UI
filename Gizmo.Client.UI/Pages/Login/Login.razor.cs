@@ -20,6 +20,9 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         UserLoginViewState ViewState { get; set; }
 
+        [Inject]
+        HostQRCodeViewState HostQRCodeViewState { get; set; }
+
         [Inject()]
         HostReservationViewState HostReservationViewState 
         {
@@ -62,6 +65,7 @@ namespace Gizmo.Client.UI.Pages
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
+            this.SubscribeChange(HostQRCodeViewState);
 
             base.OnInitialized();
         }
@@ -69,6 +73,7 @@ namespace Gizmo.Client.UI.Pages
         public override void Dispose()
         {
             this.UnsubscribeChange(ViewState);
+            this.UnsubscribeChange(HostQRCodeViewState);
 
             base.Dispose();
         }
