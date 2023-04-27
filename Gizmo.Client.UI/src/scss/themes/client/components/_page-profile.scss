@@ -181,6 +181,7 @@
             overflow: hidden;
             border: 0.1rem solid rgba(246, 251, 253, 0.16);
             border-radius: 8px;
+            white-space: nowrap;
         }
     }
 }
@@ -247,9 +248,36 @@
     }
 }
 
+.order-invoice-unpaid {
+    background-color: #FFD79D;
+    color: #202223;
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    text-align: center;
+    @include font-s-theme-client($font-weight-light-theme-client);
+}
+
+.order-invoice-partialy-paid {
+    background-color: #FFD79D;
+    color: #202223;
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    text-align: center;
+    @include font-s-theme-client($font-weight-light-theme-client);
+}
+
+.order-invoice-paid {
+    background-color: #E4E5E7;
+    color: #202223;
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    text-align: center;
+    @include font-s-theme-client($font-weight-light-theme-client);
+}
+
 .order-on-hold {
-    background-color: #F38B01;
-    color: #FAFAFA;
+    background-color: #A4E8F2;
+    color: #202223;
     border-radius: 0.4rem;
     padding: 0.3rem 0.8rem;
     text-align: center;
@@ -257,8 +285,8 @@
 }
 
 .order-completed {
-    background-color: #24C38E;
-    color: #FAFAFA;
+    background-color: #E4E5E7;
+    color: #202223;
     border-radius: 0.4rem;
     padding: 0.3rem 0.8rem;
     text-align: center;
@@ -266,8 +294,8 @@
 }
 
 .order-canceled {
-    background-color: #33000F;
-    color: #FAFAFA;
+    background-color: #FED3D1;
+    color: #202223;
     border-radius: 0.4rem;
     padding: 0.3rem 0.8rem;
     text-align: center;
@@ -275,62 +303,62 @@
 }
 
 .order-accepted {
-    background-color: #F2C94C;
-    color: #FAFAFA;
+    background-color: #AEE9D1;
+    color: #202223;
     border-radius: 0.4rem;
     padding: 0.3rem 0.8rem;
     text-align: center;
     @include font-s-theme-client($font-weight-light-theme-client);
 }
 
-.purchase-details {
+.order-line-details {
+    //Font
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
 
-    &-title {
-        grid-column-start: 1;
-        grid-column-end: 2;
-        color: rgba(255, 255, 255, 0.6);
-        @include font-s-theme-client($font-weight-light-theme-client);
-    }
-
-    &-name {
+    &-product-name {
+        margin-top: 0.8rem;
+        margin-bottom: 0.8rem;
         color: #57BCFF;
         @include font-m-theme-client($font-weight-light-theme-client);
     }
 
-    &-points {
-        @include font-m-theme-client($font-weight-light-theme-client);
-    }
-
-    &-invoice {
-        grid-column-start: 1;
-        grid-column-end: 2;
-        color: #0F9FFF;
-        @include font-m-theme-client($font-weight-light-theme-client);
-    }
-
-    &__quantities {
-        color: #FAFAFA;
-        @include font-s-theme-client($font-weight-light-theme-client);
-    }
-
-    &__prices {
-        color: #FAFAFA;
-        @include font-s-theme-client($font-weight-light-theme-client);
-    }
-
-    &__details {
-        display: grid;
-        grid-template-columns: auto auto;
-        grid-column-gap: 1.6rem;
-        grid-row-gap: 1.0rem;
+    &-quantity {
+        margin-top: 0.8rem;
         margin-bottom: 0.8rem;
-        color: #FAFAFA;
-        @include font-s-theme-client($font-weight-light-theme-client);
     }
 
-    &-action {
-        grid-column-start: 1;
-        grid-column-end: 2;
+    &-price {
+        margin-top: 0.8rem;
+        margin-bottom: 0.8rem;
+    }
+}
+
+.order-details {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-column-gap: 1.6rem;
+    grid-row-gap: 1.0rem;
+    margin-bottom: 0.8rem;
+    color: #FAFAFA;
+    @include font-s-theme-client($font-weight-light-theme-client);
+
+    &-points {
+        white-space: normal;
+
+        &-title {
+            color: rgba(255, 255, 255, 0.6);
+        }
+    }
+
+    &-notes {
+        white-space: normal;
+
+        &-title {
+            color: rgba(255, 255, 255, 0.6);
+        }
     }
 }
 
