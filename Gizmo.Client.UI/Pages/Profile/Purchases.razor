@@ -26,7 +26,14 @@
                             <div class="order-line-details">
                                 @foreach (var orderLine in order.OrderLines)
                                 {
-                                    <div class="order-line-details-product-name">@orderLine.ProductName</div>
+                                    @if (orderLine.LineType != LineType.SessionTime && orderLine.LineType != LineType.FixedTime && orderLine.ProductId.HasValue)
+                                    {
+                                        <a class="order-line-details-product-name" href="@($"{ClientRoutes.ProductDetailsRoute}?ProductId={orderLine.ProductId.Value}")">@orderLine.ProductName</a>
+                                    }
+                                    else
+                                    {
+                                        <div class="order-line-details-product-name">@orderLine.ProductName</div>
+                                    }
                                 }
                             </div>
                         </td>
@@ -59,12 +66,13 @@
                         </td>
                     </DetailTemplate>
                     <ChildContent>
-                        <DataGridColumn Field="@(nameof(UserOrderViewState.ProductNames))" TItemType="UserOrderViewState" Context="order">
+                        <DataGridColumn Style="white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;" Field="@(nameof(UserOrderViewState.ProductNames))" TItemType="UserOrderViewState" Context="order">
                             <HeaderTemplate>
                                 Order
                             </HeaderTemplate>
                             <CellTemplate>
-                                <div class="order-product-names">@order.ProductNames</div>
+                                @order.ProductNames
+                                @*<div class="order-product-names">@order.ProductNames</div>*@
                             </CellTemplate>
                         </DataGridColumn>
                         <DataGridColumn Style="width: 16.0rem" Field="@(nameof(UserOrderViewState.OrderStatus))" TItemType="UserOrderViewState" Context="order">
@@ -115,7 +123,7 @@
                                 <div class="order-payment-method-names">@order.Invoice?.PaymentMethodNames</div>
                             </CellTemplate>
                         </DataGridColumn>
-                        <DataGridColumn Style="width: 12.0rem" Field="@(nameof(UserOrderViewState.TotalPrice))" TItemType="UserOrderViewState" Context="order">
+                        <DataGridColumn Style="width: 12.0rem" TextAlignment="TextAlignments.Right" Field="@(nameof(UserOrderViewState.TotalPrice))" TItemType="UserOrderViewState" Context="order">
                             <HeaderTemplate>
                                 Order price
                             </HeaderTemplate>

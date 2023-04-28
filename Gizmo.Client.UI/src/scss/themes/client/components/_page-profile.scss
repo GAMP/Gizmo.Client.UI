@@ -182,6 +182,11 @@
             border: 0.1rem solid rgba(246, 251, 253, 0.16);
             border-radius: 8px;
             white-space: nowrap;
+
+            svg {
+                width: 1.4rem;
+                height: 1.4rem;
+            }
         }
     }
 }
@@ -312,36 +317,38 @@
 }
 
 .order-line-details {
+    display: flex;
+    flex-direction: column;
     //Font
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
     line-height: 18px;
 
-    &-product-name {
-        margin-top: 0.8rem;
-        margin-bottom: 0.8rem;
+    a.order-line-details-product-name {
         color: #57BCFF;
+    }
+
+    &-product-name {
+        height: 2.2rem;
         @include font-m-theme-client($font-weight-light-theme-client);
     }
 
     &-quantity {
-        margin-top: 0.8rem;
-        margin-bottom: 0.8rem;
+        height: 2.2rem;
     }
 
     &-price {
-        margin-top: 0.8rem;
-        margin-bottom: 0.8rem;
+        height: 2.2rem;
+        text-align: right;
     }
 }
 
 .order-details {
     display: grid;
-    grid-template-columns: auto auto;
-    grid-column-gap: 1.6rem;
-    grid-row-gap: 1.0rem;
-    margin-bottom: 0.8rem;
+    grid-template-columns: min-content 1fr;
+    grid-template-rows: 2.2rem;
+    grid-gap: 1.6rem;
     color: #FAFAFA;
     @include font-s-theme-client($font-weight-light-theme-client);
 
@@ -368,10 +375,4 @@
 
 .purchase-details-withdraw {
     color: #FF4443;
-}
-
-.order-product-names {
-    width: 20rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
