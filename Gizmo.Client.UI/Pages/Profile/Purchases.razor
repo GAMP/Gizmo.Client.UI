@@ -64,7 +64,7 @@
                                 Order
                             </HeaderTemplate>
                             <CellTemplate>
-                                @order.ProductNames
+                                <div class="order-product-names">@order.ProductNames</div>
                             </CellTemplate>
                         </DataGridColumn>
                         <DataGridColumn Style="width: 16.0rem" Field="@(nameof(UserOrderViewState.OrderStatus))" TItemType="UserOrderViewState" Context="order">
@@ -112,7 +112,7 @@
                                 Payment method
                             </HeaderTemplate>
                             <CellTemplate>
-                                @order.Invoice?.PaymentMethodNames
+                                <div class="order-payment-method-names">@order.Invoice?.PaymentMethodNames</div>
                             </CellTemplate>
                         </DataGridColumn>
                         <DataGridColumn Style="width: 12.0rem" Field="@(nameof(UserOrderViewState.TotalPrice))" TItemType="UserOrderViewState" Context="order">
