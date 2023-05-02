@@ -179,9 +179,42 @@
         .giz-table-history {
             height: 100%;
             overflow: hidden;
-            border: 0.1rem solid rgba(246, 251, 253, 0.16);
+            background-color: #191c1d;
+            border: 0.1rem solid #27292a;
             border-radius: 8px;
             white-space: nowrap;
+
+            .giz-data-grid {
+                [#{$client-theme-comp-attr}] & {
+                    background-color: #191c1d;
+
+                    & > thead td, & > thead th {
+                        background-color: #191c1d;
+                    }
+
+                    & > tbody > tr:not(.giz-data-grid-row-detail) {
+                        border-top: 0.1rem solid #191c1d;
+
+                        &:hover {
+                            background-color: #191c1d;
+                        }
+
+                        &:last-child {
+                            border-bottom: 0.1rem solid #191c1d;
+                        }
+                    }
+                }
+            }
+
+            table {
+                td:first-child {
+                    width: 100%;
+                }
+
+                td:last-child {
+                    min-width: 15rem;
+                }
+            }
 
             svg {
                 width: 1.4rem;
@@ -347,12 +380,13 @@
 .order-details {
     display: grid;
     grid-template-columns: min-content 1fr;
-    grid-template-rows: 2.2rem;
+    //grid-template-rows: 2.2rem;
     grid-gap: 1.6rem;
     color: #FAFAFA;
     @include font-s-theme-client($font-weight-light-theme-client);
 
     &-points {
+        height: 2.2rem;
         white-space: normal;
 
         &-title {
