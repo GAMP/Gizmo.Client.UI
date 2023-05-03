@@ -34,14 +34,14 @@ namespace Gizmo.Client.UI.Components
 
         public async Task OnAddQuantityButtonClickHandlerAsync(MouseEventArgs args)
         {
-            await UserCartService.AddUserCartProductAsync(ProductId, 1);
             await OnClick.InvokeAsync(args);
+            await UserCartService.AddUserCartProductAsync(ProductId, 1);
         }
 
         public async Task OnRemoveQuantityButtonClickHandler(MouseEventArgs args)
         {
-            await UserCartService.RemoveUserCartProductAsync(ProductId, 1);
             await OnClick.InvokeAsync(args);
+            await UserCartService.RemoveUserCartProductAsync(ProductId, 1);
         }
 
         protected override async Task OnInitializedAsync()
