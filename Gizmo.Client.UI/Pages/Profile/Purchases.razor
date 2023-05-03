@@ -158,6 +158,10 @@
                     </ChildContent>
                 </DataGrid>
             </div>
+            <div>
+                <Button Text="<" IsDisabled="@(ViewState.PrevCursor == null)" @onclick="PurchasesService.LoadPrevious" />
+                <Button Text=">" IsDisabled="@(ViewState.NextCursor == null)" @onclick="PurchasesService.LoadPrevious" />
+            </div>
         </div>
 
     </div>
