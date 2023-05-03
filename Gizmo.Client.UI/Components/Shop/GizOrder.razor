@@ -52,7 +52,7 @@
 
             <div class="giz-order-summary-total">
                 <span>@ViewState.Total.ToString("C", CultureInfo.CurrentCulture)</span>
-                @if (ViewState.PointsTotal == 0)
+                @if (ViewState.PointsTotal > 0)
                 {
                     <span class="giz-order-summary-number-separator">&amp;</span>
                     <span>@(ViewState.PointsTotal)</span>

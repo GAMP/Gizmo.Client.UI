@@ -36,7 +36,7 @@ namespace Gizmo.Client.UI.Components
         public Task SetPayType(bool isChecked, OrderLinePayType payType)
         {
             if (isChecked)
-                return UserCartService.ChangeProductPayType(ProductItemViewState.ProductId, payType);
+                return UserCartService.ChangeProductPayTypeAsync(ProductItemViewState.ProductId, payType);
             else
                 return Task.CompletedTask;
         }
