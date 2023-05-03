@@ -24,34 +24,39 @@
                 @((MarkupString)_advertisementViewState.Body)
             </div>
             <div class="giz-ads-carousel-item__content__actions">
-                @if (_advertisementViewState.Command is not null)
-                {
-                    <Button Size="ButtonSizes.Large"
-                            Variant="ButtonVariants.Fill"
-                            Color="ButtonColors.Primary"
-                            LeftSVGIcon="@GetCommandIcon()"
-                            Text="@GetCommandName()"
-                            Class="giz-ads-carousel-item-command"
-                            @onclick="ExecuteCommandAsync" />
-                }
-                else if (_advertisementViewState.Url is not null)
-                {
-                    <Button Size="ButtonSizes.Large"
-                            Variant="ButtonVariants.Fill"
-                            Color="ButtonColors.Primary"
-                            Text="@LocalizationService.GetString("GIZ_GEN_VIEW_DETAILS")"
-                            Class="giz-ads-carousel-item-command"
-                            @onclick="ViewDetailsAsync" />
-                }
-                @if(_advertisementViewState.MediaUrlType != AdvertisementMediaUrlType.None)
-                {
-                    <Button Size="ButtonSizes.Large"
-                            Variant="ButtonVariants.Fill"
-                            Color="ButtonColors.Primary"
-                            LeftSVGIcon="Icons.Video_Client"
-                            Class="giz-ads-carousel-item-command giz-ads-carousel-item-command--media"
-                            @onclick="ShowMediaDialogAsync"/>
-                }
+                <div>
+                    @if (_advertisementViewState.Command is not null)
+                    {
+                        <Button Size="ButtonSizes.Large"
+                                Variant="ButtonVariants.Fill"
+                                Color="ButtonColors.Primary"
+                                LeftSVGIcon="@GetCommandIcon()"
+                                Text="@GetCommandName()"
+                                Class="giz-ads-carousel-item-command"
+                                @onclick="ExecuteCommandAsync" />
+                    }
+                    else if (_advertisementViewState.Url is not null)
+                    {
+                        <Button Size="ButtonSizes.Large"
+                                Variant="ButtonVariants.Fill"
+                                Color="ButtonColors.Primary"
+                                Text="@LocalizationService.GetString("GIZ_GEN_VIEW_DETAILS")"
+                                Class="giz-ads-carousel-item-command"
+                                @onclick="ViewDetailsAsync" />
+                    }
+                </div>
+
+                <div>
+                    @if(_advertisementViewState.MediaUrlType != AdvertisementMediaUrlType.None)
+                    {
+                        <Button Size="ButtonSizes.Large"
+                                Variant="ButtonVariants.Fill"
+                                Color="ButtonColors.Primary"
+                                LeftSVGIcon="Icons.Video_Client"
+                                Class="giz-ads-carousel-item-command giz-ads-carousel-item-command--media"
+                                @onclick="ShowMediaDialogAsync"/>
+                    }
+                </div>
             </div>
         </div>
     }

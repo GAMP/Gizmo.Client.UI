@@ -13,9 +13,10 @@
             }
             <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
         </div>
-        <div class="giz-client-dialog__body">
-            @if (!@ViewState.IsComplete)
-            {
+
+        @if (!@ViewState.IsComplete)
+        {
+            <div class="giz-client-dialog__body">
                 <div class="giz-checkout">
                     <div class="giz-checkout__list">
                         <DataGrid ItemSource="@ViewState.Products.ToArray()"
@@ -66,12 +67,14 @@
                     <div class="giz-checkout__payment-method">
                         <div class="giz-checkout__summary__payment-method__label">@LocalizationService.GetString("GIZ_SHOP_PAYMENT_METHOD")</div>
                         <EditForm EditContext="@UserCartService.EditContext">
-                            <Select IsTransparent="true"
+                            <Select IsDisabled="@(ViewState.IsLoading)"
+                                    IsTransparent="true"
                                     ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
                                     HandleSVGIcon="Icons.Select_Client"
                                     TValue="int?"
                                     Value="@ViewState.PaymentMethodId"
                                     ValueChanged="@ValueChangedHandler"
+                                    ValueExpression="@(() => ViewState.PaymentMethodId)"
                                     Size="InputSizes.Small"
                                     IsFullWidth="true"
                                     OpenDirection="PopupOpenDirections.Cursor"
@@ -91,7 +94,7 @@
                     </div>
                     <div class="giz-checkout__actions">
                         <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="() => CloseDialog()">@LocalizationService.GetString("GIZ_GEN_CANCEL")</Button>
-                        <Button IsDisabled="@(ViewState.IsLoading)"
+                        <Button IsDisabled="@(ViewState.IsLoading || ViewState.IsValid == false)"
                                 Color="ButtonColors.Accent"
                                 Size="ButtonSizes.Large"
                                 @onclick="() => UserCartService.SubmitAsync()">
@@ -108,40 +111,68 @@
                         </Button>
                     </div>
                 </div>
+            </div>
+        }
+        else
+        {
+            @if (ViewState.HasError)
+            {
+                <div class="giz-client-alert-dialog giz-client-alert-dialog--error">
+                    <div class="giz-client-alert-dialog__icon">
+                        <Icon Size="IconSizes.Large" SVGIcon="Icons.Close_Client" />
+                    </div>
+                    <div class="giz-client-alert-dialog__body giz-scrollbar--v">
+                        <div class="giz-client-alert-message">@ViewState.ErrorMessage</div>
+                    </div>
+                    <div class="giz-client-alert-dialog__footer">
+                        <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="@(() => CloseDialog())" Text="@LocalizationService.GetString("GIZ_GEN_CLOSE")" />
+                    </div>
+                </div>
             }
             else
             {
-                <div class="giz-checkout-complete">
-                    <div>
-                        <!-- QR -->
-                        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="56" height="56" rx="28" fill="#0078D2"/>
-                        <g filter="url(#filter0_dd_2308_75045)">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M33.953 35.2065L23.8439 37.9734L19.4287 21.1425L29.5379 18.3757C30.9059 18.0011 32.0493 18.6757 32.4153 20.072L35.6141 32.2665C35.9819 33.6637 35.321 34.832 33.953 35.2065ZM27.3067 34.3151L31.4321 33.1863L31.1004 31.922L26.975 33.0508L27.3067 34.3151ZM29.6287 24.2368C29.2507 22.7951 27.7927 21.9405 26.3733 22.3288C24.9547 22.7171 24.1104 24.2017 24.4884 25.6434C24.8664 27.086 26.3244 27.9397 27.7439 27.5514C29.1624 27.1631 30.0076 25.6785 29.6287 24.2368ZM32.0896 28.9417L24.6624 30.974L24.9941 32.2391L32.4213 30.2068L32.0896 28.9417Z" fill="white"/>
-                        </g>
-                        <defs>
-                        <filter id="filter0_dd_2308_75045" x="15.4287" y="16.2734" width="24.2859" height="27.7" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                        <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-                        <feOffset dy="2"/>
-                        <feGaussianBlur stdDeviation="2"/>
-                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"/>
-                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2308_75045"/>
-                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-                        <feOffset dy="2"/>
-                        <feGaussianBlur stdDeviation="1"/>
-                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"/>
-                        <feBlend mode="normal" in2="effect1_dropShadow_2308_75045" result="effect2_dropShadow_2308_75045"/>
-                        <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_2308_75045" result="shape"/>
-                        </filter>
-                        </defs>
-                        </svg>
+                <div class="giz-client-alert-dialog giz-client-alert-dialog--success">
+                    <div class="giz-client-alert-dialog__icon">
+                        <Icon Size="IconSizes.Large" SVGIcon="Icons.Check" />
                     </div>
-                    <div class="giz-checkout-complete__message">@LocalizationService.GetString("GIZ_SHOP_CHECKOUT_COMPLETE_MESSAGE")</div>
-                    <div class="giz-checkout-complete__actions"><Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="() => CloseDialog()">@LocalizationService.GetString("GIZ_GEN_BACK_TO", LocalizationService.GetString("MODULE_PAGE_SHOP_TITLE"))</Button></div>
-                    <div class="giz-checkout-complete__notes">@LocalizationService.GetString("GIZ_SHOP_CHECKOUT_COMPLETE_NOTE")</div>
+                    <div class="giz-client-alert-dialog__body">
+                        Success@*TODO: A*@
+                    </div>
+                    <div class="giz-client-alert-dialog__footer">
+                        <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="@(() => CloseDialog())" Text="@LocalizationService.GetString("GIZ_GEN_CLOSE")" />
+                    </div>
                 </div>
             }
-        </div>
+            @*<div class="giz-checkout-complete">
+                <div>
+                    <!-- QR -->
+                    <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="56" height="56" rx="28" fill="#0078D2"/>
+                    <g filter="url(#filter0_dd_2308_75045)">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M33.953 35.2065L23.8439 37.9734L19.4287 21.1425L29.5379 18.3757C30.9059 18.0011 32.0493 18.6757 32.4153 20.072L35.6141 32.2665C35.9819 33.6637 35.321 34.832 33.953 35.2065ZM27.3067 34.3151L31.4321 33.1863L31.1004 31.922L26.975 33.0508L27.3067 34.3151ZM29.6287 24.2368C29.2507 22.7951 27.7927 21.9405 26.3733 22.3288C24.9547 22.7171 24.1104 24.2017 24.4884 25.6434C24.8664 27.086 26.3244 27.9397 27.7439 27.5514C29.1624 27.1631 30.0076 25.6785 29.6287 24.2368ZM32.0896 28.9417L24.6624 30.974L24.9941 32.2391L32.4213 30.2068L32.0896 28.9417Z" fill="white"/>
+                    </g>
+                    <defs>
+                    <filter id="filter0_dd_2308_75045" x="15.4287" y="16.2734" width="24.2859" height="27.7" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                    <feOffset dy="2"/>
+                    <feGaussianBlur stdDeviation="2"/>
+                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"/>
+                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2308_75045"/>
+                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                    <feOffset dy="2"/>
+                    <feGaussianBlur stdDeviation="1"/>
+                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"/>
+                    <feBlend mode="normal" in2="effect1_dropShadow_2308_75045" result="effect2_dropShadow_2308_75045"/>
+                    <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_2308_75045" result="shape"/>
+                    </filter>
+                    </defs>
+                    </svg>
+                </div>
+                <div class="giz-checkout-complete__message">@LocalizationService.GetString("GIZ_SHOP_CHECKOUT_COMPLETE_MESSAGE")</div>
+                <div class="giz-checkout-complete__actions"><Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="() => CloseDialog()">@LocalizationService.GetString("GIZ_GEN_BACK_TO", LocalizationService.GetString("MODULE_PAGE_SHOP_TITLE"))</Button></div>
+                <div class="giz-checkout-complete__notes">@LocalizationService.GetString("GIZ_SHOP_CHECKOUT_COMPLETE_NOTE")</div>
+            </div>*@
+        }
     </div>
 </HostedDialog>
