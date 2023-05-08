@@ -25,19 +25,9 @@ namespace Gizmo.Client.UI.Components
         [Inject()]
         IClientDialogService DialogService { get; set; }
 
-        private async Task PlaceOrder()
+        private Task PlaceOrder()
         {
-            var s = await DialogService.ShowCheckoutDialogAsync();
-            if (s.Result == DialogAddResult.Success)
-            {
-                try
-                {
-                    var result = await s.WaitForDialogResultAsync();
-                }
-                catch (OperationCanceledException)
-                {
-                }
-            }
+            return UserCartService.SubmitAsync();
         }
 
         protected override void OnInitialized()

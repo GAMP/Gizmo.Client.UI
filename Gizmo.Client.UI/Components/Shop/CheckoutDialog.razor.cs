@@ -38,7 +38,7 @@ namespace Gizmo.Client.UI.Components
         {
             await CancelCallback.InvokeAsync();
 
-            if (ViewState.IsComplete)
+            if (ViewState.IsComplete) //TODO: AAA DO NOT RESET WITH ERRORS.
                 await UserCartService.ResetAsync();
         }
 

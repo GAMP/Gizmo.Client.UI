@@ -18,7 +18,7 @@ namespace Gizmo.Client.UI.Components
         public EventCallback CancelCallback { get; set; }
 
         [Parameter]
-        public EventCallback<EmptyDialogResult> ResultCallback { get; set; }
+        public EventCallback<AlertDialogResult> ResultCallback { get; set; }
 
         [Parameter]
         public string Title { get; set; }
@@ -26,9 +26,12 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public string Message { get; set; }
 
-        private async Task CloseDialog()
+        [Parameter]
+        public AlertDialogButtons Buttons { get; set; }
+
+        private async Task CloseDialog(AlertDialogResultButton alertDialogResultButton)
         {
-            await ResultCallback.InvokeAsync();
+            await ResultCallback.InvokeAsync(new AlertDialogResult() { Button = alertDialogResultButton });
         }
     }
 }

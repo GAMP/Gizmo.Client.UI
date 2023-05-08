@@ -7,7 +7,7 @@
             <div class="giz-client-dialog__header__title">@Title</div>
             @if (DisplayOptions.Closable)
             {
-                <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
+                <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog(AlertDialogResultButton.None)" />
             }
         </div>
         
@@ -19,7 +19,21 @@
                 <div class="giz-client-alert-message">@Message</div>
             </div>
             <div class="giz-client-alert-dialog__footer">
-                <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="@(() => CloseDialog())" Text="@LocalizationService.GetString("GIZ_GEN_CLOSE")" />
+                @switch (Buttons)
+                {
+                    case AlertDialogButtons.OK:
+                           <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="@(() => CloseDialog(AlertDialogResultButton.OK))" Text="@LocalizationService.GetString("GIZ_GEN_OK")" />
+             
+                        break;
+
+                    case AlertDialogButtons.YesNo:
+                            <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="@(() => CloseDialog(AlertDialogResultButton.Yes))" Text="@LocalizationService.GetString("GIZ_GEN_YES")" />
+                            <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="@(() => CloseDialog(AlertDialogResultButton.No))" Text="@LocalizationService.GetString("GIZ_GEN_NO")" />
+                
+                        break;
+
+                    @*TODO: AAA*@
+                }
             </div>
         </div>
     </div>

@@ -64,31 +64,34 @@
                         <div class="giz-checkout__summary__total">@LocalizationService.GetString("GIZ_SHOP_TOTAL")</div>
                         <div class="giz-checkout__summary__amount"><span>@ViewState.Total.ToString("C", CultureInfo.CurrentCulture) @LocalizationService.GetString("GIZ_GEN_AND") @ViewState.PointsTotal</span><PointsIcon /></div>
                     </div>
-                    <div class="giz-checkout__payment-method">
-                        <div class="giz-checkout__summary__payment-method__label">@LocalizationService.GetString("GIZ_SHOP_PAYMENT_METHOD")</div>
-                        <EditForm EditContext="@UserCartService.EditContext">
-                            <Select IsDisabled="@(ViewState.IsLoading)"
-                                    IsTransparent="true"
-                                    ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
-                                    HandleSVGIcon="Icons.Select_Client"
-                                    TValue="int?"
-                                    Value="@ViewState.PaymentMethodId"
-                                    ValueChanged="@ValueChangedHandler"
-                                    ValueExpression="@(() => ViewState.PaymentMethodId)"
-                                    Size="InputSizes.Small"
-                                    IsFullWidth="true"
-                                    OpenDirection="PopupOpenDirections.Cursor"
-                                    PopupClass="giz-scrollbar--v">
-                                @if (PaymentMethodViewStateLookupService != null)
-                                {
-                                    @foreach (var paymentMethod in _paymentMethods)
+                    @if (ViewState.ShowPaymentMethods)
+                    {
+                        <div class="giz-checkout__payment-method">
+                            <div class="giz-checkout__summary__payment-method__label">@LocalizationService.GetString("GIZ_SHOP_PAYMENT_METHOD")</div>
+                            <EditForm EditContext="@UserCartService.EditContext">
+                                <Select IsDisabled="@(ViewState.IsLoading)"
+                                        IsTransparent="true"
+                                        ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
+                                        HandleSVGIcon="Icons.Select_Client"
+                                        TValue="int?"
+                                        Value="@ViewState.PaymentMethodId"
+                                        ValueChanged="@ValueChangedHandler"
+                                        ValueExpression="@(() => ViewState.PaymentMethodId)"
+                                        Size="InputSizes.Small"
+                                        IsFullWidth="true"
+                                        OpenDirection="PopupOpenDirections.Cursor"
+                                        PopupClass="giz-scrollbar--v">
+                                    @if (PaymentMethodViewStateLookupService != null)
                                     {
-                                        <SelectItem TValue="int?" Value="@paymentMethod.Id">@paymentMethod.Name</SelectItem>
+                                        @foreach (var paymentMethod in _paymentMethods)
+                                        {
+                                            <SelectItem TValue="int?" Value="@paymentMethod.Id">@paymentMethod.Name</SelectItem>
+                                        }
                                     }
-                                }
-                            </Select>
-                        </EditForm>
-                    </div>
+                                </Select>
+                            </EditForm>
+                        </div>
+                    }
                     <div class="giz-checkout__notes">
                         @LocalizationService.GetString("GIZ_SHOP_CHECKOUT_MESSAGE")
                     </div>
@@ -97,7 +100,7 @@
                         <Button IsDisabled="@(ViewState.IsLoading || ViewState.IsValid == false)"
                                 Color="ButtonColors.Accent"
                                 Size="ButtonSizes.Large"
-                                @onclick="() => UserCartService.SubmitAsync()">
+                                @onclick="() => UserCartService.CheckoutAsync()">
                             <ChildContent>
                                 @if (ViewState.IsLoading)
                                 {
