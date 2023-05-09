@@ -125,14 +125,14 @@ namespace Gizmo.Client.UI.Components
                 switch (_advertisementViewState.Command.Type)
                 {
                     case ViewServiceCommandType.Add:
-                        return "Add to cart"; //TODO: AAA TRANSLATE
+                        return LocalizationService.GetString("GIZ_GEN_ADD_TO_CART");
 
                     case ViewServiceCommandType.Launch:
-                        return "Launch"; //TODO: AAA TRANSLATE
+                        return LocalizationService.GetString("GIZ_GEN_LAUNCH");
                 }
             }
 
-            return "View details"; //TODO: AAA TRANSLATE
+            return LocalizationService.GetString("GIZ_GEN_VIEW_DETAILS");
         }
 
         #region OVERRIDE

@@ -29,6 +29,9 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public AlertDialogButtons Buttons { get; set; }
 
+        [Parameter]
+        public AlertDialogIcons Icon { get; set; }
+
         private async Task CloseDialog(AlertDialogResultButton alertDialogResultButton)
         {
             await ResultCallback.InvokeAsync(new AlertDialogResult() { Button = alertDialogResultButton });

@@ -105,13 +105,14 @@ namespace Gizmo.Client.UI.Services
             }, default, cancellationToken);
         }
 
-        public Task<ShowDialogResult<AlertDialogResult>> ShowAlertDialogAsync(string title, string message, AlertDialogButtons messageBoxButtons = AlertDialogButtons.OK, CancellationToken cancellationToken = default)
+        public Task<ShowDialogResult<AlertDialogResult>> ShowAlertDialogAsync(string title, string message, AlertDialogButtons buttons = AlertDialogButtons.OK, AlertDialogIcons icon = AlertDialogIcons.None, CancellationToken cancellationToken = default)
         {
             return ShowDialogAsync<AlertDialog, AlertDialogResult>(new Dictionary<string, object>()
             {
                 { "Title", title },
                 { "Message", message },
-                { "Buttons", messageBoxButtons }
+                { "Buttons", buttons },
+                { "Icon", icon }
             }, new DialogDisplayOptions()
             {
                 Closable = true,

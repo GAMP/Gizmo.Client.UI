@@ -26,8 +26,7 @@
             }
         </div>
         <div class="giz-order__items__footer">
-            <Button IsDisabled="@(ViewState.Products.Count() == 0)" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" LeftSVGIcon="Icons.Trash3_Client" Text="Clear" @onclick="@(() => UserCartService.ClearUserCartProductsAsync())" />
-            @*TODO: A TRANSLATE*@
+            <Button IsDisabled="@(ViewState.Products.Count() == 0)" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" LeftSVGIcon="Icons.Trash3_Client" Text="@LocalizationService.GetString("GIZ_GEN_CLEAR")" @onclick="@(() => UserCartService.ClearUserCartProductsAsync())" />
         </div>
     </div>
         
