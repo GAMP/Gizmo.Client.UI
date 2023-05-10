@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.View.Services;
+﻿using Gizmo.Client.UI.Services;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -11,8 +12,9 @@ namespace Gizmo.Client.UI.Components
     {
         #region FIELDS
 
-        public AppExeViewState _appExeViewState;
-        public AppViewState _appViewState;
+        private AppExeViewState _appExeViewState;
+        private AppViewState _appViewState;
+        private AppExeExecutionViewState _appExeExecutionViewState;
 
         #endregion
 
@@ -21,6 +23,12 @@ namespace Gizmo.Client.UI.Components
 
         [Inject]
         public AppViewStateLookupService AppViewStateLookupService { get; set; }
+
+        [Inject]
+        public AppExeExecutionViewStateLookupService AppExeExecutionViewStateLookupService { get; set; }
+
+        [Inject]
+        public AppExecutionService AppExecutionService { get; set; }
 
         [Parameter]
         public int ExecutableId { get; set; }
@@ -36,15 +44,7 @@ namespace Gizmo.Client.UI.Components
 
         public Task OnClickHandler(MouseEventArgs args)
         {
-            //switch (Executable.State)
-            //{
-            //    case View.ExecutableState.None:
-            //        return ActiveApplicationsService.RunExecutableAsyc(Executable.ExecutableId);
-
-            //    default:
-            //        return ActiveApplicationsService.TerminateExecutableAsyc(Executable.ExecutableId);
-            //}
-            return Task.CompletedTask;
+            return AppExecutionService.AppExeExecuteAsync(_appExeExecutionViewState.AppExeId, default);
         }
 
         #region OVERRIDE
@@ -53,15 +53,18 @@ namespace Gizmo.Client.UI.Components
         {
             _appExeViewState = await AppExeViewStateLookupService.GetStateAsync(ExecutableId);
             _appViewState = await AppViewStateLookupService.GetStateAsync(_appExeViewState.ApplicationId);
+            _appExeExecutionViewState = await AppExeExecutionViewStateLookupService.GetStateAsync(ExecutableId);
 
             this.SubscribeChange(_appExeViewState);
             this.SubscribeChange(_appViewState);
+            this.SubscribeChange(_appExeExecutionViewState);
 
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
+            this.UnsubscribeChange(_appExeExecutionViewState);
             this.UnsubscribeChange(_appViewState);
             this.UnsubscribeChange(_appExeViewState);
 
