@@ -15,6 +15,10 @@
 
         .giz-app-card__content__image__hovered {
             background-color: rgba(0, 0, 0, 0.84);
+
+            .giz-app-card__content--hovered {
+                visibility: visible;
+            }
         }
     }
 
@@ -42,13 +46,20 @@
                 width: 100%;
                 height: 100%;
                 z-index: 2;
-                padding: 1.6rem 1.6rem 0 1.6rem;
+                padding: 1.6rem 0 0 0;
                 transition: background-color 0.2s;
 
                 &__header {
                     display: flex;
                     justify-content: space-between;
                     width: 100%;
+                    height: 100%;
+                    overflow: hidden;
+                }
+
+                .giz-app-card__content--hovered {
+                    padding: 0 0.4rem 0 0.4rem;
+                    visibility: hidden;
                 }
             }
         }
@@ -71,11 +82,9 @@
         }
 
         &--hovered {
-            display: grid;
-            grid-template-rows: min-content 1fr min-content;
-            align-items: center;
             height: 100%;
-            padding: 1.6rem;
+            width: 100%;
+            overflow: auto;
 
             &__header {
                 display: flex;
@@ -136,4 +145,14 @@
     & > svg {
         margin-right: 0.4rem;
     }
+}
+
+.giz-exe-popup {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 100%;
+    min-height: 100%;
+    overflow: hidden;
 }

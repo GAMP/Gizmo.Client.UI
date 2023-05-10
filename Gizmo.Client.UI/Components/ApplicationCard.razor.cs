@@ -1,9 +1,7 @@
-﻿using Gizmo.Client.UI.View.Services;
-using Gizmo.Client.UI.View.States;
+﻿using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
-using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -40,11 +38,9 @@ namespace Gizmo.Client.UI.Components
             NavigationService.NavigateTo(ClientRoutes.ApplicationDetailsRoute + $"?ApplicationId={Application.ApplicationId.ToString()}");
         }
 
-        private async Task Execute()
+        public void Ignore()
         {
             _clickHandled = true;
-
-            await OnOpenExecutableSelector.InvokeAsync(Application.ApplicationId);
         }
 
         #endregion

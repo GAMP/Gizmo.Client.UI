@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
@@ -42,7 +41,7 @@ namespace Gizmo.Client.UI.Components
 
         public string GetTimeNumber()
         {
-            string result = "0";
+            string result;
 
             if (Product.TimeProduct.Minutes < 60)
             {
@@ -86,7 +85,7 @@ namespace Gizmo.Client.UI.Components
 
         public string GetTimeText()
         {
-            string result = "";
+            string result;
 
             if (Product.TimeProduct.Minutes < 60)
             {
@@ -94,8 +93,6 @@ namespace Gizmo.Client.UI.Components
             }
             else
             {
-                TimeSpan timeSpan = TimeSpan.FromMinutes(Product.TimeProduct.Minutes);
-
                 if (Product.TimeProduct.Minutes >= 60 && Product.TimeProduct.Minutes < 120)
                 {
                     result = LocalizationService.GetString("GIZ_TIME_PRODUCT_HOUR");

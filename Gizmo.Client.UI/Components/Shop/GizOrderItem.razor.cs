@@ -56,5 +56,15 @@ namespace Gizmo.Client.UI.Components
 
             base.Dispose();
         }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (!firstRender)
+            {
+                await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
+            }
+
+            await base.OnAfterRenderAsync(firstRender);
+        }
     }
 }

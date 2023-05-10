@@ -1,0 +1,9 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<div class="giz-exe-popup">
+    @foreach (var exe in _executables)
+    {
+        <UniversalExecutable @key="exe.ExecutableId" ExecutableId="@exe.ExecutableId" ShowProgressBar="true" ShowExeName="true" />
+    }
+</div>

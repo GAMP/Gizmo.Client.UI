@@ -1,9 +1,9 @@
 ﻿@inherits CustomDOMComponentBase
 @using Gizmo.Client.UI.ViewModels
 
-<div class="giz-global-search-result-card @(Result.Type == View.SearchResultTypes.Applications ? "giz-global-search-result-card--app" : "giz-global-search-result-card--product")" @onclick="OnClickHandler">
+<div class="giz-global-search-result-card @(Result.Type == View.SearchResultTypes.Executables ? "giz-global-search-result-card--app" : "giz-global-search-result-card--product")" @onclick="OnClickHandler">
     <div class="giz-global-search-result-card__image">
-        @if (Result.Type == View.SearchResultTypes.Applications)
+        @if (Result.Type == View.SearchResultTypes.Executables)
         {
 
             <GizImage ImageType="Gizmo.UI.ImageType.Application" ImageId="@Result.ImageId">
@@ -29,7 +29,7 @@
         }
     </div>
     <div class="giz-global-search-result-card__category">
-        @if (Result.Type == View.SearchResultTypes.Applications)
+        @if (Result.Type == View.SearchResultTypes.Executables)
         {
             <HeaderGlobalSearchResultCardAppCategory @key="Result" ApplicationCategoryId="@Result.CategoryId" />
         }
@@ -40,6 +40,6 @@
     </div>
     <div class="giz-global-search-result-card__title">@Result.Name</div>
     <div class="giz-global-search-result-card__action">
-        <Button Variant="ButtonVariants.Outline" @onclick="OnClickActionButtonHandler">@(Result.Type == View.SearchResultTypes.Applications ? @LocalizationService.GetString("GIZ_GEN_LAUNCH") : @LocalizationService.GetString("GIZ_GEN_ADD_TO_CART"))</Button>
+        <Button Variant="ButtonVariants.Outline" @onclick="OnClickActionButtonHandler">@(Result.Type == View.SearchResultTypes.Executables ? @LocalizationService.GetString("GIZ_GEN_LAUNCH") : @LocalizationService.GetString("GIZ_GEN_ADD_TO_CART"))</Button>
     </div>
 </div>

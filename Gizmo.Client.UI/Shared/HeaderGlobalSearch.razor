@@ -24,25 +24,26 @@
              @ref="@Ref">
             <div class="giz-dropdown-menu__content giz-global-search-dropdown__body">
 
-                @if ((ViewState.ApplicationResults != null && ViewState.ApplicationResults.Count() > 0) || (ViewState.ProductResults != null && ViewState.ProductResults.Count() > 0))
+                @if ((ViewState.ExecutableResults != null && ViewState.ExecutableResults.Count() > 0) || (ViewState.ProductResults != null && ViewState.ProductResults.Count() > 0))
                 {
-                    @if (ViewState.ApplicationResults != null && ViewState.ApplicationResults.Count() > 0)
+                    @if (ViewState.ExecutableResults != null && ViewState.ExecutableResults.Count() > 0)
                     {
                         <div class="giz-global-search-section">
                             <div class="giz-global-search-section__header">
 
                                 <div>@LocalizationService.GetString("GIZ_GLOBAL_SEARCH_GAMES_AND_APPS")</div>
 
-                                @if (ViewState.ApplicationResults.Count() > 10)
+                                @if (ViewState.ExecutableResults.Count() > 10)
                                 {
-                                    <div class="giz-global-search-section__header__more" @onclick="@(() => GlobalSearchService.ViewAllResultsAsync(Gizmo.Client.UI.View.SearchResultTypes.Applications))">@LocalizationService.GetString("GIZ_GLOBAL_SEARCH_SHOW_ALL")</div>
+                                    <div class="giz-global-search-section__header__more" @onclick="@(() => GlobalSearchService.ViewAllResultsAsync(Gizmo.Client.UI.View.SearchResultTypes.Executables))">@LocalizationService.GetString("GIZ_GLOBAL_SEARCH_SHOW_ALL")</div>
                                 }
                             </div>
                             <div class="giz-global-search-section__body">
 
-                                @foreach (var result in ViewState.ApplicationResults.Take(10))
+                                @foreach (var result in ViewState.ExecutableResults.Take(10))
                                 {
-                                    <HeaderGlobalSearchResultCard Result="@result" />
+                                    <UniversalExecutable @key="result.Id" ExecutableId="@result.Id" ShowProgressBar="true" ShowExeName="true" ShowAppName="true" />
+                                    @*<HeaderGlobalSearchResultCard Result="@result" />*@
                                 }
 
                             </div>

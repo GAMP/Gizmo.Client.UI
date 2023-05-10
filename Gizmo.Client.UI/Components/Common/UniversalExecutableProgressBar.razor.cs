@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class GizDockItemExecutionState : CustomDOMComponentBase
+    public partial class UniversalExecutableProgressBar : CustomDOMComponentBase
     {
         private AppExeExecutionViewState _appExeExecutionViewState { get; set; }
 

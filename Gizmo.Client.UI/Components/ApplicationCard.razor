@@ -1,21 +1,17 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 
-<div class="giz-app-card" @onclick="() => OpenDetails()">
+<div class="giz-app-card"
+     @onclick="OpenDetails">
     <div class="giz-app-card__content">
         <div class="giz-app-card__content__image">
             <div class="giz-app-card__content__image__hovered">
                 <div class="giz-app-card__content__image__hovered__header">
-                    @*<div class="giz-app-card-b1">
-                        <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="4" cy="4" r="4" fill="white"/>
-                        </svg>
-                        <div>24</div>
+
+                    <div class="giz-app-card__content--hovered giz-scrollbar--v" @onclick="@Ignore">
+                        <ApplicationCardHover @key="Application.ApplicationId" ApplicationId="@Application.ApplicationId" />
                     </div>
-                    <div class="giz-app-card-b2">
-                        <Icon SVGIcon="Icons.Shield_Client" />
-                        <div>24</div>
-                    </div>*@
+
                 </div>
             </div>
 
@@ -41,8 +37,5 @@
                 }
             </div>
         </div>
-    </div>
-    <div class="giz-app-card__action">
-        <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" @onclick="Execute">@LocalizationService.GetStringUpper("GIZ_APPS_LAUNCH")</Button>
     </div>
 </div>

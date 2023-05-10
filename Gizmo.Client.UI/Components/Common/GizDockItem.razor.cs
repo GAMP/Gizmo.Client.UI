@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -51,19 +50,6 @@ namespace Gizmo.Client.UI.Components
 
         [Parameter]
         public AppExeViewState Executable { get; set; }
-
-        public Task OnClickHandler(MouseEventArgs args)
-        {
-            //switch (Executable.State)
-            //{
-            //    case View.ExecutableState.None:
-            //        return ActiveApplicationsService.RunExecutableAsyc(Executable.ExecutableId);
-
-            //    default:
-            //        return ActiveApplicationsService.TerminateExecutableAsyc(Executable.ExecutableId);
-            //}
-            return Task.CompletedTask;
-        }
 
         public void OnMouseOverHandler(MouseEventArgs args)
         {
@@ -178,12 +164,5 @@ namespace Gizmo.Client.UI.Components
 
         #endregion
 
-        #region CLASSMAPPERS
-
-        protected string ClassName => new ClassMapper()
-                .Add("giz-dock-item")
-                .AsString();
-
-        #endregion
     }
 }

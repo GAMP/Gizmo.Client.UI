@@ -1,4 +1,12 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 
-<div class="giz-timeline-item"><div class="giz-bundle-product-details"><ProductIcon />@TimeProduct?.Minutes.ToString("N0")</div></div>
+<div class="giz-timeline">
+    <div class="giz-timeline-header">
+        <HexagonIcon />
+        <div>@LocalizationService.GetString("GIZ_SHOP_CARD_TIME_PRODUCT_DESCRIPTION")</div>
+    </div>
+    <div class="giz-timeline-item"><div class="giz-bundle-product-details"><ProductIcon />@TimeProduct?.Minutes.ToString("N0")</div></div>
+    @*<div class="giz-timeline-item"><div class="giz-time-product-details">@LocalizationService.GetString("GIZ_SHOP_CARD_TIME_PRODUCT_ACTION_PERIOD")<span>10:00 - 12:00</span></div></div>
+    <div class="giz-timeline-item"><div class="giz-time-product-details">@LocalizationService.GetString("GIZ_SHOP_CARD_TIME_PRODUCT_LIFE_TIME")<span>3 hours</span></div></div>*@
+</div>

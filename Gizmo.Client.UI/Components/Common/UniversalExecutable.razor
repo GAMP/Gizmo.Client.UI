@@ -1,0 +1,41 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using Gizmo.Client.UI.View;
+
+<div class="giz-universal-executable"
+     @onclick="OnClickHandler">
+
+    <div class="giz-universal-executable__icon">
+        <GizImage ImageType="Gizmo.UI.ImageType.Executable" ImageId="@_appExeViewState.ImageId">
+            <EmptyResultPlaceholder>
+                <div class="giz-default-image">
+                    <img src="_content/Gizmo.Client.UI/img/no-exe-image.svg" alt="loading" />
+                </div>
+            </EmptyResultPlaceholder>
+        </GizImage>
+        
+        @if (ShowProgressBar)
+        {
+            <UniversalExecutableProgressBar @key="ExecutableId" ExecutableId="@ExecutableId" />
+        }
+	</div>
+
+    @if (ShowAppName || ShowExeName)
+    {
+        <div class="giz-universal-executable__description">
+            @if (ShowAppName)
+            {
+                <div class="giz-universal-executable__description__app">
+                    @_appViewState.Title
+                </div>
+            }
+            @if (ShowExeName)
+            {
+                <div class="giz-universal-executable__description__exe">
+                    @_appExeViewState.Caption
+                </div>
+            }
+        </div>
+    }
+
+</div>

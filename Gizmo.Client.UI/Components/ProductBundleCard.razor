@@ -10,18 +10,8 @@
             <div class="giz-product-card__content__image__hovered">
                 <div class="giz-product-card__content__image__hovered__header">
 
-                    <div>
-                        <div class="giz-timeline">
-                            <div class="giz-timeline-header">
-                                <HexagonIcon />
-                                <div>@LocalizationService.GetString("GIZ_SHOP_CARD_BUNDLE_BUNDLE_INCLUDES")</div>
-                            </div>
-
-                            @foreach (var bundledProduct in Product.BundledProducts)
-                            {
-                                <ProductBundleCardBundledProduct @key="bundledProduct.Id" ProductId="@bundledProduct.Id" />
-                            }
-                        </div>
+                    <div class="giz-product-card__content--hovered">
+                        <ProductBundleCardHover @key="Product" Product="@Product" />
                     </div>
 
                     <div class="giz-product-card-b1">

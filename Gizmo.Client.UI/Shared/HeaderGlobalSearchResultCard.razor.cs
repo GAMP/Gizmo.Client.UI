@@ -39,7 +39,7 @@ namespace Gizmo.Client.UI.Shared
                 return;
             }
 
-            if (Result.Type == View.SearchResultTypes.Applications)
+            if (Result.Type == View.SearchResultTypes.Executables)
             {
                 NavigationService.NavigateTo(ClientRoutes.ApplicationDetailsRoute + $"?ApplicationId={ Result.Id.ToString() }");
             }
@@ -53,7 +53,7 @@ namespace Gizmo.Client.UI.Shared
         {
             _clickHandled = true;
 
-            if (Result.Type == View.SearchResultTypes.Applications)
+            if (Result.Type == View.SearchResultTypes.Executables)
             {
                 var s = await DialogService.ShowExecutableSelectorDialogAsync(Result.Id);
                 if (s.Result == DialogAddResult.Success)

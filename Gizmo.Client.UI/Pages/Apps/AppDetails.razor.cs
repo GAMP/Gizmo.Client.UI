@@ -16,6 +16,7 @@ namespace Gizmo.Client.UI.Pages
     public partial class AppDetails : CustomDOMComponentBase
     {
         #region FIELDS
+        private bool _showMore;
         private int _selectedTabIndex;
         #endregion
 
@@ -61,19 +62,10 @@ namespace Gizmo.Client.UI.Pages
 
         #endregion
 
-        private async Task OnClickMainButtonHandler()
+        private Task OnClickMainButtonHandler()
         {
-            var s = await DialogService.ShowExecutableSelectorDialogAsync(ApplicationId);
-            if (s.Result == DialogAddResult.Success)
-            {
-                try
-                {
-                    var result = await s.WaitForDialogResultAsync();
-                }
-                catch (OperationCanceledException)
-                {
-                }
-            }
+            _showMore = true;
+            return Task.CompletedTask;
         }
 
         protected override void OnInitialized()

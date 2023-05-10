@@ -1,0 +1,15 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using System.Globalization
+
+<div class="giz-timeline">
+    <div class="giz-timeline-header">
+        <HexagonIcon />
+        <div>@LocalizationService.GetString("GIZ_SHOP_CARD_BUNDLE_BUNDLE_INCLUDES")</div>
+    </div>
+
+    @foreach (var bundledProduct in Product.BundledProducts)
+    {
+        <ProductBundleCardBundledProduct @key="bundledProduct.Id" ProductId="@bundledProduct.Id" />
+    }
+</div>

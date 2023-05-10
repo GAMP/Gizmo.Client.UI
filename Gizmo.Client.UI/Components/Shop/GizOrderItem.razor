@@ -1,6 +1,7 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 @using System.Globalization
+@using Microsoft.AspNetCore.Components.Forms
 
 <div class="giz-order-item">
     <div class="giz-order-item__description">
@@ -11,6 +12,13 @@
         {
             <RadioButton GroupName="@GetPurchaseOptionsGroup()" IsChecked="@(ProductItemViewState.PayType == OrderLinePayType.Cash)" IsCheckedChanged="@((isChecked) => SetPayType(isChecked, OrderLinePayType.Cash))" Class="giz-order-item__details__price-radio" />
             <RadioButton GroupName="@GetPurchaseOptionsGroup()" IsChecked="@(ProductItemViewState.PayType == OrderLinePayType.Points)" IsCheckedChanged="@((isChecked) => SetPayType(isChecked, OrderLinePayType.Points))" Class="giz-order-item__details__points-radio" />
+            @*<InputRadioGroup @Value="ProductItemViewState.PayType">
+                ValueChanged="@((value) => SetPayType(true, value))"
+                <RadioButtonInput Value="OrderLinePayType.Cash" Class="giz-order-item__details__price-radio" />
+                <RadioButtonInput Value="OrderLinePayType.Points" Class="giz-order-item__details__points-radio" />
+                <InputRadio Value="OrderLinePayType.Cash" class="giz-order-item__details__price-radio" />
+                <InputRadio Value="OrderLinePayType.Points" class="giz-order-item__details__points-radio" />
+            </InputRadioGroup>*@
         }
         else
         {
