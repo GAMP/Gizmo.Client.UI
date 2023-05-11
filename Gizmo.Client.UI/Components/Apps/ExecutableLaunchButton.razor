@@ -3,34 +3,31 @@
 @using Gizmo.Client.UI.View;
 
 <ComboButton Progress="@_appExeExecutionViewState.Progress"
-             Color="@(_appExeExecutionViewState.State == ExecutableState.Running ? ButtonColors.Danger : ButtonColors.Accent)"
-             Variant="@(_appExeExecutionViewState.State == ExecutableState.Deployment ? ButtonVariants.Progress : ButtonVariants.Fill)"
+             Color="@(_appExeExecutionViewState.IsRunning && !_appExeViewState.Options.HasFlag(ExecutableOptionType.MultiRun) ? ButtonColors.Danger : ButtonColors.Accent)"
+             Variant="@(_appExeExecutionViewState.IsActive ? ButtonVariants.Progress : ButtonVariants.Fill)"
              Size="@Size"
              IsFullWidth="@IsFullWidth"
              OnClickMainButton="@OnClickMainButtonHandler"
-             OpenDirection="PopupOpenDirections.Cursor"
-             Text="@(_appExeExecutionViewState.State == ExecutableState.None ? LocalizationService.GetString("GIZ_APPS_LAUNCH") :
-                     _appExeExecutionViewState.State == ExecutableState.Deployment ? LocalizationService.GetString("GIZ_APPS_LOADING") :
-                     _appExeExecutionViewState.State == ExecutableState.Running ? LocalizationService.GetString("GIZ_APPS_TERMINATE") : ""
-                     )">
+             OpenDirection="PopupOpenDirections.Cursor">
     <ChildContent>
-        @switch (_appExeExecutionViewState.State)
+        @if (_appExeExecutionViewState.IsActive)
         {
-            case ExecutableState.None:
-                <div>@LocalizationService.GetString("GIZ_APPS_LAUNCH")</div>
-                break;
-
-            case ExecutableState.Loading:
+            @if (_appExeExecutionViewState.IsIndeterminate)
+            {
                 <Spinner />
-                break;
-
-            case ExecutableState.Deployment:
-                <div>@LocalizationService.GetString("GIZ_APPS_LOADING")</div>
-                break;
-
-            case ExecutableState.Running:
-                <div>@LocalizationService.GetString("GIZ_APPS_TERMINATE")</div>
-                break;
+            }
+            else
+            {
+                <div>@LocalizationService.GetString("GIZ_APPS_CANCEL")</div>
+            }
+        }
+        else if (_appExeExecutionViewState.IsRunning && !_appExeViewState.Options.HasFlag(ExecutableOptionType.MultiRun))
+        {
+            <div>@LocalizationService.GetString("GIZ_APPS_TERMINATE")</div>
+        }
+        else
+        {
+            <div>@LocalizationService.GetString("GIZ_APPS_LAUNCH")</div>
         }
     </ChildContent>
     <DropDownItems>

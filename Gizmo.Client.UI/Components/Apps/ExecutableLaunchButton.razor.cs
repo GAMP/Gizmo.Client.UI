@@ -10,6 +10,7 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class ExecutableLaunchButton : CustomDOMComponentBase
     {
+        private AppExeViewState _appExeViewState;
         private AppExeExecutionViewState _appExeExecutionViewState;
 
         [Inject]
@@ -19,15 +20,10 @@ namespace Gizmo.Client.UI.Components
         AppExecutionService AppExecutionService { get; set; }
 
         [Inject()]
-        AppExeExecutionViewStateLookupService AppExeExecutionViewStateLookupService { get; set; }
+        AppExeViewStateLookupService AppExeViewStateLookupService { get; set; }
 
         [Inject()]
-        AppExeExecutionViewState ViewState
-        {
-            get { return _appExeExecutionViewState; }
-            set { _appExeExecutionViewState = value; }
-        }
-        
+        AppExeExecutionViewStateLookupService AppExeExecutionViewStateLookupService { get; set; }
 
         [Parameter]
         public int ExecutableId { get; set; }
@@ -40,19 +36,25 @@ namespace Gizmo.Client.UI.Components
 
         private async Task OnClickMainButtonHandler()
         {
-            await AppExecutionService.AppExeExecuteAsync(_appExeExecutionViewState.AppExeId,default);
+            await AppExecutionService.AppExeExecuteAsync(_appExeExecutionViewState.AppExeId, default);
         }
 
         protected override async Task OnInitializedAsync()
         {
+            _appExeViewState = await AppExeViewStateLookupService.GetStateAsync(ExecutableId);
             _appExeExecutionViewState = await AppExeExecutionViewStateLookupService.GetStateAsync(ExecutableId);
+
+            this.SubscribeChange(_appExeViewState);
             this.SubscribeChange(_appExeExecutionViewState);
+
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
             this.UnsubscribeChange(_appExeExecutionViewState);
+            this.UnsubscribeChange(_appExeViewState);
+
             base.Dispose();
         }
     }

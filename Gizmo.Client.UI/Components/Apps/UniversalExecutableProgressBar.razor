@@ -3,18 +3,19 @@
 @using Gizmo.Client.UI.View;
 
 <div class="giz-universal-executable-progress-bar">
-	@switch (_appExeExecutionViewState.State)
-	{
-		case ExecutableState.Loading:
-			<ProgressBar IsIndeterminate="true" />
-			break;
-
-		case ExecutableState.Deployment:
-			<ProgressBar Value="@_appExeExecutionViewState.Progress" />
-			break;
-
-		case ExecutableState.Running:
-			<div class="running"></div>
-			break;
-	}
+    @if (_appExeExecutionViewState.IsActive)
+    {
+        @if (_appExeExecutionViewState.IsIndeterminate)
+        {
+            <ProgressBar IsIndeterminate="true" />
+        }
+        else
+        {
+            <ProgressBar Value="@_appExeExecutionViewState.Progress" />
+        }
+    }
+    else if (_appExeExecutionViewState.IsRunning)
+    {
+        <div class="running"></div>
+    }
 </div>
