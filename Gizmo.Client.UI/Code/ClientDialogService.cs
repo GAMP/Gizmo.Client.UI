@@ -24,15 +24,6 @@ namespace Gizmo.Client.UI.Services
             }, default, cancellationToken);
         }
 
-        public Task<ShowDialogResult<EmptyDialogResult>> ShowExecutableSelectorDialogAsync(int applicationId, CancellationToken cancellationToken = default)
-        {
-            return ShowDialogAsync<ExecutableSelectorDialog>(new Dictionary<string, object>() { { "ApplicationId", applicationId } }, new DialogDisplayOptions()
-            {
-                Closable = true,
-                CloseOnClick = true
-            }, default, cancellationToken);
-        }
-
         public Task<ShowDialogResult<UserAgreementResult>> ShowUserAgreementDialogAsync(UserAgreementDialogParameters userAgreementDialogParameters, CancellationToken cancellationToken = default)
         {
             return ShowDialogAsync<UserAgreementDialog, UserAgreementResult>(userAgreementDialogParameters.ToDictionary(), new DialogDisplayOptions()
@@ -85,11 +76,6 @@ namespace Gizmo.Client.UI.Services
                 Closable = true,
                 CloseOnClick = false
             }, default, cancellationToken);
-        }
-
-        public Task<ShowDialogResult<EmptyDialogResult>> ShowPaymentDialogAsync(PaymentDialogParameters paymentDialogParameters, CancellationToken cancellationToken = default)
-        {
-            return ShowDialogAsync<PaymentDialog>(paymentDialogParameters.ToDictionary(), default, default, cancellationToken);
         }
 
         public Task<ShowDialogResult<EmptyDialogResult>> ShowAdvertisementDialogAsync(AdvertisementViewState state, CancellationToken cancellationToken = default)

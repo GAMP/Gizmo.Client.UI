@@ -55,17 +55,7 @@ namespace Gizmo.Client.UI.Shared
 
             if (Result.Type == View.SearchResultTypes.Executables)
             {
-                var s = await DialogService.ShowExecutableSelectorDialogAsync(Result.Id);
-                if (s.Result == DialogAddResult.Success)
-                {
-                    try
-                    {
-                        var result = await s.WaitForDialogResultAsync();
-                    }
-                    catch (OperationCanceledException)
-                    {
-                    }
-                }
+                //Do nothing.
             }
             else
             {

@@ -20,12 +20,9 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public AppViewState Application { get; set; }
 
-        [Parameter]
-        public EventCallback<int> OnOpenExecutableSelector { get; set; }
-
         #endregion
 
-        #region Methods
+        #region METHODS
 
         public void OpenDetails()
         {
