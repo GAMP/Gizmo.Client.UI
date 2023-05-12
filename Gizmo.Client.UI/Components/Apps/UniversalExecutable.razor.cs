@@ -44,7 +44,7 @@ namespace Gizmo.Client.UI.Components
 
         public Task OnClickHandler(MouseEventArgs args)
         {
-            return AppExecutionService.AppExeExecuteAsync(_appExeExecutionViewState.AppExeId, default);
+            return AppExecutionService.AppExeExecuteAsync(_appExeExecutionViewState.AppExeId, false, default);
         }
 
         #region OVERRIDE

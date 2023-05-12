@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.Pages;
+using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -18,6 +19,12 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
+        [Inject()]
+        AppExecutionService AppExecutionService { get; set; }
+
+        [Parameter]
+        public int ExecutableId { get; set; }
+
         [Parameter]
         public int PersonalFileId { get; set; }
 
@@ -30,12 +37,13 @@ namespace Gizmo.Client.UI.Components
 
         private Task OnClickPersonalFileButtonHandler()
         {
-            return Task.CompletedTask;
+            return AppExecutionService.PersonalFileExploreAsync(ExecutableId, PersonalFileId);
         }
 
         protected override async Task OnInitializedAsync()
         {
             _personalFileViewState = await PersonalFileViewStateLookupService.GetStateAsync(PersonalFileId);
+
             this.SubscribeChange(_personalFileViewState);
 
             await base.OnInitializedAsync();

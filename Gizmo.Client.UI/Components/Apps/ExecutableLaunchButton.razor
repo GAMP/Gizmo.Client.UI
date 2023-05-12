@@ -31,15 +31,20 @@
         }
     </ChildContent>
     <DropDownItems>
+
         <ListItem>
-            <CheckBox Label="@LocalizationService.GetString("GIZ_APPS_AUTO_START")" Class="giz-app-autostart" />
+            <CheckBox Label="@LocalizationService.GetString("GIZ_APPS_AUTO_START")" Class="giz-app-autostart" IsChecked="@_appExeViewState.AutoLaunch" IsCheckedChanged="OnAutoStartChange" />
         </ListItem>
-        <ListItem SVGIcon="Icons.Restart_Client">
+
+        <ListItem SVGIcon="Icons.Restart_Client" OnClick="OnRepairClick">
             @LocalizationService.GetString("GIZ_APPS_REPAIR")
         </ListItem>
+
         <ExecutableLaunchButtonPersonalFiles ExecutableId="@ExecutableId" @key="ExecutableId" />
-        <ListItem SVGIcon="Icons.Terminate_Client">
+        
+        <ListItem SVGIcon="Icons.Terminate_Client" OnClick="OnTerminateClick">
             @LocalizationService.GetString("GIZ_APPS_TERMINATE")
         </ListItem>
+
     </DropDownItems>
 </ComboButton>

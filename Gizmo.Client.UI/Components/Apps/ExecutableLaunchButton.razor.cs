@@ -34,9 +34,35 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public bool IsFullWidth { get; set; }
 
-        private async Task OnClickMainButtonHandler()
+        private Task OnClickMainButtonHandler()
         {
-            await AppExecutionService.AppExeExecuteAsync(_appExeExecutionViewState.AppExeId, default);
+            if (_appExeExecutionViewState.IsActive)
+            {
+                return AppExecutionService.AppExeAbortAsync(_appExeExecutionViewState.AppExeId);
+            }
+            else if (_appExeExecutionViewState.IsRunning && !_appExeViewState.Options.HasFlag(ExecutableOptionType.MultiRun))
+            {
+                return AppExecutionService.AppExeTerminateAsync(_appExeExecutionViewState.AppExeId);
+            }
+            else
+            {
+                return AppExecutionService.AppExeExecuteAsync(_appExeExecutionViewState.AppExeId, false, default);
+            }
+        }
+
+        private Task OnAutoStartChange(bool isChecked)
+        {
+            return AppExecutionService.SetAutoLaunchAsync(_appExeExecutionViewState.AppExeId, isChecked);
+        }
+
+        private Task OnRepairClick()
+        {
+            return AppExecutionService.AppExeExecuteAsync(_appExeExecutionViewState.AppExeId, true, default);
+        }
+
+        private Task OnTerminateClick()
+        {
+            return AppExecutionService.AppExeTerminateAsync(_appExeExecutionViewState.AppExeId);
         }
 
         protected override async Task OnInitializedAsync()

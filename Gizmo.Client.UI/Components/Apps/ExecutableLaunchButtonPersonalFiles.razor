@@ -11,7 +11,7 @@
         <NestedList>
             @foreach (var personalFile in _appExeViewState.PersonalFiles)
             {
-                <ExecutableLaunchButtonPersonalFile PersonalFileId="@personalFile.PersonalFileId" @key="personalFile.PersonalFileId" />
+                <ExecutableLaunchButtonPersonalFile ExecutableId="@_appExeViewState.ExecutableId" PersonalFileId="@personalFile.PersonalFileId" @key="personalFile.PersonalFileId" />
             }
         </NestedList>
     </ListItem>
