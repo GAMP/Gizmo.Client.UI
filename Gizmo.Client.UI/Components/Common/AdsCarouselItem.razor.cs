@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Gizmo.Client.UI.View.Services;
@@ -16,7 +17,7 @@ namespace Gizmo.Client.UI.Components
         private bool _clickHandled = false;
 
         private int _index;
-        private int _fade;
+        private int _direction;
         private AdvertisementViewState _advertisementViewState;
 
 
@@ -44,22 +45,23 @@ namespace Gizmo.Client.UI.Components
         internal void Clear()
         {
             _index = 0;
-            _fade = 0;
+            _direction = 0;
 
             InvokeAsync(StateHasChanged);
         }
 
-        public void FadeOut()
+        public void Hide()
         {
-            _fade = -1;
+            _index = 0;
+            _direction = 0;
 
             InvokeAsync(StateHasChanged);
         }
 
-        public void FadeIn(int index)
+        public void ShowInPosition(int index, int direction)
         {
             _index = index;
-            _fade = 1;
+            _direction = direction;
 
             InvokeAsync(StateHasChanged);
         }
@@ -72,9 +74,16 @@ namespace Gizmo.Client.UI.Components
                 return Task.CompletedTask;
             }
 
-            if (!string.IsNullOrEmpty(_advertisementViewState.MediaUrl))
+            if (_index != 2)
             {
-                return ShowMediaDialogAsync();
+                Parent.SetCurrent(AdvertisementId);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(_advertisementViewState.MediaUrl))
+                {
+                    return ShowMediaDialogAsync();
+                }
             }
 
             return Task.CompletedTask;
@@ -165,8 +174,13 @@ namespace Gizmo.Client.UI.Components
                 .If("previous", () => _index == 1)
                 .If("current", () => _index == 2)
                 .If("next", () => _index == 3)
-                .If("fade-out-previously", () => _index > 0 && _fade == -1)
-                .If("fade-in-current", () => _index > 0 && _fade == 1)
+                .If("bring-to-front-right", () => _index == 2 && _direction == 1)
+                .If("send-to-back-left", () => _index == 1 && _direction == 1)
+                .If("bring-to-front", () => _index == 3 && _direction == 1)
+
+                .If("bring-to-front-left", () => _index == 2 && _direction == -1)
+                .If("send-to-back-right", () => _index == 3 && _direction == -1)
+                //.If("send-to-back", () => _index == 1 && _direction == -1)
                 .AsString();
 
         #endregion

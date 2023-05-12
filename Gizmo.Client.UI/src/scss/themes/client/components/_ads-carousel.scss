@@ -47,24 +47,15 @@
         }
 
         &-command {
-            visibility: hidden;
+            //visibility: hidden;
             pointer-events: all;
             z-index: 1;
         }
 
         &:hover {
             .giz-ads-carousel-item-command {
-                visibility: visible;
+                //visibility: visible;
             }
-        }
-
-        &.single {
-        }
-
-        &.first {
-        }
-
-        &.second {
         }
 
         &.previous {
@@ -72,9 +63,12 @@
             width: 72.2rem;
             height: 38rem;
             top: 1rem;
-            right: calc(50% + 3.4rem);
-            transform: translateX(-50%);
-            mask-image: linear-gradient( to left, rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0) );
+            left: 50%;
+            transform: translateX(-100%);
+            //mask-image: linear-gradient( to left, rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4) );
+            transition: opacity 0.2s;
+            opacity: 0.8;
+            z-index: 1;
 
             &:after {
                 content: "";
@@ -86,16 +80,23 @@
                 height: 100%;
                 opacity: 0.2;
                 transition: opacity 0.2s;
+                z-index: 2;
             }
 
             &:hover {
+                opacity: 1;
+
                 &:after {
                     opacity: 0;
                 }
             }
 
             .giz-ads-carousel-item__content {
-                visibility: hidden;
+                //visibility: hidden;
+            }
+
+            .giz-ads-carousel-item__content__actions {
+                display: none;
             }
         }
 
@@ -106,6 +107,7 @@
             top: 0;
             left: 50%;
             transform: translateX(-50%);
+            z-index: 2;
         }
 
         &.next {
@@ -113,9 +115,12 @@
             width: 72.2rem;
             height: 38rem;
             top: 1rem;
-            left: calc(50% + 3.4rem);
-            transform: translateX(50%);
-            mask-image: linear-gradient( to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0) );
+            left: 50%;
+            transform: translateX(0%);
+            //mask-image: linear-gradient( to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4) );            transition: opacity 0.2s;
+            transition: opacity 0.2s;
+            opacity: 0.8;
+            z-index: 1;
 
             &:after {
                 content: "";
@@ -127,9 +132,12 @@
                 height: 100%;
                 opacity: 0.2;
                 transition: opacity 0.2s;
+                z-index: 2;
             }
 
             &:hover {
+                opacity: 1;
+
                 &:after {
                     opacity: 0;
                 }
@@ -137,6 +145,10 @@
 
             .giz-ads-carousel-item__content {
                 //visibility: hidden;
+            }
+
+            .giz-ads-carousel-item__content__actions {
+                display: none;
             }
         }
 
@@ -321,77 +333,133 @@
         }
     }
 
-    .fade-out-previously {
-        pointer-events: none;
-        animation-duration: 1s;
-        animation-name: ads-fade-out-previously-anim;
-        animation-timing-function: ease-in-out;
-        animation-fill-mode: forwards;
-
-        .giz-ads-carousel-item__content__actions {
-            display: none;
-        }
-    }
-
-    .fade-in-current {
-        pointer-events: all;
-        animation-duration: 1s;
-        animation-name: ads-fade-in-current-anim;
+    .bring-to-front {
+        animation-duration: 0.5s;
+        animation-name: ads-bring-to-front-anim;
         animation-timing-function: ease-in-out;
         animation-fill-mode: forwards;
     }
-}
 
-@keyframes ads-fade-out-previously-anim {
-    from {
-        opacity: 1;
-    }
-
-    to {
-        opacity: 0;
-    }
-}
-
-@keyframes ads-fade-in-current-anim {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-.giz-ads-carousel-indicator {
-    &.current {
-        animation-duration: 1s;
-        animation-name: ads-indicator-current-anim;
+    .send-to-back {
+        animation-duration: 0.5s;
+        animation-name: ads-send-to-back-anim;
+        animation-timing-function: ease-in-out;
         animation-fill-mode: forwards;
     }
 
-    &.next {
-        animation-duration: 1s;
-        animation-name: ads-indicator-next-anim;
+    .bring-to-front-left {
+        animation-duration: 0.5s;
+        animation-name: ads-bring-to-front-left-anim;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards;
+    }
+
+    .bring-to-front-right {
+        animation-duration: 0.5s;
+        animation-name: ads-bring-to-front-right-anim;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards;
+    }
+
+    .send-to-back-left {
+        animation-duration: 0.5s;
+        animation-name: ads-send-to-back-left-anim;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards;
+    }
+
+    .send-to-back-right {
+        animation-duration: 0.5s;
+        animation-name: ads-send-to-back-right-anim;
+        animation-timing-function: ease-in-out;
         animation-fill-mode: forwards;
     }
 }
 
-@keyframes ads-indicator-current-anim {
+@keyframes ads-bring-to-front-anim {
     from {
-        margin-left: 0;
+        //opacity: 0;
     }
 
     to {
-        margin-left: 2.3rem;
+        //opacity: 0.8;
     }
 }
 
-@keyframes ads-indicator-next-anim {
+@keyframes ads-send-to-back-anim {
     from {
-        margin-left: 0;
+        //opacity: 0.8;
     }
 
     to {
-        margin-left: -2.3rem;
+        //opacity: 0;
+    }
+}
+
+@keyframes ads-bring-to-front-left-anim {
+    from {
+        top: 1rem;
+        height: 38rem;
+        width: 72.2rem;
+        transform: translateX(-100%);
+        //opacity: 0.8;
+    }
+
+    to {
+        top: 0rem;
+        height: 40rem;
+        width: 76rem;
+        transform: translateX(-50%);
+        //opacity: 1;
+    }
+}
+
+@keyframes ads-bring-to-front-right-anim {
+    from {
+        top: 1rem;
+        height: 38rem;
+        width: 72.2rem;
+        transform: translateX(0%);
+        //opacity: 0.8;
+    }
+
+    to {
+        top: 0rem;
+        height: 40rem;
+        width: 76rem;
+        transform: translateX(-50%);
+        //opacity: 1;
+    }
+}
+
+@keyframes ads-send-to-back-left-anim {
+    from {
+        top: 0rem;
+        height: 40rem;
+        width: 76rem;
+        transform: translateX(-50%);
+    }
+
+    to {
+        top: 1rem;
+        height: 38rem;
+        width: 72.2rem;
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes ads-send-to-back-right-anim {
+    from {
+        top: 0rem;
+        height: 40rem;
+        width: 76rem;
+        transform: translateX(-50%);
+    }
+
+    to {
+        top: 1rem;
+        height: 38rem;
+        width: 72.2rem;
+        transform: translateX(0%);
     }
 }

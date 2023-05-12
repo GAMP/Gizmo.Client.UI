@@ -20,11 +20,8 @@ namespace Gizmo.Client.UI.Components
         private Timer _timer;
 
         private readonly List<AdsCarouselItem> _items = new();
-        private readonly List<AdsCarouselItem> _duplicates = new();
 
         private int _selectedIndex;
-
-        private bool _duplicatesActive = false;
 
         #endregion
 
@@ -50,7 +47,7 @@ namespace Gizmo.Client.UI.Components
 
                 if (_items.Count > 2)
                 {
-                    FadeOut(value);
+                    BringToFront(value);
                 }
 
                 _selectedIndex = value;
@@ -68,12 +65,12 @@ namespace Gizmo.Client.UI.Components
 
         #region EVENTS
 
-        public void SelectedIndexChangedHandler(int index)
+        private void SelectedIndexChangedHandler(int index)
         {
             SelectedIndex = index;
         }
 
-        public void OnMouseOverHandler(MouseEventArgs args)
+        private void OnMouseOverHandler(MouseEventArgs args)
         {
             if (_timer != null)
             {
@@ -81,7 +78,7 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        public void OnMouseOutHandler(MouseEventArgs args)
+        private void OnMouseOutHandler(MouseEventArgs args)
         {
             if (_timer != null)
             {
@@ -98,33 +95,24 @@ namespace Gizmo.Client.UI.Components
             SlideNext();
         }
 
-        private void FadeOut(int index)
+        private void BringToFront(int index)
         {
             for (int i = 0; i < _items.Count; i++)
             {
-                if (!_duplicatesActive)
-                    _items[i].FadeOut();
-                else
-                    _duplicates[i].FadeOut();
+                _items[i].Hide();
             }
 
             if (_items != null && index >= 0 && _selectedIndex >= 0 && index < _items.Count && _selectedIndex < _items.Count)
             {
-                if (!_duplicatesActive)
-                {
-                    _duplicates[GetItemIndex(index, -1)].FadeIn(1);
-                    _duplicates[index].FadeIn(2);
-                    _duplicates[GetItemIndex(index, 1)].FadeIn(3);
-                }
-                else
-                {
-                    _items[GetItemIndex(index, -1)].FadeIn(1);
-                    _items[index].FadeIn(2);
-                    _items[GetItemIndex(index, 1)].FadeIn(3);
-                }
-            }
+                int direction = 1;
 
-            _duplicatesActive = !_duplicatesActive;
+                if (_selectedIndex == GetItemIndex(index, 1))
+                    direction = -1;
+
+                _items[GetItemIndex(index, -1)].ShowInPosition(1, direction);
+                _items[index].ShowInPosition(2, direction);
+                _items[GetItemIndex(index, 1)].ShowInPosition(3, direction);
+            }
         }
 
         private int GetItemIndex(int index, int direction)
@@ -155,18 +143,12 @@ namespace Gizmo.Client.UI.Components
 
         internal void Register(AdsCarouselItem item, bool duplicate)
         {
-            if (!duplicate)
-                _items.Add(item);
-            else
-                _duplicates.Add(item);
+            _items.Add(item);
         }
 
         internal void Unregister(AdsCarouselItem item, bool duplicate)
         {
-            if (!duplicate)
-                _items.Remove(item);
-            else
-                _duplicates.Remove(item);
+            _items.Remove(item);
         }
 
         private void SlideNext()
@@ -266,9 +248,10 @@ namespace Gizmo.Client.UI.Components
         {
             if (_items.Count > 2)
             {
-                _items[2].FadeIn(1);
-                _items[0].FadeIn(2);
-                _items[1].FadeIn(3);
+                //TODO: AAA
+                _items[2].ShowInPosition(1, 1);
+                _items[0].ShowInPosition(2, 1);
+                _items[1].ShowInPosition(3, 1);
             }
 
             return base.OnFirstAfterRenderAsync();
