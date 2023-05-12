@@ -1,8 +1,7 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 
-<div class="giz-app-card"
-     @onclick="OpenDetails">
+<div class="giz-app-card">
     <div class="giz-app-card__content">
         <div class="giz-app-card__content__image">
             <div class="giz-app-card__content__image__hovered">
@@ -36,6 +35,7 @@
                     <ApplicationCardCategory @key="Application.ApplicationCategoryId" ApplicationCategoryId="@Application.ApplicationCategoryId" />
                 }
             </div>
+            <IconButton Variant="ButtonVariants.Text" SVGIcon="Icons.Open_Client" Size="ButtonSizes.Small" @onclick="OpenDetails" />
         </div>
     </div>
 </div>
