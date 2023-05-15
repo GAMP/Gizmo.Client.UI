@@ -58,7 +58,7 @@
             }
         }
 
-        &.previous {
+        &.previous-out {
             display: inline-block;
             width: 72.2rem;
             height: 38rem;
@@ -100,6 +100,48 @@
             }
         }
 
+        &.previous {
+            display: inline-block;
+            width: 72.2rem;
+            height: 38rem;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-100%);
+            //mask-image: linear-gradient( to left, rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4) );
+            transition: opacity 0.2s;
+            opacity: 0.8;
+            z-index: 2;
+
+            &:after {
+                content: "";
+                background-color: black;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0.2;
+                transition: opacity 0.2s;
+                z-index: 2;
+            }
+
+            &:hover {
+                opacity: 1;
+
+                &:after {
+                    opacity: 0;
+                }
+            }
+
+            .giz-ads-carousel-item__content {
+                //visibility: hidden;
+            }
+
+            .giz-ads-carousel-item__content__actions {
+                display: none;
+            }
+        }
+
         &.current {
             display: inline-block;
             width: 76rem;
@@ -107,10 +149,52 @@
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 2;
+            z-index: 3;
         }
 
         &.next {
+            display: inline-block;
+            width: 72.2rem;
+            height: 38rem;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(0%);
+            //mask-image: linear-gradient( to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4) );            transition: opacity 0.2s;
+            transition: opacity 0.2s;
+            opacity: 0.8;
+            z-index: 2;
+
+            &:after {
+                content: "";
+                background-color: black;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0.2;
+                transition: opacity 0.2s;
+                z-index: 2;
+            }
+
+            &:hover {
+                opacity: 1;
+
+                &:after {
+                    opacity: 0;
+                }
+            }
+
+            .giz-ads-carousel-item__content {
+                //visibility: hidden;
+            }
+
+            .giz-ads-carousel-item__content__actions {
+                display: none;
+            }
+        }
+
+        &.next-out {
             display: inline-block;
             width: 72.2rem;
             height: 38rem;
@@ -333,9 +417,18 @@
         }
     }
 
-    .bring-to-front {
+    .send-to-left {
+        z-index: 1;
         animation-duration: 0.5s;
-        animation-name: ads-bring-to-front-anim;
+        animation-name: ads-send-to-left-anim;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards;
+    }
+
+    .send-to-right {
+        z-index: 1;
+        animation-duration: 0.5s;
+        animation-name: ads-send-to-right-anim;
         animation-timing-function: ease-in-out;
         animation-fill-mode: forwards;
     }
@@ -376,23 +469,33 @@
     }
 }
 
-@keyframes ads-bring-to-front-anim {
+@keyframes ads-send-to-left-anim {
     from {
-        //opacity: 0;
+        transform: translateX(0%);
     }
 
     to {
-        //opacity: 0.8;
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes ads-send-to-right-anim {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0%);
     }
 }
 
 @keyframes ads-send-to-back-anim {
     from {
-        //opacity: 0.8;
+        opacity: 0.8;
     }
 
     to {
-        //opacity: 0;
+        opacity: 0;
     }
 }
 

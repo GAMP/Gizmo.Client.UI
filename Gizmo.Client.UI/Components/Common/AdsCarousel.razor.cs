@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -13,7 +15,7 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class AdsCarousel : CustomDOMComponentBase
     {
-        const int ANIMATION_TIME = 1000;
+        const int ANIMATION_TIME = 500;
 
         #region FIELDS
 
@@ -97,6 +99,7 @@ namespace Gizmo.Client.UI.Components
 
         private void BringToFront(int index)
         {
+            //TODO: AAA 1 OR 2 ITEMS?
             for (int i = 0; i < _items.Count; i++)
             {
                 _items[i].Hide();
@@ -109,9 +112,15 @@ namespace Gizmo.Client.UI.Components
                 if (_selectedIndex == GetItemIndex(index, 1))
                     direction = -1;
 
-                _items[GetItemIndex(index, -1)].ShowInPosition(1, direction);
-                _items[index].ShowInPosition(2, direction);
-                _items[GetItemIndex(index, 1)].ShowInPosition(3, direction);
+                if (ViewState.Advertisements.Count() > 3 && direction == 1)
+                    _items[GetItemIndex(GetItemIndex(index, -1), -1)].ShowInPosition(4, direction, false);
+
+                _items[GetItemIndex(index, -1)].ShowInPosition(1, direction, ViewState.Advertisements.Count() == 3);
+                _items[index].ShowInPosition(2, direction, false);
+                _items[GetItemIndex(index, 1)].ShowInPosition(3, direction, ViewState.Advertisements.Count() == 3);
+
+                if (ViewState.Advertisements.Count() > 3 && direction == -1)
+                    _items[GetItemIndex(GetItemIndex(index, 1), 1)].ShowInPosition(4, direction, false);
             }
         }
 
@@ -141,12 +150,12 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        internal void Register(AdsCarouselItem item, bool duplicate)
+        internal void Register(AdsCarouselItem item)
         {
             _items.Add(item);
         }
 
-        internal void Unregister(AdsCarouselItem item, bool duplicate)
+        internal void Unregister(AdsCarouselItem item)
         {
             _items.Remove(item);
         }
@@ -248,10 +257,9 @@ namespace Gizmo.Client.UI.Components
         {
             if (_items.Count > 2)
             {
-                //TODO: AAA
-                _items[2].ShowInPosition(1, 1);
-                _items[0].ShowInPosition(2, 1);
-                _items[1].ShowInPosition(3, 1);
+                _items[GetItemIndex(0, -1)].ShowInPosition(1, 1, ViewState.Advertisements.Count() == 3);
+                _items[0].ShowInPosition(2, 1, false);
+                _items[GetItemIndex(0, 1)].ShowInPosition(3, 1, ViewState.Advertisements.Count() == 3);
             }
 
             return base.OnFirstAfterRenderAsync();

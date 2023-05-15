@@ -18,6 +18,7 @@ namespace Gizmo.Client.UI.Components
 
         private int _index;
         private int _direction;
+        private bool _switchSide;
         private AdvertisementViewState _advertisementViewState;
 
 
@@ -40,12 +41,13 @@ namespace Gizmo.Client.UI.Components
         public int AdvertisementId { get; set; }
 
         [Parameter]
-        public bool Duplicate { get; set; }
+        public bool SimpleMode { get; set; }
 
         internal void Clear()
         {
             _index = 0;
             _direction = 0;
+            _switchSide = false;
 
             InvokeAsync(StateHasChanged);
         }
@@ -54,14 +56,16 @@ namespace Gizmo.Client.UI.Components
         {
             _index = 0;
             _direction = 0;
+            _switchSide = false;
 
             InvokeAsync(StateHasChanged);
         }
 
-        public void ShowInPosition(int index, int direction)
+        public void ShowInPosition(int index, int direction, bool switchSide)
         {
             _index = index;
             _direction = direction;
+            _switchSide = switchSide;
 
             InvokeAsync(StateHasChanged);
         }
@@ -74,7 +78,7 @@ namespace Gizmo.Client.UI.Components
                 return Task.CompletedTask;
             }
 
-            if (_index != 2)
+            if (!SimpleMode && _index != 2)
             {
                 Parent.SetCurrent(AdvertisementId);
             }
@@ -152,14 +156,14 @@ namespace Gizmo.Client.UI.Components
 
             this.SubscribeChange(_advertisementViewState);
 
-            Parent?.Register(this, Duplicate);
+            Parent?.Register(this);
         }
 
         public override void Dispose()
         {
             this.UnsubscribeChange(_advertisementViewState);
 
-            Parent?.Unregister(this, Duplicate);
+            Parent?.Unregister(this);
 
             base.Dispose();
         }
@@ -171,16 +175,32 @@ namespace Gizmo.Client.UI.Components
         protected string ClassName => new ClassMapper()
                 .Add("giz-ads-carousel-item")
                 .If("giz-ads-carousel-item--media", () => _advertisementViewState.MediaUrlType != AdvertisementMediaUrlType.None)
+                //Left item to fade out.
+                .If("previous-out", () => _index == 4 && _direction == 1 && !_switchSide)
+                //Left item.
                 .If("previous", () => _index == 1)
+                //Center item.
                 .If("current", () => _index == 2)
+                //Right item.
                 .If("next", () => _index == 3)
-                .If("bring-to-front-right", () => _index == 2 && _direction == 1)
+                //Right item to fade out.
+                .If("next-out", () => _index == 4 && _direction == -1 && !_switchSide)
+                //From center to left.
                 .If("send-to-back-left", () => _index == 1 && _direction == 1)
-                .If("bring-to-front", () => _index == 3 && _direction == 1)
-
-                .If("bring-to-front-left", () => _index == 2 && _direction == -1)
+                //From center to right.
                 .If("send-to-back-right", () => _index == 3 && _direction == -1)
-                //.If("send-to-back", () => _index == 1 && _direction == -1)
+                //From right to center.
+                .If("bring-to-front-right", () => _index == 2 && _direction == 1)
+                //From left to center.
+                .If("bring-to-front-left", () => _index == 2 && _direction == -1)
+                //.If("bring-to-front", () => _index == 3 && _direction == 1)
+                //Fade out side item.
+                .If("send-to-back", () => _index == 4 && !_switchSide)
+                //From left to right.
+                .If("send-to-right", () => _index == 3 && _direction == 1 && _switchSide)
+                //From right to left.
+                .If("send-to-left", () => _index == 1 && _direction == -1 && _switchSide)
+
                 .AsString();
 
         #endregion

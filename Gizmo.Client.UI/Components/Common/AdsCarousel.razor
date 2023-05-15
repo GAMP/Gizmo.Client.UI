@@ -9,7 +9,7 @@
 
             @foreach (var item in ViewState.Advertisements)
             {
-                <AdsCarouselItem AdvertisementId="@item.Id"/>
+                <AdsCarouselItem @key="@item.Id" AdvertisementId="@item.Id" SimpleMode="@(ViewState.Advertisements.Count() < 3)" />
             }
 
         </div>

@@ -124,14 +124,24 @@
             }
 
             &.primary:not(.disabled) {
-                background-color: rgba(250, 250, 250, 0.16);
+                //background-color: rgba(50, 53, 54, 0.5);
+                background-color: #2a2e30;
+
+                .giz-button__progress {
+                    background-color: #323536;
+                }
 
                 &:hover {
-                    background-color: #0091FF;
+                    background-color: rgba(0, 145, 255, 0.5);
+                    background-color: #115c95;
+
+                    .giz-button__progress {
+                        background-color: #0091FF;
+                    }
                 }
 
                 &.giz-button-shadow {
-                    box-shadow: $elevation-1-theme-client;
+                    //box-shadow: $elevation-1-theme-client;
                 }
             }
 
@@ -143,16 +153,44 @@
                 background-color: $unknown-color;
             }
 
-            &.danger {
-                &.disabled, &[disabled] {
+            &.accent:not(.disabled) {
+                //background-color: rgba(0, 120, 210, 0.5);
+                background-color: #114f7e;
+
+                .giz-button__progress {
+                    background-color: #0078D2;
+                }
+
+                &:hover {
+                    //background-color: rgba(0, 145, 255, 0.5);
+                    background-color: #115c95;
+
+                    .giz-button__progress {
+                        background-color: #0091FF;
+                    }
                 }
             }
 
-            &.accent:not(.disabled) {
-                background-color: rgba(63, 140, 255, 0.5);
+            &.danger:not(.disabled) {
+                //background-color: rgba(184, 20, 35, 0.5);
+                background-color: #6d1d27;
+
+                .giz-button__progress {
+                    background-color: #B81423;
+                }
 
                 &:hover {
-                    background-color: rgba(63, 140, 255, 0.5);
+                    //background-color: rgba(224, 19, 37, 0.5);
+                    background-color: #811d28;
+
+                    .giz-button__progress {
+                        background-color: #E01325;
+                    }
+                }
+            }
+
+            &.danger {
+                &.disabled, &[disabled] {
                 }
             }
         }
