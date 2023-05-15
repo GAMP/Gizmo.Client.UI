@@ -61,7 +61,7 @@ namespace Gizmo.Client.UI.Components
         /// 1 - EmptyResult
         /// 2 - Error
         /// </summary>
-        private byte _imageResultStatusCode;
+        private int _imageResultStatusCode;
         private ImageType _previousImageType;
         private int _previousImageId;
         readonly CancellationTokenSource _cancellationTokenSource = new();
@@ -99,7 +99,7 @@ namespace Gizmo.Client.UI.Components
 
                     if (imageStream is null || imageStream == Stream.Null)
                     {
-                        _imageResultStatusCode = 1;
+                        _imageResultStatusCode = imageStream == null ? 2 : 1;
 
                         await InvokeAsync(StateHasChanged);
 
@@ -109,6 +109,11 @@ namespace Gizmo.Client.UI.Components
                     using var streamReference = new DotNetStreamReference(imageStream);
 
                     await JS.InvokeVoidAsync("ClientFunctions.SetImageSourceAsync", ElementReference, streamReference);
+                }
+                catch (OperationCanceledException)
+                {
+                    //we have cancelled loading, this only happens on dispose so no extra action is needed
+                    //in order to render any component change
                 }
                 catch (Exception)
                 {
