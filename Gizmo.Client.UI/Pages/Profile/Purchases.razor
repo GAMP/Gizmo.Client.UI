@@ -15,7 +15,7 @@
                 Purchase History@*TODO: AAA*@
             </div>
 
-            <div class="giz-table-history">
+            <div class="giz-profile-user-purchases__body">
                 <DataGrid ItemSource="@ViewState.Orders.ToList()"
                           Context="order"
                           HasStickyHeader="true"
@@ -158,9 +158,10 @@
                     </ChildContent>
                 </DataGrid>
             </div>
-            <div>
-                <Button Text="<" IsDisabled="@(ViewState.PrevCursor == null)" @onclick="PurchasesService.LoadPrevious" />
-                <Button Text=">" IsDisabled="@(ViewState.NextCursor == null)" @onclick="PurchasesService.LoadNext" />
+
+            <div class="giz-profile-user-purchases__footer">
+                <Button LeftSVGIcon="Icons.ArrowLeft_Client" Variant="ButtonVariants.Text" IsDisabled="@(ViewState.PrevCursor == null)" @onclick="PurchasesService.LoadPrevious" />
+                <Button LeftSVGIcon="Icons.ArrowRight_Client" Variant="ButtonVariants.Text" IsDisabled="@(ViewState.NextCursor == null)" @onclick="PurchasesService.LoadNext" />
             </div>
         </div>
 
