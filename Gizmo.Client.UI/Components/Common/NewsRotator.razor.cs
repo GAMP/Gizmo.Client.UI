@@ -9,6 +9,8 @@ namespace Gizmo.Client.UI.Components
     {
         #region FIELDS
 
+        int c = 0;
+
         private System.Threading.Timer _timer;
 
         private List<NewsRotatorItem> _items = new List<NewsRotatorItem>();
@@ -39,21 +41,22 @@ namespace Gizmo.Client.UI.Components
 
         private void SlideNext(object stateInfo)
         {
-            int newIndex = _selectedIndex + 1;
-            if (newIndex > _items.Count - 1)
-                newIndex = 0;
+            //int newIndex = _selectedIndex + 1;
+            //if (newIndex > _items.Count - 1)
+            //    newIndex = 0;
 
-            for (int i = 0; i < _items.Count; i++)
-            {
-                _items[i].Clear();
-            }
+            //for (int i = 0; i < _items.Count; i++)
+            //{
+            //    _items[i].Clear();
+            //}
 
-            _items[_selectedIndex].SetCurrent();
-            _items[newIndex].SetNext();
+            //_items[_selectedIndex].SetCurrent();
+            //_items[newIndex].SetNext();
 
-            _selectedIndex = newIndex;
+            //_selectedIndex = newIndex;
 
-            //InvokeAsync(StateHasChanged);
+            c += 1;
+            InvokeAsync(StateHasChanged);
         }
 
         #region OVERRIDES

@@ -3,6 +3,8 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Gizmo.UI;
+using Gizmo.Web.Components;
+using Gizmo.Web.Components.Extensions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -52,6 +54,9 @@ namespace Gizmo.Client.UI.Components
         /// </summary>
         [Parameter]
         public RenderFragment ErrorPlaceholder { get; set; }
+
+        [Parameter]
+        public ImageFitType ImageFitType { get; set; } = ImageFitType.Fill;
 
         #endregion
 
@@ -131,5 +136,14 @@ namespace Gizmo.Client.UI.Components
             _cancellationTokenSource.Cancel();
         }
         #endregion
+
+        #region CLASSMAPPERS
+
+        protected string ImageClassName => new ClassMapper()
+                 .Add($"giz-image--{ImageFitType.ToDescriptionString()}")
+                 .AsString();
+
+        #endregion
+
     }
 }
