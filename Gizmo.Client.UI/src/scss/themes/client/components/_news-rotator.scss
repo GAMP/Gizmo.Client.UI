@@ -78,7 +78,7 @@
 
         &.fade-out {
             left: -100%;
-            animation-duration: 2s;
+            animation-duration: 1s;
             animation-name: rotator-fade-out-current-anim;
         }
 
@@ -90,24 +90,23 @@
 }
 
 @keyframes rotator-fade-out-current-anim {
-    0% {
+    from {
         left: 0;
         opacity: 1;
     }
-    50% {
+
+    to {
         left: -100%;
         opacity: 0;
     }
 }
 
 @keyframes rotator-fade-in-next-anim {
-    0% {
+    from {
         opacity: 0;
     }
-    50% {
-        opacity: 0;
-    }
-    100% {
+
+    to {
         opacity: 1;
     }
 }

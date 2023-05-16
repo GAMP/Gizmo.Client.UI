@@ -62,7 +62,7 @@ namespace Gizmo.Client.UI.Components
 
                     await InvokeAsync(StateHasChanged);
 
-                    await Task.Delay(2000); //Fade out time.
+                    await Task.Delay(1000); //Fade out time.
                 }
 
                 _image = Image;
