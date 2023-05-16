@@ -80,20 +80,6 @@ namespace Gizmo.Client.UI.Components
             await base.OnParametersSetAsync();
         }
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (firstRender)
-            {
-                await InvokeVoidAsync("writeLine", $"Render {this.ToString()}");
-            }
-            else
-            {
-                await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
-            }
-
-            await base.OnAfterRenderAsync(firstRender);
-        }
-
         #endregion
 
         #region CLASSMAPPERS
