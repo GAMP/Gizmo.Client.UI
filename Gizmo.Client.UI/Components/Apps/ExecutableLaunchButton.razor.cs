@@ -13,6 +13,8 @@ namespace Gizmo.Client.UI.Components
         private AppExeViewState _appExeViewState;
         private AppExeExecutionViewState _appExeExecutionViewState;
 
+        private bool _isOpen;
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
@@ -57,11 +59,13 @@ namespace Gizmo.Client.UI.Components
 
         private Task OnRepairClick()
         {
+            _isOpen = false;
             return AppExecutionService.AppExeExecuteAsync(_appExeExecutionViewState.AppExeId, true, default);
         }
 
         private Task OnTerminateClick()
         {
+            _isOpen = false;
             return AppExecutionService.AppExeTerminateAsync(_appExeExecutionViewState.AppExeId);
         }
 

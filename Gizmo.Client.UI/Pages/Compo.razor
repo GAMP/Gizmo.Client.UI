@@ -2,6 +2,13 @@
 
 <div style="height: 100%; overflow: auto">
 
+    <div>
+        <CheckBox @bind-IsChecked="Test" />
+    </div>
+    <div>
+        <CheckBox IsChecked="@Test" IsCheckedChanged="testt" />
+    </div>
+
     <ComboButton Progress="45"
                  Color="ButtonColors.Danger"
                  Variant="ButtonVariants.Progress"
@@ -32,12 +39,18 @@
                  Color="ButtonColors.Primary"
                  Variant="ButtonVariants.Progress"
                  IsFullWidth="true"
-                 OpenDirection="PopupOpenDirections.Cursor">
+                 OpenDirection="PopupOpenDirections.Cursor"
+                    @bind-IsOpen="_isopen">
         <ChildContent>
             Test
         </ChildContent>
         <DropDownItems>
-
+            <ListItem SVGIcon="Icons.Terminate_Client" OnClick="OnTerminateClick">
+                "GIZ_APPS_TERMINATE"
+            </ListItem>
+            <ListItem SVGIcon="Icons.Terminate_Client" OnClick="OnTerminateClick2">
+                "GIZ_APPS_TERMINATE"
+            </ListItem>
         </DropDownItems>
     </ComboButton>
 

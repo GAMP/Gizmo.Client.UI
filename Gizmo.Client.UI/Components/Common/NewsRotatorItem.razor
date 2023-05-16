@@ -1,11 +1,29 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 
-<div class="@Class @ClassName">
+<div class="@Class @ClassName" @onclick="OnClickHandle">
     <div class="giz-news-rotator-item__image">
-        <img src="_content/Gizmo.Client.UI/img/DemoNews.jpg" />
+        <div class="giz-news-rotator-item__image__feed">
+            @if (!string.IsNullOrEmpty(_image))
+            {
+                <img src="@_image" />
+            }
+        </div>
+        @if (!string.IsNullOrEmpty(_channelImage))
+        {
+            <div class="giz-news-rotator-item__image__channel">
+                <img src="@_channelImage" />
+            </div>
+        }
     </div>
     <div class="giz-news-rotator-item__message">
-        @((MarkupString)_text)
+        @if (!string.IsNullOrEmpty(_summary))
+        {
+            @((MarkupString)_summary)
+        }
+        else
+        {
+            @((MarkupString)_title)
+        }
     </div>
 </div>

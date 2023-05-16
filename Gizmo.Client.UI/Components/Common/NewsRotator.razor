@@ -1,8 +1,11 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 
-<div class="giz-news-rotator">
-    <CascadingValue Value="@this" IsFixed="true">
-        <NewsRotatorItem Text="@c.ToString()" />
-    </CascadingValue>
+<div class="giz-news-rotator-wrapper">
+    <div class="giz-news-rotator">
+        @if (FeedsViewState.CurrentFeed != null)
+        {
+            <NewsRotatorItem Image="@FeedsViewState.CurrentFeed.Image.Url" Title="@FeedsViewState.CurrentFeed.Title" Summary="@FeedsViewState.CurrentFeed.Summary" ChannelImage="@FeedsViewState.CurrentFeedChannel?.Image?.Url" />
+        }
+    </div>
 </div>

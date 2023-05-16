@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
 
@@ -49,6 +50,16 @@ namespace Gizmo.Client.UI.Pages
             });
         }
 
+        private bool _isopen;
+
+        public void OnTerminateClick()
+        {
+            _isopen = false;
+        }
+        public void OnTerminateClick2()
+        {
+        }
+
         public List<IconSelectCountry> Countries { get; set; }
 
         public IconSelectCountry SelectedCountry { get; set; }
@@ -70,6 +81,13 @@ namespace Gizmo.Client.UI.Pages
         public bool Transparent { get; set; }
 
         public bool FullWidth { get; set; }
+
+        public bool Test { get; set; }
+
+        public void testt(bool value)
+        {
+            Test = value;
+        }
 
         public Gizmo.Web.Components.ButtonVariants Variant { get; set; }
 
