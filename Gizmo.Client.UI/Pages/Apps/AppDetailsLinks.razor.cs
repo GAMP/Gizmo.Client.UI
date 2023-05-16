@@ -29,13 +29,13 @@ namespace Gizmo.Client.UI.Pages
             {
                 var appLinks = await AppLinkViewStateLookupService.GetStatesAsync();
                 _appLinksViewState = appLinks.Where(exe => exe.ApplicationId == ApplicationId);
-
-                await base.OnInitializedAsync();
             }
             catch (Exception ex)
             {
 
             }
-        }   
+
+            await base.OnInitializedAsync();
+        }
     }
 }

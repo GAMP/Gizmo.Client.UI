@@ -1,10 +1,11 @@
 ﻿using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
 {
-    public partial class AppDetailsLink : CustomDOMComponentBase
+    public partial class AppDetailsMediaItem : CustomDOMComponentBase
     {
         #region PROPERTIES
 

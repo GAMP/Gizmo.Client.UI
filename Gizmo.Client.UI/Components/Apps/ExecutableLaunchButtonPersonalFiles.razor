@@ -4,14 +4,14 @@
 
 @if (_appExeViewState != null && _appExeViewState.PersonalFiles.Count() > 0)
 {
-    <ListItem SVGIcon="Icons.FolderShared_Client">
+    <ListItem SVGIcon="Icons.FolderShared_Client" @bind-IsExpanded="_isExpanded">
         <ChildContent>
             @LocalizationService.GetString("GIZ_APPS_PERSONAL_FILES")
         </ChildContent>
         <NestedList>
             @foreach (var personalFile in _appExeViewState.PersonalFiles)
             {
-                <ExecutableLaunchButtonPersonalFile ExecutableId="@_appExeViewState.ExecutableId" PersonalFileId="@personalFile.PersonalFileId" @key="personalFile.PersonalFileId" />
+                <ExecutableLaunchButtonPersonalFile ExecutableId="@_appExeViewState.ExecutableId" PersonalFileId="@personalFile.PersonalFileId" @key="personalFile.PersonalFileId" OnClick="@OnClickPersonalFileButtonHandler" />
             }
         </NestedList>
     </ListItem>

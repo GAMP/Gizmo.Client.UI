@@ -1,10 +1,10 @@
-﻿using Gizmo.Client.UI.Pages;
-using Gizmo.Client.UI.Services;
+﻿using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
@@ -21,13 +21,7 @@ namespace Gizmo.Client.UI.Components
 
         [Inject()]
         AppExecutionService AppExecutionService { get; set; }
-
-        [Parameter]
-        public int ExecutableId { get; set; }
-
-        [Parameter]
-        public int PersonalFileId { get; set; }
-
+        
         [Inject()]
         public PersonalFileViewState PersonalFileViewState
         {
@@ -35,24 +29,31 @@ namespace Gizmo.Client.UI.Components
             private set { _personalFileViewState = value; }
         }
 
-        private Task OnClickPersonalFileButtonHandler()
+        [Parameter]
+        public int ExecutableId { get; set; }
+
+        [Parameter]
+        public int PersonalFileId { get; set; }
+
+        [Parameter]
+        public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+        private async Task OnClickPersonalFileButtonHandler(MouseEventArgs args)
         {
-            return AppExecutionService.PersonalFileExploreAsync(ExecutableId, PersonalFileId);
+            await OnClick.InvokeAsync(args);
+            await AppExecutionService.PersonalFileExploreAsync(ExecutableId, PersonalFileId);
         }
 
         protected override async Task OnInitializedAsync()
         {
             _personalFileViewState = await PersonalFileViewStateLookupService.GetStateAsync(PersonalFileId);
-
             this.SubscribeChange(_personalFileViewState);
-
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
             this.UnsubscribeChange(_personalFileViewState);
-
             base.Dispose();
         }
     }

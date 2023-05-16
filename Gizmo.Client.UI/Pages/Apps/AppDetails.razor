@@ -100,12 +100,12 @@
                 </div>
 
                 <div class="giz-app-details__app__info__additional-content">
-                    <div class="giz-app-details__app__info__additional-content__tags">
-                        @*@foreach (var item in Enum.GetValues(typeof(ApplicationModes)).OfType<ApplicationModes>())
+                    @*<div class="giz-app-details__app__info__additional-content__tags">
+                        @foreach (var item in Enum.GetValues(typeof(ApplicationModes)).OfType<ApplicationModes>())
                         {
-                        <div class="giz-app-tag">@LocalizationService.GetString(item)</div>
-                        }*@
-                    </div>
+                            <div class="giz-app-tag">@LocalizationService.GetString(item)</div>
+                        }
+                    </div>*@
                     <div class="giz-app-details__app__info__additional-content__tab">
                         <ClientTab>
                             <ClientTabItem Class="@(_selectedTabIndex == 0 ? "active" : "")">
@@ -123,7 +123,7 @@
                     <div class="giz-app-details__app__info__additional-content__media">
                         @if (_selectedTabIndex == 0)
                         {
-                            <AppDetailsMedia ApplicationId="@ApplicationId" @key="ApplicationId" />
+                            <AppDetailsMediaItems ApplicationId="@ApplicationId" @key="ApplicationId" />
                         }
                         else
                         {

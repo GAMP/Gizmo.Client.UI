@@ -3,6 +3,7 @@ using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
@@ -11,20 +12,31 @@ namespace Gizmo.Client.UI.Components
     {
         private AppExeViewState _appExeViewState;
 
+        private bool _isExpanded;
+
         [Inject]
         AppExeViewStateLookupService AppExeViewStateLookupService { get; set; }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
-
-        [Parameter]
-        public int ExecutableId { get; set; }
-
+        
         [Inject()]
         public AppExeViewState ViewState
         {
             get { return _appExeViewState;}
             private set { _appExeViewState = value; }
+        }
+
+        [Parameter]
+        public int ExecutableId { get; set; }
+
+        [Parameter]
+        public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+        private async Task OnClickPersonalFileButtonHandler(MouseEventArgs args)
+        {
+            _isExpanded = false;
+            await OnClick.InvokeAsync(args);
         }
 
         protected override async Task OnInitializedAsync()

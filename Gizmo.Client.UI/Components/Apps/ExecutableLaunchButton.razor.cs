@@ -69,6 +69,11 @@ namespace Gizmo.Client.UI.Components
             return AppExecutionService.AppExeTerminateAsync(_appExeExecutionViewState.AppExeId);
         }
 
+        private void OnClickPersonalFileButtonHandler()
+        {
+            _isOpen = false;
+        }
+
         protected override async Task OnInitializedAsync()
         {
             _appExeViewState = await AppExeViewStateLookupService.GetStateAsync(ExecutableId);
