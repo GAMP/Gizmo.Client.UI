@@ -33,9 +33,6 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         AdvertisementsViewState AdvertisementsViewState { get; set; }
 
-        [Inject()]
-        IClientDialogService DialogService { get; set; }
-
         #endregion
 
         protected override async Task OnAfterRenderAsync(bool firstRender)

@@ -78,13 +78,9 @@ namespace Gizmo.Client.UI.Services
             }, default, cancellationToken);
         }
 
-        public Task<ShowDialogResult<EmptyDialogResult>> ShowAdvertisementDialogAsync(AdvertisementViewState state, CancellationToken cancellationToken = default)
+        public Task<ShowDialogResult<EmptyDialogResult>> ShowMediaDialogAsync(MediaDialogParameters mediaDialogParameters, CancellationToken cancellationToken = default)
         {
-            var stateParams = new Dictionary<string, object>()
-            {
-                {nameof(AdvertisementViewState), state}
-            };
-            return ShowDialogAsync<AdsCarouselItemDialog>(stateParams, new DialogDisplayOptions()
+            return ShowDialogAsync<MediaDialog>(mediaDialogParameters.ToDictionary(), new DialogDisplayOptions()
             {
                 Closable = true,
                 CloseOnClick = true

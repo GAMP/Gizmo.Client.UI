@@ -3,9 +3,16 @@
 
 <div class="giz-news-rotator-wrapper">
     <div class="giz-news-rotator">
-        @if (FeedsViewState.CurrentFeed != null)
+        @if (FeedsViewState.IsInitializing)
         {
-            <NewsRotatorItem Image="@FeedsViewState.CurrentFeed.Image.Url" Title="@FeedsViewState.CurrentFeed.Title" Summary="@FeedsViewState.CurrentFeed.Summary" Url="@FeedsViewState.CurrentFeed.Link?.Url" ChannelImage="@FeedsViewState.CurrentFeedChannel?.Image?.Url" />
+            <Spinner />
+        }
+        else if (FeedsViewState.IsInitialized == true)
+        {
+            @if (FeedsViewState.CurrentFeed != null)
+            {
+                <NewsRotatorItem Image="@FeedsViewState.CurrentFeed.Image.Url" Title="@FeedsViewState.CurrentFeed.Title" Summary="@FeedsViewState.CurrentFeed.Summary" Url="@FeedsViewState.CurrentFeed.Link?.Url" ChannelImage="@FeedsViewState.CurrentFeedChannel?.Image?.Url" />
+            }
         }
     </div>
 </div>

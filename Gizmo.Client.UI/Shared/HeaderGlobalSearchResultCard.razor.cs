@@ -25,9 +25,6 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         UserCartViewService UserCartService { get; set; }
 
-        [Inject()]
-        IClientDialogService DialogService { get; set; }
-
         [Parameter]
         public GlobalSearchResultViewState Result { get; set; }
 

@@ -37,12 +37,6 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         AppDetailsPageViewState ViewState { get; set; }
 
-        [Inject]
-        public ActiveApplicationsViewService ActiveApplicationsService { get; set; }
-
-        [Inject()]
-        IClientDialogService DialogService { get; set; }
-
         [Parameter]
         [SupplyParameterFromQuery]
         public int ApplicationId { get; set; }

@@ -2,11 +2,7 @@
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
-using System.Collections.Generic;
-using System.Threading;
-using System;
 using System.Threading.Tasks;
-using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.States;
 
 namespace Gizmo.Client.UI.Components
@@ -21,9 +17,6 @@ namespace Gizmo.Client.UI.Components
         
         [Inject]
         UserCartViewState ViewState { get; set; }
-
-        [Inject()]
-        IClientDialogService DialogService { get; set; }
 
         private Task PlaceOrder()
         {

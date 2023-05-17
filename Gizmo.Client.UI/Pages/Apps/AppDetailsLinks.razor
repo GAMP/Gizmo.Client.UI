@@ -1,9 +1,9 @@
 ﻿@namespace Gizmo.Client.UI.Pages
 @inherits CustomDOMComponentBase
 
-<ClientTab ControlsPosition="TabControlsPositions.Internal">
+<div class="giz-app-links">
     @foreach (var link in _appLinksViewState.Where(a => a.MediaUrlType == AdvertisementMediaUrlType.None))
     {
         <AppDetailsLink Link="@link" @key="link.AppLinkId" />
     }
-</ClientTab>
+</div>

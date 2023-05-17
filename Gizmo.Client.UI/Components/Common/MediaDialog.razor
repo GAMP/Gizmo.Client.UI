@@ -4,18 +4,18 @@
 <HostedDialog>
     <div class="giz-client-dialog giz-ads-carousel-item-dialog">
         <div class="giz-client-dialog__header">
-            <div class="giz-client-dialog__header__title">@AdvertisementViewState.Title</div>
-            <div class="giz-client-dialog__header__subtitle">@AdvertisementViewState.MediaUrlType</div>
+            <div class="giz-client-dialog__header__title">@Title</div>
+            <div class="giz-client-dialog__header__subtitle">@MediaUrlType</div>
             <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CancelCallback.InvokeAsync()" />
         </div>
         <div class="giz-ads-carousel-item-dialog-frame" >
-            @switch (AdvertisementViewState.MediaUrlType)
+            @switch (MediaUrlType)
             {
                 case AdvertisementMediaUrlType.YouTube or AdvertisementMediaUrlType.Vk:
                 {
                     <iframe 
                             style="width:100%;height:100%"
-                            src="@AdvertisementViewState.MediaUrl"
+                            src="@MediaUrl"
                             frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             allowfullscreen>
@@ -26,7 +26,7 @@
                 {
                     <video
                         style="width:100%;height:100%" 
-                        src="@AdvertisementViewState.MediaUrl" 
+                        src="@MediaUrl" 
                         controls
                         autoplay>
                         Your browser does not support the video tag.

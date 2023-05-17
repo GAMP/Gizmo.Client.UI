@@ -34,9 +34,6 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         UserVerificationViewState UserVerificationViewState { get; set; }
 
-        [Inject()]
-        IClientDialogService DialogService { get; set; }
-
         public List<IconSelectCountry> Countries { get; set; } = new List<IconSelectCountry>();
 
         public void OnClickClearValueButtonHandler(MouseEventArgs args)
