@@ -396,6 +396,52 @@ window.addEventListener("mousedown", (event) => {
 });*/
 
 function navigationGoBack() {
-    //history.go(-1);
     window.history.back();
 }
+
+function navigationBlock() {
+    window.addEventListener('unload', function () {
+        console.log("unload");
+        console.log(document.URL);
+    });
+
+    window.addEventListener('beforeunload', function () {
+        console.log("beforeunload");
+        console.log(document.URL);
+    });
+
+    window.addEventListener('pagehide', function () {
+        console.log("pagehide");
+        console.log(document.URL);
+    });
+
+    window.addEventListener('load', function () {
+        console.log("load");
+        console.log(document.URL);
+    });
+
+    window.addEventListener('pushState', function () {
+        console.log("pushState");
+        console.log(document.URL);
+    });
+
+    window.addEventListener('replaceState', function () {
+        console.log("replaceState");
+        console.log(document.URL);
+    });
+
+    window.addEventListener('popstate', function () {
+        console.log("popstate");
+        console.log(document.URL);
+
+        if (document.URL.endsWith("/"))
+            window.history.go(1);
+
+        if (document.URL.endsWith("/registrationindex"))
+            window.history.go(-1);
+    });
+}
+
+/*function test() {
+    window.location.replace("https://localhost:5001/home");
+}*/

@@ -54,6 +54,7 @@ namespace Gizmo.Client.UI.Components
         {
             _clickHandled = true;
         }
+
         #region OVERRIDES
 
         public override async Task SetParametersAsync(ParameterView parameters)
@@ -79,7 +80,7 @@ namespace Gizmo.Client.UI.Components
             if (!firstRender)
             {
                 _shouldRender = false;
-                await InvokeVoidAsync("writeLine", $"ReRender {this}");
+                //await InvokeVoidAsync("writeLine", $"ReRender {this}");
             }
             else
             {

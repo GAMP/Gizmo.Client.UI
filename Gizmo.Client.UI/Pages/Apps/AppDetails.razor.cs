@@ -24,6 +24,9 @@ namespace Gizmo.Client.UI.Pages
         #region PROPERTIES
 
         [Inject]
+        NavigationService NavigationService { get; set; }
+
+        [Inject]
         AppCategoryViewStateLookupService AppCategoryViewStateLookupService { get; set; }
 
         [Inject]

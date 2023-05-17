@@ -63,12 +63,14 @@ namespace Gizmo.Client.UI.Pages
             UserLoginService.Reset();
         }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             this.SubscribeChange(ViewState);
             this.SubscribeChange(HostQRCodeViewState);
 
-            base.OnInitialized();
+            //await InvokeVoidAsync("navigationBlock");
+
+            await base.OnInitializedAsync();
         }
 
         public override void Dispose()
