@@ -394,3 +394,8 @@ window.addEventListener("mousedown", (event) => {
         console.log("try");
     }
 });*/
+
+function navigationGoBack() {
+    //history.go(-1);
+    window.history.back();
+}

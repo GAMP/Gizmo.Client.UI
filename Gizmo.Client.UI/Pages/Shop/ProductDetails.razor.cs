@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
+﻿using System.Threading.Tasks;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -53,6 +51,11 @@ namespace Gizmo.Client.UI.Pages
         [Parameter]
         [SupplyParameterFromQuery]
         public int ProductId { get; set; }
+
+        private async Task OnClickBackButtonHandler()
+        {
+            await InvokeVoidAsync("navigationGoBack");
+        }
 
         protected override async Task OnParametersSetAsync()
         {

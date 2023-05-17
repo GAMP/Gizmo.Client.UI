@@ -3,14 +3,14 @@
 
 <div class="giz-app-details">
     <div class="giz-app-details__app">
-        <NavLink href="@ClientRoutes.ApplicationsRoute" class="giz-app-details__app__navigation">
+        <div class="giz-app-details__app__navigation" @onclick="OnClickBackButtonHandler">
             <div class="giz-app-details__app__navigation__icon">
                 <Icon SVGIcon="Icons.ArrowLeftLong_Client" />
             </div>
             <div class="giz-app-details__app__navigation__label">
-                @LocalizationService.GetString("GIZ_GEN_BACK_TO", LocalizationService.GetString("MODULE_PAGE_APPS_TITLE"))
+                @LocalizationService.GetString("GIZ_GEN_BACK")
             </div>
-        </NavLink>
+        </div>
         <div class="giz-app-details__app__info">
             <div class="giz-app-details__app__info__side">
 
@@ -106,30 +106,39 @@
                             <div class="giz-app-tag">@LocalizationService.GetString(item)</div>
                         }
                     </div>*@
-                    <div class="giz-app-details__app__info__additional-content__tab">
-                        <ClientTab>
-                            <ClientTabItem Class="@(_selectedTabIndex == 0 ? "active" : "")">
-                                <div @onclick=@(() => SelectTab(0))>
-                                    @LocalizationService.GetString("GIZ_APPS_MEDIA")
-                                </div>
-                            </ClientTabItem>
-                            <ClientTabItem Class="@(_selectedTabIndex == 1 ? "active" : "")">
-                                <div @onclick=@(() => SelectTab(1))>
-                                    @LocalizationService.GetString("GIZ_APPS_LINKS")
-                                </div>
-                            </ClientTabItem>
-                        </ClientTab>
-                    </div>
-                    <div class="giz-app-details__app__info__additional-content__media">
-                        @if (_selectedTabIndex == 0)
-                        {
-                            <AppDetailsMediaItems ApplicationId="@ApplicationId" @key="ApplicationId" />
-                        }
-                        else
-                        {
-                            <AppDetailsLinks ApplicationId="@ApplicationId" @key="ApplicationId" />
-                        }
-                    </div>
+                    @if (_hasMedia || _hasLinks)
+                    {
+                        <div class="giz-app-details__app__info__additional-content__tab">
+                            <ClientTab>
+                                @if (_hasMedia)
+                                {
+                                    <ClientTabItem Class="@(_selectedTabIndex == 0 ? "active" : "")">
+                                        <div @onclick=@(() => SelectTab(0))>
+                                            @LocalizationService.GetString("GIZ_APPS_MEDIA")
+                                        </div>
+                                    </ClientTabItem>
+                                }
+                                @if (_hasLinks)
+                                {
+                                    <ClientTabItem Class="@(_selectedTabIndex == 1 ? "active" : "")">
+                                        <div @onclick=@(() => SelectTab(1))>
+                                            @LocalizationService.GetString("GIZ_APPS_LINKS")
+                                        </div>
+                                    </ClientTabItem>
+                                }
+                            </ClientTab>
+                        </div>
+                        <div class="giz-app-details__app__info__additional-content__media">
+                            @if (_selectedTabIndex == 0)
+                            {
+                                <AppDetailsMediaItems ApplicationId="@ApplicationId" @key="ApplicationId" />
+                            }
+                            else
+                            {
+                                <AppDetailsLinks ApplicationId="@ApplicationId" @key="ApplicationId" />
+                            }
+                        </div>
+                    }
                 </div>
 
             </div>

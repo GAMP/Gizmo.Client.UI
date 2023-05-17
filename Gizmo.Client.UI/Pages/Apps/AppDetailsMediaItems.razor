@@ -2,7 +2,7 @@
 @inherits CustomDOMComponentBase
 
 <ClientTab ControlsPosition="TabControlsPositions.Internal">
-    @foreach (var link in _appLinksViewState.Where(a => a.MediaUrlType != AdvertisementMediaUrlType.None))
+    @foreach (var link in _appLinkViewStates.Where(a => a.MediaUrlType != AdvertisementMediaUrlType.None))
     {
         <AppDetailsMediaItem Link="@link" @key="link.AppLinkId" />
     }

@@ -1,6 +1,4 @@
-﻿using Gizmo.Client.UI.Components;
-using Gizmo.Client.UI.Services;
-using Gizmo.Client.UI.View.Services;
+﻿using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
@@ -18,6 +16,9 @@ namespace Gizmo.Client.UI.Pages
         #region FIELDS
         private bool _showMore;
         private int _selectedTabIndex;
+        private IEnumerable<AppLinkViewState> _appLinkViewStates = Enumerable.Empty<AppLinkViewState>();
+        private bool _hasMedia;
+        private bool _hasLinks;
         #endregion
 
         #region PROPERTIES
@@ -36,6 +37,9 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         AppDetailsPageViewState ViewState { get; set; }
+
+        [Inject]
+        AppLinkViewStateLookupService AppLinkViewStateLookupService { get; set; }
 
         [Parameter]
         [SupplyParameterFromQuery]
@@ -56,15 +60,38 @@ namespace Gizmo.Client.UI.Pages
 
         #endregion
 
+        private async Task OnClickBackButtonHandler()
+        {
+            await InvokeVoidAsync("navigationGoBack");
+        }
+
         private Task OnClickMainButtonHandler()
         {
             _showMore = true;
             return Task.CompletedTask;
         }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             this.SubscribeChange(ViewState);
+
+            try
+            {
+                var appLinks = await AppLinkViewStateLookupService.GetStatesAsync();
+                _appLinkViewStates = appLinks.Where(exe => exe.ApplicationId == ApplicationId);
+
+                _hasMedia = _appLinkViewStates.Where(a => a.MediaUrlType != AdvertisementMediaUrlType.None).Any();
+                _hasLinks = _appLinkViewStates.Where(a => a.MediaUrlType == AdvertisementMediaUrlType.None).Any();
+
+                if (!_hasMedia && _hasLinks)
+                {
+                    _selectedTabIndex = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
 
             base.OnInitialized();
         }

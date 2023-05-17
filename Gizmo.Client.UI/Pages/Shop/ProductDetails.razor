@@ -5,14 +5,14 @@
 <div class="giz-product-details-wrapper">
     <div class="giz-product-details">
         <div class="giz-product-details__product giz-scrollbar--v">
-            <NavLink href="@ClientRoutes.ShopRoute" class="giz-product-details__product__navigation">
+            <div class="giz-product-details__product__navigation" @onclick="OnClickBackButtonHandler">
                 <div class="giz-product-details__product__navigation__icon">
                     <Icon SVGIcon="Icons.ArrowLeftLong_Client" />
                 </div>
                 <div class="giz-product-details__product__navigation__label">
-                    @LocalizationService.GetString("GIZ_GEN_BACK_TO", LocalizationService.GetString("MODULE_PAGE_SHOP_TITLE"))
+                    @LocalizationService.GetString("GIZ_GEN_BACK")
                 </div>
-            </NavLink>
+            </div>
             <div class="giz-product-details__product__info">
                 <div class="giz-product-details__product__info__image">
                     <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ViewState.Product?.DefaultImageId" ImageFitType="ImageFitType.Cover">

@@ -11,7 +11,7 @@ namespace Gizmo.Client.UI.Pages
 {
     public partial class AppDetailsMediaItems : CustomDOMComponentBase
     {
-        private IEnumerable<AppLinkViewState> _appLinksViewState = Enumerable.Empty<AppLinkViewState>();
+        private IEnumerable<AppLinkViewState> _appLinkViewStates = Enumerable.Empty<AppLinkViewState>();
 
         #region PROPERTIES
 
@@ -28,12 +28,13 @@ namespace Gizmo.Client.UI.Pages
             try
             {
                 var appLinks = await AppLinkViewStateLookupService.GetStatesAsync();
-                _appLinksViewState = appLinks.Where(exe => exe.ApplicationId == ApplicationId);
+                _appLinkViewStates = appLinks.Where(exe => exe.ApplicationId == ApplicationId);
             }
             catch (Exception ex)
             {
 
             }
+
             await base.OnInitializedAsync();
         }
     }

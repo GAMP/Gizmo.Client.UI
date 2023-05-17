@@ -11,7 +11,7 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class GizDockItem : CustomDOMComponentBase
     {
-        const int OPEN_DEFAULT_DELAY = 2000;
+        const int OPEN_DEFAULT_DELAY = 500;
         const int CLOSE_DEFAULT_DELAY = 200;
 
         #region CONSTRUCTOR

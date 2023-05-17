@@ -3,8 +3,10 @@ using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
 {
@@ -24,30 +26,29 @@ namespace Gizmo.Client.UI.Pages
         HostQRCodeViewState HostQRCodeViewState { get; set; }
 
         [Inject()]
-        HostReservationViewState HostReservationViewState 
-        {
-            get; 
-            set;
-        }
+        HostReservationViewState HostReservationViewState { get; set; }
 
         [Inject()]
-        UserRegistrationConfigurationViewState UserRegisterConfigurationViewState
-        {
-            get;init;
-        }
+        UserRegistrationConfigurationViewState UserRegisterConfigurationViewState { get; init; }
 
         [Inject()]
-        UserLoginConfigurationViewState UserLoginConfigurationViewState
-        {
-            get;init;
-        }
+        UserLoginConfigurationViewState UserLoginConfigurationViewState { get; init; }
 
         [Inject]
         HostLockViewService HostUserLockService { get; set; }
 
-
         [Inject]
         UserPasswordRecoveryMethodServiceViewState UserPasswordRecoveryMethodServiceViewState { get; set; }
+
+        private Task OnKeyPressHandle(KeyboardEventArgs args)
+        {
+            if (args.Key == "Enter")
+            {
+                return UserLoginService.LoginAsync();
+            }
+
+            return Task.CompletedTask;
+        }
 
         private void SelectLoginType(ICollection<Button> selectedItems)
         {
