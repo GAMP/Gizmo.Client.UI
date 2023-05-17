@@ -1,10 +1,9 @@
-﻿using Gizmo.Client.UI.Services;
+﻿using System.Threading.Tasks;
+using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
 {
@@ -28,16 +27,8 @@ namespace Gizmo.Client.UI.Pages
                 MediaUrlType = Link.MediaUrlType,
                 MediaUrl = Link.MediaUrl
             });
-            if (dialog.Result == DialogAddResult.Success)
-            {
-                try
-                {
-                    var result = await dialog.WaitForDialogResultAsync();
-                }
-                catch (OperationCanceledException)
-                {
-                }
-            }
+            if (dialog.Result == DialogResult.Opened)
+                _ = await dialog.WaitForDialogResultAsync();
         }
 
         protected override void OnInitialized()
