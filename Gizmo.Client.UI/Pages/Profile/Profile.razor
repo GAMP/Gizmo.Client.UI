@@ -1,99 +1,101 @@
 ﻿@namespace Gizmo.Client.UI.Pages
 @inherits CustomDOMComponentBase
 
-<div class="giz-profile">
-    <div class="giz-profile__body">
-        <ProfileHeader />
+<div class="giz-profile giz-scrollbar--v">
+    <div class="giz-profile__body-wrapper">
+        <div class="giz-profile__body">
+            <ProfileHeader />
     
-        <ProfileNavigation />
+            <ProfileNavigation />
 
-        <div class="giz-profile-sections">
-            <div class="giz-profile-section">
-                <div class="giz-profile-section__header">
-                    @LocalizationService.GetString("GIZ_USER_BASIC_INFO")
-                </div>
-                <div class="giz-profile-section__body">
+            <div class="giz-profile-sections">
+                <div class="giz-profile-section">
+                    <div class="giz-profile-section__header">
+                        @LocalizationService.GetString("GIZ_USER_BASIC_INFO")
+                    </div>
+                    <div class="giz-profile-section__body">
 
-                    <div class="giz-profile-section-item">
-                        <div class="giz-profile-section-item__avatar">
-                            @if (ViewState.Picture != null)
-                            {
-                                <Avatar Image="@ViewState.Picture" Variant="AvatarVariants.Circle" Class="giz-user-avatar" />
-                            }
-                            else
-                            {
-                                <Icon SVGIcon="Icons.AccountCircle_Client" Class="giz-user-avatar" />
-                            }
-                        </div>
-                        <div class="giz-profile-section-item__info">
-                            <div class="giz-profile-section-item__info__text">@ViewState.Username</div>
-                            <div class="giz-profile-section-item__info__text--name">@ViewState.FirstName @ViewState.LastName</div>
-                        </div>
-                        <div>
-                            <Button Variant="ButtonVariants.Outline" LeftSVGIcon="Icons.Edit_Client" @onclick="OnClickUpdateProfileButtonHandler" />
+                        <div class="giz-profile-section-item">
+                            <div class="giz-profile-section-item__avatar">
+                                @if (ViewState.Picture != null)
+                                {
+                                    <Avatar Image="@ViewState.Picture" Variant="AvatarVariants.Circle" Class="giz-user-avatar" />
+                                }
+                                else
+                                {
+                                    <Icon SVGIcon="Icons.AccountCircle_Client" Class="giz-user-avatar" />
+                                }
+                            </div>
+                            <div class="giz-profile-section-item__info">
+                                <div class="giz-profile-section-item__info__text">@ViewState.Username</div>
+                                <div class="giz-profile-section-item__info__text--name">@ViewState.FirstName @ViewState.LastName</div>
+                            </div>
+                            <div>
+                                <Button Variant="ButtonVariants.Outline" LeftSVGIcon="Icons.Edit_Client" @onclick="OnClickUpdateProfileButtonHandler" />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="giz-profile-section">
+                <div class="giz-profile-section">
+                    <div class="giz-profile-section__header">
+                        @LocalizationService.GetString("GIZ_USER_CONTACT_INFO")
+                    </div>
+                    <div class="giz-profile-section__body">
+
+                        <div class="giz-profile-section-item">
+                            <div class="giz-profile-section-item__icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 20C3.45 20 2.97917 19.8042 2.5875 19.4125C2.19583 19.0208 2 18.55 2 18V6C2 5.45 2.19583 4.97917 2.5875 4.5875C2.97917 4.19583 3.45 4 4 4H20C20.55 4 21.0208 4.19583 21.4125 4.5875C21.8042 4.97917 22 5.45 22 6V18C22 18.55 21.8042 19.0208 21.4125 19.4125C21.0208 19.8042 20.55 20 20 20H4ZM12 12.825C12.0833 12.825 12.1708 12.8125 12.2625 12.7875C12.3542 12.7625 12.4417 12.725 12.525 12.675L19.6 8.25C19.7333 8.16667 19.8333 8.0625 19.9 7.9375C19.9667 7.8125 20 7.675 20 7.525C20 7.19167 19.8583 6.94167 19.575 6.775C19.2917 6.60833 19 6.61667 18.7 6.8L12 11L5.3 6.8C5 6.61667 4.70833 6.6125 4.425 6.7875C4.14167 6.9625 4 7.20833 4 7.525C4 7.69167 4.03333 7.8375 4.1 7.9625C4.16667 8.0875 4.26667 8.18333 4.4 8.25L11.475 12.675C11.5583 12.725 11.6458 12.7625 11.7375 12.7875C11.8292 12.8125 11.9167 12.825 12 12.825Z" fill="#FAFAFA" />
+                                </svg>
+                            </div>
+                            <div class="giz-profile-section-item__info">
+                                <div class="giz-profile-section-item__info__title">@LocalizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")</div>
+                                <div class="giz-profile-section-item__info__text">@ViewState.Email</div>
+                            </div>
+                            <div>
+                                @*<Button Variant="ButtonVariants.Outline" LeftSVGIcon="Icons.Edit_Client" @onclick="OnClickUpdateEmailButtonHandler" />*@
+                            </div>
+                        </div>
+
+                        <div class="giz-profile-section-item">
+                            <div class="giz-profile-section-item__icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7 23C6.45 23 5.97917 22.8042 5.5875 22.4125C5.19583 22.0208 5 21.55 5 21V3C5 2.45 5.19583 1.97917 5.5875 1.5875C5.97917 1.19583 6.45 1 7 1H17C17.55 1 18.0208 1.19583 18.4125 1.5875C18.8042 1.97917 19 2.45 19 3V21C19 21.55 18.8042 22.0208 18.4125 22.4125C18.0208 22.8042 17.55 23 17 23H7ZM7 18H17V6H7V18Z" fill="#FAFAFA" />
+                                </svg>
+                            </div>
+                            <div class="giz-profile-section-item__info">
+                                <div class="giz-profile-section-item__info__title">@LocalizationService.GetString("GIZ_GEN_PHONE")</div>
+                                <div class="giz-profile-section-item__info__text">@ViewState.MobilePhone</div>
+                            </div>
+                            <div>
+                                @*<Button Variant="ButtonVariants.Outline" LeftSVGIcon="Icons.Edit_Client" @onclick="OnClickUpdateMobileButtonHandler" />*@
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="giz-profile-section">
                 <div class="giz-profile-section__header">
-                    @LocalizationService.GetString("GIZ_USER_CONTACT_INFO")
+                    @LocalizationService.GetString("GIZ_USER_SECURITY")
                 </div>
                 <div class="giz-profile-section__body">
 
                     <div class="giz-profile-section-item">
                         <div class="giz-profile-section-item__icon">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4 20C3.45 20 2.97917 19.8042 2.5875 19.4125C2.19583 19.0208 2 18.55 2 18V6C2 5.45 2.19583 4.97917 2.5875 4.5875C2.97917 4.19583 3.45 4 4 4H20C20.55 4 21.0208 4.19583 21.4125 4.5875C21.8042 4.97917 22 5.45 22 6V18C22 18.55 21.8042 19.0208 21.4125 19.4125C21.0208 19.8042 20.55 20 20 20H4ZM12 12.825C12.0833 12.825 12.1708 12.8125 12.2625 12.7875C12.3542 12.7625 12.4417 12.725 12.525 12.675L19.6 8.25C19.7333 8.16667 19.8333 8.0625 19.9 7.9375C19.9667 7.8125 20 7.675 20 7.525C20 7.19167 19.8583 6.94167 19.575 6.775C19.2917 6.60833 19 6.61667 18.7 6.8L12 11L5.3 6.8C5 6.61667 4.70833 6.6125 4.425 6.7875C4.14167 6.9625 4 7.20833 4 7.525C4 7.69167 4.03333 7.8375 4.1 7.9625C4.16667 8.0875 4.26667 8.18333 4.4 8.25L11.475 12.675C11.5583 12.725 11.6458 12.7625 11.7375 12.7875C11.8292 12.8125 11.9167 12.825 12 12.825Z" fill="#FAFAFA" />
+                                <path d="M3 19C2.71667 19 2.47917 18.9042 2.2875 18.7125C2.09583 18.5209 2 18.2834 2 18C2 17.7167 2.09583 17.4792 2.2875 17.2875C2.47917 17.0959 2.71667 17 3 17H21C21.2833 17 21.5208 17.0959 21.7125 17.2875C21.9042 17.4792 22 17.7167 22 18C22 18.2834 21.9042 18.5209 21.7125 18.7125C21.5208 18.9042 21.2833 19 21 19H3ZM2.5 12.575C2.31667 12.475 2.2 12.325 2.15 12.125C2.1 11.925 2.125 11.7334 2.225 11.55L2.7 10.7H1.75C1.53333 10.7 1.35417 10.6292 1.2125 10.4875C1.07083 10.3459 1 10.1667 1 9.95002C1 9.73336 1.07083 9.55419 1.2125 9.41252C1.35417 9.27086 1.53333 9.20002 1.75 9.20002H2.7L2.225 8.40002C2.125 8.21669 2.1 8.02502 2.15 7.82502C2.2 7.62502 2.31667 7.47502 2.5 7.37502C2.68333 7.27502 2.875 7.25002 3.075 7.30002C3.275 7.35002 3.425 7.46669 3.525 7.65002L4 8.45002L4.475 7.65002C4.575 7.46669 4.725 7.35002 4.925 7.30002C5.125 7.25002 5.31667 7.27502 5.5 7.37502C5.68333 7.47502 5.8 7.62502 5.85 7.82502C5.9 8.02502 5.875 8.21669 5.775 8.40002L5.3 9.20002H6.25C6.46667 9.20002 6.64583 9.27086 6.7875 9.41252C6.92917 9.55419 7 9.73336 7 9.95002C7 10.1667 6.92917 10.3459 6.7875 10.4875C6.64583 10.6292 6.46667 10.7 6.25 10.7H5.3L5.775 11.55C5.875 11.7334 5.9 11.925 5.85 12.125C5.8 12.325 5.68333 12.475 5.5 12.575C5.31667 12.675 5.125 12.7 4.925 12.65C4.725 12.6 4.575 12.4834 4.475 12.3L4 11.45L3.525 12.3C3.425 12.4834 3.275 12.6 3.075 12.65C2.875 12.7 2.68333 12.675 2.5 12.575ZM10.5 12.575C10.3167 12.475 10.2 12.325 10.15 12.125C10.1 11.925 10.125 11.7334 10.225 11.55L10.7 10.7H9.75C9.53333 10.7 9.35417 10.6292 9.2125 10.4875C9.07083 10.3459 9 10.1667 9 9.95002C9 9.73336 9.07083 9.55419 9.2125 9.41252C9.35417 9.27086 9.53333 9.20002 9.75 9.20002H10.7L10.225 8.40002C10.125 8.21669 10.1 8.02502 10.15 7.82502C10.2 7.62502 10.3167 7.47502 10.5 7.37502C10.6833 7.27502 10.875 7.25002 11.075 7.30002C11.275 7.35002 11.425 7.46669 11.525 7.65002L12 8.45002L12.475 7.65002C12.575 7.46669 12.725 7.35002 12.925 7.30002C13.125 7.25002 13.3167 7.27502 13.5 7.37502C13.6833 7.47502 13.8 7.62502 13.85 7.82502C13.9 8.02502 13.875 8.21669 13.775 8.40002L13.3 9.20002H14.25C14.4667 9.20002 14.6458 9.27086 14.7875 9.41252C14.9292 9.55419 15 9.73336 15 9.95002C15 10.1667 14.9292 10.3459 14.7875 10.4875C14.6458 10.6292 14.4667 10.7 14.25 10.7H13.3L13.775 11.55C13.875 11.7334 13.9 11.925 13.85 12.125C13.8 12.325 13.6833 12.475 13.5 12.575C13.3167 12.675 13.125 12.7 12.925 12.65C12.725 12.6 12.575 12.4834 12.475 12.3L12 11.45L11.525 12.3C11.425 12.4834 11.275 12.6 11.075 12.65C10.875 12.7 10.6833 12.675 10.5 12.575ZM18.5 12.575C18.3167 12.475 18.2 12.325 18.15 12.125C18.1 11.925 18.125 11.7334 18.225 11.55L18.7 10.7H17.75C17.5333 10.7 17.3542 10.6292 17.2125 10.4875C17.0708 10.3459 17 10.1667 17 9.95002C17 9.73336 17.0708 9.55419 17.2125 9.41252C17.3542 9.27086 17.5333 9.20002 17.75 9.20002H18.7L18.225 8.40002C18.125 8.21669 18.1 8.02502 18.15 7.82502C18.2 7.62502 18.3167 7.47502 18.5 7.37502C18.6833 7.27502 18.875 7.25002 19.075 7.30002C19.275 7.35002 19.425 7.46669 19.525 7.65002L20 8.45002L20.475 7.65002C20.575 7.46669 20.725 7.35002 20.925 7.30002C21.125 7.25002 21.3167 7.27502 21.5 7.37502C21.6833 7.47502 21.8 7.62502 21.85 7.82502C21.9 8.02502 21.875 8.21669 21.775 8.40002L21.3 9.20002H22.25C22.4667 9.20002 22.6458 9.27086 22.7875 9.41252C22.9292 9.55419 23 9.73336 23 9.95002C23 10.1667 22.9292 10.3459 22.7875 10.4875C22.6458 10.6292 22.4667 10.7 22.25 10.7H21.3L21.775 11.55C21.875 11.7334 21.9 11.925 21.85 12.125C21.8 12.325 21.6833 12.475 21.5 12.575C21.3167 12.675 21.125 12.7 20.925 12.65C20.725 12.6 20.575 12.4834 20.475 12.3L20 11.45L19.525 12.3C19.425 12.4834 19.275 12.6 19.075 12.65C18.875 12.7 18.6833 12.675 18.5 12.575Z" fill="#FAFAFA" />
                             </svg>
                         </div>
-                        <div class="giz-profile-section-item__info">
-                            <div class="giz-profile-section-item__info__title">@LocalizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")</div>
-                            <div class="giz-profile-section-item__info__text">@ViewState.Email</div>
-                        </div>
+                        <div class="giz-profile-section-item__info__text">@LocalizationService.GetString("GIZ_USER_UPDATE_PASSWORD")</div>
                         <div>
-                            @*<Button Variant="ButtonVariants.Outline" LeftSVGIcon="Icons.Edit_Client" @onclick="OnClickUpdateEmailButtonHandler" />*@
+                            <Button Variant="ButtonVariants.Outline" LeftSVGIcon="Icons.Edit_Client" @onclick="OnClickChangePasswordButtonHandler" />
                         </div>
-                    </div>
-
-                    <div class="giz-profile-section-item">
-                        <div class="giz-profile-section-item__icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M7 23C6.45 23 5.97917 22.8042 5.5875 22.4125C5.19583 22.0208 5 21.55 5 21V3C5 2.45 5.19583 1.97917 5.5875 1.5875C5.97917 1.19583 6.45 1 7 1H17C17.55 1 18.0208 1.19583 18.4125 1.5875C18.8042 1.97917 19 2.45 19 3V21C19 21.55 18.8042 22.0208 18.4125 22.4125C18.0208 22.8042 17.55 23 17 23H7ZM7 18H17V6H7V18Z" fill="#FAFAFA" />
-                            </svg>
-                        </div>
-                        <div class="giz-profile-section-item__info">
-                            <div class="giz-profile-section-item__info__title">@LocalizationService.GetString("GIZ_GEN_PHONE")</div>
-                            <div class="giz-profile-section-item__info__text">@ViewState.MobilePhone</div>
-                        </div>
-                        <div>
-                            @*<Button Variant="ButtonVariants.Outline" LeftSVGIcon="Icons.Edit_Client" @onclick="OnClickUpdateMobileButtonHandler" />*@
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="giz-profile-section">
-            <div class="giz-profile-section__header">
-                @LocalizationService.GetString("GIZ_USER_SECURITY")
-            </div>
-            <div class="giz-profile-section__body">
-
-                <div class="giz-profile-section-item">
-                    <div class="giz-profile-section-item__icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3 19C2.71667 19 2.47917 18.9042 2.2875 18.7125C2.09583 18.5209 2 18.2834 2 18C2 17.7167 2.09583 17.4792 2.2875 17.2875C2.47917 17.0959 2.71667 17 3 17H21C21.2833 17 21.5208 17.0959 21.7125 17.2875C21.9042 17.4792 22 17.7167 22 18C22 18.2834 21.9042 18.5209 21.7125 18.7125C21.5208 18.9042 21.2833 19 21 19H3ZM2.5 12.575C2.31667 12.475 2.2 12.325 2.15 12.125C2.1 11.925 2.125 11.7334 2.225 11.55L2.7 10.7H1.75C1.53333 10.7 1.35417 10.6292 1.2125 10.4875C1.07083 10.3459 1 10.1667 1 9.95002C1 9.73336 1.07083 9.55419 1.2125 9.41252C1.35417 9.27086 1.53333 9.20002 1.75 9.20002H2.7L2.225 8.40002C2.125 8.21669 2.1 8.02502 2.15 7.82502C2.2 7.62502 2.31667 7.47502 2.5 7.37502C2.68333 7.27502 2.875 7.25002 3.075 7.30002C3.275 7.35002 3.425 7.46669 3.525 7.65002L4 8.45002L4.475 7.65002C4.575 7.46669 4.725 7.35002 4.925 7.30002C5.125 7.25002 5.31667 7.27502 5.5 7.37502C5.68333 7.47502 5.8 7.62502 5.85 7.82502C5.9 8.02502 5.875 8.21669 5.775 8.40002L5.3 9.20002H6.25C6.46667 9.20002 6.64583 9.27086 6.7875 9.41252C6.92917 9.55419 7 9.73336 7 9.95002C7 10.1667 6.92917 10.3459 6.7875 10.4875C6.64583 10.6292 6.46667 10.7 6.25 10.7H5.3L5.775 11.55C5.875 11.7334 5.9 11.925 5.85 12.125C5.8 12.325 5.68333 12.475 5.5 12.575C5.31667 12.675 5.125 12.7 4.925 12.65C4.725 12.6 4.575 12.4834 4.475 12.3L4 11.45L3.525 12.3C3.425 12.4834 3.275 12.6 3.075 12.65C2.875 12.7 2.68333 12.675 2.5 12.575ZM10.5 12.575C10.3167 12.475 10.2 12.325 10.15 12.125C10.1 11.925 10.125 11.7334 10.225 11.55L10.7 10.7H9.75C9.53333 10.7 9.35417 10.6292 9.2125 10.4875C9.07083 10.3459 9 10.1667 9 9.95002C9 9.73336 9.07083 9.55419 9.2125 9.41252C9.35417 9.27086 9.53333 9.20002 9.75 9.20002H10.7L10.225 8.40002C10.125 8.21669 10.1 8.02502 10.15 7.82502C10.2 7.62502 10.3167 7.47502 10.5 7.37502C10.6833 7.27502 10.875 7.25002 11.075 7.30002C11.275 7.35002 11.425 7.46669 11.525 7.65002L12 8.45002L12.475 7.65002C12.575 7.46669 12.725 7.35002 12.925 7.30002C13.125 7.25002 13.3167 7.27502 13.5 7.37502C13.6833 7.47502 13.8 7.62502 13.85 7.82502C13.9 8.02502 13.875 8.21669 13.775 8.40002L13.3 9.20002H14.25C14.4667 9.20002 14.6458 9.27086 14.7875 9.41252C14.9292 9.55419 15 9.73336 15 9.95002C15 10.1667 14.9292 10.3459 14.7875 10.4875C14.6458 10.6292 14.4667 10.7 14.25 10.7H13.3L13.775 11.55C13.875 11.7334 13.9 11.925 13.85 12.125C13.8 12.325 13.6833 12.475 13.5 12.575C13.3167 12.675 13.125 12.7 12.925 12.65C12.725 12.6 12.575 12.4834 12.475 12.3L12 11.45L11.525 12.3C11.425 12.4834 11.275 12.6 11.075 12.65C10.875 12.7 10.6833 12.675 10.5 12.575ZM18.5 12.575C18.3167 12.475 18.2 12.325 18.15 12.125C18.1 11.925 18.125 11.7334 18.225 11.55L18.7 10.7H17.75C17.5333 10.7 17.3542 10.6292 17.2125 10.4875C17.0708 10.3459 17 10.1667 17 9.95002C17 9.73336 17.0708 9.55419 17.2125 9.41252C17.3542 9.27086 17.5333 9.20002 17.75 9.20002H18.7L18.225 8.40002C18.125 8.21669 18.1 8.02502 18.15 7.82502C18.2 7.62502 18.3167 7.47502 18.5 7.37502C18.6833 7.27502 18.875 7.25002 19.075 7.30002C19.275 7.35002 19.425 7.46669 19.525 7.65002L20 8.45002L20.475 7.65002C20.575 7.46669 20.725 7.35002 20.925 7.30002C21.125 7.25002 21.3167 7.27502 21.5 7.37502C21.6833 7.47502 21.8 7.62502 21.85 7.82502C21.9 8.02502 21.875 8.21669 21.775 8.40002L21.3 9.20002H22.25C22.4667 9.20002 22.6458 9.27086 22.7875 9.41252C22.9292 9.55419 23 9.73336 23 9.95002C23 10.1667 22.9292 10.3459 22.7875 10.4875C22.6458 10.6292 22.4667 10.7 22.25 10.7H21.3L21.775 11.55C21.875 11.7334 21.9 11.925 21.85 12.125C21.8 12.325 21.6833 12.475 21.5 12.575C21.3167 12.675 21.125 12.7 20.925 12.65C20.725 12.6 20.575 12.4834 20.475 12.3L20 11.45L19.525 12.3C19.425 12.4834 19.275 12.6 19.075 12.65C18.875 12.7 18.6833 12.675 18.5 12.575Z" fill="#FAFAFA" />
-                        </svg>
-                    </div>
-                    <div class="giz-profile-section-item__info__text">@LocalizationService.GetString("GIZ_USER_UPDATE_PASSWORD")</div>
-                    <div>
-                        <Button Variant="ButtonVariants.Outline" LeftSVGIcon="Icons.Edit_Client" @onclick="OnClickChangePasswordButtonHandler" />
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
         </div>
     </div>
 </div>

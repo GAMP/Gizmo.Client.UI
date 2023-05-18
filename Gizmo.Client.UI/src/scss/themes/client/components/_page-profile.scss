@@ -1,11 +1,8 @@
 //=============== Page Profile ================//
 
 .giz-profile {
-    display: flex;
-    justify-content: center;
-    padding-top: 7.2rem;
     height: 100%;
-    overflow: hidden;
+    overflow: auto;
 
     .giz-user-avatar {
         width: 5.6rem;
@@ -88,9 +85,15 @@
     &__body {
         display: grid;
         grid-template-rows: min-content min-content 1fr;
-        height: 100%;
+        min-height: 100%;
         width: 113.8rem;
         overflow: hidden;
+
+        &-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 7.2rem 0 3rem 0;
+        }
     }
 
     &-navigation {
@@ -166,8 +169,9 @@
     &-user-purchases {
         display: grid;
         grid-template-rows: min-content 1fr;
-        padding: 4.0rem 0;
+        padding: 4.0rem 0 0 0;
         height: 100%;
+        //max-height: 65rem;
         overflow: hidden;
 
         &__header {

@@ -4,166 +4,168 @@
 @using Gizmo.Client.UI.View.States
 @using Gizmo
 
-<div class="giz-profile">
-    <div class="giz-profile__body">
-        <ProfileHeader />
+<div class="giz-profile giz-scrollbar--v">
+    <div class="giz-profile__body-wrapper">
+        <div class="giz-profile__body">
+            <ProfileHeader />
     
-        <ProfileNavigation />
+            <ProfileNavigation />
 
-        <div class="giz-profile-user-purchases">
-            <div class="giz-profile-user-purchases__header">
-                Purchase History@*TODO: AAA*@
-            </div>
+            <div class="giz-profile-user-purchases">
+                <div class="giz-profile-user-purchases__header">
+                    Purchase History@*TODO: AAA*@
+                </div>
 
-            <div class="giz-profile-user-purchases__body">
-                <DataGrid ItemSource="@ViewState.Orders.ToList()"
-                          Context="order"
-                          HasStickyHeader="true"
-                          DetailTemplateCustomColumns="true"
-                          Class="giz-scrollbar--v">
-                    <DetailTemplate>
-                        <td colspan="2">
-                            <div class="order-line-details">
-                                @foreach (var orderLine in order.OrderLines)
-                                {
-                                    @if (orderLine.LineType != LineType.SessionTime && orderLine.LineType != LineType.FixedTime && orderLine.ProductId.HasValue)
+                <div class="giz-profile-user-purchases__body">
+                    <DataGrid ItemSource="@ViewState.Orders.ToList()"
+                              Context="order"
+                              HasStickyHeader="true"
+                              DetailTemplateCustomColumns="true"
+                              Class="giz-scrollbar--v">
+                        <DetailTemplate>
+                            <td colspan="2">
+                                <div class="order-line-details">
+                                    @foreach (var orderLine in order.OrderLines)
                                     {
-                                        <a class="order-line-details-product-name" href="@($"{ClientRoutes.ProductDetailsRoute}?ProductId={orderLine.ProductId.Value}")">@orderLine.ProductName</a>
+                                        @if (orderLine.LineType != LineType.SessionTime && orderLine.LineType != LineType.FixedTime && orderLine.ProductId.HasValue)
+                                        {
+                                            <a class="order-line-details-product-name" href="@($"{ClientRoutes.ProductDetailsRoute}?ProductId={orderLine.ProductId.Value}")">@orderLine.ProductName</a>
+                                        }
+                                        else
+                                        {
+                                            <div class="order-line-details-product-name">@orderLine.ProductName</div>
+                                        }
+                                    }
+                                </div>
+                            </td>
+                            <td>
+                                <div class="order-line-details">
+                                    @foreach (var orderLine in order.OrderLines)
+                                    {
+                                        <div class="order-line-details-quantity">@orderLine.Quantity pcs.</div>@*TODO: AAA*@
+                                    }
+                                </div>
+                            </td>
+                            <td>
+                                <div class="order-line-details">
+                                    @foreach (var orderLine in order.OrderLines)
+                                    {
+                                        <div class="order-line-details-price">@orderLine.TotalPrice.ToString("C") @orderLine.TotalPointsPrice <Points2Icon /></div>
+                                    }
+                                </div>
+                            </td>
+                            <td colspan="2">
+                                <div class="order-details">
+                                    @if (order.TotalPointsAward > 0)
+                                    {
+                                        <div class="order-details-points-title">Earned points:</div>
+                                        <div class="order-details-points">@order.TotalPointsAward <PointsAward2Icon/></div>
+                                    }
+                                    <div class="order-details-notes-title">Order comments:</div>
+                                    <div class="order-details-notes">@order.Notes</div>
+                                </div>
+                            </td>
+                        </DetailTemplate>
+                        <ChildContent>
+                            <DataGridColumn Style="white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;" Field="@(nameof(UserOrderViewState.ProductNames))" TItemType="UserOrderViewState" Context="order">
+                                <HeaderTemplate>
+                                    Order
+                                </HeaderTemplate>
+                                <CellTemplate>
+                                    @order.ProductNames
+                                    @*<div class="order-product-names">@order.ProductNames</div>*@
+                                </CellTemplate>
+                            </DataGridColumn>
+                            <DataGridColumn Style="" Field="@(nameof(UserOrderViewState.OrderStatus))" TItemType="UserOrderViewState" Context="order">
+                                <HeaderTemplate>
+                                    Order status
+                                </HeaderTemplate>
+                                <CellTemplate>
+                                    @if (order.Invoice?.IsVoided == true)
+                                    {
+                                        <div class="order-canceled">@LocalizationService.GetString("ORDER_STATUS_VOIDED")</div>
                                     }
                                     else
                                     {
-                                        <div class="order-line-details-product-name">@orderLine.ProductName</div>
+                                        @switch (order.OrderStatus)
+                                        {
+                                            case OrderStatus.OnHold:
+                                                <div class="order-on-hold">@LocalizationService.GetString("ORDER_STATUS_ON_HOLD")</div>
+                                                break;
+
+                                            case OrderStatus.Completed:
+                                                <div class="order-completed">@LocalizationService.GetString("ORDER_STATUS_COMPLETED")</div>
+                                                break;
+
+                                            case OrderStatus.Canceled:
+                                                <div class="order-canceled">@LocalizationService.GetString("ORDER_STATUS_CANCELED")</div>
+                                                break;
+
+                                            case OrderStatus.Accepted:
+                                                <div class="order-accepted">@LocalizationService.GetString("ORDER_STATUS_ACCEPTED")</div>
+                                                break;
+                                        }
                                     }
-                                }
-                            </div>
-                        </td>
-                        <td>
-                            <div class="order-line-details">
-                                @foreach (var orderLine in order.OrderLines)
-                                {
-                                    <div class="order-line-details-quantity">@orderLine.Quantity pcs.</div>@*TODO: AAA*@
-                                }
-                            </div>
-                        </td>
-                        <td>
-                            <div class="order-line-details">
-                                @foreach (var orderLine in order.OrderLines)
-                                {
-                                    <div class="order-line-details-price">@orderLine.TotalPrice.ToString("C") @orderLine.TotalPointsPrice <Points2Icon /></div>
-                                }
-                            </div>
-                        </td>
-                        <td colspan="2">
-                            <div class="order-details">
-                                @if (order.TotalPointsAward > 0)
-                                {
-                                    <div class="order-details-points-title">Earned points:</div>
-                                    <div class="order-details-points">@order.TotalPointsAward <PointsAward2Icon/></div>
-                                }
-                                <div class="order-details-notes-title">Order comments:</div>
-                                <div class="order-details-notes">@order.Notes</div>
-                            </div>
-                        </td>
-                    </DetailTemplate>
-                    <ChildContent>
-                        <DataGridColumn Style="white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;" Field="@(nameof(UserOrderViewState.ProductNames))" TItemType="UserOrderViewState" Context="order">
-                            <HeaderTemplate>
-                                Order
-                            </HeaderTemplate>
-                            <CellTemplate>
-                                @order.ProductNames
-                                @*<div class="order-product-names">@order.ProductNames</div>*@
-                            </CellTemplate>
-                        </DataGridColumn>
-                        <DataGridColumn Style="" Field="@(nameof(UserOrderViewState.OrderStatus))" TItemType="UserOrderViewState" Context="order">
-                            <HeaderTemplate>
-                                Order status
-                            </HeaderTemplate>
-                            <CellTemplate>
-                                @if (order.Invoice?.IsVoided == true)
-                                {
-                                    <div class="order-canceled">@LocalizationService.GetString("ORDER_STATUS_VOIDED")</div>
-                                }
-                                else
-                                {
-                                    @switch (order.OrderStatus)
+                                </CellTemplate>
+                            </DataGridColumn>
+                            <DataGridColumn Style="" Field="@(nameof(UserOrderViewState.OrderDate))" TItemType="UserOrderViewState" Context="order">
+                                <HeaderTemplate>
+                                    Date
+                                </HeaderTemplate>
+                                <CellTemplate>
+                                    @order.OrderDate.ToString()
+                                </CellTemplate>
+                            </DataGridColumn>
+                            <DataGridColumn Style="" Field="@(nameof(UserOrderViewState.Invoice))" TItemType="UserOrderViewState" Context="order">
+                                <HeaderTemplate>
+                                    Payment method
+                                </HeaderTemplate>
+                                <CellTemplate>
+                                    <div class="order-payment-method-names">@order.Invoice?.PaymentMethodNames</div>
+                                </CellTemplate>
+                            </DataGridColumn>
+                            <DataGridColumn Style="" TextAlignment="TextAlignments.Right" Field="@(nameof(UserOrderViewState.TotalPrice))" TItemType="UserOrderViewState" Context="order">
+                                <HeaderTemplate>
+                                    Order price
+                                </HeaderTemplate>
+                                <CellTemplate>
+                                    @order.TotalPrice.ToString("C") @order.TotalPointsPrice <Points2Icon />
+                                </CellTemplate>
+                            </DataGridColumn>
+                            <DataGridColumn Style="" Field="@(nameof(UserOrderViewState.Invoice))" TItemType="UserOrderViewState" Context="order">
+                                <HeaderTemplate>
+                                    Payment status
+                                </HeaderTemplate>
+                                <CellTemplate>
+                                    @if (order.Invoice != null)
                                     {
-                                        case OrderStatus.OnHold:
-                                            <div class="order-on-hold">@LocalizationService.GetString("ORDER_STATUS_ON_HOLD")</div>
-                                            break;
+                                        @switch (order.Invoice.PaymentStatus)
+                                        {
+                                            case InvoiceStatus.Unpaid:
+                                                <div class="order-invoice-unpaid">@LocalizationService.GetString("ORDER_INVOICE_STATUS_UNPAID")</div>
+                                                break;
 
-                                        case OrderStatus.Completed:
-                                            <div class="order-completed">@LocalizationService.GetString("ORDER_STATUS_COMPLETED")</div>
-                                            break;
+                                            case InvoiceStatus.PartialyPaid:
+                                                <div class="order-invoice-partialy-paid">@LocalizationService.GetString("ORDER_INVOICE_STATUS_PARTIALY_PAID")</div>
+                                                break;
 
-                                        case OrderStatus.Canceled:
-                                            <div class="order-canceled">@LocalizationService.GetString("ORDER_STATUS_CANCELED")</div>
-                                            break;
-
-                                        case OrderStatus.Accepted:
-                                            <div class="order-accepted">@LocalizationService.GetString("ORDER_STATUS_ACCEPTED")</div>
-                                            break;
+                                            case InvoiceStatus.Paid:
+                                                <div class="order-invoice-paid">@LocalizationService.GetString("ORDER_INVOICE_STATUS_PAID")</div>
+                                                break;
+                                        }
                                     }
-                                }
-                            </CellTemplate>
-                        </DataGridColumn>
-                        <DataGridColumn Style="" Field="@(nameof(UserOrderViewState.OrderDate))" TItemType="UserOrderViewState" Context="order">
-                            <HeaderTemplate>
-                                Date
-                            </HeaderTemplate>
-                            <CellTemplate>
-                                @order.OrderDate.ToString()
-                            </CellTemplate>
-                        </DataGridColumn>
-                        <DataGridColumn Style="" Field="@(nameof(UserOrderViewState.Invoice))" TItemType="UserOrderViewState" Context="order">
-                            <HeaderTemplate>
-                                Payment method
-                            </HeaderTemplate>
-                            <CellTemplate>
-                                <div class="order-payment-method-names">@order.Invoice?.PaymentMethodNames</div>
-                            </CellTemplate>
-                        </DataGridColumn>
-                        <DataGridColumn Style="" TextAlignment="TextAlignments.Right" Field="@(nameof(UserOrderViewState.TotalPrice))" TItemType="UserOrderViewState" Context="order">
-                            <HeaderTemplate>
-                                Order price
-                            </HeaderTemplate>
-                            <CellTemplate>
-                                @order.TotalPrice.ToString("C") @order.TotalPointsPrice <Points2Icon />
-                            </CellTemplate>
-                        </DataGridColumn>
-                        <DataGridColumn Style="" Field="@(nameof(UserOrderViewState.Invoice))" TItemType="UserOrderViewState" Context="order">
-                            <HeaderTemplate>
-                                Payment status
-                            </HeaderTemplate>
-                            <CellTemplate>
-                                @if (order.Invoice != null)
-                                {
-                                    @switch (order.Invoice.PaymentStatus)
-                                    {
-                                        case InvoiceStatus.Unpaid:
-                                            <div class="order-invoice-unpaid">@LocalizationService.GetString("ORDER_INVOICE_STATUS_UNPAID")</div>
-                                            break;
+                                </CellTemplate>
+                            </DataGridColumn>
+                        </ChildContent>
+                    </DataGrid>
+                </div>
 
-                                        case InvoiceStatus.PartialyPaid:
-                                            <div class="order-invoice-partialy-paid">@LocalizationService.GetString("ORDER_INVOICE_STATUS_PARTIALY_PAID")</div>
-                                            break;
-
-                                        case InvoiceStatus.Paid:
-                                            <div class="order-invoice-paid">@LocalizationService.GetString("ORDER_INVOICE_STATUS_PAID")</div>
-                                            break;
-                                    }
-                                }
-                            </CellTemplate>
-                        </DataGridColumn>
-                    </ChildContent>
-                </DataGrid>
+                <div class="giz-profile-user-purchases__footer">
+                    <Button LeftSVGIcon="Icons.ArrowLeft_Client" Variant="ButtonVariants.Text" IsDisabled="@(ViewState.PrevCursor == null)" @onclick="PurchasesService.LoadPrevious" />
+                    <Button LeftSVGIcon="Icons.ArrowRight_Client" Variant="ButtonVariants.Text" IsDisabled="@(ViewState.NextCursor == null)" @onclick="PurchasesService.LoadNext" />
+                </div>
             </div>
 
-            <div class="giz-profile-user-purchases__footer">
-                <Button LeftSVGIcon="Icons.ArrowLeft_Client" Variant="ButtonVariants.Text" IsDisabled="@(ViewState.PrevCursor == null)" @onclick="PurchasesService.LoadPrevious" />
-                <Button LeftSVGIcon="Icons.ArrowRight_Client" Variant="ButtonVariants.Text" IsDisabled="@(ViewState.NextCursor == null)" @onclick="PurchasesService.LoadNext" />
-            </div>
         </div>
-
     </div>
 </div>
