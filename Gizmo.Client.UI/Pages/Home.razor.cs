@@ -5,6 +5,7 @@ using Gizmo.UI;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,6 +18,9 @@ namespace Gizmo.Client.UI.Pages
     public partial class Home : CustomDOMComponentBase, IAsyncDisposable
     {
         #region PROPERTIES
+
+        [Inject]
+        IOptions<PopularItemsOptions> PopularItemsOptions { get; set; }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }

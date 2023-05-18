@@ -7,6 +7,7 @@ using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Options;
 
 namespace Gizmo.Client.UI.Pages
 {
@@ -17,6 +18,9 @@ namespace Gizmo.Client.UI.Pages
     public partial class AppsIndex : CustomDOMComponentBase
     {
         #region PROPERTIES
+
+        [Inject]
+        IOptions<PopularItemsOptions> PopularItemsOptions { get; set; }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }

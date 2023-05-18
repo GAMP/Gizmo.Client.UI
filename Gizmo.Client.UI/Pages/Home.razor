@@ -25,14 +25,31 @@
                 </div>
             }
             <div class="giz-home__body__popular">
-                <div class="giz-section">
-                    <div class="giz-section__header">
-                        @LocalizationService.GetString("GIZ_GEN_POPULAR_ITEMS")
+                
+                @if (ViewState.PopularProducts.Any())
+                {
+                    <div class="giz-section">
+                        <div class="giz-section__header">
+                            @LocalizationService.GetString("GIZ_GEN_POPULAR_ITEMS")
+                        </div>
+                        <div class="giz-section__body">
+                            <ProductVirtualizedCards Items="ViewState.PopularProducts" ColumnsCount="PopularItemsOptions.Value.HomePageMaxItemsPerRow" />
+                        </div>
                     </div>
-                    <div class="giz-section__body">
-                        <ProductVirtualizedCards Items="ViewState.PopularProducts" ColumnsCount="ViewState.CardsColumsCount" />
+                }
+
+                @if (ViewState.PopularApplications.Any())
+                {
+                    <div class="giz-section">
+                        <div class="giz-section__header">
+                            @LocalizationService.GetString("GIZ_GEN_POPULAR_ITEMS")
+                        </div>
+                        <div class="giz-section__body">
+                            <ApplicationVirtualizedCards Items="ViewState.PopularApplications" ColumnsCount="PopularItemsOptions.Value.HomePageMaxItemsPerRow" />
+                        </div>
                     </div>
-                </div>
+                }
+
             </div>
         </div>
     </div>
