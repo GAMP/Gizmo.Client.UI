@@ -2,16 +2,18 @@
 @inherits CustomDOMComponentBase
 
 <div class="giz-news-rotator-wrapper">
-    <div class="giz-news-rotator">
-        @if (FeedsViewState.IsInitializing)
+    <div class="giz-news-rotator"
+         @onmouseover="OnMouseOverHandler"
+         @onmouseout="OnMouseOutHandler">
+        @if (ViewState.IsInitializing)
         {
             <Spinner />
         }
-        else if (FeedsViewState.IsInitialized == true)
+        else if (ViewState.IsInitialized == true)
         {
-            @if (FeedsViewState.CurrentFeed != null)
+            @if (ViewState.CurrentFeed != null)
             {
-                <NewsRotatorItem Image="@FeedsViewState.CurrentFeed.Image.Url" Title="@FeedsViewState.CurrentFeed.Title" Summary="@FeedsViewState.CurrentFeed.Summary" Url="@FeedsViewState.CurrentFeed.Link?.Url" ChannelImage="@FeedsViewState.CurrentFeedChannel?.Image?.Url" />
+                <NewsRotatorItem Image="@ViewState.CurrentFeed.Image.Url" Title="@ViewState.CurrentFeed.Title" Summary="@ViewState.CurrentFeed.Summary" Url="@ViewState.CurrentFeed.Link?.Url" ChannelImage="@ViewState.CurrentFeedChannel?.Image?.Url" />
             }
         }
     </div>
