@@ -15,14 +15,20 @@ namespace Gizmo.Client.UI.Pages
 
         protected override void OnInitialized()
         {
-            this.SubscribeChange(Link);
+            if (Link != null)
+            {
+                this.SubscribeChange(Link);
+            }
 
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(Link);
+            if (Link != null)
+            {
+                this.UnsubscribeChange(Link);
+            }
 
             base.Dispose();
         }

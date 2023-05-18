@@ -11,10 +11,6 @@ namespace Gizmo.Client.UI.Pages
     [Route(ClientRoutes.ProductDetailsRoute)]
     public partial class ProductDetails : CustomDOMComponentBase
     {
-        public ProductDetails()
-        {
-        }
-
         private UserCartProductItemViewState _productItemViewState;
         private UserProductGroupViewState _userProductGroupViewState;
         private int _previousProductId;
@@ -71,7 +67,7 @@ namespace Gizmo.Client.UI.Pages
                 }
 
                 _previousProductId = ProductId;
-
+                
                 _productItemViewState = await UserCartProductItemViewStateLookupService.GetStateAsync(ProductId);
                 _userProductGroupViewState = await UserProductGroupViewStateLookupService.GetStateAsync(ViewState.Product.ProductGroupId); //TODO: A CHECK
 
@@ -88,6 +84,7 @@ namespace Gizmo.Client.UI.Pages
             {
                 this.UnsubscribeChange(_productItemViewState);
             }
+
             base.Dispose();
         }
     }

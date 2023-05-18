@@ -56,8 +56,6 @@ namespace Gizmo.Client.UI.Components
             _preventClose = true;
 
             _openDeferredAction.Defer(_openDelayTimeSpan);
-
-            //InvokeVoidAsync("writeLine", $"OnMouseOverHandler {this.ToString()}");
         }
 
         public void OnMouseOutHandler(MouseEventArgs args)

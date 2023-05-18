@@ -11,6 +11,13 @@ namespace Gizmo.Client.UI.Components
         private UserProductViewState _product;
 
         [Inject]
+        public UserProductViewState Product
+        {
+            get { return _product; }
+            private set { _product = value; }
+        }
+
+        [Inject]
         UserProductViewStateLookupService UserProductViewStateLookupService { get; set; }
 
         [Parameter]
@@ -19,14 +26,21 @@ namespace Gizmo.Client.UI.Components
         protected override async Task OnInitializedAsync()
         {
             _product = await UserProductViewStateLookupService.GetStateAsync(ProductId);
-            this.SubscribeChange(_product);
+
+            if (_product != null)
+            {
+                this.SubscribeChange(_product);
+            }
 
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(_product);
+            if (_product != null)
+            {
+                this.UnsubscribeChange(_product);
+            }
 
             base.Dispose();
         }

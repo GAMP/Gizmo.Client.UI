@@ -10,6 +10,13 @@ namespace Gizmo.Client.UI.Components
     {
         private AppExeExecutionViewState _appExeExecutionViewState { get; set; }
 
+        [Inject]
+        public AppExeExecutionViewState AppExeExecutionViewState
+        {
+            get { return _appExeExecutionViewState; }
+            private set { _appExeExecutionViewState = value; }
+        }
+
         [Inject()]
         AppExeExecutionViewStateLookupService AppExeExecutionViewStateLookupService { get; set; }
 
@@ -32,14 +39,21 @@ namespace Gizmo.Client.UI.Components
         protected override async Task OnInitializedAsync()
         {
             _appExeExecutionViewState = await AppExeExecutionViewStateLookupService.GetStateAsync(ExecutableId);
-            this.SubscribeChange(_appExeExecutionViewState);
+
+            if (_appExeExecutionViewState != null)
+            {
+                this.SubscribeChange(_appExeExecutionViewState);
+            }
 
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(_appExeExecutionViewState);
+            if (_appExeExecutionViewState != null)
+            {
+                this.UnsubscribeChange(_appExeExecutionViewState);
+            }
 
             base.Dispose();
         }

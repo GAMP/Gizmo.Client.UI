@@ -16,14 +16,20 @@ namespace Gizmo.Client.UI.Components
 
         protected override async Task OnInitializedAsync()
         {
-            this.SubscribeChange(TimeProduct);
+            if (TimeProduct != null)
+            {
+                this.SubscribeChange(TimeProduct);
+            }
 
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(TimeProduct);
+            if (TimeProduct != null)
+            {
+                this.UnsubscribeChange(TimeProduct);
+            }
 
             base.Dispose();
         }

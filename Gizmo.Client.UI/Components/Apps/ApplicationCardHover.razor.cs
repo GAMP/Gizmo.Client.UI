@@ -19,6 +19,13 @@ namespace Gizmo.Client.UI.Components
         #endregion
 
         [Inject]
+        public AppViewState AppViewState
+        {
+            get { return _appViewState; }
+            private set { _appViewState = value; }
+        }
+
+        [Inject]
         public AppViewStateLookupService AppViewStateLookupService { get; set; }
 
         [Inject]
@@ -33,7 +40,10 @@ namespace Gizmo.Client.UI.Components
         {
             _appViewState = await AppViewStateLookupService.GetStateAsync(ApplicationId);
 
-            this.SubscribeChange(_appViewState);
+            if (_appViewState != null)
+            {
+                this.SubscribeChange(_appViewState);
+            }
 
             var executables = await AppExeViewStateLookupService.GetStatesAsync();
             _executables = executables.Where(a => a.ApplicationId == ApplicationId).ToList();
@@ -43,7 +53,10 @@ namespace Gizmo.Client.UI.Components
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(_appViewState);
+            if (_appViewState != null)
+            {
+                this.UnsubscribeChange(_appViewState);
+            }
 
             base.Dispose();
         }

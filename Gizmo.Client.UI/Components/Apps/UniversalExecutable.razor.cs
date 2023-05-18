@@ -19,6 +19,27 @@ namespace Gizmo.Client.UI.Components
         #endregion
 
         [Inject]
+        public AppExeViewState AppExeViewState
+        {
+            get { return _appExeViewState; }
+            private set { _appExeViewState = value; }
+        }
+
+        [Inject]
+        public AppViewState AppViewState
+        {
+            get { return _appViewState; }
+            private set { _appViewState = value; }
+        }
+
+        [Inject]
+        public AppExeExecutionViewState AppExeExecutionViewState
+        {
+            get { return _appExeExecutionViewState; }
+            private set { _appExeExecutionViewState = value; }
+        }
+
+        [Inject]
         public AppExeViewStateLookupService AppExeViewStateLookupService { get; set; }
 
         [Inject]
@@ -55,18 +76,40 @@ namespace Gizmo.Client.UI.Components
             _appViewState = await AppViewStateLookupService.GetStateAsync(_appExeViewState.ApplicationId);
             _appExeExecutionViewState = await AppExeExecutionViewStateLookupService.GetStateAsync(ExecutableId);
 
-            this.SubscribeChange(_appExeViewState);
-            this.SubscribeChange(_appViewState);
-            this.SubscribeChange(_appExeExecutionViewState);
+            if (_appExeViewState != null)
+            {
+                this.SubscribeChange(_appExeViewState);
+            }
+
+            if (_appViewState != null)
+            {
+                this.SubscribeChange(_appViewState);
+            }
+
+            if (_appExeExecutionViewState != null)
+            {
+                this.SubscribeChange(_appExeExecutionViewState);
+            }
 
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(_appExeExecutionViewState);
-            this.UnsubscribeChange(_appViewState);
-            this.UnsubscribeChange(_appExeViewState);
+            if (_appExeExecutionViewState != null)
+            {
+                this.UnsubscribeChange(_appExeExecutionViewState);
+            }
+
+            if (_appViewState != null)
+            {
+                this.UnsubscribeChange(_appViewState);
+            }
+
+            if (_appExeViewState != null)
+            {
+                this.UnsubscribeChange(_appExeViewState);
+            }
 
             base.Dispose();
         }

@@ -11,6 +11,13 @@ namespace Gizmo.Client.UI.Shared
         private UserProductGroupViewState _userProductGroupViewState;
 
         [Inject]
+        public UserProductGroupViewState UserProductGroupViewState
+        {
+            get { return _userProductGroupViewState; }
+            private set { _userProductGroupViewState = value; }
+        }
+
+        [Inject]
         UserProductGroupViewStateLookupService UserProductGroupViewStateLookupService { get; set; }
 
         [Parameter]
@@ -19,14 +26,21 @@ namespace Gizmo.Client.UI.Shared
         protected override async Task OnInitializedAsync()
         {
             _userProductGroupViewState = await UserProductGroupViewStateLookupService.GetStateAsync(ProductGroupId);
-            this.SubscribeChange(_userProductGroupViewState);
+
+            if (_userProductGroupViewState != null)
+            {
+                this.SubscribeChange(_userProductGroupViewState);
+            }
 
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(_userProductGroupViewState);
+            if (_userProductGroupViewState != null)
+            {
+                this.UnsubscribeChange(_userProductGroupViewState);
+            }
 
             base.Dispose();
         }

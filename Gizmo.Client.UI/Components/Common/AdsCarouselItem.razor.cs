@@ -21,6 +21,12 @@ namespace Gizmo.Client.UI.Components
         private bool _switchSide;
         private AdvertisementViewState _advertisementViewState;
 
+        [Inject]
+        public AdvertisementViewState AdvertisementViewState
+        {
+            get { return _advertisementViewState; }
+            private set { _advertisementViewState = value; }
+        }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -154,14 +160,20 @@ namespace Gizmo.Client.UI.Components
         {
             _advertisementViewState = await AdvertisementsService.GetAdvertisementViewStateAsync(AdvertisementId);
 
-            this.SubscribeChange(_advertisementViewState);
+            if (_advertisementViewState != null)
+            {
+                this.SubscribeChange(_advertisementViewState);
+            }
 
             Parent?.Register(this);
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(_advertisementViewState);
+            if (_advertisementViewState != null)
+            {
+                this.UnsubscribeChange(_advertisementViewState);
+            }
 
             Parent?.Unregister(this);
 

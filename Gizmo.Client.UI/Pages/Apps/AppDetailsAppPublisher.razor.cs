@@ -11,6 +11,13 @@ namespace Gizmo.Client.UI.Pages
         private AppEnterpriseViewState _appEnterpriseViewState;
 
         [Inject]
+        public AppEnterpriseViewState AppEnterpriseViewState
+        {
+            get { return _appEnterpriseViewState; }
+            private set { _appEnterpriseViewState = value; }
+        }
+
+        [Inject]
         AppEnterpriseViewStateLookupService AppEnterpriseViewStateLookupService { get; set; }
 
         [Parameter]
@@ -19,21 +26,28 @@ namespace Gizmo.Client.UI.Pages
         [Inject()]
         public AppEnterpriseViewState ViewState
         {
-            get { return _appEnterpriseViewState;}
+            get { return _appEnterpriseViewState; }
             private set { _appEnterpriseViewState = value; }
         }
 
         protected override async Task OnInitializedAsync()
         {
             _appEnterpriseViewState = await AppEnterpriseViewStateLookupService.GetStateAsync(PublisherId);
-            this.SubscribeChange(_appEnterpriseViewState);
+
+            if (_appEnterpriseViewState != null)
+            {
+                this.SubscribeChange(_appEnterpriseViewState);
+            }
 
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(_appEnterpriseViewState);
+            if (_appEnterpriseViewState != null)
+            {
+                this.UnsubscribeChange(_appEnterpriseViewState);
+            }
 
             base.Dispose();
         }

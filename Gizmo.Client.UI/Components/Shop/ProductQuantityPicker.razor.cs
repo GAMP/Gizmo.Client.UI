@@ -15,6 +15,13 @@ namespace Gizmo.Client.UI.Components
         private UserCartProductItemViewState _productItemViewState;
 
         [Inject]
+        public UserCartProductItemViewState ProductItemViewState
+        {
+            get { return _productItemViewState; }
+            private set { _productItemViewState = value; }
+        }
+
+        [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
@@ -47,14 +54,21 @@ namespace Gizmo.Client.UI.Components
         protected override async Task OnInitializedAsync()
         {
             _productItemViewState = await UserCartService.GetCartProductItemViewStateAsync(ProductId);
-            this.SubscribeChange(_productItemViewState);
+
+            if (_productItemViewState != null)
+            {
+                this.SubscribeChange(_productItemViewState);
+            }
 
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(_productItemViewState);
+            if (_productItemViewState != null)
+            {
+                this.UnsubscribeChange(_productItemViewState);
+            }
 
             base.Dispose();
         }

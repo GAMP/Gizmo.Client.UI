@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Shared
 {
-	public partial class MenuActiveApplicationCard : CustomDOMComponentBase
-	{
-		protected bool _shouldRender;
+    public partial class MenuActiveApplicationCard : CustomDOMComponentBase
+    {
+        protected bool _shouldRender;
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-		public ActiveApplicationsViewService ActiveApplicationsService { get; set; }
+        public ActiveApplicationsViewService ActiveApplicationsService { get; set; }
 
-		[Parameter]
-		public AppExeViewState Executable { get; set; }
+        [Parameter]
+        public AppExeViewState Executable { get; set; }
 
-		private Task OnClickMainButtonHandler()
-		{
+        private Task OnClickMainButtonHandler()
+        {
             //switch (Executable.State)
             //{
             //	case View.ExecutableState.None:
@@ -32,56 +32,64 @@ namespace Gizmo.Client.UI.Shared
             //		return ActiveApplicationsService.TerminateExecutableAsyc(Executable.ExecutableId);
             //}
             return Task.CompletedTask;
-		}
+        }
 
-		#region OVERRIDES
+        #region OVERRIDES
 
-		protected override void OnInitialized()
-		{
-			this.SubscribeChange(Executable); //TODO: A WE NEED TO UPDATE _shouldRender FROM SubscribeChange.
-			base.OnInitialized();
-		}
+        protected override void OnInitialized()
+        {
+            if (Executable != null)
+            {
+                this.SubscribeChange(Executable); //TODO: A WE NEED TO UPDATE _shouldRender FROM SubscribeChange.
+            }
 
-		public override void Dispose()
-		{
-			this.UnsubscribeChange(Executable);
-			base.Dispose();
-		}
+            base.OnInitialized();
+        }
 
-		public override async Task SetParametersAsync(ParameterView parameters)
-		{
-			if (parameters.TryGetValue<AppExeViewState>(nameof(Executable), out var newExecutable))
-			{
-				var executableChanged = !EqualityComparer<AppExeViewState>.Default.Equals(Executable, newExecutable);
-				if (executableChanged)
-				{
-					_shouldRender = true;
-				}
-			}
+        public override void Dispose()
+        {
+            if (Executable != null)
+            {
+                this.UnsubscribeChange(Executable);
+            }
 
-			await base.SetParametersAsync(parameters);
-		}
+            base.Dispose();
+        }
 
-		protected override bool ShouldRender()
-		{
-			return true; //TODO: A _shouldRender
-		}
+        public override async Task SetParametersAsync(ParameterView parameters)
+        {
+            if (parameters.TryGetValue<AppExeViewState>(nameof(Executable), out var newExecutable))
+            {
+                var executableChanged = !EqualityComparer<AppExeViewState>.Default.Equals(Executable, newExecutable);
+                if (executableChanged)
+                {
+                    _shouldRender = true;
+                }
+            }
 
-		protected override async Task OnAfterRenderAsync(bool firstRender)
-		{
-			if (!firstRender)
-			{
-				_shouldRender = false;
-				//await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
-			}
+            await base.SetParametersAsync(parameters);
+        }
+
+        protected override bool ShouldRender()
+        {
+            return true; //TODO: A _shouldRender
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (!firstRender)
+            {
+                _shouldRender = false;
+                //await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
+            }
             else
             {
-				//await InvokeVoidAsync("writeLine", $"Render {this.ToString()}");
-			}
+                //await InvokeVoidAsync("writeLine", $"Render {this.ToString()}");
+            }
 
-			await base.OnAfterRenderAsync(firstRender);
-		}
+            await base.OnAfterRenderAsync(firstRender);
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

@@ -21,7 +21,8 @@ namespace Gizmo.Client.UI.Components
 
         private void OnClickDetailsButtonHandle()
         {
-            NavigationService.NavigateTo(ClientRoutes.ApplicationDetailsRoute + $"?ApplicationId={Executable.ApplicationId.ToString()}");
+            if (Executable != null)
+                NavigationService.NavigateTo(ClientRoutes.ApplicationDetailsRoute + $"?ApplicationId={Executable.ApplicationId.ToString()}");
         }
     }
 }

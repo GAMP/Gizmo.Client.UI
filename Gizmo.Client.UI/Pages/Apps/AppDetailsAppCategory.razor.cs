@@ -11,6 +11,13 @@ namespace Gizmo.Client.UI.Pages
         private AppCategoryViewState _appCategoryViewState;
 
         [Inject]
+        public AppCategoryViewState AppCategoryViewState
+        {
+            get { return _appCategoryViewState; }
+            private set { _appCategoryViewState = value; }
+        }
+
+        [Inject]
         AppCategoryViewStateLookupService AppCategoryViewStateLookupService { get; set; }
 
         [Parameter]
@@ -19,14 +26,21 @@ namespace Gizmo.Client.UI.Pages
         protected override async Task OnInitializedAsync()
         {
             _appCategoryViewState = await AppCategoryViewStateLookupService.GetStateAsync(ApplicationCategoryId);
-            this.SubscribeChange(_appCategoryViewState);
+
+            if (_appCategoryViewState != null)
+            {
+                this.SubscribeChange(_appCategoryViewState);
+            }
 
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(_appCategoryViewState);
+            if (_appCategoryViewState != null)
+            {
+                this.UnsubscribeChange(_appCategoryViewState);
+            }
 
             base.Dispose();
         }

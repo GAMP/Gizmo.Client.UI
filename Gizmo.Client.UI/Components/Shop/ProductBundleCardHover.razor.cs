@@ -17,14 +17,20 @@ namespace Gizmo.Client.UI.Components
 
         protected override void OnInitialized()
         {
-            this.SubscribeChange(Product);
+            if (Product != null)
+            {
+                this.SubscribeChange(Product);
+            }
 
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(Product);
+            if (Product != null)
+            {
+                this.UnsubscribeChange(Product);
+            }
 
             base.Dispose();
         }
