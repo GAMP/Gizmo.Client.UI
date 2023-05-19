@@ -26,78 +26,85 @@
             }
         </div>
     </CardHeader>
+
     <CardBody>
-        <div class="giz-login-title">@LocalizationService.GetString("GIZ_LOGIN_SIGN_IN_TITLE")</div>
-        <div>
-            <ButtonGroup Class="giz-login-method" IsMandatory="true" SelectedItemsChanged="@SelectLoginType" IsDisabled="@ViewState.IsLogginIn">
-                <Button Name="Username" IsSelected="@(ViewState.LoginType == View.UserLoginType.UsernameOrEmail)">@LocalizationService.GetString("GIZ_GEN_USERNAME")</Button>
-                <Button Name="Phone" IsSelected="@(ViewState.LoginType == View.UserLoginType.MobilePhone)">@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")</Button>
-            </ButtonGroup>
-        </div>
-        <EditForm EditContext="@UserLoginService.EditContext" @onkeypress="OnKeyPressHandle">
-            <div class="giz-form-input">
-                @if (ViewState.LoginType == View.UserLoginType.UsernameOrEmail)
-                {
-                    <TextInput UpdateOnInput="true"
-                               Value="@ViewState.LoginName"
-                               ValueChanged="@((string value) => UserLoginService.SetLoginName(value))"
-                               ValueExpression="@(() => ViewState.LoginName)"
-                               ValidateFunction="@UserLoginService.UsernameCharacterIsValid"
-                               IsDisabled="@ViewState.IsLogginIn"
-                               Size="InputSizes.Medium"
-                               IsFullWidth="true"
-                               Label="@LocalizationService.GetString("GIZ_GEN_USERNAME")" />
-                }
-                else
-                {
-                    <MaskedPhoneInput Mask="###-###-####"
-                                      AllowMoreDigits="true"
-                                      Value="@ViewState.LoginName"
-                                      ValueChanged="@((string value) => UserLoginService.SetLoginName(value))"
-                                      ValueExpression="@(() => ViewState.LoginName)"
-                                      IsDisabled="@ViewState.IsLogginIn"
-                                      Size="InputSizes.Medium"
-                                      IsFullWidth="true"
-                                      Label="@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
-                }
-            </div>
-            <div class="giz-form-input">
-                <PasswordInput ShowRevealButton="true"
-                               UpdateOnInput="true" Value="@ViewState.Password"
-                               ValueChanged="@((string value) => UserLoginService.SetPassword(value))"
-                               ValueExpression="@(() => ViewState.Password)"
-                               IsPasswordVisible="@ViewState.IsPasswordVisible"
-                               IsPasswordVisibleChanged="@((bool value) => UserLoginService.SetPasswordVisible(value))"
-                               IsDisabled="@ViewState.IsLogginIn"
-                               Size="InputSizes.Medium"
-                               IsFullWidth="true"
-                               Label="@LocalizationService.GetString("GIZ_GEN_PASSWORD")" />
-                @if (UserPasswordRecoveryMethodServiceViewState.AvailabledRecoveryMethod != UserRecoveryMethod.None)
-                {
-                    <div class="giz-login-forgot-password">
-                        <a tabindex="-1" href="@ClientRoutes.PasswordRecoveryRoute">@LocalizationService.GetString("GIZ_LOGIN_FORGOT_YOUR_PASSWORD")</a>
-                    </div>
-                }
-            </div>
+        @if (UserLoginOptions.Value.Enabled)
+        {
+            <div class="giz-login-title">@LocalizationService.GetString("GIZ_LOGIN_SIGN_IN_TITLE")</div>
             <div>
-                <Button Color="ButtonColors.Accent" LeftSVGIcon="@(!ViewState.IsLogginIn ? Icons.Login_Client : null)" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserLoginService.LoginAsync">
-                    @if (ViewState.IsLogginIn)
+                <ButtonGroup Class="giz-login-method" IsMandatory="true" SelectedItemsChanged="@SelectLoginType" IsDisabled="@ViewState.IsLogginIn">
+                    <Button Name="Username" IsSelected="@(ViewState.LoginType == View.UserLoginType.UsernameOrEmail)">@LocalizationService.GetString("GIZ_GEN_USERNAME")</Button>
+                    <Button Name="Phone" IsSelected="@(ViewState.LoginType == View.UserLoginType.MobilePhone)">@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")</Button>
+                </ButtonGroup>
+            </div>
+            <EditForm EditContext="@UserLoginService.EditContext" @onkeypress="OnKeyPressHandle">
+                <div class="giz-form-input">
+                    @if (ViewState.LoginType == View.UserLoginType.UsernameOrEmail)
                     {
-                        <Spinner />
+                        <TextInput UpdateOnInput="true"
+                                   Value="@ViewState.LoginName"
+                                   ValueChanged="@((string value) => UserLoginService.SetLoginName(value))"
+                                   ValueExpression="@(() => ViewState.LoginName)"
+                                   ValidateFunction="@UserLoginService.UsernameCharacterIsValid"
+                                   IsDisabled="@ViewState.IsLogginIn"
+                                   Size="InputSizes.Medium"
+                                   IsFullWidth="true"
+                                   Label="@LocalizationService.GetString("GIZ_GEN_USERNAME")" />
                     }
                     else
                     {
-                        <div>@LocalizationService.GetString("GIZ_GEN_CONTINUE")</div>
+                        <MaskedPhoneInput Mask="###-###-####"
+                                          AllowMoreDigits="true"
+                                          Value="@ViewState.LoginName"
+                                          ValueChanged="@((string value) => UserLoginService.SetLoginName(value))"
+                                          ValueExpression="@(() => ViewState.LoginName)"
+                                          IsDisabled="@ViewState.IsLogginIn"
+                                          Size="InputSizes.Medium"
+                                          IsFullWidth="true"
+                                          Label="@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
                     }
-                </Button>
-            </div>
-        </EditForm>
+                </div>
+                <div class="giz-form-input">
+                    <PasswordInput ShowRevealButton="true"
+                                   UpdateOnInput="true" Value="@ViewState.Password"
+                                   ValueChanged="@((string value) => UserLoginService.SetPassword(value))"
+                                   ValueExpression="@(() => ViewState.Password)"
+                                   IsPasswordVisible="@ViewState.IsPasswordVisible"
+                                   IsPasswordVisibleChanged="@((bool value) => UserLoginService.SetPasswordVisible(value))"
+                                   IsDisabled="@ViewState.IsLogginIn"
+                                   Size="InputSizes.Medium"
+                                   IsFullWidth="true"
+                                   Label="@LocalizationService.GetString("GIZ_GEN_PASSWORD")" />
+                    @if (UserPasswordRecoveryMethodServiceViewState.AvailabledRecoveryMethod != UserRecoveryMethod.None)
+                    {
+                        <div class="giz-login-forgot-password">
+                            <a tabindex="-1" href="@ClientRoutes.PasswordRecoveryRoute">@LocalizationService.GetString("GIZ_LOGIN_FORGOT_YOUR_PASSWORD")</a>
+                        </div>
+                    }
+                </div>
+                <div>
+                    <Button Color="ButtonColors.Accent" LeftSVGIcon="@(!ViewState.IsLogginIn ? Icons.Login_Client : null)" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserLoginService.LoginAsync">
+                        @if (ViewState.IsLogginIn)
+                        {
+                            <Spinner />
+                        }
+                        else
+                        {
+                            <div>@LocalizationService.GetString("GIZ_GEN_CONTINUE")</div>
+                        }
+                    </Button>
+                </div>
+            </EditForm>
+        }
     </CardBody>
     <CardFooter>
         @if (HostQRCodeViewState.IsEnabled)
         {
             <div class="giz-alternative-login">
-                <div class="giz-alternative-login__separator"><span>@LocalizationService.GetString("GIZ_LOGIN_OR")</span></div>
+                @if (UserLoginOptions.Value.Enabled)
+                {
+                    <div class="giz-alternative-login__separator"><span>@LocalizationService.GetString("GIZ_LOGIN_OR")</span></div>
+                }
                 <div class="giz-alternative-login__qr">
                     <div class="giz-alternative-login__qr-description">
                         <div class="giz-alternative-login__qr-description__title">@LocalizationService.GetString("GIZ_LOGIN_QR_TITLE")</div>

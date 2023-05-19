@@ -11,9 +11,16 @@ namespace Gizmo.Client.UI.Pages
     [Route(ClientRoutes.ProductDetailsRoute)]
     public partial class ProductDetails : CustomDOMComponentBase
     {
+        #region FIELDS
         private UserCartProductItemViewState _productItemViewState;
         private UserProductGroupViewState _userProductGroupViewState;
         private int _previousProductId;
+        #endregion
+
+        #region PROPERTIES
+
+        [Inject]
+        NavigationService NavigationService { get; set; }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -48,9 +55,11 @@ namespace Gizmo.Client.UI.Pages
         [SupplyParameterFromQuery]
         public int ProductId { get; set; }
 
-        private async Task OnClickBackButtonHandler()
+        #endregion
+
+        private Task OnClickBackButtonHandler()
         {
-            await InvokeVoidAsync("navigationGoBack");
+            return NavigationService.GoBackAsync();
         }
 
         protected override async Task OnParametersSetAsync()

@@ -4,6 +4,7 @@ using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +14,9 @@ namespace Gizmo.Client.UI.Pages
     [Route(ClientRoutes.LoginRoute)]
     public partial class Login : CustomDOMComponentBase
     {
+        [Inject]
+        IOptions<UserLoginOptions> UserLoginOptions { get; set; }
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 

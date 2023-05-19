@@ -63,9 +63,9 @@ namespace Gizmo.Client.UI.Pages
 
         #endregion
 
-        private async Task OnClickBackButtonHandler()
+        private Task OnClickBackButtonHandler()
         {
-            await InvokeVoidAsync("navigationGoBack");
+            return NavigationService.GoBackAsync();
         }
 
         private Task OnClickMainButtonHandler()
