@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
 {
@@ -82,11 +83,24 @@ namespace Gizmo.Client.UI.Pages
 
         public bool FullWidth { get; set; }
 
-        public bool Test { get; set; }
+        public string Test { get; set; } = "1";
 
-        public void testt(bool value)
+        public async Task test1(bool value)
         {
-            Test = value;
+            //if (value)
+            //    Test = "1";
+
+            await Task.Delay(1000);
+
+            await InvokeAsync(StateHasChanged);
+
+            StateHasChanged();
+        }
+
+        public void test2(bool value)
+        {
+            if (value)
+                Test = "2";
         }
 
         public Gizmo.Web.Components.ButtonVariants Variant { get; set; }

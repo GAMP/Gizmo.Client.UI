@@ -3,10 +3,14 @@
 <div style="height: 100%; overflow: auto">
 
     <div>
-        <CheckBox @bind-IsChecked="Test" />
+        <RadioButton Label="Test1" GroupName="TestRadio" IsChecked="@(Test == "1")" IsCheckedChanged="test1" />
     </div>
     <div>
-        <CheckBox IsChecked="@Test" IsCheckedChanged="testt" />
+        <RadioButton Label="Test2" GroupName="TestRadio" IsChecked="@(Test == "2")" IsCheckedChanged="test2" />
+    </div>
+
+    <div>
+        <TextInput Label="Test - Small" @bind-Value="Test" />
     </div>
 
     <ComboButton Progress="45"
