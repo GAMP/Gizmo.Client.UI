@@ -28,7 +28,7 @@
             @ProductItemViewState.TotalPrice.ToString("C", CultureInfo.CurrentCulture)
         </div>
         <div class="giz-order-item__details__points">
-            @ProductItemViewState.TotalPointsPrice?.ToString("N0")
+            @ProductItemViewState.TotalPointsPrice.GetValueOrDefault().ToString("N0")
             <Points2Icon />
         </div>
     </div>
