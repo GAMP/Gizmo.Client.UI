@@ -1,0 +1,41 @@
+﻿@inherits LayoutComponentBase
+@using Microsoft.Extensions.Options
+
+@if (!string.IsNullOrEmpty(ClientUIOptions.Value.Skin))
+{
+    <HeadContent>
+        <link href="css/@ClientUIOptions.Value.Skin" rel="stylesheet" />
+    </HeadContent>
+}
+
+<main @onclick="OnMainClick" client-theme="true">
+    <div class="giz-background">
+        <img src="_content/Gizmo.Client.UI/img/background.jpg" />
+    </div>
+    <div class="giz-container">
+        <div class="giz-app__header">
+            <Header />
+        </div>
+        <div class="giz-app__body">
+            <div class="giz-home-wrapper">
+                <div class="giz-home">
+                    <div class="giz-home__header">
+                        <div class="giz-home__header__quick-launch">
+                            <QuickLauncher />
+                        </div>
+                        <div class="giz-home__header__ads">
+                            <NewsRotator />
+                        </div>
+                    </div>
+
+                    @Body
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <UserLock />
+    <DialogHost />
+
+</main>
