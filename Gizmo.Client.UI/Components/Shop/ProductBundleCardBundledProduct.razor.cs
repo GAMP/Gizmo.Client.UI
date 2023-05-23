@@ -23,6 +23,9 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public int ProductId { get; set; }
 
+        [Parameter]
+        public decimal Quantity { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             _product = await UserProductViewStateLookupService.GetStateAsync(ProductId);

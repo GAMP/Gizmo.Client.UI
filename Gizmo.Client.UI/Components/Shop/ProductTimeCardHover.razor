@@ -6,7 +6,25 @@
         <HexagonIcon />
         <div>@LocalizationService.GetString("GIZ_SHOP_CARD_TIME_PRODUCT_DESCRIPTION")</div>
     </div>
-    <div class="giz-timeline-item"><div class="giz-bundle-product-details"><ProductIcon />@TimeProduct?.Minutes.ToString("N0")</div></div>
+    <div class="giz-timeline-item">
+        <div class="giz-time-product-time"><Icon SVGIcon="Icons.Time_Client" Size="IconSizes.Small" />@GetTimeText()</div>
+    </div>
+    <div class="giz-timeline-item">
+        <div class="giz-time-product-details"><div>Buying time</div><div class="giz-time-product-time-availabile">@GetPurchaseAvailabilityText()</div></div>
+    </div>
+    <div class="giz-timeline-item">
+        <div class="giz-time-product-details"><div>Action time</div><div class="giz-time-product-time-availabile">@GetUsageAvailabilityText()</div></div>
+    </div>
+    <div class="giz-timeline-item">
+        <div class="giz-time-product-details">
+            <div>Expires</div>
+            <div class="giz-time-product-expirations">
+                <div class="giz-time-product-expiration">after 00:00</div>
+                <div class="giz-time-product-expiration">after 9 h. of purchase</div>
+                <div class="giz-time-product-expiration">after logout</div>
+            </div>
+        </div>
+    </div>
     @*<div class="giz-timeline-item"><div class="giz-time-product-details">@LocalizationService.GetString("GIZ_SHOP_CARD_TIME_PRODUCT_ACTION_PERIOD")<span>10:00 - 12:00</span></div></div>
     <div class="giz-timeline-item"><div class="giz-time-product-details">@LocalizationService.GetString("GIZ_SHOP_CARD_TIME_PRODUCT_LIFE_TIME")<span>3 hours</span></div></div>*@
 </div>

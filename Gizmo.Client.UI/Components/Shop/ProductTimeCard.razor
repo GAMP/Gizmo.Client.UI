@@ -47,11 +47,20 @@
             <div class="giz-product-card__title">
                 @Product.Name
             </div>
-            <div class="giz-product-card__host-group">
-                @*<div class="giz-product-card__host-group__content">
-                    <Icon Size="IconSizes.Small" SVGIcon="Icons.Passport_Client" />
-                    <div>Vip</div>
-                </div>*@
+            <div class="giz-product-card__host-groups">
+                @if (_hostGroups != null)
+                {
+                    @foreach (var item in _hostGroups)
+                    {
+                        @if (!Product.TimeProduct.DisallowedHostGroups.Contains(item.Id))
+                        {
+                            <div class="giz-time-product-host-group">
+                                <Icon Size="IconSizes.Small" SVGIcon="Icons.Passport_Client" />
+                                <div>@item.Name</div>
+                            </div>
+                        }
+                    }
+                }
             </div>
         </div>
         <div class="giz-product-card__content__footer">

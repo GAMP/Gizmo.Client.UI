@@ -30,6 +30,21 @@
                     <div class="giz-product-details__product__info__basic__title">
                         @ViewState.Product?.Name
                     </div>
+                    <div class="giz-product-details__product__info__basic__host-groups">
+                        @if (ViewState.Product != null && ViewState.Product.ProductType == ProductType.ProductTime && _hostGroups != null)
+                        {
+                            @foreach (var item in _hostGroups)
+                            {
+                                @if (!ViewState.Product.TimeProduct.DisallowedHostGroups.Contains(item.Id))
+                                {
+                                    <div class="giz-time-product-host-group">
+                                        <Icon Size="IconSizes.Small" SVGIcon="Icons.Passport_Client" />
+                                        <div>@item.Name</div>
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
                     <div class="giz-product-details__product__info__basic__description">
                         @ViewState.Product?.Description
                     </div>
@@ -40,6 +55,58 @@
                         <ProductQuantityPicker @key="ProductId" ProductId="@ProductId" Size="ButtonSizes.ExtraLarge" IsFullWidth="false" />
                     </div>
                 </div>
+                @if (ViewState.Product != null)
+                {
+                    <div class="giz-product-details__product__info__additional">
+                        @if (ViewState.Product.PurchaseAvailability != null || (ViewState.Product.ProductType == ProductType.ProductTime && ViewState.Product.TimeProduct.UsageAvailability != null))
+                        {
+                            <div class="giz-product-details__product__info__additional__availability">
+                                @if (ViewState.Product.PurchaseAvailability != null)
+                                {
+                                    <div class="giz-product-availability">
+                                        <div class="giz-product-availability__title">
+                                            Buying time
+                                        </div>
+                                        <div class="giz-product-availability__body">
+                                            @foreach (var day in ViewState.Product.PurchaseAvailability.DaysAvailable)
+                                            {
+                                                <div class="giz-product-availability-day">@GetAvailabilityText(day)</div>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                                @if (ViewState.Product.ProductType == ProductType.ProductTime && ViewState.Product.TimeProduct.UsageAvailability != null)
+                                {
+                                    <div class="giz-product-availability">
+                                        <div class="giz-product-availability__title">
+                                            Action time
+                                        </div>
+                                        <div class="giz-product-availability__body">
+                                            @foreach (var day in ViewState.Product.TimeProduct.UsageAvailability.DaysAvailable)
+                                            {
+                                                <div class="giz-product-availability-day">@GetAvailabilityText(day)</div>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        @if (ViewState.Product.ProductType == ProductType.ProductTime) @*TODO: A*@
+                        {
+                            <div class="giz-product-details__product__info__additional__expirations">
+                                <div class="giz-product-expiration">
+                                    Test
+                                </div>
+                                <div class="giz-product-expiration">
+                                    Test
+                                </div>
+                                <div class="giz-product-expiration">
+                                    Test
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
             </div>
             @if (@ViewState.Product?.ProductType == ProductType.ProductBundle)
             {

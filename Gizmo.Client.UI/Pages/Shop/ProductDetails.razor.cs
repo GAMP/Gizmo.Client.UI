@@ -1,9 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
-
+using Gizmo.Web.Components.Extensions;
 using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Pages
@@ -15,6 +18,7 @@ namespace Gizmo.Client.UI.Pages
         private UserCartProductItemViewState _productItemViewState;
         private UserProductGroupViewState _userProductGroupViewState;
         private int _previousProductId;
+        private IEnumerable<UserHostGroupViewState> _hostGroups;
         #endregion
 
         #region PROPERTIES
@@ -51,6 +55,9 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         ProductDetailsPageViewState ViewState { get; set; }
 
+        [Inject]
+        UserHostGroupViewStateLookupService UserHostGroupViewStateLookupService { get; set; }
+
         [Parameter]
         [SupplyParameterFromQuery]
         public int ProductId { get; set; }
@@ -60,6 +67,45 @@ namespace Gizmo.Client.UI.Pages
         private Task OnClickBackButtonHandler()
         {
             return NavigationService.GoBackAsync();
+        }
+
+        private string GetAvailabilityText(ProductAvailabilityDayViewState productAvailabilityDayViewState)
+        {
+            ProductAvailabilityDayTimeViewState first = null;
+
+            if (productAvailabilityDayViewState.Day == DateTime.Now.DayOfWeek)
+            {
+                TimeSpan timeSpan = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+                first = productAvailabilityDayViewState.DayTimesAvailable.Where(a => a.EndSecond > timeSpan.TotalSeconds).FirstOrDefault();
+                if (first == null)
+                {
+                    first = productAvailabilityDayViewState.DayTimesAvailable.FirstOrDefault();
+                }
+            }
+            else
+            {
+                first = productAvailabilityDayViewState.DayTimesAvailable.FirstOrDefault();
+            }
+
+            if (first != null)
+            {
+                TimeSpan startTimeSpan = TimeSpan.FromSeconds(first.StartSecond);
+                TimeSpan endTimeSpan = TimeSpan.FromSeconds(first.EndSecond);
+
+                return $"{startTimeSpan.ToString()}-{endTimeSpan.ToString()} {productAvailabilityDayViewState.Day.ToString()}";
+            }
+
+            //TODO: AAA
+            return "Error";
+        }
+
+        #region OVERRIDES
+
+        protected override async Task OnInitializedAsync()
+        {
+            _hostGroups = await UserHostGroupViewStateLookupService.GetStatesAsync();
+
+            await base.OnInitializedAsync();
         }
 
         protected override async Task OnParametersSetAsync()
@@ -96,5 +142,7 @@ namespace Gizmo.Client.UI.Pages
 
             base.Dispose();
         }
+
+        #endregion
     }
 }
