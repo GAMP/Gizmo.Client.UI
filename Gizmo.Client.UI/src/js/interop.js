@@ -39,9 +39,8 @@
 
     imageElement.src = url;
   }
-
   /**
-   * Sets image source on specified image element.
+   * Subscribes to browser full screen change event.
    * @param {string} callBackName callBack function name.
    */
   static async SubscribeOnFullScreenChange(callBackName) {
@@ -56,7 +55,7 @@
     }
   }
   /**
-   * Sets image source on specified image element.
+   * Unsubscribes from browser full screen change event.
    * @param {string} callBackName callBack function name.
    */
   static async UnsubscribeOnFullScreenChange(callBackName) {
