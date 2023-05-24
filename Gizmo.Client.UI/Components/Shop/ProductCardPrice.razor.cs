@@ -12,5 +12,8 @@ namespace Gizmo.Client.UI.Components
 
         [Parameter]
         public UserProductViewState Product { get; set; }
+
+        [Parameter]
+        public int Icon { get; set; } = 2;
     }
 }

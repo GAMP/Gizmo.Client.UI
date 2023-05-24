@@ -37,7 +37,7 @@
                             {
                                 @if (!ViewState.Product.TimeProduct.DisallowedHostGroups.Contains(item.Id))
                                 {
-                                    <div class="giz-time-product-host-group">
+                                    <div class="giz-time-product-host-group @(item.Id == ViewState.CurrentHostGroupId ? "active" : "")">
                                         <Icon Size="IconSizes.Small" SVGIcon="Icons.Passport_Client" />
                                         <div>@item.Name</div>
                                     </div>
@@ -50,7 +50,7 @@
                     </div>
                     <div class="giz-product-details__product__info__basic__action">
                         <div class="giz-product-details__product__info__basic__action__price">
-                            @ViewState.Product?.UnitPrice.ToString("C2")
+                            <ProductCardPrice Product="@ViewState.Product" Icon="1" />
                         </div>
                         <ProductQuantityPicker @key="ProductId" ProductId="@ProductId" Size="ButtonSizes.ExtraLarge" IsFullWidth="false" />
                     </div>
@@ -58,19 +58,26 @@
                 @if (ViewState.Product != null)
                 {
                     <div class="giz-product-details__product__info__additional">
-                        @if (ViewState.Product.PurchaseAvailability != null || (ViewState.Product.ProductType == ProductType.ProductTime && ViewState.Product.TimeProduct.UsageAvailability != null))
+                        @if (ViewState.Product.PurchaseAvailability != null || (ViewState.Product.ProductType == ProductType.ProductTime && ViewState.Product.PurchaseAvailability != null))
                         {
                             <div class="giz-product-details__product__info__additional__availability">
                                 @if (ViewState.Product.PurchaseAvailability != null)
                                 {
                                     <div class="giz-product-availability">
                                         <div class="giz-product-availability__title">
-                                            Buying time
+                                            @LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_BUYING_TIME")
                                         </div>
                                         <div class="giz-product-availability__body">
-                                            @foreach (var day in ViewState.Product.PurchaseAvailability.DaysAvailable)
+                                            @if (ViewState.Product.PurchaseAvailability.DateRange && ViewState.Product.PurchaseAvailability.StartDate.HasValue && ViewState.Product.PurchaseAvailability.EndDate.HasValue)
                                             {
-                                                <div class="giz-product-availability-day">@GetAvailabilityText(day)</div>
+                                                <div class="giz-product-availability-day">@($"{ViewState.Product.PurchaseAvailability.StartDate.Value.ToShortDateString()}-{ViewState.Product.PurchaseAvailability.EndDate.Value.ToShortDateString()}")</div>
+                                            }
+                                            else
+                                            {
+                                                @foreach (var day in ViewState.Product.PurchaseAvailability.DaysAvailable)
+                                                {
+                                                    <div class="giz-product-availability-day">@GetAvailabilityText(day)</div>
+                                                }
                                             }
                                         </div>
                                     </div>
@@ -79,29 +86,46 @@
                                 {
                                     <div class="giz-product-availability">
                                         <div class="giz-product-availability__title">
-                                            Action time
+                                            @LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_ACTION_TIME")
                                         </div>
                                         <div class="giz-product-availability__body">
-                                            @foreach (var day in ViewState.Product.TimeProduct.UsageAvailability.DaysAvailable)
+                                            @if (ViewState.Product.TimeProduct.UsageAvailability.DateRange && ViewState.Product.TimeProduct.UsageAvailability.StartDate.HasValue && ViewState.Product.TimeProduct.UsageAvailability.EndDate.HasValue)
                                             {
-                                                <div class="giz-product-availability-day">@GetAvailabilityText(day)</div>
+                                                <div class="giz-product-availability-day">@($"{ViewState.Product.TimeProduct.UsageAvailability.StartDate.Value.ToShortDateString()}-{ViewState.Product.TimeProduct.UsageAvailability.EndDate.Value.ToShortDateString()}")</div>
+                                            }
+                                            else
+                                            {
+                                                @foreach (var day in ViewState.Product.TimeProduct.UsageAvailability.DaysAvailable)
+                                                {
+                                                    <div class="giz-product-availability-day">@GetAvailabilityText(day)</div>
+                                                }
                                             }
                                         </div>
                                     </div>
                                 }
                             </div>
                         }
-                        @if (ViewState.Product.ProductType == ProductType.ProductTime) @*TODO: A*@
+                        @if (ViewState.Product.ProductType == ProductType.ProductTime && ViewState.Product.TimeProduct.ExpirationOptions != ProductTimeExpirationOptionType.None)
                         {
                             <div class="giz-product-details__product__info__additional__expirations">
-                                <div class="giz-product-expiration">
-                                    Test
-                                </div>
-                                <div class="giz-product-expiration">
-                                    Test
-                                </div>
-                                <div class="giz-product-expiration">
-                                    Test
+                                <div class="giz-product-details__product__info__additional__expirations__header">@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRES_AFTER")</div>
+                                <div class="giz-product-details__product__info__additional__expirations__body">
+
+                                    @if (ViewState.Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAtDayTime))
+                                    {
+                                        <div class="giz-product-expiration">@GetDayTimeFromMinute()<Icon SVGIcon="Icons.Info_Client" Size="IconSizes.Small" /></div>
+                                    }
+                                
+                                    @if (ViewState.Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAfterTime))
+                                    {
+                                        <div class="giz-product-expiration">@GetAfterText()<Icon SVGIcon="Icons.Info_Client" Size="IconSizes.Small" /></div>
+                                    }
+
+                                    @if (ViewState.Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpiresAtLogout))
+                                    {
+                                        <div class="giz-product-expiration">@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_LOGOUT")<Icon SVGIcon="Icons.Info_Client" Size="IconSizes.Small" /></div>
+                                    }
+
                                 </div>
                             </div>
                         }

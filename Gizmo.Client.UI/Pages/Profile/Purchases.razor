@@ -13,7 +13,7 @@
 
             <div class="giz-profile-user-purchases">
                 <div class="giz-profile-user-purchases__header">
-                    Purchase History@*TODO: AAA*@
+                    @LocalizationService.GetString("GIZ_PROFILE_PURCHASE_HISTORY")
                 </div>
 
                 <div class="giz-profile-user-purchases__body">
@@ -42,7 +42,7 @@
                                 <div class="order-line-details">
                                     @foreach (var orderLine in order.OrderLines)
                                     {
-                                        <div class="order-line-details-quantity">@orderLine.Quantity pcs.</div>@*TODO: AAA*@
+                                        <div class="order-line-details-quantity">@($"{orderLine.Quantity} {@LocalizationService.GetString("GIZ_GEN_PIECES_ABBREVIATED")}")</div>
                                     }
                                 </div>
                             </td>
@@ -58,10 +58,10 @@
                                 <div class="order-details">
                                     @if (order.TotalPointsAward > 0)
                                     {
-                                        <div class="order-details-points-title">Earned points:</div>
+                                        <div class="order-details-points-title">@LocalizationService.GetString("GIZ_SHOP_EARNED_POINTS"):</div>@*TODO: AAA :?*@
                                         <div class="order-details-points">@order.TotalPointsAward <PointsAward2Icon/></div>
                                     }
-                                    <div class="order-details-notes-title">Order comments:</div>
+                                    <div class="order-details-notes-title">@LocalizationService.GetString("GIZ_SHOP_ORDER_NOTE"):</div>@*TODO: AAA :?*@
                                     <div class="order-details-notes">@order.Notes</div>
                                 </div>
                             </td>

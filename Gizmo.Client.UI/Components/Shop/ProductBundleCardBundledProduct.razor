@@ -2,5 +2,15 @@
 @inherits CustomDOMComponentBase
 
 <div class="giz-timeline-item">
-    <div class="giz-bundle-product-details"><ProductIcon />@_product?.Name<span>@($" x{Quantity.ToString("N0")}")</span></div>
+    <div class="giz-bundle-product-details">
+        @if (Product.ProductType == ProductType.ProductTime)
+        {
+            <Icon SVGIcon="Icons.Time_Client" Size="IconSizes.Small" />
+        }
+        else
+        {
+            <Icon SVGIcon="Icons.FastFood_Client" Size="IconSizes.Small" />
+        }
+        @_product?.Name<span>@($" x{Quantity.ToString("N0")}")</span>
+    </div>
 </div>

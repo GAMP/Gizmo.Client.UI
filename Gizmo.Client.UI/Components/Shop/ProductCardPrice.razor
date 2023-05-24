@@ -28,6 +28,14 @@ else
     @if (Product.UnitPointsPrice > 0)
     {
         <span>@Product.UnitPointsPrice</span>
-        <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.ExtraSmall" />
+
+        @if (Icon == 1)
+        {
+            <Points2Icon />
+        }
+        else
+        {
+            <Icon SVGIcon="Icons.Trophy_Client" Size="IconSizes.ExtraSmall" />
+        }
     }
 }

@@ -6,7 +6,6 @@ using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
-using Gizmo.Web.Components.Extensions;
 using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Pages
@@ -69,6 +68,66 @@ namespace Gizmo.Client.UI.Pages
             return NavigationService.GoBackAsync();
         }
 
+        private string GetDayTimeFromMinute()
+        {
+            TimeSpan timeSpan = TimeSpan.FromMinutes(ViewState.Product.TimeProduct.ExpireAtDayTimeMinute);
+            return timeSpan.ToString("hh\\:mm");
+        }
+
+        private string GetAfterText()
+        {
+            string expireAfterText = "";
+
+            switch (ViewState.Product.TimeProduct.ExpireAfterType)
+            {
+                case ExpireAfterType.Day:
+
+                    if (ViewState.Product.TimeProduct.ExpiresAfter == 1)
+                        expireAfterText = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_DAY");
+                    else
+                        expireAfterText = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_DAYS");
+
+                    break;
+
+                case ExpireAfterType.Hour:
+
+                    if (ViewState.Product.TimeProduct.ExpiresAfter == 1)
+                        expireAfterText = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_HOUR");
+                    else
+                        expireAfterText = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_HOURS");
+
+                    break;
+
+                case ExpireAfterType.Minute:
+
+                    if (ViewState.Product.TimeProduct.ExpiresAfter == 1)
+                        expireAfterText = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_MINUTE");
+                    else
+                        expireAfterText = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_MINUTES");
+
+                    break;
+            }
+
+            string expireFromOptionsText = "";
+
+            switch (ViewState.Product.TimeProduct.ExpireFromOptions)
+            {
+                case ExpireFromOptionType.Purchase:
+
+                    expireFromOptionsText = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_AFTER_PURCHASE");
+
+                    break;
+
+                case ExpireFromOptionType.Use:
+
+                    expireFromOptionsText = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_AFTER_USE");
+
+                    break;
+            }
+
+            return $"{ViewState.Product.TimeProduct.ExpiresAfter} {expireAfterText} {LocalizationService.GetString("GIN_GEN_OF")} {expireFromOptionsText}"; //TODO: AAA
+        }
+
         private string GetAvailabilityText(ProductAvailabilityDayViewState productAvailabilityDayViewState)
         {
             ProductAvailabilityDayTimeViewState first = null;
@@ -92,7 +151,8 @@ namespace Gizmo.Client.UI.Pages
                 TimeSpan startTimeSpan = TimeSpan.FromSeconds(first.StartSecond);
                 TimeSpan endTimeSpan = TimeSpan.FromSeconds(first.EndSecond);
 
-                return $"{startTimeSpan.ToString()}-{endTimeSpan.ToString()} {productAvailabilityDayViewState.Day.ToString()}";
+                //TODO: AAA
+                return $"{startTimeSpan.ToString("hh\\:mm")}-{endTimeSpan.ToString("hh\\:mm")} {productAvailabilityDayViewState.Day.ToString().Substring(0, 2)}";
             }
 
             //TODO: AAA
@@ -122,7 +182,7 @@ namespace Gizmo.Client.UI.Pages
                 }
 
                 _previousProductId = ProductId;
-                
+
                 _productItemViewState = await UserCartProductItemViewStateLookupService.GetStateAsync(ProductId);
                 _userProductGroupViewState = await UserProductGroupViewStateLookupService.GetStateAsync(ViewState.Product.ProductGroupId); //TODO: A CHECK
 

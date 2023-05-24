@@ -7,24 +7,40 @@
         <div>@LocalizationService.GetString("GIZ_SHOP_CARD_TIME_PRODUCT_DESCRIPTION")</div>
     </div>
     <div class="giz-timeline-item">
-        <div class="giz-time-product-time"><Icon SVGIcon="Icons.Time_Client" Size="IconSizes.Small" />@GetTimeText()</div>
-    </div>
-    <div class="giz-timeline-item">
-        <div class="giz-time-product-details"><div>Buying time</div><div class="giz-time-product-time-availabile">@GetPurchaseAvailabilityText()</div></div>
-    </div>
-    <div class="giz-timeline-item">
-        <div class="giz-time-product-details"><div>Action time</div><div class="giz-time-product-time-availabile">@GetUsageAvailabilityText()</div></div>
-    </div>
-    <div class="giz-timeline-item">
-        <div class="giz-time-product-details">
-            <div>Expires</div>
-            <div class="giz-time-product-expirations">
-                <div class="giz-time-product-expiration">after 00:00</div>
-                <div class="giz-time-product-expiration">after 9 h. of purchase</div>
-                <div class="giz-time-product-expiration">after logout</div>
-            </div>
+        <div class="giz-time-product-time">
+            <Icon SVGIcon="Icons.Time_Client" Size="IconSizes.Small" />@GetTimeText()
         </div>
     </div>
-    @*<div class="giz-timeline-item"><div class="giz-time-product-details">@LocalizationService.GetString("GIZ_SHOP_CARD_TIME_PRODUCT_ACTION_PERIOD")<span>10:00 - 12:00</span></div></div>
-    <div class="giz-timeline-item"><div class="giz-time-product-details">@LocalizationService.GetString("GIZ_SHOP_CARD_TIME_PRODUCT_LIFE_TIME")<span>3 hours</span></div></div>*@
+    <div class="giz-timeline-item">
+        <div class="giz-time-product-details"><div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_BUYING_TIME")</div><div class="giz-time-product-time-availabile">@GetPurchaseAvailabilityText()</div></div>
+    </div>
+    <div class="giz-timeline-item">
+        <div class="giz-time-product-details"><div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_ACTION_TIME")</div><div class="giz-time-product-time-availabile">@GetUsageAvailabilityText()</div></div>
+    </div>
+    @if (Product != null && Product.ProductType == ProductType.ProductTime && Product.TimeProduct.ExpirationOptions != ProductTimeExpirationOptionType.None)
+    {
+        <div class="giz-timeline-item">
+            <div class="giz-time-product-details">
+                <div>Expires</div>
+                <div class="giz-time-product-expirations">
+
+                    @if (Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAtDayTime))
+                    {
+                        <div class="giz-time-product-expiration">@GetDayTimeFromMinute()</div>
+                    }
+
+                    @if (Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAfterTime))
+                    {
+                        <div class="giz-time-product-expiration">@GetAfterText()</div>
+                    }
+
+                    @if (Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpiresAtLogout))
+                    {
+                        <div class="giz-time-product-expiration">@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_AFTER_LOGOUT")</div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    }
 </div>
