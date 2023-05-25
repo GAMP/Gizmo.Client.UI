@@ -26,13 +26,15 @@
 
             <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Product.DefaultImageId" ImageFitType="ImageFitType.Cover">
                 <EmptyResultPlaceholder>
-                    <div class="giz-product-card-time-info">
-                        <div class="giz-default-image">
-                            <img src="_content/Gizmo.Client.UI/img/@GetTimeImage()" alt='loading' />
-                        </div>
-                        <div class="giz-product-card-time-info__time">
-                            <div class="giz-product-card-time-info__time__number">@GetTimeNumber()</div>
-                            <div class="giz-product-card-time-info__time__text">@GetTimeText()</div>
+                    <div class="giz-product-time-image-wrapper">
+                        <div class="giz-product-time-image">
+                            <div class="giz-default-image">
+                                <img src="_content/Gizmo.Client.UI/img/@ProductHelpers.GetProductTimeImage(Product)" alt='loading' />
+                            </div>
+                            <div class="giz-product-time-image__time">
+                                <div class="giz-product-time-image__time__number">@ProductHelpers.GetProductTimeNumber(Product)</div>
+                                <div class="giz-product-time-image__time__text">@ProductHelpers.GetProductTimeText(Product, LocalizationService)</div>
+                            </div>
                         </div>
                     </div>
                 </EmptyResultPlaceholder>
@@ -54,8 +56,8 @@
                     {
                         @if (!Product.TimeProduct.DisallowedHostGroups.Contains(item.Id))
                         {
-                            <div class="giz-time-product-host-group">
-                                <Icon Size="IconSizes.Small" SVGIcon="Icons.Passport_Client" />
+                            <div class="giz-time-product-host-group @(item.Id == HostGroupViewState.HostGroupId ? "active" : "")">
+                                @*<Icon Size="IconSizes.Small" SVGIcon="Icons.Passport_Client" />*@
                                 <div>@item.Name</div>
                             </div>
                         }

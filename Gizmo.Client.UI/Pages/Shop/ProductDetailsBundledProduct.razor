@@ -1,0 +1,30 @@
+﻿@namespace Gizmo.Client.UI.Pages
+@inherits CustomDOMComponentBase
+@using Gizmo.Client.UI.ViewModels
+
+<div class="giz-bundled-product">
+    <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@_userProductViewState.DefaultImageId">
+        <EmptyResultPlaceholder>
+            @if (_userProductViewState.ProductType == ProductType.ProductTime)
+            {
+                <div class="giz-product-time-image-wrapper">
+                    <div class="giz-product-time-image">
+                        <div class="giz-default-image">
+                            <img src="_content/Gizmo.Client.UI/img/@ProductHelpers.GetProductTimeImage(_userProductViewState)" alt='loading' />
+                        </div>
+                        <div class="giz-product-time-image__time">
+                            <div class="giz-product-time-image__time__number">@ProductHelpers.GetProductTimeNumber(_userProductViewState)</div>
+                            <div class="giz-product-time-image__time__text">@ProductHelpers.GetProductTimeText(_userProductViewState, LocalizationService)</div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="giz-default-image">
+                    <img src="_content/Gizmo.Client.UI/img/no-product-image.svg" alt='loading' />
+                </div>
+            }
+        </EmptyResultPlaceholder>
+    </GizImage>
+</div>

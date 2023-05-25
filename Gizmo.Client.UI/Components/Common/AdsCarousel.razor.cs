@@ -99,7 +99,6 @@ namespace Gizmo.Client.UI.Components
 
         private void BringToFront(int index)
         {
-            //TODO: AAA 1 OR 2 ITEMS?
             for (int i = 0; i < _items.Count; i++)
             {
                 _items[i].Hide();

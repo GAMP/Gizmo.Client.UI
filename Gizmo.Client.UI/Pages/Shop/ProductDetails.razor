@@ -17,9 +17,26 @@
                 <div class="giz-product-details__product__info__image">
                     <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ViewState.Product?.DefaultImageId" ImageFitType="ImageFitType.Cover">
                         <EmptyResultPlaceholder>
-                            <div class="giz-default-image">
-                                <img src="_content/Gizmo.Client.UI/img/no-product-image.svg" alt='loading' />
-                            </div>
+                            @if (@ViewState.Product?.ProductType == ProductType.ProductTime)
+                            {
+                                <div class="giz-product-time-image-wrapper">
+                                    <div class="giz-product-time-image">
+                                        <div class="giz-default-image">
+                                            <img src="_content/Gizmo.Client.UI/img/@ProductHelpers.GetProductTimeImage(ViewState.Product)" alt='loading' />
+                                        </div>
+                                        <div class="giz-product-time-image__time">
+                                            <div class="giz-product-time-image__time__number">@ProductHelpers.GetProductTimeNumber(ViewState.Product)</div>
+                                            <div class="giz-product-time-image__time__text">@ProductHelpers.GetProductTimeText(ViewState.Product, LocalizationService)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="giz-default-image">
+                                    <img src="_content/Gizmo.Client.UI/img/no-product-image.svg" alt='loading' />
+                                </div>
+                            }
                         </EmptyResultPlaceholder>
                     </GizImage>
                 </div>
@@ -37,8 +54,8 @@
                             {
                                 @if (!ViewState.Product.TimeProduct.DisallowedHostGroups.Contains(item.Id))
                                 {
-                                    <div class="giz-time-product-host-group @(item.Id == ViewState.CurrentHostGroupId ? "active" : "")">
-                                        <Icon Size="IconSizes.Small" SVGIcon="Icons.Passport_Client" />
+                                    <div class="giz-time-product-host-group @(item.Id == HostGroupViewState.HostGroupId ? "active" : "")">
+                                        @*<Icon Size="IconSizes.Small" SVGIcon="Icons.Passport_Client" />*@
                                         <div>@item.Name</div>
                                     </div>
                                 }
@@ -50,7 +67,7 @@
                     </div>
                     <div class="giz-product-details__product__info__basic__action">
                         <div class="giz-product-details__product__info__basic__action__price">
-                            <ProductCardPrice Product="@ViewState.Product" Icon="1" />
+                            <ProductCardPrice Product="@ViewState.Product" />
                         </div>
                         <ProductQuantityPicker @key="ProductId" ProductId="@ProductId" Size="ButtonSizes.ExtraLarge" IsFullWidth="false" />
                     </div>
@@ -113,12 +130,12 @@
 
                                     @if (ViewState.Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAtDayTime))
                                     {
-                                        <div class="giz-product-expiration">@GetDayTimeFromMinute()<Icon SVGIcon="Icons.Info_Client" Size="IconSizes.Small" /></div>
+                                        <div class="giz-product-expiration">@ProductHelpers.GetDayTimeFromMinute(ViewState.Product.TimeProduct.ExpireAtDayTimeMinute)<Icon SVGIcon="Icons.Info_Client" Size="IconSizes.Small" /></div>
                                     }
                                 
                                     @if (ViewState.Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAfterTime))
                                     {
-                                        <div class="giz-product-expiration">@GetAfterText()<Icon SVGIcon="Icons.Info_Client" Size="IconSizes.Small" /></div>
+                                        <div class="giz-product-expiration">@ProductHelpers.GetExpiresAfterText(ViewState.Product.TimeProduct, LocalizationService)<Icon SVGIcon="Icons.Info_Client" Size="IconSizes.Small" /></div>
                                     }
 
                                     @if (ViewState.Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpiresAtLogout))
@@ -137,15 +154,7 @@
                 <div class="giz-product-details__product__bundled-products">
                     @foreach (var product in ViewState.Product.BundledProducts)
                     {
-                        <div class="giz-product-details__product__bundled-products-product">
-                            <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ViewState.Product.DefaultImageId">
-                                <EmptyResultPlaceholder>
-                                    <div class="giz-default-image">
-                                        <img src="_content/Gizmo.Client.UI/img/no-product-image.svg" alt='loading' />
-                                    </div>
-                                </EmptyResultPlaceholder>
-                            </GizImage>
-                        </div>
+                        <ProductDetailsBundledProduct @key="@product.Id" ProductId="@product.Id" />
                     }
                 </div>
             }

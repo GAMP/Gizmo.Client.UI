@@ -29,14 +29,18 @@ namespace Gizmo.Client.UI.Components
             return string.Empty;
         }
 
-        private string GetPurchaseAvailabilityText()
+        private string GetFirstPurchaseAvailabilityText()
         {
             if (Product != null && Product.PurchaseAvailability != null)
             {
-                if (Product.PurchaseAvailability.DateRange && Product.PurchaseAvailability.StartDate.HasValue && Product.PurchaseAvailability.EndDate.HasValue)
+                var currentWeekStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).AddDays(((int)DateTime.Now.DayOfWeek) * -1);
+
+                if (Product.PurchaseAvailability.DateRange &&
+                    Product.PurchaseAvailability.StartDate.HasValue &&
+                    Product.PurchaseAvailability.EndDate.HasValue &&
+                    Product.PurchaseAvailability.StartDate.Value < currentWeekStart)
                 {
-                    //TODO: AAA
-                    return $"{Product.PurchaseAvailability.StartDate.Value.ToShortDateString()}-{Product.PurchaseAvailability.EndDate.Value.ToShortDateString()}";
+                    return Product.PurchaseAvailability.StartDate.Value.ToShortDateString();
                 }
                 else
                 {
@@ -86,10 +90,14 @@ namespace Gizmo.Client.UI.Components
         {
             if (Product != null && Product.ProductType == ProductType.ProductTime && Product.TimeProduct != null && Product.TimeProduct.UsageAvailability != null)
             {
-                if (Product.TimeProduct.UsageAvailability.DateRange && Product.TimeProduct.UsageAvailability.StartDate.HasValue && Product.TimeProduct.UsageAvailability.EndDate.HasValue)
+                var currentWeekStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).AddDays(((int)DateTime.Now.DayOfWeek) * -1);
+
+                if (Product.TimeProduct.UsageAvailability.DateRange &&
+                    Product.TimeProduct.UsageAvailability.StartDate.HasValue &&
+                    Product.TimeProduct.UsageAvailability.EndDate.HasValue &&
+                    Product.TimeProduct.UsageAvailability.StartDate.Value < currentWeekStart)
                 {
-                    //TODO: AAA
-                    return $"{Product.TimeProduct.UsageAvailability.StartDate.Value.ToShortDateString()}-{Product.TimeProduct.UsageAvailability.EndDate.Value.ToShortDateString()}";
+                    return Product.TimeProduct.UsageAvailability.StartDate.Value.ToShortDateString();
                 }
                 else
                 {
@@ -130,70 +138,6 @@ namespace Gizmo.Client.UI.Components
                         }
                     }
                 }
-            }
-
-            return string.Empty;
-        }
-        private string GetDayTimeFromMinute()
-        {
-            TimeSpan timeSpan = TimeSpan.FromMinutes(Product.TimeProduct.ExpireAtDayTimeMinute);
-            return $"{LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_AFTER")} {timeSpan.ToString("hh\\:mm")}";
-        }
-
-        private string GetAfterText()
-        {
-            if (Product != null && Product.ProductType == ProductType.ProductTime)
-            {
-                string expireAfterText = string.Empty;
-
-                switch (Product.TimeProduct.ExpireAfterType)
-                {
-                    case ExpireAfterType.Day:
-
-                        if (Product.TimeProduct.ExpiresAfter == 1)
-                            expireAfterText = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_DAY");
-                        else
-                            expireAfterText = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_DAYS");
-
-                        break;
-
-                    case ExpireAfterType.Hour:
-
-                        if (Product.TimeProduct.ExpiresAfter == 1)
-                            expireAfterText = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_HOUR");
-                        else
-                            expireAfterText = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_HOURS");
-
-                        break;
-
-                    case ExpireAfterType.Minute:
-
-                        if (Product.TimeProduct.ExpiresAfter == 1)
-                            expireAfterText = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_MINUTE");
-                        else
-                            expireAfterText = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_MINUTES");
-
-                        break;
-                }
-
-                string expireFromOptionsText = "";
-
-                switch (Product.TimeProduct.ExpireFromOptions)
-                {
-                    case ExpireFromOptionType.Purchase:
-
-                        expireFromOptionsText = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_AFTER_PURCHASE");
-
-                        break;
-
-                    case ExpireFromOptionType.Use:
-
-                        expireFromOptionsText = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_AFTER_USE");
-
-                        break;
-                }
-
-                return $"{LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_AFTER")} {Product.TimeProduct.ExpiresAfter} {expireAfterText} {LocalizationService.GetString("GIN_GEN_OF")} {expireFromOptionsText}";
             }
 
             return string.Empty;

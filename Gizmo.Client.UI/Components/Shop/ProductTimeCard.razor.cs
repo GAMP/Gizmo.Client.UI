@@ -25,6 +25,9 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         UserHostGroupViewStateLookupService UserHostGroupViewStateLookupService { get; set; }
 
+        [Inject]
+        HostGroupViewState HostGroupViewState { get; set; }
+
         [Parameter]
         public UserProductViewState Product { get; set; }
 
@@ -44,78 +47,25 @@ namespace Gizmo.Client.UI.Components
             _clickHandled = true;
         }
 
-        public string GetTimeNumber()
-        {
-            string result;
-
-            if (Product.TimeProduct.Minutes < 60)
-            {
-                result = Product.TimeProduct.Minutes.ToString();
-            }
-            else
-            {
-                TimeSpan timeSpan = TimeSpan.FromMinutes(Product.TimeProduct.Minutes);
-                result = timeSpan.Hours.ToString();
-
-                if (timeSpan.Minutes > 0)
-                {
-                    result += "+";
-                }
-            }
-
-            return result;
-        }
-
-        public string GetTimeImage()
-        {
-            string result = "product-time-default-1.svg";
-
-            TimeSpan timeSpan = TimeSpan.FromMinutes(Product.TimeProduct.Minutes);
-
-            if (timeSpan.Hours > 12)
-            {
-                result = "product-time-default-24.svg";
-            }
-            else if (timeSpan.Hours > 6)
-            {
-                result = "product-time-default-11.svg";
-            }
-            else if (timeSpan.Hours > 3)
-            {
-                result = "product-time-default-4.svg";
-            }
-
-            return result;
-        }
-
-        public string GetTimeText()
-        {
-            string result;
-
-            if (Product.TimeProduct.Minutes < 60)
-            {
-                result = LocalizationService.GetString("GIZ_TIME_PRODUCT_MINUTES");
-            }
-            else
-            {
-                if (Product.TimeProduct.Minutes >= 60 && Product.TimeProduct.Minutes < 120)
-                {
-                    result = LocalizationService.GetString("GIZ_TIME_PRODUCT_HOUR");
-                }
-                else
-                {
-                    result = LocalizationService.GetString("GIZ_TIME_PRODUCT_HOURS");
-                }
-            }
-
-            return result;
-        }
-
         #region OVERRIDES
 
         protected override async Task OnInitializedAsync()
         {
-            _hostGroups = await UserHostGroupViewStateLookupService.GetStatesAsync();
+            if (HostGroupViewState.HostGroupId.HasValue)
+            {
+                var hostGroups = await UserHostGroupViewStateLookupService.GetStatesAsync();
+                var tmp = hostGroups.Where(a => a.Id != HostGroupViewState.HostGroupId.Value).ToList();
+                var current = hostGroups.Where(a => a.Id == HostGroupViewState.HostGroupId.Value).FirstOrDefault();
+                if (current != null)
+                {
+                    tmp.Insert(0, current);
+                }
+                _hostGroups = tmp;
+            }
+            else
+            {
+                _hostGroups = await UserHostGroupViewStateLookupService.GetStatesAsync();
+            }
 
             await base.OnInitializedAsync();
         }
