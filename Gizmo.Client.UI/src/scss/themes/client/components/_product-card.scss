@@ -4,8 +4,9 @@
     position: relative;
     background-color: #22272B;
     border-radius: 0.8rem;
-    overflow: hidden;
     transition: background-color 0.2s;
+    max-width: 100%;
+    //overflow: hidden;
 
     .giz-button--fill.accent.giz-product-card-primary-button {
         background-color: rgba(250, 250, 250, 0.16);
@@ -41,6 +42,7 @@
         display: grid;
         grid-template-rows: min-content 1fr min-content;
         height: 100%;
+        max-width: 100%;
 
         &__image {
             display: flex;
@@ -49,6 +51,7 @@
             position: relative;
             height: 24.6rem;
             background-color: #161A1D;
+            max-width: 100%;
 
             & > img {
                 /*width: 100%;
@@ -84,6 +87,8 @@
             height: 24.6rem;
             border-radius: 0.8rem 0.8rem 0 0;
             overflow: hidden;
+            max-width: 100%;
+
             /*&:after {
                 content: '';
                 position: absolute;
@@ -116,6 +121,7 @@
             margin: 1.2rem 0 0 0;
             width: 100%;
             overflow: hidden;
+            max-width: 100%;
 
             .giz-product-card__price {
                 display: flex;
@@ -131,6 +137,23 @@
 
         &__footer {
             padding: 1.6rem;
+            max-width: 100%;
+
+            .giz-client-tooltip-wrapper {
+                white-space: nowrap;
+                display: block;
+            }
+
+            .giz-tooltip-root {
+                //display: none;
+                //white-space: nowrap;
+                display: block;
+
+                .giz-tooltip {
+                    //white-space: nowrap;
+                    display: block;
+                }
+            }
         }
     }
 

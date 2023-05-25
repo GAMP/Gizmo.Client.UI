@@ -1,8 +1,16 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 
-@if (_productItemViewState is not null)
+@if (_userProductViewState.DisallowPurchase)
 {
+    <Tooltip Text="@_userProductViewState.DisallowPurchaseReason">
+        <ChildContent>
+            <Button IsDisabled="true" Color="ButtonColors.Accent" Size="@Size" IsFullWidth="@IsFullWidth" Text="@LocalizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
+        </ChildContent>
+    </Tooltip>
+}
+else
+{ 
     @if (_productItemViewState.Quantity == 0)
     {
         <Button Color="ButtonColors.Accent" Class="giz-product-card-primary-button" Size="@Size" IsFullWidth="@IsFullWidth" @onclick="OnAddQuantityButtonClickHandlerAsync" Text="@LocalizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />

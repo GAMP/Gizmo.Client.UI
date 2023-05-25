@@ -12,7 +12,16 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class ProductQuantityPicker : CustomDOMComponentBase
     {
+        private UserProductViewState _userProductViewState;
+
         private UserCartProductItemViewState _productItemViewState;
+
+        [Inject]
+        public UserProductViewState UserProductViewState
+        {
+            get { return _userProductViewState; }
+            private set { _userProductViewState = value; }
+        }
 
         [Inject]
         public UserCartProductItemViewState ProductItemViewState
@@ -23,6 +32,9 @@ namespace Gizmo.Client.UI.Components
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
+        UserProductViewStateLookupService UserProductViewStateLookupService { get; set; }
 
         [Inject]
         UserCartViewService UserCartService { get; set; }
@@ -53,6 +65,13 @@ namespace Gizmo.Client.UI.Components
 
         protected override async Task OnInitializedAsync()
         {
+            _userProductViewState = await UserProductViewStateLookupService.GetStateAsync(ProductId);
+
+            if (_userProductViewState != null)
+            {
+                this.SubscribeChange(_userProductViewState);
+            }
+
             _productItemViewState = await UserCartService.GetCartProductItemViewStateAsync(ProductId);
 
             if (_productItemViewState != null)
@@ -65,6 +84,11 @@ namespace Gizmo.Client.UI.Components
 
         public override void Dispose()
         {
+            if (_userProductViewState != null)
+            {
+                this.UnsubscribeChange(_userProductViewState);
+            }
+
             if (_productItemViewState != null)
             {
                 this.UnsubscribeChange(_productItemViewState);
