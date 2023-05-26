@@ -11,36 +11,51 @@
             <Icon SVGIcon="Icons.Time_Client" Size="IconSizes.Small" />@GetTimeText()
         </div>
     </div>
-    <div class="giz-timeline-item">
-        <div class="giz-time-product-details"><div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_BUYING_TIME")</div><div class="giz-time-product-time-availabile">@GetFirstPurchaseAvailabilityText()</div></div>
-    </div>
-    <div class="giz-timeline-item">
-        <div class="giz-time-product-details"><div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_ACTION_TIME")</div><div class="giz-time-product-time-availabile">@GetFirstUsageAvailabilityText()</div></div>
-    </div>
-    @if (Product != null && Product.ProductType == ProductType.ProductTime && Product.TimeProduct.ExpirationOptions != ProductTimeExpirationOptionType.None)
+
+    @if (Product != null)
     {
-        <div class="giz-timeline-item">
-            <div class="giz-time-product-details">
-                <div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRES")</div>
-                <div class="giz-time-product-expirations">
-
-                    @if (Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAtDayTime))
-                    {
-                        <div class="giz-time-product-expiration">@ProductHelpers.GetDayTimeFromMinute(Product.TimeProduct.ExpireAtDayTimeMinute)</div>
-                    }
-
-                    @if (Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAfterTime))
-                    {
-                        <div class="giz-time-product-expiration">@($"{LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_AFTER")} {ProductHelpers.GetExpiresAfterText(Product.TimeProduct, LocalizationService)}")</div>
-                    }
-
-                    @if (Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpiresAtLogout))
-                    {
-                        <div class="giz-time-product-expiration">@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_AFTER_LOGOUT")</div>
-                    }
-
-                </div>
+        @if (Product.PurchaseAvailability != null)
+        {
+            <div class="giz-timeline-item">
+                <div class="giz-time-product-details"><div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_BUYING_TIME")</div><div class="giz-time-product-time-availabile">@ProductHelpers.GetPurchaseAvailabilities(Product, true, LocalizationService).FirstOrDefault()</div></div>
             </div>
-        </div>
+        }
+
+        @if (Product.ProductType == ProductType.ProductTime && Product.TimeProduct != null)
+        {
+            @if (Product.TimeProduct.UsageAvailability != null)
+            {
+                <div class="giz-timeline-item">
+                    <div class="giz-time-product-details"><div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_ACTION_TIME")</div><div class="giz-time-product-time-availabile">@ProductHelpers.GetUsageAvailabilities(Product, true, LocalizationService).FirstOrDefault()</div></div>
+                </div>
+            }
+
+            @if (Product.TimeProduct.ExpirationOptions != ProductTimeExpirationOptionType.None)
+            {
+                <div class="giz-timeline-item">
+                    <div class="giz-time-product-details">
+                        <div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRES")</div>
+                        <div class="giz-time-product-expirations">
+
+                            @if (Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAtDayTime))
+                            {
+                                <div class="giz-time-product-expiration">@ProductHelpers.GetDayTimeFromMinute(Product.TimeProduct.ExpireAtDayTimeMinute)</div>
+                            }
+
+                            @if (Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAfterTime))
+                            {
+                                <div class="giz-time-product-expiration">@($"{LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_AFTER")} {ProductHelpers.GetExpiresAfterText(Product.TimeProduct, LocalizationService)}")</div>
+                            }
+
+                            @if (Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpiresAtLogout))
+                            {
+                                <div class="giz-time-product-expiration">@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_AFTER_LOGOUT")</div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            }
+        }
     }
 </div>

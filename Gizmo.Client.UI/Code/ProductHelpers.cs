@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 
@@ -148,5 +150,145 @@ namespace Gizmo.Client.UI
             return result;
         }
 
+        public static List<string> GetPurchaseAvailabilities(UserProductViewState product, bool firstOnly, ILocalizationService localizationService)
+        {
+            return GetAvailabilities(product.PurchaseAvailability, firstOnly, localizationService);
+        }
+
+        public static List<string> GetUsageAvailabilities(UserProductViewState product, bool firstOnly, ILocalizationService localizationService)
+        {
+            return GetAvailabilities(product.TimeProduct.UsageAvailability, firstOnly, localizationService);
+        }
+
+        public static List<string> GetAvailabilities(ProductAvailabilityViewState availability, bool firstOnly, ILocalizationService localizationService)
+        {
+            List<string> result = new List<string>();
+
+            if (availability == null)
+                return result;
+
+            DateTime? lastTimeRangeEnd = null;
+
+            if (availability.DateRange && availability.EndDate.HasValue && availability.TimeRange)
+            {
+                int days = 6;
+                if (availability.StartDate.HasValue)
+                {
+                    days = Math.Min((int)availability.EndDate.Value.Subtract(availability.StartDate.Value).TotalDays, days); //TODO: AAA REVIEW
+                }
+                for (int i = 0; i < days; i++)
+                {
+                    var date = availability.EndDate.Value.AddDays(i * -1);
+                    var lastEndDate = availability.DaysAvailable.Where(a => a.Day == date.DayOfWeek).FirstOrDefault();
+                    if (lastEndDate != null)
+                    {
+                        var lastEndSecond = lastEndDate.DayTimesAvailable.OrderByDescending(a => a.EndSecond).Select(a => a.EndSecond).FirstOrDefault();
+                        TimeSpan endTimeSpan = TimeSpan.FromSeconds(lastEndSecond);
+                        lastTimeRangeEnd = new DateTime(date.Year, date.Month, date.Day, endTimeSpan.Hours, endTimeSpan.Minutes, endTimeSpan.Seconds);
+                        break;
+                    }
+                }
+            }
+
+            bool moreThanWeekLater = availability.StartDate.HasValue && availability.StartDate.Value.AddDays(-7) > DateTime.Now; //TODO: AAA REVIEW
+            bool expired = (availability.EndDate.HasValue && availability.EndDate.Value.AddDays(1) < DateTime.Now) || (lastTimeRangeEnd.HasValue && lastTimeRangeEnd.Value < DateTime.Now);
+            bool showDateRange = availability.DateRange && (moreThanWeekLater || expired || !availability.TimeRange);
+            bool showTimeRange = availability.TimeRange && !showDateRange;
+
+            if (showDateRange)
+            {
+                if (expired)
+                {
+                    result.Add("Not available anymore");//TODO: AAA TRANSLATE
+                }
+                else if (availability.StartDate.HasValue && availability.EndDate.HasValue)
+                {
+                    result.Add($"{availability.StartDate.Value.ToShortDateString()}-{availability.EndDate.Value.ToShortDateString()}");
+                }
+                else if (!availability.StartDate.HasValue && !availability.EndDate.HasValue)
+                {
+                    result.Add("Always"); //Normalized in service, should not exist.
+                }
+                else
+                {
+                    if (availability.StartDate.HasValue)
+                    {
+                        result.Add($"From {availability.StartDate.Value.ToShortDateString()}"); //TODO: AAA TRANSLATE
+                    }
+                    else
+                    {
+                        result.Add($"Until {availability.EndDate.Value.ToShortDateString()}"); //TODO: AAA TRANSLATE
+                    }
+                }
+            }
+            if (showTimeRange)
+            {
+                if (firstOnly)
+                {
+                    DateTime max = DateTime.Now;
+
+                    if (availability.StartDate.HasValue && availability.StartDate > max)
+                    {
+                        availability.StartDate = availability.StartDate.Value;
+                    }
+
+                    int days = 7;
+                    if (availability.EndDate.HasValue)
+                    {
+                        days = Math.Min((int)availability.EndDate.Value.Subtract(max).TotalDays, days);//TODO: AAA REVIEW
+                    }
+                    for (int i = 0; i < days; i++)
+                    {
+                        max = max.AddDays(i);
+                        TimeSpan timeSpan = new TimeSpan(max.Hour, max.Minute, max.Second);
+                        var firstStartDate = availability.DaysAvailable.Where(a => a.Day == max.DayOfWeek).FirstOrDefault();
+                        if (firstStartDate != null)
+                        {
+                            var firstTimeRange = firstStartDate.DayTimesAvailable.Where(b => b.EndSecond > timeSpan.TotalSeconds).OrderBy(a => a.EndSecond).FirstOrDefault();
+                            if (firstTimeRange != null)
+                            {
+                                TimeSpan startTimeSpan = TimeSpan.FromSeconds(firstTimeRange.StartSecond);
+                                TimeSpan endTimeSpan = TimeSpan.FromSeconds(firstTimeRange.EndSecond);
+
+                                //TODO: AAA
+                                result.Add($"{startTimeSpan.ToString("hh\\:mm")}-{endTimeSpan.ToString("hh\\:mm")} {max.DayOfWeek.ToString().Substring(0, 2)}");
+                                break;
+                            }
+                        }
+                        max = new DateTime(max.Year, max.Month, max.Day);
+                    }
+                }
+                else
+                {
+                    //TODO: AAA EXCLUDE PASSED DAYS
+                    foreach (var day in availability.DaysAvailable.Where(a => a.DayTimesAvailable.Count() > 0))
+                    {
+                        ProductAvailabilityDayTimeViewState first = null;
+
+                        if (day.Day == DateTime.Now.DayOfWeek)
+                        {
+                            TimeSpan timeSpan = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+                            first = day.DayTimesAvailable.Where(a => a.EndSecond > timeSpan.TotalSeconds).FirstOrDefault();
+                            if (first == null)
+                            {
+                                first = day.DayTimesAvailable.FirstOrDefault();
+                            }
+                        }
+                        else
+                        {
+                            first = day.DayTimesAvailable.FirstOrDefault();
+                        }
+
+                        TimeSpan startTimeSpan = TimeSpan.FromSeconds(first.StartSecond);
+                        TimeSpan endTimeSpan = TimeSpan.FromSeconds(first.EndSecond);
+
+                        //TODO: AAA
+                        result.Add($"{startTimeSpan.ToString("hh\\:mm")}-{endTimeSpan.ToString("hh\\:mm")} {day.Day.ToString().Substring(0, 2)}");
+                    }
+                }
+            }
+
+            return result;
+        }
     }
 }

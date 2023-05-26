@@ -75,7 +75,7 @@
                 @if (ViewState.Product != null)
                 {
                     <div class="giz-product-details__product__info__additional">
-                        @if (ViewState.Product.PurchaseAvailability != null || (ViewState.Product.ProductType == ProductType.ProductTime && ViewState.Product.PurchaseAvailability != null))
+                        @if (ViewState.Product.PurchaseAvailability != null || (ViewState.Product.ProductType == ProductType.ProductTime && ViewState.Product.TimeProduct.UsageAvailability != null))
                         {
                             <div class="giz-product-details__product__info__additional__availability">
                                 @if (ViewState.Product.PurchaseAvailability != null)
@@ -85,7 +85,7 @@
                                             @LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_BUYING_TIME")
                                         </div>
                                         <div class="giz-product-availability__body">
-                                            @foreach (var item in GetPurchaseAvailabilities())
+                                            @foreach (var item in ProductHelpers.GetPurchaseAvailabilities(ViewState.Product, false, LocalizationService))
                                             {
                                                 <div class="giz-product-availability-day">@item</div>
                                             }
@@ -99,8 +99,8 @@
                                             @LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_ACTION_TIME")
                                         </div>
                                         <div class="giz-product-availability__body">
-                                            
-                                            @foreach (var item in GetUsageAvailabilities())
+
+                                            @foreach (var item in ProductHelpers.GetUsageAvailabilities(ViewState.Product, false, LocalizationService))
                                             {
                                                 <div class="giz-product-availability-day">@item</div>
                                             }
