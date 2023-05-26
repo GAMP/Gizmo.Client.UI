@@ -15,13 +15,13 @@
         <div class="giz-time-product-details"><div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_BUYING_TIME")</div><div class="giz-time-product-time-availabile">@GetFirstPurchaseAvailabilityText()</div></div>
     </div>
     <div class="giz-timeline-item">
-        <div class="giz-time-product-details"><div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_ACTION_TIME")</div><div class="giz-time-product-time-availabile">@GetUsageAvailabilityText()</div></div>
+        <div class="giz-time-product-details"><div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_ACTION_TIME")</div><div class="giz-time-product-time-availabile">@GetFirstUsageAvailabilityText()</div></div>
     </div>
     @if (Product != null && Product.ProductType == ProductType.ProductTime && Product.TimeProduct.ExpirationOptions != ProductTimeExpirationOptionType.None)
     {
         <div class="giz-timeline-item">
             <div class="giz-time-product-details">
-                <div>Expires</div>
+                <div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRES")</div>
                 <div class="giz-time-product-expirations">
 
                     @if (Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAtDayTime))

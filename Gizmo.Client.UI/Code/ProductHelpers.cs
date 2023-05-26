@@ -101,27 +101,27 @@ namespace Gizmo.Client.UI
                     case ExpireAfterType.Day:
 
                         if (timeProduct.ExpiresAfter == 1)
-                            expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_DAY");
+                            expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_DAY_ABBREVIATED");
                         else
-                            expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_DAYS");
+                            expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_DAYS_ABBREVIATED");
 
                         break;
 
                     case ExpireAfterType.Hour:
 
                         if (timeProduct.ExpiresAfter == 1)
-                            expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_HOUR");
+                            expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_HOUR_ABBREVIATED");
                         else
-                            expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_HOURS");
+                            expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_HOURS_ABBREVIATED");
 
                         break;
 
                     case ExpireAfterType.Minute:
 
                         if (timeProduct.ExpiresAfter == 1)
-                            expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_MINUTE");
+                            expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_MINUTE_ABBREVIATED");
                         else
-                            expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_MINUTES");
+                            expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_MINUTES_ABBREVIATED");
 
                         break;
                 }
@@ -142,7 +142,7 @@ namespace Gizmo.Client.UI
                         break;
                 }
 
-                result = $"{timeProduct.ExpiresAfter} {expireAfterText} {localizationService.GetString("GIN_GEN_OF")} {expireFromOptionsText}"; //TODO: AAA
+                result = $"{timeProduct.ExpiresAfter} {expireAfterText} {localizationService.GetString("GIN_GEN_OF")} {expireFromOptionsText}";
             }
 
             return result;

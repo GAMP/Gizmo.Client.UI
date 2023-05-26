@@ -22,7 +22,6 @@ namespace Gizmo.Client.UI.Components
         {
             if (Product != null && Product.ProductType == ProductType.ProductTime)
             {
-                //TODO: AAA
                 return $"{Product.TimeProduct?.Minutes.ToString("N0")} {LocalizationService.GetString("GIZ_PRODUCT_TIME_MINUTES_ABBREVIATED")}";
             }
 
@@ -86,7 +85,7 @@ namespace Gizmo.Client.UI.Components
             return string.Empty;
         }
 
-        private string GetUsageAvailabilityText()
+        private string GetFirstUsageAvailabilityText()
         {
             if (Product != null && Product.ProductType == ProductType.ProductTime && Product.TimeProduct != null && Product.TimeProduct.UsageAvailability != null)
             {

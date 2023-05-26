@@ -71,6 +71,79 @@ namespace Gizmo.Client.UI.Pages
             return NavigationService.GoBackAsync();
         }
 
+        public List<string> GetPurchaseAvailabilities()
+        {
+            return GetAvailabilities(ViewState.Product.PurchaseAvailability);
+        }
+
+        public List<string> GetUsageAvailabilities()
+        {
+            return GetAvailabilities(ViewState.Product.TimeProduct.UsageAvailability);
+        }
+
+        public List<string> GetAvailabilities(ProductAvailabilityViewState availability)
+        {
+            List<string> result = new List<string>();
+
+            if (availability == null)
+                return result;
+
+            bool currentWeek = false; //TODO: AAA
+            bool showDateRange = availability.DateRange && !currentWeek;
+            bool showTimeRange = availability.TimeRange && !showDateRange;
+
+            if (showDateRange)
+            {
+                if (availability.StartDate.HasValue && availability.EndDate.HasValue)
+                {
+                    result.Add($"{availability.StartDate.Value.ToShortDateString()}-{availability.EndDate.Value.ToShortDateString()}");
+                }
+                else if (!availability.StartDate.HasValue && !availability.EndDate.HasValue)
+                {
+                    result.Add("Always"); //Normalized in service, should not exist.
+                }
+                else
+                {
+                    if (availability.StartDate.HasValue)
+                    {
+                        result.Add($"From {availability.StartDate.Value.ToShortDateString()}"); //TODO: AAA TRANSLATE
+                    }
+                    else
+                    {
+                        result.Add($"Until {availability.EndDate.Value.ToShortDateString()}"); //TODO: AAA TRANSLATE
+                    }
+                }
+            }
+            if (showTimeRange)
+            {
+                foreach (var day in availability.DaysAvailable.Where(a => a.DayTimesAvailable.Count() > 0))
+                {
+                    ProductAvailabilityDayTimeViewState first = null;
+
+                    if (day.Day == DateTime.Now.DayOfWeek)
+                    {
+                        TimeSpan timeSpan = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+                        first = day.DayTimesAvailable.Where(a => a.EndSecond > timeSpan.TotalSeconds).FirstOrDefault();
+                        if (first == null)
+                        {
+                            first = day.DayTimesAvailable.FirstOrDefault();
+                        }
+                    }
+                    else
+                    {
+                        first = day.DayTimesAvailable.FirstOrDefault();
+                    }
+
+                    TimeSpan startTimeSpan = TimeSpan.FromSeconds(first.StartSecond);
+                    TimeSpan endTimeSpan = TimeSpan.FromSeconds(first.EndSecond);
+
+                    result.Add($"{startTimeSpan.ToString("hh\\:mm")}-{endTimeSpan.ToString("hh\\:mm")} {day.Day.ToString().Substring(0, 2)}");
+                }
+            }
+
+            return result;
+        }
+
         private string GetAvailabilityText(ProductAvailabilityDayViewState productAvailabilityDayViewState)
         {
             ProductAvailabilityDayTimeViewState first = null;

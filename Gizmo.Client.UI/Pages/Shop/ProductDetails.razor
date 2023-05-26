@@ -85,16 +85,9 @@
                                             @LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_BUYING_TIME")
                                         </div>
                                         <div class="giz-product-availability__body">
-                                            @if (ViewState.Product.PurchaseAvailability.DateRange && ViewState.Product.PurchaseAvailability.StartDate.HasValue && ViewState.Product.PurchaseAvailability.EndDate.HasValue)
+                                            @foreach (var item in GetPurchaseAvailabilities())
                                             {
-                                                <div class="giz-product-availability-day">@($"{ViewState.Product.PurchaseAvailability.StartDate.Value.ToShortDateString()}-{ViewState.Product.PurchaseAvailability.EndDate.Value.ToShortDateString()}")</div>
-                                            }
-                                            else
-                                            {
-                                                @foreach (var day in ViewState.Product.PurchaseAvailability.DaysAvailable)
-                                                {
-                                                    <div class="giz-product-availability-day">@GetAvailabilityText(day)</div>
-                                                }
+                                                <div class="giz-product-availability-day">@item</div>
                                             }
                                         </div>
                                     </div>
@@ -106,16 +99,10 @@
                                             @LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_ACTION_TIME")
                                         </div>
                                         <div class="giz-product-availability__body">
-                                            @if (ViewState.Product.TimeProduct.UsageAvailability.DateRange && ViewState.Product.TimeProduct.UsageAvailability.StartDate.HasValue && ViewState.Product.TimeProduct.UsageAvailability.EndDate.HasValue)
+                                            
+                                            @foreach (var item in GetUsageAvailabilities())
                                             {
-                                                <div class="giz-product-availability-day">@($"{ViewState.Product.TimeProduct.UsageAvailability.StartDate.Value.ToShortDateString()}-{ViewState.Product.TimeProduct.UsageAvailability.EndDate.Value.ToShortDateString()}")</div>
-                                            }
-                                            else
-                                            {
-                                                @foreach (var day in ViewState.Product.TimeProduct.UsageAvailability.DaysAvailable)
-                                                {
-                                                    <div class="giz-product-availability-day">@GetAvailabilityText(day)</div>
-                                                }
+                                                <div class="giz-product-availability-day">@item</div>
                                             }
                                         </div>
                                     </div>
