@@ -85,7 +85,7 @@
                                             @LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_BUYING_TIME")
                                         </div>
                                         <div class="giz-product-availability__body">
-                                            @foreach (var item in ProductHelpers.GetPurchaseAvailabilities(ViewState.Product, false, LocalizationService))
+                                            @foreach (var item in ProductHelpers.GetPurchaseAvailabilities(ViewState.Product, !_showMore, LocalizationService))
                                             {
                                                 <div class="giz-product-availability-day">@item</div>
                                             }
@@ -100,11 +100,26 @@
                                         </div>
                                         <div class="giz-product-availability__body">
 
-                                            @foreach (var item in ProductHelpers.GetUsageAvailabilities(ViewState.Product, false, LocalizationService))
+                                            @foreach (var item in ProductHelpers.GetUsageAvailabilities(ViewState.Product, !_showMore, LocalizationService))
                                             {
                                                 <div class="giz-product-availability-day">@item</div>
                                             }
                                         </div>
+                                    </div>
+                                }
+                                
+                                @if (_showMore)
+                                {
+                                    <div class="giz-product-availability-show-more" @onclick="ToggleMore">
+                                        <span>Less</span> @*TODO: A*@
+                                        <Icon SVGIcon="Icons.ArrowUp" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="giz-product-availability-show-more" @onclick="ToggleMore">
+                                        <span>More</span>
+                                        <Icon SVGIcon="Icons.ArrowDown" />
                                     </div>
                                 }
                             </div>

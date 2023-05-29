@@ -3,7 +3,7 @@
 
 <div class="giz-timeline-item">
     <div class="giz-bundle-product-details">
-        @if (Product.ProductType == ProductType.ProductTime)
+        @if (_product != null && _product.ProductType == ProductType.ProductTime)
         {
             <Icon SVGIcon="Icons.Time_Client" Size="IconSizes.Small" />
         }
@@ -11,7 +11,7 @@
         {
             <Icon SVGIcon="Icons.FastFood_Client" Size="IconSizes.Small" />
         }
-        @_product?.Name
+        <div class="giz-bundle-product-details__product-name">@_product?.Name</div>
         @if (Quantity > 1)
         {
             <span>@($" x{Quantity.ToString("N0")}")</span>

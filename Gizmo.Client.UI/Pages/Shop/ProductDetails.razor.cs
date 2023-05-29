@@ -18,6 +18,7 @@ namespace Gizmo.Client.UI.Pages
         private UserProductGroupViewState _userProductGroupViewState;
         private int _previousProductId;
         private IEnumerable<UserHostGroupViewState> _hostGroups;
+        private bool _showMore = false;
         #endregion
 
         #region PROPERTIES
@@ -69,6 +70,11 @@ namespace Gizmo.Client.UI.Pages
         private Task OnClickBackButtonHandler()
         {
             return NavigationService.GoBackAsync();
+        }
+
+        private void ToggleMore()
+        {
+            _showMore = !_showMore;
         }
 
         #region OVERRIDES

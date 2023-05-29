@@ -176,7 +176,7 @@ namespace Gizmo.Client.UI
                 {
                     days = Math.Min((int)availability.EndDate.Value.Subtract(availability.StartDate.Value).TotalDays, days);
                 }
-                for (int i = 0; i < days; i++)
+                for (int i = 0; i < days; i++) //TODO: AAA CHECK
                 {
                     var date = availability.EndDate.Value.AddDays(i * -1);
                     var lastEndDate = availability.DaysAvailable.Where(a => a.Day == date.DayOfWeek).FirstOrDefault();
@@ -237,7 +237,7 @@ namespace Gizmo.Client.UI
                     {
                         days = Math.Min((int)availability.EndDate.Value.Subtract(max).TotalDays, days);
                     }
-                    for (int i = 0; i < days; i++)
+                    for (int i = 0; i < days; i++) //TODO: AAA CHECK
                     {
                         max = max.AddDays(i);
                         TimeSpan timeSpan = new TimeSpan(max.Hour, max.Minute, max.Second);
@@ -245,6 +245,10 @@ namespace Gizmo.Client.UI
                         if (firstStartDate != null)
                         {
                             var firstTimeRange = firstStartDate.DayTimesAvailable.Where(b => b.EndSecond > timeSpan.TotalSeconds).OrderBy(a => a.EndSecond).FirstOrDefault();
+                            if (firstTimeRange == null)
+                            {
+                                firstTimeRange = firstStartDate.DayTimesAvailable.OrderBy(a => a.EndSecond).FirstOrDefault();
+                            }
                             if (firstTimeRange != null)
                             {
                                 TimeSpan startTimeSpan = TimeSpan.FromSeconds(firstTimeRange.StartSecond);
@@ -260,8 +264,23 @@ namespace Gizmo.Client.UI
                 }
                 else
                 {
+                    List<DayOfWeek> includeDays = new List<DayOfWeek>();
+                    if (availability.EndDate.HasValue && availability.EndDate.Value.AddDays(-6) < DateTime.Now) //TODO: AAA CHECK
+                    {
+                        var today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+                        int days = (int)availability.EndDate.Value.AddDays(1).Subtract(today).TotalDays;
+                        for (int i = 0; i < days; i++) //TODO: AAA CHECK
+                        {
+                            var date = today.AddDays(i);
+                            includeDays.Add(date.DayOfWeek);
+                        }
+                    }
+                    else
+                    {
+                        includeDays = new List<DayOfWeek>() { DayOfWeek.Sunday, DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday };
+                    }
                     //TODO: AAA EXCLUDE PASSED DAYS
-                    foreach (var day in availability.DaysAvailable.Where(a => a.DayTimesAvailable.Count() > 0))
+                    foreach (var day in availability.DaysAvailable.Where(a => a.DayTimesAvailable.Count() > 0 && includeDays.Contains(a.Day)))
                     {
                         ProductAvailabilityDayTimeViewState first = null;
 
