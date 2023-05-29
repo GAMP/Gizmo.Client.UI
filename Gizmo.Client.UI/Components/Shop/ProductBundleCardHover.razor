@@ -5,11 +5,21 @@
 <div class="giz-timeline">
     <div class="giz-timeline-header">
         <HexagonIcon />
-        <div>@LocalizationService.GetString("GIZ_SHOP_CARD_BUNDLE_BUNDLE_INCLUDES")</div>
+        <div>@LocalizationService.GetString("GIZ_SHOP_CARD_BUNDLE_BUNDLE_DESCRIPTION")</div>
     </div>
 
-    @foreach (var bundledProduct in Product.BundledProducts)
+    @if (Product != null)
     {
-        <ProductBundleCardBundledProduct @key="bundledProduct.Id" ProductId="@bundledProduct.Id" Quantity="@bundledProduct.Quantity" />
+        @if (Product.PurchaseAvailability != null)
+        {
+            <div class="giz-timeline-item">
+                <div class="giz-time-product-details"><div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_BUYING_TIME")</div><div class="giz-time-product-time-availabile">@ProductHelpers.GetPurchaseAvailabilities(Product, true, LocalizationService).FirstOrDefault()</div></div>
+            </div>
+        }
+
+        @foreach (var bundledProduct in Product.BundledProducts)
+        {
+            <ProductBundleCardBundledProduct @key="bundledProduct.Id" ProductId="@bundledProduct.Id" Quantity="@bundledProduct.Quantity" />
+        }
     }
 </div>

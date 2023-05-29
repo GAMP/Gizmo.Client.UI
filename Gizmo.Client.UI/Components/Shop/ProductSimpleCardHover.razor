@@ -1,0 +1,21 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using System.Globalization
+
+@if (Product != null)
+{
+    @if (Product.PurchaseAvailability != null)
+    {
+        <div class="giz-timeline">
+            <div class="giz-timeline-header">
+                <HexagonIcon />
+                <div>@LocalizationService.GetString("GIZ_SHOP_CARD_PURCHASE_DETAILS")</div>
+            </div>
+
+            <div class="giz-timeline-item">
+                <div class="giz-time-product-details"><div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_BUYING_TIME")</div><div class="giz-time-product-time-availabile">@ProductHelpers.GetPurchaseAvailabilities(Product, true, LocalizationService).FirstOrDefault()</div></div>
+            </div>
+     
+        </div>
+    }
+}

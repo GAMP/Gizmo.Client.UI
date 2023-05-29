@@ -11,6 +11,10 @@
         {
             <Icon SVGIcon="Icons.FastFood_Client" Size="IconSizes.Small" />
         }
-        @_product?.Name<span>@($" x{Quantity.ToString("N0")}")</span>
+        @_product?.Name
+        @if (Quantity > 1)
+        {
+            <span>@($" x{Quantity.ToString("N0")}")</span>
+        }
     </div>
 </div>
