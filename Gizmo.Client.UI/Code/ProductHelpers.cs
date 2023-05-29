@@ -174,13 +174,13 @@ namespace Gizmo.Client.UI
                 int days = 6;
                 if (availability.StartDate.HasValue)
                 {
-                    days = Math.Min((int)availability.EndDate.Value.Subtract(availability.StartDate.Value).TotalDays, days); //TODO: AAA REVIEW
+                    days = Math.Min((int)availability.EndDate.Value.Subtract(availability.StartDate.Value).TotalDays, days);
                 }
                 for (int i = 0; i < days; i++)
                 {
                     var date = availability.EndDate.Value.AddDays(i * -1);
                     var lastEndDate = availability.DaysAvailable.Where(a => a.Day == date.DayOfWeek).FirstOrDefault();
-                    if (lastEndDate != null)
+                    if (lastEndDate != null && lastEndDate.DayTimesAvailable != null)
                     {
                         var lastEndSecond = lastEndDate.DayTimesAvailable.OrderByDescending(a => a.EndSecond).Select(a => a.EndSecond).FirstOrDefault();
                         TimeSpan endTimeSpan = TimeSpan.FromSeconds(lastEndSecond);
@@ -190,7 +190,7 @@ namespace Gizmo.Client.UI
                 }
             }
 
-            bool moreThanWeekLater = availability.StartDate.HasValue && availability.StartDate.Value.AddDays(-7) > DateTime.Now; //TODO: AAA REVIEW
+            bool moreThanWeekLater = availability.StartDate.HasValue && availability.StartDate.Value.AddDays(-6) > DateTime.Now;
             bool expired = (availability.EndDate.HasValue && availability.EndDate.Value.AddDays(1) < DateTime.Now) || (lastTimeRangeEnd.HasValue && lastTimeRangeEnd.Value < DateTime.Now);
             bool showDateRange = availability.DateRange && (moreThanWeekLater || expired || !availability.TimeRange);
             bool showTimeRange = availability.TimeRange && !showDateRange;
@@ -232,10 +232,10 @@ namespace Gizmo.Client.UI
                         availability.StartDate = availability.StartDate.Value;
                     }
 
-                    int days = 7;
+                    int days = 6;
                     if (availability.EndDate.HasValue)
                     {
-                        days = Math.Min((int)availability.EndDate.Value.Subtract(max).TotalDays, days);//TODO: AAA REVIEW
+                        days = Math.Min((int)availability.EndDate.Value.Subtract(max).TotalDays, days);
                     }
                     for (int i = 0; i < days; i++)
                     {
