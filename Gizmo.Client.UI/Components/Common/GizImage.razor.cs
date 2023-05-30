@@ -65,7 +65,7 @@ namespace Gizmo.Client.UI.Components
         private int _imageResultStatusCode;
         private ImageType _previousImageType;
         private int _previousImageId;
-        private string _imageHash;
+        private string _imageSource;
         readonly CancellationTokenSource _cancellationTokenSource = new();
 
         #endregion
@@ -97,18 +97,10 @@ namespace Gizmo.Client.UI.Components
 
                 try
                 {
-                    _imageHash = await ImageService.ImageHashGetAsync(ImageType, ImageId.Value, _cancellationTokenSource.Token);
+                    _imageSource = await ImageService.ImageSourceGetAsync(ImageType, ImageId.Value, _cancellationTokenSource.Token);
 
-                    if (string.IsNullOrEmpty(_imageHash))
-                    {
-                        _imageResultStatusCode = 1;
-                    }
-                    else
-                    {
-                        _imageHash = $"data:image/png;base64,{_imageHash}";
-                        _imageResultStatusCode = 3;
-                    }
-                    
+                    _imageResultStatusCode = string.IsNullOrEmpty(_imageSource) ? 1 : 3;
+
                     await InvokeAsync(StateHasChanged);
                 }
                 catch (OperationCanceledException)
@@ -129,7 +121,7 @@ namespace Gizmo.Client.UI.Components
         #region IDisposable
         public void Dispose()
         {
-           // _cancellationTokenSource.Cancel();
+            // _cancellationTokenSource.Cancel();
         }
         #endregion
 
