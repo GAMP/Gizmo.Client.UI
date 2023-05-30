@@ -99,7 +99,7 @@ namespace Gizmo.Client.UI.Components
                 {
                     _imageSource = await ImageService.ImageSourceGetAsync(ImageType, ImageId.Value, _cancellationTokenSource.Token);
 
-                    _imageResultStatusCode = string.IsNullOrEmpty(_imageSource) ? 1 : 3;
+                    _imageResultStatusCode = _imageSource == null ? 2 : string.IsNullOrEmpty(_imageSource) ? 2 : 3;
 
                     await InvokeAsync(StateHasChanged);
                 }
@@ -121,7 +121,7 @@ namespace Gizmo.Client.UI.Components
         #region IDisposable
         public void Dispose()
         {
-            // _cancellationTokenSource.Cancel();
+             _cancellationTokenSource.Cancel();
         }
         #endregion
 
