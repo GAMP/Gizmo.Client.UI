@@ -14,11 +14,11 @@ namespace Gizmo.Client.UI.Components
         {
             if (!firstRender)
             {
-                await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
+                //await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
             }
             else
             {
-                await InvokeVoidAsync("writeLine", $"Render {this.ToString()}");
+                //await InvokeVoidAsync("writeLine", $"Render {this.ToString()}");
             }
 
             await base.OnAfterRenderAsync(firstRender);

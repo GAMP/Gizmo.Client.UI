@@ -8,6 +8,14 @@
     flex-grow: 1;
     max-width: 2560px;
 
+    &__host-groups-tooltip {
+        display: flex;
+        gap: 0.8rem;
+        white-space: nowrap;
+        //max-width: 40rem;
+        //flex-wrap: wrap;
+    }
+
     &-wrapper {
         display: flex;
         justify-content: center;
@@ -27,17 +35,46 @@
             gap: 1.6rem;
 
             .giz-product-time-image {
+                gap: 0.8rem;
 
+                .giz-default-image {
+                    width: 4rem;
+                    height: 4rem;
+                }
+
+                &__time {
+                    gap: 0.6rem;
+
+                    &__number {
+                        //Font
+                        font-style: normal;
+                        font-weight: 700;
+                        font-size: 15px;
+                        line-height: 9px;
+                    }
+
+                    &__text {
+                        //Font ?
+                        font-style: normal;
+                        font-weight: 500;
+                        font-size: 5.48649px;
+                        line-height: 9px;
+                    }
+                }
             }
         }
 
         &__navigation {
             display: flex;
-            align-items: center;
-            margin: 2.8rem 0;
-            cursor: pointer;
-            color: #FAFAFA;
-            @include font-l-theme-client($font-weight-light-theme-client);
+
+            & > div {
+                display: flex;
+                align-items: center;
+                margin: 2.8rem 0;
+                cursor: pointer;
+                color: #FAFAFA;
+                @include font-l-theme-client($font-weight-light-theme-client);
+            }
 
             &__icon {
                 display: flex;
@@ -92,15 +129,14 @@
 
                 &__host-groups {
                     display: flex;
+                    align-items: center;
                     gap: 0.8rem;
+                    white-space: nowrap;
                     margin-top: 1.6rem;
+                    width: 100%;
+                    overflow: hidden;
 
                     .giz-time-product-host-group {
-                        white-space: nowrap;
-                        display: flex;
-                        align-items: center;
-                        gap: 0.6rem;
-                        //
                         padding: 0.6rem 0.8rem;
                         background-color: rgba(250, 250, 250, 0.16);
                         border-radius: 0.4rem;
@@ -111,6 +147,19 @@
                         font-weight: 500;
                         font-size: 13px;
                         line-height: 20px;
+
+                        &--additional { //
+                            padding: 0.6rem 0.8rem;
+                            background-color: rgba(250, 250, 250, 0.16);
+                            border-radius: 0.4rem;
+                            color: rgba(255, 255, 255, 0.75);
+                            //Font
+                            font-family: 'Noto Sans';
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 13px;
+                            line-height: 20px;
+                        }
 
                         &.active {
                             background-color: rgba(0, 120, 210, 0.32);
@@ -169,22 +218,12 @@
 
                         &__title {
                             color: rgba(255, 255, 255, 0.75);
-                            //Font
-                            font-family: 'Noto Sans';
-                            font-style: normal;
-                            font-weight: 400;
-                            font-size: 12px;
-                            line-height: 18px;
+                            @include font-s-theme-client($font-weight-light-theme-client);
                         }
 
                         &__body {
                             color: #FAFAFA;
-                            //Font
-                            font-family: 'Noto Sans';
-                            font-style: normal;
-                            font-weight: 400;
-                            font-size: 16px;
-                            line-height: 26px;
+                            @include font-l-theme-client($font-weight-light-theme-client);
                         }
                     }
                 }
@@ -192,12 +231,7 @@
                 &__expirations {
                     &__header {
                         color: rgba(255, 255, 255, 0.75);
-                        //Font
-                        font-family: 'Noto Sans';
-                        font-style: normal;
-                        font-weight: 500;
-                        font-size: 12px;
-                        line-height: 18px;
+                        @include font-s-theme-client($font-weight-regular-theme-client);
                     }
 
                     &__body {
@@ -293,11 +327,7 @@
     display: flex;
     align-items: center;
     cursor: pointer;
-    //Font
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
+    @include font-s-theme-client($font-weight-light-theme-client);
 
     span {
         position: relative;

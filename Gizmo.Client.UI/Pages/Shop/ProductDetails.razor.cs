@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gizmo.Client.UI.View.Services;
@@ -19,6 +18,7 @@ namespace Gizmo.Client.UI.Pages
         private int _previousProductId;
         private IEnumerable<UserHostGroupViewState> _hostGroups;
         private bool _showMore = false;
+        private ElementReference _hostGroupContainer;
         #endregion
 
         #region PROPERTIES
@@ -120,13 +120,26 @@ namespace Gizmo.Client.UI.Pages
 
                 //We have to bind to the new product.
                 this.SubscribeChange(_productItemViewState);
+                this.SubscribeChange(_userProductGroupViewState);
             }
 
             await base.OnParametersSetAsync();
         }
 
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await InvokeVoidAsync("productDetailsFitHostGroups", _hostGroupContainer);
+
+            await base.OnAfterRenderAsync(firstRender);
+        }
+
         public override void Dispose()
         {
+            if (_userProductGroupViewState != null)
+            {
+                this.UnsubscribeChange(_userProductGroupViewState);
+            }
+
             if (_productItemViewState != null)
             {
                 this.UnsubscribeChange(_productItemViewState);

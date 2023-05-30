@@ -445,3 +445,56 @@ function navigationBlock() {
 /*function test() {
     window.location.replace("https://localhost:5001/home");
 }*/
+
+
+function productDetailsFitHostGroups(element) {
+    try {
+        if (element) {
+            var additional = element.querySelector('.giz-time-product-host-group--additional');
+            if (additional) {
+                var elementr = element.getBoundingClientRect();
+                if (element.scrollWidth > elementr.width) {
+                    var additionalr = additional.getBoundingClientRect();
+                    var items = element.querySelectorAll('.giz-time-product-host-group.dynamic');
+                    var total = additionalr.width;
+                    var hidden = 0;
+
+                    for (var i = 0; i < items.length; i++) {
+                        if (total > elementr.width) {
+                            items[i].style = 'display: none';
+                            hidden += 1;
+                        } else {
+                            var hideAdditional = false;
+
+                            if (hidden == 0 && i == items.length - 1) {
+                                //If this is the last item check if we can fit it in.
+                                if (elementr.width > (total - additionalr.width + items[i].getBoundingClientRect().width)) {
+                                    hideAdditional = true;
+                                }
+                            }
+
+                            if (hideAdditional) {
+                                additional.style = 'display: none';
+                            }
+                            else {
+                                total += items[i].getBoundingClientRect().width + 8; //TODO: AAA
+                                if (total > elementr.width) {
+                                    items[i].style = 'display: none';
+                                    hidden += 1;
+                                }
+                            }
+                        }
+                    }
+
+                    if (hidden > 0) {
+                        additional.innerHTML = "+" + hidden.toString();
+                    }
+                } else {
+                    additional.style = 'display: none';
+                }
+            }
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}

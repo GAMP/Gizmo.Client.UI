@@ -150,7 +150,7 @@ namespace Gizmo.Client.UI.Components
             if (!firstRender)
             {
                 _shouldRender = false;
-                await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
+                //await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
             }
             else
             {
