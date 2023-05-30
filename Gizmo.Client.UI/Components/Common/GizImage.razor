@@ -3,6 +3,7 @@
 
 @switch (_imageResultStatusCode)
 {
+    //Loading
     case 0:
     {
         if (LoadingPlaceholder is not null)
@@ -11,11 +12,14 @@
         }
         else
         {
-            <Spinner Class="giz-image__spinner" />
+            <span class="giz-image-loading--wrapper">
+                <span class="giz-image-loading--activity"/>
+            </span>
         }
 
         break;
     }
+    //EmptyResult
     case 1:
     {
         if (EmptyResultPlaceholder is not null)
@@ -31,6 +35,7 @@
         
         break;
     }
+    //Error
     case 2:
     {
         if (ErrorPlaceholder is not null)
@@ -46,6 +51,7 @@
 
         break;
     }
+    //Success
     case 3:
     {
         <img src="@_imageSource" class="@ImageClassName" loading="lazy" alt="image" />
