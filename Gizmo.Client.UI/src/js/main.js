@@ -452,10 +452,19 @@ function productDetailsFitHostGroups(element) {
         if (element) {
             var additional = element.querySelector('.giz-time-product-host-group--additional');
             if (additional) {
+                var items = element.querySelectorAll('.giz-time-product-host-group.dynamic');
+
+                for (var i = 0; i < items.length; i++) {
+                    items[i].style = 'display: block';
+                }
+
+                additional.style = 'display: block';
+                additional.innerHTML = "+99";
+
                 var elementr = element.getBoundingClientRect();
                 if (element.scrollWidth > elementr.width) {
                     var additionalr = additional.getBoundingClientRect();
-                    var items = element.querySelectorAll('.giz-time-product-host-group.dynamic');
+                    
                     var total = additionalr.width;
                     var hidden = 0;
 
@@ -464,6 +473,7 @@ function productDetailsFitHostGroups(element) {
                             items[i].style = 'display: none';
                             hidden += 1;
                         } else {
+                            items[i].style = 'display: block';
                             var hideAdditional = false;
 
                             if (hidden == 0 && i == items.length - 1) {
@@ -487,7 +497,10 @@ function productDetailsFitHostGroups(element) {
                     }
 
                     if (hidden > 0) {
+                        additional.style = 'display: block';
                         additional.innerHTML = "+" + hidden.toString();
+                    } else {
+                        additional.style = 'display: none';
                     }
                 } else {
                     additional.style = 'display: none';

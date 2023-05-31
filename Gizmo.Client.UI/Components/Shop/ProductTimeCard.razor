@@ -14,7 +14,7 @@
                         <ProductTimeCardHover @key="Product.Id" Product="@Product" />
                     </div>
 
-                    <div class="giz-product-card-b1">
+                    <div class="giz-product-card-award-indicator">
                         @if (Product.UnitPointsAward > 0)
                         {
                             <PointsAward2Icon />
@@ -49,21 +49,7 @@
             <div class="giz-product-card__title">
                 @Product.Name
             </div>
-            <div class="giz-product-card__host-groups">
-                @if (_hostGroups != null)
-                {
-                    @foreach (var item in _hostGroups)
-                    {
-                        @if (!Product.TimeProduct.DisallowedHostGroups.Contains(item.Id))
-                        {
-                            <div class="giz-time-product-host-group @(item.Id == HostGroupViewState.HostGroupId ? "active" : "")">
-                                @*<Icon Size="IconSizes.Small" SVGIcon="Icons.Passport_Client" />*@
-                                <div>@item.Name</div>
-                            </div>
-                        }
-                    }
-                }
-            </div>
+            <ProductTimeHostGroups @key="Product.Id" Product="@Product" />
         </div>
         <div class="giz-product-card__content__footer">
             <ProductQuantityPicker @key="Product.Id" ProductId="@Product.Id" OnClick="@Ignore" />

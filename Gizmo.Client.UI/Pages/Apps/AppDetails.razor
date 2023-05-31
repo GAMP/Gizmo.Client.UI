@@ -114,16 +114,16 @@
                             <ClientTab>
                                 @if (_hasMedia)
                                 {
-                                    <ClientTabItem Class="@(_selectedTabIndex == 0 ? "active" : "")">
-                                        <div @onclick=@(() => SelectTab(0))>
+                                    <ClientTabItem Class="@(_selectedTabIndex == 0 ? "active" : "")" OnClick=@(() => SelectTab(0))>
+                                        <div>
                                             @LocalizationService.GetString("GIZ_APPS_MEDIA")
                                         </div>
                                     </ClientTabItem>
                                 }
                                 @if (_hasLinks)
                                 {
-                                    <ClientTabItem Class="@(_selectedTabIndex == 1 ? "active" : "")">
-                                        <div @onclick=@(() => SelectTab(1))>
+                                    <ClientTabItem Class="@(_selectedTabIndex == 1 ? "active" : "")" OnClick=@(() => SelectTab(1))>
+                                        <div>
                                             @LocalizationService.GetString("GIZ_APPS_LINKS")
                                         </div>
                                     </ClientTabItem>

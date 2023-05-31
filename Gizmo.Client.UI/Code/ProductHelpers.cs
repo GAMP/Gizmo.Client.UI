@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
+using Gizmo.Web.Components;
 
 namespace Gizmo.Client.UI
 {
@@ -239,9 +240,9 @@ namespace Gizmo.Client.UI
                     }
                     for (int i = 0; i < days; i++) //TODO: AAA CHECK
                     {
-                        max = max.AddDays(i);
-                        TimeSpan timeSpan = new TimeSpan(max.Hour, max.Minute, max.Second);
-                        var firstStartDate = availability.DaysAvailable.Where(a => a.Day == max.DayOfWeek).FirstOrDefault();
+                        var date = max.AddDays(i);
+                        TimeSpan timeSpan = new TimeSpan(date.Hour, date.Minute, date.Second);
+                        var firstStartDate = availability.DaysAvailable.Where(a => a.Day == date.DayOfWeek).FirstOrDefault();
                         if (firstStartDate != null)
                         {
                             var firstTimeRange = firstStartDate.DayTimesAvailable.Where(b => b.EndSecond > timeSpan.TotalSeconds).OrderBy(a => a.EndSecond).FirstOrDefault();
@@ -255,7 +256,7 @@ namespace Gizmo.Client.UI
                                 TimeSpan endTimeSpan = TimeSpan.FromSeconds(firstTimeRange.EndSecond);
 
                                 //TODO: AAA
-                                result.Add($"{startTimeSpan.ToString("hh\\:mm")}-{endTimeSpan.ToString("hh\\:mm")} {max.DayOfWeek.ToString().Substring(0, 2)}");
+                                result.Add($"{startTimeSpan.ToString("hh\\:mm")}-{endTimeSpan.ToString("hh\\:mm")} {date.DayOfWeek.ToString().Substring(0, 2)}");
                                 break;
                             }
                         }
@@ -277,9 +278,9 @@ namespace Gizmo.Client.UI
                     }
                     else
                     {
-                        includeDays = new List<DayOfWeek>() { DayOfWeek.Sunday, DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday };
+                        includeDays = ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).ToList();
+                        //new List<DayOfWeek>() { DayOfWeek.Sunday, DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday };
                     }
-                    //TODO: AAA EXCLUDE PASSED DAYS
                     foreach (var day in availability.DaysAvailable.Where(a => a.DayTimesAvailable.Count() > 0 && includeDays.Contains(a.Day)))
                     {
                         ProductAvailabilityDayTimeViewState first = null;

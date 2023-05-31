@@ -17,8 +17,8 @@
                         {
                             @foreach (var productGroup in ViewState.UserProductGroups)
                             {
-                                <ClientTabItem Class="@(productGroup.ProductGroupId == ViewState.SelectedUserProductGroupId ? "active" : "")">
-                                    <div @onclick=@(() => ShopService.UpdateUserGroupedProductsAsync(productGroup.ProductGroupId))>
+                                <ClientTabItem Class="@(productGroup.ProductGroupId == ViewState.SelectedUserProductGroupId ? "active" : "")" OnClick=@(() => ShopService.UpdateUserGroupedProductsAsync(productGroup.ProductGroupId))>
+                                    <div>
                                         @productGroup.Name
                                     </div>
                                 </ClientTabItem>

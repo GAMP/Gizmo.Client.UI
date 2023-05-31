@@ -9,6 +9,7 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class ClientTooltip : CustomDOMComponentBase
     {
+        //TODO: A CATCH WINDOW RESIZE AND SCROLL EVENTS.
         const int OPEN_DEFAULT_DELAY = 500;
         const int CLOSE_DEFAULT_DELAY = 200;
 
@@ -43,6 +44,8 @@ namespace Gizmo.Client.UI.Components
 
         private double _popupX;
         private double _popupY;
+
+        private double _moveX = 0;
 
         #endregion
 
@@ -99,6 +102,21 @@ namespace Gizmo.Client.UI.Components
                 }
             }
 
+            _moveX = 0;
+
+            //Fix X position.
+            if (_popupX < 0)
+            {
+                _moveX = (popupContentSize.Width / 2) + (_popupX);
+                _popupX = 0;
+            }
+
+            if (_popupX + popupContentSize.Width > windowSize.Width)
+            {
+                _moveX = (popupContentSize.Width / 2) + ((windowSize.Width - popupContentSize.Width) - _popupX);
+                _popupX = windowSize.Width - popupContentSize.Width;
+            }
+
             _isOpen = true;
 
             _shouldRender = true;
@@ -138,6 +156,10 @@ namespace Gizmo.Client.UI.Components
         protected string TooltipStyleValue => new StyleMapper()
                  .If($"top: {_popupY.ToString(System.Globalization.CultureInfo.InvariantCulture)}px", () => _isOpen)
                  .If($"left: {_popupX.ToString(System.Globalization.CultureInfo.InvariantCulture)}px", () => _isOpen)
+                 .AsString();
+
+        protected string TooltipPinStyleValue => new StyleMapper()
+                 .If($"left: {_moveX.ToString(System.Globalization.CultureInfo.InvariantCulture)}px", () => _moveX != 0)
                  .AsString();
     }
 }

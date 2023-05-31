@@ -49,50 +49,13 @@
                     <div class="giz-product-details__product__info__basic__title">
                         @ViewState.Product?.Name
                     </div>
-                    <div class="giz-product-details__product__info__basic__host-groups"
-                         @ref="@_hostGroupContainer">
-                        @if (ViewState.Product != null && ViewState.Product.ProductType == ProductType.ProductTime && _hostGroups != null)
-                        {
-                            @foreach (var item in _hostGroups)
-                            {
-                                @if (!ViewState.Product.TimeProduct.DisallowedHostGroups.Contains(item.Id))
-                                {
-                                    <div class="giz-time-product-host-group dynamic @(item.Id == HostGroupViewState.HostGroupId ? "active" : "")">
-                                        <div>@item.Name</div>
-                                    </div>
-                                }
-                            }
-                            @if (_hostGroups.Count() > 1)
-                            {
-                                <ClientTooltip>
-                                    <ChildContent>
-                                        <div class="giz-time-product-host-group--additional">
-                                            +99
-                                        </div>
-                                    </ChildContent>
-                                    <TooltipContent>
-                                        <div class="giz-product-details__host-groups-tooltip">
-                                            @foreach (var item in _hostGroups)
-                                            {
-                                                @if (!ViewState.Product.TimeProduct.DisallowedHostGroups.Contains(item.Id))
-                                                {
-                                                    <div class="giz-time-product-host-group @(item.Id == HostGroupViewState.HostGroupId ? "active" : "")">
-                                                        <div>@item.Name</div>
-                                                    </div>
-                                                }
-                                            }
-                                        </div>
-                                    </TooltipContent>
-                                </ClientTooltip>
-                            }
-                        }
-                    </div>
+                    <ProductTimeHostGroups @key="ProductId" Product="@ViewState.Product" />
                     <div class="giz-product-details__product__info__basic__description">
                         @ViewState.Product?.Description
                     </div>
                     <div class="giz-product-details__product__info__basic__action">
                         <div class="giz-product-details__product__info__basic__action__price">
-                            <ProductCardPrice Product="@ViewState.Product" />
+                            <ProductCardPrice @key="ProductId" Product="@ViewState.Product" />
                         </div>
                         <ProductQuantityPicker @key="ProductId" ProductId="@ProductId" Size="ButtonSizes.ExtraLarge" IsFullWidth="false" />
                     </div>

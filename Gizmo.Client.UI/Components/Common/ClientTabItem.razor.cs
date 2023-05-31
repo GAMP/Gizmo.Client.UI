@@ -1,5 +1,6 @@
 ﻿using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -8,8 +9,12 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public RenderFragment ChildContent { get; set; }
 
-        private async void OnClickHandler()
+        [Parameter]
+        public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+        private async void OnClickHandler(MouseEventArgs args)
         {
+            await OnClick.InvokeAsync(args);
             await InvokeVoidAsync("tabItemBringIntoView", Ref);
         }
     }
