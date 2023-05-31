@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Gizmo.Client.UI.Components;
-using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Microsoft.Extensions.Logging;
 
@@ -15,7 +14,7 @@ namespace Gizmo.Client.UI.Services
         {
         }
 
-        public Task<ShowDialogResult<EmptyDialogResult>> ShowCheckoutDialogAsync(CancellationToken cancellationToken = default)
+        public Task<AddDialogResult<EmptyComponentResult>> ShowCheckoutDialogAsync(CancellationToken cancellationToken = default)
         {
             return ShowDialogAsync<CheckoutDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()
             {
@@ -24,7 +23,7 @@ namespace Gizmo.Client.UI.Services
             }, default, cancellationToken);
         }
 
-        public Task<ShowDialogResult<UserAgreementResult>> ShowUserAgreementDialogAsync(UserAgreementDialogParameters userAgreementDialogParameters, CancellationToken cancellationToken = default)
+        public Task<AddDialogResult<UserAgreementResult>> ShowUserAgreementDialogAsync(UserAgreementDialogParameters userAgreementDialogParameters, CancellationToken cancellationToken = default)
         {
             return ShowDialogAsync<UserAgreementDialog, UserAgreementResult>(userAgreementDialogParameters.ToDictionary(), new DialogDisplayOptions()
             {
@@ -33,7 +32,7 @@ namespace Gizmo.Client.UI.Services
             }, default, cancellationToken);
         }
 
-        public Task<ShowDialogResult<EmptyDialogResult>> ShowChangeProfileDialogAsync(CancellationToken cancellationToken = default)
+        public Task<AddDialogResult<EmptyComponentResult>> ShowChangeProfileDialogAsync(CancellationToken cancellationToken = default)
         {
             return ShowDialogAsync<ChangeProfileDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()
             {
@@ -42,7 +41,7 @@ namespace Gizmo.Client.UI.Services
             }, default, default);
         }
 
-        public Task<ShowDialogResult<EmptyDialogResult>> ShowChangeEmailDialogAsync(CancellationToken cancellationToken = default)
+        public Task<AddDialogResult<EmptyComponentResult>> ShowChangeEmailDialogAsync(CancellationToken cancellationToken = default)
         {
             return ShowDialogAsync<ChangeEmailDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()
             {
@@ -51,7 +50,7 @@ namespace Gizmo.Client.UI.Services
             }, default, default);
         }
 
-        public Task<ShowDialogResult<EmptyDialogResult>> ShowChangeMobileDialogAsync(CancellationToken cancellationToken = default)
+        public Task<AddDialogResult<EmptyComponentResult>> ShowChangeMobileDialogAsync(CancellationToken cancellationToken = default)
         {
             return ShowDialogAsync<ChangeMobileDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()
             {
@@ -60,7 +59,7 @@ namespace Gizmo.Client.UI.Services
             }, default, cancellationToken);
         }
 
-        public Task<ShowDialogResult<EmptyDialogResult>> ShowChangePasswordDialogAsync(CancellationToken cancellationToken = default)
+        public Task<AddDialogResult<EmptyComponentResult>> ShowChangePasswordDialogAsync(CancellationToken cancellationToken = default)
         {
             return ShowDialogAsync<ChangePasswordDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()
             {
@@ -69,7 +68,7 @@ namespace Gizmo.Client.UI.Services
             }, default, cancellationToken);
         }
 
-        public Task<ShowDialogResult<EmptyDialogResult>> ShowChangePictureDialogAsync(CancellationToken cancellationToken = default)
+        public Task<AddDialogResult<EmptyComponentResult>> ShowChangePictureDialogAsync(CancellationToken cancellationToken = default)
         {
             return ShowDialogAsync<ChangePictureDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()
             {
@@ -78,7 +77,7 @@ namespace Gizmo.Client.UI.Services
             }, default, cancellationToken);
         }
 
-        public Task<ShowDialogResult<EmptyDialogResult>> ShowMediaDialogAsync(MediaDialogParameters mediaDialogParameters, CancellationToken cancellationToken = default)
+        public Task<AddDialogResult<EmptyComponentResult>> ShowMediaDialogAsync(MediaDialogParameters mediaDialogParameters, CancellationToken cancellationToken = default)
         {
             return ShowDialogAsync<MediaDialog>(mediaDialogParameters.ToDictionary(), new DialogDisplayOptions()
             {
@@ -87,7 +86,7 @@ namespace Gizmo.Client.UI.Services
             }, default, cancellationToken);
         }
 
-        public Task<ShowDialogResult<AlertDialogResult>> ShowAlertDialogAsync(string title, string message, AlertDialogButtons buttons = AlertDialogButtons.OK, AlertDialogIcons icon = AlertDialogIcons.None, CancellationToken cancellationToken = default)
+        public Task<AddDialogResult<AlertDialogResult>> ShowAlertDialogAsync(string title, string message, AlertDialogButtons buttons = AlertDialogButtons.OK, AlertDialogIcons icon = AlertDialogIcons.None, CancellationToken cancellationToken = default)
         {
             return ShowDialogAsync<AlertDialog, AlertDialogResult>(new Dictionary<string, object>()
             {

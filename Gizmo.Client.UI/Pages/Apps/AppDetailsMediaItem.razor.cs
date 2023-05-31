@@ -27,7 +27,7 @@ namespace Gizmo.Client.UI.Pages
                 MediaUrlType = Link.MediaUrlType,
                 MediaUrl = Link.MediaUrl
             });
-            if (dialog.Result == DialogResult.Opened)
+            if (dialog.Result == AddComponentResultCode.Opened)
                 _ = await dialog.WaitForDialogResultAsync();
         }
 
