@@ -1,12 +1,12 @@
 ﻿using System;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Gizmo.UI;
 using Gizmo.Web.Components;
 using Gizmo.Web.Components.Extensions;
+
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -14,13 +14,8 @@ namespace Gizmo.Client.UI.Components
     {
         #region PROPERTIES
 
-        private ElementReference ElementReference { get; set; }
-
         [Inject]
         private IImageService ImageService { get; init; }
-
-        [Inject]
-        private IJSRuntime JS { get; init; }
 
         /// <summary>
         /// Gets or sets image type.
@@ -65,10 +60,12 @@ namespace Gizmo.Client.UI.Components
         /// 0 - Loading
         /// 1 - EmptyResult
         /// 2 - Error
+        /// 3 - Success
         /// </summary>
         private int _imageResultStatusCode;
         private ImageType _previousImageType;
         private int _previousImageId;
+        private string _imageSource;
         readonly CancellationTokenSource _cancellationTokenSource = new();
 
         #endregion
@@ -100,20 +97,11 @@ namespace Gizmo.Client.UI.Components
 
                 try
                 {
-                    using var imageStream = await ImageService.ImageStreamGetAsync(ImageType, ImageId.Value, _cancellationTokenSource.Token);
+                    _imageSource = await ImageService.ImageSourceGetAsync(ImageType, ImageId.Value, _cancellationTokenSource.Token);
 
-                    if (imageStream is null || imageStream == Stream.Null)
-                    {
-                        _imageResultStatusCode = imageStream == null ? 2 : 1;
+                    _imageResultStatusCode = _imageSource == null ? 2 : string.IsNullOrEmpty(_imageSource) ? 1 : 3;
 
-                        await InvokeAsync(StateHasChanged);
-
-                        return;
-                    }
-
-                    using var streamReference = new DotNetStreamReference(imageStream);
-
-                    await JS.InvokeVoidAsync("ClientFunctions.SetImageSourceAsync", ElementReference, streamReference);
+                    await InvokeAsync(StateHasChanged);
                 }
                 catch (OperationCanceledException)
                 {
@@ -133,17 +121,16 @@ namespace Gizmo.Client.UI.Components
         #region IDisposable
         public void Dispose()
         {
-            _cancellationTokenSource.Cancel();
+             _cancellationTokenSource.Cancel();
         }
         #endregion
 
         #region CLASSMAPPERS
 
         protected string ImageClassName => new ClassMapper()
-                 .Add($"giz-image--{ImageFitType.ToDescriptionString()}")
-                 .AsString();
+            .Add($"giz-image--{ImageFitType.ToDescriptionString()}")
+            .AsString();
 
         #endregion
-
     }
 }

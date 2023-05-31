@@ -36,7 +36,7 @@ namespace Gizmo.Client.UI.Components
         public EventCallback CancelCallback { get; set; }
 
         [Parameter]
-        public EventCallback<EmptyDialogResult> ResultCallback { get; set; }
+        public EventCallback<EmptyComponentResult> ResultCallback { get; set; }
 
         public List<IconSelectCountry> Countries { get; set; } = new List<IconSelectCountry>();
 
