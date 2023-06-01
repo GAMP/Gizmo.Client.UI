@@ -32,6 +32,7 @@ namespace Gizmo.Client.UI.Host.WPF
                 serviceCollection.AddClientServices();
 
                 serviceCollection.AddDialogService<IClientDialogService>();
+                serviceCollection.AddNotificationsService<IClientNotificationService>();
 
                 serviceCollection.AddSingleton<IGizmoClient, TestClient>();
                 serviceCollection.AddSingleton<IImageService, ImageService>();
@@ -39,6 +40,7 @@ namespace Gizmo.Client.UI.Host.WPF
                 serviceCollection.AddSingleton<IInputLanguageService, WpfInputLenguageService>();
 
                 serviceCollection.AddSingleton<IHostWindow, HostWindow>();
+                serviceCollection.AddSingleton<INotificationsHost,NotificationsHost>();
 
             }).ConfigureLogging(loggingBuilder =>
             {
