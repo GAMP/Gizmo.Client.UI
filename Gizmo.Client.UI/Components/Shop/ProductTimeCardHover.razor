@@ -14,21 +14,39 @@
 
     @if (Product != null)
     {
-        @if (Product.PurchaseAvailability != null)
-        {
-            <div class="giz-timeline-item">
-                <div class="giz-time-product-details"><div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_BUYING_TIME")</div><div class="giz-time-product-time-availabile">@ProductHelpers.GetPurchaseAvailabilities(Product, true, LocalizationService).FirstOrDefault()</div></div>
+        <div class="giz-timeline-item">
+            <div class="giz-time-product-details">
+                <div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_BUYING_TIME")</div>
+                <div class="giz-time-product-time-availabile">
+                    @if (Product.PurchaseAvailability != null)
+                    {
+                        @ProductHelpers.GetPurchaseAvailabilities(Product, true, LocalizationService).FirstOrDefault()
+                    }
+                    else
+                    {
+                        <Icon SVGIcon="Icons.Infinite" Size="IconSizes.Small" />
+                    }
+                </div>
             </div>
-        }
+        </div>
 
         @if (Product.ProductType == ProductType.ProductTime && Product.TimeProduct != null)
         {
-            @if (Product.TimeProduct.UsageAvailability != null)
-            {
-                <div class="giz-timeline-item">
-                    <div class="giz-time-product-details"><div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_ACTION_TIME")</div><div class="giz-time-product-time-availabile">@ProductHelpers.GetUsageAvailabilities(Product, true, LocalizationService).FirstOrDefault()</div></div>
+            <div class="giz-timeline-item">
+                <div class="giz-time-product-details">
+                    <div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_ACTION_TIME")</div>
+                    <div class="giz-time-product-time-availabile">
+                        @if (Product.TimeProduct.UsageAvailability != null)
+                        {
+                            @ProductHelpers.GetUsageAvailabilities(Product, true, LocalizationService).FirstOrDefault()
+                        }
+                        else
+                        {
+                            <Icon SVGIcon="Icons.Infinite" Size="IconSizes.Small" />
+                        }
+                    </div>
                 </div>
-            }
+            </div>
 
             @if (Product.TimeProduct.ExpirationOptions != ProductTimeExpirationOptionType.None)
             {

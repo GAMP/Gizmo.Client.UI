@@ -2,29 +2,42 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Client.UI.ViewModels
 
-<div class="giz-bundled-product">
-    <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@_userProductViewState.DefaultImageId">
-        <EmptyResultPlaceholder>
-            @if (_userProductViewState.ProductType == ProductType.ProductTime)
-            {
-                <div class="giz-product-time-image-wrapper">
-                    <div class="giz-product-time-image">
+<ClientTooltip OpenDirection="TooltipOpenDirections.Right" Class="giz-bundled-product-tooltip">
+    <ChildContent>
+        <div class="giz-bundled-product">
+            <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@_userProductViewState.DefaultImageId">
+                <EmptyResultPlaceholder>
+                    @if (_userProductViewState.ProductType == ProductType.ProductTime)
+                    {
+                        <div class="giz-product-time-image-wrapper">
+                            <div class="giz-product-time-image">
+                                <div class="giz-default-image">
+                                    <img src="_content/Gizmo.Client.UI/img/@ProductHelpers.GetProductTimeImage(_userProductViewState)" alt='loading' />
+                                </div>
+                                <div class="giz-product-time-image__time">
+                                    <div class="giz-product-time-image__time__number">@ProductHelpers.GetProductTimeNumber(_userProductViewState)</div>
+                                    <div class="giz-product-time-image__time__text">@ProductHelpers.GetProductTimeText(_userProductViewState, LocalizationService)</div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
                         <div class="giz-default-image">
-                            <img src="_content/Gizmo.Client.UI/img/@ProductHelpers.GetProductTimeImage(_userProductViewState)" alt='loading' />
+                            <img src="_content/Gizmo.Client.UI/img/no-product-image.svg" alt='loading' />
                         </div>
-                        <div class="giz-product-time-image__time">
-                            <div class="giz-product-time-image__time__number">@ProductHelpers.GetProductTimeNumber(_userProductViewState)</div>
-                            <div class="giz-product-time-image__time__text">@ProductHelpers.GetProductTimeText(_userProductViewState, LocalizationService)</div>
-                        </div>
-                    </div>
-                </div>
-            }
-            else
+                    }
+                </EmptyResultPlaceholder>
+            </GizImage>
+        </div>
+    </ChildContent>
+    <TooltipContent>
+        <div class="giz-bundled-product-tooltip-text">
+            <div>@_userProductViewState.Name</div>
+            @if (Quantity > 1)
             {
-                <div class="giz-default-image">
-                    <img src="_content/Gizmo.Client.UI/img/no-product-image.svg" alt='loading' />
-                </div>
+                <span>@($" x{Quantity.ToString("N0")}")</span>
             }
-        </EmptyResultPlaceholder>
-    </GizImage>
-</div>
+        </div>
+    </TooltipContent>
+</ClientTooltip>

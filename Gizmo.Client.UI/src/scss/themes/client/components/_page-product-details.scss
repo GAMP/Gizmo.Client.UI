@@ -16,7 +16,7 @@
 
     &__product {
         display: grid;
-        grid-template-rows: min-content min-content 1fr min-content;
+        grid-template-rows: min-content min-content min-content min-content;
         padding: 0 1.6rem 1.6rem 1.6rem;
         height: 100%;
         overflow: auto;
@@ -25,6 +25,9 @@
             margin-top: 2.4rem;
             display: flex;
             gap: 1.6rem;
+            min-height: 12rem;
+            max-width: 100%;
+            overflow: hidden;
 
             .giz-product-time-image {
                 gap: 0.8rem;
@@ -79,6 +82,7 @@
             display: grid;
             grid-template-columns: min-content 1fr min-content;
             gap: 4.0rem;
+            max-height: 33.3rem;
 
             &__image {
                 width: 29.9rem;
@@ -113,6 +117,9 @@
                 }
 
                 &__title {
+                    max-height: 8.8rem;
+                    overflow: hidden;
+                    text-overflow: ellipsis; //TODO: AAA
                     //Font ?
                     font-size: 3.6rem;
                     line-height: 4.4rem;
@@ -163,7 +170,9 @@
                 }
 
                 &__description {
-                    margin-top: 2.4rem;
+                    margin: 2.4rem 0;
+                    max-height: 100%;
+                    overflow: hidden;
                     @include font-l-theme-client($font-weight-light-theme-client);
                 }
 
@@ -218,7 +227,7 @@
 
                         &__body {
                             color: #FAFAFA;
-                            @include font-l-theme-client($font-weight-light-theme-client);
+                            @include font-m-theme-client($font-weight-regular-theme-client);
                         }
                     }
                 }
@@ -280,40 +289,6 @@
     &__order {
         height: 100%;
         overflow: hidden;
-    }
-}
-
-.giz-bundled-product {
-    position: relative;
-    width: 9.6rem;
-    height: 9.6rem;
-    background-color: rgba(0, 0, 0, 0.8);
-    border-radius: 0.8rem;
-    overflow: hidden;
-    cursor: pointer;
-
-    img {
-        width: 100%;
-        height: 100%;
-    }
-
-    .giz-default-image {
-        /*img {
-                        width: unset;
-                        height: unset;
-                    }*/
-    }
-
-    &:hover {
-        &:after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.84);
-        }
     }
 }
 

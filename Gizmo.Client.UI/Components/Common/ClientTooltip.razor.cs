@@ -102,6 +102,20 @@ namespace Gizmo.Client.UI.Components
                 }
             }
 
+            if (OpenDirection == TooltipOpenDirections.Left || OpenDirection == TooltipOpenDirections.Right)
+            {
+                _popupY = tooltipRootSize.Top + (tooltipRootSize.Height / 2) - (popupContentSize.Height / 2);
+
+                if (OpenDirection == TooltipOpenDirections.Left)
+                {
+                    _popupX = (tooltipRootSize.Left - popupContentSize.Width) - 10; //TODO: AAA
+                }
+                else
+                {
+                    _popupX = (tooltipRootSize.Left + tooltipRootSize.Width) + 10; //TODO: AAA
+                }
+            }
+
             _moveX = 0;
 
             //Fix X position.

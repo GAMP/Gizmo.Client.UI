@@ -172,12 +172,14 @@ namespace Gizmo.Client.UI
 
             if (availability.DateRange && availability.EndDate.HasValue && availability.TimeRange)
             {
-                int days = 6;
+                //If product has both date range and time range we need to find the last time range before the date range expiration.
+                int days = 7; //We need to scan max 7 days (0-6).
                 if (availability.StartDate.HasValue)
                 {
-                    days = Math.Min((int)availability.EndDate.Value.Subtract(availability.StartDate.Value).TotalDays, days);
+                    //But if the product has start date then maybe it's less than 7 days.
+                    days = Math.Min((int)availability.EndDate.Value.AddDays(1).Subtract(availability.StartDate.Value).TotalDays, days);
                 }
-                for (int i = 0; i < days; i++) //TODO: AAA CHECK
+                for (int i = 0; i < days; i++) //Loop in reverse from the end date to find the last availabe time range.
                 {
                     var date = availability.EndDate.Value.AddDays(i * -1);
                     var lastEndDate = availability.DaysAvailable.Where(a => a.Day == date.DayOfWeek).FirstOrDefault();
@@ -191,18 +193,20 @@ namespace Gizmo.Client.UI
                 }
             }
 
-            bool moreThanWeekLater = availability.StartDate.HasValue && availability.StartDate.Value.AddDays(-6) > DateTime.Now;
-            bool expired = (availability.EndDate.HasValue && availability.EndDate.Value.AddDays(1) < DateTime.Now) || (lastTimeRangeEnd.HasValue && lastTimeRangeEnd.Value < DateTime.Now);
-            bool showDateRange = availability.DateRange && (moreThanWeekLater || expired || !availability.TimeRange);
-            bool showTimeRange = availability.TimeRange && !showDateRange;
+            bool startsMoreThanWeekLater = availability.StartDate.HasValue && availability.StartDate.Value.AddDays(-6) > DateTime.Now;
 
-            if (showDateRange)
+            //It's expired if current date is greater than the end date or the last time range.
+            bool expired = (availability.EndDate.HasValue && availability.EndDate.Value.AddDays(1) < DateTime.Now) || (lastTimeRangeEnd.HasValue && lastTimeRangeEnd.Value < DateTime.Now);
+            bool showDateRange = !expired && availability.DateRange && (startsMoreThanWeekLater || !availability.TimeRange);
+            bool showTimeRange = !expired && availability.TimeRange && !showDateRange;
+
+            if (expired)
             {
-                if (expired)
-                {
-                    result.Add("Not available anymore");//TODO: AAA TRANSLATE
-                }
-                else if (availability.StartDate.HasValue && availability.EndDate.HasValue)
+                result.Add(localizationService.GetString("GIZ_PRODUCT_NOT_AVAILABLE_ANYMORE"));
+            }
+            else if (showDateRange)
+            {
+                if (availability.StartDate.HasValue && availability.EndDate.HasValue)
                 {
                     result.Add($"{availability.StartDate.Value.ToShortDateString()}-{availability.EndDate.Value.ToShortDateString()}");
                 }
@@ -214,31 +218,59 @@ namespace Gizmo.Client.UI
                 {
                     if (availability.StartDate.HasValue)
                     {
-                        result.Add($"From {availability.StartDate.Value.ToShortDateString()}"); //TODO: AAA TRANSLATE
+                        result.Add($"{localizationService.GetString("GIZ_GEN_FROM")} {availability.StartDate.Value.ToShortDateString()}");
                     }
                     else
                     {
-                        result.Add($"Until {availability.EndDate.Value.ToShortDateString()}"); //TODO: AAA TRANSLATE
+                        result.Add($"{localizationService.GetString("GIZ_GEN_UNTIL")} {availability.EndDate.Value.ToShortDateString()}");
                     }
                 }
             }
-            if (showTimeRange)
+            else if (showTimeRange)
             {
                 if (firstOnly)
                 {
+                    var today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
                     DateTime max = DateTime.Now;
+                    int daysToExpiration = int.MaxValue;
+                    bool repeatCurrentWeekDay = false;
 
                     if (availability.StartDate.HasValue && availability.StartDate > max)
                     {
-                        availability.StartDate = availability.StartDate.Value;
+                        //If the product has start date and it's greater than today then start from start date.
+                        max = availability.StartDate.Value;
+
+                        if (availability.EndDate.HasValue)
+                        {
+                            //But if the product has end date then maybe it's less than 7 days.
+                            daysToExpiration = (int)availability.EndDate.Value.AddDays(1).Subtract(max).TotalDays;
+                        }
+                    }
+                    else
+                    {
+                        if (availability.EndDate.HasValue)
+                        {
+                            //But if the product has end date then maybe it's less than 7 days.
+                            daysToExpiration = (int)availability.EndDate.Value.AddDays(1).Subtract(today).TotalDays;
+                        }
+
+                        if (daysToExpiration > 7)
+                        {
+                            repeatCurrentWeekDay = true;
+                        }
                     }
 
-                    int days = 6;
-                    if (availability.EndDate.HasValue)
+                    int days = 7; //We need to scan max 7 days (0-6).
+
+                    days = Math.Min(daysToExpiration, days);
+
+                    if (repeatCurrentWeekDay)
                     {
-                        days = Math.Min((int)availability.EndDate.Value.Subtract(max).TotalDays, days);
+                        //If the end date is more than a week later then add 1 day to include the same week day of the next week in case of passed time range of current days.
+                        days += 1;
                     }
-                    for (int i = 0; i < days; i++) //TODO: AAA CHECK
+
+                    for (int i = 0; i < days; i++)
                     {
                         var date = max.AddDays(i);
                         TimeSpan timeSpan = new TimeSpan(date.Hour, date.Minute, date.Second);
@@ -246,7 +278,7 @@ namespace Gizmo.Client.UI
                         if (firstStartDate != null)
                         {
                             var firstTimeRange = firstStartDate.DayTimesAvailable.Where(b => b.EndSecond > timeSpan.TotalSeconds).OrderBy(a => a.EndSecond).FirstOrDefault();
-                            if (firstTimeRange == null)
+                            if (firstTimeRange == null && i > 0 &&  repeatCurrentWeekDay)
                             {
                                 firstTimeRange = firstStartDate.DayTimesAvailable.OrderBy(a => a.EndSecond).FirstOrDefault();
                             }
@@ -255,55 +287,65 @@ namespace Gizmo.Client.UI
                                 TimeSpan startTimeSpan = TimeSpan.FromSeconds(firstTimeRange.StartSecond);
                                 TimeSpan endTimeSpan = TimeSpan.FromSeconds(firstTimeRange.EndSecond);
 
-                                //TODO: AAA
+                                //TODO: AAA DAY NAME?
                                 result.Add($"{startTimeSpan.ToString("hh\\:mm")}-{endTimeSpan.ToString("hh\\:mm")} {date.DayOfWeek.ToString().Substring(0, 2)}");
                                 break;
                             }
                         }
-                        max = new DateTime(max.Year, max.Month, max.Day);
+                        max = new DateTime(max.Year, max.Month, max.Day); //For today we want the hour too, for the other days we don't want the hour, just the date.
                     }
                 }
                 else
                 {
+                    var today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+                    bool expiresMoreThanWeekLater = true;
+
                     List<DayOfWeek> includeDays = new List<DayOfWeek>();
-                    if (availability.EndDate.HasValue && availability.EndDate.Value.AddDays(-6) < DateTime.Now) //TODO: AAA CHECK
+                    if (availability.EndDate.HasValue && availability.EndDate.Value.AddDays(-7) < today)
                     {
-                        var today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+                        //If the product expires in less than a week we don't want to show all the days.
                         int days = (int)availability.EndDate.Value.AddDays(1).Subtract(today).TotalDays;
-                        for (int i = 0; i < days; i++) //TODO: AAA CHECK
+                        for (int i = 0; i < days; i++) //Loop from today to the end date and include only these days.
                         {
                             var date = today.AddDays(i);
                             includeDays.Add(date.DayOfWeek);
                         }
+                        expiresMoreThanWeekLater = false;
                     }
                     else
                     {
                         includeDays = ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).ToList();
-                        //new List<DayOfWeek>() { DayOfWeek.Sunday, DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday };
                     }
+
                     foreach (var day in availability.DaysAvailable.Where(a => a.DayTimesAvailable.Count() > 0 && includeDays.Contains(a.Day)))
                     {
                         ProductAvailabilityDayTimeViewState first = null;
 
                         if (day.Day == DateTime.Now.DayOfWeek)
                         {
+                            //If current day is today find the first time range that is not passed.
                             TimeSpan timeSpan = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
-                            first = day.DayTimesAvailable.Where(a => a.EndSecond > timeSpan.TotalSeconds).FirstOrDefault();
-                            if (first == null)
+                            first = day.DayTimesAvailable.Where(a => a.EndSecond > timeSpan.TotalSeconds).OrderBy(a => a.EndSecond).FirstOrDefault();
+
+                            if (expiresMoreThanWeekLater && first == null)
                             {
-                                first = day.DayTimesAvailable.FirstOrDefault();
+                                //If we didn't find any time range that was not passed but the expiration is more than a week later then find the first time range.
+                                first = day.DayTimesAvailable.OrderBy(a => a.EndSecond).FirstOrDefault();
                             }
                         }
                         else
                         {
-                            first = day.DayTimesAvailable.FirstOrDefault();
+                            first = day.DayTimesAvailable.OrderBy(a => a.EndSecond).FirstOrDefault();
                         }
 
-                        TimeSpan startTimeSpan = TimeSpan.FromSeconds(first.StartSecond);
-                        TimeSpan endTimeSpan = TimeSpan.FromSeconds(first.EndSecond);
+                        if (first != null)
+                        {
+                            TimeSpan startTimeSpan = TimeSpan.FromSeconds(first.StartSecond);
+                            TimeSpan endTimeSpan = TimeSpan.FromSeconds(first.EndSecond);
 
-                        //TODO: AAA
-                        result.Add($"{startTimeSpan.ToString("hh\\:mm")}-{endTimeSpan.ToString("hh\\:mm")} {day.Day.ToString().Substring(0, 2)}");
+                            //TODO: AAA DAY NAME?
+                            result.Add($"{startTimeSpan.ToString("hh\\:mm")}-{endTimeSpan.ToString("hh\\:mm")} {day.Day.ToString().Substring(0, 2)}");
+                        }
                     }
                 }
             }
