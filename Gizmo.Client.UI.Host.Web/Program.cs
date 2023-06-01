@@ -41,11 +41,14 @@ namespace Gizmo.Client.UI.Host.Web
 
             hostBuilder.Services.AddSingleton<IClientDialogService, ClientDialogService>();
             hostBuilder.Services.AddDialogService<IClientDialogService>();
+            hostBuilder.Services.AddSingleton<IClientNotificationService, ClientNotificationService>();
+            hostBuilder.Services.AddNotificationsService<IClientNotificationService>();
 
             hostBuilder.Services.AddSingleton<IInputLanguageService, WebInputLenguageService>();
 
             hostBuilder.Services.AddSingleton<IGizmoClient, TestClient>();
             hostBuilder.Services.AddSingleton<IImageService, ImageService>();
+            hostBuilder.Services.AddSingleton<INotificationsHost,WebNotificationHost>();
 
             var host = hostBuilder.Build();
 
