@@ -36,10 +36,6 @@ namespace Gizmo.Client.UI.Host.WPF
             InitializeComponent();
             _uICompositionService = uICompositionService;
             _serviceProvider = serviceProvider;
-            AllowsTransparency = true;
-            WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            WindowStyle = WindowStyle.None;
-            Opacity = 0.5;
         }
 
         private readonly IUICompositionService _uICompositionService;
