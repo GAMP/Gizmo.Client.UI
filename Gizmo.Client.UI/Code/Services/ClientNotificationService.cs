@@ -10,14 +10,9 @@ namespace Gizmo.Client.UI.Services
     /// </summary>
     public sealed class ClientNotificationService : NotificationsServiceBase , IClientNotificationService
     {
-        public ClientNotificationService(INotificationsHost notificationsHostWindow, IServiceProvider serviceProvider, ILogger<ClientNotificationService> logger) :base(serviceProvider,logger)
+        public ClientNotificationService(INotificationsHost notificationsHost,
+            IServiceProvider serviceProvider, ILogger<ClientNotificationService> logger) :base(notificationsHost, serviceProvider,logger)
         {
-            _notificationsHostWindow = notificationsHostWindow;
-            _ =_notificationsHostWindow.ShowAsync();
         }       
-
-        private readonly INotificationsHost _notificationsHostWindow;
-    }
-
-  
+    }  
 }
