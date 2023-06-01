@@ -10,12 +10,21 @@
 
     @if (Product != null)
     {
-        @if (Product.PurchaseAvailability != null)
-        {
-            <div class="giz-timeline-item">
-                <div class="giz-time-product-details"><div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_BUYING_TIME")</div><div class="giz-time-product-time-availabile">@ProductHelpers.GetPurchaseAvailabilities(Product, true, LocalizationService).FirstOrDefault()</div></div>
+        <div class="giz-timeline-item">
+            <div class="giz-time-product-details">
+                <div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_BUYING_TIME")</div>
+                <div class="giz-time-product-time-availabile">
+                    @if (Product.PurchaseAvailability != null)
+                    {
+                        @ProductHelpers.GetPurchaseAvailabilities(Product, true, LocalizationService).FirstOrDefault()
+                    }
+                    else
+                    {
+                        <Icon SVGIcon="Icons.Infinite" Size="IconSizes.Small" />
+                    }
+                </div>
             </div>
-        }
+        </div>
 
         @foreach (var bundledProduct in Product.BundledProducts)
         {
