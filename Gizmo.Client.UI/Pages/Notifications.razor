@@ -1,0 +1,14 @@
+﻿@inherits ComponentBase
+
+<div class="giz-notifications">
+    <div class="giz-notifications__header">
+        <div>Notifications</div>
+        <div>
+            <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseNotifications()" />
+        </div>
+    </div>
+    @for (int i = 0; i < 5; i++)
+    {
+        <GizNotifications />
+    }
+</div>

@@ -11,6 +11,10 @@ namespace Gizmo.Client.UI.Components
             get;set;
         }
 
+        private void CloseNotifications()
+        {
+        }
+
         protected override void OnInitialized()
         {
             base.OnInitialized();

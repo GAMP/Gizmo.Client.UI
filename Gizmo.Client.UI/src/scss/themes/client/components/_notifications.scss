@@ -1,46 +1,76 @@
 //============= Notifications ===============//
 
-.giz-notifications-container {
-    z-index: $notifications-index;
+.giz-notifications {
     position: fixed;
-    bottom: 0;
-    right: 0;
-    padding: 4.0rem 2.8rem;
+    bottom: 1rem;
+    right: 1rem;
     display: flex;
-    flex-direction: column-reverse;
-    gap: 1.0rem;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 60rem;
     height: calc(100vh - 7.5rem);
-    overflow-y: auto;
-    pointer-events: none;
-}
-
-.giz-notification-dialog {
-    pointer-events: all;
-}
-
-.giz-notification-card {
-    background-color: #22272B;
-    box-shadow: 0 0.8rem 3.2rem rgba(0, 0, 0, 0.08);
-    border-radius: 1.6rem;
-    position: relative;
+    border-radius: 0.4rem;
     overflow: hidden;
+    //z-index: $notifications-index;
+
+    &-wrapper {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+    }
 
     &__header {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.8rem 1.2rem 1rem 0.8rem;
+        background: rgba(255, 255, 255, 0.0326);
+        //Font
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 22px;
+    }
+}
+
+.giz-notification {
+    display: grid;
+    grid-template-columns: min-content 1fr min-content;
+    gap: 1.5rem;
+    background-color: #22272B;
+    width: 100%;
+    overflow: hidden;
+    padding-top: 1.3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(246, 251, 253, 0.06);
+
+    &__icon {
+        width: 5.3rem;
+    }
+
+    &__body {
         display: grid;
-        grid-template-columns: 1fr min-content;
-        grid-template-rows: min-content min-content;
-        margin-bottom: 2.4rem;
+        grid-template-rows: min-content 1fr min-content;
 
         &__title {
-            grid-row-start: 1;
-            grid-row-end: 2;
-            @include font-h5-theme-client($font-weight-bold-theme-client);
+            //Font
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 30px;
         }
 
-        &__subtitle {
-            grid-row-start: 2;
-            grid-row-end: 3;
-            @include font-l-theme-client($font-weight-light-theme-client);
+        &__message {
+            //Font
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 30px;
         }
+
+        &__actions {
+            margin-top: 1.6rem;
+        }
+    }
+
+    &__close-button {
+        padding: 1.2rem;
     }
 }

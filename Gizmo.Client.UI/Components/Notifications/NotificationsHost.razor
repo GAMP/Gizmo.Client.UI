@@ -1,5 +1,17 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits ComponentBase
-<div class="giz-login-alerts">
-    <Toast AlertType="AlertTypes.Warning" Title="Something went wrong" Text="Try again later please"></Toast>
+
+<div class="giz-notifications-wrapper">
+    <div class="giz-notifications">
+        <div class="giz-notifications__header">
+            <div>Notifications</div>
+            <div>
+                <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseNotifications()" />
+            </div>
+        </div>
+        @for (int i = 0; i < 5; i++)
+        {
+            <GizNotifications />
+        }
+    </div>
 </div>
