@@ -1,4 +1,5 @@
-﻿using Gizmo.Web.Components;
+﻿using System.Threading.Tasks;
+using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -12,7 +13,7 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<MouseEventArgs> OnClick { get; set; }
 
-        private async void OnClickHandler(MouseEventArgs args)
+        private async Task OnClickHandler(MouseEventArgs args)
         {
             await OnClick.InvokeAsync(args);
             await InvokeVoidAsync("tabItemBringIntoView", Ref);

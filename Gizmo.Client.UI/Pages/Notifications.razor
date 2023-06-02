@@ -1,16 +1,17 @@
 ﻿@inherits ComponentBase
 
-<div class="giz-notifications">
+<div client-theme="true" class="giz-notifications @(_slideOut ? "slide-out" : "slide-in")">
     <div class="giz-notifications__header">
-        <div>Notifications</div>
+        <div @onclick="DemoAdd">Notifications</div>
         <div>
             <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseNotifications()" />
         </div>
     </div>
     <div class="giz-notifications__body giz-scrollbar--v">
-        @for (int i = 0; i < 5; i++)
+        @for (int i = 0; i < _total; i++)
         {
-            <GizNotification Icon="AlertDialogIcons.Error" />
+            var local_i = i;
+            <GizNotification Index="@local_i" Icon="AlertDialogIcons.Error" Class="@(local_i == _slideInIndex ? "slide-in" : (local_i == _slideOutIndex ? "slide-out" : ""))" OnClose="OnCloseHandler" />
         }
     </div>
 </div>
