@@ -58,8 +58,8 @@ namespace Gizmo.Client.UI.Host.WPF
             {
                 Background  = System.Windows.Media.Brushes.Gray,
                 Services = _serviceProvider,
-                 Width = 600,
-                 Height= 800,
+                 //Width = 600,
+                 //Height= 800,
                  //Margin = new Thickness(64),
                  HorizontalAlignment = HorizontalAlignment.Stretch,
                  VerticalAlignment = VerticalAlignment.Stretch

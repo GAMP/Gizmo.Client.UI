@@ -2,22 +2,16 @@
 
 .giz-notifications {
     position: fixed;
-    bottom: 1rem;
-    right: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    width: 60rem;
-    height: calc(100vh - 7.5rem);
+    top: 1rem;
+    left: 1rem;
+    width: calc(100vw - 2rem);
+    max-height: calc(100vh - 2rem);
     border-radius: 0.4rem;
     overflow: hidden;
+    display: grid;
+    grid-template-rows: min-content 1fr;
+    background-color: #22272B;
     //z-index: $notifications-index;
-
-    &-wrapper {
-        position: relative;
-        width: 100vw;
-        height: 100vh;
-    }
 
     &__header {
         display: flex;
@@ -30,21 +24,31 @@
         font-size: 14px;
         line-height: 22px;
     }
+
+    &__body {
+        max-height: 100%;
+        overflow: auto;
+    }
 }
 
 .giz-notification {
     display: grid;
     grid-template-columns: min-content 1fr min-content;
     gap: 1.5rem;
-    background-color: #22272B;
     width: 100%;
     overflow: hidden;
     padding-top: 1.3rem;
     padding-bottom: 1.5rem;
     border-bottom: 1px solid rgba(246, 251, 253, 0.06);
 
+    &:last-child {
+        border-bottom: unset;
+    }
+
     &__icon {
         width: 5.3rem;
+        padding-top: 0.3rem;
+        padding-left: 1.6rem;
     }
 
     &__body {

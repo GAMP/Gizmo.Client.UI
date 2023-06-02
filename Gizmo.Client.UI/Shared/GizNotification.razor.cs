@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI
 {
-    public partial class GizNotifications : CustomDOMComponentBase
+    public partial class GizNotification : CustomDOMComponentBase
     {
         [Parameter]
         public AlertDialogIcons Icon { get; set; }
