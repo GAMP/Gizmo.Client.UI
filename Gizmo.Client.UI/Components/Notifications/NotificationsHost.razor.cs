@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Gizmo.UI.Services;
 using Gizmo.UI.View.States;
 using Microsoft.AspNetCore.Components;
 
@@ -15,6 +16,13 @@ namespace Gizmo.Client.UI.Components
         private NotificationsHostViewState ViewState
         {
             get; set;
+        }
+
+        [Inject()]
+        private INotificationsService  NotificationsService
+        {
+            get; 
+            set; 
         }
 
         private void DemoAdd()
@@ -42,11 +50,25 @@ namespace Gizmo.Client.UI.Components
             await InvokeAsync(StateHasChanged);
         }
 
+        protected override Task OnParametersSetAsync()
+        {
+            return base.OnParametersSetAsync();
+        }
+
         protected override void OnInitialized()
         {
             base.OnInitialized();
 
             this.SubscribeChange(ViewState);
+
+            ViewState.OnChange += ViewState_OnChange;
+        }
+
+
+
+        private void ViewState_OnChange(object sender, System.EventArgs e)
+        {
+           
         }
     }
 }
