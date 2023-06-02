@@ -464,7 +464,17 @@ function productDetailsFitHostGroups(element) {
                 var elementr = element.getBoundingClientRect();
                 if (element.scrollWidth > elementr.width) {
                     var additionalr = additional.getBoundingClientRect();
-                    
+
+                    var gap = 8;
+
+                    if (items.length > 0) {
+                        if (items.length > 1) {
+                            gap = items[1].getBoundingClientRect().left - items[0].getBoundingClientRect().right;
+                        } else {
+                            gap = additionalr.left - items[0].getBoundingClientRect().right;
+                        }
+                    }
+
                     var total = additionalr.width;
                     var hidden = 0;
 
@@ -487,7 +497,7 @@ function productDetailsFitHostGroups(element) {
                                 additional.style = 'display: none';
                             }
                             else {
-                                total += items[i].getBoundingClientRect().width + 8; //TODO: AAA
+                                total += items[i].getBoundingClientRect().width + gap;
                                 if (total > elementr.width) {
                                     items[i].style = 'display: none';
                                     hidden += 1;

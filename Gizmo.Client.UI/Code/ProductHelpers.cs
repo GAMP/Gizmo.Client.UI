@@ -168,6 +168,12 @@ namespace Gizmo.Client.UI
             if (availability == null)
                 return result;
 
+            if (availability.TimeRange && availability.DaysAvailable.Count() == 0)
+            {
+                result.Add(localizationService.GetString("GIZ_GEN_NEVER"));
+                return result;
+            }
+
             DateTime? lastTimeRangeEnd = null;
 
             if (availability.DateRange && availability.EndDate.HasValue && availability.TimeRange)
