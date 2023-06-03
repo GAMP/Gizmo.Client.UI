@@ -35,7 +35,7 @@ namespace Gizmo.Client.UI.Components
 
         private void CloseNotifications()
         {
-            NotificationsService.TryDismissAll();
+            NotificationsService.DismissAll();
         }
 
         private async Task OnCloseHandler(int index)
