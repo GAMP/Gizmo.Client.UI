@@ -27,7 +27,7 @@ namespace Gizmo.Client.UI.Components
         PaymentMethodViewStateLookupService PaymentMethodViewStateLookupService { get; set; }
 
         [Parameter]
-        public EventCallback CancelCallback { get; set; }
+        public EventCallback DismissCallback { get; set; }
 
         private void ValueChangedHandler(int? value)
         {
@@ -36,7 +36,7 @@ namespace Gizmo.Client.UI.Components
 
         private async Task CloseDialog()
         {
-            await CancelCallback.InvokeAsync();
+            await DismissCallback.InvokeAsync();
 
             if (ViewState.IsComplete) //TODO: AAA DO NOT RESET WITH ERRORS.
                 await UserCartService.ResetAsync();

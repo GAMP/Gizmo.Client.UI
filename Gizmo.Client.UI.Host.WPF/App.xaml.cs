@@ -57,21 +57,24 @@ namespace Gizmo.Client.UI.Host.WPF
             var host = hostBuilder.Build();
 
             Resources.Add("services", host.Services);
-
-            //get host window
-            var hostWindow = (HostWindow)host.Services.GetRequiredService<IHostWindow>();
-
-            var ds = host.Services.GetRequiredService<DesktopUICompositionService>();
+         
+            var compositionService = host.Services.GetRequiredService<DesktopUICompositionService>();
 
             string compositionFile = Path.Combine(Environment.CurrentDirectory, @"composition.json");
             string optionsFile = Path.Combine(Environment.CurrentDirectory, @"options.json");
 
-            await ds.SetConfigurationSourceAsync(compositionFile);
-            await ds.SetOptionsConfigurationSourceAsync(optionsFile);
-            await ds.InitializeAsync(default);
+            await compositionService.SetConfigurationSourceAsync(compositionFile);
+            await compositionService.SetOptionsConfigurationSourceAsync(optionsFile);
+            await compositionService.InitializeAsync(default);
 
             //initialize services
             await host.Services.InitializeClientServices();
+
+            //create host window
+            var hostWindow = (HostWindow)host.Services.GetRequiredService<IHostWindow>();
+
+            //create notifications window
+            var notificationsHost = host.Services.GetRequiredService<INotificationsHost>();
 
             //show host window
             hostWindow.Show();

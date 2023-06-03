@@ -22,7 +22,7 @@ namespace Gizmo.Client.UI.Components
         public DialogDisplayOptions DisplayOptions { get; set; }
 
         [Parameter]
-        public EventCallback CancelCallback { get; set; }
+        public EventCallback DismissCallback { get; set; }
 
         [Parameter]
         public EventCallback<EmptyComponentResult> ResultCallback { get; set; }

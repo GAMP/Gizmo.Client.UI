@@ -20,13 +20,13 @@ namespace Gizmo.Client.UI.Components
         ILocalizationService LocalizationService { get; set; }
 
         [Parameter]
-        public EventCallback CancelCallback { get; set; }
+        public EventCallback DismissCallback { get; set; }
 
         public string Image { get; set; }
 
         private Task CloseDialog()
         {
-            return CancelCallback.InvokeAsync();
+            return DismissCallback.InvokeAsync();
         }
 
         private async Task OnInputFileChange(InputFileChangeEventArgs e)

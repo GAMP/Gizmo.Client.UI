@@ -17,7 +17,7 @@ namespace Gizmo.Client.UI.Shared
         {
             if (ViewState.Current != null && ViewState.Current.DisplayOptions.CloseOnClick)
             {
-                ViewState.Current.CancelAsync();
+                ViewState.Current.DismissAsync();
             }
         }
 

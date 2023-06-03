@@ -28,7 +28,7 @@ namespace Gizmo.Client.UI.Components
         UserChangeMobileViewState ViewState { get; set; }
         
         [Parameter]
-        public EventCallback CancelCallback { get; set; }
+        public EventCallback DismissCallback { get; set; }
 
         public List<IconSelectCountry> Countries { get; set; } = new List<IconSelectCountry>();
 
@@ -65,7 +65,7 @@ namespace Gizmo.Client.UI.Components
 
         private async Task CloseDialog()
         {
-            await CancelCallback.InvokeAsync();
+            await DismissCallback.InvokeAsync();
 
             if (ViewState.IsComplete)
                 await UserChangeMobileService.ResetAsync();

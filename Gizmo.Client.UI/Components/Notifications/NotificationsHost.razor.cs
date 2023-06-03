@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Gizmo.UI.Services;
 using Gizmo.UI.View.States;
 using Microsoft.AspNetCore.Components;
@@ -34,9 +35,7 @@ namespace Gizmo.Client.UI.Components
 
         private void CloseNotifications()
         {
-            _slideOut = true;
-            //TODO: Allow rerender to change class and start animation
-            //Wait enough to complete animation and then send to service that is closed.
+            NotificationsService.TryDismissAll();
         }
 
         private async Task OnCloseHandler(int index)
@@ -59,16 +58,23 @@ namespace Gizmo.Client.UI.Components
         {
             base.OnInitialized();
 
-            this.SubscribeChange(ViewState);
-
             ViewState.OnChange += ViewState_OnChange;
+            this.SubscribeChange(ViewState); 
         }
-
-
 
         private void ViewState_OnChange(object sender, System.EventArgs e)
         {
-           
+            var newCount = ViewState.Visible.Count();
+
+            if(newCount > 0 && _slideOut)
+            {
+                _slideOut = false;
+            }
+            else if(newCount <=0 && 
+                !_slideOut)
+            {
+                _slideOut = true;
+            }
         }
     }
 }

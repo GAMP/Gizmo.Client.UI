@@ -24,7 +24,7 @@ namespace Gizmo.Client.UI.Components
         public bool IsRejectable { get; set; }
 
         [Parameter]
-        public EventCallback CancelCallback { get; set; }
+        public EventCallback DismissCallback { get; set; }
 
         [Parameter]
         public EventCallback<UserAgreementResult> ResultCallback { get; set; }
@@ -35,7 +35,7 @@ namespace Gizmo.Client.UI.Components
 
         private async Task CloseDialogAsync()
         {
-            await CancelCallback.InvokeAsync();
+            await DismissCallback.InvokeAsync();
         }
 
         private async Task ContinueAsync()

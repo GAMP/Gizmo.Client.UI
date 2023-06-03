@@ -32,7 +32,9 @@ namespace Gizmo.Client.UI.Host.WPF
     /// </summary>
     public partial class NotificationsHost : Window , INotificationsHost
     {
-        public NotificationsHost(IUICompositionService uICompositionService, IServiceProvider serviceProvider)
+        public NotificationsHost(IUICompositionService uICompositionService,
+            INotificationsService notificationsService,
+            IServiceProvider serviceProvider)
         {
             InitializeComponent();
             _uICompositionService = uICompositionService;
@@ -41,25 +43,30 @@ namespace Gizmo.Client.UI.Host.WPF
             Background =  System.Windows.Media.Brushes.Transparent;
             WindowStyle = WindowStyle.None;
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            _notificationsService = notificationsService;
+            WindowInteropHelper windowInteropHelper = new WindowInteropHelper(this);
+            windowInteropHelper.EnsureHandle();
         }
 
         private readonly IUICompositionService _uICompositionService;
         private readonly IServiceProvider _serviceProvider;
+        private readonly INotificationsService _notificationsService;
 
         private bool isOpen = false;
 
-        public Task HideAsyc()
+        public async Task HideAsyc()
         {
             if(!isOpen)
             {
-                return Task.CompletedTask;
+                return;
             }
 
-            Hide();
+            await Task.Delay(1000);
+            Dispatcher.Invoke(Hide);
 
 
             isOpen = false;
-            return Task.CompletedTask;
+            return;
         }
 
         public Task ShowAsync()
@@ -96,12 +103,12 @@ namespace Gizmo.Client.UI.Host.WPF
                 {                    
                     view.MinHeight = 400;
                     view.BlazorWebViewInitializing -= (sender, args) => { };
-                    view.WebView.DefaultBackgroundColor = System.Drawing.Color.Yellow;                
+                    view.WebView.DefaultBackgroundColor = System.Drawing.Color.Transparent;                
                 }
             };
         
       
-            Show();
+           Dispatcher.Invoke( Show);
             _VIEW_HOST.Child = blazorWebView;
             blazorWebView.HostPage = @"wwwroot\notifications.html";
             return Task.CompletedTask;
@@ -121,7 +128,23 @@ namespace Gizmo.Client.UI.Host.WPF
             var source = HwndSource.FromHwnd(handle);
 
             //add window proc hook
-            source.AddHook(new HwndSourceHook(WindowProc));            
+            source.AddHook(new HwndSourceHook(WindowProc));
+
+            _notificationsService.NotificationsChanged += _notificationsService_NotificationsChanged;
+        }
+
+        private async void _notificationsService_NotificationsChanged(object sender, NotificationsChangedArgs e)
+        {
+            var visibleCount = _notificationsService.GetVisible().Count();
+            if(visibleCount> 0 && !isOpen)
+            {
+                await ShowAsync();
+            }
+
+            if(visibleCount<=0 && isOpen)
+            {
+                await HideAsyc();
+            }
         }
 
         protected virtual IntPtr WindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)

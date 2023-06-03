@@ -15,9 +15,6 @@ namespace Gizmo.Client.UI.Components
         public DialogDisplayOptions DisplayOptions { get; set; }
 
         [Parameter]
-        public EventCallback CancelCallback { get; set; }
-
-        [Parameter]
         public EventCallback<AlertDialogResult> ResultCallback { get; set; }
 
         [Parameter]

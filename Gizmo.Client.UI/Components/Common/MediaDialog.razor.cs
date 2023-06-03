@@ -16,6 +16,6 @@ namespace Gizmo.Client.UI.Components
         public string MediaUrl { get; set; }
 
         [Parameter]
-        public EventCallback CancelCallback { get; set; }
+        public EventCallback DismissCallback { get; set; }
     }
 }

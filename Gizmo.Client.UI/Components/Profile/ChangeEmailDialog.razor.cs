@@ -23,11 +23,11 @@ namespace Gizmo.Client.UI.Components
         UserChangeEmailViewState ViewState { get; set; }
 
         [Parameter]
-        public EventCallback CancelCallback { get; set; }
+        public EventCallback DismissCallback { get; set; }
 
         private async Task CloseDialog()
         {
-            await CancelCallback.InvokeAsync();
+            await DismissCallback.InvokeAsync();
 
             if (ViewState.IsComplete)
                 await UserChangeEmailService.ResetAsync();

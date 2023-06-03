@@ -28,7 +28,7 @@ namespace Gizmo.Client.UI.Pages
                 MediaUrl = Link.MediaUrl
             });
             if (dialog.Result == AddComponentResultCode.Opened)
-                _ = await dialog.WaitForDialogResultAsync();
+                _ = await dialog.WaitForResultAsync();
         }
 
         protected override void OnInitialized()

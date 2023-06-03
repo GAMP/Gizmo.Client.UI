@@ -11,7 +11,7 @@ namespace Gizmo.Client.UI
         public AlertDialogIcons Icon { get; set; }
 
         [Parameter]
-        public EventCallback CancelCallback { get; set; }
+        public EventCallback DismissCallback { get; set; }
 
         [Parameter()]
         public string Title
@@ -36,7 +36,7 @@ namespace Gizmo.Client.UI
 
         private async Task CloseNotification()
         {
-            await CancelCallback.InvokeAsync();
+            await DismissCallback.InvokeAsync();
         }
     }
 }
