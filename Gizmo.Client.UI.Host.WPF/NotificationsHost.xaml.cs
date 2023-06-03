@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Interop;
 using Gizmo.UI;
 using Gizmo.UI.Services;
@@ -54,7 +53,7 @@ namespace Gizmo.Client.UI.Host.WPF
 
         private bool isOpen = false;
 
-        public async Task HideAsyc()
+        public async Task HideAsync()
         {
             if(!isOpen)
             {
@@ -143,7 +142,7 @@ namespace Gizmo.Client.UI.Host.WPF
 
             if(visibleCount<=0 && isOpen)
             {
-                await HideAsyc();
+                await HideAsync();
             }
         }
 
