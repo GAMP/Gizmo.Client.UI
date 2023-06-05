@@ -3,22 +3,23 @@
 
 <div client-theme="true" class="giz-notifications @(_slideOut ? "slide-out" : "slide-in")">
     <div class="giz-notifications__header">
-        <div @onclick="DemoAdd">Notifications</div>
+        @*<div @onclick="DemoAdd">Notifications</div>*@
+        <div></div>
         <div>
-            <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseNotifications()" />
+            <IconButton SVGIcon="Icons.Close" Visibility="(ViewState.Visible.Count()>1? Visibilities.Visible : Visibilities.Collapse)" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseNotifications()" />
         </div>
     </div>
     <div class="giz-notifications__body giz-scrollbar--v">
-        @foreach(var controller in ViewState.Visible)
+        @foreach (var controller in ViewState.Visible)
         {
             <DynamicComponent Parameters="controller.Parameters" Type="controller.ComponentType" @key=controller.Identifier></DynamicComponent>
         }
 
-       @* @for (int i = 0; i < _total; i++)
+        @* @for (int i = 0; i < _total; i++)
         {
-            var local_i = i;
-     Index="@local_i" Class="@(local_i == _slideInIndex ? "slide-in" : (local_i == _slideOutIndex ? "slide-out" : ""))"
-     Class="@(local_i == _slideInIndex ? "slide-in" : (local_i == _slideOutIndex ? "slide-out" : ""))"
+        var local_i = i;
+        Index="@local_i" Class="@(local_i == _slideInIndex ? "slide-in" : (local_i == _slideOutIndex ? "slide-out" : ""))"
+        Class="@(local_i == _slideInIndex ? "slide-in" : (local_i == _slideOutIndex ? "slide-out" : ""))"
         }*@
     </div>
 </div>
