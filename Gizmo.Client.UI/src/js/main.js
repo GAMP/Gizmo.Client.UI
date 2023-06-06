@@ -446,7 +446,6 @@ function navigationBlock() {
     window.location.replace("https://localhost:5001/home");
 }*/
 
-
 function productDetailsFitHostGroups(element) {
     try {
         if (element) {
@@ -519,5 +518,18 @@ function productDetailsFitHostGroups(element) {
         }
     } catch (error) {
         console.error(error);
+    }
+}
+
+function setNotificationsAnimationHeight(item) {
+    var element = document.querySelector('[data-id="' + item.toString() + '"]');
+    if (element) {
+        console.log(element);
+        var height = element.getBoundingClientRect().height;
+        console.log(height);
+        element.style.setProperty('--notification-height', height + 'px');
+        console.log(element);
+    } else {
+        console.log("Not found");
     }
 }

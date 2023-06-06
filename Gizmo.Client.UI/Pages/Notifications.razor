@@ -11,7 +11,9 @@
         @for (int i = 0; i < _total; i++)
         {
             var local_i = i;
-            <GizNotification Index="@local_i" Icon="AlertDialogIcons.Error" Class="@(local_i == _slideInIndex ? "slide-in" : (local_i == _slideOutIndex ? "slide-out" : ""))" OnClose="OnCloseHandler" />
+            <div class="giz-notification-wrapper @(_slideInIndex == local_i ? "slide-in" : _slideOutIndex == local_i ? "slide-out" : ""))">
+                <GizNotification Icon="AlertDialogIcons.Error" OnClose="OnCloseHandler" />
+            </div>
         }
     </div>
 </div>

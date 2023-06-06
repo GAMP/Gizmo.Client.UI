@@ -1,7 +1,9 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 
-<div client-theme="true" class="giz-notifications @(_slideOut ? "slide-out" : "slide-in")">
+<div client-theme="true" class="giz-notifications @(_slideOut ? "slide-out" : "slide-in")"
+     @onmouseover="OnMouseOverHandler"
+     @onmouseout="OnMouseOutHandler">
     <div class="giz-notifications__header">
         <div>@LocalizationService.GetString("GIZ_NOTIFICATIONS_TITLE")</div>
         <div>
@@ -13,7 +15,7 @@
         {
             @foreach (var controller in _visible)
             {
-                <div class="giz-notification-wrapper @(_newItems.Contains(controller.Identifier) ? "slide-in" : (_removedItems.Contains(controller.Identifier) ? "slide-out" : ""))">
+                <div data-id="@controller.Identifier" class="giz-notification-wrapper @(_tmp == controller.Identifier ? "tmp" : (_slideInId == controller.Identifier ? "slide-in" : (_slideOutId == controller.Identifier ? "slide-out" : "")))">
                     <DynamicComponent Parameters="controller.Parameters" Type="controller.ComponentType" @key=controller.Identifier></DynamicComponent>
                 </div>
             }

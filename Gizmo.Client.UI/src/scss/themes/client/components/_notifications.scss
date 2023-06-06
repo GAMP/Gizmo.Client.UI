@@ -91,6 +91,14 @@
         overflow: hidden;
         border-bottom: 1px solid rgba(246, 251, 253, 0.06);
 
+        &.tmp {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            visibility: hidden;
+        }
+
         &:last-child {
             border-bottom: unset;
         }
@@ -135,15 +143,13 @@
         height: 0;
     }
     to {
-        height: 153px;
-        //height: var(--abh);
+        height: var(--notification-height);
     }
 }
 
 @keyframes notification-slide-out-anim {
     from {
-        height: 153px;
-        //height: var(--abh);
+        height: var(--notification-height);
     }
     to {
         height: 0;
