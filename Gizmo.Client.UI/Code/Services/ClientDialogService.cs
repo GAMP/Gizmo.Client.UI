@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Gizmo.Client.UI.Components;
+using Gizmo.UI;
 using Gizmo.UI.Services;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Gizmo.Client.UI.Services
 {
     public sealed class ClientDialogService : DialogServiceBase, IClientDialogService
     {
-        public ClientDialogService(IServiceProvider serviceProvider, ILogger<ClientDialogService> logger) : base(serviceProvider, logger)
+        public ClientDialogService(IOptionsMonitor<DialogOptions> options,
+            IServiceProvider serviceProvider,
+            ILogger<ClientDialogService> logger) : base(options, serviceProvider, logger)
         {
         }
 

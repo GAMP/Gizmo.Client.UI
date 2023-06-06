@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Gizmo.UI;
 using Gizmo.UI.Services;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Gizmo.Client.UI.Services
 {
@@ -12,7 +14,9 @@ namespace Gizmo.Client.UI.Services
     /// </summary>
     public sealed class ClientNotificationService : NotificationsServiceBase , IClientNotificationService
     {
-        public ClientNotificationService(IServiceProvider serviceProvider, ILogger<ClientNotificationService> logger) :base(serviceProvider,logger)
+        public ClientNotificationService(IOptionsMonitor<NotificationsOptions> options,
+            IServiceProvider serviceProvider,
+            ILogger<ClientNotificationService> logger) :base(options,serviceProvider,logger)
         {
         }
 
