@@ -524,12 +524,77 @@ function productDetailsFitHostGroups(element) {
 function setNotificationsAnimationHeight(item) {
     var element = document.querySelector('[data-id="' + item.toString() + '"]');
     if (element) {
-        console.log(element);
+        //console.log(element);
         var height = element.getBoundingClientRect().height;
-        console.log(height);
+        //console.log(height);
         element.style.setProperty('--notification-height', height + 'px');
-        console.log(element);
+        //console.log(element);
     } else {
-        console.log("Not found");
+        console.log("Not found!");
     }
+}
+
+var animationEventListenerReferences = [];
+
+function addAnimationEventListener(objRef) {
+    animationEventListenerReferences.push(objRef);
+}
+
+function removeAnimationEventListener(objRef) {
+    var index = findElementIndexById(animationEventListenerReferences, objRef);
+    if (index > -1) {
+        animationEventListenerReferences.splice(index, 1);
+    }
+}
+
+function onAnimationEvent(event, state) {
+    console.log(event);
+    animationEventListenerReferences.forEach((item) => {
+        var id = event.target.id;
+        var animation = event.animationName;
+        if (!id) {
+            id = event.target.dataset.id;
+        }
+        item.invokeMethodAsync('OnAnimationEvent', { Id: id, AnimationState: state, AnimationName: animation });
+    });
+}
+
+function onAnimationStartEvent(event) {
+    onAnimationEvent(event, 0);
+}
+
+function onAnimationIterationEvent(event) {
+    onAnimationEvent(event, 1);
+}
+
+function onAnimationEndEvent(event) {
+    onAnimationEvent(event, 2);
+}
+
+function onAnimationCancelEvent(event) {
+    onAnimationEvent(event, 3);
+}
+
+var registeredAnimatedComponents = [];
+
+function registerAnimatedComponent(element) {
+    if (element) {
+        registeredAnimatedComponents.push({
+            element: element,
+            open: false
+        });
+
+        element.addEventListener("animationstart", onAnimationStartEvent);
+
+        element.addEventListener("animationiteration", onAnimationIterationEvent);
+
+        element.addEventListener("animationend", onAnimationEndEvent);
+
+        element.addEventListener("animationcancel", onAnimationCancelEvent);
+    }
+}
+
+function unregisterAnimatedComponent(element) {
+    //console.log('unregisterAnimatedComponent');
+    //console.log(element);
 }

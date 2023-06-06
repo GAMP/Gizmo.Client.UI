@@ -3,7 +3,9 @@
 
 <div client-theme="true" class="giz-notifications @(_slideOut ? "slide-out" : "slide-in")"
      @onmouseover="OnMouseOverHandler"
-     @onmouseout="OnMouseOutHandler">
+     @onmouseout="OnMouseOutHandler"
+     id="@Id"
+     @ref="@Ref">
     <div class="giz-notifications__header">
         <div>@LocalizationService.GetString("GIZ_NOTIFICATIONS_TITLE")</div>
         <div>
@@ -15,7 +17,7 @@
         {
             @foreach (var controller in _visible)
             {
-                <div data-id="@controller.Identifier" class="giz-notification-wrapper @(_tmp == controller.Identifier ? "tmp" : (_slideInId == controller.Identifier ? "slide-in" : (_slideOutId == controller.Identifier ? "slide-out" : "")))">
+                <div data-id="@controller.Identifier" class="giz-notification-wrapper @(_newlyAddedItemId == controller.Identifier ? "tmp" : (_slideInItemId == controller.Identifier ? "slide-in" : (_slideOutItemId == controller.Identifier ? "slide-out" : "")))">
                     <DynamicComponent Parameters="controller.Parameters" Type="controller.ComponentType" @key=controller.Identifier></DynamicComponent>
                 </div>
             }

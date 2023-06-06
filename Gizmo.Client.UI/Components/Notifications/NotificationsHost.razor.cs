@@ -8,16 +8,18 @@ using Gizmo.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class NotificationsHost : CustomDOMComponentBase
+    public partial class NotificationsHost : CustomDOMComponentBase, IAsyncDisposable
     {
         private bool _slideOut = false;
         private int _total = 1;
-        private int _tmp = -1;
-        private int _slideInId = -1;
-        private int _slideOutId = -1;
+        private int _newlyAddedItemId = -1;
+        private int _slideInItemId = -1;
+        private int _slideOutItemId = -1;
+        private List<int> _dismissAllItems = new List<int>();
         private List<int> _newItems = new List<int>();
         private List<int> _removedItems = new List<int>();
         private readonly SemaphoreSlim _animationLock = new(1);
@@ -52,17 +54,50 @@ namespace Gizmo.Client.UI.Components
 
         private async Task CloseNotifications()
         {
+            _dismissAllItems = ViewState.Visible.Select(a => a.Identifier).ToList();
             NotificationsService.DismissAll();
+
+            await SlideWindowOut();
+
+            _dismissAllItems.Clear();
+        }
+
+        private async Task SlideWindowIn()
+        {
+            _slideOut = false;
+            await InvokeAsync(StateHasChanged);
+            await Task.Delay(1000);
+        }
+
+        private async Task SlideWindowOut()
+        {
+            _slideOut = true;
+            await InvokeAsync(StateHasChanged);
+            await Task.Delay(1000);
+            _slideOut = false;
+        }
+
+        private async Task SlideItemIn(int item)
+        {
+            await SetAnimationHeight(item);
+            _slideInItemId = item;
+            await InvokeAsync(StateHasChanged);
+            await Task.Delay(500);
+            _slideInItemId = -1;
+        }
+
+        private async Task SlideItemOut(int item)
+        {
+            await SetAnimationHeight(item);
+            _slideOutItemId = item;
+            await InvokeAsync(StateHasChanged);
+            await Task.Delay(500);
+            _slideOutItemId = -1;
         }
 
         private async Task SetAnimationHeight(int item)
         {
             await InvokeVoidAsync("setNotificationsAnimationHeight", item);
-        }
-
-        protected override Task OnParametersSetAsync()
-        {
-            return base.OnParametersSetAsync();
         }
 
         protected override void OnInitialized()
@@ -86,27 +121,24 @@ namespace Gizmo.Client.UI.Components
             {
                 try
                 {
-                    _newItems.Clear();
-                    _removedItems.Clear();
+                    var snapShot = ViewState.Visible.ToList();
 
-                    //TODO: AAA BLOCK UNTIL FINISHED.
-                    if (_visible == null)
+                    if (_dismissAllItems.Count == 0)
                     {
-                        _visible = ViewState.Visible.ToList();
-                    }
-                    else
-                    {
-                        if (ViewState.Visible.Count() > 0)
+                        _newItems.Clear();
+                        _removedItems.Clear();
+
+                        if (_visible == null)
                         {
-                            if (_slideOut)
+                            //First run.
+                            _visible = snapShot;
+                            await SlideWindowIn();
+                        }
+                        else
+                        {
+                            if (snapShot.Count() > 0)
                             {
-                                _slideOut = false;
-                                await InvokeAsync(StateHasChanged);
-                                await Task.Delay(1000);
-                            }
-                            else
-                            {
-                                foreach (var item in ViewState.Visible)
+                                foreach (var item in snapShot)
                                 {
                                     if (!_visible.Contains(item))
                                         _newItems.Add(item.Identifier);
@@ -114,46 +146,35 @@ namespace Gizmo.Client.UI.Components
 
                                 foreach (var item in _visible)
                                 {
-                                    if (!ViewState.Visible.Contains(item))
+                                    if (!snapShot.Contains(item))
                                         _removedItems.Add(item.Identifier);
                                 }
 
                                 foreach (var item in _newItems)
                                 {
-                                    _tmp = item;
-                                    _visible.Add(ViewState.Visible.Where(a => a.Identifier == item).FirstOrDefault());
+                                    //We need to add the item to the DOM first.
+                                    //TODO: AAA ADD ITEM IN THE RIGHT POSITION.
+                                    _newlyAddedItemId = item;
+                                    _visible.Add(snapShot.Where(a => a.Identifier == item).FirstOrDefault());
                                     await InvokeAsync(StateHasChanged);
+                                    _newlyAddedItemId = -1;
 
-                                    _tmp = -1;
-                                    await SetAnimationHeight(item);
-                                    _slideInId = item;
-                                    await InvokeAsync(StateHasChanged);
-                                    await Task.Delay(500);
+                                    await SlideItemIn(item);
                                 }
-
-                                _slideInId = -1;
 
                                 foreach (var item in _removedItems)
                                 {
-                                    await SetAnimationHeight(item);
-                                    _slideOutId = item;
-                                    await InvokeAsync(StateHasChanged);
-                                    await Task.Delay(500);
+                                    await SlideItemOut(item);
                                 }
-
-                                _slideOutId = -1;
                             }
-                        }
-                        else
-                        {
-                            //TODO: AAA THIS DOES NOT WORK, ViewState_OnChange FIRES MULTIPLE TIMES ON DISMISS ALL.
-                            _slideOut = true;
-                            await InvokeAsync(StateHasChanged);
-                            await Task.Delay(1000);
-                        }
+                            else
+                            {
+                                await SlideWindowOut();
+                            }
 
-                        _visible = ViewState.Visible.ToList();
-                        await InvokeAsync(StateHasChanged);
+                            _visible = snapShot;
+                            await InvokeAsync(StateHasChanged);
+                        }
                     }
                 }
                 catch
@@ -166,5 +187,41 @@ namespace Gizmo.Client.UI.Components
                 }
             }
         }
+
+        private AnimationEventInterop AnimationEventInterop { get; set; }
+
+        private Task AnimationHandler(AnimationEventArgs args)
+        {
+            //args.Id is the host component Id or the item Identifier.
+            if (args.Id == Id)
+            {
+
+            }
+
+            return Task.CompletedTask;
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await base.OnAfterRenderAsync(firstRender);
+
+            if (firstRender)
+            {
+                await JsRuntime.InvokeVoidAsync("registerAnimatedComponent", Ref);
+                AnimationEventInterop = new AnimationEventInterop(JsRuntime);
+                await AnimationEventInterop.SetupAnimationEventCallback(args => AnimationHandler(args));
+            }
+        }
+
+        #region IAsyncDisposable
+
+        public async ValueTask DisposeAsync()
+        {
+            await InvokeVoidAsync("unregisterAnimatedComponent", Ref).ConfigureAwait(false);
+
+            Dispose();
+        }
+
+        #endregion
     }
 }
