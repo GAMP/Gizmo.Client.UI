@@ -10,11 +10,13 @@
         </div>
         <div class="giz-menu-notifications__body giz-scrollbar--v">
 
-            @if (ViewState.Notifications != null && ViewState.Notifications.Count() > 0)
+            @if (ViewState.Dismissed != null && ViewState.Dismissed.Count() > 0)
             {
-                @foreach (var notification in ViewState.Notifications)
+                @foreach (var controller in ViewState.Dismissed)
                 {
-                    <MenuNotificationCard Notification="@notification" />
+                    <div class="giz-notification-wrapper">
+                        <DynamicComponent Parameters="controller.Parameters" Type="controller.ComponentType" @key=controller.Identifier></DynamicComponent>
+                    </div>
                 }
             }
             else
@@ -29,7 +31,7 @@
 
         </div>
         <div class="giz-menu-notifications__footer">
-            <div class="giz-menu-notifications__footer__action" @onclick="@(() => NotificationsService.MarkAllAsReadAsync())">@LocalizationService.GetString("GIZ_NOTIFICATIONS_MARK_ALL_AS_READ")</div>
+            <div class="giz-menu-notifications__footer__action" @onclick="@(() => NotificationsService.AcknowledgeAll())">@LocalizationService.GetString("GIZ_NOTIFICATIONS_MARK_ALL_AS_READ")</div>
         </div>
     </div>
 </div>

@@ -1,25 +1,22 @@
 ﻿@namespace Gizmo.Client.UI.Components
-@inherits ComponentBase
+@inherits CustomDOMComponentBase
 
 <div client-theme="true" class="giz-notifications @(_slideOut ? "slide-out" : "slide-in")">
     <div class="giz-notifications__header">
-        @*<div @onclick="DemoAdd">Notifications</div>*@
-        <div></div>
+        <div>@LocalizationService.GetString("GIZ_NOTIFICATIONS_TITLE")</div>
         <div>
-            <IconButton SVGIcon="Icons.Close" Visibility="(ViewState.Visible.Count()>1? Visibilities.Visible : Visibilities.Collapse)" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseNotifications()" />
+            <IconButton SVGIcon="Icons.Close" Visibility="(_visible?.Count() > 1 ? Visibilities.Visible : Visibilities.Collapse)" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseNotifications()" />
         </div>
     </div>
     <div class="giz-notifications__body giz-scrollbar--v">
-        @foreach (var controller in ViewState.Visible)
+        @if (_visible != null)
         {
-            <DynamicComponent Parameters="controller.Parameters" Type="controller.ComponentType" @key=controller.Identifier></DynamicComponent>
+            @foreach (var controller in _visible)
+            {
+                <div class="giz-notification-wrapper @(_newItems.Contains(controller.Identifier) ? "slide-in" : (_removedItems.Contains(controller.Identifier) ? "slide-out" : ""))">
+                    <DynamicComponent Parameters="controller.Parameters" Type="controller.ComponentType" @key=controller.Identifier></DynamicComponent>
+                </div>
+            }
         }
-
-        @* @for (int i = 0; i < _total; i++)
-        {
-        var local_i = i;
-        Index="@local_i" Class="@(local_i == _slideInIndex ? "slide-in" : (local_i == _slideOutIndex ? "slide-out" : ""))"
-        Class="@(local_i == _slideInIndex ? "slide-in" : (local_i == _slideOutIndex ? "slide-out" : ""))"
-        }*@
     </div>
 </div>

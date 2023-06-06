@@ -1,6 +1,7 @@
 ﻿using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
+using Gizmo.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -25,10 +26,10 @@ namespace Gizmo.Client.UI.Shared
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        NotificationsViewService NotificationsService { get; set; }
+        INotificationsService NotificationsService { get; set; }
 
         [Inject]
-        NotificationsViewState ViewState { get; set; }
+        NotificationsHostViewState ViewState { get; set; }
 
         [Parameter]
         public bool IsOpen

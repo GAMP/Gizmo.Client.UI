@@ -46,68 +46,68 @@
 }
 
 .giz-notification {
+    display: grid;
+    grid-template-columns: min-content 1fr min-content;
+    gap: 1.5rem;
+    width: 100%;
     overflow: hidden;
-    border-bottom: 1px solid rgba(246, 251, 253, 0.06);
+    padding-top: 1.3rem;
+    padding-bottom: 1.5rem;
 
-    &:last-child {
-        border-bottom: unset;
+    &__icon {
+        width: 5.3rem;
+        padding-top: 0.3rem;
+        padding-left: 1.6rem;
     }
 
-    &__content {
+    &__body {
         display: grid;
-        grid-template-columns: min-content 1fr min-content;
-        gap: 1.5rem;
-        width: 100%;
+        grid-template-rows: min-content 1fr min-content;
+
+        &__title {
+            //Font
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 30px;
+        }
+
+        &__message {
+            //Font
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 30px;
+        }
+
+        &__actions {
+            margin-top: 1.6rem;
+        }
+    }
+
+    &__close-button {
+        padding: 1.2rem;
+    }
+
+    &-wrapper {
         overflow: hidden;
-        padding-top: 1.3rem;
-        padding-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(246, 251, 253, 0.06);
 
-        &__icon {
-            width: 5.3rem;
-            padding-top: 0.3rem;
-            padding-left: 1.6rem;
+        &:last-child {
+            border-bottom: unset;
         }
 
-        &__body {
-            display: grid;
-            grid-template-rows: min-content 1fr min-content;
-
-            &__title {
-                //Font
-                font-weight: 700;
-                font-size: 20px;
-                line-height: 30px;
-            }
-
-            &__message {
-                //Font
-                font-weight: 400;
-                font-size: 20px;
-                line-height: 30px;
-            }
-
-            &__actions {
-                margin-top: 1.6rem;
-            }
+        &.slide-in {
+            animation-duration: 0.5s;
+            animation-name: notification-slide-in-anim;
+            animation-timing-function: ease-in-out;
+            animation-fill-mode: forwards;
         }
 
-        &__close-button {
-            padding: 1.2rem;
+        &.slide-out {
+            animation-duration: 0.5s;
+            animation-name: notification-slide-out-anim;
+            animation-timing-function: ease-in-out;
+            animation-fill-mode: forwards;
         }
-    }
-
-    &.slide-in {
-        animation-duration: 0.5s;
-        animation-name: notification-slide-in-anim;
-        animation-timing-function: ease-in-out;
-        animation-fill-mode: forwards;
-    }
-
-    &.slide-out {
-        animation-duration: 0.5s;
-        animation-name: notification-slide-out-anim;
-        animation-timing-function: ease-in-out;
-        animation-fill-mode: forwards;
     }
 }
 

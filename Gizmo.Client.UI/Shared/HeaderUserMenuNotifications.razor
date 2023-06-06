@@ -2,7 +2,7 @@
 @inherits CustomDOMComponentBase
 
 <div class="giz-header__user-menu-item giz-notifications-dropdown @(IsOpen ? "open" : "")">
-    <Badge Label="@ViewState.Notifications?.Count().ToString()" IsVisible="@(ViewState.Notifications?.Count() > 0)">
+    <Badge Label="@ViewState.Dismissed?.Count().ToString()" IsVisible="@(ViewState.Dismissed?.Count() > 0)">
         <button class="user-menu-item-button--box" @onclick="(args) => OnClick.InvokeAsync(args)" @onclick:stopPropagation="true">
             <Icon SVGIcon="Icons.Notifications_Client" />
         </button>
