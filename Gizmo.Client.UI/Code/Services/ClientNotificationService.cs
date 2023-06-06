@@ -20,7 +20,7 @@ namespace Gizmo.Client.UI.Services
         {
         }
 
-        public Task<AddNotificationResult<EmptyComponentResult>>  ShowAlertNotification(int alertTypes,
+        public Task<AddNotificationResult<EmptyComponentResult>>  ShowAlertNotification(AlertTypes alertTypes,
             string title, 
             string message,
             CancellationToken cancellationToken =default)
