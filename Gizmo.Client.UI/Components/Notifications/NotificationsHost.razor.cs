@@ -15,6 +15,7 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class NotificationsHost : CustomDOMComponentBase, IAsyncDisposable
     {
+        private bool _slideIn = false;
         private bool _slideOut = false;
         private int _total = 1;
         private int _newlyAddedItemId = -1;
@@ -65,19 +66,20 @@ namespace Gizmo.Client.UI.Components
         private async Task CloseNotifications()
         {
             _dismissAllItems = _visible.Select(a => a.Identifier).ToList();
-            _visible.Clear();
             NotificationsService.DismissAll();
 
             await SlideWindowOut();
 
+            _visible.Clear();
             _dismissAllItems.Clear();
         }
 
         private async Task SlideWindowIn()
         {
-            _slideOut = false;
+            _slideIn = true;
             await InvokeAsync(StateHasChanged);
             await Task.Delay(1000);
+            _slideIn = false;
         }
 
         private async Task SlideWindowOut()
@@ -111,9 +113,11 @@ namespace Gizmo.Client.UI.Components
             await InvokeVoidAsync("setNotificationsAnimationHeight", item);
         }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
-            base.OnInitialized();
+            await base.OnInitializedAsync();
+
+            await UpdateUI();
 
             ViewState.OnChange += ViewState_OnChange;
             this.SubscribeChange(ViewState);
@@ -128,6 +132,11 @@ namespace Gizmo.Client.UI.Components
 
         private async void ViewState_OnChange(object sender, System.EventArgs e)
         {
+            await UpdateUI();
+        }
+
+        private async Task UpdateUI()
+        { 
             if (await _animationLock.WaitAsync(TimeSpan.Zero))
             {
                 try
@@ -141,9 +150,13 @@ namespace Gizmo.Client.UI.Components
 
                         if (_visible == null)
                         {
-                            //First run.
-                            _visible = snapShot;
-                            await SlideWindowIn();
+                            if (snapShot.Count() > 0)
+                            {
+                                //First run.
+                                _visible = snapShot;
+                                await InvokeAsync(StateHasChanged);
+                                await SlideWindowIn();
+                            }
                         }
                         else
                         {
