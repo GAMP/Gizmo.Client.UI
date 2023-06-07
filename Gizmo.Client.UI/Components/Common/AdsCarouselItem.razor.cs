@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 
 using Gizmo.Client.UI.View.Services;
@@ -163,9 +162,6 @@ namespace Gizmo.Client.UI.Components
             if (_advertisementViewState != null)
             {
                 this.SubscribeChange(_advertisementViewState);
-                
-                if (_advertisementViewState.Script is not null)
-                    await InvokeVoidAsync("ExternalFunctions.loadScript", _advertisementViewState.Script);
             }
 
             Parent?.Register(this);
