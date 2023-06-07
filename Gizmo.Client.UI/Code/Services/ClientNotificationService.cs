@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,6 +25,8 @@ namespace Gizmo.Client.UI.Services
         public Task<AddNotificationResult<EmptyComponentResult>>  ShowAlertNotification(AlertTypes alertTypes,
             string title, 
             string message,
+            NotificationDisplayOptions? displayOptions ,
+            NotificationAddOptions? addOptions,
             CancellationToken cancellationToken =default)
         {
             return ShowNotificationAsync<GizNotification>(new Dictionary<string, object>() 
@@ -31,7 +35,7 @@ namespace Gizmo.Client.UI.Services
                 {"Title",title}, 
                 {"Message",message},
 
-            }, default, default, cancellationToken);
+            }, displayOptions, addOptions, cancellationToken);
         }
     }  
 }
