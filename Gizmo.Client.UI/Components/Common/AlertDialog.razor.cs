@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Gizmo.UI;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 
@@ -27,7 +28,7 @@ namespace Gizmo.Client.UI.Components
         public AlertDialogButtons Buttons { get; set; }
 
         [Parameter]
-        public AlertDialogIcons Icon { get; set; }
+        public AlertTypes Icon { get; set; }
 
         private async Task CloseDialog(AlertDialogResultButton alertDialogResultButton)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Gizmo.UI;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 
@@ -8,7 +9,7 @@ namespace Gizmo.Client.UI
     public partial class GizNotification : CustomDOMComponentBase
     {
         [Parameter]
-        public AlertDialogIcons Icon { get; set; }
+        public AlertTypes Icon { get; set; }
 
         [Parameter]
         public EventCallback DismissCallback { get; set; }
