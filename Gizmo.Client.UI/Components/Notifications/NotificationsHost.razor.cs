@@ -64,7 +64,8 @@ namespace Gizmo.Client.UI.Components
 
         private async Task CloseNotifications()
         {
-            _dismissAllItems = ViewState.Visible.Select(a => a.Identifier).ToList();
+            _dismissAllItems = _visible.Select(a => a.Identifier).ToList();
+            _visible.Clear();
             NotificationsService.DismissAll();
 
             await SlideWindowOut();

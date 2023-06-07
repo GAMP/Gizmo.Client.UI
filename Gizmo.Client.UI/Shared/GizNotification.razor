@@ -1,11 +1,12 @@
 ﻿@namespace Gizmo.Client.UI
+@using Gizmo.UI;
 @inherits CustomDOMComponentBase
 
 <div class="giz-notification">
     <div class="giz-notification__icon">
         @switch (Icon)
         {
-            case AlertDialogIcons.Success:
+            case AlertTypes.Success:
 
                 <div class="giz-notification__icon--success">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -20,7 +21,7 @@
 
                 break;
 
-            case AlertDialogIcons.Error:
+            case AlertTypes.Danger:
 
                 <div class="giz-notification__icon--error">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -30,7 +31,7 @@
 
                 break;
 
-            case AlertDialogIcons.Warning:
+            case AlertTypes.Warning:
 
                 <div class="giz-notification__icon--warning">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -45,7 +46,7 @@
 
                 break;
 
-            case AlertDialogIcons.Information:
+            case AlertTypes.Info:
 
                 <div class="giz-notification__icon-infog">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

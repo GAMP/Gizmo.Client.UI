@@ -1,4 +1,5 @@
-﻿@inherits ComponentBase
+﻿@using Gizmo.UI;
+@inherits ComponentBase
 
 <div client-theme="true" class="giz-notifications @(_slideOut ? "slide-out" : "slide-in")">
     <div class="giz-notifications__header">
@@ -12,7 +13,7 @@
         {
             var local_i = i;
             <div class="giz-notification-wrapper @(_slideInIndex == local_i ? "slide-in" : _slideOutIndex == local_i ? "slide-out" : ""))">
-                <GizNotification Icon="AlertDialogIcons.Error" OnClose="OnCloseHandler" />
+                <GizNotification Icon="AlertTypes.Danger" OnClose="OnCloseHandler" />
             </div>
         }
     </div>
