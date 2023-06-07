@@ -8,6 +8,7 @@ using Gizmo.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 
 namespace Gizmo.Client.UI.Components
@@ -23,6 +24,15 @@ namespace Gizmo.Client.UI.Components
         private List<int> _newItems = new List<int>();
         private List<int> _removedItems = new List<int>();
         private readonly SemaphoreSlim _animationLock = new(1);
+
+        private ILogger<NotificationsHost> _logger;
+
+        [Inject]
+        private ILogger<NotificationsHost> Logger
+        {
+            get { return _logger; }
+            set { _logger = value; }
+        }
 
         private List<INotificationController> _visible;
 
@@ -195,7 +205,7 @@ namespace Gizmo.Client.UI.Components
             //args.Id is the host component Id or the item Identifier.
             if (args.Id == Id)
             {
-
+                _logger.LogTrace("Notification host animation state changed, new stat {state}", args.AnimationState);
             }
 
             return Task.CompletedTask;
@@ -218,7 +228,10 @@ namespace Gizmo.Client.UI.Components
         public async ValueTask DisposeAsync()
         {
             await InvokeVoidAsync("unregisterAnimatedComponent", Ref).ConfigureAwait(false);
-
+            
+            if(AnimationEventInterop!= null ) 
+                await AnimationEventInterop.DisposeAsync();
+            
             Dispose();
         }
 
