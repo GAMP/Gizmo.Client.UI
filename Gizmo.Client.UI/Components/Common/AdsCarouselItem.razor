@@ -6,7 +6,7 @@
     @if (_advertisementViewState.IsCustomTemplate)
     {
         <div class="giz-ads-carousel-item__content">
-            @((MarkupString)_advertisementViewState.Body)
+            @_advertisementViewState.Body
         </div>
     }
     else
@@ -21,13 +21,14 @@
         
         <div class="giz-ads-carousel-item__content">
             <div class="giz-ads-carousel-item__content__body">
-                @((MarkupString)_advertisementViewState.Body)
+                @_advertisementViewState.Body
             </div>
             <div class="giz-ads-carousel-item__content__actions">
                 <div>
                     @if (_advertisementViewState.Command is not null)
                     {
-                        <Button Size="ButtonSizes.Large"
+                        <Button 
+                                Size="ButtonSizes.Large"
                                 Variant="ButtonVariants.Fill"
                                 Color="ButtonColors.Primary"
                                 LeftSVGIcon="@GetCommandIcon()"
@@ -37,7 +38,8 @@
                     }
                     else if (_advertisementViewState.Url is not null)
                     {
-                        <Button Size="ButtonSizes.Large"
+                        <Button 
+                                Size="ButtonSizes.Large"
                                 Variant="ButtonVariants.Fill"
                                 Color="ButtonColors.Primary"
                                 Text="@LocalizationService.GetString("GIZ_GEN_VIEW_DETAILS")"
@@ -49,7 +51,8 @@
                 <div>
                     @if(_advertisementViewState.MediaUrlType != AdvertisementMediaUrlType.None)
                     {
-                        <Button Size="ButtonSizes.Large"
+                        <Button 
+                                Size="ButtonSizes.Large"
                                 Variant="ButtonVariants.Fill"
                                 Color="ButtonColors.Primary"
                                 LeftSVGIcon="Icons.Video_Client"
