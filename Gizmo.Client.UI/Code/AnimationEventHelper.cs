@@ -32,7 +32,7 @@ namespace Gizmo.Client.UI
         public Task OnAnimationEvent(AnimationEventArgs args) => _callback(args);
     }
 
-    public class AnimationEventInterop : IDisposable
+    public class AnimationEventInterop : IAsyncDisposable
     {
         private readonly IJSRuntime _jsRuntime;
         private DotNetObjectReference<AnimationEventHelper> Reference;
@@ -48,10 +48,6 @@ namespace Gizmo.Client.UI
             return _jsRuntime.InvokeAsync<string>("addAnimationEventListener", Reference);
         }
 
-        public void Dispose()
-        {
-            _jsRuntime.InvokeAsync<string>("removeAnimationEventListener", Reference);
-            //Reference?.Dispose();
-        }
+        public async ValueTask DisposeAsync() => await _jsRuntime.InvokeAsync<string>("removeAnimationEventListener", Reference);
     }
 }
