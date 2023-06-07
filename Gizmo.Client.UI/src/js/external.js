@@ -1,4 +1,4 @@
-export class ExternalFunctions {
+class ExternalFunctions {
   static async testAlert() {
     alert("Hello from external function");
   }
