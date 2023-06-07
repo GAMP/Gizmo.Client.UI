@@ -68,11 +68,11 @@ namespace Gizmo.Client.UI.Host.WPF
             return;
         }
 
-        public Task ShowAsync()
+        public async Task ShowAsync()
         {
             if(isOpen)
             {
-                return Task.CompletedTask;
+                return;
             }
 
             isOpen = true;
@@ -82,35 +82,40 @@ namespace Gizmo.Client.UI.Host.WPF
 
             var manifestEmbeddedProvider = new ManifestEmbeddedFileProvider(appAssembly, @"wwwroot");
 
-            var blazorWebView = new CustomBlazor(manifestEmbeddedProvider)
+            var blazorWebView = await Dispatcher.InvokeAsync(() =>
             {
-                Services = _serviceProvider,     
-                MaxHeight= 600,
-                VerticalAlignment = VerticalAlignment.Top,
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-            };
-            
-            blazorWebView.RootComponents.Add(new RootComponent()
-            {               
-                ComponentType = _uICompositionService.NotificationsComponentType,
-                Selector = "#app",
-            }); 
+                var blazorWebView = new CustomBlazor(manifestEmbeddedProvider)
+                {
+                    Services = _serviceProvider,
+                    MaxHeight = 600,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                };
 
-            blazorWebView.BlazorWebViewInitializing += (sender, args) =>
-            {
-                if (sender is BlazorWebView view)
-                {                    
-                    view.MinHeight = 400;
-                    view.BlazorWebViewInitializing -= (sender, args) => { };
-                    view.WebView.DefaultBackgroundColor = System.Drawing.Color.Transparent;                
-                }
-            };
+                blazorWebView.RootComponents.Add(new RootComponent()
+                {
+                    ComponentType = _uICompositionService.NotificationsComponentType,
+                    Selector = "#app",
+                });
+
+                blazorWebView.BlazorWebViewInitializing += (sender, args) =>
+                {
+                    if (sender is BlazorWebView view)
+                    {
+                        view.MinHeight = 400;
+                        view.BlazorWebViewInitializing -= (sender, args) => { };
+                        view.WebView.DefaultBackgroundColor = System.Drawing.Color.Transparent;
+                    }
+                };
+
+                return blazorWebView;
+            });
         
       
            Dispatcher.Invoke( Show);
             _VIEW_HOST.Child = blazorWebView;
             blazorWebView.HostPage = @"wwwroot\notifications.html";
-            return Task.CompletedTask;
+            
         }
 
         protected override void OnSourceInitialized(EventArgs e)
