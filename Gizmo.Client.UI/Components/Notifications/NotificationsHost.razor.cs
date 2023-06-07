@@ -15,7 +15,6 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class NotificationsHost : CustomDOMComponentBase, IAsyncDisposable
     {
-        private bool _slideIn = false;
         private bool _slideOut = false;
         private int _total = 1;
         private int _newlyAddedItemId = -1;
@@ -47,10 +46,10 @@ namespace Gizmo.Client.UI.Components
         }
 
         [Inject()]
-        private INotificationsService  NotificationsService
+        private INotificationsService NotificationsService
         {
-            get; 
-            set; 
+            get;
+            set;
         }
 
         private void OnMouseOverHandler(MouseEventArgs args)
@@ -76,10 +75,9 @@ namespace Gizmo.Client.UI.Components
 
         private async Task SlideWindowIn()
         {
-            _slideIn = true;
+            _slideOut = false;
             await InvokeAsync(StateHasChanged);
             await Task.Delay(1000);
-            _slideIn = false;
         }
 
         private async Task SlideWindowOut()
@@ -117,6 +115,7 @@ namespace Gizmo.Client.UI.Components
         {
             await base.OnInitializedAsync();
 
+            //await InvokeVoidAsync("writeLine", $"OnInitializedAsync {this.ToString()}");
             await UpdateUI();
 
             ViewState.OnChange += ViewState_OnChange;
@@ -132,11 +131,12 @@ namespace Gizmo.Client.UI.Components
 
         private async void ViewState_OnChange(object sender, System.EventArgs e)
         {
+            //await InvokeVoidAsync("writeLine", $"ViewState_OnChange {this.ToString()}");
             await UpdateUI();
         }
 
         private async Task UpdateUI()
-        { 
+        {
             if (await _animationLock.WaitAsync(TimeSpan.Zero))
             {
                 try
@@ -148,14 +148,17 @@ namespace Gizmo.Client.UI.Components
                         _newItems.Clear();
                         _removedItems.Clear();
 
-                        if (_visible == null)
+                        if (_visible == null || _visible.Count == 0)
                         {
                             if (snapShot.Count() > 0)
                             {
                                 //First run.
                                 _visible = snapShot;
-                                await InvokeAsync(StateHasChanged);
                                 await SlideWindowIn();
+                            }
+                            else
+                            {
+                                await InvokeVoidAsync("writeLine", $"0 items {this.ToString()}");
                             }
                         }
                         else
@@ -182,6 +185,7 @@ namespace Gizmo.Client.UI.Components
                                     _visible.Add(snapShot.Where(a => a.Identifier == item).FirstOrDefault());
                                     await InvokeAsync(StateHasChanged);
                                     _newlyAddedItemId = -1;
+                                    //await InvokeVoidAsync("writeLine", $"tmpItemAdded {this.ToString()}");
 
                                     await SlideItemIn(item);
                                 }
@@ -228,6 +232,7 @@ namespace Gizmo.Client.UI.Components
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);
+            //await InvokeVoidAsync("writeLine", $"OnAfterRenderAsync {this.ToString()}");
 
             if (firstRender)
             {
@@ -242,10 +247,11 @@ namespace Gizmo.Client.UI.Components
         public async ValueTask DisposeAsync()
         {
             await InvokeVoidAsync("unregisterAnimatedComponent", Ref).ConfigureAwait(false);
-            
-            if(AnimationEventInterop!= null ) 
+            //await InvokeVoidAsync("writeLine", $"DisposeAsync {this.ToString()}");
+
+            if (AnimationEventInterop != null)
                 await AnimationEventInterop.DisposeAsync();
-            
+
             Dispose();
         }
 

@@ -548,7 +548,7 @@ function removeAnimationEventListener(objRef) {
 }
 
 function onAnimationEvent(event, state) {
-    console.log(event);
+    //console.log(event);
     animationEventListenerReferences.forEach((item) => {
         var id = event.target.id;
         var animation = event.animationName;
