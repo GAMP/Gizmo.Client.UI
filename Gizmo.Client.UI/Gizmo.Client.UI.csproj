@@ -16,5 +16,10 @@
   <ItemGroup>
     <EmbeddedResource Include="wwwroot\notifications.html"></EmbeddedResource>
   </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="npm install" WorkingDirectory="src/webpack" />
+    <Exec Command="npm run build" WorkingDirectory="src/webpack" />
+  </Target>
   
 </Project>

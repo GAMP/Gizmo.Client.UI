@@ -1,5 +1,8 @@
-class ExternalFunctions {
+import axios from "axios";
+
+window.ExternalFunctions = class ExternalFunctions {
   static async testAlert() {
-    alert("Hello from external function");
+    const response = await axios.get("https://catfact.ninja/fact");
+    alert(response.data.fact);
   }
-}
+};
