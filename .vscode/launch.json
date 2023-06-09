@@ -2,24 +2,25 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Server",
+      "name": "Launch core",
       "type": "coreclr",
+      "preLaunchTask": "build",
       "request": "launch",
-      "preLaunchTask": "build web app",
       "program": "dotnet",
       "args": ["run"],
       "cwd": "${workspaceFolder}/Gizmo.Client.UI.Host.Web",
-      "internalConsoleOptions": "openOnSessionStart",
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     {
-      "name": "Debug Client",
+      "name": "Launch Edge browser",
       "type": "msedge",
       "request": "launch",
-      "url": "http://localhost:5000"
-      //"inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}"
+      "timeout": 30000,
+      "url": "https://localhost:5001",
+      "webRoot": "${workspaceFolder}/Gizmo.Client.UI.Host.Web",
+      "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}"
     }
   ]
 }

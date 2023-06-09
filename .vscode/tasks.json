@@ -2,46 +2,15 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "build web app",
+      "label": "build",
       "command": "dotnet",
-      "type": "shell",
+      "type": "process",
       "args": [
         "build",
         "${workspaceFolder}/Gizmo.Client.UI.Host.Web/Gizmo.Client.UI.Host.Web.csproj",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
       ],
-      "group": "build",
-      "presentation": {
-        "reveal": "silent"
-      },
-      "problemMatcher": "$msCompile"
-    },
-    {
-      "label": "publish web app",
-      "command": "dotnet",
-      "type": "shell",
-      "args": [
-        "publish",
-        "${workspaceFolder}/Gizmo.Client.UI.Host.Web/Gizmo.Client.UI.Host.Web.csproj",
-        "/property:GenerateFullPaths=true",
-        "/consoleloggerparameters:NoSummary"
-      ],
-      "group": "build",
-      "presentation": {
-        "reveal": "silent"
-      },
-      "problemMatcher": "$msCompile"
-    },
-    {
-      "label": "watch web app",
-      "command": "dotnet",
-      "type": "shell",
-      "args": ["watch", "run", "--project", "${workspaceFolder}/Gizmo.Client.UI.Host.Web/Gizmo.Client.UI.Host.Web.csproj"],
-      "group": "build",
-      "presentation": {
-        "reveal": "silent"
-      },
       "problemMatcher": "$msCompile"
     }
   ]
