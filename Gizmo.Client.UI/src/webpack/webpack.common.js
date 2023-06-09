@@ -5,7 +5,8 @@ module.exports = {
   entry: {
     client_internal_code: "../js/internal.js",
     client_external_code: "../js/external.js",
-    client_style: "../scss/main.scss",
+    client_internal_style: "../scss/main.scss",
+    client_external_style: "../scss/external.css",
     webcomponents_code:
       "../../../Submodules/Gizmo.Web.Components/src/js/main.js",
     webcomponents_style:
@@ -34,7 +35,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.scss$/,
+        test: /\.(scss|css)$/i,
         use: ["style-loader", "css-loader", "sass-loader"],
       },
       {
