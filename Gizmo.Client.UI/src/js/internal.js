@@ -1,20 +1,8 @@
 ﻿window.InternalFunctions = class InternalFunctions {
   static dotnetObjectReference;
+
   static SetDotnetObjectReference(value) {
     InternalFunctions.dotnetObjectReference = value;
-  }
-
-  static async SetUsernameAsync(username) {
-    await InternalFunctions.dotnetObjectReference.invokeMethodAsync(
-      "SetUsernameAsync",
-      username
-    );
-  }
-  static async SetPasswordAsync(username) {
-    await InternalFunctions.dotnetObjectReference.invokeMethodAsync(
-      "SetPasswordAsync",
-      username
-    );
   }
 
   /**
@@ -32,6 +20,7 @@
       );
     }
   }
+
   /**
    * Unsubscribes from browser full screen change event.
    * @param {string} callBackName callBack function name.
@@ -48,6 +37,8 @@
     }
   }
 };
+
+window.ClientFunctions = class ClientFunctions {};
 
 window.isFullScreenChangeHandler = function isFullScreenChangeHandler(
   callBackName

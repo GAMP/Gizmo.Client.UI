@@ -5,8 +5,9 @@ module.exports = {
   entry: {
     client_internal_code: "../js/internal.js",
     client_external_code: "../js/external.js",
+    client_api_code: "../js/api.js",
     client_internal_style: "../scss/main.scss",
-    client_external_style: "../scss/external.css",
+    client_external_style: "../scss/external.scss",
     webcomponents_code:
       "../../../Submodules/Gizmo.Web.Components/src/js/main.js",
     webcomponents_style:

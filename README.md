@@ -1,69 +1,58 @@
-# Gizmo.Client.UI
- Web based client UI.
+# **Gizmo.Client.UI**
 
-# Gulp installation steps:
+Web based client UI.
 
-* For scss/js compilation we are using gulp. The following packages are necessary:
-  gulp gulp-autoprefixer gulp-clean-css gulp-concat gulp-connect gulp-group-css-media-queries
-  gulp-less gulp-rename gulp-sass gulp-sourcemaps gulp-minify postcss node-sass
-  and they are installed as dev-dependencies with Node.js 18.12.1.
+# Prerequisites
 
-* To install gulp-cli globally open the command line
-  and run the following command:
-  
- npm install --global gulp-cli
+### Make sure you have installed the following prerequisites on your development machine:
 
-* Under both Gizmo.Client.UI and Gizmo.Web.Components directories open command line
-  and run the following command to install required packages:
-  
- npm install
+- Git (https://git-scm.com/downloads)
+- .NET 6.0 SDK (https://dotnet.microsoft.com/download/dotnet/6.0)
+- Node.js (https://nodejs.org/en/download/)
+- npm (https://www.npmjs.com/get-npm)
 
-* After installation you can run "gulp" command to start watching for file changes in scss/js directories.
+# Run the project
 
-* Visual Studio 2022 - Task Runner Explorer
-  If Task Runner Explorer cannot load Gulpfile.js with error: ".. could not find a binding for your current environment: ...",
-  you can try to move the (PATH) above the (VSInstalledExternalTools) under Tools->Options...->Projects and Solutions->Web Package Management
-  and restart Visual Studio.
+### Follow the steps below to run the project:
 
+- Clone the repository using the following command `git clone https://github.com/GAMP/Gizmo.Client.UI.git -b dev --recurse-submodules`
+- #### Visual Studio 2022
+  - Open the solution - **Gizmo.Client.UI.sln**
+  - Set the startup project to **Gizmo.Client.UI.Host.Web** or **Gizmo.Client.UI.Host.WPF**
+- #### Visual Studio Code
+  - Open the Gizmo.Client.UI.Host.Web folder
+  - Open the terminal and run the follofing command `dotnet watch`
 
-# Override variable / typography according to new theme/requirements in web project steps:
+# Style guide (Gizmo.Client.UI\src\scss)
 
-* we are using (Gizmo.Web.Components) library inside (Gizmo.Client.UI) web project.
-* all our component (button,card,input), variables, typography classes comes from (Gizmo.Web.Components)
-  which is common/global and we use (Gizmo.Web.Components) in our multiple web projects.
+## Adding a new theme
 
-* so, we do not make any project specific changes inside the (Gizmo.Web.Components).
-  becuase as we know this is common/global. So if we do any change inside the (Gizmo.Web.Components)
-  it will effect all web projects where we are using (Gizmo.Web.Components).
+### Follow the steps below to customize the theme:
 
-* To resolve this problem, We are using override approach.
-  We override variables/classes in specific project.
+- Open the **'~\themes'** folder
+- Copy the current theme folder and rename it to **custom_theme_name**
+- Change the value of the **$theme-attr-name** variable in the **'~\themes\custom_theme_name\variables.scss'** file to **custom_theme_name**
+- Add the **main.scss** from the **custom_theme_name** folder to the **'~\main.scss'** file as an import.
+- Customize any styles in the **custom_theme_name** folder
 
-  for this, go to (Gizmo.Client.UI) > src > scss folder.
-  inside scss folder we see _variable.scss and _typography.scss file.
-  where we can override variable/typography according to project requirements.
-  It will not effect (Gizmo.Web.Components) and other web projects too.
-  and woking with proper way.
+## Adding a new style
 
-# Using Debug in the VSCode for the Gizmo.Client.UI.Host.Web
-* Firstly, you need the following VSCode extensions:
-  * **Task Explorer** for the gulp tasks
-  > https://marketplace.visualstudio.com/items?itemName=spmeesseman.vscode-taskexplorer
-  * **C#** for the blazor app debugging
-  > https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp
-  * **Microsoft.AspNetCore.Razor.VSCode.BlazorWasmDebuggingExtension** for the blazor app debugging
-  > https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.blazorwasm-companion
+### To add a new style without changing the theme, follow these steps:
 
-* Second, you need to execute gulp tasks (it can be once)
-* For the launching app, you must have **edge** or **chrome** browser. You can choose the browser in the *./.vscode/launch.json.configurations[1].type: "chrome"*
-* Then you need to move to the *Run and Debug* menu (ctrl+shift+D) and launch:
-  1. **Debug Server Gizmo.Client.UI.Host.Web** for the start of the server
-  2. **Debug Client Gizmo.Client.UI.Host.Web** for the start of the client
-* If you use a Linux os, then after stopping the server, the port from the *./.vscode/launch.json.configurations[1].url:* can be unfree. To free it, you can execute the following command:
-  > lsof -ti tcp:<port_no> | xargs kill
- 
-  
+- Use the **'~\external.scss'** file
 
+# JavaScript guide (Gizmo.Client.UI\src\js)
 
-  
+## Adding a new JavaScript function
 
+### Follow the steps below to add new JavaScript function:
+
+- To create new JavaScript functions, use the **'~\external.js'** file and the **ExternalFunctions** class.
+- To use these functions, call them using the syntax **'ExternalFunctions.functionName()'**.
+
+## Invokeing Client.UI functions with JavaScript
+
+### Follow the steps below to invoke Client.UI functions with JavaScript:
+
+- To invoke Client.UI functions with JavaScript, use the **'~\api.js'** file and the functions from the **ClientAPI** class.
+- To use these functions, call them using the syntax **'ClientAPI.functionName()'**.
