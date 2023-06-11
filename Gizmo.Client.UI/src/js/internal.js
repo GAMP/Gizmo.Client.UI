@@ -1,8 +1,8 @@
 ﻿window.InternalFunctions = class InternalFunctions {
-  static dotnetObjectReference;
+  static DotnetObjectReference;
 
   static SetDotnetObjectReference(value) {
-    InternalFunctions.dotnetObjectReference = value;
+    InternalFunctions.DotnetObjectReference = value;
   }
 
   /**
@@ -11,9 +11,9 @@
    */
   static async SubscribeOnFullScreenChange(callBackName) {
     try {
-      subscribeFullScreenChanged(callBackName);
+      ClientFullScreen.subscribeFullScreenChanged(callBackName);
     } catch (error) {
-      InternalFunctions.dotnetObjectReference.invokeMethodAsync(
+      InternalFunctions.DotnetObjectReference.invokeMethodAsync(
         callBackName,
         false,
         error.message
@@ -27,9 +27,9 @@
    */
   static async UnsubscribeOnFullScreenChange(callBackName) {
     try {
-      unsubscribeFullScreenChanged(callBackName);
+      ClientFullScreen.unsubscribeFullScreenChanged(callBackName);
     } catch (error) {
-      InternalFunctions.dotnetObjectReference.invokeMethodAsync(
+      InternalFunctions.DotnetObjectReference.invokeMethodAsync(
         callBackName,
         false,
         error.message
@@ -38,51 +38,50 @@
   }
 };
 
-window.ClientFunctions = class ClientFunctions {};
+window.ClientFullScreen = class ClientFullScreen {
+  // Call ClientUI function when full screen mode is changed.
+  static isFullScreenChangeHandler(callBackName) {
+    return function (event) {
+      if (
+        document.fullScreen ||
+        document.mozFullScreen ||
+        document.webkitIsFullScreen ||
+        document.msFullscreenElement
+      ) {
+        console.log("FullScreenChange IN");
+        InternalFunctions.DotnetObjectReference.invokeMethodAsync(
+          callBackName,
+          true,
+          null
+        );
+      } else {
+        console.log("FullScreenChange OUT");
+        InternalFunctions.DotnetObjectReference.invokeMethodAsync(
+          callBackName,
+          false,
+          null
+        );
+      }
+    };
+  }
 
-window.isFullScreenChangeHandler = function isFullScreenChangeHandler(
-  callBackName
-) {
-  return function (event) {
-    if (
-      document.fullScreen ||
-      document.mozFullScreen ||
-      document.webkitIsFullScreen ||
-      document.msFullscreenElement
-    ) {
-      InternalFunctions.dotnetObjectReference.invokeMethodAsync(
-        callBackName,
-        true,
-        null
-      );
-    } else {
-      InternalFunctions.dotnetObjectReference.invokeMethodAsync(
-        callBackName,
-        false,
-        null
-      );
-    }
-  };
-};
+  static subscribeFullScreenChanged(callBackName) {
+    const handler = this.isFullScreenChangeHandler(callBackName);
 
-window.subscribeFullScreenChanged = function subscribeFullScreenChanged(
-  callBackName
-) {
-  const handler = isFullScreenChangeHandler(callBackName);
+    document.addEventListener("fullscreenchange", handler, false);
+    document.addEventListener("webkitfullscreenchange", handler, false);
+    document.addEventListener("mozfullscreenchange", handler, false);
+    document.addEventListener("msfullscreenchange", handler, false);
+  }
 
-  document.addEventListener("fullscreenchange", handler, false);
-  document.addEventListener("webkitfullscreenchange", handler, false);
-  document.addEventListener("mozfullscreenchange", handler, false);
-};
+  static unsubscribeFullScreenChanged(callBackName) {
+    const handler = this.isFullScreenChangeHandler(callBackName);
 
-window.unsubscribeFullScreenChanged = function unsubscribeFullScreenChanged(
-  callBackName
-) {
-  const handler = isFullScreenChangeHandler(callBackName);
-
-  document.removeEventListener("fullscreenchange", handler, false);
-  document.removeEventListener("webkitfullscreenchange", handler, false);
-  document.removeEventListener("mozfullscreenchange", handler, false);
+    document.removeEventListener("fullscreenchange", handler, false);
+    document.removeEventListener("webkitfullscreenchange", handler, false);
+    document.removeEventListener("mozfullscreenchange", handler, false);
+    document.removeEventListener("msfullscreenchange", handler, false);
+  }
 };
 
 window.appsSticky = function appsSticky() {
