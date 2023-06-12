@@ -1,8 +1,16 @@
 ﻿window.InternalFunctions = class InternalFunctions {
-  static DotnetObjectReference;
+  static dotnetObjectReference;
 
   static SetDotnetObjectReference(value) {
-    InternalFunctions.DotnetObjectReference = value;
+    this.dotnetObjectReference = value;
+  }
+};
+
+window.ClientFullScreen = class ClientFullScreen {
+  static dotnetObjectReference;
+
+  static SetDotnetObjectReference(value) {
+    this.dotnetObjectReference = value;
   }
 
   /**
@@ -11,9 +19,9 @@
    */
   static async SubscribeOnFullScreenChange(callbackName) {
     try {
-      ClientFullScreen.subscribeFullScreenChanged(callbackName);
+      this.subscribe(callbackName);
     } catch (error) {
-      this.DotnetObjectReference.invokeMethodAsync(
+      await this.dotnetObjectReference.invokeMethodAsync(
         callbackName,
         false,
         error.message
@@ -27,73 +35,50 @@
    */
   static async UnsubscribeOnFullScreenChange(callbackName) {
     try {
-      ClientFullScreen.unsubscribeFullScreenChanged(callbackName);
+      this.unsubscribe(callbackName);
     } catch (error) {
-      this.DotnetObjectReference.invokeMethodAsync(
+      await this.dotnetObjectReference.invokeMethodAsync(
         callbackName,
         false,
         error.message
       );
     }
   }
-};
 
-window.ClientFullScreen = class ClientFullScreen {
-  /**
-   * Creates a callback function that is called when the full screen mode is changed.
-   * @param {string} callbackName - The name of the method to be called when the full screen mode is changed.
-   * @returns {function} - The callback function.
-   */
-  static isFullScreenChangeHandler(callbackName) {
-    const isFullScreen =
-      document.fullscreen ||
-      document.isFullScreen ||
-      document.mozFullScreen ||
-      document.webkitIsFullScreen;
+  static subscribe(callbackName) {
+    let listener = (_) => this.fullScreenChangeHandler(callbackName);
 
-    InternalFunctions.DotnetObjectReference.invokeMethodAsync(
-      callbackName,
-      isFullScreen,
-      null
-    );
+    window.addEventListener("resize", listener);
+  }
 
-    console.log(`FullScreen is: ${isFullScreen}`);
+  static unsubscribe(callbackName) {
+    var listener = (_) => this.fullScreenChangeHandler(callbackName);
+
+    window.removeEventListener("resize", listener);
   }
 
   /**
-   * Subscribes to full screen mode change events.
+   * Handles full screen mode change events.
    * @param {string} callbackName - The name of the method to be called when the full screen mode is changed.
    */
-  static subscribeFullScreenChanged(callbackName) {
-    const listener = (e) => {
-      console.log("FullScreen is changed.");
-      this.isFullScreenChangeHandler(callbackName);
-    };
+  static async fullScreenChangeHandler(callbackName) {
+    try {
+      const isFullScreen = screen.height / window.innerHeight < 1;
 
-    document.addEventListener("fullscreenchange", listener);
-    document.addEventListener("webkitfullscreenchange", listener);
-    document.addEventListener("mozfullscreenchange", listener);
-    document.addEventListener("msfullscreenchange", listener);
+      await this.dotnetObjectReference.invokeMethodAsync(
+        callbackName,
+        isFullScreen,
+        null
+      );
 
-    console.log("FullScreen is subscribed.");
-  }
-
-  /**
-   * Unsubscribes from full screen mode change events.
-   * @param {string} callbackName - The name of the method to be called when the full screen mode is changed.
-   */
-  static unsubscribeFullScreenChanged(callbackName) {
-    const listener = (e) => {
-      console.log("FullScreen is changed.");
-      this.isFullScreenChangeHandler(callbackName);
-    };
-
-    document.removeEventListener("fullscreenchange", listener);
-    document.removeEventListener("webkitfullscreenchange", listener);
-    document.removeEventListener("mozfullscreenchange", listener);
-    document.removeEventListener("msfullscreenchange", listener);
-
-    console.log("FullScreen is unsubscribed.");
+      console.log(`FullScreen is: ${isFullScreen}`);
+    } catch (error) {
+      await this.dotnetObjectReference.invokeMethodAsync(
+        callbackName,
+        false,
+        error.message
+      );
+    }
   }
 };
 
