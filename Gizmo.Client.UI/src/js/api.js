@@ -1,18 +1,18 @@
 window.ClientAPI = class ClientAPI {
-  static dotnetObjectReference;
+  static DotnetObjectReference;
 
   static SetDotnetObjectReference(value) {
-    ClientAPI.dotnetObjectReference = value;
+    ClientAPI.DotnetObjectReference = value;
   }
 
   static async SetUsernameAsync(username) {
-    await ClientAPI.dotnetObjectReference.invokeMethodAsync(
+    await this.DotnetObjectReference.invokeMethodAsync(
       "SetUsernameAsync",
       username
     );
   }
   static async SetPasswordAsync(username) {
-    await ClientAPI.dotnetObjectReference.invokeMethodAsync(
+    await this.DotnetObjectReference.invokeMethodAsync(
       "SetPasswordAsync",
       username
     );
