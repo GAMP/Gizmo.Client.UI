@@ -20,9 +20,9 @@
             }
             else
             {
-                @if (HostReservationViewState.IsPending)@*TODO: A*@
+                @if (HostReservationViewState.IsReserved)@*TODO: A*@
                 {
-                    <Alert AlertType="AlertTypes.Warning" Title="@LocalizationService.GetString("GIZ_LOGIN_RESERVATION_WARNING_TITLE", HostReservationViewState.StartTime.ToShortTimeString())" Text="@LocalizationService.GetString("GIZ_LOGIN_RESERVATION_WARNING_MESSAGE")" />
+                    <Alert AlertType="AlertTypes.Warning" Title="@LocalizationService.GetString("GIZ_LOGIN_RESERVATION_WARNING_TITLE", HostReservationViewState.Time.Value.ToShortTimeString())" Text="@LocalizationService.GetString("GIZ_LOGIN_RESERVATION_WARNING_MESSAGE")" />
                 }
             }
         </div>
