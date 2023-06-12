@@ -7,14 +7,14 @@
 
   /**
    * Subscribes to browser full screen change event.
-   * @param {string} callBackName callBack function name.
+   * @param {string} callbackName callBack function name.
    */
-  static async SubscribeOnFullScreenChange(callBackName) {
+  static async SubscribeOnFullScreenChange(callbackName) {
     try {
-      ClientFullScreen.subscribeFullScreenChanged(callBackName);
+      ClientFullScreen.subscribeFullScreenChanged(callbackName);
     } catch (error) {
-      InternalFunctions.DotnetObjectReference.invokeMethodAsync(
-        callBackName,
+      this.DotnetObjectReference.invokeMethodAsync(
+        callbackName,
         false,
         error.message
       );
@@ -23,14 +23,14 @@
 
   /**
    * Unsubscribes from browser full screen change event.
-   * @param {string} callBackName callBack function name.
+   * @param {string} callbackName callBack function name.
    */
-  static async UnsubscribeOnFullScreenChange(callBackName) {
+  static async UnsubscribeOnFullScreenChange(callbackName) {
     try {
-      ClientFullScreen.unsubscribeFullScreenChanged(callBackName);
+      ClientFullScreen.unsubscribeFullScreenChanged(callbackName);
     } catch (error) {
-      InternalFunctions.DotnetObjectReference.invokeMethodAsync(
-        callBackName,
+      this.DotnetObjectReference.invokeMethodAsync(
+        callbackName,
         false,
         error.message
       );
@@ -39,48 +39,61 @@
 };
 
 window.ClientFullScreen = class ClientFullScreen {
-  // Call ClientUI function when full screen mode is changed.
-  static isFullScreenChangeHandler(callBackName) {
-    return function (event) {
-      if (
-        document.fullScreen ||
-        document.mozFullScreen ||
-        document.webkitIsFullScreen ||
-        document.msFullscreenElement
-      ) {
-        console.log("FullScreenChange IN");
-        InternalFunctions.DotnetObjectReference.invokeMethodAsync(
-          callBackName,
-          true,
-          null
-        );
-      } else {
-        console.log("FullScreenChange OUT");
-        InternalFunctions.DotnetObjectReference.invokeMethodAsync(
-          callBackName,
-          false,
-          null
-        );
-      }
+  /**
+   * Creates a callback function that is called when the full screen mode is changed.
+   * @param {string} callbackName - The name of the method to be called when the full screen mode is changed.
+   * @returns {function} - The callback function.
+   */
+  static isFullScreenChangeHandler(callbackName) {
+    const isFullScreen =
+      document.fullscreen ||
+      document.isFullScreen ||
+      document.mozFullScreen ||
+      document.webkitIsFullScreen;
+
+    InternalFunctions.DotnetObjectReference.invokeMethodAsync(
+      callbackName,
+      isFullScreen,
+      null
+    );
+
+    console.log(`FullScreen is: ${isFullScreen}`);
+  }
+
+  /**
+   * Subscribes to full screen mode change events.
+   * @param {string} callbackName - The name of the method to be called when the full screen mode is changed.
+   */
+  static subscribeFullScreenChanged(callbackName) {
+    const listener = (e) => {
+      console.log("FullScreen is changed.");
+      this.isFullScreenChangeHandler(callbackName);
     };
+
+    document.addEventListener("fullscreenchange", listener);
+    document.addEventListener("webkitfullscreenchange", listener);
+    document.addEventListener("mozfullscreenchange", listener);
+    document.addEventListener("msfullscreenchange", listener);
+
+    console.log("FullScreen is subscribed.");
   }
 
-  static subscribeFullScreenChanged(callBackName) {
-    const handler = this.isFullScreenChangeHandler(callBackName);
+  /**
+   * Unsubscribes from full screen mode change events.
+   * @param {string} callbackName - The name of the method to be called when the full screen mode is changed.
+   */
+  static unsubscribeFullScreenChanged(callbackName) {
+    const listener = (e) => {
+      console.log("FullScreen is changed.");
+      this.isFullScreenChangeHandler(callbackName);
+    };
 
-    document.addEventListener("fullscreenchange", handler, false);
-    document.addEventListener("webkitfullscreenchange", handler, false);
-    document.addEventListener("mozfullscreenchange", handler, false);
-    document.addEventListener("msfullscreenchange", handler, false);
-  }
+    document.removeEventListener("fullscreenchange", listener);
+    document.removeEventListener("webkitfullscreenchange", listener);
+    document.removeEventListener("mozfullscreenchange", listener);
+    document.removeEventListener("msfullscreenchange", listener);
 
-  static unsubscribeFullScreenChanged(callBackName) {
-    const handler = this.isFullScreenChangeHandler(callBackName);
-
-    document.removeEventListener("fullscreenchange", handler, false);
-    document.removeEventListener("webkitfullscreenchange", handler, false);
-    document.removeEventListener("mozfullscreenchange", handler, false);
-    document.removeEventListener("msfullscreenchange", handler, false);
+    console.log("FullScreen is unsubscribed.");
   }
 };
 

@@ -6,13 +6,13 @@ window.ClientAPI = class ClientAPI {
   }
 
   static async SetUsernameAsync(username) {
-    await ClientAPI.DotnetObjectReference.invokeMethodAsync(
+    await this.DotnetObjectReference.invokeMethodAsync(
       "SetUsernameAsync",
       username
     );
   }
   static async SetPasswordAsync(username) {
-    await ClientAPI.DotnetObjectReference.invokeMethodAsync(
+    await this.DotnetObjectReference.invokeMethodAsync(
       "SetPasswordAsync",
       username
     );
