@@ -14,7 +14,7 @@ namespace Gizmo.Client.UI.Components
         #region FIELDS
 
         public AppViewState _appViewState;
-        public IEnumerable<AppExeViewState> _executables;
+        public IEnumerable<AppExeViewState> _executables = Enumerable.Empty<AppExeViewState>();
 
         #endregion
 
