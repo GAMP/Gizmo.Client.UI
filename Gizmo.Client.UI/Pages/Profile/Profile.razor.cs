@@ -32,7 +32,7 @@ namespace Gizmo.Client.UI.Pages
             await UserChangeProfileViewStateService.StartAsync();
         }
 
-        private async Task OnClickUpdateEmailButtonHandler()
+        private Task OnClickUpdateEmailButtonHandler()
         {
             //var s = await DialogService.ShowChangeEmailDialogAsync();
             //if (s.Result == DialogAddResult.Success)
@@ -45,9 +45,11 @@ namespace Gizmo.Client.UI.Pages
             //    {
             //    }
             //}
+
+            return Task.CompletedTask;
         }
 
-        private async Task OnClickUpdateMobileButtonHandler()
+        private Task OnClickUpdateMobileButtonHandler()
         {
             //var s = await DialogService.ShowChangeMobileDialogAsync();
             //if (s.Result == DialogAddResult.Success)
@@ -60,6 +62,8 @@ namespace Gizmo.Client.UI.Pages
             //    {
             //    }
             //}
+
+            return Task.CompletedTask;
         }
 
         private async Task OnClickChangePasswordButtonHandler()
@@ -67,7 +71,7 @@ namespace Gizmo.Client.UI.Pages
             await UserChangePasswordViewStateService.StartAsync();
         }
 
-        private async Task OnClickChangePictureButtonHandler()
+        private Task OnClickChangePictureButtonHandler()
         {
             //var s = await DialogService.ShowChangePictureDialogAsync();
             //if (s.Result == DialogAddResult.Success)
@@ -80,6 +84,8 @@ namespace Gizmo.Client.UI.Pages
             //    {
             //    }
             //}
+
+            return Task.CompletedTask;
         }
 
         protected override void OnInitialized()

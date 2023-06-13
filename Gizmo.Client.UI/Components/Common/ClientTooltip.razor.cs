@@ -88,17 +88,19 @@ namespace Gizmo.Client.UI.Components
             var tooltipRootSize = await JsInvokeAsync<BoundingClientRect>("getElementBoundingClientRect", Ref);
             var popupContentSize = await JsInvokeAsync<BoundingClientRect>("getElementBoundingClientRect", _tooltipContent);
 
+            int space = 10; //TODO: AAA Convert 1rem to px.
+
             if (OpenDirection == TooltipOpenDirections.Top || OpenDirection == TooltipOpenDirections.Bottom)
             {
                 _popupX = tooltipRootSize.Left + (tooltipRootSize.Width / 2) - (popupContentSize.Width / 2);
 
                 if (OpenDirection == TooltipOpenDirections.Top)
                 {
-                    _popupY = (tooltipRootSize.Top - popupContentSize.Height) - 10; //TODO: AAA
+                    _popupY = (tooltipRootSize.Top - popupContentSize.Height) - space;
                 }
                 else
                 {
-                    _popupY = (tooltipRootSize.Top + tooltipRootSize.Height) + 10; //TODO: AAA
+                    _popupY = (tooltipRootSize.Top + tooltipRootSize.Height) + space;
                 }
             }
 
@@ -108,11 +110,11 @@ namespace Gizmo.Client.UI.Components
 
                 if (OpenDirection == TooltipOpenDirections.Left)
                 {
-                    _popupX = (tooltipRootSize.Left - popupContentSize.Width) - 10; //TODO: AAA
+                    _popupX = (tooltipRootSize.Left - popupContentSize.Width) - space;
                 }
                 else
                 {
-                    _popupX = (tooltipRootSize.Left + tooltipRootSize.Width) + 10; //TODO: AAA
+                    _popupX = (tooltipRootSize.Left + tooltipRootSize.Width) + space;
                 }
             }
 

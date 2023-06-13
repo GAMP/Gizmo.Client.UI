@@ -21,19 +21,6 @@ namespace Gizmo.Client.UI.Shared
         [Parameter]
         public AppExeViewState Executable { get; set; }
 
-        private Task OnClickMainButtonHandler()
-        {
-            //switch (Executable.State)
-            //{
-            //	case View.ExecutableState.None:
-            //		return ActiveApplicationsService.RunExecutableAsyc(Executable.ExecutableId);
-
-            //	default:
-            //		return ActiveApplicationsService.TerminateExecutableAsyc(Executable.ExecutableId);
-            //}
-            return Task.CompletedTask;
-        }
-
         #region OVERRIDES
 
         protected override void OnInitialized()

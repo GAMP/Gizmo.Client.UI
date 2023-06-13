@@ -14,7 +14,7 @@ namespace Gizmo.Client.UI.Components
         {
         }
 
-        private bool _shouldRender;
+        //private bool _shouldRender;
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -31,7 +31,7 @@ namespace Gizmo.Client.UI.Components
 
         private async Task OnInputFileChange(InputFileChangeEventArgs e)
         {
-            _shouldRender = false;
+            //_shouldRender = false;
             int maxAllowedFiles = 1;
             long maxFileSize = 1024 * 1024 * 4;
             var upload = false;
@@ -56,7 +56,7 @@ namespace Gizmo.Client.UI.Components
 
                     upload = true;
                 }
-                catch (Exception ex)
+                catch
                 {
                 }
             }
