@@ -22,7 +22,19 @@
             {
                 @if (HostReservationViewState.IsReserved)@*TODO: A*@
                 {
-                    <Alert AlertType="AlertTypes.Warning" Title="@LocalizationService.GetString("GIZ_LOGIN_RESERVATION_WARNING_TITLE", HostReservationViewState.Time.Value.ToShortTimeString())" Text="@LocalizationService.GetString("GIZ_LOGIN_RESERVATION_WARNING_MESSAGE")" />
+                    @if (HostReservationViewState.IsLoginBlocked)
+                    {
+                        <Alert AlertType="AlertTypes.Warning"
+                               Title="@LocalizationService.GetString("GIZ_LOGIN_RESERVATION_WARNING_TITLE", HostReservationViewState.Time.Value.ToShortTimeString())"
+                               Text="@LocalizationService.GetString("GIZ_HOST_RESERVATION_LOGIN_IS_CURRENTLY_BLOCKED")" />
+                        
+                    }
+                    else
+                    {
+                        <Alert AlertType="AlertTypes.Warning"
+                               Title="@LocalizationService.GetString("GIZ_LOGIN_RESERVATION_WARNING_TITLE", HostReservationViewState.Time.Value.ToShortTimeString())"
+                               Text="@LocalizationService.GetString("GIZ_HOST_RESERVATION_LOGIN_IS_CURRENTLY_UNBLOCKED")" />
+                    }
                 }
             }
         </div>

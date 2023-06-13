@@ -61,7 +61,7 @@
                             IsFullWidth="true"
                             IsDisabled="@(ViewState.IsLoading || UserVerificationFallbackViewState.IsVerificationFallbackLocked)"
                             @onclick="@UserRegistrationConfirmationService.SMSFallbackAsync">
-                        <div>@LocalizationService.GetString("UI_RETRY_WITH_SMS")</div>
+                        <div>@LocalizationService.GetString("GIZ_USER_CONFIRMATION_RETRY_WITH_SMS")</div>
                         @if (UserVerificationFallbackViewState.IsVerificationFallbackLocked)
                         {
                             <div class="giz-resend-button__time">@string.Format("{0:mm\\:ss}", UserVerificationFallbackViewState.Countdown)</div>

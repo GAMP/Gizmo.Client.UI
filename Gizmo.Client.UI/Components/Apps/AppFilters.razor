@@ -18,25 +18,25 @@ else
     {
         case ApplicationSortingOption.Popularity:
 
-            <div>@LocalizationService.GetString("GIZ_APPS_POPULAR_ITEMS")</div>
+            <div>@LocalizationService.GetString("GIZ_APP_FILTERS_POPULAR_ITEMS")</div>
 
             break;
 
         case ApplicationSortingOption.AddDate:
 
-            <div>@LocalizationService.GetString("GIZ_APPS_RECENTLY_ADDED")</div>
+            <div>@LocalizationService.GetString("GIZ_APP_FILTERS_RECENTLY_ADDED")</div>
 
             break;
 
         case ApplicationSortingOption.ReleaseDate:
 
-            <div>@LocalizationService.GetString("GIZ_APPS_NEW_RELEASES")</div>
+            <div>@LocalizationService.GetString("GIZ_APP_FILTERS_NEW_RELEASES")</div>
 
             break;
 
         case ApplicationSortingOption.Title:
 
-            <div>@LocalizationService.GetString("GIZ_APPS_ALL_ITEMS")</div>
+            <div>@LocalizationService.GetString("GIZ_APP_FILTERS_ALL_ITEMS")</div>
 
             break;
     }
@@ -68,7 +68,7 @@ else
     </Select>
     <Select HandleSVGIcon="Icons.Select_Client"
             ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
-            Placeholder="@LocalizationService.GetString("ALL_GAMES_AND_APPS")"
+            Placeholder="@LocalizationService.GetString("GIZ_APP_FILTERS_ALL_GAMES_AND_APPS")"
             Size="InputSizes.Small"
             TValue="int?"
             Value="@ViewState.SelectedCategoryId"
@@ -85,7 +85,7 @@ else
     </Select>
     <MultiSelect HandleSVGIcon="Icons.Select_Client"
                  ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
-                 Placeholder="@LocalizationService.GetString("SELECT_SOMETHING")"
+                 Placeholder="@LocalizationService.GetString("GIZ_APP_FILTERS_SELECT_SOMETHING")"
                  Size="InputSizes.Small"
                  TValue="ApplicationModes"
                  Value="@ViewState.SelectedExecutableModes.ToList()"

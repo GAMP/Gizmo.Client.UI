@@ -14,7 +14,7 @@ using Microsoft.Extensions.Options;
 namespace Gizmo.Client.UI.Pages
 {
     [ModuleGuid(KnownModules.MODULE_SHOP)]
-    [PageUIModule(TitleLocalizationKey = "MODULE_PAGE_SHOP_TITLE", DescriptionLocalizationKey = "MODULE_PAGE_SHOP_DESCRIPTION"), ModuleDisplayOrder(2)]
+    [PageUIModule(TitleLocalizationKey = "GIZ_MODULE_PAGE_SHOP_TITLE", DescriptionLocalizationKey = "GIZ_MODULE_PAGE_SHOP_DESCRIPTION"), ModuleDisplayOrder(2)]
     [Route(ClientRoutes.ShopRoute)]
     public partial class ProductsIndex : CustomDOMComponentBase
     {

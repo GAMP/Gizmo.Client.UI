@@ -7,8 +7,8 @@
         <div class="giz-user-lock-overlay open">
             <div class="giz-user-lock-wrapper">
                 <div class="giz-user-lock">
-                    <div class="giz-user-lock__title">@LocalizationService.GetString("USER_LOCK_SCREEN_TITLE")</div>
-                    <div class="giz-user-lock__subtitle">@LocalizationService.GetString("USER_LOCK_SCREEN_SUBTITLE")</div>
+                    <div class="giz-user-lock__title">@LocalizationService.GetString("GIZ_USER_LOCK_SCREEN_TITLE")</div>
+                    <div class="giz-user-lock__subtitle">@LocalizationService.GetString("GIZ_USER_LOCK_SCREEN_SUBTITLE")</div>
                     <div class="giz-user-lock__code">
                         <TextInput IsTransparent="true"
                                    Value="@ViewState.InputPassword"
@@ -44,8 +44,8 @@ else
             <div class="giz-user-lock-overlay open">
                 <div class="giz-user-lock-wrapper">
                     <div class="giz-user-lock @(!string.IsNullOrEmpty(ViewState.Error) ? "error" : "")">
-                        <div class="giz-user-lock__title">@LocalizationService.GetString("USER_LOCK_SCREEN_LOCKED_TITLE")</div>
-                        <div class="giz-user-lock__subtitle">@LocalizationService.GetString("USER_LOCK_SCREEN_LOCKED_SUBTITLE")</div>
+                        <div class="giz-user-lock__title">@LocalizationService.GetString("GIZ_USER_LOCK_SCREEN_LOCKED_TITLE")</div>
+                        <div class="giz-user-lock__subtitle">@LocalizationService.GetString("GIZ_USER_LOCK_SCREEN_LOCKED_SUBTITLE")</div>
                         <div class="giz-user-lock__code">
                             <TextInput IsTransparent="true"
                                        Value="@ViewState.InputPassword"
@@ -65,9 +65,9 @@ else
                             <Button Color="ButtonColors.Primary" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.DeleteDigitAsync())" LeftSVGIcon="Icons.Backspace"></Button>
                         </div>
                         <div class="giz-user-lock__actions">
-                            <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.UnlockAsync())">@LocalizationService.GetString("USER_LOCK_SCREEN_ENTER_CODE")</Button>
+                            <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.UnlockAsync())">@LocalizationService.GetString("GIZ_USER_LOCK_SCREEN_ENTER_CODE")</Button>
                         </div>
-                        <div class="giz-user-lock__note">@LocalizationService.GetString("USER_LOCK_SCREEN_FORGOT_PIN")</div>
+                        <div class="giz-user-lock__note">@LocalizationService.GetString("GIZ_USER_LOCK_SCREEN_FORGOT_PIN")</div>
                     </div>
                 </div>
             </div>

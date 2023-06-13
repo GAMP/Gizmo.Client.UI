@@ -37,7 +37,7 @@
             {
                 <div class="giz-login-subtitle--sign-up">@LocalizationService.GetString("GIZ_REGISTRATION_MOBILE_CONFIRMATION_MESSAGE")</div>
                 <div class="giz-registration-form-input">
-                    <IconSelect Placeholder="@LocalizationService.GetString("GIN_GEN_SEARCH")"
+                    <IconSelect Placeholder="@LocalizationService.GetString("GIZ_GEN_SEARCH")"
                                 IsVirtualized="false"
                                 IsLoading="@(!_isLoaded)"
                                 CanClearValue="@(!(GetSelectedCountry()?.PhonePrefix == "+"))"
@@ -81,7 +81,7 @@
                         }
                         else
                         {
-                            <div>@LocalizationService.GetString("GIZ_VERIFICATION_SEND_CODE")</div>
+                            <div>@LocalizationService.GetString("GIZ_USER_CONFIRMATION_SEND_CODE")</div>
                             @if (UserVerificationViewState.IsVerificationLocked)
                             {
                                 <div class="giz-resend-button__time">@string.Format("{0:mm\\:ss}", UserVerificationViewState.Countdown)</div>

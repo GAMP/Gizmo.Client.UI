@@ -13,7 +13,7 @@
 
             <div class="giz-profile-user-purchases">
                 <div class="giz-profile-user-purchases__header">
-                    @LocalizationService.GetString("GIZ_PROFILE_PURCHASE_HISTORY")
+                    @LocalizationService.GetString("GIZ_USER_PURCHASES_HISTORY")
                 </div>
 
                 <div class="giz-profile-user-purchases__body">
@@ -83,26 +83,26 @@
                                 <CellTemplate>
                                     @if (order.Invoice?.IsVoided == true)
                                     {
-                                        <div class="order-canceled">@LocalizationService.GetString("ORDER_STATUS_VOIDED")</div>
+                                        <div class="order-canceled">@LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_STATUS_VOIDED")</div>
                                     }
                                     else
                                     {
                                         @switch (order.OrderStatus)
                                         {
                                             case OrderStatus.OnHold:
-                                                <div class="order-on-hold">@LocalizationService.GetString("ORDER_STATUS_ON_HOLD")</div>
+                                                <div class="order-on-hold">@LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_STATUS_ON_HOLD")</div>
                                                 break;
 
                                             case OrderStatus.Completed:
-                                                <div class="order-completed">@LocalizationService.GetString("ORDER_STATUS_COMPLETED")</div>
+                                                <div class="order-completed">@LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_STATUS_COMPLETED")</div>
                                                 break;
 
                                             case OrderStatus.Canceled:
-                                                <div class="order-canceled">@LocalizationService.GetString("ORDER_STATUS_CANCELED")</div>
+                                                <div class="order-canceled">@LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_STATUS_CANCELED")</div>
                                                 break;
 
                                             case OrderStatus.Accepted:
-                                                <div class="order-accepted">@LocalizationService.GetString("ORDER_STATUS_ACCEPTED")</div>
+                                                <div class="order-accepted">@LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_STATUS_ACCEPTED")</div>
                                                 break;
                                         }
                                     }
@@ -142,15 +142,15 @@
                                         @switch (order.Invoice.PaymentStatus)
                                         {
                                             case InvoiceStatus.Unpaid:
-                                                <div class="order-invoice-unpaid">@LocalizationService.GetString("ORDER_INVOICE_STATUS_UNPAID")</div>
+                                                <div class="order-invoice-unpaid">@LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_INVOICE_STATUS_UNPAID")</div>
                                                 break;
 
                                             case InvoiceStatus.PartialyPaid:
-                                                <div class="order-invoice-partialy-paid">@LocalizationService.GetString("ORDER_INVOICE_STATUS_PARTIALY_PAID")</div>
+                                                <div class="order-invoice-partialy-paid">@LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_INVOICE_STATUS_PARTIALY_PAID")</div>
                                                 break;
 
                                             case InvoiceStatus.Paid:
-                                                <div class="order-invoice-paid">@LocalizationService.GetString("ORDER_INVOICE_STATUS_PAID")</div>
+                                                <div class="order-invoice-paid">@LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_INVOICE_STATUS_PAID")</div>
                                                 break;
                                         }
                                     }

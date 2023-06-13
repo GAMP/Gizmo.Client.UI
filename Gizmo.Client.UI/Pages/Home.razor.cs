@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Gizmo.Client.UI.Pages
 {
     [ModuleGuid(KnownModules.MODULE_HOME)]
-    [PageUIModule(TitleLocalizationKey = "MODULE_PAGE_HOME_TITLE", DescriptionLocalizationKey = "MODULE_PAGE_HOME_TITLE"), ModuleDisplayOrder(0)]
+    [PageUIModule(TitleLocalizationKey = "GIZ_MODULE_PAGE_HOME_TITLE", DescriptionLocalizationKey = "GIZ_MODULE_PAGE_HOME_TITLE"), ModuleDisplayOrder(0)]
     [Route(ClientRoutes.HomeRoute)]
     public partial class Home : CustomDOMComponentBase, IAsyncDisposable
     {

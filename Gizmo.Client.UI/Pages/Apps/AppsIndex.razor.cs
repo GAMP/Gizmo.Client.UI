@@ -13,7 +13,7 @@ namespace Gizmo.Client.UI.Pages
 {
     [ModuleGuid(KnownModules.MODULE_APPS)]
     [ModuleDisplayOrder(1)]
-    [PageUIModule(TitleLocalizationKey = "MODULE_PAGE_APPS_TITLE", DescriptionLocalizationKey = "MODULE_PAGE_APPS_DESCRIPTION")]
+    [PageUIModule(TitleLocalizationKey = "GIZ_MODULE_PAGE_APPS_TITLE", DescriptionLocalizationKey = "GIZ_MODULE_PAGE_APPS_DESCRIPTION")]
     [DefaultRoute(ClientRoutes.ApplicationsRoute), Route(ClientRoutes.ApplicationsRoute)]
     public partial class AppsIndex : CustomDOMComponentBase
     {

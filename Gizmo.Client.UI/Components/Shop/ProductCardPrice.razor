@@ -4,7 +4,7 @@
 
 @if (Product.UnitPrice == 0 && (Product.UnitPointsPrice ?? 0) == 0)
 {
-    <span>@LocalizationService.GetString("PURCHASE_OPTION_FREE")</span>
+    <span>@LocalizationService.GetString("GIZ_PRODUCT_PRICE_FREE")</span>
 }
 else
 {
@@ -17,11 +17,11 @@ else
     {
         @if (Product.PurchaseOptions.HasFlag(PurchaseOptionType.Or))
         {
-            <span>@(" " + LocalizationService.GetString("PURCHASE_OPTION_OR") + " ")</span>
+            <span>@(" " + LocalizationService.GetString("GIZ_PRODUCT_PRICE_PURCHASE_OPTION_OR") + " ")</span>
         }
         else
         {
-            <span>@(" " + LocalizationService.GetString("PURCHASE_OPTION_AND") + " ")</span>
+            <span>@(" " + LocalizationService.GetString("GIZ_PRODUCT_PRICE_PURCHASE_OPTION_AND") + " ")</span>
         }
     }
 

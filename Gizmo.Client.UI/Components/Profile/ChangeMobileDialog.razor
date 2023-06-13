@@ -5,7 +5,7 @@
 <HostedDialog>
     <div class="giz-client-dialog giz-change-mobile-dialog">
         <div class="giz-client-dialog__header">
-            <div class="giz-client-dialog__header__title">@LocalizationService.GetString("UPDATE_NUMBER")</div>
+            <div class="giz-client-dialog__header__title">@LocalizationService.GetString("GIZ_CHANGE_MOBILE")</div>
             <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
         </div>
         @switch (ViewState.PageIndex)
@@ -13,10 +13,10 @@
             case 0:
 
                 <div class="giz-client-dialog__body">
-                    <div class="giz-change-mobile-dialog-message">@LocalizationService.GetString("UPDATE_NUMBER_MESSAGE")</div>
+                    <div class="giz-change-mobile-dialog-message">@LocalizationService.GetString("GIZ_CHANGE_MOBILE_MESSAGE")</div>
                     <EditForm EditContext="@UserChangeMobileService.EditContext">
                         <div class="giz-registration-form-input">
-                            <IconSelect Placeholder="@LocalizationService.GetString("GIN_GEN_SEARCH")"
+                            <IconSelect Placeholder="@LocalizationService.GetString("GIZ_GEN_SEARCH")"
                                         IsVirtualized="false"
                                         IsLoading="@(!_isLoaded)" 
                                         CanClearValue="@(!(GetSelectedCountry()?.PhonePrefix == "+"))"
@@ -61,7 +61,7 @@
                             }
                             else
                             {
-                                <div>@LocalizationService.GetString("GET_CODE")</div>
+                                <div>@LocalizationService.GetString("GIZ_USER_CONFIRMATION_GET_CONFIRMATION_CODE")</div>
                             }
                         </ChildContent>
                     </Button>
@@ -72,7 +72,7 @@
             case 1:
 
                 <div class="giz-client-dialog__body">
-                    <div class="giz-change-mobile-dialog-message">@LocalizationService.GetString("UPDATE_NUMBER_SUCCESS_MESSAGE")</div>
+                    <div class="giz-change-mobile-dialog-message">@LocalizationService.GetString("GIZ_CHANGE_MOBILE_SUCCESS_MESSAGE")</div>
                     <div class="giz-change-mobile-dialog-mobile">TODO: A...</div>
                     <EditForm EditContext="@UserChangeMobileService.EditContext">
                         <div class="giz-form-input">
@@ -82,7 +82,7 @@
                                        ValueExpression="@(() => ViewState.ConfirmationCode)"
                                        Size="InputSizes.Medium"
                                        IsFullWidth="true"
-                                       Label="@LocalizationService.GetString("ENTER_THE_CODE")" />
+                                       Label="@LocalizationService.GetString("GIZ_USER_CONFIRMATION_ENTER_CONFIRMATION_CODE")" />
                         </div>
                     </EditForm>
                 </div>
