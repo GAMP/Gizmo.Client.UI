@@ -54,7 +54,7 @@ namespace Gizmo.Client.UI.Components
                 this.SubscribeChange(_appViewState);
             }
 
-            _executables = await AppExeViewStateLookupService.GetFilteredStatesAsync();
+            _executables = await AppExeViewStateLookupService.GetFilteredStatesAsync(ApplicationId);
 
             await base.OnInitializedAsync();
         }
