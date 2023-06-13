@@ -12,13 +12,7 @@ window.ExternalFunctions = class ExternalFunctions {
      * @param {string} title title of the ADS
      */
     static async OnLoad(title) {
-      switch (title) {
-        case "Custom HTML of an Advertisement":
-          alert(`'${title}' was loaded.`);
-          break;
-        default:
-          break;
-      }
+     alert(`'${title}' was loaded.`);
     }
   };
 };

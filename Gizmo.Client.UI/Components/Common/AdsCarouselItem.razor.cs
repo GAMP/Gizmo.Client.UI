@@ -162,11 +162,6 @@ namespace Gizmo.Client.UI.Components
             if (_advertisementViewState != null)
             {
                 this.SubscribeChange(_advertisementViewState);
-
-                if(_advertisementViewState.IsCustomTemplate)
-                {
-                    await InvokeVoidAsync("ExternalFunctions.Advertisement.OnLoad", _advertisementViewState.Title);
-                }
             }
 
             Parent?.Register(this);
