@@ -57,6 +57,7 @@ Web based client UI.
 
 - To create new JavaScript functions, use the **'~\external.js'** file and the **ExternalFunctions** class.
 - To use these functions, call them using the syntax **'ExternalFunctions.functionName()'**.
+- To use JavaScript libraries add to the **Gizmo.Client.UI\src\webpack\package.json** as a npm packages in the **dependencies** section.
 
 ## Invokeing Client.UI functions with JavaScript
 
