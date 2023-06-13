@@ -54,13 +54,7 @@ namespace Gizmo.Client.UI.Components
                 this.SubscribeChange(_appViewState);
             }
 
-            var executables = await AppExeViewStateLookupService.GetStatesAsync();
-
-            //TODO we probably should move fitering functionality outside of component into lookup service
-            _executables = executables
-                .Where(a => a.Accessible)
-                .Where(a => Client.AppCurrentProfilePass(a.ApplicationId))
-                .Where(a => a.ApplicationId == ApplicationId).ToList();
+            _executables = await AppExeViewStateLookupService.GetFilteredStatesAsync();
 
             await base.OnInitializedAsync();
         }
