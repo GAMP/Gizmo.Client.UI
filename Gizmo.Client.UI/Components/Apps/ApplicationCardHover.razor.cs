@@ -16,6 +16,8 @@ namespace Gizmo.Client.UI.Components
         public AppViewState _appViewState;
         public IEnumerable<AppExeViewState> _executables = Enumerable.Empty<AppExeViewState>();
 
+        private IGizmoClient _client;
+
         #endregion
 
         [Inject]
@@ -34,6 +36,13 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public int ApplicationId { get; set; }
 
+        [Inject()]
+        private IGizmoClient Client
+        {
+            get { return _client; }
+            set { _client = value; }
+        }
+
         #region OVERRIDE
 
         protected override async Task OnInitializedAsync()
@@ -46,7 +55,12 @@ namespace Gizmo.Client.UI.Components
             }
 
             var executables = await AppExeViewStateLookupService.GetStatesAsync();
-            _executables = executables.Where(a => a.ApplicationId == ApplicationId).ToList();
+
+            //TODO we probably should move fitering functionality outside of component into lookup service
+            _executables = executables
+                .Where(a => a.Accessible)
+                .Where(a => Client.AppCurrentProfilePass(a.ApplicationId))
+                .Where(a => a.ApplicationId == ApplicationId).ToList();
 
             await base.OnInitializedAsync();
         }
