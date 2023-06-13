@@ -2,6 +2,11 @@
 
 Web based client UI.
 
+## We have two types of UI that can be used:
+
+- Web browser based UI from the **Gizmo.Client.UI.Host.Web** folder
+- Windows app based UI from the **Gizmo.Client.UI.Host.WPF** folder
+
 # Prerequisites
 
 ### Make sure you have installed the following prerequisites on your development machine:
@@ -11,7 +16,7 @@ Web based client UI.
 - Node.js (https://nodejs.org/en/download/)
 - npm (https://www.npmjs.com/get-npm)
 
-# Run the project
+# Run the project in debug mode
 
 ### Follow the steps below to run the project:
 
@@ -19,9 +24,12 @@ Web based client UI.
 - #### Visual Studio 2022
   - Open the solution - **Gizmo.Client.UI.sln**
   - Set the startup project to **Gizmo.Client.UI.Host.Web** or **Gizmo.Client.UI.Host.WPF**
+  - Press **F5** or button to run the project
 - #### Visual Studio Code
-  - Open the Gizmo.Client.UI.Host.Web folder
-  - Open the terminal and run the follofing command `dotnet watch`
+  - Install the **ms-dotnettools.csdevkit** extension
+  - Select the **SOLUTION EXPLORER** tab
+  - Right click on the **Gizmo.Client.UI.Host.Web** or **Gizmo.Client.UI.Host.WPF** folder and select **Debug** option
+  - Choose the **Start New instance**
 
 # Style guide (Gizmo.Client.UI\src\scss)
 
@@ -56,3 +64,17 @@ Web based client UI.
 
 - To invoke Client.UI functions with JavaScript, use the **'~\api.js'** file and the functions from the **ClientAPI** class.
 - To use these functions, call them using the syntax **'ClientAPI.functionName()'**.
+
+# Publishing the project
+
+## It can be published in two ways:
+
+### 1. Publishing the project as a Gizmo.Client skin
+
+- Open the **'~\Gizmo.Client.UI.Host.WPF'** folder
+- Open the terminal and run the follofing command `dotnet publish -c Release -o C:\client_skinname_folder`
+
+### 2. Publishing the project as a standalone application
+
+- Open the **'~\Gizmo.Client.UI.Host.Web'** folder
+- Open the terminal and run the follofing command `dotnet publish -c Release -o C:\client_app_folder`
