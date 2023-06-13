@@ -13,8 +13,8 @@ window.ExternalFunctions = class ExternalFunctions {
      */
     static async OnLoad(title) {
       switch (title) {
-          case "Custom HTML of an Advertisement":
-              await alert(`'${title}' was loaded.`);
+        case "Custom HTML of an Advertisement":
+          alert(`'${title}' was loaded.`);
           break;
         default:
           break;
