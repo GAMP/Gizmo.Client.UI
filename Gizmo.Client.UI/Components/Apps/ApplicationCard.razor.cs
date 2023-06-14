@@ -12,6 +12,9 @@ namespace Gizmo.Client.UI.Components
         #region PROPERTIES
 
         [Inject]
+        AppDetailsPageViewState AppDetailsPageViewState { get; set; }
+
+        [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
@@ -32,7 +35,8 @@ namespace Gizmo.Client.UI.Components
                 return;
             }
 
-            NavigationService.NavigateTo(ClientRoutes.ApplicationDetailsRoute + $"?ApplicationId={Application.ApplicationId.ToString()}");
+            if (!AppDetailsPageViewState.DisableAppDetails)
+                NavigationService.NavigateTo(ClientRoutes.ApplicationDetailsRoute + $"?ApplicationId={Application.ApplicationId.ToString()}");
         }
 
         public void Ignore()

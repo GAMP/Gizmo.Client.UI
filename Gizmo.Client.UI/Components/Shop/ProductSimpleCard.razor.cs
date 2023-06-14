@@ -15,6 +15,9 @@ namespace Gizmo.Client.UI.Components
         protected bool _shouldRender;
 
         [Inject]
+        ProductDetailsPageViewState ProductDetailsPageViewState { get; set; }
+
+        [Inject]
         NavigationService NavigationService { get; set; }
 
         [Inject]
@@ -34,7 +37,8 @@ namespace Gizmo.Client.UI.Components
                 return;
             }
 
-            NavigationService.NavigateTo(ClientRoutes.ProductDetailsRoute + $"?ProductId={Product.Id}");
+            if (!ProductDetailsPageViewState.DisableProductDetails)
+                NavigationService.NavigateTo(ClientRoutes.ProductDetailsRoute + $"?ProductId={Product.Id}");
         }
 
         public void Ignore()

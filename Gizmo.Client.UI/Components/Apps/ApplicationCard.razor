@@ -35,7 +35,10 @@
                     <ApplicationCardCategory @key="Application.ApplicationCategoryId" ApplicationCategoryId="@Application.ApplicationCategoryId" />
                 }
             </div>
-            <IconButton Variant="ButtonVariants.Text" SVGIcon="Icons.Open_Client" Size="ButtonSizes.Small" @onclick="OpenDetails" />
+            @if (!AppDetailsPageViewState.DisableAppDetails)
+            {
+                <IconButton Variant="ButtonVariants.Text" SVGIcon="Icons.Open_Client" Size="ButtonSizes.Small" @onclick="OpenDetails" />
+            }
         </div>
     </div>
 </div>
