@@ -48,6 +48,7 @@ namespace Gizmo.Client.UI.Components
 
                             if (!string.IsNullOrWhiteSpace(functionParametersValue))
                             {
+                                //Add the function parameters to the Client.UI parameters
                                 ContentParameters.Add("Data", functionParametersValue);
                             }
                             

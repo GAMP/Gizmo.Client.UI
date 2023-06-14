@@ -66,6 +66,30 @@ Web based client UI.
 - To invoke Client.UI functions with JavaScript, use the **'~\api.js'** file and the functions from the **ClientAPI** class.
 - To use these functions, call them using the syntax **'ClientAPI.functionName()'**.
 
+# Custom HTML guide
+
+## Adding custom HTML content
+
+### Follow the steps below to add custom HTML content:
+
+- To add custom HTML content, use a special Client.UI API property.
+- It isn't possible for the following elements: **html**, **head**, **body**, **script**, **link**, **meta**, **base**, **title**.
+- This content there is embeded in the   **index.html** file in the `<body>` tag.
+- Make the custom HTML element in a text editor, for example:
+
+        <div _onload='ExternalFunctions.testFunction({""key"": 1, ""value"": ""string""})' class='external-css_content'>
+            <h1 class=""external-css"" onclick=""ExternalFunctions.testAlert()"">Test external CSS and JavaScript</h1>
+        </div>
+
+    - It is possible to use the **_onload** attribute to call the **ExternalFunctions.testFunction** function when the element is loaded.
+    - The **ExternalFunctions.testFunction** in the custom HTML can be used with and without parameters.
+    - The parameters should be sended like a **string**, **int**, **bool**, **array**, **JSON object**.
+    - The defined **ExternalFunctions.testFunction** must receive a **Map** object as a **parameters**.
+    - The **parameters.Data** of the defined function is this sent data like a string.
+    - The **parameters** can have some **parameters.Key** and **parameters.Value** properties from the Client.UI application.
+    - To define a CSS class, look at the **Style guide**.
+    - To define a JavaScript function, look at the **JavaScript guide**.
+
 # Publishing the project
 
 ## It can be published in two ways:
