@@ -5,15 +5,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
+using static System.Net.Mime.MediaTypeNames;
+
 namespace Gizmo.Client.UI.Components
 {
     public partial class HtmlString : ComponentBase
     {
         [Inject] IJSRuntime JsRuntime { get; set; }
-        [Parameter] public  string Content { get; set; }
+        [Parameter] public string Content { get; set; }
 
         private MarkupString _htmlContent;
-        private readonly HashSet<string> _htmlCommands = new()
+
+        private const string CommandPattern = @"(?<name>_\w+)=(?<quote>['""])(?<value>.*?)\k<quote>";
+        private readonly HashSet<string> _supportedCommands = new()
         {
             "_onload"
         };
@@ -22,19 +26,23 @@ namespace Gizmo.Client.UI.Components
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            var regex = new Regex(@"(?<tag>\w+)='(?<function>.*?)'", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
-            var commands = regex.Matches(Content);
+            var regex = new Regex(CommandPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
+            var matches = regex.Matches(Content);
 
-            for (var i = 0; i < commands.Count; i++)
+            for (var i = 0; i < matches.Count; i++)
             {
-                var command = commands[i];
-                
-                var tag = command.Groups["tag"].Value;
-                var function = command.Groups["function"].Value;
+                var command = matches[i].Groups;
 
-                if (_htmlCommands.Contains(tag))
+                if (_supportedCommands.Contains(command["name"].Value))
                 {
-                    await JsRuntime.InvokeVoidAsync(function, function);
+                    var value = command["value"].Value;
+
+                    if (value[^2..] == "()")
+                    {
+                        value = value[..^2];
+                    }
+
+                    await JsRuntime.InvokeVoidAsync(value, value);
                 }
             }
         }
