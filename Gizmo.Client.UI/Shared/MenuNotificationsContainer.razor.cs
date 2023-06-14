@@ -119,6 +119,12 @@ namespace Gizmo.Client.UI.Shared
             return Task.CompletedTask;
         }
 
+        private void AcknowledgeAll()
+        {
+            IsOpen = false;
+            NotificationsService.AcknowledgeAll();
+        }
+
         #region IAsyncDisposable
 
         public async ValueTask DisposeAsync()
