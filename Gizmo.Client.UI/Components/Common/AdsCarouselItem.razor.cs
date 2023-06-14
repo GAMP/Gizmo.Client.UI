@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Gizmo.Client.UI.View.Services;
@@ -19,6 +20,7 @@ namespace Gizmo.Client.UI.Components
         private int _direction;
         private bool _switchSide;
         private AdvertisementViewState _advertisementViewState;
+        private Dictionary<string, object> _contentParameters;
 
         [Inject]
         public AdvertisementViewState AdvertisementViewState
@@ -162,6 +164,14 @@ namespace Gizmo.Client.UI.Components
             if (_advertisementViewState != null)
             {
                 this.SubscribeChange(_advertisementViewState);
+
+                if (_advertisementViewState.IsCustomTemplate)
+                {
+                    _contentParameters = new Dictionary<string, object>()
+                    {
+                        { "Title", "Additional content parameter" }
+                    };
+                }
             }
 
             Parent?.Register(this);

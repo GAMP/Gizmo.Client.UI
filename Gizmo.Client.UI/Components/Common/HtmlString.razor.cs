@@ -1,18 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
-
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Gizmo.Client.UI.Components
 {
     public partial class HtmlString : ComponentBase
     {
         [Inject] IJSRuntime JsRuntime { get; set; }
+        [Inject] ILogger<HtmlString> Logger { get; set; }
+
         [Parameter] public string Content { get; set; }
+        [Parameter] public Dictionary<string, object> ContentAdditionalParameters { get; set; }
 
         private MarkupString _htmlContent;
 
@@ -26,25 +31,75 @@ namespace Gizmo.Client.UI.Components
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            var regex = new Regex(CommandPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
-            var matches = regex.Matches(Content);
-
-            for (var i = 0; i < matches.Count; i++)
+            if (firstRender)
             {
-                var command = matches[i].Groups;
+                var regex = new Regex(CommandPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
+                var matches = regex.Matches(Content);
 
-                if (_supportedCommands.Contains(command["name"].Value))
+                for (var i = 0; i < matches.Count; i++)
                 {
-                    var value = command["value"].Value;
+                    var command = matches[i].Groups;
+                    var commandName = command["name"].Value;
+                    var commandValue = command["value"].Value;
 
-                    if (value[^2..] == "()")
+                    if (_supportedCommands.Contains(commandName))
                     {
-                        value = value[..^2];
-                    }
+                        try
+                        {
+                            var functionName = GetFunctionName(commandValue.AsSpan());
+                            var functionParametersValue = GetFunctionParametersValue(commandValue.AsSpan());
 
-                    await JsRuntime.InvokeVoidAsync(value, value);
+                            if (string.IsNullOrWhiteSpace(functionParametersValue))
+                            {
+                                await JsRuntime.InvokeVoidAsync(functionName);
+                            }
+                            else
+                            {
+                                var parameters = JsonSerializer.Deserialize<Dictionary<string, object>>(functionParametersValue);
+
+                                //Add additional parameters
+                                if (ContentAdditionalParameters is not null && ContentAdditionalParameters.Any())
+                                {
+                                    foreach (var additionalParameter in ContentAdditionalParameters)
+                                    {
+                                        parameters.Add(additionalParameter.Key, additionalParameter.Value);
+                                    }
+                                }
+
+                                var parametersString = JsonSerializer.Serialize(parameters);
+
+                                await JsRuntime.InvokeVoidAsync(functionName, parametersString);
+                            }
+                        }
+                        catch (Exception exeption)
+                        {
+                            Logger.LogError(exeption, "Error parsing for the costom event: {0}={1}", commandName, commandValue);
+                        }
+
+                        //Stop parsing after the first supported command
+                        break;
+                    }
                 }
             }
+        }
+
+        private static string GetFunctionName(ReadOnlySpan<char> commandValue)
+        {
+            var index = commandValue.IndexOf('(');
+
+            return index == -1
+                ? commandValue.ToString()
+                : commandValue[..index].ToString();
+        }
+
+        private static string GetFunctionParametersValue(ReadOnlySpan<char> commandValue)
+        {
+            var startIndex = commandValue.IndexOf('(') + 1;
+            var endIndex = commandValue.LastIndexOf(')');
+
+            return startIndex < endIndex
+                ? commandValue[startIndex..endIndex].TrimEnd(new char[] { '\'', '"' }).ToString()
+                : string.Empty;
         }
     }
 }
