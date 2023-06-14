@@ -9,10 +9,14 @@ window.ExternalFunctions = class ExternalFunctions {
   static Advertisement = class Advertisement {
     /**
      * Event that is called when the advertisement is loaded
-     * @param {string} title title of the ADS
+     * @param {string} parameters title of the ADS
      */
-    static async OnLoad(title) {
-     alert(`'${title}' was started.`);
+    static async OnLoad(parameters) {
+      const message = !parameters
+        ? "Advertisement is loaded without parameters."
+        : `Advertisement is loaded with parameters: ${parameters}`;
+
+      alert(message);
     }
   };
 };
