@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -17,7 +15,7 @@ namespace Gizmo.Client.UI.Components
         [Inject] ILogger<HtmlString> Logger { get; set; }
 
         [Parameter] public string Content { get; set; }
-        [Parameter] public Dictionary<string, object> ContentAdditionalParameters { get; set; }
+        [Parameter] public Dictionary<string, object> ContentParameters { get; set; } = new();
 
         private MarkupString _htmlContent;
 
@@ -46,30 +44,16 @@ namespace Gizmo.Client.UI.Components
                     {
                         try
                         {
-                            var functionName = GetFunctionName(commandValue.AsSpan());
                             var functionParametersValue = GetFunctionParametersValue(commandValue.AsSpan());
 
-                            if (string.IsNullOrWhiteSpace(functionParametersValue))
+                            if (!string.IsNullOrWhiteSpace(functionParametersValue))
                             {
-                                await JsRuntime.InvokeVoidAsync(functionName);
+                                ContentParameters.Add("Data", functionParametersValue);
                             }
-                            else
-                            {
-                                var parameters = JsonSerializer.Deserialize<Dictionary<string, object>>(functionParametersValue);
+                            
+                            var functionName = GetFunctionName(commandValue.AsSpan());
 
-                                //Add additional parameters
-                                if (ContentAdditionalParameters is not null && ContentAdditionalParameters.Any())
-                                {
-                                    foreach (var additionalParameter in ContentAdditionalParameters)
-                                    {
-                                        parameters.Add(additionalParameter.Key, additionalParameter.Value);
-                                    }
-                                }
-
-                                var parametersString = JsonSerializer.Serialize(parameters);
-
-                                await JsRuntime.InvokeVoidAsync(functionName, parametersString);
-                            }
+                            await JsRuntime.InvokeVoidAsync(functionName, ContentParameters);
                         }
                         catch (Exception exeption)
                         {

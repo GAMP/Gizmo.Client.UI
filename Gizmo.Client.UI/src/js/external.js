@@ -9,14 +9,19 @@ window.ExternalFunctions = class ExternalFunctions {
   static Advertisement = class Advertisement {
     /**
      * Event that is called when the advertisement is loaded
-     * @param {string} parameters title of the ADS
+     * @param {Map} parameters is a map of parameters that are passed to the application
+     * parameters.Data is a string parameter that contains the data that is passed from the this function of the custom HTML
+     * parameters.Title is a string parameter of the Client.UI application
      */
     static async OnLoad(parameters) {
       const message = !parameters
         ? "Advertisement is loaded without parameters."
-        : `Advertisement is loaded with parameters: ${parameters}`;
+        : `Advertisement is loaded with parameters:
+          \n0. All the parameters: '${JSON.stringify(parameters)}'
+          \n1. Client.UI parameter: '${parameters.Title}'
+          \n2. Custom parameters of the function: ${parameters.Data}`;
 
-      alert(message);
+      console.log(message);
     }
   };
 };

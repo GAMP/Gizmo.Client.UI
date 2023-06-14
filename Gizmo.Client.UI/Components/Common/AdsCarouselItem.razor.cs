@@ -169,7 +169,7 @@ namespace Gizmo.Client.UI.Components
                 {
                     _contentParameters = new Dictionary<string, object>()
                     {
-                        { "Title", "Additional content parameter" }
+                        {nameof(AdvertisementViewState.Title), _advertisementViewState.Title }
                     };
                 }
             }
