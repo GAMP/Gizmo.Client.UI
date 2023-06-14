@@ -12,7 +12,7 @@ window.ExternalFunctions = class ExternalFunctions {
      * @param {string} title title of the ADS
      */
     static async OnLoad(title) {
-     alert(`'${title}' was loaded.`);
+     alert(`'${title}' was started.`);
     }
   };
 };

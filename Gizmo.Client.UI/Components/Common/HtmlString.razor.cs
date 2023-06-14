@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -10,24 +12,31 @@ namespace Gizmo.Client.UI.Components
         [Inject] IJSRuntime JsRuntime { get; set; }
         [Parameter] public  string Content { get; set; }
 
-        private MarkupString _html;
-
-        protected override async Task OnInitializedAsync()
+        private MarkupString _htmlContent;
+        private readonly HashSet<string> _htmlCommands = new()
         {
-            _html = await ParseHtmlString(Content);
-        }
+            "_onload"
+        };
+
+        protected override void OnInitialized() => _htmlContent = new(Content);
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (Content.Contains("onload"))
-            { 
-                await JsRuntime.InvokeVoidAsync("ExternalFunctions.Advertisement.OnLoad", "Advertisement");
-            }
-        }
+            var regex = new Regex(@"(?<tag>\w+)='(?<function>.*?)'", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
+            var commands = regex.Matches(Content);
 
-        private async Task<MarkupString> ParseHtmlString(string row) 
-        {
-            return new MarkupString(row);
+            for (var i = 0; i < commands.Count; i++)
+            {
+                var command = commands[i];
+                
+                var tag = command.Groups["tag"].Value;
+                var function = command.Groups["function"].Value;
+
+                if (_htmlCommands.Contains(tag))
+                {
+                    await JsRuntime.InvokeVoidAsync(function, function);
+                }
+            }
         }
     }
 }
