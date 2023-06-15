@@ -9,18 +9,15 @@
     <div class="giz-notifications__header">
         <div>@LocalizationService.GetString("GIZ_NOTIFICATIONS_TITLE")</div>
         <div>
-            <IconButton SVGIcon="Icons.Close" Visibility="(_visible?.Count() > 1 ? Visibilities.Visible : Visibilities.Collapse)" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseNotifications()" />
+            <IconButton SVGIcon="Icons.Close" Visibility="(_visible.Count() > 1 ? Visibilities.Visible : Visibilities.Collapse)" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseNotifications()" />
         </div>
     </div>
     <div class="giz-notifications__body giz-scrollbar--v">
-        @if (_visible != null)
+        @foreach (var controller in _visible)
         {
-            @foreach (var controller in _visible)
-            {
-                <div data-id="@controller.Identifier" class="giz-notification-wrapper @(_newlyAddedItemId == controller.Identifier ? "tmp" : (_slideInItemId == controller.Identifier ? "slide-in" : (_slideOutItemId == controller.Identifier ? "slide-out" : "")))">
-                    <DynamicComponent Parameters="controller.Parameters" Type="controller.ComponentType" @key=controller.Identifier></DynamicComponent>
-                </div>
-            }
+            <div data-id="@controller.Identifier" class="giz-notification-wrapper @(_newlyAddedItemId == controller.Identifier ? "tmp" : (_slideInItemId == controller.Identifier ? "slide-in" : (_slideOutItemId == controller.Identifier ? "slide-out" : "")))">
+                <DynamicComponent Parameters="controller.Parameters" Type="controller.ComponentType" @key=controller.Identifier></DynamicComponent>
+            </div>
         }
     </div>
 </div>

@@ -15,8 +15,18 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class NotificationsHost : CustomDOMComponentBase, IAsyncDisposable
     {
+        private enum Animations
+        {
+            None,
+            WindowSlideIn,
+            WindowSlideOut,
+            ItemSlideIn,
+            ItemSlideOut
+        }
+
+        protected bool _shouldRender;
+        private Animations _currentAnimation = Animations.None;
         private bool _slideOut = false;
-        private int _total = 1;
         private int _newlyAddedItemId = -1;
         private int _slideInItemId = -1;
         private int _slideOutItemId = -1;
@@ -34,7 +44,7 @@ namespace Gizmo.Client.UI.Components
             set { _logger = value; }
         }
 
-        private List<INotificationController> _visible;
+        private List<INotificationController> _visible = new List<INotificationController>();
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -52,38 +62,68 @@ namespace Gizmo.Client.UI.Components
             set;
         }
 
-        private void OnMouseOverHandler(MouseEventArgs args)
+        private Task Rerender()
         {
-            NotificationsService.SuspendTimeOutAll();
+            _shouldRender = true;
+            return InvokeAsync(StateHasChanged);
         }
 
-        private void OnMouseOutHandler(MouseEventArgs args)
+        private Task OnMouseOverHandler(MouseEventArgs args)
+        {
+            NotificationsService.SuspendTimeOutAll();
+
+            //await InvokeVoidAsync("writeLine", $"OnMouseOverHandler {this.ToString()}");
+
+            return Task.CompletedTask;
+        }
+
+        private Task OnMouseOutHandler(MouseEventArgs args)
         {
             NotificationsService.ResumeTimeOutAll();
+
+            //await InvokeVoidAsync("writeLine", $"OnMouseOutHandler {this.ToString()}");
+
+            return Task.CompletedTask;
         }
 
         private async Task CloseNotifications()
         {
-            _dismissAllItems = _visible.Select(a => a.Identifier).ToList();
-            NotificationsService.DismissAll();
+            if (await _animationLock.WaitAsync(TimeSpan.FromMinutes(1)))
+            {
+                try
+                {
+                    _dismissAllItems = _visible.Select(a => a.Identifier).ToList();
+                    NotificationsService.DismissAll();
 
-            await SlideWindowOut();
+                    //await InvokeVoidAsync("writeLine", $"CloseNotifications {this.ToString()}");
 
-            _visible.Clear();
-            _dismissAllItems.Clear();
+                    await SlideWindowOut();
+
+                    _visible.Clear();
+                    //_dismissAllItems.Clear();
+                }
+                catch
+                {
+                    throw;
+                }
+                finally
+                {
+                    _animationLock.Release();
+                }
+            }
         }
 
         private async Task SlideWindowIn()
         {
             _slideOut = false;
-            await InvokeAsync(StateHasChanged);
+            await Rerender();
             await Task.Delay(1000);
         }
 
         private async Task SlideWindowOut()
         {
             _slideOut = true;
-            await InvokeAsync(StateHasChanged);
+            await Rerender();
             await Task.Delay(1000);
             _slideOut = false;
         }
@@ -92,7 +132,7 @@ namespace Gizmo.Client.UI.Components
         {
             await SetAnimationHeight(item);
             _slideInItemId = item;
-            await InvokeAsync(StateHasChanged);
+            await Rerender();
             await Task.Delay(500);
             _slideInItemId = -1;
         }
@@ -101,7 +141,7 @@ namespace Gizmo.Client.UI.Components
         {
             await SetAnimationHeight(item);
             _slideOutItemId = item;
-            await InvokeAsync(StateHasChanged);
+            await Rerender();
             await Task.Delay(500);
             _slideOutItemId = -1;
         }
@@ -119,15 +159,15 @@ namespace Gizmo.Client.UI.Components
             await UpdateUI();
 
             ViewState.OnChange += ViewState_OnChange;
-            this.SubscribeChange(ViewState);
+            //this.SubscribeChange(ViewState);
         }
 
-        public override void Dispose()
-        {
-            this.UnsubscribeChange(ViewState);
+        //public override void Dispose()
+        //{
+        //    this.UnsubscribeChange(ViewState);
 
-            base.Dispose();
-        }
+        //    base.Dispose();
+        //}
 
         private async void ViewState_OnChange(object sender, System.EventArgs e)
         {
@@ -137,72 +177,101 @@ namespace Gizmo.Client.UI.Components
 
         private async Task UpdateUI()
         {
-            if (await _animationLock.WaitAsync(TimeSpan.Zero))
+            if (await _animationLock.WaitAsync(TimeSpan.FromMinutes(1)))
             {
                 try
                 {
                     var snapShot = ViewState.Visible.ToList();
 
-                    if (_dismissAllItems.Count == 0)
+                    //With dismiss all button we will get OnChange event for every item that was in the list.
+                    //We have to ignore these items, but render the new items.
+                    if (_dismissAllItems.Count > 0)
                     {
-                        _newItems.Clear();
-                        _removedItems.Clear();
-
-                        if (_visible == null || _visible.Count == 0)
+                        //Get all ids in the snapshot.
+                        var snapShotIds = snapShot.Select(a => a.Identifier).ToList();
+                        //Get ids that was in the dismiss list but not in the snapshot.
+                        var removedItems = _dismissAllItems.Where(a => !snapShotIds.Contains(a)).ToList();
+                        //Remove these items from the dismiss list.
+                        _dismissAllItems.RemoveAll(a => removedItems.Contains(a));
+                        //Check if there are new items.
+                        var addedItems = snapShot.Where(a => !_dismissAllItems.Contains(a.Identifier)).ToList();
+                        if (addedItems.Count == 0)
                         {
-                            if (snapShot.Count() > 0)
+                            //If no new items found then do nothing.
+                            return;
+                        }
+                        else
+                        {
+                            //Else keep in the snapshot only the new items and continue with render.
+                            await InvokeVoidAsync("writeLine", $"Error: New items could be ignored {this.ToString()}");
+
+                            snapShot = addedItems;
+                        }
+                    }
+
+                    _newItems.Clear();
+                    _removedItems.Clear();
+
+                    if (_visible.Count == 0)
+                    {
+                        if (snapShot.Count() > 0)
+                        {
+                            //First run.
+                            _visible = snapShot;
+                            _currentAnimation = Animations.WindowSlideIn;
+                            await SlideWindowIn();
+                            _currentAnimation = Animations.None;
+                        }
+                        else
+                        {
+                            await InvokeVoidAsync("writeLine", $"Error: 0 items {this.ToString()}");
+                        }
+                    }
+                    else
+                    {
+                        if (snapShot.Count() > 0)
+                        {
+                            foreach (var item in snapShot)
                             {
-                                //First run.
-                                _visible = snapShot;
-                                await SlideWindowIn();
+                                if (!_visible.Contains(item))
+                                    _newItems.Add(item.Identifier);
                             }
-                            else
+
+                            foreach (var item in _visible)
                             {
-                                await InvokeVoidAsync("writeLine", $"0 items {this.ToString()}");
+                                if (!snapShot.Contains(item))
+                                    _removedItems.Add(item.Identifier);
+                            }
+
+                            foreach (var item in _newItems)
+                            {
+                                //We need to add the item to the DOM first.
+                                //TODO: AAA ADD ITEM IN THE RIGHT POSITION.
+                                _newlyAddedItemId = item;
+                                _visible.Add(snapShot.Where(a => a.Identifier == item).FirstOrDefault());
+                                await Rerender();
+                                _newlyAddedItemId = -1;
+                                //await InvokeVoidAsync("writeLine", $"tmpItemAdded {this.ToString()}");
+
+                                _currentAnimation = Animations.ItemSlideIn;
+                                await SlideItemIn(item);
+                                _currentAnimation = Animations.None;
+                            }
+
+                            foreach (var item in _removedItems)
+                            {
+                                _currentAnimation = Animations.ItemSlideOut;
+                                await SlideItemOut(item);
+                                _currentAnimation = Animations.None;
                             }
                         }
                         else
                         {
-                            if (snapShot.Count() > 0)
-                            {
-                                foreach (var item in snapShot)
-                                {
-                                    if (!_visible.Contains(item))
-                                        _newItems.Add(item.Identifier);
-                                }
-
-                                foreach (var item in _visible)
-                                {
-                                    if (!snapShot.Contains(item))
-                                        _removedItems.Add(item.Identifier);
-                                }
-
-                                foreach (var item in _newItems)
-                                {
-                                    //We need to add the item to the DOM first.
-                                    //TODO: AAA ADD ITEM IN THE RIGHT POSITION.
-                                    _newlyAddedItemId = item;
-                                    _visible.Add(snapShot.Where(a => a.Identifier == item).FirstOrDefault());
-                                    await InvokeAsync(StateHasChanged);
-                                    _newlyAddedItemId = -1;
-                                    //await InvokeVoidAsync("writeLine", $"tmpItemAdded {this.ToString()}");
-
-                                    await SlideItemIn(item);
-                                }
-
-                                foreach (var item in _removedItems)
-                                {
-                                    await SlideItemOut(item);
-                                }
-                            }
-                            else
-                            {
-                                await SlideWindowOut();
-                            }
-
-                            _visible = snapShot;
-                            await InvokeAsync(StateHasChanged);
+                            await SlideWindowOut();
                         }
+
+                        _visible = snapShot;
+                        await Rerender();
                     }
                 }
                 catch
@@ -213,6 +282,10 @@ namespace Gizmo.Client.UI.Components
                 {
                     _animationLock.Release();
                 }
+            }
+            else
+            {
+                await InvokeVoidAsync("writeLine", $"Error: _animationLock not available {this.ToString()}");
             }
         }
 
@@ -229,6 +302,11 @@ namespace Gizmo.Client.UI.Components
             return Task.CompletedTask;
         }
 
+        protected override bool ShouldRender()
+        {
+            return _shouldRender;
+        }
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);
@@ -240,6 +318,15 @@ namespace Gizmo.Client.UI.Components
                 AnimationEventInterop = new AnimationEventInterop(JsRuntime);
                 await AnimationEventInterop.SetupAnimationEventCallback(args => AnimationHandler(args));
             }
+            else
+            {
+                _shouldRender = false;
+            }
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + $" Current animation: {_currentAnimation.ToString()} Items: {_visible.Count}";
         }
 
         #region IAsyncDisposable
@@ -250,7 +337,9 @@ namespace Gizmo.Client.UI.Components
             //await InvokeVoidAsync("writeLine", $"DisposeAsync {this.ToString()}");
 
             if (AnimationEventInterop != null)
+            {
                 await AnimationEventInterop.DisposeAsync();
+            }
 
             Dispose();
         }
