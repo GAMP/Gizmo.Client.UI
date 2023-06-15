@@ -2,6 +2,13 @@ const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
+  watch: true,
+  watchOptions: {
+    ignored: /node_modules/,
+    aggregateTimeout: 500, // Delay before reloading
+    poll: 1000, // Check for changes every second
+    stdin: true, // Stop watching when stdin stream has ended
+  },
   entry: {
     client_internal_code: "../js/internal.js",
     client_external_code: "../js/external.js",
