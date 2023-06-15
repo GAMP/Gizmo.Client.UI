@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="npm install" WorkingDirectory="." />
     <Exec Condition="'$(Configuration)' == 'Debug'" Command="npm run build_dev" WorkingDirectory="." />
     <Exec Condition="'$(Configuration)' == 'Release'" Command="npm run build_prod" WorkingDirectory="." />
   </Target>
