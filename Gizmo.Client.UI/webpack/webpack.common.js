@@ -10,35 +10,31 @@ module.exports = {
     stdin: true, // Stop watching when stdin stream has ended
   },
   entry: {
-    client_internal_code: "../js/internal.js",
-    client_external_code: "../js/external.js",
-    client_api_code: "../js/api.js",
-    client_internal_style: "../scss/main.scss",
-    client_external_style: "../scss/external.scss",
-    webcomponents_code:
-      "../../../Submodules/Gizmo.Web.Components/src/js/main.js",
+    client_internal_code: "./src/js/internal.js",
+    client_external_code: "./src/js/external.js",
+    client_api_code: "./src/js/api.js",
+    client_internal_style: "./src/scss/main.scss",
+    client_external_style: "./src/scss/external.scss",
+    webcomponents_code: "../Submodules/Gizmo.Web.Components/src/js/main.js",
     webcomponents_style:
-      "../../../Submodules/Gizmo.Web.Components/src/scss/main.scss",
+      "../Submodules/Gizmo.Web.Components/src/scss/main.scss",
   },
   plugins: [
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: "../html",
-          to: path.resolve(__dirname, "../../wwwroot/"),
-          // globOptions: {
-          //   ignore: ["**/index.html"]
-          // },
+          from: "src/html",
+          to: path.resolve(__dirname, "../wwwroot/"),
         },
         {
-          from: "../img",
-          to: path.resolve(__dirname, "../../wwwroot/img"),
+          from: "src/img",
+          to: path.resolve(__dirname, "../wwwroot/img"),
         },
       ],
     }),
   ],
   resolve: {
-    modules: [path.resolve(__dirname, "node_modules")],
+    modules: [path.resolve(__dirname, "../node_modules")],
   },
   module: {
     rules: [
@@ -60,7 +56,7 @@ module.exports = {
   },
   output: {
     filename: "[name].js",
-    path: path.resolve(__dirname, "../../wwwroot/"),
+    path: path.resolve(__dirname, "../wwwroot/"),
     clean: true,
   },
 };
