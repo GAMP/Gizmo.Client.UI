@@ -639,8 +639,10 @@ window.setNotificationsAnimationHeight =
       //console.log(height);
       element.style.setProperty("--notification-height", height + "px");
       //console.log(element);
+      return height;
     } else {
       console.log("Not found!");
+      return 0;
     }
   };
 
@@ -715,4 +717,10 @@ window.unregisterAnimatedComponent = function unregisterAnimatedComponent(
 ) {
   //console.log('unregisterAnimatedComponent');
   //console.log(element);
+};
+
+window.getFontSize = function getFontSize() {
+    var style = window.getComputedStyle(document.documentElement, null).getPropertyValue('font-size');
+    var fontSize = parseFloat(style);
+    return fontSize;
 };

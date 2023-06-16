@@ -24,7 +24,11 @@ namespace Gizmo.Client.UI.Components
             ItemSlideOut
         }
 
-        protected bool _shouldRender;
+        private float _lastItemHeight;
+        private System.Drawing.Size _componentSize = new System.Drawing.Size();
+        private float _fontSize = 10;
+        private bool _isTemp;
+        private bool _shouldRender;
         private Animations _currentAnimation = Animations.None;
         private bool _slideOut = false;
         private int _newlyAddedItemId = -1;
@@ -71,18 +75,12 @@ namespace Gizmo.Client.UI.Components
         private Task OnMouseOverHandler(MouseEventArgs args)
         {
             NotificationsService.SuspendTimeOutAll();
-
-            //await InvokeVoidAsync("writeLine", $"OnMouseOverHandler {this.ToString()}");
-
             return Task.CompletedTask;
         }
 
         private Task OnMouseOutHandler(MouseEventArgs args)
         {
             NotificationsService.ResumeTimeOutAll();
-
-            //await InvokeVoidAsync("writeLine", $"OnMouseOutHandler {this.ToString()}");
-
             return Task.CompletedTask;
         }
 
@@ -95,7 +93,7 @@ namespace Gizmo.Client.UI.Components
                     _dismissAllItems = _visible.Select(a => a.Identifier).ToList();
                     NotificationsService.DismissAll();
 
-                    //await InvokeVoidAsync("writeLine", $"CloseNotifications {this.ToString()}");
+                    await InvokeVoidAsync("writeLine", $"CloseNotifications {this.ToString()}");
 
                     await SlideWindowOut();
 
@@ -146,32 +144,31 @@ namespace Gizmo.Client.UI.Components
             _slideOutItemId = -1;
         }
 
+        private async Task<BoundingClientRect> GetElementSize()
+        {
+            return await JsInvokeAsync<BoundingClientRect>("getElementBoundingClientRect", Ref);
+        }
+
         private async Task SetAnimationHeight(int item)
         {
-            await InvokeVoidAsync("setNotificationsAnimationHeight", item);
+            _lastItemHeight = await JsInvokeAsync<float>("setNotificationsAnimationHeight", item);
         }
 
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
 
-            //await InvokeVoidAsync("writeLine", $"OnInitializedAsync {this.ToString()}");
+            _fontSize = await JsInvokeAsync<float>("getFontSize");
+
+            await InvokeVoidAsync("writeLine", $"OnInitializedAsync {this.ToString()}");
             await UpdateUI();
 
             ViewState.OnChange += ViewState_OnChange;
-            //this.SubscribeChange(ViewState);
         }
-
-        //public override void Dispose()
-        //{
-        //    this.UnsubscribeChange(ViewState);
-
-        //    base.Dispose();
-        //}
 
         private async void ViewState_OnChange(object sender, System.EventArgs e)
         {
-            //await InvokeVoidAsync("writeLine", $"ViewState_OnChange {this.ToString()}");
+            await InvokeVoidAsync("writeLine", $"ViewState_OnChange {this.ToString()}");
             await UpdateUI();
         }
 
@@ -218,6 +215,17 @@ namespace Gizmo.Client.UI.Components
                         {
                             //First run.
                             _visible = snapShot;
+
+                            _isTemp = true;
+                            await Rerender();
+                            var size = await GetElementSize();
+                            size.Height += _fontSize * 2;
+                            await InvokeVoidAsync("writeLine", $"Height: {size.Height.ToString()}");
+                            _componentSize.Width = (int)size.Width;
+                            _componentSize.Height = (int)size.Height;
+                            NotificationsService.RequestNotificationHostSize(_componentSize);
+                            _isTemp = false;
+
                             _currentAnimation = Animations.WindowSlideIn;
                             await SlideWindowIn();
                             _currentAnimation = Animations.None;
@@ -243,26 +251,49 @@ namespace Gizmo.Client.UI.Components
                                     _removedItems.Add(item.Identifier);
                             }
 
+                            var tmp = _visible.ToList();
+
                             foreach (var item in _newItems)
                             {
-                                //We need to add the item to the DOM first.
-                                //TODO: AAA ADD ITEM IN THE RIGHT POSITION.
-                                _newlyAddedItemId = item;
                                 _visible.Add(snapShot.Where(a => a.Identifier == item).FirstOrDefault());
-                                await Rerender();
-                                _newlyAddedItemId = -1;
-                                //await InvokeVoidAsync("writeLine", $"tmpItemAdded {this.ToString()}");
-
-                                _currentAnimation = Animations.ItemSlideIn;
-                                await SlideItemIn(item);
-                                _currentAnimation = Animations.None;
                             }
+
+                            _isTemp = true;
+                            await Rerender();
+                            var size = await GetElementSize();
+                            size.Height += _fontSize * 2;
+                            await InvokeVoidAsync("writeLine", $"Height: {size.Height.ToString()}");
+                            _componentSize.Width = (int)size.Width;
+                            _componentSize.Height = (int)size.Height;
+                            NotificationsService.RequestNotificationHostSize(_componentSize);
+                            _isTemp = false;
+
+                            _visible = tmp;
 
                             foreach (var item in _removedItems)
                             {
                                 _currentAnimation = Animations.ItemSlideOut;
                                 await SlideItemOut(item);
                                 _currentAnimation = Animations.None;
+                            }
+
+                            foreach (var item in _newItems)
+                            {
+                                //We need to add the item to the DOM first.
+                                //TODO: AAA ADD ITEM IN THE RIGHT POSITION.
+                                _newlyAddedItemId = item;
+                                var newlyAddedItem = snapShot.Where(a => a.Identifier == item).FirstOrDefault();
+                                var index = snapShot.IndexOf(newlyAddedItem);
+                                _visible.Insert(index, newlyAddedItem);
+                                await Rerender();
+                                _newlyAddedItemId = -1;
+                                await InvokeVoidAsync("writeLine", $"tmpItemAdded {this.ToString()}");
+
+                                _currentAnimation = Animations.ItemSlideIn;
+                                await SlideItemIn(item);
+                                _currentAnimation = Animations.None;
+
+                                NotificationsService.TryResetTimeout(item);
                             }
                         }
                         else
@@ -310,7 +341,7 @@ namespace Gizmo.Client.UI.Components
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);
-            //await InvokeVoidAsync("writeLine", $"OnAfterRenderAsync {this.ToString()}");
+            await InvokeVoidAsync("writeLine", $"OnAfterRenderAsync {this.ToString()}");
 
             if (firstRender)
             {
@@ -334,7 +365,7 @@ namespace Gizmo.Client.UI.Components
         public async ValueTask DisposeAsync()
         {
             await InvokeVoidAsync("unregisterAnimatedComponent", Ref).ConfigureAwait(false);
-            //await InvokeVoidAsync("writeLine", $"DisposeAsync {this.ToString()}");
+            await InvokeVoidAsync("writeLine", $"DisposeAsync {this.ToString()}");
 
             if (AnimationEventInterop != null)
             {
@@ -343,6 +374,17 @@ namespace Gizmo.Client.UI.Components
 
             Dispose();
         }
+
+        #endregion
+
+        #region CLASSMAPPERS
+
+        protected string ClassName => new ClassMapper()
+                .Add("giz-notifications")
+                .If("slide-out", () => _slideOut)
+                .If("slide-in", () => !_slideOut)
+                .If("prerender", () => _isTemp)
+                .AsString();
 
         #endregion
     }
