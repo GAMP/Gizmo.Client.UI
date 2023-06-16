@@ -232,6 +232,11 @@ namespace Gizmo.Client.UI.Components
                             _currentAnimation = Animations.WindowSlideIn;
                             await SlideWindowIn();
                             _currentAnimation = Animations.None;
+
+                            foreach (var item in snapShot)
+                            {
+                                NotificationsService.TryResetTimeout(item.Identifier);
+                            }
                         }
                         else
                         {
