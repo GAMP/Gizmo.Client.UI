@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Gizmo.Client.UI.Components;
 using Gizmo.UI;
 using Gizmo.UI.Services;
+using Gizmo.Web.Components;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -63,9 +64,12 @@ namespace Gizmo.Client.UI.Services
             }, default, cancellationToken);
         }
 
-        public Task<AddDialogResult<EmptyComponentResult>> ShowChangePasswordDialogAsync(CancellationToken cancellationToken = default)
+        public Task<AddDialogResult<EmptyComponentResult>> ShowChangePasswordDialogAsync(bool showOldPassword, CancellationToken cancellationToken = default)
         {
-            return ShowDialogAsync<ChangePasswordDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()
+            return ShowDialogAsync<ChangePasswordDialog>(new Dictionary<string, object>()
+            {
+                { "ShowOldPassword", showOldPassword }
+            }, new DialogDisplayOptions()
             {
                 Closable = true,
                 CloseOnClick = false
