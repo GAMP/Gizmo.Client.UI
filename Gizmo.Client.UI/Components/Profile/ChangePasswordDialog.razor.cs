@@ -19,9 +19,6 @@ namespace Gizmo.Client.UI.Components
         UserChangePasswordViewState ViewState { get; set; }
 
         [Parameter]
-        public bool ShowOldPassword { get; set; }
-
-        [Parameter]
         public DialogDisplayOptions DisplayOptions { get; set; }
 
         [Parameter]
