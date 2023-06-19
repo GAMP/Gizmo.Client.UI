@@ -724,3 +724,74 @@ window.getFontSize = function getFontSize() {
     var fontSize = parseFloat(style);
     return fontSize;
 };
+
+var videoEventListenerReferences = [];
+
+window.addVideoEventListener = function addVideoEventListener(objRef) {
+    videoEventListenerReferences.push(objRef);
+};
+
+window.removeVideoEventListener = function removeVideoEventListener(
+    objRef
+) {
+    var index = findElementIndexById(videoEventListenerReferences, objRef);
+    if (index > -1) {
+        videoEventListenerReferences.splice(index, 1);
+    }
+};
+
+window.onVideoEvent = function onVideoEvent(event, state) {
+    videoEventListenerReferences.forEach((item) => {
+        var id = event.target.id;
+        item.invokeMethodAsync("OnVideoEvent", {
+            Id: id,
+            VideoState: state,
+        });
+    });
+};
+
+window.onVideoCanPlayThroughEvent = function onVideoCanPlayThroughEvent(event) {
+    onVideoEvent(event, 0);
+    console.log('onVideoCanPlayThroughEvent');
+    //try {
+    //    event.target.play();
+    //} catch (error) {
+    //    console.error(error);
+    //}
+};
+
+window.onVideoEndedEvent = function onVideoEndedEvent(event) {
+    onVideoEvent(event, 1);
+    console.log('onVideoEndedEvent');
+};
+
+var registeredVideoComponents = [];
+
+window.registerVideoComponent = function registerVideoComponent(element) {
+    if (element) {
+        registeredVideoComponents.push({
+            element: element,
+            open: false,
+        });
+
+        element.addEventListener("canplaythrough", onVideoCanPlayThroughEvent);
+
+        element.addEventListener("ended", onVideoEndedEvent);
+    }
+};
+
+window.unregisterVideoComponent = function unregisterVideoComponent(
+    element
+) {
+    //console.log('unregisterVideoComponent');
+    //console.log(element);
+};
+
+window.playVideo = function playVideo(element) {
+    try {
+        element.muted = true;
+        element.play();
+    } catch (error) {
+        console.error(error);
+    }
+};

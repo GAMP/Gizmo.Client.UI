@@ -12,9 +12,14 @@
 <main client-theme="true">
     <div class="giz-main-container">
         <div class="giz-login__adv">
-            <div class="giz-login__adv__background">
-                <img src="_content/Gizmo.Client.UI/img/bg-img-2.png" alt="loading">
-            </div>
+            @if (LoginRotatorViewState.IsEnabled)
+            {
+                <Layout_LoginRotator />
+            }
+            else
+            {
+                <Layout_LoginWallpaper />
+            }
 
             <div class="giz-login__adv__header">
                 <div class="giz-nav-logo">

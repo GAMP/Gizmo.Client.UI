@@ -1,0 +1,16 @@
+﻿@namespace Gizmo.Client.UI.Shared
+@inherits CustomDOMComponentBase
+
+<div class="giz-login__adv__background">
+    @if (ViewState.CurrentItem != null)
+    {
+        @if (ViewState.CurrentItem.IsVideo)
+        {
+            <Layout_LoginRotatorVideo MediaPath="@ViewState.CurrentItem.MediaPath" />
+        }
+        else
+        {
+            <img src="@ViewState.CurrentItem.MediaPath" alt="loading">
+        }
+    }
+</div>
