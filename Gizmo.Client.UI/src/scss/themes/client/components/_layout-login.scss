@@ -11,25 +11,24 @@
             display: grid;
             grid-template-rows: min-content 1fr min-content;
             position: relative;
-            width: 100vw;
-
+            /*width: 100vw;
             &.collapsed {
                 width: calc(100vw - 74rem);
             }
 
             &.shrink {
-                animation-duration: 1s;
+                animation-duration: 0.5s;
                 animation-name: login-adv-shrink-anim;
                 animation-timing-function: ease-in-out;
                 animation-fill-mode: forwards;
             }
 
             &.grow {
-                animation-duration: 1s;
+                animation-duration: 0.5s;
                 animation-name: login-adv-grow-anim;
                 animation-timing-function: ease-in-out;
                 animation-fill-mode: forwards;
-            }
+            }*/
 
             &__background {
                 position: absolute;
@@ -113,11 +112,37 @@
                 padding: 2.4rem 3.2rem;
                 z-index: 1;
 
-                .giz-nav-title {
+                .giz-host-number {
                     //Font ?
-                    font-size: 3.6rem;
-                    line-height: 4.4rem;
-                    font-weight: 700;
+                    font-family: 'Rubik';
+                    font-style: normal;
+                    font-weight: 500;
+                    font-size: 12.8rem;
+                    line-height: 13.2rem;
+
+                    &.collapsed {
+                        margin-right: 74rem;
+                        //Font ?
+                        font-family: 'Rubik';
+                        font-style: normal;
+                        font-weight: 700;
+                        font-size: 3.6rem;
+                        line-height: 4.4rem;
+                    }
+
+                    &.shrink {
+                        animation-duration: 0.5s;
+                        animation-name: login-host-number-shrink-anim;
+                        animation-timing-function: ease-in-out;
+                        animation-fill-mode: forwards;
+                    }
+
+                    &.grow {
+                        animation-duration: 0.5s;
+                        animation-name: login-host-number-grow-anim;
+                        animation-timing-function: ease-in-out;
+                        animation-fill-mode: forwards;
+                    }
                 }
             }
 
@@ -717,7 +742,47 @@
     }
 }
 
-@keyframes login-adv-shrink-anim {
+@keyframes login-host-number-shrink-anim {
+    0% {
+        margin-right: 0;
+        font-size: 12.8rem;
+        line-height: 13.2rem;
+        font-weight: 500;
+    }
+
+    50% {
+        font-weight: 600;
+    }
+
+    100% {
+        margin-right: 74rem;
+        font-size: 3.6rem;
+        line-height: 4.4rem;
+        font-weight: 700;
+    }
+}
+
+@keyframes login-host-number-grow-anim {
+    0% {
+        margin-right: 74rem;
+        font-size: 3.6rem;
+        line-height: 4.4rem;
+        font-weight: 700;
+    }
+
+    50% {
+        font-weight: 500;
+    }
+
+    100% {
+        margin-right: 0;
+        font-size: 12.8rem;
+        line-height: 13.2rem;
+        font-weight: 500;
+    }
+}
+
+/*@keyframes login-adv-shrink-anim {
     from {
         width: 100vw;
     }
@@ -735,4 +800,4 @@
     to {
         width: 100vw;
     }
-}
+}*/

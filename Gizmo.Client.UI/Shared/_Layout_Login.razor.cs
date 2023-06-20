@@ -68,7 +68,7 @@ namespace Gizmo.Client.UI.Shared
         #region CLASSMAPPERS
 
         protected string ClassName => new ClassMapper()
-                .Add("giz-login__adv")
+                .Add("giz-host-number")
                 .If("shrink", () => _slideIn)
                 .If("grow", () => _slideOut)
                 .If("collapsed", () => !_slideIn && !_slideOut && !_previousIsIdle)
