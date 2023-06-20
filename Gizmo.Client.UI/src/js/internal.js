@@ -787,8 +787,9 @@ window.unregisterVideoComponent = function unregisterVideoComponent(
     //console.log(element);
 };
 
-window.playVideo = function playVideo(element) {
+window.playVideo = function playVideo(id) {
     try {
+        var element = document.getElementById(id);
         element.muted = true;
         element.play();
     } catch (error) {

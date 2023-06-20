@@ -11,6 +11,25 @@
             display: grid;
             grid-template-rows: min-content 1fr min-content;
             position: relative;
+            width: 100vw;
+
+            &.collapsed {
+                width: calc(100vw - 74rem);
+            }
+
+            &.shrink {
+                animation-duration: 1s;
+                animation-name: login-adv-shrink-anim;
+                animation-timing-function: ease-in-out;
+                animation-fill-mode: forwards;
+            }
+
+            &.grow {
+                animation-duration: 1s;
+                animation-name: login-adv-grow-anim;
+                animation-timing-function: ease-in-out;
+                animation-fill-mode: forwards;
+            }
 
             &__background {
                 position: absolute;
@@ -19,10 +38,72 @@
                 width: 100%;
                 height: 100%;
                 z-index: 0;
+                overflow: hidden;
+
+                .giz-login-background-wrapper {
+                    position: absolute;
+                    //top: 0;
+                    //left: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 0;
+
+                    &.current {
+                        z-index: 1;
+                    }
+
+                    &.slide-in-top {
+                        animation-duration: 1s;
+                        animation-name: login-background-slide-in-top-anim;
+                        animation-timing-function: ease-in-out;
+                        animation-fill-mode: forwards;
+                    }
+
+                    &.slide-out-top {
+                        animation-duration: 1s;
+                        animation-name: login-background-slide-out-top-anim;
+                        animation-timing-function: ease-in-out;
+                        animation-fill-mode: forwards;
+                    }
+
+                    &.slide-in-bottom {
+                        animation-duration: 1s;
+                        animation-name: login-background-slide-in-bottom-anim;
+                        animation-timing-function: ease-in-out;
+                        animation-fill-mode: forwards;
+                    }
+
+                    &.slide-out-bottom {
+                        animation-duration: 1s;
+                        animation-name: login-background-slide-out-bottom-anim;
+                        animation-timing-function: ease-in-out;
+                        animation-fill-mode: forwards;
+                    }
+
+                    &.slide-in-left {
+                        animation-duration: 1s;
+                        animation-name: login-background-slide-in-left-anim;
+                        animation-timing-function: ease-in-out;
+                        animation-fill-mode: forwards;
+                    }
+
+                    &.slide-in-right {
+                        animation-duration: 1s;
+                        animation-name: login-background-slide-in-right-anim;
+                        animation-timing-function: ease-in-out;
+                        animation-fill-mode: forwards;
+                    }
+                }
 
                 img {
                     width: 100%;
                     height: 100%;
+                }
+
+                video {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: fill;
                 }
             }
 
@@ -97,10 +178,13 @@
         }
 
         &__login {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100vh;
             max-height: 100vh;
-            //overflow-y: hidden;
-            background-color: #0C0F11;
-            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
     }
 }
@@ -132,6 +216,8 @@
 }
 
 .giz-login-card {
+    //right: -74.0rem;
+    background-color: #0C0F11;
     display: grid;
     grid-template-rows: 1fr min-content 1fr;
     align-items: center;
@@ -141,6 +227,24 @@
     position: relative;
     /*overflow: hidden;*/
     padding: 1.0rem;
+
+    &.hidden {
+        right: -74rem;
+    }
+
+    &.slide-in {
+        animation-duration: 0.5s;
+        animation-name: login-card-slide-in-anim;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards;
+    }
+
+    &.slide-out {
+        animation-duration: 0.5s;
+        animation-name: login-card-slide-out-anim;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards;
+    }
 
     &__header {
         display: grid;
@@ -530,5 +634,105 @@
                 min-height: 2.4rem;
             }
         }
+    }
+}
+
+@keyframes login-card-slide-in-anim {
+    from {
+        right: -74rem;
+    }
+
+    to {
+        right: 0%;
+    }
+}
+
+@keyframes login-card-slide-out-anim {
+    from {
+        right: 0%;
+    }
+
+    to {
+        right: -74rem;
+    }
+}
+
+@keyframes login-background-slide-in-top-anim {
+    from {
+        top: -100%;
+    }
+
+    to {
+        top: 0%;
+    }
+}
+
+@keyframes login-background-slide-out-top-anim {
+    from {
+        top: 0%;
+    }
+
+    to {
+        top: -100%;
+    }
+}
+
+@keyframes login-background-slide-in-bottom-anim {
+    from {
+        bottom: -100%;
+    }
+
+    to {
+        bottom: 0%;
+    }
+}
+
+@keyframes login-background-slide-out-bottom-anim {
+    from {
+        bottom: 0%;
+    }
+
+    to {
+        bottom: -100%;
+    }
+}
+
+@keyframes login-background-slide-in-left-anim {
+    from {
+        left: -100%;
+    }
+
+    to {
+        left: 0%;
+    }
+}
+
+@keyframes login-background-slide-in-right-anim {
+    from {
+        right: -100%;
+    }
+
+    to {
+        right: 0%;
+    }
+}
+
+@keyframes login-adv-shrink-anim {
+    from {
+        width: 100vw;
+    }
+
+    to {
+        width: calc(100vw - 74rem);
+    }
+}
+
+@keyframes login-adv-grow-anim {
+    from {
+        width: calc(100vw - 74rem);
+    }
+
+    to {
+        width: 100vw;
     }
 }

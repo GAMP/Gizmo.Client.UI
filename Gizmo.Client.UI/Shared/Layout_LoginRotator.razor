@@ -2,15 +2,30 @@
 @inherits CustomDOMComponentBase
 
 <div class="giz-login__adv__background">
-    @if (ViewState.CurrentItem != null)
+    @if (_previousItem != null)
     {
-        @if (ViewState.CurrentItem.IsVideo)
-        {
-            <Layout_LoginRotatorVideo MediaPath="@ViewState.CurrentItem.MediaPath" />
-        }
-        else
-        {
-            <img src="@ViewState.CurrentItem.MediaPath" alt="loading">
-        }
+        <div class="giz-login-background-wrapper previous">
+            @if (_previousItem.IsVideo)
+            {
+                <Layout_LoginRotatorVideo MediaPath="@_previousItem.MediaPath" />
+            }
+            else
+            {
+                <img src="@_previousItem.MediaPath" alt="loading">
+            }
+        </div>
+    }
+    @if (_currentItem != null)
+    {
+        <div class="@AnimatedClassName">
+            @if (_currentItem.IsVideo)
+            {
+                <Layout_LoginRotatorVideo MediaPath="@_currentItem.MediaPath" OnVideoEvent="@OnVideoEventHandle" />
+            }
+            else
+            {
+                <img src="@_currentItem.MediaPath" alt="loading">
+            }
+        </div>
     }
 </div>

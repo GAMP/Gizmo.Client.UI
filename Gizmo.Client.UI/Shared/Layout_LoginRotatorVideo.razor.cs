@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Gizmo.Client.UI.View.Services;
-using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -10,11 +8,11 @@ namespace Gizmo.Client.UI.Shared
 {
     public partial class Layout_LoginRotatorVideo : CustomDOMComponentBase, IAsyncDisposable
     {
-        [Inject]
-        LoginRotatorViewService LoginRotatorViewService { get; set; }
-
         [Parameter]
         public string MediaPath { get; set; }
+
+        [Parameter]
+        public EventCallback<VideoEventArgs> OnVideoEvent { get; set; }
 
         private VideoEventInterop VideoEventInterop { get; set; }
 
@@ -22,14 +20,7 @@ namespace Gizmo.Client.UI.Shared
         {
             if (args.Id == Id)
             {
-                if (args.VideoState == VideoStates.Ended)
-                {
-                    await LoginRotatorViewService.PlayNext();
-                }
-                else
-                {
-                    await JsRuntime.InvokeVoidAsync("playVideo", Ref);
-                }
+                await OnVideoEvent.InvokeAsync(args);
             }
         }
 
