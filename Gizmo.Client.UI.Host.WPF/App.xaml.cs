@@ -18,6 +18,9 @@ namespace Gizmo.Client.UI.Host.WPF
         {
             base.OnStartup(e);
 
+            //close application as soon as main window closes
+            ShutdownMode = ShutdownMode.OnMainWindowClose;
+
             var hostBuilder = new HostBuilder();
 
 
@@ -73,7 +76,7 @@ namespace Gizmo.Client.UI.Host.WPF
             //create host window
             var hostWindow = (HostWindow)host.Services.GetRequiredService<IHostWindow>();
 
-            //create notifications window
+            //create notifications window (early load)
             var notificationsHost = host.Services.GetRequiredService<INotificationsHost>();
 
             //show host window
