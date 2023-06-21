@@ -8,7 +8,7 @@ namespace Gizmo.Client.UI.Components
     public partial class QuickLauncherQuickLaunch : CustomDOMComponentBase
     {
         [Inject]
-        IOptions<PopularItemsOptions> PopularItemsOptions { get; set; }
+        IOptions<ClientInterfaceOptions> ClientInterfaceOptions { get; set; }
 
         [Inject]
         QuickLaunchViewState ViewState { get; set; }

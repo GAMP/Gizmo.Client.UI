@@ -9,7 +9,7 @@ namespace Gizmo.Client.UI.Components
     public partial class QuickLauncherFavorites : CustomDOMComponentBase
     {
         [Inject]
-        IOptions<PopularItemsOptions> PopularItemsOptions { get; set; }
+        IOptions<ClientInterfaceOptions> ClientInterfaceOptions { get; set; }
 
         [Inject]
         FavoritesViewState ViewState { get; set; }
