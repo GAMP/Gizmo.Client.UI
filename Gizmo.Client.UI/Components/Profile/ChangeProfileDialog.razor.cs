@@ -42,7 +42,7 @@ namespace Gizmo.Client.UI.Components
 
         public void OnClickClearValueButtonHandler(MouseEventArgs args)
         {
-            SetSelectedCountry(Countries.Where(a => a.PhonePrefix == "+").FirstOrDefault());
+            SetSelectedCountry(Countries.Where(a => a.Text == "Other").FirstOrDefault());
         }
 
         public IconSelectCountry GetSelectedCountry()
@@ -62,12 +62,10 @@ namespace Gizmo.Client.UI.Components
             if (value == null)
             {
                 UserChangeProfileViewStateService.SetCountry(null);
-                UserChangeProfileViewStateService.SetPrefix(null);
             }
             else
             {
                 UserChangeProfileViewStateService.SetCountry(value.Text);
-                UserChangeProfileViewStateService.SetPrefix(value.PhonePrefix);
             }
         }
 
@@ -88,11 +86,6 @@ namespace Gizmo.Client.UI.Components
                 else
                 {
                     IconSelectCountry defaultItem = null;
-
-                    if (_defaultCountry != null && _defaultCountry.CallingCodeSuffixes.Count() > 0)
-                    {
-                        defaultItem = Countries.Where(a => a.PhonePrefix == _defaultCountry.CallingCodeRoot + _defaultCountry.CallingCodeSuffixes.First()).FirstOrDefault();
-                    }
 
                     if (defaultItem == null)
                     {
@@ -119,21 +112,16 @@ namespace Gizmo.Client.UI.Components
 
             foreach (var country in countries)
             {
-                foreach (var suffix in country.CallingCodeSuffixes)
+                Countries.Add(new IconSelectCountry()
                 {
-                    Countries.Add(new IconSelectCountry()
-                    {
-                        Text = country.NativeName,
-                        PhonePrefix = country.CallingCodeRoot + suffix,
-                        Icon = country.FlagSvg
-                    });
-                }
+                    Text = country.NativeName,
+                    Icon = country.FlagSvg
+                });
             }
 
             var other = new IconSelectCountry()
             {
                 Text = "Other",
-                PhonePrefix = "+",
                 Icon = "_content/Gizmo.Client.UI/img/no-flag-image.svg"
             };
 
@@ -141,7 +129,7 @@ namespace Gizmo.Client.UI.Components
 
             foreach (var item in Countries)
             {
-                item.Display = item.Text + " " + item.PhonePrefix;
+                item.Display = item.Text;
             }
 
             //Render the list first.

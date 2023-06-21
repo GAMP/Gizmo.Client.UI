@@ -55,7 +55,7 @@ namespace Gizmo.Client.UI.Pages
             }
             else
             {
-                return Countries.Where(a => a.Text == ViewState.Country).FirstOrDefault();
+                return Countries.Where(a => a.Text == ViewState.Country && a.PhonePrefix == ViewState.Prefix).FirstOrDefault();
             }
         }
 
