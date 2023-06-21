@@ -71,6 +71,7 @@ namespace Gizmo.Client.UI.Pages
         {
             this.SubscribeChange(ViewState);
             this.SubscribeChange(HostQRCodeViewState);
+            this.SubscribeChange(HostReservationViewState);
 
             //await InvokeVoidAsync("navigationBlock");
 
@@ -79,8 +80,9 @@ namespace Gizmo.Client.UI.Pages
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(ViewState);
+            this.UnsubscribeChange(HostReservationViewState);
             this.UnsubscribeChange(HostQRCodeViewState);
+            this.UnsubscribeChange(ViewState);
 
             base.Dispose();
         }

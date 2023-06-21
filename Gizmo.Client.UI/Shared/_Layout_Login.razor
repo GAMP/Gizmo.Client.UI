@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @using Gizmo.Client.UI.ViewModels
+@using Gizmo.UI;
 @using Microsoft.Extensions.Options
 
 @if (!string.IsNullOrEmpty(ClientUIOptions.Value.Skin))
@@ -11,7 +12,7 @@
 
 <main client-theme="true">
     <div class="giz-main-container">
-        <div class="giz-login__adv">
+        <div class=" @ClassName">
             @if (LoginRotatorViewState.IsEnabled)
             {
                 <Layout_LoginRotator />
@@ -21,19 +22,30 @@
                 <Layout_LoginWallpaper />
             }
 
-            <div class="giz-login__adv__header">
-                <div class="giz-nav-logo">
-                    @*<div>
-                        <img alt="loading">
-                    </div>*@
-                </div>
-                <div class="@ClassName"><HostNumber /></div>
+            <div class="giz-host-number">
+                <HostNumber />
             </div>
 
-            <div class="giz-login__adv__body">
+            <div class="giz-login-warnings">
+                @if ((_previousIsIdle || _slideOut) && HostReservationViewState.IsReserved)
+                {
+                    @if (HostReservationViewState.IsLoginBlocked)
+                    {
+                        <Alert AlertType="AlertTypes.Warning"
+                               Title="@LocalizationService.GetString("GIZ_LOGIN_RESERVATION_WARNING_TITLE", HostReservationViewState.Time.Value.ToShortTimeString())"
+                               Text="@LocalizationService.GetString("GIZ_HOST_RESERVATION_LOGIN_IS_CURRENTLY_BLOCKED")" />
+
+                    }
+                    else
+                    {
+                        <Alert AlertType="AlertTypes.Warning"
+                               Title="@LocalizationService.GetString("GIZ_LOGIN_RESERVATION_WARNING_TITLE", HostReservationViewState.Time.Value.ToShortTimeString())"
+                               Text="@LocalizationService.GetString("GIZ_HOST_RESERVATION_LOGIN_IS_CURRENTLY_UNBLOCKED")" />
+                    }
+                }
             </div>
 
-            <div class="giz-login__adv__footer" @onclick="test">
+            <div class="giz-client-status" @onclick="test">
                 <ClientLanguageMenu />
 
                 <div class="giz-server">

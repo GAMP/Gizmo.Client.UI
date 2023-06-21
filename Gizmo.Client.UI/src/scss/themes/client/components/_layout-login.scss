@@ -7,28 +7,73 @@
 
     .giz-login {
 
-        &__adv {
+        &-content {
             display: grid;
             grid-template-rows: min-content 1fr min-content;
             position: relative;
-            /*width: 100vw;
+
             &.collapsed {
-                width: calc(100vw - 74rem);
+                .giz-host-number {
+                    margin-right: 74rem;
+                    //Font ?
+                    font-family: 'Rubik';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: 3.6rem;
+                    line-height: 4.4rem;
+                }
+
+                .giz-client-status {
+                    opacity: 1;
+                    pointer-events: all;
+                }
             }
 
             &.shrink {
-                animation-duration: 0.5s;
-                animation-name: login-adv-shrink-anim;
-                animation-timing-function: ease-in-out;
-                animation-fill-mode: forwards;
+                .giz-host-number {
+                    animation-duration: 0.5s;
+                    animation-name: login-host-number-shrink-anim;
+                    animation-timing-function: ease-in-out;
+                    animation-fill-mode: forwards;
+                }
+
+                .giz-client-status {
+                    animation-duration: 0.5s;
+                    animation-name: login-client-status-shrink-anim;
+                    animation-timing-function: ease-in-out;
+                    animation-fill-mode: forwards;
+                }
+
+                .giz-login-warnings {
+                    animation-duration: 0.5s;
+                    animation-name: login-warnings-slide-out-anim;
+                    animation-timing-function: ease-in-out;
+                    animation-fill-mode: forwards;
+                }
             }
 
             &.grow {
-                animation-duration: 0.5s;
-                animation-name: login-adv-grow-anim;
-                animation-timing-function: ease-in-out;
-                animation-fill-mode: forwards;
-            }*/
+                .giz-host-number {
+                    animation-duration: 0.5s;
+                    animation-name: login-host-number-grow-anim;
+                    animation-timing-function: ease-in-out;
+                    animation-fill-mode: forwards;
+                }
+
+                .giz-client-status {
+                    animation-duration: 0.5s;
+                    animation-name: login-client-status-grow-anim;
+                    animation-timing-function: ease-in-out;
+                    animation-fill-mode: forwards;
+                }
+
+                .giz-login-warnings {
+                    animation-duration: 0.5s;
+                    animation-name: login-warnings-slide-in-anim;
+                    animation-timing-function: ease-in-out;
+                    animation-fill-mode: forwards;
+                }
+            }
 
             &__background {
                 position: absolute;
@@ -106,63 +151,35 @@
                 }
             }
 
-            &__header {
-                display: flex;
-                justify-content: space-between;
+            .giz-host-number {
+                position: absolute;
+                top: 2.4rem;
+                right: 3.2rem;
                 padding: 2.4rem 3.2rem;
                 z-index: 1;
-
-                .giz-host-number {
-                    //Font ?
-                    font-family: 'Rubik';
-                    font-style: normal;
-                    font-weight: 500;
-                    font-size: 12.8rem;
-                    line-height: 13.2rem;
-
-                    &.collapsed {
-                        margin-right: 74rem;
-                        //Font ?
-                        font-family: 'Rubik';
-                        font-style: normal;
-                        font-weight: 700;
-                        font-size: 3.6rem;
-                        line-height: 4.4rem;
-                    }
-
-                    &.shrink {
-                        animation-duration: 0.5s;
-                        animation-name: login-host-number-shrink-anim;
-                        animation-timing-function: ease-in-out;
-                        animation-fill-mode: forwards;
-                    }
-
-                    &.grow {
-                        animation-duration: 0.5s;
-                        animation-name: login-host-number-grow-anim;
-                        animation-timing-function: ease-in-out;
-                        animation-fill-mode: forwards;
-                    }
-                }
+                //Font ?
+                font-family: 'Rubik';
+                font-style: normal;
+                font-weight: 500;
+                font-size: 12.8rem;
+                line-height: 13.2rem;
             }
 
-            &__body {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1;
-
-                .giz-carousel {
-                    max-width: 69.2rem;
-                    max-height: 51.6rem;
-                }
+            .giz-login-warnings {
+                position: absolute;
+                margin-top: 2.4rem;
+                left: 50%;
+                transform: translateX(-50%);
             }
 
-            &__footer {
+            .giz-client-status {
+                position: absolute;
                 display: flex;
-                align-items: center;
-                padding: 0 0 2.6rem 4.6rem;
+                bottom: 2.6rem;
+                left: 4.6rem;
                 z-index: 1;
+                opacity: 0;
+                //TODO: AAA pointer-events: none;
 
                 .giz-client-language-menu {
                     display: flex;
@@ -779,6 +796,46 @@
         font-size: 12.8rem;
         line-height: 13.2rem;
         font-weight: 500;
+    }
+}
+
+@keyframes login-client-status-shrink-anim {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes login-client-status-grow-anim {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes login-warnings-slide-in-anim {
+    from {
+        top: -100%;
+    }
+
+    to {
+        top: 0%;
+    }
+}
+
+@keyframes login-warnings-slide-out-anim {
+    from {
+        top: 0%;
+    }
+
+    to {
+        top: -100%;
     }
 }
 

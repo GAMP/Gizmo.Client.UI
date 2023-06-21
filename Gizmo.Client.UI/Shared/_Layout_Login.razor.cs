@@ -2,6 +2,7 @@
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
+using Gizmo.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
@@ -21,10 +22,7 @@ namespace Gizmo.Client.UI.Shared
         /// Gets client version view state.
         /// </summary>
         [Inject()]
-        private ClientVersionViewState ClientVersionViewState
-        {
-            get; set;
-        }
+        private ClientVersionViewState ClientVersionViewState { get; set; }
 
         [Inject]
         IOptions<ClientInterfaceOptions> ClientUIOptions { get; set; }
@@ -34,6 +32,10 @@ namespace Gizmo.Client.UI.Shared
 
         [Inject]
         LoginRotatorViewState LoginRotatorViewState { get; set; }
+
+        [Inject()]
+        HostReservationViewState HostReservationViewState { get; set; }
+
         private async void UserIdleViewState_OnChange(object sender, System.EventArgs e)
         {
             if (_previousIsIdle == UserIdleViewState.IsIdle)
@@ -68,7 +70,7 @@ namespace Gizmo.Client.UI.Shared
         #region CLASSMAPPERS
 
         protected string ClassName => new ClassMapper()
-                .Add("giz-host-number")
+                .Add("giz-login-content")
                 .If("shrink", () => _slideIn)
                 .If("grow", () => _slideOut)
                 .If("collapsed", () => !_slideIn && !_slideOut && !_previousIsIdle)
@@ -82,6 +84,13 @@ namespace Gizmo.Client.UI.Shared
         private void test()
         {
             UserIdleViewService.Toggle();
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            this.SubscribeChange(HostReservationViewState);
+
+            await base.OnInitializedAsync();
         }
     }
 }
