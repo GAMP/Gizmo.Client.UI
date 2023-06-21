@@ -23,7 +23,7 @@ namespace Gizmo.Client.UI.Pages
         #region PROPERTIES
 
         [Inject]
-        IOptions<PopularItemsOptions> PopularItemsOptions { get; set; }
+        IOptions<ClientInterfaceOptions> ClientInterfaceOptions { get; set; }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }

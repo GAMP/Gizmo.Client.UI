@@ -9,7 +9,7 @@ namespace Gizmo.Client.UI.Shared
     public partial class _Layout_Apps : LayoutComponentBase
     {
         [Inject]
-        IOptions<ClientUIOptions> ClientUIOptions { get; set; }
+        IOptions<ClientInterfaceOptions> ClientUIOptions { get; set; }
 
         [Inject]
         IJSRuntime JsRuntime { get; set; }

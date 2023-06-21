@@ -33,7 +33,7 @@
       <Files Include="$(PublishDir)*.exe" />
       <Files Include="$(PublishDir)*.dll" />
       <Files Include="$(PublishDir)*.json" />
-      <FilesToDelete Include="@(Files)" Condition="%(Filename) != 'Gizmo.Client.UI' and %(Filename) != 'composition' and %(Filename) != 'options' and %(Filename) != 'Gizmo.Web.Components' " />
+      <FilesToDelete Include="@(Files)" Condition="%(Filename) != 'Gizmo.Client.UI' and %(Filename) != 'composition' and %(Filename) != 'Gizmo.Web.Components' " />
       <DirsToClean Include="$([System.IO.Directory]::GetDirectories('$(PublishDir)'))" />
     </ItemGroup>
 

@@ -27,7 +27,7 @@ namespace Gizmo.Client.UI.Shared
         }
 
         [Inject]
-        IOptions<ClientUIOptions> ClientUIOptions { get; set; }
+        IOptions<ClientInterfaceOptions> ClientUIOptions { get; set; }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }

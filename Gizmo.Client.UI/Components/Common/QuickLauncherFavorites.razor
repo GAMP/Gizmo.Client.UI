@@ -2,7 +2,7 @@
 @inherits CustomDOMComponentBase
 
 <GizDock>
-    @foreach (var item in ViewState.Executables.Take(PopularItemsOptions.Value.MaxQuickLaunchExecutables))
+    @foreach (var item in ViewState.Executables.Take(PopularItemsOptions.Value.MaxPopularUserExecutables))
     {
         <GizDockItem @key="@item" Executable="@item" />
     }
