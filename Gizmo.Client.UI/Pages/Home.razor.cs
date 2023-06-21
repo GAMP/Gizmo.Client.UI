@@ -1,5 +1,4 @@
-﻿using Gizmo.Client.UI.Services;
-using Gizmo.Client.UI.View.Services;
+﻿using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI;
 using Gizmo.UI.Services;
@@ -7,7 +6,6 @@ using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
@@ -20,7 +18,7 @@ namespace Gizmo.Client.UI.Pages
         #region PROPERTIES
 
         [Inject]
-        IOptions<PopularItemsOptions> PopularItemsOptions { get; set; }
+        IOptions<ClientInterfaceOptions> ClientInterfaceOptions { get; set; }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
