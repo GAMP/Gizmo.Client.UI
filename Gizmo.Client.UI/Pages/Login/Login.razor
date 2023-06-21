@@ -41,7 +41,7 @@
     </CardHeader>
 
     <CardBody>
-        @if (UserLoginOptions.Value.Enabled)
+        @if (!UserLoginOptions.Value.Disabled)
         {
             <div class="giz-login-title">@LocalizationService.GetString("GIZ_LOGIN_SIGN_IN_TITLE")</div>
             <div>
@@ -114,7 +114,7 @@
         @if (HostQRCodeViewState.IsEnabled)
         {
             <div class="giz-alternative-login">
-                @if (UserLoginOptions.Value.Enabled)
+                @if (!UserLoginOptions.Value.Disabled)
                 {
                     <div class="giz-alternative-login__separator"><span>@LocalizationService.GetString("GIZ_LOGIN_OR")</span></div>
                 }
