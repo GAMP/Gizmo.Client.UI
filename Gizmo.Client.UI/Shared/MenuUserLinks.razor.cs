@@ -1,14 +1,9 @@
-﻿using Gizmo.Client.UI.Components;
-using Gizmo.Client.UI.View.Services;
+﻿using Gizmo.Client.UI.View.Services;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System.Collections.Generic;
-using System.Threading;
-using System;
 using System.Threading.Tasks;
-using Gizmo.Client.UI.Services;
 
 namespace Gizmo.Client.UI.Shared
 {

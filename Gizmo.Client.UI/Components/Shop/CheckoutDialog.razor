@@ -67,11 +67,10 @@
                     @if (ViewState.ShowPaymentMethods)
                     {
                         <div class="giz-checkout__payment-method">
-                            <div class="giz-checkout__summary__payment-method__label">@LocalizationService.GetString("GIZ_SHOP_PAYMENT_METHOD")</div>
+                            <div class="giz-checkout__payment-method__label">@LocalizationService.GetString("GIZ_SHOP_PAYMENT_METHOD")</div>
                             <EditForm EditContext="@UserCartService.EditContext">
                                 <Select IsDisabled="@(ViewState.IsLoading)"
                                         IsTransparent="true"
-                                        ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
                                         HandleSVGIcon="Icons.Select_Client"
                                         TValue="int?"
                                         Value="@ViewState.PaymentMethodId"
