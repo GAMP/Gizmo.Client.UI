@@ -1,10 +1,10 @@
 ﻿@inherits LayoutComponentBase
 @using Microsoft.Extensions.Options
 
-@if (!string.IsNullOrEmpty(ClientUIOptions.Value.Skin))
+@if (!string.IsNullOrEmpty(ClientUIOptions.Value.Theme))
 {
     <HeadContent>
-        <link href="css/@ClientUIOptions.Value.Skin" rel="stylesheet" />
+        <link href="https://static/@(()=>ClientUIOptions.Value.Theme)" rel="stylesheet" />
     </HeadContent>
 }
 
