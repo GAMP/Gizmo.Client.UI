@@ -4,7 +4,7 @@
 @if (!string.IsNullOrEmpty(ClientUIOptions.Value.Theme))
 {
     <HeadContent>
-        <link href="https://static/@(()=>ClientUIOptions.Value.Theme)" rel="stylesheet" />
+        <link href="https://static/@ClientUIOptions.Value.Theme" rel="stylesheet" />
     </HeadContent>
 }
 
@@ -12,7 +12,7 @@
     <div class="giz-background">
         @if (!string.IsNullOrWhiteSpace(ClientUIOptions.Value.Background))
         {
-            <img src="https://staic/@(()=>Environment.ExpandEnvironmentVariables(ClientUIOptions.Value.Background))" />
+            <img src="https://static/@(Environment.ExpandEnvironmentVariables(ClientUIOptions.Value.Background))" />
         }
         else
         {

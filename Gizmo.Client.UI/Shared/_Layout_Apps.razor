@@ -4,13 +4,20 @@
 @if (!string.IsNullOrEmpty(ClientUIOptions.Value.Theme))
 {
     <HeadContent>
-        <link href="https://static/@(()=>ClientUIOptions.Value.Theme)" rel="stylesheet" />
+        <link href="https://static/@ClientUIOptions.Value.Theme" rel="stylesheet" />
     </HeadContent>
 }
 
 <main @onclick="OnMainClick" client-theme="true">
     <div class="giz-background">
-        <img src="_content/Gizmo.Client.UI/img/background.jpg" />
+        @if (!string.IsNullOrWhiteSpace(ClientUIOptions.Value.Background))
+        {
+            <img src="https://static/@(Environment.ExpandEnvironmentVariables(ClientUIOptions.Value.Background))" />
+        }
+        else
+        {
+            <img src="_content/Gizmo.Client.UI/img/background.jpg" />
+        }
     </div>
     <div class="giz-container">
         <div class="giz-app__header">
