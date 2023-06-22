@@ -1,22 +1,14 @@
-﻿using Gizmo.UI.Services;
+﻿using Gizmo.Client.UI.View.States;
 using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI
 {
     public partial class HeaderModulesMenu : ComponentBase
     {
-        #region PROPERTIES
-
-        /// <summary>
-        /// Gets component discovery service.
-        /// </summary>
         [Inject()]
-        public IUICompositionService ComponentDiscoveryService
+        private PageModulesViewState ViewState
         {
-            get;
-            init;
+            get;set;
         }
-
-        #endregion
     }
 }

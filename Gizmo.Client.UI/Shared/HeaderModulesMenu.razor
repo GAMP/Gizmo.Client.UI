@@ -2,10 +2,10 @@
 @inherits ComponentBase
 
 <div class="giz-header__modules-menu">
-    @foreach (var pageModule in ComponentDiscoveryService.PageModules)
+    @foreach (var pageModule in ViewState.PageModules)
     {
         <div class="giz-header__modules-menu-item">
-            <HeaderModulesMenuItem MetaData="@pageModule" />
+            <HeaderModulesMenuItem MetaData="@pageModule.MetaData" />
         </div>
     }
 </div>
