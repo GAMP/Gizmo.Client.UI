@@ -17,6 +17,9 @@ namespace Gizmo.Client.UI
         [Inject]
         UserBalanceViewState UserBalanceViewState { get; set; }
 
+        [Inject]
+        UserSessionViewState UserSessionViewState { get; set; }
+
         private void ToggleBalanceVisibility()
         {
             _hideBalance = !_hideBalance;
