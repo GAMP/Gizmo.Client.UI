@@ -27,6 +27,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="$(ProjectDir)static\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
   <Target Name="CleanPublishOutput" AfterTargets="Publish">
     <ItemGroup>
       <Files Include="$(PublishDir)*.pdb" />
