@@ -17,17 +17,13 @@ namespace Gizmo.Client.UI
             {
                 TimeSpan timeSpan = TimeSpan.FromMinutes(product.TimeProduct.Minutes);
 
-                if (timeSpan.TotalHours > 12)
+                if (timeSpan.TotalHours >= 1 && timeSpan.TotalHours < 25)
+                {
+                    result = $"product-time-default-{((int)timeSpan.TotalHours)}.svg";
+                }
+                else if (timeSpan.TotalHours > 24)
                 {
                     result = "product-time-default-24.svg";
-                }
-                else if (timeSpan.TotalHours > 6)
-                {
-                    result = "product-time-default-11.svg";
-                }
-                else if (timeSpan.TotalHours > 3)
-                {
-                    result = "product-time-default-4.svg";
                 }
             }
 
