@@ -3,11 +3,11 @@
 
 <div class="giz-home-apps-wrapper">
     <div class="giz-home-apps">
-        <div class="giz-home-apps__header @(!ViewState.IsFeedEnabled ? "full-quick-launcher" : "")">
+        <div class="giz-home-apps__header @(!FeedsViewState.IsEnabled ? "full-quick-launcher" : "")">
             <div class="giz-home-apps__header__quick-launch">
                 <QuickLauncher />
             </div>
-            @if (ViewState.IsFeedEnabled)
+            @if (FeedsViewState.IsEnabled)
             {
                 <div class="giz-home-apps__header__ads">
                     <NewsRotator />

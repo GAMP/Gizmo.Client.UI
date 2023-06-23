@@ -20,6 +20,9 @@ namespace Gizmo.Client.UI.Pages
         #region PROPERTIES
 
         [Inject]
+        FeedsViewState FeedsViewState { get; set; }
+
+        [Inject]
         IOptions<ClientInterfaceOptions> ClientInterfaceOptions { get; set; }
 
         [Inject]
