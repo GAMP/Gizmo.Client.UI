@@ -18,7 +18,7 @@ namespace Gizmo.Client.UI
         UserBalanceViewState UserBalanceViewState { get; set; }
 
         [Inject]
-        UserSessionViewState UserSessionViewState { get; set; }
+        UsageSessionViewState UsageSessionViewState { get; set; }
 
         private void ToggleBalanceVisibility()
         {
@@ -27,12 +27,14 @@ namespace Gizmo.Client.UI
 
         protected override Task OnInitializedAsync()
         {
+            this.SubscribeChange(UsageSessionViewState);
             this.SubscribeChange(UserBalanceViewState);
             return base.OnInitializedAsync();
         }
 
         public void Dispose()
         {
+            this.UnsubscribeChange(UsageSessionViewState);
             this.UnsubscribeChange(UserBalanceViewState);
         }
     }
