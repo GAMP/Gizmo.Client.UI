@@ -35,6 +35,11 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         NavigationService NavigationService { get; set; }
 
+        public void OnCloseButtonClickHandler()
+        {
+            UserPasswordRecoveryService.Reset();
+        }
+
         private void SelectRecoveryMethod(ICollection<Button> selectedItems)
         {
             if (selectedItems.Where(a => a.Name == "Email").Any())

@@ -13,17 +13,17 @@
         <div class="giz-login-alerts">
             @if (ViewState.HasError)
             {
-                <Toast CanClose="true" AlertType="AlertTypes.Danger" Text="@ViewState.ErrorMessage" />
+                <Toast CanClose="true" OnCloseButtonClick="OnCloseButtonClickHandler" AlertType="AlertTypes.Danger" Text="@ViewState.ErrorMessage" />
             }
         </div>
     </CardHeader>
     <CardBody>
-        <EditForm EditContext="@UserRegistrationBasicFieldsService.EditContext">
+        <EditForm EditContext="@UserRegistrationBasicFieldsViewService.EditContext">
             <div class="giz-login-title">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
             <div class="giz-registration-form-input">
                 <TextInput UpdateOnInput="true"
                            Value="@ViewState.Username"
-                           ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetUsername(value))"
+                           ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetUsername(value))"
                            ValueExpression="@(() => ViewState.Username)"
                            Size="InputSizes.Small"
                            IsFullWidth="true"
@@ -34,7 +34,7 @@
                     <PasswordInput ShowRevealButton="true"
                                    UpdateOnInput="true"
                                    Value="@ViewState.Password"
-                                   ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetPassword(value))"
+                                   ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetPassword(value))"
                                    ValueExpression="@(() => ViewState.Password)"
                                    Size="InputSizes.Small"
                                    IsFullWidth="true"
@@ -43,7 +43,7 @@
                 </div>
                 <PasswordInput UpdateOnInput="true"
                                Value="@ViewState.RepeatPassword"
-                               ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetRepeatPassword(value))"
+                               ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetRepeatPassword(value))"
                                ValueExpression="@(() => ViewState.RepeatPassword)"
                                Size="InputSizes.Small"
                                IsFullWidth="true"
@@ -53,7 +53,7 @@
                 @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.FirstName)
                 {
                     <TextInput Value="@ViewState.FirstName"
-                               ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetFirstName(value))"
+                               ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetFirstName(value))"
                                ValueExpression="@(() => ViewState.FirstName)"
                                Size="InputSizes.Small"
                                IsFullWidth="true"
@@ -62,7 +62,7 @@
                 @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.LastName)
                 {
                     <TextInput Value="@ViewState.LastName"
-                               ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetLastName(value))"
+                               ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetLastName(value))"
                                ValueExpression="@(() => ViewState.LastName)"
                                Size="InputSizes.Small"
                                IsFullWidth="true"
@@ -73,7 +73,7 @@
                 @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.BirthDate)
                 {
                     <MaskedDateInput Value="@ViewState.BirthDate"
-                                     ValueChanged="@((DateTime? value) => UserRegistrationBasicFieldsService.SetBirthDate(value))"
+                                     ValueChanged="@((DateTime? value) => UserRegistrationBasicFieldsViewService.SetBirthDate(value))"
                                      ValueExpression="@(() => ViewState.BirthDate)"
                                      Size="InputSizes.Small"
                                      IsFullWidth="true"
@@ -82,7 +82,7 @@
                 @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.Sex)
                 {
                     <Select Value="@ViewState.Sex"
-                            ValueChanged="@((Sex value) => UserRegistrationBasicFieldsService.SetSex(value))"
+                            ValueChanged="@((Sex value) => UserRegistrationBasicFieldsViewService.SetSex(value))"
                             ValueExpression="@(() => ViewState.Sex)"
                             Size="InputSizes.Small"
                             HandleSVGIcon="Icons.Select_Client"
@@ -103,7 +103,7 @@
                     <div class="giz-form-input">
                         <TextInput UpdateOnInput="true"
                                    Value="@ViewState.Email"
-                                   ValueChanged="@((string value) => UserRegistrationBasicFieldsService.SetEmail(value))"
+                                   ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetEmail(value))"
                                    ValueExpression="@(() => ViewState.Email)"
                                    Size="InputSizes.Small"
                                    IsFullWidth="true"
@@ -116,7 +116,7 @@
                         Color="ButtonColors.Accent"
                         Size="ButtonSizes.Large"
                         IsFullWidth="true"
-                        @onclick="@UserRegistrationBasicFieldsService.SubmitAsync">@LocalizationService.GetString("GIZ_GEN_CONTINUE")</Button>
+                        @onclick="@UserRegistrationBasicFieldsViewService.SubmitAsync">@LocalizationService.GetString("GIZ_GEN_CONTINUE")</Button>
             </div>
         </EditForm>
     </CardBody>

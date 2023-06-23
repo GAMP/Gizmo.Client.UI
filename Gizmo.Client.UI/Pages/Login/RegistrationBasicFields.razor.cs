@@ -19,10 +19,15 @@ namespace Gizmo.Client.UI.Pages
         UserRegistrationConfirmationMethodViewService UserRegistrationConfirmationMethodService { get; set; }
 
         [Inject]
-        UserRegistrationBasicFieldsViewService UserRegistrationBasicFieldsService { get; set; }
+        UserRegistrationBasicFieldsViewService UserRegistrationBasicFieldsViewService { get; set; }
 
         [Inject]
         UserRegistrationBasicFieldsViewState ViewState { get; set; }
+
+        public void OnCloseButtonClickHandler()
+        {
+            UserRegistrationBasicFieldsViewService.Reset();
+        }
 
         protected override void OnInitialized()
         {

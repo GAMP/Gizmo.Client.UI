@@ -32,13 +32,18 @@ namespace Gizmo.Client.UI.Pages
         UserRegistrationConfirmationMethodViewState UserRegistrationConfirmationMethodViewState { get; set; }
 
         [Inject]
-        UserRegistrationAdditionalFieldsViewService UserRegistrationAdditionalFieldsService { get; set; }
+        UserRegistrationAdditionalFieldsViewService UserRegistrationAdditionalFieldsViewService { get; set; }
 
         [Inject]
         UserRegistrationAdditionalFieldsViewState ViewState { get; set; }
 
         [Inject]
         NavigationService NavigationService { get; set; }
+
+        public void OnCloseButtonClickHandler()
+        {
+            UserRegistrationAdditionalFieldsViewService.Reset();
+        }
 
         public List<IconSelectCountry> Countries { get; set; } = new List<IconSelectCountry>();
 
@@ -63,13 +68,13 @@ namespace Gizmo.Client.UI.Pages
         {
             if (value == null)
             {
-                UserRegistrationAdditionalFieldsService.SetCountry(null);
-                UserRegistrationAdditionalFieldsService.SetPrefix(null);
+                UserRegistrationAdditionalFieldsViewService.SetCountry(null);
+                UserRegistrationAdditionalFieldsViewService.SetPrefix(null);
             }
             else
             {
-                UserRegistrationAdditionalFieldsService.SetCountry(value.Text);
-                UserRegistrationAdditionalFieldsService.SetPrefix(value.PhonePrefix);
+                UserRegistrationAdditionalFieldsViewService.SetCountry(value.Text);
+                UserRegistrationAdditionalFieldsViewService.SetPrefix(value.PhonePrefix);
             }
         }
 

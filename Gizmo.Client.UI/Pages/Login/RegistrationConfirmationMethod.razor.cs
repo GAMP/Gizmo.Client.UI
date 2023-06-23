@@ -36,6 +36,11 @@ namespace Gizmo.Client.UI.Pages
 
         public List<IconSelectCountry> Countries { get; set; } = new List<IconSelectCountry>();
 
+        public void OnCloseButtonClickHandler()
+        {
+            UserRegistrationConfirmationMethodService.Reset();
+        }
+
         public void OnClickClearValueButtonHandler(MouseEventArgs args)
         {
             SetSelectedCountry(Countries.Where(a => a.PhonePrefix == "+").FirstOrDefault());

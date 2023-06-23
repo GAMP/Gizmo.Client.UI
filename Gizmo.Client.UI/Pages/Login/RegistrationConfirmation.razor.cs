@@ -13,7 +13,7 @@ namespace Gizmo.Client.UI.Pages
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        UserRegistrationConfirmationViewService UserRegistrationConfirmationService { get; set; }
+        UserRegistrationConfirmationViewService UserRegistrationConfirmationViewService { get; set; }
 
         [Inject]
         UserRegistrationConfirmationViewState ViewState { get; set; }
@@ -23,6 +23,11 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         NavigationService NavigationService { get; set; }
+
+        public void OnCloseButtonClickHandler()
+        {
+            UserRegistrationConfirmationViewService.Reset();
+        }
 
         protected override void OnInitialized()
         {

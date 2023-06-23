@@ -16,12 +16,12 @@
         <div class="giz-login-alerts">
             @if (ViewState.HasError)
             {
-                <Toast CanClose="true" AlertType="AlertTypes.Danger" Text="@ViewState.ErrorMessage" />
+                <Toast CanClose="true" OnCloseButtonClick="OnCloseButtonClickHandler" AlertType="AlertTypes.Danger" Text="@ViewState.ErrorMessage" />
             }
         </div>
     </CardHeader>
     <CardBody>
-        <EditForm EditContext="@UserRegistrationAdditionalFieldsService.EditContext">
+        <EditForm EditContext="@UserRegistrationAdditionalFieldsViewService.EditContext">
             <div class="giz-login-title">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
             @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.Country)
             {
@@ -51,7 +51,7 @@
             {
                 <div class="giz-registration-form-input">
                     <TextInput Value="@ViewState.Address"
-                               ValueChanged="@((string value) => UserRegistrationAdditionalFieldsService.SetAddress(value))"
+                               ValueChanged="@((string value) => UserRegistrationAdditionalFieldsViewService.SetAddress(value))"
                                ValueExpression="@(() => ViewState.Address)"
                                Size="InputSizes.Small"
                                IsFullWidth="true"
@@ -62,7 +62,7 @@
             {
                 <div class="giz-registration-form-input">
                     <TextInput Value="@ViewState.PostCode"
-                               ValueChanged="@((string value) => UserRegistrationAdditionalFieldsService.SetPostCode(value))"
+                               ValueChanged="@((string value) => UserRegistrationAdditionalFieldsViewService.SetPostCode(value))"
                                ValueExpression="@(() => ViewState.PostCode)"
                                Size="InputSizes.Small"
                                IsFullWidth="true"
@@ -78,7 +78,7 @@
                                           Prefix="@ViewState.Prefix"
                                           AllowMoreDigits="@(string.IsNullOrEmpty(ViewState.Prefix) || ViewState.Prefix == "+")"
                                           Value="@ViewState.MobilePhone"
-                                          ValueChanged="@((string value) => UserRegistrationAdditionalFieldsService.SetMobilePhone(value))"
+                                          ValueChanged="@((string value) => UserRegistrationAdditionalFieldsViewService.SetMobilePhone(value))"
                                           ValueExpression="@(() => ViewState.MobilePhone)"
                                           Size="InputSizes.Small"
                                           IsFullWidth="true"
@@ -91,7 +91,7 @@
                         Color="ButtonColors.Accent"
                         Size="ButtonSizes.Large"
                         IsFullWidth="true"
-                        @onclick="@UserRegistrationAdditionalFieldsService.SubmitAsync">
+                        @onclick="@UserRegistrationAdditionalFieldsViewService.SubmitAsync">
                     <ChildContent>
                         @if (ViewState.IsLoading)
                         {

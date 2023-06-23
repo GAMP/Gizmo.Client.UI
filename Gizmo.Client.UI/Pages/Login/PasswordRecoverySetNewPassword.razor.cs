@@ -13,7 +13,7 @@ namespace Gizmo.Client.UI.Pages
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        UserPasswordRecoverySetNewPasswordViewService UserPasswordRecoverySetNewPasswordService { get; set; }
+        UserPasswordRecoverySetNewPasswordViewService UserPasswordRecoverySetNewPasswordViewService { get; set; }
 
         [Inject]
         UserLoginViewService UserLoginService { get; set; }
@@ -25,6 +25,11 @@ namespace Gizmo.Client.UI.Pages
         UserRegistrationConfigurationViewState UserRegisterConfigurationViewState
         {
             get; init;
+        }
+
+        public void OnCloseButtonClickHandler()
+        {
+            UserPasswordRecoverySetNewPasswordViewService.Reset();
         }
 
         protected override void OnInitialized()

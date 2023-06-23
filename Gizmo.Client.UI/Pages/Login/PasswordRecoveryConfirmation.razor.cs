@@ -16,7 +16,7 @@ namespace Gizmo.Client.UI.Pages
         UserPasswordRecoveryViewService UserPasswordRecoveryService { get; set; }
 
         [Inject]
-        UserPasswordRecoveryConfirmationViewService UserPasswordRecoveryConfirmationService { get; set; }
+        UserPasswordRecoveryConfirmationViewService UserPasswordRecoveryConfirmationViewService { get; set; }
 
         [Inject]
         UserLoginViewService UserLoginService { get; set; }
@@ -42,6 +42,10 @@ namespace Gizmo.Client.UI.Pages
             get; init;
         }
 
+        public void OnCloseButtonClickHandler()
+        {
+            UserPasswordRecoveryConfirmationViewService.Reset();
+        }
 
         protected override void OnInitialized()
         {

@@ -16,19 +16,19 @@
         <div class="giz-login-alerts">
             @if (ViewState.HasError)
             {
-                <Toast CanClose="true" AlertType="AlertTypes.Danger" Text="@ViewState.ErrorMessage" />
+                <Toast CanClose="true" OnCloseButtonClick="OnCloseButtonClickHandler" AlertType="AlertTypes.Danger" Text="@ViewState.ErrorMessage" />
             }
         </div>
     </CardHeader>
     <CardBody>
-        <EditForm EditContext="@UserRegistrationConfirmationService.EditContext">
+        <EditForm EditContext="@UserRegistrationConfirmationViewService.EditContext">
             <div class="giz-login-title">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
             <div class="giz-login-subtitle">@ViewState.ConfirmationCodeMessage</div>
             <div class="giz-form-input">
                 <TextInput UpdateOnInput="true"
                            Placeholder="123 456"
                            Value="@ViewState.ConfirmationCode"
-                           ValueChanged="@((string value) => UserRegistrationConfirmationService.SetConfirmationCode(value))"
+                           ValueChanged="@((string value) => UserRegistrationConfirmationViewService.SetConfirmationCode(value))"
                            ValueExpression="@(() => ViewState.ConfirmationCode)"
                            IsDisabled="@ViewState.IsLoading"
                            Size="InputSizes.Medium"
@@ -40,7 +40,7 @@
                         Color="ButtonColors.Accent"
                         Size="ButtonSizes.ExtraLarge"
                         IsFullWidth="true"
-                        @onclick="@UserRegistrationConfirmationService.Confirm">
+                        @onclick="@UserRegistrationConfirmationViewService.Confirm">
                     <ChildContent>
                         @if (ViewState.IsLoading)
                         {
@@ -60,7 +60,7 @@
                             Size="ButtonSizes.ExtraLarge"
                             IsFullWidth="true"
                             IsDisabled="@(ViewState.IsLoading || UserVerificationFallbackViewState.IsVerificationFallbackLocked)"
-                            @onclick="@UserRegistrationConfirmationService.SMSFallbackAsync">
+                            @onclick="@UserRegistrationConfirmationViewService.SMSFallbackAsync">
                         <div>@LocalizationService.GetString("GIZ_USER_CONFIRMATION_RETRY_WITH_SMS")</div>
                         @if (UserVerificationFallbackViewState.IsVerificationFallbackLocked)
                         {
