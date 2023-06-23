@@ -55,7 +55,7 @@ Web based client UI.
 
 - Use your .css file to override the current theme styles.
 - Put this file in the **'~\static\'** folder.
-- Add this file name with an extension to the app configuration file **'options.json'** to the **'ClientInterface.Style'** section.
+- Add this file name with an extension to the app configuration file **'options.json'** to the **'ClientInterface.StyleSheet'** section.
 - Ctrl + F5 to refresh the app.
 
 ## **Changing the background image**
