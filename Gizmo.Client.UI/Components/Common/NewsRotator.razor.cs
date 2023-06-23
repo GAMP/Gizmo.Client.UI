@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
-using Gizmo.Client.View.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
