@@ -2,13 +2,16 @@
 
 <div class="giz-home-apps-wrapper">
     <div class="giz-home-apps">
-        <div class="giz-home-apps__header">
+        <div class="giz-home-apps__header @(!ViewState.IsFeedEnabled ? "full-quick-launcher" : "")">
             <div class="giz-home-apps__header__quick-launch">
                 <QuickLauncher />
             </div>
-            <div class="giz-home-apps__header__ads">
-                <NewsRotator />
-            </div>
+            @if (ViewState.IsFeedEnabled)
+            {
+                <div class="giz-home-apps__header__ads">
+                    <NewsRotator />
+                </div>
+            }
         </div>
         <div class="giz-home__body giz-ads-container giz-scrollbar--v">
             @if (AdvertisementsViewState.Advertisements.Count() > 0)

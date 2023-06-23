@@ -14,7 +14,7 @@ namespace Gizmo.Client.UI.Shared
         private LoginRotatorItemViewState _currentItem;
         private bool _animation = false;
         private string _nextAnimation = string.Empty;
-        private string[] _animations = new string[] { "slide-in-top", "slide-in-bottom", "slide-in-left", "slide-in-right" }; //, "slide-out-top", "slide-out-bottom" };
+        private string[] _animations = new string[] { "slide-in-top", "slide-in-bottom", "slide-in-left", "slide-in-right" };
         private Random random = new();
 
         [Inject]
@@ -27,7 +27,8 @@ namespace Gizmo.Client.UI.Shared
         {
             if (args.VideoState == VideoStates.Ended)
             {
-                await LoginRotatorViewService.PlayNext();
+                if (!LoginRotatorViewService.PlayNext())
+                    await JsRuntime.InvokeVoidAsync("playVideo", args.Id);
             }
             else
             {
@@ -39,6 +40,10 @@ namespace Gizmo.Client.UI.Shared
         {
             _previousItem = _currentItem;
             _currentItem = ViewState.CurrentItem;
+
+            if (_previousItem == _currentItem)
+                return;
+
             _animation = true;
             _nextAnimation = _animations[random.Next(0, _animations.Length)];
             await InvokeAsync(StateHasChanged);

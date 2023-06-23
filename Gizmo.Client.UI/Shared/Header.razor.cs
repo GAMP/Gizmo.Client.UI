@@ -1,6 +1,4 @@
-﻿using Gizmo.Client.UI.ViewModels;
-using Gizmo.Web.Components;
-using System;
+﻿using Gizmo.Web.Components;
 
 namespace Gizmo.Client.UI.Shared
 {
