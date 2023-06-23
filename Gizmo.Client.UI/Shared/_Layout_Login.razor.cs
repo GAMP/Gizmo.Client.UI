@@ -24,6 +24,9 @@ namespace Gizmo.Client.UI.Shared
         [Inject()]
         private ClientVersionViewState ClientVersionViewState { get; set; }
 
+        [Inject()]
+        private LogoViewState LogoViewState { get; set; }
+
         [Inject]
         IOptions<ClientInterfaceOptions> ClientUIOptions { get; set; }
 
@@ -83,7 +86,7 @@ namespace Gizmo.Client.UI.Shared
 
         private void test()
         {
-            UserIdleViewService.Toggle();
+            //UserIdleViewService.Toggle();
         }
 
         protected override async Task OnInitializedAsync()

@@ -25,6 +25,13 @@
                 <HostNumber />
             </div>
 
+            @if (!string.IsNullOrEmpty(LogoViewState.Logo))
+            {
+                <div class="giz-login-logo">
+                    <img src="@LogoViewState.Logo" alt='loading' />
+                </div>
+            }
+
             <div class="giz-login-warnings">
                 @if ((_previousIsIdle || _slideOut) && HostReservationViewState.IsReserved)
                 {
