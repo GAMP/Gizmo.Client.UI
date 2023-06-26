@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,15 +14,14 @@ namespace Gizmo.Client.UI.Host.WPF
     {
         public WpfInputLenguageService()
         {
-            InputLanguageManager.Current.InputLanguageChanged += Current_InputLanguageChanged;
         }
+        
+        public event EventHandler<EventArgs> LangauageChange;
 
-        private void Current_InputLanguageChanged(object sender, InputLanguageEventArgs e)
-        {
-        }
-
+  
         public IEnumerable<CultureInfo> AvailableInputLanguages => InputLanguageManager.Current.AvailableInputLanguages.OfType<CultureInfo>();
 
+        public CultureInfo CurrentInputLanguage => throw new NotImplementedException();
 
         public async Task SetCurrentInputLanguageAsync(CultureInfo culture)
         {
