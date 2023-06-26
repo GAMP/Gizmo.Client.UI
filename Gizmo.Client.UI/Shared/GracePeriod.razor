@@ -1,0 +1,15 @@
+﻿@namespace Gizmo.Client.UI.Shared
+@inherits CustomDOMComponentBase
+
+@if (ViewState.IsInGracePeriod)
+{
+    <div class="giz-login-overlay">
+        <div class="giz-grace-period-wrapper">
+            <div class="giz-grace-period">
+                <div class="giz-grace-period__message">@((MarkupString)LocalizationService.GetString("GIZ_GRACE_PERIOD_MESSAGE"))</div>
+                <div class="giz-grace-period__time">@string.Format("{0:mm\\:ss}", ViewState.Time)</div>
+                <div class="giz-grace-period__action"><Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" Text="@LocalizationService.GetString("GIZ_GRACE_PERDIOD_LOGOUT")" @onclick="@(() => UserService.LogoutAsync())" /></div>
+            </div>
+        </div>
+    </div>
+}

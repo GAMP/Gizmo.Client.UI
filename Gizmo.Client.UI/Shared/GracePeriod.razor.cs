@@ -1,17 +1,21 @@
-﻿using Gizmo.Client.UI.View.States;
+﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Shared
 {
-    public partial class Layout_LoginLock : CustomDOMComponentBase
+    public partial class GracePeriod : CustomDOMComponentBase
     {
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        HostLockViewState ViewState { get; set; }
+        GracePeriodViewState ViewState { get; set; }
+
+        [Inject]
+        UserViewService UserService { get; set; }
 
         protected override void OnInitialized()
         {
