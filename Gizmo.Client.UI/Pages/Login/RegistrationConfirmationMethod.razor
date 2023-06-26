@@ -22,7 +22,7 @@
             <div class="giz-login-title">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
             @if (UserRegistrationViewState.ConfirmationMethod == RegistrationVerificationMethod.Email)
             {
-                <div class="giz-login-subtitle--sign-up">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim</div>
+                <div class="giz-login-subtitle--sign-up">@LocalizationService.GetString("GIZ_REGISTRATION_EMAIL_CONFIRMATION_MESSAGE")</div>
                 <div class="giz-form-input">
                     <TextInput Value="@ViewState.Email"
                                ValueChanged="@((string value) => UserRegistrationConfirmationMethodService.SetEmail(value))"
@@ -30,6 +30,7 @@
                                IsDisabled="@ViewState.IsLoading"
                                Size="InputSizes.Medium"
                                IsFullWidth="true"
+                               UpdateOnInput="true"
                                Label="@LocalizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")"/>
                 </div>
             }
