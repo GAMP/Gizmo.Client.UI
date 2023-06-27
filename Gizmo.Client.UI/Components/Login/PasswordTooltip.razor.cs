@@ -1,70 +1,21 @@
-﻿using Gizmo.UI.Services;
+﻿using Gizmo.Client.UI.View.States;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
     public partial class PasswordTooltip : CustomDOMComponentBase
     {
-        private int _rulesPassed = 0;
-
-        private bool _lengthRulePassed = false;
-        private bool _lowerRulePassed = false;
-        private bool _upperRulePassed = false;
-        private bool _numberRulePassed = false;
-
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Parameter]
-        public string Password { get; set; }
-
-        private void Calculate()
-        {
-            _rulesPassed = 0;
-
-            _lengthRulePassed = false;
-            _lowerRulePassed = false;
-            _upperRulePassed = false;
-            _numberRulePassed = false;
-
-            if (string.IsNullOrEmpty(Password))
-                return;
-
-            if (Password.Length >= 8)
-            {
-                _rulesPassed += 1;
-                _lengthRulePassed = true;
-            }
-
-            Regex lowerRulePassedRegex = new Regex("[A-Z]");
-            Regex upperRuleRegex = new Regex("[a-z]");
-            Regex numberRuleRegex = new Regex("[0-9]");
-
-            if (lowerRulePassedRegex.Matches(Password).Count > 0)
-            {
-                _rulesPassed += 1;
-                _lowerRulePassed = true;
-            }
-
-            if (upperRuleRegex.Matches(Password).Count > 0)
-            {
-                _rulesPassed += 1;
-                _upperRulePassed = true;
-            }
-
-            if (numberRuleRegex.Matches(Password).Count > 0)
-            {
-                _rulesPassed += 1;
-                _numberRulePassed = true;
-            }
-        }
+        public PasswordTooltipViewState PasswordTooltipViewState { get; set; }
 
         private string GetColor()
         {
-            switch (_rulesPassed)
+            switch (PasswordTooltipViewState.PassedRules)
             {
                 case 2:
                     return "#F2994A";
@@ -80,23 +31,18 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        private string GetPasswordMessage()
+        protected override void OnInitialized()
         {
-            if (_rulesPassed == 4)
-                return LocalizationService.GetString("GIZ_PASSWORD_MESSAGE_SECURE");
+            this.SubscribeChange(PasswordTooltipViewState);
 
-            if (!_lengthRulePassed)
-                return LocalizationService.GetString("GIZ_PASSWORD_MESSAGE_TOO_SHORT");
-
-            return LocalizationService.GetString("GIZ_PASSWORD_MESSAGE_TOO_EASY");
+            base.OnInitialized();
         }
 
-
-        protected override async Task OnParametersSetAsync()
+        public override void Dispose()
         {
-            Calculate();
+            this.UnsubscribeChange(PasswordTooltipViewState);
 
-            await base.OnParametersSetAsync();
+            base.Dispose();
         }
     }
 }

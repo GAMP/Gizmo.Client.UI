@@ -528,18 +528,14 @@
 }
 
 .giz-password-tooltip {
-    visibility: hidden;
-    position: absolute;
-    top: 50%;
-    right: calc(100% + 1.2rem);
-    transform: translate(0, calc(-50% + 1.7rem));
-    padding: 1.6rem;
-    background-color: #2B2D33;
-    box-shadow: 0 0.4rem 2.0rem rgba(0, 0, 0, 0.08);
-    border-radius: 0.8rem;
     display: grid;
     grid-template-columns: min-content max-content;
     gap: 1.6rem;
+    padding: 1.6rem;
+
+    &-root {
+        display: block;
+    }
 
     &-message {
         &.passed {
@@ -558,28 +554,6 @@
 
         &__messages {
             @include font-m-theme-client($font-weight-light-theme-client);
-        }
-    }
-
-    &::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 100%;
-        margin-left: -0.5rem;
-        border-width: 0.5rem;
-        border-style: solid;
-        border-color: #2B2D33;
-        transform: translateY(-0.5rem) rotate(45deg);
-    }
-
-    &-root {
-        position: relative;
-
-        &:focus-within {
-            .giz-password-tooltip {
-                visibility: visible;
-            }
         }
     }
 }

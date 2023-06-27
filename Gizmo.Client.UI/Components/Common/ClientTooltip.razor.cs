@@ -26,6 +26,8 @@ namespace Gizmo.Client.UI.Components
 
         #region FIELDS
 
+        private bool _hasFocus;
+
         private DeferredAction _openDeferredAction;
         private int _openDelay = OPEN_DEFAULT_DELAY;
         private TimeSpan _openDelayTimeSpan;
@@ -78,6 +80,23 @@ namespace Gizmo.Client.UI.Components
         public void OnMouseOutHandler(MouseEventArgs args)
         {
             _preventClose = false;
+
+            _closeDeferredAction.Defer(_closeDelayTimeSpan);
+        }
+
+        private void OnFocusIn()
+        {
+            _hasFocus = true;
+
+            if (!_isOpen)
+            {
+                _openDeferredAction.Defer(_openDelayTimeSpan);
+            }
+        }
+
+        private void OnFocusOut()
+        {
+            _hasFocus = false;
 
             _closeDeferredAction.Defer(_closeDelayTimeSpan);
         }
@@ -142,7 +161,7 @@ namespace Gizmo.Client.UI.Components
 
         private Task Close()
         {
-            if (!_preventClose)
+            if (!_preventClose && !_hasFocus)
             {
                 _openDeferredAction.Cancel();
 

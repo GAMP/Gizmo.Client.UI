@@ -30,17 +30,21 @@
                            Label="@LocalizationService.GetString("GIZ_GEN_USERNAME")" />
             </div>
             <div class="giz-registration-form-input giz-form-input-columns">
-                <div class="giz-password-tooltip-root">
-                    <PasswordInput ShowRevealButton="true"
-                                   UpdateOnInput="true"
-                                   Value="@ViewState.Password"
-                                   ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetPassword(value))"
-                                   ValueExpression="@(() => ViewState.Password)"
-                                   Size="InputSizes.Small"
-                                   IsFullWidth="true"
-                                   Label="@LocalizationService.GetString("GIZ_GEN_PASSWORD")" />
-                    <PasswordTooltip Password="@ViewState.Password" />
-                </div>
+                <ClientTooltip OpenDirection="TooltipOpenDirections.Left" Class="giz-password-tooltip-root">
+                    <ChildContent>
+                        <PasswordInput ShowRevealButton="true"
+                                       UpdateOnInput="true"
+                                       Value="@ViewState.Password"
+                                       ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetPassword(value))"
+                                       ValueExpression="@(() => ViewState.Password)"
+                                       Size="InputSizes.Small"
+                                       IsFullWidth="true"
+                                       Label="@LocalizationService.GetString("GIZ_GEN_PASSWORD")" />
+                    </ChildContent>
+                    <TooltipContent>
+                        <PasswordTooltip PasswordTooltipViewState="@ViewState.PasswordTooltip" />
+                    </TooltipContent>
+                </ClientTooltip>
                 <PasswordInput UpdateOnInput="true"
                                Value="@ViewState.RepeatPassword"
                                ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetRepeatPassword(value))"
