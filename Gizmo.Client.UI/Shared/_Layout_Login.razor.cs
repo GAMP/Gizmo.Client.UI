@@ -16,6 +16,9 @@ namespace Gizmo.Client.UI.Shared
         private bool _slideOut = false;
 
         [Inject]
+        HostOutOfOrderViewState HostOutOfOrderViewState { get; set; }
+
+        [Inject]
         UserIdleViewState UserIdleViewState { get; set; }
 
         /// <summary>
@@ -90,7 +93,10 @@ namespace Gizmo.Client.UI.Shared
 
         protected override async Task OnInitializedAsync()
         {
+            this.SubscribeChange(LoginRotatorViewState);
+            this.SubscribeChange(LogoViewState);
             this.SubscribeChange(HostReservationViewState);
+            this.SubscribeChange(HostOutOfOrderViewState);
 
             await base.OnInitializedAsync();
         }

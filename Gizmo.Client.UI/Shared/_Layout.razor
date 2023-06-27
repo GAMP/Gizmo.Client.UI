@@ -30,7 +30,16 @@
 
     <UserLock />
     <DialogHost />
-    <Layout_LoginLock />
+
+    @if (HostOutOfOrderViewState.IsOutOfOrder)
+    {
+        <Layout_LoginOutOfOrder />
+    }
+    else
+    {
+        <Layout_LoginLock />
+    }
+
     <GracePeriod />
 
 </main>

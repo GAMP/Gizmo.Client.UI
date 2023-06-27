@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Gizmo.Client.UI.View.States;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
@@ -14,9 +15,19 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         IJSRuntime JsRuntime { get; set; }
 
+        [Inject]
+        HostOutOfOrderViewState HostOutOfOrderViewState { get; set; }
+
         private async Task OnMainClick(MouseEventArgs e)
         {
             await JsRuntime.InvokeVoidAsync("closeOpenPopups", e);
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            this.SubscribeChange(HostOutOfOrderViewState);
+
+            await base.OnInitializedAsync();
         }
     }
 }
