@@ -15,20 +15,24 @@ namespace Gizmo.Client.UI.Components
 
         private string GetColor()
         {
-            switch (PasswordTooltipViewState.PassedRules)
+            if (PasswordTooltipViewState.PassedRules == 0)
             {
-                case 2:
-                    return "#F2994A";
-
-                case 3:
-                    return "#F2C94C";
-
-                case 4:
-                    return "#219653"; //TODO: A ICON
-
-                default:
-                    return "#EB5757";
+                return "#EB5757";
             }
+            else if (PasswordTooltipViewState.PassedRules == PasswordTooltipViewState.TotalRules)
+            {
+                return "#219653"; //TODO: A ICON
+            }
+            else
+            {
+                return "#F2994A";
+            }
+            /*case 2:
+                return "#F2994A";
+
+            case 3:
+                return "#F2C94C";*/
+
         }
 
         protected override void OnInitialized()
