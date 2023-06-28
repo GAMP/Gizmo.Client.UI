@@ -68,7 +68,7 @@ namespace Gizmo.Client.UI.Shared
 
             IsOpen = false;
 
-            return UserService.LogoutAsync();
+            return UserService.LogoutWithConfirmationAsync();
         }
 
         private void OnClickLinkHandler()
