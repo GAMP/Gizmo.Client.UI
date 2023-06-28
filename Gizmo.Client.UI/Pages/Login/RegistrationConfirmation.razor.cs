@@ -16,6 +16,9 @@ namespace Gizmo.Client.UI.Pages
         UserRegistrationConfirmationViewService UserRegistrationConfirmationViewService { get; set; }
 
         [Inject]
+        UserRegistrationConfirmationMethodViewState UserRegistrationConfirmationMethodViewState { get; set; }
+
+        [Inject]
         UserRegistrationConfirmationViewState ViewState { get; set; }
 
         [Inject]
@@ -23,6 +26,18 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         NavigationService NavigationService { get; set; }
+
+        private string GetPlaceholder()
+        {
+            if (UserRegistrationConfirmationMethodViewState.CodeLength <= 3)
+                return "123".Substring(0, UserRegistrationConfirmationMethodViewState.CodeLength);
+            else if (UserRegistrationConfirmationMethodViewState.CodeLength == 4)
+                return "12 34".Substring(0, UserRegistrationConfirmationMethodViewState.CodeLength + 1);
+            else if (UserRegistrationConfirmationMethodViewState.CodeLength >= 5 && UserRegistrationConfirmationMethodViewState.CodeLength <= 6)
+                return "123 456".Substring(0, UserRegistrationConfirmationMethodViewState.CodeLength + 1);
+            else
+                return "1234 5678".Substring(0, UserRegistrationConfirmationMethodViewState.CodeLength + 1);
+        }
 
         public void OnCloseButtonClickHandler()
         {

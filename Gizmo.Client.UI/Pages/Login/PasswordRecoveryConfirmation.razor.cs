@@ -42,6 +42,18 @@ namespace Gizmo.Client.UI.Pages
             get; init;
         }
 
+        private string GetPlaceholder()
+        {
+            if (UserPasswordRecoveryViewState.CodeLength <= 3)
+                return "123".Substring(0, UserPasswordRecoveryViewState.CodeLength);
+            else if (UserPasswordRecoveryViewState.CodeLength == 4)
+                return "12 34".Substring(0, UserPasswordRecoveryViewState.CodeLength + 1);
+            else if (UserPasswordRecoveryViewState.CodeLength >= 5 && UserPasswordRecoveryViewState.CodeLength <= 6)
+                return "123 456".Substring(0, UserPasswordRecoveryViewState.CodeLength + 1);
+            else
+                return "1234 5678".Substring(0, UserPasswordRecoveryViewState.CodeLength + 1);
+        }
+
         public void OnCloseButtonClickHandler()
         {
             UserPasswordRecoveryConfirmationViewService.Reset();

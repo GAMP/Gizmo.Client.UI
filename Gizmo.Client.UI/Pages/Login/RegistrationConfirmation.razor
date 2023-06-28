@@ -26,7 +26,7 @@
             <div class="giz-login-subtitle">@ViewState.ConfirmationCodeMessage</div>
             <div class="giz-form-input">
                 <TextInput UpdateOnInput="true"
-                           Placeholder="123 456"
+                           Placeholder="@GetPlaceholder()"
                            Value="@ViewState.ConfirmationCode"
                            ValueChanged="@((string value) => UserRegistrationConfirmationViewService.SetConfirmationCode(value))"
                            ValueExpression="@(() => ViewState.ConfirmationCode)"
