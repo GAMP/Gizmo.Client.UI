@@ -49,6 +49,8 @@ namespace Gizmo.Client.UI.Components
 
         private double _moveX = 0;
 
+        private float _fontSize = 10;
+
         #endregion
 
         #region PROPERTIES
@@ -103,11 +105,10 @@ namespace Gizmo.Client.UI.Components
 
         private async Task Open()
         {
+            _fontSize = await JsInvokeAsync<float>("getFontSize");
             var windowSize = await JsInvokeAsync<WindowSize>("getWindowSize");
             var tooltipRootSize = await JsInvokeAsync<BoundingClientRect>("getElementBoundingClientRect", Ref);
             var popupContentSize = await JsInvokeAsync<BoundingClientRect>("getElementBoundingClientRect", _tooltipContent);
-
-            int space = 10; //TODO: AAA Convert 1rem to px.
 
             if (OpenDirection == TooltipOpenDirections.Top || OpenDirection == TooltipOpenDirections.Bottom)
             {
@@ -115,11 +116,11 @@ namespace Gizmo.Client.UI.Components
 
                 if (OpenDirection == TooltipOpenDirections.Top)
                 {
-                    _popupY = (tooltipRootSize.Top - popupContentSize.Height) - space;
+                    _popupY = (tooltipRootSize.Top - popupContentSize.Height) - _fontSize;
                 }
                 else
                 {
-                    _popupY = (tooltipRootSize.Top + tooltipRootSize.Height) + space;
+                    _popupY = (tooltipRootSize.Top + tooltipRootSize.Height) + _fontSize;
                 }
             }
 
@@ -129,11 +130,11 @@ namespace Gizmo.Client.UI.Components
 
                 if (OpenDirection == TooltipOpenDirections.Left)
                 {
-                    _popupX = (tooltipRootSize.Left - popupContentSize.Width) - space;
+                    _popupX = (tooltipRootSize.Left - popupContentSize.Width) - _fontSize;
                 }
                 else
                 {
-                    _popupX = (tooltipRootSize.Left + tooltipRootSize.Width) + space;
+                    _popupX = (tooltipRootSize.Left + tooltipRootSize.Width) + _fontSize;
                 }
             }
 
@@ -176,6 +177,14 @@ namespace Gizmo.Client.UI.Components
             }
 
             return Task.CompletedTask;
+        }
+
+        protected override async Task OnParametersSetAsync()
+        {
+            await base.OnParametersSetAsync();
+
+            if (_isOpen)
+                await Open();
         }
 
         protected string ClassName => new ClassMapper()
