@@ -14,12 +14,17 @@
                 </div>
             </div>
 
-            <GizImage @key="Application.ApplicationId" ImageType="Gizmo.UI.ImageType.Application" ImageId="@Application.ImageId" ImageFitType="ImageFitType.Fill">
+            <GizImage @key="Application" ImageType="Gizmo.UI.ImageType.Application" ImageId="@Application.ImageId" ImageFitType="ImageFitType.Fill">
                 <EmptyResultPlaceholder>
                     <div class="giz-default-image">
                         <img src="_content/Gizmo.Client.UI/img/no-app-image.svg" alt='loading' />
                     </div>
                 </EmptyResultPlaceholder>
+                <ErrorPlaceholder>
+                    <div class="giz-default-image">
+                        <img src="_content/Gizmo.Client.UI/img/broken-image.svg" alt='loading' />
+                    </div>
+                </ErrorPlaceholder>
             </GizImage>
 
         </div>

@@ -4,7 +4,7 @@
 <ClientTooltip OpenDirection="TooltipOpenDirections.Right" Class="giz-bundled-product-tooltip">
     <ChildContent>
         <div class="giz-bundled-product">
-            <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@_userProductViewState.DefaultImageId">
+            <GizImage @key="_userProductViewState" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@_userProductViewState.DefaultImageId">
                 <EmptyResultPlaceholder>
                     @if (_userProductViewState.ProductType == ProductType.ProductTime)
                     {
@@ -27,6 +27,11 @@
                         </div>
                     }
                 </EmptyResultPlaceholder>
+                <ErrorPlaceholder>
+                    <div class="giz-default-image">
+                        <img src="_content/Gizmo.Client.UI/img/broken-image.svg" alt='loading' />
+                    </div>
+                </ErrorPlaceholder>
             </GizImage>
         </div>
     </ChildContent>

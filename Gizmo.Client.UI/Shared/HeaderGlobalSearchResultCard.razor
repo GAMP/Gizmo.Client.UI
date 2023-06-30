@@ -5,24 +5,34 @@
         @if (Result.Type == View.SearchResultTypes.Executables)
         {
 
-            <GizImage ImageType="Gizmo.UI.ImageType.Application" ImageId="@Result.ImageId">
+            <GizImage @key="Result" ImageType="Gizmo.UI.ImageType.Application" ImageId="@Result.ImageId">
                 <EmptyResultPlaceholder>
                     <div class="giz-default-image">
                         <img src="_content/Gizmo.Client.UI/img/no-app-image.svg" alt='loading' />
                     </div>
                 </EmptyResultPlaceholder>
+                <ErrorPlaceholder>
+                    <div class="giz-default-image">
+                        <img src="_content/Gizmo.Client.UI/img/broken-image.svg" alt='loading' />
+                    </div>
+                </ErrorPlaceholder>
             </GizImage>
 
         }
         else
         {
 
-            <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Result.ImageId">
+            <GizImage @key="Result" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Result.ImageId">
                 <EmptyResultPlaceholder>
                     <div class="giz-default-image">
                         <img src="_content/Gizmo.Client.UI/img/no-product-image.svg" alt='loading' />
                     </div>
                 </EmptyResultPlaceholder>
+                <ErrorPlaceholder>
+                    <div class="giz-default-image">
+                        <img src="_content/Gizmo.Client.UI/img/broken-image.svg" alt='loading' />
+                    </div>
+                </ErrorPlaceholder>
             </GizImage>
 
         }

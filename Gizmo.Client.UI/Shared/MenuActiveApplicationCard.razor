@@ -4,12 +4,17 @@
 <tr class="giz-active-app-card">
     <td class="giz-active-app-card__image">
 
-        <GizImage ImageType="Gizmo.UI.ImageType.Executable" ImageId="@Executable.ImageId">
+        <GizImage @key="Executable" ImageType="Gizmo.UI.ImageType.Executable" ImageId="@Executable.ImageId">
             <EmptyResultPlaceholder>
                 <div class="giz-default-image">
                     <img src="_content/Gizmo.Client.UI/img/no-exe-image.svg" alt='loading' />
                 </div>
             </EmptyResultPlaceholder>
+            <ErrorPlaceholder>
+                <div class="giz-default-image">
+                    <img src="_content/Gizmo.Client.UI/img/broken-image.svg" alt='loading' />
+                </div>
+            </ErrorPlaceholder>
         </GizImage>
 
     </td>

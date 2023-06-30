@@ -24,7 +24,7 @@
                 </div>
             </div>
 
-            <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Product.DefaultImageId" ImageFitType="ImageFitType.Cover">
+            <GizImage @key="Product" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Product.DefaultImageId" ImageFitType="ImageFitType.Cover">
                 <EmptyResultPlaceholder>
                     <div class="giz-product-time-image-wrapper">
                         <div class="giz-product-time-image">
@@ -38,6 +38,11 @@
                         </div>
                     </div>
                 </EmptyResultPlaceholder>
+                <ErrorPlaceholder>
+                    <div class="giz-default-image">
+                        <img src="_content/Gizmo.Client.UI/img/broken-image.svg" alt='loading' />
+                    </div>
+                </ErrorPlaceholder>
             </GizImage>
 
         </div>

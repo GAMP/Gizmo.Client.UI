@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class GizImage : ComponentBase, IDisposable
+    public partial class GizImage : CustomDOMComponentBase
     {
         #region PROPERTIES
 
@@ -64,9 +64,10 @@ namespace Gizmo.Client.UI.Components
         /// </summary>
         private int _imageResultStatusCode;
         private ImageType _previousImageType;
-        private int _previousImageId;
+        private int? _previousImageId;
         private string _imageSource;
         readonly CancellationTokenSource _cancellationTokenSource = new();
+        private bool _loaded;
 
         #endregion
 
@@ -76,20 +77,22 @@ namespace Gizmo.Client.UI.Components
         {
             await base.SetParametersAsync(parameters);
 
-            if (!ImageId.HasValue)
-            {
-                _imageResultStatusCode = 1;
-
-                await InvokeAsync(StateHasChanged);
-
-                return;
-            }
-
             var imageTypeChanged = _previousImageType != ImageType;
-            var imageIdChanged = _previousImageId != ImageId.Value;
+            var imageIdChanged = _previousImageId != ImageId;
 
-            if (imageTypeChanged || imageIdChanged)
+            if (imageTypeChanged || imageIdChanged || !_loaded)
             {
+                _loaded = true;
+
+                if (!ImageId.HasValue)
+                {
+                    _imageResultStatusCode = 1;
+
+                    await InvokeAsync(StateHasChanged);
+
+                    return;
+                }
+
                 _imageResultStatusCode = 0;
 
                 _previousImageType = ImageType;
@@ -107,6 +110,8 @@ namespace Gizmo.Client.UI.Components
                 {
                     //we have cancelled loading, this only happens on dispose so no extra action is needed
                     //in order to render any component change
+                    _imageResultStatusCode = 2;
+                    await InvokeAsync(StateHasChanged);
                 }
                 catch (Exception)
                 {
@@ -118,12 +123,12 @@ namespace Gizmo.Client.UI.Components
 
         #endregion
 
-        #region IDisposable
-        public void Dispose()
+        public override void Dispose()
         {
-             _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Cancel();
+
+            base.Dispose();
         }
-        #endregion
 
         #region CLASSMAPPERS
 

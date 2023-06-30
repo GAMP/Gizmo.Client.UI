@@ -6,12 +6,17 @@
      @onclick="OnClickHandler">
 
     <div class="giz-universal-executable__icon">
-        <GizImage ImageType="Gizmo.UI.ImageType.Executable" ImageId="@_appExeViewState.ImageId">
+        <GizImage @key="_appExeViewState" ImageType="Gizmo.UI.ImageType.Executable" ImageId="@_appExeViewState.ImageId">
             <EmptyResultPlaceholder>
                 <div class="giz-default-image">
                     <img src="_content/Gizmo.Client.UI/img/no-exe-image.svg" alt="loading" />
                 </div>
             </EmptyResultPlaceholder>
+            <ErrorPlaceholder>
+                <div class="giz-default-image">
+                    <img src="_content/Gizmo.Client.UI/img/broken-image.svg" alt='loading' />
+                </div>
+            </ErrorPlaceholder>
         </GizImage>
         
         @if (ShowProgressBar)

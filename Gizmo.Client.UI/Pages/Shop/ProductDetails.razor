@@ -16,30 +16,38 @@
             </div>
             <div class="giz-product-details__product__info">
                 <div class="giz-product-details__product__info__image">
-                    <GizImage ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ViewState.Product?.DefaultImageId" ImageFitType="ImageFitType.Cover">
-                        <EmptyResultPlaceholder>
-                            @if (@ViewState.Product?.ProductType == ProductType.ProductTime)
-                            {
-                                <div class="giz-product-time-image-wrapper">
-                                    <div class="giz-product-time-image">
-                                        <div class="giz-default-image">
-                                            <img src="_content/Gizmo.Client.UI/img/@ProductHelpers.GetProductTimeImage(ViewState.Product)" alt='loading' />
-                                        </div>
-                                        <div class="giz-product-time-image__time">
-                                            <div class="giz-product-time-image__time__number">@ProductHelpers.GetProductTimeNumber(ViewState.Product)</div>
-                                            <div class="giz-product-time-image__time__text">@ProductHelpers.GetProductTimeText(ViewState.Product, LocalizationService)</div>
+                    @if (ViewState.Product != null)
+                    {
+                        <GizImage @key="ViewState.Product" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@ViewState.Product?.DefaultImageId" ImageFitType="ImageFitType.Cover">
+                            <EmptyResultPlaceholder>
+                                @if (@ViewState.Product?.ProductType == ProductType.ProductTime)
+                                {
+                                    <div class="giz-product-time-image-wrapper">
+                                        <div class="giz-product-time-image">
+                                            <div class="giz-default-image">
+                                                <img src="_content/Gizmo.Client.UI/img/@ProductHelpers.GetProductTimeImage(ViewState.Product)" alt='loading' />
+                                            </div>
+                                            <div class="giz-product-time-image__time">
+                                                <div class="giz-product-time-image__time__number">@ProductHelpers.GetProductTimeNumber(ViewState.Product)</div>
+                                                <div class="giz-product-time-image__time__text">@ProductHelpers.GetProductTimeText(ViewState.Product, LocalizationService)</div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            }
-                            else
-                            {
+                                }
+                                else
+                                {
+                                    <div class="giz-default-image">
+                                        <img src="_content/Gizmo.Client.UI/img/no-product-image.svg" alt='loading' />
+                                    </div>
+                                }
+                            </EmptyResultPlaceholder>
+                            <ErrorPlaceholder>
                                 <div class="giz-default-image">
-                                    <img src="_content/Gizmo.Client.UI/img/no-product-image.svg" alt='loading' />
+                                    <img src="_content/Gizmo.Client.UI/img/broken-image.svg" alt='loading' />
                                 </div>
-                            }
-                        </EmptyResultPlaceholder>
-                    </GizImage>
+                            </ErrorPlaceholder>
+                        </GizImage>
+                    }
                 </div>
                 <div class="giz-product-details__product__info__basic">
                     <div class="giz-product-details__product__info__basic__category">
