@@ -28,7 +28,7 @@ namespace Gizmo.Client.UI.Components
         private System.Drawing.Size _componentSize = new System.Drawing.Size();
         private float _fontSize = 10;
         private bool _isTemp;
-        private bool _hidden;
+        private bool _hidden = true;
         private bool _shouldRender;
         private Animations _currentAnimation = Animations.None;
         private bool _slideIn = false;
@@ -95,7 +95,7 @@ namespace Gizmo.Client.UI.Components
                     _dismissAllItems = _visible.Select(a => a.Identifier).ToList();
                     NotificationsService.DismissAll();
 
-                    await InvokeVoidAsync("writeLine", $"CloseNotifications {this.ToString()}");
+                    //await InvokeVoidAsync("writeLine", $"CloseNotifications {this.ToString()}");
 
                     await SlideWindowOut();
 
@@ -161,17 +161,12 @@ namespace Gizmo.Client.UI.Components
         {
             await base.OnInitializedAsync();
 
-            _fontSize = await JsInvokeAsync<float>("getFontSize");
-
-            await InvokeVoidAsync("writeLine", $"OnInitializedAsync {this.ToString()}");
-            await UpdateUI();
-
-            ViewState.OnChange += ViewState_OnChange;
+            //await InvokeVoidAsync("writeLine", $"OnInitializedAsync {this.ToString()}");
         }
 
         private async void ViewState_OnChange(object sender, System.EventArgs e)
         {
-            await InvokeVoidAsync("writeLine", $"ViewState_OnChange {this.ToString()}");
+            //await InvokeVoidAsync("writeLine", $"ViewState_OnChange {this.ToString()}");
             await UpdateUI();
         }
 
@@ -203,7 +198,7 @@ namespace Gizmo.Client.UI.Components
                         else
                         {
                             //Else keep in the snapshot only the new items and continue with render.
-                            await InvokeVoidAsync("writeLine", $"Error: New items could be ignored {this.ToString()}");
+                            //await InvokeVoidAsync("writeLine", $"Error: New items could be ignored {this.ToString()}");
 
                             snapShot = addedItems;
                         }
@@ -225,7 +220,7 @@ namespace Gizmo.Client.UI.Components
                             size.Height += _fontSize * 2;
                             _componentSize.Width = (int)size.Width;
                             _componentSize.Height = (int)size.Height;
-                            await InvokeVoidAsync("writeLine", $"Height: {_componentSize.Height.ToString()}");
+                            //await InvokeVoidAsync("writeLine", $"Height: {_componentSize.Height.ToString()}");
                             NotificationsService.RequestNotificationHostSize(_componentSize);
                             _isTemp = false;
 
@@ -240,7 +235,7 @@ namespace Gizmo.Client.UI.Components
                         }
                         else
                         {
-                            await InvokeVoidAsync("writeLine", $"Error: 0 items {this.ToString()}");
+                            //await InvokeVoidAsync("writeLine", $"Error: 0 items {this.ToString()}");
                         }
                     }
                     else
@@ -292,7 +287,7 @@ namespace Gizmo.Client.UI.Components
                             size.Height += _fontSize * 2;
                             _componentSize.Width = (int)size.Width;
                             _componentSize.Height = (int)size.Height;
-                            await InvokeVoidAsync("writeLine", $"Height: {_componentSize.Height.ToString()}");
+                            //await InvokeVoidAsync("writeLine", $"Height: {_componentSize.Height.ToString()}");
                             NotificationsService.RequestNotificationHostSize(_componentSize);
 
                             foreach (var item in _newItems)
@@ -305,13 +300,13 @@ namespace Gizmo.Client.UI.Components
                                 _visible.Insert(index, newlyAddedItem);
                                 await Rerender();
                                 _newlyAddedItemId = -1;
-                                await InvokeVoidAsync("writeLine", $"tmpItemAdded {this.ToString()}");
+                                //await InvokeVoidAsync("writeLine", $"tmpItemAdded {this.ToString()}");
 
                                 _currentAnimation = Animations.ItemSlideIn;
 
                                 await SetAnimationHeight(item);
                                 _componentSize.Height += (int)_lastItemHeight;
-                                await InvokeVoidAsync("writeLine", $"Height: {_componentSize.Height.ToString()}");
+                                //await InvokeVoidAsync("writeLine", $"Height: {_componentSize.Height.ToString()}");
                                 NotificationsService.RequestNotificationHostSize(_componentSize);
 
                                 await SlideItemIn(item);
@@ -340,7 +335,7 @@ namespace Gizmo.Client.UI.Components
             }
             else
             {
-                await InvokeVoidAsync("writeLine", $"Error: _animationLock not available {this.ToString()}");
+                //await InvokeVoidAsync("writeLine", $"Error: _animationLock not available {this.ToString()}");
             }
         }
 
@@ -365,13 +360,19 @@ namespace Gizmo.Client.UI.Components
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);
-            await InvokeVoidAsync("writeLine", $"OnAfterRenderAsync {this.ToString()}");
+            //await InvokeVoidAsync("writeLine", $"OnAfterRenderAsync {this.ToString()}");
 
             if (firstRender)
             {
+                _fontSize = await JsInvokeAsync<float>("getFontSize");
+
                 await JsRuntime.InvokeVoidAsync("registerAnimatedComponent", Ref);
                 AnimationEventInterop = new AnimationEventInterop(JsRuntime);
                 await AnimationEventInterop.SetupAnimationEventCallback(args => AnimationHandler(args));
+
+                _hidden = false;
+                ViewState.OnChange += ViewState_OnChange;
+                await UpdateUI();
             }
             else
             {
@@ -389,7 +390,7 @@ namespace Gizmo.Client.UI.Components
         public async ValueTask DisposeAsync()
         {
             await InvokeVoidAsync("unregisterAnimatedComponent", Ref).ConfigureAwait(false);
-            await InvokeVoidAsync("writeLine", $"DisposeAsync {this.ToString()}");
+            //await InvokeVoidAsync("writeLine", $"DisposeAsync {this.ToString()}");
 
             if (AnimationEventInterop != null)
             {
