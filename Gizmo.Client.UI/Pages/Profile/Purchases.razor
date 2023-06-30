@@ -68,7 +68,7 @@
                         <ChildContent>
                             <DataGridColumn Style="white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;" Field="@(nameof(UserOrderViewState.ProductNames))" TItemType="UserOrderViewState" Context="order">
                                 <HeaderTemplate>
-                                    Order
+                                    @LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER")
                                 </HeaderTemplate>
                                 <CellTemplate>
                                     @order.ProductNames
@@ -77,7 +77,7 @@
                             </DataGridColumn>
                             <DataGridColumn Style="" Field="@(nameof(UserOrderViewState.OrderStatus))" TItemType="UserOrderViewState" Context="order">
                                 <HeaderTemplate>
-                                    Order status
+                                    @LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_STATUS")
                                 </HeaderTemplate>
                                 <CellTemplate>
                                     @if (order.Invoice?.IsVoided == true)
@@ -109,7 +109,7 @@
                             </DataGridColumn>
                             <DataGridColumn Style="" Field="@(nameof(UserOrderViewState.OrderDate))" TItemType="UserOrderViewState" Context="order">
                                 <HeaderTemplate>
-                                    Date
+                                    @LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_DATE")
                                 </HeaderTemplate>
                                 <CellTemplate>
                                     @order.OrderDate.ToString()
@@ -117,7 +117,7 @@
                             </DataGridColumn>
                             <DataGridColumn Style="" Field="@(nameof(UserOrderViewState.Invoice))" TItemType="UserOrderViewState" Context="order">
                                 <HeaderTemplate>
-                                    Payment method
+                                    @LocalizationService.GetString("GIZ_USER_PURCHASES_PAYMENT_METHOD")
                                 </HeaderTemplate>
                                 <CellTemplate>
                                     <div class="order-payment-method-names">@order.Invoice?.PaymentMethodNames</div>
@@ -125,7 +125,7 @@
                             </DataGridColumn>
                             <DataGridColumn Style="" TextAlignment="TextAlignments.Right" Field="@(nameof(UserOrderViewState.TotalPrice))" TItemType="UserOrderViewState" Context="order">
                                 <HeaderTemplate>
-                                    Order price
+                                    @LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_PRICE")
                                 </HeaderTemplate>
                                 <CellTemplate>
                                     @order.TotalPrice.ToString("C") @order.TotalPointsPrice <Points2Icon />
@@ -133,7 +133,7 @@
                             </DataGridColumn>
                             <DataGridColumn Style="" Field="@(nameof(UserOrderViewState.Invoice))" TItemType="UserOrderViewState" Context="order">
                                 <HeaderTemplate>
-                                    Payment status
+                                    @LocalizationService.GetString("GIZ_USER_PURCHASES_PAYMENT_STATUS")
                                 </HeaderTemplate>
                                 <CellTemplate>
                                     @if (order.Invoice != null)
