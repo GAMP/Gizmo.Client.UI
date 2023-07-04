@@ -49,12 +49,13 @@ else
                         <div class="giz-user-lock__title">@LocalizationService.GetString("GIZ_USER_LOCK_SCREEN_LOCKED_TITLE")</div>
                         <div class="giz-user-lock__subtitle">@LocalizationService.GetString("GIZ_USER_LOCK_SCREEN_LOCKED_SUBTITLE")</div>
                         <div class="giz-user-lock__code">
-                            <TextInput IsTransparent="true"
+                            <PasswordInput IsTransparent="true"
                                        Value="@ViewState.InputPassword"
                                        ValueChanged="@((string value) => UserLockService.SetInputPassword(value))"
                                        ValueExpression="@(() => ViewState.InputPassword)"
                                        ValidateFunction="@UserLockService.SetInputPasswordCharacterIsValid"
                                        ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
+                                       ShowRevealButton="true"
                                        UpdateOnInput="true"
                                        MaxLength="4" />
                         </div>
