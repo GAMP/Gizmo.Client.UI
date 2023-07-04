@@ -10,14 +10,14 @@
                     <div class="giz-user-lock__title">@LocalizationService.GetString("GIZ_USER_LOCK_SCREEN_TITLE")</div>
                     <div class="giz-user-lock__subtitle">@LocalizationService.GetString("GIZ_USER_LOCK_SCREEN_SUBTITLE")</div>
                     <div class="giz-user-lock__code">
-                        <TextInput IsTransparent="true"
-                                   Value="@ViewState.InputPassword"
-                                   ValueChanged="@((string value) => UserLockService.SetInputPassword(value))"
-                                   ValueExpression="@(() => ViewState.InputPassword)"
-                                   ValidateFunction="@UserLockService.SetInputPasswordCharacterIsValid"
-                                   ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
-                                   UpdateOnInput="true"
-                                   MaxLength="4" />
+                        <PasswordInput IsTransparent="true"
+                                       Value="@ViewState.InputPassword"
+                                       ValueChanged="@((string value) => UserLockService.SetInputPassword(value))"
+                                       ValueExpression="@(() => ViewState.InputPassword)"
+                                       ValidateFunction="@UserLockService.SetInputPasswordCharacterIsValid"
+                                       ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
+                                       UpdateOnInput="true"
+                                       MaxLength="4" />
                     </div>
                     <div class="giz-user-lock__numpad">
                         @for (int i = 0; i <= 9; i++)
