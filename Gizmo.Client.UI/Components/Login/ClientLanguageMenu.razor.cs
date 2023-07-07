@@ -16,7 +16,7 @@ namespace Gizmo.Client.UI.Shared
 
         private void ValueChangedHandler(CultureInfo culture)
         {
-            CultureService.SetCurrentCultureAsync(culture.TwoLetterISOLanguageName);
+            CultureService.SetCurrentCultureAsync(culture.Name);
         }
 
         protected override void OnInitialized()
