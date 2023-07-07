@@ -48,7 +48,7 @@ namespace Gizmo.Client.UI.Host.Web
 
             hostBuilder.Services.AddSingleton<IGizmoClient, TestClient>();
             hostBuilder.Services.AddSingleton<IImageService, ImageService>();
-            hostBuilder.Services.AddSingleton<INotificationsHost,WebNotificationHost>();
+            hostBuilder.Services.AddSingleton<INotificationsHost, WebNotificationHost>();
 
             var host = hostBuilder.Build();
 

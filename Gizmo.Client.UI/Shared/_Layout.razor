@@ -31,6 +31,13 @@
     <UserLock />
     <DialogHost />
 
+    @if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Create("browser")))
+    {
+        <div class="giz-web-notifications-host">
+            <NotificationsHost />
+        </div>
+    }
+
     @if (HostOutOfOrderViewState.IsOutOfOrder)
     {
         <Layout_LoginOutOfOrder />
