@@ -75,8 +75,8 @@
                 {
                     <div class="giz-registration-form-input">
                         <MaskedPhoneInput Mask="###-###-####"
-                                          Prefix="@ViewState.Prefix"
-                                          AllowMoreDigits="@(string.IsNullOrEmpty(ViewState.Prefix) || ViewState.Prefix == "+")"
+                                          Prefix="+"
+                                          AllowMoreDigits="true"
                                           Value="@ViewState.MobilePhone"
                                           ValueChanged="@((string value) => UserRegistrationAdditionalFieldsViewService.SetMobilePhone(value))"
                                           ValueExpression="@(() => ViewState.MobilePhone)"

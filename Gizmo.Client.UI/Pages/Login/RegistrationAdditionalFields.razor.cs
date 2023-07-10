@@ -60,7 +60,7 @@ namespace Gizmo.Client.UI.Pages
             }
             else
             {
-                return Countries.Where(a => a.Text == ViewState.Country && a.PhonePrefix == ViewState.Prefix).FirstOrDefault();
+                return Countries.Where(a => a.Text == ViewState.Country).FirstOrDefault();
             }
         }
 
@@ -69,12 +69,17 @@ namespace Gizmo.Client.UI.Pages
             if (value == null)
             {
                 UserRegistrationAdditionalFieldsViewService.SetCountry(null);
-                UserRegistrationAdditionalFieldsViewService.SetPrefix(null);
+                UserRegistrationConfirmationMethodService.SetMobilePhone(null);
             }
             else
             {
                 UserRegistrationAdditionalFieldsViewService.SetCountry(value.Text);
-                UserRegistrationAdditionalFieldsViewService.SetPrefix(value.PhonePrefix);
+                var tmp = value.PhonePrefix;
+                if (tmp.StartsWith("+"))
+                {
+                    tmp = tmp.Substring(1);
+                }
+                UserRegistrationConfirmationMethodService.SetMobilePhone(tmp);
             }
         }
 
@@ -91,12 +96,21 @@ namespace Gizmo.Client.UI.Pages
 
             foreach (var country in countries)
             {
-                foreach (var suffix in country.CallingCodeSuffixes)
+                if (country.CallingCodeSuffixes.Count() == 1)
                 {
                     Countries.Add(new IconSelectCountry()
                     {
                         Text = country.NativeName,
-                        PhonePrefix = country.CallingCodeRoot + suffix,
+                        PhonePrefix = country.CallingCodeRoot + country.CallingCodeSuffixes.FirstOrDefault(),
+                        Icon = country.FlagSvg
+                    });
+                }
+                else
+                {
+                    Countries.Add(new IconSelectCountry()
+                    {
+                        Text = country.NativeName,
+                        PhonePrefix = country.CallingCodeRoot,
                         Icon = country.FlagSvg
                     });
                 }
