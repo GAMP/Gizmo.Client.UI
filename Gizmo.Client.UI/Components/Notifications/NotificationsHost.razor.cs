@@ -364,6 +364,15 @@ namespace Gizmo.Client.UI.Components
 
             if (firstRender)
             {
+                try
+                {
+                    await InvokeVoidAsync("writeLine", $"OnAfterRenderAsync {this.ToString()}");
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(ex.Message);
+                }
+
                 _fontSize = await JsInvokeAsync<float>("getFontSize");
 
                 await JsRuntime.InvokeVoidAsync("registerAnimatedComponent", Ref);
