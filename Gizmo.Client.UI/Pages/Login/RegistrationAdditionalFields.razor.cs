@@ -40,6 +40,21 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         NavigationService NavigationService { get; set; }
 
+        public string GetMask()
+        {
+            var selectedCountry = GetSelectedCountry();
+
+            if (selectedCountry != null)
+            {
+                if (selectedCountry.PhonePrefix.Length - 1 > 0)
+                {
+                    return new string('#', selectedCountry.PhonePrefix.Length - 1) + "-###-###-####";
+                }
+            }
+
+            return "###-###-####";
+        }
+
         public void OnCloseButtonClickHandler()
         {
             UserRegistrationAdditionalFieldsViewService.Reset();

@@ -74,7 +74,7 @@
                 @if (UserRegistrationViewState.ConfirmationMethod != RegistrationVerificationMethod.MobilePhone)
                 {
                     <div class="giz-registration-form-input">
-                        <MaskedPhoneInput Mask="###-###-####"
+                        <MaskedPhoneInput Mask="@GetMask()"
                                           Prefix="+"
                                           AllowMoreDigits="true"
                                           Value="@ViewState.MobilePhone"
