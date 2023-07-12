@@ -166,7 +166,7 @@ namespace Gizmo.Client.UI.Components
 
         private async void ViewState_OnChange(object sender, System.EventArgs e)
         {
-            //await InvokeVoidAsync("writeLine", $"ViewState_OnChange {this.ToString()}");
+            await InvokeVoidAsync("writeLine", $"ViewState_OnChange {this.ToString()}");
             await UpdateUI();
         }
 
@@ -235,7 +235,7 @@ namespace Gizmo.Client.UI.Components
                         }
                         else
                         {
-                            //await InvokeVoidAsync("writeLine", $"Error: 0 items {this.ToString()}");
+                            await InvokeVoidAsync("writeLine", $"Error: 0 items {this.ToString()}");
                         }
                     }
                     else
@@ -287,7 +287,7 @@ namespace Gizmo.Client.UI.Components
                             size.Height += _fontSize * 2;
                             _componentSize.Width = (int)size.Width;
                             _componentSize.Height = (int)size.Height;
-                            //await InvokeVoidAsync("writeLine", $"Height: {_componentSize.Height.ToString()}");
+                            await InvokeVoidAsync("writeLine", $"Height: {_componentSize.Height.ToString()}");
                             NotificationsService.RequestNotificationHostSize(_componentSize);
 
                             foreach (var item in _newItems)
@@ -335,7 +335,7 @@ namespace Gizmo.Client.UI.Components
             }
             else
             {
-                //await InvokeVoidAsync("writeLine", $"Error: _animationLock not available {this.ToString()}");
+                await InvokeVoidAsync("writeLine", $"Error: _animationLock not available {this.ToString()}");
             }
         }
 
@@ -362,17 +362,17 @@ namespace Gizmo.Client.UI.Components
             await base.OnAfterRenderAsync(firstRender);
             //await InvokeVoidAsync("writeLine", $"OnAfterRenderAsync {this.ToString()}");
 
+            try
+            {
+                await InvokeVoidAsync("writeLine", $"OnAfterRenderAsync {this.ToString()}");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+            }
+
             if (firstRender)
             {
-                try
-                {
-                    await InvokeVoidAsync("writeLine", $"OnAfterRenderAsync {this.ToString()}");
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(ex.Message);
-                }
-
                 _fontSize = await JsInvokeAsync<float>("getFontSize");
 
                 await JsRuntime.InvokeVoidAsync("registerAnimatedComponent", Ref);
