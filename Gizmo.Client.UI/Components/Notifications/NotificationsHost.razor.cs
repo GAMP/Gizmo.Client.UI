@@ -377,7 +377,6 @@ namespace Gizmo.Client.UI.Components
                 if (firstRender)
                 {
                     Logger.LogError($"NotificationsMessage: Before getFontSize");
-                    await InvokeVoidAsync("writeLine", $"OnAfterRenderAsync {this.ToString()}");
                     _fontSize = await JsInvokeAsync<float>("getFontSize");
                     Logger.LogError($"NotificationsMessage: After getFontSize");
 
