@@ -218,7 +218,7 @@ namespace Gizmo.Client.UI.Components
                             _visible = snapShot;
 
                             //Render invisible to get height.
-                            //_isTemp = true;
+                            _isTemp = true;
                             await Rerender();
                             var size = await GetElementSize();
                             size.Height += _fontSize * 2;
