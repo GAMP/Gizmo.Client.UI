@@ -117,6 +117,7 @@ namespace Gizmo.Client.UI.Components
         {
             _hidden = false;
             _slideIn = true;
+            Logger.LogTrace($"NotificationsMessage: SlideWindowIn {this.ToString()}");
             await Rerender();
             await Task.Delay(1000);
             _slideIn = false;
@@ -126,6 +127,7 @@ namespace Gizmo.Client.UI.Components
         {
             _slideOut = true;
             await Rerender();
+            Logger.LogTrace($"NotificationsMessage: SlideWindowOut {this.ToString()}");
             await Task.Delay(1000);
             _slideOut = false;
             _hidden = true;
@@ -166,6 +168,7 @@ namespace Gizmo.Client.UI.Components
 
         private async void ViewState_OnChange(object sender, System.EventArgs e)
         {
+            Logger.LogTrace($"NotificationsMessage: ViewState_OnChange {this.ToString()}");
             //await InvokeVoidAsync("writeLine", $"ViewState_OnChange {this.ToString()}");
             await UpdateUI();
         }
@@ -211,19 +214,22 @@ namespace Gizmo.Client.UI.Components
                     {
                         if (snapShot.Count() > 0)
                         {
-                            //First run.
+                            //First render after window shown.
                             _visible = snapShot;
 
-                            _isTemp = true;
+                            //Render invisible to get height.
+                            //_isTemp = true;
                             await Rerender();
                             var size = await GetElementSize();
                             size.Height += _fontSize * 2;
                             _componentSize.Width = (int)size.Width;
                             _componentSize.Height = (int)size.Height;
+                            Logger.LogTrace($"NotificationsMessage: Height {_componentSize.Height.ToString()}");
                             //await InvokeVoidAsync("writeLine", $"Height: {_componentSize.Height.ToString()}");
                             NotificationsService.RequestNotificationHostSize(_componentSize);
                             _isTemp = false;
 
+                            //Render visible to show window slide in animation.
                             _currentAnimation = Animations.WindowSlideIn;
                             await SlideWindowIn();
                             _currentAnimation = Animations.None;
@@ -235,6 +241,7 @@ namespace Gizmo.Client.UI.Components
                         }
                         else
                         {
+                            Logger.LogError($"NotificationsMessage: Error: 0 items {this.ToString()}");
                             //await InvokeVoidAsync("writeLine", $"Error: 0 items {this.ToString()}");
                         }
                     }
@@ -254,25 +261,6 @@ namespace Gizmo.Client.UI.Components
                                     _removedItems.Add(item.Identifier);
                             }
 
-                            //var tmp = _visible.ToList();
-
-                            //foreach (var item in _newItems)
-                            //{
-                            //    _visible.Add(snapShot.Where(a => a.Identifier == item).FirstOrDefault());
-                            //}
-
-                            //_isTemp = true;
-                            //await Rerender();
-                            //var size = await GetElementSize();
-                            //size.Height += _fontSize * 2;
-                            //await InvokeVoidAsync("writeLine", $"Height: {size.Height.ToString()}");
-                            //_componentSize.Width = (int)size.Width;
-                            //_componentSize.Height = (int)size.Height;
-                            //NotificationsService.RequestNotificationHostSize(_componentSize);
-                            //_isTemp = false;
-
-                            //_visible = tmp;
-
                             foreach (var item in _removedItems)
                             {
                                 _currentAnimation = Animations.ItemSlideOut;
@@ -287,6 +275,7 @@ namespace Gizmo.Client.UI.Components
                             size.Height += _fontSize * 2;
                             _componentSize.Width = (int)size.Width;
                             _componentSize.Height = (int)size.Height;
+                            Logger.LogTrace($"NotificationsMessage: Height {_componentSize.Height.ToString()}");
                             //await InvokeVoidAsync("writeLine", $"Height: {_componentSize.Height.ToString()}");
                             NotificationsService.RequestNotificationHostSize(_componentSize);
 
@@ -306,6 +295,7 @@ namespace Gizmo.Client.UI.Components
 
                                 await SetAnimationHeight(item);
                                 _componentSize.Height += (int)_lastItemHeight;
+                                Logger.LogTrace($"NotificationsMessage: Height {_componentSize.Height.ToString()}");
                                 //await InvokeVoidAsync("writeLine", $"Height: {_componentSize.Height.ToString()}");
                                 NotificationsService.RequestNotificationHostSize(_componentSize);
 
@@ -335,6 +325,7 @@ namespace Gizmo.Client.UI.Components
             }
             else
             {
+                Logger.LogError($"NotificationsMessage: Error: _animationLock not available {this.ToString()}");
                 //await InvokeVoidAsync("writeLine", $"Error: _animationLock not available {this.ToString()}");
             }
         }
@@ -346,7 +337,19 @@ namespace Gizmo.Client.UI.Components
             //args.Id is the host component Id or the item Identifier.
             if (args.Id == Id)
             {
-                _logger.LogTrace("Notification host animation state changed, new stat {state}", args.AnimationState);
+                _logger.LogTrace($"Notification host animation {args.AnimationName} state changed, new stat {args.AnimationState}");
+
+                if (args.AnimationName == "notifications-slide-in-anim")
+                {
+                    if (args.AnimationState == AnimationStates.End)
+                    {
+
+                    }
+                }
+                else if (args.AnimationName == "notifications-slide-out-anim")
+                {
+
+                }
             }
 
             return Task.CompletedTask;
@@ -363,22 +366,13 @@ namespace Gizmo.Client.UI.Components
 
             try
             {
-                ////await InvokeVoidAsync("writeLine", $"OnAfterRenderAsync {this.ToString()}");
-
-                //try
-                //{
-                //    //await InvokeVoidAsync("writeLine", $"OnAfterRenderAsync {this.ToString()}");
-                //}
-                //catch (Exception ex)
-                //{
-                //    Logger.LogError($"Notifications Error: {ex.Message}");
-                //}
-                Logger.LogError($"NotificationsMessage: After Render");
+                Logger.LogTrace($"NotificationsMessage: After Render firstRender:{firstRender} {this.ToString()}");
                 if (firstRender)
                 {
-                    Logger.LogError($"NotificationsMessage: Before getFontSize");
+                    //await Task.Delay(0);
+                    Logger.LogTrace($"NotificationsMessage: Before getFontSize");
                     _fontSize = await JsInvokeAsync<float>("getFontSize");
-                    Logger.LogError($"NotificationsMessage: After getFontSize");
+                    Logger.LogTrace($"NotificationsMessage: After getFontSize");
 
                     await JsRuntime.InvokeVoidAsync("registerAnimatedComponent", Ref);
                     AnimationEventInterop = new AnimationEventInterop(JsRuntime);
@@ -387,9 +381,9 @@ namespace Gizmo.Client.UI.Components
                     _hidden = false;
                     ViewState.OnChange += ViewState_OnChange;
 
-                    Logger.LogError($"NotificationsMessage: Before UpdateUI");
+                    Logger.LogTrace($"NotificationsMessage: Before UpdateUI");
                     await UpdateUI();
-                    Logger.LogError($"NotificationsMessage: After UpdateUI");
+                    Logger.LogTrace($"NotificationsMessage: After UpdateUI");
                 }
                 else
                 {
@@ -404,13 +398,14 @@ namespace Gizmo.Client.UI.Components
 
         public override string ToString()
         {
-            return base.ToString() + $" Current animation: {_currentAnimation.ToString()} Items: {_visible.Count}";
+            return base.ToString() + $" Current animation: {_currentAnimation.ToString()} Items: {_visible.Count} _isTemp: {_isTemp} _hidden: {_hidden}";
         }
 
         #region IAsyncDisposable
 
         public async ValueTask DisposeAsync()
         {
+            Logger.LogTrace($"NotificationsMessage: DisposeAsync {this.ToString()}");
             await InvokeVoidAsync("unregisterAnimatedComponent", Ref).ConfigureAwait(false);
             //await InvokeVoidAsync("writeLine", $"DisposeAsync {this.ToString()}");
 
