@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Shared
 {
-    public partial class HeaderGlobalSearchResultCardProductGroup : CustomDOMComponentBase
+    public partial class HeaderGlobalSearchProductResultCardProductGroup : CustomDOMComponentBase
     {
         private UserProductGroupViewState _userProductGroupViewState;
 

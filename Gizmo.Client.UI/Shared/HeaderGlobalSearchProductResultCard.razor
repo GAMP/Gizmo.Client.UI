@@ -1,0 +1,36 @@
+﻿@inherits CustomDOMComponentBase
+
+<div class="giz-global-search-result-card giz-global-search-result-card--product" @onclick="OnClickHandler">
+    <div class="giz-global-search-result-card__image">
+        <GizImage @key="_userProductViewState" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@_userProductViewState.DefaultImageId">
+            <EmptyResultPlaceholder>
+                <div class="giz-default-image">
+                    <img src="_content/Gizmo.Client.UI/img/no-product-image.svg" alt='loading' />
+                </div>
+            </EmptyResultPlaceholder>
+            <ErrorPlaceholder>
+                <div class="giz-default-image">
+                    <img src="_content/Gizmo.Client.UI/img/broken-image.svg" alt='loading' />
+                </div>
+            </ErrorPlaceholder>
+        </GizImage>
+    </div>
+    <div class="giz-global-search-result-card__category">
+        <HeaderGlobalSearchProductResultCardProductGroup @key="_userProductViewState" ProductGroupId="@_userProductViewState.ProductGroupId" />
+    </div>
+    <div class="giz-global-search-result-card__title">@_userProductViewState.Name</div>
+    <div class="giz-global-search-result-card__action">
+        @if (_userProductViewState.DisallowPurchase)
+        {
+            <ClientTooltip Text="@_userProductViewState.DisallowPurchaseReason" Class="giz-product-host-groups-tooltip">
+                <ChildContent>
+                    <Button IsDisabled="true" Variant="ButtonVariants.Outline" @onclick="OnClickActionButtonHandler">@LocalizationService.GetString("GIZ_GEN_ADD_TO_CART")</Button>
+                </ChildContent>
+            </ClientTooltip>
+        }
+        else
+        { 
+            <Button Variant="ButtonVariants.Outline" @onclick="OnClickActionButtonHandler">@LocalizationService.GetString("GIZ_GEN_ADD_TO_CART")</Button>
+        }
+    </div>
+</div>

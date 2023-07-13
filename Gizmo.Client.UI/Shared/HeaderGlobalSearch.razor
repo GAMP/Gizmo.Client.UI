@@ -42,7 +42,6 @@
                                 @foreach (var result in ViewState.ExecutableResults.Take(10))
                                 {
                                     <UniversalExecutable @key="result.Id" ExecutableId="@result.Id" ShowProgressBar="true" ShowExeName="true" ShowAppName="true" />
-                                    @*<HeaderGlobalSearchResultCard Result="@result" />*@
                                 }
 
                             </div>
@@ -64,7 +63,7 @@
 
                                 @foreach (var result in ViewState.ProductResults.Take(10))
                                 {
-                                    <HeaderGlobalSearchResultCard Result="@result" />
+                                    <HeaderGlobalSearchProductResultCard @key="result.Id" ProductId="@result.Id" />
                                 }
 
                             </div>
