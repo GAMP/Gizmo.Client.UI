@@ -62,7 +62,7 @@
 
                             @if (Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAfterTime))
                             {
-                                <div class="giz-time-product-expiration">@($"{LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_AFTER")} {ProductHelpers.GetExpiresAfterText(Product.TimeProduct, LocalizationService)}")</div>
+                                <div class="giz-time-product-expiration">@($"{ProductHelpers.GetExpiresAfterText(Product.TimeProduct, LocalizationService)}")</div>
                             }
 
                             @if (Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpiresAtLogout))

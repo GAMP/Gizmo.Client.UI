@@ -122,7 +122,7 @@
                         @if (ViewState.Product.ProductType == ProductType.ProductTime && ViewState.Product.TimeProduct.ExpirationOptions != ProductTimeExpirationOptionType.None)
                         {
                             <div class="giz-product-details__product__info__additional__expirations">
-                                <div class="giz-product-details__product__info__additional__expirations__header">@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRES_AFTER")</div>
+                                <div class="giz-product-details__product__info__additional__expirations__header">@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRES")</div>
                                 <div class="giz-product-details__product__info__additional__expirations__body">
 
                                     @if (ViewState.Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAtDayTime))
@@ -137,7 +137,7 @@
 
                                     @if (ViewState.Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpiresAtLogout))
                                     {
-                                        <div class="giz-product-expiration">@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_LOGOUT")<Icon SVGIcon="Icons.Info_Client" Size="IconSizes.Small" /></div>
+                                        <div class="giz-product-expiration">@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_AFTER_LOGOUT")<Icon SVGIcon="Icons.Info_Client" Size="IconSizes.Small" /></div>
                                     }
 
                                 </div>

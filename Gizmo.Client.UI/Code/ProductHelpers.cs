@@ -148,7 +148,7 @@ namespace Gizmo.Client.UI
                         break;
                 }
 
-                result = $"{timeProduct.ExpiresAfter} {expireAfterText} {localizationService.GetString("GIZ_GEN_OF")} {expireFromOptionsText}";
+                result = $"{timeProduct.ExpiresAfter} {expireAfterText} {expireFromOptionsText}";
             }
 
             return result;
