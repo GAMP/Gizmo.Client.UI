@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Gizmo.Client.UI.Code;
 using Gizmo.UI.Services;
 using Gizmo.UI.View.States;
 using Gizmo.Web.Components;
@@ -40,6 +41,8 @@ namespace Gizmo.Client.UI.Components
         private List<int> _newItems = new List<int>();
         private List<int> _removedItems = new List<int>();
         private readonly SemaphoreSlim _animationLock = new(1);
+
+        private readonly AsyncAutoResetEvent asyncAutoResetEvent = new AsyncAutoResetEvent();
 
         private ILogger<NotificationsHost> _logger;
 
@@ -119,7 +122,8 @@ namespace Gizmo.Client.UI.Components
             _slideIn = true;
             Logger.LogTrace($"NotificationsMessage: SlideWindowIn {this.ToString()}");
             await Rerender();
-            await Task.Delay(1000);
+            //await Task.Delay(1000);
+            await asyncAutoResetEvent.WaitAsync();
             _slideIn = false;
         }
 
@@ -128,7 +132,8 @@ namespace Gizmo.Client.UI.Components
             _slideOut = true;
             await Rerender();
             Logger.LogTrace($"NotificationsMessage: SlideWindowOut {this.ToString()}");
-            await Task.Delay(1000);
+            //await Task.Delay(1000);
+            await asyncAutoResetEvent.WaitAsync();
             _slideOut = false;
             _hidden = true;
         }
@@ -343,12 +348,15 @@ namespace Gizmo.Client.UI.Components
                 {
                     if (args.AnimationState == AnimationStates.End)
                     {
-
+                        asyncAutoResetEvent.Set();
                     }
                 }
                 else if (args.AnimationName == "notifications-slide-out-anim")
                 {
-
+                    if (args.AnimationState == AnimationStates.End)
+                    {
+                        asyncAutoResetEvent.Set();
+                    }
                 }
             }
 
@@ -369,7 +377,7 @@ namespace Gizmo.Client.UI.Components
                 Logger.LogTrace($"NotificationsMessage: After Render firstRender:{firstRender} {this.ToString()}");
                 if (firstRender)
                 {
-                    //await Task.Delay(0);
+                    await Task.Delay(1);
                     Logger.LogTrace($"NotificationsMessage: Before getFontSize");
                     _fontSize = await JsInvokeAsync<float>("getFontSize");
                     Logger.LogTrace($"NotificationsMessage: After getFontSize");
