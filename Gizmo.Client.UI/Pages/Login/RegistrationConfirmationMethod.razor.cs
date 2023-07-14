@@ -129,7 +129,7 @@ namespace Gizmo.Client.UI.Pages
 
             var other = new IconSelectCountry()
             {
-                Text = "Other",
+                Text = LocalizationService.GetString("GIZ_COUNTRY_OTHER"),
                 PhonePrefix = "+",
                 Icon = "_content/Gizmo.Client.UI/img/no-flag-image.svg"
             };

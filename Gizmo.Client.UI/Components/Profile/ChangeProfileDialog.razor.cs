@@ -42,7 +42,7 @@ namespace Gizmo.Client.UI.Components
 
         public void OnClickClearValueButtonHandler(MouseEventArgs args)
         {
-            SetSelectedCountry(Countries.Where(a => a.Text == "Other").FirstOrDefault());
+            SetSelectedCountry(Countries.Where(a => a.Text == LocalizationService.GetString("GIZ_COUNTRY_OTHER")).FirstOrDefault());
         }
 
         public IconSelectCountry GetSelectedCountry()
@@ -89,7 +89,7 @@ namespace Gizmo.Client.UI.Components
 
                     if (defaultItem == null)
                     {
-                        var other = Countries.Where(a => a.Text == "Other").FirstOrDefault();
+                        var other = Countries.Where(a => a.Text == LocalizationService.GetString("GIZ_COUNTRY_OTHER")).FirstOrDefault();
                         defaultItem = other;
                     }
 
@@ -121,7 +121,7 @@ namespace Gizmo.Client.UI.Components
 
             var other = new IconSelectCountry()
             {
-                Text = "Other",
+                Text = LocalizationService.GetString("GIZ_COUNTRY_OTHER"),
                 Icon = "_content/Gizmo.Client.UI/img/no-flag-image.svg"
             };
 
