@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -296,8 +297,7 @@ namespace Gizmo.Client.UI
                                 TimeSpan startTimeSpan = TimeSpan.FromSeconds(firstTimeRange.StartSecond);
                                 TimeSpan endTimeSpan = TimeSpan.FromSeconds(firstTimeRange.EndSecond);
 
-                                //TODO: AAA DAY NAME?
-                                result.Add($"{startTimeSpan.ToString("hh\\:mm")}-{endTimeSpan.ToString("hh\\:mm")} {date.DayOfWeek.ToString().Substring(0, 2)}");
+                                result.Add($"{startTimeSpan.ToString("hh\\:mm")}-{endTimeSpan.ToString("hh\\:mm")} {CultureInfo.CurrentCulture.DateTimeFormat.GetDayName(date.DayOfWeek).Substring(0, 2)}");
                                 break;
                             }
                         }
@@ -352,8 +352,7 @@ namespace Gizmo.Client.UI
                             TimeSpan startTimeSpan = TimeSpan.FromSeconds(first.StartSecond);
                             TimeSpan endTimeSpan = TimeSpan.FromSeconds(first.EndSecond);
 
-                            //TODO: AAA DAY NAME?
-                            result.Add($"{startTimeSpan.ToString("hh\\:mm")}-{endTimeSpan.ToString("hh\\:mm")} {day.Day.ToString().Substring(0, 2)}");
+                            result.Add($"{startTimeSpan.ToString("hh\\:mm")}-{endTimeSpan.ToString("hh\\:mm")} {CultureInfo.CurrentCulture.DateTimeFormat.GetDayName(day.Day).Substring(0, 2)}");
                         }
                     }
                 }
