@@ -37,7 +37,7 @@ namespace Gizmo.Client.UI.Host.WPF
                 serviceCollection.AddDialogService<IClientDialogService>();
                 serviceCollection.AddNotificationsService<IClientNotificationService>();
 
-                serviceCollection.AddSingleton<IGizmoClient, TestClient>();
+                serviceCollection.AddSingleton<IGizmoClient, DemoClient>();
                 serviceCollection.AddSingleton<IImageService, ImageService>();
 
                 serviceCollection.AddSingleton<IInputLanguageService, WpfInputLenguageService>();

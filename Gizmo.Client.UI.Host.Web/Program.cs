@@ -46,7 +46,7 @@ namespace Gizmo.Client.UI.Host.Web
 
             hostBuilder.Services.AddSingleton<IInputLanguageService, WebInputLenguageService>();
 
-            hostBuilder.Services.AddSingleton<IGizmoClient, TestClient>();
+            hostBuilder.Services.AddSingleton<IGizmoClient, DemoClient>();
             hostBuilder.Services.AddSingleton<IImageService, ImageService>();
             hostBuilder.Services.AddSingleton<INotificationsHost, WebNotificationHost>();
 

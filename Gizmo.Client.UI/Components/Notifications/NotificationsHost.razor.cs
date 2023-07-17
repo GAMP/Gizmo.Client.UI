@@ -369,7 +369,7 @@ namespace Gizmo.Client.UI.Components
                 Logger.LogTrace($"NotificationsMessage: After Render firstRender:{firstRender} {this.ToString()}");
                 if (firstRender)
                 {
-                    //await Task.Delay(0);
+                    //await Task.Delay(10);
                     Logger.LogTrace($"NotificationsMessage: Before getFontSize");
                     _fontSize = await JsInvokeAsync<float>("getFontSize");
                     Logger.LogTrace($"NotificationsMessage: After getFontSize");
