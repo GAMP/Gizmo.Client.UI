@@ -107,6 +107,10 @@ namespace Gizmo.Client.UI.Components
         {
             _fontSize = await JsInvokeAsync<float>("getFontSize");
             var windowSize = await JsInvokeAsync<WindowSize>("getWindowSize");
+
+            if (IsDisposed)
+                return;
+
             var tooltipRootSize = await JsInvokeAsync<BoundingClientRect>("getElementBoundingClientRect", Ref);
             var popupContentSize = await JsInvokeAsync<BoundingClientRect>("getElementBoundingClientRect", _tooltipContent);
 
