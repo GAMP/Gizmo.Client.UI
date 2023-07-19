@@ -4,6 +4,7 @@ using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
@@ -12,7 +13,7 @@ namespace Gizmo.Client.UI.Components
     {
         private bool _isOpen { get; set; }
 
-        private IEnumerable<PaymentMethodViewState> _paymentMethods;
+        private IEnumerable<PaymentMethodViewState> _paymentMethods = Enumerable.Empty<PaymentMethodViewState>();
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
