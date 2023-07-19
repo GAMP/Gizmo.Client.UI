@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -24,6 +25,9 @@ namespace Gizmo.Client.UI.Shared
 
         [Inject]
         UserViewService UserService { get; set; }
+
+        [Inject]
+        UserViewState ViewState { get; set; }
 
         [Inject]
         UserLockViewService UserLockService { get; set; }
@@ -116,13 +120,6 @@ namespace Gizmo.Client.UI.Shared
             }
         }
 
-        public override void Dispose()
-        {
-            ClosePopupEventInterop?.Dispose();
-
-            base.Dispose();
-        }
-
         #endregion
 
         private ClosePopupEventInterop ClosePopupEventInterop { get; set; }
@@ -137,6 +134,28 @@ namespace Gizmo.Client.UI.Shared
             }
 
             return Task.CompletedTask;
+        }
+
+        protected override void OnInitialized()
+        {
+            ViewState.OnChange += ViewState_OnChange;
+
+            base.OnInitialized();
+        }
+
+        private async void ViewState_OnChange(object sender, System.EventArgs e)
+        {
+            _shouldRender = true;
+            await InvokeAsync(StateHasChanged);
+        }
+
+        public override void Dispose()
+        {
+            ViewState.OnChange -= ViewState_OnChange;
+
+            ClosePopupEventInterop?.Dispose();
+
+            base.Dispose();
         }
 
         #region IAsyncDisposable

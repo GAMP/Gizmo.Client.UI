@@ -26,13 +26,16 @@
             </div>
             <div class="giz-user-links-item-title">@LocalizationService.GetString("GIZ_USER_MENU_LOCK_PC")</div>
         </div>
-                
-        <div class="giz-user-links-item" @onclick="OnClickUserLogoutButtonHandler">
-            <div class="giz-user-links-item__icon">
-                <Icon SVGIcon="Icons.Logout_Client" />
+        
+        @if (ViewState.IsUserLogoutEnabled)
+        {
+            <div class="giz-user-links-item" @onclick="OnClickUserLogoutButtonHandler">
+                <div class="giz-user-links-item__icon">
+                    <Icon SVGIcon="Icons.Logout_Client" />
+                </div>
+                <div class="giz-user-links-item-title">@LocalizationService.GetString("GIZ_USER_MENU_LOGOUT")</div>
             </div>
-            <div class="giz-user-links-item-title">@LocalizationService.GetString("GIZ_USER_MENU_LOGOUT")</div>
-        </div>
+        }
 
     </div>
 </div>
