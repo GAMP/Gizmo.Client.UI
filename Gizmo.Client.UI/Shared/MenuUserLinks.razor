@@ -19,14 +19,17 @@
             </div>
             <div class="giz-user-links-item-title">@LocalizationService.GetString("GIZ_USER_MENU_HELP")</div>
         </div>*@
-                
-        <div class="giz-user-links-item" @onclick="OnClickUserLockButtonHandler">
-            <div class="giz-user-links-item__icon">
-                <Icon SVGIcon="Icons.Lock_Client" />
+
+        @if (!ViewState.IsUserLockDisabled)
+        {
+            <div class="giz-user-links-item" @onclick="OnClickUserLockButtonHandler">
+                <div class="giz-user-links-item__icon">
+                    <Icon SVGIcon="Icons.Lock_Client" />
+                </div>
+                <div class="giz-user-links-item-title">@LocalizationService.GetString("GIZ_USER_MENU_LOCK_PC")</div>
             </div>
-            <div class="giz-user-links-item-title">@LocalizationService.GetString("GIZ_USER_MENU_LOCK_PC")</div>
-        </div>
-        
+        }
+
         @if (ViewState.IsUserLogoutEnabled)
         {
             <div class="giz-user-links-item" @onclick="OnClickUserLogoutButtonHandler">

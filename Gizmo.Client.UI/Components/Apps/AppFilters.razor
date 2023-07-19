@@ -59,7 +59,7 @@ else
             Label="@LocalizationService.GetString("GIZ_GEN_SORT_BY")"
             OpenDirection="PopupOpenDirections.Bottom"
             MaximumHeight="20.0rem"
-            Class="@(ViewState.SelectedSortingOption != ApplicationSortingOption.Popularity ? "app-filter--filled" : "app-filter--default")"
+            Class="@(ViewState.SelectedSortingOption != ViewState.DefaultSortingOption ? "app-filter--filled" : "app-filter--default")"
             PopupClass="giz-scrollbar--v">
         @foreach (var item in ViewState.SortingOptions)
         {
