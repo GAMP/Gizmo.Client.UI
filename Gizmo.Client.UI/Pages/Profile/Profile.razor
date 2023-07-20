@@ -17,7 +17,7 @@
 
                         <div class="giz-profile-section-item">
                             <div class="giz-profile-section-item__avatar">
-                                @if (ViewState.Picture != null)
+                                @if (!string.IsNullOrEmpty(ViewState.Picture))
                                 {
                                     <Avatar Image="@ViewState.Picture" Variant="AvatarVariants.Circle" Class="giz-user-avatar" />
                                 }

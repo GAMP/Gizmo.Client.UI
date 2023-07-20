@@ -1,7 +1,7 @@
 ﻿@namespace Gizmo.Client.UI
 @inherits CustomDOMComponentBase
 
-@if (ViewState.Picture != null)
+@if (!string.IsNullOrEmpty(ViewState.Picture))
 {
     <Avatar Image="@ViewState.Picture" Variant="AvatarVariants.Circle" Class="giz-user-avatar" />
 }

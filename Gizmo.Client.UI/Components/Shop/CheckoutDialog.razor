@@ -82,7 +82,7 @@
                                         PopupClass="giz-scrollbar--v">
                                     @if (PaymentMethodViewStateLookupService != null)
                                     {
-                                        @foreach (var paymentMethod in _paymentMethods.Where(a => a.Id != -4 && !a.IsOnline))
+                                        @foreach (var paymentMethod in _paymentMethods)
                                         {
                                             <SelectItem TValue="int?" Value="@paymentMethod.Id">@paymentMethod.Name</SelectItem>
                                         }

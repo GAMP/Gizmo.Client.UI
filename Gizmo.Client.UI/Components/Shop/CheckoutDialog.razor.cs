@@ -47,7 +47,9 @@ namespace Gizmo.Client.UI.Components
         {
             this.SubscribeChange(ViewState);
 
-            _paymentMethods = await PaymentMethodViewStateLookupService.GetStatesAsync();
+            var tmp = await PaymentMethodViewStateLookupService.GetStatesAsync();
+
+            _paymentMethods = tmp.Where(a => a.Id != -4 && !a.IsOnline && !a.IsDeleted && a.IsEnabled).ToList();
 
             await base.OnInitializedAsync();
         }

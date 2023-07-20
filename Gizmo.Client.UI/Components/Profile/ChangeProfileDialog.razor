@@ -27,10 +27,10 @@
                                                Size="InputSizes.Small"
                                                IsFullWidth="true"
                                                Label="@LocalizationService.GetString("GIZ_GEN_USERNAME")" />
-                                    <div class="giz-change-profile-group__username__tip">Other users will see your username</div>
+                                    <div class="giz-change-profile-group__username__tip">@LocalizationService.GetString("GIZ_USER_PROFILE_USERNAME_TIP")</div>
                                 </div>
                                 <div class="giz-change-profile-group__avatar">
-                                    @if (ViewState.Picture != null)
+                                    @if (!string.IsNullOrEmpty(ViewState.Picture))
                                     {
                                         <Avatar Image="@ViewState.Picture" Variant="AvatarVariants.Circle" Class="giz-user-avatar" />
                                     }
