@@ -108,7 +108,7 @@
                                         Placeholder="@LocalizationService.GetString("GIZ_GEN_SEARCH")"
                                         IsVirtualized="false"
                                         IsLoading="@(!_isLoaded)"
-                                        CanClearValue="@(!(GetSelectedCountry()?.PhonePrefix == "+"))"
+                                        CanClearValue="@(GetSelectedCountry() != _otherCountry)"
                                         OnClickClearValueButton="OnClickClearValueButtonHandler"
                                         HandleSVGIcon="Icons.Select_Client"
                                         TValue="IconSelectCountry"

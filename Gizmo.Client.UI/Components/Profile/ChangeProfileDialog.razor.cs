@@ -15,6 +15,7 @@ namespace Gizmo.Client.UI.Components
     {
         private bool _countriesLoaded;
         private CountryInfo _defaultCountry = null;
+        private IconSelectCountry _otherCountry = null;
         private bool _isLoaded;
 
         [Inject]
@@ -119,13 +120,13 @@ namespace Gizmo.Client.UI.Components
                 });
             }
 
-            var other = new IconSelectCountry()
+            _otherCountry = new IconSelectCountry()
             {
                 Text = LocalizationService.GetString("GIZ_COUNTRY_OTHER"),
                 Icon = "_content/Gizmo.Client.UI/img/no-flag-image.svg"
             };
 
-            Countries.Add(other);
+            Countries.Add(_otherCountry);
 
             foreach (var item in Countries)
             {

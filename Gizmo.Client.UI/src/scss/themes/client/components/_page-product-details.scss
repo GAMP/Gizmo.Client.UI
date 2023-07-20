@@ -180,24 +180,36 @@
 
                 &__action {
                     display: flex;
+                    max-width: 100%;
+                    overflow: hidden;
 
                     &__price {
                         display: flex;
                         align-items: center;
                         gap: 1rem;
+                        max-width: 100%;
+                        overflow: hidden;
                         margin-left: 3.2rem;
                         //margin-right: 12.0rem;
                         white-space: nowrap;
                         @include font-h1-theme-client($font-weight-bold-theme-client);
 
+                        .giz-product-card__price__points {
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+
                         svg {
+                            min-width: 3.2rem;
+                            min-height: 3.2rem;
                             width: 3.2rem;
                             height: 3.2rem;
                         }
                     }
 
                     .giz-button--fill {
-                        padding: 0 2.4rem;
+                        padding: 1.1rem 2.4rem;
+                        white-space: nowrap;
                     }
 
                     .giz-shop-quantity-picker {
