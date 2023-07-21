@@ -6,15 +6,12 @@
      @ref="@Ref">
     <div class="giz-dropdown-menu__content giz-user-links">
         
-        @if (!ViewState.IsGuest)
-        {
-            <a href="@ClientRoutes.UserProfileRoute" class="giz-user-links-item" @onclick="OnClickLinkHandler">
-                <div class="giz-user-links-item__icon">
-                    <Icon SVGIcon="Icons.User_Client" />
-                </div>
-                <div class="giz-user-links-item-title">@LocalizationService.GetString("GIZ_USER_MENU_PROFILE")</div>
-            </a>
-        }
+        <a href="@(ViewState.IsGuest ? ClientRoutes.UserPurchasesRoute : ClientRoutes.UserProfileRoute)" class="giz-user-links-item" @onclick="OnClickLinkHandler">
+            <div class="giz-user-links-item__icon">
+                <Icon SVGIcon="Icons.User_Client" />
+            </div>
+            <div class="giz-user-links-item-title">@LocalizationService.GetString("GIZ_USER_MENU_PROFILE")</div>
+        </a>
 
         @*<div class="giz-user-links-item">
             <div class="giz-user-links-item__icon">

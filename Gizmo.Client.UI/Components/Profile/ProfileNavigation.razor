@@ -3,12 +3,15 @@
 
 <div class="giz-profile-navigation">
     
-    <div class="giz-profile-navigation-item">
-        <NavLink href="@ClientRoutes.UserProfileRoute" Match="NavLinkMatch.All">
-            <Icon SVGIcon="Icons.User_Client" />
-            @LocalizationService.GetString("GIZ_USER_DETAILS")
-        </NavLink>
-    </div>
+    @if (!ViewState.IsGuest)
+    {
+        <div class="giz-profile-navigation-item">
+            <NavLink href="@ClientRoutes.UserProfileRoute" Match="NavLinkMatch.All">
+                <Icon SVGIcon="Icons.User_Client" />
+                @LocalizationService.GetString("GIZ_USER_DETAILS")
+            </NavLink>
+        </div>
+    }
 
     @*<div class="giz-profile-navigation-item">
         <NavLink href="@ClientRoutes.UserProductsRoute" Match="NavLinkMatch.All">
