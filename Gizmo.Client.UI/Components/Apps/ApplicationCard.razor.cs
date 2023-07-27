@@ -1,12 +1,17 @@
-﻿using Gizmo.Client.UI.View.States;
+﻿using System.Threading.Tasks;
+
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
+
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Gizmo.Client.UI.Components
 {
     public partial class ApplicationCard : CustomDOMComponentBase
     {
+        private bool _isVisibleImageContent;
         private bool _clickHandled = false;
 
         #region PROPERTIES
@@ -42,6 +47,16 @@ namespace Gizmo.Client.UI.Components
         public void Ignore()
         {
             _clickHandled = true;
+        }
+
+        private Task OnVisibleImageContent(MouseEventArgs _)
+        {
+            if (!_isVisibleImageContent)
+            {
+                _isVisibleImageContent = true;
+                StateHasChanged();
+            }
+            return Task.CompletedTask;
         }
 
         #endregion

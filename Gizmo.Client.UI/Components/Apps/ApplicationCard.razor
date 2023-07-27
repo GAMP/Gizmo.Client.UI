@@ -5,11 +5,14 @@
     <div class="giz-app-card__content">
         <div class="giz-app-card__content__image">
             <div class="giz-app-card__content__image__hovered">
-                <div class="giz-app-card__content__image__hovered__header">
+                <div class="giz-app-card__content__image__hovered__header" @onmouseover="OnVisibleImageContent">
 
-                    <div class="giz-app-card__content--hovered giz-scrollbar-slim--v" @onclick="@Ignore">
-                        <ApplicationCardHover @key="Application.ApplicationId" ApplicationId="@Application.ApplicationId" />
-                    </div>
+                        @if(_isVisibleImageContent)
+                        {
+                            <div class="giz-app-card__content--hovered giz-scrollbar-slim--v" @onclick="@Ignore">
+                                    <ApplicationCardHover @key="Application.ApplicationId" ApplicationId="@Application.ApplicationId" />
+                            </div>
+                        }
 
                 </div>
             </div>
