@@ -40,7 +40,7 @@ namespace Gizmo.Client.UI.Components
 
         private async Task ContinueAsync()
         {
-            await ResultCallback.InvokeAsync(new UserAgreementResult());
+            await ResultCallback.InvokeAsync(new UserAgreementResult() { Accepted = _accepted});
         }
 
         #endregion
