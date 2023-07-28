@@ -5,11 +5,13 @@ using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Gizmo.Client.UI.Components
 {
     public partial class ProductSimpleCard : CustomDOMComponentBase
     {
+        private bool _isVisibleImageContent;
         private bool _clickHandled = false;
 
         protected bool _shouldRender;
@@ -44,6 +46,16 @@ namespace Gizmo.Client.UI.Components
         public void Ignore()
         {
             _clickHandled = true;
+        }
+
+        private Task OnVisibleImageContent(MouseEventArgs _)
+        {
+            if (!_isVisibleImageContent)
+            {
+                _isVisibleImageContent = true;
+                StateHasChanged();
+            }
+            return Task.CompletedTask;
         }
 
         #region OVERRIDES
