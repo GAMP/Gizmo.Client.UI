@@ -6,27 +6,27 @@
      @onclick="OpenDetails">
     <div class="giz-product-card__content">
                 
-        <div class="giz-product-card__content__image">
-            <div class="giz-product-card__content__image__hovered">
-                <div class="giz-product-card__content__image__hovered__header" @onmouseover="OnVisibleImageContent">
+        <div class="giz-product-card__content__image" @onmouseover="OnVisibleImageContent">
+            @if(_isVisibleImageContent)
+            {
+                <div class="giz-product-card__content__image__hovered">
+                    <div class="giz-product-card__content__image__hovered__header">
 
-                        @if(_isVisibleImageContent)
-                        {
-                            <div class="giz-product-card__content--hovered">
-                                <ProductSimpleCardHover @key="Product.Id" Product="@Product" />
-                            </div>
-                        }
+                        <div class="giz-product-card__content--hovered">
+                            <ProductSimpleCardHover @key="Product.Id" Product="@Product" />
+                        </div>
 
-                    <div class="giz-product-card-award-indicator">
-                        @if (Product.UnitPointsAward > 0)
-                        {
-                            <PointsAward2Icon />
-                        }
+                        <div class="giz-product-card-award-indicator">
+                            @if (Product.UnitPointsAward > 0)
+                            {
+                                <PointsAward2Icon />
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
 
-            <GizImage @key="Product" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Product.DefaultImageId" ImageFitType="ImageFitType.Cover">
+            <GizImage @key="Product.Id" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Product.DefaultImageId" ImageFitType="ImageFitType.Cover">
                 <EmptyResultPlaceholder>
                     <div class="giz-default-image">
                         <img src="_content/Gizmo.Client.UI/img/no-product-image.svg" alt='loading' />

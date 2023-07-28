@@ -11,7 +11,10 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class ProductSimpleCard : CustomDOMComponentBase
     {
-        private bool _isVisibleImageContent;
+        //TODO: We have a problem with the rendering after content visibility by the 'mouseover' event.
+        //In the good version of the implementation, this flag should be 'false' by default.
+        private bool _isVisibleImageContent = true;
+        
         private bool _clickHandled = false;
 
         protected bool _shouldRender;
