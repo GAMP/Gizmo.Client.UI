@@ -44,7 +44,7 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         UserPasswordRecoveryMethodServiceViewState UserPasswordRecoveryMethodServiceViewState { get; set; }
 
-        private Task OnKeyPressHandle(KeyboardEventArgs args)
+        private Task OnKeyDownHandle(KeyboardEventArgs args)
         {
             if (args.Key == "Enter")
             {

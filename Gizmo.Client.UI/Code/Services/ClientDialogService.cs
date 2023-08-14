@@ -32,7 +32,7 @@ namespace Gizmo.Client.UI.Services
         {
             return ShowDialogAsync<UserAgreementDialog, UserAgreementResult>(userAgreementDialogParameters.ToDictionary(), new DialogDisplayOptions()
             {
-                Closable = true,
+                Closable = false,
                 CloseOnClick = false
             }, default, cancellationToken);
         }

@@ -9,7 +9,9 @@
             <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="CloseDialogAsync" />
         </div>
         <div class="giz-client-dialog__body giz-scrollbar--v">
-            <div class="user-agreement">@Agreement</div>
+            <div class="user-agreement">
+                @((MarkupString)Agreement)
+            </div>
         </div>
         <div class="giz-client-dialog__footer">
             <div class="giz-user-agreement-checkboxes">

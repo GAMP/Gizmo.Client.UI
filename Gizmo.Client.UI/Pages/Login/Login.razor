@@ -50,7 +50,7 @@
                     <Button Name="Phone" IsSelected="@(ViewState.LoginType == View.UserLoginType.MobilePhone)">@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")</Button>
                 </ButtonGroup>
             </div>
-            <EditForm EditContext="@UserLoginService.EditContext" @onkeypress="OnKeyPressHandle">
+            <EditForm EditContext="@UserLoginService.EditContext" @onkeydown="OnKeyDownHandle">
                 <div class="giz-form-input">
                     @if (ViewState.LoginType == View.UserLoginType.UsernameOrEmail)
                     {

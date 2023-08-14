@@ -69,7 +69,7 @@
                                       Label="@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
                 </div>
             }
-            <div>
+            <div class="giz-resend-button">
                 <Button IsDisabled="@(ViewState.IsValid == false || ViewState.IsLoading || UserVerificationViewState.IsVerificationLocked)"
                         Color="ButtonColors.Accent"
                         Size="ButtonSizes.ExtraLarge"
@@ -82,7 +82,7 @@
                         }
                         else
                         {
-                            <div>@LocalizationService.GetString("GIZ_USER_CONFIRMATION_SEND_CODE")</div>
+                            <div class="giz-resend-button__label">@LocalizationService.GetString("GIZ_USER_CONFIRMATION_SEND_CODE")</div>
                             @if (UserVerificationViewState.IsVerificationLocked)
                             {
                                 <div class="giz-resend-button__time">@string.Format("{0:mm\\:ss}", UserVerificationViewState.Countdown)</div>
