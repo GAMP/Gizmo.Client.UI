@@ -7,7 +7,8 @@ namespace Gizmo.Client.UI
     public enum VideoStates
     {
         CanPlayThrough = 0,
-        Ended = 1
+        Ended = 1,
+        Error = 2
     }
 
     public class VideoEventArgs : EventArgs

@@ -25,10 +25,19 @@ namespace Gizmo.Client.UI.Shared
 
         private async Task OnVideoEventHandle(VideoEventArgs args)
         {
-            if (args.VideoState == VideoStates.Ended)
+            if (args.VideoState == VideoStates.Ended || args.VideoState == VideoStates.Error)
             {
                 if (!LoginRotatorViewService.PlayNext())
-                    await JsRuntime.InvokeVoidAsync("playVideo", args.Id);
+                {
+                    if (args.VideoState == VideoStates.Error)
+                    {
+                        await JsRuntime.InvokeVoidAsync("resetVideo", args.Id);
+                    }
+                    else
+                    {
+                        await JsRuntime.InvokeVoidAsync("playVideo", args.Id);
+                    }
+                }
             }
             else
             {

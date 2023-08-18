@@ -752,7 +752,8 @@ window.onVideoEvent = function onVideoEvent(event, state) {
 
 window.onVideoCanPlayThroughEvent = function onVideoCanPlayThroughEvent(event) {
     onVideoEvent(event, 0);
-    console.log('onVideoCanPlayThroughEvent');
+    //console.log('onVideoCanPlayThroughEvent');
+    //console.log(event);
     //try {
     //    event.target.play();
     //} catch (error) {
@@ -762,7 +763,23 @@ window.onVideoCanPlayThroughEvent = function onVideoCanPlayThroughEvent(event) {
 
 window.onVideoEndedEvent = function onVideoEndedEvent(event) {
     onVideoEvent(event, 1);
-    console.log('onVideoEndedEvent');
+    //console.log('onVideoEndedEvent');
+    //console.log(event);
+};
+
+window.videoEvent = function videoEvent(event) {
+    //console.log('onVideoEvent');
+    //console.log(event.type);
+    if (event.type == 'pause') {
+        //console.log(event);
+        if (event.target.error) {
+            //console.log(event.target.currentTime + ' of ' + event.target.duration);
+            //console.log(event.target.error);
+            onVideoEvent(event, 2);
+        }
+    }
+    //if (event.type == 'timeupdate')
+        //console.log(event.target.currentTime + ' of ' + event.target.duration);
 };
 
 var registeredVideoComponents = [];
@@ -774,24 +791,69 @@ window.registerVideoComponent = function registerVideoComponent(element) {
             open: false,
         });
 
-        element.addEventListener("canplaythrough", onVideoCanPlayThroughEvent);
+        //element.addEventListener("playing", videoEvent);
+        //element.addEventListener("waiting", videoEvent);
+        //element.addEventListener("seeking", videoEvent);
+        //element.addEventListener("seeked", videoEvent);
+        //element.addEventListener("loadedmetadata", videoEvent);
+        //element.addEventListener("loadeddata", videoEvent);
+        //element.addEventListener("canplay", videoEvent);
+        //element.addEventListener("durationchange", videoEvent);
+        //element.addEventListener("timeupdate", videoEvent);
+       // element.addEventListener("play", videoEvent);
+        element.addEventListener("pause", videoEvent);
+        //element.addEventListener("ratechange", videoEvent);
+        //element.addEventListener("volumechange", videoEvent);
+        //element.addEventListener("suspend", videoEvent);
+        //element.addEventListener("emptied", videoEvent);
+        //element.addEventListener("stalled", videoEvent);
 
+        element.addEventListener("canplaythrough", onVideoCanPlayThroughEvent);
         element.addEventListener("ended", onVideoEndedEvent);
     }
 };
 
-window.unregisterVideoComponent = function unregisterVideoComponent(
-    element
-) {
-    //console.log('unregisterVideoComponent');
-    //console.log(element);
+window.unregisterVideoComponent = function unregisterVideoComponent(element) {
+    var objRefIndex = -1;
+
+    registeredVideoComponents.forEach((item, index) => {
+        if (item.element.id == element.id)
+            objRefIndex = index;
+    });
+
+    if (objRefIndex > -1) {
+        element.removeEventListener("pause", videoEvent);
+        element.removeEventListener("canplaythrough", onVideoCanPlayThroughEvent);
+        element.removeEventListener("ended", onVideoEndedEvent);
+
+        registeredVideoComponents.splice(objRefIndex, 1);
+
+        //console.log('unregisterVideoComponent');
+        //console.log(element);
+    }
 };
 
 window.playVideo = function playVideo(id) {
     try {
+        //console.log('element.play()');
         var element = document.getElementById(id);
-        element.muted = true;
-        element.play();
+        if (element.currentTime > 0) {
+            element.currentTime = 0;
+        } else {
+            element.muted = true;
+            element.play();
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+window.resetVideo = function resetVideo(id) {
+    try {
+        //console.log('reset()');
+        var element = document.getElementById(id);
+        //element.currentTime = 0;
+        element.load();
     } catch (error) {
         console.error(error);
     }
