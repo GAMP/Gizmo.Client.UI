@@ -153,7 +153,7 @@ namespace Gizmo.Client.UI.Components
 
             if (_popupX + popupContentSize.Width > windowSize.Width)
             {
-                _moveX = (popupContentSize.Width / 2) + ((windowSize.Width - popupContentSize.Width) - _popupX);
+                _moveX = (popupContentSize.Width / 2) + (_popupX) - (windowSize.Width - popupContentSize.Width);
                 _popupX = windowSize.Width - popupContentSize.Width;
             }
 

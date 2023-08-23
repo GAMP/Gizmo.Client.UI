@@ -630,6 +630,93 @@ window.productDetailsFitHostGroups = function productDetailsFitHostGroups(
   }
 };
 
+window.userTimeProductsFitHostGroups = function userTimeProductsFitHostGroups(
+    element
+) {
+    try {
+        if (element) {
+            var additional = element.querySelector(
+                ".giz-user-time-products-host-group--additional"
+            );
+            if (additional) {
+                var items = element.querySelectorAll(
+                    ".giz-user-time-products-host-group.dynamic"
+                );
+
+                for (var i = 0; i < items.length; i++) {
+                    items[i].style = "display: block";
+                }
+
+                additional.style = "display: block";
+                additional.innerHTML = "+99";
+
+                var elementr = element.getBoundingClientRect();
+                if (element.scrollWidth > elementr.width) {
+                    var additionalr = additional.getBoundingClientRect();
+
+                    var gap = 8;
+
+                    if (items.length > 0) {
+                        if (items.length > 1) {
+                            gap =
+                                items[1].getBoundingClientRect().left -
+                                items[0].getBoundingClientRect().right;
+                        } else {
+                            gap = additionalr.left - items[0].getBoundingClientRect().right;
+                        }
+                    }
+
+                    var total = additionalr.width;
+                    var hidden = 0;
+
+                    for (var i = 0; i < items.length; i++) {
+                        if (total > elementr.width) {
+                            items[i].style = "display: none";
+                            hidden += 1;
+                        } else {
+                            items[i].style = "display: block";
+                            var hideAdditional = false;
+
+                            if (hidden == 0 && i == items.length - 1) {
+                                //If this is the last item check if we can fit it in.
+                                if (
+                                    elementr.width >
+                                    total -
+                                    additionalr.width +
+                                    items[i].getBoundingClientRect().width
+                                ) {
+                                    hideAdditional = true;
+                                }
+                            }
+
+                            if (hideAdditional) {
+                                additional.style = "display: none";
+                            } else {
+                                total += items[i].getBoundingClientRect().width + gap;
+                                if (total > elementr.width) {
+                                    items[i].style = "display: none";
+                                    hidden += 1;
+                                }
+                            }
+                        }
+                    }
+
+                    if (hidden > 0) {
+                        additional.style = "display: block";
+                        additional.innerHTML = "+" + hidden.toString();
+                    } else {
+                        additional.style = "display: none";
+                    }
+                } else {
+                    additional.style = "display: none";
+                }
+            }
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 window.setNotificationsAnimationHeight =
   function setNotificationsAnimationHeight(item) {
     var element = document.querySelector('[data-id="' + item.toString() + '"]');

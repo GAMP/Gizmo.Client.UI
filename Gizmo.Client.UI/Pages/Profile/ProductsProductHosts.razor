@@ -1,0 +1,42 @@
+﻿@namespace Gizmo.Client.UI.Pages
+@inherits CustomDOMComponentBase
+@using Gizmo.Client.UI.View.States
+
+<div class="giz-user-time-products-host-groups"
+     @ref="@_hostGroupContainer">
+    @if (AvailableHostGroups != null && _hostGroups != null)
+    {
+        @foreach (var hostGroup in _hostGroups)
+        {
+            @if (AvailableHostGroups.Contains(hostGroup.Id))
+            {
+                <div class="giz-user-time-products-host-group dynamic @(hostGroup.Id == HostGroupViewState.HostGroupId ? "active" : "")">
+                    <div>@hostGroup.Name</div>
+                </div>
+            }
+        }
+        @if (_hostGroups.Count() > 1)
+        {
+            <ClientTooltip>
+                <ChildContent>
+                    <div class="giz-user-time-products-host-group--additional">
+                        +99
+                    </div>
+                </ChildContent>
+                <TooltipContent>
+                    <div class="giz-user-time-products-host-groups-tooltip">
+                        @foreach (var item in _hostGroups)
+                        {
+                            @if (AvailableHostGroups.Contains(item.Id))
+                            {
+                                <div class="giz-user-time-products-host-group @(item.Id == HostGroupViewState.HostGroupId ? "active" : "")">
+                                    <div>@item.Name</div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </TooltipContent>
+            </ClientTooltip>
+        }
+    }
+</div>

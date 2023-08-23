@@ -10,12 +10,12 @@
     
             <ProfileNavigation />
 
-            <div class="giz-profile-user-purchases">
-                <div class="giz-profile-user-purchases__header">
+            <div class="giz-user-history giz-user-purchases">
+                <div class="giz-user-history__header">
                     @LocalizationService.GetString("GIZ_USER_PURCHASES_HISTORY")
                 </div>
 
-                <div class="giz-profile-user-purchases__body">
+                <div class="giz-user-history__body">
                     <DataGrid ItemSource="@ViewState.Orders.ToList()"
                               Context="order"
                               HasStickyHeader="true"
@@ -159,7 +159,7 @@
                     </DataGrid>
                 </div>
 
-                <div class="giz-profile-user-purchases__footer">
+                <div class="giz-user-history__footer">
                     <Button LeftSVGIcon="Icons.ArrowLeft_Client" Variant="ButtonVariants.Text" IsDisabled="@(ViewState.PrevCursor == null)" @onclick="PurchasesService.LoadPrevious" />
                     <Button LeftSVGIcon="Icons.ArrowRight_Client" Variant="ButtonVariants.Text" IsDisabled="@(ViewState.NextCursor == null)" @onclick="PurchasesService.LoadNext" />
                 </div>
