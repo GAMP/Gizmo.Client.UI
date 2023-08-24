@@ -20,7 +20,7 @@ namespace Gizmo.Client.UI.Pages
         HostGroupViewState HostGroupViewState { get; set; }
 
         [Parameter]
-        public IEnumerable<int> AvailableHostGroups { get; set; }
+        public TimeProductViewState TimeProduct { get; set; }
 
         #region OVERRIDES
 

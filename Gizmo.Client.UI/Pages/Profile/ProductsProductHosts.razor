@@ -4,11 +4,11 @@
 
 <div class="giz-user-time-products-host-groups"
      @ref="@_hostGroupContainer">
-    @if (AvailableHostGroups != null && _hostGroups != null)
+    @if (TimeProduct != null && TimeProduct.AvailableHostGroups != null && _hostGroups != null)
     {
         @foreach (var hostGroup in _hostGroups)
         {
-            @if (AvailableHostGroups.Contains(hostGroup.Id))
+            @if (TimeProduct.AvailableHostGroups.Contains(hostGroup.Id))
             {
                 <div class="giz-user-time-products-host-group dynamic @(hostGroup.Id == HostGroupViewState.HostGroupId ? "active" : "")">
                     <div>@hostGroup.Name</div>
@@ -27,7 +27,7 @@
                     <div class="giz-user-time-products-host-groups-tooltip">
                         @foreach (var item in _hostGroups)
                         {
-                            @if (AvailableHostGroups.Contains(item.Id))
+                            @if (TimeProduct.AvailableHostGroups.Contains(item.Id))
                             {
                                 <div class="giz-user-time-products-host-group @(item.Id == HostGroupViewState.HostGroupId ? "active" : "")">
                                     <div>@item.Name</div>
