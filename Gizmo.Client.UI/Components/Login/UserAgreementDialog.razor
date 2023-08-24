@@ -6,7 +6,10 @@
         <div class="giz-client-dialog__header">
             <div class="giz-client-dialog__header__title">@LocalizationService.GetString("GIZ_USER_AGREEMENT_DIALOG_TITLE")</div>
             <div class="giz-client-dialog__header__subtitle">@Name</div>
-            <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="CloseDialogAsync" />
+            @if (DisplayOptions.Closable)
+            {
+                <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="CloseDialogAsync" />
+            }
         </div>
         <div class="giz-client-dialog__body giz-scrollbar--v">
             <div class="user-agreement">

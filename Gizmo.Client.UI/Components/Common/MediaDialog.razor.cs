@@ -1,4 +1,5 @@
-﻿using Gizmo.Web.Components;
+﻿using Gizmo.UI.Services;
+using Gizmo.Web.Components;
 
 using Microsoft.AspNetCore.Components;
 
@@ -14,6 +15,9 @@ namespace Gizmo.Client.UI.Components
 
         [Parameter]
         public string MediaUrl { get; set; }
+
+        [Parameter]
+        public DialogDisplayOptions DisplayOptions { get; set; }
 
         [Parameter]
         public EventCallback DismissCallback { get; set; }
