@@ -20,7 +20,7 @@
                               HasStickyHeader="true"
                               Class="giz-scrollbar--v">
                         <ChildContent>
-                            <DataGridColumn Field="@(nameof(TimeProductViewState.UseOrder))" TItemType="TimeProductViewState" Context="timeProduct">
+                            <DataGridColumn Field="@(nameof(TimeProductViewState.ActivationOrder))" TItemType="TimeProductViewState" Context="timeProduct">
                                 <HeaderTemplate>
                                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M12.4167 10.5H11.75C11.5375 10.5 11.3594 10.5715 11.2156 10.7144C11.0719 10.8573 11 11.0344 11 11.2456C11 11.4569 11.0719 11.6354 11.2156 11.7812C11.3594 11.9271 11.5375 12 11.75 12H14.25C14.4625 12 14.6406 11.9281 14.7844 11.7844C14.9281 11.6406 15 11.4625 15 11.25V8.75C15 8.5375 14.9285 8.35937 14.7856 8.21562C14.6427 8.07187 14.4656 8 14.2544 8C14.0431 8 13.8646 8.07187 13.7188 8.21562C13.5729 8.35937 13.5 8.5375 13.5 8.75V9.41667C13.0972 8.86111 12.5825 8.41667 11.9557 8.08333C11.3289 7.75 10.6423 7.58333 9.89583 7.58333C8.8125 7.58333 7.86806 7.92361 7.0625 8.60417C6.25694 9.28472 5.74306 10.1319 5.52083 11.1458C5.47917 11.3681 5.52083 11.566 5.64583 11.7396C5.77083 11.9132 5.94444 12 6.16667 12C6.38889 12 6.57292 11.9201 6.71875 11.7604C6.86458 11.6007 6.97222 11.4167 7.04167 11.2083C7.23179 10.5867 7.58488 10.0772 8.10092 9.67963C8.61697 9.2821 9.21528 9.08333 9.89583 9.08333C10.4236 9.08333 10.9097 9.21528 11.3542 9.47917C11.7986 9.74306 12.1528 10.0833 12.4167 10.5ZM10.0058 18C8.90469 18 7.86806 17.7917 6.89583 17.375C5.92361 16.9583 5.07292 16.3854 4.34375 15.6562C3.61458 14.9271 3.04167 14.0767 2.625 13.105C2.20833 12.1334 2 11.0952 2 9.99046C2 8.88571 2.20833 7.85069 2.625 6.88542C3.04167 5.92014 3.61458 5.07292 4.34375 4.34375C5.07292 3.61458 5.92332 3.04167 6.89496 2.625C7.86661 2.20833 8.90481 2 10.0095 2C11.1143 2 12.1493 2.20833 13.1146 2.625C14.0799 3.04167 14.9271 3.61458 15.6562 4.34375C16.3854 5.07292 16.9583 5.92169 17.375 6.89008C17.7917 7.85849 18 8.89321 18 9.99425C18 11.0953 17.7917 12.1319 17.375 13.1042C16.9583 14.0764 16.3854 14.9271 15.6562 15.6562C14.9271 16.3854 14.0783 16.9583 13.1099 17.375C12.1415 17.7917 11.1068 18 10.0058 18Z" fill="white" fill-opacity="0.6"/>
@@ -28,7 +28,7 @@
                                 </HeaderTemplate>
                                 <CellTemplate>
                                     <div class="giz-user-time-products-order">
-                                        @timeProduct.UseOrder
+                                        @timeProduct.ActivationOrder
                                     </div>
                                 </CellTemplate>
                             </DataGridColumn>
@@ -96,10 +96,10 @@
                     </DataGrid>
                 </div>
 
-                <div class="giz-user-history__footer">
+                @*<div class="giz-user-history__footer">
                     <Button LeftSVGIcon="Icons.ArrowLeft_Client" Variant="ButtonVariants.Text" IsDisabled="@(ViewState.PrevCursor == null)" @onclick="TimeProductsService.LoadPrevious" />
                     <Button LeftSVGIcon="Icons.ArrowRight_Client" Variant="ButtonVariants.Text" IsDisabled="@(ViewState.NextCursor == null)" @onclick="TimeProductsService.LoadNext" />
-                </div>
+                </div>*@
             </div>
 
         </div>
