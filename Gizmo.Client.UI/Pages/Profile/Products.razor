@@ -42,7 +42,7 @@
                             </DataGridColumn>
                             <DataGridColumn Field="@(nameof(TimeProductViewState.Source))" TItemType="TimeProductViewState" Context="timeProduct">
                                 <HeaderTemplate>
-                                    Title
+                                    Source
                                 </HeaderTemplate>
                                 <CellTemplate>
                                     @timeProduct.Source
@@ -78,10 +78,10 @@
                             </DataGridColumn>
                             <DataGridColumn Field="@(nameof(TimeProductViewState.Source))" TItemType="TimeProductViewState" Context="timeProduct">
                                 <HeaderTemplate>
-                                    Properties
+                                    Available
                                 </HeaderTemplate>
                                 <CellTemplate>
-                                    @timeProduct.Source
+                                    @timeProduct.ExpirationDate.ToString()
                                 </CellTemplate>
                             </DataGridColumn>
                             <DataGridColumn Field="@(nameof(TimeProductViewState.AvailableHostGroups))" TItemType="TimeProductViewState" Context="timeProduct">
