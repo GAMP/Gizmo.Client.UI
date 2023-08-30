@@ -336,21 +336,34 @@
 }
 
 .giz-user-time-products-type {
-    display: flex;
-    width: 20.1rem;
-    padding: 0.5rem 0.8rem;
-    justify-content: center;
-    align-items: center;
-    gap: 0.4rem;
-    border-radius: 0.4rem;
     background: #FFF;
     color: #252A31;
+    border-radius: 0.4rem;
+    padding: 0.5rem 0.8rem;
     //Font
     font-family: Noto Sans;
     font-size: 1.4rem;
     font-style: normal;
     font-weight: 500;
     line-height: 2.2rem;
+
+    &-content {
+        display: flex;
+        gap: 0.4rem;
+        justify-content: center;
+        align-items: center;
+        max-width: 100%;
+
+        & > svg {
+            min-width: 2rem;
+            min-height: 2rem;
+        }
+    }
+
+    &-description {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 .giz-user-purchases {
@@ -440,6 +453,11 @@
     table {
         td:first-child {
             width: 1%;
+        }
+
+        td:nth-child(2) {
+            width: 20.1rem;
+            max-width: 20.1rem;
         }
 
         td:last-child {
