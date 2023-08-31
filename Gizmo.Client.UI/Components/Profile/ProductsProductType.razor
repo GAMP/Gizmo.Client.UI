@@ -1,0 +1,35 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<div class="giz-user-time-products-type @(TimeProduct.ActivationOrder.HasValue ? (TimeProduct.InCredit ? "giz-user-time-products-type--credit" : "") : "giz-user-time-products-type--disabled")">
+    <div class="giz-user-time-products-type-content">
+        @if (TimeProduct.InCredit)
+        {
+            <Icon SVGIcon="Icons.CreditCard_Client" />
+        }
+        else
+        {
+            @switch (TimeProduct.TimeProductType)
+            {
+                case UsageType.TimeFixed:
+
+                    <Icon SVGIcon="Icons.TimeFixed_Client" />
+
+                    break;
+
+                case UsageType.Rate:
+
+                    <Icon SVGIcon="Icons.TimeSession_Client" />
+
+                    break;
+
+                case UsageType.TimeOffer:
+
+                    <Icon SVGIcon="Icons.TimeOffer_Client" />
+
+                    break;
+            } 
+        }
+        <div class="giz-user-time-products-type-description">@TimeProduct.TimeProductName</div>
+    </div>
+</div>

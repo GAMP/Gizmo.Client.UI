@@ -1,12 +1,12 @@
-﻿using Gizmo.Client.UI.View.States;
+﻿using System.Threading.Tasks;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 
-namespace Gizmo.Client.UI.Pages
+namespace Gizmo.Client.UI.Components
 {
-    [Route(ClientRoutes.UserProductsRoute)]
-    public partial class Products : CustomDOMComponentBase
+    public partial class HeaderUserBalanceCurrentTimeProductTooltip : CustomDOMComponentBase
     {
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -17,16 +17,18 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         TimeProductsViewState ViewState { get; set; }
 
-        public void OpenDetails(int productId)
+        public void OpenDetails()
         {
-            NavigationService.NavigateTo(ClientRoutes.ProductDetailsRoute + $"?ProductId={productId}");
+            NavigationService.NavigateTo(ClientRoutes.UserProductsRoute);
         }
 
-        protected override void OnInitialized()
+        #region OVERRIDE
+
+        protected override Task OnInitializedAsync()
         {
             this.SubscribeChange(ViewState);
 
-            base.OnInitialized();
+            return base.OnInitializedAsync();
         }
 
         public override void Dispose()
@@ -35,5 +37,7 @@ namespace Gizmo.Client.UI.Pages
 
             base.Dispose();
         }
+
+        #endregion
     }
 }

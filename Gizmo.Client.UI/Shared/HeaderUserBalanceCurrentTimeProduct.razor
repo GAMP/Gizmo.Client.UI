@@ -1,0 +1,37 @@
+﻿@namespace Gizmo.Client.UI
+@inherits CustomDOMComponentBase
+@using System.Globalization
+
+<div class="giz-header-user-balance"
+     @onmouseover="OnMouseOverHandler"
+     @onmouseout="OnMouseOutHandler">
+    @switch (UsageSessionViewState.CurrentTimeProductType)
+    {
+        case UsageType.TimeFixed:
+
+            <Icon SVGIcon="Icons.TimeFixed_Client" />
+
+            break;
+
+        case UsageType.Rate:
+
+            <Icon SVGIcon="Icons.TimeSession_Client" />
+
+            break;
+
+        case UsageType.TimeOffer:
+
+            <Icon SVGIcon="Icons.TimeOffer_Client" />
+
+            break;
+    }
+    <div>@UsageSessionViewState.CurrentTimeProductName</div>
+
+    <div class="giz-header-user-balance-tooltip-wrapper @(_isOpen ? "giz-header-user-balance-tooltip-wrapper--visible" : "")"
+         @onmouseover="OnMouseOverTooltipHandler"
+         @onmouseout="OnMouseOutTooltipHandler">
+
+        <HeaderUserBalanceCurrentTimeProductTooltip />
+
+    </div>
+</div>

@@ -18,12 +18,7 @@
 
         &__header {
             margin-bottom: 1.2rem;
-            //Font
-            font-family: 'Rubik';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 2.4rem;
-            line-height: 3rem;
+            @include font-h5-theme-client($font-weight-light-theme-client);
         }
 
         &-item {
@@ -336,16 +331,20 @@
 }
 
 .giz-user-time-products-type {
-    background: #FFF;
+    background-color: #FFF;
     color: #252A31;
     border-radius: 0.4rem;
     padding: 0.5rem 0.8rem;
-    //Font
-    font-family: Noto Sans;
-    font-size: 1.4rem;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 2.2rem;
+    @include font-m-theme-client($font-weight-regular-theme-client);
+
+    &--credit {
+        background-color: #FFD79D;
+    }
+
+    &--disabled {
+        background-color: rgba(250, 250, 250, 0.16);
+        color: rgba(255, 255, 255, 0.75);
+    }
 
     &-content {
         display: flex;
@@ -354,7 +353,9 @@
         align-items: center;
         max-width: 100%;
 
-        & > svg {
+        .giz-icon--medium {
+            width: 2rem;
+            height: 2rem;
             min-width: 2rem;
             min-height: 2rem;
         }
@@ -460,9 +461,13 @@
             max-width: 20.1rem;
         }
 
-        td:last-child {
+        td:nth-child(7) {
             max-width: 24rem;
             overflow: hidden;
+        }
+
+        td:last-child {
+            width: 1%;
         }
     }
 }
@@ -488,19 +493,14 @@
         border-radius: 0.4rem;
         background: rgba(250, 250, 250, 0.16);
         color: rgba(255, 255, 255, 0.75);
-        //Font
-        font-family: Noto Sans;
-        font-size: 1.4rem;
-        font-style: normal;
-        font-weight: 500;
-        line-height: 2.2rem;
+        @include font-m-theme-client($font-weight-regular-theme-client);
 
         &--additional { //TODO: AAA
             padding: 0.6rem 0.8rem;
             background-color: rgba(250, 250, 250, 0.16);
             border-radius: 0.4rem;
             color: rgba(255, 255, 255, 0.75);
-            //Font
+            //Font ?
             font-family: 'Noto Sans';
             font-style: normal;
             font-weight: 500;
@@ -521,13 +521,15 @@
     border-radius: 50%;
     color: #FFF;
     text-align: center;
-    //Font
+    margin-left: 0.2rem;
+    //Font ?
     font-family: Noto Sans;
     font-size: 1rem;
     font-style: normal;
     font-weight: 700;
     line-height: 1.6rem; //Fix for alignment
-    &.active {
+
+    &--current {
         background: #0078D2;
     }
 }
@@ -536,4 +538,183 @@
     display: flex;
     align-items: center;
     gap: 0.4rem;
+}
+
+.giz-user-balance-tooltip {
+    padding: 2.4rem 2rem;
+    background-color: #22272B;
+    border-radius: 0.8rem;
+    color: #FAFAFA;
+    width: 50rem;
+    white-space: normal;
+
+    &__header {
+        display: flex;
+
+        &__title {
+            margin-right: auto;
+            @include font-m-theme-client($font-weight-bold-theme-client);
+        }
+
+        &__link {
+            border-bottom: 1px solid #0F9FFF;
+            cursor: pointer;
+            @include font-m-theme-client($font-weight-light-theme-client);
+        }
+    }
+
+
+    &__expiration {
+        padding: 1.2rem 0;
+        color: #E68200;
+        border-top: 1px solid rgba(246, 251, 253, 0.06);
+        @include font-m-theme-client($font-weight-light-theme-client);
+    }
+
+    &__message {
+        padding: 1.2rem 0;
+        border-top: 1px solid rgba(246, 251, 253, 0.06);
+        @include font-m-theme-client($font-weight-light-theme-client);
+    }
+
+    &__actions {
+        padding-top: 2.4rem;
+        border-top: 1px solid rgba(246, 251, 253, 0.06);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.6rem;
+
+        .giz-button {
+            width: 100%;
+        }
+    }
+}
+
+.giz-profile-header__info__stats-credit-item {
+    &__header {
+        display: flex;
+        gap: 0.4rem;
+        color: rgba(255, 255, 255, 0.60);
+        text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.20), 0px 2px 2px rgba(0, 0, 0, 0.20);
+        @include font-s-theme-client($font-weight-light-theme-client);
+
+        &__icon {
+            position: relative;
+            cursor: pointer;
+        }
+    }
+
+    &__body {
+        margin-top: 0.3rem;
+        display: flex;
+        gap: 0.8rem;
+        color: #FAFAFA;
+        text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.20), 0px 2px 2px rgba(0, 0, 0, 0.20);
+        @include font-xxl-theme-client($font-weight-regular-theme-client);
+
+        &__icon {
+            width: 2.4rem;
+            height: 2.4rem;
+            border-radius: 0.4rem;
+            background-color: #FFFFFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            svg {
+                width: 2rem;
+                height: 2rem;
+            }
+        }
+    }
+}
+
+.giz-user-credit-tooltip {
+    position: relative;
+    padding: 1.2rem;
+    padding-right: 2.8rem;
+    background-color: #22272B;
+    border-radius: 8px;
+    color: #FFF;
+    width: 25rem;
+    @include font-s-theme-client($font-weight-light-theme-client);
+
+    &-wrapper {
+        position: absolute;
+        top: 100%;
+        display: none;
+        z-index: 100; //TODO: AAA + shadow
+
+        &--visible {
+            display: block;
+        }
+    }
+
+    &-item {
+        display: flex;
+        gap: 0.8rem;
+        margin-bottom: 1.6rem;
+
+        &__icon {
+            width: 3.2rem;
+            height: 3.2rem;
+            border-radius: 0.4rem;
+            background-color: #FAFAFA;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            svg {
+                width: 2rem;
+                height: 2rem;
+            }
+        }
+    }
+
+    &-unlimited {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding-top: 1.2rem;
+        border-top: 1px solid rgba(246, 251, 253, 0.06);
+    }
+
+    &-close-btn {
+        position: absolute;
+        top: 1.2rem;
+        right: 1.2rem;
+    }
+}
+
+.giz-header-user-balance-tooltip-wrapper {
+    position: absolute;
+    top: calc(100% + 2rem);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100; //TODO: AAA + shadow
+    display: none;
+
+    &--visible {
+        display: block;
+    }
+}
+
+.giz-icon--medium {
+    &.giz-user-time-infinite {
+        width: 2rem;
+        height: 2rem;
+        min-width: 2rem;
+        min-height: 2rem;
+        vertical-align: middle;
+    }
+}
+
+.giz-icon--small {
+    &.giz-user-time-products-order-icon {
+        width: 2rem;
+        height: 2rem;
+        min-width: 2rem;
+        min-height: 2rem;
+        fill-opacity: 0.6;
+    }
 }
