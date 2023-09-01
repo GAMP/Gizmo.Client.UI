@@ -2,7 +2,7 @@
 @inherits CustomDOMComponentBase
 
 <div class="giz-user-time-products-type @(TimeProduct.ActivationOrder.HasValue ? (TimeProduct.InCredit ? "giz-user-time-products-type--credit" : "") : "giz-user-time-products-type--disabled")">
-    <div class="giz-user-time-products-type-content">
+    <div class="giz-user-time-products-type__content">
         @if (TimeProduct.InCredit)
         {
             <Icon SVGIcon="Icons.CreditCard_Client" />
@@ -30,6 +30,6 @@
                     break;
             } 
         }
-        <div class="giz-user-time-products-type-description">@TimeProduct.TimeProductName</div>
+        <div class="giz-user-time-products-type__description">@TimeProduct.TimeProductName</div>
     </div>
 </div>

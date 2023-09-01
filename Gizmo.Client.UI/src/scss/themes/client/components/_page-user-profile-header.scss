@@ -1,0 +1,98 @@
+//=============== Page User Profile Header ================//
+
+.giz-profile-header__info__stats-credit-item {
+    &__header {
+        display: flex;
+        gap: 0.4rem;
+        color: rgba(255, 255, 255, 0.60);
+        text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.20), 0px 2px 2px rgba(0, 0, 0, 0.20);
+        @include font-s-theme-client($font-weight-light-theme-client);
+
+        &__icon {
+            position: relative;
+            cursor: pointer;
+        }
+    }
+
+    &__body {
+        margin-top: 0.3rem;
+        display: flex;
+        gap: 0.8rem;
+        color: #FAFAFA;
+        text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.20), 0px 2px 2px rgba(0, 0, 0, 0.20);
+        @include font-xxl-theme-client($font-weight-regular-theme-client);
+
+        &__icon {
+            width: 2.4rem;
+            height: 2.4rem;
+            border-radius: 0.4rem;
+            background-color: #FFFFFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            svg {
+                width: 2rem;
+                height: 2rem;
+            }
+        }
+    }
+}
+
+.giz-user-credit-tooltip {
+    position: relative;
+    padding: 1.2rem;
+    padding-right: 2.8rem;
+    background-color: #22272B;
+    border-radius: 8px;
+    color: #FFF;
+    width: 25rem;
+    @include font-s-theme-client($font-weight-light-theme-client);
+
+    &-wrapper {
+        position: absolute;
+        top: 100%;
+        display: none;
+        z-index: $info-tooltip-index;
+        box-shadow: 0px 32px 64px rgba(0, 0, 0, 0.37), 0px 2px 21px rgba(0, 0, 0, 0.37);
+
+        &--visible {
+            display: block;
+        }
+    }
+
+    &-item {
+        display: flex;
+        gap: 0.8rem;
+        margin-bottom: 1.6rem;
+
+        &__icon {
+            width: 3.2rem;
+            height: 3.2rem;
+            border-radius: 0.4rem;
+            background-color: #FAFAFA;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            svg {
+                width: 2rem;
+                height: 2rem;
+            }
+        }
+    }
+
+    &-unlimited {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding-top: 1.2rem;
+        border-top: 1px solid rgba(246, 251, 253, 0.06);
+    }
+
+    &-close-btn {
+        position: absolute;
+        top: 1.2rem;
+        right: 1.2rem;
+    }
+}

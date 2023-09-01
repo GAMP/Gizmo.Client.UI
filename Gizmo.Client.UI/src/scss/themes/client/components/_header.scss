@@ -206,3 +206,67 @@
         min-height: 2rem;
     }
 }
+
+.giz-user-balance-tooltip {
+    padding: 2.4rem 2rem;
+    background-color: #22272B;
+    border-radius: 0.8rem;
+    color: #FAFAFA;
+    width: 50rem;
+    white-space: normal;
+
+    &-wrapper {
+        position: absolute;
+        top: calc(100% + 2rem);
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: $header-dropdown-index;
+        box-shadow: 0px 32px 64px rgba(0, 0, 0, 0.37), 0px 2px 21px rgba(0, 0, 0, 0.37);
+        display: none;
+
+        &--visible {
+            display: block;
+        }
+    }
+
+    &__header {
+        display: flex;
+
+        &__title {
+            margin-right: auto;
+            @include font-m-theme-client($font-weight-bold-theme-client);
+        }
+
+        &__link {
+            border-bottom: 1px solid #0F9FFF;
+            cursor: pointer;
+            @include font-m-theme-client($font-weight-light-theme-client);
+        }
+    }
+
+
+    &__expiration {
+        padding: 1.2rem 0;
+        color: #E68200;
+        border-top: 1px solid rgba(246, 251, 253, 0.06);
+        @include font-m-theme-client($font-weight-light-theme-client);
+    }
+
+    &__message {
+        padding: 1.2rem 0;
+        border-top: 1px solid rgba(246, 251, 253, 0.06);
+        @include font-m-theme-client($font-weight-light-theme-client);
+    }
+
+    &__actions {
+        padding-top: 2.4rem;
+        border-top: 1px solid rgba(246, 251, 253, 0.06);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.6rem;
+
+        .giz-button {
+            width: 100%;
+        }
+    }
+}
