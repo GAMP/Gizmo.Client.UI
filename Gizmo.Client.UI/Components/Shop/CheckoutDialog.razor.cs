@@ -28,6 +28,9 @@ namespace Gizmo.Client.UI.Components
         PaymentMethodViewStateLookupService PaymentMethodViewStateLookupService { get; set; }
 
         [Parameter]
+        public DialogDisplayOptions DisplayOptions { get; set; }
+
+        [Parameter]
         public EventCallback DismissCallback { get; set; }
 
         private void ValueChangedHandler(int? value)

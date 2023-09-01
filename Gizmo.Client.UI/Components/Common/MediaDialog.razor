@@ -6,7 +6,10 @@
         <div class="giz-client-dialog__header">
             <div class="giz-client-dialog__header__title">@Title</div>
             <div class="giz-client-dialog__header__subtitle">@MediaUrlType</div>
-            <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => DismissCallback.InvokeAsync()" />
+            @if (DisplayOptions.Closable)
+            {
+                <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => DismissCallback.InvokeAsync()" />
+            }
         </div>
         <div class="giz-ads-carousel-item-dialog-frame" >
             @switch (MediaUrlType)

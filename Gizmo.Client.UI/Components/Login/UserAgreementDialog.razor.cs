@@ -24,6 +24,9 @@ namespace Gizmo.Client.UI.Components
         public bool IsRejectable { get; set; }
 
         [Parameter]
+        public DialogDisplayOptions DisplayOptions { get; set; }
+
+        [Parameter]
         public EventCallback DismissCallback { get; set; }
 
         [Parameter]

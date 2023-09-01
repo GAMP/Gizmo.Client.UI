@@ -11,7 +11,10 @@
             {
                 <div class="giz-client-dialog__header__title">@LocalizationService.GetString("GIZ_SHOP_CHECKOUT_TITLE")</div>
             }
-            <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
+            @if (DisplayOptions.Closable)
+            {
+                <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
+            }
         </div>
 
         @if (!@ViewState.IsComplete)
