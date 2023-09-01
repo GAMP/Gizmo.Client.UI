@@ -11,7 +11,7 @@
 
             <div class="giz-user-history giz-user-time-products">
                 <div class="giz-user-history__header">
-                    Available time
+                    @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_TITLE")
                 </div>
 
                 <div class="giz-user-history__body">
@@ -32,7 +32,7 @@
                             </DataGridColumn>
                             <DataGridColumn Field="@(nameof(TimeProductViewState.TimeProductType))" TItemType="TimeProductViewState" Context="timeProduct">
                                 <HeaderTemplate>
-                                    Time Product
+                                    @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_TIME_PRODUCT")
                                 </HeaderTemplate>
                                 <CellTemplate>
                                     <ProductsProductType TimeProduct="@timeProduct" />
@@ -40,7 +40,7 @@
                             </DataGridColumn>
                             <DataGridColumn Field="@(nameof(TimeProductViewState.Source))" TItemType="TimeProductViewState" Context="timeProduct">
                                 <HeaderTemplate>
-                                    Source
+                                    @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_SOURCE")
                                 </HeaderTemplate>
                                 <CellTemplate>
                                     @timeProduct.Source
@@ -50,7 +50,7 @@
                                 <HeaderTemplate>
                                     <div class="giz-user-time-products-time">
                                         <div>
-                                            Time
+                                            @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_TIME")
                                         </div>
                                         @*<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <mask id="mask0_7277_4132" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
@@ -75,7 +75,7 @@
                             </DataGridColumn>
                             <DataGridColumn Field="@(nameof(TimeProductViewState.PurchaseDate))" TItemType="TimeProductViewState" Context="timeProduct">
                                 <HeaderTemplate>
-                                    Purchase date
+                                    @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_PURCHASE_DATE")
                                 </HeaderTemplate>
                                 <CellTemplate>
                                     @timeProduct.PurchaseDate.ToString()
@@ -83,15 +83,18 @@
                             </DataGridColumn>
                             <DataGridColumn Field="@(nameof(TimeProductViewState.Source))" TItemType="TimeProductViewState" Context="timeProduct">
                                 <HeaderTemplate>
-                                    Available
+                                    @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_AVAILABLE")
                                 </HeaderTemplate>
                                 <CellTemplate>
-                                    @timeProduct.ExpirationDate.ToString()
+                                    @if (timeProduct.ExpirationDate.HasValue)
+                                    {
+                                        @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_AVAILABLE_UNTIL", @timeProduct.ExpirationDate.ToString())
+                                    }
                                 </CellTemplate>
                             </DataGridColumn>
                             <DataGridColumn Field="@(nameof(TimeProductViewState.AvailableHostGroups))" TItemType="TimeProductViewState" Context="timeProduct">
                                 <HeaderTemplate>
-                                    Hosts
+                                    @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_HOSTS")
                                 </HeaderTemplate>
                                 <CellTemplate>
                                     <ProductsProductHosts TimeProduct="@timeProduct" />
@@ -111,10 +114,6 @@
                     </DataGrid>
                 </div>
 
-                @*<div class="giz-user-history__footer">
-                    <Button LeftSVGIcon="Icons.ArrowLeft_Client" Variant="ButtonVariants.Text" IsDisabled="@(ViewState.PrevCursor == null)" @onclick="TimeProductsService.LoadPrevious" />
-                    <Button LeftSVGIcon="Icons.ArrowRight_Client" Variant="ButtonVariants.Text" IsDisabled="@(ViewState.NextCursor == null)" @onclick="TimeProductsService.LoadNext" />
-                </div>*@
             </div>
 
         </div>

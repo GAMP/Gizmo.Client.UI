@@ -4,8 +4,8 @@
 
 <div class="giz-user-balance-tooltip">
     <div class="giz-user-balance-tooltip__header">
-        <div class="giz-user-balance-tooltip__header__title">Game Time Sources</div>
-        <div class="giz-user-balance-tooltip__header__link" @onclick="OpenDetails">See all available time</div>
+        <div class="giz-user-balance-tooltip__header__title">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TITLE")</div>
+        <div class="giz-user-balance-tooltip__header__link" @onclick="OpenDetails">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_SEE_ALL_AVAILABLE_TIME")</div>
     </div>
     <div class="giz-user-balance-tooltip__list">
         <DataGrid ItemSource="@ViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).Take(2).ToList()"
@@ -25,7 +25,7 @@
                 </DataGridColumn>
                 <DataGridColumn Field="@(nameof(TimeProductViewState.TimeProductType))" TItemType="TimeProductViewState" Context="timeProduct">
                     <HeaderTemplate>
-                        Time Product
+                        @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_TIME_PRODUCT")
                     </HeaderTemplate>
                     <CellTemplate>
                         <ProductsProductType TimeProduct="@timeProduct" />
@@ -33,7 +33,7 @@
                 </DataGridColumn>
                 <DataGridColumn Field="@(nameof(TimeProductViewState.Source))" TItemType="TimeProductViewState" Context="timeProduct">
                     <HeaderTemplate>
-                        Source
+                        @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_SOURCE")
                     </HeaderTemplate>
                     <CellTemplate>
                         @timeProduct.Source
@@ -43,7 +43,7 @@
                     <HeaderTemplate>
                         <div class="giz-user-time-products-time">
                             <div>
-                                Time
+                                @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_TIME")
                             </div>
                             @*<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <mask id="mask0_7277_4132" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
