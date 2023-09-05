@@ -1,0 +1,16 @@
+﻿@namespace Gizmo.Client.UI.Pages
+@inherits CustomDOMComponentBase
+@using Gizmo.Client.UI.View.States
+
+<div>
+    @if (_userProductViewState.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpiresAtDate) ||
+    _userProductViewState.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAfterTime) ||
+    _userProductViewState.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAtDayTime))
+    {
+
+    }
+    @if (_userProductViewState.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpiresAtLogout))
+    {
+
+    }
+</div>

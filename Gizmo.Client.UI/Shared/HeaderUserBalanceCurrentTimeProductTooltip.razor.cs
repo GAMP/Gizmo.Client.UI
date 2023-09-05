@@ -15,7 +15,10 @@ namespace Gizmo.Client.UI.Components
         NavigationService NavigationService { get; set; }
 
         [Inject]
-        TimeProductsViewState ViewState { get; set; }
+        TimeProductsViewState TimeProductsViewState { get; set; }
+
+        [Inject]
+        CreditOptionsViewState CreditOptionsViewState { get; set; }
 
         public void OpenDetails()
         {
@@ -26,14 +29,14 @@ namespace Gizmo.Client.UI.Components
 
         protected override Task OnInitializedAsync()
         {
-            this.SubscribeChange(ViewState);
+            this.SubscribeChange(TimeProductsViewState);
 
             return base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(ViewState);
+            this.UnsubscribeChange(TimeProductsViewState);
 
             base.Dispose();
         }

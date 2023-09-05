@@ -8,7 +8,7 @@
         <div class="giz-user-balance-tooltip__header__link" @onclick="OpenDetails">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_SEE_ALL_AVAILABLE_TIME")</div>
     </div>
     <div class="giz-user-balance-tooltip__list">
-        <DataGrid ItemSource="@ViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).Take(2).ToList()"
+        <DataGrid ItemSource="@TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).Take(2).ToList()"
                   Context="timeProducts"
                   HasStickyHeader="true"
                   Class="giz-scrollbar--v">
@@ -69,9 +69,9 @@
             </ChildContent>
         </DataGrid>
     </div>
-    @if (ViewState.TimeProducts.Count() == 1)
+    @if (TimeProductsViewState.TimeProducts.Count() == 1)
     {
-        if (string.IsNullOrEmpty(ViewState.TimeProducts.First().Time))
+        if (string.IsNullOrEmpty(TimeProductsViewState.TimeProducts.First().Time))
         {
             <div class="giz-user-balance-tooltip__expiration">The session will not end while you have the unlimited time credit option enabled</div>
             <div class="giz-user-balance-tooltip__message">Don't forget to close your bill at the end of the session</div>
@@ -83,7 +83,7 @@
         else
         {
             <div class="giz-user-balance-tooltip__expiration">When the current time expires, the session will be ended</div>
-                @if (ViewState.TimeProducts.First().InCredit)
+                @if (TimeProductsViewState.TimeProducts.First().InCredit)
                 {
                     <div class="giz-user-balance-tooltip__message">To continue playing, close your credit bill and buy a time pack or/and top up your balance</div>
                 }
@@ -95,6 +95,13 @@
                 <Button Variant="ButtonVariants.Outline" Text="Top up balance" />
                 <Button Color="ButtonColors.Accent" Text="Go to the Shop" />
             </div>
+        }
+    }
+    else
+    {
+        @if (CreditOptionsViewState.IsUserTimeCreditEnabled)
+        {
+            <div class="giz-user-balance-tooltip__expiration">Credit is available on the account</div>
         }
     }
 </div>

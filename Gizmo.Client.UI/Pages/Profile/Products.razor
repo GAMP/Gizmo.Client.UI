@@ -81,7 +81,7 @@
                                     @timeProduct.PurchaseDate.ToString()
                                 </CellTemplate>
                             </DataGridColumn>
-                            <DataGridColumn Field="@(nameof(TimeProductViewState.Source))" TItemType="TimeProductViewState" Context="timeProduct">
+                            <DataGridColumn Field="@(nameof(TimeProductViewState.ExpirationDate))" TItemType="TimeProductViewState" Context="timeProduct">
                                 <HeaderTemplate>
                                     @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_AVAILABLE")
                                 </HeaderTemplate>
@@ -92,6 +92,17 @@
                                     }
                                 </CellTemplate>
                             </DataGridColumn>
+                            @*<DataGridColumn Field="@(nameof(TimeProductViewState.ProductId))" TItemType="TimeProductViewState" Context="timeProduct">
+                                <HeaderTemplate>
+                                    @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_PROPERTIES")
+                                </HeaderTemplate>
+                                <CellTemplate>
+                                    @if (@timeProduct.ProductId.HasValue)
+                                    {
+                                        <ProductsProperties ProductId="@timeProduct.ProductId.Value" />
+                                    }
+                                </CellTemplate>
+                            </DataGridColumn>*@
                             <DataGridColumn Field="@(nameof(TimeProductViewState.AvailableHostGroups))" TItemType="TimeProductViewState" Context="timeProduct">
                                 <HeaderTemplate>
                                     @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_HOSTS")

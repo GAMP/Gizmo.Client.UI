@@ -1,4 +1,5 @@
-﻿using Gizmo.UI.Services;
+﻿using Gizmo.Client.UI.View.States;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 
@@ -10,6 +11,9 @@ namespace Gizmo.Client.UI.Components
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
+        CreditOptionsViewState CreditOptionsViewState { get; set; }
 
         private void OnClickCreditInfoHandler()
         {

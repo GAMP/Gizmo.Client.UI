@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -44,6 +45,9 @@ namespace Gizmo.Client.UI
         [Inject]
         UsageSessionViewState UsageSessionViewState { get; set; }
 
+        [Inject]
+        TimeProductsViewService TimeProductsViewService { get; set; }
+
         public void OnMouseOverHandler(MouseEventArgs args)
         {
             _preventClose = true;
@@ -70,13 +74,15 @@ namespace Gizmo.Client.UI
             _closeDeferredAction.Defer(_closeDelayTimeSpan);
         }
 
-        private Task Open()
+        private async Task Open()
         {
+            await TimeProductsViewService.LoadAsync();
+
             _isOpen = true;
 
             _shouldRender = true;
 
-            return InvokeAsync(StateHasChanged);
+            await InvokeAsync(StateHasChanged);
         }
 
         private Task Close()
