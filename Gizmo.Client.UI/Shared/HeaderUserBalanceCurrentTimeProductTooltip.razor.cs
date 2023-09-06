@@ -3,6 +3,7 @@ using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -20,9 +21,17 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         CreditOptionsViewState CreditOptionsViewState { get; set; }
 
+        [Inject]
+        UserBalanceTooltipViewState ViewState { get; set; }
+
         public void OpenDetails()
         {
             NavigationService.NavigateTo(ClientRoutes.UserProductsRoute);
+        }
+
+        public void OpenShop()
+        {
+            NavigationService.NavigateTo(ClientRoutes.ShopRoute);
         }
 
         #region OVERRIDE

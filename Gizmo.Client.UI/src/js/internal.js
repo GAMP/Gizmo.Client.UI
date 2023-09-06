@@ -194,11 +194,24 @@ window.registerPopup = function registerPopup(element) {
     element: element,
     open: false,
   });
+  //console.log('registerPopup');
+  //console.log(element);
 };
 
 window.unregisterPopup = function unregisterPopup(element) {
-  //console.log('unregisterPopup');
-  //console.log(element);
+    var objRefIndex = -1;
+
+    registeredPopups.forEach((item, index) => {
+        if (item.element.id == element.id)
+            objRefIndex = index;
+    });
+
+    if (objRefIndex > -1) {
+        registeredVideoComponents.splice(objRefIndex, 1);
+
+        //console.log('unregisterPopup');
+        //console.log(element);
+    }
 };
 
 window.isPointWithinRect = function isPointWithinRect(

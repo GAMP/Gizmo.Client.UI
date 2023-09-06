@@ -209,10 +209,8 @@
 
 .giz-user-balance-tooltip {
     padding: 2.4rem 2rem;
-    background-color: #22272B;
-    border-radius: 0.8rem;
     color: #FAFAFA;
-    width: 50rem;
+    min-width: 50rem;
     white-space: normal;
 
     &-wrapper {
@@ -221,6 +219,8 @@
         left: 50%;
         transform: translateX(-50%);
         z-index: $header-dropdown-index;
+        background-color: #22272B;
+        border-radius: 0.8rem;
         box-shadow: 0px 32px 64px rgba(0, 0, 0, 0.37), 0px 2px 21px rgba(0, 0, 0, 0.37);
         display: none;
 
@@ -244,6 +244,12 @@
         }
     }
 
+    &__credit {
+        padding-top: 1.2rem;
+        color: rgba(255, 255, 255, 0.60);
+        border-top: 1px solid rgba(246, 251, 253, 0.06);
+        @include font-m-theme-client($font-weight-light-theme-client);
+    }
 
     &__expiration {
         padding: 1.2rem 0;
@@ -264,6 +270,17 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 1.6rem;
+
+        .giz-button {
+            width: 100%;
+        }
+    }
+
+    &__action {
+        padding-top: 2.4rem;
+        border-top: 1px solid rgba(246, 251, 253, 0.06);
+        display: grid;
+        grid-template-columns: 1fr;
 
         .giz-button {
             width: 100%;
