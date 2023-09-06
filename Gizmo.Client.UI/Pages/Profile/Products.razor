@@ -70,7 +70,10 @@
                                     @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_PURCHASE_DATE")
                                 </HeaderTemplate>
                                 <CellTemplate>
-                                    @timeProduct.PurchaseDate.ToString()
+                                    @if (timeProduct.PurchaseDate.HasValue)
+                                    {
+                                        @timeProduct.PurchaseDate.Value.ToLocalTime().ToString()
+                                    }
                                 </CellTemplate>
                             </DataGridColumn>
                             <DataGridColumn Field="@(nameof(TimeProductViewState.ExpirationDate))" TItemType="TimeProductViewState" Context="timeProduct">
