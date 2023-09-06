@@ -2,7 +2,7 @@
 @inherits CustomDOMComponentBase
 @using System.Globalization
 
-@if (CreditOptionsViewState.SalesCreditOption != View.CreditOption.NoCredit || CreditOptionsViewState.IsUserTimeCreditEnabled)
+@if (CreditOptionsViewState.SalesCreditType != CreditType.NoCredit || CreditOptionsViewState.IsUserTimeCreditEnabled)
 {
     <div class="giz-profile-header__info__stats-credit-item">
 
@@ -25,7 +25,7 @@
 
         <div class="giz-profile-header__info__stats-credit-item__body">
 
-            @if (CreditOptionsViewState.SalesCreditOption != View.CreditOption.NoCredit)
+            @if (CreditOptionsViewState.SalesCreditType != CreditType.NoCredit)
             {
                 <div class="giz-profile-header__info__stats-credit-item__body__icon">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -33,7 +33,7 @@
                     </svg>
                 </div>
 
-                @if (CreditOptionsViewState.SalesCreditOption == View.CreditOption.Unlimited)
+                @if (CreditOptionsViewState.SalesCreditType == CreditType.Unlimited)
                 {
                     <div class="giz-profile-header__info__stats-credit-item__body__infinite">
                         <Icon SVGIcon="Icons.Infinite" Color="#FFC700" />
@@ -44,8 +44,8 @@
                     <div>@(CreditOptionsViewState.CreditLimit.ToString("C", CultureInfo.CurrentCulture))</div>
                 }
             }
-            
-            @if (CreditOptionsViewState.TimeCreditOption != View.CreditOption.NoCredit)
+
+            @if (CreditOptionsViewState.TimeCreditType != CreditType.NoCredit)
             {
                 <div class="giz-profile-header__info__stats-credit-item__body__icon">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -53,7 +53,7 @@
                     </svg>
                 </div>
 
-                @if (CreditOptionsViewState.TimeCreditOption == View.CreditOption.Unlimited)
+                @if (CreditOptionsViewState.TimeCreditType == CreditType.Unlimited)
                 {
                     <div class="giz-profile-header__info__stats-credit-item__body__infinite">
                         <Icon SVGIcon="Icons.Infinite" Color="#FFC700" />
