@@ -10,7 +10,7 @@
             @*TODO: Smaller*@
             <IconButton SVGIcon="Icons.Close_Client" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="Close" />
         </div>
-        @if (CreditOptionsViewState.SalesCreditType != CreditType.NoCredit)
+        @if (CreditOptionsViewState.TimeCreditType != CreditType.NoCredit && CreditOptionsViewState.IsUserTimeCreditEnabled)
         {
             <div class="giz-user-credit-tooltip-item">
                 <div class="giz-user-credit-tooltip-item__icon">
@@ -23,7 +23,7 @@
                 </div>
             </div>
         }
-        @if (CreditOptionsViewState.TimeCreditType != CreditType.NoCredit && CreditOptionsViewState.IsUserTimeCreditEnabled)
+        @if (CreditOptionsViewState.SalesCreditType != CreditType.NoCredit)
         {
             <div class="giz-user-credit-tooltip-item">
                 <div class="giz-user-credit-tooltip-item__icon">

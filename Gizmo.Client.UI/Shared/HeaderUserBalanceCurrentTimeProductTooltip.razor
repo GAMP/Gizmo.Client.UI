@@ -61,9 +61,9 @@
             </ChildContent>
         </DataGrid>
     </div>
-    @if (TimeProductsViewState.TimeProducts.Count() == 1)
+    @if (TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).Count() == 1)
     {
-        if (string.IsNullOrEmpty(TimeProductsViewState.TimeProducts.First().Time))
+        if (string.IsNullOrEmpty(TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).First().Time))
         {
             <div class="giz-user-balance-tooltip__expiration">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_SESSION_WILL_NOT_EXPIRE_MESSAGE")</div>
             <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_CLOSE_BALANCE_MESSAGE")</div>
@@ -88,7 +88,7 @@
             <div class="giz-user-balance-tooltip__expiration">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_SESSION_WILL_EXPIRE_MESSAGE")</div>
             @if (!ViewState.DisableOnlineDeposits || !ViewState.DisableShop)
             {
-                @if (TimeProductsViewState.TimeProducts.First().InCredit)
+                @if (TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).First().InCredit)
                 {
                     <div class="giz-user-balance-tooltip__message">To continue playing, close your credit bill and buy a time pack or/and top up your balance</div>
                 }
