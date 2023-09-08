@@ -8,114 +8,124 @@
         <div class="giz-user-balance-tooltip__header__link" @onclick="OpenDetails">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_SEE_ALL_AVAILABLE_TIME")</div>
     </div>
     <div class="giz-user-balance-tooltip__list">
-        <DataGrid ItemSource="@TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).Take(2).ToList()"
-                  Context="timeProducts"
-                  HasStickyHeader="true"
-                  Class="giz-scrollbar--v">
-            <ChildContent>
-                <DataGridColumn Field="@(nameof(TimeProductViewState.ActivationOrder))" TItemType="TimeProductViewState" Context="timeProduct">
-                    <HeaderTemplate>
-                        <Icon SVGIcon="Icons.ActivationOrder_Client" Size="IconSizes.Small" Class="giz-user-time-products-order-icon" />
-                    </HeaderTemplate>
-                    <CellTemplate>
-                        <div class="giz-user-time-products-order @(timeProduct.ActivationOrder == 1 ? "giz-user-time-products-order--current" : "")">
-                            @timeProduct.ActivationOrder
-                        </div>
-                    </CellTemplate>
-                </DataGridColumn>
-                <DataGridColumn Field="@(nameof(TimeProductViewState.TimeProductType))" TItemType="TimeProductViewState" Context="timeProduct">
-                    <HeaderTemplate>
-                        @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_TIME_PRODUCT")
-                    </HeaderTemplate>
-                    <CellTemplate>
-                        <ProductsProductType TimeProduct="@timeProduct" />
-                    </CellTemplate>
-                </DataGridColumn>
-                <DataGridColumn Field="@(nameof(TimeProductViewState.Source))" TItemType="TimeProductViewState" Context="timeProduct">
-                    <HeaderTemplate>
-                        @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_SOURCE")
-                    </HeaderTemplate>
-                    <CellTemplate>
-                        @timeProduct.Source
-                    </CellTemplate>
-                </DataGridColumn>
-                <DataGridColumn Field="@(nameof(TimeProductViewState.Time))" TItemType="TimeProductViewState" Context="timeProduct">
-                    <HeaderTemplate>
-                        <div class="giz-user-time-products-time">
-                            <div>
-                                @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_TIME")
-                            </div>
-                        </div>
-                    </HeaderTemplate>
-                    <CellTemplate>
-                        @if (!string.IsNullOrEmpty(timeProduct.Time))
-                        {
-                            @timeProduct.Time
-                        }
-                        else
-                        {
-                            <Icon SVGIcon="Icons.Infinite" Class="giz-user-time-infinite" Color="#FFC700" />
-                        }
-                    </CellTemplate>
-                </DataGridColumn>
-            </ChildContent>
-        </DataGrid>
-    </div>
-    @if (TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).Count() == 1)
-    {
-        if (string.IsNullOrEmpty(TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).First().Time))
+        @if (TimeProductsViewState.IsInitializing)
         {
-            <div class="giz-user-balance-tooltip__expiration">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_SESSION_WILL_NOT_EXPIRE_MESSAGE")</div>
-            <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_CLOSE_BALANCE_MESSAGE")</div>
-            @if (!ViewState.DisableOnlineDeposits || !ViewState.DisableShop)
+            <Spinner />
+        }
+        else if (TimeProductsViewState.IsInitialized == true)
+        {
+            <DataGrid ItemSource="@TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).Take(2).ToList()"
+                      Context="timeProducts"
+                      HasStickyHeader="true"
+                      Class="giz-scrollbar--v">
+                <ChildContent>
+                    <DataGridColumn Field="@(nameof(TimeProductViewState.ActivationOrder))" TItemType="TimeProductViewState" Context="timeProduct">
+                        <HeaderTemplate>
+                            <Icon SVGIcon="Icons.ActivationOrder_Client" Size="IconSizes.Small" Class="giz-user-time-products-order-icon" />
+                        </HeaderTemplate>
+                        <CellTemplate>
+                            <div class="giz-user-time-products-order @(timeProduct.ActivationOrder == 1 ? "giz-user-time-products-order--current" : "")">
+                                @timeProduct.ActivationOrder
+                            </div>
+                        </CellTemplate>
+                    </DataGridColumn>
+                    <DataGridColumn Field="@(nameof(TimeProductViewState.TimeProductType))" TItemType="TimeProductViewState" Context="timeProduct">
+                        <HeaderTemplate>
+                            @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_TIME_PRODUCT")
+                        </HeaderTemplate>
+                        <CellTemplate>
+                            <ProductsProductType TimeProduct="@timeProduct" />
+                        </CellTemplate>
+                    </DataGridColumn>
+                    <DataGridColumn Field="@(nameof(TimeProductViewState.Source))" TItemType="TimeProductViewState" Context="timeProduct">
+                        <HeaderTemplate>
+                            @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_SOURCE")
+                        </HeaderTemplate>
+                        <CellTemplate>
+                            @timeProduct.Source
+                        </CellTemplate>
+                    </DataGridColumn>
+                    <DataGridColumn Field="@(nameof(TimeProductViewState.Time))" TItemType="TimeProductViewState" Context="timeProduct">
+                        <HeaderTemplate>
+                            <div class="giz-user-time-products-time-header">
+                                <div>
+                                    @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_TIME")
+                                </div>
+                            </div>
+                        </HeaderTemplate>
+                        <CellTemplate>
+                            @if (!string.IsNullOrEmpty(timeProduct.Time))
+                            {
+                                @timeProduct.Time
+                            }
+                            else
+                            {
+                                <Icon SVGIcon="Icons.Infinite" Class="giz-user-time-infinite" Color="#FFC700" />
+                            }
+                        </CellTemplate>
+                    </DataGridColumn>
+                </ChildContent>
+            </DataGrid>
+        }
+    </div>
+    @if (TimeProductsViewState.IsInitialized == true)
+    {
+        @if (TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).Count() == 1)
+        {
+            if (string.IsNullOrEmpty(TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).First().Time))
             {
-                <div class="@(!ViewState.DisableOnlineDeposits && !ViewState.DisableShop ? "giz-user-balance-tooltip__actions" : "giz-user-balance-tooltip__action")">
-                    @if (!ViewState.DisableOnlineDeposits)
+                <div class="giz-user-balance-tooltip__expiration">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_SESSION_WILL_NOT_EXPIRE_MESSAGE")</div>
+                <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_CLOSE_BALANCE_MESSAGE")</div>
+                @if (!ViewState.DisableOnlineDeposits || !ViewState.DisableShop)
+                {
+                    <div class="@(!ViewState.DisableOnlineDeposits && !ViewState.DisableShop ? "giz-user-balance-tooltip__actions" : "giz-user-balance-tooltip__action")">
+                        @if (!ViewState.DisableOnlineDeposits)
+                        {
+                            <Button Variant="@(ViewState.DisableShop ? ButtonVariants.Fill : ButtonVariants.Outline)"
+                                    Color="@(ViewState.DisableShop ? ButtonColors.Accent : ButtonColors.Primary)"
+                                    Text="@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TOP_UP")" />
+                        }
+                        @if (!ViewState.DisableShop)
+                        {
+                            <Button Color="ButtonColors.Accent" Text="@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_GO_TO_SHOP")" @onclick="OpenShop" />
+                        }
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="giz-user-balance-tooltip__expiration">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_SESSION_WILL_EXPIRE_MESSAGE")</div>
+                @if (!ViewState.DisableOnlineDeposits || !ViewState.DisableShop)
+                {
+                    @if (TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).First().InCredit)
                     {
-                        <Button Variant="@(ViewState.DisableShop ? ButtonVariants.Fill : ButtonVariants.Outline)"
-                                Color="@(ViewState.DisableShop ? ButtonColors.Accent : ButtonColors.Primary)"
-                                Text="@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TOP_UP")" />
+                        <div class="giz-user-balance-tooltip__message">To continue playing, close your credit bill and buy a time pack or/and top up your balance</div>
                     }
-                    @if (!ViewState.DisableShop)
+                    else
                     {
-                        <Button Color="ButtonColors.Accent" Text="@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_GO_TO_SHOP")" @onclick="OpenShop" />
+                        <div class="giz-user-balance-tooltip__message">To continue playing buy a time pack or/and top up your balance</div>
                     }
-                </div>
+                    <div class="@(!ViewState.DisableOnlineDeposits && !ViewState.DisableShop ? "giz-user-balance-tooltip__actions" : "giz-user-balance-tooltip__action")">
+                        @if (!ViewState.DisableOnlineDeposits)
+                        {
+                            <Button Variant="@(ViewState.DisableShop ? ButtonVariants.Fill : ButtonVariants.Outline)"
+                                    Color="@(ViewState.DisableShop ? ButtonColors.Accent : ButtonColors.Primary)"
+                                    Text="@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TOP_UP")" />
+                        }
+                        @if (!ViewState.DisableShop)
+                        {
+                            <Button Color="ButtonColors.Accent" Text="@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_GO_TO_SHOP")" @onclick="OpenShop" />
+                        }
+                    </div>
+                }
             }
         }
         else
         {
-            <div class="giz-user-balance-tooltip__expiration">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_SESSION_WILL_EXPIRE_MESSAGE")</div>
-            @if (!ViewState.DisableOnlineDeposits || !ViewState.DisableShop)
+            @if (CreditOptionsViewState.TimeCreditType != CreditType.NoCredit && CreditOptionsViewState.IsUserTimeCreditEnabled)
             {
-                @if (TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).First().InCredit)
-                {
-                    <div class="giz-user-balance-tooltip__message">To continue playing, close your credit bill and buy a time pack or/and top up your balance</div>
-                }
-                else
-                {
-                    <div class="giz-user-balance-tooltip__message">To continue playing buy a time pack or/and top up your balance</div>
-                }
-                <div class="@(!ViewState.DisableOnlineDeposits && !ViewState.DisableShop ? "giz-user-balance-tooltip__actions" : "giz-user-balance-tooltip__action")">
-                    @if (!ViewState.DisableOnlineDeposits)
-                    {
-                        <Button Variant="@(ViewState.DisableShop ? ButtonVariants.Fill : ButtonVariants.Outline)"
-                                Color="@(ViewState.DisableShop ? ButtonColors.Accent : ButtonColors.Primary)"
-                                Text="@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TOP_UP")" />
-                    }
-                    @if (!ViewState.DisableShop)
-                    {
-                        <Button Color="ButtonColors.Accent" Text="@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_GO_TO_SHOP")" @onclick="OpenShop" />
-                    }
-                </div>
+                <div class="giz-user-balance-tooltip__credit">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_CREDIT")</div>
             }
-        }
-    }
-    else
-    {
-        @if (CreditOptionsViewState.TimeCreditType != CreditType.NoCredit && CreditOptionsViewState.IsUserTimeCreditEnabled)
-        {
-            <div class="giz-user-balance-tooltip__credit">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_CREDIT")</div>
         }
     }
 </div>

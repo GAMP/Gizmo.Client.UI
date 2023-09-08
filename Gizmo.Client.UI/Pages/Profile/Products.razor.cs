@@ -8,6 +8,8 @@ namespace Gizmo.Client.UI.Pages
     [Route(ClientRoutes.UserProductsRoute)]
     public partial class Products : CustomDOMComponentBase
     {
+        private bool _isOpen;
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
@@ -20,6 +22,11 @@ namespace Gizmo.Client.UI.Pages
         public void OpenDetails(int productId)
         {
             NavigationService.NavigateTo(ClientRoutes.ProductDetailsRoute + $"?ProductId={productId}");
+        }
+
+        private void OnClickPropertiesInfoHandler()
+        {
+            _isOpen = !_isOpen;
         }
 
         protected override void OnInitialized()

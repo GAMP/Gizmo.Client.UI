@@ -15,7 +15,7 @@
             max-width: 20.1rem;
         }
 
-        td:nth-child(7) {
+        td:nth-child(8) {
             max-width: 24rem;
             overflow: hidden;
         }
@@ -93,7 +93,13 @@
     }
 }
 
-.giz-user-time-products-time {
+.giz-user-time-products-time-header {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.giz-user-time-products-properties-header {
     display: flex;
     align-items: center;
     gap: 0.4rem;
@@ -148,5 +154,95 @@
         min-width: 2rem;
         min-height: 2rem;
         vertical-align: middle;
+    }
+}
+
+.giz-user-time-products-properties {
+    display: flex;
+    gap: 0.4rem;
+
+    .giz-user-time-products-property {
+        background-color: rgba(250, 250, 250, 0.16);
+        border-radius: 4px;
+        padding: 0.6rem;
+
+        svg {
+            fill-opacity: 0.75;
+        }
+
+        &.active {
+            background-color: #0078D2;
+
+            svg {
+                fill-opacity: 1;
+            }
+        }
+    }
+}
+
+.giz-user-time-products-properties-icon {
+    position: relative;
+    cursor: pointer;
+}
+
+.giz-user-time-products-properties-tooltip {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    position: relative;
+    padding: 1.2rem;
+    padding-right: 2.8rem;
+    color: #FFF;
+    width: 25rem;
+    cursor: default;
+    @include font-s-theme-client($font-weight-light-theme-client);
+    white-space: normal;
+    text-align: left;
+
+    .close-btn {
+        width: 1.2rem;
+        height: 1.2rem;
+        min-width: 1.2rem;
+        min-height: 1.2rem;
+
+        .giz-icon--small {
+            width: 1.2rem;
+            height: 1.2rem;
+            min-width: 1.2rem;
+            min-height: 1.2rem;
+        }
+    }
+
+    &-wrapper {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        display: none;
+        z-index: $info-tooltip-index;
+        background-color: #22272B;
+        border-radius: 8px;
+        box-shadow: 0px 32px 64px rgba(0, 0, 0, 0.37), 0px 2px 21px rgba(0, 0, 0, 0.37);
+
+        &.open {
+            display: block;
+        }
+    }
+
+    &-item {
+        display: flex;
+        gap: 0.8rem;
+
+        &__icon {
+            background-color: rgba(250, 250, 250, 0.16);
+            border-radius: 4px;
+            padding: 0.6rem;
+        }
+    }
+
+    &-close-btn {
+        position: absolute;
+        top: 1.2rem;
+        right: 1.2rem;
     }
 }
