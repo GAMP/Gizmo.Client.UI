@@ -1,0 +1,23 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<CascadingValue Value="this" IsFixed="true">
+    <div class="giz-client-popup-root @Class"
+         @ref="@Ref">
+        <div class="giz-client-popup-activator" @onclick="OnClickHandler">
+            @Activator
+        </div>
+        @if (ChildContent != null)
+        {
+            <div class="@PopupClassName"
+                 style="@PopupStyleValue"
+                 id="@Id"
+                 @ref="@_popupContent">
+                @ChildContent
+                @*<div class="giz-client-popup-pin"
+                     style="@PopupPinStyleValue">
+                </div>*@
+            </div>
+        }
+    </div>
+</CascadingValue>

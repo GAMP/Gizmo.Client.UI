@@ -230,31 +230,36 @@ window.isPointWithinRect = function isPointWithinRect(
 };
 
 window.closeOpenPopups = function closeOpenPopups(event) {
-  registeredPopups.forEach(function (value, index, array) {
-    const popup = value.element;
-    if (popup.classList.contains("open")) {
-      var popupContent = popup.querySelector(".giz-dropdown-menu__content");
-      if (popupContent) {
-        var bbox = popupContent.getBoundingClientRect();
-        if (
-          !isPointWithinRect(
-            event.clientX,
-            event.clientY,
-            bbox.left,
-            bbox.top,
-            bbox.right,
-            bbox.bottom
-          )
-        ) {
-          //popup.classList.remove('open');
+    registeredPopups.forEach(function (value, index, array) {
+        const popup = value.element;
+        if (popup.classList.contains("open")) {
+            var popupContent;
+            if (popup.classList.contains("giz-client-popup")) {
+                popupContent = popup;
+            } else {
+                popupContent = popup.querySelector(".giz-dropdown-menu__content");
+            }
+            if (popupContent) {
+                var bbox = popupContent.getBoundingClientRect();
+                if (
+                    !isPointWithinRect(
+                        event.clientX,
+                        event.clientY,
+                        bbox.left,
+                        bbox.top,
+                        bbox.right,
+                        bbox.bottom
+                    )
+                ) {
+                    //popup.classList.remove('open');
 
-          closePopupEventListenerReferences.forEach((item) => {
-            item.invokeMethodAsync("OnClosePopupEvent", popup.id);
-          });
+                    closePopupEventListenerReferences.forEach((item) => {
+                        item.invokeMethodAsync("OnClosePopupEvent", popup.id);
+                    });
+                }
+            }
         }
-      }
-    }
-  });
+    });
 };
 /*window.onclick = function (event) {
     closeOpenPopups from here does not work
