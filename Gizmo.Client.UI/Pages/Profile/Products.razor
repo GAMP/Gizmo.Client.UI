@@ -70,14 +70,14 @@
                                         }
                                     </CellTemplate>
                                 </DataGridColumn>
-                                <DataGridColumn Field="@(nameof(TimeProductViewState.PurchaseDate))" TItemType="TimeProductViewState" Context="timeProduct">
+                                <DataGridColumn Field="@(nameof(TimeProductViewState.PurchaseTime))" TItemType="TimeProductViewState" Context="timeProduct">
                                     <HeaderTemplate>
                                         @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_PURCHASE_DATE")
                                     </HeaderTemplate>
                                     <CellTemplate>
-                                        @if (timeProduct.PurchaseDate.HasValue)
+                                        @if (timeProduct.PurchaseTime.HasValue)
                                         {
-                                            @timeProduct.PurchaseDate.Value.ToLocalTime().ToString()
+                                            @timeProduct.PurchaseTime.Value.ToLocalTime().ToString()
                                         }
                                     </CellTemplate>
                                 </DataGridColumn>
@@ -113,7 +113,7 @@
                                                     </div>
                                                 </Activator>
                                                 <ChildContent>
-                                                    <ProductsProductPropertiesTooltip />
+                                                    <ProductsProductPropertiesHeaderTooltip />
                                                 </ChildContent>
                                             </ClientPopup>
                                         </div>
@@ -121,7 +121,7 @@
                                     <CellTemplate>
                                         @if (@timeProduct.ProductId.HasValue)
                                         {
-                                            <ProductsProductProperties ProductId="@timeProduct.ProductId.Value" />
+                                            <ProductsProductProperties ProductId="@timeProduct.ProductId.Value" FirstUse="@timeProduct.FirstUsageTime" />
                                         }
                                     </CellTemplate>
                                 </DataGridColumn>

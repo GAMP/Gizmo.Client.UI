@@ -6,7 +6,7 @@ using Gizmo.Client.UI.Components;
 
 namespace Gizmo.Client.UI.Pages
 {
-    public partial class ProductsProductPropertiesTooltip : CustomDOMComponentBase
+    public partial class ProductsProductPropertiesHeaderTooltip : CustomDOMComponentBase
     {
         [Inject]
         ILocalizationService LocalizationService { get; set; }

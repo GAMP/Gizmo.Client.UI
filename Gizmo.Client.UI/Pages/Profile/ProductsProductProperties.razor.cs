@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using System;
+using Gizmo.UI.Services;
 
 namespace Gizmo.Client.UI.Pages
 {
@@ -18,10 +20,16 @@ namespace Gizmo.Client.UI.Pages
         }
 
         [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
         UserProductViewStateLookupService UserProductViewStateLookupService { get; set; }
 
         [Parameter]
         public int ProductId { get; set; }
+
+        [Parameter]
+        public DateTime? FirstUsageTime { get; set; }
 
         protected override async Task OnInitializedAsync()
         {

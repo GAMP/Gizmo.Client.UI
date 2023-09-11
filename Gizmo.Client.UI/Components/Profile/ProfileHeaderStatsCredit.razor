@@ -39,7 +39,10 @@
                 }
                 else
                 {
-                    <div>@(CreditOptionsViewState.CreditLimit.ToString("C", CultureInfo.CurrentCulture))</div>
+                    @if (CreditOptionsViewState.SalesCreditType != CreditType.Limited)
+                    {
+                        <div>@(CreditOptionsViewState.CreditLimit.ToString("C", CultureInfo.CurrentCulture))</div>
+                    }
                 }
             }
 
