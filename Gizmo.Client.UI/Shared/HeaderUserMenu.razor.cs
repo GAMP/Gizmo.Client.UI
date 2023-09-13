@@ -10,6 +10,7 @@ namespace Gizmo.Client.UI
         private bool _activeAppsIsOpen;
         private bool _notificationsIsOpen;
         private bool _userLinksIsOpen;
+        private bool _assistanceIsOpen;
 
         [Inject]
         public UserOnlineDepositViewState UserOnlineDepositViewState { get; set; }
@@ -23,6 +24,7 @@ namespace Gizmo.Client.UI
                 _activeAppsIsOpen = false;
                 _notificationsIsOpen = false;
                 _userLinksIsOpen = false;
+                _assistanceIsOpen = false;
             }
         }
 
@@ -35,6 +37,7 @@ namespace Gizmo.Client.UI
                 _userOnlineDepositIsOpen = false;
                 _notificationsIsOpen = false;
                 _userLinksIsOpen = false;
+                _assistanceIsOpen = false;
             }
         }
 
@@ -47,6 +50,7 @@ namespace Gizmo.Client.UI
                 _userOnlineDepositIsOpen = false;
                 _activeAppsIsOpen = false;
                 _userLinksIsOpen = false;
+                _assistanceIsOpen = false;
             }
         }
 
@@ -59,6 +63,20 @@ namespace Gizmo.Client.UI
                 _userOnlineDepositIsOpen = false;
                 _activeAppsIsOpen = false;
                 _notificationsIsOpen = false;
+                _assistanceIsOpen = false;
+            }
+        }
+
+        public void ToggleAssistance()
+        {
+            _assistanceIsOpen = !_assistanceIsOpen;
+
+            if (_assistanceIsOpen)
+            {
+                _userOnlineDepositIsOpen = false;
+                _activeAppsIsOpen = false;
+                _notificationsIsOpen = false;
+                _userLinksIsOpen = false;
             }
         }
     }

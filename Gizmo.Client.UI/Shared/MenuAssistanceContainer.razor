@@ -1,0 +1,91 @@
+﻿@namespace Gizmo.Client.UI.Shared
+@using Gizmo.UI;
+@inherits CustomDOMComponentBase
+
+<div class="giz-dropdown-menu @(_isOpen ? "open" : "")"
+     id="@Id"
+     @ref="@Ref">
+    <div class="giz-dropdown-menu__content giz-menu-assistance">
+        @if (ViewState.IsInitializing)
+        {
+            <Spinner />
+        }
+        else
+        {
+            @if (ViewState.HasError)
+            {
+                @ViewState.ErrorMessage
+            }
+            else
+            {
+                @if (ViewState.AnyPending)
+                {
+                    <div>
+                        <Select IsDisabled="@(ViewState.IsLoading)"
+                                HandleSVGIcon="Icons.Select_Client"
+                                TValue="int?"
+                                Value="@ViewState.SelectedAssistanceRequestType"
+                                ValueChanged="@ValueChangedHandler"
+                                ValueExpression="@(() => ViewState.SelectedAssistanceRequestType)"
+                                Size="InputSizes.ExtraSmall"
+                                IsFullWidth="true"
+                                Label="Select the reason for contact"
+                                Placeholder="Select something">
+                            @if (ViewState.AssistanceRequestTypes != null)
+                            {
+                                @foreach (var item in ViewState.AssistanceRequestTypes)
+                                {
+                                    <SelectItem TValue="int?" Value="@item.Id">@item.Title</SelectItem>
+                                }
+                            }
+                        </Select>
+                        @*Select the reason for contact*@
+                    </div>
+                    <div>
+                        <TextInput IsDisabled="@(ViewState.IsLoading)"
+                                   TValue="string"
+                                   IsFullWidth="true"
+                                   IsMultiLine="true"
+                                   Label="What can we help you with?"
+                                   Placeholder="What can we help you with?" />
+                    </div>
+                    <div>
+                        <Button IsDisabled="@(ViewState.IsLoading)"
+                                Color="ButtonColors.Accent"
+                                IsFullWidth="true"
+                                Size="ButtonSizes.Large"
+                                @onclick="AssistanceRequestViewService.SubmitAsync">
+                            <ChildContent>
+                                @if (ViewState.IsLoading)
+                                {
+                                    <Spinner />
+                                }
+                                else
+                                {
+                                    <div>Send</div>
+                                }
+                            </ChildContent>
+                        </Button>
+                    </div>
+                }
+                else
+                {
+                    <Alert AlertType="AlertTypes.Info" Title="The request has been sent" Text="Wait until the operator accepts your request for work, the answer will be sent in the notification section">
+                        <Button @onclick="AssistanceRequestViewService.CancelAsync">
+                            <ChildContent>
+                                @if (ViewState.IsLoading)
+                                {
+                                    <Spinner />
+                                }
+                                else
+                                {
+                                    <div>Decline request</div>
+                                }
+                            </ChildContent>
+                        </Button>
+                    </Alert>
+                }
+            }
+        }
+    </div>
+</div>
