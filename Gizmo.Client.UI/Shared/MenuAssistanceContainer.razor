@@ -1,5 +1,6 @@
 ﻿@namespace Gizmo.Client.UI.Shared
 @using Gizmo.UI;
+@using Microsoft.AspNetCore.Components.Forms
 @inherits CustomDOMComponentBase
 
 <div class="giz-dropdown-menu @(_isOpen ? "open" : "")"
@@ -18,36 +19,43 @@
             }
             else
             {
-                @if (ViewState.AnyPending)
+                @if (!ViewState.AnyPending)
                 {
                     <div>
-                        <Select IsDisabled="@(ViewState.IsLoading)"
-                                HandleSVGIcon="Icons.Select_Client"
-                                TValue="int?"
-                                Value="@ViewState.SelectedAssistanceRequestType"
-                                ValueChanged="@ValueChangedHandler"
-                                ValueExpression="@(() => ViewState.SelectedAssistanceRequestType)"
-                                Size="InputSizes.ExtraSmall"
-                                IsFullWidth="true"
-                                Label="Select the reason for contact"
-                                Placeholder="Select something">
-                            @if (ViewState.AssistanceRequestTypes != null)
-                            {
-                                @foreach (var item in ViewState.AssistanceRequestTypes)
+                        <EditForm EditContext="@AssistanceRequestViewService.EditContext">
+                            <Select IsDisabled="@(ViewState.IsLoading)"
+                                    HandleSVGIcon="Icons.Select_Client"
+                                    TValue="int?"
+                                    Value="@ViewState.SelectedAssistanceRequestType"
+                                    ValueChanged="@ValueChangedHandler"
+                                    ValueExpression="@(() => ViewState.SelectedAssistanceRequestType)"
+                                    Size="InputSizes.ExtraSmall"
+                                    IsFullWidth="true"
+                                    Label="@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_SELECT_TYPE_LABEL")"
+                                    Placeholder="@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_SELECT_TYPE_PLACEHOLDER")">
+                                @if (ViewState.AssistanceRequestTypes != null)
                                 {
-                                    <SelectItem TValue="int?" Value="@item.Id">@item.Title</SelectItem>
+                                    @foreach (var item in ViewState.AssistanceRequestTypes)
+                                    {
+                                        <SelectItem TValue="int?" Value="@item.Id">@item.Title</SelectItem>
+                                    }
                                 }
-                            }
-                        </Select>
-                        @*Select the reason for contact*@
+                            </Select>
+                            @*Select the reason for contact*@
+                        </EditForm>
                     </div>
                     <div>
                         <TextInput IsDisabled="@(ViewState.IsLoading)"
-                                   TValue="string"
+                                   UpdateOnInput="true"
+                                   Value="@ViewState.Note"
+                                   ValueChanged="@((string value) => AssistanceRequestViewService.SetNote(value))"
+                                   ValueExpression="@(() => ViewState.Note)"
                                    IsFullWidth="true"
                                    IsMultiLine="true"
-                                   Label="What can we help you with?"
-                                   Placeholder="What can we help you with?" />
+                                   MaxLength="@ViewState.NoteLimit"
+                                   Label="@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_NOTE_LABEL")"
+                                   Placeholder="@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_NOTE_PLACEHOLDER")" />
+                        <div class="giz-menu-assistance-note-counter">@($"{ViewState.Note?.Length ?? 0}/{ViewState.NoteLimit}")</div>
                     </div>
                     <div>
                         <Button IsDisabled="@(ViewState.IsLoading)"
@@ -62,7 +70,7 @@
                                 }
                                 else
                                 {
-                                    <div>Send</div>
+                                    <div>@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_SEND")</div>
                                 }
                             </ChildContent>
                         </Button>
@@ -70,8 +78,8 @@
                 }
                 else
                 {
-                    <Alert AlertType="AlertTypes.Info" Title="The request has been sent" Text="Wait until the operator accepts your request for work, the answer will be sent in the notification section">
-                        <Button @onclick="AssistanceRequestViewService.CancelAsync">
+                    <Alert AlertType="AlertTypes.Info" Title="@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_SENT_TITLE")" Text="@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_SENT_MESSAGE")">
+                        <Button Color="ButtonColors.Info" Variant="ButtonVariants.Outline" Size="ButtonSizes.Small" @onclick="AssistanceRequestViewService.CancelAsync">
                             <ChildContent>
                                 @if (ViewState.IsLoading)
                                 {
@@ -79,7 +87,7 @@
                                 }
                                 else
                                 {
-                                    <div>Decline request</div>
+                                    <div>@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_SENT_CANCEL")</div>
                                 }
                             </ChildContent>
                         </Button>

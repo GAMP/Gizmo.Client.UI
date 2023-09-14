@@ -12,12 +12,26 @@
     max-height: 100%;
     overflow: hidden;
 
+    .giz-animate-spinner {
+        height: 6.4rem;
+    }
+
     .giz-alert {
         &__body {
             &__text {
                 word-wrap: normal;
-                text-wrap: wrap;
+                text-wrap: wrap; //TODO: AAA
             }
+
+            .giz-button {
+                padding: 0.5rem 1.7rem;
+            }
+        }
+    }
+
+    [#{$client-theme-comp-attr}] & {
+        .giz-input-validation-label {
+            min-height: unset;
         }
     }
 
@@ -25,5 +39,15 @@
         .giz-input-root--medium {
             height: 8rem;
         }
+    }
+
+    &-note-counter {
+        color: rgba(255, 255, 255, 0.35);
+        //Font
+        font-family: Noto Sans;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 22px; /* 157.143% */
     }
 }
