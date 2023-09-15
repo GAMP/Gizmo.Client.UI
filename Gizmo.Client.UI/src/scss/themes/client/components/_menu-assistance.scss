@@ -12,19 +12,28 @@
     max-height: 100%;
     overflow: hidden;
 
-    .giz-animate-spinner {
+    & > .giz-animate-spinner {
         height: 6.4rem;
     }
 
     .giz-alert {
         &__body {
             &__text {
-                word-wrap: normal;
-                text-wrap: wrap; //TODO: AAA
+                white-space: normal;
             }
 
             .giz-button {
                 padding: 0.5rem 1.7rem;
+
+                & .giz-animate-spinner {
+                    position: absolute;
+                    left: 50%;
+                    transform: translateX(-50%);
+
+                    svg {
+                        color: #0091E6;
+                    }
+                }
             }
         }
     }
