@@ -40,15 +40,16 @@
                 </div>
                 <div>
                     <TextInput IsDisabled="@(ViewState.IsLoading)"
-                                UpdateOnInput="true"
-                                Value="@ViewState.Note"
-                                ValueChanged="@((string value) => AssistanceRequestViewService.SetNote(value))"
-                                ValueExpression="@(() => ViewState.Note)"
-                                IsFullWidth="true"
-                                IsMultiLine="true"
-                                MaxLength="@ViewState.NoteLimit"
-                                Label="@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_NOTE_LABEL")"
-                                Placeholder="@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_NOTE_PLACEHOLDER")" />
+                               UpdateOnInput="true"
+                               Value="@ViewState.Note"
+                               ValueChanged="@((string value) => AssistanceRequestViewService.SetNote(value))"
+                               ValueExpression="@(() => ViewState.Note)"
+                               IsFullWidth="true"
+                               IsMultiLine="true"
+                               MaxLength="@ViewState.NoteLimit"
+                               Label="@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_NOTE_LABEL")"
+                               Placeholder="@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_NOTE_PLACEHOLDER")"
+                               InputClass="giz-scrollbar--v" />
                     <div class="giz-menu-assistance-note-counter">@($"{ViewState.Note?.Length ?? 0}/{ViewState.NoteLimit}")</div>
                 </div>
                 <div>
