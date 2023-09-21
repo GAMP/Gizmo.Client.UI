@@ -41,8 +41,6 @@ namespace Gizmo.Client.UI.Components
 
         private AppExeViewState _previousExecutable;
 
-        protected bool _shouldRender;
-
         #endregion
 
         [Inject]
@@ -81,8 +79,6 @@ namespace Gizmo.Client.UI.Components
         {
             _isOpen = true;
 
-            _shouldRender = true;
-
             return InvokeAsync(StateHasChanged);
         }
 
@@ -95,8 +91,6 @@ namespace Gizmo.Client.UI.Components
                 if (_isOpen)
                 {
                     _isOpen = false;
-
-                    _shouldRender = true;
 
                     return InvokeAsync(StateHasChanged);
                 }
@@ -121,7 +115,7 @@ namespace Gizmo.Client.UI.Components
                 if (Executable != null)
                 {
                     //Add handler
-                    this.SubscribeChange(Executable); //TODO: A WE NEED TO UPDATE _shouldRender FROM SubscribeChange.
+                    this.SubscribeChange(Executable);
                 }
             }
 
@@ -138,26 +132,6 @@ namespace Gizmo.Client.UI.Components
             }
 
             base.Dispose();
-        }
-
-        protected override bool ShouldRender()
-        {
-            return true; //TODO: A _shouldRender
-        }
-
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (!firstRender)
-            {
-                _shouldRender = false;
-                //await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
-            }
-            else
-            {
-                //await InvokeVoidAsync("writeLine", $"Render {this.ToString()}");
-            }
-
-            await base.OnAfterRenderAsync(firstRender);
         }
 
         #endregion

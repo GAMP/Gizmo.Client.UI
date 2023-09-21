@@ -9,7 +9,6 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class ClientTooltip : CustomDOMComponentBase
     {
-        //TODO: A CATCH WINDOW RESIZE AND SCROLL EVENTS.
         const int OPEN_DEFAULT_DELAY = 500;
         const int CLOSE_DEFAULT_DELAY = 200;
 
