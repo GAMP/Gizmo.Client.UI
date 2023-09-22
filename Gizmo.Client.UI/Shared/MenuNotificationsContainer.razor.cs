@@ -11,13 +11,7 @@ using System.Threading.Tasks;
 namespace Gizmo.Client.UI.Shared
 {
     public partial class MenuNotificationsContainer : CustomDOMComponentBase, IAsyncDisposable
-    {        
-        public MenuNotificationsContainer()
-        {
-        }
-
-        private bool _isOpen;
-
+    {
         #region PROPERTIES
 
         [Inject]
@@ -29,31 +23,18 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         NotificationsHostViewState ViewState { get; set; }
 
-        [Parameter]
-        public bool IsOpen
-        {
-            get
-            {
-                return _isOpen;
-            }
-            set
-            {
-                if (_isOpen == value)
-                    return;
+        [Inject]
+        UserMenuViewState UserMenuViewState { get; set; }
 
-                _isOpen = value;
-                _ = IsOpenChanged.InvokeAsync(_isOpen);
-            }
-        }
-
-        [Parameter]
-        public EventCallback<bool> IsOpenChanged { get; set; }
+        [Inject]
+        UserMenuViewService UserMenuViewService { get; set; }
 
         #endregion
 
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
+            this.SubscribeChange(UserMenuViewState);
 
             base.OnInitialized();
         }
@@ -72,6 +53,7 @@ namespace Gizmo.Client.UI.Shared
 
         public override void Dispose()
         {
+            this.UnsubscribeChange(UserMenuViewState);
             this.UnsubscribeChange(ViewState);
 
             ClosePopupEventInterop?.Dispose();
@@ -85,7 +67,7 @@ namespace Gizmo.Client.UI.Shared
         {
             if (args == Id)
             {
-                IsOpen = false;
+                UserMenuViewService.CloseNotifications();
             }
 
             return Task.CompletedTask;
@@ -93,7 +75,7 @@ namespace Gizmo.Client.UI.Shared
 
         private void AcknowledgeAll()
         {
-            IsOpen = false;
+            UserMenuViewService.CloseNotifications();
             NotificationsService.AcknowledgeAll();
         }
 

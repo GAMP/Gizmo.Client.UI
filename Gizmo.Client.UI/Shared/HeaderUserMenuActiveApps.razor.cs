@@ -1,4 +1,5 @@
-﻿using Gizmo.Web.Components;
+﻿using Gizmo.Client.UI.View.States;
+using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -6,29 +7,24 @@ namespace Gizmo.Client.UI
 {
     public partial class HeaderUserMenuActiveApps : CustomDOMComponentBase
     {
-        private bool _isOpen;
-
-        [Parameter]
-        public bool IsOpen
-        {
-            get
-            {
-                return _isOpen;
-            }
-            set
-            {
-                if (_isOpen == value)
-                    return;
-
-                _isOpen = value;
-                _ = IsOpenChanged.InvokeAsync(_isOpen);
-            }
-        }
-
-        [Parameter]
-        public EventCallback<bool> IsOpenChanged { get; set; }
+        [Inject]
+        public UserMenuViewState UserMenuViewState { get; set; }
 
         [Parameter]
         public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+        protected override void OnInitialized()
+        {
+            this.SubscribeChange(UserMenuViewState);
+
+            base.OnInitialized();
+        }
+
+        public override void Dispose()
+        {
+            this.UnsubscribeChange(UserMenuViewState);
+
+            base.Dispose();
+        }
     }
 }

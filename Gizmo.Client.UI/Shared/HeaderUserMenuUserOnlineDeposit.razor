@@ -2,9 +2,9 @@
 @inherits CustomDOMComponentBase
 @using System.Globalization
 
-<div class="giz-header__user-menu-item giz-user-online-deposit-dropdown @(IsOpen ? "open" : "")">
+<div class="giz-header__user-menu-item giz-user-online-deposit-dropdown @(UserMenuViewState.UserOnlineDepositIsVisible ? "open" : "")">
     <button class="user-menu-item-button--box" @onclick="(args) => OnClick.InvokeAsync(args)" @onclick:stopPropagation="true">
         <Icon SVGIcon="Icons.Deposit_Client" />
     </button>
-    <MenuUserOnlineDepositContainer @bind-IsOpen="IsOpen" />
+    <MenuUserOnlineDepositContainer />
 </div>

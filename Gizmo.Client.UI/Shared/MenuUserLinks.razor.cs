@@ -10,12 +10,6 @@ namespace Gizmo.Client.UI.Shared
 {
     public partial class MenuUserLinks : CustomDOMComponentBase
     {
-        public MenuUserLinks()
-        {
-        }
-
-        private bool _isOpen;
-
         protected bool _shouldRender;
 
         #region PROPERTIES
@@ -35,25 +29,11 @@ namespace Gizmo.Client.UI.Shared
         [Inject()]
         UserOnlineDepositViewService UserOnlineDepositViewStateService { get; set; }
 
-        [Parameter]
-        public bool IsOpen
-        {
-            get
-            {
-                return _isOpen;
-            }
-            set
-            {
-                if (_isOpen == value)
-                    return;
+        [Inject]
+        UserMenuViewState UserMenuViewState { get; set; }
 
-                _isOpen = value;
-                _ = IsOpenChanged.InvokeAsync(_isOpen);
-            }
-        }
-
-        [Parameter]
-        public EventCallback<bool> IsOpenChanged { get; set; }
+        [Inject]
+        UserMenuViewService UserMenuViewService { get; set; }
 
         #endregion
 
@@ -61,7 +41,7 @@ namespace Gizmo.Client.UI.Shared
         {
             _shouldRender = true;
 
-            IsOpen = false;
+            UserMenuViewService.CloseUserLinks();
 
             return UserLockService.LockAsync();
         }
@@ -70,7 +50,7 @@ namespace Gizmo.Client.UI.Shared
         {
             _shouldRender = true;
 
-            IsOpen = false;
+            UserMenuViewService.CloseUserLinks();
 
             return UserService.LogoutWithConfirmationAsync();
         }
@@ -79,7 +59,7 @@ namespace Gizmo.Client.UI.Shared
         {
             _shouldRender = true;
 
-            IsOpen = false;
+            UserMenuViewService.CloseUserLinks();
         }
 
         #region OVERRIDES
@@ -87,20 +67,6 @@ namespace Gizmo.Client.UI.Shared
         protected override bool ShouldRender()
         {
             return _shouldRender;
-        }
-
-        public override async Task SetParametersAsync(ParameterView parameters)
-        {
-            if (parameters.TryGetValue<bool>(nameof(IsOpen), out var newIsOpen))
-            {
-                var isOpenChanged = IsOpen != newIsOpen;
-                if (isOpenChanged)
-                {
-                    _shouldRender = true;
-                }
-            }
-
-            await base.SetParametersAsync(parameters);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -130,7 +96,7 @@ namespace Gizmo.Client.UI.Shared
             {
                 _shouldRender = true;
 
-                IsOpen = false;
+                UserMenuViewService.CloseUserLinks();
             }
 
             return Task.CompletedTask;
@@ -139,6 +105,7 @@ namespace Gizmo.Client.UI.Shared
         protected override void OnInitialized()
         {
             ViewState.OnChange += ViewState_OnChange;
+            UserMenuViewState.OnChange += ViewState_OnChange;
 
             base.OnInitialized();
         }
@@ -151,6 +118,7 @@ namespace Gizmo.Client.UI.Shared
 
         public override void Dispose()
         {
+            UserMenuViewState.OnChange -= ViewState_OnChange;
             ViewState.OnChange -= ViewState_OnChange;
 
             ClosePopupEventInterop?.Dispose();

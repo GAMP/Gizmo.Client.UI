@@ -11,8 +11,6 @@ namespace Gizmo.Client.UI
 {
     public partial class MenuUserOnlineDepositContainer : CustomDOMComponentBase
     {
-        private bool _isOpen;
-
         [Inject]
         IJSRuntime JSRuntime { get; set; }
 
@@ -25,25 +23,11 @@ namespace Gizmo.Client.UI
         [Inject]
         UserOnlineDepositViewState ViewState { get; set; }
 
-        [Parameter]
-        public bool IsOpen
-        {
-            get
-            {
-                return _isOpen;
-            }
-            set
-            {
-                if (_isOpen == value)
-                    return;
+        [Inject]
+        UserMenuViewState UserMenuViewState { get; set; }
 
-                _isOpen = value;
-                _ = IsOpenChanged.InvokeAsync(_isOpen);
-            }
-        }
-
-        [Parameter]
-        public EventCallback<bool> IsOpenChanged { get; set; }
+        [Inject]
+        UserMenuViewService UserMenuViewService { get; set; }
 
         [Parameter]
         public EventCallback<MouseEventArgs> OnClick { get; set; }
@@ -57,6 +41,7 @@ namespace Gizmo.Client.UI
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
+            this.SubscribeChange(UserMenuViewState);
 
             base.OnInitialized();
         }
@@ -75,6 +60,7 @@ namespace Gizmo.Client.UI
 
         public override void Dispose()
         {
+            this.UnsubscribeChange(UserMenuViewState);
             this.UnsubscribeChange(ViewState);
 
             ClosePopupEventInterop?.Dispose();
@@ -88,7 +74,7 @@ namespace Gizmo.Client.UI
         {
             if (args == Id)
             {
-                IsOpen = false;
+                UserMenuViewService.CloseUserOnlineDeposit();
             }
 
             return Task.CompletedTask;

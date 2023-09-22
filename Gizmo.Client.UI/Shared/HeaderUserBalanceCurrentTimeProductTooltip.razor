@@ -83,7 +83,7 @@
                         {
                             <Button Variant="@(ViewState.DisableShop ? ButtonVariants.Fill : ButtonVariants.Outline)"
                                     Color="@(ViewState.DisableShop ? ButtonColors.Accent : ButtonColors.Primary)"
-                                    Text="@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TOP_UP")" />
+                                    Text="@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TOP_UP")" @onclick="OpenUserOnlineDeposit" StopPropagation="true" />
                         }
                         @if (!ViewState.DisableShop)
                         {
@@ -99,18 +99,54 @@
                 {
                     @if (TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).First().InCredit)
                     {
-                        <div class="giz-user-balance-tooltip__message">To continue playing, close your credit bill and buy a time pack or/and top up your balance</div>
+                        @if (!ViewState.DisableShop && !ViewState.DisableOnlineDeposits)
+                        {
+                            <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TO_CONTINUE_CLOSE_BALANCE_AND_BUY_TIME_OR_TOP_UP")</div>
+                        }
+                        else if (ViewState.DisableShop && ViewState.DisableOnlineDeposits)
+                        {
+
+                        }
+                        else
+                        {
+                            if (!ViewState.DisableShop)
+                            {
+                                <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TO_CONTINUE_CLOSE_BALANCE_AND_BUY_TIME")</div>
+                            }
+                            else
+                            {
+                                <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TO_CONTINUE_CLOSE_BALANCE_AND_TOP_UP")</div>
+                            }
+                        }
                     }
                     else
                     {
-                        <div class="giz-user-balance-tooltip__message">To continue playing buy a time pack or/and top up your balance</div>
+                        @if (!ViewState.DisableShop && !ViewState.DisableOnlineDeposits)
+                        {
+                            <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TO_CONTINUE_BUY_TIME_OR_TOP_UP")</div>
+                        }
+                        else if (ViewState.DisableShop && ViewState.DisableOnlineDeposits)
+                        {
+                            
+                        }
+                        else
+                        {
+                            if (!ViewState.DisableShop)
+                            {
+                                <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TO_CONTINUE_BUY_TIME")</div>
+                            }
+                            else
+                            {
+                                <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TO_CONTINUE_TOP_UP")</div>
+                            }
+                        }
                     }
                     <div class="@(!ViewState.DisableOnlineDeposits && !ViewState.DisableShop ? "giz-user-balance-tooltip__actions" : "giz-user-balance-tooltip__action")">
                         @if (!ViewState.DisableOnlineDeposits)
                         {
                             <Button Variant="@(ViewState.DisableShop ? ButtonVariants.Fill : ButtonVariants.Outline)"
                                     Color="@(ViewState.DisableShop ? ButtonColors.Accent : ButtonColors.Primary)"
-                                    Text="@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TOP_UP")" />
+                                    Text="@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TOP_UP")" @onclick="OpenUserOnlineDeposit" StopPropagation="true" />
                         }
                         @if (!ViewState.DisableShop)
                         {

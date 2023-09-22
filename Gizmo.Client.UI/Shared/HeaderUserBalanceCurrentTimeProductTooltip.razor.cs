@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -24,6 +24,9 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         UserBalanceTooltipViewState ViewState { get; set; }
 
+        [Inject]
+        UserMenuViewService UserMenuViewService { get; set; }
+
         public void OpenDetails()
         {
             NavigationService.NavigateTo(ClientRoutes.UserProductsRoute);
@@ -32,6 +35,11 @@ namespace Gizmo.Client.UI.Components
         public void OpenShop()
         {
             NavigationService.NavigateTo(ClientRoutes.ShopRoute);
+        }
+        
+        private void OpenUserOnlineDeposit()
+        {
+            UserMenuViewService.OpenUserOnlineDeposit();
         }
 
         #region OVERRIDE

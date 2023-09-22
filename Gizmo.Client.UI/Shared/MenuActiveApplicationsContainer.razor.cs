@@ -11,12 +11,6 @@ namespace Gizmo.Client.UI.Shared
 {
     public partial class MenuActiveApplicationsContainer : CustomDOMComponentBase, IAsyncDisposable
     {
-        public MenuActiveApplicationsContainer()
-        {
-        }
-
-        private bool _isOpen;
-
         #region PROPERTIES
 
         [Inject]
@@ -28,25 +22,11 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         ActiveApplicationsViewState ViewState { get; set; }
 
-        [Parameter]
-        public bool IsOpen
-        {
-            get
-            {
-                return _isOpen;
-            }
-            set
-            {
-                if (_isOpen == value)
-                    return;
+        [Inject]
+        UserMenuViewState UserMenuViewState { get; set; }
 
-                _isOpen = value;
-                _ = IsOpenChanged.InvokeAsync(_isOpen);
-            }
-        }
-
-        [Parameter]
-        public EventCallback<bool> IsOpenChanged { get; set; }
+        [Inject]
+        UserMenuViewService UserMenuViewService { get; set; }
 
         #endregion
 
@@ -55,6 +35,7 @@ namespace Gizmo.Client.UI.Shared
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
+            this.SubscribeChange(UserMenuViewState);
 
             base.OnInitialized();
         }
@@ -73,6 +54,7 @@ namespace Gizmo.Client.UI.Shared
 
         public override void Dispose()
         {
+            this.UnsubscribeChange(UserMenuViewState);
             this.UnsubscribeChange(ViewState);
 
             ClosePopupEventInterop?.Dispose();
@@ -88,7 +70,7 @@ namespace Gizmo.Client.UI.Shared
         {
             if (args == Id)
             {
-                IsOpen = false;
+                UserMenuViewService.CloseActiveApps();
             }
 
             return Task.CompletedTask;
