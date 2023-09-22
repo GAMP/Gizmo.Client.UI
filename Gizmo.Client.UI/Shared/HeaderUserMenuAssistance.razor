@@ -1,9 +1,9 @@
 ﻿@namespace Gizmo.Client.UI
 @inherits CustomDOMComponentBase
 
-<div class="giz-header__user-menu-item giz-assistance-dropdown @(IsOpen ? "open" : "")">
+<div class="giz-header__user-menu-item giz-assistance-dropdown @(UserMenuViewState.AssistanceRequestsIsVisible ? "open" : "")">
     <button class="user-menu-item-button--box" @onclick="(args) => OnClick.InvokeAsync(args)" @onclick:stopPropagation="true">
         <Icon SVGIcon="Icons.Assistance_Client" />
     </button>
-    <MenuAssistanceContainer @bind-IsOpen="IsOpen" />
+    <MenuAssistanceContainer />
 </div>

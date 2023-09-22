@@ -11,10 +11,6 @@ namespace Gizmo.Client.UI.Shared
 {
     public partial class MenuAssistanceContainer : CustomDOMComponentBase, IAsyncDisposable
     {
-        private bool _isOpen;
-
-        protected bool _shouldRender;
-
         #region PROPERTIES
 
         [Inject]
@@ -26,25 +22,11 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         AssistanceRequesetViewState ViewState { get; set; }
 
-        [Parameter]
-        public bool IsOpen
-        {
-            get
-            {
-                return _isOpen;
-            }
-            set
-            {
-                if (_isOpen == value)
-                    return;
+        [Inject]
+        UserMenuViewState UserMenuViewState { get; set; }
 
-                _isOpen = value;
-                _ = IsOpenChanged.InvokeAsync(_isOpen);
-            }
-        }
-
-        [Parameter]
-        public EventCallback<bool> IsOpenChanged { get; set; }
+        [Inject]
+        UserMenuViewService UserMenuViewService { get; set; }
 
         #endregion
 
@@ -55,40 +37,17 @@ namespace Gizmo.Client.UI.Shared
 
         protected override void OnInitialized()
         {
-            this.SubscribeChange(ViewState); //TODO: A WE NEED TO UPDATE _shouldRender FROM SubscribeChange.
+            this.SubscribeChange(ViewState);
+            this.SubscribeChange(UserMenuViewState);
 
             base.OnInitialized();
-        }
-
-        protected override bool ShouldRender()
-        {
-            return true; //TODO: A _shouldRender
-        }
-
-        public override async Task SetParametersAsync(ParameterView parameters)
-        {
-            if (parameters.TryGetValue<bool>(nameof(IsOpen), out var newIsOpen))
-            {
-                var isOpenChanged = IsOpen != newIsOpen;
-                if (isOpenChanged)
-                {
-                    _shouldRender = true;
-                }
-            }
-
-            await base.SetParametersAsync(parameters);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            if (!firstRender)
-            {
-                _shouldRender = false;
-                //await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
-            }
-            else
+            if (firstRender)
             {
                 await JsRuntime.InvokeVoidAsync("registerPopup", Ref);
                 ClosePopupEventInterop = new ClosePopupEventInterop(JsRuntime);
@@ -98,6 +57,7 @@ namespace Gizmo.Client.UI.Shared
 
         public override void Dispose()
         {
+            this.UnsubscribeChange(UserMenuViewState);
             this.UnsubscribeChange(ViewState);
 
             ClosePopupEventInterop?.Dispose();
@@ -111,9 +71,7 @@ namespace Gizmo.Client.UI.Shared
         {
             if (args == Id)
             {
-                _shouldRender = true;
-
-                IsOpen = false;
+                UserMenuViewService.CloseAssistanceRequests();
             }
 
             return Task.CompletedTask;
