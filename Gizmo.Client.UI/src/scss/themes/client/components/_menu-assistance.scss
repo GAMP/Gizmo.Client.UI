@@ -1,0 +1,62 @@
+//=============== Menu Assistance ================//
+
+.giz-menu-assistance {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+    background-color: #22272B;
+    width: 46rem;
+    padding: 2.4rem;
+    border-radius: 0 0 0.8rem 0.8rem;
+    box-shadow: 0px 32px 64px rgba(0, 0, 0, 0.37), 0px 2px 21px rgba(0, 0, 0, 0.37);
+    max-height: 100%;
+    overflow: hidden;
+
+    & > .giz-animate-spinner {
+        height: 6.4rem;
+    }
+
+    .giz-alert {
+        &__body {
+            &__text {
+                white-space: normal;
+            }
+
+            .giz-button {
+                padding: 0.5rem 1.7rem;
+
+                & .giz-animate-spinner {
+                    position: absolute;
+                    left: 50%;
+                    transform: translateX(-50%);
+
+                    svg {
+                        color: #0091E6;
+                    }
+                }
+            }
+        }
+    }
+
+    [#{$client-theme-comp-attr}] & {
+        .giz-input-validation-label {
+            min-height: unset;
+        }
+    }
+
+    .giz-text-input {
+        .giz-input-root--medium {
+            height: 8rem;
+        }
+    }
+
+    &-note-counter {
+        color: rgba(255, 255, 255, 0.35);
+        //Font
+        font-family: Noto Sans;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 22px; /* 157.143% */
+    }
+}
