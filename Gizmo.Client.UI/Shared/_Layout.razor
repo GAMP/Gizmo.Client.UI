@@ -1,23 +1,16 @@
 ﻿@inherits LayoutComponentBase
 @using Microsoft.Extensions.Options
 
-@if (!string.IsNullOrEmpty(ClientUIOptions.Value.StyleSheet))
+@if (!string.IsNullOrEmpty(ClientUIOptions.CurrentValue.StyleSheet))
 {
     <HeadContent>
-        <link href="https://static/@ClientUIOptions.Value.StyleSheet" rel="stylesheet" />
+        <link href="https://static/@ClientUIOptions.CurrentValue.StyleSheet" rel="stylesheet" />
     </HeadContent>
 }
 
 <main @onclick="OnMainClick" client-theme="true">
     <div class="giz-background">
-        @if (!string.IsNullOrWhiteSpace(ClientUIOptions.Value.Background))
-        {
-            <img src="https://static/@(Environment.ExpandEnvironmentVariables(ClientUIOptions.Value.Background))" />
-        }
-        else
-        {
-            <img src="_content/Gizmo.Client.UI/img/background.jpg" />
-        }
+        <img src="@WallpaperViewState.Wallpaper" alt='loading' />
     </div>
     <div class="giz-container">
         <div class="giz-app__header">

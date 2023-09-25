@@ -10,10 +10,13 @@ namespace Gizmo.Client.UI.Shared
     public partial class _Layout : LayoutComponentBase
     {
         [Inject]
-        IOptions<ClientInterfaceOptions> ClientUIOptions { get; set; }
+        IOptionsMonitor<ClientInterfaceOptions> ClientUIOptions { get; set; }
 
         [Inject]
         IJSRuntime JsRuntime { get; set; }
+
+        [Inject]
+        WallpaperViewState WallpaperViewState { get; set; }
 
         [Inject]
         HostOutOfOrderViewState HostOutOfOrderViewState { get; set; }
