@@ -1,14 +1,8 @@
-﻿using Gizmo.Client.UI.View.Services;
-using Gizmo.Web.Api.Models;
-using Gizmo.Web.Components;
+﻿using Gizmo.Web.Components;
 using Gizmo.Web.Components.Extensions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
@@ -23,6 +17,9 @@ namespace Gizmo.Client.UI.Components
 
         [Parameter]
         public int Minimum { get; set; } = 0;
+
+        [Parameter]
+        public int Maximum { get; set; } = int.MaxValue;
 
         [Parameter]
         public EventCallback<MouseEventArgs> OnAddQuantityButtonClick { get; set; }

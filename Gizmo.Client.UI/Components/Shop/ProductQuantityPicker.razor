@@ -17,6 +17,6 @@ else
     }
     else
     {
-        <QuantityPicker Size="@Size" Quantity="@_productItemViewState.Quantity" OnAddQuantityButtonClick="OnAddQuantityButtonClickHandlerAsync" OnRemoveQuantityButtonClick="OnRemoveQuantityButtonClickHandler" OnClick="@((args) => OnClick.InvokeAsync(args))" />
+        <QuantityPicker Maximum="@(_userProductViewState.ProductType == ProductType.ProductTime ? 1 : int.MaxValue)" Size="@Size" Quantity="@_productItemViewState.Quantity" OnAddQuantityButtonClick="OnAddQuantityButtonClickHandlerAsync" OnRemoveQuantityButtonClick="OnRemoveQuantityButtonClickHandler" OnClick="@((args) => OnClick.InvokeAsync(args))" />
     }
 }

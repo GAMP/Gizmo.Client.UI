@@ -29,6 +29,6 @@
         <IconButton Variant="ButtonVariants.Text" Size="ButtonSizes.Small" SVGIcon="Icons.Trash3_Client" @onclick="@(() => UserCartService.DeleteUserCartProductAsync(ProductItemViewState.ProductId))" />
     </div>
     <div class="giz-order-item__quantity">
-        <QuantityPicker Minimum="1" Size="ButtonSizes.Small" Quantity="@ProductItemViewState.Quantity" OnAddQuantityButtonClick="OnAddQuantityButtonClickHandlerAsync" OnRemoveQuantityButtonClick="OnRemoveQuantityButtonClickHandler" />
+        <QuantityPicker Minimum="1" Maximum="@(_product.ProductType == ProductType.ProductTime ? 1 : int.MaxValue)" Size="ButtonSizes.Small" Quantity="@ProductItemViewState.Quantity" OnAddQuantityButtonClick="OnAddQuantityButtonClickHandlerAsync" OnRemoveQuantityButtonClick="OnRemoveQuantityButtonClickHandler" />
     </div>
 </div>

@@ -4,5 +4,5 @@
 <div class="@Class @ClassName" @onclick="OnClickHandler">
     <Button IsDisabled="@(Quantity == Minimum)" Variant="ButtonVariants.Text" Size="@(Size == ButtonSizes.Small ? ButtonSizes.ExtraSmall : ButtonSizes.Small)" Text="-" Class="giz-decrease-btn" @onclick="RemoveQuantity" />
     <span>@Quantity</span>
-    <Button Variant="ButtonVariants.Text" Size="@(Size == ButtonSizes.Small ? ButtonSizes.ExtraSmall : ButtonSizes.Small)" Text="+" Class="giz-increase-btn" @onclick="AddQuantity" />
+    <Button IsDisabled="@(Quantity == Maximum)" Variant="ButtonVariants.Text" Size="@(Size == ButtonSizes.Small ? ButtonSizes.ExtraSmall : ButtonSizes.Small)" Text="+" Class="giz-increase-btn" @onclick="AddQuantity" />
 </div>
