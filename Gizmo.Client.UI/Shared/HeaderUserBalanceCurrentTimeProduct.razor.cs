@@ -104,6 +104,22 @@ namespace Gizmo.Client.UI
             return Task.CompletedTask;
         }
 
+        private Task OnClickActionHandler()
+        {
+            _openDeferredAction.Cancel();
+
+            if (_isOpen)
+            {
+                _isOpen = false;
+
+                _shouldRender = true;
+
+                return InvokeAsync(StateHasChanged);
+            }
+
+            return Task.CompletedTask;
+        }
+
         #region OVERRIDE
 
         protected override Task OnInitializedAsync()

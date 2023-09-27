@@ -5,6 +5,7 @@ using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -31,18 +32,27 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         UserMenuViewService UserMenuViewService { get; set; }
 
-        public void OpenDetails()
+        [Parameter]
+        public EventCallback<MouseEventArgs> OnClickAction { get; set; }
+
+        public async Task OpenDetails(MouseEventArgs args)
         {
+            await OnClickAction.InvokeAsync(args);
+
             NavigationService.NavigateTo(ClientRoutes.UserProductsRoute);
         }
 
-        public void OpenShop()
+        public async Task OpenShop(MouseEventArgs args)
         {
+            await OnClickAction.InvokeAsync(args);
+
             NavigationService.NavigateTo(ClientRoutes.ShopRoute);
         }
         
-        private async Task OpenUserOnlineDeposit()
+        private async Task OpenUserOnlineDeposit(MouseEventArgs args)
         {
+            await OnClickAction.InvokeAsync(args);
+
             //Open Menu
             //UserMenuViewService.OpenUserOnlineDeposit();
 
