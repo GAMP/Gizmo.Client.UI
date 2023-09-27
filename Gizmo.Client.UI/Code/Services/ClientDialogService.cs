@@ -105,5 +105,14 @@ namespace Gizmo.Client.UI.Services
                 CloseOnClick = false
             }, default, cancellationToken);
         }
+
+        public Task<AddDialogResult<EmptyComponentResult>> ShowUserOnlineDepositsDialogAsync(CancellationToken cancellationToken = default)
+        {
+            return ShowDialogAsync<UserOnlineDepositsDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()
+            {
+                Closable = true,
+                CloseOnClick = true
+            }, default, cancellationToken);
+        }
     }
 }

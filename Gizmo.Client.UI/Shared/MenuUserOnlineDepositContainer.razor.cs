@@ -1,10 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
-using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 
 namespace Gizmo.Client.UI
@@ -15,35 +13,26 @@ namespace Gizmo.Client.UI
         IJSRuntime JSRuntime { get; set; }
 
         [Inject]
-        ILocalizationService LocalizationService { get; set; }
-
-        [Inject]
-        UserOnlineDepositViewService UserOnlineDepositViewStateService { get; set; }
-
-        [Inject]
-        UserOnlineDepositViewState ViewState { get; set; }
+        UserMenuViewService UserMenuViewService { get; set; }
 
         [Inject]
         UserMenuViewState UserMenuViewState { get; set; }
 
         [Inject]
-        UserMenuViewService UserMenuViewService { get; set; }
+        UserOnlineDepositViewState ViewState { get; set; }
 
-        [Parameter]
-        public EventCallback<MouseEventArgs> OnClick { get; set; }
+        [Inject]
+        UserOnlineDepositViewService UserOnlineDepositViewStateService { get; set; }
 
-        private async Task PayFromPC()
+        private async Task OnClickPayFromPCHandler()
         {
             if (ViewState.PaymentUrl is not null)
                 await JSRuntime.InvokeVoidAsync("open", ViewState.PaymentUrl);
         }
 
-        protected override void OnInitialized()
+        private void OnClickClearHandler()
         {
-            this.SubscribeChange(ViewState);
-            this.SubscribeChange(UserMenuViewState);
-
-            base.OnInitialized();
+            UserOnlineDepositViewStateService.Clear();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -56,6 +45,14 @@ namespace Gizmo.Client.UI
                 ClosePopupEventInterop = new ClosePopupEventInterop(JsRuntime);
                 await ClosePopupEventInterop.SetupClosePopupEventCallback(args => ClosePopupHandler(args));
             }
+        }
+
+        protected override void OnInitialized()
+        {
+            this.SubscribeChange(ViewState);
+            this.SubscribeChange(UserMenuViewState);
+
+            base.OnInitialized();
         }
 
         public override void Dispose()

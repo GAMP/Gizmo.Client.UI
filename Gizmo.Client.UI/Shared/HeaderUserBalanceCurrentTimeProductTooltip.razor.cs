@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -9,6 +10,9 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class HeaderUserBalanceCurrentTimeProductTooltip : CustomDOMComponentBase
     {
+        [Inject]
+        IClientDialogService DialogService { get; set; }
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
@@ -37,9 +41,15 @@ namespace Gizmo.Client.UI.Components
             NavigationService.NavigateTo(ClientRoutes.ShopRoute);
         }
         
-        private void OpenUserOnlineDeposit()
+        private async Task OpenUserOnlineDeposit()
         {
-            UserMenuViewService.OpenUserOnlineDeposit();
+            //Open Menu
+            //UserMenuViewService.OpenUserOnlineDeposit();
+
+            //Open Dialog
+            var dialog = await DialogService.ShowUserOnlineDepositsDialogAsync();
+            if (dialog.Result == AddComponentResultCode.Opened)
+                _ = await dialog.WaitForResultAsync();
         }
 
         #region OVERRIDE

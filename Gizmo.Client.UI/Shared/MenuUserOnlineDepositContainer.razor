@@ -6,76 +6,7 @@
 <div class="giz-dropdown-menu @(UserMenuViewState.UserOnlineDepositIsVisible ? "open" : "")"
      id="@Id"
      @ref="@Ref">
-    <div class="giz-dropdown-menu__content giz-user-online-deposit">
-        @if (ViewState.PageIndex == 0)
-        {
-            <div class="giz-user-online-deposit__body">
-                <div>@LocalizationService.GetString("GIZ_ONLINE_DEPOSIT_QUICK_SELECT")</div>
-                <div>
-                    <ButtonGroup>
-                        @foreach (var preset in ViewState.Presets)
-                        {
-                            <Button Size="ButtonSizes.Large" Name="@preset.ToString()" IsSelected="@(@preset == ViewState.Amount)" @onclick="@(() => UserOnlineDepositViewStateService.SelectPreset(@preset))">@preset.ToString("C", CultureInfo.CurrentCulture)</Button>
-                        }
-                    </ButtonGroup>
-                </div>
-                @if (ViewState.AllowCustomValue)
-                {
-                    <EditForm EditContext="@UserOnlineDepositViewStateService.EditContext">
-                        <div>
-                            <TextInput IsTransparent="true"
-                                       Size="InputSizes.Small"
-                                       IsFullWidth="true"
-                                       UpdateOnInput="true"
-                                       TValue="decimal?"
-                                       Value="@ViewState.Amount"
-                                       ValueChanged="@((value) => UserOnlineDepositViewStateService.SetAmount(value))"
-                                       ValueExpression="@(() => ViewState.Amount)"
-                                       Label="@LocalizationService.GetString("GIZ_ONLINE_DEPOSIT_OR_ENTER_AMOUNT")" />
-                        </div>
-                    </EditForm>
-                }
-                <div class="giz-user-online-deposit__summary"><span class="giz-user-online-deposit__summary__amount">@((ViewState.Amount ?? 0).ToString("C", CultureInfo.CurrentCulture))</span> @LocalizationService.GetString("GIZ_ONLINE_DEPOSIT_WILL_BE_CREDITED")</div>
-            </div>
-            <div class="giz-user-online-deposit__footer">
-                <Button IsDisabled="@(ViewState.IsValid == false || ViewState.IsLoading)"
-                        Color="ButtonColors.Accent"
-                        Size="ButtonSizes.ExtraLarge"
-                        IsFullWidth="true"
-                        @onclick="@(() => UserOnlineDepositViewStateService.SubmitAsync())">
-                    <ChildContent>
-                        @if (ViewState.IsLoading)
-                        {
-                            <Spinner />
-                        }
-                        else
-                        {
-                            <div>@LocalizationService.GetString("GIZ_ONLINE_DEPOSIT_PLACE_NEXT")</div>
-                        }
-                    </ChildContent>
-                </Button>
-            </div>
-        }
-        else
-        {
-            <div class="giz-user-online-deposit__body">
-                <div class="giz-user-online-deposit__submitted__summary">@LocalizationService.GetString("GIZ_ONLINE_DEPOSIT_TO_BE_PAID") <span class="giz-user-online-deposit__submitted__summary__amount">@((ViewState.Amount ?? 0).ToString("C", CultureInfo.CurrentCulture))</span></div>
-                <div class="giz-user-online-deposit__submitted__qr">
-                    <div class="giz-user-online-deposit__submitted__qr__label">@LocalizationService.GetString("GIZ_ONLINE_DEPOSIT_QR_CODE")</div>
-                    <div class="giz-user-online-deposit__submitted__qr__image">
-                        @((MarkupString)ViewState.QrImage)
-                    </div>
-                </div>
-            </div>
-            <div class="giz-user-online-deposit__footer">
-                <div class="giz-user-online-deposit__submitted__action">
-                    <div class="giz-user-online-deposit__submitted__action__label">@LocalizationService.GetString("GIZ_ONLINE_DEPOSIT_OR")</div>
-                    <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="PayFromPC">@LocalizationService.GetString("GIZ_ONLINE_DEPOSIT_PAY_FROM_PC")</Button>
-                </div>
-                <div class="giz-user-online-deposit-clear-button">
-                    <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@(() => UserOnlineDepositViewStateService.Clear())">@LocalizationService.GetString("GIZ_ONLINE_DEPOSIT_CLEAR")</Button>
-                </div>
-            </div>
-        }
+    <div class="giz-dropdown-menu__content giz-user-online-deposit-menu">
+        <UserOnlineDeposits OnClickPayFromPC="@OnClickPayFromPCHandler" OnClickClear="@OnClickClearHandler" />
     </div>
 </div>

@@ -1,0 +1,17 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<HostedDialog>
+    <div class="giz-client-dialog giz-user-online-deposit-dialog">
+        <div class="giz-client-dialog__header">
+            <div class="giz-client-dialog__header__title">@LocalizationService.GetString("GIZ_ONLINE_DEPOSIT_TITLE")</div>
+            @if (DisplayOptions.Closable)
+            {
+                <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => DismissCallback.InvokeAsync()" />
+            }
+        </div>
+        <div class="giz-user-online-deposit-dialog__content">
+            <UserOnlineDeposits OnClickPayFromPC="@OnClickPayFromPCHandler" OnClickClear="@OnClickClearHandler" />
+        </div>
+    </div>
+</HostedDialog>
