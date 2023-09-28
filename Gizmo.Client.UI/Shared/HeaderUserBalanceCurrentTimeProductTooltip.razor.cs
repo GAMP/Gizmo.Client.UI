@@ -30,6 +30,9 @@ namespace Gizmo.Client.UI.Components
         UserBalanceTooltipViewState ViewState { get; set; }
 
         [Inject]
+        UserOnlineDepositViewState UserOnlineDepositViewState { get; set; }
+
+        [Inject]
         UserMenuViewService UserMenuViewService { get; set; }
 
         [Parameter]

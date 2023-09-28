@@ -76,10 +76,10 @@
             {
                 <div class="giz-user-balance-tooltip__expiration">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_SESSION_WILL_NOT_EXPIRE_MESSAGE")</div>
                 <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_CLOSE_BALANCE_MESSAGE")</div>
-                @if (!ViewState.DisableOnlineDeposits || !ViewState.DisableShop)
+                @if (UserOnlineDepositViewState.IsEnabled || !ViewState.DisableShop)
                 {
-                    <div class="@(!ViewState.DisableOnlineDeposits && !ViewState.DisableShop ? "giz-user-balance-tooltip__actions" : "giz-user-balance-tooltip__action")">
-                        @if (!ViewState.DisableOnlineDeposits)
+                    <div class="@(UserOnlineDepositViewState.IsEnabled && !ViewState.DisableShop ? "giz-user-balance-tooltip__actions" : "giz-user-balance-tooltip__action")">
+                        @if (UserOnlineDepositViewState.IsEnabled)
                         {
                             <Button Variant="@(ViewState.DisableShop ? ButtonVariants.Fill : ButtonVariants.Outline)"
                                     Color="@(ViewState.DisableShop ? ButtonColors.Accent : ButtonColors.Primary)"
@@ -95,15 +95,15 @@
             else
             {
                 <div class="giz-user-balance-tooltip__expiration">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_SESSION_WILL_EXPIRE_MESSAGE")</div>
-                @if (!ViewState.DisableOnlineDeposits || !ViewState.DisableShop)
+                @if (UserOnlineDepositViewState.IsEnabled || !ViewState.DisableShop)
                 {
                     @if (TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).First().InCredit)
                     {
-                        @if (!ViewState.DisableShop && !ViewState.DisableOnlineDeposits)
+                        @if (!ViewState.DisableShop && UserOnlineDepositViewState.IsEnabled)
                         {
                             <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TO_CONTINUE_CLOSE_BALANCE_AND_BUY_TIME_OR_TOP_UP")</div>
                         }
-                        else if (ViewState.DisableShop && ViewState.DisableOnlineDeposits)
+                        else if (ViewState.DisableShop && !UserOnlineDepositViewState.IsEnabled)
                         {
 
                         }
@@ -121,11 +121,11 @@
                     }
                     else
                     {
-                        @if (!ViewState.DisableShop && !ViewState.DisableOnlineDeposits)
+                        @if (!ViewState.DisableShop && UserOnlineDepositViewState.IsEnabled)
                         {
                             <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TO_CONTINUE_BUY_TIME_OR_TOP_UP")</div>
                         }
-                        else if (ViewState.DisableShop && ViewState.DisableOnlineDeposits)
+                        else if (ViewState.DisableShop && !UserOnlineDepositViewState.IsEnabled)
                         {
                             
                         }
@@ -141,8 +141,8 @@
                             }
                         }
                     }
-                    <div class="@(!ViewState.DisableOnlineDeposits && !ViewState.DisableShop ? "giz-user-balance-tooltip__actions" : "giz-user-balance-tooltip__action")">
-                        @if (!ViewState.DisableOnlineDeposits)
+                    <div class="@(UserOnlineDepositViewState.IsEnabled && !ViewState.DisableShop ? "giz-user-balance-tooltip__actions" : "giz-user-balance-tooltip__action")">
+                        @if (UserOnlineDepositViewState.IsEnabled)
                         {
                             <Button Variant="@(ViewState.DisableShop ? ButtonVariants.Fill : ButtonVariants.Outline)"
                                     Color="@(ViewState.DisableShop ? ButtonColors.Accent : ButtonColors.Primary)"
