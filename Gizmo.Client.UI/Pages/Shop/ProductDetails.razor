@@ -151,7 +151,8 @@
                 <div class="giz-product-details__product__bundled-products">
                     @foreach (var product in ViewState.Product.BundledProducts)
                     {
-                        <ProductDetailsBundledProduct @key="@product.Id" ProductId="@product.Id" Quantity="product.Quantity" />
+                        @*Do not use product.Id as key, a bundle can have multiple times the same product.*@
+                        <ProductDetailsBundledProduct @key="@product" ProductId="@product.Id" Quantity="product.Quantity" />
                     }
                 </div>
             }

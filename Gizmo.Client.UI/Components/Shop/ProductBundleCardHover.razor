@@ -28,7 +28,8 @@
 
         @foreach (var bundledProduct in Product.BundledProducts)
         {
-            <ProductBundleCardBundledProduct @key="bundledProduct.Id" ProductId="@bundledProduct.Id" Quantity="@bundledProduct.Quantity" />
+            @*Do not use bundledProduct.Id as key, a bundle can have multiple times the same product.*@
+            <ProductBundleCardBundledProduct @key="bundledProduct" ProductId="@bundledProduct.Id" Quantity="@bundledProduct.Quantity" />
         }
     }
 </div>
