@@ -6,7 +6,9 @@ using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.WinForms;
 using Microsoft.Web.WebView2.Wpf;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
 
 namespace Gizmo.Client.UI.Host.WPF
@@ -50,5 +52,16 @@ namespace Gizmo.Client.UI.Host.WPF
                 _BLAZOR_WEB_VIEW.WebView.CoreWebView2.SetVirtualHostNameToFolderMapping("static", staticFiles, CoreWebView2HostResourceAccessKind.Allow);
             }
         }
+
+        /// <summary>
+        /// Gets web view process ids.
+        /// </summary>
+        /// <returns>Process ids, empty list if web view is not initialized.</returns>
+        public IEnumerable<int> GetWebViewProcessIds() => Enumerable.Empty<int>();
+
+        /// <summary>
+        /// Gets window handle.
+        /// </summary>
+        public IntPtr Handle { get; } = IntPtr.Zero;
     }
 }
