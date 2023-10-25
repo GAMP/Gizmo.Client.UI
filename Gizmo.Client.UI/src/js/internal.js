@@ -187,6 +187,8 @@ window.unregisterAdsAutoCollapse = function unregisterAdsAutoCollapse() {
   resetAutoHideAds();
 };
 
+//Popups
+
 var registeredPopups = [];
 
 window.registerPopup = function registerPopup(element) {
@@ -278,6 +280,8 @@ window.removeClosePopupEventEventListener =
       closePopupEventListenerReferences.splice(index, 1);
     }
   };
+
+//End Popups
 
 var registeredTabs = [];
 

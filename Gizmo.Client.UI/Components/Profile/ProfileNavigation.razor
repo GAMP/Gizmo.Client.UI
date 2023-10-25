@@ -20,12 +20,15 @@
         </NavLink>
     </div>
 
-    <div class="giz-profile-navigation-item">
-        <NavLink href="@ClientRoutes.UserPurchasesRoute" Match="NavLinkMatch.All">
-            <Icon SVGIcon="Icons.ShoppingCart_Client" />
-            @LocalizationService.GetString("GIZ_USER_PURCHASES")
-        </NavLink>
-    </div>
+    @if (!ClientInterfaceOptions.CurrentValue.DisableUserPurchaseHistory)
+    {
+        <div class="giz-profile-navigation-item">
+            <NavLink href="@ClientRoutes.UserPurchasesRoute" Match="NavLinkMatch.All">
+                <Icon SVGIcon="Icons.ShoppingCart_Client" />
+                @LocalizationService.GetString("GIZ_USER_PURCHASES")
+            </NavLink>
+        </div>
+    }
 
     @*<div class="giz-profile-navigation-item">
         <NavLink href="@ClientRoutes.UserDepositsRoute" Match="NavLinkMatch.All">

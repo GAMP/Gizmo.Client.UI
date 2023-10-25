@@ -2,6 +2,7 @@
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Options;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -9,6 +10,9 @@ namespace Gizmo.Client.UI.Components
     {
         [Inject]
         ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
+        IOptionsMonitor<ClientInterfaceOptions> ClientInterfaceOptions { get; set; }
 
         [Inject]
         UserViewState ViewState { get; set; }
