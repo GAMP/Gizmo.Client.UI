@@ -119,11 +119,13 @@
                     <div class="giz-alternative-login__separator"><span>@LocalizationService.GetString("GIZ_LOGIN_OR")</span></div>
                 }
                 <div class="giz-alternative-login__qr">
-                    <div class="giz-alternative-login__qr-description">
-                        <div class="giz-alternative-login__qr-description__title">@LocalizationService.GetString("GIZ_LOGIN_QR_TITLE")</div>
-                        <div class="giz-alternative-login__qr-description__subtitle">@LocalizationService.GetString("GIZ_LOGIN_QR_MESSAGE")</div>
+                    <div class="giz-alternative-login__qr__description">
+                        <div class="giz-alternative-login__qr__description__title">@LocalizationService.GetString("GIZ_LOGIN_QR_TITLE")</div>
+                        <div class="giz-alternative-login__qr__description__subtitle">@LocalizationService.GetString("GIZ_LOGIN_QR_MESSAGE")</div>
                     </div>
-                    @((MarkupString)HostQRCodeViewState.HostQRCode)
+                    <div class="giz-alternative-login__qr__image">
+                        @((MarkupString)HostQRCodeViewState.HostQRCode)
+                    </div>
                 </div>
             </div>
         }

@@ -30,7 +30,14 @@
 
         <div class="giz-profile-header__info__stats-text">
             <div class="giz-title">@LocalizationService.GetString("GIZ_GEN_TIME")</div>
-            <div class="giz-numbers">@((int)ViewState.Time.TotalHours):@ViewState.Time.ToString("mm")</div>
+            @if (ViewState.Time.HasValue)
+            {
+                <div class="giz-numbers">@((int)ViewState.Time.Value.TotalHours):@ViewState.Time.Value.ToString("mm")</div>
+            }
+            else
+            {
+                <Icon SVGIcon="Icons.Infinite" Color="#FFC700" />
+            }
         </div>
     </div>
 </div>

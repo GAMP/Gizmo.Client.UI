@@ -22,7 +22,14 @@ else
         <div class="giz-header__user-menu-item__icon">
             <Icon Size="IconSizes.Small" SVGIcon="Icons.Schedule_Client" />
         </div>
-        <div>@((int)UserBalanceViewState.Time.TotalHours):@UserBalanceViewState.Time.ToString("mm")</div>
+        @if (UserBalanceViewState.Time.HasValue)
+        {
+            <div>@((int)UserBalanceViewState.Time.Value.TotalHours):@UserBalanceViewState.Time.Value.ToString("mm")</div>
+        }
+        else
+        {
+            <Icon SVGIcon="Icons.Infinite" Color="#FFC700" />
+        }
     </div>
     <div class="giz-header__user-menu-item">
         <div class="giz-header__user-menu-item__icon">

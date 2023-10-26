@@ -1,52 +1,56 @@
 //=============== CheckBox ================//
 
 .giz-check-box {
-  [#{$client-theme-comp-attr}] & {
-    & input {
-      & + label {
-        margin: 0.4rem 0;
-        color: #fafafa;
-        @include font-m-theme-client($font-weight-light-theme-client);
-      }
+    [#{$client-theme-comp-attr}] & {
+        & input {
+            & + label {
+                margin: 0.4rem 0;
+                color: #fafafa;
+                @include font-m-theme-client($font-weight-light-theme-client);
 
-      & + label:before {
-        width: 2.4rem;
-        height: 2.4rem;
-        background-color: transparent;
-        border: 0.2rem solid #fafafa;
-        border-radius: 0.4rem;
-        margin-right: 0.8rem;
-        box-sizing: border-box;
-      }
+                span {
+                    margin-left: 0.8rem;
+                }
+            }
 
-      &:checked + label:before {
-        background-color: #3f8cff;
-        border: 0.2rem solid #3f8cff;
-      }
+            & + label:before {
+                width: 2.4rem;
+                height: 2.4rem;
+                background-color: transparent;
+                border: 0.2rem solid #fafafa;
+                border-radius: 0.4rem;
+                //margin-right: 0.8rem;
+                box-sizing: border-box;
+            }
 
-      &:checked + label:after {
-        background-color: unset;
-        left: 0.9rem;
-        top: 0.5rem;
-        width: 0.4rem;
-        height: 0.8rem;
-        border: solid white;
-        border-width: 0 0.2rem 0.2rem 0;
-        -webkit-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-        transform: rotate(45deg);
-        //background: url('/img/icons/tick.svg') no-repeat; //TODO: doesn't exist
-      }
+            &:checked + label:before {
+                background-color: #3f8cff;
+                border: 0.2rem solid #3f8cff;
+            }
 
-      &.disabled + label:before,
-      &[disabled] + label:before {
-        border: 0.2rem solid rgba(246, 251, 253, 0.28);
-      }
+            &:checked + label:after {
+                background-color: unset;
+                left: 0.9rem;
+                top: 0.5rem;
+                width: 0.4rem;
+                height: 0.8rem;
+                border: solid white;
+                border-width: 0 0.2rem 0.2rem 0;
+                -webkit-transform: rotate(45deg);
+                -ms-transform: rotate(45deg);
+                transform: rotate(45deg);
+                //background: url('/img/icons/tick.svg') no-repeat; //TODO: doesn't exist
+            }
 
-      &.disabled + label,
-      &[disabled] + label {
-        color: rgba(255, 255, 255, 0.24);
-      }
+            &.disabled + label:before,
+            &[disabled] + label:before {
+                border: 0.2rem solid rgba(246, 251, 253, 0.28);
+            }
+
+            &.disabled + label,
+            &[disabled] + label {
+                color: rgba(255, 255, 255, 0.24);
+            }
+        }
     }
-  }
 }
