@@ -37,15 +37,15 @@
                             <ProductsProductType TimeProduct="@timeProduct" />
                         </CellTemplate>
                     </DataGridColumn>
-                    <DataGridColumn Field="@(nameof(TimeProductViewState.Source))" TItemType="TimeProductViewState" Context="timeProduct">
+                    <DataGridColumn Field="@(nameof(TimeProductViewState.RemainingTime))" TItemType="TimeProductViewState" Context="timeProduct">
                         <HeaderTemplate>
                             @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_SOURCE")
                         </HeaderTemplate>
                         <CellTemplate>
-                            @timeProduct.Source
+                            @timeProduct.RemainingTime
                         </CellTemplate>
                     </DataGridColumn>
-                    <DataGridColumn Field="@(nameof(TimeProductViewState.Time))" TItemType="TimeProductViewState" Context="timeProduct">
+                    <DataGridColumn Field="@(nameof(TimeProductViewState.UsableTime))" TItemType="TimeProductViewState" Context="timeProduct">
                         <HeaderTemplate>
                             <div class="giz-user-time-products-time-header">
                                 <div>
@@ -54,9 +54,9 @@
                             </div>
                         </HeaderTemplate>
                         <CellTemplate>
-                            @if (!string.IsNullOrEmpty(timeProduct.Time))
+                            @if (!string.IsNullOrEmpty(timeProduct.UsableTime))
                             {
-                                @timeProduct.Time
+                                @timeProduct.UsableTime
                             }
                             else
                             {
@@ -72,7 +72,7 @@
     {
         @if (TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).Count() == 1)
         {
-            if (string.IsNullOrEmpty(TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).First().Time))
+            if (string.IsNullOrEmpty(TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).First().UsableTime))
             {
                 <div class="giz-user-balance-tooltip__expiration">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_SESSION_WILL_NOT_EXPIRE_MESSAGE")</div>
                 <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_CLOSE_BALANCE_MESSAGE")</div>

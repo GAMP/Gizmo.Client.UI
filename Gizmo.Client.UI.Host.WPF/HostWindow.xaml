@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Gizmo.Client.UI.Host.WPF"
-        xmlns:blazor="clr-namespace:Microsoft.AspNetCore.Components.WebView.Wpf;assembly=Microsoft.AspNetCore.Components.WebView.Wpf"      
+        xmlns:blazor="clr-namespace:Microsoft.AspNetCore.Components.WebView.Wpf;assembly=Microsoft.AspNetCore.Components.WebView.Wpf"
+        xmlns:blazorweb="clr-namespace:Microsoft.AspNetCore.Components.Web;assembly=Microsoft.AspNetCore.Components.Web"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
@@ -14,6 +15,7 @@
         <blazor:BlazorWebView BlazorWebViewInitialized="BlazorWebViewInit" x:Name="_BLAZOR_WEB_VIEW" HostPage="wwwroot\index.html" Services="{StaticResource ResourceKey=services}">
             <blazor:BlazorWebView.RootComponents>
                 <blazor:RootComponent x:Name="_ROOT_COMPONENT" Selector="#app"></blazor:RootComponent>
+                <blazor:RootComponent Selector="head::after" ComponentType="{x:Type blazorweb:HeadOutlet}" />
             </blazor:BlazorWebView.RootComponents>
         </blazor:BlazorWebView>
     </Grid>
