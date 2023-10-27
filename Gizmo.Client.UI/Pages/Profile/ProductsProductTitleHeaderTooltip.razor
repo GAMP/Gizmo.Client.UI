@@ -1,0 +1,49 @@
+﻿@namespace Gizmo.Client.UI.Pages
+@inherits CustomDOMComponentBase
+@using Gizmo.Client.UI.View.States
+
+<div class="giz-user-time-products-title-header-tooltip-wrapper"
+     id="@Id"
+     @ref="@Ref">
+    <div class="giz-user-time-products-title-header-tooltip">
+        <div class="giz-user-time-products-title-header-tooltip-close-btn">
+            <IconButton SVGIcon="Icons.Close_Client" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="Close" />
+        </div>
+
+        <div class="giz-user-time-products-title-header-tooltip-item">
+            <div class="giz-user-time-products-title-header-tooltip-item__icon">
+                <Icon SVGIcon="Icons.TimeOffer_Client" />
+            </div>
+            <div class="giz-user-time-products-title-header-tooltip-item__description">
+                @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_TITLE_TIME_OFFER")
+            </div>
+        </div>
+
+        <div class="giz-user-time-products-title-header-tooltip-item">
+            <div class="giz-user-time-products-title-header-tooltip-item__icon">
+                <Icon SVGIcon="Icons.TimeFixed_Client" />
+            </div>
+            <div class="giz-user-time-products-title-header-tooltip-item__description">
+                @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_TITLE_FIXED_TIME")
+            </div>
+        </div>
+
+        <div class="giz-user-time-products-title-header-tooltip-item">
+            <div class="giz-user-time-products-title-header-tooltip-item__icon">
+                <Icon SVGIcon="Icons.TimeSession2_Client" />
+            </div>
+            <div class="giz-user-time-products-title-header-tooltip-item__description">
+                @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_TITLE_RATE")
+            </div>
+        </div>
+        @if (CreditOptionsViewState.TimeCreditType != CreditType.NoCredit && CreditOptionsViewState.IsUserTimeCreditEnabled)
+        {
+            <div class="giz-user-time-products-title-header-tooltip-indicator">
+                <div class="giz-user-time-products-title-header-tooltip-indicator__credit"></div>
+                <div class="giz-user-time-products-title-header-tooltip-indicator__description">
+                    @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_TITLE_USING_CREDIT")
+                </div>
+            </div>
+        }
+    </div>
+</div>

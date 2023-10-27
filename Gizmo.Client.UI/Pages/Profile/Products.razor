@@ -37,7 +37,19 @@
                                 </DataGridColumn>
                                 <DataGridColumn Field="@(nameof(TimeProductViewState.TimeProductType))" TItemType="TimeProductViewState" Context="timeProduct">
                                     <HeaderTemplate>
-                                        @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_TIME_PRODUCT")
+                                        <div class="giz-user-time-products-properties-header">
+                                            <div>
+                                                @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_TIME_PRODUCT")
+                                            </div>
+                                            <ClientPopup>
+                                                <Activator>
+                                                    <Icon SVGIcon="Icons.Info2_Client" Size="IconSizes.Small" Class="giz-user-time-products-properties-icon" />
+                                                </Activator>
+                                                <ChildContent>
+                                                    <ProductsProductTitleHeaderTooltip />
+                                                </ChildContent>
+                                            </ClientPopup>
+                                        </div>
                                     </HeaderTemplate>
                                     <CellTemplate>
                                         <ProductsProductType TimeProduct="@timeProduct" />
@@ -100,17 +112,7 @@
                                             </div>
                                             <ClientPopup>
                                                 <Activator>
-                                                    <div class="giz-user-time-products-properties-icon">
-                                                        @*TODO: A SVG*@
-                                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <mask id="mask0_7397_5959" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
-                                                                <rect width="16" height="16" fill="#D9D9D9" />
-                                                            </mask>
-                                                            <g mask="url(#mask0_7397_5959)">
-                                                                <path d="M7.9999 11.334C8.1887 11.334 8.3527 11.2644 8.4919 11.1252C8.63056 10.9865 8.6999 10.8228 8.6999 10.634V8.01718C8.6999 7.82838 8.63056 7.66732 8.4919 7.53398C8.3527 7.40065 8.1887 7.33398 7.9999 7.33398C7.8111 7.33398 7.6471 7.40332 7.5079 7.54198C7.36923 7.68118 7.2999 7.84518 7.2999 8.03398V10.65C7.2999 10.8393 7.36923 11.0007 7.5079 11.134C7.6471 11.2673 7.8111 11.334 7.9999 11.334ZM7.9999 5.98358C8.1887 5.98358 8.3527 5.91425 8.4919 5.77558C8.63056 5.63638 8.6999 5.47238 8.6999 5.28358C8.6999 5.09478 8.63056 4.93105 8.4919 4.79238C8.3527 4.65318 8.1887 4.58358 7.9999 4.58358C7.8111 4.58358 7.6471 4.65318 7.5079 4.79238C7.36923 4.93105 7.2999 5.09478 7.2999 5.28358C7.2999 5.47238 7.36923 5.63638 7.5079 5.77558C7.6471 5.91425 7.8111 5.98358 7.9999 5.98358ZM7.9999 14.6668C7.07776 14.6668 6.2111 14.4919 5.3999 14.142C4.5887 13.7921 3.8831 13.3172 3.2831 12.7172C2.6831 12.1172 2.20816 11.4116 1.8583 10.6004C1.50843 9.78918 1.3335 8.92252 1.3335 8.00038C1.3335 7.07825 1.50843 6.21158 1.8583 5.40038C2.20816 4.58918 2.6831 3.88358 3.2831 3.28358C3.8831 2.68358 4.5887 2.20865 5.3999 1.85878C6.2111 1.50892 7.07776 1.33398 7.9999 1.33398C8.92203 1.33398 9.7887 1.50892 10.5999 1.85878C11.4111 2.20865 12.1167 2.68358 12.7167 3.28358C13.3167 3.88358 13.7916 4.58918 14.1415 5.40038C14.4914 6.21158 14.6663 7.07825 14.6663 8.00038C14.6663 8.92252 14.4914 9.78918 14.1415 10.6004C13.7916 11.4116 13.3167 12.1172 12.7167 12.7172C12.1167 13.3172 11.4111 13.7921 10.5999 14.142C9.7887 14.4919 8.92203 14.6668 7.9999 14.6668Z" fill="white" fill-opacity="0.75" />
-                                                            </g>
-                                                        </svg>
-                                                    </div>
+                                                    <Icon SVGIcon="Icons.Info2_Client" Size="IconSizes.Small" Class="giz-user-time-products-properties-icon" />
                                                 </Activator>
                                                 <ChildContent>
                                                     <ProductsProductPropertiesHeaderTooltip />
