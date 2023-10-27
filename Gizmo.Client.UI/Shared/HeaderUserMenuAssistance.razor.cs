@@ -8,7 +8,7 @@ namespace Gizmo.Client.UI
     public partial class HeaderUserMenuAssistance : CustomDOMComponentBase
     {
         [Inject]
-        AssistanceRequesetViewState ViewState { get; set; }
+        AssistanceRequestViewState ViewState { get; set; }
 
         [Inject]
         UserMenuViewState UserMenuViewState { get; set; }

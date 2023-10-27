@@ -20,7 +20,7 @@ namespace Gizmo.Client.UI.Shared
         AssistanceRequestViewService AssistanceRequestViewService { get; set; }
 
         [Inject]
-        AssistanceRequesetViewState ViewState { get; set; }
+        AssistanceRequestViewState ViewState { get; set; }
 
         [Inject]
         UserMenuViewState UserMenuViewState { get; set; }
