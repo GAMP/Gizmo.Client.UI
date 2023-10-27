@@ -93,7 +93,7 @@
                                         }
                                     </CellTemplate>
                                 </DataGridColumn>
-                                <DataGridColumn Field="@(nameof(TimeProductViewState.ExpirationDate))" TItemType="TimeProductViewState" Context="timeProduct">
+                                @* <DataGridColumn Field="@(nameof(TimeProductViewState.ExpirationDate))" TItemType="TimeProductViewState" Context="timeProduct">
                                     <HeaderTemplate>
                                         @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_EXPIRES")
                                     </HeaderTemplate>
@@ -103,7 +103,7 @@
                                             @timeProduct.ExpirationDate.Value.ToLocalTime().ToString()
                                         }
                                     </CellTemplate>
-                                </DataGridColumn>
+                                </DataGridColumn> *@
                                 <DataGridColumn Field="@(nameof(TimeProductViewState.ProductId))" TItemType="TimeProductViewState" Context="timeProduct">
                                     <HeaderTemplate>
                                         <div class="giz-user-time-products-properties-header">
@@ -140,8 +140,7 @@
                                     <CellTemplate>
                                         @if (timeProduct.TimeProductType == UsageType.TimeOffer && timeProduct.ProductId.HasValue)
                                         {
-                                            <IconButton Variant="ButtonVariants.Text" SVGIcon="Icons.Open_Client" Size="ButtonSizes.Small" @onclick="@(() => OpenDetails(timeProduct.ProductId.Value))" />
-                                            @*TODO: AAA SIZE 20*@
+                                            <IconButton Size="ButtonSizes.Small" Variant="ButtonVariants.Text" SVGIcon="Icons.Open_Client" Class="giz-user-time-products-action" @onclick="@(() => OpenDetails(timeProduct.ProductId.Value))" />
                                         }
                                     </CellTemplate>
                                 </DataGridColumn>
