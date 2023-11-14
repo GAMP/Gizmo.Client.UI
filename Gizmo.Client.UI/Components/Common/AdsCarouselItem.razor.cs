@@ -93,7 +93,7 @@ namespace Gizmo.Client.UI.Components
             {
                 if (!string.IsNullOrEmpty(_advertisementViewState.MediaUrl))
                 {
-                    return ShowMediaDialogAsync();
+                    return AdvertisementsService.ShowMediaSync(_advertisementViewState);
                 }
             }
 
