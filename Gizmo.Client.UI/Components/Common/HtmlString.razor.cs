@@ -31,38 +31,41 @@ namespace Gizmo.Client.UI.Components
         {
             if (firstRender)
             {
-                var regex = new Regex(CommandPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
-                var matches = regex.Matches(Content);
-
-                for (var i = 0; i < matches.Count; i++)
+                if (!string.IsNullOrEmpty(Content))
                 {
-                    var command = matches[i].Groups;
-                    var commandName = command["name"].Value;
-                    var commandValue = command["value"].Value;
+                    var regex = new Regex(CommandPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
+                    var matches = regex.Matches(Content);
 
-                    if (_supportedCommands.Contains(commandName))
+                    for (var i = 0; i < matches.Count; i++)
                     {
-                        try
-                        {
-                            var functionParametersValue = GetFunctionParametersValue(commandValue.AsSpan());
+                        var command = matches[i].Groups;
+                        var commandName = command["name"].Value;
+                        var commandValue = command["value"].Value;
 
-                            if (!string.IsNullOrWhiteSpace(functionParametersValue))
+                        if (_supportedCommands.Contains(commandName))
+                        {
+                            try
                             {
-                                //Add the function parameters to the Client.UI parameters
-                                ContentParameters.Add("Data", functionParametersValue);
+                                var functionParametersValue = GetFunctionParametersValue(commandValue.AsSpan());
+
+                                if (!string.IsNullOrWhiteSpace(functionParametersValue))
+                                {
+                                    //Add the function parameters to the Client.UI parameters
+                                    ContentParameters.Add("Data", functionParametersValue);
+                                }
+
+                                var functionName = GetFunctionName(commandValue.AsSpan());
+
+                                await JsRuntime.InvokeVoidAsync(functionName, ContentParameters);
                             }
-                            
-                            var functionName = GetFunctionName(commandValue.AsSpan());
+                            catch (Exception exeption)
+                            {
+                                Logger.LogError(exeption, "Error parsing for the costom event: {0}={1}", commandName, commandValue);
+                            }
 
-                            await JsRuntime.InvokeVoidAsync(functionName, ContentParameters);
+                            //Stop parsing after the first supported command
+                            break;
                         }
-                        catch (Exception exeption)
-                        {
-                            Logger.LogError(exeption, "Error parsing for the costom event: {0}={1}", commandName, commandValue);
-                        }
-
-                        //Stop parsing after the first supported command
-                        break;
                     }
                 }
             }
