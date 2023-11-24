@@ -8,6 +8,7 @@ using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using System.Linq;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace Gizmo.Client.UI.Pages
 {
@@ -69,7 +70,6 @@ namespace Gizmo.Client.UI.Pages
             }
             else
             {
-                //return Countries.Where(a => a.Text == ViewState.Country && a.PhonePrefix == ViewState.Prefix).FirstOrDefault();
                 return Countries.Where(a => a.Text == ViewState.Country).FirstOrDefault();
             }
         }
@@ -168,6 +168,18 @@ namespace Gizmo.Client.UI.Pages
             this.UnsubscribeChange(ViewState);
 
             base.Dispose();
+        }
+
+        private FieldIdentifier? _countryFieldIdentifier;
+
+        private FieldIdentifier GetCountryFieldIdentifier()
+        {
+            if (_countryFieldIdentifier == null)
+            {
+                _countryFieldIdentifier = new FieldIdentifier(ViewState, nameof(ViewState.Country));
+            }
+
+            return _countryFieldIdentifier.Value;
         }
     }
 }

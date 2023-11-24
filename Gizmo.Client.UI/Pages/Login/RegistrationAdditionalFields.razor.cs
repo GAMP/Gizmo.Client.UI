@@ -4,6 +4,7 @@ using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using System.Collections.Generic;
 using System.Linq;
@@ -171,6 +172,18 @@ namespace Gizmo.Client.UI.Pages
             this.UnsubscribeChange(ViewState);
 
             base.Dispose();
+        }
+
+        private FieldIdentifier? _countryFieldIdentifier;
+
+        private FieldIdentifier GetCountryFieldIdentifier()
+        {
+            if (_countryFieldIdentifier == null)
+            {
+                _countryFieldIdentifier = new FieldIdentifier(ViewState, nameof(ViewState.Country));
+            }
+
+            return _countryFieldIdentifier.Value;
         }
     }
 }
