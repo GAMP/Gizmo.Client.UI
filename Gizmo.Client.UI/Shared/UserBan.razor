@@ -1,0 +1,15 @@
+﻿@namespace Gizmo.Client.UI.Shared
+@inherits CustomDOMComponentBase
+
+@if (ViewState.IsDisabled)
+{
+    <div class="giz-login-overlay">
+        <div class="giz-user-ban-wrapper">
+            <div class="giz-user-ban">
+                <div class="giz-user-ban__message">@((MarkupString)LocalizationService.GetString("GIZ_USER_BAN_MESSAGE"))</div>
+                <div class="giz-user-ban__time">@string.Format("{0:mm\\:ss}", ViewState.Time)</div>
+                <div class="giz-user-ban__action"><Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" Text="@LocalizationService.GetString("GIZ_USER_BAN_LOGOUT")" @onclick="@(() => UserService.LogoutAsync())" /></div>
+            </div>
+        </div>
+    </div>
+}
