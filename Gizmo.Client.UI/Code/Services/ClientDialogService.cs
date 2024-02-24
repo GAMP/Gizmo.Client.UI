@@ -68,7 +68,7 @@ namespace Gizmo.Client.UI.Services
         {
             return ShowDialogAsync<ChangePasswordDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()
             {
-                Closable = true,
+                Closable = false,
                 CloseOnClick = false
             }, default, cancellationToken);
         }
