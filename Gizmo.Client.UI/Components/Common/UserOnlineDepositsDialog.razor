@@ -7,7 +7,7 @@
             <div class="giz-client-dialog__header__title">@LocalizationService.GetString("GIZ_ONLINE_DEPOSIT_TITLE")</div>
             @if (DisplayOptions.Closable)
             {
-                <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => DismissCallback.InvokeAsync()" />
+                <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="@OnDismissHandler" />
             }
         </div>
         <div class="giz-user-online-deposit-dialog__content">

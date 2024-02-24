@@ -32,6 +32,14 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<EmptyComponentResult> ResultCallback { get; set; }
 
+        private async Task OnDismissHandler()
+        {
+            await DismissCallback.InvokeAsync();
+
+            //reset previous selection
+            UserOnlineDepositViewStateService.Clear();
+        }
+
         private async Task OnClickPayFromPCHandler()
         {
             if (ViewState.PaymentUrl is not null)
