@@ -35,6 +35,10 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         UserVerificationViewState UserVerificationViewState { get; set; }
 
+        [Parameter]
+        [SupplyParameterFromQuery]
+        public bool? Fallback { get; set; }
+
         public List<IconSelectCountry> Countries { get; set; } = new List<IconSelectCountry>();
 
         public string GetMask()
@@ -83,13 +87,17 @@ namespace Gizmo.Client.UI.Pages
             }
             else
             {
-                UserRegistrationConfirmationMethodService.SetCountry(value.Text);
-                var tmp = value.PhonePrefix;
-                if (tmp.StartsWith("+"))
+                if (Fallback != true || !ViewState.Country.Equals(value.Text))
                 {
-                    tmp = tmp.Substring(1);
+                    UserRegistrationConfirmationMethodService.SetCountry(value.Text);
+                    var tmp = value.PhonePrefix;
+                    if (tmp.StartsWith("+"))
+                    {
+                        tmp = tmp.Substring(1);
+                    }
+
+                    UserRegistrationConfirmationMethodService.SetMobilePhone(tmp);
                 }
-                UserRegistrationConfirmationMethodService.SetMobilePhone(tmp);
             }
         }
 
@@ -144,18 +152,21 @@ namespace Gizmo.Client.UI.Pages
             //Render the list first.
             await InvokeAsync(StateHasChanged);
 
-            IconSelectCountry defaultItem = null;
-            var defaultCountry = await CountryInformationService.GetCurrentCountryInfoAsync();
-
-            if (defaultCountry != null && defaultCountry.CallingCodeSuffixes.Count() > 0)
+            if (Fallback != true)
             {
-                defaultItem = Countries.Where(a => a.PhonePrefix == defaultCountry.CallingCodeRoot + defaultCountry.CallingCodeSuffixes.First()).FirstOrDefault();
+                IconSelectCountry defaultItem = null;
+                var defaultCountry = await CountryInformationService.GetCurrentCountryInfoAsync();
+
+                if (defaultCountry != null && defaultCountry.CallingCodeSuffixes.Count() > 0)
+                {
+                    defaultItem = Countries.Where(a => a.PhonePrefix == defaultCountry.CallingCodeRoot + defaultCountry.CallingCodeSuffixes.First()).FirstOrDefault();
+                }
+
+                if (defaultItem == null)
+                    defaultItem = other;
+
+                SetSelectedCountry(defaultItem);
             }
-
-            if (defaultItem == null)
-                defaultItem = other;
-
-            SetSelectedCountry(defaultItem);
 
             _isLoaded = true;
 

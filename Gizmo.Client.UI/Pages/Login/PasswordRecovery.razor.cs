@@ -35,6 +35,10 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         NavigationService NavigationService { get; set; }
 
+        [Parameter]
+        [SupplyParameterFromQuery]
+        public bool? Fallback { get; set; }
+
         public void OnCloseButtonClickHandler()
         {
             UserPasswordRecoveryService.Reset();
