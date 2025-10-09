@@ -21,9 +21,13 @@
                 <Layout_LoginWallpaper />
             }
 
-            <div class="giz-host-number">
-                <HostNumber />
-            </div>
+            @if (HostNumberViewState.HostNumberIsEnabled)
+            {
+                <div class="giz-host-number @(ClassName == "grow" ? HostNumberViewState.CurrentPosition : "")"
+                     style="--transition-duration: @(HostNumberViewState.AnimationDuration)s">
+                    <HostNumber />
+                </div>
+            }
 
             @if (!string.IsNullOrEmpty(LogoViewState.Logo))
             {

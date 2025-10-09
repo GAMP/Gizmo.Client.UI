@@ -1,4 +1,4 @@
 ﻿@namespace Gizmo.Client.UI.Shared
 @inherits CustomDOMComponentBase
 
-PC @ViewState.HostNumber
+@(ViewState.PrefixIsEnabled ? (string.IsNullOrEmpty(ViewState.Prefix) ? "PC" : ViewState.Prefix) : "") @ViewState.HostNumber
