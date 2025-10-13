@@ -2,7 +2,12 @@
 @inherits CustomDOMComponentBase
 
 <div class="giz-header__user-menu">
-    <HeaderUserBalance />
+    @foreach (var userMenuModule in ViewState.UserMenuModules)
+    {
+        <HeaderUserMenuItem MetaData="userMenuModule.MetaData" />
+    }
+    
+    <HeaderUserBalance/>
 
     @if (UserOnlineDepositViewState.IsEnabled)
     {

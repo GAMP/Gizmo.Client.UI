@@ -6,6 +6,7 @@ using Gizmo.Client.UI.Components;
 using Gizmo.UI;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -112,6 +113,15 @@ namespace Gizmo.Client.UI.Services
             {
                 Closable = true,
                 CloseOnClick = true
+            }, default, cancellationToken);
+        }        
+        
+        public Task<AddDialogResult<EmptyComponentResult>> ShowCustomDialogAsync<T>(CancellationToken cancellationToken = default) where T : ComponentBase, new()
+        {
+            return ShowDialogAsync<T>(new Dictionary<string, object>(), new DialogDisplayOptions()
+            {
+                Closable = true,
+                CloseOnClick = false
             }, default, cancellationToken);
         }
     }
