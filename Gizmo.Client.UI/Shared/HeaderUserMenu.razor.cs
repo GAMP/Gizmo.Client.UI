@@ -21,7 +21,10 @@ namespace Gizmo.Client.UI
         public UserOnlineDepositViewState UserOnlineDepositViewState { get; set; }
 
         [Inject]
-        public AssistanceRequestViewState AssistanceRequestViewState { get; set; }
+        public AssistanceRequestViewState AssistanceRequestViewState { get; set; }   
+        
+        [Inject]
+        public UserMenuModulesViewState ViewState { get; set; }
 
         private async Task ShowOnlineDeposits()
         {
