@@ -28,6 +28,9 @@ namespace Gizmo.Client.UI.Components
 
         [Parameter]
         public UserCartProductItemViewState ProductItemViewState { get; set; }
+        
+        [Inject]
+        PaymentMethodViewStateLookupService PaymentMethodViewStateLookupService { get; set; }
 
         public string GetPurchaseOptionsGroup()
         {

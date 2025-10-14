@@ -10,20 +10,29 @@
     <div class="giz-order-item__details">
         @if (_product?.PurchaseOptions.HasFlag(PurchaseOptionType.Or) == true)
         {
-            <RadioButton @key="Guid.NewGuid()" GroupName="@GetPurchaseOptionsGroup()" IsChecked="@(ProductItemViewState.PayType == OrderLinePayType.Cash)" IsCheckedChanged="@((isChecked) => SetPayType(isChecked, OrderLinePayType.Cash))" Class="giz-order-item__details__price-radio" />
-            <RadioButton @key="Guid.NewGuid()" GroupName="@GetPurchaseOptionsGroup()" IsChecked="@(ProductItemViewState.PayType == OrderLinePayType.Points)" IsCheckedChanged="@((isChecked) => SetPayType(isChecked, OrderLinePayType.Points))" Class="giz-order-item__details__points-radio" />
+            if (PaymentMethodViewStateLookupService.IsPointsPaymentMethodEnabled)
+            {
+                <RadioButton @key="Guid.NewGuid()" GroupName="@GetPurchaseOptionsGroup()" IsChecked="@(ProductItemViewState.PayType == OrderLinePayType.Cash)" IsCheckedChanged="@((isChecked) => SetPayType(isChecked, OrderLinePayType.Cash))" Class="giz-order-item__details__price-radio" />
+                <RadioButton @key="Guid.NewGuid()" GroupName="@GetPurchaseOptionsGroup()" IsChecked="@(ProductItemViewState.PayType == OrderLinePayType.Points)" IsCheckedChanged="@((isChecked) => SetPayType(isChecked, OrderLinePayType.Points))" Class="giz-order-item__details__points-radio"/>
+            }
         }
         else
         {
-            <div class="giz-order-item__details__and">&amp;</div>
+            if (PaymentMethodViewStateLookupService.IsPointsPaymentMethodEnabled)
+            {
+                <div class="giz-order-item__details__and">&amp;</div>
+            }
         }
         <div class="giz-order-item__details__price">
             @ProductItemViewState.TotalPrice.ToString("C", CultureInfo.CurrentCulture)
         </div>
-        <div class="giz-order-item__details__points">
-            @ProductItemViewState.TotalPointsPrice.GetValueOrDefault().ToString("N0")
-            <Points2Icon />
-        </div>
+        @if (PaymentMethodViewStateLookupService.IsPointsPaymentMethodEnabled)
+        {
+            <div class="giz-order-item__details__points">
+                @ProductItemViewState.TotalPointsPrice.GetValueOrDefault().ToString("N0")
+                <Points2Icon />
+            </div>
+        }
     </div>
     <div class="giz-order-item__remove">
         <IconButton Variant="ButtonVariants.Text" Size="ButtonSizes.Small" SVGIcon="Icons.Trash3_Client" @onclick="@(() => UserCartService.DeleteUserCartProductAsync(ProductItemViewState.ProductId))" />
