@@ -120,8 +120,16 @@
                 }
                 <div class="giz-alternative-login__qr">
                     <div class="giz-alternative-login__qr__description">
-                        <div class="giz-alternative-login__qr__description__title">@LocalizationService.GetString("GIZ_LOGIN_QR_TITLE")</div>
-                        <div class="giz-alternative-login__qr__description__subtitle">@LocalizationService.GetString("GIZ_LOGIN_QR_MESSAGE")</div>
+                        <div class="giz-alternative-login__qr__description__title">
+                            @(string.IsNullOrEmpty(HostQrCodeOptions.Value.Title)
+                                ? LocalizationService.GetString("GIZ_LOGIN_QR_TITLE")
+                                : HostQrCodeOptions.Value.Title)
+                        </div>
+                        <div class="giz-alternative-login__qr__description__subtitle">
+                            @(string.IsNullOrEmpty(HostQrCodeOptions.Value.Description)
+                                ? LocalizationService.GetString("GIZ_LOGIN_QR_MESSAGE")
+                                : HostQrCodeOptions.Value.Description)
+                        </div>
                     </div>
                     <div class="giz-alternative-login__qr__image">
                         @((MarkupString)HostQRCodeViewState.HostQRCode)
