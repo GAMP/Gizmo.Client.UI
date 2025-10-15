@@ -43,6 +43,9 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         UserPasswordRecoveryMethodServiceViewState UserPasswordRecoveryMethodServiceViewState { get; set; }
+        
+        [Inject] 
+        IOptions<HostQRCodeOptions> HostQrCodeOptions { get; set; }
 
         private Task OnKeyDownHandle(KeyboardEventArgs args)
         {
