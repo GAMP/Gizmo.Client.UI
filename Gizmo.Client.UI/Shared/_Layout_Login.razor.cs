@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -48,8 +49,14 @@ namespace Gizmo.Client.UI.Shared
 
         [Inject()]
         HostReservationViewState HostReservationViewState { get; set; }
+        
+        [Inject]
+        HostNumberViewState HostNumberViewState { get; set; }
+        
+        [Inject]
+        HostNumberViewService HostHumberViewService { get; set; }
 
-        private async void UserIdleViewState_OnChange(object sender, System.EventArgs e)
+        private async void UserIdleViewState_OnChange(object sender, EventArgs e)
         {
             if (_previousIsIdle == UserIdleViewState.IsIdle)
                 return;
@@ -76,7 +83,8 @@ namespace Gizmo.Client.UI.Shared
         {
             _previousIsIdle = UserIdleViewState.IsIdle;
             UserIdleViewState.OnChange += UserIdleViewState_OnChange;
-
+            HostHumberViewService.OnPositionChanged += HandlePositionChanged;
+            
             _locked = UserLoginOptions.Value.Disabled && !UserRegisterConfigurationViewState.IsEnabled;
 
             base.OnInitialized();
@@ -108,6 +116,11 @@ namespace Gizmo.Client.UI.Shared
             this.SubscribeChange(HostOutOfOrderViewState);
 
             await base.OnInitializedAsync();
+        }
+        
+        private void HandlePositionChanged()
+        {
+            InvokeAsync(StateHasChanged);
         }
     }
 }
