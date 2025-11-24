@@ -1,24 +1,4 @@
 ﻿@namespace Gizmo.Client.UI.Shared
 @inherits CustomDOMComponentBase
 
-<div class="giz-header__user-menu-item">
-    <button class="user-menu-item-button--frame" @onclick="HandleClickAsync">
-        @if (MetaData?.Guid == KnownModules.MODULE_STEAM_PAYMENT)
-        {
-            <Icon SVGIcon="Icons.Steam" Size="IconSizes.Medium" />
-        }
-        else
-        {
-            <IconButton Icon="@MetaData?.Icon" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" />
-        }
-
-        @if (!string.IsNullOrWhiteSpace(MetaData?.TitleLocalizationKey))
-        {
-            <span>@LocalizationService.GetString(MetaData.TitleLocalizationKey)</span>
-        }
-        else
-        {
-            <span>@(MetaData?.Title ?? LocalizationService.GetString("GIZ_GEN_UNSET_STRING_VALUE"))</span>
-        }
-    </button>
-</div>
+<DynamicComponent Type="@MetaData.Type" />

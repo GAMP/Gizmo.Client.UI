@@ -115,14 +115,5 @@ namespace Gizmo.Client.UI.Services
                 CloseOnClick = true
             }, default, cancellationToken);
         }        
-        
-        public Task<AddDialogResult<EmptyComponentResult>> ShowCustomDialogAsync<T>(CancellationToken cancellationToken = default) where T : ComponentBase, new()
-        {
-            return ShowDialogAsync<T>(new Dictionary<string, object>(), new DialogDisplayOptions()
-            {
-                Closable = true,
-                CloseOnClick = false
-            }, default, cancellationToken);
-        }
     }
 }

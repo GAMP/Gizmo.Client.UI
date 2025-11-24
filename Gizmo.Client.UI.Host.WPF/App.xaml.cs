@@ -35,17 +35,7 @@ namespace Gizmo.Client.UI.Host.WPF
 
                 serviceCollection.AddClientOptions(context.Configuration);
                 
-                var assemblies = Directory
-                    .EnumerateFiles(AppContext.BaseDirectory, "*.Module.dll", SearchOption.TopDirectoryOnly)
-                    .Select(Assembly.LoadFrom)
-                    .Prepend(Assembly.GetExecutingAssembly())
-                    .ToArray();
-
-                foreach (var assembly in assemblies)
-                {
-                    Console.WriteLine($"Loaded assembly: {assembly.FullName}");
-                    serviceCollection.AddClientServices(assembly);
-                }
+                serviceCollection.AddClientServices();
                 
                 serviceCollection.AddSingleton<IClientDialogService, ClientDialogService>();
                 serviceCollection.AddDialogService<IClientDialogService>();
