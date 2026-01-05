@@ -79,13 +79,6 @@ namespace Gizmo.Client.UI.Host.WPF
             //create notifications window (early load)
             var notificationsHost = host.Services.GetRequiredService<INotificationsHost>();
 
-            var auth = host.Services.GetRequiredService<Gizmo.Web.Api.User.Clients.AuthWebApiClient>();
-            var tk = await auth.AccessTokenGetAsync(new Web.Api.Models.UserAccessTokenRequestModel() { Password = "oleg", Username = "oleg" });
-            var pv = host.Services.GetRequiredService<UserAccessTokenHandler>();
-           await pv.SetCurrentAsync(tk);
-            var cl = host.Services.GetRequiredService<Gizmo.Web.Api.User.Clients.AssistanceRequestsWebApiClient>();
-            await cl.CancelAsync();
-            await cl.CreateAsync(new Web.Api.Models.AssistanceRequestModelUserCreate() { AssistanceRequestTypeId = 1, Note = "Help please" });
             //show host window
             hostWindow.Show();
 
