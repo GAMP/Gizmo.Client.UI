@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
@@ -24,9 +23,6 @@ namespace Gizmo.Client.UI.Components
 
         [Inject]
         NavigationService NavigationService { get; set; }
-
-        [Inject]
-        UserCartViewService UserCartService { get; set; }
 
         [Inject]
         UserCartViewState ViewState { get; set; }

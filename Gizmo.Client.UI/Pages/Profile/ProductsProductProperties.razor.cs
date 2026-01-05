@@ -5,7 +5,6 @@ using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System;
 using Gizmo.UI.Services;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Gizmo.Client.UI.Pages
 {

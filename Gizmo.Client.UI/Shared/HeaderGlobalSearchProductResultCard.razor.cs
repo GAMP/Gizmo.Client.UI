@@ -11,8 +11,6 @@ namespace Gizmo.Client.UI.Shared
     {
         private UserProductViewState _userProductViewState;
 
-        private UserCartProductItemViewState _productItemViewState;
-
         private bool _clickHandled = false;
 
         protected bool _shouldRender;
@@ -27,7 +25,7 @@ namespace Gizmo.Client.UI.Shared
         UserProductViewStateLookupService UserProductViewStateLookupService { get; set; }
 
         [Inject]
-        UserCartViewService UserCartService { get; set; }
+        ClientServerCartViewService ClientServerCartViewService { get; set; }
 
         [Parameter]
         public int ProductId { get; set; }
@@ -43,11 +41,11 @@ namespace Gizmo.Client.UI.Shared
             NavigationService.NavigateTo(ClientRoutes.ProductDetailsRoute + $"?ProductId={ProductId.ToString()}");
         }
 
-        private async Task OnClickActionButtonHandler()
+        private void OnClickActionButtonHandler()
         {
             _clickHandled = true;
 
-            await UserCartService.AddUserCartProductAsync(ProductId);
+            ClientServerCartViewService.AddProduct(ProductId);
         }
 
         #region OVERRIDES
@@ -74,34 +72,21 @@ namespace Gizmo.Client.UI.Shared
 
         protected override async Task OnInitializedAsync()
         {
+            //TODO: AAAAA
+
             _userProductViewState = await UserProductViewStateLookupService.GetStateAsync(ProductId);
 
-            if (_userProductViewState != null)
-            {
+            if (_userProductViewState != null)            
                 this.SubscribeChange(_userProductViewState);
-            }
-
-            _productItemViewState = await UserCartService.GetCartProductItemViewStateAsync(ProductId);
-
-            if (_productItemViewState != null)
-            {
-                this.SubscribeChange(_productItemViewState);
-            }
+            
 
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
-            if (_userProductViewState != null)
-            {
-                this.UnsubscribeChange(_userProductViewState);
-            }
-
-            if (_productItemViewState != null)
-            {
-                this.UnsubscribeChange(_productItemViewState);
-            }
+            if (_userProductViewState != null)            
+                this.UnsubscribeChange(_userProductViewState);            
 
             base.Dispose();
         }

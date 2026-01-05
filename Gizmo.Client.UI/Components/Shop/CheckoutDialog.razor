@@ -1,5 +1,6 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
+
 @using Gizmo.Client.UI.View.States
 @using Microsoft.AspNetCore.Components.Forms
 @using System.Globalization
@@ -7,7 +8,7 @@
 <HostedDialog>
     <div class="giz-client-dialog giz-checkout-dialog">
         <div class="giz-client-dialog__header">
-            @if (!@ViewState.IsComplete)
+            @if (!@Service.ViewState.IsComplete)
             {
                 <div class="giz-client-dialog__header__title">@LocalizationService.GetString("GIZ_SHOP_CHECKOUT_TITLE")</div>
             }
@@ -17,34 +18,34 @@
             }
         </div>
 
-        @if (!@ViewState.IsComplete)
+        @if (!@Service.ViewState.IsComplete)
         {
             <div class="giz-client-dialog__body">
                 <div class="giz-checkout">
                     <div class="giz-checkout__list">
-                        <DataGrid ItemSource="@ViewState.Products.ToArray()"
+                        <DataGrid ItemSource="@ClientServerCartViewService.ViewState.Products.ToArray()"
                                     Context="products"
                                     HasStickyHeader="true"
                                     RerenderOnStateChange="true"
                                     Class="giz-scrollbar--v">
                             <ChildContent>
-                                <DataGridColumn Field="@(nameof(UserCartProductItemViewState.ProductId))" TItemType="UserCartProductItemViewState" Context="product">
+                                <DataGridColumn Field="@(nameof(UserCartProductViewState.ProductId))" TItemType="UserCartProductViewState" Context="product">
                                     <HeaderTemplate>
                                         @LocalizationService.GetString("GIZ_SHOP_PRODUCT_NAME")
                                     </HeaderTemplate>
                                     <CellTemplate>
-                                        <CheckoutDialogProductName @key="product.ProductId" ProductId="@product.ProductId" />
+                                        @product.ProductName
                                     </CellTemplate>
                                 </DataGridColumn>
-                                <DataGridColumn TextAlignment="TextAlignments.Right" Field="@(nameof(UserCartProductItemViewState.ProductId))" TItemType="UserCartProductItemViewState" Context="product">
+                                <DataGridColumn TextAlignment="TextAlignments.Right" Field="@(nameof(UserCartProductViewState.ProductId))" TItemType="UserCartProductViewState" Context="product">
                                     <HeaderTemplate>
                                         @LocalizationService.GetString("GIZ_SHOP_PRICE")
                                     </HeaderTemplate>
                                     <CellTemplate>
-                                        <CheckoutDialogProductUnitPrice @key="product.ProductId" ProductId="@product.ProductId" />
+                                        @product.UnitPrice.ToString("C", CultureInfo.CurrentCulture)
                                     </CellTemplate>
                                 </DataGridColumn>
-                                <DataGridColumn TextAlignment="TextAlignments.Right" Field="@(nameof(UserCartProductItemViewState.Quantity))" TItemType="UserCartProductItemViewState" Context="product">
+                                <DataGridColumn TextAlignment="TextAlignments.Right" Field="@(nameof(UserCartProductViewState.Quantity))" TItemType="UserCartProductViewState" Context="product">
                                     <HeaderTemplate>
                                         @LocalizationService.GetString("GIZ_SHOP_QUANTITY")
                                     </HeaderTemplate>
@@ -52,7 +53,7 @@
                                         @product.Quantity
                                     </CellTemplate>
                                 </DataGridColumn>
-                                <DataGridColumn TextAlignment="TextAlignments.Right" Field="@(nameof(UserCartProductItemViewState.TotalPrice))" TItemType="UserCartProductItemViewState" Context="product">
+                                <DataGridColumn TextAlignment="TextAlignments.Right" Field="@(nameof(UserCartProductViewState.TotalPrice))" TItemType="UserCartProductViewState" Context="product">
                                     <HeaderTemplate>
                                         @LocalizationService.GetString("GIZ_SHOP_SUBTOTAL")
                                     </HeaderTemplate>
@@ -65,20 +66,20 @@
                     </div>
                     <div class="giz-checkout__summary">
                         <div class="giz-checkout__summary__total">@LocalizationService.GetString("GIZ_SHOP_TOTAL")</div>
-                        <div class="giz-checkout__summary__amount"><span>@ViewState.Total.ToString("C", CultureInfo.CurrentCulture) @LocalizationService.GetString("GIZ_GEN_AND") @ViewState.PointsTotal</span><PointsIcon /></div>
+                        <div class="giz-checkout__summary__amount"><span>@ClientServerCartViewService.ViewState.Total.ToString("C", CultureInfo.CurrentCulture) @LocalizationService.GetString("GIZ_GEN_AND") @ClientServerCartViewService.ViewState.PointsTotal</span><PointsIcon /></div>
                     </div>
-                    @if (ViewState.ShowPaymentMethods)
+                    @if (Service.ViewState.ShowPaymentMethods)
                     {
                         <div class="giz-checkout__payment-method">
                             <div class="giz-checkout__payment-method__label">@LocalizationService.GetString("GIZ_SHOP_PAYMENT_METHOD")</div>
-                            <EditForm EditContext="@UserCartService.EditContext">
-                                <Select IsDisabled="@(ViewState.IsLoading)"
+                            <EditForm EditContext="@Service.EditContext">
+                                <Select IsDisabled="@(Service.ViewState.IsLoading)"
                                         IsTransparent="true"
                                         HandleSVGIcon="Icons.Select_Client"
                                         TValue="int?"
-                                        Value="@ViewState.PaymentMethodId"
+                                        Value="@Service.ViewState.PaymentMethodId"
                                         ValueChanged="@ValueChangedHandler"
-                                        ValueExpression="@(() => ViewState.PaymentMethodId)"
+                                        ValueExpression="@(() => Service.ViewState.PaymentMethodId)"
                                         Size="InputSizes.Small"
                                         IsFullWidth="true"
                                         OpenDirection="PopupOpenDirections.Cursor"
@@ -99,12 +100,12 @@
                     </div>*@
                     <div class="giz-checkout__actions">
                         <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="() => CloseDialog()">@LocalizationService.GetString("GIZ_GEN_CANCEL")</Button>
-                        <Button IsDisabled="@(ViewState.IsLoading || ViewState.IsValid == false)"
+                        <Button IsDisabled="@(Service.ViewState.IsLoading || Service.ViewState.IsValid == false)"
                                 Color="ButtonColors.Accent"
                                 Size="ButtonSizes.Large"
-                                @onclick="() => UserCartService.CheckoutAsync()">
+                                @onclick="() => ClientServerCartViewService.AcceptAsync()">
                             <ChildContent>
-                                @if (ViewState.IsLoading)
+                                @if (Service.ViewState.IsLoading)
                                 {
                                     <Spinner />
                                 }
@@ -120,14 +121,14 @@
         }
         else
         {
-            @if (ViewState.HasError)
+            @if (Service.ViewState.HasError)
             {
                 <div class="giz-client-alert-dialog">
                     <div class="giz-client-alert-dialog__icon giz-client-alert-dialog__icon--error">
                         <Icon Size="IconSizes.Large" SVGIcon="Icons.Close_Client" />
                     </div>
                     <div class="giz-client-alert-dialog__body giz-scrollbar--v">
-                        <div class="giz-client-alert-message">@((MarkupString)ViewState.ErrorMessage)</div>
+                        <div class="giz-client-alert-message">@((MarkupString)Service.ViewState.ErrorMessage)</div>
                     </div>
                     <div class="giz-client-alert-dialog__footer">
                         <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="@(() => CloseDialog())" Text="@LocalizationService.GetString("GIZ_GEN_CLOSE")" />

@@ -12,22 +12,17 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class ProductQuantityPicker : CustomDOMComponentBase
     {
-        private UserProductViewState _userProductViewState;
+        //TODO: AAAAA REFRESH _userCartProductViewState AFTER ADDED TO CART
 
-        private UserCartProductItemViewState _productItemViewState;
+        private UserProductViewState _product;
 
-        [Inject]
-        public UserProductViewState UserProductViewState
-        {
-            get { return _userProductViewState; }
-            private set { _userProductViewState = value; }
-        }
+        private UserCartProductViewState _userCartProductViewState;
 
         [Inject]
-        public UserCartProductItemViewState ProductItemViewState
+        public UserProductViewState Product
         {
-            get { return _productItemViewState; }
-            private set { _productItemViewState = value; }
+            get { return _product; }
+            private set { _product = value; }
         }
 
         [Inject]
@@ -37,7 +32,7 @@ namespace Gizmo.Client.UI.Components
         UserProductViewStateLookupService UserProductViewStateLookupService { get; set; }
 
         [Inject]
-        UserCartViewService UserCartService { get; set; }
+        ClientServerCartViewService ClientServerCartViewService { get; set; }
 
         [Parameter]
         public int ProductId { get; set; }
@@ -51,48 +46,48 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<MouseEventArgs> OnClick { get; set; }
 
-        public async Task OnAddQuantityButtonClickHandlerAsync(MouseEventArgs args)
+        public async Task OnAddProductButtonClickHandler(MouseEventArgs args)
         {
             await OnClick.InvokeAsync(args);
-            await UserCartService.AddUserCartProductAsync(ProductId, 1);
+            ClientServerCartViewService.AddProduct(ProductId);
         }
 
         public async Task OnRemoveQuantityButtonClickHandler(MouseEventArgs args)
         {
             await OnClick.InvokeAsync(args);
-            await UserCartService.RemoveUserCartProductAsync(ProductId, 1);
+            if (_userCartProductViewState != null)
+                ClientServerCartViewService.SetQuantity(_userCartProductViewState.Guid, _userCartProductViewState.Quantity - 1);
+        }
+
+        public async Task OnAddQuantityButtonClickHandlerAsync(MouseEventArgs args)
+        {
+            await OnClick.InvokeAsync(args);
+            if (_userCartProductViewState != null)
+                ClientServerCartViewService.SetQuantity(_userCartProductViewState.Guid, _userCartProductViewState.Quantity + 1);
         }
 
         protected override async Task OnInitializedAsync()
         {
-            _userProductViewState = await UserProductViewStateLookupService.GetStateAsync(ProductId);
+            _product = await UserProductViewStateLookupService.GetStateAsync(ProductId);
 
-            if (_userProductViewState != null)
-            {
-                this.SubscribeChange(_userProductViewState);
-            }
+            if (_product != null)
+                this.SubscribeChange(_product);
 
-            _productItemViewState = await UserCartService.GetCartProductItemViewStateAsync(ProductId);
+            _userCartProductViewState = await ClientServerCartViewService.GetCartProductItemViewStateAsync(ProductId);
 
-            if (_productItemViewState != null)
-            {
-                this.SubscribeChange(_productItemViewState);
-            }
+            if (_userCartProductViewState != null)
+                this.SubscribeChange(_userCartProductViewState);
 
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
-            if (_userProductViewState != null)
-            {
-                this.UnsubscribeChange(_userProductViewState);
-            }
+            if (_userCartProductViewState != null)
+                this.UnsubscribeChange(_userCartProductViewState);
 
-            if (_productItemViewState != null)
-            {
-                this.UnsubscribeChange(_productItemViewState);
-            }
+            if (_product != null)
+                this.UnsubscribeChange(_product);
 
             base.Dispose();
         }

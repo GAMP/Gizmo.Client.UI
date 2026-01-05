@@ -1,22 +1,35 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 
-@if (_userProductViewState.DisallowPurchase)
+@if (_product.DisallowPurchase)
 {
-    <ClientTooltip Text="@_userProductViewState.DisallowPurchaseReason" Class="giz-product-host-groups-tooltip">
+    <ClientTooltip Text="@_product.DisallowPurchaseReason" Class="giz-product-host-groups-tooltip">
         <ChildContent>
-            <Button IsDisabled="true" Color="ButtonColors.Accent" Size="@Size" IsFullWidth="@IsFullWidth" Text="@LocalizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
+            <Button IsDisabled="true"
+                    Color="ButtonColors.Accent" Size="@Size"
+                    IsFullWidth="@IsFullWidth"
+                    Text="@LocalizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
         </ChildContent>
     </ClientTooltip>
 }
 else
-{ 
-    @if (_productItemViewState.Quantity == 0)
+{
+    if (_userCartProductViewState == null || _userCartProductViewState.Quantity == 0)
     {
-        <Button Color="ButtonColors.Accent" Class="giz-product-card-primary-button" Size="@Size" IsFullWidth="@IsFullWidth" @onclick="OnAddQuantityButtonClickHandlerAsync" Text="@LocalizationService.GetString("GIZ_SHOP_ADD_TO_CART")" />
+        <Button Color="ButtonColors.Accent"
+                Class="giz-product-card-primary-button"
+                Size="@Size"
+                IsFullWidth="@IsFullWidth"
+                Text="@LocalizationService.GetString("GIZ_SHOP_ADD_TO_CART")"
+                @onclick="OnAddProductButtonClickHandler" />
     }
     else
     {
-        <QuantityPicker Maximum="@(_userProductViewState.ProductType == ProductType.ProductTime ? 1 : int.MaxValue)" Size="@Size" Quantity="@_productItemViewState.Quantity" OnAddQuantityButtonClick="OnAddQuantityButtonClickHandlerAsync" OnRemoveQuantityButtonClick="OnRemoveQuantityButtonClickHandler" OnClick="@((args) => OnClick.InvokeAsync(args))" />
+        <QuantityPicker Maximum="@(_product.ProductType == ProductType.ProductTime ? 1 : int.MaxValue)"
+                        Size="@Size"
+                        Quantity="@_userCartProductViewState.Quantity"
+                        OnAddQuantityButtonClick="OnAddQuantityButtonClickHandlerAsync"
+                        OnRemoveQuantityButtonClick="OnRemoveQuantityButtonClickHandler"
+                        OnClick="@((args) => OnClick.InvokeAsync(args))" />
     }
 }

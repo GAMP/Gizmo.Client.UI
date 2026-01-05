@@ -3,7 +3,6 @@ using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
-using Gizmo.Client.UI.View.States;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -13,26 +12,28 @@ namespace Gizmo.Client.UI.Components
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        UserCartViewService UserCartService { get; set; }
-        
+        UserCartViewService Service { get; set; }
+
         [Inject]
-        UserCartViewState ViewState { get; set; }
+        ClientServerCartViewService ClientServerCartViewService { get; set; }
 
         private Task PlaceOrder()
         {
-            return UserCartService.SubmitAsync();
+            return Service.SubmitAsync();
         }
 
         protected override void OnInitialized()
         {
-            this.SubscribeChange(ViewState);
+            this.SubscribeChange(Service.ViewState);
+            this.SubscribeChange(ClientServerCartViewService.ViewState);
 
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(ViewState);
+            this.UnsubscribeChange(ClientServerCartViewService.ViewState);
+            this.UnsubscribeChange(Service.ViewState);
 
             base.Dispose();
         }

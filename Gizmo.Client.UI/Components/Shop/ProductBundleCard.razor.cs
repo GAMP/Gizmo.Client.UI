@@ -23,19 +23,13 @@ namespace Gizmo.Client.UI.Components
         ProductDetailsPageViewState ProductDetailsPageViewState { get; set; }
 
         [Inject]
-        ILocalizationService LocalizationService { get; set; }
-
-        [Inject]
         NavigationService NavigationService { get; set; }
 
         [Inject]
-        UserCartViewService UserCartService { get; set; }
+        UserCartViewService Service { get; set; }
 
         [Inject]
-        UserCartViewState ViewState { get; set; }
-
-        [Inject]
-        UserProductViewStateLookupService UserProductViewStateLookupService { get; set; }
+        ClientServerCartViewService ClientServerCartViewService { get; set; }
 
         [Parameter]
         public UserProductViewState Product { get; set; }
@@ -52,11 +46,11 @@ namespace Gizmo.Client.UI.Components
                 NavigationService.NavigateTo(ClientRoutes.ProductDetailsRoute + $"?ProductId={Product.Id}");
         }
 
-        public async Task AddProduct()
+        public void AddProduct()
         {
             _clickHandled = true;
 
-            await UserCartService.AddUserCartProductAsync(Product.Id);
+            ClientServerCartViewService.AddProduct(Product.Id);
         }
 
         public void Ignore()
@@ -111,14 +105,16 @@ namespace Gizmo.Client.UI.Components
 
         protected override void OnInitialized()
         {
-            this.SubscribeChange(ViewState);
+            this.SubscribeChange(Service.ViewState);
+            this.SubscribeChange(ClientServerCartViewService.ViewState);
 
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(ViewState);
+            this.UnsubscribeChange(ClientServerCartViewService.ViewState);
+            this.UnsubscribeChange(Service.ViewState);
 
             base.Dispose();
         }

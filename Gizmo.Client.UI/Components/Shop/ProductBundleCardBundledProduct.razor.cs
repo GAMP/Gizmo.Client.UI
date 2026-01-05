@@ -17,9 +17,6 @@ namespace Gizmo.Client.UI.Components
             private set { _product = value; }
         }
 
-        [Inject]
-        UserProductViewStateLookupService UserProductViewStateLookupService { get; set; }
-
         [Parameter]
         public int ProductId { get; set; }
 
@@ -28,7 +25,7 @@ namespace Gizmo.Client.UI.Components
 
         protected override async Task OnInitializedAsync()
         {
-            _product = await UserProductViewStateLookupService.GetStateAsync(ProductId);
+            //TODO: AAAAA _product = await UserProductViewStateLookupService.GetStateAsync(ProductId);
 
             if (_product != null)
             {

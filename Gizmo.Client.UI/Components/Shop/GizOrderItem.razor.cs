@@ -21,45 +21,45 @@ namespace Gizmo.Client.UI.Components
         }
 
         [Inject]
-        UserCartViewService UserCartService { get; set; }
+        ClientServerCartViewService ClientServerCartViewService { get; set; }
 
         [Inject]
         UserProductViewStateLookupService UserProductViewStateLookupService { get; set; }
 
+
         [Parameter]
-        public UserCartProductItemViewState ProductItemViewState { get; set; }
+        public UserCartProductViewState UserCartProductViewState { get; set; }
 
         public string GetPurchaseOptionsGroup()
         {
-            return "PurchaseOptions_" + ProductItemViewState.ProductId;
+            return "PurchaseOptions_" + UserCartProductViewState.ProductId;
         }
 
-        public Task OnRemoveQuantityButtonClickHandler(MouseEventArgs _) =>
-            UserCartService.RemoveUserCartProductAsync(ProductItemViewState.ProductId);
+        public void OnRemoveQuantityButtonClickHandler(MouseEventArgs _) =>
+            ClientServerCartViewService.SetQuantity(UserCartProductViewState.Guid, UserCartProductViewState.Quantity - 1);
 
-        public Task OnAddQuantityButtonClickHandlerAsync(MouseEventArgs _) =>
-            UserCartService.AddUserCartProductAsync(ProductItemViewState.ProductId);
+        public void OnAddQuantityButtonClickHandlerAsync(MouseEventArgs _) =>
+            ClientServerCartViewService.SetQuantity(UserCartProductViewState.Guid, UserCartProductViewState.Quantity + 1);
 
-        public Task SetPayType(bool isChecked, OrderLinePayType payType)
+        public void SetPayType(bool isChecked, OrderLinePayType payType)
         {
             if (isChecked)
-                return UserCartService.ChangeProductPayTypeAsync(ProductItemViewState.ProductId, payType);
-            else
-                return Task.CompletedTask;
+                ClientServerCartViewService.SetPayType(UserCartProductViewState.Guid, payType);
         }
 
         protected override async Task OnInitializedAsync()
         {
-            if (ProductItemViewState != null)
+            if (UserCartProductViewState != null)
             {
-                this.SubscribeChange(ProductItemViewState);
-            }
+                this.SubscribeChange(UserCartProductViewState);
 
-            _product = await UserProductViewStateLookupService.GetStateAsync(ProductItemViewState.ProductId);
+                if (UserCartProductViewState.ProductId.HasValue)
+                {
+                    _product = await UserProductViewStateLookupService.GetStateAsync(UserCartProductViewState.ProductId.Value);
 
-            if (_product != null)
-            {
-                this.SubscribeChange(_product);
+                    if (_product != null)
+                        this.SubscribeChange(_product);
+                }
             }
 
             await base.OnInitializedAsync();
@@ -68,14 +68,10 @@ namespace Gizmo.Client.UI.Components
         public override void Dispose()
         {
             if (_product != null)
-            {
                 this.UnsubscribeChange(_product);
-            }
 
-            if (ProductItemViewState != null)
-            {
-                this.UnsubscribeChange(ProductItemViewState);
-            }
+            if (UserCartProductViewState != null)
+                this.UnsubscribeChange(UserCartProductViewState);
 
             base.Dispose();
         }

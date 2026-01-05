@@ -11,18 +11,16 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class CheckoutDialog : CustomDOMComponentBase
     {
-        private bool _isOpen { get; set; }
-
         private IEnumerable<PaymentMethodViewState> _paymentMethods = Enumerable.Empty<PaymentMethodViewState>();
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        UserCartViewService UserCartService { get; set; }
+        UserCartViewService Service { get; set; }
 
         [Inject]
-        UserCartViewState ViewState { get; set; }
+        ClientServerCartViewService ClientServerCartViewService { get; set; }
 
         [Inject]
         PaymentMethodViewStateLookupService PaymentMethodViewStateLookupService { get; set; }
@@ -35,31 +33,33 @@ namespace Gizmo.Client.UI.Components
 
         private void ValueChangedHandler(int? value)
         {
-            UserCartService.SetOrderPaymentMethod(value);
+            Service.SetOrderPaymentMethod(value);
         }
 
         private async Task CloseDialog()
         {
             await DismissCallback.InvokeAsync();
 
-            if (ViewState.IsComplete) //TODO: AAA DO NOT RESET WITH ERRORS.
-                await UserCartService.ResetAsync();
+            if (Service.ViewState.IsComplete) //TODO: AAAAA DO NOT RESET WITH ERRORS.
+                ClientServerCartViewService.Clear(); //TODO: AAAAA
         }
 
         protected override async Task OnInitializedAsync()
         {
-            this.SubscribeChange(ViewState);
+            this.SubscribeChange(Service.ViewState);
+            this.SubscribeChange(ClientServerCartViewService.ViewState);
 
             var tmp = await PaymentMethodViewStateLookupService.GetStatesAsync();
 
-            _paymentMethods = tmp.Where(a => a.Id != -4 && !a.IsOnline && !a.IsDeleted && a.IsEnabled).ToList();
+            _paymentMethods = tmp.Where(a => a.Id != -4 && !a.IsOnline && !a.IsDeleted && a.IsEnabled).ToList(); //TODO: AAAAA
 
             await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(ViewState);
+            this.UnsubscribeChange(ClientServerCartViewService.ViewState);
+            this.UnsubscribeChange(Service.ViewState);
 
             base.Dispose();
         }
