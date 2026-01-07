@@ -122,11 +122,12 @@ namespace Gizmo.Client.UI.Host.WPF
                 return blazorWebView;
             });
 
-
-            Dispatcher.Invoke(Show);
-            _VIEW_HOST.Child = blazorWebView;
-            blazorWebView.HostPage = @"wwwroot\notifications.html";
-
+            Dispatcher.Invoke(() =>
+            {
+                _VIEW_HOST.Child = blazorWebView;
+                blazorWebView.HostPage = @"wwwroot\notifications.html";
+            });
+            Dispatcher.Invoke(Show); 
         }
 
         private void BlazorWebViewInit(object sender, BlazorWebViewInitializedEventArgs e)
