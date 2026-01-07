@@ -60,6 +60,7 @@ namespace Gizmo.Client.UI.Host.WPF
             var host = hostBuilder.Build();
 
             Resources.Add("services", host.Services);
+
          
             var compositionService = host.Services.GetRequiredService<DesktopUICompositionService>();
 
@@ -78,6 +79,11 @@ namespace Gizmo.Client.UI.Host.WPF
 
             //create notifications window (early load)
             var notificationsHost = host.Services.GetRequiredService<INotificationsHost>();
+
+            var tokenHandlerService = host.Services.GetRequiredService<UserAccessTokenHandler>();
+            var authClient = host.Services.GetRequiredService<Gizmo.Web.Api.User.Clients.AuthWebApiClient>();
+            var token = await authClient.AccessTokenGetAsync(new Web.Api.Models.UserAccessTokenRequestModel() { Password = "oleg", Username = "oleg" });
+            await tokenHandlerService.SetCurrentAsync(token);
 
             //show host window
             hostWindow.Show();
