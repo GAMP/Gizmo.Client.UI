@@ -72,14 +72,11 @@ namespace Gizmo.Client.UI.Shared
 
         protected override async Task OnInitializedAsync()
         {
-            //TODO: AAAAA
-
             _userProductViewState = await UserProductViewStateLookupService.GetStateAsync(ProductId);
 
             if (_userProductViewState != null)            
                 this.SubscribeChange(_userProductViewState);
             
-
             await base.OnInitializedAsync();
         }
 

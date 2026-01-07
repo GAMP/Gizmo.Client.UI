@@ -41,7 +41,7 @@ namespace Gizmo.Client.UI.Components
             await DismissCallback.InvokeAsync();
 
             if (Service.ViewState.IsComplete) //TODO: AAAAA DO NOT RESET WITH ERRORS.
-                ClientServerCartViewService.Clear(); //TODO: AAAAA
+                await Service.ResetAsync();
         }
 
         protected override async Task OnInitializedAsync()

@@ -103,7 +103,7 @@
                         <Button IsDisabled="@(Service.ViewState.IsLoading || Service.ViewState.IsValid == false)"
                                 Color="ButtonColors.Accent"
                                 Size="ButtonSizes.Large"
-                                @onclick="() => ClientServerCartViewService.AcceptAsync()">
+                                @onclick="() => Service.CheckoutAsync()">
                             <ChildContent>
                                 @if (Service.ViewState.IsLoading)
                                 {
