@@ -40,8 +40,8 @@ namespace Gizmo.Client.UI.Components
         {
             await DismissCallback.InvokeAsync();
 
-            if (Service.ViewState.IsComplete) //TODO: AAAAA DO NOT RESET WITH ERRORS.
-                await Service.ResetAsync();
+            if (Service.ViewState.IsComplete) //TODO: AAAAA CHECK
+                Service.Clear();
         }
 
         protected override async Task OnInitializedAsync()

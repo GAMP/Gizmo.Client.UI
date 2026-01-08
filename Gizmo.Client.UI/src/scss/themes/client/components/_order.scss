@@ -43,11 +43,12 @@
 
                     &__details {
                         display: grid;
-                        grid-template-rows: min-content 1fr min-content;
+                        grid-template-rows: 1fr 1fr;
                         grid-template-columns: min-content 1fr;
                         gap: 0.4rem;
                         align-items: center;
                         text-align: right;
+                        height: 6.8rem;
                         @include font-xl-theme-client($font-weight-regular-theme-client);
 
                         &__price-radio {
@@ -166,14 +167,18 @@
             }
 
             .giz-order-summary-total {
-                display: flex;
-                align-items: center;
-                gap: 0.4rem;
-                @include font-h5-theme-client($font-weight-bold-theme-client);
+                justify-self: end;
 
-                svg {
-                    width: 2.4rem;
-                    height: 2.4rem;
+                &-content {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.4rem;
+                    @include font-h5-theme-client($font-weight-bold-theme-client);
+
+                    svg {
+                        width: 2.4rem;
+                        height: 2.4rem;
+                    }
                 }
             }
 
@@ -203,7 +208,10 @@
 
             .giz-order-summary-points-award {
                 justify-self: end;
-                @include font-m-theme-client($font-weight-light-theme-client);
+
+                &-content {
+                    @include font-m-theme-client($font-weight-light-theme-client);
+                }
             }
 
             .giz-order-summary-points {

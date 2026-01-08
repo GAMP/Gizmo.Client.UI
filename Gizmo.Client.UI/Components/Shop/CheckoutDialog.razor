@@ -24,10 +24,10 @@
                 <div class="giz-checkout">
                     <div class="giz-checkout__list">
                         <DataGrid ItemSource="@ClientServerCartViewService.ViewState.Products.ToArray()"
-                                    Context="products"
-                                    HasStickyHeader="true"
-                                    RerenderOnStateChange="true"
-                                    Class="giz-scrollbar--v">
+                                  Context="products"
+                                  HasStickyHeader="true"
+                                  RerenderOnStateChange="true"
+                                  Class="giz-scrollbar--v">
                             <ChildContent>
                                 <DataGridColumn Field="@(nameof(UserCartProductViewState.ProductId))" TItemType="UserCartProductViewState" Context="product">
                                     <HeaderTemplate>
@@ -66,7 +66,9 @@
                     </div>
                     <div class="giz-checkout__summary">
                         <div class="giz-checkout__summary__total">@LocalizationService.GetString("GIZ_SHOP_TOTAL")</div>
-                        <div class="giz-checkout__summary__amount"><span>@ClientServerCartViewService.ViewState.Total.ToString("C", CultureInfo.CurrentCulture) @LocalizationService.GetString("GIZ_GEN_AND") @ClientServerCartViewService.ViewState.PointsTotal</span><PointsIcon /></div>
+                        <ICartViewStateLoader ViewState="@ClientServerCartViewService.ViewState" MinimumHeight="2.2rem">
+                            <div class="giz-checkout__summary__amount"><span>@ClientServerCartViewService.ViewState.Total.ToString("C", CultureInfo.CurrentCulture) @LocalizationService.GetString("GIZ_GEN_AND") @ClientServerCartViewService.ViewState.PointsTotal</span><PointsIcon /></div>
+                        </ICartViewStateLoader>
                     </div>
                     @if (Service.ViewState.ShowPaymentMethods)
                     {
@@ -100,7 +102,7 @@
                     </div>*@
                     <div class="giz-checkout__actions">
                         <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="() => CloseDialog()">@LocalizationService.GetString("GIZ_GEN_CANCEL")</Button>
-                        <Button IsDisabled="@(Service.ViewState.IsLoading || Service.ViewState.IsValid == false)"
+                        <Button IsDisabled="@(ClientServerCartViewService.ViewState.IsStateUpdateRequired || ClientServerCartViewService.ViewState.IsStateUpdating || Service.ViewState.IsLoading || Service.ViewState.IsValid == false)"
                                 Color="ButtonColors.Accent"
                                 Size="ButtonSizes.Large"
                                 @onclick="() => Service.CheckoutAsync()">

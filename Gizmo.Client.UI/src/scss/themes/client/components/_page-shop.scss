@@ -97,3 +97,30 @@
         max-width: 28.8rem;
     }
 }
+
+.giz-wm-icart-loader {
+    position: relative;
+
+    &-content {
+        visibility: visible;
+    }
+
+    .giz-image-loading--activity {
+        display: none;
+    }
+
+    &.loading {
+        overflow: hidden;
+
+        .giz-wm-icart-loader-content {
+            visibility: hidden;
+        }
+
+        .giz-image-loading--activity {
+            display: block;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+    }
+}

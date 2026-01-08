@@ -12,8 +12,6 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class ProductQuantityPicker : CustomDOMComponentBase
     {
-        //TODO: AAAAA REFRESH _userCartProductViewState AFTER ADDED TO CART
-
         private UserProductViewState _product;
 
         private UserCartProductViewState _userCartProductViewState;
@@ -73,12 +71,32 @@ namespace Gizmo.Client.UI.Components
             if (_product != null)
                 this.SubscribeChange(_product);
 
+            ClientServerCartViewService.ViewState.OnChange += ViewState_OnChange;
+
             _userCartProductViewState = await ClientServerCartViewService.GetCartProductItemViewStateAsync(ProductId);
 
             if (_userCartProductViewState != null)
                 this.SubscribeChange(_userCartProductViewState);
 
             await base.OnInitializedAsync();
+        }
+
+        private async void ViewState_OnChange(object sender, System.EventArgs e)
+        {
+            var tmp = await ClientServerCartViewService.GetCartProductItemViewStateAsync(ProductId);
+
+            if (_userCartProductViewState != tmp)
+            {
+                if (_userCartProductViewState != null)
+                    this.UnsubscribeChange(_userCartProductViewState);
+
+                _userCartProductViewState = tmp;
+
+                if (_userCartProductViewState != null)
+                    this.SubscribeChange(_userCartProductViewState);
+
+                await InvokeAsync(StateHasChanged);
+            }
         }
 
         public override void Dispose()

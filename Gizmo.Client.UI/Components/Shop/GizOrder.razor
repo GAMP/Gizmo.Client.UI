@@ -26,10 +26,15 @@
             }
         </div>
         <div class="giz-order__items__footer">
-            <Button IsDisabled="@(ClientServerCartViewService.ViewState.Products.Count() == 0)" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" LeftSVGIcon="Icons.Trash3_Client" Text="@LocalizationService.GetString("GIZ_GEN_CLEAR")" @onclick="@(() => Service.ClearUserCartProductsAsync())" />
+            <Button IsDisabled="@(ClientServerCartViewService.ViewState.Products.Count() == 0)"
+                    Variant="ButtonVariants.Text"
+                    Size="ButtonSizes.Small"
+                    LeftSVGIcon="Icons.Trash3_Client"
+                    Text="@LocalizationService.GetString("GIZ_GEN_CLEAR")"
+                    @onclick="@(() => Service.ClearUserCartProductsAsync())" />
         </div>
     </div>
-        
+
     <div class="giz-order__notes">
         <div class="giz-order__notes__header">@LocalizationService.GetString("GIZ_SHOP_ORDER_NOTE")</div>
         <div class="giz-order__notes__body">
@@ -50,23 +55,35 @@
             <div class="giz-order-summary-text-bold">@LocalizationService.GetString("GIZ_SHOP_SUBTOTAL")</div>
 
             <div class="giz-order-summary-total">
-                <span>@ClientServerCartViewService.ViewState.Total.ToString("C", CultureInfo.CurrentCulture)</span>
-                @if (ClientServerCartViewService.ViewState.PointsTotal > 0)
-                {
-                    <span class="giz-order-summary-number-separator">&amp;</span>
-                    <span>@(ClientServerCartViewService.ViewState.PointsTotal)</span>
-                    <Points2Icon />
-                }
+                <ICartViewStateLoader ViewState="@ClientServerCartViewService.ViewState" MinimumHeight="3.0rem">
+                    <div class="giz-order-summary-total-content">
+                        <span>@ClientServerCartViewService.ViewState.Total.ToString("C", CultureInfo.CurrentCulture)</span>
+                        @if (ClientServerCartViewService.ViewState.PointsTotal > 0)
+                        {
+                            <span class="giz-order-summary-number-separator">&amp;</span>
+                            <span>@(ClientServerCartViewService.ViewState.PointsTotal)</span>
+                            <Points2Icon />
+                        }
+                    </div>
+                </ICartViewStateLoader>
             </div>
 
             <div class="giz-order-summary-text">@LocalizationService.GetString("GIZ_SHOP_EARNED_POINTS")</div>
             <div class="giz-order-summary-points-award">
-                <span>@ClientServerCartViewService.ViewState.PointsAward</span>
-                <PointsAward2Icon />
+                <ICartViewStateLoader ViewState="@ClientServerCartViewService.ViewState" MinimumHeight="2.2rem">
+                    <div class="giz-order-summary-points-award-content">
+                        <span>@ClientServerCartViewService.ViewState.PointsAward</span>
+                        <PointsAward2Icon />
+                    </div>
+                </ICartViewStateLoader>
             </div>
         </div>
         <div>
-            <Button Color="ButtonColors.Accent" Size="ButtonSizes.Large" IsFullWidth="true" IsDisabled="@(ClientServerCartViewService.ViewState.Products.Count() == 0)" @onclick="@(() => PlaceOrder())" Text="@LocalizationService.GetString("GIZ_SHOP_PLACE_ORDER")" />
+            <Button Color="ButtonColors.Accent"
+                    Size="ButtonSizes.Large"
+                    IsFullWidth="true"
+                    IsDisabled="@(ClientServerCartViewService.ViewState.IsStateUpdateRequired || ClientServerCartViewService.ViewState.IsStateUpdating || ClientServerCartViewService.ViewState.Products.Count() == 0)"
+                    @onclick="@(() => PlaceOrder())" Text="@LocalizationService.GetString("GIZ_SHOP_PLACE_ORDER")" />
         </div>
     </div>
 </div>
