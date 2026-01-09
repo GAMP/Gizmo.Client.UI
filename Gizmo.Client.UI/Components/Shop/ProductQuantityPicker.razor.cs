@@ -73,7 +73,7 @@ namespace Gizmo.Client.UI.Components
 
             ClientServerCartViewService.ViewState.OnChange += ViewState_OnChange;
 
-            _userCartProductViewState = await ClientServerCartViewService.GetCartProductItemViewStateAsync(ProductId);
+            _userCartProductViewState = await ClientServerCartViewService.GetUserCartProductViewStateAsync(ProductId);
 
             if (_userCartProductViewState != null)
                 this.SubscribeChange(_userCartProductViewState);
@@ -83,7 +83,7 @@ namespace Gizmo.Client.UI.Components
 
         private async void ViewState_OnChange(object sender, System.EventArgs e)
         {
-            var tmp = await ClientServerCartViewService.GetCartProductItemViewStateAsync(ProductId);
+            var tmp = await ClientServerCartViewService.GetUserCartProductViewStateAsync(ProductId);
 
             if (_userCartProductViewState != tmp)
             {

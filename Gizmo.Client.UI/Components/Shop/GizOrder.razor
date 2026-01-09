@@ -51,6 +51,34 @@
     </div>
 
     <div class="giz-order__totals">
+        <div class="giz-order-promocode">
+            <TextInput IsTransparent="true"
+                       ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
+                       Value="@ClientServerCartViewService.ViewState.PromoCodeViewState.InputPromoCode"
+                       ValueChanged="@((string value) => ClientServerCartViewService.SetInputPromoCode(value))"
+                       IsReadOnly="@(ClientServerCartViewService.ViewState.PromoCodeStatus != Web.Api.Models.PromoCodeApplyStatus.None)"
+                       UpdateOnInput="true"
+                       IsFullWidth="true"
+                       Placeholder="@LocalizationService.GetString("GIZ_SHOP_ORDER_PROMOCODE_PLACEHOLDER")" />
+            @if (string.IsNullOrEmpty(ClientServerCartViewService.ViewState.PromoCodeViewState.PromoCode))
+            {
+                <Button Size="ButtonSizes.ExtraLarge"
+                        IsDisabled="@(ClientServerCartViewService.ViewState.IsStateUpdateRequired || ClientServerCartViewService.ViewState.IsStateUpdating || ClientServerCartViewService.ViewState.PromoCodeViewState.IsLoading)"
+                        Text="@LocalizationService.GetString("GIZ_SHOP_APPLY_PROMOCODE")"
+                        @onclick="@(() => ClientServerCartViewService.AddPromoCode(ClientServerCartViewService.ViewState.PromoCodeViewState.InputPromoCode))" />
+            }
+            else
+            {
+                <Button Size="ButtonSizes.ExtraLarge"
+                        IsDisabled="@(ClientServerCartViewService.ViewState.IsStateUpdateRequired || ClientServerCartViewService.ViewState.IsStateUpdating || ClientServerCartViewService.ViewState.PromoCodeViewState.IsLoading)"
+                        LeftSVGIcon="Icons.Trash3_Client"
+                        @onclick="@(() => ClientServerCartViewService.RemovePromoCode())" />
+            }
+            @if (ClientServerCartViewService.ViewState.PromoCodeStatus != Web.Api.Models.PromoCodeApplyStatus.None)
+            {
+                <div class="@GetPromocodeStatusClass(ClientServerCartViewService.ViewState.PromoCodeStatus)">@ClientServerCartViewService.ViewState.PromoCodeStatus.ToString()</div>
+            }
+        </div>
         <div class="giz-order-summary">
             <div class="giz-order-summary-text-bold">@LocalizationService.GetString("GIZ_SHOP_SUBTOTAL")</div>
 
@@ -83,7 +111,8 @@
                     Size="ButtonSizes.Large"
                     IsFullWidth="true"
                     IsDisabled="@(ClientServerCartViewService.ViewState.IsStateUpdateRequired || ClientServerCartViewService.ViewState.IsStateUpdating || ClientServerCartViewService.ViewState.Products.Count() == 0)"
-                    @onclick="@(() => PlaceOrder())" Text="@LocalizationService.GetString("GIZ_SHOP_PLACE_ORDER")" />
+                    Text="@LocalizationService.GetString("GIZ_SHOP_PLACE_ORDER")"
+                    @onclick="@(() => Service.SubmitAsync())" />
         </div>
     </div>
 </div>

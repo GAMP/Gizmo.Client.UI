@@ -143,7 +143,7 @@
 
         .giz-order-notes {
             .giz-input-root {
-                min-height: 9.8rem;
+                min-height: 6.8rem;
             }
         }
     }
@@ -153,10 +153,21 @@
         border-radius: 1.6rem;
         padding: 3.2rem 2.4rem;
 
+        .giz-order-promocode {
+            display: grid;
+            grid-template-rows: min-content;
+            grid-template-columns: 1fr min-content;
+            grid-column-gap: 1.6rem;
+            grid-auto-flow: row;
+            grid-auto-rows: min-content;
+            grid-row-gap: 0.4rem;
+            margin-bottom: 1.2rem;
+        }
+
         .giz-order-summary {
             display: grid;
             grid-template-columns: 1fr min-content;
-            grid-row-gap: 1.8rem;
+            grid-row-gap: 1.2rem;
             grid-column-gap: 0.4rem;
             margin-bottom: 2.4rem;
             align-items: center;
@@ -240,4 +251,8 @@
         color: rgba(255, 255, 255, 0.6);
         @include font-m-theme-client($font-weight-light-theme-client);
     }
+}
+
+.giz-order-promocode-status {
+    @include font-m-theme-client($font-weight-light-theme-client);
 }

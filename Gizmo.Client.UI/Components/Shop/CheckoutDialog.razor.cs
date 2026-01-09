@@ -40,8 +40,7 @@ namespace Gizmo.Client.UI.Components
         {
             await DismissCallback.InvokeAsync();
 
-            if (Service.ViewState.IsComplete) //TODO: AAAAA CHECK
-                Service.Clear();
+            Service.ClearDialog();
         }
 
         protected override async Task OnInitializedAsync()

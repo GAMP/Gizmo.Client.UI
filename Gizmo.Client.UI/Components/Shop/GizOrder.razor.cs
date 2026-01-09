@@ -2,7 +2,6 @@
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
-using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -17,21 +16,40 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         ClientServerCartViewService ClientServerCartViewService { get; set; }
 
-        private Task PlaceOrder()
+        public string GetPromocodeStatusClass(Web.Api.Models.PromoCodeApplyStatus status)
         {
-            return Service.SubmitAsync();
+            string result = "giz-order-promocode-status";
+
+            switch (status)
+            {
+                case Web.Api.Models.PromoCodeApplyStatus.Applied:
+                    result += " giz-order-promocode-status--applied";
+                    break;
+
+                case Web.Api.Models.PromoCodeApplyStatus.NotApplied:
+                    result += " giz-order-promocode-status--not-applied";
+                    break;
+
+                case Web.Api.Models.PromoCodeApplyStatus.Unusable:
+                    result += " giz-order-promocode-status--unusable";
+                    break;
+            }
+
+            return result;
         }
 
         protected override void OnInitialized()
         {
             this.SubscribeChange(Service.ViewState);
             this.SubscribeChange(ClientServerCartViewService.ViewState);
+            this.SubscribeChange(ClientServerCartViewService.ViewState.PromoCodeViewState);
 
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
+            this.UnsubscribeChange(ClientServerCartViewService.ViewState.PromoCodeViewState);
             this.UnsubscribeChange(ClientServerCartViewService.ViewState);
             this.UnsubscribeChange(Service.ViewState);
 
