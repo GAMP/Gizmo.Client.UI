@@ -10,15 +10,15 @@ using Gizmo.UI;
 
 namespace Gizmo.Client.UI.Host.WPF
 {
-    public sealed class WpfInputLenguageService : IInputLanguageService
+    public sealed class WpfInputLanguageService : IInputLanguageService
     {
-        public WpfInputLenguageService()
+        public WpfInputLanguageService()
         {
         }
-        
-        public event EventHandler<EventArgs> LangauageChange;
 
-  
+        public event EventHandler<EventArgs> LanguageChange;
+
+
         public IEnumerable<CultureInfo> AvailableInputLanguages => InputLanguageManager.Current.AvailableInputLanguages.OfType<CultureInfo>();
 
         public CultureInfo CurrentInputLanguage => throw new NotImplementedException();

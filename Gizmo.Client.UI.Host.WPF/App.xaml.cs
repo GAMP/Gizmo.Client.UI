@@ -40,7 +40,7 @@ namespace Gizmo.Client.UI.Host.WPF
                 serviceCollection.AddSingleton<IGizmoClient, DemoClient>();
                 serviceCollection.AddSingleton<IImageService, ImageService>();
 
-                serviceCollection.AddSingleton<IInputLanguageService, WpfInputLenguageService>();
+                serviceCollection.AddSingleton<IInputLanguageService, WpfInputLanguageService>();
 
                 serviceCollection.AddSingleton<IHostWindow, HostWindow>();
                 serviceCollection.AddSingleton<INotificationsHost,NotificationsHost>();
@@ -80,13 +80,13 @@ namespace Gizmo.Client.UI.Host.WPF
             //create notifications window (early load)
             var notificationsHost = host.Services.GetRequiredService<INotificationsHost>();
 
+            //show host window
+            hostWindow.Show();
+
             var tokenHandlerService = host.Services.GetRequiredService<UserAccessTokenHandler>();
             var authClient = host.Services.GetRequiredService<Gizmo.Web.Api.User.Clients.AuthWebApiClient>();
             var token = await authClient.AccessTokenGetAsync(new Web.Api.Models.UserAccessTokenRequestModel() { Password = "oleg", Username = "oleg" });
             await tokenHandlerService.SetCurrentAsync(token);
-
-            //show host window
-            hostWindow.Show();
 
             await host.StartAsync();
         }
