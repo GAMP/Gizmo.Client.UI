@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Gizmo.Client.UI.Services;
+using Gizmo.Client.Options;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI;

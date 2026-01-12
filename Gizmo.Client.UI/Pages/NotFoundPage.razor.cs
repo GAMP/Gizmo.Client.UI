@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Gizmo.Client.Options;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Microsoft.AspNetCore.Components;
