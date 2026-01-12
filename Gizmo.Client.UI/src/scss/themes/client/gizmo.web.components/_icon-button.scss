@@ -2,9 +2,29 @@
 
 .giz-icon-button {
     [#{$client-theme-comp-attr}] & {
+        cursor: pointer;
+        white-space: nowrap;
+        position: relative;
+        align-items: center;
         color: white;
         border: none;
         border-radius: 50%;
+
+        &__content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &:hover {
+            .giz-tooltip {
+                visibility: visible;
+            }
+        }
+
+        &.disabled, &[disabled] {
+            pointer-events: none;
+        }
 
         &--fill {
             background-color: rgba(0, 120, 210, 0.4);

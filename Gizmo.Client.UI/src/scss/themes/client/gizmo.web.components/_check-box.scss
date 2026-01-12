@@ -2,8 +2,18 @@
 
 .giz-check-box {
     [#{$client-theme-comp-attr}] & {
+        display: inline-flex;
+
         & input {
+            position: absolute;
+            left: -9999px;
+
             & + label {
+                position: relative;
+                display: flex;
+                align-items: center;
+                user-select: none;
+                cursor: pointer;
                 margin: 0.4rem 0;
                 color: #fafafa;
                 @include font-m-theme-client($font-weight-light-theme-client);
@@ -13,7 +23,12 @@
                 }
             }
 
+            &:checked + label {
+                overflow: visible;
+            }
+
             & + label:before {
+                content: '';
                 width: 2.4rem;
                 height: 2.4rem;
                 background-color: transparent;
@@ -24,12 +39,14 @@
             }
 
             &:checked + label:before {
+                content: '';
                 background-color: #3f8cff;
                 border: 0.2rem solid #3f8cff;
             }
 
             &:checked + label:after {
-                background-color: unset;
+                content: '';
+                position: absolute;
                 left: 0.9rem;
                 top: 0.5rem;
                 width: 0.4rem;
@@ -44,11 +61,14 @@
 
             &.disabled + label:before,
             &[disabled] + label:before {
+                cursor: default;
+                pointer-events: none;
                 border: 0.2rem solid rgba(246, 251, 253, 0.28);
             }
 
             &.disabled + label,
             &[disabled] + label {
+                cursor: default;
                 color: rgba(255, 255, 255, 0.24);
             }
         }

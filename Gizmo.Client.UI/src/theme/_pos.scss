@@ -1,218 +1,208 @@
 [client-theme] {
+    //##############################
+    //POS
+    //##############################
+    /*POS Menu Tab.*/
+    .giz-client-tab-item {
+        color: $background-text-color;
 
-	//##############################
-	//POS
-	//##############################
+        &.active {
+            color: $primary-color;
+            /*Bottom Line*/
+            &:before {
+                background-color: $primary-color;
+            }
+        }
+    }
+    /*Product card.*/
+    .giz-product-card {
+        color: $background-text-color;
+        background-color: $background-color;
 
-	/*POS Menu Tab.*/
-	.giz-client-tab-item {
-		color: $background-text-color;
+        &__title {
+            color: $background-text-color-light;
+        }
 
-		&.active {
-			color: $primary-color;
+        .giz-time-product-details {
+            color: $background-text-color;
+        }
 
-			/*Bottom Line*/
-			&:before {
-				background-color: $primary-color;
-			}
-		}
-	}
+        .giz-timeline {
+            &-header {
+                color: $background-text-color-light;
+            }
 
-	/*Product card.*/
-	.giz-product-card {
-		color: $background-text-color;
-		background-color: $background-color;
+                &-header:after {
+                    border: 0.1rem solid $background-text-color-light;
+                }
 
-		&__title {
-			color: $background-text-color-light;
-		}
+            &-item:before {
+                background-color: $background-text-color-light;
+                border: 0.1rem solid $background-text-color-light;
+            }
 
-		.giz-time-product-details {
-			color: $background-text-color;
-		}
+            &-item:after {
+                border: 0.1rem solid $background-text-color-light;
+            }
+        }
 
-		.giz-timeline {
-			&-header {
-				color: $background-text-color-light;
-			}
-
-			&-header:after {
-				border: 0.1rem solid $background-text-color-light;
-			}
-
-			&-item:before {
-				background-color: $background-text-color-light;
-				border: 0.1rem solid $background-text-color-light;
-			}
-
-			&-item:after {
-				border: 0.1rem solid $background-text-color-light;
-			}
-		}
-
-		.giz-product-card__content__image {
-			background-color: $background-color-highlight;
-		}
-
-		/*.giz-product-card__content__image__hovered {
+        .giz-product-card__content__image {
+            background-color: $background-color-highlight;
+        }
+        /*.giz-product-card__content__image__hovered {
 			background-color: $background-color-highlight;
 		}*/
+        /*Blur image on hover.*/
+        &:hover {
+            .giz-product-card__content__image__hovered {
+                background-color: $background-color-highlight-active;
+            }
 
-		/*Blur image on hover.*/
-		&:hover {
-			.giz-product-card__content__image__hovered {
-				background-color: $background-color-highlight-active;
-			}
+            .giz-button--fill.accent.giz-product-card-primary-button {
+                color: $button-accent-rest-color;
+                background-color: $button-accent-rest-background-color;
+            }
+        }
 
-			.giz-button--fill.accent.giz-product-card-primary-button {
-				color: $button-accent-rest-color;
-				background-color: $button-accent-rest-background-color;
-			}
-		}
+        .giz-bundle-product-details {
+            & > span {
+                color: $background-text-color;
+                text-shadow: 0 0.2rem 0.2rem $text-shadow-1, 0 0.1rem 0.1rem $text-shadow-2;
+            }
+        }
+    }
+    /*Product details page.*/
+    .giz-product-details {
+        color: $background-text-color;
 
-		.giz-bundle-product-details {
-			&>span {
-				color: $background-text-color;
-				text-shadow: 0 0.2rem 0.2rem $text-shadow-1, 0 0.1rem 0.1rem $text-shadow-2;
-			}
-		}
-	}
+        &__product {
+            &__navigation {
+                & > div {
+                    color: $background-text-color;
+                }
+            }
 
-	/*Product details page.*/
-	.giz-product-details {
-		color: $background-text-color;
+            &__info__image {
+                background-color: $background-color-highlight;
+            }
 
-		&__product {
-			&__navigation {
-				&>div {
-					color: $background-text-color;
-				}
-			}
+            &__info {
+                &__additional {
+                    &__availability {
+                        background-color: $background-color-highlight;
 
-			&__info__image {
-				background-color: $background-color-highlight;
-			}
+                        .giz-product-availability {
+                            &__title {
+                                color: $background-text-color-light;
+                            }
 
-			&__info {
-				&__additional {
-					&__availability {
-						background-color: $background-color-highlight;
+                            &__body {
+                                color: $background-text-color;
+                            }
+                        }
+                    }
 
-						.giz-product-availability {
-							&__title {
-								color: $background-text-color-light;
-							}
+                    &__expirations__header {
+                        color: $background-text-color-light;
+                    }
+                }
+            }
+        }
+    }
+    /*POS Cart*/
+    .giz-order {
+        &__items {
+            color: $background-text-color;
+            background-color: $background-color;
 
-							&__body {
-								color: $background-text-color;
-							}
-						}
-					}
+            &__footer {
+                box-shadow: 0 -0.3rem 5.0rem $box-shadow-3;
+            }
 
-					&__expirations__header {
-						color: $background-text-color-light;
-					}
-				}
-			}
-		}
-	}
+            .giz-empty-state {
+                &__title {
+                    color: $background-text-color;
+                }
 
-	/*POS Cart*/
-	.giz-order {
-		&__items {
-			color: $background-text-color;
-			background-color: $background-color;
+                &__text {
+                    color: $background-text-color-light;
+                }
+            }
+        }
 
-			&__footer {
-				box-shadow: 0 -0.3rem 5.0rem $box-shadow-3;
-			}
+        &__notes {
+            color: $background-text-color;
+            background-color: $background-color;
+        }
 
-			.giz-empty-state {
-				&__title {
-					color: $background-text-color;
-				}
+        &__totals {
+            color: $background-text-color;
+            background-color: $background-color;
+        }
+    }
 
-				&__text {
-					color: $background-text-color-light;
-				}
-			}
-		}
+    .giz-product-availability-show-more span:after {
+        border-top: 0.1rem solid $link-color;
+    }
 
-		&__notes {
-			color: $background-text-color;
-			background-color: $background-color;
-		}
+    .giz-time-product {
+        &-host-groups {
+            .giz-time-product-host-group {
+                color: $background-text-color;
+                background-color: $background-color-highlight;
 
-		&__totals {
-			color: $background-text-color;
-			background-color: $background-color;
-		}
-	}
+                &--additional {
+                    color: $background-text-color;
+                    background-color: $background-color-highlight;
+                }
 
-	.giz-product-availability-show-more span:after {
-		border-top: 0.1rem solid $link-color;
-	}
+                &.active {
+                    background-color: $background-color-highlight-active;
+                }
+            }
+        }
 
-	.giz-time-product {
-		&-host-groups {
-			.giz-time-product-host-group {
-				color: $background-text-color;
-				background-color: $background-color-highlight;
+        &-expiration {
+            color: #FFFFFF;
+        }
+    }
 
-				&--additional {
-					color: $background-text-color;
-					background-color: $background-color-highlight;
-				}
+    .giz-product-expiration {
+        color: #FFFFFF;
+    }
 
-				&.active {
-					background-color: $background-color-highlight-active;
-				}
-			}
-		}
+    .giz-bundle-product-details {
+        text-shadow: 0 0.2rem 0.2rem $text-shadow-1, 0 0.1rem 0.1rem $text-shadow-2;
 
-		&-expiration {
-			color: #FFFFFF;
-		}
-	}
+        & > span {
+            text-shadow: 0 0.2rem 0.2rem $text-shadow-1, 0 0.1rem 0.1rem $text-shadow-2;
+        }
+    }
 
-	.giz-product-expiration {
-		color: #FFFFFF;
-	}
+    .giz-shop-quantity-picker {
+        color: $background-text-color;
+        border: 0.1rem solid $border-rest;
+    }
 
-	.giz-bundle-product-details {
-		text-shadow: 0 0.2rem 0.2rem $text-shadow-1, 0 0.1rem 0.1rem $text-shadow-2;
+    .giz-checkout-dialog {
+        .giz-checkout {
+            &__summary {
+                color: $background-text-color;
+            }
 
-		&>span {
-			text-shadow: 0 0.2rem 0.2rem $text-shadow-1, 0 0.1rem 0.1rem $text-shadow-2;
-		}
-	}
+            &__payment-method {
+                color: $background-text-color;
+            }
 
-	.giz-shop-quantity-picker {
-		color: $background-text-color;
-		border: 0.1rem solid $border-rest;
-	}
-
-	.giz-checkout-dialog {
-		.giz-checkout {
-			&__summary {
-				color: $background-text-color;
-			}
-
-			&__payment-method {
-				color: $background-text-color;
-			}
-
-			.giz-select {
-				.giz-input-root {
-					color: $background-text-color;
-					background-color: $background-color;
-				}
-			}
-		}
-	}
-
-	//##############################
-	//End POS
-	//##############################
-
+            .giz-select {
+                .giz-input-root {
+                    color: $background-text-color;
+                    background-color: $background-color;
+                }
+            }
+        }
+    }
+    //##############################
+    //End POS
+    //##############################
 }

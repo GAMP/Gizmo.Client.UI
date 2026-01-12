@@ -76,7 +76,11 @@
             }
             @if (ClientServerCartViewService.ViewState.PromoCodeStatus != Web.Api.Models.PromoCodeApplyStatus.None)
             {
-                <div class="@GetPromocodeStatusClass(ClientServerCartViewService.ViewState.PromoCodeStatus)">@ClientServerCartViewService.ViewState.PromoCodeStatus.ToString()</div>
+                <div class="@GetPromocodeStatusClass(ClientServerCartViewService.ViewState.PromoCodeStatus)">@GetPromocodeStatusText(ClientServerCartViewService.ViewState.PromoCodeStatus)</div>
+            }
+            else if (!string.IsNullOrEmpty(ClientServerCartViewService.ViewState.PromotionExceptionMessage))
+            {
+                <div class="giz-order-promocode-status giz-order-promocode-status--unusable">@ClientServerCartViewService.ViewState.PromotionExceptionMessage</div>
             }
         </div>
         <div class="giz-order-summary">

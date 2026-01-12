@@ -2,6 +2,9 @@
 
 .giz-button {
     [#{$client-theme-comp-attr}] & {
+        display: inline-block;
+        position: relative;
+        cursor: pointer;
         border-radius: 0.8rem;
         color: white;
         border: none;
@@ -12,11 +15,46 @@
         @include font-l-theme-client($font-weight-regular-theme-client);
 
         &__progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
             background-color: #3F8CFF;
 
             &-wrapper {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                overflow: hidden;
                 border-radius: 0.8rem;
             }
+        }
+
+        &__content {
+            display: flex;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            align-items: center;
+            height: 100%;
+
+            &_wrapper {
+                position: relative;
+                display: flex;
+                height: 100%;
+                overflow: hidden;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        &--full-width {
+            width: 100%;
+        }
+
+        &.disabled, &[disabled] {
+            pointer-events: none;
         }
 
         &--group-button {
