@@ -2,17 +2,30 @@
 
 .giz-badge {
     [#{$client-theme-comp-attr}] & {
-        &.giz-badge--small {
-            .giz-badge__wrapper {
-                .giz-badge__badge {
-                    display: inline-block;
-                    line-height: 1;
-                    height: 0.6rem;
-                    min-width: 0.6rem;
-                    border-radius: 50%;
-                    padding: 0;
-                    inset: auto auto calc(100% - 0.3rem) calc(100% - 0.3rem);
-                    box-shadow: 0 0 0.5rem 0.2rem rgba(37, 140, 246, 0.6);
+        display: inline-block;
+
+        &--corner {
+            position: relative;
+
+            & > .giz-badge__wrapper {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+
+                & > .giz-badge__badge {
+                    position: absolute;
+                    height: unset;
+                    min-width: unset;
+                    background-color: #E70038;
+                    padding: 0.2rem 0.6rem;
+                    border-radius: 1rem;
+                    white-space: nowrap;
+                    inset: auto auto calc(100% - 1.5rem) calc(100% - 1.0rem);
+                    //Font ?
+                    font-weight: 400;
+                    font-size: 1.2rem;
+                    line-height: 1.6rem;
                 }
             }
         }
