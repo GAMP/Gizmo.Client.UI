@@ -2,8 +2,31 @@
 
 .giz-menu {
     [#{$client-theme-comp-attr}] & {
+        display: inline-block;
+        position: relative;
+
+        &--mouse {
+            .giz-overlay {
+                pointer-events: none;
+            }
+        }
+
+        & > button {
+            width: 100%;
+        }
 
         &__dropdown {
+            right: 0;
+            left: 0;
+
+            &--cursor {
+                position: absolute;
+
+                & > .giz-list {
+                    right: 0;
+                    left: 0;
+                }
+            }
 
             & > .giz-list.giz-list--right {
                 position: absolute;

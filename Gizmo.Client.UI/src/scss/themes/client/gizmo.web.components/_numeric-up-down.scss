@@ -1,0 +1,57 @@
+//=============== NumericUpDown ================//
+
+.giz-numeric-up-down {
+    [#{$client-theme-comp-attr}] & {
+        display: inline-block;
+
+        &--full-width {
+            display: block;
+        }
+
+        .giz-input-root {
+            .giz-input__icon-right {
+                .giz-icon {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        &__value {
+            z-index: 1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: inherit;
+        }
+
+        &--formatted {
+            .giz-input-root .giz-input-wrapper > input {
+                padding: 0;
+                height: 0;
+            }
+
+            &:focus-within {
+                .giz-numeric-up-down__value {
+                    height: 0;
+                }
+
+                .giz-input-root .giz-input-wrapper > input {
+                    height: 100%;
+                }
+            }
+
+            &--invalid {
+                .giz-numeric-up-down__value {
+                    height: 0;
+                }
+
+                .giz-input-root .giz-input-wrapper > input {
+                    height: 100%;
+                }
+            }
+        }
+    }
+}

@@ -2,18 +2,50 @@
 
 .giz-select {
     [#{$client-theme-comp-attr}] & {
+        display: inline-block;
+        position: relative;
+
+        &--full-width {
+            display: block;
+        }
+
         &.open {
             .giz-input__icon-right {
                 transform: rotate(180deg);
             }
         }
 
-        .giz-select__dropdown {
+        &__content {
+            cursor: pointer;
+            flex-grow: 1;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+            &_wrapper {
+                position: relative;
+            }
+        }
+
+        &__dropdown {
             background-color: #22272B;
             box-shadow: 0 0.2rem 1.6rem rgba(0, 0, 0, 0.25);
             border-radius: 0.8rem;
             padding: 0.8rem;
             border: unset;
+
+            &--full-width {
+                width: 100%;
+            }
+
+            &--cursor {
+                position: absolute;
+
+                & > .giz-list {
+                    right: 0;
+                    left: 0;
+                }
+            }
 
             .giz-list {
                 padding: unset;
@@ -50,6 +82,40 @@
                         }
                     }
                 }
+            }
+        }
+
+        .giz-input-control {
+            cursor: pointer;
+
+            .giz-input-root {
+                justify-content: space-between;
+                align-items: center;
+
+                input {
+                    cursor: pointer;
+                }
+
+                .giz-input__icon-right {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        &.disabled,
+        &[disabled] {
+            .giz-input-control {
+                cursor: default;
+            }
+        }
+
+        .giz-popup {
+            display: none;
+            overflow-x: hidden;
+            overflow-y: auto;
+
+            &--open {
+                display: block;
             }
         }
     }

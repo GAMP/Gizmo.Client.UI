@@ -1,0 +1,37 @@
+//=============== IconSelect ================//
+
+.giz-icon-select {
+    [#{$client-theme-comp-attr}] & {
+        display: inline-block;
+
+        &-item {
+            display: grid;
+            grid-template-columns: min-content 1fr min-content;
+            align-items: center;
+            gap: 1.0rem;
+            width: 100%;
+
+            &__icon {
+                display: flex;
+                align-items: center;
+                width: 2.2rem;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+
+            &__display {
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+        &--virtualized {
+            .giz-list-item {
+                white-space: nowrap;
+            }
+        }
+    }
+}

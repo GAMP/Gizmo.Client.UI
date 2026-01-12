@@ -3,21 +3,37 @@
 .giz-masked-phone-input {
     [#{$client-theme-comp-attr}] & {
         input {
+            position: absolute;
             font-family: $font-family-text-theme-client;
             @include font-l-theme-client($font-weight-light-theme-client);
         }
 
         .giz-input-wrapper {
+            display: flex;
+            cursor: text;
+
             .giz-phone-prefix {
+                cursor: text;
                 margin-right: 0.5rem;
+            }
+
+            .giz-phone-wrapper {
+                flex-grow: 1;
+                position: relative;
             }
         }
 
         .giz-mask {
+            position: absolute;
+            display: flex;
             color: rgba(255, 255, 255, 0.35);
             //FontF
             font-family: $font-family-text-theme-client;
             @include font-l-theme-client($font-weight-light-theme-client);
+
+            &-done {
+                visibility: hidden;
+            }
         }
 
         .giz-input-root {

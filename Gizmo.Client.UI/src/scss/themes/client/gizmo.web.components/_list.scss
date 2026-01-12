@@ -2,7 +2,25 @@
 
 .giz-list {
     [#{$client-theme-comp-attr}] & {
+        position: relative;
         text-align: left;
+
+        .giz-list-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            text-decoration: none;
+
+            &.disabled {
+                cursor: default;
+                pointer-events: none;
+            }
+        }
+
+        &.giz-list--with-header {
+            display: grid;
+            grid-template-rows: auto 1fr;
+        }
 
         .giz-divider {
             margin: 0.8rem;
@@ -10,7 +28,21 @@
         }
 
         &-nested-list {
+            position: absolute;
+            width: max-content;
             margin-top: -4.5rem;
+
+            &.giz-list--right {
+                left: 100%;
+            }
+
+            &.giz-list--left {
+                right: 100%;
+            }
+
+            &.giz-list--top {
+                bottom: 0;
+            }
         }
 
         &-nested-list-expand-icon {

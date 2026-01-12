@@ -2,6 +2,12 @@
 
 .giz-multi-select {
     [#{$client-theme-comp-attr}] & {
+        display: inline-block;
+        position: relative;
+
+        &--full-width {
+            display: block;
+        }
 
         &.open {
             .giz-input__icon-right {
@@ -10,7 +16,16 @@
         }
 
         &__content {
+            cursor: pointer;
+            flex-grow: 1;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
             @include font-m-theme-client($font-weight-light-theme-client);
+
+            &_wrapper {
+                position: relative;
+            }
         }
 
         &__dropdown {
@@ -20,11 +35,29 @@
             padding: 0.8rem;
             border: unset;
 
+            &--full-width {
+                width: 100%;
+            }
+
+            &--cursor {
+                position: absolute;
+                overflow: hidden !important;
+
+                & > .giz-list {
+                    right: 0;
+                    left: 0;
+                    overflow: auto;
+                }
+            }
+
             .giz-multi-select-list {
+                display: flex;
+                flex-wrap: wrap;
                 padding: unset;
                 gap: 0.8rem;
 
                 .giz-multi-select-item {
+                    cursor: pointer;
                     border: 1px solid rgba(246, 251, 253, 0.52);
                     border-radius: 0.4rem;
                     padding: 0 1.2rem;
@@ -38,6 +71,28 @@
                     }
                 }
             }
+        }
+
+        .giz-input-control {
+            cursor: pointer;
+
+            .giz-input-root {
+                justify-content: space-between;
+                align-items: center;
+
+                input {
+                    cursor: pointer;
+                }
+
+                .giz-input__icon-right {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .giz-popup {
+            overflow-x: hidden;
+            overflow-y: auto;
         }
     }
 }

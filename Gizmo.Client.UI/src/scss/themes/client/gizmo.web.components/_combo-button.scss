@@ -2,7 +2,17 @@
 
 .giz-combo-button {
     [#{$client-theme-comp-attr}] & {
+        display: inline-flex;
+        position: relative;
         gap: 0.2rem;
+
+        &--full-width {
+            display: flex;
+
+            & > .left-button {
+                flex-grow: 1;
+            }
+        }
 
         .giz-icon--medium {
             width: 2.0rem;
@@ -31,8 +41,31 @@
         }
 
         .giz-combo-button__dropdown {
-            background-color: unset;
             border: unset;
+
+            &--full-width {
+                min-width: 100%;
+            }
+
+            &--cursor {
+                position: absolute;
+
+                & > .giz-list {
+                    right: 0;
+                    left: 0;
+
+                    .giz-list-nested-list {
+                        &.giz-list--right {
+                        }
+
+                        &.giz-list--left {
+                        }
+
+                        &.giz-list--top {
+                        }
+                    }
+                }
+            }
 
             .giz-list {
                 background-color: #201F1F;
@@ -45,6 +78,7 @@
                     padding: 0.9rem 1.6rem;
                     color: #E4E6EB;
                     border-radius: 0;
+                    white-space: nowrap;
                     @include font-m-theme-client($font-weight-light-theme-client);
 
                     &.active {

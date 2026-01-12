@@ -2,10 +2,45 @@
 
 .giz-data-grid {
     [#{$client-theme-comp-attr}] & {
+        position: relative;
+        width: 100%;
         border-collapse: separate;
         border-spacing: 0;
         background-color: #22272B;
         color: unset;
+
+        &-wrapper {
+            position: relative;
+            overflow: auto;
+
+            .giz-menu {
+                position: absolute !important;
+            }
+        }
+
+        &-row {
+            &-detail {
+                display: none;
+
+                &-content {
+                    position: relative;
+                    width: 100%;
+                    display: flex;
+                    align-items: flex-start;
+                    box-sizing: border-box;
+                }
+            }
+
+            &--dropdown {
+                &.giz-data-grid-row--open + .giz-data-grid-row-detail {
+                    display: table-row;
+                }
+            }
+
+            &--open {
+                cursor: pointer;
+            }
+        }
 
         & > thead td, & > thead th {
             color: #AAABAD;
@@ -14,12 +49,22 @@
             @include font-s-theme-client($font-weight-light-theme-client);
             background-color: #22272B;
             border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
+
+            .giz-data-grid-header {
+                display: flex;
+                height: 100%;
+                align-items: center;
+            }
         }
 
         & > tbody > tr:not(.giz-data-grid-row-detail) {
             border-top: 0.1rem solid #22272B;
             height: unset;
             @include font-m-theme-client($font-weight-light-theme-client);
+
+            &.selected {
+                cursor: pointer;
+            }
 
             &:hover {
                 background-color: #22272B;
@@ -50,6 +95,42 @@
 
                 &:last-child {
                     border-right: unset;
+                }
+            }
+        }
+
+        &-check {
+            width: 1%;
+        }
+
+        &-column-selector {
+            &-wrapper {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: 2;
+            }
+
+            .giz-check-box {
+                label {
+                    margin: 0;
+                }
+            }
+        }
+
+        &--sticky-header {
+            max-height: 100%;
+
+            .giz-data-grid-column-selector-wrapper {
+                position: sticky;
+            }
+
+            .giz-data-grid {
+                & > thead td, & > thead th {
+                    position: sticky;
+                    top: 0;
+                    z-index: 1;
                 }
             }
         }

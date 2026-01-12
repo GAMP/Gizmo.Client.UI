@@ -1,10 +1,16 @@
 //=============== ButtonGroup ================//
 
 .giz-button-group {
+    display: inline-flex;
+
     [#{$client-theme-comp-attr}] & {
         border: 0.1rem solid rgba(246, 251, 253, 0.28);
         border-radius: 0.8rem;
         padding: unset;
+
+        &.disabled {
+            pointer-events: none;
+        }
 
         .giz-button {
             text-transform: uppercase;
