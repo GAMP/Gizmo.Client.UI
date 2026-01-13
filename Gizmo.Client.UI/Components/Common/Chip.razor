@@ -1,0 +1,17 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits Gizmo.Web.Components.CustomDOMComponentBase
+
+<div class="@Class @ClassName"
+     style="@Style"
+     @onclick="@OnClickChipHandler"
+     @ref="@Ref"
+     @attributes="@Attributes"
+     id="@Id">
+    <div class="giz-chip__content_wrapper">
+        @ChildContent
+    </div>
+    @if (CanClose)
+    {
+        <IconButton SVGIcon="Icons.Close" Class="giz-input-button-clear" @onclick="OnClickCloseButtonHandler" />
+    }
+</div>

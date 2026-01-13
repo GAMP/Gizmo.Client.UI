@@ -1,0 +1,16 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<div class="@Class @ClassName">
+    <span class="giz-circular-progress-bar__right">
+        <!--if need to set value 0deg to 180deg then change the value top to bottom circle-->
+        <span class="giz-circular-progress-bar-value-bar" style="border-color: @Color; transform: rotate(@(_left.ToString(System.Globalization.CultureInfo.InvariantCulture))deg)"></span>
+    </span>
+    <span class="giz-circular-progress-bar__left">
+        <!--if need to set value 180deg to 360deg then change the value bottom to top circle-->
+        <span class="giz-circular-progress-bar-value-bar" style="border-color: @Color; transform: rotate(@(_right.ToString(System.Globalization.CultureInfo.InvariantCulture))deg)"></span>
+    </span>
+    <div class="giz-circular-progress-bar__value">
+        @ChildContent
+    </div>
+</div>

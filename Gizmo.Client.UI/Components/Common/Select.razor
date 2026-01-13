@@ -1,0 +1,85 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits GizInputBase<TValue>
+
+@typeparam TValue
+
+<CascadingValue Value="@((ISelect<TValue>)this)" IsFixed="true">
+    <div class="@Class @ClassName"
+         style="@Style"
+         id="@Id"
+         @ref="@Ref">         
+        <div class="giz-select__content_wrapper" @ref="_inputWrapperElement">
+            <GizInput Label="@Label"
+                      ValidationErrorStyle="@(ValidationErrorStyle == ValidationErrorStyles.Label ? ValidationErrorStyles.BorderOnly : ValidationErrorStyle)"
+                      IsDisabled="@IsDisabled"
+                      IsFullWidth="@IsFullWidth"
+                      Width="@Width"
+                      HasOutline="@HasOutline"
+                      HasShadow="@HasShadow"
+                      IsTransparent="@IsTransparent"
+                      Size="@Size"
+                      IsValid="@IsValid"
+                      ValidationMessage="@ValidationMessage"
+                      LeftSVGIcon="@LeftSVGIcon"
+                      RightSVGIcon="@(HandleSVGIcon.HasValue ? HandleSVGIcon.Value : Icons.TriangleDown)"
+                      @onclick="OnClickInput">
+
+                @if (@_selectedItem == null)
+                {
+                    <div class="giz-select__content" tabindex="0" style="outline: none"
+                         @onkeydown="OnInputKeyDownHandler"
+                         @onkeydown:preventDefault="true">
+                        @Placeholder
+                    </div>
+                }
+                else
+                {
+                    @if (@_selectedItem.ChildContent != null)
+                    {
+                        <div class="giz-select__content" tabindex="0" style="outline: none"
+                             @onkeydown="OnInputKeyDownHandler"
+                             @onkeydown:preventDefault="true">
+                            @_selectedItem.ChildContent
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="giz-input-wrapper">
+                            <input @ref="_inputElement"
+                                   type="text"
+                                   value="@_selectedItem.Text"
+                                   disabled="@IsDisabled"
+                                   readonly
+                                   @onkeydown="OnInputKeyDownHandler"
+                                   @onkeydown:preventDefault="true" />
+                        </div>
+                    }
+                }
+
+                @if (CanClearValue && IsNullable() && Value != null)
+                {
+                    <IconButton SVGIcon="@Icons.Close" Class="giz-input-button-clear" @onclick="OnClickButtonClearValueHandler" />
+                }
+            </GizInput>
+
+            <Popup MaximumHeight="@MaximumHeight"
+                   @bind-IsOpen="_isOpen"
+                   OpenDirection="@OpenDirection"
+                   Class="@PopupClassName"
+                   Style="@PopupStyleValue">
+                <List @ref="_popupContent"
+                      CanClick="true"
+                      CanSelect="true">
+                    @ChildContent
+                </List>
+            </Popup>
+        </div>
+            
+        @if (ValidationErrorStyle == ValidationErrorStyles.Label)
+        {
+            <div class="giz-input-validation-label">
+                @ValidationMessage
+            </div>
+        }
+    </div>
+</CascadingValue>

@@ -1,0 +1,124 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits Gizmo.Web.Components.CustomDOMComponentBase
+
+@typeparam TItemType
+
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+
+@*propagate this component as parent*@
+<CascadingValue Value="this" Name="Parent" IsFixed="true">
+    <CascadingValue Value="@_editContext" IsFixed="true">
+
+        <div class="@Class @ClassName"
+             style="@Style"
+             @ref="@Ref"
+             @oncontextmenu:preventDefault="true"
+             @oncontextmenu="ContextMenuHandler"
+             >
+       
+            @* @if (ContextMenu != null)
+            {
+                <Menu @ref="_contextMenu" IsContextMenu="true" OpenDirection="PopupOpenDirections.Cursor">
+                    @ContextMenu
+                </Menu>
+            } *@
+
+            @* @if (ShowColumnSelector)
+            {
+                <div class="giz-data-grid-column-selector-wrapper">
+                    <Menu CloseOnItemClick="false" Class="giz-data-grid-column-selector" Direction="ListDirections.Left" OpenDirection="PopupOpenDirections.Cursor">
+                        <Activator>
+                            <Button Size="ButtonSizes.Small" Variant="ButtonVariants.Text" LeftSVGIcon="Icons.Show"></Button>
+                        </Activator>
+                        <ChildContent>
+                            @foreach (var column in Columns)
+                            {
+                                if (column.CanChangeVisibility)
+                                {
+                                    <ListItem>
+                                        <CheckBox @bind-IsChecked="column.IsVisible">
+                                            @column.HeaderTemplate
+                                        </CheckBox>
+                                    </ListItem>
+                                }
+                            }
+                        </ChildContent>
+                    </Menu>
+                </div>
+            } *@
+
+            <table class="@TableClass @TableClassName"
+                    id="@Id"
+                    @ref="@_table"
+                    @attributes="@Attributes"
+                    @onkeydown="OnInputKeyDownHandler">
+
+                @*table head*@
+                <thead>
+                    @*header*@
+                    <tr>
+                        @if (IsSelectable && (ShowCheckBoxes || !SelectOnClick))
+                        {
+                            <th class="giz-data-grid-check">
+                                <CheckBox IsChecked="@(_hasSelectedAllItems)" IsIndeterminate="@(_hasSelectedItems && !_hasSelectedAllItems)" IsCheckedChanged="@IsCheckedChangedHandler" />
+                            </th>
+                        }
+                        @ChildContent
+                    </tr>
+                </thead>
+
+                @*table body*@
+                <tbody>
+                    @if (@IsVirtualized)
+                    {
+                        @*virtualization enabled*@
+                        @if (ItemsProvider != null)
+                        {
+                            <Virtualize TItem="@TItemType"
+                                        Context="dataItem"
+                                        ItemSize="@ItemSize"
+                                        OverscanCount="@OverscanCount"
+                                        ItemsProvider="@ItemsProvider">
+                                <ItemContent>
+                                    <DataGridRow @key="dataItem.GetHashCode()" Class="@RowClass" TItemType="@TItemType" Columns="@Columns" IsSelectable="@IsSelectable" IsDropdown="@(DetailTemplate != null)" Item="dataItem" />
+                                </ItemContent>
+                                <Placeholder>
+                                    @PlaceHolderTemplate
+                                </Placeholder>
+                            </Virtualize>
+                        }
+                        else
+                        {
+                            <Virtualize TItem="@TItemType"
+                                        Context="dataItem"
+                                        ItemSize="@ItemSize"
+                                        OverscanCount="@OverscanCount"
+                                        Items="@ItemSource">
+                                <ItemContent>
+                                    <DataGridRow @key="dataItem.GetHashCode()" Class="@RowClass" TItemType="@TItemType" Columns="@Columns" IsSelectable="@IsSelectable" IsDropdown="@(DetailTemplate != null)" Item="dataItem" />
+                                </ItemContent>
+                                <Placeholder>
+                                    @PlaceHolderTemplate
+                                </Placeholder>
+                            </Virtualize>
+                        }
+                    }
+                    else
+                    {
+                        @*virtualization disabled*@
+                        @if (ItemSource != null)
+                        {
+                            @foreach (var dataItem in GetSortedData())
+                            {
+                                <DataGridRow @key="dataItem.GetHashCode()" Class="@RowClass" TItemType="@TItemType" Columns="@Columns" DetailTemplateCustomColumns="@DetailTemplateCustomColumns" IsSelectable="@IsSelectable" IsDropdown="@(DetailTemplate != null)" Item="dataItem" />
+                            }
+                        }
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+        
+    </CascadingValue>
+</CascadingValue>

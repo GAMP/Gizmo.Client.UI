@@ -1,0 +1,55 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits ButtonBase
+
+<button class="@Class @ClassName"
+        style="@StyleValue @Style"
+        @onclick="@OnClickButtonHandler"
+        @onclick:stopPropagation="@StopPropagation"
+        aria-label="@Label"
+        disabled="@IsDisabled"
+        type="@Type"
+        name="@Name"
+        value="@Value"
+        @ref="@Ref"
+        @attributes="@Attributes"
+        id="@Id">
+
+    <div class="giz-button__progress-wrapper">
+        <div class="giz-button__progress" style="width: @(Progress.ToString(System.Globalization.CultureInfo.InvariantCulture))%"></div>
+    </div>
+
+    <div class="giz-button__content_wrapper">
+        @if (LeftSVGIcon.HasValue)
+        {
+            <Icon SVGIcon="LeftSVGIcon" Class="@ButtonIconLeft" Size="@(Size == ButtonSizes.ExtraSmall ? IconSizes.ExtraSmall : 
+                  (Size == ButtonSizes.Small ? IconSizes.Small :
+                  (Size == ButtonSizes.Medium ? IconSizes.Medium :
+                  (Size == ButtonSizes.Large ? IconSizes.Large :
+                  IconSizes.ExtraLarge))))" />
+        }
+
+        @if (ChildContent != null || !string.IsNullOrEmpty(Text))
+        {
+            <div class="giz-button__content">
+                @if (ChildContent != null)
+                {
+                    @ChildContent
+                }
+                else
+                {
+                    @Text
+                }
+            </div>
+        }
+
+        @if (RightSVGIcon.HasValue)
+        {
+            <Icon SVGIcon="RightSVGIcon" Class="@ButtonIconRight" Size="@(Size == ButtonSizes.ExtraSmall ? IconSizes.ExtraSmall : 
+                  (Size == ButtonSizes.Small ? IconSizes.Small :
+                  (Size == ButtonSizes.Medium ? IconSizes.Medium :
+                  (Size == ButtonSizes.Large ? IconSizes.Large :
+                  IconSizes.ExtraLarge))))" />
+        }
+    </div>
+
+</button>

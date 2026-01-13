@@ -1,0 +1,20 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<div class="@Class @ClassName"
+     style="@Style">
+
+    <span>
+        @ChildContent
+    </span>
+
+    <span class="giz-badge__wrapper">
+        <span class="giz-badge__badge" style="@BadgeStyleValue">
+            @if (!string.IsNullOrEmpty(Label))
+            {
+                @Label
+            }
+        </span>
+    </span>
+
+</div>

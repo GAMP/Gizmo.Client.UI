@@ -1,0 +1,46 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<div class="@Class @ClassName"
+     style="@StyleValue @Style"
+     id="@Id"
+     @ref="@Ref"
+     @onclick="OnClickHandler"
+     @onclick:stopPropagation=" true">
+
+    @if (!string.IsNullOrEmpty(Icon) || SVGIcon.HasValue)
+    {
+        <Icon Source="@Icon" SVGIcon="SVGIcon" Class="giz-list-item__icon" />
+    }
+    else
+    {
+        if (Parent.PreserveIconSpace)
+        {
+            <div class="giz-list-item__icon__placeholder"></div>
+        }
+    }
+
+    <div class="giz-list-item__content">
+        @ChildContent
+    </div>
+
+    @if (NestedList != null)
+    {
+        @if (IsExpanded)
+        {
+            <Icon SVGIcon="Icons.TriangleUp" Class="giz-list-nested-list-expand-icon" />
+        }
+        else
+        {
+            <Icon SVGIcon="Icons.TriangleDown" Class="giz-list-nested-list-expand-icon" />
+        }
+    }
+</div>
+@if (NestedList != null)
+{
+    <Collapse Expanded="@IsExpanded">
+        <List Class="giz-list-nested-list" IsDisabled="@IsDisabled" ExpandBottomToTop="@(Parent?.ExpandBottomToTop ?? false)">
+            @NestedList
+        </List>
+    </Collapse>
+}

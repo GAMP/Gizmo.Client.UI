@@ -1,0 +1,22 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits ButtonBase
+
+<div class="@Class @ClassName"
+     id="@Id"
+     @ref="@Ref">
+    <Button Class="left-button" Color="@Color" Size="@Size" Variant="@Variant" Label="@Label" ChildContent="@ChildContent" Text="@Text" StopPropagation="@StopPropagation" IsFullWidth="true" @onclick="OnClickMainButtonHandler" Progress="@Progress" />
+    <Button Class="right-button" Color="@Color" Size="@Size" Variant="@(Variant == ButtonVariants.Progress ? ButtonVariants.Fill : @Variant)" LeftSVGIcon="Icons.TriangleDown" @onclick="OnClickDropDownButtonHandler" />
+
+    <Popup MaximumHeight="@MaximumHeight"
+           @bind-IsOpen="IsOpen"
+           OpenDirection="@OpenDirection"
+           Class="@PopupClassName"
+           Style="@PopupStyleValue">
+        <List @ref="_popupContent"
+              Direction="@Direction"
+              CanClick="true"
+              MaximumHeight="@(OpenDirection == PopupOpenDirections.Cursor ? MaximumHeight : null)">
+            @DropDownItems
+        </List>
+    </Popup>
+</div>

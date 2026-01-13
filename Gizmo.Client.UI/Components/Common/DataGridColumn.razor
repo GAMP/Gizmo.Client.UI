@@ -1,0 +1,27 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits Gizmo.Web.Components.CustomDOMComponentBase
+@typeparam TItemType
+
+@if (IsVisible)
+{
+    <th class="@Class @ClassName"
+        style="@StyleValue @Style"
+        @ref="Ref"
+        @attributes="Attributes"
+        @onclick="(e => OnHeaderMouseEvent(e))"
+        @oncontextmenu:preventDefault="true"
+        @oncontextmenu="ContextMenuHandler">
+        <div class="giz-data-grid-header" style="@HeaderStyleValue">
+            <div>
+                @HeaderTemplate
+            </div>
+            @if (CanSort && IsSorted)
+            {
+                <div class="">
+                    <Icon SVGIcon="@(SortDirection == SortDirections.Ascending ? Icons.ArrowUp : Icons.ArrowDown)" />
+                </div>
+            }
+        </div>
+
+    </th>
+}

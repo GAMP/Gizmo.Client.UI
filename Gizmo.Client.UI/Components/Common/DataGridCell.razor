@@ -1,0 +1,15 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits Gizmo.Web.Components.CustomDOMComponentBase
+
+@typeparam TItemType
+
+<td style="@StyleValue @Style">
+    @if (IsEditMode && @Column.CellEditTemplate != null)
+    {
+        @Column.CellEditTemplate(Item)
+    }
+    else
+    {
+        @Column.CellTemplate(Item)
+    }
+</td>

@@ -1,0 +1,47 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<div class="@Class @ClassName"
+     style="@Style"
+     @onclick="OnClickHandler">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label for="@Id" class="giz-input-label">@Label</label>
+    }
+    <div class="@FieldClassName" style="@FieldStyleValue" readonly="@IsReadOnly" disabled="@IsDisabled" @onclick="OnRootClickHandler">
+        @if (!string.IsNullOrEmpty(LeftIcon) || LeftSVGIcon.HasValue)
+        {
+            <Icon Source="@LeftIcon"
+                  SVGIcon="@LeftSVGIcon"
+                  Size="@LeftIconSize"
+                  Class="@IconLeft" />
+        }
+        
+        @if (LeftContent != null)
+        {
+            @LeftContent
+        }
+
+        @ChildContent
+        
+        @if (RightContent != null)
+        {
+            @RightContent
+        }
+
+        @if (!string.IsNullOrEmpty(RightIcon) || RightSVGIcon.HasValue)
+        {
+            <Icon Class="@IconRight"
+                  Source="@RightIcon"
+                  Size="@RightIconSize"
+                  SVGIcon="@RightSVGIcon"/>
+        }
+
+    </div>
+    @if (ValidationErrorStyle != ValidationErrorStyles.BorderOnly)
+    {
+        <div class="@ValidationClassName">
+            @ValidationMessage
+        </div>
+    }
+</div>

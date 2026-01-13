@@ -7,10 +7,7 @@ module.exports = {
     client_external_code: "./src/js/external.js",
     client_api_code: "./src/js/api.js",
     client_internal_style: "./src/scss/main.scss",
-    client_external_style: "./src/scss/external.scss",
-    webcomponents_code: "../Submodules/Gizmo.Web.Components/src/js/main.js",
-    webcomponents_style:
-      "../Submodules/Gizmo.Web.Components/src/scss/main.scss",
+    client_external_style: "./src/scss/external.scss"
   },
   plugins: [
     new CopyWebpackPlugin({

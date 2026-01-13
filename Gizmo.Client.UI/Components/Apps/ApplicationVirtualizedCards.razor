@@ -1,7 +1,8 @@
 ﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomVirtualizedDOMComponentBase<AppViewState>
+
 @using Gizmo.Client.UI.View.States;
 @using Microsoft.AspNetCore.Components.Web.Virtualization
-@inherits CustomVirtualizedDOMComponentBase<AppViewState>
 
 <Virtualize Items="Items.Chunk(ColumnsCount).ToArray()" Context="chunkedApps">
     <div class="virtual-chunk-grid" style="@_gridColumnsStyle">

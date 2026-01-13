@@ -1,0 +1,41 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits ButtonBase
+
+<button class="@Class @ClassName"
+        style="@StyleValue @Style"
+        @onclick="@OnClickButtonHandler"
+        @onclick:stopPropagation="@StopPropagation"
+        disabled="@IsDisabled"
+        type="@Type"
+        name="@Name"
+        @ref="@Ref"
+        @attributes="@Attributes"
+        id="@Id">
+
+    <div class="giz-icon-button__content">
+        @if (ChildContent != null)
+        {
+            @ChildContent
+        }
+        else
+        {
+            @if (!string.IsNullOrEmpty(Icon) || SVGIcon.HasValue)
+            {
+                <Icon Source="@Icon" SVGIcon="SVGIcon" Color="@IconColor" BackgroundColor="@IconBackgroundColor" Class="@ButtonIcon"
+                      Size="@(Size == ButtonSizes.ExtraSmall ? IconSizes.ExtraSmall :
+                      (Size == ButtonSizes.Small ? IconSizes.Small :
+                      (Size == ButtonSizes.Medium ? IconSizes.Medium :
+                      (Size == ButtonSizes.Large ? IconSizes.Large :
+                      IconSizes.ExtraLarge))))" />
+            }
+        }
+    </div>
+    
+    @if (!string.IsNullOrEmpty(Tooltip))
+    {
+        <div class="@TooltipClassName">
+            @Tooltip
+        </div>
+    }
+
+</button>

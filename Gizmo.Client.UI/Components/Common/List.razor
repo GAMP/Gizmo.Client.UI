@@ -1,0 +1,21 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<div class="@Class @ClassName"
+     style="@StyleValue @Style"
+     @ref="@Ref">
+
+    @if (ListHeader != null)
+    {
+        <div class="giz-list-header">
+            @ListHeader
+        </div>
+    }
+    
+    <div class="giz-list-body @BodyClass">
+        <CascadingValue Value="@this" IsFixed="true">
+            @ChildContent
+        </CascadingValue>
+    </div>
+    
+</div>

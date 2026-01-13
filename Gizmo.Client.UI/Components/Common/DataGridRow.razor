@@ -1,0 +1,35 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits Gizmo.Web.Components.CustomDOMComponentBase
+
+@typeparam TItemType
+
+<tr class="@Class @ClassName"
+    style="@CustomStyle"
+    @onclick="@(async (e) => await OnClickEvent(e, Item))"
+    @ondblclick="@(async (e) => await OnDoubleClickEvent(e, Item))"
+    @oncontextmenu:preventDefault="true"
+    @oncontextmenu="ContextMenuHandler"
+    >
+
+    @if (IsSelectable && (Parent.ShowCheckBoxes || !Parent.SelectOnClick))
+    {
+        <td class="giz-data-grid-check">
+            <CheckBox IsChecked="@_isSelected" IsCheckedChanged="@IsCheckedChangedHandler" IsReadOnly="@Parent.SelectOnClick" />
+        </td>
+    }
+
+    @foreach (var column in Columns)
+    {
+        if (column.IsVisible && column.CellTemplate != null)
+        {
+            <DataGridCell TItemType="@TItemType" Column="column" Item="@Item" IsEditMode="@_isEditMode" Style="@column.Style" />
+        }
+    }
+</tr>
+
+@if (IsDropdown && !HideDetails)
+{
+    <DataGridDetailTemplate Columns="@(Columns.Count())" DetailTemplateCustomColumns="@DetailTemplateCustomColumns" Style="@Style">
+        @Parent.DetailTemplate(Item)
+    </DataGridDetailTemplate>
+}

@@ -1,0 +1,107 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits GizInputBase<TValue>
+
+@typeparam TValue
+
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+
+<div class="@Class @ClassName"
+     style="@Style"
+     id="@Id"
+     @ref="@Ref">
+
+    <div class="giz-select__content_wrapper" @ref="_inputElement">
+        <GizInput Label="@Label"
+                  ValidationErrorStyle="@(ValidationErrorStyle == ValidationErrorStyles.Label ? ValidationErrorStyles.BorderOnly : ValidationErrorStyle)"
+                  IsDisabled="@(IsDisabled || IsLoading)"
+                  IsFullWidth="@IsFullWidth"
+                  Width="@Width"
+                  HasOutline="@HasOutline"
+                  HasShadow="@HasShadow"
+                  IsTransparent="@IsTransparent"
+                  Size="@Size"
+                  IsValid="@IsValid"
+                  ValidationMessage="@ValidationMessage"
+                  RightSVGIcon="@(HandleSVGIcon.HasValue ? HandleSVGIcon.Value : Icons.TriangleDown)"
+                  @onclick="OnClickInput">
+                    
+            <div class="giz-input-wrapper">
+
+                @if (IsLoading)
+                {
+                    <Spinner />
+                }
+                else
+                {
+                    <input type="text"
+                           value="@_text"
+                           readonly="@IsReadOnly"
+                           disabled="@IsDisabled"
+                           placeholder="@Placeholder"
+                           @oninput="OnInputHandler"
+                           @onkeydown="OnInputKeyDownHandler" />
+                }
+
+            </div>
+
+            @if (CanClearValue && SelectedItem != null)
+            {
+                <IconButton SVGIcon="@Icons.Close" Class="giz-input-button-clear" @onclick="OnClickClearValueButtonHandler" />
+            }
+
+        </GizInput>
+
+        <Popup MaximumHeight="@MaximumHeight"
+                IsOpen="@_isOpen"
+                IsOpenChanged="IsOpenChangedHandler"
+                OpenDirection="@OpenDirection"
+                Class="@PopupClassName"
+                Style="@PopupStyleValue">
+            <List @ref="_popupContent"
+                  CanClick="true"
+                  CanSelect="true"
+                  MaximumHeight="@(OpenDirection == PopupOpenDirections.Cursor ? MaximumHeight : null)">
+                @if (ItemSource != null)
+                {
+                    @if (IsVirtualized)
+                    {
+                        <Virtualize Items="_filteredItems" Context="item">
+                            <IconSelectListItem @key="item" Item="@item" OnClick="@(() => SetSelectedItem(item))" />
+                        </Virtualize>
+                    }
+                    else
+                    {
+                        @if (SelectedItem != null)
+                        {
+                            <div class="giz-list-item selected" @onclick="@(() => SetSelectedItem(SelectedItem))">
+                                <div class="giz-icon-select-item">
+                                    <div class="giz-icon-select-item__icon">
+                                        <img src="@SelectedItem.Icon" />
+                                    </div>
+                                    <div>@($"{SelectedItem.Display}")</div>
+                                    <Icon SVGIcon="Icons.Check" />
+                                </div>
+                            </div>
+                            <Divider />
+                        }
+
+                        @foreach (var item in _filteredItems)
+                        {
+                            @if (item != SelectedItem)
+                            {
+                                <IconSelectListItem @key="item" Item="@item" OnClick="@(() => SetSelectedItem(item))" />
+                            }
+                        }
+                    }
+                }
+            </List>
+        </Popup>
+    </div>
+            
+    @if (ValidationErrorStyle == ValidationErrorStyles.Label)
+    {
+        <div class="giz-input-validation-label">
+            @ValidationMessage
+        </div>
+    }
+</div>

@@ -1,0 +1,17 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<div class="@ClassName @(!IsCollapsed ? "expanded" : "")"
+     id="@Id"
+     @ref="@Ref">
+    <div class="giz-expansion-panel__header">
+        <button class="giz-expansion-panel__header__content"
+             @onclick="OnClickHeader">
+            <div>@ExpansionPanelHeader</div>
+            <Icon SVGIcon="Icons.Select_Client" Class="giz-expansion-panel-arrow" />
+        </button>
+    </div>
+    <div class="giz-expansion-panel__body">
+        @ChildContent
+    </div>
+</div>

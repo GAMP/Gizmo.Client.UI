@@ -2,13 +2,29 @@
 
 .giz-tooltip {
     [#{$client-theme-comp-attr}] & {
+        visibility: hidden;
+        position: absolute;
+        z-index: 1;
         background-color: #22272B;
         color: #FFFFFF;
         padding: 0.8rem 1.2rem;
         border-radius: 0.8rem;
         @include font-s-theme-client($font-weight-light-theme-client);
 
+        &-root {
+            display: inline-block;
+            position: relative;
+
+            &:hover {
+                .giz-tooltip {
+                    visibility: visible;
+                }
+            }
+        }
+
         &--top {
+            bottom: 100%;
+            left: 50%;
             transform: translate(-50%, calc(-1rem));
 
             &::after {
@@ -24,6 +40,8 @@
         }
 
         &--bottom {
+            top: 100%;
+            left: 50%;
             transform: translate(-50%, calc(1rem));
 
             &::after {

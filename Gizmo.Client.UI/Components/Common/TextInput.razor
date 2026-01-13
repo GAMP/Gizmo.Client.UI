@@ -1,0 +1,91 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits GizInputBase<TValue>
+
+@typeparam TValue
+
+<GizInput Class="@ClassName"
+          Style="@Style"
+          Label="@Label"
+          ValidationErrorStyle="@ValidationErrorStyle"
+          IsReadOnly="@IsReadOnly"
+          IsDisabled="@IsDisabled"
+          IsFullWidth="@IsFullWidth"
+          Width="@Width"
+          HasOutline="@HasOutline"
+          HasShadow="@HasShadow"
+          IsTransparent="@IsTransparent"
+          Size="@Size"
+          IsValid="@IsValid"
+          ValidationMessage="@ValidationMessage"
+          LeftContent="@LeftContent"
+          RightContent="@RightContent"
+          LeftIcon="@LeftIcon"
+          LeftSVGIcon="@LeftSVGIcon"
+          LeftIconSize="@LeftIconSize"
+          RightIcon="@RightIcon"
+          RightSVGIcon="@RightSVGIcon"
+          RightIconSize="@RightIconSize"
+          OnRootClick="@OnRootClickHandler">
+    <div class="giz-input-wrapper">
+        @if(!string.IsNullOrEmpty(InternalLabel))
+        {
+            <div class="@InternalLabelClassName">@InternalLabel</div>
+        }
+
+        @if (!IsMultiLine)
+        {
+            <input id="@Id"
+                   @ref="_inputElement"
+                   type="@Type"
+                   value="@_text"
+                   readonly="@IsReadOnly"
+                   disabled="@IsDisabled"
+                   placeholder="@Placeholder"
+                   @oninput="OnInputHandler"
+                   @onkeydown="OnInputKeyDownHandler"
+                   @onkeydown:preventDefault="@_hasValidateFunction"
+                   @onkeyup="OnInputKeyUpHandler"
+                   @onkeyup:preventDefault="@_hasValidateFunction"
+                   @onkeypress="OnInputKeyPressHandler"
+                   @onkeypress:preventDefault="@_hasValidateFunction"
+                   @onchange="OnChangeHandler"
+                   @onclick="OnClickHandler"
+                   @attributes="Attributes"
+                   @ondrop="OnDropHandler"
+                   @ondrop:preventDefault="@DisableDrop"
+                   @onfocusin="OnFocusInHandler"
+                   @onfocusout="OnFocusOutHandler"
+                   class="@InputClass" />
+        }
+        else
+        {
+            <textarea id="@Id"
+                      @ref="_inputElement"
+                      type="@Type"
+                      value="@_text"
+                      readonly="@IsReadOnly"
+                      disabled="@IsDisabled"
+                      placeholder="@Placeholder"
+                      @oninput="OnInputHandler"
+                      @onkeydown="OnInputKeyDownHandler"
+                      @onkeydown:preventDefault="@_hasValidateFunction"
+                      @onkeyup="OnInputKeyUpHandler"
+                      @onkeyup:preventDefault="@_hasValidateFunction"
+                      @onkeypress="OnInputKeyPressHandler"
+                      @onkeypress:preventDefault="@_hasValidateFunction"
+                      @onchange="OnChangeHandler"
+                      @onclick="OnClickHandler"
+                      @attributes="Attributes"
+                      @ondrop="OnDropHandler"
+                      @ondrop:preventDefault="@DisableDrop"
+                      @onfocusin="OnFocusInHandler"
+                      @onfocusout="OnFocusOutHandler"
+                      class="@InputClass"/>
+        }
+    </div>
+
+    @if (CanClearValue && IsNullable() && !IsNull())
+    {
+        <IconButton SVGIcon="@Icons.Close" Class="giz-input-button-clear" @onclick="OnClickButtonClearValueHandler" />
+    }
+</GizInput>

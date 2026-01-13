@@ -1,0 +1,32 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<div class="@Class @ClassName">
+	<input type="checkbox"
+           checked="@IsChecked"
+           disabled="@IsDisabled"
+           id="@Id"
+           @ref="@Ref"
+           @onchange="OnChangeCheckBoxHandler"
+           @attributes="Attributes"
+           @onclick="OnClickCheckBoxHandler"
+           @onclick:preventDefault="@PreventDefault"
+           @onclick:stopPropagation="true"
+           />
+
+    <label for="@Id">
+        @if (ChildContent != null)
+        {
+            @ChildContent
+        }
+        else
+        {
+            @if (!string.IsNullOrEmpty(Label))
+            {
+                <span>
+                    @Label
+                </span>
+            }
+        }
+    </label>
+</div>
