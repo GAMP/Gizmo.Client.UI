@@ -739,21 +739,32 @@ window.userTimeProductsFitHostGroups = function userTimeProductsFitHostGroups(
     }
 };
 
-window.setNotificationsAnimationHeight =
-  function setNotificationsAnimationHeight(item) {
+window.setNotificationHeight = function setNotificationHeight(item) {
     var element = document.querySelector('[data-id="' + item.toString() + '"]');
     if (element) {
-      //console.log(element);
-      var height = element.getBoundingClientRect().height;
-      //console.log(height);
-      element.style.setProperty("--notification-height", height + "px");
-      //console.log(element);
-      return height;
+        //console.log(element);
+        var height = element.getBoundingClientRect().height;
+        //console.log(height);
+        element.style.setProperty("--notification-height", height + "px");
+        //console.log(element);
+        return height;
     } else {
-      console.log("Not found!");
-      return 0;
+        //console.log("Not found!");
+        return 0;
     }
-  };
+};
+
+window.setNotificationsContainerHeight = function setNotificationsContainerHeight(element) {
+    if (element) {
+        var height = element.getBoundingClientRect().height;
+        //console.log(height);
+        element.style.setProperty("--notifications-container-height", -1 * height + "px");
+        return height;
+    } else {
+        console.error("null object parameter");
+        return 0;
+    }
+};
 
 var animationEventListenerReferences = [];
 

@@ -17,10 +17,7 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class NotificationsHost : CustomDOMComponentBase, IAsyncDisposable
     {
-        [Inject]
-        IOptionsMonitor<ClientInterfaceOptions> ClientInterfaceOptions { get; set; }
-
-        private enum Animations
+        private enum NotificationsAnimations
         {
             None,
             WindowSlideIn,
@@ -29,13 +26,15 @@ namespace Gizmo.Client.UI.Components
             ItemSlideOut
         }
 
+        #region Fields
+
         private float _lastItemHeight;
         private System.Drawing.Size _componentSize = new System.Drawing.Size();
         private float _fontSize = 10;
         private bool _isTemp;
         private bool _hidden = true;
         private bool _shouldRender;
-        private Animations _currentAnimation = Animations.None;
+        private NotificationsAnimations _currentAnimation = NotificationsAnimations.None;
         private bool _slideIn = false;
         private bool _slideOut = false;
         private int _newlyAddedItemId = -1;
@@ -45,33 +44,35 @@ namespace Gizmo.Client.UI.Components
         private List<int> _newItems = new List<int>();
         private List<int> _removedItems = new List<int>();
         private readonly SemaphoreSlim _animationLock = new(1);
+        private AnimationEventInterop? _animationEventInterop;
 
-        private ILogger<NotificationsHost> _logger;
-
-        [Inject]
-        private ILogger<NotificationsHost> Logger
-        {
-            get { return _logger; }
-            set { _logger = value; }
-        }
+        private bool _slideInComplete = false;
+        private bool _slideOutComplete = false;
 
         private List<INotificationController> _visible = new List<INotificationController>();
 
+        #endregion
+
+        #region Injects
+
         [Inject]
-        ILocalizationService LocalizationService { get; set; }
+        private IOptionsMonitor<ClientInterfaceOptions> ClientInterfaceOptions { get; set; }
 
-        [Inject()]
-        private NotificationsHostViewState ViewState
-        {
-            get; set;
-        }
+        [Inject]
+        private ILogger<NotificationsHost> Logger { get; set; } = null!;
 
-        [Inject()]
-        private INotificationsService NotificationsService
-        {
-            get;
-            set;
-        }
+        [Inject]
+        private ILocalizationService LocalizationService { get; set; } = null!;
+
+        [Inject]
+        private NotificationsHostViewState ViewState { get; set; } = null!;
+
+        [Inject]
+        private INotificationsService NotificationsService { get; set; } = null!;
+
+        #endregion
+
+        #region Methods
 
         private Task Rerender()
         {
@@ -79,61 +80,42 @@ namespace Gizmo.Client.UI.Components
             return InvokeAsync(StateHasChanged);
         }
 
-        private Task OnMouseOverHandler(MouseEventArgs args)
-        {
-            NotificationsService.SuspendTimeOutAll();
-            return Task.CompletedTask;
-        }
-
-        private Task OnMouseOutHandler(MouseEventArgs args)
-        {
-            NotificationsService.ResumeTimeOutAll();
-            return Task.CompletedTask;
-        }
-
-        private async Task CloseNotifications()
-        {
-            if (await _animationLock.WaitAsync(TimeSpan.FromMinutes(1)))
-            {
-                try
-                {
-                    _dismissAllItems = _visible.Select(a => a.Identifier).ToList();
-                    NotificationsService.DismissAll();
-
-                    //await InvokeVoidAsync("writeLine", $"CloseNotifications {this.ToString()}");
-
-                    await SlideWindowOut();
-
-                    _visible.Clear();
-                    //_dismissAllItems.Clear();
-                }
-                catch
-                {
-                    throw;
-                }
-                finally
-                {
-                    _animationLock.Release();
-                }
-            }
-        }
-
         private async Task SlideWindowIn()
         {
+            await SetNotificationsContainerHeight();
+
             _hidden = false;
             _slideIn = true;
-            Logger.LogTrace($"NotificationsMessage: SlideWindowIn {this.ToString()}");
+
+            Logger.LogDebug($"NotificationsMessage: SlideWindowIn {this.ToString()}");
+
+            _slideInComplete = false;
+
             await Rerender();
-            await Task.Delay(1000);
+
+            do
+            {
+                await Task.Delay(100); //200
+            } while (!_slideInComplete);
+
             _slideIn = false;
         }
 
         private async Task SlideWindowOut()
         {
             _slideOut = true;
+
+            //Logger.LogDebug($"NotificationsMessage: SlideWindowOut {this.ToString()}");
+
+            _slideOutComplete = false;
+
             await Rerender();
-            Logger.LogTrace($"NotificationsMessage: SlideWindowOut {this.ToString()}");
-            await Task.Delay(1000);
+
+            do
+            {
+                await Task.Delay(100); //200
+            } while (!_slideOutComplete);
+
             _slideOut = false;
             _hidden = true;
         }
@@ -159,27 +141,19 @@ namespace Gizmo.Client.UI.Components
             return await JsInvokeAsync<BoundingClientRect>("getElementBoundingClientRect", Ref);
         }
 
-        private async Task SetAnimationHeight(int item)
+        private async Task SetNotificationsContainerHeight()
         {
-            _lastItemHeight = await JsInvokeAsync<float>("setNotificationsAnimationHeight", item);
+            await JsInvokeAsync<float>("setNotificationsContainerHeight", @Ref);
         }
 
-        protected override async Task OnInitializedAsync()
+        private async Task SetNotificationHeight(int item)
         {
-            await base.OnInitializedAsync();
-
-            //await InvokeVoidAsync("writeLine", $"OnInitializedAsync {this.ToString()}");
-        }
-
-        private async void ViewState_OnChange(object sender, System.EventArgs e)
-        {
-            Logger.LogTrace($"NotificationsMessage: ViewState_OnChange {this.ToString()}");
-            //await InvokeVoidAsync("writeLine", $"ViewState_OnChange {this.ToString()}");
-            await UpdateUI();
+            _lastItemHeight = await JsInvokeAsync<float>("setNotificationHeight", item);
         }
 
         private async Task UpdateUI()
         {
+            //await InvokeVoidAsync("writeLine", $"UpdateUI {this.ToString()}");
             if (await _animationLock.WaitAsync(TimeSpan.FromMinutes(1)))
             {
                 try
@@ -229,20 +203,20 @@ namespace Gizmo.Client.UI.Components
                             size.Height += _fontSize * 2;
                             _componentSize.Width = (int)size.Width;
                             _componentSize.Height = (int)size.Height;
-                            Logger.LogTrace($"NotificationsMessage: Height {_componentSize.Height.ToString()}");
+                            Logger.LogDebug($"NotificationsMessage: Height {_componentSize.Height.ToString()}");
                             //await InvokeVoidAsync("writeLine", $"Height: {_componentSize.Height.ToString()}");
                             NotificationsService.RequestNotificationHostSize(_componentSize);
                             _isTemp = false;
-
-                            //Render visible to show window slide in animation.
-                            _currentAnimation = Animations.WindowSlideIn;
-                            await SlideWindowIn();
-                            _currentAnimation = Animations.None;
 
                             foreach (var item in snapShot)
                             {
                                 NotificationsService.TryResetTimeout(item.Identifier);
                             }
+
+                            //Render visible to show window slide in animation.
+                            _currentAnimation = NotificationsAnimations.WindowSlideIn;
+                            await SlideWindowIn();
+                            _currentAnimation = NotificationsAnimations.None;
                         }
                         else
                         {
@@ -268,44 +242,58 @@ namespace Gizmo.Client.UI.Components
 
                             foreach (var item in _removedItems)
                             {
-                                _currentAnimation = Animations.ItemSlideOut;
+                                _currentAnimation = NotificationsAnimations.ItemSlideOut;
 
-                                await SetAnimationHeight(item);
+                                await SetNotificationHeight(item);
 
                                 await SlideItemOut(item);
-                                _currentAnimation = Animations.None;
+                                _currentAnimation = NotificationsAnimations.None;
                             }
 
                             var size = await GetElementSize();
                             size.Height += _fontSize * 2;
                             _componentSize.Width = (int)size.Width;
                             _componentSize.Height = (int)size.Height;
-                            Logger.LogTrace($"NotificationsMessage: Height {_componentSize.Height.ToString()}");
+                            Logger.LogDebug($"NotificationsMessage: Height {_componentSize.Height.ToString()}");
                             //await InvokeVoidAsync("writeLine", $"Height: {_componentSize.Height.ToString()}");
                             NotificationsService.RequestNotificationHostSize(_componentSize);
 
                             foreach (var item in _newItems)
                             {
                                 //We need to add the item to the DOM first.
-                                //TODO: AAA ADD ITEM IN THE RIGHT POSITION.
+                                //TODO: C ADD ITEM IN THE RIGHT POSITION?
                                 _newlyAddedItemId = item;
-                                var newlyAddedItem = snapShot.Where(a => a.Identifier == item).FirstOrDefault();
-                                var index = snapShot.IndexOf(newlyAddedItem);
-                                _visible.Insert(index, newlyAddedItem);
+                                var newlyAddedItem = snapShot.Where(a => a.Identifier == _newlyAddedItemId).FirstOrDefault();
+                                if (newlyAddedItem != null)
+                                {
+                                    var index = snapShot.IndexOf(newlyAddedItem);
+                                    if (index >= 0)
+                                    {
+                                        _visible.Insert(index, newlyAddedItem);
+                                    }
+                                    else
+                                    {
+                                        //TODO: A ERROR
+                                    }
+                                }
+                                else
+                                {
+                                    //TODO: A ERROR
+                                }
                                 await Rerender();
                                 _newlyAddedItemId = -1;
                                 //await InvokeVoidAsync("writeLine", $"tmpItemAdded {this.ToString()}");
 
-                                _currentAnimation = Animations.ItemSlideIn;
+                                _currentAnimation = NotificationsAnimations.ItemSlideIn;
 
-                                await SetAnimationHeight(item);
+                                await SetNotificationHeight(item);
                                 _componentSize.Height += (int)_lastItemHeight;
-                                Logger.LogTrace($"NotificationsMessage: Height {_componentSize.Height.ToString()}");
+                                Logger.LogDebug($"NotificationsMessage: Height {_componentSize.Height.ToString()}");
                                 //await InvokeVoidAsync("writeLine", $"Height: {_componentSize.Height.ToString()}");
                                 NotificationsService.RequestNotificationHostSize(_componentSize);
 
                                 await SlideItemIn(item);
-                                _currentAnimation = Animations.None;
+                                _currentAnimation = NotificationsAnimations.None;
 
                                 NotificationsService.TryResetTimeout(item);
                             }
@@ -335,70 +323,158 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        private AnimationEventInterop AnimationEventInterop { get; set; }
+        #endregion
+
+        #region Handlers
+
+        private Task OnMouseOverHandler(MouseEventArgs args)
+        {
+            NotificationsService.SuspendTimeOutAll();
+            return Task.CompletedTask;
+        }
+
+        private Task OnMouseOutHandler(MouseEventArgs args)
+        {
+            NotificationsService.ResumeTimeOutAll();
+            return Task.CompletedTask;
+        }
+
+        private async Task CloseNotifications()
+        {
+            if (await _animationLock.WaitAsync(TimeSpan.FromMinutes(1)))
+            {
+                try
+                {
+                    _dismissAllItems = _visible.Select(a => a.Identifier).ToList();
+                    NotificationsService.DismissAll();
+
+                    //await InvokeVoidAsync("writeLine", $"CloseNotifications {this.ToString()}");
+
+                    await SlideWindowOut();
+
+                    _visible.Clear();
+                    //_dismissAllItems.Clear();
+                    await Rerender();
+                }
+                catch
+                {
+                    throw;
+                }
+                finally
+                {
+                    _animationLock.Release();
+                }
+            }
+        }
+
+        private async void ViewState_OnChange(object sender, System.EventArgs e)
+        {
+            Logger.LogDebug($"NotificationsMessage: ViewState_OnChange {this.ToString()}");
+            //await InvokeVoidAsync("writeLine", $"ViewState_OnChange {this.ToString()}");
+            await UpdateUI();
+        }
 
         private Task AnimationHandler(AnimationEventArgs args)
         {
             //args.Id is the host component Id or the item Identifier.
             if (args.Id == Id)
             {
-                _logger.LogTrace($"Notification host animation {args.AnimationName} state changed, new stat {args.AnimationState}");
+                Logger.LogDebug($"Notification host animation {args.AnimationName} state changed, new stat {args.AnimationState}");
 
                 if (args.AnimationName == "notifications-slide-in-anim")
                 {
                     if (args.AnimationState == AnimationStates.End)
                     {
-
+                        _slideInComplete = true;
                     }
                 }
                 else if (args.AnimationName == "notifications-slide-out-anim")
                 {
-
+                    if (args.AnimationState == AnimationStates.End)
+                    {
+                        _slideOutComplete = true;
+                    }
                 }
             }
 
             return Task.CompletedTask;
         }
 
+        #endregion
+
+        #region Overrides
+
         protected override bool ShouldRender()
         {
             return _shouldRender;
         }
 
+        private int _retriesCounter = 0;
+        private int _logErrorCounter = 0;
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
+            //Logger.LogDebug($"NotificationsMessage: After Render firstRender:{firstRender} {this.ToString()}");
+            if (firstRender)
+            {
+                //await Task.Delay(10);
+
+                bool done = false;
+
+                do
+                {
+                    _retriesCounter += 1;
+
+                    try
+                    {
+                        //Logger.LogDebug($"NotificationsMessage: Before getFontSize");
+                        _fontSize = await JsInvokeAsync<float>("getFontSize");
+                        //Logger.LogDebug($"NotificationsMessage: After getFontSize");
+
+                        await JsRuntime.InvokeVoidAsync("registerAnimatedComponent", Ref);
+                        _animationEventInterop = new AnimationEventInterop(JsRuntime);
+                        await _animationEventInterop.SetupAnimationEventCallback(args => AnimationHandler(args));
+
+                        //_hidden = false;
+
+                        //Logger.LogDebug($"NotificationsMessage: Before UpdateUI");
+                        await UpdateUI();
+                        //Logger.LogDebug($"NotificationsMessage: After UpdateUI");
+
+                        if (_retriesCounter > 1)
+                        {
+                            Logger.LogDebug($"NotificationsMessage: retries: {_retriesCounter}");
+                        }
+
+                        if (_logErrorCounter > 0)
+                        {
+                            Logger.LogDebug($"NotificationsMessage: logging errors: {_logErrorCounter}");
+                        }
+
+                        done = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        //try
+                        //{
+                        Logger.LogError($"NotificationsMessage: {ex.Message}");
+                        //}
+                        //catch (Exception ex2)
+                        //{
+                        //    _logErrorCounter += 1;
+                        //}
+                        await Task.Delay(100);
+                    }
+                } while (!done);
+
+                ViewState.OnChange += ViewState_OnChange;
+            }
+            else
+            {
+                _shouldRender = false;
+            }
+
             await base.OnAfterRenderAsync(firstRender);
-
-            try
-            {
-                Logger.LogTrace($"NotificationsMessage: After Render firstRender:{firstRender} {this.ToString()}");
-                if (firstRender)
-                {
-                    //await Task.Delay(10);
-                    Logger.LogTrace($"NotificationsMessage: Before getFontSize");
-                    _fontSize = await JsInvokeAsync<float>("getFontSize");
-                    Logger.LogTrace($"NotificationsMessage: After getFontSize");
-
-                    await JsRuntime.InvokeVoidAsync("registerAnimatedComponent", Ref);
-                    AnimationEventInterop = new AnimationEventInterop(JsRuntime);
-                    await AnimationEventInterop.SetupAnimationEventCallback(args => AnimationHandler(args));
-
-                    _hidden = false;
-                    ViewState.OnChange += ViewState_OnChange;
-
-                    Logger.LogTrace($"NotificationsMessage: Before UpdateUI");
-                    await UpdateUI();
-                    Logger.LogTrace($"NotificationsMessage: After UpdateUI");
-                }
-                else
-                {
-                    _shouldRender = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError($"NotificationsMessage: {ex.Message}");
-            }
         }
 
         public override string ToString()
@@ -406,17 +482,36 @@ namespace Gizmo.Client.UI.Components
             return base.ToString() + $" Current animation: {_currentAnimation.ToString()} Items: {_visible.Count} _isTemp: {_isTemp} _hidden: {_hidden}";
         }
 
+        protected override async Task OnInitializedAsync()
+        {
+            await base.OnInitializedAsync();
+
+            //await InvokeVoidAsync("writeLine", $"OnInitializedAsync {this.ToString()}");
+        }
+
+        #endregion
+
         #region IAsyncDisposable
 
         public async ValueTask DisposeAsync()
         {
-            Logger.LogTrace($"NotificationsMessage: DisposeAsync {this.ToString()}");
-            await InvokeVoidAsync("unregisterAnimatedComponent", Ref).ConfigureAwait(false);
-            //await InvokeVoidAsync("writeLine", $"DisposeAsync {this.ToString()}");
+            Logger.LogDebug($"NotificationsMessage: DisposeAsync {this.ToString()}");
 
-            if (AnimationEventInterop != null)
+            try
             {
-                await AnimationEventInterop.DisposeAsync();
+                await InvokeVoidAsync("unregisterAnimatedComponent", Ref).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "exception unregisterAnimatedComponent");
+            }
+
+            //Logger.LogDebug($"NotificationsMessage: DisposeAsync {this.ToString()}");
+
+            if (_animationEventInterop != null)
+            {
+                await _animationEventInterop.DisposeAsync();
+                _animationEventInterop = null;
             }
 
             Dispose();
@@ -424,7 +519,7 @@ namespace Gizmo.Client.UI.Components
 
         #endregion
 
-        #region CLASSMAPPERS
+        #region ClassMappers
 
         protected string ClassName => new ClassMapper()
                 .Add("giz-notifications")
