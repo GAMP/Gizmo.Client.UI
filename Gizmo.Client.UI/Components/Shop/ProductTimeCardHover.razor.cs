@@ -20,7 +20,7 @@ namespace Gizmo.Client.UI.Components
 
         private string GetTimeText()
         {
-            if (Product != null && Product.ProductType == ProductType.ProductTime)
+            if (Product != null && Product.ProductType == Web.Api.Models.ProductType.ProductTime)
             {
                 return $"{Product.TimeProduct?.Minutes.ToString("N0")} {LocalizationService.GetString("GIZ_PRODUCT_TIME_MINUTES_ABBREVIATED")}";
             }

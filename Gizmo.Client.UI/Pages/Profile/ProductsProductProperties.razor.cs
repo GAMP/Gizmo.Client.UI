@@ -38,28 +38,28 @@ namespace Gizmo.Client.UI.Pages
         {
             string result = string.Empty;
 
-            if (_userProductViewState != null && _userProductViewState.ProductType == ProductType.ProductTime)
+            if (_userProductViewState != null && _userProductViewState.ProductType == Web.Api.Models.ProductType.ProductTime)
             {
-                if (_userProductViewState.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAfterTime))
+                if (_userProductViewState.TimeProduct.ExpirationOptions.HasFlag(Web.Api.Models.ProductTimeExpirationOptionType.ExpireAfterTime))
                 {
                     string time = string.Empty;
 
                     switch (_userProductViewState.TimeProduct.ExpireAfterType)
                     {
-                        case ExpireAfterType.Day:
+                        case Web.Api.Models.ExpireAfterType.Day:
                             time = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_DAYS_ABBREVIATED");
                             break;
-                        case ExpireAfterType.Hour:
+                        case Web.Api.Models.ExpireAfterType.Hour:
                             time = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_HOURS_ABBREVIATED");
                             break;
-                        case ExpireAfterType.Minute:
+                        case Web.Api.Models.ExpireAfterType.Minute:
                             time = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_MINUTES_ABBREVIATED");
                             break;
                     }
 
                     result = $"{_userProductViewState.TimeProduct.ExpiresAfter} {time}";
                 }
-                if (_userProductViewState.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAtDayTime))
+                if (_userProductViewState.TimeProduct.ExpirationOptions.HasFlag(Web.Api.Models.ProductTimeExpirationOptionType.ExpireAtDayTime))
                 {
                     DateTime dateTime = new DateTime();
                     dateTime = dateTime.AddMinutes(_userProductViewState.TimeProduct.ExpireAtDayTimeMinute);

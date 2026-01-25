@@ -56,7 +56,7 @@ namespace Gizmo.Client.UI.Components
             {
                 return AppExecutionService.AppExeAbortAsync(_appExeExecutionViewState.AppExeId);
             }
-            else if (_appExeExecutionViewState.IsRunning && !_appExeViewState.Options.HasFlag(ExecutableOptionType.MultiRun))
+            else if (_appExeExecutionViewState.IsRunning && !_appExeViewState.Options.HasFlag(Web.Api.Models.ExecutableOptionType.MultiRun))
             {
                 return AppExecutionService.AppExeTerminateAsync(_appExeExecutionViewState.AppExeId);
             }

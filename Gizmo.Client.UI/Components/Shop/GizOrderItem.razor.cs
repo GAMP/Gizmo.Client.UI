@@ -40,7 +40,7 @@ namespace Gizmo.Client.UI.Components
         public void OnAddQuantityButtonClickHandlerAsync(MouseEventArgs _) =>
             ClientServerCartViewService.SetQuantity(UserCartProductViewState.Guid, UserCartProductViewState.Quantity + 1);
 
-        public void SetPayType(bool isChecked, OrderLinePayType payType)
+        public void SetPayType(bool isChecked, Web.Api.Models.OrderLinePayType payType)
         {
             if (isChecked)
                 ClientServerCartViewService.SetPayType(UserCartProductViewState.Guid, payType);

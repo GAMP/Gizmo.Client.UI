@@ -104,7 +104,7 @@ namespace Gizmo.Client.UI
 
                 switch (timeProduct.ExpireAfterType)
                 {
-                    case ExpireAfterType.Day:
+                    case Web.Api.Models.ExpireAfterType.Day:
 
                         if (timeProduct.ExpiresAfter == 1)
                             expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_DAY_ABBREVIATED");
@@ -113,7 +113,7 @@ namespace Gizmo.Client.UI
 
                         break;
 
-                    case ExpireAfterType.Hour:
+                    case Web.Api.Models.ExpireAfterType.Hour:
 
                         if (timeProduct.ExpiresAfter == 1)
                             expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_HOUR_ABBREVIATED");
@@ -122,7 +122,7 @@ namespace Gizmo.Client.UI
 
                         break;
 
-                    case ExpireAfterType.Minute:
+                    case Web.Api.Models.ExpireAfterType.Minute:
 
                         if (timeProduct.ExpiresAfter == 1)
                             expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_MINUTE_ABBREVIATED");
@@ -136,13 +136,13 @@ namespace Gizmo.Client.UI
 
                 switch (timeProduct.ExpireFromOptions)
                 {
-                    case ExpireFromOptionType.Purchase:
+                    case Web.Api.Models.ExpireFromOptionType.Purchase:
 
                         expireFromOptionsText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_AFTER_PURCHASE");
 
                         break;
 
-                    case ExpireFromOptionType.Use:
+                    case Web.Api.Models.ExpireFromOptionType.Use:
 
                         expireFromOptionsText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_AFTER_USE");
                         break;
