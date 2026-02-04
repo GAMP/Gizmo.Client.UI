@@ -43,7 +43,7 @@ namespace Gizmo.Client.UI.Host.WPF
                 serviceCollection.AddSingleton<IInputLanguageService, WpfInputLanguageService>();
 
                 serviceCollection.AddSingleton<IHostWindow, HostWindow>();
-                serviceCollection.AddSingleton<INotificationsHost,NotificationsHost>();
+                serviceCollection.AddSingleton<INotificationsHost, NotificationsHost>();
 
             }).ConfigureLogging(loggingBuilder =>
             {
@@ -61,7 +61,7 @@ namespace Gizmo.Client.UI.Host.WPF
 
             Resources.Add("services", host.Services);
 
-         
+
             var compositionService = host.Services.GetRequiredService<DesktopUICompositionService>();
 
             string compositionFile = Path.Combine(Environment.CurrentDirectory, @"composition.json");
@@ -82,11 +82,6 @@ namespace Gizmo.Client.UI.Host.WPF
 
             //show host window
             hostWindow.Show();
-
-            var tokenHandlerService = host.Services.GetRequiredService<UserAccessTokenHandler>();
-            var authClient = host.Services.GetRequiredService<Gizmo.Web.Api.User.Clients.AuthWebApiClient>();
-            var token = await authClient.AccessTokenGetAsync(new Web.Api.Models.UserAccessTokenRequestModel() { Password = "oleg", Username = "oleg" });
-            await tokenHandlerService.SetCurrentAsync(token);
 
             await host.StartAsync();
         }
