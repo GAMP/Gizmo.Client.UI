@@ -160,6 +160,7 @@
                 top: 2.4rem;
                 right: 3.2rem;
                 padding: 2.4rem 3.2rem;
+                transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
                 z-index: 2;
                 //Font ?
                 font-family: 'Rubik';
@@ -167,6 +168,71 @@
                 font-weight: 500;
                 font-size: 12.8rem;
                 line-height: 13.2rem;
+                white-space: nowrap;
+    
+                &.top {
+                  &-right {
+                    top: 2.4rem;
+                    transition: var(--transition-duration) ease-in-out;
+                    right: 3.2rem;
+                    transform: translateX(0);
+                  }
+                  &-center {
+                    top: 2.4rem;
+                    transition: var(--transition-duration) ease-in-out;
+                    right: 50%;
+                    transform: translateX(50%);
+                  }
+                  &-left {
+                    top: 2.4rem;
+                    transition: var(--transition-duration) ease-in-out;
+                    right: 100%;
+                    white-space: nowrap;
+                    transform: translateX(calc(100% + 3.2rem));
+                  }
+                }
+    
+                &.center {
+                  &-right {
+                    top: 50%;
+                    transition: var(--transition-duration) ease-in-out;
+                    right: 3.2rem;
+                    transform: translateY(-50%);
+                  }
+                  &-screen {
+                    top: 50%;
+                    transition: var(--transition-duration) ease-in-out;
+                    right: 50%;
+                    transform: translate(50%, -50%);
+                  }
+                  &-left {
+                    top: 50%;
+                    transition: var(--transition-duration) ease-in-out;
+                    right: 100%;
+                    transform: translate(calc(100% + 3.2rem),-50%);
+                  }
+                }
+    
+                &.bottom {
+                  &-right {
+                    top: 100%;
+                    transition: var(--transition-duration) ease-in-out;
+                    right: 3.2rem;
+                    transform: translate(0,calc(-100% - 2.4rem));
+                  }
+                  &-center {
+                    top: 100%;
+                    transition: var(--transition-duration) ease-in-out;
+                    right: 50%;
+                    transform: translate(50%,calc(-100% - 2.4rem));
+                  }
+                  &-left {
+                    top: 100%;
+                    transition: var(--transition-duration) ease-in-out;
+                    right: 100%;
+                    transform: translate(calc(100% + 3.2rem),calc(-100% - 2.4rem));
+                  }
+                }
             }
 
             .giz-login-warnings {

@@ -23,7 +23,7 @@
 
             @if (HostNumberViewState.HostNumberIsEnabled)
             {
-                <div class="giz-host-number @(ClassName == "grow" ? HostNumberViewState.CurrentPosition : "")"
+                <div class="giz-host-number @(UserIdleViewState.IsIdle ? HostNumberViewState.CurrentPosition : "")"
                      style="--transition-duration: @(HostNumberViewState.AnimationDuration)s">
                     <HostNumber />
                 </div>
