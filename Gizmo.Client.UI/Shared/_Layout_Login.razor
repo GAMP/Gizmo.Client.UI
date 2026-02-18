@@ -37,20 +37,20 @@
             }
 
             <div class="giz-login-warnings">
-                @if ((_previousIsIdle || _slideOut) && HostReservationViewState.IsReserved)
+                @if (_previousIsIdle || _slideOut)
                 {
-                    @if (HostReservationViewState.IsLoginBlocked)
+                    @if (HostReservationViewState.ReservationBlockTimeReached)
                     {
-                        <Alert AlertType="AlertTypes.Warning"
+                        <Alert AlertType="AlertTypes.Info"
                                Title="@LocalizationService.GetString("GIZ_LOGIN_RESERVATION_WARNING_TITLE", HostReservationViewState.Time.Value.ToShortTimeString())"
-                               Text="@LocalizationService.GetString("GIZ_HOST_RESERVATION_LOGIN_IS_CURRENTLY_BLOCKED")" />
+                               Text="@LocalizationService.GetString("GIZ_HOST_RESERVATION_LOGIN_BLOCK_TIME_REACHED_MESSAGE")" />
 
                     }
-                    else
+                    else if (HostReservationViewState.ReservationNotificationTimeReached)
                     {
                         <Alert AlertType="AlertTypes.Warning"
                                Title="@LocalizationService.GetString("GIZ_LOGIN_RESERVATION_WARNING_TITLE", HostReservationViewState.Time.Value.ToShortTimeString())"
-                               Text="@LocalizationService.GetString("GIZ_HOST_RESERVATION_LOGIN_IS_CURRENTLY_UNBLOCKED")" />
+                               Text="@LocalizationService.GetString("GIZ_HOST_RESERVATION_LOGIN_NOTIFICATION_TIME_REACHED_MESSAGE")" />
                     }
                 }
             </div>
