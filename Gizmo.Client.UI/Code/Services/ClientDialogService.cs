@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Gizmo.Client.UI.Components;
 using Gizmo.UI;
 using Gizmo.UI.Services;
-using Gizmo.Web.Components;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -112,6 +111,15 @@ namespace Gizmo.Client.UI.Services
             {
                 Closable = true,
                 CloseOnClick = true
+            }, default, cancellationToken);
+        }
+
+        public Task<AddDialogResult<EmptyComponentResult>> ShowConfirmReservationDialogAsync(CancellationToken cancellationToken = default)
+        {
+            return ShowDialogAsync<ConfirmReservationDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()
+            {
+                Closable = true,
+                CloseOnClick = false
             }, default, cancellationToken);
         }
     }

@@ -323,6 +323,11 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
+        public async Task UpdateItem(int identifier)
+        {
+
+        }
+
         #endregion
 
         #region Handlers

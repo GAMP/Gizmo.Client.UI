@@ -8,23 +8,25 @@
     </HeadContent>
 }
 
-<div client-theme="true" class="@ClassName"
-     @onmouseover="OnMouseOverHandler"
-     @onmouseout="OnMouseOutHandler"
-     id="@Id"
-     @ref="@Ref">
-    <div class="giz-notifications__header">
-        <div>@LocalizationService.GetString("GIZ_NOTIFICATIONS_TITLE")</div>
-        <div>
-            <IconButton SVGIcon="Icons.Close" Visibility="(_visible.Count() > 1 ? Visibilities.Visible : Visibilities.Collapse)" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseNotifications()" />
+<CascadingValue Value="@this" IsFixed="true">
+    <div client-theme="true" class="@ClassName"
+         @onmouseover="OnMouseOverHandler"
+         @onmouseout="OnMouseOutHandler"
+         id="@Id"
+         @ref="@Ref">
+        <div class="giz-notifications__header">
+            <div>@LocalizationService.GetString("GIZ_NOTIFICATIONS_TITLE")</div>
+            <div>
+                <IconButton SVGIcon="Icons.Close" Visibility="(_visible.Count() > 1 ? Visibilities.Visible : Visibilities.Collapse)" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseNotifications()" />
+            </div>
+        </div>
+        <div class="giz-notifications__body giz-scrollbar--v">
+            @foreach (var controller in _visible)
+            {
+                <div data-id="@controller.Identifier" class="giz-notification-wrapper @(_newlyAddedItemId == controller.Identifier ? "tmp" : (_slideInItemId == controller.Identifier ? "slide-in" : (_slideOutItemId == controller.Identifier ? "slide-out" : "")))">
+                    <DynamicComponent Parameters="controller.Parameters" Type="controller.ComponentType" @key=controller.Identifier></DynamicComponent>
+                </div>
+            }
         </div>
     </div>
-    <div class="giz-notifications__body giz-scrollbar--v">
-        @foreach (var controller in _visible)
-        {
-            <div data-id="@controller.Identifier" class="giz-notification-wrapper @(_newlyAddedItemId == controller.Identifier ? "tmp" : (_slideInItemId == controller.Identifier ? "slide-in" : (_slideOutItemId == controller.Identifier ? "slide-out" : "")))">
-                <DynamicComponent Parameters="controller.Parameters" Type="controller.ComponentType" @key=controller.Identifier></DynamicComponent>
-            </div>
-        }
-    </div>
-</div>
+</CascadingValue>

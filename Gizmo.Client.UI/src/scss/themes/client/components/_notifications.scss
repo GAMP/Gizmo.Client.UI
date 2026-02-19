@@ -128,6 +128,84 @@
     }
 }
 
+.giz-reservation-notification {
+    display: grid;
+    grid-template-columns: min-content 1fr min-content;
+    gap: 1.5rem;
+    width: 100%;
+    overflow: hidden;
+    padding-top: 1.3rem;
+    padding-bottom: 1.5rem;
+
+    &__icon {
+        width: 5.3rem;
+        padding-top: 0.3rem;
+        padding-left: 1.6rem;
+    }
+
+    &__body {
+        &__title {
+            width: 100%;
+            overflow: hidden;
+            //white-space: nowrap;
+            white-space: normal;
+            text-overflow: ellipsis;
+            @include font-l-theme-client($font-weight-bold-theme-client);
+        }
+
+        &__message {
+            width: 100%;
+            overflow: hidden;
+            white-space: normal;
+            @include font-l-theme-client($font-weight-light-theme-client);
+        }
+
+        &__input {
+            margin-top: 1.6rem;
+        }
+
+        &__actions {
+            margin-top: 1.6rem;
+        }
+    }
+
+    &__close-button {
+        padding: 0 1.2rem;
+    }
+
+    &-wrapper {
+        overflow: hidden;
+        border-bottom: 1px solid rgba(246, 251, 253, 0.06);
+
+        &.tmp {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            visibility: hidden;
+        }
+
+        &:last-child {
+            border-bottom: unset;
+        }
+
+        &.slide-in {
+            height: 0;
+            animation-duration: 0.5s;
+            animation-name: notification-slide-in-anim;
+            animation-timing-function: ease-in-out;
+            animation-fill-mode: forwards;
+        }
+
+        &.slide-out {
+            animation-duration: 0.5s;
+            animation-name: notification-slide-out-anim;
+            animation-timing-function: ease-in-out;
+            animation-fill-mode: forwards;
+        }
+    }
+}
+
 @keyframes notifications-slide-in-anim {
     from {
         margin-top: -100%;
