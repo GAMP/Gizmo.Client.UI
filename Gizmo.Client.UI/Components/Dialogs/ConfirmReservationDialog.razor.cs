@@ -20,6 +20,9 @@ namespace Gizmo.Client.UI.Components
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
+        HostReservationViewState HostReservationViewState { get; set; }
+
+        [Inject]
         ConfirmReservationDialogViewService ConfirmReservationDialogViewService { get; set; }
 
         [Parameter]
@@ -31,13 +34,23 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<EmptyComponentResult> ResultCallback { get; set; }
 
-        private async Task CloseDialog()
+        private void Ignore()
         {
-            await ResultCallback.InvokeAsync();
+            ConfirmReservationDialogViewService.Ignore();
+        }
+
+        private string GetReservationTime()
+
+        {
+            if (HostReservationViewState.Time.HasValue && HostReservationViewState.Duration.HasValue)
+                return $"{HostReservationViewState.Time.Value} - {HostReservationViewState.Time.Value.AddMinutes(HostReservationViewState.Duration.Value)}";
+
+            return string.Empty;
         }
 
         protected override async Task OnInitializedAsync()
         {
+            this.SubscribeChange(HostReservationViewState);
             this.SubscribeChange(ConfirmReservationDialogViewService.ViewState);
 
             var tmp = await PaymentMethodViewStateLookupService.GetStatesAsync();
@@ -50,6 +63,7 @@ namespace Gizmo.Client.UI.Components
         public override void Dispose()
         {
             this.UnsubscribeChange(ConfirmReservationDialogViewService.ViewState);
+            this.UnsubscribeChange(HostReservationViewState);
 
             base.Dispose();
         }

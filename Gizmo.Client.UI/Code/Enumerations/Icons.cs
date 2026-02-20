@@ -182,6 +182,7 @@
         WaitingLines,
         Warning_Client,
         WiFi_Client,
-        WorkHistory_Client
+        WorkHistory_Client,
+        UserReservation
     }
 }

@@ -14,9 +14,9 @@
                 <div class="giz-client-dialog__header__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_DIALOG_PAYMENT_STEP_TITLE))</div>
             }
 
-            @if (DisplayOptions.Closable)
+            @if (!HostReservationViewState.ReservationTimeReached)
             {
-                <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
+                <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => Ignore()" />
             }
         </div>
 
@@ -66,7 +66,9 @@
                     <div class="giz-confirm-reservation-dialog-payment__info">
                     </div>
                     <div class="giz-confirm-reservation-dialog-payment__reservation">
-                        <div class="giz-confirm-reservation-dialog-payment_reservation__time"></div>
+                        <div class="giz-confirm-reservation-dialog-payment_reservation__time">
+                            @GetReservationTime()
+                        </div>
                         <div class="giz-confirm-reservation-dialog-payment_reservation__hosts"></div>
                     </div>
                     <div class="giz-confirm-reservation-dialog-payment__totals">

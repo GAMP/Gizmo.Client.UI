@@ -1,0 +1,12 @@
+﻿@namespace Gizmo.Client.UI
+@inherits CustomDOMComponentBase
+@using System.Globalization
+
+@if (HostReservationViewService.ViewState.Ignored)
+{
+    <div class="giz-header__user-menu-item">
+        <button class="user-menu-item-button--box" @onclick="@(() => HostReservationViewService.ShowDialog())">
+            <Icon SVGIcon="Icons.UserReservation" />
+        </button>
+    </div>
+}
