@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -11,10 +9,8 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class ConfirmReservationDialog : CustomDOMComponentBase
     {
-        private IEnumerable<PaymentMethodViewState> _paymentMethods = Enumerable.Empty<PaymentMethodViewState>();
-
         [Inject]
-        PaymentMethodViewStateLookupService PaymentMethodViewStateLookupService { get; set; }
+        UserBalanceViewState UserBalanceViewState { get; set; }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -40,7 +36,6 @@ namespace Gizmo.Client.UI.Components
         }
 
         private string GetReservationTime()
-
         {
             if (HostReservationViewState.Time.HasValue && HostReservationViewState.Duration.HasValue)
                 return $"{HostReservationViewState.Time.Value} - {HostReservationViewState.Time.Value.AddMinutes(HostReservationViewState.Duration.Value)}";
@@ -52,10 +47,6 @@ namespace Gizmo.Client.UI.Components
         {
             this.SubscribeChange(HostReservationViewState);
             this.SubscribeChange(ConfirmReservationDialogViewService.ViewState);
-
-            var tmp = await PaymentMethodViewStateLookupService.GetStatesAsync();
-
-            _paymentMethods = tmp.Where(a => a.Id != -4 && !a.IsOnline && !a.IsDeleted && a.IsEnabled).ToList(); //TODO: AAAAA
 
             await base.OnInitializedAsync();
         }
