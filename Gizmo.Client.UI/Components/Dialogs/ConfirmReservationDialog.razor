@@ -5,7 +5,7 @@
 @using System.Globalization
 
 <HostedDialog>
-    <div class="giz-client-dialog giz-change-password-dialog">
+    <div class="giz-client-dialog">
         <div class="giz-client-dialog__header">
             @if (ConfirmReservationDialogViewService.ViewState.Step == 0)
             {
@@ -16,7 +16,7 @@
                 <div class="giz-client-dialog__header__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_DIALOG_PAYMENT_STEP_TITLE))</div>
             }
 
-            @if (!HostReservationViewState.ReservationTimeReached)
+            @if (!HostReservationViewState.ReservationTimeReached && ConfirmReservationDialogViewService.ViewState.Step != 2)
             {
                 <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => Ignore()" />
             }
@@ -61,18 +61,18 @@
                 </div>
             </div>
         }
-        else
+        else if (ConfirmReservationDialogViewService.ViewState.Step == 1)
         {
             <div class="giz-client-dialog__body">
                 <div class="giz-confirm-reservation-dialog-payment">
-                    <div class="giz-confirm-reservation-dialog-payment__info">
-                        @if (ConfirmReservationDialogViewService.ViewState.AvailablePaymentMethods.Count() == 0)
-                        {
+                    @if (ConfirmReservationDialogViewService.ViewState.AvailablePaymentMethods.Count() == 0)
+                    {
+                        <div class="giz-confirm-reservation-dialog-payment__info">
                             <Alert AlertType="AlertTypes.Info"
                                    Title="Online payment is not available."
                                    Text="Please complete the payment at the counter with the operator to continue." />
-                        }
-                    </div>
+                        </div>
+                    }
                     <div class="giz-confirm-reservation-dialog-payment__reservation">
                         <div class="giz-confirm-reservation-dialog-payment__reservation__time">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -81,31 +81,38 @@
                             <div>@GetReservationTime()</div>
                         </div>
                         <div class="giz-confirm-reservation-dialog-payment__reservation__hosts">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M7 17V15.5H8.5V14H3.5C3.0875 14 2.73438 13.8531 2.44063 13.5594C2.14688 13.2656 2 12.9125 2 12.5V4.5C2 4.0875 2.14688 3.73438 2.44063 3.44063C2.73438 3.14688 3.0875 3 3.5 3H16.5C16.9125 3 17.2656 3.14688 17.5594 3.44063C17.8531 3.73438 18 4.0875 18 4.5V12.5C18 12.9125 17.8531 13.2656 17.5594 13.5594C17.2656 13.8531 16.9125 14 16.5 14H11.5V15.5H13V17H7Z" fill="white" fill-opacity="0.3" />
-                            </svg>
-                            <div></div>
+                            <div class="giz-confirm-reservation-dialog-payment__reservation__hosts__icon">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7 17V15.5H8.5V14H3.5C3.0875 14 2.73438 13.8531 2.44063 13.5594C2.14688 13.2656 2 12.9125 2 12.5V4.5C2 4.0875 2.14688 3.73438 2.44063 3.44063C2.73438 3.14688 3.0875 3 3.5 3H16.5C16.9125 3 17.2656 3.14688 17.5594 3.44063C17.8531 3.73438 18 4.0875 18 4.5V12.5C18 12.9125 17.8531 13.2656 17.5594 13.5594C17.2656 13.8531 16.9125 14 16.5 14H11.5V15.5H13V17H7Z" fill="white" fill-opacity="0.3" />
+                                </svg>
+                            </div>
+                            <div>
+                                @foreach (var item in HostReservationViewState.Hosts)
+                                {
+                                    <div>@item.HostNumber | @item.HostName</div>
+                                }
+                            </div>
                         </div>
                     </div>
                     <div class="giz-confirm-reservation-dialog-payment__totals">
                         <div class="giz-confirm-reservation-dialog-payment__totals-item">
                             <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_DIALOG_PAYMENT_STEP_TOTAL_LABEL))</div>
-                            <div></div>
+                            <div>@HostReservationViewState.Total.GetValueOrDefault().ToString("C", CultureInfo.CurrentCulture)</div>
                         </div>
                         <div class="giz-confirm-reservation-dialog-payment__totals-item">
                             <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_DIALOG_PAYMENT_STEP_PAID_LABEL))</div>
-                            <div></div>
+                            <div>@((HostReservationViewState.Total - HostReservationViewState.Outstanding).GetValueOrDefault().ToString("C", CultureInfo.CurrentCulture))</div>
                         </div>
                     </div>
                     <div class="giz-confirm-reservation-dialog-payment__payment">
                         <div class="giz-confirm-reservation-dialog-payment__payment__header">
                             <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_DIALOG_PAYMENT_STEP_TO_BE_PAID_LABEL))</div>
-                            <div></div>
+                            <div>@HostReservationViewState.Outstanding.GetValueOrDefault().ToString("C", CultureInfo.CurrentCulture)</div>
                         </div>
                         @if (ConfirmReservationDialogViewService.ViewState.AvailablePaymentMethods.Count() > 0)
                         {
                             <div class="giz-confirm-reservation-dialog-payment__payment__payment_method">
-                                <Select IsDisabled="@(ConfirmReservationDialogViewService.ViewState.IsLoading)"
+                                <Select IsDisabled="@(ConfirmReservationDialogViewService.ViewState.IsLoading || ConfirmReservationDialogViewService.ViewState.HasQr)"
                                         IsTransparent="true"
                                         HandleSVGIcon="Icons.Select_Client"
                                         TValue="int?"
@@ -132,42 +139,21 @@
                                             <div class="giz-confirm-reservation-dialog-payment-deposits__amount">
                                                 <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_RESERVATION_AVAILABLE_DEPOSITS_LABEL))</div>
                                                 <div>
-                                                    <svg width="35" height="34" viewBox="0 0 35 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <g filter="url(#filter0_dd_8432_51213)">
-                                                            <mask id="mask0_8432_51213" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5" y="1" width="24" height="24">
-                                                                <rect x="5" y="1" width="24" height="24" fill="#D9D9D9" />
-                                                            </mask>
-                                                            <g mask="url(#mask0_8432_51213)">
-                                                                <path d="M21 14.5C21.4333 14.5 21.7917 14.3583 22.075 14.075C22.3583 13.7917 22.5 13.4333 22.5 13C22.5 12.5667 22.3583 12.2083 22.075 11.925C21.7917 11.6417 21.4333 11.5 21 11.5C20.5667 11.5 20.2083 11.6417 19.925 11.925C19.6417 12.2083 19.5 12.5667 19.5 13C19.5 13.4333 19.6417 13.7917 19.925 14.075C20.2083 14.3583 20.5667 14.5 21 14.5ZM18 18C17.45 18 16.9793 17.8043 16.588 17.413C16.196 17.021 16 16.55 16 16V10C16 9.45 16.196 8.979 16.588 8.587C16.9793 8.19567 17.45 8 18 8H25C25.55 8 26.021 8.19567 26.413 8.587C26.8043 8.979 27 9.45 27 10V16C27 16.55 26.8043 17.021 26.413 17.413C26.021 17.8043 25.55 18 25 18H18ZM10 22C9.45 22 8.979 21.8043 8.587 21.413C8.19567 21.021 8 20.55 8 20V6C8 5.45 8.19567 4.979 8.587 4.587C8.979 4.19567 9.45 4 10 4H24C24.55 4 25.021 4.19567 25.413 4.587C25.8043 4.979 26 5.45 26 6H18C16.8167 6 15.8543 6.37067 15.113 7.112C14.371 7.854 14 8.81667 14 10V16C14 17.1833 14.371 18.1457 15.113 18.887C15.8543 19.629 16.8167 20 18 20H26C26 20.55 25.8043 21.021 25.413 21.413C25.021 21.8043 24.55 22 24 22H10Z" fill="#FAFAFA" />
-                                                            </g>
-                                                        </g>
-                                                        <defs>
-                                                            <filter id="filter0_dd_8432_51213" x="0" y="0" width="35" height="34" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                                                                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                                                                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                                                                <feOffset dy="2" />
-                                                                <feGaussianBlur stdDeviation="1" />
-                                                                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
-                                                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_8432_51213" />
-                                                                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                                                                <feOffset dy="4" />
-                                                                <feGaussianBlur stdDeviation="4" />
-                                                                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
-                                                                <feBlend mode="normal" in2="effect1_dropShadow_8432_51213" result="effect2_dropShadow_8432_51213" />
-                                                                <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_8432_51213" result="shape" />
-                                                            </filter>
-                                                        </defs>
-                                                    </svg>
-                                                    <div>@UserBalanceViewState.Balance.ToString("C", CultureInfo.CurrentCulture)</div>
+                                                    <Icon SVGIcon="Icons.AccountBalance_Client" />
+                                                    <div class="giz-confirm-reservation-dialog-payment-deposits__amount__value @(UserBalanceViewState.Balance < HostReservationViewState.Outstanding ? "giz-confirm-reservation-dialog-payment-deposits__amount__value--negative" : "")">@UserBalanceViewState.Balance.ToString("C", CultureInfo.CurrentCulture)</div>
                                                 </div>
                                             </div>
-                                            <div class="giz-confirm-reservation-dialog-payment-deposits__message">
-                                            </div>
+                                            @if (UserBalanceViewState.Balance < HostReservationViewState.Outstanding)
+                                            {
+                                                <div class="giz-confirm-reservation-dialog-payment-deposits__message">
+                                                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_DIALOG_DEPOSITS_NOT_ENOUGH_MESSAGE))
+                                                </div>
+                                            }
                                         </div>
                                     }
                                     else
                                     {
-                                        @if (ConfirmReservationDialogViewService.ViewState.SelectedPaymentMethod.IsOnline)
+                                        @if (ConfirmReservationDialogViewService.ViewState.HasQr)
                                         {
                                             <div class="giz-confirm-reservation-dialog-payment-qr">
                                                 <div class="giz-confirm-reservation-dialog-payment-qr__message">
@@ -186,11 +172,24 @@
                                 }
 
                                 <div class="giz-confirm-reservation-dialog-payment-action">
-                                    <Button Color="ButtonColors.Accent"
-                                            IsFullWidth="true">
-                                        <div>
-                                            @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_DIALOG_PAY_BUTTON))
-                                        </div>
+                                    <Button IsDisabled="@(ConfirmReservationDialogViewService.ViewState.IsLoading || ConfirmReservationDialogViewService.ViewState.HasQr || (ConfirmReservationDialogViewService.ViewState.PaymentMethodId == -3 && UserBalanceViewState.Balance < HostReservationViewState.Outstanding))"
+                                            Size="ButtonSizes.Large"
+                                            Color="ButtonColors.Accent"
+                                            IsFullWidth="true"
+                                            @onclick="ConfirmReservationDialogViewService.PayAsync">
+                                        @if (ConfirmReservationDialogViewService.ViewState.IsLoading)
+                                        {
+                                            <div style="visibility: hidden">
+                                                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_DIALOG_PAY_BUTTON))
+                                            </div>
+                                            <div class="giz-button-spinner-wrapper">
+                                                <Spinner />
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_DIALOG_PAY_BUTTON))</div>
+                                        }
                                     </Button>
                                 </div>
 
@@ -205,6 +204,20 @@
                             </div>
                         }
                     </div>
+                </div>
+            </div>
+        }
+        else if (ConfirmReservationDialogViewService.ViewState.Step == 2)
+        {
+            <div class="giz-client-alert-dialog">
+                <div class="giz-client-alert-dialog__icon giz-client-alert-dialog__icon--success">
+                    <Icon Size="IconSizes.Large" SVGIcon="Icons.Check" />
+                </div>
+                <div class="giz-client-alert-dialog__body">
+                    @LocalizationService.GetString("GIZ_GEN_SUCCESS")
+                </div>
+                <div class="giz-client-alert-dialog__footer">
+                    <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="@(() => Close())" Text="@LocalizationService.GetString("GIZ_GEN_CLOSE")" />
                 </div>
             </div>
         }

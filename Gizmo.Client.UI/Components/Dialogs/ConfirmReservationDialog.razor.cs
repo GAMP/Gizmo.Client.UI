@@ -21,6 +21,9 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         ConfirmReservationDialogViewService ConfirmReservationDialogViewService { get; set; }
 
+        [Inject]
+        IGizmoClient _gizmoClient { get; set; }
+
         [Parameter]
         public DialogDisplayOptions DisplayOptions { get; set; }
 
@@ -33,6 +36,11 @@ namespace Gizmo.Client.UI.Components
         private void Ignore()
         {
             ConfirmReservationDialogViewService.Ignore();
+        }
+
+        private void Close()
+        {
+            ConfirmReservationDialogViewService.Close();
         }
 
         private string GetReservationTime()
