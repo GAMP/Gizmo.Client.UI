@@ -1,5 +1,6 @@
 ﻿@namespace Gizmo.Client.UI
 @using Gizmo.UI;
+@using Microsoft.AspNetCore.Components.Forms
 @inherits CustomDOMComponentBase
 
 <div class="giz-reservation-notification">
@@ -15,43 +16,52 @@
     </div>
     @if (ConfirmReservationNotificationViewService.ViewState.Step == 0)
     {
-        <div class="giz-reservation-notification__body">
-            <div class="giz-reservation-notification__body__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATON_CONFIRMATION_STEP_TITLE))</div>
-            <div class="giz-reservation-notification__body__message">
-                @((MarkupString)LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATON_CONFIRMATION_STEP_MESSAGE)))
+        <EditForm EditContext="@ConfirmReservationNotificationViewService.EditContext">
+            <div class="giz-reservation-notification__body">
+                <div class="giz-reservation-notification__body__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATON_CONFIRMATION_STEP_TITLE))</div>
+                <div class="giz-reservation-notification__body__message">
+                    @((MarkupString)LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATON_CONFIRMATION_STEP_MESSAGE)))
+                </div>
+                <div class="giz-reservation-notification__body__input">
+                    <PasswordInput UpdateOnInput="true"
+                                   Value="@ConfirmReservationNotificationViewService.ViewState.Pin"
+                                   ValueChanged="@((string value) => ConfirmReservationNotificationViewService.SetPin(value))"
+                                   ValueExpression="@(() => ConfirmReservationNotificationViewService.ViewState.Pin)"
+                                   IsDisabled="@ConfirmReservationNotificationViewService.ViewState.IsLoading"
+                                   Size="InputSizes.Medium"
+                                   IsFullWidth="true"
+                                   IsTransparent="true"
+                                   Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_RESERVATION_PIN_INPUT_LABEL))" />
+                </div>
+                @if (!string.IsNullOrEmpty(ConfirmReservationNotificationViewService.ViewState.ErrorMessage))
+                {
+                    <div class="giz-reservation-notification__body__error">
+                        @ConfirmReservationNotificationViewService.ViewState.ErrorMessage
+                    </div>
+                }
+                <div class="giz-reservation-notification__body__actions">
+                    <Button IsDisabled="@(ConfirmReservationNotificationViewService.ViewState.IsValid == false || ConfirmReservationNotificationViewService.ViewState.IsLoading)"
+                            @onclick="ConfirmAsync">
+                        @if (ConfirmReservationNotificationViewService.ViewState.IsLoading)
+                        {
+                            <div style="visibility: hidden">
+                                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATON_CONFIRMATION_STEP_CONFIRM_BUTTON))
+                            </div>
+                            <div class="giz-button-spinner-wrapper">
+                                <Spinner />
+                            </div>
+                        }
+                        else
+                        {
+                            <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATON_CONFIRMATION_STEP_CONFIRM_BUTTON))</div>
+                        }
+                    </Button>
+                    <Button Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATON_IGNORE_BUTTON))"
+                            IsDisabled="@ConfirmReservationNotificationViewService.ViewState.IsLoading"
+                            @onclick="Ignore" />
+                </div>
             </div>
-            <div class="giz-reservation-notification__body__input">
-                <PasswordInput UpdateOnInput="true" Value="@ConfirmReservationNotificationViewService.ViewState.Pin"
-                               ValueChanged="@((string value) => ConfirmReservationNotificationViewService.SetPin(value))"
-                               ValueExpression="@(() => ConfirmReservationNotificationViewService.ViewState.Pin)"
-                               IsDisabled="@ConfirmReservationNotificationViewService.ViewState.IsLoading"
-                               Size="InputSizes.Medium"
-                               IsFullWidth="true"
-                               IsTransparent="true"
-                               Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_RESERVATION_PIN_INPUT_LABEL))" />
-            </div>
-            <div class="giz-reservation-notification__body__actions">
-                <Button IsDisabled="@ConfirmReservationNotificationViewService.ViewState.IsLoading"
-                        @onclick="ConfirmAsync">
-                    @if (ConfirmReservationNotificationViewService.ViewState.IsLoading)
-                    {
-                        <div style="visibility: hidden">
-                            @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATON_CONFIRMATION_STEP_CONFIRM_BUTTON))
-                        </div>
-                        <div class="giz-button-spinner-wrapper">
-                            <Spinner />
-                        </div>
-                    }
-                    else
-                    {
-                        <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATON_CONFIRMATION_STEP_CONFIRM_BUTTON))</div>
-                    }
-                </Button>
-                <Button Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATON_IGNORE_BUTTON))"
-                        IsDisabled="@ConfirmReservationNotificationViewService.ViewState.IsLoading"
-                        @onclick="Ignore" />
-            </div>
-        </div>
+        </EditForm>
     }
     else
     {

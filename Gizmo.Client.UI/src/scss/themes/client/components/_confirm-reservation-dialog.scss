@@ -4,9 +4,24 @@
         @include font-l-theme-client($font-weight-light-theme-client);
     }
 
+    &__input {
+        .giz-input-control--valid {
+            .giz-input-validation-label {
+                display: none;
+            }
+        }
+    }
+
+    &__error {
+        color: #F73B3B;
+        margin-top: 0.4rem;
+        @include font-m-theme-client($font-weight-light-theme-client);
+    }
+
     &__actions {
         display: flex;
         justify-content: center;
+        margin-top: 1.6rem;
     }
 }
 
@@ -58,8 +73,10 @@
         }
 
         &__payment_method {
-            .giz-input-validation-label {
-                display: none;
+            .giz-select--valid {
+                .giz-input-validation-label {
+                    display: none;
+                }
             }
         }
     }
@@ -130,9 +147,28 @@
         }
 
         &__qr {
-            height: 100px;
+            display: flex;
+            justify-content: center;
+            margin: 1.6rem 0;
+
+            &__code {
+                background-color: white;
+                padding: 1.6rem;
+
+                svg {
+                    width: 15rem;
+                    height: 15rem;
+                    shape-rendering: crispedges;
+                }
+            }
         }
     }
+}
+
+.giz-confirm-reservation-dialog-payment-error {
+    color: #F73B3B;
+    margin-top: 0.4rem;
+    @include font-m-theme-client($font-weight-light-theme-client);
 }
 
 .giz-confirm-reservation-dialog-payment-action {

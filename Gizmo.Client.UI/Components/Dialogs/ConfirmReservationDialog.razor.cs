@@ -33,6 +33,11 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<EmptyComponentResult> ResultCallback { get; set; }
 
+        private void Test()
+        {
+            ((DemoClient)_gizmoClient).Test();
+        }
+
         private void Ignore()
         {
             ConfirmReservationDialogViewService.Ignore();
