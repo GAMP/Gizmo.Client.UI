@@ -36,6 +36,7 @@
                                            Value="@ConfirmReservationDialogViewService.ViewState.Pin"
                                            ValueChanged="@((string value) => ConfirmReservationDialogViewService.SetPin(value))"
                                            ValueExpression="@(() => ConfirmReservationDialogViewService.ViewState.Pin)"
+                                           ValidateFunction="@SetInputPasswordCharacterIsValid"
                                            IsDisabled="@ConfirmReservationDialogViewService.ViewState.IsLoading"
                                            Size="InputSizes.Medium"
                                            IsFullWidth="true"
@@ -78,8 +79,8 @@
                         {
                             <div class="giz-confirm-reservation-dialog-payment__info">
                                 <Alert AlertType="AlertTypes.Info"
-                                       Title="Online payment is not available."
-                                       Text="Please complete the payment at the counter with the operator to continue." />
+                                       Title="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_DIALOG_PAYMENT_STEP_NO_PAYMENT_METHODS_TITLE))"
+                                       Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_DIALOG_PAYMENT_STEP_NO_PAYMENT_METHODS_MESSAGE))" />
                             </div>
                         }
                         <div class="giz-confirm-reservation-dialog-payment__reservation">
@@ -212,7 +213,7 @@
                                         </Button>
                                     </div>
 
-                                    <div class="giz-confirm-reservation-dialog-payment-alternative" @onclick="Test">
+                                    <div class="giz-confirm-reservation-dialog-payment-alternative">
                                         <div class="giz-confirm-reservation-dialog-payment-alternative__title">
                                             <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_RESERVATION_OR))</span>
                                         </div>

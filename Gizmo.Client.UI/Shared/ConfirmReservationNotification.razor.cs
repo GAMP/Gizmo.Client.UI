@@ -30,11 +30,6 @@ namespace Gizmo.Client.UI
         [Parameter]
         public EventCallback<int> OnClose { get; set; }
 
-        private Task ConfirmAsync()
-        {
-            return ConfirmReservationNotificationViewService.ConfirmAsync();
-        }
-
         private Task OpenPaymentDialogAsync()
         {
             return ConfirmReservationNotificationViewService.OpenPaymentDialogAsync();

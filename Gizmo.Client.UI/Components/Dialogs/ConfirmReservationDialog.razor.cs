@@ -33,9 +33,9 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<EmptyComponentResult> ResultCallback { get; set; }
 
-        private void Test()
+        public Task<bool> SetInputPasswordCharacterIsValid(char value)
         {
-            ((DemoClient)_gizmoClient).Test();
+            return Task.FromResult(char.IsNumber(value) && (string.IsNullOrEmpty(ConfirmReservationDialogViewService.ViewState.Pin) || ConfirmReservationDialogViewService.ViewState.Pin.Length <= 6));
         }
 
         private void Ignore()
