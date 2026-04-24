@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.States;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 
@@ -8,5 +9,8 @@ namespace Gizmo.Client.UI.Components
     {
         [Parameter]
         public TimeProductViewState TimeProduct { get; set; }
+
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
     }
 }
