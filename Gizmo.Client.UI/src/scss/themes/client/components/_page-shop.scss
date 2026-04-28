@@ -47,24 +47,26 @@
         &__header {
             width: 100%;
             overflow: auto;
-            padding: 1.6rem;
+            padding: 1.6rem 2.0rem 0 2.0rem;
 
             &__tab {
-                background-color: rgba(255, 255, 255, 0.01);
-                box-shadow: inset 0 0 10.1rem rgba(255, 255, 255, 0.06);
-                backdrop-filter: blur(6.0rem);
-                border-radius: 1.6rem;
-                height: 6.6rem;
-                padding: 1.6rem;
+                background-color: transparent;
+                border-bottom: 1px solid $border-subtle-v2;
+                border-radius: 0;
+                padding: 0.8rem 0;
                 display: flex;
-                gap: 1.0rem;
+                gap: 2.4rem;
                 width: 100%;
                 overflow: hidden;
+                box-shadow: none;
+                backdrop-filter: none;
+                height: auto;
+                min-height: 4.4rem;
             }
         }
 
         &__body {
-            padding: 1.6rem;
+            padding: 2.0rem;
             height: 100%;
             overflow: auto;
 
@@ -72,13 +74,13 @@
             }
 
             .giz-section {
-                margin-top: 1.6rem;
+                margin-top: 2.0rem;
             }
         }
 
         &__list {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(auto-fill, minmax(22.0rem, 1fr));
             grid-auto-rows: minmax(42.0rem, 1fr);
             grid-column-gap: 1.6rem;
             grid-row-gap: 1.6rem;

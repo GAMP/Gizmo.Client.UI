@@ -4,7 +4,12 @@
   display: flex;
   align-items: stretch;
   height: 100%;
-  padding: 0 1.6rem;
+  padding: 0 2.0rem;
+  background-color: $bg-1-v2;
+  border-bottom: 1px solid $border-subtle-v2;
+  // Note: deliberately no backdrop-filter — it creates a stacking
+  // context that traps popovers (notifications/help/active-apps)
+  // anchored inside the header.
 
   .giz-user-avatar {
       width: 4rem;
@@ -14,13 +19,13 @@
   &__logo {
     display: flex;
     align-items: center;
-    padding: 0 3.2rem 0 0;
+    padding: 0 2.4rem 0 0;
   }
 
   &__modules-menu {
     display: flex;
-    gap: 1.6rem;
-    padding: 0 3.2rem 0 0;
+    gap: 0.4rem;
+    padding: 0 2.4rem 0 0;
 
     &-item {
       width: 5.6rem;
@@ -30,31 +35,41 @@
         align-items: center;
         justify-content: center;
         height: 100%;
-        color: white;
+        color: $text-secondary-v2;
+        position: relative;
+        transition: color $dur-fast-v2 $ease-out-v2;
 
         .giz-icon--large {
-          width: 3rem;
-          height: 3rem;
-          color: #fafafa;
+          width: 2.6rem;
+          height: 2.6rem;
+          color: inherit;
+          transition: color $dur-fast-v2 $ease-out-v2,
+                      filter $dur-fast-v2 $ease-out-v2;
+        }
+
+        &:hover {
+          color: $text-primary-v2;
         }
 
         &.active {
-          color: $primary-color-theme-client;
-          position: relative;
+          color: $accent-v2;
 
           .giz-icon--large {
-            color: #0078d2;
+            color: $accent-v2;
+            filter: drop-shadow(0 0 8px $accent-glow-v2);
           }
 
           &::before {
             content: "";
             position: absolute;
             bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 0.3rem;
-            background-color: $primary-color-theme-client;
-            border-radius: 0.2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            height: 0.2rem;
+            background-color: $accent-v2;
+            border-radius: $radius-pill-v2;
+            box-shadow: 0 0 8px $accent-glow-v2;
           }
         }
 
@@ -69,15 +84,15 @@
     display: flex;
     align-items: center;
     flex-grow: 1;
-    padding: 0 3.2rem 0 0;
+    padding: 0 2.4rem 0 0;
   }
 
   &__user-menu {
     display: flex;
-    align-items: stretch;
+    align-items: center;
     justify-content: center;
     height: 100%;
-    gap: 1.6rem;
+    gap: 0.8rem;
     position: relative;
 
     &-item {
@@ -103,19 +118,25 @@
         align-items: center;
         gap: 1rem;
         white-space: nowrap;
-        padding: 0 0.7rem;
-        border-radius: 0.8rem;
+        padding: 0 0.8rem 0 0.4rem;
+        border-radius: $radius-pill-v2;
         cursor: pointer;
-        height: 4.8rem;
-        //Button
-        background-color: transparent;
-        border: none;
-        color: #fafafa;
-        @include font-xl-theme-client($font-weight-regular-theme-client);
+        height: 4.4rem;
+        background-color: $bg-2-v2;
+        border: 1px solid $border-subtle-v2;
+        color: $text-primary-v2;
+        transition: background-color $dur-fast-v2 $ease-out-v2,
+                    border-color $dur-fast-v2 $ease-out-v2;
+        @include font-l-theme-client($font-weight-regular-theme-client);
+
+        &:hover {
+          background-color: $bg-3-v2;
+          border-color: $border-strong-v2;
+        }
 
         .giz-icon--extra-large {
-          width: 4rem;
-          height: 4rem;
+          width: 3.6rem;
+          height: 3.6rem;
         }
       }
     }
@@ -131,11 +152,12 @@
 
   &.open {
     .giz-user-menu-button {
-      background-color: #1d334e;
-      box-shadow: inset 0 0 10.1rem rgba(255, 255, 255, 0.06);
+      background-color: $bg-3-v2;
+      border-color: $accent-v2;
+      box-shadow: 0 0 0 1px $accent-v2, 0 8px 24px $accent-glow-v2;
 
       .giz-icon {
-        color: #0f7cfe;
+        color: $accent-v2;
       }
     }
   }
@@ -146,73 +168,73 @@
   cursor: pointer;
 
   &--box {
-    width: 4.8rem;
-    height: 4.8rem;
-    background-color: rgba(250, 250, 250, 0.16);
-    border-radius: 0.8rem;
+    width: 4.0rem;
+    height: 4.0rem;
+    background-color: $bg-2-v2;
+    border: 1px solid $border-subtle-v2;
+    border-radius: $radius-md-v2;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    color: rgba(255, 255, 255, 0.75);
-    //Button
-    border: none;
+    color: $text-secondary-v2;
+    transition: background-color $dur-fast-v2 $ease-out-v2,
+                border-color $dur-fast-v2 $ease-out-v2,
+                color $dur-fast-v2 $ease-out-v2;
+
+    &:hover {
+      background-color: $bg-3-v2;
+      border-color: $border-strong-v2;
+      color: $text-primary-v2;
+    }
+  }
+}
+
+@mixin _v2-header-button-open {
+  .user-menu-item-button--box {
+    background-color: $bg-3-v2;
+    border-color: $accent-v2;
+    color: $accent-v2;
+    box-shadow: 0 0 0 1px $accent-v2, 0 8px 24px $accent-glow-v2;
   }
 }
 
 .giz-user-online-deposit-dropdown {
-    &.open {
-        .user-menu-item-button--box {
-            background-color: #1d334e;
-            color: #0f7cfe;
-        }
-    }
+    &.open { @include _v2-header-button-open; }
 }
 
 .giz-notifications-dropdown {
-  &.open {
-    .user-menu-item-button--box {
-      background-color: #1d334e;
-      color: #0f7cfe;
-    }
-  }
+  &.open { @include _v2-header-button-open; }
 }
 
 .giz-assistance-dropdown {
-    &.open {
-        .user-menu-item-button--box {
-            background-color: #1d334e;
-            color: #0f7cfe;
-        }
-    }
+    &.open { @include _v2-header-button-open; }
 }
 
 .giz-active-apps-dropdown {
-  &.open {
-    .user-menu-item-button--box {
-      background-color: #1d334e;
-      color: #0f7cfe;
-    }
-  }
+  &.open { @include _v2-header-button-open; }
 }
 
 .giz-header-user-balance {
     position: relative;
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    height: 3.2rem;
-    background-color: #FAFAFA;
-    color: #252A31;
-    border-radius: 0.4rem;
-    padding: 0.5rem 0.8rem;
-    @include font-m-theme-client($font-weight-regular-theme-client);
+    gap: 0.6rem;
+    height: 3.6rem;
+    background-color: $currency-soft-v2;
+    color: $currency-v2;
+    border: 1px solid rgba(245, 184, 0, 0.32);
+    border-radius: $radius-pill-v2;
+    padding: 0.5rem 1.2rem;
+    font-variant-numeric: tabular-nums;
+    @include font-m-theme-client($font-weight-bold-theme-client);
 
     .giz-icon--medium {
-        width: 2rem;
-        height: 2rem;
-        min-width: 2rem;
-        min-height: 2rem;
+        width: 1.8rem;
+        height: 1.8rem;
+        min-width: 1.8rem;
+        min-height: 1.8rem;
+        color: $currency-v2;
     }
 }
 

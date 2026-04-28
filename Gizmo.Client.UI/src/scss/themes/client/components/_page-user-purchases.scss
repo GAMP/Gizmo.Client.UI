@@ -3,17 +3,19 @@
 .order-details {
     display: grid;
     grid-template-columns: min-content 1fr;
-    //grid-template-rows: 2.2rem;
     grid-gap: 1.6rem;
-    color: #FAFAFA;
-    @include font-s-theme-client($font-weight-light-theme-client);
+    color: $text-primary-v2;
+    @include font-s-theme-client($font-weight-regular-theme-client);
 
     &-points {
         height: 2.2rem;
         white-space: normal;
 
         &-title {
-            color: rgba(255, 255, 255, 0.6);
+            color: $text-tertiary-v2;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            @include font-s-theme-client($font-weight-bold-theme-client);
         }
     }
 
@@ -21,17 +23,24 @@
         white-space: normal;
 
         &-title {
-            color: rgba(255, 255, 255, 0.6);
+            color: $text-tertiary-v2;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            @include font-s-theme-client($font-weight-bold-theme-client);
         }
     }
 }
 
 .purchase-details-deposit {
-    color: #24C38E;
+    color: $status-success-v2;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
 }
 
 .purchase-details-withdraw {
-    color: #FF4443;
+    color: $status-danger-v2;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
 }
 
 .giz-user-purchases {

@@ -1,11 +1,46 @@
 //=============== Page Home ================//
 
 .giz-home__body {
-    padding: 1.6rem;
+    padding: 0.8rem 2.0rem 2.0rem 2.0rem;
     height: 100%;
     overflow: auto;
 
+    // AdsCarousel slot — promoted to page hero on Home.
+    // Operator's own promos get prime real estate (vs RSS NewsRotator
+    // which lives smaller in the page header).
+    &__ads {
+        margin: 0 -2.0rem 2.4rem -2.0rem; // bleed to page edges
+        padding: 1.2rem 0 0.8rem 0;
+        background:
+            radial-gradient(120rem 30rem at 50% 0%, rgba(34, 211, 238, 0.08), transparent 70%),
+            linear-gradient(180deg, $bg-1-v2 0%, transparent 100%);
+        border-bottom: 1px solid $border-subtle-v2;
+
+        // Tighten the existing ExpansionPanel — the toggle still works,
+        // but the chrome shouldn't fight the hero feel.
+        .giz-expansion-panel-header {
+            padding: 0 2.4rem;
+            color: $text-secondary-v2;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .giz-ads-carousel {
+            padding-top: 0.8rem;
+        }
+
+        // Hide the redundant inner "ADS" header inside the carousel
+        // (the expansion panel header already labels it).
+        .giz-ads-carousel__header {
+            display: none;
+        }
+    }
+
     &__popular {
-        margin-top: 1.6rem;
+        display: flex;
+        flex-direction: column;
+        gap: 3.2rem;
     }
 }

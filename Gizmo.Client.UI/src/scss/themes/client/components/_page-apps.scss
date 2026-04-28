@@ -15,30 +15,31 @@
 
     &__header {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.6rem;
-        padding: 1.6rem;
+        // QuickLauncher gets the bulk; NewsRotator (RSS) capped at a
+        // secondary 36rem so it reads as a widget, not a hero.
+        grid-template-columns: 1fr minmax(min-content, 36rem);
+        gap: 2.0rem;
+        padding: 2.0rem 2.0rem 0.8rem 2.0rem;
+        align-items: center;
 
         &.full-quick-launcher {
             grid-template-columns: 1fr;
         }
 
         &__quick-launch {
-            background-color: rgba(255, 255, 255, 0.01);
-            box-shadow: inset 0 0 10.1rem rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(6rem);
-            border-radius: 1.6rem;
+            background-color: $bg-1-v2;
+            border: 1px solid $border-subtle-v2;
+            border-radius: $radius-lg-v2;
             max-width: 100%;
             z-index: $quick-launch-index;
-            //overflow: hidden;
         }
 
         &__ads {
-            background-color: rgba(255, 255, 255, 0.01);
-            box-shadow: inset 0 0 10.1rem rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(6rem);
-            border-radius: 1.6rem;
-            //padding: 1.6rem;
+            // No own background — NewsRotator wrapper handles its own
+            // surface so the floating "FROM THE NEWS" label can sit on
+            // the page background.
+            background-color: transparent;
+            border-radius: 0;
         }
     }
 
@@ -52,15 +53,10 @@
     overflow: hidden;
 
     &__content {
-        margin-top: 1.6rem;
-        padding: 0 1.6rem;
+        margin-top: 0.8rem;
+        padding: 0 2.0rem;
         height: 100%;
         overflow: auto;
-
-        &--stuck {
-            //clip-path: inset(8.2rem 0 0 0);
-            clip-path: polygon(0% 0%, 0 8.2rem, 0 8.2rem, 0 0, 100% 0, 100% 100%, 0 100%, 0 8.2rem, calc(100% - 1rem) 8.2rem, calc(100% - 1rem) 0);
-        }
 
         &__popular {
             margin-top: 1.6rem;
@@ -73,8 +69,8 @@
             top: 0;
             z-index: $app-section-header-index;
             margin-bottom: 0;
-            padding-bottom: 1.6rem;
-            //background: #0c0f11;
+            padding: 1.2rem 0 1.6rem 1.2rem;
+            background-color: $bg-0-v2;
 
             &.hidden {
                 display: none;
@@ -82,47 +78,68 @@
         }
 
         &--stuck {
-            position: absolute;
+            position: sticky;
             top: 0;
             left: 0;
             width: 100%;
-            padding: 1.6rem 2.4rem 1.6rem 1.6rem;
-            display: none;
+            padding: 1.6rem 2.0rem 0.8rem 2.0rem;
+            background-color: $bg-0-v2;
+            border-bottom: 1px solid $border-subtle-v2;
+            z-index: $app-section-header-index;
+            // Always show — drop the .visible toggle dependency.
+            display: block;
 
-            &.visible {
-                display: block;
+            // The accent bar from _section.scss doesn't belong on a
+            // filter-only sticky header.
+            .giz-section__header {
+                padding-left: 0;
+                background-color: transparent;
+                border: 0;
+                position: static;
+
+                &::before {
+                    display: none;
+                }
             }
         }
     }
 }
 
+// Hide the duplicate inline AppFilters render inside the popular
+// section — keep only the sticky (--stuck) one at the top.
+// AppsIndex.razor renders <AppFilters /> twice; this collapses the
+// redundancy without touching markup.
+.giz-apps__body__content__popular .giz-section > .giz-section__header {
+    display: none;
+}
+
 .giz-select.app-filter--filled {
     .giz-input-root {
-        background-color: #0b1a24;
-        border-color: #0b1a24;
-        color: #0078D2;
+        background-color: $accent-soft-v2;
+        border-color: rgba(34, 211, 238, 0.32);
+        color: $accent-v2;
 
         .giz-icon {
             svg {
-                color: #3F8CFF;
+                color: $accent-v2;
             }
         }
 
         input {
-            color: #0078D2;
+            color: $accent-v2;
         }
     }
 }
 
 .giz-multi-select.app-filter--filled {
     .giz-input-root {
-        background-color: #0b1a24;
-        border-color: #0b1a24;
-        color: #0078D2;
+        background-color: $accent-soft-v2;
+        border-color: rgba(34, 211, 238, 0.32);
+        color: $accent-v2;
 
         .giz-input__icon-right {
             svg {
-                color: #3F8CFF;
+                color: $accent-v2;
             }
         }
     }
@@ -167,6 +184,6 @@
     }
 
     .giz-filters-icon {
-        color: #0078D2;
+        color: $accent-v2;
     }
 }

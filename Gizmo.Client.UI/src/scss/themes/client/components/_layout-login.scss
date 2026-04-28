@@ -329,26 +329,28 @@
         margin-right: 0.7rem;
 
         &.disconnected {
-            color: #F73B3B;
+            color: $status-danger-v2;
         }
     }
 
     .giz-version {
         &__title {
-            color: #808185;
-            @include font-s-theme-client($font-weight-light-theme-client);
+            color: $text-tertiary-v2;
+            @include font-s-theme-client($font-weight-regular-theme-client);
         }
 
         &__version {
-            color: white;
-            @include font-s-theme-client($font-weight-light-theme-client);
+            color: $text-secondary-v2;
+            @include font-s-theme-client($font-weight-regular-theme-client);
         }
     }
 }
 
 .giz-login-card {
-    //right: -74.0rem;
-    background-color: #0C0F11;
+    background:
+        radial-gradient(60rem 30rem at 100% 0%, rgba(34, 211, 238, 0.08), transparent 60%),
+        $bg-1-v2;
+    border-left: 1px solid $border-subtle-v2;
     display: grid;
     grid-template-rows: 1fr min-content 1fr;
     align-items: center;
@@ -356,7 +358,6 @@
     width: 74.0rem;
     min-width: 74.0rem;
     position: relative;
-    /*overflow: hidden;*/
     padding: 1.0rem;
 
     &.hidden {
@@ -389,11 +390,18 @@
             margin-left: auto;
             margin-top: 1.0rem;
             text-align: right;
-            @include font-m-theme-client($font-weight-light-theme-client);
+            color: $text-secondary-v2;
+            @include font-m-theme-client($font-weight-regular-theme-client);
 
             & > a {
-                color: #3F8CFF;
+                color: $accent-v2;
                 cursor: pointer;
+                font-weight: 600;
+                transition: color $dur-fast-v2 $ease-out-v2;
+
+                &:hover {
+                    color: lighten($accent-v2, 10%);
+                }
             }
         }
 
@@ -435,17 +443,19 @@
 
 .giz-login-title {
     margin-bottom: 2.0rem;
+    color: $text-primary-v2;
     @include font-h5-theme-client($font-weight-bold-theme-client);
 }
 
 .giz-login-subtitle {
     margin-bottom: 2.4rem;
-    @include font-l-theme-client($font-weight-light-theme-client);
+    color: $text-secondary-v2;
+    @include font-l-theme-client($font-weight-regular-theme-client);
 
     &--sign-up {
         margin-bottom: 2.4rem;
-        color: rgba(255, 255, 255, 0.6);
-        @include font-l-theme-client($font-weight-light-theme-client);
+        color: $text-tertiary-v2;
+        @include font-l-theme-client($font-weight-regular-theme-client);
     }
 }
 
@@ -459,8 +469,14 @@
     & > a {
         position: absolute;
         right: 0;
-        color: #57BCFF;
-        @include font-m-theme-client($font-weight-light-theme-client);
+        color: $accent-v2;
+        font-weight: 600;
+        transition: color $dur-fast-v2 $ease-out-v2;
+        @include font-m-theme-client($font-weight-regular-theme-client);
+
+        &:hover {
+            color: lighten($accent-v2, 10%);
+        }
     }
 }
 
@@ -470,24 +486,26 @@
     margin-top: 2.4rem;
 
     &__separator {
-        color: white;
+        color: $text-secondary-v2;
         position: relative;
         text-align: center;
-        background-color: #0C0F11;
+        background-color: transparent;
         margin-bottom: 2.4rem;
-        @include font-l-theme-client($font-weight-light-theme-client);
+        @include font-l-theme-client($font-weight-regular-theme-client);
 
         span {
             position: relative;
-            background-color: #0C0F11;
+            background-color: $bg-1-v2;
             padding: 0 0.8rem;
-            color: rgba(255, 255, 255, 0.6);
-            @include font-m-theme-client($font-weight-light-theme-client);
+            color: $text-tertiary-v2;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            @include font-s-theme-client($font-weight-bold-theme-client);
         }
 
         &:before {
             content: '';
-            border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
+            border-bottom: 1px solid $border-subtle-v2;
             position: absolute;
             top: 50%;
             left: 0;
@@ -534,8 +552,9 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(180deg, rgba(35, 35, 45, 0.9) 0%, rgba(42, 44, 53, 0.15) 100%);
-    backdrop-filter: blur(3.0rem);
+    background: linear-gradient(180deg, rgba(7, 9, 11, 0.92) 0%, rgba(7, 9, 11, 0.55) 100%);
+    backdrop-filter: blur(2.0rem);
+    -webkit-backdrop-filter: blur(2.0rem);
     z-index: $login-overlay-index;
 
     .giz-host-locked {
@@ -543,13 +562,14 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        color: #FAFAFA;
+        color: $text-primary-v2;
         @include font-h1-theme-client($font-weight-bold-theme-client);
 
         &__message {
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 1.2rem;
+            color: $status-danger-v2;
 
             .giz-icon--large {
                 width: 3.2rem;
@@ -563,13 +583,14 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        color: #FAFAFA;
+        color: $text-primary-v2;
         @include font-h1-theme-client($font-weight-bold-theme-client);
 
         &__message {
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 1.2rem;
+            color: $status-warning-v2;
 
             .giz-icon--large {
                 width: 3.2rem;
@@ -579,7 +600,7 @@
     }
 
     .giz-grace-period {
-        color: #FAFAFA;
+        color: $text-primary-v2;
         @include font-h1-theme-client($font-weight-bold-theme-client);
         display: flex;
         flex-direction: column;
@@ -594,12 +615,13 @@
         }
 
         &__time {
-            color: #C74952;
+            color: $status-danger-v2;
+            font-variant-numeric: tabular-nums;
         }
     }
 
     .giz-user-ban {
-        color: #FAFAFA;
+        color: $text-primary-v2;
         @include font-h1-theme-client($font-weight-bold-theme-client);
         display: flex;
         flex-direction: column;
@@ -614,7 +636,8 @@
         }
 
         &__time {
-            color: #C74952;
+            color: $status-danger-v2;
+            font-variant-numeric: tabular-nums;
         }
     }
 }
@@ -631,7 +654,7 @@
 
     &-message {
         &.passed {
-            color: #219653;
+            color: $status-success-v2;
         }
     }
 
@@ -652,22 +675,33 @@
 
 .giz-login-method.giz-button-group, .giz-recovery-method.giz-button-group {
     display: flex;
-    padding: 0.5rem;
+    padding: 0.4rem;
     margin-bottom: 2.4rem;
+    background-color: $bg-2-v2;
+    border: 1px solid $border-subtle-v2;
+    border-radius: $radius-md-v2;
+    gap: 0.2rem;
 
     .giz-button {
         flex: 1;
-        border-radius: 0.8rem;
-        color: rgba(255, 255, 255, 0.8);
+        border-radius: $radius-sm-v2;
+        color: $text-secondary-v2;
         height: initial;
         min-height: 3.6rem;
-        //Font ?
         font-weight: 500;
         font-size: 1.6rem;
         line-height: 2.0rem;
+        transition: background-color $dur-fast-v2 $ease-out-v2,
+                    color $dur-fast-v2 $ease-out-v2;
+
+        &:hover:not(.selected) {
+            color: $text-primary-v2;
+        }
 
         &.selected {
-            background-color: #22272B;
+            background-color: $bg-3-v2;
+            color: $accent-v2;
+            box-shadow: $ring-2-v2;
         }
     }
 }
@@ -679,8 +713,9 @@
     grid-template-rows: 1fr min-content;
 
     &__image {
-        background-color: #0C0F11;
-        border-radius: 1.6rem;
+        background-color: $bg-1-v2;
+        border: 1px solid $border-subtle-v2;
+        border-radius: $radius-lg-v2;
         overflow: hidden;
 
         img {
@@ -692,9 +727,8 @@
     &__text {
         margin: 4.0rem 0 0 0;
         text-align: center;
-        color: rgba(255, 255, 255, 0.6);
-        text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
-        @include font-m-theme-client($font-weight-light-theme-client);
+        color: $text-secondary-v2;
+        @include font-m-theme-client($font-weight-regular-theme-client);
     }
 }
 
@@ -800,12 +834,20 @@
 .giz-back-button {
     width: 4.2rem;
     height: 4.2rem;
-    border: 0.1rem solid rgba(246, 251, 253, 0.28);
+    border: 1px solid $border-strong-v2;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    color: $text-secondary-v2;
+    transition: border-color $dur-fast-v2 $ease-out-v2,
+                color $dur-fast-v2 $ease-out-v2;
+
+    &:hover {
+        border-color: $accent-v2;
+        color: $accent-v2;
+    }
 }
 
 .giz-icon-button {

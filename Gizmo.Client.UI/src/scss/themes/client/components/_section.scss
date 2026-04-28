@@ -1,10 +1,26 @@
 .giz-section {
   &__header {
     margin-bottom: 1.6rem;
-    color: #fafafa;
+    color: $text-primary-v2;
     @include font-h5-theme-client($font-weight-bold-theme-client);
     display: flex;
     align-items: center;
+    position: relative;
+    padding-left: 1.2rem;
+
+    // Steam-style accent bar to the left of the shelf title
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0.4rem;
+      height: 2.4rem;
+      background-color: $accent-v2;
+      border-radius: $radius-pill-v2;
+      box-shadow: 0 0 12px $accent-glow-v2;
+    }
 
     &__filters {
       display: flex;
@@ -12,7 +28,8 @@
 
       &__title {
         margin-bottom: 0.4rem;
-        @include font-m-theme-client($font-weight-light-theme-client);
+        color: $text-secondary-v2;
+        @include font-m-theme-client($font-weight-regular-theme-client);
       }
     }
   }

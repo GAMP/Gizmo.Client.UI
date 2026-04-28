@@ -17,8 +17,24 @@
         margin-top: 4rem;
 
         &__header {
-            margin-bottom: 1.2rem;
-            @include font-h5-theme-client($font-weight-light-theme-client);
+            margin-bottom: 1.6rem;
+            color: $text-primary-v2;
+            position: relative;
+            padding-left: 1.2rem;
+            @include font-h5-theme-client($font-weight-bold-theme-client);
+
+            &::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 0.4rem;
+                height: 2.4rem;
+                background-color: $accent-v2;
+                border-radius: $radius-pill-v2;
+                box-shadow: 0 0 12px $accent-glow-v2;
+            }
         }
 
         &-item {
@@ -26,8 +42,13 @@
             grid-template-columns: min-content 1fr min-content;
             align-items: center;
             gap: 1.6rem;
-            padding-top: 1.2rem;
-            padding-bottom: 1.2rem;
+            padding: 1.2rem;
+            border-radius: $radius-md-v2;
+            transition: background-color $dur-fast-v2 $ease-out-v2;
+
+            &:hover {
+                background-color: $bg-1-v2;
+            }
 
             &__icon {
                 display: flex;
@@ -35,23 +56,28 @@
                 justify-content: center;
                 width: 4.4rem;
                 height: 4.4rem;
-                color: #FAFAFA;
-                background-color: #22272B;
-                border-radius: 1.6rem;
+                color: $text-secondary-v2;
+                background-color: $bg-2-v2;
+                border: 1px solid $border-subtle-v2;
+                border-radius: $radius-md-v2;
             }
 
             &__info {
                 &__title {
-                    color: rgba(255, 255, 255, 0.6);
-                    @include font-s-theme-client($font-weight-light-theme-client);
+                    color: $text-tertiary-v2;
+                    text-transform: uppercase;
+                    letter-spacing: 0.06em;
+                    @include font-s-theme-client($font-weight-bold-theme-client);
                 }
 
                 &__text {
-                    @include font-l-theme-client($font-weight-light-theme-client);
+                    color: $text-primary-v2;
+                    margin-top: 0.2rem;
+                    @include font-l-theme-client($font-weight-regular-theme-client);
 
                     &--name {
-                        color: rgba(255, 255, 255, 0.6);
-                        @include font-m-theme-client($font-weight-light-theme-client);
+                        color: $text-secondary-v2;
+                        @include font-m-theme-client($font-weight-regular-theme-client);
                     }
                 }
             }
@@ -79,16 +105,16 @@
 
     &-navigation {
         display: flex;
-        gap: 6.2rem;
-        padding: 2.4rem 3.2rem;
-        border: 0.1rem solid rgba(246, 251, 253, 0.06);
-        border-radius: 1.6rem;
+        gap: 4.8rem;
+        padding: 1.6rem 2.4rem;
+        background-color: $bg-1-v2;
+        border: 1px solid $border-subtle-v2;
+        border-radius: $radius-lg-v2;
         white-space: nowrap;
 
         &-item {
-            height: 4.6rem;
+            height: 4.0rem;
             @include font-l-theme-client($font-weight-regular-theme-client);
-            text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.20), 0px 2px 2px rgba(0, 0, 0, 0.20);
 
             .giz-icon--medium {
                 width: 2.0rem;
@@ -100,30 +126,37 @@
                 align-items: center;
                 justify-content: center;
                 height: 100%;
-                color: white;
+                color: $text-secondary-v2;
+                position: relative;
+                transition: color $dur-fast-v2 $ease-out-v2;
 
                 .giz-icon {
-                    color: #FAFAFA;
-                    margin-right: 1.5rem;
+                    color: inherit;
+                    margin-right: 1.0rem;
+                }
+
+                &:hover {
+                    color: $text-primary-v2;
                 }
 
                 &.active {
-                    color: $primary-color-theme-client;
-                    position: relative;
+                    color: $accent-v2;
 
                     svg {
-                        color: #0078D2;
+                        color: $accent-v2;
                     }
 
                     &::before {
                         content: '';
                         position: absolute;
-                        bottom: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 0.3rem;
-                        background-color: $primary-color-theme-client;
-                        border-radius: 0.2rem;
+                        bottom: -0.6rem;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        width: 70%;
+                        height: 0.2rem;
+                        background-color: $accent-v2;
+                        border-radius: $radius-pill-v2;
+                        box-shadow: 0 0 8px $accent-glow-v2;
                     }
                 }
 
@@ -152,123 +185,128 @@
 .giz-profile-header {
     display: flex;
     align-items: center;
-    gap: 1.6rem;
-    margin-bottom: 4.8rem;
+    gap: 2.4rem;
+    margin-bottom: 4.0rem;
+    padding: 2.4rem;
+    background:
+        radial-gradient(80rem 20rem at 0% 0%, rgba(34, 211, 238, 0.10), transparent 60%),
+        $bg-1-v2;
+    border: 1px solid $border-subtle-v2;
+    border-radius: $radius-lg-v2;
 
     .giz-user-avatar {
-        width: 11.2rem;
-        height: 11.2rem;
+        width: 9.6rem;
+        height: 9.6rem;
+        border: 2px solid $border-strong-v2;
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px $bg-1-v2, 0 0 0 5px $accent-soft-v2;
     }
 
     &__info {
         display: grid;
         grid-template-rows: min-content min-content;
         gap: 1.6rem;
+        flex: 1;
 
         &__username {
-            color: #FAFAFA;
-            text-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25), 0 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
-            @include font-h5-theme-client($font-weight-regular-theme-client);
+            color: $text-primary-v2;
+            @include font-h5-theme-client($font-weight-bold-theme-client);
         }
 
         &__stats {
             display: flex;
-            gap: 1.6rem;
+            gap: 0;
 
             &-item {
                 display: flex;
                 align-items: center;
                 gap: 0.8rem;
-                padding-right: 1.6rem;
+                padding: 0 2.0rem;
+                border-right: 1px solid $border-subtle-v2;
+
+                &:first-child {
+                    padding-left: 0;
+                }
 
                 &:last-child {
                     border-right: none;
                 }
 
                 .giz-icon {
-                    margin-right: 1.0rem;
+                    margin-right: 0.8rem;
                 }
             }
 
             &-text {
 
                 .giz-title {
-                    color: rgba(255, 255, 255, 0.6);
-                    text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
-                    @include font-s-theme-client($font-weight-light-theme-client);
+                    color: $text-tertiary-v2;
+                    text-transform: uppercase;
+                    letter-spacing: 0.06em;
+                    @include font-s-theme-client($font-weight-bold-theme-client);
                 }
 
                 .giz-numbers {
-                    color: #FAFAFA;
-                    text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
-                    @include font-xxl-theme-client($font-weight-regular-theme-client);
+                    color: $text-primary-v2;
+                    font-variant-numeric: tabular-nums;
+                    @include font-xxl-theme-client($font-weight-bold-theme-client);
                 }
             }
         }
     }
 }
 
-.order-invoice-unpaid {
-    background-color: #FFD79D;
-    color: #202223;
-    border-radius: 0.4rem;
-    padding: 0.3rem 0.8rem;
+// Status pills — saturated text + 12% tinted bg + thin border for the
+// modern launcher look. Replaces pastel-on-dark pattern with proper
+// dark-theme-friendly status indicators.
+%order-pill {
+    border-radius: $radius-pill-v2;
+    padding: 0.3rem 1.0rem;
     text-align: center;
-    @include font-s-theme-client($font-weight-light-theme-client);
+    border: 1px solid currentColor;
+    @include font-s-theme-client($font-weight-bold-theme-client);
+}
+
+.order-invoice-unpaid {
+    @extend %order-pill;
+    background-color: $status-warning-bg-v2;
+    color: $status-warning-v2;
 }
 
 .order-invoice-partialy-paid {
-    background-color: #FFD79D;
-    color: #202223;
-    border-radius: 0.4rem;
-    padding: 0.3rem 0.8rem;
-    text-align: center;
-    @include font-s-theme-client($font-weight-light-theme-client);
+    @extend %order-pill;
+    background-color: $status-warning-bg-v2;
+    color: $status-warning-v2;
 }
 
 .order-invoice-paid {
-    background-color: #E4E5E7;
-    color: #202223;
-    border-radius: 0.4rem;
-    padding: 0.3rem 0.8rem;
-    text-align: center;
-    @include font-s-theme-client($font-weight-light-theme-client);
+    @extend %order-pill;
+    background-color: $status-success-bg-v2;
+    color: $status-success-v2;
 }
 
 .order-on-hold {
-    background-color: #A4E8F2;
-    color: #202223;
-    border-radius: 0.4rem;
-    padding: 0.3rem 0.8rem;
-    text-align: center;
-    @include font-s-theme-client($font-weight-light-theme-client);
+    @extend %order-pill;
+    background-color: $status-info-bg-v2;
+    color: $status-info-v2;
 }
 
 .order-completed {
-    background-color: #E4E5E7;
-    color: #202223;
-    border-radius: 0.4rem;
-    padding: 0.3rem 0.8rem;
-    text-align: center;
-    @include font-s-theme-client($font-weight-light-theme-client);
+    @extend %order-pill;
+    background-color: $status-success-bg-v2;
+    color: $status-success-v2;
 }
 
 .order-canceled {
-    background-color: #FED3D1;
-    color: #202223;
-    border-radius: 0.4rem;
-    padding: 0.3rem 0.8rem;
-    text-align: center;
-    @include font-s-theme-client($font-weight-light-theme-client);
+    @extend %order-pill;
+    background-color: $status-danger-bg-v2;
+    color: $status-danger-v2;
 }
 
 .order-accepted {
-    background-color: #AEE9D1;
-    color: #202223;
-    border-radius: 0.4rem;
-    padding: 0.3rem 0.8rem;
-    text-align: center;
-    @include font-s-theme-client($font-weight-light-theme-client);
+    @extend %order-pill;
+    background-color: $status-success-bg-v2;
+    color: $status-success-v2;
 }
 
 .order-line-details {
@@ -300,7 +338,6 @@
     grid-template-rows: min-content 1fr;
     padding: 4.0rem 0 0 0;
     height: 100%;
-    //max-height: 65rem;
     overflow: hidden;
 
     .giz-animate-spinner {
@@ -309,36 +346,57 @@
     }
 
     &__header {
-        color: #FAFAFA;
+        color: $text-primary-v2;
         margin-bottom: 2.4rem;
-        @include font-h5-theme-client($font-weight-regular-theme-client);
+        position: relative;
+        padding-left: 1.2rem;
+        @include font-h5-theme-client($font-weight-bold-theme-client);
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0.4rem;
+            height: 2.4rem;
+            background-color: $accent-v2;
+            border-radius: $radius-pill-v2;
+            box-shadow: 0 0 12px $accent-glow-v2;
+        }
     }
 
     &__body {
         height: 100%;
         overflow: hidden;
-        background-color: #191c1d;
-        border: 0.1rem solid #27292a;
-        border-radius: 0.8rem;
+        background-color: $bg-1-v2;
+        border: 1px solid $border-subtle-v2;
+        border-radius: $radius-lg-v2;
         white-space: nowrap;
 
         .giz-data-grid {
             [#{$client-theme-comp-attr}] & {
-                background-color: #191c1d;
+                background-color: transparent;
 
                 & > thead td, & > thead th {
-                    background-color: #191c1d;
+                    background-color: transparent;
+                    color: $text-tertiary-v2;
+                    text-transform: uppercase;
+                    letter-spacing: 0.06em;
+                    border-bottom: 1px solid $border-subtle-v2;
+                    @include font-s-theme-client($font-weight-bold-theme-client);
                 }
 
                 & > tbody > tr:not(.giz-data-grid-row-detail) {
-                    border-top: 0.1rem solid #191c1d;
+                    border-top: 1px solid $border-subtle-v2;
+                    transition: background-color $dur-fast-v2 $ease-out-v2;
 
                     &:hover {
-                        background-color: #191c1d;
+                        background-color: $bg-2-v2;
                     }
 
                     &:last-child {
-                        border-bottom: 0.1rem solid #191c1d;
+                        border-bottom: 1px solid $border-subtle-v2;
                     }
                 }
             }
@@ -348,15 +406,24 @@
     &__footer {
         display: flex;
         justify-content: flex-end;
-        padding-top: 3.2rem;
+        padding-top: 2.4rem;
+        gap: 0.8rem;
 
         .giz-button {
-            width: 4.4rem;
-            height: 4.4rem;
+            width: 4.0rem;
+            height: 4.0rem;
+            background-color: $bg-2-v2;
+            border: 1px solid $border-subtle-v2;
+            border-radius: $radius-md-v2;
+            color: $text-secondary-v2;
+            transition: background-color $dur-fast-v2 $ease-out-v2,
+                        color $dur-fast-v2 $ease-out-v2,
+                        border-color $dur-fast-v2 $ease-out-v2;
 
             &:hover {
-                background-color: rgba(250, 250, 250, 0.23);
-                color: #fff;
+                background-color: $bg-3-v2;
+                color: $accent-v2;
+                border-color: $accent-v2;
             }
         }
     }

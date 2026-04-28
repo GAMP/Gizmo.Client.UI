@@ -4,7 +4,7 @@
     display: flex;
     flex-direction: column;
     gap: 2.4rem;
-    color: #FAFAFA;
+    color: $text-primary-v2;
     width: 100%;
     overflow: hidden;
     align-items: center;
@@ -12,20 +12,22 @@
 
     &__icon {
         &--success {
-            background-color: #E8F7F4;
+            background-color: $status-success-bg-v2;
+            border: 1px solid rgba(34, 197, 94, 0.32);
+            box-shadow: 0 0 24px rgba(34, 197, 94, 0.20);
 
             .giz-icon {
-                color: #008E7D;
+                color: $status-success-v2;
             }
         }
 
         &--error {
-            //background-color: #FFEFEF;
-            background-color: #FDEEEE;
+            background-color: $status-danger-bg-v2;
+            border: 1px solid rgba(239, 68, 68, 0.32);
+            box-shadow: 0 0 24px rgba(239, 68, 68, 0.20);
 
             .giz-icon {
-                //color: #FC9696;
-                color: #C74952;
+                color: $status-danger-v2;
             }
         }
     }
@@ -40,17 +42,18 @@
     }
 
     &__header {
-        //Font font-family: 'Rubik';
         font-weight: 700;
         font-size: 2.4rem;
         line-height: 3rem;
+        color: $text-primary-v2;
     }
 
     &__body {
         max-width: 100%;
         max-height: 24rem;
         overflow: auto;
-        @include font-l-theme-client($font-weight-light-theme-client);
+        color: $text-secondary-v2;
+        @include font-l-theme-client($font-weight-regular-theme-client);
 
         .giz-client-alert-message {
             text-align: center;

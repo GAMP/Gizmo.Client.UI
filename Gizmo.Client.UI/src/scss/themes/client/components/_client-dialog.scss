@@ -5,37 +5,46 @@
     display: grid;
     grid-template-rows: auto 1fr auto;
     height: 100%;
-    background-color: #22272B;
-    padding: 3.2rem;
-    border-radius: 1.6rem;
-    box-shadow: 0 0.8rem 3.2rem rgba(0, 0, 0, 0.08);
+    background-color: $bg-1-v2;
+    padding: 2.8rem 3.2rem;
+    border: 1px solid $border-strong-v2;
+    border-radius: $radius-lg-v2;
+    box-shadow: $shadow-pop-v2;
 
     &__header {
         display: grid;
         grid-template-columns: 1fr min-content;
         grid-template-rows: min-content min-content;
         margin-bottom: 2.4rem;
+        padding-bottom: 1.6rem;
+        border-bottom: 1px solid $border-subtle-v2;
 
         &__title {
             grid-row-start: 1;
             grid-row-end: 2;
+            color: $text-primary-v2;
             @include font-h5-theme-client($font-weight-bold-theme-client);
         }
 
         &__subtitle {
             grid-row-start: 2;
             grid-row-end: 3;
-            @include font-l-theme-client($font-weight-light-theme-client);
+            color: $text-secondary-v2;
+            margin-top: 0.4rem;
+            @include font-l-theme-client($font-weight-regular-theme-client);
         }
     }
 
     &__body {
         height: 100%;
         overflow: auto;
+        color: $text-primary-v2;
     }
 
     &__footer {
         margin-top: 2.4rem;
+        padding-top: 1.6rem;
+        border-top: 1px solid $border-subtle-v2;
     }
 
     .close-btn {
@@ -43,5 +52,11 @@
         grid-row-end: 3;
         grid-column-start: 2;
         grid-column-end: 3;
+        color: $text-tertiary-v2;
+        transition: color $dur-fast-v2 $ease-out-v2;
+
+        &:hover {
+            color: $text-primary-v2;
+        }
     }
 }

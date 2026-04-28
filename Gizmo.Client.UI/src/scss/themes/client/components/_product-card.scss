@@ -2,21 +2,29 @@
 
 .giz-product-card {
     position: relative;
-    background-color: #22272B;
-    border-radius: 0.8rem;
-    transition: background-color 0.2s;
+    background-color: $bg-2-v2;
+    border-radius: $radius-md-v2;
+    box-shadow: $ring-1-v2;
+    transition: background-color $dur-base-v2 $ease-out-v2,
+                box-shadow $dur-base-v2 $ease-out-v2,
+                transform $dur-base-v2 $ease-out-v2;
     max-width: 100%;
     overflow: hidden;
 
     .giz-button--fill.accent.giz-product-card-primary-button {
-        background-color: rgba(250, 250, 250, 0.16);
+        background-color: $bg-3-v2;
+        color: $text-primary-v2;
+        background-image: none;
+        font-weight: 500;
     }
 
     &:hover {
-        background-color: #050607;
+        background-color: $bg-2-v2;
+        transform: translateY(-2px);
+        box-shadow: 0 0 0 1px $accent-strong-v2, 0 14px 32px rgba(0, 0, 0, 0.55), 0 0 24px $accent-glow-v2;
 
         .giz-product-card__content__image__hovered {
-            background-color: rgba(0, 0, 0, 0.84);
+            background: linear-gradient(180deg, rgba(7, 9, 11, 0.0) 0%, rgba(7, 9, 11, 0.90) 100%);
 
             .giz-product-card__content--hovered {
                 visibility: visible;
@@ -24,7 +32,10 @@
         }
 
         .giz-button--fill.accent.giz-product-card-primary-button {
-            background-color: #0078d2;
+            background: linear-gradient(180deg, $accent-v2 0%, $accent-strong-v2 100%);
+            color: #062227;
+            font-weight: 700;
+            box-shadow: 0 6px 18px $accent-glow-v2;
         }
     }
 
@@ -40,14 +51,28 @@
             justify-content: center;
             position: relative;
             height: 24.6rem;
-            background-color: #161A1D;
+            background-color: $bg-1-v2;
+            background-image:
+                linear-gradient(135deg, rgba(34, 211, 238, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.03), transparent 60%);
             max-width: 100%;
+            overflow: hidden;
+
+            // Soft inset edge so product photos with white plates blend
+            // into the dark card instead of butting hard against it.
+            &::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                pointer-events: none;
+                box-shadow: inset 0 -32px 32px -16px rgba(7, 9, 11, 0.65),
+                            inset 0 0 0 1px $border-subtle-v2;
+            }
 
             & > img {
-                /*width: 100%;
-                height: 100%;
-                object-fit: cover;*/
-                border-radius: 0.9rem 0.9rem 0 0;
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
             }
 
             &__hovered {
@@ -58,7 +83,7 @@
                 height: 100%;
                 z-index: 2;
                 padding: 1.6rem 1.6rem 0 1.6rem;
-                transition: background-color 0.2s;
+                transition: background $dur-base-v2 $ease-out-v2;
                 overflow: hidden;
 
                 &__header {
@@ -157,11 +182,10 @@
 
     &__title {
         flex-grow: 1;
-        color: rgba(255, 255, 255, 0.6);
-        @include font-m-theme-client($font-weight-light-theme-client);
+        color: $text-primary-v2;
+        @include font-m-theme-client($font-weight-regular-theme-client);
         overflow: hidden;
         text-overflow: ellipsis;
-        //white-space: nowrap;
         max-height: 4.4rem;
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -184,38 +208,42 @@
             display: flex;
             align-items: center;
             gap: 0.6rem;
-            padding: 0.1rem 0.4rem;
-            background-color: rgba(250, 250, 250, 0.16);
-            border-radius: 0.5rem;
-            color: rgba(255, 255, 255, 0.75);
-            @include font-s-theme-client($font-weight-light-theme-client);
+            padding: 0.2rem 0.6rem;
+            background-color: $bg-3-v2;
+            border-radius: $radius-pill-v2;
+            color: $text-secondary-v2;
+            @include font-s-theme-client($font-weight-regular-theme-client);
 
-            &--additional { //
+            &--additional {
                 white-space: nowrap;
                 display: flex;
                 align-items: center;
                 gap: 0.6rem;
-                padding: 0.1rem 0.4rem;
-                background-color: rgba(250, 250, 250, 0.16);
-                border-radius: 0.5rem;
-                color: rgba(255, 255, 255, 0.75);
-                @include font-s-theme-client($font-weight-light-theme-client);
+                padding: 0.2rem 0.6rem;
+                background-color: $bg-3-v2;
+                border-radius: $radius-pill-v2;
+                color: $text-secondary-v2;
+                @include font-s-theme-client($font-weight-regular-theme-client);
             }
 
             &.active {
-                background-color: rgba(0, 120, 210, 0.32);
+                background-color: $accent-soft-v2;
+                color: $accent-v2;
             }
         }
     }
 
     &__price {
-        @include font-l-theme-client($font-weight-light-theme-client);
+        color: $currency-v2;
+        font-variant-numeric: tabular-nums;
+        @include font-l-theme-client($font-weight-bold-theme-client);
 
         svg {
-            fill: white;
+            fill: $currency-v2;
         }
 
         .inactive {
+            color: $text-tertiary-v2;
         }
     }
 }

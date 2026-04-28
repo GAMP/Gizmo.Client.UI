@@ -61,55 +61,77 @@
         }
 
         &--fill {
-            &:active:not(.giz-button-shadow) {
+            transition: background-color $dur-fast-v2 $ease-out-v2,
+                        box-shadow $dur-fast-v2 $ease-out-v2,
+                        transform $dur-fast-v2 $ease-out-v2,
+                        color $dur-fast-v2 $ease-out-v2;
+
+            &:active:not(.disabled):not([disabled]) {
+                transform: translateY(1px);
             }
 
             &.disabled, &[disabled] {
-                //background-color: rgba(250, 250, 250, 0.16);
-                background-color: #323536;
-                color: rgba(255, 255, 255, 0.24);
+                background-color: $bg-3-v2;
+                color: $text-disabled-v2;
             }
 
             &.warning {
             }
 
+            // "primary" in this codebase is used as the secondary/neutral
+            // action (e.g. Add to cart). Keep it muted; let "accent" pop.
             &.primary:not(.disabled) {
-                //background-color: rgba(250, 250, 250, 0.16);
-                background-color: #323536;
+                background-color: $bg-3-v2;
+                color: $text-primary-v2;
+                box-shadow: $ring-1-v2;
 
                 &:hover {
-                    background-color: #0091FF;
+                    background-color: $bg-4-v2;
+                    box-shadow: $ring-2-v2;
                 }
 
                 &.giz-button-shadow {
-                    box-shadow: $elevation-1-theme-client;
+                    box-shadow: $shadow-soft-v2;
                 }
             }
 
             &.secondary {
-                background-color: $unknown-color;
+                background-color: $bg-3-v2;
+                color: $text-primary-v2;
+                box-shadow: $ring-1-v2;
+
+                &:hover {
+                    background-color: $bg-4-v2;
+                }
             }
 
             &.info {
-                background-color: $unknown-color;
+                background-color: $bg-3-v2;
+                color: $accent-v2;
+                box-shadow: $ring-1-v2;
             }
 
             &.danger {
-                background-color: #B81423;
+                background-color: $status-danger-v2;
 
                 &:hover {
-                    background-color: #E01325;
+                    background-color: lighten($status-danger-v2, 6%);
+                    box-shadow: 0 8px 24px rgba(239, 68, 68, 0.30);
                 }
 
                 &.disabled, &[disabled] {
                 }
             }
 
+            // "accent" is the visual primary CTA (e.g. Place order, Send).
             &.accent:not(.disabled) {
-                background-color: #0078D2;
+                background: linear-gradient(180deg, $accent-v2 0%, $accent-strong-v2 100%);
+                color: #062227;
+                font-weight: 700;
 
                 &:hover {
-                    background-color: #0091FF;
+                    background: linear-gradient(180deg, lighten($accent-v2, 4%) 0%, $accent-v2 100%);
+                    box-shadow: 0 8px 28px $accent-glow-v2;
                 }
             }
         }

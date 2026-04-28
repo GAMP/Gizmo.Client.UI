@@ -54,27 +54,34 @@
     }
 
     &-item {
-        color: #FAFAFA;
+        color: $text-secondary-v2;
         cursor: pointer;
-        @include font-m-theme-client($font-weight-light-theme-client);
+        padding: 0.6rem 0.4rem;
+        position: relative;
+        transition: color $dur-fast-v2 $ease-out-v2;
+        @include font-m-theme-client($font-weight-regular-theme-client);
+
+        &:hover {
+            color: $text-primary-v2;
+        }
 
         &.active {
-            color: $primary-color-theme-client;
-            position: relative;
+            color: $accent-v2;
 
             svg {
-                color: #0078D2;
+                color: $accent-v2;
             }
 
             &::before {
                 content: '';
                 position: absolute;
-                bottom: 0;
+                bottom: -0.4rem;
                 left: 0;
                 width: 100%;
-                height: 0.3rem;
-                background-color: $primary-color-theme-client;
-                border-radius: 0.2rem;
+                height: 0.2rem;
+                background-color: $accent-v2;
+                border-radius: $radius-pill-v2;
+                box-shadow: 0 0 8px $accent-glow-v2;
             }
         }
     }

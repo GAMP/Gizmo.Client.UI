@@ -4,21 +4,25 @@
     display: grid;
     grid-template-columns: min-content 1fr;
     align-items: center;
-    padding: 0 1.6rem;
+    gap: 1.6rem;
+    padding: 1.2rem 1.6rem;
     height: 8.0rem;
 
     .giz-dock {
-        margin-left: 3.2rem;
+        margin-left: 1.6rem;
     }
 }
 
 .quick-launcher-switch.giz-button-group {
-    width: 12.0rem;
-    height: 4.8rem;
-    border: 0.1rem solid #0078D2;
-    border-radius: 0.6rem;
+    width: 11.2rem;
+    height: 4.0rem;
+    background-color: $bg-2-v2;
+    border: 1px solid $border-subtle-v2;
+    border-radius: $radius-pill-v2;
+    padding: 0.3rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: 0.2rem;
     overflow: hidden;
 
     .giz-button {
@@ -28,9 +32,23 @@
         justify-content: center;
         height: 100%;
         cursor: pointer;
+        border-radius: $radius-pill-v2;
+        color: $text-secondary-v2;
+        transition: background-color $dur-fast-v2 $ease-out-v2,
+                    color $dur-fast-v2 $ease-out-v2;
+
+        &:hover:not(.selected) {
+            color: $text-primary-v2;
+        }
 
         &.selected {
-            background-color: #0078D2;
+            background-color: $accent-v2;
+            color: #062227;
+            box-shadow: 0 0 16px $accent-glow-v2;
+
+            svg {
+                color: #062227;
+            }
         }
     }
 }
@@ -43,16 +61,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #0078D2;
+    color: $accent-v2;
 
     .giz-spinner {
-        color: #0078D2;
+        color: $accent-v2;
     }
 }
 
 .running {
     width: 0.9rem;
     height: 0.3rem;
-    background-color: #0078D2;
-    border-radius: 0.4rem;
+    background-color: $accent-v2;
+    border-radius: $radius-pill-v2;
+    box-shadow: 0 0 6px $accent-glow-v2;
 }

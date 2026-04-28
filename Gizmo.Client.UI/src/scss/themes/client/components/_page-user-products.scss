@@ -7,10 +7,11 @@
 
     &-action {
         &.giz-icon-button {
-            color: #FFFFFF;
+            color: $text-secondary-v2;
+            transition: color $dur-fast-v2 $ease-out-v2;
 
             &:hover {
-                color: #0091FF;
+                color: $accent-v2;
             }
 
             .giz-icon {
@@ -56,37 +57,42 @@
 .giz-user-time-products-order {
     width: 1.6rem;
     height: 1.6rem;
-    background: rgba(250, 250, 250, 0.16);
+    background: $bg-3-v2;
     border-radius: 50%;
-    color: #FFF;
+    color: $text-secondary-v2;
     text-align: center;
     margin-left: 0.2rem;
-    //Font ?
     font-family: Noto Sans;
     font-size: 1rem;
     font-style: normal;
     font-weight: 700;
-    line-height: 1.6rem; //Fix for alignment
+    line-height: 1.6rem;
 
     &--current {
-        background: #0078D2;
+        background: $accent-v2;
+        color: #062227;
+        box-shadow: 0 0 8px $accent-glow-v2;
     }
 }
 
 .giz-user-time-products-type {
-    background-color: #FFF;
-    color: #252A31;
-    border-radius: 0.4rem;
-    padding: 0.5rem 0.8rem;
-    @include font-m-theme-client($font-weight-regular-theme-client);
+    background-color: $accent-soft-v2;
+    color: $accent-v2;
+    border: 1px solid rgba(34, 211, 238, 0.32);
+    border-radius: $radius-pill-v2;
+    padding: 0.4rem 1.0rem;
+    @include font-m-theme-client($font-weight-bold-theme-client);
 
     &--credit {
-        background-color: #FFD79D;
+        background-color: $currency-soft-v2;
+        color: $currency-v2;
+        border-color: rgba(245, 184, 0, 0.32);
     }
 
     &--disabled {
-        background-color: rgba(250, 250, 250, 0.16);
-        color: rgba(255, 255, 255, 0.75);
+        background-color: $bg-3-v2;
+        color: $text-tertiary-v2;
+        border-color: $border-subtle-v2;
     }
 
     &__content {
@@ -153,18 +159,17 @@
     }
 
     .giz-user-time-products-host-group {
-        padding: 0.5rem 0.8rem;
-        border-radius: 0.4rem;
-        background: rgba(250, 250, 250, 0.16);
-        color: rgba(255, 255, 255, 0.75);
+        padding: 0.4rem 0.8rem;
+        border-radius: $radius-pill-v2;
+        background: $bg-3-v2;
+        color: $text-secondary-v2;
         @include font-m-theme-client($font-weight-regular-theme-client);
 
-        &--additional { //TODO: AAA
-            padding: 0.6rem 0.8rem;
-            background-color: rgba(250, 250, 250, 0.16);
-            border-radius: 0.4rem;
-            color: rgba(255, 255, 255, 0.75);
-            //Font ?
+        &--additional {
+            padding: 0.4rem 0.8rem;
+            background-color: $bg-3-v2;
+            border-radius: $radius-pill-v2;
+            color: $text-secondary-v2;
             font-family: 'Noto Sans';
             font-style: normal;
             font-weight: 500;
@@ -173,7 +178,8 @@
         }
 
         &.active {
-            background: rgba(0, 120, 210, 0.32);
+            background: $accent-soft-v2;
+            color: $accent-v2;
         }
     }
 }
@@ -196,9 +202,11 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: rgba(250, 250, 250, 0.16);
-        border-radius: 0.4rem;
+        background-color: $bg-3-v2;
+        border: 1px solid $border-subtle-v2;
+        border-radius: $radius-sm-v2;
         padding: 0.6rem;
+        color: $text-tertiary-v2;
 
         .giz-icon--medium {
             width: 2rem;
@@ -212,7 +220,9 @@
         }
 
         &.active {
-            background-color: #0078D2;
+            background-color: $accent-soft-v2;
+            border-color: $accent-v2;
+            color: $accent-v2;
 
             svg {
                 fill-opacity: 1;
@@ -255,9 +265,10 @@
     }
 
     &-wrapper {
-        background-color: #22272B;
-        border-radius: 0.8rem;
-        box-shadow: 0px 32px 64px rgba(0, 0, 0, 0.37), 0px 2px 21px rgba(0, 0, 0, 0.37);
+        background-color: $bg-2-v2;
+        border: 1px solid $border-strong-v2;
+        border-radius: $radius-md-v2;
+        box-shadow: $shadow-pop-v2;
     }
 
     &-item {
@@ -268,9 +279,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #FAFAFA;
-            color: #252A31;
-            border-radius: 0.4rem;
+            background-color: $accent-soft-v2;
+            color: $accent-v2;
+            border: 1px solid rgba(34, 211, 238, 0.32);
+            border-radius: $radius-sm-v2;
             padding: 0.6rem;
             width: 3.2rem;
             height: 3.2rem;
@@ -302,8 +314,9 @@
             height: 1.6rem;
             min-width: 1.6rem;
             min-height: 1.6rem;
-            background-color: #FFD79D;
+            background-color: $currency-v2;
             border-radius: 50%;
+            box-shadow: 0 0 6px $currency-soft-v2;
         }
 
         &__description {
@@ -348,9 +361,10 @@
     }
 
     &-wrapper {
-        background-color: #22272B;
-        border-radius: 0.8rem;
-        box-shadow: 0px 32px 64px rgba(0, 0, 0, 0.37), 0px 2px 21px rgba(0, 0, 0, 0.37);
+        background-color: $bg-2-v2;
+        border: 1px solid $border-strong-v2;
+        border-radius: $radius-md-v2;
+        box-shadow: $shadow-pop-v2;
     }
 
     &-item {
@@ -394,8 +408,9 @@
             height: 1.6rem;
             min-width: 1.6rem;
             min-height: 1.6rem;
-            background-color: #0078D2;
+            background-color: $accent-v2;
             border-radius: 50%;
+            box-shadow: 0 0 6px $accent-glow-v2;
         }
 
         &__description {
@@ -418,8 +433,10 @@
     padding: 1.2rem 1.6rem;
 
     &__header {
-        color: rgba(255, 255, 255, 0.60);
-        @include font-s-theme-client($font-weight-regular-theme-client);
+        color: $text-tertiary-v2;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        @include font-s-theme-client($font-weight-bold-theme-client);
     }
 
     &__body {
@@ -429,18 +446,19 @@
 
     &__footer {
         padding-top: 0.8rem;
-        border-top: 1px solid rgba(246, 251, 253, 0.06);
-        @include font-s-theme-client($font-weight-light-theme-client);
+        border-top: 1px solid $border-subtle-v2;
+        color: $text-secondary-v2;
+        @include font-s-theme-client($font-weight-regular-theme-client);
     }
 
     &-item {
         display: flex;
         gap: 0.4rem;
-        border-radius: 0.4rem;
-        padding: 0.5rem 0.8rem;
-        background-color: rgba(250, 250, 250, 0.16);
-        color: rgba(255, 255, 255, 0.75);
-        @include font-m-theme-client($font-weight-light-theme-client);
+        border-radius: $radius-pill-v2;
+        padding: 0.4rem 0.8rem;
+        background-color: $bg-3-v2;
+        color: $text-secondary-v2;
+        @include font-m-theme-client($font-weight-regular-theme-client);
 
         &__icon {
             display: flex;
@@ -456,8 +474,8 @@
         }
 
         &.active {
-            background-color: #0078D2;
-            color: #FFF;
+            background-color: $accent-soft-v2;
+            color: $accent-v2;
         }
     }
 }

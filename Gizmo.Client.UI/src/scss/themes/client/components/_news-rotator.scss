@@ -8,14 +8,40 @@
 
     &-wrapper {
         height: 100%;
-        padding: 1.6rem;
+        padding: 1.2rem 1.6rem;
+        background-color: $bg-1-v2;
+        border: 1px solid $border-subtle-v2;
+        border-radius: $radius-md-v2;
+        position: relative;
+
+        // "From the news" cue — small label inset along the top edge.
+        // Only show when the rotator actually has a feed item inside;
+        // otherwise the wrapper stays empty AND the label is hidden so
+        // we don't display a labelled empty box.
+        &:has(.giz-news-rotator-item)::before {
+            content: "FROM THE NEWS";
+            position: absolute;
+            top: -0.8rem;
+            left: 1.2rem;
+            padding: 0 0.6rem;
+            background-color: $bg-0-v2;
+            color: $text-tertiary-v2;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+        }
+
+        // When empty, collapse the empty card so it doesn't take space.
+        &:not(:has(.giz-news-rotator-item)):not(:has(.giz-spinner)) {
+            display: none;
+        }
     }
 
     &-item {
         display: grid;
         grid-template-columns: min-content 1fr;
         align-items: center;
-        gap: 1.0rem;
+        gap: 1.2rem;
         visibility: hidden;
         position: absolute;
         left: 0;
@@ -24,11 +50,16 @@
         height: 100%;
         overflow: hidden;
         cursor: pointer;
+        transition: opacity $dur-fast-v2 $ease-out-v2;
+
+        &:hover &__message {
+            color: $accent-v2;
+        }
 
         &__image {
             position: relative;
-            width: 4.8rem;
-            height: 4.8rem;
+            width: 4.0rem;
+            height: 4.0rem;
 
             &__feed {
                 position: absolute;
@@ -36,22 +67,27 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                border-radius: 0.9rem;
+                border-radius: $radius-sm-v2;
                 overflow: hidden;
+                background-color: $bg-2-v2;
 
                 & > img {
                     width: 100%;
                     height: 100%;
+                    object-fit: cover;
                 }
             }
 
             &__channel {
                 position: absolute;
-                bottom: 0;
-                right: -0.6rem;
-                width: 2rem;
-                height: 2rem;
+                bottom: -0.4rem;
+                right: -0.4rem;
+                width: 1.8rem;
+                height: 1.8rem;
                 z-index: 1;
+                border-radius: 50%;
+                overflow: hidden;
+                border: 2px solid $bg-1-v2;
 
                 & > img {
                     width: 100%;
@@ -65,7 +101,9 @@
             max-height: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
-            @include font-m-theme-client($font-weight-light-theme-client);
+            color: $text-secondary-v2;
+            transition: color $dur-fast-v2 $ease-out-v2;
+            @include font-m-theme-client($font-weight-regular-theme-client);
         }
 
         &--current {

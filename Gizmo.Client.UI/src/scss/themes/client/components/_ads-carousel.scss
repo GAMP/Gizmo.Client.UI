@@ -10,6 +10,7 @@
 
     &__header {
         margin-bottom: 1.6rem;
+        color: $text-primary-v2;
         @include font-h5-theme-client($font-weight-bold-theme-client);
     }
 
@@ -23,11 +24,29 @@
         margin-top: 2.1rem;
     }
 
+    // Force single-hero layout — the original 3-up "current/prev/next"
+    // composition uses fixed pixel widths that overlap on common
+    // viewports (1920×1080) and produces visibly cropped tiles.
+    // Only the current item shows; other states remain in DOM so
+    // transitions still drive content swaps.
+    &-item.previous,
+    &-item.previous-out,
+    &-item.next,
+    &-item.next-out {
+        display: none !important;
+    }
+
+    &-item.current {
+        width: min(76rem, calc(100% - 4.8rem)) !important;
+        max-width: 100rem;
+    }
+
     &-item {
         position: absolute;
-        border-radius: 0.8rem;
+        border-radius: $radius-lg-v2;
         overflow: hidden;
-        background-color: #22272b;
+        background-color: $bg-2-v2;
+        box-shadow: $shadow-pop-v2;
         display: none;
 
         &--media {
@@ -397,6 +416,7 @@
         border-radius: 50%;
         cursor: pointer;
         background-color: transparent;
+        transition: background-color $dur-fast-v2 $ease-out-v2;
 
         &:after {
             position: absolute;
@@ -406,14 +426,20 @@
             left: 0.4rem;
             width: calc(100% - 0.8rem);
             height: calc(100% - 0.8rem);
-            background-color: rgba(250, 250, 250, 0.16);
+            background-color: $bg-4-v2;
+            transition: background-color $dur-fast-v2 $ease-out-v2;
+        }
+
+        &:hover:not(.active):after {
+            background-color: $text-tertiary-v2;
         }
 
         &.active {
-            background-color: #0078d2;
+            background-color: $accent-soft-v2;
 
             &:after {
-                background-color: #fafafa;
+                background-color: $accent-v2;
+                box-shadow: 0 0 8px $accent-glow-v2;
             }
         }
     }
