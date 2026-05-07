@@ -1,33 +1,32 @@
 
 
 .giz-user-lock {
-    color: #FAFAFA;
+    color: $text-primary-v2;
 
     .giz-input-text {
         .giz-input-root--outline {
             border-top: none;
             border-left: none;
             border-right: none;
-            border-bottom: 0.2rem solid rgba(246, 251, 253, 0.28);
+            border-bottom: 0.2rem solid $border-strong-v2;
             border-radius: 0;
 
             &:hover {
                 border-top: none;
                 border-left: none;
                 border-right: none;
-                border-bottom: 0.2rem solid rgba(246, 251, 253, 0.28);
+                border-bottom: 0.2rem solid $border-strong-v2;
             }
 
             &:focus-within {
                 border-top: none;
                 border-left: none;
                 border-right: none;
-                border-bottom: 0.2rem solid #0091E6;
+                border-bottom: 0.2rem solid $accent-v2;
             }
 
             input {
                 text-align: center;
-                //Font ?
                 font-weight: 700;
                 font-size: 2.6rem;
                 line-height: 3.4rem;
@@ -38,30 +37,34 @@
     &.error {
         .giz-input-text {
             .giz-input-root--outline {
-                border-bottom: 0.2rem solid #F73B3B;
+                border-bottom: 0.2rem solid $status-danger-v2;
 
                 &:hover {
-                    border-bottom: 0.2rem solid #F73B3B;
+                    border-bottom: 0.2rem solid $status-danger-v2;
                 }
 
                 &:focus-within {
-                    border-bottom: 0.2rem solid #F73B3B;
+                    border-bottom: 0.2rem solid $status-danger-v2;
                 }
             }
         }
     }
 
+    // Privacy-sensitive overlay — kept heavy on purpose so a passerby
+    // can't read content behind it. Palette aligned with the rest of
+    // the launcher (charcoal, not blue-grey) but opacity stays high.
     &-overlay {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(180deg, rgba(35, 35, 45, 0.9) 0%, rgba(42, 44, 53, 0.15) 100%);
-        backdrop-filter: blur(3.0rem);
+        background: linear-gradient(180deg, rgba(7, 9, 11, 0.85) 0%, rgba(7, 9, 11, 0.65) 100%);
+        backdrop-filter: blur(2.4rem);
+        -webkit-backdrop-filter: blur(2.4rem);
         z-index: $lock-overlay-index;
         opacity: 0;
-        transition: opacity 0.5s;
+        transition: opacity $dur-slow-v2 $ease-out-v2;
 
         &.open {
             opacity: 1;
@@ -91,7 +94,7 @@
     &__error {
         margin-top: 0.4rem;
         margin-bottom: 2.4rem;
-        color: #C74952;
+        color: $status-danger-v2;
         @include font-m-theme-client($font-weight-light-theme-client);
     }
 
@@ -112,7 +115,7 @@
     }
 
     &__note {
-        color: #FFFFFF;
+        color: $text-primary-v2;
         @include font-l-theme-client($font-weight-regular-theme-client);
     }
 }

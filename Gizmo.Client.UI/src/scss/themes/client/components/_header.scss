@@ -240,7 +240,7 @@
 
 .giz-user-balance-tooltip {
     padding: 2.4rem 2rem;
-    color: #FAFAFA;
+    color: $text-primary-v2;
     min-width: 50rem;
     white-space: normal;
 
@@ -254,14 +254,13 @@
     }
 
     &-wrapper {
+        @extend %giz-menu-panel-base;
         position: absolute;
-        top: calc(100% + 2rem);
+        top: calc(100% + 0.6rem);
         left: 50%;
         transform: translateX(-50%);
         z-index: $header-dropdown-index;
-        background-color: #22272B;
-        border-radius: 0.8rem;
-        box-shadow: 0px 32px 64px rgba(0, 0, 0, 0.37), 0px 2px 21px rgba(0, 0, 0, 0.37);
+        margin-top: 0;
         display: none;
 
         &--visible {
@@ -278,35 +277,41 @@
         }
 
         &__link {
-            border-bottom: 1px solid #0F9FFF;
+            border-bottom: 1px solid $accent-v2;
+            color: $accent-v2;
             cursor: pointer;
+            transition: color $dur-fast-v2 $ease-out-v2;
             @include font-m-theme-client($font-weight-light-theme-client);
+
+            &:hover {
+                color: lighten($accent-v2, 8%);
+            }
         }
     }
 
     &__credit {
         padding-top: 1.2rem;
-        color: rgba(255, 255, 255, 0.60);
-        border-top: 1px solid rgba(246, 251, 253, 0.06);
+        color: $text-tertiary-v2;
+        border-top: 1px solid $border-subtle-v2;
         @include font-m-theme-client($font-weight-light-theme-client);
     }
 
     &__expiration {
         padding: 1.2rem 0;
-        color: #E68200;
-        border-top: 1px solid rgba(246, 251, 253, 0.06);
+        color: $status-warning-v2;
+        border-top: 1px solid $border-subtle-v2;
         @include font-m-theme-client($font-weight-light-theme-client);
     }
 
     &__message {
         padding: 1.2rem 0;
-        border-top: 1px solid rgba(246, 251, 253, 0.06);
+        border-top: 1px solid $border-subtle-v2;
         @include font-m-theme-client($font-weight-light-theme-client);
     }
 
     &__actions {
         padding-top: 2.4rem;
-        border-top: 1px solid rgba(246, 251, 253, 0.06);
+        border-top: 1px solid $border-subtle-v2;
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 1.6rem;
@@ -318,7 +323,7 @@
 
     &__action {
         padding-top: 2.4rem;
-        border-top: 1px solid rgba(246, 251, 253, 0.06);
+        border-top: 1px solid $border-subtle-v2;
         display: grid;
         grid-template-columns: 1fr;
 

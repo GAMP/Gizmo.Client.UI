@@ -1,14 +1,11 @@
 //=============== Menu Active Apps ================//
 
 .giz-active-apps {
+    @extend %giz-menu-panel-base;
+    position: relative;
     display: grid;
     grid-template-rows: min-content 1fr;
-    //grid-template-columns: max-content;
-    background-color: #22272B;
-    border-radius: 0 0 0.8rem 0.8rem;
-    box-shadow: 0px 32px 64px rgba(0, 0, 0, 0.37), 0px 2px 21px rgba(0, 0, 0, 0.37);
     max-height: 100%;
-    overflow: hidden;
     min-width: 52.2rem;
     width: max-content;
 
@@ -31,10 +28,7 @@
     }
 
     &__header {
-        color: #E4E6EB;
-        padding: 0.8rem 1.6rem;
-        white-space: nowrap;
-        @include font-h5-theme-client($font-weight-bold-theme-client);
+        @extend %giz-menu-panel-header;
     }
 
     &__body {
@@ -75,8 +69,13 @@
 }
 
 .giz-active-app-card {
-    padding: 1.6rem;
-    border-bottom: 0.1rem solid #373839;
+    padding: 0.4rem;
+    border-bottom: 1px solid $border-subtle-v2;
+    transition: background-color $dur-fast-v2 $ease-out-v2;
+
+    &:hover {
+        background-color: $bg-3-v2;
+    }
 
     &:last-child {
         border-bottom: none;
@@ -84,32 +83,35 @@
 
     &__image {
         height: 100%;
-        padding: 1.6rem;
+        padding: 1.2rem 1.6rem;
 
         img {
             width: 4.0rem;
             height: 4.0rem;
+            border-radius: $radius-sm-v2;
         }
     }
 
     &__info {
         height: 100%;
-        padding: 1.6rem;
+        padding: 1.2rem 1.6rem;
 
         &__category {
-            color: rgba(255, 255, 255, 0.6);
-            opacity: 0.6;
-            @include font-s-theme-client($font-weight-light-theme-client);
+            color: $text-tertiary-v2;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            @include font-s-theme-client($font-weight-bold-theme-client);
         }
 
         &__title {
-            color: #FAFAFA;
-            @include font-l-theme-client($font-weight-regular-theme-client);
+            color: $text-primary-v2;
+            margin-top: 0.2rem;
+            @include font-l-theme-client($font-weight-bold-theme-client);
         }
     }
 
     &__actions {
         height: 100%;
-        padding: 1.6rem;
+        padding: 1.2rem 1.6rem;
     }
 }

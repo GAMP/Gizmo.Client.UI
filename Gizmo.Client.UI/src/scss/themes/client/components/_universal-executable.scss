@@ -47,7 +47,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            color: rgba(255, 255, 255, 0.6);
+            color: $text-secondary-v2;
             @include font-s-theme-client($font-weight-light-theme-client);
         }
 
@@ -55,13 +55,12 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            color: #FAFAFA;
+            color: $text-primary-v2;
             @include font-m-theme-client($font-weight-regular-theme-client);
         }
     }
 
     &:before {
-        //visibility: hidden;
         content: '';
         position: absolute;
         top: 0;
@@ -70,16 +69,21 @@
         height: 100%;
         z-index: 1;
         box-sizing: border-box;
-        border-radius: 0.8rem;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0.085) 50%), linear-gradient(0deg, rgba(255, 255, 255, 0.0605), rgba(255, 255, 255, 0.0605));
-        border: 0.1rem solid rgba(255, 255, 255, 0.13);
+        border-radius: $radius-md-v2;
+        background-color: $accent-soft-v2;
+        border: 0.1rem solid $accent-strong-v2;
+        box-shadow: 0 6px 20px $accent-glow-v2;
         opacity: 0;
-        transition: opacity 0.2s;
+        transition: opacity $dur-base-v2 $ease-out-v2;
     }
 
     &:hover {
         &:before {
             opacity: 1;
+        }
+
+        .giz-universal-executable__description__exe {
+            color: $accent-v2;
         }
     }
 }

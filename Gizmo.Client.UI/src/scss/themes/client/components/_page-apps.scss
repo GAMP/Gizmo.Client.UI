@@ -13,31 +13,17 @@
         height: 100%;
     }
 
+    // NewsRotator-only zone (QuickLauncher moved to the sidebar in
+    // Phase 2). Aligned right so the news widget sits as a compact
+    // secondary reading next to where the page hero begins.
     &__header {
-        display: grid;
-        // QuickLauncher gets the bulk; NewsRotator (RSS) capped at a
-        // secondary 36rem so it reads as a widget, not a hero.
-        grid-template-columns: 1fr minmax(min-content, 36rem);
-        gap: 2.0rem;
-        padding: 2.0rem 2.0rem 0.8rem 2.0rem;
-        align-items: center;
-
-        &.full-quick-launcher {
-            grid-template-columns: 1fr;
-        }
-
-        &__quick-launch {
-            background-color: $bg-1-v2;
-            border: 1px solid $border-subtle-v2;
-            border-radius: $radius-lg-v2;
-            max-width: 100%;
-            z-index: $quick-launch-index;
-        }
+        display: flex;
+        justify-content: flex-end;
+        padding: 1.6rem 2.0rem 0.8rem 2.0rem;
 
         &__ads {
-            // No own background — NewsRotator wrapper handles its own
-            // surface so the floating "FROM THE NEWS" label can sit on
-            // the page background.
+            width: 100%;
+            max-width: 36rem;
             background-color: transparent;
             border-radius: 0;
         }

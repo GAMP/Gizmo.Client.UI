@@ -15,9 +15,11 @@
             .giz-input-root {
                 display: flex;
                 align-items: center;
-                color: #D5D5D6;
-                background-color: #0C0F11;
+                color: $text-primary-v2;
+                background-color: $bg-1-v2;
                 width: 20.0rem;
+                transition: border-color $dur-fast-v2 $ease-out-v2,
+                            box-shadow $dur-fast-v2 $ease-out-v2;
 
                 .giz-input-wrapper {
                     position: relative;
@@ -38,15 +40,14 @@
                 }
 
                 svg {
-                    color: #D5D5D6;
+                    color: $text-secondary-v2;
                     vertical-align: baseline;
                 }
 
                 &.disabled, &[disabled] {
                     pointer-events: none;
-                    //Default Theme
-                    color: rgba(255, 255, 255, 0.6);
-                    background-color: rgba(250, 250, 250, 0.16);
+                    color: $text-secondary-v2;
+                    background-color: $bg-2-v2;
                     border: 0.1rem solid transparent;
                 }
 
@@ -55,26 +56,25 @@
                     border: none;
                     outline: none;
                     background-color: inherit;
-                    color: #D5D5D6;
+                    color: $text-primary-v2;
+
+                    &::placeholder {
+                        color: $text-tertiary-v2;
+                    }
 
                     &.disabled, &[disabled] {
                         pointer-events: none;
-                        color: rgba(255, 255, 255, 0.24);
-                        //Default Theme
-                        //background-color: transparent;
-                        //background-color: #0C0F11;
-                        //background-color: initial;
+                        color: $text-disabled-v2;
                     }
                 }
 
                 &--outline {
-                    border: 1px solid rgba(246, 251, 253, 0.28);
-                    border-radius: 0.8rem;
-                    //background-color: transparent;
-                    background-color: #0C0F11;
+                    border: 1px solid $border-strong-v2;
+                    border-radius: $radius-md-v2;
+                    background-color: $bg-1-v2;
 
                     &:hover {
-                        border: 0.2rem solid rgba(246, 251, 253, 0.52);
+                        border: 0.2rem solid $accent-v2;
 
                         &.giz-input-root--extrasmall {
                             padding: 0.4rem 1.1rem;
@@ -94,7 +94,8 @@
                     }
 
                     &:focus-within {
-                        border: 0.2rem solid #0091E6;
+                        border: 0.2rem solid $accent-v2;
+                        box-shadow: 0 0 0 0.4rem $accent-soft-v2;
 
                         &.giz-input-root--extrasmall {
                             padding: 0.4rem 1.1rem;
@@ -224,21 +225,19 @@
             }
 
             &--invalid {
-                //color: $typo-alert-theme-client;
-
                 input {
-                    color: $typo-alert-theme-client;
+                    color: $status-danger-v2;
                 }
 
                 .giz-input-validation-label {
-                    color: $typo-alert-theme-client;
+                    color: $status-danger-v2;
                 }
 
                 .giz-input-root--outline {
-                    border: 0.1rem solid $bg-alert-theme-client;
+                    border: 0.1rem solid $status-danger-v2;
 
                     &:hover {
-                        border: 0.1rem solid $bg-alert-theme-client;
+                        border: 0.1rem solid $status-danger-v2;
 
                         &.giz-input-root--extrasmall {
                             padding: 0.5rem 1.2rem;
@@ -258,7 +257,8 @@
                     }
 
                     &:focus-within {
-                        border: 0.2rem solid $bg-alert-theme-client;
+                        border: 0.2rem solid $status-danger-v2;
+                        box-shadow: 0 0 0 0.4rem $status-danger-bg-v2;
 
                         &.giz-input-root--extrasmall {
                             padding: 0.4rem 1.1rem;

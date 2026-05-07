@@ -29,11 +29,8 @@
         }
 
         &__dropdown {
-            background-color: #22272b;
-            box-shadow: 0 0.2rem 1.6rem rgba(0, 0, 0, 0.25);
-            border-radius: 0.8rem;
+            @extend %giz-menu-panel-base;
             padding: 0.8rem;
-            border: unset;
 
             &--full-width {
                 width: 100%;
@@ -58,16 +55,26 @@
 
                 .giz-multi-select-item {
                     cursor: pointer;
-                    border: 1px solid rgba(246, 251, 253, 0.52);
-                    border-radius: 0.4rem;
+                    border: 1px solid $border-strong-v2;
+                    border-radius: $radius-sm-v2;
                     padding: 0 1.2rem;
+                    color: $text-primary-v2;
                     overflow-wrap: anywhere;
                     hyphens: auto;
-                    @include font-l-theme-client($font-weight-light-theme-client);
+                    transition: background-color $dur-fast-v2 $ease-out-v2,
+                                border-color $dur-fast-v2 $ease-out-v2,
+                                color $dur-fast-v2 $ease-out-v2;
+                    @include font-l-theme-client($font-weight-regular-theme-client);
+
+                    &:hover:not(.selected) {
+                        background-color: $bg-3-v2;
+                        border-color: $accent-v2;
+                    }
 
                     &.selected {
-                        border: 1px solid transparent;
-                        background-color: rgba(250, 250, 250, 0.16);
+                        border-color: transparent;
+                        background-color: $accent-soft-v2;
+                        color: $accent-v2;
                     }
                 }
             }

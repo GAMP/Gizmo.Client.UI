@@ -3,18 +3,41 @@
 .giz-container {
     position: relative;
     z-index: 1;
+    display: grid;
+    grid-template-columns: 8.0rem 1fr;
+    grid-template-rows: 6.4rem 1fr;
+    grid-template-areas:
+        "header  header"
+        "sidebar body";
+    height: 100vh;
+    width: 100vw;
 
     .giz-app__header {
+        grid-area: header;
         background-color: $bg-1-v2;
         border-bottom: 1px solid $border-subtle-v2;
         height: 6.4rem;
     }
+
+    .giz-app__sidebar {
+        grid-area: sidebar;
+        // No overflow:hidden — dock-item tooltips must escape to the
+        // right. Internal scrolling lives on the pinned section's
+        // inner wrapper instead.
+    }
+
+    .giz-app__body {
+        grid-area: body;
+        min-width: 0;
+        min-height: 0;
+        overflow: hidden;
+    }
 }
 
-// Operator-uploaded venue wallpaper. Kept as subtle atmospheric layer
-// rather than dominant background so content surfaces win the contrast
-// fight. Heavy dark overlay + blur turns it into a barely-visible
-// texture under the launcher chrome.
+// Operator-uploaded venue wallpaper. Darkened just enough that
+// foreground content surfaces stay readable, but the operator's
+// chosen image actually shows through instead of being reduced to
+// a near-invisible texture.
 .giz-background {
     position: fixed;
     top: 0;
@@ -29,18 +52,17 @@
         position: absolute;
         inset: 0;
         background:
-            radial-gradient(70rem 35rem at 0% 0%, rgba(34, 211, 238, 0.05), transparent 60%),
+            radial-gradient(70rem 35rem at 0% 0%, rgba(34, 211, 238, 0.04), transparent 60%),
             radial-gradient(60rem 30rem at 100% 100%, rgba(245, 184, 0, 0.03), transparent 60%),
-            linear-gradient(180deg, rgba(7, 9, 11, 0.92) 0%, rgba(7, 9, 11, 0.88) 50%, rgba(7, 9, 11, 0.95) 100%);
-        backdrop-filter: blur(2.4rem) saturate(0.8);
-        -webkit-backdrop-filter: blur(2.4rem) saturate(0.8);
+            linear-gradient(180deg, rgba(7, 9, 11, 0.55) 0%, rgba(7, 9, 11, 0.45) 50%, rgba(7, 9, 11, 0.60) 100%);
+        backdrop-filter: blur(0.8rem) saturate(0.95);
+        -webkit-backdrop-filter: blur(0.8rem) saturate(0.95);
     }
 
     img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        opacity: 0.55;
     }
 }
 

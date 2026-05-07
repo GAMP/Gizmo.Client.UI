@@ -3,28 +3,15 @@
 .giz-toast {
     display: grid;
     grid-template-columns: min-content 1fr min-content;
-    border-radius: 0.8rem;
+    border-radius: $radius-md-v2;
     padding: 1.6rem;
     gap: 1.6rem;
+    border: 1px solid transparent;
 
     a {
-        color: #FFFFFF;
-
-        &:link {
-            text-decoration: underline;
-        }
-
-        &:visited {
-            text-decoration: underline;
-        }
-
-        &:hover {
-            text-decoration: underline;
-        }
-
-        &:active {
-            text-decoration: underline;
-        }
+        color: inherit;
+        text-decoration: underline;
+        font-weight: 600;
     }
 
     &__body {
@@ -33,43 +20,62 @@
         gap: 0.8rem;
 
         &__title {
-            @include font-m-theme-client($font-weight-regular-theme-client);
+            color: $text-primary-v2;
+            @include font-m-theme-client($font-weight-bold-theme-client);
         }
 
         &__text {
-            @include font-m-theme-client($font-weight-light-theme-client);
+            color: $text-secondary-v2;
+            @include font-m-theme-client($font-weight-regular-theme-client);
         }
     }
 
+    // Status variants — tinted background + saturated icon/border. Matches
+    // the v2 status token system (status-*-bg-v2 = 12% tint, status-*-v2 =
+    // saturated). Loud enough to grab attention, modern enough to not feel
+    // like a screaming color slab.
     &--warning {
-        background-color: #F88545;
-        color: #FFFFFF;
+        background-color: $status-warning-bg-v2;
+        border-color: $status-warning-v2;
+
+        .giz-toast__body__title {
+            color: $status-warning-v2;
+        }
     }
 
     &--success {
-        background-color: #19B28D;
-        color: #FFFFFF;
+        background-color: $status-success-bg-v2;
+        border-color: $status-success-v2;
+
+        .giz-toast__body__title {
+            color: $status-success-v2;
+        }
     }
 
     &--danger {
-        background-color: #FF2E5A;
-        color: #FFFFFF;
+        background-color: $status-danger-bg-v2;
+        border-color: $status-danger-v2;
+
+        .giz-toast__body__title {
+            color: $status-danger-v2;
+        }
     }
 
     &--info {
-        background-color: #2B2D33;
-        color: #FFFFFF;
+        background-color: $bg-3-v2;
+        border-color: $border-strong-v2;
     }
 
     &--accent {
-        background-color: #3F8CFF;
-        color: #FFFFFF;
+        background-color: $accent-soft-v2;
+        border-color: $accent-strong-v2;
+
+        .giz-toast__body__title {
+            color: $accent-v2;
+        }
     }
 
     .close-btn {
-        /*width: 2.0rem;
-        height: 2.0rem;
-        color: #FACED1;*/
         background-color: transparent;
 
         &:hover {

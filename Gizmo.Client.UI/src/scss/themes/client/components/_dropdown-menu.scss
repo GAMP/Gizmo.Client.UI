@@ -12,3 +12,43 @@
         display: block;
     }
 }
+
+// Shared chrome for the header popovers (active apps, notifications,
+// assistance, user links, online deposit). Replaces the per-file
+// "#22272B + heavy shadow + bottom-only border-radius" pattern with a
+// proper bordered floating panel that ties to the cyan-accented
+// trigger buttons in the header.
+%giz-menu-panel-base {
+    background-color: $bg-2-v2;
+    border: 1px solid $border-strong-v2;
+    border-radius: $radius-md-v2;
+    box-shadow: $shadow-pop-v2;
+    margin-top: 0.6rem;          // small gap from the trigger
+    overflow: hidden;
+
+    // Subtle cyan glow along the top edge — visual link to the
+    // accented (open-state) trigger button immediately above.
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg,
+            transparent 0%,
+            $accent-v2 50%,
+            transparent 100%);
+        opacity: 0.7;
+        pointer-events: none;
+    }
+}
+
+// Common header style: bottom divider, accent-bar eyebrow.
+%giz-menu-panel-header {
+    color: $text-primary-v2;
+    padding: 1.6rem 2.0rem;
+    border-bottom: 1px solid $border-subtle-v2;
+    white-space: nowrap;
+    @include font-l-theme-client($font-weight-bold-theme-client);
+}

@@ -1,16 +1,14 @@
 //=============== Menu Assistance ================//
 
 .giz-menu-assistance {
+    @extend %giz-menu-panel-base;
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 2.4rem;
-    background-color: #22272B;
     width: 46rem;
     padding: 2.4rem;
-    border-radius: 0 0 0.8rem 0.8rem;
-    box-shadow: 0px 32px 64px rgba(0, 0, 0, 0.37), 0px 2px 21px rgba(0, 0, 0, 0.37);
     max-height: 100%;
-    overflow: hidden;
 
     & > .giz-animate-spinner {
         height: 6.4rem;
@@ -51,7 +49,7 @@
     }
 
     &-note-counter {
-        color: rgba(255, 255, 255, 0.35);
-        @include font-m-theme-client($font-weight-light-theme-client);
+        color: $text-tertiary-v2;
+        @include font-m-theme-client($font-weight-regular-theme-client);
     }
 }

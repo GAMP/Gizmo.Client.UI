@@ -6,8 +6,8 @@
         width: 100%;
         border-collapse: separate;
         border-spacing: 0;
-        background-color: #22272B;
-        color: unset;
+        background-color: transparent; // adopt host panel surface (popup/dialog/page)
+        color: $text-primary-v2;
 
         &-wrapper {
             position: relative;
@@ -43,12 +43,12 @@
         }
 
         & > thead td, & > thead th {
-            color: #AAABAD;
+            color: $text-tertiary-v2;
             padding: 1.1rem 0.8rem;
             height: unset;
-            @include font-s-theme-client($font-weight-light-theme-client);
-            background-color: #22272B;
-            border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
+            @include font-s-theme-client($font-weight-regular-theme-client);
+            background-color: transparent;
+            border-bottom: 0.1rem solid $border-subtle-v2;
 
             .giz-data-grid-header {
                 display: flex;
@@ -58,16 +58,18 @@
         }
 
         & > tbody > tr:not(.giz-data-grid-row-detail) {
-            border-top: 0.1rem solid #22272B;
+            border-top: 0.1rem solid $border-subtle-v2;
             height: unset;
-            @include font-m-theme-client($font-weight-light-theme-client);
+            transition: background-color $dur-fast-v2 $ease-out-v2;
+            @include font-m-theme-client($font-weight-regular-theme-client);
 
             &.selected {
                 cursor: pointer;
+                background-color: $accent-soft-v2;
             }
 
             &:hover {
-                background-color: #22272B;
+                background-color: $bg-3-v2;
 
                 & > td {
                     &:first-child {
@@ -81,7 +83,7 @@
             }
 
             &:last-child {
-                border-bottom: 0.1rem solid #22272B;
+                border-bottom: 0.1rem solid $border-subtle-v2;
             }
 
             & > td {
@@ -131,12 +133,13 @@
                     position: sticky;
                     top: 0;
                     z-index: 1;
+                    background-color: $bg-2-v2; // sticky needs an opaque fill so scrolled rows don't bleed through
                 }
             }
         }
 
         .giz-data-grid-row-detail {
-            background-color: #0C0F11;
+            background-color: $bg-1-v2;
 
             td {
                 padding: 0.8rem;

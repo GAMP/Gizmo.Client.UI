@@ -1,14 +1,13 @@
 //=============== Spinner ================//
 
 .giz-user-online-deposit {
-    color: #FAFAFA;
+    color: $text-primary-v2;
 
     &-menu {
+        @extend %giz-menu-panel-base;
+        position: relative;
         width: 45.6rem;
         padding: 2rem;
-        background-color: #22272B;
-        border-radius: 0 0 0.8rem 0.8rem;
-        box-shadow: 0px 32px 64px rgba(0, 0, 0, 0.37), 0px 2px 21px rgba(0, 0, 0, 0.37);
     }
 
     .giz-button-group {
@@ -20,17 +19,26 @@
 
         .giz-button {
             flex: 1;
-            border-radius: 0.8rem;
-            background-color: #F4F4F4;
-            color: #2B2D33;
-            //Font ?
+            border-radius: $radius-md-v2;
+            background-color: $bg-3-v2;
+            border: 1px solid $border-subtle-v2;
+            color: $text-secondary-v2;
             font-weight: 500;
             font-size: 1.6rem;
             line-height: 2.0rem;
+            transition: background-color $dur-fast-v2 $ease-out-v2,
+                        color $dur-fast-v2 $ease-out-v2,
+                        border-color $dur-fast-v2 $ease-out-v2;
+
+            &:hover:not(.selected) {
+                color: $text-primary-v2;
+                border-color: $border-strong-v2;
+            }
 
             &.selected {
-                background-color: #0078D2;
-                color: #FFFFFF;
+                background-color: $accent-soft-v2;
+                border-color: $accent-v2;
+                color: $accent-v2;
             }
         }
     }
@@ -46,8 +54,8 @@
     }
 
     &__summary {
-        border-top: 0.1rem solid rgba(246, 251, 253, 0.06);
-        border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
+        border-top: 0.1rem solid $border-subtle-v2;
+        border-bottom: 0.1rem solid $border-subtle-v2;
         padding: 1.2rem 0;
         //margin-top: 2.4rem;
         margin-bottom: 2.9rem;
@@ -60,8 +68,8 @@
 
     &__submitted {
         &__summary {
-            //border-top: 0.1rem solid rgba(246, 251, 253, 0.06);
-            border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
+            //border-top: 0.1rem solid $border-subtle-v2;
+            border-bottom: 0.1rem solid $border-subtle-v2;
             padding: 1.2rem 0;
             margin-bottom: 2.4rem;
             @include font-m-theme-client($font-weight-bold-theme-client);
@@ -75,7 +83,7 @@
             display: flex;
             justify-content: center;
             position: relative;
-            border: 0.1rem solid rgba(246, 251, 253, 0.06);
+            border: 0.1rem solid $border-subtle-v2;
             border-radius: 0.5rem;
             margin-bottom: 2.4rem;
             @include font-m-theme-client($font-weight-regular-theme-client);
@@ -93,8 +101,8 @@
             }
 
             &__label {
-                color: rgba(255, 255, 255, 0.6);
-                background-color: #22272B;
+                color: $text-secondary-v2;
+                background-color: $bg-2-v2;
                 padding: 0 1.4rem;
                 position: absolute;
                 top: 0;
@@ -107,7 +115,7 @@
             display: flex;
             justify-content: center;
             position: relative;
-            border: 0.1rem solid rgba(246, 251, 253, 0.06);
+            border: 0.1rem solid $border-subtle-v2;
             border-radius: 0.5rem;
             @include font-m-theme-client($font-weight-light-theme-client);
 
@@ -116,8 +124,8 @@
             }
 
             &__label {
-                color: rgba(255, 255, 255, 0.6);
-                background-color: #22272B;
+                color: $text-secondary-v2;
+                background-color: $bg-2-v2;
                 padding: 0 1.4rem;
                 position: absolute;
                 top: 0;
@@ -162,8 +170,8 @@
     }
 
     &__summary {
-        border-top: 0.1rem solid rgba(246, 251, 253, 0.06);
-        border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
+        border-top: 0.1rem solid $border-subtle-v2;
+        border-bottom: 0.1rem solid $border-subtle-v2;
         padding: 1.2rem 0;
         margin-top: 2.4rem;
         @include font-m-theme-client($font-weight-light-theme-client);
@@ -171,8 +179,8 @@
 
     &__submitted {
         &__summary {
-            border-top: 0.1rem solid rgba(246, 251, 253, 0.06);
-            border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
+            border-top: 0.1rem solid $border-subtle-v2;
+            border-bottom: 0.1rem solid $border-subtle-v2;
             padding: 1.2rem 0;
             margin-bottom: 2.4rem;
             @include font-m-theme-client($font-weight-bold-theme-client);
@@ -182,7 +190,7 @@
             display: flex;
             justify-content: center;
             position: relative;
-            border: 0.1rem solid rgba(246, 251, 253, 0.06);
+            border: 0.1rem solid $border-subtle-v2;
             border-radius: 0.5rem;
 
             &__image {
@@ -190,8 +198,8 @@
             }
 
             &__label {
-                color: rgba(255, 255, 255, 0.6);
-                background-color: #22272B;
+                color: $text-secondary-v2;
+                background-color: $bg-2-v2;
                 padding: 0 1.4rem;
                 position: absolute;
                 top: 0;
@@ -204,7 +212,7 @@
             display: flex;
             justify-content: center;
             position: relative;
-            border: 0.1rem solid rgba(246, 251, 253, 0.06);
+            border: 0.1rem solid $border-subtle-v2;
             border-radius: 0.5rem;
 
             & > .giz-button {
@@ -212,8 +220,8 @@
             }
 
             &__label {
-                color: rgba(255, 255, 255, 0.6);
-                background-color: #22272B;
+                color: $text-secondary-v2;
+                background-color: $bg-2-v2;
                 padding: 0 1.4rem;
                 position: absolute;
                 top: 0;

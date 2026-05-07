@@ -1,17 +1,15 @@
 //============= Notifications ===============//
 
 .giz-notifications {
+    @extend %giz-menu-panel-base;
     position: fixed;
     top: 1rem;
     left: 1rem;
     width: calc(100vw - 2rem);
     max-height: calc(100vh - 2rem);
-    border-radius: 0.4rem;
-    overflow: hidden;
+    margin-top: 0; // override the gap-from-trigger inherited from menu-panel-base
     display: grid;
     grid-template-rows: min-content 1fr;
-    background-color: #22272B;
-    //z-index: $notifications-index;
 
     &.prerender {
         max-height: unset;
@@ -26,9 +24,10 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0.8rem 1.2rem 1rem 0.8rem;
-        background: rgba(255, 255, 255, 0.0326);
-        @include font-m-theme-client($font-weight-regular-theme-client);
+        padding: 1.2rem 1.6rem;
+        color: $text-primary-v2;
+        border-bottom: 1px solid $border-subtle-v2;
+        @include font-l-theme-client($font-weight-bold-theme-client);
     }
 
     &__body {
@@ -97,7 +96,7 @@
 
     &-wrapper {
         overflow: hidden;
-        border-bottom: 1px solid rgba(246, 251, 253, 0.06);
+        border-bottom: 1px solid $border-subtle-v2;
 
         &.tmp {
             position: absolute;
@@ -174,7 +173,7 @@
 
     &-wrapper {
         overflow: hidden;
-        border-bottom: 1px solid rgba(246, 251, 253, 0.06);
+        border-bottom: 1px solid $border-subtle-v2;
 
         &.tmp {
             position: absolute;
