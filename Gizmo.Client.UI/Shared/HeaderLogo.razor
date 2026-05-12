@@ -1,5 +1,12 @@
-﻿<div class="giz-header__logo">
-    <div class="giz-navbar-brand">
-        <img alt="loading">
-    </div>
+@inherits CustomDOMComponentBase
+
+<div class="giz-header__logo">
+    @if (!string.IsNullOrEmpty(LogoViewState.Logo))
+    {
+        <img src="@LogoViewState.Logo" alt="logo" />
+    }
+    else
+    {
+        <div class="giz-header__logo__placeholder">GIZMO</div>
+    }
 </div>

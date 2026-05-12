@@ -20,6 +20,44 @@
     display: flex;
     align-items: center;
     padding: 0 2.4rem 0 0;
+
+    // Operator-configured logo: scaled to fit header vertically,
+    // aspect ratio preserved. Hard width cap so unusually wide
+    // logos don't shove the search bar offscreen.
+    img {
+      max-height: 4.0rem;
+      max-width: 24rem;
+      width: auto;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    // Wordmark fallback when no operator logo is configured.
+    // Token-styled so it visually fits the rest of the chrome,
+    // clearly intentional but obviously a placeholder.
+    &__placeholder {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      height: 4.0rem;
+      padding: 0 1.4rem;
+      border-radius: $radius-md-v2;
+      background-color: $bg-2-v2;
+      border: 1px solid $border-strong-v2;
+      color: $accent-v2;
+      letter-spacing: 0.18em;
+      @include font-m-theme-client($font-weight-bold-theme-client);
+
+      &::before {
+        content: "";
+        width: 0.6rem;
+        height: 0.6rem;
+        background-color: $accent-v2;
+        border-radius: 50%;
+        box-shadow: 0 0 8px $accent-glow-v2;
+      }
+    }
   }
 
   &__modules-menu {

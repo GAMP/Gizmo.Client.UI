@@ -20,9 +20,6 @@ namespace Gizmo.Client.UI.Pages
         #region PROPERTIES
 
         [Inject]
-        FeedsViewState FeedsViewState { get; set; }
-
-        [Inject]
         IOptions<ClientInterfaceOptions> ClientInterfaceOptions { get; set; }
 
         [Inject]
@@ -33,12 +30,6 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject()]
         public AppsPageViewState ViewState { get; set; }
-
-        [Inject]
-        AdvertisementsViewService AdvertisementsViewStateService { get; set; }
-
-        [Inject]
-        AdvertisementsViewState AdvertisementsViewState { get; set; }
 
         #region PARAMETERS
 
@@ -58,7 +49,6 @@ namespace Gizmo.Client.UI.Pages
 
             if (firstRender)
             {
-                await InvokeVoidAsync("registerAdsAutoCollapse");
                 await InvokeVoidAsync("registerAppsSticky");
             }
         }
@@ -82,7 +72,6 @@ namespace Gizmo.Client.UI.Pages
         public async ValueTask DisposeAsync()
         {
             await InvokeVoidAsync("unregisterAppsSticky", Ref).ConfigureAwait(false);
-            await InvokeVoidAsync("unregisterAdsAutoCollapse", Ref).ConfigureAwait(false);
 
             Dispose();
         }

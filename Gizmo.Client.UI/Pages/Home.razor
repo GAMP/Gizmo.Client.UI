@@ -2,28 +2,28 @@
 
 <div class="giz-home-apps-wrapper">
     <div class="giz-home-apps">
-        @if (FeedsViewState.IsEnabled)
+        @{
+            var hasNews = AdvertisementsViewState.Advertisements.Count() > 0;
+            var hasFeeds = FeedsViewState.IsEnabled && FeedsViewState.CurrentFeed != null;
+        }
+        @if (hasNews || hasFeeds)
         {
-            <div class="giz-home-apps__header">
-                <div class="giz-home-apps__header__ads">
-                    <NewsRotator />
-                </div>
+            <div class="giz-home-apps__hero">
+                @if (hasNews)
+                {
+                    <div class="giz-home-apps__hero__news">
+                        <AdsCarousel Interval="5000" />
+                    </div>
+                }
+                @if (hasFeeds)
+                {
+                    <div class="giz-home-apps__hero__feeds">
+                        <NewsRotator />
+                    </div>
+                }
             </div>
         }
-        <div class="giz-home__body giz-ads-container giz-scrollbar--v">
-            @if (AdvertisementsViewState.Advertisements.Count() > 0)
-            {
-                <div class="giz-home__body__ads">
-                    <ExpansionPanel IsCollapsed="@AdvertisementsViewState.IsCollapsed" IsCollapsedChanged="@((value) => AdvertisementsViewStateService.SetCollapsed(value))">
-                        <ExpansionPanelHeader>
-                            @LocalizationService.GetString("GIZ_GEN_ADS")
-                        </ExpansionPanelHeader>
-                        <ChildContent>
-                            <AdsCarousel Interval="5000" />
-                        </ChildContent>
-                    </ExpansionPanel>
-                </div>
-            }
+        <div class="giz-home__body giz-scrollbar--v">
             <div class="giz-home__body__popular">
                 
                 @if (ViewState.IsShopEnabled && ViewState.PopularProducts.Any())

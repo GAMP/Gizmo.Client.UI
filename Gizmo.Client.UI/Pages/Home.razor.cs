@@ -6,15 +6,13 @@ using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
-using System;
-using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
 {
     [ModuleGuid(KnownModules.MODULE_HOME)]
     [PageUIModule(TitleLocalizationKey = "GIZ_MODULE_PAGE_HOME_TITLE", DescriptionLocalizationKey = "GIZ_MODULE_PAGE_HOME_TITLE"), ModuleDisplayOrder(0)]
     [Route(ClientRoutes.HomeRoute)]
-    public partial class Home : CustomDOMComponentBase, IAsyncDisposable
+    public partial class Home : CustomDOMComponentBase
     {
         #region PROPERTIES
 
@@ -34,26 +32,15 @@ namespace Gizmo.Client.UI.Pages
         HomePageViewState ViewState { get; set; }
 
         [Inject]
-        AdvertisementsViewService AdvertisementsViewStateService { get; set; }
-
-        [Inject]
         AdvertisementsViewState AdvertisementsViewState { get; set; }
 
         #endregion
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            await base.OnAfterRenderAsync(firstRender);
-
-            if (firstRender)
-            {
-                await InvokeVoidAsync("registerAdsAutoCollapse");
-            }
-        }
-
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
+            this.SubscribeChange(FeedsViewState);
+            this.SubscribeChange(AdvertisementsViewState);
 
             base.OnInitialized();
         }
@@ -61,19 +48,10 @@ namespace Gizmo.Client.UI.Pages
         public override void Dispose()
         {
             this.UnsubscribeChange(ViewState);
+            this.UnsubscribeChange(FeedsViewState);
+            this.UnsubscribeChange(AdvertisementsViewState);
 
             base.Dispose();
         }
-
-        #region IAsyncDisposable
-
-        public async ValueTask DisposeAsync()
-        {
-            await InvokeVoidAsync("unregisterAdsAutoCollapse", Ref).ConfigureAwait(false);
-
-            Dispose();
-        }
-
-        #endregion
     }
 }

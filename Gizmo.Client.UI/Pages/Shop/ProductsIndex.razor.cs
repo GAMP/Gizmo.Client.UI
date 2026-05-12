@@ -35,25 +35,9 @@ namespace Gizmo.Client.UI.Pages
         ProductsPageViewState ViewState { get; set; }
 
         [Inject]
-        AdvertisementsViewService AdvertisementsViewStateService { get; set; }
-
-        [Inject]
-        AdvertisementsViewState AdvertisementsViewState { get; set; }
-
-        [Inject]
         UserProductGroupViewStateLookupService UserProductGroupViewStateLookupService { get; set; }
 
         #endregion
-
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            await base.OnAfterRenderAsync(firstRender);
-
-            if (firstRender)
-            {
-                await InvokeVoidAsync("registerAdsAutoCollapse");
-            }
-        }
 
         protected override async Task OnInitializedAsync()
         {
@@ -72,16 +56,5 @@ namespace Gizmo.Client.UI.Pages
 
             base.Dispose();
         }
-
-        #region IAsyncDisposable
-
-        public async ValueTask DisposeAsync()
-        {
-            await InvokeVoidAsync("unregisterAdsAutoCollapse", Ref).ConfigureAwait(false);
-
-            Dispose();
-        }
-
-        #endregion
     }
 }

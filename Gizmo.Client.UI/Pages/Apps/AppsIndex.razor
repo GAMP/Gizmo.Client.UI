@@ -3,34 +3,13 @@
 
 <div class="giz-home-apps-wrapper">
     <div class="giz-home-apps">
-        @if (FeedsViewState.IsEnabled)
-        {
-            <div class="giz-home-apps__header">
-                <div class="giz-home-apps__header__ads">
-                    <NewsRotator />
-                </div>
-            </div>
-        }
         <div class="giz-apps__body">
             <div class="giz-section giz-section--stuck">
                 <div class="giz-section__header">
                     <AppFilters />
                 </div>
             </div>
-            <div class="giz-apps__body__content giz-ads-container giz-scrollbar--v">
-                @if (AdvertisementsViewState.Advertisements.Count() > 0)
-                {
-                    <div class="giz-apps__body__content__ads">
-                        <ExpansionPanel IsCollapsed="@AdvertisementsViewState.IsCollapsed" IsCollapsedChanged="@((value) => AdvertisementsViewStateService.SetCollapsed(value))">
-                            <ExpansionPanelHeader>
-                                @LocalizationService.GetString("GIZ_GEN_ADS")
-                            </ExpansionPanelHeader>
-                            <ChildContent>
-                                <AdsCarousel Interval="5000" />
-                            </ChildContent>
-                        </ExpansionPanel>
-                    </div>
-                }
+            <div class="giz-apps__body__content giz-scrollbar--v">
                 <div class="giz-apps__body__content__popular">
                     <div class="giz-section">
                         <div class="giz-section__header">

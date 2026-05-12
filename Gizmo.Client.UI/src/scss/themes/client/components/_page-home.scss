@@ -5,42 +5,69 @@
     height: 100%;
     overflow: auto;
 
-    // AdsCarousel slot — promoted to page hero on Home.
-    // Operator's own promos get prime real estate (vs RSS NewsRotator
-    // which lives smaller in the page header).
-    &__ads {
-        margin: 0 -2.0rem 2.4rem -2.0rem; // bleed to page edges
-        padding: 1.2rem 0 0.8rem 0;
-        background:
-            radial-gradient(120rem 30rem at 50% 0%, rgba(34, 211, 238, 0.08), transparent 70%),
-            linear-gradient(180deg, $bg-1-v2 0%, transparent 100%);
-        border-bottom: 1px solid $border-subtle-v2;
-
-        // Tighten the existing ExpansionPanel — the toggle still works,
-        // but the chrome shouldn't fight the hero feel.
-        .giz-expansion-panel-header {
-            padding: 0 2.4rem;
-            color: $text-secondary-v2;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .giz-ads-carousel {
-            padding-top: 0.8rem;
-        }
-
-        // Hide the redundant inner "ADS" header inside the carousel
-        // (the expansion panel header already labels it).
-        .giz-ads-carousel__header {
-            display: none;
-        }
-    }
-
     &__popular {
         display: flex;
         flex-direction: column;
         gap: 3.2rem;
+    }
+}
+
+// Unified hero zone: news (operator AdsCarousel, ~2/3 width) shares a
+// single bordered chrome with feeds (RSS NewsRotator, ~1/3 width).
+// Either lane collapses when its source has no entries — when both
+// are empty, the entire hero block is not rendered (markup-level).
+.giz-home-apps__hero {
+    // Grid with explicit minmax(0, 1fr) for the news column — required
+    // because the AdsCarousel's internal content has a min-content size
+    // that would otherwise prevent the news column from shrinking and
+    // push the feeds rail off-screen (where .giz-app__body's overflow
+    // hidden clips it). The minmax(0, ...) lets the column shrink to 0.
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 36rem;
+    gap: 2rem;
+    margin: 0 0 2.4rem 0;
+    padding: 1.2rem 2.0rem 1.6rem 2.0rem;
+    background:
+        radial-gradient(120rem 30rem at 50% 0%, rgba(34, 211, 238, 0.08), transparent 70%),
+        linear-gradient(180deg, $bg-1-v2 0%, transparent 100%);
+    border-bottom: 1px solid $border-subtle-v2;
+
+    // Single-lane case: only one of the two has content → that lane fills
+    // the full row.
+    &:not(:has(.giz-home-apps__hero__feeds)) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    &:not(:has(.giz-home-apps__hero__news)) {
+        grid-template-columns: 36rem;
+        justify-content: start;
+    }
+
+    &__news {
+        min-width: 0;
+
+        // Let the current ads item fill its lane instead of capping at
+        // 76rem with empty space on both sides.
+        .giz-ads-carousel-item.current {
+            width: 100% !important;
+            max-width: 100%;
+        }
+    }
+
+    // Feeds rail: fixed 36rem column. Phase 2 will turn this into a
+    // multi-item vertical stack with peeking neighbors.
+    &__feeds {
+        min-width: 0;
+        display: flex;
+        align-items: center;
+
+        .giz-news-rotator {
+            width: 100%;
+        }
+    }
+
+    // Inner carousel header is redundant inside the hero chrome.
+    .giz-ads-carousel__header {
+        display: none;
     }
 }
