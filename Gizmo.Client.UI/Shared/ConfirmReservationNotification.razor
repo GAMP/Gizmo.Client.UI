@@ -17,15 +17,15 @@
     @if (ConfirmReservationNotificationViewService.ViewState.Step == 0)
     {
         <div class="giz-reservation-notification__body">
-            <div class="giz-reservation-notification__body__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATON_CONFIRMATION_STEP_TITLE))</div>
+            <div class="giz-reservation-notification__body__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATION_CONFIRMATION_STEP_TITLE))</div>
             <div class="giz-reservation-notification__body__message">
-                @((MarkupString)LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATON_CONFIRMATION_STEP_MESSAGE)))
+                @((MarkupString)LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATION_CONFIRMATION_STEP_MESSAGE)))
             </div>
             <div class="giz-reservation-notification__body__actions">
-                <Button Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATON_CONFIRMATION_STEP_CONFIRM_BUTTON))"
+                <Button Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATION_CONFIRMATION_STEP_CONFIRM_BUTTON))"
                         IsDisabled="@ConfirmReservationNotificationViewService.ViewState.IsLoading"
                         @onclick="OpenPaymentDialogAsync" />
-                <Button Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATON_IGNORE_BUTTON))"
+                <Button Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATION_IGNORE_BUTTON))"
                         IsDisabled="@ConfirmReservationNotificationViewService.ViewState.IsLoading"
                         @onclick="Ignore" />
             </div>
@@ -34,15 +34,15 @@
     else
     {
         <div class="giz-reservation-notification__body">
-            <div class="giz-reservation-notification__body__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATON_PAYMENT_STEP_TITLE))</div>
+            <div class="giz-reservation-notification__body__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATION_PAYMENT_STEP_TITLE))</div>
             <div class="giz-reservation-notification__body__message">
-                @((MarkupString)LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATON_PAYMENT_STEP_MESSAGE)))
+                @((MarkupString)LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATION_PAYMENT_STEP_MESSAGE)))
             </div>
             <div class="giz-reservation-notification__body__actions">
-                <Button Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATON_PAYMENT_GO_TO_PAYMENT_BUTTON))"
+                <Button Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATION_PAYMENT_GO_TO_PAYMENT_BUTTON))"
                         IsDisabled="@ConfirmReservationNotificationViewService.ViewState.IsLoading"
                         @onclick="OpenPaymentDialogAsync" />
-                <Button Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATON_IGNORE_BUTTON))"
+                <Button Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATION_IGNORE_BUTTON))"
                         IsDisabled="@ConfirmReservationNotificationViewService.ViewState.IsLoading"
                         @onclick="Ignore" />
             </div>

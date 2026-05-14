@@ -46,7 +46,7 @@ namespace Gizmo.Client.UI.Components
                     return LocalizationService.GetString("GIZ_SHOP_PROMOCODE_APPLIED");
 
                 case Web.Api.Models.PromoCodeApplyStatus.NotApplied:
-                    return LocalizationService.GetString("DGIZ_SHOP_PROMOCODE_NOT_APPLIED");
+                    return LocalizationService.GetString("GIZ_SHOP_PROMOCODE_NOT_APPLIED");
 
                 case Web.Api.Models.PromoCodeApplyStatus.Unusable:
                     return LocalizationService.GetString("GIZ_SHOP_PROMOCODE_UNUSABLE");
