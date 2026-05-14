@@ -9,7 +9,7 @@
                     <ClientTab>
                         <ClientTabItem Class="@(!ViewState.SelectedUserProductGroupId.HasValue ? "active" : "")">
                             <div @onclick=@(() => ShopService.UpdateUserGroupedProductsAsync(null))>
-                                @LocalizationService.GetString("GIZ_GEN_ALL")
+                                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ALL))
                             </div>
                         </ClientTabItem>
                         @if (ViewState.UserProductGroups != null)
@@ -32,7 +32,7 @@
                     <div class="giz-shop__products__body__ads">
                         <ExpansionPanel IsCollapsed="@AdvertisementsViewState.IsCollapsed" IsCollapsedChanged="@((value) => AdvertisementsViewStateService.SetCollapsed(value))">
                             <ExpansionPanelHeader>
-                                @LocalizationService.GetString("GIZ_GEN_ADS")
+                                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ADS))
                             </ExpansionPanelHeader>
                             <ChildContent>
                                 <AdsCarousel Interval="5000" />
@@ -45,7 +45,7 @@
                     <div class="giz-section">
                         <div class="giz-section__header__filters">
                             <div>
-                                <div class="giz-section__header__filters__title">@LocalizationService.GetString("GIZ_GEN_RESULTS_FOR")</div>
+                                <div class="giz-section__header__filters__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_RESULTS_FOR))</div>
                                 <div>
                                     <Chip CanClose="true" OnClose="@(() => ShopService.ClearSearchPattern() )">@ViewState.SearchPattern</Chip>
                                 </div>
@@ -57,8 +57,8 @@
                     {
                         <div class="giz-section__body">
                             <div class="global-search-no-results">
-                                <div class="global-search-no-results__header">@LocalizationService.GetString("GIZ_GLOBAL_SEARCH_NO_MATCH_FOUND_FOR") <span class="global-search-pattern">@ViewState.SearchPattern</span></div>
-                                <div class="global-search-no-results__body">@LocalizationService.GetString("GIZ_GLOBAL_SEARCH_NO_MATCH_FOUND_MESSAGE")</div>
+                                <div class="global-search-no-results__header">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GLOBAL_SEARCH_NO_MATCH_FOUND_FOR)) <span class="global-search-pattern">@ViewState.SearchPattern</span></div>
+                                <div class="global-search-no-results__body">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GLOBAL_SEARCH_NO_MATCH_FOUND_MESSAGE))</div>
                             </div>
                         </div>
                     }

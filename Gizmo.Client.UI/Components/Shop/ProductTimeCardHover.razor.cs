@@ -22,7 +22,7 @@ namespace Gizmo.Client.UI.Components
         {
             if (Product != null && Product.ProductType == Web.Api.Models.ProductType.ProductTime)
             {
-                return $"{Product.TimeProduct?.Minutes.ToString("N0")} {LocalizationService.GetString("GIZ_PRODUCT_TIME_MINUTES_ABBREVIATED")}";
+                return $"{Product.TimeProduct?.Minutes.ToString("N0")} {LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_MINUTES_ABBREVIATED))}";
             }
 
             return string.Empty;

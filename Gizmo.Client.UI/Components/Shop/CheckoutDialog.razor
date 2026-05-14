@@ -10,7 +10,7 @@
         <div class="giz-client-dialog__header">
             @if (!@Service.ViewState.IsComplete)
             {
-                <div class="giz-client-dialog__header__title">@LocalizationService.GetString("GIZ_SHOP_CHECKOUT_TITLE")</div>
+                <div class="giz-client-dialog__header__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_CHECKOUT_TITLE))</div>
             }
             @if (DisplayOptions.Closable)
             {
@@ -31,7 +31,7 @@
                             <ChildContent>
                                 <DataGridColumn Field="@(nameof(UserCartProductViewState.ProductId))" TItemType="UserCartProductViewState" Context="product">
                                     <HeaderTemplate>
-                                        @LocalizationService.GetString("GIZ_SHOP_PRODUCT_NAME")
+                                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_PRODUCT_NAME))
                                     </HeaderTemplate>
                                     <CellTemplate>
                                         @product.ProductName
@@ -39,7 +39,7 @@
                                 </DataGridColumn>
                                 <DataGridColumn TextAlignment="TextAlignments.Right" Field="@(nameof(UserCartProductViewState.ProductId))" TItemType="UserCartProductViewState" Context="product">
                                     <HeaderTemplate>
-                                        @LocalizationService.GetString("GIZ_SHOP_PRICE")
+                                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_PRICE))
                                     </HeaderTemplate>
                                     <CellTemplate>
                                         @product.UnitPrice.ToString("C", CultureInfo.CurrentCulture)
@@ -47,7 +47,7 @@
                                 </DataGridColumn>
                                 <DataGridColumn TextAlignment="TextAlignments.Right" Field="@(nameof(UserCartProductViewState.Quantity))" TItemType="UserCartProductViewState" Context="product">
                                     <HeaderTemplate>
-                                        @LocalizationService.GetString("GIZ_SHOP_QUANTITY")
+                                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_QUANTITY))
                                     </HeaderTemplate>
                                     <CellTemplate>
                                         @product.Quantity
@@ -55,7 +55,7 @@
                                 </DataGridColumn>
                                 <DataGridColumn TextAlignment="TextAlignments.Right" Field="@(nameof(UserCartProductViewState.TotalPrice))" TItemType="UserCartProductViewState" Context="product">
                                     <HeaderTemplate>
-                                        @LocalizationService.GetString("GIZ_SHOP_SUBTOTAL")
+                                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_SUBTOTAL))
                                     </HeaderTemplate>
                                     <CellTemplate>
                                         @product.TotalPrice.ToString("C", CultureInfo.CurrentCulture)
@@ -65,15 +65,15 @@
                         </DataGrid>
                     </div>
                     <div class="giz-checkout__summary">
-                        <div class="giz-checkout__summary__total">@LocalizationService.GetString("GIZ_SHOP_TOTAL")</div>
+                        <div class="giz-checkout__summary__total">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_TOTAL))</div>
                         <ICartViewStateLoader ViewState="@ClientServerCartViewService.ViewState" MinimumHeight="2.2rem">
-                            <div class="giz-checkout__summary__amount"><span>@ClientServerCartViewService.ViewState.Total.ToString("C", CultureInfo.CurrentCulture) @LocalizationService.GetString("GIZ_GEN_AND") @ClientServerCartViewService.ViewState.PointsTotal</span><PointsIcon /></div>
+                            <div class="giz-checkout__summary__amount"><span>@ClientServerCartViewService.ViewState.Total.ToString("C", CultureInfo.CurrentCulture) @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_AND)) @ClientServerCartViewService.ViewState.PointsTotal</span><PointsIcon /></div>
                         </ICartViewStateLoader>
                     </div>
                     @if (Service.ViewState.ShowPaymentMethods)
                     {
                         <div class="giz-checkout__payment-method">
-                            <div class="giz-checkout__payment-method__label">@LocalizationService.GetString("GIZ_SHOP_PAYMENT_METHOD")</div>
+                            <div class="giz-checkout__payment-method__label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_PAYMENT_METHOD))</div>
                             <EditForm EditContext="@Service.EditContext">
                                 <Select IsDisabled="@(Service.ViewState.IsLoading)"
                                         IsTransparent="true"
@@ -98,10 +98,10 @@
                         </div>
                     }
                     @*<div class="giz-checkout__notes">
-                        @LocalizationService.GetString("GIZ_SHOP_CHECKOUT_MESSAGE")
+                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_CHECKOUT_MESSAGE))
                     </div>*@
                     <div class="giz-checkout__actions">
-                        <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="() => CloseDialog()">@LocalizationService.GetString("GIZ_GEN_CANCEL")</Button>
+                        <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="() => CloseDialog()">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CANCEL))</Button>
                         <Button IsDisabled="@(ClientServerCartViewService.ViewState.IsStateUpdateRequired || ClientServerCartViewService.ViewState.IsStateUpdating || Service.ViewState.IsLoading || Service.ViewState.IsValid == false)"
                                 Color="ButtonColors.Accent"
                                 Size="ButtonSizes.Large"
@@ -113,7 +113,7 @@
                                 }
                                 else
                                 {
-                                    <div>@LocalizationService.GetString("GIZ_SHOP_PLACE_ORDER")</div>
+                                    <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_PLACE_ORDER))</div>
                                 }
                             </ChildContent>
                         </Button>
@@ -133,7 +133,7 @@
                         <div class="giz-client-alert-message">@((MarkupString)Service.ViewState.ErrorMessage)</div>
                     </div>
                     <div class="giz-client-alert-dialog__footer">
-                        <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="@(() => CloseDialog())" Text="@LocalizationService.GetString("GIZ_GEN_CLOSE")" />
+                        <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="@(() => CloseDialog())" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CLOSE))" />
                     </div>
                 </div>
             }
@@ -144,10 +144,10 @@
                         <Icon Size="IconSizes.Large" SVGIcon="Icons.Check" />
                     </div>
                     <div class="giz-client-alert-dialog__body">
-                        @LocalizationService.GetString("GIZ_GEN_SUCCESS")
+                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SUCCESS))
                     </div>
                     <div class="giz-client-alert-dialog__footer">
-                        <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="@(() => CloseDialog())" Text="@LocalizationService.GetString("GIZ_GEN_CLOSE")" />
+                        <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="@(() => CloseDialog())" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CLOSE))" />
                     </div>
                 </div>
             }

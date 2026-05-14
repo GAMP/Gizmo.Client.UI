@@ -5,7 +5,7 @@
 <HostedDialog>
     <div class="giz-client-dialog giz-change-profile-dialog">
         <div class="giz-client-dialog__header">
-            <div class="giz-client-dialog__header__title">@LocalizationService.GetString("GIZ_USER_BASIC_INFO")</div>
+            <div class="giz-client-dialog__header__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_BASIC_INFO))</div>
             @if (DisplayOptions.Closable)
             {
                 <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
@@ -17,7 +17,7 @@
             <div class="giz-client-dialog__body">
                 <EditForm EditContext="@UserChangeProfileViewStateService.EditContext">
                     <div class="giz-change-profile-section">
-                        <div class="giz-change-profile-section__header">@LocalizationService.GetString("GIZ_USER_PROFILE_PICTURE_AND_USERNAME")</div>
+                        <div class="giz-change-profile-section__header">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PROFILE_PICTURE_AND_USERNAME))</div>
                         <div class="giz-change-profile-section__body">
                             <div class="giz-change-profile-group">
                                 <div class="giz-change-profile-group__username">
@@ -26,8 +26,8 @@
                                                Value="@ViewState.Username"
                                                Size="InputSizes.Small"
                                                IsFullWidth="true"
-                                               Label="@LocalizationService.GetString("GIZ_GEN_USERNAME")" />
-                                    <div class="giz-change-profile-group__username__tip">@LocalizationService.GetString("GIZ_USER_PROFILE_USERNAME_TIP")</div>
+                                               Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_USERNAME))" />
+                                    <div class="giz-change-profile-group__username__tip">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PROFILE_USERNAME_TIP))</div>
                                 </div>
                                 <div class="giz-change-profile-group__avatar">
                                     @if (!string.IsNullOrEmpty(ViewState.Picture))
@@ -49,7 +49,7 @@
                          (ViewState.RequiredUserInformation?.Sex == true))
                     {
                         <div class="giz-change-profile-section">
-                            <div class="giz-change-profile-section__header">@LocalizationService.GetString("GIZ_USER_PERSONAL_INFORMATION")</div>
+                            <div class="giz-change-profile-section__header">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PERSONAL_INFORMATION))</div>
                             <div class="giz-change-profile-section__body">
                                 <div class="giz-change-profile-group">
                                 
@@ -64,7 +64,7 @@
                                                        ValueExpression="@(() => ViewState.FirstName)"
                                                        Size="InputSizes.Small"
                                                        IsFullWidth="true"
-                                                       Label="@LocalizationService.GetString("GIZ_USER_FIRST_NAME")" />
+                                                       Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_FIRST_NAME))" />
                                         </div>
                                     }
 
@@ -79,7 +79,7 @@
                                                        ValueExpression="@(() => ViewState.LastName)"
                                                        Size="InputSizes.Small"
                                                        IsFullWidth="true"
-                                                       Label="@LocalizationService.GetString("GIZ_USER_LAST_NAME")" />
+                                                       Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LAST_NAME))" />
                                         </div>
                                     }
 
@@ -93,7 +93,7 @@
                                                              ValueExpression="@(() => ViewState.BirthDate)"
                                                              Size="InputSizes.Small"
                                                              IsFullWidth="true"
-                                                             Label="@LocalizationService.GetString("GIZ_USER_BIRTH_DATE")" />
+                                                             Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_BIRTH_DATE))" />
                                         </div>
                                     }
 
@@ -108,12 +108,12 @@
                                                     ValueExpression="@(() => ViewState.Sex)"
                                                     Size="InputSizes.Small"
                                                     IsFullWidth="true"
-                                                    Label="@LocalizationService.GetString("GIZ_USER_GENDER")"
+                                                    Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_GENDER))"
                                                     OpenDirection="PopupOpenDirections.Cursor"
                                                     PopupClass="giz-scrollbar--v">
-                                                <SelectItem Value="@Sex.Unspecified" Text="@LocalizationService.GetString("GIZ_GEN_SEX_UNSPECIFIED")" />
-                                                <SelectItem Value="@Sex.Male" Text="@LocalizationService.GetString("GIZ_GEN_SEX_MALE")" />
-                                                <SelectItem Value="@Sex.Female" Text="@LocalizationService.GetString("GIZ_GEN_SEX_FEMALE")" />
+                                                <SelectItem Value="@Sex.Unspecified" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEX_UNSPECIFIED))" />
+                                                <SelectItem Value="@Sex.Male" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEX_MALE))" />
+                                                <SelectItem Value="@Sex.Female" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEX_FEMALE))" />
                                             </Select>
                                         </div>
                                     }
@@ -126,11 +126,11 @@
                     @if (ViewState.RequiredUserInformation?.Country == true)
                     {
                         <div class="giz-change-profile-section">
-                            <div class="giz-change-profile-section__header">@LocalizationService.GetString("GIZ_USER_LOCATION")</div>
+                            <div class="giz-change-profile-section__header">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LOCATION))</div>
                             <div class="giz-change-profile-section__body">
                                 <IconSelect IsDisabled="@(!_isLoaded || !(ViewState.IsInitialized == true) || ViewState.IsLoading)"
                                             IsTransparent="true"
-                                            Placeholder="@LocalizationService.GetString("GIZ_GEN_SEARCH")"
+                                            Placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEARCH))"
                                             IsVirtualized="false"
                                             IsLoading="@(!_isLoaded)"
                                             CanClearValue="@(GetSelectedCountry() != _otherCountry)"
@@ -143,7 +143,7 @@
                                             FieldIdentifier="@GetCountryFieldIdentifier()"
                                             Size="InputSizes.Small"
                                             IsFullWidth="true"
-                                            Label="@LocalizationService.GetString("GIZ_USER_COUNTRY")"
+                                            Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_COUNTRY))"
                                             OpenDirection="PopupOpenDirections.Cursor"
                                             MaximumHeight="20.0rem"
                                             PopupClass="giz-scrollbar--v" />
@@ -159,7 +159,7 @@
                         Size="ButtonSizes.Large"
                         IsFullWidth="true"
                         @onclick="@(() => UserChangeProfileViewStateService.SubmitAsync())"
-                        Text="@LocalizationService.GetString("GIZ_GEN_SAVE")" />
+                        Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SAVE))" />
             </div>
         }
         else
@@ -174,7 +174,7 @@
                         <div class="giz-client-alert-message">@ViewState.ErrorMessage</div>
                     </div>
                     <div class="giz-client-alert-dialog__footer">
-                        <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="@(() => CloseDialog())" Text="@LocalizationService.GetString("GIZ_GEN_CLOSE")" />
+                        <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="@(() => CloseDialog())" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CLOSE))" />
                     </div>
                 </div>
             }
@@ -185,10 +185,10 @@
                         <Icon Size="IconSizes.Large" SVGIcon="Icons.Check" />
                     </div>
                     <div class="giz-client-alert-dialog__body">
-                        @LocalizationService.GetString("GIZ_GEN_SUCCESS")
+                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SUCCESS))
                     </div>
                     <div class="giz-client-alert-dialog__footer">
-                        <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="@(() => CloseDialog())" Text="@LocalizationService.GetString("GIZ_GEN_CLOSE")" />
+                        <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="@(() => CloseDialog())" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CLOSE))" />
                     </div>
                 </div>
             }

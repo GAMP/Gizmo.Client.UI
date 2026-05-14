@@ -9,7 +9,7 @@
                     <Icon SVGIcon="Icons.ArrowLeftLong_Client" />
                 </div>
                 <div class="giz-app-details__app__navigation__label">
-                    @LocalizationService.GetString("GIZ_GEN_BACK")
+                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BACK))
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
 
                 <div class="giz-app-details-card-brand-info">
                     <div class="giz-app-details-card-brand-title">
-                        @LocalizationService.GetString("GIZ_APPS_PUBLISHER")
+                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_PUBLISHER))
                     </div>
                     <div class="giz-app-details-card-brand-text">
                         @if (ViewState.Application?.PublisherId != null)
@@ -44,19 +44,19 @@
                         }
                     </div>
                     <div class="giz-app-details-card-brand-title">
-                        @LocalizationService.GetString("GIZ_APPS_RELEASE_DATE")
+                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_RELEASE_DATE))
                     </div>
                     <div class="giz-app-details-card-brand-text">
                         @ViewState.Application?.ReleaseDate?.ToShortDateString()
                     </div>
                     <div class="giz-app-details-card-brand-title">
-                        @LocalizationService.GetString("GIZ_APPS_DATE_ADDED")
+                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_DATE_ADDED))
                     </div>
                     <div class="giz-app-details-card-brand-text">
                         @ViewState.Application?.AddDate.ToShortDateString()
                     </div>
                     @*<div class="giz-app-details-card-brand-title">
-                    @LocalizationService.GetString("GIZ_APPS_PLAYER_MODE")
+                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_PLAYER_MODE))
                     </div>
                     <div class="giz-app-details-card-brand-text">
                     <div class="d-flex align-center" style="justify-content: flex-end;">
@@ -100,7 +100,7 @@
                     @if (!_showMore && ViewState.Executables.Count() > 4)
                     {
                         <div>
-                            <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Small" @onclick="@(() => OnClickMainButtonHandler())">@LocalizationService.GetString("GIZ_APPS_SHOW_MORE")</Button>
+                            <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Small" @onclick="@(() => OnClickMainButtonHandler())">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_SHOW_MORE))</Button>
                         </div>
                     }
 
@@ -121,7 +121,7 @@
                                 {
                                     <ClientTabItem Class="@(_selectedTabIndex == 0 ? "active" : "")" OnClick=@(() => SelectTab(0))>
                                         <div>
-                                            @LocalizationService.GetString("GIZ_APPS_MEDIA")
+                                            @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_MEDIA))
                                         </div>
                                     </ClientTabItem>
                                 }
@@ -129,7 +129,7 @@
                                 {
                                     <ClientTabItem Class="@(_selectedTabIndex == 1 ? "active" : "")" OnClick=@(() => SelectTab(1))>
                                         <div>
-                                            @LocalizationService.GetString("GIZ_APPS_LINKS")
+                                            @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_LINKS))
                                         </div>
                                     </ClientTabItem>
                                 }

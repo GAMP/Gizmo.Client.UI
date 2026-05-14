@@ -43,13 +43,13 @@ namespace Gizmo.Client.UI.Components
             switch (status)
             {
                 case Web.Api.Models.PromoCodeApplyStatus.Applied:
-                    return LocalizationService.GetString("GIZ_SHOP_PROMOCODE_APPLIED");
+                    return LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_PROMOCODE_APPLIED));
 
                 case Web.Api.Models.PromoCodeApplyStatus.NotApplied:
-                    return LocalizationService.GetString("GIZ_SHOP_PROMOCODE_NOT_APPLIED");
+                    return LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_PROMOCODE_NOT_APPLIED));
 
                 case Web.Api.Models.PromoCodeApplyStatus.Unusable:
-                    return LocalizationService.GetString("GIZ_SHOP_PROMOCODE_UNUSABLE");
+                    return LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_PROMOCODE_UNUSABLE));
             }
 
             return string.Empty;

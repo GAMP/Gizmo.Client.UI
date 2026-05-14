@@ -45,24 +45,6 @@ namespace Gizmo.Client.UI.Services
             }, default, default);
         }
 
-        public Task<AddDialogResult<EmptyComponentResult>> ShowChangeEmailDialogAsync(CancellationToken cancellationToken = default)
-        {
-            return ShowDialogAsync<ChangeEmailDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()
-            {
-                Closable = true,
-                CloseOnClick = false
-            }, default, default);
-        }
-
-        public Task<AddDialogResult<EmptyComponentResult>> ShowChangeMobileDialogAsync(CancellationToken cancellationToken = default)
-        {
-            return ShowDialogAsync<ChangeMobileDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()
-            {
-                Closable = true,
-                CloseOnClick = false
-            }, default, cancellationToken);
-        }
-
         public Task<AddDialogResult<EmptyComponentResult>> ShowChangePasswordDialogAsync(bool closable, CancellationToken cancellationToken = default)
         {
             return ShowDialogAsync<ChangePasswordDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()

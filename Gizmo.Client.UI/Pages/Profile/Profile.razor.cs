@@ -32,40 +32,6 @@ namespace Gizmo.Client.UI.Pages
             await UserChangeProfileViewStateService.StartAsync();
         }
 
-        private Task OnClickUpdateEmailButtonHandler()
-        {
-            //var s = await DialogService.ShowChangeEmailDialogAsync();
-            //if (s.Result == DialogAddResult.Success)
-            //{
-            //    try
-            //    {
-            //        var result = await s.WaitForDialogResultAsync();
-            //    }
-            //    catch (OperationCanceledException)
-            //    {
-            //    }
-            //}
-
-            return Task.CompletedTask;
-        }
-
-        private Task OnClickUpdateMobileButtonHandler()
-        {
-            //var s = await DialogService.ShowChangeMobileDialogAsync();
-            //if (s.Result == DialogAddResult.Success)
-            //{
-            //    try
-            //    {
-            //        var result = await s.WaitForDialogResultAsync();
-            //    }
-            //    catch (OperationCanceledException)
-            //    {
-            //    }
-            //}
-
-            return Task.CompletedTask;
-        }
-
         private async Task OnClickChangePasswordButtonHandler()
         {
             await UserChangePasswordViewStateService.StartAsync(true, true);

@@ -42,15 +42,15 @@
                     @if (HostReservationViewState.ReservationBlockTimeReached)
                     {
                         <Alert AlertType="AlertTypes.Info"
-                               Title="@LocalizationService.GetString("GIZ_LOGIN_RESERVATION_WARNING_TITLE", HostReservationViewState.Time.Value.ToShortTimeString())"
-                               Text="@LocalizationService.GetString("GIZ_HOST_RESERVATION_LOGIN_BLOCK_TIME_REACHED_MESSAGE")" />
+                               Title="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_RESERVATION_WARNING_TITLE), HostReservationViewState.Time.Value.ToShortTimeString())"
+                               Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_BLOCK_TIME_REACHED_MESSAGE))" />
 
                     }
                     else if (HostReservationViewState.ReservationNotificationTimeReached)
                     {
                         <Alert AlertType="AlertTypes.Warning"
-                               Title="@LocalizationService.GetString("GIZ_LOGIN_RESERVATION_WARNING_TITLE", HostReservationViewState.Time.Value.ToShortTimeString())"
-                               Text="@LocalizationService.GetString("GIZ_HOST_RESERVATION_LOGIN_NOTIFICATION_TIME_REACHED_MESSAGE")" />
+                               Title="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_RESERVATION_WARNING_TITLE), HostReservationViewState.Time.Value.ToShortTimeString())"
+                               Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_NOTIFICATION_TIME_REACHED_MESSAGE))" />
                     }
                 }
             </div>
@@ -61,7 +61,7 @@
                 <div class="giz-server">
                     <Layout_LoginServerConnection />
                     <div class="giz-version">
-                        <div class="giz-version__title">@LocalizationService.GetString("GIZ_SYSTEM_VERSION")</div>
+                        <div class="giz-version__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SYSTEM_VERSION))</div>
                         <div class="giz-version__version">@ClientVersionViewState.Version</div>
                     </div>
                 </div>

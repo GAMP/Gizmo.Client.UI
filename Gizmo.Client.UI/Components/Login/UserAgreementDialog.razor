@@ -4,7 +4,7 @@
 <HostedDialog>
     <div class="giz-client-dialog giz-user-agreement-dialog">
         <div class="giz-client-dialog__header">
-            <div class="giz-client-dialog__header__title">@LocalizationService.GetString("GIZ_USER_AGREEMENT_DIALOG_TITLE")</div>
+            <div class="giz-client-dialog__header__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_AGREEMENT_DIALOG_TITLE))</div>
             <div class="giz-client-dialog__header__subtitle">@Name</div>
             @if (DisplayOptions.Closable)
             {
@@ -18,7 +18,7 @@
         </div>
         <div class="giz-client-dialog__footer">
             <div class="giz-user-agreement-checkboxes">
-                <CheckBox Label="@LocalizationService.GetString("GIZ_USER_AGREEMENT_DIALOG_AGREE_CHECKBOX")"
+                <CheckBox Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_AGREEMENT_DIALOG_AGREE_CHECKBOX))"
                           IsChecked="@_accepted"
                           IsCheckedChanged="@((value) => { _accepted = value; } )"
                           Class="@(IsRejectable ? "" : "giz-user-agreement-checkbox--required")" />
@@ -28,7 +28,7 @@
                     Size="ButtonSizes.ExtraLarge"
                     IsFullWidth="true"
                     @onclick="ContinueAsync">
-                @LocalizationService.GetString("GIZ_GEN_CONTINUE")
+                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CONTINUE))
             </Button>
         </div>
     </div>
