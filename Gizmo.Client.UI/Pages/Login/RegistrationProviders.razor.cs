@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Gizmo;
+using Gizmo.Client;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Pages
 {
-    [Route(NavigationHelper.RegistrationProviders)]
+    [Route(ClientRoutes.RegistrationProvidersRoute)]
     public partial class RegistrationProviders : CustomDOMComponentBase
     {
         [Inject]
