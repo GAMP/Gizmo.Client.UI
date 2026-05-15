@@ -4,6 +4,7 @@
     display: grid;
     grid-template-columns: 1fr min-content;
     height: 100vh;
+    overflow: hidden;
 
     .giz-login {
 
@@ -79,7 +80,7 @@
                 position: absolute;
                 top: 0;
                 left: 0;
-                width: 100%;
+                right: 74rem;
                 height: 100%;
                 z-index: 0;
                 overflow: hidden;
@@ -142,12 +143,15 @@
                 img {
                     width: 100%;
                     height: 100%;
+                    object-fit: cover;
+                    object-position: top center;
                 }
 
                 video {
                     width: 100%;
                     height: 100%;
-                    object-fit: fill;
+                    object-fit: cover;
+                    object-position: top center;
                 }
             }
 
@@ -312,11 +316,50 @@
         }
     }
 
+    .giz-login-logotype {
+        position: absolute;
+        top: 2.4rem;
+        left: 3.2rem;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+
+        &__icon {
+            width: 4.8rem;
+            height: 4.8rem;
+            background-color: #fafafa;
+            border-radius: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+
+            .giz-icon {
+                color: #0c0f11;
+            }
+        }
+
+        &__text {
+            display: flex;
+            flex-direction: column;
+            color: #fafafa;
+            @include font-m-theme-client($font-weight-bold-theme-client);
+            line-height: 1.2;
+        }
+    }
+
     .giz-login-logo {
         position: absolute;
         top: 2.4rem;
         left: 3.2rem;
-        z-index: 1;
+        z-index: 2;
+
+        img {
+            height: 4.8rem;
+            width: auto;
+            object-fit: contain;
+        }
     }
 }
 
@@ -984,6 +1027,286 @@
 
     to {
         top: -100%;
+    }
+}
+
+// Carousel — centered in left panel
+.giz-login-carousel {
+    position: absolute;
+    width: 69.2rem;
+    height: 64rem;
+    top: max(19.3rem, 19vh);
+    left: calc(50% - 71.6rem);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__track {
+        width: 100%;
+        height: 51.6rem;
+        position: relative;
+        border-radius: 1.6rem;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    &__slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #0c0f11;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+
+        &--active {
+            opacity: 1;
+        }
+    }
+
+    &__footer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.6rem;
+        margin-top: 1.6rem;
+        width: 100%;
+    }
+
+    &__text {
+        color: rgba(#ffffff, 0.6);
+        @include font-m-theme-client($font-weight-light-theme-client);
+        text-align: center;
+        min-height: 4.4rem;
+        padding: 0 9.8rem;
+    }
+
+    &__dots {
+        display: flex;
+        align-items: center;
+        gap: 3.2rem;
+    }
+
+    &__dot {
+        width: 0.8rem;
+        height: 0.8rem;
+        border-radius: 50%;
+        background-color: #fafafa;
+        flex-shrink: 0;
+        cursor: pointer;
+        transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
+
+        &--active {
+            width: 1.6rem;
+            height: 1.6rem;
+            background-color: #0078d2;
+            cursor: default;
+        }
+    }
+}
+
+.giz-login-social {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 2.4rem;
+
+    &__button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 4.4rem;
+        height: 4.4rem;
+        border-radius: 1.1rem;
+        color: #ffffff;
+        flex-shrink: 0;
+        cursor: pointer;
+
+        &--telegram  { background: linear-gradient(to bottom, #2aabee, #0088cc); }
+        &--vk        { background: linear-gradient(to bottom, #4c75a3, #2d5e8e); }
+        &--facebook  { background: linear-gradient(to bottom, #1877f2, #0c5bd9); }
+    }
+}
+
+.giz-login-or {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 2.4rem;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        border-top: 0.1rem solid rgba(#f6fbfd, 0.06);
+    }
+
+    span {
+        position: relative;
+        background-color: #0c0f11;
+        padding: 0 0.8rem;
+        color: rgba(#ffffff, 0.6);
+        @include font-m-theme-client($font-weight-light-theme-client);
+    }
+}
+
+.giz-login-qr {
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    gap: 2.4rem;
+    align-items: center;
+    margin-top: 2.4rem;
+
+    &__text {
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+
+        &__title {
+            @include font-h5-theme-client($font-weight-bold-theme-client);
+        }
+
+        &__subtitle {
+            color: rgba(#ffffff, 0.6);
+            @include font-m-theme-client($font-weight-light-theme-client);
+        }
+    }
+
+    &__image {
+        width: 15.4rem;
+        height: 15.4rem;
+        min-width: 15.4rem;
+        background-color: #201f1f;
+        border-radius: 0.86rem;
+        padding: 0.8rem;
+
+        svg {
+            width: 100%;
+            height: 100%;
+            shape-rendering: crispedges;
+        }
+    }
+}
+
+// Registration Providers
+.giz-registration-providers-error-block {
+    margin-bottom: 2.0rem;
+}
+
+.giz-registration-providers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.0rem;
+}
+
+.giz-registration-provider-btn {
+    width: 100%;
+    height: 4.8rem;
+    display: flex;
+    align-items: center;
+    padding: 0 1.6rem;
+    gap: 1.3rem;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #ffffff;
+    background: rgba(#ffffff, 0.04);
+    border: 0.1rem solid rgba(#f6fbfd, 0.22);
+    border-radius: 1.0rem;
+    cursor: pointer;
+    appearance: none;
+    transition: opacity 0.15s ease, background 0.15s ease;
+
+    .giz-icon {
+        flex-shrink: 0;
+        width: 1.9rem;
+        height: 1.9rem;
+        min-width: 1.9rem;
+        min-height: 1.9rem;
+    }
+
+    &:hover {
+        background: rgba(#ffffff, 0.08);
+    }
+
+    &:active {
+        opacity: 0.85;
+    }
+
+    &--telegram {
+        background: linear-gradient(135deg, #2aabee 0%, #0088cc 100%);
+        border: none;
+
+        &:hover {
+            background: linear-gradient(135deg, lighten(#2aabee, 5%) 0%, lighten(#0088cc, 5%) 100%);
+        }
+    }
+
+    &--facebook {
+        border-color: rgba(#1877f2, 0.32);
+    }
+}
+
+.giz-registration-providers-divider {
+    display: flex;
+    align-items: center;
+    gap: 1.0rem;
+    margin-top: 2.0rem;
+
+    &__line {
+        flex: 1;
+        height: 0.1rem;
+        background: rgba(#57bcff, 0.28);
+    }
+
+    &__badge {
+        padding: 0 1.2rem;
+        height: 2.6rem;
+        display: flex;
+        align-items: center;
+        background: rgba(#57bcff, 0.10);
+        border: 0.1rem solid rgba(#57bcff, 0.28);
+        border-radius: 9999px;
+        font-size: 1.1rem;
+        font-family: 'Noto Sans', sans-serif;
+        font-weight: 600;
+        color: #57bcff;
+        white-space: nowrap;
+    }
+}
+
+.giz-registration-providers-hint {
+    margin: 1.2rem 0 0;
+    font-size: 1.2rem;
+    font-family: 'Noto Sans', sans-serif;
+    color: rgba(#57bcff, 0.70);
+    line-height: 1.5;
+    text-align: center;
+}
+
+.giz-registration-providers-terms {
+    margin-top: auto;
+    padding-top: 2.0rem;
+    font-size: 1.1rem;
+    font-family: 'Noto Sans', sans-serif;
+    color: rgba(#ffffff, 0.30);
+    line-height: 1.55;
+    text-align: center;
+
+    a {
+        color: #57bcff;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
     }
 }
 
