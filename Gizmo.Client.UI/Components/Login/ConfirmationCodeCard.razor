@@ -1,0 +1,56 @@
+@namespace Gizmo.Client.UI.Components.Login
+@inherits CustomDOMComponentBase
+@using Gizmo.UI
+
+<LoginCard>
+    <CardHeader>
+        <div class="giz-login-links">
+            @HeaderLinks
+        </div>
+        <div class="giz-login-alerts">
+            @if (HasError)
+            {
+                <Toast CanClose="true" OnCloseButtonClick="OnCloseError" AlertType="AlertTypes.Danger" Text="@ErrorMessage" />
+            }
+        </div>
+    </CardHeader>
+    <CardBody>
+        <EditForm EditContext="@EditContext">
+            <div class="giz-login-title">@Title</div>
+            <div class="giz-login-subtitle">@Subtitle</div>
+            <div class="giz-form-input">
+                <TextInput UpdateOnInput="true"
+                           Placeholder="@Placeholder"
+                           Value="@ConfirmationCode"
+                           ValueChanged="CodeChanged"
+                           ValueExpression="CodeExpression"
+                           IsDisabled="@IsLoading"
+                           Size="InputSizes.Medium"
+                           IsFullWidth="true"
+                           Label="@LocalizationService.GetString("GIZ_PASSWORD_RECOVERY_ENTER_YOUR_CODE")" />
+            </div>
+            <div class="giz-form-input">
+                <Button IsDisabled="@(IsValid == false || IsLoading)"
+                        Color="ButtonColors.Accent"
+                        Size="ButtonSizes.ExtraLarge"
+                        IsFullWidth="true"
+                        @onclick="OnConfirm">
+                    <ChildContent>
+                        @if (IsLoading)
+                        {
+                            <Spinner />
+                        }
+                        else
+                        {
+                            <div>@LocalizationService.GetString("GIZ_GEN_CONFIRM")</div>
+                        }
+                    </ChildContent>
+                </Button>
+            </div>
+            @FallbackContent
+        </EditForm>
+    </CardBody>
+    <CardFooter>
+        <InputLanguageMenu />
+    </CardFooter>
+</LoginCard>

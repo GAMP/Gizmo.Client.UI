@@ -8,9 +8,9 @@ using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 
-namespace Gizmo.Client.UI.Pages
+namespace Gizmo.Client.UI.Pages.Registration
 {
-    // Obsolete: moved to Pages/Registration/RegistrationProviders.razor
+    [Route(ClientRoutes.RegistrationProvidersRoute)]
     public partial class RegistrationProviders : CustomDOMComponentBase
     {
         [Inject]

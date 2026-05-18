@@ -1,0 +1,23 @@
+@namespace Gizmo.Client.UI.Pages.Registration
+@inherits CustomDOMComponentBase
+
+<ConfirmationCodeCard EditContext="@UserRegistrationConfirmationViewService.EditContext"
+                      Title="@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")"
+                      Subtitle="@ViewState.ConfirmationCodeMessage"
+                      Placeholder="@GetPlaceholder()"
+                      ConfirmationCode="@ViewState.ConfirmationCode"
+                      CodeChanged="@((string value) => UserRegistrationConfirmationViewService.SetConfirmationCode(value))"
+                      CodeExpression="@(() => ViewState.ConfirmationCode)"
+                      IsLoading="@ViewState.IsLoading"
+                      IsValid="@ViewState.IsValid"
+                      HasError="@ViewState.HasError"
+                      ErrorMessage="@ViewState.ErrorMessage"
+                      OnConfirm="@UserRegistrationConfirmationViewService.Confirm"
+                      OnCloseError="@OnCloseButtonClickHandler">
+    <HeaderLinks>
+        <div class="giz-back-button" @onclick="@(() => NavigationService.NavigateTo(RegistrationSession.Flow == RegistrationFlow.Email ? ClientRoutes.RegistrationEmailRoute : ClientRoutes.RegistrationPhoneRoute))">
+            <Icon SVGIcon="Icons.ArrowLeft_Client" Size="IconSizes.ExtraSmall" />
+        </div>
+        <div class="giz-login-new-user">@LocalizationService.GetString("GIZ_LOGIN_ALREADY_A_MEMBER") <a href="@ClientRoutes.LoginRoute">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_IN")</a></div>
+    </HeaderLinks>
+</ConfirmationCodeCard>

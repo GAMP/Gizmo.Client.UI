@@ -1,17 +1,19 @@
-﻿using Gizmo.Client.UI.Services;
+using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Gizmo.Client.UI.Components
+namespace Gizmo.Client.UI.Pages.Registration
 {
-    public partial class ChangeMobileDialog : CustomDOMComponentBase
+    [Route(ClientRoutes.RegistrationPhoneRoute)]
+    public partial class RegistrationPhone : CustomDOMComponentBase
     {
         private bool _isLoaded;
 
@@ -22,15 +24,35 @@ namespace Gizmo.Client.UI.Components
         CountryInformationService CountryInformationService { get; set; }
 
         [Inject]
-        UserChangeMobileViewService UserChangeMobileService { get; set; }
+        RegistrationPhoneViewService RegistrationPhoneViewService { get; set; }
 
         [Inject]
-        UserChangeMobileViewState ViewState { get; set; }
-        
-        [Parameter]
-        public EventCallback DismissCallback { get; set; }
+        RegistrationPhoneViewState ViewState { get; set; }
+
+        [Inject]
+        NavigationService NavigationService { get; set; }
 
         public List<IconSelectCountry> Countries { get; set; } = new List<IconSelectCountry>();
+
+        public string GetMask()
+        {
+            var selectedCountry = GetSelectedCountry();
+
+            if (selectedCountry != null)
+            {
+                if (selectedCountry.PhonePrefix.Length - 1 > 0)
+                {
+                    return new string('#', selectedCountry.PhonePrefix.Length - 1) + "-###-###-####";
+                }
+            }
+
+            return "###-###-####";
+        }
+
+        public void OnCloseButtonClickHandler()
+        {
+            RegistrationPhoneViewService.Reset();
+        }
 
         public void OnClickClearValueButtonHandler(MouseEventArgs args)
         {
@@ -53,22 +75,19 @@ namespace Gizmo.Client.UI.Components
         {
             if (value == null)
             {
-                UserChangeMobileService.SetCountry(null);
-                UserChangeMobileService.SetPrefix(null);
+                RegistrationPhoneViewService.SetCountry(null);
+                RegistrationPhoneViewService.SetMobilePhone(null);
             }
             else
             {
-                UserChangeMobileService.SetCountry(value.Text);
-                UserChangeMobileService.SetPrefix(value.PhonePrefix);
+                RegistrationPhoneViewService.SetCountry(value.Text);
+                var tmp = value.PhonePrefix;
+                if (tmp.StartsWith("+"))
+                {
+                    tmp = tmp.Substring(1);
+                }
+                RegistrationPhoneViewService.SetMobilePhone(tmp);
             }
-        }
-
-        private async Task CloseDialog()
-        {
-            await DismissCallback.InvokeAsync();
-
-            if (ViewState.IsComplete)
-                await UserChangeMobileService.ResetAsync();
         }
 
         protected override void OnInitialized()
@@ -84,12 +103,21 @@ namespace Gizmo.Client.UI.Components
 
             foreach (var country in countries)
             {
-                foreach (var suffix in country.CallingCodeSuffixes)
+                if (country.CallingCodeSuffixes.Count() == 1)
                 {
                     Countries.Add(new IconSelectCountry()
                     {
                         Text = country.NativeName,
-                        PhonePrefix = country.CallingCodeRoot + suffix,
+                        PhonePrefix = country.CallingCodeRoot + country.CallingCodeSuffixes.FirstOrDefault(),
+                        Icon = country.FlagSvg
+                    });
+                }
+                else
+                {
+                    Countries.Add(new IconSelectCountry()
+                    {
+                        Text = country.NativeName,
+                        PhonePrefix = country.CallingCodeRoot,
                         Icon = country.FlagSvg
                     });
                 }
@@ -109,7 +137,6 @@ namespace Gizmo.Client.UI.Components
                 item.Display = item.Text + " " + item.PhonePrefix;
             }
 
-            //Render the list first.
             await InvokeAsync(StateHasChanged);
 
             IconSelectCountry defaultItem = null;
@@ -135,6 +162,18 @@ namespace Gizmo.Client.UI.Components
             this.UnsubscribeChange(ViewState);
 
             base.Dispose();
+        }
+
+        private FieldIdentifier? _countryFieldIdentifier;
+
+        private FieldIdentifier GetCountryFieldIdentifier()
+        {
+            if (_countryFieldIdentifier == null)
+            {
+                _countryFieldIdentifier = new FieldIdentifier(ViewState, nameof(ViewState.Country));
+            }
+
+            return _countryFieldIdentifier.Value;
         }
     }
 }

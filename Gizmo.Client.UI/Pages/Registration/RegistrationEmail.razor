@@ -1,0 +1,56 @@
+@namespace Gizmo.Client.UI.Pages.Registration
+@inherits CustomDOMComponentBase
+
+<LoginCard>
+    <CardHeader>
+        <div class="giz-login-links">
+            <div class="giz-back-button" @onclick="@(() => NavigationService.NavigateTo(ClientRoutes.RegistrationProvidersRoute))">
+                <Icon SVGIcon="Icons.ArrowLeft_Client" Size="IconSizes.ExtraSmall" />
+            </div>
+            <div class="giz-login-new-user">@LocalizationService.GetString("GIZ_LOGIN_ALREADY_A_MEMBER") <a href="@ClientRoutes.LoginRoute">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_IN")</a></div>
+        </div>
+        <div class="giz-login-alerts">
+            @if (ViewState.HasError)
+            {
+                <Toast CanClose="true" OnCloseButtonClick="OnCloseButtonClickHandler" AlertType="AlertTypes.Danger" Text="@ViewState.ErrorMessage" />
+            }
+        </div>
+    </CardHeader>
+    <CardBody>
+        <EditForm EditContext="@RegistrationEmailViewService.EditContext">
+            <div class="giz-login-title">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
+            <div class="giz-login-subtitle--sign-up">@LocalizationService.GetString("GIZ_REGISTRATION_EMAIL_CONFIRMATION_MESSAGE")</div>
+            <div class="giz-form-input">
+                <TextInput UpdateOnInput="true"
+                           Value="@ViewState.Email"
+                           ValueChanged="@((string value) => RegistrationEmailViewService.SetEmail(value))"
+                           ValueExpression="@(() => ViewState.Email)"
+                           IsDisabled="@ViewState.IsLoading"
+                           Size="InputSizes.Medium"
+                           IsFullWidth="true"
+                           Label="@LocalizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")" />
+            </div>
+            <div class="giz-form-input">
+                <Button IsDisabled="@(ViewState.IsValid == false || ViewState.IsLoading)"
+                        Color="ButtonColors.Accent"
+                        Size="ButtonSizes.ExtraLarge"
+                        IsFullWidth="true"
+                        @onclick="@RegistrationEmailViewService.SubmitAsync">
+                    <ChildContent>
+                        @if (ViewState.IsLoading)
+                        {
+                            <Spinner />
+                        }
+                        else
+                        {
+                            <div>@LocalizationService.GetString("GIZ_USER_CONFIRMATION_SEND_CODE")</div>
+                        }
+                    </ChildContent>
+                </Button>
+            </div>
+        </EditForm>
+    </CardBody>
+    <CardFooter>
+        <InputLanguageMenu />
+    </CardFooter>
+</LoginCard>

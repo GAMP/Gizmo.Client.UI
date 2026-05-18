@@ -1,0 +1,78 @@
+@namespace Gizmo.Client.UI.Pages.Registration
+@inherits CustomDOMComponentBase
+
+<LoginCard>
+    <CardHeader>
+        <div class="giz-login-links">
+            <div class="giz-back-button" @onclick="@(() => NavigationService.NavigateTo(ClientRoutes.RegistrationProvidersRoute))">
+                <Icon SVGIcon="Icons.ArrowLeft_Client" Size="IconSizes.ExtraSmall" />
+            </div>
+            <div class="giz-login-new-user">@LocalizationService.GetString("GIZ_LOGIN_ALREADY_A_MEMBER") <a href="@ClientRoutes.LoginRoute">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_IN")</a></div>
+        </div>
+        <div class="giz-login-alerts">
+            @if (ViewState.HasError)
+            {
+                <Toast CanClose="true" OnCloseButtonClick="OnCloseButtonClickHandler" AlertType="AlertTypes.Danger" Text="@ViewState.ErrorMessage" />
+            }
+        </div>
+    </CardHeader>
+    <CardBody>
+        <EditForm EditContext="@RegistrationPhoneViewService.EditContext">
+            <div class="giz-login-title">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
+            <div class="giz-login-subtitle--sign-up">@LocalizationService.GetString("GIZ_REGISTRATION_MOBILE_CONFIRMATION_MESSAGE")</div>
+            <div class="giz-registration-form-input">
+                <IconSelect Placeholder="@LocalizationService.GetString("GIZ_GEN_SEARCH")"
+                            IsVirtualized="false"
+                            IsLoading="@(!_isLoaded)"
+                            CanClearValue="@(!(GetSelectedCountry()?.PhonePrefix == "+"))"
+                            OnClickClearValueButton="OnClickClearValueButtonHandler"
+                            HandleSVGIcon="Icons.Select_Client"
+                            TValue="IconSelectCountry"
+                            ItemSource="@Countries"
+                            SelectedItem="@GetSelectedCountry()"
+                            SelectedItemChanged="@SetSelectedCountry"
+                            FieldIdentifier="@GetCountryFieldIdentifier()"
+                            IsDisabled="@ViewState.IsLoading"
+                            Size="InputSizes.Medium"
+                            IsFullWidth="true"
+                            Label="@LocalizationService.GetString("GIZ_USER_COUNTRY")"
+                            OpenDirection="PopupOpenDirections.Bottom"
+                            MaximumHeight="20.0rem"
+                            PopupClass="giz-scrollbar--v" />
+            </div>
+            <div class="giz-form-input">
+                <MaskedPhoneInput Mask="@GetMask()"
+                                  Prefix="+"
+                                  AllowMoreDigits="true"
+                                  Value="@ViewState.MobilePhone"
+                                  ValueChanged="@((string value) => RegistrationPhoneViewService.SetMobilePhone(value))"
+                                  ValueExpression="@(() => ViewState.MobilePhone)"
+                                  IsDisabled="@ViewState.IsLoading"
+                                  Size="InputSizes.Medium"
+                                  IsFullWidth="true"
+                                  Label="@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
+            </div>
+            <div class="giz-form-input">
+                <Button IsDisabled="@(ViewState.IsValid == false || ViewState.IsLoading)"
+                        Color="ButtonColors.Accent"
+                        Size="ButtonSizes.ExtraLarge"
+                        IsFullWidth="true"
+                        @onclick="@RegistrationPhoneViewService.SubmitAsync">
+                    <ChildContent>
+                        @if (ViewState.IsLoading)
+                        {
+                            <Spinner />
+                        }
+                        else
+                        {
+                            <div>@LocalizationService.GetString("GIZ_USER_CONFIRMATION_SEND_CODE")</div>
+                        }
+                    </ChildContent>
+                </Button>
+            </div>
+        </EditForm>
+    </CardBody>
+    <CardFooter>
+        <InputLanguageMenu />
+    </CardFooter>
+</LoginCard>

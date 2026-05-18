@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Components.Forms;
 
 namespace Gizmo.Client.UI.Pages
 {
+    // Obsolete: replaced by Pages/Registration/RegistrationEmail.razor and Pages/Registration/RegistrationPhone.razor
     [Route(ClientRoutes.RegistrationConfirmationMethodRoute)]
     public partial class RegistrationConfirmationMethod : CustomDOMComponentBase
     {
