@@ -9,7 +9,7 @@
 <LoginCard>
     <CardHeader>
         <div class="giz-login-links">
-            <div class="giz-login-new-user">@LocalizationService.GetString("GIZ_LOGIN_ALREADY_A_MEMBER") <a href="@ClientRoutes.LoginRoute">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_IN")</a></div>
+            <div class="giz-login-new-user">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_ALREADY_A_MEMBER)) <a href="@ClientRoutes.LoginRoute">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_IN))</a></div>
         </div>
         <div class="giz-login-alerts">
             @if (ViewState.HasError)
@@ -20,10 +20,10 @@
     </CardHeader>
     <CardBody>
         <EditForm EditContext="@UserRegistrationConfirmationMethodService.EditContext">
-            <div class="giz-login-title">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
+            <div class="giz-login-title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_UP_TITLE))</div>
             @if (UserRegistrationViewState.ConfirmationMethod == RegistrationVerificationMethod.Email)
             {
-                <div class="giz-login-subtitle--sign-up">@LocalizationService.GetString("GIZ_REGISTRATION_EMAIL_CONFIRMATION_MESSAGE")</div>
+                <div class="giz-login-subtitle--sign-up">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_EMAIL_CONFIRMATION_MESSAGE))</div>
                 <div class="giz-form-input">
                     <TextInput Value="@ViewState.Email"
                                ValueChanged="@((string value) => UserRegistrationConfirmationMethodService.SetEmail(value))"
@@ -32,14 +32,14 @@
                                Size="InputSizes.Medium"
                                IsFullWidth="true"
                                UpdateOnInput="true"
-                               Label="@LocalizationService.GetString("GIZ_GEN_EMAIL_ADDRESS")"/>
+                               Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_EMAIL_ADDRESS))"/>
                 </div>
             }
             @if (UserRegistrationViewState.ConfirmationMethod == RegistrationVerificationMethod.MobilePhone)
             {
-                <div class="giz-login-subtitle--sign-up">@LocalizationService.GetString("GIZ_REGISTRATION_MOBILE_CONFIRMATION_MESSAGE")</div>
+                <div class="giz-login-subtitle--sign-up">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_MOBILE_CONFIRMATION_MESSAGE))</div>
                 <div class="giz-registration-form-input">
-                    <IconSelect Placeholder="@LocalizationService.GetString("GIZ_GEN_SEARCH")"
+                    <IconSelect Placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEARCH))"
                                 IsVirtualized="false"
                                 IsLoading="@(!_isLoaded)"
                                 CanClearValue="@(!(GetSelectedCountry()?.PhonePrefix == "+"))"
@@ -53,7 +53,7 @@
                                 IsDisabled="@ViewState.IsLoading"
                                 Size="InputSizes.Medium"
                                 IsFullWidth="true"
-                                Label="@LocalizationService.GetString("GIZ_USER_COUNTRY")"
+                                Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_COUNTRY))"
                                 OpenDirection="PopupOpenDirections.Bottom"
                                 MaximumHeight="20.0rem"
                                 PopupClass="giz-scrollbar--v" />
@@ -68,7 +68,7 @@
                                       IsDisabled="@ViewState.IsLoading"
                                       Size="InputSizes.Medium"
                                       IsFullWidth="true"
-                                      Label="@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
+                                      Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PHONE_NUMBER))" />
                 </div>
             }
             <div class="giz-resend-button">
@@ -84,7 +84,7 @@
                         }
                         else
                         {
-                            <div class="giz-resend-button__label">@LocalizationService.GetString("GIZ_USER_CONFIRMATION_SEND_CODE")</div>
+                            <div class="giz-resend-button__label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CONFIRMATION_SEND_CODE))</div>
                             @if (UserVerificationViewState.IsVerificationLocked)
                             {
                                 <div class="giz-resend-button__time">@string.Format("{0:mm\\:ss}", UserVerificationViewState.Countdown)</div>

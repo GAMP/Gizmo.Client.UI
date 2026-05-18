@@ -78,8 +78,6 @@ namespace Gizmo.Client.UI.Pages
             this.SubscribeChange(HostQRCodeViewState);
             this.SubscribeChange(HostReservationViewState);
 
-            //await InvokeVoidAsync("navigationBlock");
-
             await base.OnInitializedAsync();
         }
 

@@ -12,7 +12,7 @@
             <div class="giz-back-button" @onclick="@(() => NavigationService.NavigateTo(ClientRoutes.RegistrationBasicFieldsRoute))">
                 <Icon SVGIcon="Icons.ArrowLeft_Client" Size="IconSizes.ExtraSmall" />
             </div>
-            <div class="giz-login-new-user">@LocalizationService.GetString("GIZ_LOGIN_ALREADY_A_MEMBER") <a href="@ClientRoutes.LoginRoute">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_IN")</a></div>
+            <div class="giz-login-new-user">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_ALREADY_A_MEMBER)) <a href="@ClientRoutes.LoginRoute">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_IN))</a></div>
         </div>
         <div class="giz-login-alerts">
             @if (ViewState.HasError)
@@ -23,13 +23,13 @@
     </CardHeader>
     <CardBody>
         <EditForm EditContext="@UserRegistrationAdditionalFieldsViewService.EditContext">
-            <div class="giz-login-title">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")</div>
+            <div class="giz-login-title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_UP_TITLE))</div>
             @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.Country)
             {
                 @if (UserRegistrationViewState.ConfirmationMethod != RegistrationVerificationMethod.MobilePhone)
                 {
                     <div class="giz-registration-form-input">
-                        <IconSelect Placeholder="@LocalizationService.GetString("GIZ_GEN_SEARCH")"
+                        <IconSelect Placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEARCH))"
                                     IsVirtualized="false"
                                     IsLoading="@(!_isLoaded)"
                                     CanClearValue="@(!(GetSelectedCountry()?.PhonePrefix == "+"))"
@@ -42,7 +42,7 @@
                                     FieldIdentifier="@GetCountryFieldIdentifier()"
                                     Size="InputSizes.Small"
                                     IsFullWidth="true"
-                                    Label="@LocalizationService.GetString("GIZ_USER_COUNTRY_REGION")"
+                                    Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_COUNTRY_REGION))"
                                     OpenDirection="PopupOpenDirections.Bottom"
                                     MaximumHeight="20.0rem"
                                     PopupClass="giz-scrollbar--v" />
@@ -57,7 +57,7 @@
                                ValueExpression="@(() => ViewState.Address)"
                                Size="InputSizes.Small"
                                IsFullWidth="true"
-                               Label="@LocalizationService.GetString("GIZ_USER_ADDRESS")" />
+                               Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_ADDRESS))" />
                 </div>
             }
             @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.PostCode)
@@ -68,7 +68,7 @@
                                ValueExpression="@(() => ViewState.PostCode)"
                                Size="InputSizes.Small"
                                IsFullWidth="true"
-                               Label="@LocalizationService.GetString("GIZ_USER_POST_CODE")" />
+                               Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_POST_CODE))" />
                 </div>
             }
             @if (UserRegistrationViewState.DefaultUserGroupRequiredInfo.Mobile)
@@ -84,7 +84,7 @@
                                           ValueExpression="@(() => ViewState.MobilePhone)"
                                           Size="InputSizes.Small"
                                           IsFullWidth="true"
-                                          Label="@LocalizationService.GetString("GIZ_GEN_MOBILE_PHONE")" />
+                                          Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_MOBILE_PHONE))" />
                     </div>
                 }
             }
@@ -101,7 +101,7 @@
                         }
                         else
                         {
-                            <div>@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_BUTTON")</div>
+                            <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_UP_BUTTON))</div>
                         }
                     </ChildContent>
                 </Button>

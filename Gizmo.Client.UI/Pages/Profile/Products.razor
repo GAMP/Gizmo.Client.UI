@@ -11,7 +11,7 @@
 
             <div class="giz-user-history giz-user-time-products">
                 <div class="giz-user-history__header">
-                    @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_TITLE")
+                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_TITLE))
                 </div>
 
                 <div class="giz-user-history__body">
@@ -39,7 +39,7 @@
                                     <HeaderTemplate>
                                         <div class="giz-user-time-products-properties-header">
                                             <div>
-                                                @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_TIME_PRODUCT")
+                                                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_TIME_PRODUCT))
                                             </div>
                                             <ClientPopup>
                                                 <Activator>
@@ -57,7 +57,7 @@
                                 </DataGridColumn>
                                 <DataGridColumn Field="@(nameof(TimeProductViewState.RemainingTime))" TItemType="TimeProductViewState" Context="timeProduct">
                                     <HeaderTemplate>
-                                        @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_REMAINING_TIME")
+                                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_REMAINING_TIME))
                                     </HeaderTemplate>
                                     <CellTemplate>
                                         @if (!string.IsNullOrEmpty(timeProduct.RemainingTime))
@@ -74,7 +74,7 @@
                                     <HeaderTemplate>
                                         <div class="giz-user-time-products-time-header">
                                             <div>
-                                                @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_USABLE_TIME")
+                                                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_USABLE_TIME))
                                             </div>
                                         </div>
                                     </HeaderTemplate>
@@ -84,7 +84,7 @@
                                 </DataGridColumn>
                                 <DataGridColumn Field="@(nameof(TimeProductViewState.PurchaseTime))" TItemType="TimeProductViewState" Context="timeProduct">
                                     <HeaderTemplate>
-                                        @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_PURCHASE_DATE")
+                                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PURCHASE_DATE))
                                     </HeaderTemplate>
                                     <CellTemplate>
                                         @if (timeProduct.PurchaseTime.HasValue)
@@ -95,7 +95,7 @@
                                 </DataGridColumn>
                                 @* <DataGridColumn Field="@(nameof(TimeProductViewState.ExpirationDate))" TItemType="TimeProductViewState" Context="timeProduct">
                                     <HeaderTemplate>
-                                        @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_EXPIRES")
+                                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_EXPIRES))
                                     </HeaderTemplate>
                                     <CellTemplate>
                                         @if (timeProduct.ExpirationDate.HasValue)
@@ -108,7 +108,7 @@
                                     <HeaderTemplate>
                                         <div class="giz-user-time-products-properties-header">
                                             <div>
-                                                @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_PROPERTIES")
+                                                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PROPERTIES))
                                             </div>
                                             <ClientPopup>
                                                 <Activator>
@@ -129,7 +129,7 @@
                                 </DataGridColumn>
                                 <DataGridColumn Field="@(nameof(TimeProductViewState.AvailableHostGroups))" TItemType="TimeProductViewState" Context="timeProduct">
                                     <HeaderTemplate>
-                                        @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_HOSTS")
+                                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_HOSTS))
                                     </HeaderTemplate>
                                     <CellTemplate>
                                         <ProductsProductHosts TimeProduct="@timeProduct" />

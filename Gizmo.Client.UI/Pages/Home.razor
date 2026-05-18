@@ -19,7 +19,7 @@
                 <div class="giz-home__body__ads">
                     <ExpansionPanel IsCollapsed="@AdvertisementsViewState.IsCollapsed" IsCollapsedChanged="@((value) => AdvertisementsViewStateService.SetCollapsed(value))">
                         <ExpansionPanelHeader>
-                            @LocalizationService.GetString("GIZ_GEN_ADS")
+                            @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ADS))
                         </ExpansionPanelHeader>
                         <ChildContent>
                             <AdsCarousel Interval="5000" />
@@ -33,10 +33,10 @@
                 {
                     <div class="giz-section">
                         <div class="giz-section__header">
-                            @LocalizationService.GetString("GIZ_GEN_POPULAR_PRODUCTS")
+                            @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_POPULAR_PRODUCTS))
                         </div>
                         <div class="giz-section__body">
-                            <ProductVirtualizedCards Items="ViewState.PopularProducts" ColumnsCount="ClientInterfaceOptions.Value.HomePageMaxItemsPerRow" />
+                            <ProductVirtualizedCards Items="ViewState.PopularProducts" ColumnsCount="ClientInterfaceOptions.CurrentValue.HomePageMaxItemsPerRow" />
                         </div>
                     </div>
                 }
@@ -45,10 +45,10 @@
                 {
                     <div class="giz-section">
                         <div class="giz-section__header">
-                            @LocalizationService.GetString("GIZ_GEN_POPULAR_APPS")
+                            @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_POPULAR_APPS))
                         </div>
                         <div class="giz-section__body">
-                            <ApplicationVirtualizedCards Items="ViewState.PopularApplications" ColumnsCount="ClientInterfaceOptions.Value.HomePageMaxItemsPerRow" />
+                            <ApplicationVirtualizedCards Items="ViewState.PopularApplications" ColumnsCount="ClientInterfaceOptions.CurrentValue.HomePageMaxItemsPerRow" />
                         </div>
                     </div>
                 }

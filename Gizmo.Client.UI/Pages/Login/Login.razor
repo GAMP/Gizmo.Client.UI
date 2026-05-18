@@ -11,7 +11,7 @@
         <div class="giz-login-links">
             @if (UserRegisterConfigurationViewState.IsEnabled)
             {
-                <div class="giz-login-new-user">@LocalizationService.GetString("GIZ_LOGIN_NOT_A_MEMBER") <a @onclick="UserLoginService.OpenRegistrationAsync">@LocalizationService.GetString("GIZ_LOGIN_SIGN_UP_NOW")</a></div>
+                <div class="giz-login-new-user">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_NOT_A_MEMBER)) <a @onclick="UserLoginService.OpenRegistrationAsync">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_SIGN_UP_NOW))</a></div>
             }
         </div>
         <div class="giz-login-alerts">
@@ -24,15 +24,15 @@
                 @if (HostReservationViewState.ReservationBlockTimeReached)
                 {
                     <Alert AlertType="AlertTypes.Info"
-                           Title="@LocalizationService.GetString("GIZ_LOGIN_RESERVATION_WARNING_TITLE", HostReservationViewState.Time.GetValueOrDefault().ToShortTimeString())"
-                           Text="@LocalizationService.GetString("GIZ_HOST_RESERVATION_LOGIN_BLOCK_TIME_REACHED_MESSAGE")" />
+                           Title="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_RESERVATION_WARNING_TITLE), HostReservationViewState.Time.GetValueOrDefault().ToShortTimeString())"
+                           Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_BLOCK_TIME_REACHED_MESSAGE))" />
 
                 }
                 else if (HostReservationViewState.ReservationNotificationTimeReached)
                 {
                     <Alert AlertType="AlertTypes.Warning"
-                           Title="@LocalizationService.GetString("GIZ_LOGIN_RESERVATION_WARNING_TITLE", HostReservationViewState.Time.GetValueOrDefault().ToShortTimeString())"
-                           Text="@LocalizationService.GetString("GIZ_HOST_RESERVATION_LOGIN_NOTIFICATION_TIME_REACHED_MESSAGE")" />
+                           Title="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_RESERVATION_WARNING_TITLE), HostReservationViewState.Time.GetValueOrDefault().ToShortTimeString())"
+                           Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_NOTIFICATION_TIME_REACHED_MESSAGE))" />
                 }
             }
         </div>
@@ -41,11 +41,11 @@
     <CardBody>
         @if (!UserLoginOptions.Value.Disabled)
         {
-            <div class="giz-login-title">@LocalizationService.GetString("GIZ_LOGIN_SIGN_IN_TITLE")</div>
+            <div class="giz-login-title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_SIGN_IN_TITLE))</div>
             <div>
                 <ButtonGroup Class="giz-login-method" IsMandatory="true" SelectedItemsChanged="@SelectLoginType" IsDisabled="@(ViewState.IsLogginIn || ViewState.IsLogginOut)">
-                    <Button Name="Username" IsSelected="@(ViewState.LoginType == View.UserLoginType.UsernameOrEmail)">@LocalizationService.GetString("GIZ_GEN_USERNAME")</Button>
-                    <Button Name="Phone" IsSelected="@(ViewState.LoginType == View.UserLoginType.MobilePhone)">@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")</Button>
+                    <Button Name="Username" IsSelected="@(ViewState.LoginType == View.UserLoginType.UsernameOrEmail)">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_USERNAME))</Button>
+                    <Button Name="Phone" IsSelected="@(ViewState.LoginType == View.UserLoginType.MobilePhone)">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PHONE_NUMBER))</Button>
                 </ButtonGroup>
             </div>
             <EditForm EditContext="@UserLoginService.EditContext" @onkeydown="OnKeyDownHandle">
@@ -60,7 +60,7 @@
                                    IsDisabled="@(ViewState.IsLogginIn || ViewState.IsLogginOut)"
                                    Size="InputSizes.Medium"
                                    IsFullWidth="true"
-                                   Label="@LocalizationService.GetString("GIZ_GEN_USERNAME")" />
+                                   Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_USERNAME))" />
                     }
                     else
                     {
@@ -72,7 +72,7 @@
                                           IsDisabled="@(ViewState.IsLogginIn || ViewState.IsLogginOut)"
                                           Size="InputSizes.Medium"
                                           IsFullWidth="true"
-                                          Label="@LocalizationService.GetString("GIZ_GEN_PHONE_NUMBER")" />
+                                          Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PHONE_NUMBER))" />
                     }
                 </div>
                 <div class="giz-form-input">
@@ -85,11 +85,11 @@
                                    IsDisabled="@(ViewState.IsLogginIn || ViewState.IsLogginOut)"
                                    Size="InputSizes.Medium"
                                    IsFullWidth="true"
-                                   Label="@LocalizationService.GetString("GIZ_GEN_PASSWORD")" />
+                                   Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PASSWORD))" />
                     @if (UserPasswordRecoveryMethodServiceViewState.AvailableRecoveryMethod != UserRecoveryMethod.None)
                     {
                         <div class="giz-login-forgot-password">
-                            <a tabindex="-1" href="@ClientRoutes.PasswordRecoveryRoute">@LocalizationService.GetString("GIZ_LOGIN_FORGOT_YOUR_PASSWORD")</a>
+                            <a tabindex="-1" href="@ClientRoutes.PasswordRecoveryRoute">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_FORGOT_YOUR_PASSWORD))</a>
                         </div>
                     }
                 </div>
@@ -100,7 +100,7 @@
                         <div class="giz-login-pin-label-wrapper">
                             <div class="giz-login-pin-label">
                                 <div>
-                                    @LocalizationService.GetString("GIZ_RESERVATION_PIN_INPUT_LABEL")
+                                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_RESERVATION_PIN_INPUT_LABEL))
                                 </div>
                             </div>
                         </div>
@@ -123,7 +123,7 @@
                         }
                         else
                         {
-                            <div>@LocalizationService.GetString("GIZ_GEN_CONTINUE")</div>
+                            <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CONTINUE))</div>
                         }
                     </Button>
                 </div>
@@ -142,6 +142,27 @@
 
         @if (HostQRCodeViewState.IsEnabled)
         {
+            <div class="giz-alternative-login">
+                @if (!UserLoginOptions.Value.Disabled)
+                {
+                    <div class="giz-alternative-login__separator"><span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_OR))</span></div>
+                }
+                <div class="giz-alternative-login__qr">
+                    <div class="giz-alternative-login__qr__description">
+                        <div class="giz-alternative-login__qr__description__title">
+                            @(string.IsNullOrEmpty(HostQrCodeOptions.Value.Title)
+                                ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_QR_TITLE))
+                                : HostQrCodeOptions.Value.Title)
+                        </div>
+                        <div class="giz-alternative-login__qr__description__subtitle">
+                            @(string.IsNullOrEmpty(HostQrCodeOptions.Value.Description)
+                                ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_QR_MESSAGE))
+                                : HostQrCodeOptions.Value.Description)
+                        </div>
+                    </div>
+                    <div class="giz-alternative-login__qr__image">
+                        @((MarkupString)HostQRCodeViewState.HostQRCode)
+                    </div>
             <div class="giz-login-qr">
                 <div class="giz-login-qr__text">
                     <div class="giz-login-qr__text__title">

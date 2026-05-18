@@ -70,17 +70,17 @@ namespace Gizmo.Client.UI
             {
                 if (product.TimeProduct.Minutes < 60)
                 {
-                    result = localizationService.GetString("GIZ_TIME_PRODUCT_MINUTES");
+                    result = localizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_TIME_PRODUCT_MINUTES));
                 }
                 else
                 {
                     if (product.TimeProduct.Minutes >= 60 && product.TimeProduct.Minutes < 120)
                     {
-                        result = localizationService.GetString("GIZ_TIME_PRODUCT_HOUR");
+                        result = localizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_TIME_PRODUCT_HOUR));
                     }
                     else
                     {
-                        result = localizationService.GetString("GIZ_TIME_PRODUCT_HOURS");
+                        result = localizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_TIME_PRODUCT_HOURS));
                     }
                 }
             }
@@ -107,27 +107,27 @@ namespace Gizmo.Client.UI
                     case Web.Api.Models.ExpireAfterType.Day:
 
                         if (timeProduct.ExpiresAfter == 1)
-                            expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_DAY_ABBREVIATED");
+                            expireAfterText = localizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_DAY_ABBREVIATED));
                         else
-                            expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_DAYS_ABBREVIATED");
+                            expireAfterText = localizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_DAYS_ABBREVIATED));
 
                         break;
 
                     case Web.Api.Models.ExpireAfterType.Hour:
 
                         if (timeProduct.ExpiresAfter == 1)
-                            expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_HOUR_ABBREVIATED");
+                            expireAfterText = localizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_HOUR_ABBREVIATED));
                         else
-                            expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_HOURS_ABBREVIATED");
+                            expireAfterText = localizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_HOURS_ABBREVIATED));
 
                         break;
 
                     case Web.Api.Models.ExpireAfterType.Minute:
 
                         if (timeProduct.ExpiresAfter == 1)
-                            expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_MINUTE_ABBREVIATED");
+                            expireAfterText = localizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_MINUTE_ABBREVIATED));
                         else
-                            expireAfterText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_MINUTES_ABBREVIATED");
+                            expireAfterText = localizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_MINUTES_ABBREVIATED));
 
                         break;
                 }
@@ -138,13 +138,13 @@ namespace Gizmo.Client.UI
                 {
                     case Web.Api.Models.ExpireFromOptionType.Purchase:
 
-                        expireFromOptionsText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_AFTER_PURCHASE");
+                        expireFromOptionsText = localizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_AFTER_PURCHASE));
 
                         break;
 
                     case Web.Api.Models.ExpireFromOptionType.Use:
 
-                        expireFromOptionsText = localizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_AFTER_USE");
+                        expireFromOptionsText = localizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_AFTER_USE));
                         break;
                 }
 
@@ -173,7 +173,7 @@ namespace Gizmo.Client.UI
 
             if (availability.TimeRange && availability.DaysAvailable.Count() == 0)
             {
-                result.Add(localizationService.GetString("GIZ_GEN_NEVER"));
+                result.Add(localizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_NEVER)));
                 return result;
             }
 
@@ -211,7 +211,7 @@ namespace Gizmo.Client.UI
 
             if (expired)
             {
-                result.Add(localizationService.GetString("GIZ_PRODUCT_NOT_AVAILABLE_ANYMORE"));
+                result.Add(localizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_NOT_AVAILABLE_ANYMORE)));
             }
             else if (showDateRange)
             {
@@ -227,11 +227,11 @@ namespace Gizmo.Client.UI
                 {
                     if (availability.StartDate.HasValue)
                     {
-                        result.Add($"{localizationService.GetString("GIZ_GEN_FROM")} {availability.StartDate.Value.ToShortDateString()}");
+                        result.Add($"{localizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_FROM))} {availability.StartDate.Value.ToShortDateString()}");
                     }
                     else
                     {
-                        result.Add($"{localizationService.GetString("GIZ_GEN_UNTIL")} {availability.EndDate.Value.ToShortDateString()}");
+                        result.Add($"{localizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_UNTIL))} {availability.EndDate.Value.ToShortDateString()}");
                     }
                 }
             }
