@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.Services;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
@@ -16,7 +17,7 @@ namespace Gizmo.Client.UI.Pages
         UserRegistrationViewState UserRegistrationViewState { get; set; }
 
         [Inject]
-        UserRegistrationConfirmationMethodViewService UserRegistrationConfirmationMethodService { get; set; }
+        IRegistrationSessionService RegistrationSession { get; set; }
 
         [Inject]
         UserRegistrationBasicFieldsViewService UserRegistrationBasicFieldsViewService { get; set; }

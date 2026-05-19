@@ -142,27 +142,21 @@
 
         @if (HostQRCodeViewState.IsEnabled)
         {
-            <div class="giz-alternative-login">
-                @if (!UserLoginOptions.Value.Disabled)
-                {
-                    <div class="giz-alternative-login__separator"><span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_OR))</span></div>
-                }
-                <div class="giz-alternative-login__qr">
-                    <div class="giz-alternative-login__qr__description">
-                        <div class="giz-alternative-login__qr__description__title">
-                            @(string.IsNullOrEmpty(HostQrCodeOptions.Value.Title)
-                                ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_QR_TITLE))
-                                : HostQrCodeOptions.Value.Title)
-                        </div>
-                        <div class="giz-alternative-login__qr__description__subtitle">
-                            @(string.IsNullOrEmpty(HostQrCodeOptions.Value.Description)
-                                ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_QR_MESSAGE))
-                                : HostQrCodeOptions.Value.Description)
-                        </div>
+            <div class="giz-login-qr">
+                <div class="giz-login-qr__text">
+                    <div class="giz-login-qr__text__title">
+                        @(string.IsNullOrEmpty(HostQrCodeOptions.Value.Title)
+                            ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_QR_TITLE))
+                            : HostQrCodeOptions.Value.Title)
                     </div>
-                    <div class="giz-alternative-login__qr__image">
-                        @((MarkupString)HostQRCodeViewState.HostQRCode)
+                    <div class="giz-login-qr__text__subtitle">
+                        @(string.IsNullOrEmpty(HostQrCodeOptions.Value.Description)
+                            ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_QR_MESSAGE))
+                            : HostQrCodeOptions.Value.Description)
                     </div>
+                </div>
+                <div class="giz-login-qr__image">
+                    @((MarkupString)HostQRCodeViewState.HostQRCode)
                 </div>
             </div>
         }

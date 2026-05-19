@@ -1,4 +1,4 @@
-﻿using Gizmo.Client.UI.Services;
+using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -27,10 +27,7 @@ namespace Gizmo.Client.UI.Pages
         UserRegistrationViewState UserRegistrationViewState { get; set; }
 
         [Inject]
-        UserRegistrationConfirmationMethodViewService UserRegistrationConfirmationMethodService { get; set; }
-
-        [Inject]
-        UserRegistrationConfirmationMethodViewState UserRegistrationConfirmationMethodViewState { get; set; }
+        IRegistrationSessionService RegistrationSession { get; set; }
 
         [Inject]
         UserRegistrationAdditionalFieldsViewService UserRegistrationAdditionalFieldsViewService { get; set; }
@@ -40,21 +37,6 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         NavigationService NavigationService { get; set; }
-
-        public string GetMask()
-        {
-            var selectedCountry = GetSelectedCountry();
-
-            if (selectedCountry != null)
-            {
-                if (selectedCountry.PhonePrefix.Length - 1 > 0)
-                {
-                    return new string('#', selectedCountry.PhonePrefix.Length - 1) + "-###-###-####";
-                }
-            }
-
-            return "###-###-####";
-        }
 
         public void OnCloseButtonClickHandler()
         {
@@ -85,17 +67,10 @@ namespace Gizmo.Client.UI.Pages
             if (value == null)
             {
                 UserRegistrationAdditionalFieldsViewService.SetCountry(null);
-                UserRegistrationConfirmationMethodService.SetMobilePhone(null);
             }
             else
             {
                 UserRegistrationAdditionalFieldsViewService.SetCountry(value.Text);
-                var tmp = value.PhonePrefix;
-                if (tmp.StartsWith("+"))
-                {
-                    tmp = tmp.Substring(1);
-                }
-                UserRegistrationConfirmationMethodService.SetMobilePhone(tmp);
             }
         }
 
