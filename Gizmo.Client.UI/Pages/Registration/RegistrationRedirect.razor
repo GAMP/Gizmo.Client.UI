@@ -1,0 +1,34 @@
+@namespace Gizmo.Client.UI.Pages.Registration
+@inherits CustomDOMComponentBase
+
+<LoginCard>
+    <CardHeader>
+        <div class="giz-login-links">
+            <div class="giz-back-button" @onclick="@RegistrationRedirectViewService.NavigateBackAsync">
+                <Icon SVGIcon="Icons.ArrowLeft_Client" Size="IconSizes.ExtraSmall" />
+            </div>
+            <div class="giz-login-new-user">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_ALREADY_A_MEMBER)) <a href="@ClientRoutes.LoginRoute">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_IN))</a></div>
+        </div>
+        <div class="giz-login-alerts">
+            @if (ViewState.HasError)
+            {
+                <Toast CanClose="true" OnCloseButtonClick="OnCloseErrorHandler" AlertType="AlertTypes.Danger" Text="@ViewState.ErrorMessage" />
+            }
+        </div>
+    </CardHeader>
+    <CardBody>
+        @if (ViewState.IsLoading)
+        {
+            <Spinner />
+        }
+        else if (!ViewState.HasError && ViewState.RedirectUrl is not null)
+        {
+            <div class="giz-login-title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_TITLE))</div>
+            <div class="giz-registration-redirect__url">@ViewState.RedirectUrl</div>
+            <div class="giz-registration-redirect__hint">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_WAITING_SCAN))</div>
+        }
+    </CardBody>
+    <CardFooter>
+        <InputLanguageMenu />
+    </CardFooter>
+</LoginCard>
