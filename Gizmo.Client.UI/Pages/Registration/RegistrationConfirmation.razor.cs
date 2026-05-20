@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Gizmo.Client;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
@@ -42,6 +43,11 @@ namespace Gizmo.Client.UI.Pages.Registration
         public void OnCloseButtonClickHandler()
         {
             UserRegistrationConfirmationViewService.Reset();
+        }
+
+        private async Task RestartTimer()
+        {
+            await UserRegistrationConfirmationViewService.RestartTimerAsync();
         }
 
         protected override void OnInitialized()

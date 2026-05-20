@@ -56,5 +56,16 @@ namespace Gizmo.Client.UI.Components.Login
 
         [Parameter]
         public RenderFragment FallbackContent { get; set; }
+
+        [Parameter]
+        public int SecondsLeft { get; set; }
+
+        [Parameter]
+        public bool TimerExpired { get; set; }
+
+        [Parameter]
+        public EventCallback OnResend { get; set; }
+
+        private string TimerDisplay => $"{SecondsLeft / 60:D2}:{SecondsLeft % 60:D2}";
     }
 }

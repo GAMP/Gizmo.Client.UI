@@ -47,6 +47,27 @@
                     </ChildContent>
                 </Button>
             </div>
+            @if (OnResend.HasDelegate)
+            {
+                <div class="giz-confirmation-resend">
+                    @if (!TimerExpired)
+                    {
+                        <span class="giz-confirmation-resend__timer">@TimerDisplay</span>
+                    }
+                    else
+                    {
+                        <Button IsDisabled="false"
+                                Color="ButtonColors.Secondary"
+                                Size="ButtonSizes.Medium"
+                                IsFullWidth="true"
+                                @onclick="OnResend">
+                            <ChildContent>
+                                <div>@LocalizationService.GetString("GIZ_GEN_RESEND")</div>
+                            </ChildContent>
+                        </Button>
+                    }
+                </div>
+            }
             @FallbackContent
         </EditForm>
     </CardBody>

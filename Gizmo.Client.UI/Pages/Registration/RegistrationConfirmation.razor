@@ -13,7 +13,10 @@
                       HasError="@ViewState.HasError"
                       ErrorMessage="@ViewState.ErrorMessage"
                       OnConfirm="@UserRegistrationConfirmationViewService.Confirm"
-                      OnCloseError="@OnCloseButtonClickHandler">
+                      OnCloseError="@OnCloseButtonClickHandler"
+                      SecondsLeft="@ViewState.SecondsLeft"
+                      TimerExpired="@ViewState.TimerExpired"
+                      OnResend="@RestartTimer">
     <HeaderLinks>
         <div class="giz-back-button" @onclick="@(() => NavigationService.NavigateTo(RegistrationSession.Flow == RegistrationFlow.Email ? ClientRoutes.RegistrationEmailRoute : ClientRoutes.RegistrationPhoneRoute))">
             <Icon SVGIcon="Icons.ArrowLeft_Client" Size="IconSizes.ExtraSmall" />
