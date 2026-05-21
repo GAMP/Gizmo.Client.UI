@@ -32,28 +32,34 @@
                 }
             </div>
 
-            <div class="giz-registration-providers-list">
-                @foreach (var provider in ViewState.PriorityProviders)
-                {
-                    var displayName = GetProviderDisplayName(provider.ChannelGuid, provider.Name);
-                    <button class="giz-registration-provider-btn @GetProviderCssClass(provider.ChannelGuid)"
-                            type="button"
-                            @onclick="@(() => SelectProvider(provider.PublicId))">
-                        <Icon SVGIcon="@GetProviderIcon(provider.ChannelGuid)" />
-                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_CONTINUE_WITH), displayName)
-                    </button>
-                }
-            </div>
-
-            @if (ViewState.HasError && ViewState.AltProviders.Count > 0)
+            @if (ViewState.PriorityProviders.Count > 0)
             {
-                <div class="giz-registration-providers-divider">
-                    <div class="giz-registration-providers-divider__line"></div>
-                    <div class="giz-registration-providers-divider__badge">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_OTHER_METHODS))</div>
-                    <div class="giz-registration-providers-divider__line"></div>
+                <div class="giz-registration-providers-list">
+                    @foreach (var provider in ViewState.PriorityProviders)
+                    {
+                        var displayName = GetProviderDisplayName(provider.ChannelGuid, provider.Name);
+                        <button class="giz-registration-provider-btn @GetProviderCssClass(provider.ChannelGuid)"
+                                type="button"
+                                @onclick="@(() => SelectProvider(provider.PublicId))">
+                            <Icon SVGIcon="@GetProviderIcon(provider.ChannelGuid)" />
+                            @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_CONTINUE_WITH), displayName)
+                        </button>
+                    }
                 </div>
+            }
 
-                <p class="giz-registration-providers-hint">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_TRY_ALTERNATIVES))</p>
+            @if (ViewState.AltProviders.Count > 0 && (ViewState.HasError || ViewState.PriorityProviders.Count == 0))
+            {
+                @if (ViewState.HasError && ViewState.PriorityProviders.Count > 0)
+                {
+                    <div class="giz-registration-providers-divider">
+                        <div class="giz-registration-providers-divider__line"></div>
+                        <div class="giz-registration-providers-divider__badge">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_OTHER_METHODS))</div>
+                        <div class="giz-registration-providers-divider__line"></div>
+                    </div>
+
+                    <p class="giz-registration-providers-hint">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_TRY_ALTERNATIVES))</p>
+                }
 
                 <div class="giz-registration-providers-list">
                     @foreach (var provider in ViewState.AltProviders)

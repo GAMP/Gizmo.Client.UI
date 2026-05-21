@@ -100,7 +100,19 @@
                     <SelectItem Value="@Sex.Female" Text="Female" />
                 </Select>
             </div>
-            @if (RegistrationSession.Flow != RegistrationFlow.Email)
+            @if (RegistrationSession.Flow == RegistrationFlow.Email)
+            {
+                <div class="giz-form-input">
+                    <TextInput UpdateOnInput="true"
+                               Value="@ViewState.MobilePhone"
+                               ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetMobilePhone(value))"
+                               ValueExpression="@(() => ViewState.MobilePhone)"
+                               Size="InputSizes.Small"
+                               IsFullWidth="true"
+                               Label="Phone number" />
+                </div>
+            }
+            else
             {
                 <div class="giz-form-input">
                     <TextInput UpdateOnInput="true"
