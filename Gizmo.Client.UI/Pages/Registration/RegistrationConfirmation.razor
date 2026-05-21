@@ -2,7 +2,7 @@
 @inherits CustomDOMComponentBase
 
 <ConfirmationCodeCard EditContext="@UserRegistrationConfirmationViewService.EditContext"
-                      Title="@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_UP_TITLE")"
+                      Title="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_UP_TITLE))"
                       Subtitle="@ViewState.ConfirmationCodeMessage"
                       Placeholder="@GetPlaceholder()"
                       ConfirmationCode="@ViewState.ConfirmationCode"
@@ -16,11 +16,13 @@
                       OnCloseError="@OnCloseButtonClickHandler"
                       SecondsLeft="@ViewState.SecondsLeft"
                       TimerExpired="@ViewState.TimerExpired"
-                      OnResend="@RestartTimer">
+                      OnResend="@RestartTimer"
+                      SignUpSubtitle="true"
+                      ShowFooter="false">
     <HeaderLinks>
-        <div class="giz-back-button" @onclick="@(() => NavigationService.NavigateTo(RegistrationSession.Flow == RegistrationFlow.Email ? ClientRoutes.RegistrationEmailRoute : ClientRoutes.RegistrationPhoneRoute))">
+        <div class="giz-back-button" @onclick="@NavigateBackAsync">
             <Icon SVGIcon="Icons.ArrowLeft_Client" Size="IconSizes.ExtraSmall" />
         </div>
-        <div class="giz-login-new-user">@LocalizationService.GetString("GIZ_LOGIN_ALREADY_A_MEMBER") <a href="@ClientRoutes.LoginRoute">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_IN")</a></div>
+        <div class="giz-login-new-user">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_ALREADY_A_MEMBER)) <a href="@ClientRoutes.LoginRoute">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_IN))</a></div>
     </HeaderLinks>
 </ConfirmationCodeCard>

@@ -125,7 +125,7 @@ namespace Gizmo.Client.UI.Pages.Registration
 
             var other = new IconSelectCountry()
             {
-                Text = LocalizationService.GetString("GIZ_COUNTRY_OTHER"),
+                Text = LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_COUNTRY_OTHER)),
                 PhonePrefix = "+",
                 Icon = "_content/Gizmo.Client.UI/img/no-flag-image.svg"
             };
@@ -137,22 +137,23 @@ namespace Gizmo.Client.UI.Pages.Registration
                 item.Display = item.Text + " " + item.PhonePrefix;
             }
 
+            SetSelectedCountry(other);
+            _isLoaded = true;
             await InvokeAsync(StateHasChanged);
 
-            IconSelectCountry defaultItem = null;
             var defaultCountry = await CountryInformationService.GetCurrentCountryInfoAsync();
+            IconSelectCountry defaultItem = null;
 
             if (defaultCountry != null && defaultCountry.CallingCodeSuffixes.Count() > 0)
             {
                 defaultItem = Countries.Where(a => a.PhonePrefix == defaultCountry.CallingCodeRoot + defaultCountry.CallingCodeSuffixes.First()).FirstOrDefault();
             }
 
-            if (defaultItem == null)
-                defaultItem = other;
-
-            SetSelectedCountry(defaultItem);
-
-            _isLoaded = true;
+            if (defaultItem != null && ViewState.Country == other.Text && string.IsNullOrEmpty(ViewState.MobilePhone))
+            {
+                SetSelectedCountry(defaultItem);
+                await InvokeAsync(StateHasChanged);
+            }
 
             await base.OnInitializedAsync();
         }

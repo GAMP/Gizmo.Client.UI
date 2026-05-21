@@ -66,6 +66,12 @@ namespace Gizmo.Client.UI.Components.Login
         [Parameter]
         public EventCallback OnResend { get; set; }
 
-        private string TimerDisplay => $"{SecondsLeft / 60:D2}:{SecondsLeft % 60:D2}";
+        [Parameter]
+        public bool SignUpSubtitle { get; set; }
+
+        [Parameter]
+        public bool ShowFooter { get; set; } = true;
+
+        private string TimerDisplay => $"{SecondsLeft / 60}:{SecondsLeft % 60:D2}";
     }
 }

@@ -1,6 +1,7 @@
 @namespace Gizmo.Client.UI.Components.Login
 @inherits CustomDOMComponentBase
 @using Gizmo.UI
+@using Microsoft.AspNetCore.Components.Forms
 
 <LoginCard>
     <CardHeader>
@@ -16,62 +17,121 @@
     </CardHeader>
     <CardBody>
         <EditForm EditContext="@EditContext">
-            <div class="giz-login-title">@Title</div>
-            <div class="giz-login-subtitle">@Subtitle</div>
-            <div class="giz-form-input">
-                <TextInput UpdateOnInput="true"
-                           Placeholder="@Placeholder"
-                           Value="@ConfirmationCode"
-                           ValueChanged="CodeChanged"
-                           ValueExpression="CodeExpression"
-                           IsDisabled="@IsLoading"
-                           Size="InputSizes.Medium"
-                           IsFullWidth="true"
-                           Label="@LocalizationService.GetString("GIZ_PASSWORD_RECOVERY_ENTER_YOUR_CODE")" />
-            </div>
-            <div class="giz-form-input">
-                <Button IsDisabled="@(IsValid == false || IsLoading)"
-                        Color="ButtonColors.Accent"
-                        Size="ButtonSizes.ExtraLarge"
-                        IsFullWidth="true"
-                        @onclick="OnConfirm">
-                    <ChildContent>
-                        @if (IsLoading)
-                        {
-                            <Spinner />
-                        }
-                        else
-                        {
-                            <div>@LocalizationService.GetString("GIZ_GEN_CONFIRM")</div>
-                        }
-                    </ChildContent>
-                </Button>
-            </div>
-            @if (OnResend.HasDelegate)
+            @if (SignUpSubtitle)
             {
-                <div class="giz-confirmation-resend">
-                    @if (!TimerExpired)
-                    {
-                        <span class="giz-confirmation-resend__timer">@TimerDisplay</span>
-                    }
-                    else
-                    {
-                        <Button IsDisabled="false"
-                                Color="ButtonColors.Secondary"
-                                Size="ButtonSizes.Medium"
-                                IsFullWidth="true"
-                                @onclick="OnResend">
-                            <ChildContent>
-                                <div>@LocalizationService.GetString("GIZ_GEN_RESEND")</div>
-                            </ChildContent>
-                        </Button>
-                    }
+                <div class="giz-confirmation-code">
+                    <div class="giz-confirmation-code__header">
+                        <div class="giz-login-title">@Title</div>
+                        <div class="giz-login-subtitle--sign-up">@Subtitle</div>
+                    </div>
+                    <div class="giz-confirmation-code__form">
+                        <div class="giz-form-input">
+                            <TextInput UpdateOnInput="true"
+                                       Placeholder="@Placeholder"
+                                       Value="@ConfirmationCode"
+                                       ValueChanged="CodeChanged"
+                                       ValueExpression="CodeExpression"
+                                       IsDisabled="@IsLoading"
+                                       Size="InputSizes.Medium"
+                                       IsFullWidth="true"
+                                       Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PASSWORD_RECOVERY_ENTER_YOUR_CODE))" />
+                        </div>
+                    </div>
+                    <div class="giz-confirmation-code__actions">
+                        <div class="giz-form-input">
+                            <Button IsDisabled="@(IsValid == false || IsLoading)"
+                                    Color="ButtonColors.Accent"
+                                    Size="ButtonSizes.ExtraLarge"
+                                    IsFullWidth="true"
+                                    @onclick="OnConfirm">
+                                <ChildContent>
+                                    @if (IsLoading)
+                                    {
+                                        <Spinner />
+                                    }
+                                    else
+                                    {
+                                        <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CONFIRM))</div>
+                                    }
+                                </ChildContent>
+                            </Button>
+                        </div>
+                        @if (OnResend.HasDelegate)
+                        {
+                            <div class="giz-resend-button">
+                                <Button Variant="ButtonVariants.Outline"
+                                        Size="ButtonSizes.ExtraLarge"
+                                        IsFullWidth="true"
+                                        IsDisabled="@(!TimerExpired || IsLoading)"
+                                        @onclick="OnResend">
+                                    <div class="giz-resend-button__label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_RESEND))</div>
+                                    @if (!TimerExpired)
+                                    {
+                                        <div class="giz-resend-button__time">@TimerDisplay</div>
+                                    }
+                                </Button>
+                            </div>
+                        }
+                    </div>
                 </div>
+            }
+            else
+            {
+                <div class="giz-login-title">@Title</div>
+                <div class="giz-login-subtitle">@Subtitle</div>
+                <div class="giz-form-input">
+                    <TextInput UpdateOnInput="true"
+                               Placeholder="@Placeholder"
+                               Value="@ConfirmationCode"
+                               ValueChanged="CodeChanged"
+                               ValueExpression="CodeExpression"
+                               IsDisabled="@IsLoading"
+                               Size="InputSizes.Medium"
+                               IsFullWidth="true"
+                               Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PASSWORD_RECOVERY_ENTER_YOUR_CODE))" />
+                </div>
+                <div class="giz-form-input">
+                    <Button IsDisabled="@(IsValid == false || IsLoading)"
+                            Color="ButtonColors.Accent"
+                            Size="ButtonSizes.ExtraLarge"
+                            IsFullWidth="true"
+                            @onclick="OnConfirm">
+                        <ChildContent>
+                            @if (IsLoading)
+                            {
+                                <Spinner />
+                            }
+                            else
+                            {
+                                <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CONFIRM))</div>
+                            }
+                        </ChildContent>
+                    </Button>
+                </div>
+                @if (OnResend.HasDelegate)
+                {
+                    <div class="giz-resend-button">
+                        <Button Variant="ButtonVariants.Outline"
+                                Size="ButtonSizes.ExtraLarge"
+                                IsFullWidth="true"
+                                IsDisabled="@(!TimerExpired || IsLoading)"
+                                @onclick="OnResend">
+                            <div class="giz-resend-button__label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_RESEND))</div>
+                            @if (!TimerExpired)
+                            {
+                                <div class="giz-resend-button__time">@TimerDisplay</div>
+                            }
+                        </Button>
+                    </div>
+                }
             }
             @FallbackContent
         </EditForm>
     </CardBody>
     <CardFooter>
-        <InputLanguageMenu />
+        @if (ShowFooter)
+        {
+            <InputLanguageMenu />
+        }
     </CardFooter>
 </LoginCard>

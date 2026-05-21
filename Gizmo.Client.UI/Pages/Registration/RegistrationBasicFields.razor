@@ -15,7 +15,8 @@
     </CardHeader>
     <CardBody>
         <EditForm EditContext="@UserRegistrationBasicFieldsViewService.EditContext">
-            <div class="giz-login-title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_UP_TITLE))</div>
+            <div class="giz-login-title">Sign Up</div>
+            <div class="giz-login-subtitle--sign-up">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim</div>
             <div class="giz-registration-form-input">
                 <TextInput UpdateOnInput="true"
                            Value="@ViewState.Username"
@@ -23,7 +24,7 @@
                            ValueExpression="@(() => ViewState.Username)"
                            Size="InputSizes.Small"
                            IsFullWidth="true"
-                           Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_USERNAME))" />
+                           Label="Username" />
             </div>
             <div class="giz-registration-form-input giz-form-input-columns">
                 @if (ViewState.PasswordTooltip.TotalRules > 0)
@@ -37,7 +38,7 @@
                                            ValueExpression="@(() => ViewState.Password)"
                                            Size="InputSizes.Small"
                                            IsFullWidth="true"
-                                           Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PASSWORD))" />
+                                           Label="Password" />
                         </ChildContent>
                         <TooltipContent>
                             <PasswordTooltip PasswordTooltipViewState="@ViewState.PasswordTooltip" />
@@ -53,7 +54,7 @@
                                    ValueExpression="@(() => ViewState.Password)"
                                    Size="InputSizes.Small"
                                    IsFullWidth="true"
-                                   Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PASSWORD))" />
+                                   Label="Password" />
                 }
 
                 <PasswordInput UpdateOnInput="true"
@@ -62,7 +63,7 @@
                                ValueExpression="@(() => ViewState.RepeatPassword)"
                                Size="InputSizes.Small"
                                IsFullWidth="true"
-                               Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CONFIRM_PASSWORD))" />
+                               Label="Confirm your password" />
             </div>
             <div class="giz-registration-form-input giz-form-input-columns">
                 <TextInput Value="@ViewState.FirstName"
@@ -70,13 +71,13 @@
                            ValueExpression="@(() => ViewState.FirstName)"
                            Size="InputSizes.Small"
                            IsFullWidth="true"
-                           Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_FIRST_NAME))" />
+                           Label="First name (optional)" />
                 <TextInput Value="@ViewState.LastName"
                            ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetLastName(value))"
                            ValueExpression="@(() => ViewState.LastName)"
                            Size="InputSizes.Small"
                            IsFullWidth="true"
-                           Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LAST_NAME))" />
+                           Label="Last name (optional)" />
             </div>
             <div class="giz-registration-form-input giz-form-input-columns">
                 <MaskedDateInput Value="@ViewState.BirthDate"
@@ -84,19 +85,19 @@
                                  ValueExpression="@(() => ViewState.BirthDate)"
                                  Size="InputSizes.Small"
                                  IsFullWidth="true"
-                                 Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_BIRTH_DATE))" />
+                                 Label="Date of birth" />
                 <Select Value="@ViewState.Sex"
                         ValueChanged="@((Sex value) => UserRegistrationBasicFieldsViewService.SetSex(value))"
                         ValueExpression="@(() => ViewState.Sex)"
                         Size="InputSizes.Small"
                         HandleSVGIcon="Icons.Select_Client"
                         IsFullWidth="true"
-                        Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_GENDER))"
+                        Label="Gender"
                         OpenDirection="PopupOpenDirections.Cursor"
                         PopupClass="giz-scrollbar--v">
-                    <SelectItem Value="@Sex.Unspecified" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEX_UNSPECIFIED))" />
-                    <SelectItem Value="@Sex.Male" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEX_MALE))" />
-                    <SelectItem Value="@Sex.Female" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEX_FEMALE))" />
+                    <SelectItem Value="@Sex.Unspecified" Text="Select something" />
+                    <SelectItem Value="@Sex.Male" Text="Male" />
+                    <SelectItem Value="@Sex.Female" Text="Female" />
                 </Select>
             </div>
             @if (RegistrationSession.Flow != RegistrationFlow.Email)
@@ -108,15 +109,26 @@
                                ValueExpression="@(() => ViewState.Email)"
                                Size="InputSizes.Small"
                                IsFullWidth="true"
-                               Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_EMAIL_ADDRESS))" />
+                               Label="Email address (optional)" />
                 </div>
             }
             <div>
-                <Button IsDisabled="@(ViewState.IsValid == false)"
+                <Button IsDisabled="@(ViewState.IsValid == false || ViewState.IsLoading)"
                         Color="ButtonColors.Accent"
                         Size="ButtonSizes.Large"
                         IsFullWidth="true"
-                        @onclick="@UserRegistrationBasicFieldsViewService.SubmitAsync">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CONTINUE))</Button>
+                        @onclick="@UserRegistrationBasicFieldsViewService.SubmitAsync">
+                    <ChildContent>
+                        @if (ViewState.IsLoading)
+                        {
+                            <Spinner />
+                        }
+                        else
+                        {
+                            <div>Continue</div>
+                        }
+                    </ChildContent>
+                </Button>
             </div>
         </EditForm>
     </CardBody>

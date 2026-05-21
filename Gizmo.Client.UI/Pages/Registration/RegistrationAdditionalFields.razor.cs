@@ -121,23 +121,23 @@ namespace Gizmo.Client.UI.Pages
                 item.Display = item.Text + " " + item.PhonePrefix;
             }
 
-            //Render the list first.
+            SetSelectedCountry(other);
+            _isLoaded = true;
             await InvokeAsync(StateHasChanged);
 
-            IconSelectCountry defaultItem = null;
             var defaultCountry = await CountryInformationService.GetCurrentCountryInfoAsync();
+            IconSelectCountry defaultItem = null;
 
             if (defaultCountry != null && defaultCountry.CallingCodeSuffixes.Count() > 0)
             {
                 defaultItem = Countries.Where(a => a.PhonePrefix == defaultCountry.CallingCodeRoot + defaultCountry.CallingCodeSuffixes.First()).FirstOrDefault();
             }
 
-            if (defaultItem == null)
-                defaultItem = other;
-
-            SetSelectedCountry(defaultItem);
-
-            _isLoaded = true;
+            if (defaultItem != null && ViewState.Country == other.Text)
+            {
+                SetSelectedCountry(defaultItem);
+                await InvokeAsync(StateHasChanged);
+            }
 
             await base.OnInitializedAsync();
         }

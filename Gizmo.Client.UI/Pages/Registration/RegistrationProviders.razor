@@ -4,7 +4,7 @@
 <LoginCard>
     <CardHeader>
         <div class="giz-login-links">
-            <div class="giz-login-new-user">@LocalizationService.GetString("GIZ_LOGIN_ALREADY_A_MEMBER") <a href="@ClientRoutes.LoginRoute">@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_IN")</a></div>
+            <div class="giz-login-new-user">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_ALREADY_A_MEMBER)) <a href="@ClientRoutes.LoginRoute">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_IN))</a></div>
         </div>
         <div class="giz-login-alerts"></div>
     </CardHeader>
@@ -20,15 +20,15 @@
                 <ErrorBlock Message="@ViewState.ErrorMessage" ShowIcon="true" Class="giz-registration-providers-error-block" />
             }
 
-            <div class="giz-login-title">@LocalizationService.GetString("GIZ_REGISTRATION_CREATE_ACCOUNT")</div>
+            <div class="giz-login-title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_CREATE_ACCOUNT))</div>
             <div class="giz-login-subtitle--sign-up">
                 @if (ViewState.HasError)
                 {
-                    @LocalizationService.GetString("GIZ_REGISTRATION_SELECT_OTHER_METHOD")
+                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SELECT_OTHER_METHOD))
                 }
                 else
                 {
-                    @LocalizationService.GetString("GIZ_REGISTRATION_SELECT_METHOD")
+                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SELECT_METHOD))
                 }
             </div>
 
@@ -40,7 +40,7 @@
                             type="button"
                             @onclick="@(() => SelectProvider(provider.PublicId))">
                         <Icon SVGIcon="@GetProviderIcon(provider.ChannelGuid)" />
-                        @LocalizationService.GetString("GIZ_REGISTRATION_CONTINUE_WITH", displayName)
+                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_CONTINUE_WITH), displayName)
                     </button>
                 }
             </div>
@@ -49,11 +49,11 @@
             {
                 <div class="giz-registration-providers-divider">
                     <div class="giz-registration-providers-divider__line"></div>
-                    <div class="giz-registration-providers-divider__badge">@LocalizationService.GetString("GIZ_REGISTRATION_OTHER_METHODS")</div>
+                    <div class="giz-registration-providers-divider__badge">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_OTHER_METHODS))</div>
                     <div class="giz-registration-providers-divider__line"></div>
                 </div>
 
-                <p class="giz-registration-providers-hint">@LocalizationService.GetString("GIZ_REGISTRATION_TRY_ALTERNATIVES")</p>
+                <p class="giz-registration-providers-hint">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_TRY_ALTERNATIVES))</p>
 
                 <div class="giz-registration-providers-list">
                     @foreach (var provider in ViewState.AltProviders)
@@ -63,14 +63,14 @@
                                 type="button"
                                 @onclick="@(() => SelectProvider(provider.PublicId))">
                             <Icon SVGIcon="@GetProviderIcon(provider.ChannelGuid)" />
-                            @LocalizationService.GetString("GIZ_REGISTRATION_CONTINUE_WITH", displayName)
+                            @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_CONTINUE_WITH), displayName)
                         </button>
                     }
                 </div>
             }
 
             <p class="giz-registration-providers-terms">
-                @LocalizationService.GetString("GIZ_REGISTRATION_TERMS_PREFIX")<a href="#">@LocalizationService.GetString("GIZ_REGISTRATION_TERMS_OF_USE")</a>@LocalizationService.GetString("GIZ_REGISTRATION_TERMS_AND")<a href="#">@LocalizationService.GetString("GIZ_REGISTRATION_PRIVACY_POLICY")</a>.
+                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_TERMS_PREFIX))<a href="#">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_TERMS_OF_USE))</a>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_TERMS_AND))<a href="#">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_PRIVACY_POLICY))</a>.
             </p>
         }
     </CardBody>

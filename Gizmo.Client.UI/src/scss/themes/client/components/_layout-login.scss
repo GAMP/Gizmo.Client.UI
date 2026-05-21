@@ -4,6 +4,8 @@
     display: grid;
     grid-template-columns: 1fr min-content;
     height: 100vh;
+    width: 100vw;
+    max-width: 100vw;
     overflow: hidden;
 
     .giz-login {
@@ -410,6 +412,7 @@
     position: relative;
     /*overflow: hidden;*/
     padding: 1.0rem;
+    box-sizing: border-box;
 
     &.hidden {
         right: -74rem;
@@ -844,9 +847,11 @@
 .giz-login-links {
     margin-left: 2.2rem;
     margin-top: 2.2rem;
-    margin-right: 1.2rem;
+    margin-right: 2.2rem;
     display: flex;
     justify-content: space-between;
+    width: calc(100% - 4.4rem);
+    box-sizing: border-box;
 }
 
 .giz-back-button {

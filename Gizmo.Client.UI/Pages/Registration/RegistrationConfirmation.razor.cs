@@ -50,6 +50,18 @@ namespace Gizmo.Client.UI.Pages.Registration
             await UserRegistrationConfirmationViewService.RestartTimerAsync();
         }
 
+        private Task NavigateBackAsync()
+        {
+            var returnRoute = RegistrationSession.Flow == RegistrationFlow.Email
+                ? ClientRoutes.RegistrationEmailRoute
+                : ClientRoutes.RegistrationPhoneRoute;
+
+            RegistrationSession.Clear();
+            NavigationService.NavigateTo(returnRoute);
+
+            return Task.CompletedTask;
+        }
+
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
