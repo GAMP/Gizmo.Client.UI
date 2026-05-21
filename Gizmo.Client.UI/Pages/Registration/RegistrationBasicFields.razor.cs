@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -25,9 +26,27 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         UserRegistrationBasicFieldsViewState ViewState { get; set; }
 
+        [Inject]
+        NavigationService NavigationService { get; set; }
+
         public void OnCloseButtonClickHandler()
         {
             UserRegistrationBasicFieldsViewService.Reset();
+        }
+
+        private Task NavigateBackAsync()
+        {
+            RegistrationSession.Clear();
+
+            var route = RegistrationSession.Flow switch
+            {
+                RegistrationFlow.Email => ClientRoutes.RegistrationEmailRoute,
+                RegistrationFlow.Sms   => ClientRoutes.RegistrationPhoneRoute,
+                _                      => ClientRoutes.RegistrationProvidersRoute // redirect flow (Flow=None, Token non-empty)
+            };
+
+            NavigationService.NavigateTo(route);
+            return Task.CompletedTask;
         }
 
         protected override void OnInitialized()
