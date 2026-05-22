@@ -1452,6 +1452,285 @@
     }
 }
 
+.giz-registration-redirect {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+    width: 100%;
+    max-width: 39.8rem;
+    margin: 0 auto;
+
+    &__back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0;
+        border: none;
+        background: none;
+        cursor: pointer;
+        appearance: none;
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: rgba(#ffffff, 0.5);
+        transition: color 0.15s ease;
+
+        .giz-icon {
+            color: rgba(#ffffff, 0.5);
+        }
+
+        &:hover {
+            color: rgba(#ffffff, 0.7);
+        }
+    }
+
+    &__provider {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+    }
+
+    &__provider-icon {
+        width: 4.4rem;
+        height: 4.4rem;
+        min-width: 4.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 1.2rem;
+        background: rgba(#ffffff, 0.04);
+        border: 0.1rem solid rgba(#f6fbfd, 0.22);
+
+        .giz-icon {
+            width: 2.2rem;
+            height: 2.2rem;
+            min-width: 2.2rem;
+            min-height: 2.2rem;
+        }
+
+        &--telegram {
+            background: linear-gradient(135deg, #2aabee 0%, #0088cc 100%);
+            border: none;
+            box-shadow: 0 0.4rem 1.6rem rgba(#000000, 0.3);
+        }
+
+        &--facebook {
+            border-color: rgba(#1877f2, 0.32);
+        }
+    }
+
+    &__provider-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        min-width: 0;
+    }
+
+    &__title {
+        font-family: 'Rubik', sans-serif;
+        font-size: 2.2rem;
+        font-weight: 700;
+        line-height: 1.5;
+        color: #fafafa;
+    }
+
+    &__subtitle {
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: rgba(#ffffff, 0.45);
+    }
+
+    &__info {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.0rem;
+        padding: 1.3rem 1.5rem;
+        background: rgba(#57bcff, 0.04);
+        border: 0.1rem solid rgba(#57bcff, 0.1);
+        border-radius: 1.1rem;
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 1.2rem;
+        font-weight: 400;
+        line-height: 1.65;
+        color: rgba(#ffffff, 0.48);
+
+        &-icon {
+            flex-shrink: 0;
+            margin-top: 0.15rem;
+            color: rgba(#57bcff, 0.55);
+        }
+    }
+
+    &__qr-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.4rem;
+        width: 21.4rem;
+        margin: 0 auto;
+        padding: 1.7rem;
+        background: rgba(#ffffff, 0.03);
+        border: 0.1rem solid rgba(#2aabee, 0.2);
+        border-radius: 2.0rem;
+
+        &--expired {
+            background: rgba(#ff3b30, 0.04);
+            border-color: rgba(#ff3b30, 0.25);
+        }
+    }
+
+    &__qr-image {
+        position: relative;
+        width: 18.0rem;
+        height: 18.0rem;
+        padding: 0;
+        background-color: #201f1f;
+        border-radius: 1.0rem;
+        overflow: hidden;
+
+        svg {
+            width: 100%;
+            height: 100%;
+            shape-rendering: crispedges;
+        }
+
+        &--expired {
+            background-color: #fafafa;
+
+            svg {
+                filter: grayscale(100%);
+                opacity: 0.15;
+            }
+        }
+    }
+
+    &__qr-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        background: rgba(#0c0f11, 0.88);
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 500;
+        line-height: 1.5;
+        color: #ffffff;
+        pointer-events: none;
+    }
+
+    &__qr-overlay-clock {
+        width: 2.8rem;
+        height: 2.8rem;
+        min-width: 2.8rem;
+        min-height: 2.8rem;
+        color: #ffffff;
+
+        .giz-icon {
+            width: 2.8rem;
+            height: 2.8rem;
+            min-width: 2.8rem;
+            min-height: 2.8rem;
+        }
+    }
+
+    &__url {
+        padding: 1.0rem;
+        font-size: 1.1rem;
+        word-break: break-all;
+        color: rgba(#ffffff, 0.7);
+    }
+
+    &__status {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.7rem;
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 1.2rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: rgba(#ffffff, 0.55);
+
+        &--expired {
+            color: rgba(#ff3b30, 0.85);
+        }
+    }
+
+    &__status-dot {
+        width: 0.7rem;
+        height: 0.7rem;
+        border-radius: 50%;
+        background: #57bcff;
+        box-shadow: 0 0 0.6rem #57bcff;
+        flex-shrink: 0;
+
+        &--expired {
+            background: #ff3b30;
+            box-shadow: none;
+        }
+    }
+
+    &__expired-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 2.4rem;
+        width: 100%;
+    }
+
+    &__expired-alert {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.0rem;
+        padding: 1.4rem 1.6rem;
+        background: rgba(#ff3b30, 0.06);
+        border: 0.1rem solid rgba(#ff3b30, 0.2);
+        border-radius: 1.2rem;
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 1.2rem;
+        font-weight: 400;
+        line-height: 1.65;
+        color: rgba(#ff3b30, 0.8);
+    }
+
+    &__expired-alert-icon {
+        flex-shrink: 0;
+        margin-top: 0.1rem;
+        color: rgba(#ff3b30, 0.6);
+    }
+
+    &__btn-primary {
+        width: 100%;
+        height: 4.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #0078d2;
+        border: none;
+        border-radius: 1.0rem;
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: #ffffff;
+        cursor: pointer;
+        appearance: none;
+        transition: opacity 0.15s ease;
+
+        &:hover {
+            opacity: 0.9;
+        }
+
+        &:active {
+            opacity: 0.8;
+        }
+    }
+
+}
+
 /*@keyframes login-adv-shrink-anim {
     from {
         width: 100vw;

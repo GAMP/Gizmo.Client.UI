@@ -43,6 +43,8 @@ namespace Gizmo.Client.UI.Pages.Registration
                 return fallback;
 
             var id = channelGuid.ToString("D");
+            
+            //TODO вынести в отдельный хелпер
             if (id.Equals(CommunicationChannels.Telegram, StringComparison.OrdinalIgnoreCase))
                 return "Telegram";
             if (id.Equals(CommunicationChannels.FacebookMessenger, StringComparison.OrdinalIgnoreCase))
