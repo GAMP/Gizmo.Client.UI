@@ -4,6 +4,9 @@
 <LoginCard>
     <CardHeader>
         <div class="giz-login-links">
+            <div class="giz-back-button" @onclick="@RegistrationRedirectViewService.NavigateBackAsync">
+                <Icon SVGIcon="Icons.ArrowLeft_Client" Size="IconSizes.ExtraSmall" />
+            </div>
             <div class="giz-login-new-user">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_ALREADY_A_MEMBER)) <a href="@ClientRoutes.LoginRoute">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_IN))</a></div>
         </div>
         <div class="giz-login-alerts">
@@ -21,11 +24,6 @@
         else if (!ViewState.HasError && ViewState.RedirectUrl is not null)
         {
             <div class="giz-registration-redirect">
-                <button class="giz-registration-redirect__back" type="button" @onclick="@RegistrationRedirectViewService.NavigateBackAsync">
-                    <Icon SVGIcon="Icons.ArrowLeft_Client" Size="IconSizes.ExtraSmall" />
-                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BACK))</span>
-                </button>
-
                 <div class="giz-registration-redirect__provider">
                     <div class="giz-registration-redirect__provider-icon @GetProviderIconCssClass()">
                         <Icon SVGIcon="@GetProviderIcon()" />
