@@ -48,9 +48,9 @@
                 </div>
             }
 
-            @if (ViewState.AltProviders.Count > 0 && (ViewState.HasError || ViewState.PriorityProviders.Count == 0))
+            @if (ViewState.AltProviders.Count > 0 && (ViewState.HasError || ViewState.PriorityProviders.Count == 0 || ViewState.ShowAllProviders))
             {
-                @if (ViewState.HasError && ViewState.PriorityProviders.Count > 0)
+                @if ((ViewState.HasError || ViewState.ShowAllProviders) && ViewState.PriorityProviders.Count > 0)
                 {
                     <div class="giz-registration-providers-divider">
                         <div class="giz-registration-providers-divider__line"></div>
