@@ -1,0 +1,42 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<HostedDialog>
+    <div class="giz-registration-agreements-dialog">
+        <div class="giz-registration-agreements-dialog__header">
+            <span class="giz-registration-agreements-dialog__title">
+                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_AGREEMENTS_TITLE))
+            </span>
+            @if (DisplayOptions.Closable)
+            {
+                <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="CloseAsync" />
+            }
+        </div>
+        <div class="giz-registration-agreements-dialog__body giz-scrollbar--v">
+            @foreach (var agreement in Agreements)
+            {
+                <div class="giz-registration-agreements-dialog__section">
+                    <div class="giz-registration-agreements-dialog__section-title">@agreement.Name</div>
+                    <div class="giz-registration-agreements-dialog__section-text">
+                        @((MarkupString)(agreement.Agreement ?? string.Empty))
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="giz-registration-agreements-dialog__footer">
+            @foreach (var agreement in Agreements)
+            {
+                <CheckBox Label="@agreement.Name"
+                          IsChecked="@_checked[agreement.Id]"
+                          IsCheckedChanged="@((v) => { _checked[agreement.Id] = v; })" />
+            }
+            <Button Color="ButtonColors.Accent"
+                    Size="ButtonSizes.ExtraLarge"
+                    IsFullWidth="true"
+                    IsDisabled="@(!CanAccept)"
+                    @onclick="AcceptAsync">
+                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ACCEPT))
+            </Button>
+        </div>
+    </div>
+</HostedDialog>

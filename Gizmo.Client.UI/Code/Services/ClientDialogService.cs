@@ -104,5 +104,18 @@ namespace Gizmo.Client.UI.Services
                 CloseOnClick = false
             }, default, cancellationToken);
         }
+
+        public Task<AddDialogResult<RegistrationAgreementsResult>> ShowRegistrationAgreementsDialogAsync(
+            IReadOnlyList<RegistrationAgreement> agreements,
+            CancellationToken cancellationToken = default)
+        {
+            return ShowDialogAsync<RegistrationAgreementsDialog, RegistrationAgreementsResult>(
+                new Dictionary<string, object>
+                {
+                    { nameof(RegistrationAgreementsDialog.Agreements), agreements }
+                },
+                new DialogDisplayOptions { Closable = true, CloseOnClick = false },
+                default, cancellationToken);
+        }
     }
 }
