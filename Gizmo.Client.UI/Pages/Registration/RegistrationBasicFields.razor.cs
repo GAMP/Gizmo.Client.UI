@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
@@ -11,8 +12,16 @@ namespace Gizmo.Client.UI.Pages
     [Route(ClientRoutes.RegistrationBasicFieldsRoute)]
     public partial class RegistrationBasicFields : CustomDOMComponentBase
     {
+        private bool _phoneCountriesLoaded;
+        private IconSelectCountry? _selectedPhoneCountry;
+        private readonly Dictionary<string, string> _phoneCountryRegionCodes = new();
+        private readonly Dictionary<string, string?> _phoneCountryMasks = new();
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
+        IPhoneValidationService PhoneValidationService { get; set; }
 
         [Inject]
         UserRegistrationViewState UserRegistrationViewState { get; set; }
@@ -28,6 +37,29 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         NavigationService NavigationService { get; set; }
+
+        public List<IconSelectCountry> PhoneCountries { get; set; } = new();
+
+        public IconSelectCountry? GetSelectedPhoneCountry() => _selectedPhoneCountry;
+
+        protected void SetPhoneCountry(IconSelectCountry value)
+        {
+            _selectedPhoneCountry = value;
+            var regionCode = value != null && _phoneCountryRegionCodes.TryGetValue(value.Text, out var rc) ? rc : null;
+            UserRegistrationBasicFieldsViewService.SetPhoneRegionCode(regionCode);
+        }
+
+        public string GetPhoneMask()
+        {
+            if (_selectedPhoneCountry != null && _phoneCountryMasks.TryGetValue(_selectedPhoneCountry.Text, out var mask) && mask != null)
+                return mask;
+            return "###-###-####";
+        }
+
+        public string GetPhonePrefix()
+        {
+            return _selectedPhoneCountry?.PhonePrefix ?? "+";
+        }
 
         public void OnCloseButtonClickHandler()
         {
@@ -54,6 +86,32 @@ namespace Gizmo.Client.UI.Pages
             this.SubscribeChange(ViewState);
 
             base.OnInitialized();
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            var countries = await PhoneValidationService.GetCountriesAsync();
+
+            foreach (var country in countries)
+            {
+                _phoneCountryRegionCodes[country.CountryName] = country.RegionCode;
+                _phoneCountryMasks[country.CountryName] = country.InputMask;
+
+                PhoneCountries.Add(new IconSelectCountry
+                {
+                    Text = country.CountryName,
+                    PhonePrefix = country.CallingCode,
+                    Icon = "_content/Gizmo.Client.UI/img/no-flag-image.svg"
+                });
+            }
+
+            foreach (var item in PhoneCountries)
+                item.Display = item.Text + " " + item.PhonePrefix;
+
+            _phoneCountriesLoaded = true;
+            await InvokeAsync(StateHasChanged);
+
+            await base.OnInitializedAsync();
         }
 
         public override void Dispose()

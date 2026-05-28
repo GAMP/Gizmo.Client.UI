@@ -76,7 +76,14 @@
                             <div class="giz-list-item selected" @onclick="@(() => SetSelectedItem(SelectedItem))">
                                 <div class="giz-icon-select-item">
                                     <div class="giz-icon-select-item__icon">
-                                        <img src="@SelectedItem.Icon" />
+                                        @if (!string.IsNullOrEmpty(SelectedItem.Icon) && (SelectedItem.Icon.StartsWith("http") || SelectedItem.Icon.StartsWith("/") || SelectedItem.Icon.StartsWith("_content")))
+                                        {
+                                            <img src="@SelectedItem.Icon" />
+                                        }
+                                        else if (!string.IsNullOrEmpty(SelectedItem.Icon))
+                                        {
+                                            <span class="giz-icon-select-flag">@SelectedItem.Icon</span>
+                                        }
                                     </div>
                                     <div>@($"{SelectedItem.Display}")</div>
                                     <Icon SVGIcon="Icons.Check" />

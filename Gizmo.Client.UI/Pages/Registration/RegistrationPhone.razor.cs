@@ -16,12 +16,14 @@ namespace Gizmo.Client.UI.Pages.Registration
     public partial class RegistrationPhone : CustomDOMComponentBase
     {
         private bool _isLoaded;
+        private readonly Dictionary<string, string> _countryRegionCodes = new();
+        private readonly Dictionary<string, string?> _countryMasks = new();
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        CountryInformationService CountryInformationService { get; set; }
+        IPhoneValidationService PhoneValidationService { get; set; }
 
         [Inject]
         RegistrationPhoneViewService RegistrationPhoneViewService { get; set; }
@@ -38,15 +40,16 @@ namespace Gizmo.Client.UI.Pages.Registration
         {
             var selectedCountry = GetSelectedCountry();
 
-            if (selectedCountry != null)
-            {
-                if (selectedCountry.PhonePrefix.Length - 1 > 0)
-                {
-                    return new string('#', selectedCountry.PhonePrefix.Length - 1) + "-###-###-####";
-                }
-            }
+            if (selectedCountry != null && _countryMasks.TryGetValue(selectedCountry.Text, out var mask) && mask != null)
+                return mask;
 
             return "###-###-####";
+        }
+
+        private string? GetRegionCode(string countryName)
+        {
+            _countryRegionCodes.TryGetValue(countryName, out var rc);
+            return rc;
         }
 
         public void OnCloseButtonClickHandler()
@@ -76,11 +79,13 @@ namespace Gizmo.Client.UI.Pages.Registration
             if (value == null)
             {
                 RegistrationPhoneViewService.SetCountry(null);
+                RegistrationPhoneViewService.SetRegionCode(null);
                 RegistrationPhoneViewService.SetMobilePhone(null);
             }
             else
             {
                 RegistrationPhoneViewService.SetCountry(value.Text);
+                RegistrationPhoneViewService.SetRegionCode(GetRegionCode(value.Text));
                 var tmp = value.PhonePrefix;
                 if (tmp.StartsWith("+"))
                 {
@@ -99,28 +104,19 @@ namespace Gizmo.Client.UI.Pages.Registration
 
         protected override async Task OnInitializedAsync()
         {
-            var countries = await CountryInformationService.GetCountryInfoAsync();
+            var countries = await PhoneValidationService.GetCountriesAsync();
 
-            foreach (var country in countries)
+            foreach (var country in countries.OrderBy(c => c.CountryName))
             {
-                if (country.CallingCodeSuffixes.Count() == 1)
+                _countryRegionCodes[country.CountryName] = country.RegionCode;
+                _countryMasks[country.CountryName] = country.InputMask;
+
+                Countries.Add(new IconSelectCountry()
                 {
-                    Countries.Add(new IconSelectCountry()
-                    {
-                        Text = country.NativeName,
-                        PhonePrefix = country.CallingCodeRoot + country.CallingCodeSuffixes.FirstOrDefault(),
-                        Icon = country.FlagSvg
-                    });
-                }
-                else
-                {
-                    Countries.Add(new IconSelectCountry()
-                    {
-                        Text = country.NativeName,
-                        PhonePrefix = country.CallingCodeRoot,
-                        Icon = country.FlagSvg
-                    });
-                }
+                    Text = country.CountryName,
+                    PhonePrefix = country.CallingCode,
+                    Icon = country.Flag ?? string.Empty
+                });
             }
 
             var other = new IconSelectCountry()
@@ -140,20 +136,6 @@ namespace Gizmo.Client.UI.Pages.Registration
             SetSelectedCountry(other);
             _isLoaded = true;
             await InvokeAsync(StateHasChanged);
-
-            var defaultCountry = await CountryInformationService.GetCurrentCountryInfoAsync();
-            IconSelectCountry defaultItem = null;
-
-            if (defaultCountry != null && defaultCountry.CallingCodeSuffixes.Count() > 0)
-            {
-                defaultItem = Countries.Where(a => a.PhonePrefix == defaultCountry.CallingCodeRoot + defaultCountry.CallingCodeSuffixes.First()).FirstOrDefault();
-            }
-
-            if (defaultItem != null && ViewState.Country == other.Text && string.IsNullOrEmpty(ViewState.MobilePhone))
-            {
-                SetSelectedCountry(defaultItem);
-                await InvokeAsync(StateHasChanged);
-            }
 
             await base.OnInitializedAsync();
         }

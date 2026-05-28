@@ -108,14 +108,32 @@
             </div>
             @if (RegistrationSession.Flow == RegistrationFlow.Email)
             {
+                <div class="giz-registration-form-input">
+                    <IconSelect Placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEARCH))"
+                                IsVirtualized="false"
+                                IsLoading="@(!_phoneCountriesLoaded)"
+                                HandleSVGIcon="Icons.Select_Client"
+                                TValue="IconSelectCountry"
+                                ItemSource="@PhoneCountries"
+                                SelectedItem="@GetSelectedPhoneCountry()"
+                                SelectedItemChanged="@SetPhoneCountry"
+                                Size="InputSizes.Small"
+                                IsFullWidth="true"
+                                Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_COUNTRY))"
+                                OpenDirection="PopupOpenDirections.Bottom"
+                                MaximumHeight="20.0rem"
+                                PopupClass="giz-scrollbar--v" />
+                </div>
                 <div class="giz-form-input">
-                    <TextInput UpdateOnInput="true"
-                               Value="@ViewState.MobilePhone"
-                               ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetMobilePhone(value))"
-                               ValueExpression="@(() => ViewState.MobilePhone)"
-                               Size="InputSizes.Small"
-                               IsFullWidth="true"
-                               Label="Phone number" />
+                    <MaskedPhoneInput Mask="@GetPhoneMask()"
+                                      Prefix="@GetPhonePrefix()"
+                                      AllowMoreDigits="true"
+                                      Value="@ViewState.MobilePhone"
+                                      ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetMobilePhone(value))"
+                                      ValueExpression="@(() => ViewState.MobilePhone)"
+                                      Size="InputSizes.Small"
+                                      IsFullWidth="true"
+                                      Label="Phone number" />
                 </div>
             }
             else
