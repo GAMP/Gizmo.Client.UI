@@ -29,7 +29,7 @@
                         <IconSelect Placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEARCH))"
                                     IsVirtualized="false"
                                     IsLoading="@(!_isLoaded)"
-                                    CanClearValue="@(!(GetSelectedCountry()?.PhonePrefix == "+"))"
+                                    CanClearValue="@(GetSelectedCountry() != null)"
                                     OnClickClearValueButton="OnClickClearValueButtonHandler"
                                     HandleSVGIcon="Icons.Select_Client"
                                     TValue="IconSelectCountry"

@@ -47,7 +47,7 @@ namespace Gizmo.Client.UI.Pages
 
         public void OnClickClearValueButtonHandler(MouseEventArgs args)
         {
-            SetSelectedCountry(Countries.Where(a => a.PhonePrefix == "+").FirstOrDefault());
+            SetSelectedCountry(null);
         }
 
         public IconSelectCountry GetSelectedCountry()
@@ -107,21 +107,12 @@ namespace Gizmo.Client.UI.Pages
                 }
             }
 
-            var other = new IconSelectCountry()
-            {
-                Text = LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_COUNTRY_OTHER)),
-                PhonePrefix = "+",
-                Icon = "_content/Gizmo.Client.UI/img/no-flag-image.svg"
-            };
-
-            Countries.Add(other);
-
             foreach (var item in Countries)
             {
                 item.Display = item.Text + " " + item.PhonePrefix;
             }
 
-            SetSelectedCountry(other);
+            SetSelectedCountry(null);
             _isLoaded = true;
             await InvokeAsync(StateHasChanged);
 
@@ -133,7 +124,7 @@ namespace Gizmo.Client.UI.Pages
                 defaultItem = Countries.Where(a => a.PhonePrefix == defaultCountry.CallingCodeRoot + defaultCountry.CallingCodeSuffixes.First()).FirstOrDefault();
             }
 
-            if (defaultItem != null && ViewState.Country == other.Text)
+            if (defaultItem != null && string.IsNullOrEmpty(ViewState.Country))
             {
                 SetSelectedCountry(defaultItem);
                 await InvokeAsync(StateHasChanged);
