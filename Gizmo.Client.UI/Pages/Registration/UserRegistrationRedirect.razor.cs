@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Gizmo;
 using Gizmo.Client;
+using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -11,19 +12,19 @@ using Microsoft.AspNetCore.Components;
 namespace Gizmo.Client.UI.Pages.Registration
 {
     [Route(ClientRoutes.RegistrationRedirectRoute)]
-    public partial class RegistrationRedirect : CustomDOMComponentBase
+    public partial class UserRegistrationRedirect : CustomDOMComponentBase
     {
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        RegistrationRedirectViewService RegistrationRedirectViewService { get; set; }
+        UserRegistrationRedirectViewService RegistrationRedirectViewService { get; set; }
 
         [Inject]
-        RegistrationRedirectViewState ViewState { get; set; }
+        UserRegistrationRedirectViewState ViewState { get; set; }
 
         [Inject]
-        UserRegistrationViewState UserRegistrationViewState { get; set; }
+        IRegistrationSessionService RegistrationSession { get; set; }
 
         public void OnCloseErrorHandler()
         {
@@ -44,7 +45,7 @@ namespace Gizmo.Client.UI.Pages.Registration
 
         private string GetProviderDisplayName()
         {
-            var provider = UserRegistrationViewState.SelectedProvider;
+            var provider = RegistrationSession.SelectedProvider;
             if (provider is null)
                 return string.Empty;
 
@@ -70,7 +71,7 @@ namespace Gizmo.Client.UI.Pages.Registration
 
         private Icons GetProviderIcon()
         {
-            var channelGuid = UserRegistrationViewState.SelectedProvider?.ChannelGuid.ToString("D") ?? string.Empty;
+            var channelGuid = RegistrationSession.SelectedProvider?.ChannelGuid.ToString("D") ?? string.Empty;
             if (channelGuid.Equals(CommunicationChannels.Telegram, StringComparison.OrdinalIgnoreCase))
                 return Icons.Telegram_Client;
             if (channelGuid.Equals(CommunicationChannels.FacebookMessenger, StringComparison.OrdinalIgnoreCase))
@@ -80,7 +81,7 @@ namespace Gizmo.Client.UI.Pages.Registration
 
         private string GetProviderIconCssClass()
         {
-            var channelGuid = UserRegistrationViewState.SelectedProvider?.ChannelGuid.ToString("D") ?? string.Empty;
+            var channelGuid = RegistrationSession.SelectedProvider?.ChannelGuid.ToString("D") ?? string.Empty;
             if (channelGuid.Equals(CommunicationChannels.Telegram, StringComparison.OrdinalIgnoreCase))
                 return "giz-registration-redirect__provider-icon--telegram";
             if (channelGuid.Equals(CommunicationChannels.FacebookMessenger, StringComparison.OrdinalIgnoreCase))

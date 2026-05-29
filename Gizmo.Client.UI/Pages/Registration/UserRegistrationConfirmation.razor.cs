@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Components;
 namespace Gizmo.Client.UI.Pages.Registration
 {
     [Route(ClientRoutes.RegistrationConfirmationRoute)]
-    public partial class RegistrationConfirmation : CustomDOMComponentBase
+    public partial class UserRegistrationConfirmation : CustomDOMComponentBase
     {
         [Inject]
         ILocalizationService LocalizationService { get; set; }

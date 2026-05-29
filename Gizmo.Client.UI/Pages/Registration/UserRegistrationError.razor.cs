@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Components;
 namespace Gizmo.Client.UI.Pages.Registration
 {
     [Route(ClientRoutes.RegistrationErrorRoute)]
-    public partial class RegistrationError : CustomDOMComponentBase
+    public partial class UserRegistrationError : CustomDOMComponentBase
     {
         [Inject]
         ILocalizationService LocalizationService { get; set; }

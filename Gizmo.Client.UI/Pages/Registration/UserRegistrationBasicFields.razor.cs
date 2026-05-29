@@ -7,10 +7,10 @@ using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 
-namespace Gizmo.Client.UI.Pages
+namespace Gizmo.Client.UI.Pages.Registration
 {
     [Route(ClientRoutes.RegistrationBasicFieldsRoute)]
-    public partial class RegistrationBasicFields : CustomDOMComponentBase
+    public partial class UserRegistrationBasicFields : CustomDOMComponentBase
     {
         private bool _phoneCountriesLoaded;
         private IconSelectCountry? _selectedPhoneCountry;
@@ -22,9 +22,6 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         IPhoneValidationService PhoneValidationService { get; set; }
-
-        [Inject]
-        UserRegistrationViewState UserRegistrationViewState { get; set; }
 
         [Inject]
         IRegistrationSessionService RegistrationSession { get; set; }

@@ -11,16 +11,16 @@ using Microsoft.AspNetCore.Components;
 namespace Gizmo.Client.UI.Pages.Registration
 {
     [Route(ClientRoutes.RegistrationProvidersRoute)]
-    public partial class RegistrationProviders : CustomDOMComponentBase
+    public partial class UserRegistrationProviders : CustomDOMComponentBase
     {
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        RegistrationProvidersViewState ViewState { get; set; }
+        UserRegistrationProvidersViewState ViewState { get; set; }
 
         [Inject]
-        RegistrationProvidersViewService RegistrationProvidersViewService { get; set; }
+        UserRegistrationProvidersViewService RegistrationProvidersViewService { get; set; }
 
         public Task SelectProvider(Guid channelGuid) =>
             RegistrationProvidersViewService.SelectProviderAsync(channelGuid);

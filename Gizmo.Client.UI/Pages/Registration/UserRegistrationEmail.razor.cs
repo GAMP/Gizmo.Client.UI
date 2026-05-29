@@ -7,16 +7,16 @@ using Microsoft.AspNetCore.Components;
 namespace Gizmo.Client.UI.Pages.Registration
 {
     [Route(ClientRoutes.RegistrationEmailRoute)]
-    public partial class RegistrationEmail : CustomDOMComponentBase
+    public partial class UserRegistrationEmail : CustomDOMComponentBase
     {
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        RegistrationEmailViewService RegistrationEmailViewService { get; set; }
+        UserRegistrationEmailViewService RegistrationEmailViewService { get; set; }
 
         [Inject]
-        RegistrationEmailViewState ViewState { get; set; }
+        UserRegistrationEmailViewState ViewState { get; set; }
 
         [Inject]
         NavigationService NavigationService { get; set; }
