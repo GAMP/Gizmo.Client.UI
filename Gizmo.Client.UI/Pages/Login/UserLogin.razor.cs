@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Gizmo.Client.UI.Pages
 {
     [Route(ClientRoutes.LoginRoute)]
-    public partial class Login : CustomDOMComponentBase
+    public partial class UserLogin : CustomDOMComponentBase
     {
         [Inject]
         IOptions<UserLoginOptions> UserLoginOptions { get; set; }
