@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -44,6 +45,11 @@ namespace Gizmo.Client.UI.Pages
                 return "123 456".Substring(0, PasswordRecoverySession.CodeLength + 1);
             else
                 return "1234 5678".Substring(0, PasswordRecoverySession.CodeLength + 1);
+        }
+
+        private async Task ResendCode()
+        {
+            await PasswordRecoveryConfirmationViewService.RestartTimerAsync();
         }
 
         public void OnCloseButtonClickHandler()

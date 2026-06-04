@@ -1,16 +1,30 @@
+using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Web;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
 {
     [Route(ClientRoutes.PasswordRecoveryRoute)]
     public partial class PasswordRecovery : CustomDOMComponentBase
     {
+        private bool _isLoaded;
+        private readonly Dictionary<string, string> _countryRegionCodes = new();
+        private readonly Dictionary<string, string?> _countryMasks = new();
+        private FieldIdentifier? _countryFieldIdentifier;
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
+        IPhoneValidationService PhoneValidationService { get; set; }
 
         [Inject]
         PasswordRecoveryViewService PasswordRecoveryViewService { get; set; }
@@ -27,34 +41,94 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         NavigationService NavigationService { get; set; }
 
+        public List<IconSelectCountry> Countries { get; set; } = new List<IconSelectCountry>();
+
+        public string GetMask()
+        {
+            var selected = GetSelectedCountry();
+            if (selected != null && _countryMasks.TryGetValue(selected.Text, out var mask) && mask != null)
+                return mask;
+            return "###-###-####";
+        }
+
+        public IconSelectCountry GetSelectedCountry()
+        {
+            if (string.IsNullOrEmpty(ViewState.Country))
+                return null;
+            return Countries.FirstOrDefault(c => c.Text == ViewState.Country);
+        }
+
+        public void SetSelectedCountry(IconSelectCountry value)
+        {
+            if (value == null)
+            {
+                PasswordRecoveryViewService.SetCountry(null);
+                PasswordRecoveryViewService.SetRegionCode(null);
+                PasswordRecoveryViewService.SetMobilePhone(null);
+            }
+            else
+            {
+                PasswordRecoveryViewService.SetCountry(value.Text);
+                _countryRegionCodes.TryGetValue(value.Text, out var regionCode);
+                PasswordRecoveryViewService.SetRegionCode(regionCode);
+                var prefix = value.PhonePrefix;
+                if (prefix.StartsWith("+"))
+                    prefix = prefix[1..];
+                PasswordRecoveryViewService.SetMobilePhone(prefix);
+            }
+        }
+
+        public void OnClickClearValueButtonHandler(MouseEventArgs args)
+        {
+            SetSelectedCountry(null);
+        }
+
+        public FieldIdentifier GetCountryFieldIdentifier()
+        {
+            _countryFieldIdentifier ??= new FieldIdentifier(ViewState, nameof(ViewState.Country));
+            return _countryFieldIdentifier.Value;
+        }
+
         public void OnCloseButtonClickHandler()
         {
             PasswordRecoveryViewService.Reset();
-        }
-
-        private string GetMatchValueLabel()
-        {
-            return string.Join(" / ", new[]
-            {
-                LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_EMAIL)),
-                LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_USERNAME)),
-                LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PHONE_NUMBER)),
-            });
         }
 
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
             this.SubscribeChange(UserRegisterConfigurationViewState);
-
             base.OnInitialized();
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            var countries = await PhoneValidationService.GetCountriesAsync();
+
+            foreach (var country in countries.OrderBy(c => c.CountryName))
+            {
+                _countryRegionCodes[country.CountryName] = country.RegionCode;
+                _countryMasks[country.CountryName] = country.InputMask;
+                Countries.Add(new IconSelectCountry
+                {
+                    Text = country.CountryName,
+                    PhonePrefix = country.CallingCode,
+                    Icon = country.Flag ?? string.Empty
+                });
+            }
+
+            foreach (var item in Countries)
+                item.Display = item.Text + " " + item.PhonePrefix;
+
+            _isLoaded = true;
+            await InvokeAsync(StateHasChanged);
+            await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
             this.UnsubscribeChange(ViewState);
             this.UnsubscribeChange(UserRegisterConfigurationViewState);
-
             base.Dispose();
         }
     }
