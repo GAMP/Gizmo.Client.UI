@@ -1,4 +1,4 @@
-﻿using Gizmo.Client.Options;
+using Gizmo.Client.Options;
 using Gizmo.Client.UI.Components;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Gizmo.Client.UI.Pages
 {
     [Route(ClientRoutes.LoginRoute)]
-    public partial class UserLogin : CustomDOMComponentBase
+    public partial class Login : CustomDOMComponentBase
     {
         [Inject]
         IOptions<UserLoginOptions> UserLoginOptions { get; set; }
