@@ -1,8 +1,7 @@
-﻿@namespace Gizmo.Client.UI.Pages
+@namespace Gizmo.Client.UI.Pages
 @inherits CustomDOMComponentBase
 @layout _Layout_Login
 @using System.Threading
-@using Gizmo.Server
 @using Gizmo.UI;
 @using Microsoft.AspNetCore.Components.Forms
 
@@ -86,7 +85,7 @@
                                    Size="InputSizes.Medium"
                                    IsFullWidth="true"
                                    Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PASSWORD))" />
-                    @if (UserPasswordRecoveryMethodServiceViewState.AvailableRecoveryMethod != UserRecoveryMethod.None)
+                    @if (ViewState.IsPasswordRecoveryAvailable)
                     {
                         <div class="giz-login-forgot-password">
                             <a tabindex="-1" href="@ClientRoutes.PasswordRecoveryRoute">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_FORGOT_YOUR_PASSWORD))</a>
