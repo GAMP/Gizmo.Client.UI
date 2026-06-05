@@ -1,4 +1,4 @@
-﻿using Gizmo.Client.Options;
+using Gizmo.Client.Options;
 using Gizmo.Client.UI.Components;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -44,9 +44,6 @@ namespace Gizmo.Client.UI.Pages
         HostLockViewService HostUserLockService { get; set; }
 
         [Inject]
-        UserPasswordRecoveryMethodServiceViewState UserPasswordRecoveryMethodServiceViewState { get; set; }
-        
-        [Inject] 
         IOptions<HostQRCodeOptions> HostQrCodeOptions { get; set; }
 
         private Task OnKeyDownHandle(KeyboardEventArgs args)
