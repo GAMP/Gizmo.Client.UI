@@ -27,6 +27,9 @@ namespace Gizmo.Client.UI.Pages
         IPhoneValidationService PhoneValidationService { get; set; }
 
         [Inject]
+        IServerInfoService ServerInfo { get; set; }
+
+        [Inject]
         PasswordRecoveryViewService PasswordRecoveryViewService { get; set; }
 
         [Inject]
@@ -119,6 +122,14 @@ namespace Gizmo.Client.UI.Pages
 
             foreach (var item in Countries)
                 item.Display = item.Text + " " + item.PhonePrefix;
+
+            if (ViewState.Channel == PasswordRecoveryChannel.Sms && ViewState.Country is null)
+            {
+                var regionCode = await ServerInfo.GetRegionCodeAsync();
+                var def = CountryDefaults.ResolveDefault(regionCode, countries);
+                var match = def != null ? Countries.FirstOrDefault(c => c.Text == def.CountryName) : null;
+                SetSelectedCountry(match);
+            }
 
             _isLoaded = true;
             await InvokeAsync(StateHasChanged);

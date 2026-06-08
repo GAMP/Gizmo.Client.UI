@@ -21,7 +21,7 @@
                 <Layout_LoginWallpaper />
             }
 
-            <Layout_LoginCarousel />
+            @* <Layout_LoginCarousel /> *@
 
             @if (HostNumberViewState.HostNumberIsEnabled)
             {
@@ -74,7 +74,7 @@
                     <Layout_LoginServerConnection />
                     <div class="giz-version">
                         <div class="giz-version__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SYSTEM_VERSION))</div>
-                        <div class="giz-version__version">@ClientVersionViewState.Version</div>
+                        <div class="giz-version__version">@(string.IsNullOrEmpty(ClientVersionViewState.ServerVersion) ? ClientVersionViewState.Version : ClientVersionViewState.ServerVersion)</div>
                     </div>
                 </div>
             </div>

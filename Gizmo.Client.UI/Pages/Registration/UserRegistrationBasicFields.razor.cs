@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
@@ -22,6 +23,9 @@ namespace Gizmo.Client.UI.Pages.Registration
 
         [Inject]
         IPhoneValidationService PhoneValidationService { get; set; }
+
+        [Inject]
+        IServerInfoService ServerInfo { get; set; }
 
         [Inject]
         IRegistrationSessionService RegistrationSession { get; set; }
@@ -104,6 +108,15 @@ namespace Gizmo.Client.UI.Pages.Registration
 
             foreach (var item in PhoneCountries)
                 item.Display = item.Text + " " + item.PhonePrefix;
+
+            if (_selectedPhoneCountry is null)
+            {
+                var regionCode = await ServerInfo.GetRegionCodeAsync();
+                var def = CountryDefaults.ResolveDefault(regionCode, countries);
+                var match = def != null ? PhoneCountries.FirstOrDefault(c => c.Text == def.CountryName) : null;
+                if (match != null)
+                    SetPhoneCountry(match);
+            }
 
             _phoneCountriesLoaded = true;
             await InvokeAsync(StateHasChanged);

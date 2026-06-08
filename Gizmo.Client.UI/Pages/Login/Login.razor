@@ -63,7 +63,26 @@
                     }
                     else
                     {
-                        <MaskedPhoneInput Mask="###-###-####"
+                        <IconSelect Placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEARCH))"
+                                    IsVirtualized="false"
+                                    IsLoading="@(!_isLoaded)"
+                                    CanClearValue="@(GetSelectedCountry() != null)"
+                                    OnClickClearValueButton="OnClickClearValueButtonHandler"
+                                    HandleSVGIcon="Icons.Select_Client"
+                                    TValue="IconSelectCountry"
+                                    ItemSource="@Countries"
+                                    SelectedItem="@GetSelectedCountry()"
+                                    SelectedItemChanged="@SetSelectedCountry"
+                                    FieldIdentifier="@GetCountryFieldIdentifier()"
+                                    IsDisabled="@(ViewState.IsLogginIn || ViewState.IsLogginOut)"
+                                    Size="InputSizes.Medium"
+                                    IsFullWidth="true"
+                                    Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_COUNTRY))"
+                                    OpenDirection="PopupOpenDirections.Bottom"
+                                    MaximumHeight="20.0rem"
+                                    PopupClass="giz-scrollbar--v" />
+                        <MaskedPhoneInput Mask="@GetMask()"
+                                          Prefix="+"
                                           AllowMoreDigits="true"
                                           Value="@ViewState.LoginName"
                                           ValueChanged="@((string value) => UserLoginService.SetLoginName(value))"
@@ -129,7 +148,7 @@
             </EditForm>
 
             @* TODO: stub — social login buttons, no action. Wire up when provider auth flow is available. *@
-            <LoginSocialButtons />
+            @* <LoginSocialButtons /> *@
         }
 
         @if (HostQRCodeViewState.IsEnabled)
