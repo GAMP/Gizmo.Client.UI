@@ -4,24 +4,14 @@ using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Components.Web;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages.Registration
 {
     [Route(ClientRoutes.RegistrationAdditionalFieldsRoute)]
     public partial class UserRegistrationAdditionalFields : CustomDOMComponentBase
     {
-        private bool _isLoaded;
-
         [Inject]
         ILocalizationService LocalizationService { get; set; }
-
-        [Inject]
-        CountryInformationService CountryInformationService { get; set; }
 
         [Inject]
         IRegistrationSessionService RegistrationSession { get; set; }
@@ -35,40 +25,19 @@ namespace Gizmo.Client.UI.Pages.Registration
         [Inject]
         NavigationService NavigationService { get; set; }
 
+        public bool ShowCountry => RegistrationSession.RequiredUserInfo?.Country == true;
+        public bool ShowAddress => RegistrationSession.RequiredUserInfo?.Address == true;
+        public bool ShowCity => RegistrationSession.RequiredUserInfo?.City == true;
+        public bool ShowPostCode => RegistrationSession.RequiredUserInfo?.PostCode == true;
+
+        public string CountryLabel => LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_COUNTRY_REGION));
+        public string AddressLabel => LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_ADDRESS));
+        public string CityLabel => LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CITY));
+        public string PostCodeLabel => LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_POST_CODE));
+
         public void OnCloseButtonClickHandler()
         {
             UserRegistrationAdditionalFieldsViewService.Reset();
-        }
-
-        public List<IconSelectCountry> Countries { get; set; } = new List<IconSelectCountry>();
-
-        public void OnClickClearValueButtonHandler(MouseEventArgs args)
-        {
-            SetSelectedCountry(null);
-        }
-
-        public IconSelectCountry GetSelectedCountry()
-        {
-            if (string.IsNullOrEmpty(ViewState.Country))
-            {
-                return null;
-            }
-            else
-            {
-                return Countries.Where(a => a.Text == ViewState.Country).FirstOrDefault();
-            }
-        }
-
-        protected void SetSelectedCountry(IconSelectCountry value)
-        {
-            if (value == null)
-            {
-                UserRegistrationAdditionalFieldsViewService.SetCountry(null);
-            }
-            else
-            {
-                UserRegistrationAdditionalFieldsViewService.SetCountry(value.Text);
-            }
         }
 
         protected override void OnInitialized()
@@ -78,75 +47,11 @@ namespace Gizmo.Client.UI.Pages.Registration
             base.OnInitialized();
         }
 
-        protected override async Task OnInitializedAsync()
-        {
-            var countries = await CountryInformationService.GetCountryInfoAsync();
-
-            foreach (var country in countries)
-            {
-                if (country.CallingCodeSuffixes.Count() == 1)
-                {
-                    Countries.Add(new IconSelectCountry()
-                    {
-                        Text = country.NativeName,
-                        PhonePrefix = country.CallingCodeRoot + country.CallingCodeSuffixes.FirstOrDefault(),
-                        Icon = country.FlagSvg
-                    });
-                }
-                else
-                {
-                    Countries.Add(new IconSelectCountry()
-                    {
-                        Text = country.NativeName,
-                        PhonePrefix = country.CallingCodeRoot,
-                        Icon = country.FlagSvg
-                    });
-                }
-            }
-
-            foreach (var item in Countries)
-            {
-                item.Display = item.Text + " " + item.PhonePrefix;
-            }
-
-            SetSelectedCountry(null);
-            _isLoaded = true;
-            await InvokeAsync(StateHasChanged);
-
-            var defaultCountry = await CountryInformationService.GetCurrentCountryInfoAsync();
-            IconSelectCountry defaultItem = null;
-
-            if (defaultCountry != null && defaultCountry.CallingCodeSuffixes.Count() > 0)
-            {
-                defaultItem = Countries.Where(a => a.PhonePrefix == defaultCountry.CallingCodeRoot + defaultCountry.CallingCodeSuffixes.First()).FirstOrDefault();
-            }
-
-            if (defaultItem != null && string.IsNullOrEmpty(ViewState.Country))
-            {
-                SetSelectedCountry(defaultItem);
-                await InvokeAsync(StateHasChanged);
-            }
-
-            await base.OnInitializedAsync();
-        }
-
         public override void Dispose()
         {
             this.UnsubscribeChange(ViewState);
 
             base.Dispose();
-        }
-
-        private FieldIdentifier? _countryFieldIdentifier;
-
-        private FieldIdentifier GetCountryFieldIdentifier()
-        {
-            if (_countryFieldIdentifier == null)
-            {
-                _countryFieldIdentifier = new FieldIdentifier(ViewState, nameof(ViewState.Country));
-            }
-
-            return _countryFieldIdentifier.Value;
         }
     }
 }

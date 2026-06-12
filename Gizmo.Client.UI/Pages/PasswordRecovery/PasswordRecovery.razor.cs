@@ -1,4 +1,5 @@
 using Gizmo.Client.UI.Services;
+using Gizmo.Client.UI.Components;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -6,6 +7,7 @@ using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +18,7 @@ namespace Gizmo.Client.UI.Pages
     public partial class PasswordRecovery : CustomDOMComponentBase
     {
         private bool _isLoaded;
+        private IReadOnlyList<PhoneCountry> _phoneCountries = Array.Empty<PhoneCountry>();
         private readonly Dictionary<string, string> _countryRegionCodes = new();
         private readonly Dictionary<string, string?> _countryMasks = new();
         private FieldIdentifier? _countryFieldIdentifier;
@@ -97,6 +100,19 @@ namespace Gizmo.Client.UI.Pages
             PasswordRecoveryViewService.Reset();
         }
 
+        private async Task SelectRecoveryChannel(ICollection<Button> selectedItems)
+        {
+            var selectedChannel = selectedItems.Any(item => item.Name == "Sms")
+                ? PasswordRecoveryChannel.Sms
+                : PasswordRecoveryChannel.Email;
+
+            var provider = ViewState.AvailableProviders.FirstOrDefault(item => item.Channel == selectedChannel);
+            PasswordRecoveryViewService.SetActiveProvider(provider);
+
+            if (selectedChannel == PasswordRecoveryChannel.Sms && _isLoaded && ViewState.Country is null)
+                await SelectDefaultCountryAsync();
+        }
+
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
@@ -106,9 +122,9 @@ namespace Gizmo.Client.UI.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            var countries = await PhoneValidationService.GetCountriesAsync();
+            _phoneCountries = (await PhoneValidationService.GetCountriesAsync()).ToList();
 
-            foreach (var country in countries.OrderBy(c => c.CountryName))
+            foreach (var country in _phoneCountries.OrderBy(c => c.CountryName))
             {
                 _countryRegionCodes[country.CountryName] = country.RegionCode;
                 _countryMasks[country.CountryName] = country.InputMask;
@@ -123,17 +139,21 @@ namespace Gizmo.Client.UI.Pages
             foreach (var item in Countries)
                 item.Display = item.Text + " " + item.PhonePrefix;
 
-            if (ViewState.Channel == PasswordRecoveryChannel.Sms && ViewState.Country is null)
-            {
-                var regionCode = await ServerInfo.GetRegionCodeAsync();
-                var def = CountryDefaults.ResolveDefault(regionCode, countries);
-                var match = def != null ? Countries.FirstOrDefault(c => c.Text == def.CountryName) : null;
-                SetSelectedCountry(match);
-            }
-
             _isLoaded = true;
-            await InvokeAsync(StateHasChanged);
             await base.OnInitializedAsync();
+
+            if (ViewState.Channel == PasswordRecoveryChannel.Sms && ViewState.Country is null)
+                await SelectDefaultCountryAsync();
+
+            await InvokeAsync(StateHasChanged);
+        }
+
+        private async Task SelectDefaultCountryAsync()
+        {
+            var regionCode = await ServerInfo.GetRegionCodeAsync();
+            var def = CountryDefaults.ResolveDefault(regionCode, _phoneCountries);
+            var match = def != null ? Countries.FirstOrDefault(c => c.Text == def.CountryName) : null;
+            SetSelectedCountry(match);
         }
 
         public override void Dispose()

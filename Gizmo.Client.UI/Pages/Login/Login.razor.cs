@@ -89,11 +89,18 @@ namespace Gizmo.Client.UI.Pages
                 UserLoginService.SetCountry(value.Text);
                 _countryRegionCodes.TryGetValue(value.Text, out var regionCode);
                 UserLoginService.SetRegionCode(regionCode);
-                var prefix = value.PhonePrefix;
-                if (prefix.StartsWith("+"))
-                    prefix = prefix.Substring(1);
-                UserLoginService.SetLoginName(prefix);
+
+                if (ViewState.LoginType == View.UserLoginType.MobilePhone)
+                    UserLoginService.SetLoginName(GetPrefixDigits(value));
             }
+        }
+
+        private static string GetPrefixDigits(IconSelectCountry value)
+        {
+            var prefix = value.PhonePrefix;
+            if (prefix.StartsWith("+"))
+                prefix = prefix.Substring(1);
+            return prefix;
         }
 
         public void OnClickClearValueButtonHandler(MouseEventArgs args)
@@ -120,9 +127,21 @@ namespace Gizmo.Client.UI.Pages
         private void SelectLoginType(ICollection<Button> selectedItems)
         {
             if (selectedItems.Where(a => a.Name == "Username").Any())
+            {
                 UserLoginService.SetLoginMethod(View.UserLoginType.UsernameOrEmail);
+            }
             else
+            {
+                var switching = ViewState.LoginType != View.UserLoginType.MobilePhone;
                 UserLoginService.SetLoginMethod(View.UserLoginType.MobilePhone);
+
+                if (switching)
+                {
+                    var selected = GetSelectedCountry();
+                    if (selected != null)
+                        UserLoginService.SetLoginName(GetPrefixDigits(selected));
+                }
+            }
         }
 
         public void OnCloseButtonClickHandler()

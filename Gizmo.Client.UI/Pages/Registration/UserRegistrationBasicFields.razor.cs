@@ -41,13 +41,44 @@ namespace Gizmo.Client.UI.Pages.Registration
 
         public List<IconSelectCountry> PhoneCountries { get; set; } = new();
 
+        public bool ShowPassword => true;
+        public bool ShowFirstName => RegistrationSession.RequiredUserInfo?.FirstName == true;
+        public bool ShowLastName => RegistrationSession.RequiredUserInfo?.LastName == true;
+        public bool ShowBirthDate => RegistrationSession.RequiredUserInfo?.BirthDate == true;
+        public bool ShowSex => RegistrationSession.RequiredUserInfo?.Sex == true;
+        public bool ShowEmail => RegistrationSession.Flow != RegistrationFlow.Email && RegistrationSession.RequiredUserInfo?.Email == true;
+        public bool ShowMobilePhone => RegistrationSession.Flow != RegistrationFlow.Sms && RegistrationSession.RequiredUserInfo?.Mobile == true;
+        public bool ShowPhone => RegistrationSession.RequiredUserInfo?.Phone == true;
+
+        public string FirstNameLabel => LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_FIRST_NAME));
+        public string LastNameLabel => LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LAST_NAME));
+        public string BirthDateLabel => LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_BIRTH_DATE));
+        public string SexLabel => LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_GENDER));
+        public string EmailLabel => LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_EMAIL_ADDRESS));
+        public string MobilePhoneLabel => LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_MOBILE_PHONE));
+        public string PhoneLabel => LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PHONE));
+
         public IconSelectCountry? GetSelectedPhoneCountry() => _selectedPhoneCountry;
 
-        protected void SetPhoneCountry(IconSelectCountry value)
+        protected void SetPhoneCountry(IconSelectCountry? value)
         {
             _selectedPhoneCountry = value;
-            var regionCode = value != null && _phoneCountryRegionCodes.TryGetValue(value.Text, out var rc) ? rc : null;
+
+            if (value == null)
+            {
+                UserRegistrationBasicFieldsViewService.SetPhoneRegionCode(null);
+                UserRegistrationBasicFieldsViewService.SetMobilePhone(null);
+                return;
+            }
+
+            var regionCode = _phoneCountryRegionCodes.TryGetValue(value.Text, out var rc) ? rc : null;
             UserRegistrationBasicFieldsViewService.SetPhoneRegionCode(regionCode);
+
+            var phonePrefix = value.PhonePrefix;
+            if (phonePrefix.StartsWith("+"))
+                phonePrefix = phonePrefix.Substring(1);
+
+            UserRegistrationBasicFieldsViewService.SetMobilePhone(phonePrefix);
         }
 
         public string GetPhoneMask()
@@ -55,11 +86,6 @@ namespace Gizmo.Client.UI.Pages.Registration
             if (_selectedPhoneCountry != null && _phoneCountryMasks.TryGetValue(_selectedPhoneCountry.Text, out var mask) && mask != null)
                 return mask;
             return "###-###-####";
-        }
-
-        public string GetPhonePrefix()
-        {
-            return _selectedPhoneCountry?.PhonePrefix ?? "+";
         }
 
         public void OnCloseButtonClickHandler()
@@ -91,9 +117,9 @@ namespace Gizmo.Client.UI.Pages.Registration
 
         protected override async Task OnInitializedAsync()
         {
-            var countries = await PhoneValidationService.GetCountriesAsync();
+            var countries = (await PhoneValidationService.GetCountriesAsync()).ToList();
 
-            foreach (var country in countries)
+            foreach (var country in countries.OrderBy(c => c.CountryName))
             {
                 _phoneCountryRegionCodes[country.CountryName] = country.RegionCode;
                 _phoneCountryMasks[country.CountryName] = country.InputMask;
@@ -102,7 +128,7 @@ namespace Gizmo.Client.UI.Pages.Registration
                 {
                     Text = country.CountryName,
                     PhonePrefix = country.CallingCode,
-                    Icon = "_content/Gizmo.Client.UI/img/no-flag-image.svg"
+                    Icon = country.Flag ?? string.Empty
                 });
             }
 
