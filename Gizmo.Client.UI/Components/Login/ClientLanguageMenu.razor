@@ -1,32 +1,16 @@
-﻿@namespace Gizmo.Client.UI.Shared
+@namespace Gizmo.Client.UI.Shared
 @inherits CustomDOMComponentBase
 @using Gizmo.Client.UI.View.States
-@using Microsoft.AspNetCore.Components.Forms
 @using System.Globalization
 
-@if (ViewState.CurrentCulture is not null && ViewState.AvailableCultures.Count() > 1)
+@if (ViewState.CurrentCulture is not null)
 {
-    <Select HandleSVGIcon="Icons.Select_Client"
-            ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
-            TValue="CultureInfo"
-            Value="ViewState.CurrentCulture"
-            ValueChanged="@ValueChangedHandler"
-            Size="InputSizes.Small"
-            OpenDirection="PopupOpenDirections.Top"
-            Class="giz-client-language-menu"
-            PopupClass="giz-scrollbar--v">
-
-        @foreach (var culture in ViewState.AvailableCultures)
-        {
-            <SelectItem Value="@culture">
-                <div class="giz-input-language-menu-item">
-                    <div class="giz-input-language-menu-item__flag">
-                        <Icon Size="IconSizes.Small" SVGIcon="Icons.Language_Client" />
-                    </div>
-                    <div>@culture.NativeName[..3].ToUpper()</div>
-                </div>
-            </SelectItem>
-        }
-
-    </Select>
+    <div class="giz-client-language-menu">
+        <div class="giz-input-language-menu-item">
+            <div class="giz-input-language-menu-item__flag">
+                <Icon Size="IconSizes.Small" SVGIcon="Icons.Language_Client" />
+            </div>
+            <div>@ViewState.CurrentCulture.NativeName[..3].ToUpper()</div>
+        </div>
+    </div>
 }
