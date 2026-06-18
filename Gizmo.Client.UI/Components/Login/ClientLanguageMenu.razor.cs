@@ -1,3 +1,6 @@
+using System.Globalization;
+using System.Threading.Tasks;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -7,7 +10,15 @@ namespace Gizmo.Client.UI.Shared
     public partial class ClientLanguageMenu : CustomDOMComponentBase
     {
         [Inject]
+        public ClientLocalizationViewService CultureService { get; set; }
+
+        [Inject]
         public ClientLocalizationViewState ViewState { get; set; }
+
+        private Task ValueChangedHandler(CultureInfo culture)
+        {
+            return CultureService.SetCurrentCultureAsync(culture.Name);
+        }
 
         protected override void OnInitialized()
         {

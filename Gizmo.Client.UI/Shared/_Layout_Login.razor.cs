@@ -115,7 +115,6 @@ namespace Gizmo.Client.UI.Shared
             this.SubscribeChange(LogoViewState);
             this.SubscribeChange(HostReservationViewState);
             this.SubscribeChange(HostOutOfOrderViewState);
-            this.SubscribeChange(ClientVersionViewState);
 
             await base.OnInitializedAsync();
         }

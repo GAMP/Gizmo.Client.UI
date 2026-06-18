@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Threading.Tasks;
 
 using Gizmo.Client.UI;
@@ -54,39 +53,9 @@ namespace Gizmo.Client.UI.Host.Web
 
             var host = hostBuilder.Build();
 
-            // Apply the server default culture BEFORE RunAsync so the Blazor WebAssembly
-            // runtime downloads/loads the matching satellite resource assembly for it.
-            // Setting the culture only after startup leaves strings on the neutral (English)
-            // fallback because the satellite is never loaded.
-            try
-            {
-                var serverInfo = host.Services.GetRequiredService<IServerInfoService>();
-                var serverCulture = await serverInfo.GetDefaultCultureAsync();
-
-                if (!string.IsNullOrWhiteSpace(serverCulture))
-                {
-                    var culture = ResolveCulture(serverCulture);
-                    CultureInfo.CurrentCulture = culture;
-                    CultureInfo.CurrentUICulture = culture;
-                    CultureInfo.DefaultThreadCurrentCulture = culture;
-                    CultureInfo.DefaultThreadCurrentUICulture = culture;
-                }
-            }
-            catch (Exception ex)
-            {
-                var logger = host.Services.GetRequiredService<ILogger<Program>>();
-                logger.LogWarning(ex, "Failed to apply server default culture on startup.");
-            }
-
             await host.Services.InitializeClientServices();
 
             await host.RunAsync();
-        }
-
-        private static CultureInfo ResolveCulture(string cultureName)
-        {
-            var culture = CultureInfo.GetCultureInfo(cultureName);
-            return culture.IsNeutralCulture ? CultureInfo.CreateSpecificCulture(culture.Name) : culture;
         }
     }
 }

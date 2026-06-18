@@ -11,18 +11,7 @@
   </head>
   <body>
     <div id="app">Loading...</div>
-    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
-    <script>
-      // Load all satellite (localization) resource assemblies at startup so the UI can be
-      // rendered in the server-provided culture. Blazor WebAssembly otherwise only loads
-      // satellites for the boot culture, which leaves specific-culture translations (e.g.
-      // ru-RU) unloaded and strings fall back to English.
-      Blazor.start({
-        configureRuntime: (builder) => {
-          builder.withConfig({ loadAllSatelliteResources: true });
-        }
-      });
-    </script>
+    <script src="_framework/blazor.webassembly.js"></script>
 
     <script src="_content/Gizmo.Client.UI/client_internal_style.js"></script>
     <script src="_content/Gizmo.Client.UI/client_external_style.js"></script>

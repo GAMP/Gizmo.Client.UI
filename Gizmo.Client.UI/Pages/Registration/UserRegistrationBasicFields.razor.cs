@@ -25,9 +25,6 @@ namespace Gizmo.Client.UI.Pages.Registration
         IPhoneValidationService PhoneValidationService { get; set; }
 
         [Inject]
-        IServerInfoService ServerInfo { get; set; }
-
-        [Inject]
         IRegistrationSessionService RegistrationSession { get; set; }
 
         [Inject]
@@ -134,15 +131,6 @@ namespace Gizmo.Client.UI.Pages.Registration
 
             foreach (var item in PhoneCountries)
                 item.Display = item.Text + " " + item.PhonePrefix;
-
-            if (_selectedPhoneCountry is null)
-            {
-                var regionCode = await ServerInfo.GetRegionCodeAsync();
-                var def = CountryDefaults.ResolveDefault(regionCode, countries);
-                var match = def != null ? PhoneCountries.FirstOrDefault(c => c.Text == def.CountryName) : null;
-                if (match != null)
-                    SetPhoneCountry(match);
-            }
 
             _phoneCountriesLoaded = true;
             await InvokeAsync(StateHasChanged);
