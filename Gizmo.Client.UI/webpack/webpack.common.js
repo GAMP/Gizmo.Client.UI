@@ -20,6 +20,10 @@ module.exports = {
           from: "src/img",
           to: path.resolve(__dirname, "../wwwroot/img"),
         },
+        {
+          from: path.resolve(__dirname, "../node_modules/flag-icons/flags/4x3"),
+          to: path.resolve(__dirname, "../wwwroot/img/flags"),
+        },
       ],
     }),
   ],

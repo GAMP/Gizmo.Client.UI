@@ -78,7 +78,7 @@
                                     <div class="giz-icon-select-item__icon">
                                         @if (!string.IsNullOrEmpty(SelectedItem.Icon) && (SelectedItem.Icon.StartsWith("http") || SelectedItem.Icon.StartsWith("/") || SelectedItem.Icon.StartsWith("_content")))
                                         {
-                                            <img src="@SelectedItem.Icon" />
+                                            <img src="@SelectedItem.Icon" onerror="this.onerror=null;this.src='_content/Gizmo.Client.UI/img/no-flag-image.svg';" />
                                         }
                                         else if (!string.IsNullOrEmpty(SelectedItem.Icon))
                                         {
