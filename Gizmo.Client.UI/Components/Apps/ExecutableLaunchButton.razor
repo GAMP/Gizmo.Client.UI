@@ -19,32 +19,32 @@
             }
             else
             {
-                <div>@LocalizationService.GetString("GIZ_APPS_CANCEL")</div>
+                <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_CANCEL))</div>
             }
         }
         else if (_appExeExecutionViewState.IsRunning && !_appExeViewState.Options.HasFlag(ExecutableOptionType.MultiRun))
         {
-            <div>@LocalizationService.GetString("GIZ_APPS_TERMINATE")</div>
+            <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_TERMINATE))</div>
         }
         else
         {
-            <div>@LocalizationService.GetString("GIZ_APPS_LAUNCH")</div>
+            <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_LAUNCH))</div>
         }
     </ChildContent>
     <DropDownItems>
 
         <ListItem>
-            <CheckBox Label="@LocalizationService.GetString("GIZ_APPS_AUTO_START")" Class="giz-app-autostart" IsChecked="@_appExeViewState.AutoLaunch" IsCheckedChanged="OnAutoStartChange" />
+            <CheckBox Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_AUTO_START))" Class="giz-app-autostart" IsChecked="@_appExeViewState.AutoLaunch" IsCheckedChanged="OnAutoStartChange" />
         </ListItem>
 
         <ListItem SVGIcon="Icons.Restart_Client" OnClick="OnRepairClick">
-            @LocalizationService.GetString("GIZ_APPS_REPAIR")
+            @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_REPAIR))
         </ListItem>
 
         <ExecutableLaunchButtonPersonalFiles ExecutableId="@ExecutableId" @key="ExecutableId" OnClick="@OnClickPersonalFileButtonHandler" />
         
         <ListItem SVGIcon="Icons.Terminate_Client" OnClick="OnTerminateClick">
-            @LocalizationService.GetString("GIZ_APPS_TERMINATE")
+            @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_TERMINATE))
         </ListItem>
 
     </DropDownItems>

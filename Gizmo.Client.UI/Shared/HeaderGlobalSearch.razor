@@ -8,7 +8,7 @@
 
         <input type="text"
                value="@ViewState.SearchPattern"
-               placeholder="@LocalizationService.GetString("GIZ_GLOBAL_SEARCH_PLACEHOLDER")"
+               placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GLOBAL_SEARCH_PLACEHOLDER))"
                @ref="_inputElement"
                @onfocusin="OnFocusInHandler"
                @onfocusout="OnFocusOutHandler"
@@ -30,11 +30,11 @@
                         <div class="giz-global-search-section">
                             <div class="giz-global-search-section__header">
 
-                                <div>@LocalizationService.GetString("GIZ_GLOBAL_SEARCH_GAMES_AND_APPS")</div>
+                                <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GLOBAL_SEARCH_GAMES_AND_APPS))</div>
 
                                 @if (ViewState.ExecutableResults.Count() > 10)
                                 {
-                                    <div class="giz-global-search-section__header__more" @onclick="@(() => GlobalSearchService.ViewAllResultsAsync(Gizmo.Client.UI.View.SearchResultTypes.Executables))">@LocalizationService.GetString("GIZ_GLOBAL_SEARCH_SHOW_ALL")</div>
+                                    <div class="giz-global-search-section__header__more" @onclick="@(() => GlobalSearchService.ViewAllResultsAsync(Gizmo.Client.UI.View.SearchResultTypes.Executables))">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GLOBAL_SEARCH_SHOW_ALL))</div>
                                 }
                             </div>
                             <div class="giz-global-search-section__body">
@@ -52,11 +52,11 @@
                         <div class="giz-global-search-section">
                             <div class="giz-global-search-section__header">
 
-                                <div>@LocalizationService.GetString("GIZ_GLOBAL_SEARCH_SHOP")</div>
+                                <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GLOBAL_SEARCH_SHOP))</div>
 
                                 @if (ViewState.ProductResults.Count() > 10)
                                 {
-                                    <div class="giz-global-search-section__header__more" @onclick="@(() => GlobalSearchService.ViewAllResultsAsync(Gizmo.Client.UI.View.SearchResultTypes.Products))">@LocalizationService.GetString("GIZ_GLOBAL_SEARCH_SHOW_ALL")</div>
+                                    <div class="giz-global-search-section__header__more" @onclick="@(() => GlobalSearchService.ViewAllResultsAsync(Gizmo.Client.UI.View.SearchResultTypes.Products))">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GLOBAL_SEARCH_SHOW_ALL))</div>
                                 }
                             </div>
                             <div class="giz-global-search-section__body">

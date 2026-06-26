@@ -5,7 +5,7 @@
 {
     <div class="giz-section__header__filters">
         <div>
-            <div class="giz-section__header__filters__title">@LocalizationService.GetString("GIZ_GEN_RESULTS_FOR")</div>
+            <div class="giz-section__header__filters__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_RESULTS_FOR))</div>
             <div>
                 <Chip CanClose="true" OnClose="@(() => AppsPageService.ClearSearchPattern())">@ViewState.SearchPattern</Chip>
             </div>
@@ -18,25 +18,25 @@ else
     {
         case ApplicationSortingOption.Popularity:
 
-            <div>@LocalizationService.GetString("GIZ_APP_FILTERS_POPULAR_APPS")</div>
+            <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APP_FILTERS_POPULAR_APPS))</div>
 
             break;
 
         case ApplicationSortingOption.AddDate:
 
-            <div>@LocalizationService.GetString("GIZ_APP_FILTERS_RECENTLY_ADDED")</div>
+            <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APP_FILTERS_RECENTLY_ADDED))</div>
 
             break;
 
         case ApplicationSortingOption.ReleaseDate:
 
-            <div>@LocalizationService.GetString("GIZ_APP_FILTERS_NEW_RELEASES")</div>
+            <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APP_FILTERS_NEW_RELEASES))</div>
 
             break;
 
         case ApplicationSortingOption.Title:
 
-            <div>@LocalizationService.GetString("GIZ_APP_FILTERS_ALL_APPS")</div>
+            <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APP_FILTERS_ALL_APPS))</div>
 
             break;
     }
@@ -56,7 +56,7 @@ else
             TValue="ApplicationSortingOption"
             Value="@ViewState.SelectedSortingOption"
             ValueChanged="@((value) => AppsPageService.SetSelectedSortingOption(value))"
-            Label="@LocalizationService.GetString("GIZ_GEN_SORT_BY")"
+            Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SORT_BY))"
             OpenDirection="PopupOpenDirections.Bottom"
             MaximumHeight="20.0rem"
             Class="@(ViewState.SelectedSortingOption != ViewState.DefaultSortingOption ? "app-filter--filled" : "app-filter--default")"
@@ -68,12 +68,12 @@ else
     </Select>
     <Select HandleSVGIcon="Icons.Select_Client"
             ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
-            Placeholder="@LocalizationService.GetString("GIZ_APP_FILTERS_ALL_GAMES_AND_APPS")"
+            Placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APP_FILTERS_ALL_GAMES_AND_APPS))"
             Size="InputSizes.Small"
             TValue="int?"
             Value="@ViewState.SelectedCategoryId"
             ValueChanged="@((value) => AppsPageService.SetSelectedApplicationCategory(value))"
-            Label="@LocalizationService.GetString("GIZ_APPS_CATEGORY")"
+            Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_CATEGORY))"
             OpenDirection="PopupOpenDirections.Bottom"
             MaximumHeight="20.0rem"
             Class="@(ViewState.SelectedCategoryId.HasValue ? "app-filter--filled" : "app-filter--default")"
@@ -85,12 +85,12 @@ else
     </Select>
     <MultiSelect HandleSVGIcon="Icons.Select_Client"
                  ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
-                 Placeholder="@LocalizationService.GetString("GIZ_APP_FILTERS_SELECT_SOMETHING")"
+                 Placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APP_FILTERS_SELECT_SOMETHING))"
                  Size="InputSizes.Small"
                  TValue="ApplicationModes"
                  Value="@ViewState.SelectedExecutableModes.ToList()"
                  ValueChanged="@((value) => AppsPageService.SetSelectedSelectedExecutableModes(value))"
-                 Label="@LocalizationService.GetString("GIZ_APPS_PARAMETERS")"
+                 Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_PARAMETERS))"
                  OpenDirection="PopupOpenDirections.Bottom"
                  CanClearValue="true"
                  MaximumHeight="20.0rem"

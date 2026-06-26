@@ -22,7 +22,7 @@ namespace Gizmo.Client.UI.Pages
         FeedsViewState FeedsViewState { get; set; }
 
         [Inject]
-        IOptions<ClientInterfaceOptions> ClientInterfaceOptions { get; set; }
+        IOptionsMonitor<ClientInterfaceOptions> ClientInterfaceOptions { get; set; }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }

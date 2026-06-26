@@ -34,7 +34,7 @@
         <TooltipContent>
             <div class="giz-user-time-products-properties-tooltip">
                 <div class="giz-user-time-products-properties-tooltip__header">
-                    @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_PROPERTIES_EXPIRES_TOOLTIP_HEADER")
+                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PROPERTIES_EXPIRES_TOOLTIP_HEADER))
                 </div>
                 <div class="giz-user-time-products-properties-tooltip__body">
                     @if (_userProductViewState.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAfterTime) ||
@@ -47,7 +47,7 @@
                                     <Icon SVGIcon="Icons.ExpirationFromUse_Client" />
                                 </div>
                                 <div class="giz-user-time-products-properties-tooltip-item__description">
-                                    @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_PROPERTIES_EXPIRES_FROM_USE", GetTime())
+                                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PROPERTIES_EXPIRES_FROM_USE), GetTime())
                                 </div>
                             }
                             @if (_userProductViewState.TimeProduct.ExpireFromOptions == ExpireFromOptionType.Purchase)
@@ -56,7 +56,7 @@
                                     <Icon SVGIcon="Icons.ExpirationFromPurchase_Client" />
                                 </div>
                                 <div class="giz-user-time-products-properties-tooltip-item__description">
-                                    @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_PROPERTIES_EXPIRES_FROM_PURCHASE", GetTime())
+                                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PROPERTIES_EXPIRES_FROM_PURCHASE), GetTime())
                                 </div>
                             }
                         </div>
@@ -68,7 +68,7 @@
                                 <Icon SVGIcon="Icons.ExpirationAtLogout_Client" />
                             </div>
                             <div class="giz-user-time-products-properties-tooltip-item__description">
-                                @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_PROPERTIES_EXPIRES_LOGOUT")
+                                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PROPERTIES_EXPIRES_LOGOUT))
                             </div>
                         </div>
                     }
@@ -80,14 +80,14 @@
                     {
                         @if (FirstUsageTime.HasValue)
                         {
-                            <div class="giz-user-time-products-properties-tooltip__footer">@LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_PROPERTIES_EXPIRES_ACTIVATED", @FirstUsageTime.Value.ToLocalTime().ToString())</div>
+                            <div class="giz-user-time-products-properties-tooltip__footer">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PROPERTIES_EXPIRES_ACTIVATED), @FirstUsageTime.Value.ToLocalTime().ToString())</div>
                         }
                     }
                     else
                     {
                         @if (PurchaseTime.HasValue)
                         {
-                            <div class="giz-user-time-products-properties-tooltip__footer">@LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_PROPERTIES_EXPIRES_ACTIVATED", @PurchaseTime.Value.ToLocalTime().ToString())</div>
+                            <div class="giz-user-time-products-properties-tooltip__footer">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PROPERTIES_EXPIRES_ACTIVATED), @PurchaseTime.Value.ToLocalTime().ToString())</div>
                         }
                     }
                 }

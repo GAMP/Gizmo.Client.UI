@@ -47,13 +47,13 @@ namespace Gizmo.Client.UI.Pages
                     switch (_userProductViewState.TimeProduct.ExpireAfterType)
                     {
                         case Web.Api.Models.ExpireAfterType.Day:
-                            time = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_DAYS_ABBREVIATED");
+                            time = LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_DAYS_ABBREVIATED));
                             break;
                         case Web.Api.Models.ExpireAfterType.Hour:
-                            time = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_HOURS_ABBREVIATED");
+                            time = LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_HOURS_ABBREVIATED));
                             break;
                         case Web.Api.Models.ExpireAfterType.Minute:
-                            time = LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_MINUTES_ABBREVIATED");
+                            time = LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_MINUTES_ABBREVIATED));
                             break;
                     }
 

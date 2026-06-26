@@ -4,7 +4,7 @@
 <div class="giz-timeline">
     <div class="giz-timeline-header">
         <HexagonIcon />
-        <div>@LocalizationService.GetString("GIZ_SHOP_CARD_TIME_PRODUCT_DESCRIPTION")</div>
+        <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_CARD_TIME_PRODUCT_DESCRIPTION))</div>
     </div>
     <div class="giz-timeline-item">
         <div class="giz-time-product-time">
@@ -16,7 +16,7 @@
     {
         <div class="giz-timeline-item">
             <div class="giz-time-product-details">
-                <div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_BUYING_TIME")</div>
+                <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_BUYING_TIME))</div>
                 <div class="giz-time-product-time-availabile">
                     @if (Product.PurchaseAvailability != null)
                     {
@@ -34,7 +34,7 @@
         {
             <div class="giz-timeline-item">
                 <div class="giz-time-product-details">
-                    <div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_ACTION_TIME")</div>
+                    <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_ACTION_TIME))</div>
                     <div class="giz-time-product-time-availabile">
                         @if (Product.TimeProduct.UsageAvailability != null)
                         {
@@ -52,7 +52,7 @@
             {
                 <div class="giz-timeline-item">
                     <div class="giz-time-product-details">
-                        <div>@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRES")</div>
+                        <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRES))</div>
                         <div class="giz-time-product-expirations">
 
                             @if (Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAtDayTime))
@@ -67,7 +67,7 @@
 
                             @if (Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpiresAtLogout))
                             {
-                                <div class="giz-time-product-expiration">@LocalizationService.GetString("GIZ_PRODUCT_TIME_EXPIRATION_AFTER_LOGOUT")</div>
+                                <div class="giz-time-product-expiration">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_AFTER_LOGOUT))</div>
                             }
 
                         </div>

@@ -146,14 +146,14 @@ namespace Gizmo.Client.UI.Components
                 switch (_advertisementViewState.Command.Type)
                 {
                     case ViewServiceCommandType.Add:
-                        return LocalizationService.GetString("GIZ_GEN_ADD_TO_CART");
+                        return LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ADD_TO_CART));
 
                     case ViewServiceCommandType.Launch:
-                        return LocalizationService.GetString("GIZ_GEN_LAUNCH");
+                        return LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_LAUNCH));
                 }
             }
 
-            return LocalizationService.GetString("GIZ_GEN_VIEW_DETAILS");
+            return LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_VIEW_DETAILS));
         }
 
         #region OVERRIDE

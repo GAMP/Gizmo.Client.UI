@@ -12,7 +12,7 @@
 
             <div class="giz-user-history giz-user-purchases">
                 <div class="giz-user-history__header">
-                    @LocalizationService.GetString("GIZ_USER_PURCHASES_HISTORY")
+                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_HISTORY))
                 </div>
 
                 <div class="giz-user-history__body">
@@ -41,7 +41,7 @@
                                 <div class="order-line-details">
                                     @foreach (var orderLine in order.OrderLines)
                                     {
-                                        <div class="order-line-details-quantity">@($"{orderLine.Quantity} {@LocalizationService.GetString("GIZ_GEN_PIECES_ABBREVIATED")}")</div>
+                                        <div class="order-line-details-quantity">@($"{orderLine.Quantity} {@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PIECES_ABBREVIATED))}")</div>
                                     }
                                 </div>
                             </td>
@@ -57,10 +57,10 @@
                                 <div class="order-details">
                                     @if (order.TotalPointsAward > 0)
                                     {
-                                        <div class="order-details-points-title">@LocalizationService.GetString("GIZ_USER_PURCHASES_EARNED_POINTS")</div>
+                                        <div class="order-details-points-title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_EARNED_POINTS))</div>
                                         <div class="order-details-points">@order.TotalPointsAward <PointsAward2Icon/></div>
                                     }
-                                    <div class="order-details-notes-title">@LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_NOTE")</div>
+                                    <div class="order-details-notes-title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_NOTE))</div>
                                     <div class="order-details-notes">@order.Notes</div>
                                 </div>
                             </td>
@@ -68,7 +68,7 @@
                         <ChildContent>
                             <DataGridColumn Style="white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;" Field="@(nameof(UserOrderViewState.ProductNames))" TItemType="UserOrderViewState" Context="order">
                                 <HeaderTemplate>
-                                    @LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER")
+                                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER))
                                 </HeaderTemplate>
                                 <CellTemplate>
                                     @order.ProductNames
@@ -77,31 +77,31 @@
                             </DataGridColumn>
                             <DataGridColumn Style="" Field="@(nameof(UserOrderViewState.OrderStatus))" TItemType="UserOrderViewState" Context="order">
                                 <HeaderTemplate>
-                                    @LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_STATUS")
+                                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_STATUS))
                                 </HeaderTemplate>
                                 <CellTemplate>
                                     @if (order.Invoice?.IsVoided == true)
                                     {
-                                        <div class="order-canceled">@LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_STATUS_VOIDED")</div>
+                                        <div class="order-canceled">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_STATUS_VOIDED))</div>
                                     }
                                     else
                                     {
                                         @switch (order.OrderStatus)
                                         {
                                             case OrderStatus.OnHold:
-                                                <div class="order-on-hold">@LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_STATUS_ON_HOLD")</div>
+                                                <div class="order-on-hold">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_STATUS_ON_HOLD))</div>
                                                 break;
 
                                             case OrderStatus.Completed:
-                                                <div class="order-completed">@LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_STATUS_COMPLETED")</div>
+                                                <div class="order-completed">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_STATUS_COMPLETED))</div>
                                                 break;
 
                                             case OrderStatus.Canceled:
-                                                <div class="order-canceled">@LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_STATUS_CANCELED")</div>
+                                                <div class="order-canceled">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_STATUS_CANCELED))</div>
                                                 break;
 
                                             case OrderStatus.Accepted:
-                                                <div class="order-accepted">@LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_STATUS_ACCEPTED")</div>
+                                                <div class="order-accepted">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_STATUS_ACCEPTED))</div>
                                                 break;
                                         }
                                     }
@@ -109,7 +109,7 @@
                             </DataGridColumn>
                             <DataGridColumn Style="" Field="@(nameof(UserOrderViewState.OrderDate))" TItemType="UserOrderViewState" Context="order">
                                 <HeaderTemplate>
-                                    @LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_DATE")
+                                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_DATE))
                                 </HeaderTemplate>
                                 <CellTemplate>
                                     @order.OrderDate.ToString()
@@ -117,7 +117,7 @@
                             </DataGridColumn>
                             <DataGridColumn Style="" Field="@(nameof(UserOrderViewState.Invoice))" TItemType="UserOrderViewState" Context="order">
                                 <HeaderTemplate>
-                                    @LocalizationService.GetString("GIZ_USER_PURCHASES_PAYMENT_METHOD")
+                                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_PAYMENT_METHOD))
                                 </HeaderTemplate>
                                 <CellTemplate>
                                     <div class="order-payment-method-names">@order.Invoice?.PaymentMethodNames</div>
@@ -125,7 +125,7 @@
                             </DataGridColumn>
                             <DataGridColumn Style="" TextAlignment="TextAlignments.Right" Field="@(nameof(UserOrderViewState.TotalPrice))" TItemType="UserOrderViewState" Context="order">
                                 <HeaderTemplate>
-                                    @LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_PRICE")
+                                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_PRICE))
                                 </HeaderTemplate>
                                 <CellTemplate>
                                     @order.TotalPrice.ToString("C") @order.TotalPointsPrice <Points2Icon />
@@ -133,7 +133,7 @@
                             </DataGridColumn>
                             <DataGridColumn Style="" Field="@(nameof(UserOrderViewState.Invoice))" TItemType="UserOrderViewState" Context="order">
                                 <HeaderTemplate>
-                                    @LocalizationService.GetString("GIZ_USER_PURCHASES_PAYMENT_STATUS")
+                                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_PAYMENT_STATUS))
                                 </HeaderTemplate>
                                 <CellTemplate>
                                     @if (order.Invoice != null)
@@ -141,15 +141,15 @@
                                         @switch (order.Invoice.PaymentStatus)
                                         {
                                             case InvoiceStatus.Unpaid:
-                                                <div class="order-invoice-unpaid">@LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_INVOICE_STATUS_UNPAID")</div>
+                                                <div class="order-invoice-unpaid">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_INVOICE_STATUS_UNPAID))</div>
                                                 break;
 
                                             case InvoiceStatus.PartiallyPaid:
-                                                <div class="order-invoice-partialy-paid">@LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_INVOICE_STATUS_PARTIALY_PAID")</div>
+                                                <div class="order-invoice-partially-paid">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_INVOICE_STATUS_PARTIALLY_PAID))</div>
                                                 break;
 
                                             case InvoiceStatus.Paid:
-                                                <div class="order-invoice-paid">@LocalizationService.GetString("GIZ_USER_PURCHASES_ORDER_INVOICE_STATUS_PAID")</div>
+                                                <div class="order-invoice-paid">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_INVOICE_STATUS_PAID))</div>
                                                 break;
                                         }
                                     }

@@ -27,8 +27,8 @@
                                 MaximumHeight="20rem"
                                 PopupClass="giz-scrollbar--v"
                                 IsFullWidth="true"
-                                Label="@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_SELECT_TYPE_LABEL")"
-                                Placeholder="@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_SELECT_TYPE_PLACEHOLDER")">
+                                Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_SELECT_TYPE_LABEL))"
+                                Placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_SELECT_TYPE_PLACEHOLDER))">
                             @if (ViewState.AssistanceRequestTypes != null)
                             {
                                 @foreach (var item in ViewState.AssistanceRequestTypes)
@@ -49,8 +49,8 @@
                                IsFullWidth="true"
                                IsMultiLine="true"
                                MaxLength="@ViewState.NoteLimit"
-                               Label="@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_NOTE_LABEL")"
-                               Placeholder="@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_NOTE_PLACEHOLDER")"
+                               Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_NOTE_LABEL))"
+                               Placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_NOTE_PLACEHOLDER))"
                                InputClass="giz-scrollbar--v" />
                     <div class="giz-menu-assistance-note-counter">@($"{ViewState.Note?.Length ?? 0}/{ViewState.NoteLimit}")</div>
                 </div>
@@ -67,7 +67,7 @@
                             }
                             else
                             {
-                                <div>@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_SEND")</div>
+                                <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_SEND))</div>
                             }
                         </ChildContent>
                     </Button>
@@ -75,17 +75,17 @@
             }
             else
             {
-                <Alert AlertType="AlertTypes.Info" Title="@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_SENT_TITLE")" Text="@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_SENT_MESSAGE")">
+                <Alert AlertType="AlertTypes.Info" Title="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_SENT_TITLE))" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_SENT_MESSAGE))">
                     <Button Color="ButtonColors.Info" Variant="ButtonVariants.Outline" Size="ButtonSizes.Small" @onclick="AssistanceRequestViewService.CancelAsync">
                         <ChildContent>
                             @if (ViewState.IsLoading)
                             {
-                                <div style="visibility: hidden">@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_SENT_CANCEL")</div>
+                                <div style="visibility: hidden">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_SENT_CANCEL))</div>
                                 <Spinner />
                             }
                             else
                             {
-                                <div>@LocalizationService.GetString("GIZ_ASSISTANCE_REQUEST_SENT_CANCEL")</div>
+                                <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_SENT_CANCEL))</div>
                             }
                         </ChildContent>
                     </Button>

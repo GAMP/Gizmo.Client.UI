@@ -4,8 +4,8 @@
 
 <div class="giz-user-balance-tooltip">
     <div class="giz-user-balance-tooltip__header">
-        <div class="giz-user-balance-tooltip__header__title">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TITLE")</div>
-        <div class="giz-user-balance-tooltip__header__link" @onclick="OpenDetails">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_SEE_ALL_AVAILABLE_TIME")</div>
+        <div class="giz-user-balance-tooltip__header__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_TITLE))</div>
+        <div class="giz-user-balance-tooltip__header__link" @onclick="OpenDetails">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_SEE_ALL_AVAILABLE_TIME))</div>
     </div>
     <div class="giz-user-balance-tooltip__list">
         @if (TimeProductsViewState.IsInitializing)
@@ -31,7 +31,7 @@
                     </DataGridColumn>
                     <DataGridColumn Field="@(nameof(TimeProductViewState.TimeProductType))" TItemType="TimeProductViewState" Context="timeProduct">
                         <HeaderTemplate>
-                            @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_TIME_PRODUCT")
+                            @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_TIME_PRODUCT))
                         </HeaderTemplate>
                         <CellTemplate>
                             <ProductsProductType TimeProduct="@timeProduct" />
@@ -39,7 +39,7 @@
                     </DataGridColumn>
                     <DataGridColumn Field="@(nameof(TimeProductViewState.RemainingTime))" TItemType="TimeProductViewState" Context="timeProduct">
                         <HeaderTemplate>
-                            @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_REMAINING_TIME")
+                            @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_REMAINING_TIME))
                         </HeaderTemplate>
                         <CellTemplate>
                             @timeProduct.RemainingTime
@@ -49,7 +49,7 @@
                         <HeaderTemplate>
                             <div class="giz-user-time-products-time-header">
                                 <div>
-                                    @LocalizationService.GetString("GIZ_USER_TIME_PRODUCTS_USABLE_TIME")
+                                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_USABLE_TIME))
                                 </div>
                             </div>
                         </HeaderTemplate>
@@ -74,8 +74,8 @@
         {
             if (string.IsNullOrEmpty(TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).First().UsableTime))
             {
-                <div class="giz-user-balance-tooltip__expiration">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_SESSION_WILL_NOT_EXPIRE_MESSAGE")</div>
-                <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_CLOSE_BALANCE_MESSAGE")</div>
+                <div class="giz-user-balance-tooltip__expiration">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_SESSION_WILL_NOT_EXPIRE_MESSAGE))</div>
+                <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_CLOSE_BALANCE_MESSAGE))</div>
                 @if (UserOnlineDepositViewState.IsEnabled || !ViewState.DisableShop)
                 {
                     <div class="@(UserOnlineDepositViewState.IsEnabled && !ViewState.DisableShop ? "giz-user-balance-tooltip__actions" : "giz-user-balance-tooltip__action")">
@@ -83,25 +83,25 @@
                         {
                             <Button Variant="@(ViewState.DisableShop ? ButtonVariants.Fill : ButtonVariants.Outline)"
                                     Color="@(ViewState.DisableShop ? ButtonColors.Accent : ButtonColors.Primary)"
-                                    Text="@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TOP_UP")" @onclick="OpenUserOnlineDeposit" StopPropagation="true" />
+                                    Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_TOP_UP))" @onclick="OpenUserOnlineDeposit" StopPropagation="true" />
                         }
                         @if (!ViewState.DisableShop)
                         {
-                            <Button Color="ButtonColors.Accent" Text="@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_GO_TO_SHOP")" @onclick="OpenShop" />
+                            <Button Color="ButtonColors.Accent" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_GO_TO_SHOP))" @onclick="OpenShop" />
                         }
                     </div>
                 }
             }
             else
             {
-                <div class="giz-user-balance-tooltip__expiration">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_SESSION_WILL_EXPIRE_MESSAGE")</div>
+                <div class="giz-user-balance-tooltip__expiration">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_SESSION_WILL_EXPIRE_MESSAGE))</div>
                 @if (UserOnlineDepositViewState.IsEnabled || !ViewState.DisableShop)
                 {
                     @if (TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).First().InCredit)
                     {
                         @if (!ViewState.DisableShop && UserOnlineDepositViewState.IsEnabled)
                         {
-                            <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TO_CONTINUE_CLOSE_BALANCE_AND_BUY_TIME_OR_TOP_UP")</div>
+                            <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_TO_CONTINUE_CLOSE_BALANCE_AND_BUY_TIME_OR_TOP_UP))</div>
                         }
                         else if (ViewState.DisableShop && !UserOnlineDepositViewState.IsEnabled)
                         {
@@ -111,11 +111,11 @@
                         {
                             if (!ViewState.DisableShop)
                             {
-                                <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TO_CONTINUE_CLOSE_BALANCE_AND_BUY_TIME")</div>
+                                <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_TO_CONTINUE_CLOSE_BALANCE_AND_BUY_TIME))</div>
                             }
                             else
                             {
-                                <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TO_CONTINUE_CLOSE_BALANCE_AND_TOP_UP")</div>
+                                <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_TO_CONTINUE_CLOSE_BALANCE_AND_TOP_UP))</div>
                             }
                         }
                     }
@@ -123,7 +123,7 @@
                     {
                         @if (!ViewState.DisableShop && UserOnlineDepositViewState.IsEnabled)
                         {
-                            <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TO_CONTINUE_BUY_TIME_OR_TOP_UP")</div>
+                            <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_TO_CONTINUE_BUY_TIME_OR_TOP_UP))</div>
                         }
                         else if (ViewState.DisableShop && !UserOnlineDepositViewState.IsEnabled)
                         {
@@ -133,11 +133,11 @@
                         {
                             if (!ViewState.DisableShop)
                             {
-                                <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TO_CONTINUE_BUY_TIME")</div>
+                                <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_TO_CONTINUE_BUY_TIME))</div>
                             }
                             else
                             {
-                                <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TO_CONTINUE_TOP_UP")</div>
+                                <div class="giz-user-balance-tooltip__message">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_TO_CONTINUE_TOP_UP))</div>
                             }
                         }
                     }
@@ -146,11 +146,11 @@
                         {
                             <Button Variant="@(ViewState.DisableShop ? ButtonVariants.Fill : ButtonVariants.Outline)"
                                     Color="@(ViewState.DisableShop ? ButtonColors.Accent : ButtonColors.Primary)"
-                                    Text="@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_TOP_UP")" @onclick="OpenUserOnlineDeposit" StopPropagation="true" />
+                                    Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_TOP_UP))" @onclick="OpenUserOnlineDeposit" StopPropagation="true" />
                         }
                         @if (!ViewState.DisableShop)
                         {
-                            <Button Color="ButtonColors.Accent" Text="@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_GO_TO_SHOP")" @onclick="OpenShop" />
+                            <Button Color="ButtonColors.Accent" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_GO_TO_SHOP))" @onclick="OpenShop" />
                         }
                     </div>
                 }
@@ -160,7 +160,7 @@
         {
             @if (CreditOptionsViewState.TimeCreditType != CreditType.NoCredit && CreditOptionsViewState.IsUserTimeCreditEnabled)
             {
-                <div class="giz-user-balance-tooltip__credit">@LocalizationService.GetString("GIZ_MENU_BALANCE_TOOLTIP_CREDIT")</div>
+                <div class="giz-user-balance-tooltip__credit">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_CREDIT))</div>
             }
         }
     }
