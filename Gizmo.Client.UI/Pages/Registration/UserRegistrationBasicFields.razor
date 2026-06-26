@@ -193,7 +193,14 @@
                         }
                         else
                         {
-                            <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CONTINUE))</div>
+                            @if (HasAdditionalFields)
+                            {
+                                <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CONTINUE))</div>
+                            }
+                            else
+                            {
+                                <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_UP_BUTTON))</div>
+                            }
                         }
                     </ChildContent>
                 </Button>

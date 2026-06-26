@@ -38,6 +38,12 @@ namespace Gizmo.Client.UI.Pages.Registration
 
         public List<IconSelectCountry> PhoneCountries { get; set; } = new();
 
+        public bool HasAdditionalFields =>
+            RegistrationSession.RequiredUserInfo?.Country == true ||
+            RegistrationSession.RequiredUserInfo?.Address == true ||
+            RegistrationSession.RequiredUserInfo?.City == true ||
+            RegistrationSession.RequiredUserInfo?.PostCode == true;
+
         public bool ShowPassword => true;
         public bool ShowFirstName => RegistrationSession.RequiredUserInfo?.FirstName == true;
         public bool ShowLastName => RegistrationSession.RequiredUserInfo?.LastName == true;
