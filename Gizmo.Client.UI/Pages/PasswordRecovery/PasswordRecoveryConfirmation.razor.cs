@@ -32,21 +32,6 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         UserRegistrationConfigurationViewState UserRegisterConfigurationViewState { get; init; }
 
-        private string GetPlaceholder()
-        {
-            if (PasswordRecoverySession.CodeLength <= 0)
-                return string.Empty;
-
-            if (PasswordRecoverySession.CodeLength <= 3)
-                return "123".Substring(0, PasswordRecoverySession.CodeLength);
-            else if (PasswordRecoverySession.CodeLength == 4)
-                return "12 34".Substring(0, PasswordRecoverySession.CodeLength + 1);
-            else if (PasswordRecoverySession.CodeLength >= 5 && PasswordRecoverySession.CodeLength <= 6)
-                return "123 456".Substring(0, PasswordRecoverySession.CodeLength + 1);
-            else
-                return "1234 5678".Substring(0, PasswordRecoverySession.CodeLength + 1);
-        }
-
         private async Task ResendCode()
         {
             await PasswordRecoveryConfirmationViewService.RestartTimerAsync();

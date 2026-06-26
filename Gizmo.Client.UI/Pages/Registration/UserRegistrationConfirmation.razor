@@ -4,7 +4,6 @@
 <ConfirmationCodeCard EditContext="@UserRegistrationConfirmationViewService.EditContext"
                       Title="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_UP_TITLE))"
                       Subtitle="@ViewState.ConfirmationCodeMessage"
-                      Placeholder="@GetPlaceholder()"
                       ConfirmationCode="@ViewState.ConfirmationCode"
                       CodeChanged="@((string value) => UserRegistrationConfirmationViewService.SetConfirmationCode(value))"
                       CodeExpression="@(() => ViewState.ConfirmationCode)"

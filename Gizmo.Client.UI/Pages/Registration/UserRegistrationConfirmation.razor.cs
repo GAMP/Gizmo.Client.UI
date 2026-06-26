@@ -27,19 +27,6 @@ namespace Gizmo.Client.UI.Pages.Registration
         [Inject]
         NavigationService NavigationService { get; set; }
 
-        private string GetPlaceholder()
-        {
-            var len = RegistrationSession.CodeLength;
-            if (len <= 3)
-                return "123".Substring(0, len);
-            else if (len == 4)
-                return "12 34".Substring(0, len + 1);
-            else if (len >= 5 && len <= 6)
-                return "123 456".Substring(0, len + 1);
-            else
-                return "1234 5678".Substring(0, len + 1);
-        }
-
         public void OnCloseButtonClickHandler()
         {
             UserRegistrationConfirmationViewService.Reset();
