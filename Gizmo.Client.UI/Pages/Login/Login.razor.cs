@@ -100,6 +100,15 @@ namespace Gizmo.Client.UI.Pages
             return prefix;
         }
 
+        public int GetLockedPrefixLength()
+        {
+            var selected = GetSelectedCountry();
+            if (selected == null || string.IsNullOrEmpty(selected.PhonePrefix))
+                return 0;
+
+            return selected.PhonePrefix.Count(char.IsDigit);
+        }
+
         public void OnClickClearValueButtonHandler(MouseEventArgs args)
         {
             SetSelectedCountry(null);

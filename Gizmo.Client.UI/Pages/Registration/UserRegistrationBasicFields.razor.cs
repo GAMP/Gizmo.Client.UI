@@ -63,6 +63,14 @@ namespace Gizmo.Client.UI.Pages.Registration
 
         public IconSelectCountry? GetSelectedPhoneCountry() => _selectedPhoneCountry;
 
+        public int GetLockedPrefixLength()
+        {
+            if (_selectedPhoneCountry == null || string.IsNullOrEmpty(_selectedPhoneCountry.PhonePrefix))
+                return 0;
+
+            return _selectedPhoneCountry.PhonePrefix.Count(char.IsDigit);
+        }
+
         protected void SetPhoneCountry(IconSelectCountry? value)
         {
             _selectedPhoneCountry = value;

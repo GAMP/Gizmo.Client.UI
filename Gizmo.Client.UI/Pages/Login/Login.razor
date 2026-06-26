@@ -83,7 +83,8 @@
                                     PopupClass="giz-scrollbar--v" />
                         <MaskedPhoneInput Mask="@GetMask()"
                                           Prefix="+"
-                                          AllowMoreDigits="true"
+                                          AllowMoreDigits="false"
+                                          LockedLength="@GetLockedPrefixLength()"
                                           Value="@ViewState.LoginName"
                                           ValueChanged="@((string value) => UserLoginService.SetLoginName(value))"
                                           ValueExpression="@(() => ViewState.LoginName)"

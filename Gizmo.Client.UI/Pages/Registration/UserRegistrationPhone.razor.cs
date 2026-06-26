@@ -52,6 +52,15 @@ namespace Gizmo.Client.UI.Pages.Registration
             return rc;
         }
 
+        public int GetLockedPrefixLength()
+        {
+            var selectedCountry = GetSelectedCountry();
+            if (selectedCountry == null || string.IsNullOrEmpty(selectedCountry.PhonePrefix))
+                return 0;
+
+            return selectedCountry.PhonePrefix.Count(char.IsDigit);
+        }
+
         public void OnCloseButtonClickHandler()
         {
             RegistrationPhoneViewService.Reset();

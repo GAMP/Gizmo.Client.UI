@@ -147,7 +147,8 @@
                 <div class="giz-form-input">
                     <MaskedPhoneInput Mask="@GetPhoneMask()"
                                       Prefix="+"
-                                      AllowMoreDigits="true"
+                                      AllowMoreDigits="false"
+                                      LockedLength="@GetLockedPrefixLength()"
                                       Value="@ViewState.MobilePhone"
                                       ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetMobilePhone(value))"
                                       ValueExpression="@(() => ViewState.MobilePhone)"
@@ -181,7 +182,7 @@
                 </div>
             }
             <div>
-                <Button IsDisabled="@(ViewState.IsValid == false || ViewState.IsLoading)"
+                <Button IsDisabled="@(ViewState.IsValid != true || ViewState.IsLoading)"
                         Color="ButtonColors.Accent"
                         Size="ButtonSizes.Large"
                         IsFullWidth="true"

@@ -60,6 +60,15 @@ namespace Gizmo.Client.UI.Pages
             return Countries.FirstOrDefault(c => c.Text == ViewState.Country);
         }
 
+        public int GetLockedPrefixLength()
+        {
+            var selected = GetSelectedCountry();
+            if (selected == null || string.IsNullOrEmpty(selected.PhonePrefix))
+                return 0;
+
+            return selected.PhonePrefix.Count(char.IsDigit);
+        }
+
         public void SetSelectedCountry(IconSelectCountry value)
         {
             if (value == null)
