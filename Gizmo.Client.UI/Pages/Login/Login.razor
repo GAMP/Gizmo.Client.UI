@@ -48,9 +48,9 @@
                 </ButtonGroup>
             </div>
             <EditForm EditContext="@UserLoginService.EditContext" @onkeydown="OnKeyDownHandle">
-                <div class="giz-form-input">
-                    @if (ViewState.LoginType == View.UserLoginType.UsernameOrEmail)
-                    {
+                @if (ViewState.LoginType == View.UserLoginType.UsernameOrEmail)
+                {
+                    <div class="giz-form-input">
                         <TextInput UpdateOnInput="true"
                                    Value="@ViewState.LoginName"
                                    ValueChanged="@((string value) => UserLoginService.SetLoginName(value))"
@@ -60,40 +60,26 @@
                                    Size="InputSizes.Medium"
                                    IsFullWidth="true"
                                    Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_USERNAME))" />
-                    }
-                    else
-                    {
-                        <IconSelect Placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEARCH))"
-                                    IsVirtualized="false"
-                                    IsLoading="@(!_isLoaded)"
-                                    CanClearValue="@(GetSelectedCountry() != null)"
-                                    OnClickClearValueButton="OnClickClearValueButtonHandler"
-                                    HandleSVGIcon="Icons.Select_Client"
-                                    TValue="IconSelectCountry"
-                                    ItemSource="@Countries"
-                                    SelectedItem="@GetSelectedCountry()"
-                                    SelectedItemChanged="@SetSelectedCountry"
-                                    FieldIdentifier="@GetCountryFieldIdentifier()"
-                                    IsDisabled="@(ViewState.IsLogginIn || ViewState.IsLogginOut)"
-                                    Size="InputSizes.Medium"
-                                    IsFullWidth="true"
-                                    Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_COUNTRY))"
-                                    OpenDirection="PopupOpenDirections.Bottom"
-                                    MaximumHeight="20.0rem"
-                                    PopupClass="giz-scrollbar--v" />
-                        <MaskedPhoneInput Mask="@GetMask()"
-                                          Prefix="+"
-                                          AllowMoreDigits="false"
-                                          LockedLength="@GetLockedPrefixLength()"
-                                          Value="@ViewState.LoginName"
-                                          ValueChanged="@((string value) => UserLoginService.SetLoginName(value))"
-                                          ValueExpression="@(() => ViewState.LoginName)"
+                    </div>
+                }
+                else
+                {
+                    <div class="giz-form-input">
+                        <PhoneNumberField SelectedCountryName="@ViewState.Country"
+                                          PhoneValue="@ViewState.LoginName"
+                                          PhoneValueExpression="@(() => ViewState.LoginName)"
+                                          CountryFieldIdentifier="@GetCountryFieldIdentifier()"
                                           IsDisabled="@(ViewState.IsLogginIn || ViewState.IsLogginOut)"
                                           Size="InputSizes.Medium"
                                           IsFullWidth="true"
-                                          Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PHONE_NUMBER))" />
-                    }
-                </div>
+                                          RenderWrappers="false"
+                                          CountryLabel="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_COUNTRY))"
+                                          PhoneLabel="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PHONE_NUMBER))"
+                                          SearchPlaceholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEARCH))"
+                                          CountryChanged="@OnCountryChangedAsync"
+                                          PhoneValueChanged="@OnPhoneValueChangedAsync" />
+                    </div>
+                }
                 <div class="giz-form-input">
                     <PasswordInput ShowRevealButton="true"
                                    UpdateOnInput="true" Value="@ViewState.Password"

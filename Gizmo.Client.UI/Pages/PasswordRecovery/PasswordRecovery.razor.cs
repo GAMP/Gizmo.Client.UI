@@ -1,4 +1,3 @@
-using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.Components;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -6,27 +5,20 @@ using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Components.Web;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Gizmo.Client.UI.Services;
 
 namespace Gizmo.Client.UI.Pages
 {
     [Route(ClientRoutes.PasswordRecoveryRoute)]
     public partial class PasswordRecovery : CustomDOMComponentBase
     {
-        private bool _isLoaded;
-        private readonly Dictionary<string, string> _countryRegionCodes = new();
-        private readonly Dictionary<string, string?> _countryMasks = new();
         private FieldIdentifier? _countryFieldIdentifier;
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
-
-        [Inject]
-        IPhoneValidationService PhoneValidationService { get; set; }
 
         [Inject]
         PasswordRecoveryViewService PasswordRecoveryViewService { get; set; }
@@ -43,35 +35,15 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         NavigationService NavigationService { get; set; }
 
-        public List<IconSelectCountry> Countries { get; set; } = new List<IconSelectCountry>();
-
-        public string GetMask()
+        private FieldIdentifier GetCountryFieldIdentifier()
         {
-            var selected = GetSelectedCountry();
-            if (selected != null && _countryMasks.TryGetValue(selected.Text, out var mask) && mask != null)
-                return mask;
-            return "###-###-####";
+            _countryFieldIdentifier ??= new FieldIdentifier(ViewState, nameof(ViewState.Country));
+            return _countryFieldIdentifier.Value;
         }
 
-        public IconSelectCountry GetSelectedCountry()
+        private Task OnCountryChangedAsync(PhoneCountrySelection? selection)
         {
-            if (string.IsNullOrEmpty(ViewState.Country))
-                return null;
-            return Countries.FirstOrDefault(c => c.Text == ViewState.Country);
-        }
-
-        public int GetLockedPrefixLength()
-        {
-            var selected = GetSelectedCountry();
-            if (selected == null || string.IsNullOrEmpty(selected.PhonePrefix))
-                return 0;
-
-            return selected.PhonePrefix.Count(char.IsDigit);
-        }
-
-        public void SetSelectedCountry(IconSelectCountry value)
-        {
-            if (value == null)
+            if (selection == null)
             {
                 PasswordRecoveryViewService.SetCountry(null);
                 PasswordRecoveryViewService.SetRegionCode(null);
@@ -79,25 +51,17 @@ namespace Gizmo.Client.UI.Pages
             }
             else
             {
-                PasswordRecoveryViewService.SetCountry(value.Text);
-                _countryRegionCodes.TryGetValue(value.Text, out var regionCode);
-                PasswordRecoveryViewService.SetRegionCode(regionCode);
-                var prefix = value.PhonePrefix;
-                if (prefix.StartsWith("+"))
-                    prefix = prefix[1..];
-                PasswordRecoveryViewService.SetMobilePhone(prefix);
+                PasswordRecoveryViewService.SetCountry(selection.CountryName);
+                PasswordRecoveryViewService.SetRegionCode(selection.RegionCode);
+                PasswordRecoveryViewService.SetMobilePhone(selection.CallingCodeDigits);
             }
+            return Task.CompletedTask;
         }
 
-        public void OnClickClearValueButtonHandler(MouseEventArgs args)
+        private Task OnPhoneValueChangedAsync(string? value)
         {
-            SetSelectedCountry(null);
-        }
-
-        public FieldIdentifier GetCountryFieldIdentifier()
-        {
-            _countryFieldIdentifier ??= new FieldIdentifier(ViewState, nameof(ViewState.Country));
-            return _countryFieldIdentifier.Value;
+            PasswordRecoveryViewService.SetMobilePhone(value);
+            return Task.CompletedTask;
         }
 
         public void OnCloseButtonClickHandler()
@@ -122,31 +86,6 @@ namespace Gizmo.Client.UI.Pages
             this.SubscribeChange(ViewState);
             this.SubscribeChange(UserRegisterConfigurationViewState);
             base.OnInitialized();
-        }
-
-        protected override async Task OnInitializedAsync()
-        {
-            var countries = (await PhoneValidationService.GetCountriesAsync()).ToList();
-
-            foreach (var country in countries.OrderBy(c => c.CountryName))
-            {
-                _countryRegionCodes[country.CountryName] = country.RegionCode;
-                _countryMasks[country.CountryName] = country.InputMask;
-                Countries.Add(new IconSelectCountry
-                {
-                    Text = country.CountryName,
-                    PhonePrefix = country.CallingCode,
-                    Icon = country.Flag ?? string.Empty
-                });
-            }
-
-            foreach (var item in Countries)
-                item.Display = item.Text + " " + item.PhonePrefix;
-
-            _isLoaded = true;
-            await base.OnInitializedAsync();
-
-            await InvokeAsync(StateHasChanged);
         }
 
         public override void Dispose()

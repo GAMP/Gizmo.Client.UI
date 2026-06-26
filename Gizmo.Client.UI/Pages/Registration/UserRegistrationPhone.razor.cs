@@ -1,13 +1,10 @@
-using Gizmo.Client.UI.Services;
+using Gizmo.Client.UI.Components;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Components.Web;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages.Registration
@@ -15,15 +12,10 @@ namespace Gizmo.Client.UI.Pages.Registration
     [Route(ClientRoutes.RegistrationPhoneRoute)]
     public partial class UserRegistrationPhone : CustomDOMComponentBase
     {
-        private bool _isLoaded;
-        private readonly Dictionary<string, string> _countryRegionCodes = new();
-        private readonly Dictionary<string, string?> _countryMasks = new();
+        private FieldIdentifier? _countryFieldIdentifier;
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
-
-        [Inject]
-        IPhoneValidationService PhoneValidationService { get; set; }
 
         [Inject]
         UserRegistrationPhoneViewService RegistrationPhoneViewService { get; set; }
@@ -34,58 +26,16 @@ namespace Gizmo.Client.UI.Pages.Registration
         [Inject]
         NavigationService NavigationService { get; set; }
 
-        public List<IconSelectCountry> Countries { get; set; } = new List<IconSelectCountry>();
-
-        public string GetMask()
+        private FieldIdentifier GetCountryFieldIdentifier()
         {
-            var selectedCountry = GetSelectedCountry();
-
-            if (selectedCountry != null && _countryMasks.TryGetValue(selectedCountry.Text, out var mask) && mask != null)
-                return mask;
-
-            return "###-###-####";
+            if (_countryFieldIdentifier == null)
+                _countryFieldIdentifier = new FieldIdentifier(ViewState, nameof(ViewState.Country));
+            return _countryFieldIdentifier.Value;
         }
 
-        private string? GetRegionCode(string countryName)
+        private Task OnCountryChangedAsync(PhoneCountrySelection? selection)
         {
-            _countryRegionCodes.TryGetValue(countryName, out var rc);
-            return rc;
-        }
-
-        public int GetLockedPrefixLength()
-        {
-            var selectedCountry = GetSelectedCountry();
-            if (selectedCountry == null || string.IsNullOrEmpty(selectedCountry.PhonePrefix))
-                return 0;
-
-            return selectedCountry.PhonePrefix.Count(char.IsDigit);
-        }
-
-        public void OnCloseButtonClickHandler()
-        {
-            RegistrationPhoneViewService.Reset();
-        }
-
-        public void OnClickClearValueButtonHandler(MouseEventArgs args)
-        {
-            SetSelectedCountry(null);
-        }
-
-        public IconSelectCountry GetSelectedCountry()
-        {
-            if (string.IsNullOrEmpty(ViewState.Country))
-            {
-                return null;
-            }
-            else
-            {
-                return Countries.Where(a => a.Text == ViewState.Country).FirstOrDefault();
-            }
-        }
-
-        protected void SetSelectedCountry(IconSelectCountry value)
-        {
-            if (value == null)
+            if (selection == null)
             {
                 RegistrationPhoneViewService.SetCountry(null);
                 RegistrationPhoneViewService.SetRegionCode(null);
@@ -93,69 +43,34 @@ namespace Gizmo.Client.UI.Pages.Registration
             }
             else
             {
-                RegistrationPhoneViewService.SetCountry(value.Text);
-                RegistrationPhoneViewService.SetRegionCode(GetRegionCode(value.Text));
-                var tmp = value.PhonePrefix;
-                if (tmp.StartsWith("+"))
-                {
-                    tmp = tmp.Substring(1);
-                }
-                RegistrationPhoneViewService.SetMobilePhone(tmp);
+                RegistrationPhoneViewService.SetCountry(selection.CountryName);
+                RegistrationPhoneViewService.SetRegionCode(selection.RegionCode);
+                RegistrationPhoneViewService.SetMobilePhone(selection.CallingCodeDigits);
             }
+            return Task.CompletedTask;
+        }
+
+        private Task OnPhoneValueChangedAsync(string? value)
+        {
+            RegistrationPhoneViewService.SetMobilePhone(value);
+            return Task.CompletedTask;
+        }
+
+        public void OnCloseButtonClickHandler()
+        {
+            RegistrationPhoneViewService.Reset();
         }
 
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
-
             base.OnInitialized();
-        }
-
-        protected override async Task OnInitializedAsync()
-        {
-            var countries = await PhoneValidationService.GetCountriesAsync();
-
-            foreach (var country in countries.OrderBy(c => c.CountryName))
-            {
-                _countryRegionCodes[country.CountryName] = country.RegionCode;
-                _countryMasks[country.CountryName] = country.InputMask;
-
-                Countries.Add(new IconSelectCountry()
-                {
-                    Text = country.CountryName,
-                    PhonePrefix = country.CallingCode,
-                    Icon = country.Flag ?? string.Empty
-                });
-            }
-
-            foreach (var item in Countries)
-            {
-                item.Display = item.Text + " " + item.PhonePrefix;
-            }
-
-            _isLoaded = true;
-            await InvokeAsync(StateHasChanged);
-
-            await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
             this.UnsubscribeChange(ViewState);
-
             base.Dispose();
-        }
-
-        private FieldIdentifier? _countryFieldIdentifier;
-
-        private FieldIdentifier GetCountryFieldIdentifier()
-        {
-            if (_countryFieldIdentifier == null)
-            {
-                _countryFieldIdentifier = new FieldIdentifier(ViewState, nameof(ViewState.Country));
-            }
-
-            return _countryFieldIdentifier.Value;
         }
     }
 }
