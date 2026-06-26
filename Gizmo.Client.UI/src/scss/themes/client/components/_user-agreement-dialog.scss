@@ -32,6 +32,26 @@
         margin-bottom: 2.4rem;
     }
 
+    // Defensive: keep the native checkbox input hidden and the box aligned even if the
+    // [client-theme] scoped check-box styles do not reach this dialog (e.g. in an integrated
+    // host) or an external host stylesheet overrides the base rules. Scoped to this dialog only,
+    // and the higher specificity (.giz-user-agreement-dialog .giz-check-box input) beats any
+    // generic external input reset regardless of load order.
+    .giz-check-box {
+        display: inline-flex;
+
+        input {
+            position: absolute;
+            left: -9999px;
+        }
+
+        input + label {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+    }
+
     .giz-user-agreement-checkbox--required {
         input + label:before {
             border-color: #EE505A;

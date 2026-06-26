@@ -23,7 +23,7 @@
                           IsCheckedChanged="@((value) => { _accepted = value; } )"
                           Class="@(IsRejectable ? "" : "giz-user-agreement-checkbox--required")" />
             </div>
-            <Button IsDisabled="@(!IsRejectable && !_accepted)"
+            <Button IsDisabled="@(!AllowContinueWithoutAccept && !IsRejectable && !_accepted)"
                     Color="ButtonColors.Accent"
                     Size="ButtonSizes.ExtraLarge"
                     IsFullWidth="true"

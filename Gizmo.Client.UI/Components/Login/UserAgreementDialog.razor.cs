@@ -23,6 +23,13 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public bool IsRejectable { get; set; }
 
+        /// <summary>
+        /// Allows the user to continue without checking the accept checkbox, even for non-rejectable agreements.
+        /// Used by the registration flow, where declining a mandatory agreement routes the user back to login.
+        /// </summary>
+        [Parameter]
+        public bool AllowContinueWithoutAccept { get; set; }
+
         [Parameter]
         public DialogDisplayOptions DisplayOptions { get; set; }
 
