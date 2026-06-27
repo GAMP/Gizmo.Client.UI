@@ -116,7 +116,6 @@ namespace Gizmo.Client.UI.Components
                     return;
 
                 _selectedItem = value;
-                _ = SelectedItemChanged.InvokeAsync(_selectedItem);
             }
         }
 
@@ -169,7 +168,10 @@ namespace Gizmo.Client.UI.Components
 
         protected void SetSelectedItem(TValue value)
         {
+            var selectionChanged = _selectedItem != value;
             SelectedItem = value;
+            if (selectionChanged)
+                _ = SelectedItemChanged.InvokeAsync(_selectedItem);
 
             if (SelectedItem != null)
                 _text = SelectedItem.Text;
@@ -403,7 +405,10 @@ namespace Gizmo.Client.UI.Components
                 }
                 else
                 {
+                    var selectionChanged = _selectedItem != null;
                     SelectedItem = null;
+                    if (selectionChanged)
+                        _ = SelectedItemChanged.InvokeAsync(_selectedItem);
 
                     _hasParsingErrors = true;
                     _parsingErrors = "The field is invalid."; //TODO: A TRANSLATE
