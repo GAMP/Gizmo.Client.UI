@@ -32,11 +32,13 @@
         margin-bottom: 2.4rem;
     }
 
-    // Defensive: keep the native checkbox input hidden and the box aligned even if the
-    // [client-theme] scoped check-box styles do not reach this dialog (e.g. in an integrated
-    // host) or an external host stylesheet overrides the base rules. Scoped to this dialog only,
-    // and the higher specificity (.giz-user-agreement-dialog .giz-check-box input) beats any
-    // generic external input reset regardless of load order.
+    // This dialog's accept label is long and wraps to multiple lines. The shared check-box
+    // styling centers the box (:before) vertically in the label, but the checkmark (:after) is
+    // anchored to the label's top, so on a multi-line label the checkmark floats above the box.
+    // Top-align the box so it stays where the checkmark is anchored, for both single- and
+    // multi-line labels. Scoped to this dialog; loaded after the shared check-box styles, so it
+    // wins by source order. (The input is also kept hidden defensively in case the
+    // [client-theme] scoped reset does not reach an integrated host.)
     .giz-check-box {
         display: inline-flex;
 
@@ -48,7 +50,7 @@
         input + label {
             position: relative;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
         }
     }
 
