@@ -49,6 +49,11 @@ namespace Gizmo.Client.UI.Components
         private bool _slideInComplete = false;
         private bool _slideOutComplete = false;
 
+        //upper bound for waiting on a window slide animation to report completion via the animationend interop.
+        //the window slide animation runs for 1s, this allows a generous margin before proceeding without the event
+        //so a missed animationend (render gated out, element recreated, event lost) cannot hang the animation lock.
+        private static readonly TimeSpan _slideAnimationTimeout = TimeSpan.FromSeconds(2);
+
         private List<INotificationController> _visible = new List<INotificationController>();
 
         #endregion
@@ -80,6 +85,34 @@ namespace Gizmo.Client.UI.Components
             return InvokeAsync(StateHasChanged);
         }
 
+        /// <summary>
+        /// Waits until the specified animation completion predicate is satisfied or the timeout elapses.
+        /// </summary>
+        /// <param name="isComplete">Predicate reporting whether the animation completion event has been received.</param>
+        /// <param name="animationName">Animation name, used for diagnostics when the wait times out.</param>
+        /// <remarks>
+        /// Completion is normally signalled by the animationend interop (see AnimationHandler). This wait is bounded so
+        /// a missed completion event (render gated out, element recreated, event lost) cannot hang the caller and, in
+        /// turn, hold the animation lock indefinitely which would stop all further notifications from rendering.
+        /// </remarks>
+        private async Task WaitForAnimationComplete(Func<bool> isComplete, string animationName)
+        {
+            var elapsed = TimeSpan.Zero;
+            var interval = TimeSpan.FromMilliseconds(100);
+
+            while (!isComplete())
+            {
+                if (elapsed >= _slideAnimationTimeout)
+                {
+                    Logger.LogWarning($"NotificationsMessage: timed out waiting for '{animationName}' completion, proceeding. {this.ToString()}");
+                    return;
+                }
+
+                await Task.Delay(interval);
+                elapsed += interval;
+            }
+        }
+
         private async Task SlideWindowIn()
         {
             await SetNotificationsContainerHeight();
@@ -93,10 +126,7 @@ namespace Gizmo.Client.UI.Components
 
             await Rerender();
 
-            do
-            {
-                await Task.Delay(100); //200
-            } while (!_slideInComplete);
+            await WaitForAnimationComplete(() => _slideInComplete, "notifications-slide-in-anim");
 
             _slideIn = false;
         }
@@ -105,16 +135,11 @@ namespace Gizmo.Client.UI.Components
         {
             _slideOut = true;
 
-            //Logger.LogDebug($"NotificationsMessage: SlideWindowOut {this.ToString()}");
-
             _slideOutComplete = false;
 
             await Rerender();
 
-            do
-            {
-                await Task.Delay(100); //200
-            } while (!_slideOutComplete);
+            await WaitForAnimationComplete(() => _slideOutComplete, "notifications-slide-out-anim");
 
             _slideOut = false;
             _hidden = true;
@@ -153,7 +178,6 @@ namespace Gizmo.Client.UI.Components
 
         private async Task UpdateUI()
         {
-            //await InvokeVoidAsync("writeLine", $"UpdateUI {this.ToString()}");
             if (await _animationLock.WaitAsync(TimeSpan.FromMinutes(1)))
             {
                 try
@@ -180,8 +204,6 @@ namespace Gizmo.Client.UI.Components
                         else
                         {
                             //Else keep in the snapshot only the new items and continue with render.
-                            //await InvokeVoidAsync("writeLine", $"Error: New items could be ignored {this.ToString()}");
-
                             snapShot = addedItems;
                         }
                     }
@@ -204,7 +226,6 @@ namespace Gizmo.Client.UI.Components
                             _componentSize.Width = (int)size.Width;
                             _componentSize.Height = (int)size.Height;
                             Logger.LogDebug($"NotificationsMessage: Height {_componentSize.Height.ToString()}");
-                            //await InvokeVoidAsync("writeLine", $"Height: {_componentSize.Height.ToString()}");
                             NotificationsService.RequestNotificationHostSize(_componentSize);
                             _isTemp = false;
 
@@ -221,7 +242,6 @@ namespace Gizmo.Client.UI.Components
                         else
                         {
                             Logger.LogError($"NotificationsMessage: Error: 0 items {this.ToString()}");
-                            //await InvokeVoidAsync("writeLine", $"Error: 0 items {this.ToString()}");
                         }
                     }
                     else
@@ -255,7 +275,6 @@ namespace Gizmo.Client.UI.Components
                             _componentSize.Width = (int)size.Width;
                             _componentSize.Height = (int)size.Height;
                             Logger.LogDebug($"NotificationsMessage: Height {_componentSize.Height.ToString()}");
-                            //await InvokeVoidAsync("writeLine", $"Height: {_componentSize.Height.ToString()}");
                             NotificationsService.RequestNotificationHostSize(_componentSize);
 
                             foreach (var item in _newItems)
@@ -282,14 +301,12 @@ namespace Gizmo.Client.UI.Components
                                 }
                                 await Rerender();
                                 _newlyAddedItemId = -1;
-                                //await InvokeVoidAsync("writeLine", $"tmpItemAdded {this.ToString()}");
 
                                 _currentAnimation = NotificationsAnimations.ItemSlideIn;
 
                                 await SetNotificationHeight(item);
                                 _componentSize.Height += (int)_lastItemHeight;
                                 Logger.LogDebug($"NotificationsMessage: Height {_componentSize.Height.ToString()}");
-                                //await InvokeVoidAsync("writeLine", $"Height: {_componentSize.Height.ToString()}");
                                 NotificationsService.RequestNotificationHostSize(_componentSize);
 
                                 await SlideItemIn(item);
@@ -300,6 +317,13 @@ namespace Gizmo.Client.UI.Components
                         }
                         else
                         {
+                            //the snapshot for this invocation is empty, but notifications changes are raised per item and
+                            //serialized behind the animation lock, so this snapshot can be stale by the time we run.
+                            //re-check the live service state and only slide the whole window out when nothing is showing,
+                            //otherwise a newer queued update will reconcile against the current state.
+                            if (NotificationsService.GetVisible().Any())
+                                return;
+
                             await SlideWindowOut();
                         }
 
@@ -319,7 +343,6 @@ namespace Gizmo.Client.UI.Components
             else
             {
                 Logger.LogError($"NotificationsMessage: Error: _animationLock not available {this.ToString()}");
-                //await InvokeVoidAsync("writeLine", $"Error: _animationLock not available {this.ToString()}");
             }
         }
 
@@ -353,12 +376,9 @@ namespace Gizmo.Client.UI.Components
                     _dismissAllItems = _visible.Select(a => a.Identifier).ToList();
                     NotificationsService.DismissAll();
 
-                    //await InvokeVoidAsync("writeLine", $"CloseNotifications {this.ToString()}");
-
                     await SlideWindowOut();
 
                     _visible.Clear();
-                    //_dismissAllItems.Clear();
                     await Rerender();
                 }
                 catch
@@ -375,7 +395,6 @@ namespace Gizmo.Client.UI.Components
         private async void ViewState_OnChange(object sender, System.EventArgs e)
         {
             Logger.LogDebug($"NotificationsMessage: ViewState_OnChange {this.ToString()}");
-            //await InvokeVoidAsync("writeLine", $"ViewState_OnChange {this.ToString()}");
             await UpdateUI();
         }
 
@@ -419,11 +438,8 @@ namespace Gizmo.Client.UI.Components
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            //Logger.LogDebug($"NotificationsMessage: After Render firstRender:{firstRender} {this.ToString()}");
             if (firstRender)
             {
-                //await Task.Delay(10);
-
                 bool done = false;
 
                 do
@@ -432,19 +448,13 @@ namespace Gizmo.Client.UI.Components
 
                     try
                     {
-                        //Logger.LogDebug($"NotificationsMessage: Before getFontSize");
                         _fontSize = await JsInvokeAsync<float>("getFontSize");
-                        //Logger.LogDebug($"NotificationsMessage: After getFontSize");
 
                         await JsRuntime.InvokeVoidAsync("registerAnimatedComponent", Ref);
                         _animationEventInterop = new AnimationEventInterop(JsRuntime);
                         await _animationEventInterop.SetupAnimationEventCallback(args => AnimationHandler(args));
 
-                        //_hidden = false;
-
-                        //Logger.LogDebug($"NotificationsMessage: Before UpdateUI");
                         await UpdateUI();
-                        //Logger.LogDebug($"NotificationsMessage: After UpdateUI");
 
                         if (_retriesCounter > 1)
                         {
@@ -460,14 +470,7 @@ namespace Gizmo.Client.UI.Components
                     }
                     catch (Exception ex)
                     {
-                        //try
-                        //{
                         Logger.LogError($"NotificationsMessage: {ex.Message}");
-                        //}
-                        //catch (Exception ex2)
-                        //{
-                        //    _logErrorCounter += 1;
-                        //}
                         await Task.Delay(100);
                     }
                 } while (!done);
@@ -490,8 +493,6 @@ namespace Gizmo.Client.UI.Components
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-
-            //await InvokeVoidAsync("writeLine", $"OnInitializedAsync {this.ToString()}");
         }
 
         #endregion
@@ -510,8 +511,6 @@ namespace Gizmo.Client.UI.Components
             {
                 Logger.LogError(ex, "exception unregisterAnimatedComponent");
             }
-
-            //Logger.LogDebug($"NotificationsMessage: DisposeAsync {this.ToString()}");
 
             if (_animationEventInterop != null)
             {
