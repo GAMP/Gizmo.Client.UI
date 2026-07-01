@@ -1,0 +1,316 @@
+/* =====================================================================
+   GIZMO CLIENT UI — "INDUSTRIAL" THEME
+   Gunmetal · brushed graphite · machined amber
+   ---------------------------------------------------------------------
+   A crafted dark theme, not just a recolor. Design system:
+     · Surfaces are layered gunmetal with a faint brushed-metal grain
+       and a 1px top light-line, so panels read as milled plates.
+     · Elevation is real: stacked ambient + key shadows per layer.
+     · Accent is machined amber with a full interaction ladder
+       (rest / hover / active / focus-ring / disabled).
+     · Edges are tight (2–3px), borders are hairline-cold, glows are
+       replaced with inset bevels — the "CNC panel" look.
+
+   Delivery: paste into the Manager client custom-CSS field (served as
+   style.css, loaded after the compiled theme → wins the cascade).
+   Retune everything from the :root tokens. Remove to revert.
+   ===================================================================== */
+
+:root {
+    /* ---------- Accent: machined amber ---------- */
+    --ind-accent:        #E0912F;
+    --ind-accent-hi:     #FFB253;   /* hover / highlight edge   */
+    --ind-accent-lo:     #B06D18;   /* pressed                  */
+    --ind-accent-ink:    #150F06;   /* text on accent           */
+    --ind-accent-tint:   rgba(224, 145, 47, 0.12);
+    --ind-accent-tint-2: rgba(224, 145, 47, 0.22);
+    --ind-accent-line:   rgba(224, 145, 47, 0.55);
+    --ind-accent-glow:   rgba(224, 145, 47, 0.35);
+
+    /* ---------- Gunmetal surface ramp ---------- */
+    --ind-0:  #07090B;   /* app void                 */
+    --ind-1:  #0E1114;   /* base plate               */
+    --ind-2:  #14181C;   /* panels / cards           */
+    --ind-3:  #1B2025;   /* tiles / rows             */
+    --ind-4:  #232A30;   /* inputs / menus           */
+    --ind-5:  #2C343B;   /* hover surface            */
+
+    /* ---------- Structure ---------- */
+    --ind-line:        rgba(150, 170, 190, 0.10);   /* hairline    */
+    --ind-line-2:      rgba(150, 170, 190, 0.18);   /* stronger    */
+    --ind-top-light:   rgba(255, 255, 255, 0.055);  /* milled edge */
+    --ind-inner-dark:  rgba(0, 0, 0, 0.45);
+
+    /* ---------- Text ---------- */
+    --ind-fg:      #E9ECEF;
+    --ind-fg-dim:  rgba(233, 236, 239, 0.56);
+    --ind-fg-mute: rgba(233, 236, 239, 0.32);
+
+    /* ---------- Elevation (ambient + key) ---------- */
+    --ind-elev-1: 0 1px 0 var(--ind-top-light) inset, 0 2px 6px rgba(0,0,0,0.45);
+    --ind-elev-2: 0 1px 0 var(--ind-top-light) inset, 0 8px 24px rgba(0,0,0,0.55), 0 2px 6px rgba(0,0,0,0.4);
+    --ind-elev-3: 0 1px 0 var(--ind-top-light) inset, 0 18px 48px rgba(0,0,0,0.62), 0 4px 12px rgba(0,0,0,0.5);
+
+    --ind-radius:  0.3rem;
+    --ind-radius-s: 0.2rem;
+
+    /* Brushed-metal grain (subtle vertical striations, drawn in CSS) */
+    --ind-grain:
+        repeating-linear-gradient(
+            90deg,
+            rgba(255,255,255,0.010) 0px,
+            rgba(255,255,255,0.010) 1px,
+            rgba(0,0,0,0.012) 2px,
+            rgba(0,0,0,0.012) 3px
+        );
+}
+
+/* =====================================================================
+   1. BASE — void + vignette + faint radial forge-glow at top
+   ===================================================================== */
+html, body {
+    background:
+        radial-gradient(120% 90% at 50% -10%, #171B1F 0%, var(--ind-1) 42%, var(--ind-0) 100%) fixed !important;
+    color: var(--ind-fg) !important;
+}
+
+/* Wallpaper reduced to a dark machined backdrop */
+.giz-background img {
+    filter: grayscale(0.6) brightness(0.38) contrast(1.08) !important;
+}
+.giz-background::after {
+    content: "";
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+        radial-gradient(130% 120% at 50% 0%, rgba(0,0,0,0) 38%, rgba(0,0,0,0.72) 100%),
+        var(--ind-grain);
+    mix-blend-mode: normal;
+}
+
+/* =====================================================================
+   2. BUTTONS — machined amber key + tactile press
+   ===================================================================== */
+[client-theme] .giz-button--fill.primary:not(.disabled) {
+    background: linear-gradient(180deg, var(--ind-accent-hi) 0%, var(--ind-accent) 52%, var(--ind-accent-lo) 100%) !important;
+    color: var(--ind-accent-ink) !important;
+    font-weight: 600 !important;
+    border-radius: var(--ind-radius) !important;
+    box-shadow:
+        0 1px 0 rgba(255,255,255,0.35) inset,
+        0 -1px 0 rgba(0,0,0,0.25) inset,
+        0 2px 8px rgba(0,0,0,0.5),
+        0 0 0 0.1rem rgba(0,0,0,0.35) !important;
+    transition: transform .06s ease, filter .12s ease, box-shadow .12s ease !important;
+}
+[client-theme] .giz-button--fill.primary:not(.disabled):hover { filter: brightness(1.06) !important; }
+[client-theme] .giz-button--fill.primary:not(.disabled):active {
+    transform: translateY(1px) !important;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.4) inset, 0 1px 3px rgba(0,0,0,0.5) !important;
+    filter: brightness(0.94) !important;
+}
+[client-theme] .giz-button__progress {
+    background: linear-gradient(180deg, var(--ind-accent-hi), var(--ind-accent)) !important;
+}
+[client-theme] .giz-button--fill.disabled,
+[client-theme] .giz-button--fill[disabled] {
+    background: var(--ind-4) !important;
+    color: var(--ind-fg-mute) !important;
+    box-shadow: 0 1px 0 var(--ind-top-light) inset !important;
+}
+
+/* Outline / text — steel rim */
+[client-theme] .giz-button--outline,
+[client-theme] .giz-button--outline.primary {
+    background: transparent !important;
+    border: 0.1rem solid var(--ind-accent-line) !important;
+    color: var(--ind-accent-hi) !important;
+    border-radius: var(--ind-radius) !important;
+    transition: background .12s ease, border-color .12s ease !important;
+}
+[client-theme] .giz-button--outline:hover {
+    background: var(--ind-accent-tint) !important;
+    border-color: var(--ind-accent-hi) !important;
+}
+[client-theme] .giz-button--text.primary:not(.disabled) { color: var(--ind-accent-hi) !important; }
+
+/* =====================================================================
+   3. HEADER — brushed control bar
+   ===================================================================== */
+.giz-header {
+    background:
+        linear-gradient(180deg, #191E22 0%, rgba(12,14,16,0.9) 100%),
+        var(--ind-grain) !important;
+    border-bottom: 0.1rem solid var(--ind-line-2) !important;
+    box-shadow: 0 1px 0 var(--ind-top-light) inset, 0 3px 16px rgba(0,0,0,0.5) !important;
+}
+.giz-header__modules-menu-item > a { color: var(--ind-fg-dim) !important; transition: color .12s ease !important; }
+.giz-header__modules-menu-item > a:hover { color: var(--ind-fg) !important; }
+.giz-header__modules-menu-item > a.active,
+.giz-header__modules-menu-item > a.active .giz-icon--large { color: var(--ind-accent) !important; }
+.giz-header__modules-menu-item > a.active::before {
+    background: linear-gradient(90deg, transparent, var(--ind-accent) 20%, var(--ind-accent) 80%, transparent) !important;
+    box-shadow: 0 0 10px var(--ind-accent-glow) !important;
+    height: 0.2rem !important;
+}
+
+/* =====================================================================
+   4. CARDS / TILES — milled plates
+   ===================================================================== */
+.giz-card,
+.giz-app-card,
+.giz-executable-card,
+.giz-product-card,
+.giz-client-dialog,
+.giz-client-dialog__card,
+.giz-menu-notifications {
+    background:
+        linear-gradient(180deg, var(--ind-3) 0%, var(--ind-2) 100%),
+        var(--ind-grain) !important;
+    border: 0.1rem solid var(--ind-line) !important;
+    border-radius: var(--ind-radius) !important;
+    box-shadow: var(--ind-elev-2) !important;
+}
+.giz-app-card,
+.giz-executable-card,
+.giz-product-card {
+    transition: transform .14s cubic-bezier(.2,.7,.3,1), border-color .14s ease, box-shadow .14s ease !important;
+}
+.giz-app-card:hover,
+.giz-executable-card:hover,
+.giz-product-card:hover {
+    transform: translateY(-2px) !important;
+    border-color: var(--ind-accent-line) !important;
+    box-shadow: var(--ind-elev-3), 0 0 0 0.1rem var(--ind-accent-tint) !important;
+}
+
+/* =====================================================================
+   5. INPUTS / SELECTS / MENUS / TOOLTIPS — recessed panels
+   ===================================================================== */
+.giz-input-root,
+.giz-text-input,
+.giz-select,
+.giz-multi-select {
+    background-color: var(--ind-4) !important;
+    border: 0.1rem solid var(--ind-line) !important;
+    border-radius: var(--ind-radius) !important;
+    color: var(--ind-fg) !important;
+    box-shadow: 0 1px 2px var(--ind-inner-dark) inset !important;
+}
+.giz-input-root:focus-within,
+.giz-text-input:focus-within {
+    border-color: var(--ind-accent) !important;
+    box-shadow: 0 0 0 0.15rem var(--ind-accent-tint-2), 0 1px 2px var(--ind-inner-dark) inset !important;
+}
+::placeholder { color: var(--ind-fg-mute) !important; }
+
+.giz-menu,
+.giz-dropdown-menu,
+.giz-client-popup,
+.giz-select__menu,
+.giz-global-search__results,
+.giz-tooltip {
+    background:
+        linear-gradient(180deg, var(--ind-4) 0%, var(--ind-3) 100%),
+        var(--ind-grain) !important;
+    border: 0.1rem solid var(--ind-line-2) !important;
+    border-radius: var(--ind-radius) !important;
+    box-shadow: var(--ind-elev-3) !important;
+    color: var(--ind-fg) !important;
+}
+/* tooltip CSS-triangle arrows inherit the menu grey */
+.giz-tooltip__arrow--top    { border-color: var(--ind-4) transparent transparent transparent !important; }
+.giz-tooltip__arrow--bottom { border-color: transparent transparent var(--ind-4) transparent !important; }
+
+.giz-menu .selected,
+.giz-dropdown-menu .active,
+.giz-select__menu .selected,
+.giz-menu-notification-item:hover {
+    background-color: var(--ind-accent-tint) !important;
+    color: var(--ind-accent-hi) !important;
+    box-shadow: inset 0.2rem 0 0 var(--ind-accent) !important;   /* left keyline */
+}
+
+/* =====================================================================
+   6. CHIPS / CHECKBOX / RADIO — accent selection
+   ===================================================================== */
+[client-theme] .giz-chip {
+    color: var(--ind-accent-hi) !important;
+    background-color: var(--ind-3) !important;
+    border: 0.1rem solid var(--ind-line) !important;
+    border-radius: var(--ind-radius-s) !important;
+}
+[client-theme] .giz-chip-group .selected,
+[client-theme] .giz-chip.selected {
+    background: linear-gradient(180deg, var(--ind-accent-hi), var(--ind-accent)) !important;
+    color: var(--ind-accent-ink) !important;
+    border-color: transparent !important;
+}
+[client-theme] .giz-check-box input:checked + label:before,
+[client-theme] .giz-radio-button input:checked + label:before {
+    background-color: var(--ind-accent) !important;
+    border-color: var(--ind-accent) !important;
+    box-shadow: 0 0 0 0.15rem var(--ind-accent-tint) !important;
+}
+
+/* =====================================================================
+   7. TABS / DOCK / QUICK-LAUNCH / PROGRESS
+   ===================================================================== */
+.giz-client-tab .active { color: var(--ind-accent) !important; }
+.giz-client-tab .active::after,
+.giz-client-tab__indicator {
+    background: linear-gradient(90deg, var(--ind-accent-lo), var(--ind-accent), var(--ind-accent-hi)) !important;
+}
+
+.giz-dock {
+    background: linear-gradient(180deg, var(--ind-3), var(--ind-2)) !important;
+    border: 0.1rem solid var(--ind-line) !important;
+    box-shadow: var(--ind-elev-2) !important;
+}
+.giz-quick-launcher { border-color: var(--ind-accent-line) !important; }
+.giz-quick-launcher .active,
+.giz-quick-launcher__indicator { background-color: var(--ind-accent) !important; }
+
+.giz-progress-bar__value-bar {
+    background: linear-gradient(90deg, var(--ind-accent-lo), var(--ind-accent) 60%, var(--ind-accent-hi)) !important;
+    box-shadow: 0 0 8px var(--ind-accent-glow) !important;
+}
+.giz-progress-bar__background { background-color: var(--ind-4) !important; }
+
+/* Spinner + circular progress take the accent stroke */
+.giz-animate-spinner, .giz-circular-progress-bar { color: var(--ind-accent) !important; }
+
+/* =====================================================================
+   8. LINKS / BADGES / TOASTS / DIVIDERS / SCROLLBARS
+   ===================================================================== */
+a { color: var(--ind-accent-hi) !important; }
+a:hover { color: var(--ind-accent) !important; }
+
+.giz-badge { box-shadow: 0 0 0 0.15rem var(--ind-2) !important; }   /* seat badge on plate */
+
+.giz-toast--accent {
+    background: linear-gradient(180deg, var(--ind-accent-hi), var(--ind-accent)) !important;
+    color: var(--ind-accent-ink) !important;
+    box-shadow: var(--ind-elev-2) !important;
+}
+
+.giz-divider { background-color: var(--ind-line) !important; }
+
+.giz-scrollbar--v::-webkit-scrollbar-thumb,
+.giz-scrollbar-slim--v::-webkit-scrollbar-thumb,
+.giz-scrollbar--h::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--ind-5), var(--ind-3)) !important;
+    border: 0.1rem solid var(--ind-line) !important;
+    border-radius: var(--ind-radius-s) !important;
+}
+.giz-scrollbar--v:hover::-webkit-scrollbar-thumb,
+.giz-scrollbar-slim--v:hover::-webkit-scrollbar-thumb { background: var(--ind-accent-line) !important; }
+.giz-scrollbar--v::-webkit-scrollbar-track,
+.giz-scrollbar-slim--v::-webkit-scrollbar-track,
+.giz-scrollbar--h::-webkit-scrollbar-track { background: rgba(0,0,0,0.28) !important; }
+
+/* =====================================================================
+   9. LOGIN / LOCK — host-number gets the machined-amber readout
+   ===================================================================== */
+.giz-host-number { color: var(--ind-accent) !important; text-shadow: 0 0 12px var(--ind-accent-glow) !important; }
+.giz-user-lock .giz-input-root--outline { border-bottom: 0.2rem solid var(--ind-line-2) !important; }
+.giz-user-lock .giz-input-root--outline:focus-within { border-bottom-color: var(--ind-accent) !important; }
