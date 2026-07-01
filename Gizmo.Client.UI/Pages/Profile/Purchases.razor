@@ -26,7 +26,7 @@
                                 <div class="order-line-details">
                                     @foreach (var orderLine in order.OrderLines)
                                     {
-                                        @if (orderLine.LineType != LineType.SessionTime && orderLine.LineType != LineType.FixedTime && orderLine.ProductId.HasValue)
+                                        @if (ProductDetailsNavigationEnabled && orderLine.LineType != LineType.SessionTime && orderLine.LineType != LineType.FixedTime && orderLine.ProductId.HasValue)
                                         {
                                             <a class="order-line-details-product-name" href="@($"{ClientRoutes.ProductDetailsRoute}?ProductId={orderLine.ProductId.Value}")">@orderLine.ProductName</a>
                                         }

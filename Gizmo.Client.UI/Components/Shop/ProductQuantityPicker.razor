@@ -1,7 +1,10 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 
-@if (_product.DisallowPurchase)
+@if (!IsShopEnabled)
+{
+}
+else if (_product.DisallowPurchase)
 {
     <ClientTooltip Text="@_product.DisallowPurchaseReason" Class="giz-product-host-groups-tooltip">
         <ChildContent>

@@ -27,6 +27,9 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         ClientServerCartViewService ClientServerCartViewService { get; set; }
 
+        [Inject]
+        ProductDetailsPageViewState ProductDetailsPageViewState { get; set; }
+
         [Parameter]
         public int ProductId { get; set; }
 
@@ -37,6 +40,9 @@ namespace Gizmo.Client.UI.Shared
                 _clickHandled = false;
                 return;
             }
+
+            if (ProductDetailsPageViewState.DisableProductDetails)
+                return;
 
             NavigationService.NavigateTo(ClientRoutes.ProductDetailsRoute + $"?ProductId={ProductId.ToString()}");
         }
