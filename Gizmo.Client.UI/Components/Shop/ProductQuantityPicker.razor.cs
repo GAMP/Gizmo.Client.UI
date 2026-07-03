@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 
+using Gizmo.Client.Options;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -7,6 +8,7 @@ using Gizmo.Web.Components;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Options;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -31,6 +33,11 @@ namespace Gizmo.Client.UI.Components
 
         [Inject]
         ClientServerCartViewService ClientServerCartViewService { get; set; }
+
+        [Inject]
+        IOptionsMonitor<ClientShopOptions> ShopOptions { get; set; }
+
+        public bool IsShopEnabled => !ShopOptions.CurrentValue.Disabled;
 
         [Parameter]
         public int ProductId { get; set; }

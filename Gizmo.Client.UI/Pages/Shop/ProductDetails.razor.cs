@@ -40,6 +40,12 @@ namespace Gizmo.Client.UI.Pages
         [SupplyParameterFromQuery]
         public int ProductId { get; set; }
 
+        /// <summary>
+        /// Gets whether purchasing (cart, quantity picker, related products) is available on this page.
+        /// Disabled when the shop is off or product details are disabled, in which case the page is view-only.
+        /// </summary>
+        private bool CanPurchase => ViewState.ProductDetailsNavigationEnabled;
+
         #endregion
 
         private Task OnClickBackButtonHandler()

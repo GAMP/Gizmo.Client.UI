@@ -138,7 +138,7 @@
                                 <DataGridColumn Field="@(nameof(TimeProductViewState.AvailableHostGroups))" TItemType="TimeProductViewState" Context="timeProduct">
                                     <HeaderTemplate></HeaderTemplate>
                                     <CellTemplate>
-                                        @if (timeProduct.TimeProductType == UsageType.TimeOffer && timeProduct.ProductId.HasValue)
+                                        @if (ProductDetailsNavigationEnabled && timeProduct.TimeProductType == UsageType.TimeOffer && timeProduct.ProductId.HasValue)
                                         {
                                             <IconButton Size="ButtonSizes.Small" Variant="ButtonVariants.Text" SVGIcon="Icons.Open_Client" Class="giz-user-time-products-action" @onclick="@(() => OpenDetails(timeProduct.ProductId.Value))" />
                                         }
