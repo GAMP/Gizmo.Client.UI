@@ -39,9 +39,6 @@ namespace Gizmo.Client.UI.Pages.Registration
 
         private static string GetProviderDisplayName(Guid channelGuid, string fallback)
         {
-            if (!string.IsNullOrWhiteSpace(fallback))
-                return fallback;
-
             var id = channelGuid.ToString("D");
             
             //TODO вынести в отдельный хелпер
@@ -70,14 +67,9 @@ namespace Gizmo.Client.UI.Pages.Registration
             return Icons.Globe_Client;
         }
 
-        private static string GetProviderCssClass(Guid channelGuid)
+        private static string GetProviderCssClass(bool isPrimary)
         {
-            var id = channelGuid.ToString("D");
-            if (id.Equals(CommunicationChannels.Telegram, StringComparison.OrdinalIgnoreCase))
-                return "giz-registration-provider-btn--telegram";
-            if (id.Equals(CommunicationChannels.FacebookMessenger, StringComparison.OrdinalIgnoreCase))
-                return "giz-registration-provider-btn--facebook";
-            return string.Empty;
+            return isPrimary ? "giz-registration-provider-btn--primary" : string.Empty;
         }
     }
 }

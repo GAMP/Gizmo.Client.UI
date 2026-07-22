@@ -5,6 +5,7 @@ using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -69,16 +70,23 @@ namespace Gizmo.Client.UI.Pages
             PasswordRecoveryViewService.Reset();
         }
 
-        private Task SelectRecoveryChannel(ICollection<Button> selectedItems)
+        private Task SelectRecoveryProvider(ICollection<Button> selectedItems)
         {
-            var selectedChannel = selectedItems.Any(item => item.Name == "Sms")
-                ? PasswordRecoveryChannel.Sms
-                : PasswordRecoveryChannel.Email;
+            var selectedItem = selectedItems.FirstOrDefault();
+            if (selectedItem is null || !Guid.TryParse(selectedItem.Name, out var providerPublicId))
+                return Task.CompletedTask;
 
-            var provider = ViewState.AvailableProviders.FirstOrDefault(item => item.Channel == selectedChannel);
+            var provider = ViewState.AvailableProviders.FirstOrDefault(item => item.PublicId == providerPublicId);
             PasswordRecoveryViewService.SetActiveProvider(provider);
 
             return Task.CompletedTask;
+        }
+
+        private string GetProviderDisplayName(PasswordRecoveryProvider provider)
+        {
+            return provider.Channel == PasswordRecoveryChannel.Sms
+                ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PHONE_NUMBER))
+                : LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_EMAIL_ADDRESS));
         }
 
         protected override void OnInitialized()

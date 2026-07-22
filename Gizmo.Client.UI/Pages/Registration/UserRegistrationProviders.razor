@@ -38,7 +38,7 @@
                     @foreach (var provider in ViewState.PriorityProviders)
                     {
                         var displayName = GetProviderDisplayName(provider.ChannelGuid, provider.Name);
-                        <button class="giz-registration-provider-btn @GetProviderCssClass(provider.ChannelGuid)"
+                        <button class="giz-registration-provider-btn @GetProviderCssClass(provider.IsPrimary)"
                                 type="button"
                                 @onclick="@(() => SelectProvider(provider.PublicId))">
                             <Icon SVGIcon="@GetProviderIcon(provider.ChannelGuid)" />
@@ -65,7 +65,7 @@
                     @foreach (var provider in ViewState.AltProviders)
                     {
                         var displayName = GetProviderDisplayName(provider.ChannelGuid, provider.Name);
-                        <button class="giz-registration-provider-btn @GetProviderCssClass(provider.ChannelGuid)"
+                        <button class="giz-registration-provider-btn @GetProviderCssClass(provider.IsPrimary)"
                                 type="button"
                                 @onclick="@(() => SelectProvider(provider.PublicId))">
                             <Icon SVGIcon="@GetProviderIcon(provider.ChannelGuid)" />
