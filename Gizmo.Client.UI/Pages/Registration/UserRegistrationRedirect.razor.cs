@@ -45,38 +45,13 @@ namespace Gizmo.Client.UI.Pages.Registration
 
         private string GetProviderDisplayName()
         {
-            var provider = RegistrationSession.SelectedProvider;
-            if (provider is null)
-                return string.Empty;
-
-            if (!string.IsNullOrWhiteSpace(provider.Name))
-                return provider.Name;
-
-            var channelGuid = provider.ChannelGuid.ToString("D");
-            if (channelGuid.Equals(CommunicationChannels.Telegram, StringComparison.OrdinalIgnoreCase))
-                return "Telegram";
-            if (channelGuid.Equals(CommunicationChannels.FacebookMessenger, StringComparison.OrdinalIgnoreCase))
-                return "Facebook";
-            if (channelGuid.Equals(CommunicationChannels.Sms, StringComparison.OrdinalIgnoreCase))
-                return "SMS";
-            if (channelGuid.Equals(CommunicationChannels.WhatsApp, StringComparison.OrdinalIgnoreCase))
-                return "WhatsApp";
-            if (channelGuid.Equals(CommunicationChannels.Viber, StringComparison.OrdinalIgnoreCase))
-                return "Viber";
-            if (channelGuid.Equals(CommunicationChannels.Email, StringComparison.OrdinalIgnoreCase))
-                return "Email";
-
-            return provider.Name ?? string.Empty;
+            return RegistrationSession.SelectedProvider?.Name ?? string.Empty;
         }
 
         private Icons GetProviderIcon()
         {
-            var channelGuid = RegistrationSession.SelectedProvider?.ChannelGuid.ToString("D") ?? string.Empty;
-            if (channelGuid.Equals(CommunicationChannels.Telegram, StringComparison.OrdinalIgnoreCase))
-                return Icons.Telegram_Client;
-            if (channelGuid.Equals(CommunicationChannels.FacebookMessenger, StringComparison.OrdinalIgnoreCase))
-                return Icons.Facebook_Client;
-            return Icons.Globe_Client;
+            var channelGuid = RegistrationSession.SelectedProvider?.ChannelGuid ?? Guid.Empty;
+            return ChannelIcons.ResolveChannelIcon(channelGuid);
         }
 
         private string GetProviderIconCssClass()
