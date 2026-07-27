@@ -17,9 +17,12 @@ namespace Gizmo.Client.UI.Components
 
     public partial class PhoneNumberField : CustomDOMComponentBase
     {
+        private const string DEFAULT_NATIONAL_MASK = "###-###-####";
+
         private bool _isLoaded;
         private readonly Dictionary<string, string> _regionCodes = new();
         private readonly Dictionary<string, string?> _masks = new();
+        private readonly Dictionary<string, int> _maxLengths = new();
         private List<IconSelectCountry> _countries = new();
 
         [Inject]
@@ -91,12 +94,65 @@ namespace Gizmo.Client.UI.Components
             return _countries.FirstOrDefault(c => c.Text == SelectedCountryName);
         }
 
+        /// <summary>
+        /// Builds the mask for the value layout actually stored by the phone input: calling-code digits
+        /// followed by the national significant number. The server mask is generated from the national
+        /// example (RU: "8 (912) 345-67-89" -> "# (###) ###-##-##"), so it can carry a trunk-prefix
+        /// placeholder that is not part of the stored value, and it never covers the calling code.
+        /// Both are corrected here, otherwise the '#' count caps input below the real number length
+        /// (e.g. Greece: mask 10 digits, needed 2 + 10).
+        /// </summary>
         private string GetMask()
         {
             var selected = GetSelectedCountry();
-            if (selected != null && _masks.TryGetValue(selected.Text, out var mask) && mask != null)
+
+            var nationalMask = DEFAULT_NATIONAL_MASK;
+            if (selected != null)
+            {
+                _masks.TryGetValue(selected.Text, out var serverMask);
+                _maxLengths.TryGetValue(selected.Text, out var maxLength);
+                nationalMask = ToNationalSignificantMask(serverMask, maxLength) ?? DEFAULT_NATIONAL_MASK;
+            }
+
+            var lockedLength = GetLockedPrefixLength();
+            if (lockedLength == 0)
+                return nationalMask;
+
+            return new string('#', lockedLength) + " " + nationalMask;
+        }
+
+        /// <summary>
+        /// Reduces the server mask to the national significant number, i.e. to exactly <paramref name="maxLength"/>
+        /// digit placeholders, by dropping the leading trunk-prefix placeholders and the separators after them.
+        /// Returns null when neither a mask nor a length is known.
+        /// </summary>
+        private static string? ToNationalSignificantMask(string? mask, int maxLength)
+        {
+            if (string.IsNullOrEmpty(mask))
+                return maxLength > 0 ? new string('#', maxLength) : null;
+
+            if (maxLength <= 0)
                 return mask;
-            return "###-###-####";
+
+            var placeholders = mask.Count(c => c == '#');
+
+            if (placeholders == maxLength)
+                return mask;
+
+            //The mask cannot hold the whole national number, so grouping is dropped in favour of capacity.
+            if (placeholders < maxLength)
+                return new string('#', maxLength);
+
+            var extra = placeholders - maxLength;
+            var index = 0;
+            while (index < mask.Length && extra > 0)
+            {
+                if (mask[index] == '#')
+                    extra -= 1;
+                index += 1;
+            }
+
+            return mask.Substring(index).TrimStart(' ', '-', '.', '/');
         }
 
         private int GetLockedPrefixLength()
@@ -147,6 +203,7 @@ namespace Gizmo.Client.UI.Components
             {
                 _regionCodes[country.CountryName] = country.RegionCode;
                 _masks[country.CountryName] = country.InputMask;
+                _maxLengths[country.CountryName] = country.MaxLength;
                 _countries.Add(new IconSelectCountry
                 {
                     Text = country.CountryName,
