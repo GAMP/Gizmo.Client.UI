@@ -41,7 +41,7 @@ namespace Gizmo.Client.UI.Pages.Registration
         public bool ShowBirthDate => RegistrationSession.RequiredUserInfo?.BirthDate == true;
         public bool ShowSex => RegistrationSession.RequiredUserInfo?.Sex == true;
         public bool ShowEmail => RegistrationSession.Flow != RegistrationFlow.Email && RegistrationSession.RequiredUserInfo?.Email == true;
-        public bool ShowMobilePhone => RegistrationSession.Flow != RegistrationFlow.Sms && RegistrationSession.RequiredUserInfo?.Mobile == true;
+        public bool ShowMobilePhone => !RegistrationSession.HasConfirmedMobilePhone && RegistrationSession.RequiredUserInfo?.Mobile == true;
         public bool ShowPhone => RegistrationSession.RequiredUserInfo?.Phone == true;
 
         public string FirstNameLabel => LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_FIRST_NAME));
@@ -73,6 +73,25 @@ namespace Gizmo.Client.UI.Pages.Registration
         {
             UserRegistrationBasicFieldsViewService.SetMobilePhone(value);
             return Task.CompletedTask;
+        }
+
+        private const int PhoneMaxLength = 20;
+
+        private Task<bool> ValidatePhoneCharacterAsync(char character)
+        {
+            var current = ViewState.Phone ?? string.Empty;
+
+            if (current.Length >= PhoneMaxLength)
+                return Task.FromResult(false);
+
+            if (char.IsDigit(character))
+                return Task.FromResult(true);
+
+            // '+' is only ever allowed into an empty field, so it can only land in the first position.
+            if (character == '+')
+                return Task.FromResult(current.Length == 0);
+
+            return Task.FromResult(false);
         }
 
         public void OnCloseButtonClickHandler()

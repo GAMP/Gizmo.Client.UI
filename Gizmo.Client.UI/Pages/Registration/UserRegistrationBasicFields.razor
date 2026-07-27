@@ -29,6 +29,7 @@
                            ValueExpression="@(() => ViewState.Username)"
                            Size="InputSizes.Small"
                            IsFullWidth="true"
+                           MaxLength="30"
                            Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_USERNAME))" />
             </div>
             @if (ShowPassword)
@@ -45,6 +46,7 @@
                                                ValueExpression="@(() => ViewState.Password)"
                                                Size="InputSizes.Small"
                                                IsFullWidth="true"
+                                               MaxLength="24"
                                                Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PASSWORD))" />
                             </ChildContent>
                             <TooltipContent>
@@ -61,6 +63,7 @@
                                        ValueExpression="@(() => ViewState.Password)"
                                        Size="InputSizes.Small"
                                        IsFullWidth="true"
+                                       MaxLength="24"
                                        Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PASSWORD))" />
                     }
 
@@ -70,6 +73,7 @@
                                    ValueExpression="@(() => ViewState.RepeatPassword)"
                                    Size="InputSizes.Small"
                                    IsFullWidth="true"
+                                   MaxLength="24"
                                    Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CONFIRM_PASSWORD))" />
                 </div>
             }
@@ -83,6 +87,7 @@
                                    ValueExpression="@(() => ViewState.FirstName)"
                                    Size="InputSizes.Small"
                                    IsFullWidth="true"
+                                   MaxLength="45"
                                    Label="@FirstNameLabel" />
                     }
                     @if (ShowLastName)
@@ -92,6 +97,7 @@
                                    ValueExpression="@(() => ViewState.LastName)"
                                    Size="InputSizes.Small"
                                    IsFullWidth="true"
+                                   MaxLength="45"
                                    Label="@LastNameLabel" />
                     }
                 </div>
@@ -149,6 +155,7 @@
                                ValueExpression="@(() => ViewState.Email)"
                                Size="InputSizes.Small"
                                IsFullWidth="true"
+                               MaxLength="254"
                                Label="@EmailLabel" />
                 </div>
             }
@@ -161,6 +168,8 @@
                                ValueExpression="@(() => ViewState.Phone)"
                                Size="InputSizes.Small"
                                IsFullWidth="true"
+                               MaxLength="20"
+                               ValidateFunction="@ValidatePhoneCharacterAsync"
                                Label="@PhoneLabel" />
                 </div>
             }
