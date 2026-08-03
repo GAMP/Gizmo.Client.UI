@@ -33,7 +33,7 @@ namespace Gizmo.Client.UI.Components.Login
         public string Subtitle { get; set; } = string.Empty;
 
         [Parameter]
-        public EventCallback<Guid> OnSelect { get; set; }
+        public EventCallback<int> OnSelect { get; set; }
 
         private static string GetProviderCssClass(bool isPrimary) =>
             isPrimary ? "giz-registration-provider-btn--primary" : string.Empty;

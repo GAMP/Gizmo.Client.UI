@@ -39,8 +39,8 @@ namespace Gizmo.Client.UI.Pages
         private IReadOnlyList<ProviderOption> AltOptions =>
             ViewState.AltProviders.Select(ToOption).ToList();
 
-        public Task SelectProvider(Guid publicId) =>
-            PasswordRecoveryViewService.SelectProviderAsync(publicId);
+        public Task SelectProvider(int methodId) =>
+            PasswordRecoveryViewService.SelectProviderAsync(methodId);
 
         protected override void OnInitialized()
         {
@@ -57,6 +57,6 @@ namespace Gizmo.Client.UI.Pages
         }
 
         private static ProviderOption ToOption(PasswordRecoveryProvider provider) =>
-            new(provider.PublicId, provider.Name, provider.ChannelGuid, provider.IsPrimary);
+            new(provider.MethodId, provider.Name, provider.ChannelGuid, provider.IsPrimary);
     }
 }

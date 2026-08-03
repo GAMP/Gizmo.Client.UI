@@ -16,7 +16,7 @@
         {
             <button class="giz-registration-provider-btn @GetProviderCssClass(provider.IsPrimary)"
                     type="button"
-                    @onclick="@(() => OnSelect.InvokeAsync(provider.PublicId))">
+                    @onclick="@(() => OnSelect.InvokeAsync(provider.MethodId))">
                 <Icon SVGIcon="@ChannelIcons.ResolveChannelIcon(provider.ChannelGuid)" />
                 @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_CONTINUE_WITH), provider.Name)
             </button>
@@ -42,7 +42,7 @@
         {
             <button class="giz-registration-provider-btn @GetProviderCssClass(provider.IsPrimary)"
                     type="button"
-                    @onclick="@(() => OnSelect.InvokeAsync(provider.PublicId))">
+                    @onclick="@(() => OnSelect.InvokeAsync(provider.MethodId))">
                 <Icon SVGIcon="@ChannelIcons.ResolveChannelIcon(provider.ChannelGuid)" />
                 @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_CONTINUE_WITH), provider.Name)
             </button>

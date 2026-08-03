@@ -1,4 +1,7 @@
+using System;
 using System.Threading.Tasks;
+using Gizmo;
+using Gizmo.Client.UI;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -40,6 +43,27 @@ namespace Gizmo.Client.UI.Pages
         public void OnCloseButtonClickHandler()
         {
             PasswordRecoveryConfirmationViewService.Reset();
+        }
+
+        private string GetProviderDisplayName()
+        {
+            return PasswordRecoverySession.ActiveProvider?.Name ?? string.Empty;
+        }
+
+        private Icons GetProviderIcon()
+        {
+            var channelGuid = PasswordRecoverySession.ActiveProvider?.ChannelGuid ?? Guid.Empty;
+            return ChannelIcons.ResolveChannelIcon(channelGuid);
+        }
+
+        private string GetProviderIconCssClass()
+        {
+            var channelGuid = PasswordRecoverySession.ActiveProvider?.ChannelGuid.ToString("D") ?? string.Empty;
+            if (channelGuid.Equals(CommunicationChannels.Telegram, StringComparison.OrdinalIgnoreCase))
+                return "giz-registration-redirect__provider-icon--telegram";
+            if (channelGuid.Equals(CommunicationChannels.FacebookMessenger, StringComparison.OrdinalIgnoreCase))
+                return "giz-registration-redirect__provider-icon--facebook";
+            return string.Empty;
         }
 
         protected override void OnInitialized()

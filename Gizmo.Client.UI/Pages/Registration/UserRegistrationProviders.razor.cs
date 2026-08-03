@@ -32,8 +32,8 @@ namespace Gizmo.Client.UI.Pages.Registration
         private IReadOnlyList<ProviderOption> AltOptions =>
             ViewState.AltProviders.Select(ToOption).ToList();
 
-        public Task SelectProvider(Guid channelGuid) =>
-            RegistrationProvidersViewService.SelectProviderAsync(channelGuid);
+        public Task SelectProvider(int methodId) =>
+            RegistrationProvidersViewService.SelectProviderAsync(methodId);
 
         protected override void OnInitialized()
         {
@@ -48,6 +48,6 @@ namespace Gizmo.Client.UI.Pages.Registration
         }
 
         private static ProviderOption ToOption(RegistrationProvider provider) =>
-            new(provider.PublicId, provider.Name, provider.ChannelGuid, provider.IsPrimary);
+            new(provider.MethodId, provider.Name, provider.ChannelGuid, provider.IsPrimary);
     }
 }
