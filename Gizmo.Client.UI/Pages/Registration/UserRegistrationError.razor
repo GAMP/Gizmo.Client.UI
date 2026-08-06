@@ -22,14 +22,9 @@
                 <div class="giz-registration-error__subtitle">@LocalizationService.GetString("GIZ_REGISTRATION_ERROR_SUBTITLE")</div>
             </div>
 
-            <div class="giz-registration-error__alert">
-                <svg class="giz-registration-error__alert-icon" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <circle cx="7.5" cy="7.5" r="6.5" stroke="currentColor" stroke-width="1.1"/>
-                    <line x1="7.5" y1="4.5" x2="7.5" y2="8.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-                    <circle cx="7.5" cy="10.5" r="0.6" fill="currentColor"/>
-                </svg>
-                <span>@LocalizationService.GetString("GIZ_REGISTRATION_ERROR_ALERT")</span>
-            </div>
+            <ErrorBlock Message="@LocalizationService.GetString("GIZ_REGISTRATION_ERROR_ALERT")"
+                        ShowIcon="true"
+                        Class="giz-registration-error__alert" />
 
             <div class="giz-registration-error__buttons">
                 <button class="giz-registration-error__btn-primary" type="button" @onclick="GoBack">

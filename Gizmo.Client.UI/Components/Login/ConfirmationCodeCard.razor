@@ -8,14 +8,13 @@
         <div class="giz-login-links">
             @HeaderLinks
         </div>
-        <div class="giz-login-alerts">
-            @if (HasError)
-            {
-                <Toast CanClose="true" OnCloseButtonClick="OnCloseError" AlertType="AlertTypes.Danger" Text="@ErrorMessage" />
-            }
-        </div>
+        <div class="giz-login-alerts"></div>
     </CardHeader>
     <CardBody>
+        @if (HasError)
+        {
+            <ErrorBlock Message="@ErrorMessage" ShowIcon="true" Class="giz-login-error-block" />
+        }
         <EditForm EditContext="@EditContext">
             @if (SignUpSubtitle)
             {

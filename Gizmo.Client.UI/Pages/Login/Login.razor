@@ -14,11 +14,7 @@
             }
         </div>
         <div class="giz-login-alerts">
-            @if (ViewState.HasLoginError)
-            {
-                <Toast CanClose="true" OnCloseButtonClick="OnCloseButtonClickHandler" AlertType="AlertTypes.Danger" Text="@ViewState.LoginError" />
-            }
-            else
+            @if (!ViewState.HasLoginError)
             {
                 @if (HostReservationViewState.ReservationBlockTimeReached)
                 {
@@ -38,6 +34,10 @@
     </CardHeader>
 
     <CardBody>
+        @if (ViewState.HasLoginError)
+        {
+            <ErrorBlock Message="@ViewState.LoginError" ShowIcon="true" Class="giz-login-error-block" />
+        }
         @if (!UserLoginOptions.Value.Disabled)
         {
             <div class="giz-login-title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_SIGN_IN_TITLE))</div>

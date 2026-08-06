@@ -9,14 +9,13 @@
             </div>
             <div class="giz-login-new-user">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_ALREADY_A_MEMBER)) <RegistrationSignInLink>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_IN))</RegistrationSignInLink></div>
         </div>
-        <div class="giz-login-alerts">
-            @if (ViewState.HasError)
-            {
-                <Toast CanClose="true" OnCloseButtonClick="OnCloseButtonClickHandler" AlertType="AlertTypes.Danger" Text="@ViewState.ErrorMessage" />
-            }
-        </div>
+        <div class="giz-login-alerts"></div>
     </CardHeader>
     <CardBody>
+        @if (ViewState.HasError)
+        {
+            <ErrorBlock Message="@ViewState.ErrorMessage" ShowIcon="true" Class="giz-login-error-block" />
+        }
         <EditForm EditContext="@RegistrationEmailViewService.EditContext">
             <div class="giz-login-title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_UP_TITLE))</div>
             <div class="giz-login-subtitle--sign-up">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_EMAIL_CONFIRMATION_MESSAGE))</div>
