@@ -18,7 +18,7 @@
                     type="button"
                     @onclick="@(() => OnSelect.InvokeAsync(provider.MethodId))">
                 <Icon SVGIcon="@ChannelIcons.ResolveChannelIcon(provider.ChannelGuid)" />
-                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_CONTINUE_WITH), provider.Name)
+                @provider.Name
             </button>
         }
     </div>
@@ -44,7 +44,7 @@
                     type="button"
                     @onclick="@(() => OnSelect.InvokeAsync(provider.MethodId))">
                 <Icon SVGIcon="@ChannelIcons.ResolveChannelIcon(provider.ChannelGuid)" />
-                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_CONTINUE_WITH), provider.Name)
+                @provider.Name
             </button>
         }
     </div>
