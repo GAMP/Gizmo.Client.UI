@@ -7,8 +7,6 @@ using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Pages
@@ -57,23 +55,6 @@ namespace Gizmo.Client.UI.Pages
         {
             PasswordRecoveryDestinationViewService.SetMobilePhone(value);
             return Task.CompletedTask;
-        }
-
-        private void SelectIdentifierKind(ICollection<Button> selectedItems)
-        {
-            if (selectedItems.Any(item => item.Name == nameof(PasswordRecoveryIdentifierKind.Email)))
-            {
-                PasswordRecoveryDestinationViewService.SetIdentifierKind(PasswordRecoveryIdentifierKind.Email);
-                return;
-            }
-
-            if (selectedItems.Any(item => item.Name == nameof(PasswordRecoveryIdentifierKind.MobilePhone)))
-            {
-                PasswordRecoveryDestinationViewService.SetIdentifierKind(PasswordRecoveryIdentifierKind.MobilePhone);
-                return;
-            }
-
-            PasswordRecoveryDestinationViewService.SetIdentifierKind(PasswordRecoveryIdentifierKind.Username);
         }
 
         public void OnCloseButtonClickHandler()
