@@ -71,7 +71,8 @@
                                        ValueExpression="@(() => ViewState.PostCode)"
                                        Size="InputSizes.Small"
                                        IsFullWidth="true"
-                                       MaxLength="20"
+                                       MaxLength="@PostCodeMaxLength"
+                                       ValidateFunction="@ValidatePostCodeCharacterAsync"
                                        Label="@PostCodeLabel" />
                         </div>
                     }

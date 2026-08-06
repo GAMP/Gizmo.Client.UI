@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -34,6 +35,15 @@ namespace Gizmo.Client.UI.Pages.Registration
         public string AddressLabel => LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_ADDRESS));
         public string CityLabel => LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CITY));
         public string PostCodeLabel => LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_POST_CODE));
+
+        private const int PostCodeMaxLength = 20;
+
+        private Task<bool> ValidatePostCodeCharacterAsync(char character)
+        {
+            var current = ViewState.PostCode ?? string.Empty;
+
+            return Task.FromResult(current.Length < PostCodeMaxLength && character is >= '0' and <= '9');
+        }
 
         public void OnCloseButtonClickHandler()
         {
