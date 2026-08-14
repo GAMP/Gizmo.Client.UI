@@ -1,0 +1,104 @@
+@namespace Gizmo.Client.UI.Pages.Registration
+@inherits CustomDOMComponentBase
+
+<LoginCard>
+    <CardHeader>
+        <div class="giz-login-links">
+            <div class="giz-back-button" @onclick="@(() => NavigationService.NavigateTo(ClientRoutes.RegistrationBasicFieldsRoute))">
+                <Icon SVGIcon="Icons.ArrowLeft_Client" Size="IconSizes.ExtraSmall" />
+            </div>
+            <div class="giz-login-new-user">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_ALREADY_A_MEMBER)) <RegistrationSignInLink>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_IN))</RegistrationSignInLink></div>
+        </div>
+        <div class="giz-login-alerts"></div>
+    </CardHeader>
+    <CardBody>
+        @if (ViewState.HasError)
+        {
+            <ErrorBlock Message="@ViewState.ErrorMessage" ShowIcon="true" Class="giz-login-error-block" />
+        }
+        <EditForm EditContext="@UserRegistrationAdditionalFieldsViewService.EditContext">
+            <div class="giz-registration-basic">
+                <div class="giz-registration-basic__header">
+                    <div class="giz-login-title giz-registration-basic__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_UP_TITLE))</div>
+                </div>
+
+                <div class="giz-registration-basic__fields">
+                    @if (ShowCountry)
+                    {
+                        <div class="giz-registration-basic__field giz-registration-basic__field--full">
+                            <TextInput Value="@ViewState.Country"
+                                       ValueChanged="@((string value) => UserRegistrationAdditionalFieldsViewService.SetCountry(value))"
+                                       ValueExpression="@(() => ViewState.Country)"
+                                       Size="InputSizes.Small"
+                                       IsFullWidth="true"
+                                       MaxLength="45"
+                                       Label="@CountryLabel" />
+                        </div>
+                    }
+
+                    @if (ShowAddress)
+                    {
+                        <div class="giz-registration-basic__field giz-registration-basic__field--full">
+                            <TextInput Value="@ViewState.Address"
+                                       ValueChanged="@((string value) => UserRegistrationAdditionalFieldsViewService.SetAddress(value))"
+                                       ValueExpression="@(() => ViewState.Address)"
+                                       Size="InputSizes.Small"
+                                       IsFullWidth="true"
+                                       MaxLength="255"
+                                       Label="@AddressLabel" />
+                        </div>
+                    }
+
+                    @if (ShowCity)
+                    {
+                        <div class="giz-registration-basic__field giz-registration-basic__field--full">
+                            <TextInput Value="@ViewState.City"
+                                       ValueChanged="@((string value) => UserRegistrationAdditionalFieldsViewService.SetCity(value))"
+                                       ValueExpression="@(() => ViewState.City)"
+                                       Size="InputSizes.Small"
+                                       IsFullWidth="true"
+                                       MaxLength="45"
+                                       Label="@CityLabel" />
+                        </div>
+                    }
+
+                    @if (ShowPostCode)
+                    {
+                        <div class="giz-registration-basic__field giz-registration-basic__field--full">
+                            <TextInput Value="@ViewState.PostCode"
+                                       ValueChanged="@((string value) => UserRegistrationAdditionalFieldsViewService.SetPostCode(value))"
+                                       ValueExpression="@(() => ViewState.PostCode)"
+                                       Size="InputSizes.Small"
+                                       IsFullWidth="true"
+                                       MaxLength="@PostCodeMaxLength"
+                                       ValidateFunction="@ValidatePostCodeCharacterAsync"
+                                       Label="@PostCodeLabel" />
+                        </div>
+                    }
+                </div>
+
+                <div class="giz-registration-basic__submit">
+                    <Button IsDisabled="@(ViewState.IsValid == false || ViewState.IsLoading)"
+                            Color="ButtonColors.Accent"
+                            Size="ButtonSizes.Large"
+                            IsFullWidth="true"
+                            @onclick="@UserRegistrationAdditionalFieldsViewService.SubmitAsync">
+                        <ChildContent>
+                            @if (ViewState.IsLoading)
+                            {
+                                <Spinner />
+                            }
+                            else
+                            {
+                                <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_UP_BUTTON))</div>
+                            }
+                        </ChildContent>
+                    </Button>
+                </div>
+            </div>
+        </EditForm>
+    </CardBody>
+    <CardFooter>
+        <InputLanguageMenu />
+    </CardFooter>
+</LoginCard>

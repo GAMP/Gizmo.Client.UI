@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+using System.Globalization;
+using System.Threading.Tasks;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
@@ -14,9 +15,9 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         public ClientLocalizationViewState ViewState { get; set; }
 
-        private void ValueChangedHandler(CultureInfo culture)
+        private Task ValueChangedHandler(CultureInfo culture)
         {
-            CultureService.SetCurrentCultureAsync(culture.Name);
+            return CultureService.SetCurrentCultureAsync(culture.Name);
         }
 
         protected override void OnInitialized()

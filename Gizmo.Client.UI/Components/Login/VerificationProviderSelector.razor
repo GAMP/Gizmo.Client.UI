@@ -1,0 +1,51 @@
+@namespace Gizmo.Client.UI.Components.Login
+@inherits CustomDOMComponentBase
+
+@if (HasError)
+{
+    <ErrorBlock Message="@ErrorMessage" ShowIcon="true" Class="giz-login-error-block" />
+}
+
+<div class="giz-login-title">@Title</div>
+<div class="giz-login-subtitle--sign-up">@Subtitle</div>
+
+@if (PriorityProviders.Count > 0)
+{
+    <div class="giz-registration-providers-list">
+        @foreach (var provider in PriorityProviders)
+        {
+            <button class="giz-registration-provider-btn @GetProviderCssClass(provider.IsPrimary)"
+                    type="button"
+                    @onclick="@(() => OnSelect.InvokeAsync(provider.MethodId))">
+                <Icon SVGIcon="@ChannelIcons.ResolveChannelIcon(provider.ChannelGuid)" />
+                @provider.Name
+            </button>
+        }
+    </div>
+}
+
+@if (AltProviders.Count > 0 && (HasError || PriorityProviders.Count == 0 || ShowAll))
+{
+    @if ((HasError || ShowAll) && PriorityProviders.Count > 0)
+    {
+        <div class="giz-registration-providers-divider">
+            <div class="giz-registration-providers-divider__line"></div>
+            <div class="giz-registration-providers-divider__badge">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_OTHER_METHODS))</div>
+            <div class="giz-registration-providers-divider__line"></div>
+        </div>
+
+        <p class="giz-registration-providers-hint">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_TRY_ALTERNATIVES))</p>
+    }
+
+    <div class="giz-registration-providers-list">
+        @foreach (var provider in AltProviders)
+        {
+            <button class="giz-registration-provider-btn @GetProviderCssClass(provider.IsPrimary)"
+                    type="button"
+                    @onclick="@(() => OnSelect.InvokeAsync(provider.MethodId))">
+                <Icon SVGIcon="@ChannelIcons.ResolveChannelIcon(provider.ChannelGuid)" />
+                @provider.Name
+            </button>
+        }
+    </div>
+}

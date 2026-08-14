@@ -1,0 +1,31 @@
+@namespace Gizmo.Client.UI.Pages.Registration
+@inherits CustomDOMComponentBase
+
+<LoginCard>
+    <CardHeader>
+        <div class="giz-login-links">
+            <div class="giz-login-new-user">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_ALREADY_A_MEMBER)) <RegistrationSignInLink>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_IN))</RegistrationSignInLink></div>
+        </div>
+        <div class="giz-login-alerts"></div>
+    </CardHeader>
+    <CardBody>
+        @if (ViewState.IsLoading)
+        {
+            <Spinner />
+        }
+        else
+        {
+            <VerificationProviderSelector PriorityProviders="@PriorityOptions"
+                                           AltProviders="@AltOptions"
+                                           HasError="@ViewState.HasError"
+                                           ErrorMessage="@ViewState.ErrorMessage"
+                                           ShowAll="@ViewState.ShowAllProviders"
+                                           Title="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_CREATE_ACCOUNT))"
+                                           Subtitle="@(ViewState.HasError ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SELECT_OTHER_METHOD)) : LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SELECT_METHOD)))"
+                                           OnSelect="SelectProvider" />
+        }
+    </CardBody>
+    <CardFooter>
+        <InputLanguageMenu />
+    </CardFooter>
+</LoginCard>

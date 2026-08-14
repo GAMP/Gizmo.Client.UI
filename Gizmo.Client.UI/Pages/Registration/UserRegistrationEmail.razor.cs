@@ -1,32 +1,29 @@
-﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 
-namespace Gizmo.Client.UI.Pages
+namespace Gizmo.Client.UI.Pages.Registration
 {
-    [Route(ClientRoutes.RegistrationBasicFieldsRoute)]
-    public partial class RegistrationBasicFields : CustomDOMComponentBase
+    [Route(ClientRoutes.RegistrationEmailRoute)]
+    public partial class UserRegistrationEmail : CustomDOMComponentBase
     {
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        UserRegistrationViewState UserRegistrationViewState { get; set; }
+        UserRegistrationEmailViewService RegistrationEmailViewService { get; set; }
 
         [Inject]
-        UserRegistrationConfirmationMethodViewService UserRegistrationConfirmationMethodService { get; set; }
+        UserRegistrationEmailViewState ViewState { get; set; }
 
         [Inject]
-        UserRegistrationBasicFieldsViewService UserRegistrationBasicFieldsViewService { get; set; }
-
-        [Inject]
-        UserRegistrationBasicFieldsViewState ViewState { get; set; }
+        NavigationService NavigationService { get; set; }
 
         public void OnCloseButtonClickHandler()
         {
-            UserRegistrationBasicFieldsViewService.Reset();
+            RegistrationEmailViewService.Reset();
         }
 
         protected override void OnInitialized()

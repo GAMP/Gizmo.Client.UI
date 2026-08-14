@@ -27,6 +27,7 @@ namespace Gizmo.Client.UI.Components
         private List<TValue> _filteredItems = new List<TValue>();
 
         private TValue _selectedItem;
+        private TValue _syncedSelectedItem;
         private List _popupContent;
         private ElementReference _inputElement;
         private bool _isOpen;
@@ -116,7 +117,6 @@ namespace Gizmo.Client.UI.Components
                     return;
 
                 _selectedItem = value;
-                _ = SelectedItemChanged.InvokeAsync(_selectedItem);
             }
         }
 
@@ -169,7 +169,10 @@ namespace Gizmo.Client.UI.Components
 
         protected void SetSelectedItem(TValue value)
         {
+            var selectionChanged = _selectedItem != value;
             SelectedItem = value;
+            if (selectionChanged)
+                _ = SelectedItemChanged.InvokeAsync(_selectedItem);
 
             if (SelectedItem != null)
                 _text = SelectedItem.Text;
@@ -328,7 +331,8 @@ namespace Gizmo.Client.UI.Components
         {
             _text = (string)args.Value;
 
-            if (MinimumCharacters > 0 && _text.Length >= MinimumCharacters)
+            //An emptied input has to search as well, otherwise the previous search results stay on screen.
+            if (_text.Length == 0 || (MinimumCharacters > 0 && _text.Length >= MinimumCharacters))
             {
                 _deferredAction.Defer(_delayTimeSpan);
             }
@@ -364,13 +368,21 @@ namespace Gizmo.Client.UI.Components
                 _validationMessageStore = new ValidationMessageStore(EditContext);
             }
 
-            if (ItemSource != null)
-                _filteredItems = ItemSource.ToList();
+            //Take the text from the selection only when the selection actually changed. A re-render of the
+            //parent must not discard the text the user is currently typing in the search input.
+            if (!EqualityComparer<TValue>.Default.Equals(_syncedSelectedItem, _selectedItem))
+            {
+                _syncedSelectedItem = _selectedItem;
 
-            if (SelectedItem != null)
-                _text = SelectedItem.Text;
-            else
-                _text = string.Empty;
+                if (_selectedItem != null)
+                    _text = _selectedItem.Text;
+                else
+                    _text = string.Empty;
+            }
+
+            //Reapply the current search instead of resetting the list, otherwise a re-render of the parent
+            //drops the search results.
+            ApplyFilter();
 
             base.OnParametersSet();
         }
@@ -403,7 +415,10 @@ namespace Gizmo.Client.UI.Components
                 }
                 else
                 {
+                    var selectionChanged = _selectedItem != null;
                     SelectedItem = null;
+                    if (selectionChanged)
+                        _ = SelectedItemChanged.InvokeAsync(_selectedItem);
 
                     _hasParsingErrors = true;
                     _parsingErrors = "The field is invalid."; //TODO: A TRANSLATE
@@ -444,18 +459,24 @@ namespace Gizmo.Client.UI.Components
 
         private Task Search()
         {
-            if (string.IsNullOrEmpty(_text))
-            {
-                if (ItemSource != null)
-                    _filteredItems = ItemSource.ToList();
-            }
-            else
-            {
-                if (ItemSource != null)
-                    _filteredItems = ItemSource.Where(a => a.Text.Contains(_text, StringComparison.InvariantCultureIgnoreCase)).ToList();
-            }
+            ApplyFilter();
 
             return InvokeAsync(StateHasChanged);
+        }
+
+        /// <summary>
+        /// Filters the item source by the current input text. The text of the selected item is not treated as a
+        /// search term, so reopening the popup after a selection still lists every item.
+        /// </summary>
+        private void ApplyFilter()
+        {
+            if (ItemSource == null)
+                return;
+
+            if (string.IsNullOrEmpty(_text) || (_selectedItem != null && _text == _selectedItem.Text))
+                _filteredItems = ItemSource.ToList();
+            else
+                _filteredItems = ItemSource.Where(a => a.Text.Contains(_text, StringComparison.InvariantCultureIgnoreCase)).ToList();
         }
 
         #endregion

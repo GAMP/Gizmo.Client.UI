@@ -1,0 +1,76 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using Gizmo.Client.UI
+
+@{
+    var selectedCountry = GetSelectedCountry();
+}
+
+@if (RenderWrappers)
+{
+    <div class="giz-registration-form-input">
+        <IconSelect Placeholder="@SearchPlaceholder"
+                    IsVirtualized="false"
+                    IsLoading="@(!_isLoaded)"
+                    CanClearValue="@(CanClearCountry && selectedCountry != null)"
+                    OnClickClearValueButton="@OnClearCountryClickedAsync"
+                    HandleSVGIcon="Icons.Select_Client"
+                    TValue="IconSelectCountry"
+                    ItemSource="@_countries"
+                    SelectedItem="@selectedCountry"
+                    SelectedItemChanged="@OnCountrySelectedAsync"
+                    FieldIdentifier="@CountryFieldIdentifier"
+                    IsDisabled="@IsDisabled"
+                    Size="@Size"
+                    IsFullWidth="@IsFullWidth"
+                    Label="@CountryLabel"
+                    OpenDirection="PopupOpenDirections.Bottom"
+                    MaximumHeight="20.0rem"
+                    PopupClass="giz-scrollbar--v" />
+    </div>
+    <div class="giz-form-input">
+        <MaskedPhoneInput Mask="@GetMask()"
+                          Prefix="+"
+                          AllowMoreDigits="false"
+                          LockedLength="@GetLockedPrefixLength()"
+                          Value="@PhoneValue"
+                          ValueChanged="@((string? v) => PhoneValueChanged.InvokeAsync(v))"
+                          ValueExpression="@PhoneValueExpression"
+                          IsDisabled="@IsDisabled"
+                          Size="@Size"
+                          IsFullWidth="@IsFullWidth"
+                          Label="@PhoneLabel" />
+    </div>
+}
+else
+{
+    <IconSelect Placeholder="@SearchPlaceholder"
+                IsVirtualized="false"
+                IsLoading="@(!_isLoaded)"
+                CanClearValue="@(CanClearCountry && selectedCountry != null)"
+                OnClickClearValueButton="@OnClearCountryClickedAsync"
+                HandleSVGIcon="Icons.Select_Client"
+                TValue="IconSelectCountry"
+                ItemSource="@_countries"
+                SelectedItem="@selectedCountry"
+                SelectedItemChanged="@OnCountrySelectedAsync"
+                FieldIdentifier="@CountryFieldIdentifier"
+                IsDisabled="@IsDisabled"
+                Size="@Size"
+                IsFullWidth="@IsFullWidth"
+                Label="@CountryLabel"
+                OpenDirection="PopupOpenDirections.Bottom"
+                MaximumHeight="20.0rem"
+                PopupClass="giz-scrollbar--v" />
+    <MaskedPhoneInput Mask="@GetMask()"
+                      Prefix="+"
+                      AllowMoreDigits="false"
+                      LockedLength="@GetLockedPrefixLength()"
+                      Value="@PhoneValue"
+                      ValueChanged="@((string? v) => PhoneValueChanged.InvokeAsync(v))"
+                      ValueExpression="@PhoneValueExpression"
+                      IsDisabled="@IsDisabled"
+                      Size="@Size"
+                      IsFullWidth="@IsFullWidth"
+                      Label="@PhoneLabel" />
+}

@@ -4,6 +4,8 @@
     display: grid;
     grid-template-columns: 1fr min-content;
     height: 100vh;
+    width: 100vw;
+    max-width: 100vw;
 
     .giz-login {
 
@@ -298,6 +300,12 @@
             overflow: hidden;
             z-index: 1;
 
+            .giz-dialog {
+                [#{$client-theme-comp-attr}] & {
+                    position: absolute;
+                }
+            }
+
             &.collapsed {
                 overflow: unset; //ATTENTION
             }
@@ -312,6 +320,39 @@
         }
     }
 
+    .giz-login-logotype {
+        position: absolute;
+        top: 2.4rem;
+        left: 3.2rem;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+
+        &__icon {
+            width: 4.8rem;
+            height: 4.8rem;
+            background-color: #fafafa;
+            border-radius: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+
+            .giz-icon {
+                color: #0c0f11;
+            }
+        }
+
+        &__text {
+            display: flex;
+            flex-direction: column;
+            color: #fafafa;
+            @include font-m-theme-client($font-weight-bold-theme-client);
+            line-height: 1.2;
+        }
+    }
+
     .giz-login-logo {
         position: absolute;
         top: 2.4rem;
@@ -323,6 +364,13 @@
         img {
             max-width: 100%;
             max-height: 100%;
+            object-fit: contain;
+        }
+        z-index: 2;
+
+        img {
+            height: 4.8rem;
+            width: auto;
             object-fit: contain;
         }
     }
@@ -366,6 +414,7 @@
     position: relative;
     /*overflow: hidden;*/
     padding: 1.0rem;
+    box-sizing: border-box;
 
     &.hidden {
         right: -74rem;
@@ -431,6 +480,12 @@
         display: flex;
         flex-direction: column;
         flex-grow: 1;
+
+        > .giz-animate-spinner {
+            width: 2.6rem;
+            height: 2.6rem;
+            align-self: center;
+        }
     }
 
     &__footer {
@@ -658,7 +713,7 @@
     }
 }
 
-.giz-login-method.giz-button-group, .giz-recovery-method.giz-button-group {
+.giz-login-method.giz-button-group {
     display: flex;
     padding: 0.5rem;
     margin-bottom: 2.4rem;
@@ -800,9 +855,11 @@
 .giz-login-links {
     margin-left: 2.2rem;
     margin-top: 2.2rem;
-    margin-right: 1.2rem;
+    margin-right: 2.2rem;
     display: flex;
     justify-content: space-between;
+    width: calc(100% - 4.4rem);
+    box-sizing: border-box;
 }
 
 .giz-back-button {
@@ -995,6 +1052,671 @@
     }
 }
 
+// Carousel — centered in left panel
+.giz-login-carousel {
+    position: absolute;
+    width: 69.2rem;
+    height: 64rem;
+    top: max(19.3rem, 19vh);
+    left: calc(50% - 71.6rem);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__track {
+        width: 100%;
+        height: 51.6rem;
+        position: relative;
+        border-radius: 1.6rem;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    &__slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #0c0f11;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+
+        &--active {
+            opacity: 1;
+        }
+    }
+
+    &__footer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.6rem;
+        margin-top: 1.6rem;
+        width: 100%;
+    }
+
+    &__text {
+        color: rgba(#ffffff, 0.6);
+        @include font-m-theme-client($font-weight-light-theme-client);
+        text-align: center;
+        min-height: 4.4rem;
+        padding: 0 9.8rem;
+    }
+
+    &__dots {
+        display: flex;
+        align-items: center;
+        gap: 3.2rem;
+    }
+
+    &__dot {
+        width: 0.8rem;
+        height: 0.8rem;
+        border-radius: 50%;
+        background-color: #fafafa;
+        flex-shrink: 0;
+        cursor: pointer;
+        transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
+
+        &--active {
+            width: 1.6rem;
+            height: 1.6rem;
+            background-color: #0078d2;
+            cursor: default;
+        }
+    }
+}
+
+.giz-login-social {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 2.4rem;
+
+    &__button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 4.4rem;
+        height: 4.4rem;
+        border-radius: 1.1rem;
+        color: #ffffff;
+        flex-shrink: 0;
+        cursor: pointer;
+
+        &--telegram  { background: linear-gradient(to bottom, #2aabee, #0088cc); }
+        &--vk        { background: linear-gradient(to bottom, #4c75a3, #2d5e8e); }
+        &--facebook  { background: linear-gradient(to bottom, #1877f2, #0c5bd9); }
+    }
+}
+
+.giz-login-or {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 2.4rem;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        border-top: 0.1rem solid rgba(#f6fbfd, 0.06);
+    }
+
+    span {
+        position: relative;
+        background-color: #0c0f11;
+        padding: 0 0.8rem;
+        color: rgba(#ffffff, 0.6);
+        @include font-m-theme-client($font-weight-light-theme-client);
+    }
+}
+
+.giz-login-qr {
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    gap: 2.4rem;
+    align-items: center;
+    margin-top: 2.4rem;
+
+    &__text {
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+
+        &__title {
+            @include font-h5-theme-client($font-weight-bold-theme-client);
+        }
+
+        &__subtitle {
+            color: rgba(#ffffff, 0.6);
+            @include font-m-theme-client($font-weight-light-theme-client);
+        }
+    }
+
+    &__image {
+        width: 15.4rem;
+        height: 15.4rem;
+        min-width: 15.4rem;
+        background-color: #201f1f;
+        border-radius: 0.86rem;
+        padding: 0.8rem;
+
+        svg {
+            width: 100%;
+            height: 100%;
+            shape-rendering: crispedges;
+        }
+    }
+}
+
+// Login errors
+.giz-login-error-block {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 2.0rem;
+}
+
+.giz-registration-providers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.0rem;
+}
+
+.giz-registration-provider-btn {
+    width: 100%;
+    height: 4.8rem;
+    display: flex;
+    align-items: center;
+    padding: 0 1.6rem;
+    gap: 1.3rem;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #ffffff;
+    background: rgba(#ffffff, 0.04);
+    border: 0.1rem solid rgba(#f6fbfd, 0.22);
+    border-radius: 1.0rem;
+    cursor: pointer;
+    appearance: none;
+    transition: opacity 0.15s ease, background 0.15s ease;
+
+    .giz-icon {
+        flex-shrink: 0;
+        width: 1.9rem;
+        height: 1.9rem;
+        min-width: 1.9rem;
+        min-height: 1.9rem;
+    }
+
+    &:hover {
+        background: rgba(#ffffff, 0.08);
+    }
+
+    &:active {
+        opacity: 0.85;
+    }
+
+    &--primary {
+        background: #0078D2;
+        border: none;
+
+        &:hover {
+            background: #0091FF;
+        }
+    }
+}
+
+.giz-registration-providers-divider {
+    display: flex;
+    align-items: center;
+    gap: 1.0rem;
+    margin-top: 2.0rem;
+
+    &__line {
+        flex: 1;
+        height: 0.1rem;
+        background: rgba(#57bcff, 0.28);
+    }
+
+    &__badge {
+        padding: 0 1.2rem;
+        height: 2.6rem;
+        display: flex;
+        align-items: center;
+        background: rgba(#57bcff, 0.10);
+        border: 0.1rem solid rgba(#57bcff, 0.28);
+        border-radius: 9999px;
+        font-size: 1.1rem;
+        font-family: 'Noto Sans', sans-serif;
+        font-weight: 600;
+        color: #57bcff;
+        white-space: nowrap;
+    }
+}
+
+.giz-registration-providers-hint {
+    margin: 1.2rem 0 2.0rem;
+    font-size: 1.2rem;
+    font-family: 'Noto Sans', sans-serif;
+    color: rgba(#57bcff, 0.70);
+    line-height: 1.5;
+    text-align: center;
+}
+
+.giz-registration-providers-terms {
+    margin-top: auto;
+    padding-top: 2.0rem;
+    font-size: 1.1rem;
+    font-family: 'Noto Sans', sans-serif;
+    color: rgba(#ffffff, 0.30);
+    line-height: 1.55;
+    text-align: center;
+
+    a {
+        color: #57bcff;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+// Registration Error
+.giz-registration-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.0rem;
+    padding: 4.0rem 0;
+    width: 100%;
+
+    &__icon {
+        width: 8.0rem;
+        height: 8.0rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background: rgba(#dc2626, 0.10);
+        border: 0.2rem solid rgba(#ff5050, 0.30);
+        color: rgba(#ff6e6e, 0.90);
+    }
+
+    &__text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+        width: 30.0rem;
+    }
+
+    &__title {
+        font-family: 'Rubik', sans-serif;
+        font-size: 2.1rem;
+        font-weight: 700;
+        color: #ffffff;
+        line-height: 1.5;
+        text-align: center;
+    }
+
+    &__subtitle {
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 400;
+        color: rgba(#ffffff, 0.60);
+        line-height: 1.6;
+        text-align: center;
+    }
+
+    &__alert {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    &__buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 1.0rem;
+        width: 100%;
+    }
+
+    &__btn-primary {
+        width: 100%;
+        height: 4.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #0078d2;
+        border: none;
+        border-radius: 1.0rem;
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: #ffffff;
+        cursor: pointer;
+        appearance: none;
+        transition: opacity 0.15s ease;
+
+        &:hover {
+            opacity: 0.9;
+        }
+
+        &:active {
+            opacity: 0.8;
+        }
+    }
+
+    &__btn-secondary {
+        width: 100%;
+        height: 3.55rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: rgba(#ffffff, 0.38);
+        cursor: pointer;
+        appearance: none;
+        transition: color 0.15s ease;
+
+        &:hover {
+            color: rgba(#ffffff, 0.55);
+        }
+    }
+}
+
+.giz-registration-redirect {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+    width: 100%;
+    max-width: 39.8rem;
+    margin: 0 auto;
+
+    &__back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0;
+        border: none;
+        background: none;
+        cursor: pointer;
+        appearance: none;
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: rgba(#ffffff, 0.5);
+        transition: color 0.15s ease;
+
+        .giz-icon {
+            color: rgba(#ffffff, 0.5);
+        }
+
+        &:hover {
+            color: rgba(#ffffff, 0.7);
+        }
+    }
+
+    &__provider {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+    }
+
+    &__provider-icon {
+        width: 4.4rem;
+        height: 4.4rem;
+        min-width: 4.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 1.2rem;
+        background: rgba(#ffffff, 0.04);
+        border: 0.1rem solid rgba(#f6fbfd, 0.22);
+
+        .giz-icon {
+            width: 2.2rem;
+            height: 2.2rem;
+            min-width: 2.2rem;
+            min-height: 2.2rem;
+        }
+
+        &--telegram {
+            background: linear-gradient(135deg, #2aabee 0%, #0088cc 100%);
+            border: none;
+            box-shadow: 0 0.4rem 1.6rem rgba(#000000, 0.3);
+        }
+
+        &--facebook {
+            border-color: rgba(#1877f2, 0.32);
+        }
+    }
+
+    &__provider-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        min-width: 0;
+    }
+
+    &__title {
+        font-family: 'Rubik', sans-serif;
+        font-size: 2.2rem;
+        font-weight: 700;
+        line-height: 1.5;
+        color: #fafafa;
+    }
+
+    &__subtitle {
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: rgba(#ffffff, 0.45);
+    }
+
+    &__info {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.0rem;
+        padding: 1.3rem 1.5rem;
+        background: rgba(#57bcff, 0.04);
+        border: 0.1rem solid rgba(#57bcff, 0.1);
+        border-radius: 1.1rem;
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 1.2rem;
+        font-weight: 400;
+        line-height: 1.65;
+        color: rgba(#ffffff, 0.48);
+
+        &-icon {
+            flex-shrink: 0;
+            margin-top: 0.15rem;
+            color: rgba(#57bcff, 0.55);
+        }
+    }
+
+    &__qr-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.4rem;
+        width: 21.4rem;
+        margin: 0 auto;
+        padding: 1.7rem;
+        background: rgba(#ffffff, 0.03);
+        border: 0.1rem solid rgba(#2aabee, 0.2);
+        border-radius: 2.0rem;
+
+        &--expired {
+            background: rgba(#ff3b30, 0.04);
+            border-color: rgba(#ff3b30, 0.25);
+        }
+    }
+
+    &__qr-image {
+        position: relative;
+        width: 18.0rem;
+        height: 18.0rem;
+        padding: 0;
+        background-color: #201f1f;
+        border-radius: 1.0rem;
+        overflow: hidden;
+
+        svg {
+            width: 100%;
+            height: 100%;
+            shape-rendering: crispedges;
+        }
+
+        &--expired {
+            background-color: #fafafa;
+
+            svg {
+                filter: grayscale(100%);
+                opacity: 0.15;
+            }
+        }
+    }
+
+    &__qr-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        background: rgba(#0c0f11, 0.88);
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 500;
+        line-height: 1.5;
+        color: #ffffff;
+        pointer-events: none;
+    }
+
+    &__qr-overlay-clock {
+        width: 2.8rem;
+        height: 2.8rem;
+        min-width: 2.8rem;
+        min-height: 2.8rem;
+        color: #ffffff;
+
+        .giz-icon {
+            width: 2.8rem;
+            height: 2.8rem;
+            min-width: 2.8rem;
+            min-height: 2.8rem;
+        }
+    }
+
+    &__url {
+        padding: 1.0rem;
+        font-size: 1.1rem;
+        word-break: break-all;
+        color: rgba(#ffffff, 0.7);
+    }
+
+    &__status {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.7rem;
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 1.2rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: rgba(#ffffff, 0.55);
+
+        &--expired {
+            color: rgba(#ff3b30, 0.85);
+        }
+    }
+
+    &__status-dot {
+        width: 0.7rem;
+        height: 0.7rem;
+        border-radius: 50%;
+        background: #57bcff;
+        box-shadow: 0 0 0.6rem #57bcff;
+        flex-shrink: 0;
+
+        &--expired {
+            background: #ff3b30;
+            box-shadow: none;
+        }
+    }
+
+    &__expired-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 2.4rem;
+        width: 100%;
+    }
+
+    &__expired-alert {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.0rem;
+        padding: 1.4rem 1.6rem;
+        background: rgba(#ff3b30, 0.06);
+        border: 0.1rem solid rgba(#ff3b30, 0.2);
+        border-radius: 1.2rem;
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 1.2rem;
+        font-weight: 400;
+        line-height: 1.65;
+        color: rgba(#ff3b30, 0.8);
+    }
+
+    &__expired-alert-icon {
+        flex-shrink: 0;
+        margin-top: 0.1rem;
+        color: rgba(#ff3b30, 0.6);
+    }
+
+    &__btn-primary {
+        width: 100%;
+        height: 4.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #0078d2;
+        border: none;
+        border-radius: 1.0rem;
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: #ffffff;
+        cursor: pointer;
+        appearance: none;
+        transition: opacity 0.15s ease;
+
+        &:hover {
+            opacity: 0.9;
+        }
+
+        &:active {
+            opacity: 0.8;
+        }
+    }
+
+}
+
 /*@keyframes login-adv-shrink-anim {
     from {
         width: 100vw;
@@ -1014,3 +1736,59 @@
         width: 100vw;
     }
 }*/
+
+//============= Registration Agreements Dialog ===========//
+
+.giz-registration-agreements-dialog {
+    width: 48rem;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #22272B;
+    border-radius: 1.6rem;
+    box-shadow: $elevation-5-theme-client;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 2.4rem 2.4rem 0;
+    }
+
+    &__title {
+        @include font-h5-theme-client($font-weight-bold-theme-client);
+        color: $typo-primary-theme-client;
+    }
+
+    &__body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1.6rem 2.4rem;
+    }
+
+    &__section {
+        margin-bottom: 1.6rem;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    &__section-title {
+        @include font-l-theme-client($font-weight-bold-theme-client);
+        color: $typo-primary-theme-client;
+        margin-bottom: 0.8rem;
+    }
+
+    &__section-text {
+        @include font-m-theme-client($font-weight-light-theme-client);
+        color: $typo-secondary-theme-client;
+    }
+
+    &__footer {
+        padding: 1.6rem 2.4rem 2.4rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+    }
+}

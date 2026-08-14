@@ -46,6 +46,13 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public int ExtraDigits { get; set; } = 7;
 
+        /// <summary>
+        /// Number of leading digits that cannot be removed by the user (e.g. the country calling code).
+        /// These digits are only cleared by the owning component (when the country is changed/cleared), never by Backspace.
+        /// </summary>
+        [Parameter]
+        public int LockedLength { get; set; }
+
         #endregion
 
         #region EVENTS
@@ -120,6 +127,10 @@ namespace Gizmo.Client.UI.Components
                 case "Backspace":
 
                     if (string.IsNullOrEmpty(currentValue) || currentValue.Length == 0)
+                        return;
+
+                    //Do not allow the user to delete into the locked prefix (e.g. country calling code).
+                    if (currentValue.Length <= LockedLength)
                         return;
 
                     //Remove the last character from value.

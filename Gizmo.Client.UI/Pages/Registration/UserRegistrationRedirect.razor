@@ -1,0 +1,100 @@
+@namespace Gizmo.Client.UI.Pages.Registration
+@inherits CustomDOMComponentBase
+
+<LoginCard>
+    <CardHeader>
+        <div class="giz-login-links">
+            <div class="giz-back-button" @onclick="@RegistrationRedirectViewService.NavigateBackAsync">
+                <Icon SVGIcon="Icons.ArrowLeft_Client" Size="IconSizes.ExtraSmall" />
+            </div>
+            <div class="giz-login-new-user">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_ALREADY_A_MEMBER)) <RegistrationSignInLink>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_IN))</RegistrationSignInLink></div>
+        </div>
+        <div class="giz-login-alerts"></div>
+    </CardHeader>
+    <CardBody>
+        @if (ViewState.HasError)
+        {
+            <ErrorBlock Message="@ViewState.ErrorMessage" ShowIcon="true" Class="giz-login-error-block" />
+        }
+        @if (ViewState.IsLoading)
+        {
+            <Spinner />
+        }
+        else if (!ViewState.HasError && ViewState.RedirectUrl is not null)
+        {
+            <div class="giz-registration-redirect">
+                <div class="giz-registration-redirect__provider">
+                    <div class="giz-registration-redirect__provider-icon @GetProviderIconCssClass()">
+                        <Icon SVGIcon="@GetProviderIcon()" />
+                    </div>
+                    <div class="giz-registration-redirect__provider-text">
+                        <div class="giz-registration-redirect__title">
+                            @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_TITLE), GetProviderDisplayName())
+                        </div>
+                        <div class="giz-registration-redirect__subtitle">
+                            @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_SUBTITLE))
+                        </div>
+                    </div>
+                </div>
+
+                <div class="giz-registration-redirect__info">
+                    <Icon SVGIcon="Icons.Info_Client" Size="IconSizes.ExtraSmall" Class="giz-registration-redirect__info-icon" />
+                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_SCAN_HINT))</span>
+                </div>
+
+                <div class="giz-registration-redirect__qr-card @(ViewState.IsQrExpired ? "giz-registration-redirect__qr-card--expired" : null)">
+                    <div class="giz-registration-redirect__qr-image @(ViewState.IsQrExpired ? "giz-registration-redirect__qr-image--expired" : null)">
+                        @if (ViewState.QrCode is not null)
+                        {
+                            @((MarkupString)ViewState.QrCode)
+                        }
+                        else
+                        {
+                            <div class="giz-registration-redirect__url">@ViewState.RedirectUrl</div>
+                        }
+                        @if (ViewState.IsQrExpired)
+                        {
+                            <div class="giz-registration-redirect__qr-overlay">
+                                <Icon SVGIcon="Icons.Clock_Client" Size="IconSizes.Medium" Class="giz-registration-redirect__qr-overlay-clock" />
+                                <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_QR_EXPIRED_OVERLAY))</span>
+                            </div>
+                        }
+                    </div>
+                    <div class="giz-registration-redirect__status @(ViewState.IsQrExpired ? "giz-registration-redirect__status--expired" : null)">
+                        <span class="giz-registration-redirect__status-dot @(ViewState.IsQrExpired ? "giz-registration-redirect__status-dot--expired" : null)"></span>
+                        <span>
+                            @if (ViewState.IsQrExpired)
+                            {
+                                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_QR_EXPIRED))
+                            }
+                            else
+                            {
+                                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_WAITING_SCAN))
+                            }
+                        </span>
+                    </div>
+                </div>
+
+                @if (ViewState.IsQrExpired)
+                {
+                    <div class="giz-registration-redirect__expired-actions">
+                        <div class="giz-registration-redirect__expired-alert">
+                            <svg class="giz-registration-redirect__expired-alert-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/>
+                                <line x1="8" y1="5" x2="8" y2="8.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                                <circle cx="8" cy="10.85" r="0.65" fill="currentColor"/>
+                            </svg>
+                            <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_SESSION_EXPIRED))</span>
+                        </div>
+                        <button class="giz-registration-redirect__btn-primary" type="button" @onclick="@RegistrationRedirectViewService.NavigateToProvidersAsync">
+                            @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_BACK_TO_MAIN))
+                        </button>
+                    </div>
+                }
+            </div>
+        }
+    </CardBody>
+    <CardFooter>
+        <InputLanguageMenu />
+    </CardFooter>
+</LoginCard>

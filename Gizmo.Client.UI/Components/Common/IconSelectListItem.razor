@@ -4,7 +4,14 @@
 <ListItem OnClick="@((args) => OnClick.InvokeAsync(args))">
     <div class="giz-icon-select-item">
         <div class="giz-icon-select-item__icon">
-            <img src="@Item.Icon" />
+            @if (!string.IsNullOrEmpty(Item.Icon) && (Item.Icon.StartsWith("http") || Item.Icon.StartsWith("/") || Item.Icon.StartsWith("_content")))
+            {
+                <img src="@Item.Icon" onerror="this.onerror=null;this.src='_content/Gizmo.Client.UI/img/no-flag-image.svg';" />
+            }
+            else if (!string.IsNullOrEmpty(Item.Icon))
+            {
+                <span class="giz-icon-select-flag">@Item.Icon</span>
+            }
         </div>
         <div class="giz-icon-select-item__display">@($"{Item.Display}")</div>
     </div>
