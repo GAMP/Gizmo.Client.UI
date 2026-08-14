@@ -1,0 +1,18 @@
+@namespace Gizmo.Client.UI.Pages.Registration
+@using Microsoft.AspNetCore.Components
+
+@inject IRegistrationSessionService RegistrationSession
+@inject NavigationService NavigationService
+
+<a href="@ClientRoutes.LoginRoute" @onclick="NavigateToLogin" @onclick:preventDefault="true">@ChildContent</a>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = builder => { };
+
+    private void NavigateToLogin()
+    {
+        RegistrationSession.Clear();
+        NavigationService.NavigateTo(ClientRoutes.LoginRoute);
+    }
+}

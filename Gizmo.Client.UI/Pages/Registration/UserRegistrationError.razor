@@ -1,0 +1,42 @@
+@namespace Gizmo.Client.UI.Pages.Registration
+@inherits CustomDOMComponentBase
+
+<LoginCard>
+    <CardHeader>
+        <div class="giz-login-links">
+            <div class="giz-login-new-user">@LocalizationService.GetString("GIZ_LOGIN_ALREADY_A_MEMBER") <RegistrationSignInLink>@LocalizationService.GetString("GIZ_REGISTRATION_SIGN_IN")</RegistrationSignInLink></div>
+        </div>
+        <div class="giz-login-alerts"></div>
+    </CardHeader>
+    <CardBody>
+        <div class="giz-registration-error">
+            <div class="giz-registration-error__icon">
+                <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <line x1="11" y1="11" x2="23" y2="23" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                    <line x1="23" y1="11" x2="11" y2="23" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                </svg>
+            </div>
+
+            <div class="giz-registration-error__text">
+                <div class="giz-registration-error__title">@LocalizationService.GetString("GIZ_REGISTRATION_ERROR_TITLE")</div>
+                <div class="giz-registration-error__subtitle">@LocalizationService.GetString("GIZ_REGISTRATION_ERROR_SUBTITLE")</div>
+            </div>
+
+            <ErrorBlock Message="@LocalizationService.GetString("GIZ_REGISTRATION_ERROR_ALERT")"
+                        ShowIcon="true"
+                        Class="giz-registration-error__alert" />
+
+            <div class="giz-registration-error__buttons">
+                <button class="giz-registration-error__btn-primary" type="button" @onclick="GoBack">
+                    @LocalizationService.GetString("GIZ_REGISTRATION_ERROR_BACK")
+                </button>
+                <button class="giz-registration-error__btn-secondary" type="button" @onclick="TryAgain">
+                    @LocalizationService.GetString("GIZ_REGISTRATION_ERROR_RETRY")
+                </button>
+            </div>
+        </div>
+    </CardBody>
+    <CardFooter>
+        <InputLanguageMenu />
+    </CardFooter>
+</LoginCard>

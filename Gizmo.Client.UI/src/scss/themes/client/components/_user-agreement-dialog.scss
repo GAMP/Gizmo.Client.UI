@@ -32,6 +32,33 @@
         margin-bottom: 2.4rem;
     }
 
+    // This dialog's accept label is long and wraps to multiple lines. The shared check-box
+    // styling centers the box (:before) vertically in the label, but the checkmark (:after) is
+    // anchored to the label's top, so on a multi-line label the checkmark floats above the box.
+    // Top-align the box so it stays where the checkmark is anchored, for both single- and
+    // multi-line labels. Scoped to this dialog; loaded after the shared check-box styles, so it
+    // wins by source order. (The input is also kept hidden defensively in case the
+    // [client-theme] scoped reset does not reach an integrated host.)
+    .giz-check-box {
+        display: inline-flex;
+
+        input {
+            position: absolute;
+            left: -9999px;
+        }
+
+        input + label {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        // Nudge the checkmark a couple pixels left so it sits centered in the box.
+        input:checked + label:after {
+            left: 0.7rem;
+        }
+    }
+
     .giz-user-agreement-checkbox--required {
         input + label:before {
             border-color: #EE505A;

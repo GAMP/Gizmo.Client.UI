@@ -1,0 +1,25 @@
+@namespace Gizmo.Client.UI.Shared
+@inherits CustomDOMComponentBase
+
+<div class="giz-login-carousel">
+    <div class="giz-login-carousel__track">
+        @for (int i = 0; i < SlideCount; i++)
+        {
+            var idx = i;
+            <div class="giz-login-carousel__slide @(_currentIndex == idx ? "giz-login-carousel__slide--active" : "")">
+                @* Placeholder — slide content goes here when data source is available *@
+            </div>
+        }
+    </div>
+    <div class="giz-login-carousel__footer">
+        <div class="giz-login-carousel__text">@SlideText</div>
+        <div class="giz-login-carousel__dots">
+            @for (int i = 0; i < SlideCount; i++)
+            {
+                var index = i;
+                <span class="giz-login-carousel__dot @(_currentIndex == index ? "giz-login-carousel__dot--active" : "")"
+                      @onclick="@(() => GoToSlide(index))"></span>
+            }
+        </div>
+    </div>
+</div>

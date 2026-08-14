@@ -27,9 +27,12 @@ namespace Gizmo.Client.UI.Services
             }, default, cancellationToken);
         }
 
-        public Task<AddDialogResult<UserAgreementResult>> ShowUserAgreementDialogAsync(UserAgreementDialogParameters userAgreementDialogParameters, CancellationToken cancellationToken = default)
+        public Task<AddDialogResult<UserAgreementResult>> ShowUserAgreementDialogAsync(UserAgreementDialogParameters userAgreementDialogParameters, bool allowContinueWithoutAccept = false, CancellationToken cancellationToken = default)
         {
-            return ShowDialogAsync<UserAgreementDialog, UserAgreementResult>(userAgreementDialogParameters.ToDictionary(), new DialogDisplayOptions()
+            var parameters = userAgreementDialogParameters.ToDictionary();
+            parameters["AllowContinueWithoutAccept"] = allowContinueWithoutAccept;
+
+            return ShowDialogAsync<UserAgreementDialog, UserAgreementResult>(parameters, new DialogDisplayOptions()
             {
                 Closable = false,
                 CloseOnClick = false
@@ -103,6 +106,19 @@ namespace Gizmo.Client.UI.Services
                 Closable = true,
                 CloseOnClick = false
             }, default, cancellationToken);
+        }
+
+        public Task<AddDialogResult<RegistrationAgreementsResult>> ShowRegistrationAgreementsDialogAsync(
+            IReadOnlyList<RegistrationAgreement> agreements,
+            CancellationToken cancellationToken = default)
+        {
+            return ShowDialogAsync<RegistrationAgreementsDialog, RegistrationAgreementsResult>(
+                new Dictionary<string, object>
+                {
+                    { nameof(RegistrationAgreementsDialog.Agreements), agreements }
+                },
+                new DialogDisplayOptions { Closable = true, CloseOnClick = false },
+                default, cancellationToken);
         }
     }
 }

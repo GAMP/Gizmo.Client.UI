@@ -1,10 +1,10 @@
 ﻿using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 
-namespace Gizmo.Client.UI.Pages
+namespace Gizmo.Client.UI.Pages.Registration
 {
     [Route(ClientRoutes.RegistrationIndexRoute)]
-    public partial class RegistrationIndex : CustomDOMComponentBase
+    public partial class UserRegistrationIndex : CustomDOMComponentBase
     {
     }
 }

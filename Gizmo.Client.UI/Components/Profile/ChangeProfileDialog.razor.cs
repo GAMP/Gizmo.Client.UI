@@ -117,7 +117,9 @@ namespace Gizmo.Client.UI.Components
                 Countries.Add(new IconSelectCountry()
                 {
                     Text = country.NativeName,
-                    Icon = country.FlagSvg
+                    Icon = string.IsNullOrEmpty(country.TwoLetterCountryCode)
+                        ? "_content/Gizmo.Client.UI/img/no-flag-image.svg"
+                        : $"_content/Gizmo.Client.UI/img/flags/{country.TwoLetterCountryCode.ToLowerInvariant()}.svg"
                 });
             }
 
