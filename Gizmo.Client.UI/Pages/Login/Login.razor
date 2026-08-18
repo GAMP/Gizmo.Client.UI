@@ -91,9 +91,12 @@
                                    Size="InputSizes.Medium"
                                    IsFullWidth="true"
                                    Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PASSWORD))" />
-                    <div class="giz-login-forgot-password">
-                        <a tabindex="-1" href="@ClientRoutes.PasswordRecoveryKindRoute">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_FORGOT_YOUR_PASSWORD))</a>
-                    </div>
+                    @if (UserRegisterConfigurationViewState.IsPasswordRecoveryEnabled)
+                    {
+                        <div class="giz-login-forgot-password">
+                            <a tabindex="-1" href="@ClientRoutes.PasswordRecoveryKindRoute">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_FORGOT_YOUR_PASSWORD))</a>
+                        </div>
+                    }
                 </div>
 
                 @if (HostReservationViewState.ReservationNotificationTimeReached || HostReservationViewState.ReservationBlockTimeReached)
