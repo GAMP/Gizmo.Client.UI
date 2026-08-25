@@ -92,7 +92,9 @@ namespace Gizmo.Client.UI.Components
             }
             else
             {
-                if (!string.IsNullOrEmpty(_advertisementViewState.MediaUrl))
+                //the media dialog belongs to the built in layout only, a custom
+                //template provides its own actions inside the rendered html
+                if (!_advertisementViewState.IsCustomTemplate && !string.IsNullOrEmpty(_advertisementViewState.MediaUrl))
                 {
                     return AdvertisementsService.ShowMediaSync(_advertisementViewState);
                 }
@@ -196,7 +198,9 @@ namespace Gizmo.Client.UI.Components
 
         protected string ClassName => new ClassMapper()
                 .Add("giz-ads-carousel-item")
-                .If("giz-ads-carousel-item--media", () => _advertisementViewState.MediaUrlType != AdvertisementMediaUrlType.None)
+                //a custom template owns its whole visual, the built in media affordance
+                //is not part of it regardless of what the entry carries
+                .If("giz-ads-carousel-item--media", () => !_advertisementViewState.IsCustomTemplate && _advertisementViewState.MediaUrlType != AdvertisementMediaUrlType.None)
                 //Left item to fade out.
                 .If("previous-out", () => _index == 4 && _direction == 1 && !_switchSide)
                 //Left item.
