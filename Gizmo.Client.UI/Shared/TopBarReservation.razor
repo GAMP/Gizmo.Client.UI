@@ -1,0 +1,22 @@
+@namespace Gizmo.Client.UI.Shared
+@inherits CustomDOMComponentBase
+
+@* Sits in the top bar between the search field and the session HUD, so it is
+   visible on every page rather than only on Home.
+
+   Deliberately quiet: one line, no button, nothing to dismiss. It states a
+   fact about the machine; the shell already raises its own notification when
+   the reservation actually falls due. Attention comes from a slow breath
+   (see .giz-resv in _Layout.razor), not from brightness. *@
+
+@if (HasReservation)
+{
+    <div class="giz-resv @(IsClose ? "giz-resv--soon" : "")">
+        <span class="giz-resv__dot"></span>
+        <b class="giz-resv__lead">Бронь в @StartText</b>
+        @if (CountdownText is string countdown)
+        {
+            <span class="giz-resv__count">через @countdown</span>
+        }
+    </div>
+}

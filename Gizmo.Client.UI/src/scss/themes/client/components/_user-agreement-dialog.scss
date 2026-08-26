@@ -2,19 +2,87 @@
 
 .giz-user-agreement-dialog {
     max-width: 60.0rem;
+    // Same glass recipe and radius language as the login card / top bar, so
+    // the consent step doesn't read as a leftover default dialog.
+    border-radius: 2.8rem;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+        linear-gradient(180deg, rgba(23, 18, 40, 0.94), rgba(12, 10, 20, 0.97));
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+        inset 0 1.5px 0 rgba(255, 255, 255, 0.22),
+        0 4rem 9rem -3rem rgba(0, 0, 0, 0.9);
+
+    .giz-client-dialog__header__title {
+        font-family: $font-family-header-theme-client;
+        font-weight: 800;
+        font-size: 2.4rem;
+        line-height: 1.25;
+        color: rgba(255, 255, 255, 0.98);
+        letter-spacing: -0.01em;
+    }
 
     .giz-client-dialog__header__subtitle {
-        color: #808185;
-        margin-top: 1.2rem;
+        margin-top: 0.6rem;
+        color: rgba(255, 255, 255, 0.42);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.1rem;
+        font-weight: 700;
     }
 
     .user-agreement {
         @include font-l-theme-client($font-weight-light-theme-client);
+        color: rgba(255, 255, 255, 0.62);
+        line-height: 2.2rem;
+    }
+
+    // Legal text sits in its own recessed well so the scroll region is
+    // visually bounded instead of floating loose in the dialog.
+    .giz-client-dialog__body {
+        border-radius: 1.6rem;
+        background: rgba(0, 0, 0, 0.22);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        padding: 1.8rem 2rem;
+    }
+
+    // Accent-filled confirm button, matching the login screen's primary.
+    .giz-button--fill.accent:not(.disabled) {
+        height: 5.2rem;
+        border-radius: 1.5rem;
+        background: linear-gradient(135deg, #c397ff 0%, #7c3aed 55%, #5b21b6 100%) !important;
+        border: none;
+        color: #fff !important;
+        font-family: $font-family-header-theme-client;
+        font-weight: 700;
+        
+        transition: filter 0.18s, box-shadow 0.18s;
+
+        &:hover {
+            filter: brightness(1.08);
+            
+        }
     }
 
     .giz-client-dialog__body {
         max-height: 24.0rem;
         position: relative;
+        overflow-y: auto;
+
+        // No visible scrollbar at all - the text still scrolls (wheel, drag,
+        // keyboard), the bar is simply hidden. The well's own border already
+        // bounds the region, so nothing is lost by removing the stripe.
+        // Deliberately not using a mask-image fade here: this element also
+        // draws the well's background and border, and a mask would fade
+        // those out along with the text.
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
         /*&:after {
             content: '';
             display: inline-block;
@@ -30,39 +98,36 @@
 
     .giz-user-agreement-checkboxes {
         margin-bottom: 2.4rem;
-    }
 
-    // This dialog's accept label is long and wraps to multiple lines. The shared check-box
-    // styling centers the box (:before) vertically in the label, but the checkmark (:after) is
-    // anchored to the label's top, so on a multi-line label the checkmark floats above the box.
-    // Top-align the box so it stays where the checkmark is anchored, for both single- and
-    // multi-line labels. Scoped to this dialog; loaded after the shared check-box styles, so it
-    // wins by source order. (The input is also kept hidden defensively in case the
-    // [client-theme] scoped reset does not reach an integrated host.)
-    .giz-check-box {
-        display: inline-flex;
-
-        input {
-            position: absolute;
-            left: -9999px;
-        }
-
-        input + label {
-            position: relative;
-            display: flex;
+        // Align the box with the FIRST line of a wrapping consent label
+        // instead of vertical-centering the whole two-line block.
+        .giz-check-box label {
             align-items: flex-start;
         }
 
-        // Nudge the checkmark a couple pixels left so it sits centered in the box.
-        input:checked + label:after {
-            left: 0.7rem;
+        .giz-check-box label:before {
+            margin-top: 0.1rem;
+        }
+
+        .giz-check-box label span {
+            line-height: 2rem;
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        // keep the tick aligned to the top-anchored box
+        .giz-check-box input:checked + label:after {
+            top: 1.2rem;
         }
     }
 
+    // "Required" and NOT yet agreed: a subtle red-tinted box on the dark
+    // dialog (the old light-pink fill glared against it). Scoped to
+    // :not(:checked) so that once ticked the normal accent-filled state
+    // takes over instead of staying red.
     .giz-user-agreement-checkbox--required {
-        input + label:before {
-            border-color: #EE505A;
-            background: #FDEEEE;
+        input:not(:checked) + label:before {
+            border-color: rgba(238, 80, 90, 0.8);
+            background: rgba(238, 80, 90, 0.12);
         }
     }
 }

@@ -367,35 +367,25 @@ namespace Gizmo.Client.UI.Components
             return Task.CompletedTask;
         }
 
-        private async Task CloseNotifications()
+        private void ViewState_OnChange(object sender, System.EventArgs e)
         {
-            if (await _animationLock.WaitAsync(TimeSpan.FromMinutes(1)))
+            Logger.LogDebug($"NotificationsMessage: ViewState_OnChange {this.ToString()}");
+
+            DispatchWorkflow(async () =>
             {
                 try
                 {
-                    _dismissAllItems = _visible.Select(a => a.Identifier).ToList();
-                    NotificationsService.DismissAll();
-
-                    await SlideWindowOut();
-
-                    _visible.Clear();
-                    await Rerender();
+                    await UpdateUI();
                 }
-                catch
+                catch (Exception ex)
                 {
-                    throw;
+                    //This was async void, so anything UpdateUI threw - most often JS interop
+                    //against a WebView that is going away - got rethrown on the thread pool and
+                    //exited the entire client. A notification failing to animate is never worth
+                    //a restart, so it is logged and dropped instead.
+                    Logger.LogError(ex, "NotificationsMessage: notification update failed.");
                 }
-                finally
-                {
-                    _animationLock.Release();
-                }
-            }
-        }
-
-        private async void ViewState_OnChange(object sender, System.EventArgs e)
-        {
-            Logger.LogDebug($"NotificationsMessage: ViewState_OnChange {this.ToString()}");
-            await UpdateUI();
+            });
         }
 
         private Task AnimationHandler(AnimationEventArgs args)
@@ -502,6 +492,11 @@ namespace Gizmo.Client.UI.Components
         public async ValueTask DisposeAsync()
         {
             Logger.LogDebug($"NotificationsMessage: DisposeAsync {this.ToString()}");
+
+            //Subscribed in OnAfterRenderAsync but never detached, so every rebuild of this host
+            //left another dead instance attached to the (long lived) view state, each one still
+            //driving JS interop against a DOM it no longer owns.
+            ViewState.OnChange -= ViewState_OnChange;
 
             try
             {

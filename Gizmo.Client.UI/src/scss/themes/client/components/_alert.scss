@@ -1,47 +1,85 @@
 //=============== Alert ================//
 
+// Плашка-уведомление: на экране входа это предупреждение о брони, дальше по
+// оболочке — статусы операций.
+//
+// У вендора плашки светлые: бледная заливка и тёмный текст, как в светлой теме
+// менеджера. В нашей тёмной оболочке такой блок читается как чужой прямоугольник
+// и перетягивает на себя всё внимание карточки. Оставляем ту же семантику цвета,
+// но берём её оттенком: прозрачная заливка, тонкая рамка того же тона, цветной
+// значок — и обычный светлый текст, как везде.
 .giz-alert {
     display: flex;
-    border-radius: 0.8rem;
-    padding: 1.6rem;
-    gap: 1.6rem;
+    align-items: flex-start;
+    border-radius: 1.4rem;
+    padding: 1.4rem 1.6rem;
+    gap: 1.2rem;
+    border: 1px solid transparent;
+    color: rgba(255, 255, 255, 0.88);
+
+    &__icon {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        // Значок ровно по первой строке заголовка, а не по центру всей плашки:
+        // с двумя строками текста он иначе съезжает вниз.
+        min-height: 2rem;
+    }
 
     &__body {
-        display: grid;
-        grid-template-rows: min-content 1fr;
-        gap: 0.8rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        min-width: 0;
 
         &__title {
-            @include font-m-theme-client($font-weight-regular-theme-client);
+            color: #fff;
+            @include font-m-theme-client($font-weight-bold-theme-client);
         }
 
         &__text {
+            color: rgba(255, 255, 255, 0.62);
             @include font-m-theme-client($font-weight-light-theme-client);
         }
+
+        // Заголовок или текст может не прийти — пустая строка не должна
+        // занимать место.
+        &__title:empty,
+        &__text:empty { display: none; }
     }
 
     &--warning {
-        background-color: #FEF3EC;
-        color: #CB662F;
+        background-color: rgba(255, 176, 86, 0.09);
+        border-color: rgba(255, 176, 86, 0.26);
+
+        .giz-alert__icon { color: #ffb056; }
     }
 
     &--success {
-        background-color: #E8F7F4;
-        color: #008E7D;
+        background-color: rgba(94, 216, 148, 0.09);
+        border-color: rgba(94, 216, 148, 0.26);
+
+        .giz-alert__icon { color: #5ed894; }
     }
 
     &--danger {
-        background-color: #FDEEEE;
-        color: #C74952;
+        background-color: rgba(255, 139, 139, 0.09);
+        border-color: rgba(255, 139, 139, 0.26);
+
+        .giz-alert__icon { color: #ff8b8b; }
     }
 
     &--info {
-        background-color: #F4F4F4;
-        color: #2B2D33;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.14);
+
+        .giz-alert__icon { color: rgba(255, 255, 255, 0.62); }
     }
 
     &--accent {
-        background-color: #D9E8FF;
-        color: $primary-color-theme-client;
+        background-color: rgba(var(--gg-accent-rgb), 0.10);
+        border-color: rgba(var(--gg-accent-rgb), 0.32);
+
+        .giz-alert__icon { color: var(--gg-accent); }
     }
 }

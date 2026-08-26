@@ -8,6 +8,19 @@
     />
     <title>Client UI (WEB)</title>
     <base href="/" />
+
+    <!-- Phosphor Icons + Manrope/Space Grotesk, per the Nexus Play brief
+         (sections 3 and 9). SELF-HOSTED in this host's own wwwroot/vendor so
+         the shell renders with zero network dependency - it runs on club PCs
+         that may be offline. (Kept out of the shared RCL wwwroot because its
+         StaticWebAssets pipeline pruned the files; each host carries its own
+         copy instead.) Static <link> tags, not a Blazor <HeadContent> block:
+         HeadOutlet in this app never committed a second HeadContent's links
+         to the DOM, confirmed by direct testing. -->
+    <link rel="stylesheet" href="vendor/phosphor/regular/style.css" />
+    <link rel="stylesheet" href="vendor/phosphor/bold/style.css" />
+    <link rel="stylesheet" href="vendor/phosphor/fill/style.css" />
+    <link rel="stylesheet" href="vendor/fonts/fonts.css" />
   </head>
   <body>
     <div id="app">Loading...</div>

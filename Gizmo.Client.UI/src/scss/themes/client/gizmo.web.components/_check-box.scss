@@ -3,6 +3,13 @@
 .giz-check-box {
     [#{$client-theme-comp-attr}] & {
         display: inline-flex;
+        // Single source of truth for the box size. The tick below is placed
+        // from this, so anything that wants a different sized checkbox (see
+        // .giz-app-autostart) overrides this one variable and the tick follows.
+        // Previously the tick's `left` was a constant tuned for a 2.2rem box,
+        // so .giz-app-autostart shrinking the box to 2rem left the tick sitting
+        // off-centre inside it.
+        --giz-check-box-size: 2.2rem;
 
         & input {
             position: absolute;
@@ -29,34 +36,46 @@
 
             & + label:before {
                 content: '';
-                width: 2.4rem;
-                height: 2.4rem;
-                background-color: transparent;
-                border: 0.2rem solid #fafafa;
-                border-radius: 0.4rem;
-                //margin-right: 0.8rem;
+                flex-shrink: 0;
+                width: var(--giz-check-box-size);
+                height: var(--giz-check-box-size);
+                background-color: rgba(255, 255, 255, 0.04);
+                border: 0.15rem solid rgba(255, 255, 255, 0.35);
+                border-radius: 0.6rem;
                 box-sizing: border-box;
+                transition: background-color 0.16s, border-color 0.16s;
             }
 
+            // Accent (brand purple) instead of the legacy blue.
             &:checked + label:before {
                 content: '';
-                background-color: $primary-color-theme-client;
-                border: 0.2rem solid $primary-color-theme-client;
+                background-color: var(--gg-accent);
+                border-color: var(--gg-accent);
             }
 
+            // Tick anchored to the box, not the label. The box is the first
+            // flex item and align-items:center keeps it vertically centred, so
+            // top:50% + translateY centres the tick on the box regardless of
+            // how tall the label's text wraps - the old fixed top:0.5rem was
+            // measured from the label top and drifted off the box on
+            // multi-line labels.
+            //
+            // `left` is derived from the box size for the same reason: as a
+            // constant it silently went off-centre whenever the box was
+            // resized. The 0.32rem term is the tick's own half width once
+            // rotated; at the default 2.2rem box this resolves to the 0.78rem
+            // that was previously hard coded, so the standard checkbox is
+            // pixel identical to before.
             &:checked + label:after {
                 content: '';
                 position: absolute;
-                left: 0.9rem;
-                top: 0.5rem;
-                width: 0.4rem;
-                height: 0.8rem;
-                border: solid white;
-                border-width: 0 0.2rem 0.2rem 0;
-                -webkit-transform: rotate(45deg);
-                -ms-transform: rotate(45deg);
-                transform: rotate(45deg);
-                //background: url('/img/icons/tick.svg') no-repeat; //TODO: doesn't exist
+                left: calc(var(--giz-check-box-size) / 2 - 0.32rem);
+                top: 50%;
+                width: 0.5rem;
+                height: 0.9rem;
+                border: solid #fff;
+                border-width: 0 0.22rem 0.22rem 0;
+                transform: translateY(-62%) rotate(45deg);
             }
 
             &.disabled + label:before,

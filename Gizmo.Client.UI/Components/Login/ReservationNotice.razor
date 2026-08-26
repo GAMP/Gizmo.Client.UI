@@ -1,0 +1,52 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+@* Плашка «этот компьютер забронирован» на экране входа.
+
+   Раньше это был Alert внутри карточки авторизации: он вставал над заголовком
+   «Войти», отодвигал форму и читался как ошибка ввода, хотя относится не к
+   форме, а ко всему устройству. Теперь это отдельная плитка над карточкой -
+   её видно сразу и её не путаешь с полями.
+
+   Компонент чисто отображающий: и страница входа, и шаблон экрана уже держат
+   HostReservationViewState у себя, поэтому текст и время приходят параметрами,
+   а не вторым чтением состояния. Так плашка выглядит одинаково и рядом с
+   карточкой, и поверх обоев, когда станция простаивает. *@
+
+<div class="giz-login-reserved">
+    <div class="giz-login-reserved__badge">
+        <i class="ph-fill ph-calendar-check giz-ph-icon"></i>
+    </div>
+
+    <div class="giz-login-reserved__text">
+        <div class="giz-login-reserved__title">Компьютер забронирован</div>
+        @if (!string.IsNullOrWhiteSpace(Message))
+        {
+            <div class="giz-login-reserved__note">@Message</div>
+        }
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Time))
+    {
+        <div class="giz-login-reserved__time">
+            <div class="giz-login-reserved__time-label">с</div>
+            <div class="giz-login-reserved__time-value">@Time</div>
+        </div>
+    }
+</div>
+
+@code {
+
+    /// <summary>
+    /// Время начала брони, уже в местном формате.
+    /// </summary>
+    [Parameter]
+    public string? Time { get; set; }
+
+    /// <summary>
+    /// Пояснение вендора: что именно значит эта бронь прямо сейчас.
+    /// </summary>
+    [Parameter]
+    public string? Message { get; set; }
+
+}

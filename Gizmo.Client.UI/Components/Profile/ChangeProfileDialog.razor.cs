@@ -42,6 +42,8 @@ namespace Gizmo.Client.UI.Components
 
         public List<IconSelectCountry> Countries { get; set; } = new List<IconSelectCountry>();
 
+        protected string Picture => AvatarService.Current?.Picture;
+
         public void OnClickClearValueButtonHandler(MouseEventArgs args)
         {
             SetSelectedCountry(Countries.Where(a => a.Text == LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_COUNTRY_OTHER))).FirstOrDefault());
@@ -105,7 +107,15 @@ namespace Gizmo.Client.UI.Components
         {
             this.SubscribeChange(ViewState);
 
+            if (AvatarService.Current != null)
+                AvatarService.Current.Changed += OnAvatarChanged;
+
             base.OnInitialized();
+        }
+
+        private void OnAvatarChanged()
+        {
+            DispatchStateHasChanged();
         }
 
         protected override async Task OnInitializedAsync()
@@ -161,6 +171,9 @@ namespace Gizmo.Client.UI.Components
         public override void Dispose()
         {
             this.UnsubscribeChange(ViewState);
+
+            if (AvatarService.Current != null)
+                AvatarService.Current.Changed -= OnAvatarChanged;
 
             base.Dispose();
         }

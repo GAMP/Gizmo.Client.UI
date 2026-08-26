@@ -50,7 +50,17 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        private async Task OnClickClearHandler()
+        // "Сбросить QR" resets back to the amount-selection screen and the
+        // dialog stays open (matches the top-bar dropdown's own Clear
+        // behaviour) - it used to also invoke ResultCallback here, which
+        // closes the whole dialog, so the reset was never actually visible
+        // before the dialog vanished.
+        private void OnClickClearHandler()
+        {
+            UserOnlineDepositViewStateService.Clear();
+        }
+
+        private async Task OnPaymentSucceededHandler()
         {
             UserOnlineDepositViewStateService.Clear();
             await ResultCallback.InvokeAsync();

@@ -53,6 +53,7 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public ImageFitType ImageFitType { get; set; } = ImageFitType.Fill;
 
+
         #endregion
 
         #region FIELDS

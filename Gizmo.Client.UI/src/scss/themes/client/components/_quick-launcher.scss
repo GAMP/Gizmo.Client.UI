@@ -1,37 +1,53 @@
 //=============== Quick Launcher ================//
+//
+// Lives in its own floating panel under the nav rail (.giz-left-panel in
+// _Layout.razor), not in the Home hero strip, so this stacks vertically -
+// pinned apps scrolling top to bottom - instead of running left-to-right in
+// a single wide row. GizDock itself defaults to a horizontal row
+// (_dock.scss); it has no other caller right now, so the vertical variant is
+// overridden here rather than changing that default. No rocket/history
+// switch above it any more - just the pinned-apps list.
 
 .quick-launcher {
-    display: grid;
-    grid-template-columns: min-content 1fr;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    padding: 0 1.6rem;
-    height: 8.0rem;
+    // Sizes to its content, no forced 100% height. The single scroll point
+    // for the whole rail is .giz-left-panel__quicklaunch (in _Layout.razor):
+    // the dock and this wrapper both size to content and NEVER scroll on
+    // their own. Previously the dock had its own overflow-y:auto + height:100%
+    // in a circular flex-basis:0% chain, which produced a scrollbar even when
+    // a few icons fit fine - and the global *::-webkit-scrollbar rule showed
+    // it despite a width:0 override.
+    width: 100%;
+    padding: 0.8rem 0;
 
     .giz-dock {
-        margin-left: 3.2rem;
-    }
-}
+        width: 100%;
+        justify-content: flex-start;
+        overflow: visible;
 
-.quick-launcher-switch.giz-button-group {
-    width: 12.0rem;
-    height: 4.8rem;
-    border: 0.1rem solid #0078D2;
-    border-radius: 0.6rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    overflow: hidden;
-
-    .giz-button {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        cursor: pointer;
-
-        &.selected {
-            background-color: #0078D2;
+        &__body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+            width: 100%;
         }
+    }
+
+    .giz-dock-item {
+        padding: 0;
+    }
+
+    // Tooltip opens rightward instead of downward - this rail sits flush
+    // against the left edge of the window, so a downward-opening tooltip
+    // would either clip against that edge or land on the icon below it.
+    .giz-dock-item-tooltip-wrapper {
+        top: 0;
+        left: 100%;
+        padding-top: 0;
+        padding-left: 0.8rem;
     }
 }
 
@@ -43,16 +59,23 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #0078D2;
+    color: var(--gg-accent);
 
     .giz-spinner {
-        color: #0078D2;
+        color: var(--gg-accent);
     }
 }
 
 .running {
-    width: 0.9rem;
-    height: 0.3rem;
-    background-color: #0078D2;
+    width: 1.2rem;
+    height: 0.35rem;
+    background: var(--gg-accent);
     border-radius: 0.4rem;
+    
+    animation: running-pulse 2s ease-in-out infinite;
+}
+
+@keyframes running-pulse {
+    0%, 100% { opacity: 1;  }
+    50%       { opacity: 0.7;  }
 }

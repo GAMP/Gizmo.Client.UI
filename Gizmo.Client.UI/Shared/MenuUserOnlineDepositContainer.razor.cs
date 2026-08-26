@@ -35,6 +35,12 @@ namespace Gizmo.Client.UI
             UserOnlineDepositViewStateService.Clear();
         }
 
+        private void OnPaymentSucceededHandler()
+        {
+            UserOnlineDepositViewStateService.Clear();
+            UserMenuViewService.CloseUserOnlineDeposit();
+        }
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);

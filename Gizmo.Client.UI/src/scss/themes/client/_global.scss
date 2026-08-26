@@ -1,13 +1,52 @@
 //=============== Theme Client Global ================//
 
 body {
-    background-color: #0C0F11;
+    background-color: #07050f;
     color: #FAFAFA;
     font-family: $font-family-text-theme-client;
     font-size: 1rem;
     font-weight: normal;
     line-height: normal;
     letter-spacing: normal;
+}
+
+// Shell-wide scrollbar baseline - every scrollable area gets the thin
+// accent-tinted look by default, not just the ones tagged with the
+// .giz-scrollbar--v opt-in utility class.
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(var(--gg-accent-rgb), 0.30) transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 0.6rem;
+    height: 0.6rem;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: rgba(var(--gg-accent-rgb), 0.30);
+    border-radius: 0.3rem;
+    border: 1px solid transparent;
+    background-clip: padding-box;
+
+    &:hover {
+        background: rgba(var(--gg-accent-rgb), 0.5);
+        background-clip: padding-box;
+    }
+}
+
+@keyframes gg-glow-pulse {
+    0%, 100% {  }
+    50%       {  }
+}
+
+@keyframes gg-border-pulse {
+    0%, 100% { border-color: rgba(var(--gg-accent-rgb), 0.25); }
+    50%       { border-color: rgba(var(--gg-accent-rgb), 0.55); }
 }
 
 a {

@@ -1,0 +1,183 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+@using Gizmo.Client.UI.View.States
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Globalization
+
+@* Билет, а не форма.
+   Всё стоит на одной вертикальной оси по центру узкого окна. Прежняя раскладка
+   «подпись слева — число справа» в окне шириной 52rem растаскивала каждую пару
+   к противоположным стенкам, и между ними оставалась пустая середина; отсюда и
+   ощущение разваленности, которое не лечилось отступами.
+
+   Акцент по-прежнему ровно один: та кнопка, которая сейчас имеет смысл. *@
+
+<HostedDialog>
+    <div class="giz-client-dialog giz-buy">
+
+        <div class="giz-buy__head">
+            <span class="giz-buy__head__label">@(_step == Step.TopUp ? "Пополнение" : "Покупка")</span>
+            @if (DisplayOptions.Closable)
+            {
+                <button type="button" class="giz-buy__close" @onclick="() => CloseDialog()" aria-label="Закрыть">
+                    <i class="ph-bold ph-x"></i>
+                </button>
+            }
+        </div>
+
+        @if (_outcomeOk is { } ok)
+        {
+            @* Итог зафиксирован в момент ответа и больше не меняется — см.
+               _outcomeOk в code-behind про «сначала успешно, потом ошибка». *@
+            <div class="giz-buy__body giz-buy__body--result">
+                @if (ok)
+                {
+                    <div class="giz-buy__result">
+                        <div class="giz-buy__result__icon giz-buy__result__icon--ok"><i class="ph-bold ph-check"></i></div>
+                        <div class="giz-buy__result__title">Пакет куплен</div>
+                        @if (_product is not null)
+                        {
+                            <div class="giz-buy__result__sub">@_product.Name</div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="giz-buy__result">
+                        <div class="giz-buy__result__icon giz-buy__result__icon--error"><i class="ph-bold ph-x"></i></div>
+                        <div class="giz-buy__result__title">Не получилось</div>
+                        <div class="giz-buy__result__sub">@((MarkupString)_outcomeError)</div>
+                    </div>
+                }
+
+                <button type="button" class="giz-buy__primary" @onclick="@(() => CloseDialog())">Готово</button>
+            </div>
+        }
+        else if (_step == Step.TopUp)
+        {
+            <div class="giz-buy__body">
+                <div class="giz-buy__short">
+                    <span class="giz-buy__short__label">Не хватает</span>
+                    <span class="giz-buy__short__sum">@Shortfall.ToString("C", CultureInfo.CurrentCulture)</span>
+                </div>
+
+                <UserOnlineDeposits OnPaymentSucceeded="@OnTopUpSucceeded" />
+
+                <button type="button" class="giz-buy__quiet" @onclick="@(() => BackToConfirm())">Назад</button>
+            </div>
+        }
+        else
+        {
+            <div class="giz-buy__body">
+
+                @* ── что покупаем ── *@
+                <div class="giz-buy__pack">
+                    <div class="giz-buy__pack__name">@(_product?.Name ?? "Пакет времени")</div>
+                    @if (Duration is { Length: > 0 })
+                    {
+                        <div class="giz-buy__pack__dur">@Duration</div>
+                    }
+                </div>
+
+                @* ── сколько ── *@
+                <div class="giz-buy__sum">
+                    @if (IsPriced)
+                    {
+                        <div class="giz-buy__sum__now">@Total.ToString("C", CultureInfo.CurrentCulture)</div>
+                    }
+                    else
+                    {
+                        @* Корзина считается на сервере: пока итог не пришёл, тут
+                           спиннер, а не ноль над активной кнопкой. *@
+                        <div class="giz-buy__sum__wait"><Spinner /></div>
+                    }
+
+                    @if (HasDiscount)
+                    {
+                        <div class="giz-buy__sum__was">
+                            <span class="giz-buy__sum__struck">@SubTotal.ToString("C", CultureInfo.CurrentCulture)</span>
+                            <span class="giz-buy__sum__save">скидка @Discount.ToString("C", CultureInfo.CurrentCulture)</span>
+                        </div>
+                    }
+                </div>
+
+                @* ── чем платим ── *@
+                @if (IsFree)
+                {
+                    @* Платить нечего, и способ оплаты к нулевой корзине не
+                       привязывается — см. Pay() в code-behind. *@
+                    <div class="giz-buy__free">Оплата не требуется</div>
+                }
+                else
+                {
+                    <div class="giz-buy__field">
+                        <span class="giz-buy__field__label">Способ оплаты</span>
+                        <EditForm EditContext="@CartOrderService.EditContext">
+                            <Select IsDisabled="@IsBusy"
+                                    IsTransparent="true"
+                                    HandleSVGIcon="Icons.Select_Client"
+                                    TValue="int?"
+                                    Value="@CartOrderService.ViewState.PaymentMethodId"
+                                    ValueChanged="@OnPaymentMethodChanged"
+                                    ValueExpression="@(() => CartOrderService.ViewState.PaymentMethodId)"
+                                    Size="InputSizes.Small"
+                                    IsFullWidth="true"
+                                    OpenDirection="PopupOpenDirections.Cursor"
+                                    PopupClass="giz-scrollbar--v">
+                                @foreach (var method in _paymentMethods)
+                                {
+                                    <SelectItem TValue="int?" Value="@method.Id">@method.Name</SelectItem>
+                                }
+                            </Select>
+                        </EditForm>
+
+                        @if (IsPayingFromBalance)
+                        {
+                            <span class="giz-buy__field__note">На счете @UserBalanceViewState.Balance.ToString("C", CultureInfo.CurrentCulture)</span>
+                        }
+                    </div>
+                }
+
+                @if (HasOtherItems)
+                {
+                    @* Корзина на пользователя одна, так что эти товары уйдут в
+                       оплату вместе с пакетом. Молчать об этом нельзя. *@
+                    <div class="giz-buy__note">В корзине есть товары — они оплачиваются вместе с пакетом</div>
+                }
+
+                @if (Shortfall > 0)
+                {
+                    <div class="giz-buy__short">
+                        <span class="giz-buy__short__label">Не хватает</span>
+                        <span class="giz-buy__short__sum">@Shortfall.ToString("C", CultureInfo.CurrentCulture)</span>
+                    </div>
+
+                    @if (CanTopUp)
+                    {
+                        <button type="button" class="giz-buy__primary" @onclick="@(() => TopUp())">
+                            Пополнить на @Shortfall.ToString("C", CultureInfo.CurrentCulture)
+                        </button>
+                    }
+                    else
+                    {
+                        <div class="giz-buy__note">Пополните счет на стойке администратора</div>
+                    }
+                }
+                else
+                {
+                    <button type="button" class="giz-buy__primary" disabled="@(!CanPay)" @onclick="@(() => Pay())">
+                        @if (CartOrderService.ViewState.IsLoading)
+                        {
+                            <Spinner />
+                        }
+                        else
+                        {
+                            <span>Оплатить</span>
+                        }
+                    </button>
+                }
+            </div>
+        }
+    </div>
+</HostedDialog>

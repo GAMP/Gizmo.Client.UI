@@ -1,25 +1,18 @@
-﻿//plain object namespace on purpose: the .NET 10 js interop resolver (findObjectMember in blazor.webview.js)
-//only traverses intermediate path segments whose typeof is "object", so a class (typeof "function") used as
-//a namespace breaks dotted invocations like "InternalFunctions.FullScreen.SubscribeOnFullScreenChange"
-//with "('FullScreen' was undefined)".
-window.InternalFunctions = {
-  dotnetObjectReference: null,
+﻿window.InternalFunctions = class InternalFunctions {
+  static dotnetObjectReference;
 
-  SetDotnetObjectReference(value) {
-    InternalFunctions.dotnetObjectReference = value;
-  },
+  static SetDotnetObjectReference(value) {
+    this.dotnetObjectReference = value;
+  }
 
-  FullScreen: {
-    //registered listeners kept per callback name so unsubscribe removes the exact handler instances
-    listeners: {},
-
+  static FullScreen = class FullScreen {
     /**
      * Subscribes to browser full screen change event.
      * @param {string} callbackName callBack function name.
      */
-    async SubscribeOnFullScreenChange(callbackName) {
+    static async SubscribeOnFullScreenChange(callbackName) {
       try {
-        InternalFunctions.FullScreen.subscribe(callbackName);
+        this.subscribe(callbackName);
       } catch (error) {
         await InternalFunctions.dotnetObjectReference.invokeMethodAsync(
           callbackName,
@@ -27,15 +20,15 @@ window.InternalFunctions = {
           error.message
         );
       }
-    },
+    }
 
     /**
      * Unsubscribes from browser full screen change event.
      * @param {string} callbackName callBack function name.
      */
-    async UnsubscribeOnFullScreenChange(callbackName) {
+    static async UnsubscribeOnFullScreenChange(callbackName) {
       try {
-        InternalFunctions.FullScreen.unsubscribe(callbackName);
+        this.unsubscribe(callbackName);
       } catch (error) {
         await InternalFunctions.dotnetObjectReference.invokeMethodAsync(
           callbackName,
@@ -43,41 +36,31 @@ window.InternalFunctions = {
           error.message
         );
       }
-    },
+    }
 
-    subscribe(callbackName) {
-      const fullScreen = InternalFunctions.FullScreen;
-
-      if (fullScreen.listeners[callbackName]) return;
-
-      const listener = (_) => fullScreen.fullScreenChangeHandler(callbackName);
-      fullScreen.listeners[callbackName] = listener;
+    static subscribe(callbackName) {
+      const listener = (_) => this.fullScreenChangeHandler(callbackName);
 
       window.addEventListener("fullscreenchange", listener);
       window.addEventListener("mozfullscreenchange", listener);
       window.addEventListener("webkitfullscreenchange", listener);
       window.addEventListener("msfullscreenchange", listener);
-    },
+    }
 
-    unsubscribe(callbackName) {
-      const fullScreen = InternalFunctions.FullScreen;
-
-      const listener = fullScreen.listeners[callbackName];
-      if (!listener) return;
-
-      delete fullScreen.listeners[callbackName];
+    static unsubscribe(callbackName) {
+      const listener = (_) => this.fullScreenChangeHandler(callbackName);
 
       window.removeEventListener("fullscreenchange", listener);
       window.removeEventListener("mozfullscreenchange", listener);
       window.removeEventListener("webkitfullscreenchange", listener);
       window.removeEventListener("msfullscreenchange", listener);
-    },
+    }
 
     /**
      * Handles full screen mode change events.
      * @param {string} callbackName - The name of the method to be called when the full screen mode is changed.
      */
-    async fullScreenChangeHandler(callbackName) {
+    static async fullScreenChangeHandler(callbackName) {
       try {
         let isFullScreen =
           document.fullscreenElement ||
@@ -99,8 +82,8 @@ window.InternalFunctions = {
           error.message
         );
       }
-    },
-  },
+    }
+  };
 };
 
 window.ClientFullScreen = window.appsSticky = function appsSticky() {
@@ -1328,4 +1311,436 @@ window.removeExpansionPanelEventListener = function removeExpansionPanelEventLis
     if (index > -1) {
         expansionPanelEventListenerReferences.splice(index, 1);
     }
+};
+
+//=============== Avatar upload =================//
+// Compression always happens here, client-side, before anything is sent to
+// C# / the avatar proxy: source images (a picked file, a pasted screenshot,
+// a random URL) can be several MB, and the whole point of doing this in the
+// browser is that the server never has to store more than a small, fixed
+// size per user. Every input path (file, paste, URL) funnels through the
+// same _compressImageElement so they all end up with identical output
+// rules regardless of how the image arrived.
+
+function _loadImageFromObjectUrl(objectUrl, useCrossOrigin) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        if (useCrossOrigin) {
+            // Needed to read pixels back out of the canvas for an
+            // externally-hosted URL. If the remote host doesn't send
+            // permissive CORS headers, drawImage still succeeds but
+            // canvas.toBlob will throw a SecurityError (tainted canvas) -
+            // that's surfaced to the caller as a normal rejected promise.
+            img.crossOrigin = "anonymous";
+        }
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error("Image failed to load."));
+        img.src = objectUrl;
+    });
+}
+
+function _compressImageElement(img, maxDim, quality) {
+    // Crop to a centred square first - avatars render in a circle, so a
+    // non-square source would otherwise get squashed instead of cropped.
+    const side = Math.min(img.naturalWidth || img.width, img.naturalHeight || img.height);
+    const sx = ((img.naturalWidth || img.width) - side) / 2;
+    const sy = ((img.naturalHeight || img.height) - side) / 2;
+
+    const outSide = Math.min(side, maxDim);
+    const canvas = document.createElement("canvas");
+    canvas.width = outSide;
+    canvas.height = outSide;
+
+    const ctx = canvas.getContext("2d");
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(img, sx, sy, side, side, 0, 0, outSide, outSide);
+
+    const tryExport = (type) => new Promise((resolve, reject) => {
+        canvas.toBlob((blob) => {
+            if (blob) resolve(blob);
+            else reject(new Error(`Canvas export to ${type} failed.`));
+        }, type, quality);
+    });
+
+    // WebP first (smallest for a given quality); most Chromium/WebView2
+    // targets support it, but fall back to JPEG if the browser returns
+    // nothing for that mime type.
+    return tryExport("image/webp")
+        .catch(() => tryExport("image/jpeg"))
+        .then((blob) => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve({
+                dataUrl: reader.result,
+                contentType: blob.type,
+                byteLength: blob.size,
+                width: outSide,
+                height: outSide,
+            });
+            reader.onerror = () => reject(new Error("Reading compressed blob failed."));
+            reader.readAsDataURL(blob);
+        }));
+}
+
+window.compressImageFromInputElement = async function compressImageFromInputElement(inputElement, maxDim, quality) {
+    if (!inputElement || !inputElement.files || inputElement.files.length === 0) {
+        throw new Error("No file selected.");
+    }
+    const file = inputElement.files[0];
+    const objectUrl = URL.createObjectURL(file);
+    try {
+        const img = await _loadImageFromObjectUrl(objectUrl, false);
+        return await _compressImageElement(img, maxDim, quality);
+    } finally {
+        URL.revokeObjectURL(objectUrl);
+    }
+};
+
+window.compressImageFromDataUrl = async function compressImageFromDataUrl(dataUrl, maxDim, quality) {
+    const img = await _loadImageFromObjectUrl(dataUrl, false);
+    return await _compressImageElement(img, maxDim, quality);
+};
+
+window.compressImageFromUrl = async function compressImageFromUrl(url, maxDim, quality) {
+    const img = await _loadImageFromObjectUrl(url, true);
+    return await _compressImageElement(img, maxDim, quality);
+};
+
+var _avatarPasteHandler = null;
+
+window.setupAvatarPaste = function setupAvatarPaste(dotNetRef, callbackName) {
+    window.teardownAvatarPaste();
+
+    _avatarPasteHandler = function (event) {
+        const items = (event.clipboardData || window.clipboardData || {}).items;
+        if (!items) return;
+
+        for (const item of items) {
+            if (item.type && item.type.startsWith("image/")) {
+                const blob = item.getAsFile();
+                const reader = new FileReader();
+                reader.onload = () => {
+                    dotNetRef.invokeMethodAsync(callbackName, reader.result);
+                };
+                reader.readAsDataURL(blob);
+                event.preventDefault();
+                break;
+            }
+        }
+    };
+
+    document.addEventListener("paste", _avatarPasteHandler);
+};
+
+window.teardownAvatarPaste = function teardownAvatarPaste() {
+    if (_avatarPasteHandler) {
+        document.removeEventListener("paste", _avatarPasteHandler);
+        _avatarPasteHandler = null;
+    }
+};
+
+//=============== Avatar crop editor =================//
+// Раньше картинка резалась сразу и вслепую: бралась центральная квадратная
+// область и сжималась в 512px. Для портрета в полный рост это означало
+// «аватарка — живот». Теперь пользователь сам выбирает область: тянет
+// картинку и меняет масштаб, а в круг попадает ровно то, что видно.
+//
+// Геометрия. Сцена квадратная со стороной S, круг вписан, диаметр D = S.
+// Картинка натуральных размеров nw*nh лежит по центру сцены и двигается
+// трансформом translate(tx,ty) scale(s). Тогда точка изображения под центром
+// круга это (nw/2 - tx/s, nh/2 - ty/s), а диаметр круга в пикселях исходника
+// равен D/s — из этого и считается прямоугольник для canvas при экспорте.
+//
+// Минимальный масштаб — тот, при котором круг ещё полностью закрыт картинкой:
+// s >= D / min(nw, nh). Смещение всегда зажимается так, чтобы за краем круга
+// не оказалось пустоты, поэтому «дырок» в аватарке не бывает в принципе.
+
+var _avatarCrop = null;
+
+function _avatarCropClamp() {
+    const c = _avatarCrop;
+    if (!c) return;
+
+    const maxX = Math.max(0, (c.nw * c.scale - c.d) / 2);
+    const maxY = Math.max(0, (c.nh * c.scale - c.d) / 2);
+
+    c.tx = Math.min(maxX, Math.max(-maxX, c.tx));
+    c.ty = Math.min(maxY, Math.max(-maxY, c.ty));
+}
+
+function _avatarCropApply() {
+    const c = _avatarCrop;
+    if (!c) return;
+
+    _avatarCropClamp();
+    c.img.style.transform =
+        "translate(-50%, -50%) translate(" + c.tx + "px, " + c.ty + "px) scale(" + c.scale + ")";
+}
+
+window.avatarCropInit = function avatarCropInit(stage, dataUrl) {
+    window.avatarCropDispose();
+
+    return new Promise((resolve, reject) => {
+        if (!stage) {
+            reject(new Error("No crop stage element."));
+            return;
+        }
+
+        const img = new Image();
+        img.onload = () => {
+            const d = Math.min(stage.clientWidth, stage.clientHeight);
+            const nw = img.naturalWidth;
+            const nh = img.naturalHeight;
+            const base = d / Math.min(nw, nh);
+
+            img.className = "giz-avatar-crop__img";
+            img.draggable = false;
+            img.style.width = nw + "px";
+            img.style.height = nh + "px";
+
+            stage.appendChild(img);
+
+            _avatarCrop = {
+                stage: stage, img: img, nw: nw, nh: nh, d: d,
+                base: base,
+                scale: base,
+                tx: 0, ty: 0,
+                dragging: false,
+                lastX: 0, lastY: 0,
+                pointerId: null,
+            };
+
+            const onDown = (e) => {
+                const c = _avatarCrop;
+                if (!c) return;
+                c.dragging = true;
+                c.pointerId = e.pointerId;
+                c.lastX = e.clientX;
+                c.lastY = e.clientY;
+                stage.setPointerCapture(e.pointerId);
+                stage.classList.add("is-dragging");
+            };
+
+            const onMove = (e) => {
+                const c = _avatarCrop;
+                if (!c || !c.dragging || e.pointerId !== c.pointerId) return;
+                c.tx += e.clientX - c.lastX;
+                c.ty += e.clientY - c.lastY;
+                c.lastX = e.clientX;
+                c.lastY = e.clientY;
+                _avatarCropApply();
+            };
+
+            const onUp = (e) => {
+                const c = _avatarCrop;
+                if (!c) return;
+                c.dragging = false;
+                c.pointerId = null;
+                try { stage.releasePointerCapture(e.pointerId); } catch (err) { /* уже отпущен */ }
+                stage.classList.remove("is-dragging");
+            };
+
+            const onWheel = (e) => {
+                const c = _avatarCrop;
+                if (!c) return;
+                e.preventDefault();
+                // Колесо меняет масштаб от центра круга: зум «в точку курсора»
+                // выглядит богаче, но на тачпаде уводит картинку из-под руки.
+                const step = e.deltaY < 0 ? 1.08 : 1 / 1.08;
+                window.avatarCropSetZoom((c.scale * step) / c.base);
+            };
+
+            stage.addEventListener("pointerdown", onDown);
+            stage.addEventListener("pointermove", onMove);
+            stage.addEventListener("pointerup", onUp);
+            stage.addEventListener("pointercancel", onUp);
+            stage.addEventListener("wheel", onWheel, { passive: false });
+
+            _avatarCrop.listeners = { onDown: onDown, onMove: onMove, onUp: onUp, onWheel: onWheel };
+
+            _avatarCropApply();
+            resolve({ width: nw, height: nh });
+        };
+        img.onerror = () => reject(new Error("Image failed to load."));
+        img.src = dataUrl;
+    });
+};
+
+// zoom — множитель к минимальному масштабу, 1 = картинка ровно закрывает круг.
+window.avatarCropSetZoom = function avatarCropSetZoom(zoom) {
+    const c = _avatarCrop;
+    if (!c) return 1;
+
+    const clamped = Math.min(4, Math.max(1, zoom));
+    c.scale = c.base * clamped;
+    _avatarCropApply();
+    return clamped;
+};
+
+window.avatarCropExport = function avatarCropExport(outSize, quality) {
+    const c = _avatarCrop;
+    if (!c) throw new Error("Crop editor is not initialised.");
+
+    const side = c.d / c.scale;                       // сторона выреза в пикселях исходника
+    const sx = c.nw / 2 - c.tx / c.scale - side / 2;
+    const sy = c.nh / 2 - c.ty / c.scale - side / 2;
+
+    const out = Math.min(Math.round(side), outSize);  // не растягиваем мелкий исходник
+    const canvas = document.createElement("canvas");
+    canvas.width = out;
+    canvas.height = out;
+
+    const ctx = canvas.getContext("2d");
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(c.img, sx, sy, side, side, 0, 0, out, out);
+
+    const tryExport = (type) => new Promise((resolve, reject) => {
+        canvas.toBlob((blob) => {
+            if (blob) resolve(blob);
+            else reject(new Error("Canvas export to " + type + " failed."));
+        }, type, quality);
+    });
+
+    return tryExport("image/webp")
+        .catch(() => tryExport("image/jpeg"))
+        .then((blob) => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve({
+                dataUrl: reader.result,
+                contentType: blob.type,
+                byteLength: blob.size,
+                width: out,
+                height: out,
+            });
+            reader.onerror = () => reject(new Error("Reading cropped blob failed."));
+            reader.readAsDataURL(blob);
+        }));
+};
+
+window.avatarCropDispose = function avatarCropDispose() {
+    const c = _avatarCrop;
+    if (!c) return;
+
+    const l = c.listeners || {};
+    c.stage.removeEventListener("pointerdown", l.onDown);
+    c.stage.removeEventListener("pointermove", l.onMove);
+    c.stage.removeEventListener("pointerup", l.onUp);
+    c.stage.removeEventListener("pointercancel", l.onUp);
+    c.stage.removeEventListener("wheel", l.onWheel);
+
+    if (c.img && c.img.parentNode) c.img.parentNode.removeChild(c.img);
+
+    _avatarCrop = null;
+};
+
+// Исходник для редактора: только декодируем и, если картинка огромная,
+// уменьшаем — резать будет уже пользователь. Верхняя граница нужна, чтобы
+// снимок с телефона на 12 мегапикселей не жил в памяти WebView целиком.
+function _avatarSourceFromImage(img, maxDim) {
+    const nw = img.naturalWidth || img.width;
+    const nh = img.naturalHeight || img.height;
+    const factor = Math.min(1, maxDim / Math.max(nw, nh));
+
+    if (factor >= 1) {
+        return Promise.resolve({ dataUrl: img.src, width: nw, height: nh });
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(nw * factor);
+    canvas.height = Math.round(nh * factor);
+
+    const ctx = canvas.getContext("2d");
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    return new Promise((resolve, reject) => {
+        canvas.toBlob((blob) => {
+            if (!blob) { reject(new Error("Canvas export failed.")); return; }
+            const reader = new FileReader();
+            reader.onload = () => resolve({
+                dataUrl: reader.result,
+                width: canvas.width,
+                height: canvas.height,
+            });
+            reader.onerror = () => reject(new Error("Reading source blob failed."));
+            reader.readAsDataURL(blob);
+        }, "image/webp", 0.92);
+    });
+}
+
+window.avatarSourceFromInputElement = async function avatarSourceFromInputElement(inputElement, maxDim) {
+    if (!inputElement || !inputElement.files || inputElement.files.length === 0) {
+        throw new Error("No file selected.");
+    }
+    const objectUrl = URL.createObjectURL(inputElement.files[0]);
+    try {
+        const img = await _loadImageFromObjectUrl(objectUrl, false);
+        return await _avatarSourceFromImage(img, maxDim);
+    } finally {
+        URL.revokeObjectURL(objectUrl);
+    }
+};
+
+window.avatarSourceFromDataUrl = async function avatarSourceFromDataUrl(dataUrl, maxDim) {
+    const img = await _loadImageFromObjectUrl(dataUrl, false);
+    return await _avatarSourceFromImage(img, maxDim);
+};
+
+window.avatarSourceFromUrl = async function avatarSourceFromUrl(url, maxDim) {
+    const img = await _loadImageFromObjectUrl(url, true);
+    return await _avatarSourceFromImage(img, maxDim);
+};
+
+// ─────────────────────── keyboard layout detection ───────────────────────
+// The desktop host's IInputLanguageService never raises LanguageChange and
+// its CurrentInputLanguage getter throws NotImplementedException, so the
+// shell has no way of hearing about an Alt+Shift layout switch from the
+// C# side. The WebView is Chromium though, and Chromium exposes the live
+// OS layout through navigator.keyboard.getLayoutMap(). Polling that is the
+// only route to the information that does not require changing the host.
+//
+// The 'layoutchange' event on navigator.keyboard exists in the spec but is
+// not shipped in most Chromium builds, hence the poll rather than a
+// listener.
+let _layoutWatchTimer = null;
+let _layoutWatchLast = null;
+
+async function _probeLayoutSampleChar() {
+    if (!navigator.keyboard || !navigator.keyboard.getLayoutMap) return null;
+    try {
+        const map = await navigator.keyboard.getLayoutMap();
+        // KeyA is present in every layout worth distinguishing here and
+        // its output identifies the script: "a" latin, "ф" cyrillic,
+        // "α" greek, ...
+        return map.get("KeyA") || null;
+    } catch {
+        return null;
+    }
+}
+
+window.setupInputLayoutWatch = function setupInputLayoutWatch(dotNetRef, callbackName, intervalMs) {
+    window.teardownInputLayoutWatch();
+
+    const tick = async () => {
+        const sample = await _probeLayoutSampleChar();
+        if (sample && sample !== _layoutWatchLast) {
+            _layoutWatchLast = sample;
+            try {
+                await dotNetRef.invokeMethodAsync(callbackName, sample);
+            } catch {
+                // Component went away between the poll and the callback.
+                window.teardownInputLayoutWatch();
+            }
+        }
+    };
+
+    tick();
+    _layoutWatchTimer = setInterval(tick, intervalMs || 800);
+};
+
+window.teardownInputLayoutWatch = function teardownInputLayoutWatch() {
+    if (_layoutWatchTimer !== null) {
+        clearInterval(_layoutWatchTimer);
+        _layoutWatchTimer = null;
+    }
+    _layoutWatchLast = null;
 };

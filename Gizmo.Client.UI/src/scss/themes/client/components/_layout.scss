@@ -2,8 +2,13 @@
 
 .giz-container {
     .giz-app__header {
-        background-color: #22272B;
-        border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
+        z-index: 1; // lift header stacking context above page body so popups/tooltips paint on top
+        background: rgba(6, 8, 16, 0.82);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border-bottom: 1px solid rgba(var(--gg-accent-rgb), 0.14);
+        box-shadow:
+                    0 4px 40px rgba(0, 0, 0, 0.5);
         height: 6.4rem;
     }
 }
@@ -33,10 +38,20 @@
     }
 }
 
+// Browser/WASM host only (.giz-web-notifications-host is only rendered when
+// RuntimeInformation.IsOSPlatform("browser") is true - see _Layout.razor).
+// The desktop shell never renders this wrapper at all: its notifications
+// render in a wholly separate WPF window
+// (Host.WPF/NotificationsHost.xaml.cs) with no such wrapper div, so this
+// block is inert in production and only matters when browser-testing this
+// project locally. Left aligned with the real _notifications.scss sizing
+// (width/z-index) purely so a local browser preview isn't misleading about
+// what desktop actually looks like - old leftover values here (60rem/900)
+// predate that file's own width and z-index.
 .giz-web-notifications-host {
     .giz-notifications {
-        z-index: 900;
-        width: 60rem;
+        z-index: 600;
+        width: 42rem;
         left: 50%;
         transform: translateX(-50%);
     }

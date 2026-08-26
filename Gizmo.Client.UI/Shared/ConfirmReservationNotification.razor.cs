@@ -30,6 +30,11 @@ namespace Gizmo.Client.UI
         [Parameter]
         public EventCallback<int> OnClose { get; set; }
 
+        /// <summary>
+        /// Шаг 1 — бронь уже подтверждена и ждёт оплаты, шаг 0 — ещё нужен код.
+        /// </summary>
+        private bool IsPaymentStep => ConfirmReservationNotificationViewService.ViewState.Step == 1;
+
         private Task OpenPaymentDialogAsync()
         {
             return ConfirmReservationNotificationViewService.OpenPaymentDialogAsync();

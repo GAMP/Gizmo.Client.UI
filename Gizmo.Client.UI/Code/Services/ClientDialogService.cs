@@ -90,6 +90,29 @@ namespace Gizmo.Client.UI.Services
             }, default, cancellationToken);
         }
 
+        /// <summary>
+        /// One step purchase of a single time package, without the shop cart screen.
+        /// </summary>
+        /// <remarks>
+        /// Deliberately NOT on IClientDialogService: that interface lives in
+        /// Gizmo.Client.UI.Services, which the server never reloads from the skin
+        /// folder, so an addition there would never reach a real client. Callers
+        /// inside this assembly reach it by testing the injected service for this
+        /// concrete type - see Home.razor.cs.
+        /// </remarks>
+        public Task<AddDialogResult<EmptyComponentResult>> ShowPackagePurchaseDialogAsync(int productId, Guid cartEntryId, CancellationToken cancellationToken = default)
+        {
+            return ShowDialogAsync<PackagePurchaseDialog>(new Dictionary<string, object>()
+            {
+                { nameof(PackagePurchaseDialog.ProductId), productId },
+                { nameof(PackagePurchaseDialog.CartEntryId), cartEntryId }
+            }, new DialogDisplayOptions()
+            {
+                Closable = true,
+                CloseOnClick = false
+            }, default, cancellationToken);
+        }
+
         public Task<AddDialogResult<EmptyComponentResult>> ShowUserOnlineDepositsDialogAsync(CancellationToken cancellationToken = default)
         {
             return ShowDialogAsync<UserOnlineDepositsDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()

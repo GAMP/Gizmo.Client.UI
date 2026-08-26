@@ -1,162 +1,292 @@
 //=============== Application Card ================//
+//
+// Одна карточка — один постер. Всё остальное лежит НА нём, а не под ним:
+// раньше карточка была коробкой из трёх этажей (картинка, подпись, футер с
+// категорией и кнопкой), и в сетке из двадцати штук это читалось как таблица,
+// а не как полка с играми.
+//
+// Правила те же, что на главной, и это намеренно — карточка там и здесь одна:
+//   1. В покое видно только постер и плашку с названием.
+//   2. На наведении постер приглушается и чуть наезжает, поверх — таблетки
+//      ярлыков запуска. Один ярлык — одна фиолетовая таблетка, то есть кнопка.
+//   3. Служебное (категория, «подробнее») выезжает сверху только на наведении.
+//   4. Акцент ровно один: то, что сейчас можно нажать.
+//
+// --gg-card-bg и --gg-card-image-bg остаются точками входа для клубной темы.
+
+$ac-r:     2rem;                                        // радиус карточки
+$ac-pad:   0.9rem;                                      // отступ плашек от краёв
+$ac-ink:   #f2f0f7;
+$ac-ink-2: rgba(242, 240, 247, 0.62);
+$ac-ink-3: rgba(242, 240, 247, 0.4);
+$ac-plate: rgba(12, 9, 20, 0.86);                       // фон плашки и таблеток
 
 .giz-app-card {
     position: relative;
-    background-color: #22272B;
-    border-radius: 0.8rem;
+    max-width: 100%;
     overflow: hidden;
+    border-radius: $ac-r;
+    background: var(--gg-card-bg, #14111d);
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.2s;
 
     &:hover {
-        background-color: #020203;
-
-        .giz-app-card__action {
-            display: flex;
-        }
-
-        .giz-app-card__content__image__hovered {
-            background-color: rgba(0, 0, 0, 0.94);
-
-            .giz-app-card__content--hovered {
-                visibility: visible;
-            }
-        }
+        transform: translateY(-3px);
+        box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.85);
     }
 
-    &__content {
-        display: grid;
-        grid-template-rows: min-content 1fr min-content;
-        gap: 1.6rem;
-        height: 100%;
+    // Обводка отдельным слоем поверх содержимого, а не inset-тенью на самой
+    // карточке. Inset-тень рисуется под содержимым, а постер занимает карточку
+    // целиком — и закрывал её везде, кроме полоски под собой: обводка была
+    // видна только снизу. Настоящий border тоже не годится: он забирает место
+    // в раскладке и рисует волоски на нулевой высоте.
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 7;
+        border-radius: inherit;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+        pointer-events: none;
+        transition: box-shadow 0.2s;
+    }
 
+    &:hover::after { box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.5); }
+
+    &__content {
+        position: relative;
+        height: 100%;
+        max-width: 100%;
+
+        // Постер задаёт высоту карточки — всё остальное лежит поверх и в
+        // раскладке не участвует.
         &__image {
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            height: 33.3rem;
-            background-color: #161A1D;
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            overflow: hidden;
+            background: var(--gg-card-image-bg, linear-gradient(160deg, #1e0a3c 0%, #0f0424 55%, #06030e 100%));
 
-            & > img {
-                /*width: 100%;
-                height: 100%;
-                object-fit: cover;*/
-                border-radius: 0.9rem 0.9rem 0 0;
-            }
-
-            &__hovered {
-                position: absolute;
-                top: 0;
-                left: 0;
+            // Обложка заполняет карточку и обрезается по пропорции 3:4.
+            // Показывать её целиком нельзя без одного из двух: либо поле по
+            // краям (размытая подложка — отвергнута), либо своя высота у каждой
+            // карточки. Второе в сетке не работает: у каждого приложения своя
+            // пропорция картинки, ряды поехали бы лесенкой.
+            //
+            // object-position по центру, а не по верху: обрезка симметричная,
+            // так реже режется главное.
+            img {
                 width: 100%;
                 height: 100%;
-                z-index: 2;
-                padding: 1.6rem 0 0 0;
-                transition: background-color 0.2s;
+                object-fit: cover;
+                object-position: center;
+                transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.3, 1), filter 0.28s;
+            }
 
-                &__header {
-                    display: flex;
-                    justify-content: space-between;
-                    width: 100%;
-                    height: 100%;
-                    overflow: hidden;
-                }
+            .giz-default-image,
+            .giz-broken-image {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
 
-                .giz-app-card__content--hovered {
-                    padding: 0 0.4rem 0 0.4rem;
-                    visibility: hidden;
-                }
+                img { width: 34%; height: auto; object-fit: contain; opacity: 0.2; }
             }
         }
 
+        // ── плашка с названием ──
+        // Она же и делает из постера кнопку: по треугольнику видно, что это
+        // можно запустить, а название всегда лежит на своём фоне, а не на
+        // случайном пикселе обложки. Затемнения к низу под ней нет намеренно —
+        // плашка носит фон сама.
         &__details {
-            padding: 0 1.6rem;
-            width: 100%;
-            overflow: hidden;
+            position: absolute;
+            z-index: 2;
+            left: $ac-pad;
+            right: $ac-pad;
+            bottom: $ac-pad;
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            min-width: 0;
+            padding: 0.9rem 1.1rem;
+            border-radius: 1.3rem;
+            background: $ac-plate;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+            pointer-events: none;
+            transition: opacity 0.18s;
+
+            // Треугольник нарисован границами, а не иконочным шрифтом: не
+            // зависит от того, догрузился ли шрифт, и всегда в размер текста.
+            &::before {
+                content: '';
+                flex: none;
+                width: 0;
+                height: 0;
+                border-left: 0.85rem solid var(--gg-accent);
+                border-top: 0.52rem solid transparent;
+                border-bottom: 0.52rem solid transparent;
+            }
         }
 
+        // ── верхняя строка: категория и «подробнее» ──
+        // В покое её нет. Категория дублирует фильтр над сеткой, а кнопка
+        // деталей нужна раз в сто наведений — держать их постоянно значит
+        // отдать им треть карточки ни за что.
         &__footer {
+            position: absolute;
+            z-index: 6;
+            top: $ac-pad;
+            left: $ac-pad;
+            right: $ac-pad;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            padding: 0.0rem 1.6rem 1.6rem 1.6rem;
-            width: 100%;
-            overflow: hidden;
+            gap: 0.8rem;
+            padding: 0;
+            max-width: none;
+            opacity: 0;
+            transform: translateY(-4px);
+            pointer-events: none;
+            transition: opacity 0.18s, transform 0.18s;
 
             &-category {
-                background-color: rgba(255, 255, 255, 0.1);
-                border-radius: 1.6rem;
-                color: rgba(255, 255, 255, 0.6);
-                padding: 0.6rem 1.2rem;
+                min-width: 0;
+                padding: 0.4rem 0.9rem;
+                border-radius: 0.9rem;
+                background: $ac-plate;
+                box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+                color: $ac-ink-2;
                 white-space: nowrap;
-                max-width: 100%;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                @include font-s-theme-client($font-weight-regular-theme-client);
-            }
-        }
-
-        &--hovered {
-            height: 100%;
-            width: 100%;
-            overflow: auto;
-
-            &__header {
-                display: flex;
-                justify-content: space-between;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                font-family: $font-family-header-theme-client;
+                font-size: 1rem;
+                font-weight: 700;
             }
         }
     }
 
-    &__action {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 2;
-        padding: 1.6rem;
-        display: none;
-        align-items: center;
+    &:hover &__content__footer {
+        opacity: 1;
+        transform: none;
+        pointer-events: auto;
     }
 
-    &-text {
-        overflow: hidden;
+    // ── наведение ──
+    &:hover {
+        // Приглушить до узнаваемости, а не погасить: под таблетками должно
+        // читаться, какая это игра. Порог выверен по самой светлой обложке.
+        .giz-app-card__content__image > img {
+            transform: scale(1.06);
+            filter: brightness(0.58) saturate(0.8);
+        }
+
+        // Плашку сменяет настоящий список ярлыков — держать под ним ещё и её
+        // незачем.
+        .giz-app-card__content__details { opacity: 0; }
+
+        .giz-app-card__content__image__hovered {
+            // Вуаль тонкая: обложку уже приглушает фильтр, здесь нужен только
+            // ровный тон под подписями.
+            background: linear-gradient(180deg, rgba(9, 6, 16, 0.28), rgba(9, 6, 16, 0.5));
+
+            .giz-app-card__content--hovered {
+                opacity: 1;
+                transform: translateY(0);
+                pointer-events: auto;
+            }
+        }
     }
 
     &__title {
+        min-width: 0;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        @include font-l-theme-client($font-weight-light-theme-client);
+        color: $ac-ink;
+        font-family: $font-family-header-theme-client;
+        font-size: clamp(1.25rem, 1.14rem + 0.22vw, 1.55rem);
+        font-weight: 600;
+        line-height: 1.3;
+        letter-spacing: -0.005em;
+    }
+
+    // Кнопка деталей: тихий стеклянный квадрат, акцент — только под курсором.
+    &__open {
+        flex-shrink: 0;
+        width: 3rem;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: 0;
+        border-radius: 0.9rem;
+        cursor: pointer;
+        background: $ac-plate;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        color: $ac-ink-2;
+        transition: background 0.16s, color 0.16s, box-shadow 0.16s;
+
+        i { font-size: 1.5rem; }
+
+        &:hover {
+            background: var(--gg-accent);
+            box-shadow: none;
+            color: #16081f;
+        }
+
+        &:focus-visible { outline: 2px solid var(--gg-accent); outline-offset: 2px; }
+    }
+
+    &-text {
+        min-width: 0;
+        overflow: hidden;
     }
 }
 
-.giz-app-card-b1 {
-    display: flex;
-    align-items: center;
-    background-color: #1B1D21;
-    opacity: 0.9;
-    border-radius: 1.2rem;
-    padding: 0.4rem 0.8rem;
-    color: #FAFAFA;
-    @include font-s-theme-client($font-weight-light-theme-client);
+// ── оверлей запуска ──────────────────────────────────────────────────────
+.giz-app-card__content__image__hovered {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    // Отступ ровный со всех сторон: список центрируется по карточке, а не по
+    // остатку под верхней строкой. Столкнуться с ней он может только при
+    // девяти с лишним ярлыках — до этого срабатывает плотный режим ниже.
+    padding: $ac-pad;
+    background: transparent;
+    transition: background 0.22s ease;
+    overflow: hidden;
 
-    & > svg {
-        margin-right: 0.4rem;
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
     }
-}
 
-.giz-app-card-b2 {
-    display: flex;
-    align-items: center;
-    background-color: #1B1D21;
-    opacity: 0.9;
-    border-radius: 1.2rem;
-    padding: 0.4rem 0.8rem;
-    color: #FAFAFA;
-    @include font-s-theme-client($font-weight-light-theme-client);
-
-    & > svg {
-        margin-right: 0.4rem;
+    // Центровка держится не на grid + place-items (ломает собственную
+    // прокрутку контейнера), а на снятии распорки: у .giz-exe-popup стоит
+    // min-height: 100%, из-за чего блок всегда во всю высоту и его
+    // justify-content: center ничего не решает.
+    .giz-app-card__content--hovered {
+        width: 100%;
+        height: auto;
+        max-height: 100%;
+        padding: 0;
+        overflow: auto;
+        opacity: 0;
+        transform: translateY(5px);
+        pointer-events: none;
+        transition: opacity 0.22s ease, transform 0.22s ease;
     }
 }
 
@@ -165,7 +295,130 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-width: 100%;
-    min-height: 100%;
+    gap: 0.55rem;
+    min-width: 0;
+    min-height: 0;
     overflow: hidden;
+
+    // ── таблетка ярлыка ──
+    // Прежде это был вертикальный список иконок по 62px на почти непрозрачной
+    // чёрной заливке: карточка чернела целиком ради того, что у большинства
+    // приложений ярлык РОВНО ОДИН.
+    .giz-universal-executable {
+        // Третья колонка — под треугольник запуска: тот же знак, что и на
+        // плашке в покое, чтобы строка читалась как действие, а не как файл.
+        grid-template-columns: min-content 1fr min-content;
+        align-items: center;
+        gap: 0.55rem;
+        padding: 0.5rem;
+        border-radius: 0.9rem;
+        // Заливка тёмная, а не осветляющая: светлая плёнка на светлом участке
+        // обложки (снег, небо, белая полоса) оставляла белый текст почти без
+        // контраста.
+        background: rgba(12, 9, 20, 0.72);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+        transition: background 0.16s, box-shadow 0.16s, transform 0.16s, filter 0.16s;
+
+        // Стеклянная подсветка базового компонента не нужна: таблетка красится
+        // сама, а два фона друг на друге давали грязь на акценте.
+        &::before { content: none; }
+
+        &::after {
+            content: '';
+            align-self: center;
+            justify-self: end;
+            margin-right: 0.3rem;
+            width: 0;
+            height: 0;
+            border-left: 0.72rem solid rgba(255, 255, 255, 0.45);
+            border-top: 0.44rem solid transparent;
+            border-bottom: 0.44rem solid transparent;
+            transition: border-color 0.16s;
+        }
+
+        // 2.6rem вместо 6.2rem: на такой высоте шесть ярлыков — потолок,
+        // который реально встречается, — влезают в карточку без прокрутки.
+        .giz-universal-executable__icon {
+            width: 2.6rem;
+            height: 2.6rem;
+
+            img {
+                width: 100%;
+                height: 100%;
+                border-radius: 0.6rem;
+                // contain, а не cover: иконки исполняемых файлов квадратные, а
+                // svg-заглушка при cover растягивалась.
+                object-fit: contain;
+            }
+        }
+
+        .giz-universal-executable__description {
+            padding-right: 0;
+
+            &__exe {
+                font-size: clamp(1.15rem, 1.05rem + 0.2vw, 1.4rem);
+                line-height: 1.3;
+                color: $ac-ink;
+            }
+        }
+
+        // Прогресс установки шёл полоской под иконкой 62px. Под иконку 26px он
+        // не встаёт — растягиваем на всю таблетку, так он и заметнее.
+        .giz-universal-executable-progress-bar {
+            left: 0.5rem;
+            right: 0.5rem;
+            bottom: 0.3rem;
+            width: auto;
+        }
+
+        &:hover {
+            background: var(--gg-accent);
+            box-shadow: none;
+            transform: translateY(-1px);
+
+            .giz-universal-executable__description__exe { color: #16081f; font-weight: 700; }
+            &::after { border-left-color: #16081f; }
+        }
+
+        // Один ярлык — сразу кнопка. Выбирать не из чего, и изображать список
+        // ради одной строки незачем.
+        &:only-child {
+            background: var(--gg-accent);
+            box-shadow: none;
+
+            .giz-universal-executable__description__exe { color: #16081f; font-weight: 700; }
+            &::after { border-left-color: #16081f; }
+
+            &:hover { filter: brightness(1.1); }
+        }
+    }
+
+    // Пять ярлыков и больше — плотный режим. Обрезанная снизу таблетка
+    // читается как поломка, а не как «прокрути»: лучше ужать строки и показать
+    // список целиком. :has() не поддержан — правило игнорируется, остаётся
+    // обычная прокрутка, так что терять нечего.
+    &:has(> .giz-universal-executable:nth-child(5)) {
+        gap: 0.35rem;
+
+        .giz-universal-executable {
+            padding: 0.34rem 0.5rem;
+
+            .giz-universal-executable__icon { width: 2.2rem; height: 2.2rem; }
+        }
+    }
+}
+
+.giz-app-card-b1,
+.giz-app-card-b2 {
+    display: flex;
+    align-items: center;
+    padding: 0.4rem 0.8rem;
+    border-radius: 1.2rem;
+    background: rgba(var(--gg-accent-rgb), 0.08);
+    border: 1px solid rgba(var(--gg-accent-rgb), 0.2);
+    color: var(--gg-accent);
+    opacity: 0.9;
+    @include font-s-theme-client($font-weight-light-theme-client);
+
+    & > svg { margin-right: 0.4rem; }
 }

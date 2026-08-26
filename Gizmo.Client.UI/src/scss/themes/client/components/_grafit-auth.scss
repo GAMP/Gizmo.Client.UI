@@ -1,0 +1,638 @@
+//=============== Grafit: вход, регистрация, восстановление ================//
+//
+// Слой поверх вендорских стилей нового потока авторизации (3.0.91). Вендор
+// принёс работающий функционал в своём оформлении: 'Noto Sans', голубой
+// #57bcff, скругления по 1rem, плоские рамки. Здесь он приводится к языку
+// оболочки — Manrope/Space Grotesk, единственный фиолетовый акцент, стекло и
+// крупные скругления.
+//
+// ПОЧЕМУ ОТДЕЛЬНЫЙ ФАЙЛ, а не правки в _layout-login.scss: вендор эту область
+// сейчас активно переписывает (весь диапазон 30.07–20.08 — только она). Правки
+// внутри его блоков дали бы конфликт в каждом следующем обновлении; отдельный
+// файл, подключённый последним, переопределяет по порядку каскада и при
+// слиянии не пересекается с ним ни одной строкой.
+//
+// Трогается только вид. Ни один селектор здесь не меняет поведение, разметку
+// или условия показа — функционал вендора остаётся как есть.
+
+$ga-ink:      rgba(255, 255, 255, 0.95);
+$ga-ink-2:    rgba(255, 255, 255, 0.6);
+$ga-ink-3:    rgba(255, 255, 255, 0.42);
+$ga-line:     rgba(255, 255, 255, 0.12);
+$ga-surface:  linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+$ga-r:        1.4rem;   // поля и строки
+$ga-r-card:   2.4rem;   // карточки и диалоги
+$ga-danger:   #ff6b6b;
+
+// ── Блок ошибки ──────────────────────────────────────────────────────────
+// Был в 'Noto Sans' с рамкой 0.8rem. Приводим к тому же виду, что ошибки в
+// диалоге аватарки и на экране брони: одна форма ошибки на всю оболочку.
+.giz-error-block {
+    padding: 1.1rem 1.4rem;
+    border-radius: 1.3rem;
+    background: rgba(238, 80, 90, 0.12);
+    border: 1px solid rgba(238, 80, 90, 0.3);
+    color: #ffd7da;
+    font-family: $font-family-text-theme-client;
+    font-size: 1.3rem;
+    line-height: 1.9rem;
+
+    &--with-icon {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.2rem 1.4rem;
+        border-radius: 1.3rem;
+        background: rgba(238, 80, 90, 0.12);
+        border-color: rgba(238, 80, 90, 0.3);
+        color: #ffd7da;
+        font-family: $font-family-text-theme-client;
+        font-size: 1.3rem;
+        line-height: 1.9rem;
+        text-align: left;
+    }
+
+    &__icon {
+        flex-shrink: 0;
+        margin-top: 0.1rem;
+        color: $ga-danger;
+    }
+}
+
+.giz-login-error-block {
+    margin-bottom: 2rem;
+}
+
+// ── Выбор способа подтверждения ──────────────────────────────────────────
+.giz-registration-providers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+// Строка провайдера (Telegram, SMS, почта…) — та же таблетка, что ярлыки
+// запуска на карточках: стекло в покое, акцент под курсором.
+.giz-registration-provider-btn {
+    width: 100%;
+    height: 5.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0 1.6rem;
+    border-radius: $ga-r;
+    background: $ga-surface;
+    border: 1px solid $ga-line;
+    color: $ga-ink;
+    font-family: $font-family-header-theme-client;
+    font-size: 1.45rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.16s, border-color 0.16s, transform 0.16s;
+
+    .giz-icon {
+        flex-shrink: 0;
+        width: 2.2rem;
+        height: 2.2rem;
+        color: var(--gg-accent);
+    }
+
+    &:hover {
+        background: rgba(var(--gg-accent-rgb), 0.1);
+        border-color: rgba(var(--gg-accent-rgb), 0.5);
+        transform: translateY(-1px);
+    }
+
+    &:disabled {
+        opacity: 0.45;
+        cursor: default;
+        transform: none;
+    }
+}
+
+// Разделитель «другие способы»: у вендора он голубой, а голубого в оболочке
+// нет вообще — только волосяная линия и микро-капитель.
+.giz-registration-providers-divider {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin: 2.4rem 0 1.2rem;
+
+    &__line {
+        flex: 1;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    &__badge {
+        height: auto;
+        padding: 0;
+        background: none;
+        border: 0;
+        border-radius: 0;
+        color: $ga-ink-3;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+}
+
+.giz-registration-providers-hint,
+.giz-registration-providers-terms {
+    margin: 0 0 1.6rem;
+    color: $ga-ink-2;
+    font-family: $font-family-text-theme-client;
+    font-size: 1.3rem;
+    line-height: 1.9rem;
+}
+
+// ── Ввод кода подтверждения ──────────────────────────────────────────────
+.giz-confirmation-code {
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+        margin-bottom: 0.4rem;
+    }
+
+    &__form {
+        margin-bottom: 1.6rem;
+    }
+
+    &__actions {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+// Кнопка «отправить ещё раз» с обратным отсчётом. Время — табличными цифрами,
+// иначе секунды дёргают надпись по горизонтали на каждом тике.
+.giz-resend-button {
+    &__label {
+        padding: 0 5.6rem;
+        font-family: $font-family-header-theme-client;
+        font-weight: 600;
+    }
+
+    &__time {
+        right: 2rem;
+        color: $ga-ink-3;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.35rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+// ── Формы регистрации ────────────────────────────────────────────────────
+.giz-registration-form-input {
+    margin-bottom: 1.6rem;
+}
+
+// Пока открыт список (страны на входе, регистрации и восстановлении), его
+// строка поднимается над теми, что ниже.
+//
+// z-index у самого списка есть и он большой, но этого мало: строка формы может
+// оказаться собственным контекстом наложения - от анимации появления, от
+// прозрачности, от чего угодно, что мы добавим потом, - и тогда любой z-index
+// внутри неё считается уже внутри. Список честно лежит поверх всего в своей
+// строке и всё равно уходит под подпись «пароль» и иконку глаза из следующей.
+// Поднимаем саму строку: это работает независимо от того, кто и почему завёл
+// контекст, и действует ровно пока список открыт.
+.giz-login-card {
+    :is(.giz-form-input, .giz-registration-form-input, .giz-registration-basic__field):has(.giz-popup--open) {
+        position: relative;
+        z-index: 60;
+    }
+}
+
+// Ряд полей формы. auto-fit, а НЕ жёсткие две колонки: в этом контейнере
+// вендор держит и пару «имя + фамилия», и одиночное поле пароля. При
+// repeat(2, 1fr) одиночное поле вставало в половину ширины, а на узкой
+// карточке маска телефона переносилась на вторую строку. auto-fit сам решает:
+// один ребёнок — во всю ширину, два — в две колонки, тесно — переносит.
+.giz-form-input-columns,
+.giz-registration-basic__fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: 1.2rem 1.6rem;
+}
+
+// Шаг телефона: страна и номер идут друг под другом. Ставить их в две колонки
+// нельзя — маска «+7 (###) ###-##-##» в половине карточки не помещается и
+// ломается на две строки.
+.giz-registration-phone__fields {
+    display: flex;
+    flex-direction: column;
+}
+
+.giz-registration-basic,
+.giz-registration-phone {
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+        margin-bottom: 0.4rem;
+    }
+
+    &__title {
+        color: rgba(255, 255, 255, 0.98);
+        font-family: $font-family-header-theme-client;
+        font-size: 3.6rem;
+        font-weight: 800;
+        line-height: 1.15;
+        letter-spacing: -0.01em;
+        margin-bottom: 1.2rem;
+    }
+
+    &__submit {
+        margin-top: 2rem;
+    }
+}
+
+// Ячейка формы. min-width: 0 обязателен: без него длинное значение в поле
+// распирает колонку сетки, и вторая уезжает за край карточки.
+.giz-registration-basic__field {
+    min-width: 0;
+
+    // Поле на всю ширину внутри двухколоночной сетки.
+    &--full { grid-column: 1 / -1; }
+}
+
+// Подсказка о требованиях к паролю: выполненный пункт был болотно-зелёным
+// (#219653) — переводим на тот же зелёный, что у «Готово» в остальной оболочке.
+.giz-password-tooltip-message.passed {
+    color: #5ed894;
+}
+
+// Сообщение о неверном значении под полем. Было чистым красным в полный
+// размер текста — приводим к нашей приглушённой красной гамме.
+.giz-input-validation-label {
+    color: #ff8b8b;
+    font-size: 1.2rem;
+    line-height: 1.7rem;
+}
+
+// ── Экран ошибки регистрации ─────────────────────────────────────────────
+.giz-registration-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.6rem;
+
+    &__icon {
+        width: 7.2rem;
+        height: 7.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(238, 80, 90, 0.12);
+        border: 1px solid rgba(238, 80, 90, 0.3);
+        color: $ga-danger;
+    }
+
+    &__title {
+        color: rgba(255, 255, 255, 0.98);
+        font-family: $font-family-header-theme-client;
+        font-size: 2.8rem;
+        font-weight: 800;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+    }
+
+    &__subtitle {
+        margin-top: 0.8rem;
+        color: $ga-ink-2;
+        font-family: $font-family-text-theme-client;
+        font-size: 1.45rem;
+        line-height: 2.1rem;
+    }
+
+    &__alert {
+        width: 100%;
+    }
+
+    &__buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        width: 100%;
+        margin-top: 0.4rem;
+    }
+
+    // Тот же порядок, что везде в оболочке: один заполненный акцент, второе
+    // действие — тихая обводка.
+    &__btn-primary,
+    &__btn-secondary {
+        width: 100%;
+        height: 5.2rem;
+        border-radius: $ga-r;
+        cursor: pointer;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.5rem;
+        font-weight: 600;
+        transition: filter 0.16s, background 0.16s, border-color 0.16s;
+    }
+
+    &__btn-primary {
+        border: 0;
+        background: var(--gg-accent);
+        color: #16081f;
+
+        &:hover { filter: brightness(1.1); }
+    }
+
+    &__btn-secondary {
+        background: transparent;
+        border: 1px solid $ga-line;
+        color: $ga-ink;
+
+        &:hover {
+            border-color: rgba(var(--gg-accent-rgb), 0.5);
+            background: rgba(var(--gg-accent-rgb), 0.1);
+        }
+    }
+}
+
+// ── Регистрация через внешний сервис (QR) ────────────────────────────────
+.giz-registration-redirect {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.4rem;
+
+    &__title {
+        color: rgba(255, 255, 255, 0.98);
+        font-family: $font-family-header-theme-client;
+        font-size: 2.8rem;
+        font-weight: 800;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+    }
+
+    &__subtitle {
+        color: $ga-ink-2;
+        font-family: $font-family-text-theme-client;
+        font-size: 1.45rem;
+        line-height: 2.1rem;
+    }
+
+    // Заголовок экрана: значок канала СЛЕВА от названия, одной строкой. Плитки
+    // здесь нет намеренно — на этом экране их было три вложенных друг в друга
+    // (шапка провайдера, подсказка, рамка кода). Рамка нужна только коду,
+    // остальное читается лучше просто текстом.
+    &__provider {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 1.2rem;
+        padding: 0;
+        background: none;
+        border: 0;
+        border-radius: 0;
+    }
+
+    // Плашка значка — вендорская (у Telegram это его фирменный градиент, он
+    // опознаёт канал). Трогаем только размер: рядом со строкой заголовка
+    // 4.4 rem перевешивают её.
+    &__provider-icon {
+        width: 3.8rem;
+        height: 3.8rem;
+        min-width: 3.8rem;
+        border-radius: 1.1rem;
+    }
+
+    &__provider-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        text-align: left;
+    }
+
+    // Подзаголовок вендора здесь дублирует подсказку ниже. Оставлен пустым
+    // через ShellStringOverrides — прячем, чтобы не занимал строку.
+    &__subtitle:empty { display: none; }
+
+    &__provider-text {
+        color: $ga-ink;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+
+    // Значок канала у вендора красится в его фирменный цвет (телеграмный
+    // синий и т.п.). Это единственное место, где чужой цвет уместен: он
+    // опознаёт сервис, а не украшает. Оставляем как есть.
+
+    // Подсказка «отсканируйте код» была отдельной плиткой в голубой рамке.
+    // Это просто строка текста — рамка ей не нужна.
+    &__info {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 0.7rem;
+        max-width: 34rem;
+        padding: 0;
+        background: none;
+        border: 0;
+        border-radius: 0;
+        color: $ga-ink-2;
+        font-family: $font-family-text-theme-client;
+        font-size: 1.35rem;
+        line-height: 2rem;
+
+        .giz-icon { color: var(--gg-accent); flex-shrink: 0; }
+    }
+
+    // Ссылка под кодом: моноширинно и с переносом — её иногда переписывают
+    // вручную с экрана.
+    &__url {
+        max-width: 100%;
+        padding: 0.8rem 1.2rem;
+        border-radius: 1.1rem;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: $ga-ink-2;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.2rem;
+        overflow-wrap: anywhere;
+    }
+
+    // Рамка вокруг кода. Белой её делать нельзя: сам код вендор рисует
+    // светлым по тёмному (__qr-image с фоном #201f1f), белая карточка вокруг
+    // тёмного квадрата выглядела бы ошибкой. Наше стекло и нейтральная
+    // обводка вместо телеграмно-синей.
+    &__qr-card {
+        background: $ga-surface;
+        border: 1px solid $ga-line;
+        border-radius: $ga-r-card;
+        box-shadow: 0 2.4rem 5rem -2.4rem rgba(0, 0, 0, 0.8);
+    }
+
+    // Наложение поверх кода — по радиусу самого кода, а не карточки, иначе
+    // углы вылезают за его границы.
+    &__qr-overlay {
+        border-radius: 1rem;
+        background: rgba(10, 8, 18, 0.86);
+        color: $ga-ink;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.35rem;
+        font-weight: 600;
+    }
+
+    // Живой статус ожидания: точка дышит, пока ждём подтверждения.
+    &__status {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        color: $ga-ink-2;
+        font-family: $font-family-text-theme-client;
+        font-size: 1.3rem;
+    }
+
+    &__status-dot {
+        width: 0.8rem;
+        height: 0.8rem;
+        border-radius: 50%;
+        background: #5ed894;
+        box-shadow: 0 0 0 0.4rem rgba(94, 216, 148, 0.16);
+        animation: giz-auth-pulse 2s ease-in-out infinite;
+
+        &.expired,
+        &--expired {
+            background: $ga-danger;
+            box-shadow: 0 0 0 0.4rem rgba(255, 107, 107, 0.16);
+            animation: none;
+        }
+    }
+
+    &__expired-alert {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        width: 100%;
+        padding: 1.2rem 1.4rem;
+        border-radius: 1.3rem;
+        background: rgba(255, 196, 107, 0.12);
+        border: 1px solid rgba(255, 196, 107, 0.3);
+        color: #ffe0b2;
+        font-family: $font-family-text-theme-client;
+        font-size: 1.3rem;
+        line-height: 1.9rem;
+        text-align: left;
+    }
+
+    &__expired-alert-icon {
+        flex-shrink: 0;
+        color: #ffc46b;
+    }
+
+    &__expired-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        width: 100%;
+    }
+
+    &__btn-primary {
+        width: 100%;
+        height: 5.2rem;
+        border: 0;
+        border-radius: $ga-r;
+        background: var(--gg-accent);
+        color: #16081f;
+        cursor: pointer;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.5rem;
+        font-weight: 600;
+        transition: filter 0.16s;
+
+        &:hover { filter: brightness(1.1); }
+    }
+}
+
+@keyframes giz-auth-pulse {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+}
+
+// ── Диалог соглашений ────────────────────────────────────────────────────
+// Вендорский вариант — плоская коробка #22272B. Приводим к тому же стеклу,
+// что и остальные диалоги оболочки (диалог фото профиля, покупка пакета).
+.giz-registration-agreements-dialog {
+    width: min(52rem, 92vw);
+    border-radius: 2.8rem;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+        linear-gradient(180deg, rgba(23, 18, 40, 0.94), rgba(12, 10, 20, 0.97));
+    border: 1px solid $ga-line;
+    box-shadow:
+        inset 0 1.5px 0 rgba(255, 255, 255, 0.22),
+        0 4rem 9rem -3rem rgba(0, 0, 0, 0.9);
+    color: rgba(255, 255, 255, 0.92);
+
+    &__header {
+        padding: 2.4rem 2.4rem 0;
+    }
+
+    &__title {
+        font-family: $font-family-header-theme-client;
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: rgba(255, 255, 255, 0.98);
+    }
+
+    &__body {
+        padding: 1.8rem 2.4rem;
+    }
+
+    &__section {
+        margin-bottom: 1.8rem;
+
+        &:last-child { margin-bottom: 0; }
+    }
+
+    &__section-title {
+        margin-bottom: 0.6rem;
+        color: rgba(255, 255, 255, 0.95);
+        font-family: $font-family-header-theme-client;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    &__section-text {
+        color: $ga-ink-2;
+        font-family: $font-family-text-theme-client;
+        font-size: 1.35rem;
+        line-height: 2rem;
+    }
+
+    &__footer {
+        padding: 0 2.4rem 2.4rem;
+        gap: 1rem;
+    }
+}
+
+// ── Флаги стран в выпадающем списке ──────────────────────────────────────
+// Базовый стиль растягивал svg на высоту строки: флаг у всех стран 4:3, и без
+// пропорции он плющился. Заодно скругление и волосяная рамка, иначе светлые
+// флаги (Япония, Польша) сливаются с фоном списка.
+.giz-icon-select-item__icon {
+    width: 2.6rem;
+
+    img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        border-radius: 0.3rem;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+    }
+}

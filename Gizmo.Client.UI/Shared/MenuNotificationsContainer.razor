@@ -5,8 +5,11 @@
      id="@Id"
      @ref="@Ref">
     <div class="giz-dropdown-menu__content giz-menu-notifications">
+        @* Russian written inline - see the note in
+           MenuActiveApplicationsContainer.razor for why not resource keys. *@
         <div class="giz-menu-notifications__header">
-            @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_NOTIFICATIONS_TITLE))
+            <div class="giz-heading">Уведомления</div>
+            <div class="giz-menu-notifications__header__hint">Всё, что мы вам присылали</div>
         </div>
         <div class="giz-menu-notifications__body giz-scrollbar--v">
 
@@ -23,15 +26,19 @@
             {
                 <div class="giz-menu-notification-default-item-wrapper">
                     <div class="giz-empty-state">
-                        <div class="giz-empty-state__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_NOTIFICATIONS_NO_NEW_NOTIFICATIONS))</div>
-                        <div class="giz-empty-state__text">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_NOTIFICATIONS_NO_NEW_NOTIFICATIONS_MESSAGE))</div>
+                        <i class="ph-fill ph-bell-slash giz-ph-icon"></i>
+                        <div class="giz-empty-state__title">Тишина</div>
+                        <div class="giz-empty-state__text">Новых уведомлений нет</div>
                     </div>
                 </div>
             }
 
         </div>
-        <div class="giz-menu-notifications__footer">
-            <div class="giz-menu-notifications__footer__action" @onclick="AcknowledgeAll">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_NOTIFICATIONS_MARK_ALL_AS_READ))</div>
-        </div>
+        @if (ViewState.Dismissed != null && ViewState.Dismissed.Any())
+        {
+            <div class="giz-menu-notifications__footer">
+                <div class="giz-menu-notifications__footer__action" @onclick="AcknowledgeAll">Очистить список</div>
+            </div>
+        }
     </div>
 </div>

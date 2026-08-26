@@ -5,26 +5,7 @@
 <div class="giz-header-user-balance"
      @onmouseover="OnMouseOverHandler"
      @onmouseout="OnMouseOutHandler">
-    @switch (UsageSessionViewState.CurrentTimeProductType)
-    {
-        case UsageType.TimeFixed:
-
-            <Icon SVGIcon="Icons.TimeFixed_Client" />
-
-            break;
-
-        case UsageType.Rate:
-
-            <Icon SVGIcon="Icons.TimeSession2_Client" />
-
-            break;
-
-        case UsageType.TimeOffer:
-
-            <Icon SVGIcon="Icons.TimeOffer_Client" />
-
-            break;
-    }
+    <i class="ph-fill ph-lightning giz-ph-icon"></i>
     <div>@UsageSessionViewState.CurrentTimeProductName</div>
 
     <div class="giz-user-balance-tooltip-wrapper @(_isOpen ? "giz-user-balance-tooltip-wrapper--visible" : "")"

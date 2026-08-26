@@ -88,22 +88,28 @@ namespace Gizmo.Client.UI.Components
             await base.OnInitializedAsync();
         }
 
-        private async void ViewState_OnChange(object sender, System.EventArgs e)
+        //Cart changes are raised off the UI thread. Not async void: a dispatcher fault during
+        //host teardown would be rethrown on the thread pool and exit the client (see
+        //CustomComponentBase.DispatchWorkflow).
+        private void ViewState_OnChange(object sender, System.EventArgs e)
         {
-            var tmp = await ClientServerCartViewService.GetUserCartProductViewStateAsync(ProductId);
-
-            if (_userCartProductViewState != tmp)
+            DispatchWorkflow(async () =>
             {
-                if (_userCartProductViewState != null)
-                    this.UnsubscribeChange(_userCartProductViewState);
+                var tmp = await ClientServerCartViewService.GetUserCartProductViewStateAsync(ProductId);
 
-                _userCartProductViewState = tmp;
+                if (_userCartProductViewState != tmp)
+                {
+                    if (_userCartProductViewState != null)
+                        this.UnsubscribeChange(_userCartProductViewState);
 
-                if (_userCartProductViewState != null)
-                    this.SubscribeChange(_userCartProductViewState);
+                    _userCartProductViewState = tmp;
 
-                await InvokeAsync(StateHasChanged);
-            }
+                    if (_userCartProductViewState != null)
+                        this.SubscribeChange(_userCartProductViewState);
+
+                    StateHasChanged();
+                }
+            });
         }
 
         public override void Dispose()

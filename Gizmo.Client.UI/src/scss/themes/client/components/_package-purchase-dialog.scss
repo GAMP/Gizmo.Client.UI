@@ -1,0 +1,292 @@
+//=============== Покупка пакета ================//
+//
+// Билет, а не форма. Три правила, всё остальное следует из них:
+//
+//   1. ОДНА ОСЬ. Всё выровнено по центру узкого окна. Раскладка «подпись
+//      слева — число справа» в окне шириной 52rem растаскивала каждую пару к
+//      противоположным стенкам и оставляла между ними пустую середину; отступами
+//      это не лечилось, потому что дело было в самой раскладке.
+//   2. ОДНА КРУПНАЯ ВЕЛИЧИНА. Сумма к оплате. Всё остальное мелко и тихо:
+//      иерархию держит размер, а не цвет.
+//   3. ОДИН АКЦЕНТ. Ровно одна фиолетовая кнопка — то действие, которое сейчас
+//      имеет смысл: «Оплатить», когда денег хватает, «Пополнить», когда нет.
+
+$gb-ink:   #f2f0f7;
+$gb-ink-2: rgba(242, 240, 247, 0.6);
+$gb-ink-3: rgba(242, 240, 247, 0.38);
+$gb-line:  rgba(255, 255, 255, 0.08);
+
+.giz-buy {
+    // Узкое окно — часть композиции, а не экономия. На центральной оси короткие
+    // строки должны стоять близко друг к другу, иначе получается разрежённый
+    // столбик посреди пустого поля.
+    width: min(38rem, 92vw);
+    background: #120f1c;
+    border-radius: 2rem;
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 40px 90px -40px rgba(0, 0, 0, 0.95);
+    overflow: hidden;
+
+    // ── шапка ────────────────────────────────────────────────────────────
+    &__head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.6rem;
+        padding: 1.8rem 1.8rem 0;
+
+        &__label {
+            font-family: $font-family-header-theme-client;
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: $gb-ink-3;
+        }
+    }
+
+    &__close {
+        width: 3rem;
+        height: 3rem;
+        display: grid;
+        place-items: center;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        cursor: pointer;
+        background: transparent;
+        color: $gb-ink-3;
+        font-size: 1.3rem;
+        transition: background 0.16s, color 0.16s;
+
+        &:hover { background: rgba(255, 255, 255, 0.06); color: $gb-ink; }
+        &:focus-visible { outline: 2px solid var(--gg-accent); outline-offset: 2px; }
+    }
+
+    &__body {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2.2rem;
+        padding: 1.4rem 2.4rem 2.4rem;
+        text-align: center;
+
+        &--result { gap: 2.4rem; }
+    }
+
+    // ── что покупаем ─────────────────────────────────────────────────────
+    &__pack {
+        &__name {
+            font-family: $font-family-header-theme-client;
+            font-size: 2.2rem;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            color: $gb-ink;
+        }
+
+        &__dur {
+            margin-top: 0.6rem;
+            font-family: $font-family-numeric-theme-client;
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: $gb-ink-3;
+        }
+    }
+
+    // ── сколько ──────────────────────────────────────────────────────────
+    &__sum {
+        &__now {
+            font-family: $font-family-numeric-theme-client;
+            font-size: 4.6rem;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            font-variant-numeric: tabular-nums;
+            color: $gb-ink;
+        }
+
+        &__wait {
+            display: grid;
+            place-items: center;
+            min-height: 4.6rem;
+        }
+
+        // Старая цена и выгода — одной строкой под суммой, а не двумя пунктами
+        // счёта: это подпись к числу, а не самостоятельные величины.
+        &__was {
+            margin-top: 0.9rem;
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 0.9rem;
+            font-size: 1.3rem;
+        }
+
+        &__struck {
+            font-family: $font-family-numeric-theme-client;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+            text-decoration: line-through;
+            color: $gb-ink-3;
+        }
+
+        // Единственное место, где цвет несёт смысл, а не украшает.
+        &__save {
+            font-weight: 600;
+            color: #5ed894;
+        }
+    }
+
+    // ── чем платим ───────────────────────────────────────────────────────
+    &__field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        text-align: left;
+
+        &__label {
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: $gb-ink-3;
+        }
+
+        // Остаток на счете — подпись к полю оплаты, а не строка счёта: он
+        // отвечает на вопрос «хватит ли этим способом», и место ему рядом.
+        &__note {
+            font-family: $font-family-numeric-theme-client;
+            font-size: 1.2rem;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+            color: $gb-ink-3;
+        }
+    }
+
+    &__free {
+        font-size: 1.35rem;
+        color: $gb-ink-2;
+    }
+
+    &__note {
+        font-size: 1.25rem;
+        line-height: 1.45;
+        color: $gb-ink-2;
+    }
+
+    // ── не хватает ───────────────────────────────────────────────────────
+    // Не цветная плашка: цифра сама по себе достаточно громкая, а фиолетовый в
+    // этот момент нужен кнопке.
+    &__short {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        &__label {
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: $gb-ink-3;
+        }
+
+        &__sum {
+            font-family: $font-family-numeric-theme-client;
+            font-size: 2.4rem;
+            font-weight: 700;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+            color: $gb-ink;
+        }
+    }
+
+    // ── действия ─────────────────────────────────────────────────────────
+    &__primary {
+        width: 100%;
+        padding: 1.35em 1.6em;
+        display: grid;
+        place-items: center;
+        border: 0;
+        border-radius: 99px;
+        cursor: pointer;
+        background: var(--gg-accent);
+        color: #16081f;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        transition: filter 0.16s, transform 0.16s, opacity 0.16s;
+
+        &:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-1px); }
+        &:active:not(:disabled) { transform: none; }
+        &:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+        &:disabled { opacity: 0.35; cursor: default; }
+    }
+
+    &__quiet {
+        width: 100%;
+        padding: 0.9em;
+        border: 0;
+        border-radius: 99px;
+        cursor: pointer;
+        background: transparent;
+        color: $gb-ink-3;
+        font-family: inherit;
+        font-size: 1.3rem;
+        font-weight: 600;
+        transition: color 0.16s, background 0.16s;
+
+        &:hover { color: $gb-ink; background: rgba(255, 255, 255, 0.04); }
+        &:focus-visible { outline: 2px solid var(--gg-accent); outline-offset: 2px; }
+    }
+
+    // ── результат ────────────────────────────────────────────────────────
+    &__result {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.2rem;
+        padding: 1rem 0 0.4rem;
+
+        &__icon {
+            width: 5.6rem;
+            height: 5.6rem;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            font-size: 2.4rem;
+
+            &--ok { background: rgba(94, 216, 148, 0.14); color: #5ed894; }
+            &--error { background: rgba(247, 59, 59, 0.14); color: #f76b6b; }
+        }
+
+        &__title {
+            font-family: $font-family-header-theme-client;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+            color: $gb-ink;
+        }
+
+        &__sub {
+            font-size: 1.35rem;
+            line-height: 1.45;
+            color: $gb-ink-2;
+        }
+    }
+
+    // Компонент пополнения живёт внутри окна, а не в собственном: диалоги в
+    // оболочке — очередь, а не стопка, и второе окно открылось бы только после
+    // закрытия этого, потеряв покупку по дороге.
+    .giz-user-online-deposit {
+        padding: 0;
+        background: transparent;
+        box-shadow: none;
+        text-align: left;
+    }
+}

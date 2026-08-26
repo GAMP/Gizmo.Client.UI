@@ -1,9 +1,13 @@
 ﻿@namespace Gizmo.Client.UI
 @inherits CustomDOMComponentBase
+@inject Gizmo.UI.Services.ILocalizationService LocalizationService
 
-<div class="giz-header__user-menu-item giz-active-apps-dropdown @(UserMenuViewState.ActiveAppsIsVisible ? "open" : "")">
+@* data-tooltip drives the top-bar hover tooltip styled in _Layout.razor.
+   GGBook sourced the text from their own GGModL10n; on V3 it comes from the
+   stock localization service instead. *@
+<div class="giz-header__user-menu-item giz-active-apps-dropdown @(UserMenuViewState.ActiveAppsIsVisible ? "open" : "")" data-tooltip="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ACTIVE_APPS_TITLE))">
     <button class="user-menu-item-button--box" @onclick="(args) => OnClick.InvokeAsync(args)" @onclick:stopPropagation="true">
-        <Icon SVGIcon="Icons.GridView_Client" />
+        <i class="ph-bold ph-squares-four giz-ph-icon"></i>
     </button>
     <MenuActiveApplicationsContainer />
 </div>

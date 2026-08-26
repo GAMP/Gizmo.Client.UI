@@ -2,6 +2,53 @@
 
 $client-theme-comp-attr: 'client-theme';
 
+//==Accent (GGBook highlight — change here to retheme everything)
+// Cyan: #00d4ff  |  Mint: #3dffc0  |  Green: #00e676  |  Purple: #b06bff
+// Grafit brand accent.
+$gg-accent: #b06bff;
+
+// CSS custom properties — auto-derived from $gg-accent at build time.
+// Override at runtime by adding a CSS file with:
+//   :root { --gg-accent: #3dffc0; --gg-accent-rgb: 61, 255, 192; }
+:root {
+    --gg-accent:     #{$gg-accent};
+    --gg-accent-rgb: #{red($gg-accent)}, #{green($gg-accent)}, #{blue($gg-accent)};
+}
+
+//==Login screen host number placement (idle/locked screen "PC 46" label)
+// Default = top-right. Reposition at runtime via the same per-club override
+// CSS file used for --gg-accent — no code changes needed. Examples:
+//
+//   Top-left:
+//     :root {
+//         --gg-host-number-top: 2.4rem; --gg-host-number-right: auto;
+//         --gg-host-number-left: 3.2rem; --gg-host-number-align: left;
+//         --gg-host-number-shift: 0;
+//     }
+//
+//   Top-center:
+//     :root {
+//         --gg-host-number-top: 2.4rem; --gg-host-number-right: auto;
+//         --gg-host-number-left: 50%; --gg-host-number-transform: translateX(-50%);
+//         --gg-host-number-align: center; --gg-host-number-shift: 0;
+//     }
+//
+// --gg-host-number-shift only matters when anchored via "right" — it's the
+// extra margin that slides the number clear of the login card once it's open.
+// The card is centred now instead of being a 74rem panel pinned to the right
+// edge, so nothing needs to be pushed out of its way: shift is 0. Position
+// itself stays top-right and stays overridable from the per-club CSS, exactly
+// as before — it is not hardcoded anywhere in the layout.
+:root {
+    --gg-host-number-top:       2.4rem;
+    --gg-host-number-right:     3.2rem;
+    --gg-host-number-bottom:    auto;
+    --gg-host-number-left:      auto;
+    --gg-host-number-transform: none;
+    --gg-host-number-align:     right;
+    --gg-host-number-shift:     0;
+}
+
 //==Colors
 $primary-color-theme-client: #3F8CFF;
 

@@ -1,127 +1,165 @@
 //============= Product Card ===============//
+//
+// Карточка товара отвечает на три вопроса, и порядок у них жёсткий:
+//
+//   ЧТО ЭТО   — фотография и название. Название было тусклым серым 14px под
+//               ярко-фиолетовой ценой: первым в глаза бросалась цена товара,
+//               который ещё не опознан.
+//   СКОЛЬКО   — цена. Крупно, табличными цифрами, но белым: фиолетовый в
+//               карточке ровно один — на кнопке, то есть на действии.
+//   ПОДРОБНО  — панель на наведении. Раньше она накрывала и картинку, и
+//               название с ценой, полупрозрачно, так что сквозь неё
+//               просвечивал текст под ней, а сами строки шли без интервалов
+//               и подписей 12px светлым начертанием. Теперь панель ложится
+//               ТОЛЬКО на картинку: цена и название остаются на месте, а
+//               подробности читаются как список пар «подпись — значение».
+
+$pc-img-h:    18rem;                                    // высота картинки и панели
+$pc-r:        2rem;                                     // радиус карточки
+$pc-ink:      #f2f0f7;
+$pc-ink-2:    rgba(242, 240, 247, 0.6);
+$pc-ink-3:    rgba(242, 240, 247, 0.42);
+$pc-line:     rgba(255, 255, 255, 0.07);
+$pc-panel:    rgba(14, 11, 22, 0.98);
+// Мягкий фиолетовый радиал под фото: снимок с белым фоном без него читается
+// как наклейка на тёмной карточке.
+$gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(168, 85, 247, 0.16), rgba(255, 255, 255, 0.02) 70%);
 
 .giz-product-card {
     position: relative;
-    background-color: #22272B;
-    border-radius: 0.8rem;
-    transition: background-color 0.2s;
     max-width: 100%;
     overflow: hidden;
+    border-radius: $pc-r;
+    background: var(--gg-card-bg, #14111d);
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.2s;
 
-    .giz-button--fill.accent.giz-product-card-primary-button {
-        background-color: rgba(250, 250, 250, 0.16);
+    // Обводка отдельным слоем поверх содержимого. Inset-тень на самой карточке
+    // рисуется ПОД содержимым, поэтому картинка, идущая встык к краям, закрывала
+    // её сверху и с боков — обводка была видна только вокруг нижней половины.
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 7;
+        border-radius: inherit;
+        box-shadow: inset 0 0 0 1px $pc-line;
+        pointer-events: none;
+        transition: box-shadow 0.2s;
     }
 
+    &:hover::after { box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.45); }
+
     &:hover {
-        background-color: #050607;
+        transform: translateY(-3px);
+        box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.85);
 
-        .giz-product-card__content__image__hovered {
-            background-color: rgba(0, 0, 0, 0.84);
-
-            .giz-product-card__content--hovered {
-                visibility: visible;
-            }
+        .giz-product-card__hover-overlay {
+            background: $pc-panel;
+            pointer-events: auto;
         }
 
-        .giz-button--fill.accent.giz-product-card-primary-button {
-            background-color: #0078d2;
+        .giz-product-card__content--hovered {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
         }
     }
 
     &__content {
         display: grid;
-        grid-template-rows: min-content 1fr min-content;
+        // Верх (картинка + подписи) тянется, футер с кнопкой — по содержимому.
+        grid-template-rows: 1fr min-content;
         height: 100%;
         max-width: 100%;
 
-        &__image {
+        // Контекст позиционирования для панели наведения. Абсолютный блок
+        // вообще не участвует в расчёте строк сетки — обычный элемент участвует,
+        // и раньше скрытая панель раздувала высоту карточки своим содержимым.
+        &__top {
+            position: relative;
+            display: grid;
+            grid-template-rows: min-content 1fr;
+        }
+
+        &__image,
+        &__image--time {
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            height: 24.6rem;
-            background-color: #161A1D;
+            height: $pc-img-h;
             max-width: 100%;
-
-            & > img {
-                /*width: 100%;
-                height: 100%;
-                object-fit: cover;*/
-                border-radius: 0.9rem 0.9rem 0 0;
-            }
-
-            &__hovered {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: 2;
-                padding: 1.6rem 1.6rem 0 1.6rem;
-                transition: background-color 0.2s;
-                overflow: hidden;
-
-                &__header {
-                    position: relative;
-                    width: 100%;
-                    height: 100%;
-                }
-
-                .giz-product-card__content--hovered {
-                    visibility: hidden;
-                }
-            }
-        }
-
-        &__image--time {
-            position: relative;
-            height: 24.6rem;
-            border-radius: 0.8rem 0.8rem 0 0;
             overflow: hidden;
-            max-width: 100%;
-            /*&:after {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.84);
-            }*/
+            background: $gg-image-bg;
 
-            & > img {
+            // Затемнения к низу картинки здесь нет: текста поверх неё не лежит,
+            // а карточка и без него отделена собственным фоном.
+            img {
                 width: 100%;
                 height: 100%;
+                object-fit: cover;
             }
 
-            & > svg {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: 1;
+            .giz-default-image,
+            .giz-broken-image {
+                width: 4.8rem;
+                height: 4.8rem;
+                color: rgba(255, 255, 255, 0.16);
             }
         }
 
+        &__image--time > svg {
+            position: absolute;
+            top: 11%;
+            left: 11%;
+            width: 78%;
+            height: 78%;
+            z-index: 1;
+        }
+
+        // ── что это и сколько ──
         &__details {
             display: flex;
             flex-direction: column;
-            padding: 0 1.6rem;
-            margin: 1.2rem 0 0 0;
+            gap: 0.6rem;
+            padding: 1.4rem 1.6rem 0;
             width: 100%;
-            overflow: hidden;
             max-width: 100%;
+            overflow: hidden;
+
+            // Порядок в разметке — цена, потом название. Разметка общая с
+            // остальными скинами, поэтому меняем не её, а порядок показа.
+            .giz-product-card__title { order: 1; }
+            .giz-product-card__price { order: 2; }
+            .giz-time-product-host-groups,
+            .giz-product-card__host-group { order: 3; }
 
             .giz-product-card__price {
                 display: flex;
-                align-items: center;
-                gap: 0.4rem;
+                align-items: baseline;
+                gap: 0.5rem;
                 white-space: nowrap;
+                color: $pc-ink;
+                font-family: $font-family-numeric-theme-client;
+                font-size: 2rem;
+                font-weight: 700;
+                line-height: 1.1;
+                font-variant-numeric: tabular-nums;
+
+                // «или» / «и» между ценой в деньгах и ценой в баллах — связка,
+                // а не величина.
+                span + span:not(.giz-product-card__price__points) {
+                    color: $pc-ink-3;
+                    font-family: $font-family-text-theme-client;
+                    font-size: 1.2rem;
+                    font-weight: 500;
+                }
 
                 .giz-product-card__price__points {
                     overflow: hidden;
                     text-overflow: ellipsis;
+                    color: var(--gg-accent);
                 }
 
                 svg {
@@ -129,225 +167,344 @@
                     min-height: 1.6rem;
                     width: 1.6rem;
                     height: 1.6rem;
+                    fill: var(--gg-accent);
+                    align-self: center;
                 }
             }
         }
 
         &__footer {
-            padding: 1.6rem;
+            padding: 1.4rem;
             max-width: 100%;
 
-            .giz-client-tooltip-root {
-                white-space: nowrap;
-                display: block;
-            }
-
-            .giz-tooltip-root {
-                //display: none;
-                //white-space: nowrap;
-                display: block;
-
-                .giz-tooltip {
-                    //white-space: nowrap;
-                    display: block;
-                }
-            }
+            .giz-client-tooltip-root,
+            .giz-tooltip-root { display: block; white-space: nowrap; }
+            .giz-tooltip-root .giz-tooltip { display: block; }
         }
     }
 
     &__title {
-        flex-grow: 1;
-        color: rgba(255, 255, 255, 0.6);
-        @include font-m-theme-client($font-weight-light-theme-client);
+        color: $pc-ink;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.5rem;
+        font-weight: 600;
+        line-height: 1.35;
+        letter-spacing: -0.005em;
         overflow: hidden;
         text-overflow: ellipsis;
-        //white-space: nowrap;
-        max-height: 4.4rem;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
+        // min, а не только max: коробка под две строки держится и для
+        // однострочного названия, иначе цены в одном ряду встают вразнобой.
+        min-height: 4.1rem;
+        max-height: 4.1rem;
     }
 
-    .giz-time-product-host-groups {
-        gap: 0.4rem;
-        margin-top: auto;
-
-        &-tooltip {
-            display: flex;
-            gap: 0.4rem;
-            white-space: nowrap;
-            padding: 0.8rem 1.2rem;
+    // ── кнопка ──
+    // Один акцент на карточку: тихая фиолетовая заливка в покое, полная — под
+    // курсором. Высота и радиус одинаковые во всех состояниях, включая
+    // недоступное, иначе ряд карточек «прыгает».
+    [#{$client-theme-comp-attr}] & {
+        .giz-button {
+            height: 4.2rem;
+            border-radius: 1.3rem;
+            font-family: $font-family-header-theme-client;
+            font-size: 1.35rem;
+            font-weight: 600;
         }
 
-        .giz-time-product-host-group {
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            padding: 0.1rem 0.4rem;
-            background-color: rgba(250, 250, 250, 0.16);
-            border-radius: 0.5rem;
-            color: rgba(255, 255, 255, 0.75);
-            @include font-s-theme-client($font-weight-light-theme-client);
+        .giz-button--fill.accent:not(.disabled):not([disabled]) {
+            background: rgba(var(--gg-accent-rgb), 0.16);
+            border: 0;
+            box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.34);
+            color: var(--gg-accent);
+            transition: background 0.16s, box-shadow 0.16s, color 0.16s;
 
-            &--additional { //
-                white-space: nowrap;
-                display: flex;
-                align-items: center;
-                gap: 0.6rem;
-                padding: 0.1rem 0.4rem;
-                background-color: rgba(250, 250, 250, 0.16);
-                border-radius: 0.5rem;
-                color: rgba(255, 255, 255, 0.75);
-                @include font-s-theme-client($font-weight-light-theme-client);
+            &:hover {
+                background: var(--gg-accent);
+                box-shadow: none;
+                color: #16081f;
             }
+        }
 
-            &.active {
-                background-color: rgba(0, 120, 210, 0.32);
-            }
+        .giz-button--fill.disabled,
+        .giz-button--fill[disabled] {
+            background: rgba(255, 255, 255, 0.035);
+            border: 0;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+            color: rgba(242, 240, 247, 0.3);
         }
     }
 
-    &__price {
-        @include font-l-theme-client($font-weight-light-theme-client);
+    &:hover .giz-button--fill.accent:not(.disabled):not([disabled]) {
+        background: rgba(var(--gg-accent-rgb), 0.24);
+    }
 
-        svg {
-            fill: white;
-        }
+    // ── панель подробностей ──
+    // Ложится только на картинку: цена, название и кнопка остаются видимыми,
+    // и подробности читаются вместе с ними, а не вместо них.
+    //
+    // Селектор намеренно однокласcовый (0-1-0), а не вложенный в &__content:
+    // при вложении правило покоя opacity: 0 получало 0-3-0 и ровно связывало
+    // :hover-правило, выигрывая по порядку — панель не могла проявиться.
+    &__hover-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: auto;
+        // Ростом по содержимому, но не ниже картинки и не до кнопки. У пакета
+        // с двумя сроками сгорания строк больше, чем помещается в картинку, —
+        // раньше лишнее просто обрезалось, а полосы прокрутки тут не видно.
+        // Теперь панель в таком случае заезжает на название (цена и кнопка
+        // остаются), а на коротком списке ровно накрывает картинку.
+        height: auto;
+        min-height: $pc-img-h;
+        max-height: calc(100% - 6.6rem);
+        z-index: 5;
+        padding: 1.2rem 1.4rem;
+        background: transparent;
+        transition: background 0.22s ease;
+        overflow-x: hidden;
+        overflow-y: auto;
+        scrollbar-width: none;
+        // Прозрачная в покое, но это всё равно коробка поверх картинки: без
+        // отключённых событий она молча съедала @onmouseover самой картинки.
+        pointer-events: none;
+        &::-webkit-scrollbar { display: none; }
+    }
 
-        .inactive {
-        }
+    &__content--hovered {
+        opacity: 0;
+        transform: translateY(5px);
+        pointer-events: none;
+        transition: opacity 0.22s ease, transform 0.22s ease;
     }
 }
 
-.giz-product-card-alternative-button {
-    display: none;
-}
-
+// ── список подробностей ──────────────────────────────────────────────────
+// Раньше у .giz-timeline не было стилей вообще: строки шли впритык, подписи и
+// значения различались только тем, что значение прижато вправо.
 .giz-timeline {
-    position: relative;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 
     &-header {
         display: flex;
         align-items: center;
-        color: rgba(255, 255, 255, 0.6);
-        margin-bottom: 1.6rem;
-        position: relative;
-        @include font-s-theme-client($font-weight-light-theme-client);
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        color: $pc-ink-3;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        line-height: 1.2;
 
         svg {
-            margin-right: 0.4rem;
-        }
-
-        &:after {
-            content: '';
-            border-left: 0.1rem solid rgba(255, 255, 255, 0.6);
-            position: absolute;
-            top: calc(50% + 0.5rem);
-            left: 0.2rem;
-            height: calc(100% + 0.3rem);
+            flex: none;
+            width: 1rem;
+            height: 1rem;
+            color: var(--gg-accent);
+            opacity: 0.85;
         }
     }
 
     &-item {
-        //color: #FFAC33;
-        color: #FFC700;
-        margin-bottom: 0.8rem;
-        position: relative;
-        @include font-s-theme-client($font-weight-regular-theme-client);
+        // Ритм выверен по самому высокому случаю — пакет времени с двумя
+        // сроками сгорания: четыре строки и заголовок должны уместиться в
+        // панель целиком, потому что полоса прокрутки здесь скрыта и
+        // обрезанная строка читалась бы как поломка.
+        padding: 0.38rem 0;
 
-        & > div {
-            margin-left: 0.9rem;
-        }
-
-        &:before {
-            content: '';
-            background-color: rgba(255, 255, 255, 0.6);
-            border: 0.1rem solid rgba(255, 255, 255, 0.6);
-            border-radius: 50%;
-            width: 0.2rem;
-            height: 0.2rem;
-            position: absolute;
-            //top: 50%;
-            top: 0.9rem;
-            left: 0.1rem;
-            transform: translate(0, -50%);
-        }
-
-        &:after {
-            content: '';
-            border-left: 0.1rem solid rgba(255, 255, 255, 0.6);
-            position: absolute;
-            //top: calc(50% + 0.4rem);
-            top: 1.3rem;
-            left: 0.2rem;
-            height: calc(100% + 0.8rem);
-        }
-
-        &:last-child {
-            &:after {
-                height: 102.4rem;
-            }
+        // Разделитель тенью, а не border: на нулевой высоте настоящая рамка
+        // всё равно рисует свою полоску.
+        & + .giz-timeline-item {
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
         }
     }
 }
 
+// Подпись НАД значением, а не слева от него. Карточка товара в клубной сетке
+// шириной около 200px: пара «Доступен для покупки — 07:00-12:00 чт» в строку
+// туда не влезает, подпись переносилась на две строки, а значение упиралось в
+// правый край и обрезалось (панель режет по горизонтали). В столбик каждая
+// половина получает всю ширину.
 .giz-time-product-details {
     display: flex;
-    justify-content: space-between;
-    color: #FAFAFA;
-    @include font-s-theme-client($font-weight-light-theme-client);
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
 
+    // Подпись
+    > div:first-child {
+        min-width: 0;
+        color: $pc-ink-3;
+        font-family: $font-family-header-theme-client;
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        line-height: 1.3;
+    }
+
+    // Значение
     .giz-time-product-time-availabile {
-        text-align: right;
+        min-width: 0;
+        text-align: left;
+        color: $pc-ink;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.25rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        line-height: 1.3;
+        overflow-wrap: anywhere;
 
         .giz-icon {
-            color: #ffc700;
+            color: var(--gg-accent);
+            width: 1.5rem;
+            height: 1.5rem;
         }
     }
+}
 
-    span {
-        margin-left: 0.8rem;
-        color: #FFAC33;
-        @include font-s-theme-client($font-weight-regular-theme-client);
+// Длительность пакета — единственная величина в панели, которой можно кричать.
+.giz-time-product-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gg-accent);
+    font-family: $font-family-header-theme-client;
+    font-size: 1.45rem;
+    font-weight: 700;
+    line-height: 1.2;
+
+    .giz-icon {
+        width: 1.5rem;
+        height: 1.5rem;
     }
 }
 
-.giz-time-product-time {
+// Сроки сгорания: янтарным, но текстом. Плашки на каждой строке превращали
+// панель в лоскутное одеяло, а предупреждение здесь и так одно.
+.giz-time-product-expirations {
     display: flex;
-    align-items: center;
-    gap: 0.4rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
 }
 
+.giz-time-product-expiration {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #ffc46b;
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-align: left;
+}
+
+// Состав набора
 .giz-bundle-product-details {
     display: grid;
     grid-template-columns: min-content 1fr min-content;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.6rem;
     overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    color: #FFC700;
-    text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2), 0px 1px 1px rgba(0, 0, 0, 0.2);
+    color: $pc-ink;
+    font-size: 1.25rem;
+    line-height: 1.3;
+
+    .giz-icon {
+        width: 1.4rem;
+        height: 1.4rem;
+        color: var(--gg-accent);
+    }
 
     &__product-name {
         max-width: 100%;
         overflow: hidden;
+        white-space: nowrap;
         text-overflow: ellipsis;
     }
 
+    // Количество
     & > span {
-        color: #FAFAFA;
-        text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2), 0px 1px 1px rgba(0, 0, 0, 0.2);
+        margin-left: 0;
+        color: $pc-ink-3;
+        font-family: $font-family-numeric-theme-client;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
     }
+}
+
+// ── группы ПК у пакета времени ───────────────────────────────────────────
+.giz-time-product-host-groups {
+    display: flex;
+    gap: 0.4rem;
+    margin-top: auto;
+    overflow: hidden;
+
+    &-tooltip {
+        display: flex;
+        gap: 0.4rem;
+        white-space: nowrap;
+        padding: 0.8rem 1.2rem;
+    }
+
+    .giz-time-product-host-group,
+    .giz-time-product-host-group--additional {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.25rem 0.7rem;
+        border: 0;
+        border-radius: 0.7rem;
+        background: rgba(255, 255, 255, 0.05);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+        color: $pc-ink-2;
+        white-space: nowrap;
+        font-size: 1.05rem;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+
+        // Группа, на которой сидит этот клиент. Единственная, которую стоит
+        // подсветить: остальные — справка.
+        &.active {
+            background: rgba(var(--gg-accent-rgb), 0.16);
+            box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.42);
+            color: var(--gg-accent);
+        }
+    }
+}
+
+// ── лицо пакета времени ──────────────────────────────────────────────────
+// У пакета нет фотографии, поэтому верх карточки — не «картинка-заглушка», а
+// табло: длительность и всё. Иконку-кружок над числом убираем внутри карточки
+// (на странице товара она остаётся): рядом с крупной цифрой она читалась как
+// не догрузившийся элемент.
+.giz-product-card .giz-product-card__content__image--time {
+    background: linear-gradient(180deg,
+        rgba(var(--gg-accent-rgb), 0.17),
+        rgba(var(--gg-accent-rgb), 0.05) 60%,
+        rgba(255, 255, 255, 0.02));
+}
+
+.giz-product-card .giz-product-time-image {
+    gap: 0;
+
+    > .giz-default-image { display: none; }
 }
 
 .giz-product-time-image {
     position: relative;
     display: grid;
     grid-template-rows: min-content min-content;
-    gap: 2rem;
+    gap: 0.8rem;
 
     &-wrapper {
         display: flex;
@@ -368,39 +525,54 @@
 
         &__number {
             text-align: center;
-            //text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 8px rgba(0, 0, 0, 0.2);
-            //Font ?
-            font-family: $font-family-header-theme-client;
+            font-family: $font-family-numeric-theme-client;
             font-weight: 700;
-            font-size: 4.2rem;
-            line-height: 5rem;
+            font-size: 5.2rem;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            font-variant-numeric: tabular-nums;
+            color: $pc-ink;
         }
 
         &__text {
+            margin-top: 0.6rem;
             text-align: center;
-            @include font-m-theme-client($font-weight-regular-theme-client);
+            color: $pc-ink-3;
+            font-family: $font-family-header-theme-client;
+            font-size: 1.15rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
         }
     }
 }
 
-.giz-time-product-expirations {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-}
-
-.giz-time-product-expiration {
-    padding: 0.1rem 0.4rem;
-    color: #FFFFFF;
-    background: rgba(255, 199, 0, 0.32);
-    border-radius: 0.4rem;
-    margin-bottom: 0.8rem;
-    text-align: right;
-    @include font-s-theme-client($font-weight-regular-theme-client);
-}
-
+// Значок начисления баллов. Был голой звездой в углу карточки — теперь
+// такая же плашка, как всё остальное поверх картинок.
 .giz-product-card-award-indicator {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 0.9rem;
+    background: rgba(12, 9, 20, 0.8);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    color: var(--gg-accent);
+
+    svg {
+        width: 1.5rem;
+        height: 1.5rem;
+        fill: currentColor;
+    }
+
+    &:empty { display: none; }
+    &:not(:has(svg)) { display: none; }
+}
+
+.giz-product-card-alternative-button {
+    display: none;
 }

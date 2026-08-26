@@ -3,14 +3,21 @@
 .giz-active-apps {
     display: grid;
     grid-template-rows: min-content 1fr;
-    //grid-template-columns: max-content;
-    background-color: #22272B;
-    border-radius: 0 0 0.8rem 0.8rem;
-    box-shadow: 0px 32px 64px rgba(0, 0, 0, 0.37), 0px 2px 21px rgba(0, 0, 0, 0.37);
+    background: rgba(8, 11, 20, 0.97);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: none;
+    border-radius: 0 0 1rem 1rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(var(--gg-accent-rgb), 0.06);
     max-height: 100%;
     overflow: hidden;
     min-width: 52.2rem;
     width: max-content;
+
+    // backdrop-filter removed to stop trapping position:fixed; z must be > top-bar z-index (500)
+    .giz-popup-wrapper {
+        z-index: 600 !important;
+    }
 
     .giz-combo-button {
         width: 15rem;
@@ -31,10 +38,11 @@
     }
 
     &__header {
-        color: #E4E6EB;
-        padding: 0.8rem 1.6rem;
+        color: rgba(255, 255, 255, 0.95);
+        padding: 1rem 1.6rem;
         white-space: nowrap;
         @include font-h5-theme-client($font-weight-bold-theme-client);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     &__body {
@@ -76,14 +84,20 @@
 
 .giz-active-app-card {
     padding: 1.6rem;
-    border-bottom: 0.1rem solid #373839;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 
     &:last-child {
         border-bottom: none;
     }
 
+    // NOTE: none of these carry height:100% any more. That was left over from
+    // when each row was a <table> and these were <td> cells, where it did
+    // nothing harmful. The rows are grid now (see _Layout.razor), and on a grid
+    // item height:100% overrides align-items:center - the item fills the whole
+    // row and its own content then sits at the top of that box. That is what
+    // pushed the app name above the icon and the Launch button instead of
+    // level with them. Let the row centre them.
     &__image {
-        height: 100%;
         padding: 1.6rem;
 
         img {
@@ -93,8 +107,12 @@
     }
 
     &__info {
-        height: 100%;
         padding: 1.6rem;
+        // Own centring too, so a future second line (category, status) keeps
+        // the block centred rather than growing downwards only.
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
 
         &__category {
             color: rgba(255, 255, 255, 0.6);
@@ -109,7 +127,6 @@
     }
 
     &__actions {
-        height: 100%;
         padding: 1.6rem;
     }
 }

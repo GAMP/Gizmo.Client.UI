@@ -1,8 +1,11 @@
 //=============== Page Apps ================//
 
 .giz-home-apps {
-    display: grid;
-    grid-template-rows: min-content 1fr;
+    // Used to be a 2-row grid (quick-launch/news header, then body) - the
+    // header row is gone now that quick-launch lives in its own permanent
+    // rail, so this is just the body filling the page.
+    display: flex;
+    flex-direction: column;
     height: 100%;
     flex-grow: 1;
     max-width: 256rem;
@@ -13,41 +16,14 @@
         height: 100%;
     }
 
-    &__header {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.6rem;
-        padding: 1.6rem;
-
-        &.full-quick-launcher {
-            grid-template-columns: 1fr;
-        }
-
-        &__quick-launch {
-            background-color: rgba(255, 255, 255, 0.01);
-            box-shadow: inset 0 0 10.1rem rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(6rem);
-            border-radius: 1.6rem;
-            max-width: 100%;
-            z-index: $quick-launch-index;
-            //overflow: hidden;
-        }
-
-        &__ads {
-            background-color: rgba(255, 255, 255, 0.01);
-            box-shadow: inset 0 0 10.1rem rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(6rem);
-            border-radius: 1.6rem;
-            //padding: 1.6rem;
-        }
-    }
-
     .giz-ads-carousel-item__content__text {
         max-width: 34.4rem;
     }
 }
 
 .giz-apps__body {
+    flex: 1;
+    min-height: 0;
     position: relative;
     overflow: hidden;
 
@@ -56,11 +32,6 @@
         padding: 0 1.6rem;
         height: 100%;
         overflow: auto;
-
-        &--stuck {
-            //clip-path: inset(8.2rem 0 0 0);
-            clip-path: polygon(0% 0%, 0 8.2rem, 0 8.2rem, 0 0, 100% 0, 100% 100%, 0 100%, 0 8.2rem, calc(100% - 1rem) 8.2rem, calc(100% - 1rem) 0);
-        }
 
         &__popular {
             margin-top: 1.6rem;
@@ -74,55 +45,73 @@
             z-index: $app-section-header-index;
             margin-bottom: 0;
             padding-bottom: 1.6rem;
-            //background: #0c0f11;
+            // Title on the left, filter cluster pushed to the right, both on
+            // one baseline. AppFilters emits the title as a bare <div>
+            // followed by .giz-apps-filters, so the row is laid out here
+            // rather than inside that component.
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.6rem;
+            flex-wrap: wrap;
+
+            // _section.scss puts the accent bar on the header element
+            // itself. That works where the header is only a title, but here
+            // the header also holds the filter cluster, so the bar stretched
+            // to the full row height - a ~85px stripe next to 24px of text.
+            // The bar moves to the title below; the header keeps none.
+            padding-left: 0;
+            border-left: none;
+            box-shadow: none;
 
             &.hidden {
                 display: none;
             }
-        }
 
-        &--stuck {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 1.6rem 2.4rem 1.6rem 1.6rem;
-            display: none;
-
-            &.visible {
-                display: block;
+            // The sorting-option caption ("Popular apps" / "All apps" / ...).
+            // Same accent-bar heading as the shop and home feeds.
+            > div:not(.giz-apps-filters):not(.giz-section__header__filters) {
+                padding-left: 1.2rem;
+                border-left: 3px solid var(--gg-accent);
+                color: rgba(255, 255, 255, 0.97);
+                letter-spacing: 0.02em;
+                @include font-h5-theme-client($font-weight-bold-theme-client);
             }
         }
+
+        // The "--stuck" duplicate header was removed from AppsIndex.razor
+        // along with its second AppFilters copy; the clip-path hack that
+        // revealed it went with it.
     }
 }
 
 .giz-select.app-filter--filled {
     .giz-input-root {
-        background-color: #0b1a24;
-        border-color: #0b1a24;
-        color: #0078D2;
+        background: rgba(var(--gg-accent-rgb), 0.08);
+        border-color: rgba(var(--gg-accent-rgb), 0.25);
+        color: var(--gg-accent);
 
         .giz-icon {
             svg {
-                color: $primary-color-theme-client;
+                color: var(--gg-accent);
             }
         }
 
         input {
-            color: #0078D2;
+            color: var(--gg-accent);
         }
     }
 }
 
 .giz-multi-select.app-filter--filled {
     .giz-input-root {
-        background-color: #0b1a24;
-        border-color: #0b1a24;
-        color: #0078D2;
+        background: rgba(var(--gg-accent-rgb), 0.08);
+        border-color: rgba(var(--gg-accent-rgb), 0.25);
+        color: var(--gg-accent);
 
         .giz-input__icon-right {
             svg {
-                color: $primary-color-theme-client;
+                color: var(--gg-accent);
             }
         }
     }
@@ -159,6 +148,30 @@
 }
 
 .giz-apps-filters {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    flex-wrap: wrap;
+
+    // Field captions ("Sort by:", "Category:", ...) were full-size grey body
+    // text stacked above each control, which made the filter cluster twice
+    // as tall as the heading beside it and read as unstyled leftovers.
+    // Small caps, tight to their control, same treatment as the login
+    // screen's field labels.
+    .giz-input-label,
+    label {
+        display: block;
+        margin-bottom: 0.4rem;
+        color: rgba(255, 255, 255, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 0.09em;
+        font-family: $font-family-header-theme-client;
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.4rem;
+        white-space: nowrap;
+    }
+
     .giz-input__icon-left {
         width: 1.6rem;
         height: 1.6rem;
@@ -167,6 +180,36 @@
     }
 
     .giz-filters-icon {
-        color: #0078D2;
+        color: var(--gg-accent);
+    }
+
+    // Glass pills, same material as the top bar's segments, instead of the
+    // library's default boxed inputs.
+    .giz-input-root {
+        min-height: 4rem;
+        border-radius: 1.3rem;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03));
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        transition: border-color 0.16s, background 0.16s;
+
+        &:hover,
+        &:focus-within {
+            border-color: rgba(var(--gg-accent-rgb), 0.4);
+        }
+    }
+
+    // "Filter is set" state keeps the accent tint, just on the new shape.
+    .app-filter--filled .giz-input-root {
+        background: linear-gradient(180deg, rgba(var(--gg-accent-rgb), 0.18), rgba(var(--gg-accent-rgb), 0.08));
+        border-color: rgba(var(--gg-accent-rgb), 0.42);
+    }
+
+    .giz-select__dropdown,
+    .giz-multi-select__dropdown {
+        border-radius: 1.4rem;
+        background: linear-gradient(180deg, rgba(30, 24, 48, 0.98), rgba(16, 13, 26, 0.99));
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 2.4rem 5rem -1.6rem rgba(0, 0, 0, 0.8);
     }
 }

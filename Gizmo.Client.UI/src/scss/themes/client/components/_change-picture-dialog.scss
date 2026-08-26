@@ -1,55 +1,330 @@
+//============= Change picture dialog ===========//
+// Same glass recipe as the user-agreement dialog / login card, so this
+// reads as part of the same product rather than a leftover vendor stub
+// (which is what used to live in this file - wrong class names, unused).
+
 .giz-change-picture-dialog {
-    color: #FAFAFA;
-    width: 60.0rem;
+    max-width: 56.0rem;
+    border-radius: 2.8rem;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+        linear-gradient(180deg, rgba(23, 18, 40, 0.94), rgba(12, 10, 20, 0.97));
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+        inset 0 1.5px 0 rgba(255, 255, 255, 0.22),
+        0 4rem 9rem -3rem rgba(0, 0, 0, 0.9);
+    color: rgba(255, 255, 255, 0.92);
 
-    &-image {
-        position: relative;
-        width: 26.0rem;
-        height: 26.0rem;
-
-        &-delete-button.giz-button--fill.primary:not(.disabled) {
-            position: absolute;
-            top: 1.6rem;
-            left: 1.6rem;
-            width: 2.4rem;
-            background-color: #FFFFFF;
-            color: black;
-
-            .giz-icon--extra-small {
-                width: 1.4rem;
-                height: 1.4rem;
-            }
-        }
+    .giz-client-dialog__header__title {
+        font-family: $font-family-header-theme-client;
+        font-weight: 800;
+        font-size: 2.2rem;
+        color: rgba(255, 255, 255, 0.98);
     }
 
-    .giz-input-label {
-        color: #FFFFFF;
-        margin-bottom: 0.4rem;
-        @include font-s-theme-client($font-weight-light-theme-client);
-    }
-
-    .giz-input-control {
-        .giz-input-label {
-            color: #FFFFFF;
-            margin-bottom: 0.4rem;
-            @include font-s-theme-client($font-weight-light-theme-client);
-        }
-    }
-
-    &-message {
-        color: rgba(255, 255, 255, 0.75);
-        margin-bottom: 2.4rem;
-        @include font-s-theme-client($font-weight-light-theme-client);
-    }
-
-    & > .giz-client-dialog__body {
-        display: grid;
-        grid-template-columns: min-content 1fr;
-    }
-
-    & > .giz-client-dialog__footer {
+    .giz-client-dialog__body {
         display: flex;
-        justify-content: flex-end;
-        gap: 1.6rem;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.4rem;
+    }
+
+    &__footer {
+        display: flex;
+        gap: 1.2rem;
+
+        > * {
+            flex: 1 1 0;
+        }
+    }
+}
+
+// ── Drop zone (idle state: no image chosen yet) ──────────────────────────
+.giz-avatar-dropzone {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 4rem 2.4rem;
+    border-radius: 2rem;
+    border: 1.5px dashed rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.03);
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 0.18s, background 0.18s;
+
+    &:hover {
+        border-color: rgba(var(--gg-accent-rgb), 0.55);
+        background: rgba(var(--gg-accent-rgb), 0.06);
+    }
+
+    // The real <input type=file> sits invisibly over the whole zone - this
+    // is what makes native OS drag-and-drop work here for free (a real
+    // file input accepts drops even while visually hidden), on top of the
+    // <label> wrapper already triggering the picker on click.
+    input[type="file"] {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    i {
+        font-size: 3.6rem;
+        color: rgba(var(--gg-accent-rgb), 0.85);
+    }
+
+    &__title {
+        font-family: $font-family-header-theme-client;
+        font-weight: 700;
+        font-size: 1.6rem;
+        color: rgba(255, 255, 255, 0.92);
+    }
+}
+
+// ── URL row ────────────────────────────────────────────────────────────
+.giz-avatar-url-row {
+    display: flex;
+    gap: 0.8rem;
+
+    &__input {
+        flex: 1 1 auto;
+        min-width: 0;
+        height: 4.8rem;
+        padding: 0 1.6rem;
+        border-radius: 1.4rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.9);
+        @include font-m-theme-client(500);
+        outline: none;
+        transition: border-color 0.15s, background 0.15s;
+
+        &::placeholder {
+            color: rgba(255, 255, 255, 0.32);
+        }
+
+        &:focus {
+            border-color: rgba(var(--gg-accent-rgb), 0.6);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        &:disabled {
+            opacity: 0.5;
+        }
+    }
+
+    &__submit {
+        flex: 0 0 auto;
+        width: 4.8rem;
+        height: 4.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 1.4rem;
+        border: none;
+        background: linear-gradient(135deg, #c397ff 0%, #7c3aed 55%, #5b21b6 100%);
+        color: #fff;
+        cursor: pointer;
+        transition: filter 0.15s, opacity 0.15s;
+
+        i {
+            font-size: 1.7rem;
+        }
+
+        &:hover:not(:disabled) {
+            filter: brightness(1.08);
+        }
+
+        &:disabled {
+            opacity: 0.35;
+            cursor: default;
+        }
+    }
+}
+
+// ── Busy / error ───────────────────────────────────────────────────────
+// The spinner's <svg> carries no intrinsic size, so as an ordinary flex
+// child it stretched to the dialog's full width - a huge disc that also
+// shoved everything below it down as soon as work started. It is now a
+// fixed-size mark floating over the body, so toggling busy moves nothing.
+.giz-change-picture-dialog .giz-client-dialog__body {
+    position: relative;
+}
+
+.giz-avatar-busy {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1.6rem;
+    background: rgba(10, 8, 18, 0.6);
+    backdrop-filter: blur(0.3rem);
+    -webkit-backdrop-filter: blur(0.3rem);
+
+    svg {
+        width: 3.6rem;
+        height: 3.6rem;
+        flex: 0 0 auto;
+        color: var(--gg-accent);
+    }
+}
+
+.giz-avatar-error {
+    padding: 1.1rem 1.6rem;
+    border-radius: 1.3rem;
+    background: rgba(238, 80, 90, 0.12);
+    border: 1px solid rgba(238, 80, 90, 0.3);
+    color: #ffd7da;
+    @include font-m-theme-client(500);
+    text-align: center;
+}
+
+// ── Preview (an image has been picked/pasted/loaded and compressed) ──────
+.giz-change-picture-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 1.2rem 0 0.6rem;
+
+    &__circle {
+        width: 16rem;
+        height: 16rem;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid rgba(168, 85, 247, 0.5);
+        box-shadow: 0 0 0 8px rgba(var(--gg-accent-rgb), 0.08);
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    &__meta {
+        @include font-s-theme-client(500);
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    &__retry {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.9rem 1.6rem;
+        border-radius: 1.1rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.7);
+        @include font-m-theme-client(500);
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+
+        i {
+            font-size: 1.5rem;
+        }
+
+        &:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+        }
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
+    }
+}
+
+// ── Редактор кадра ──────────────────────────────────────────────────────
+// Круг — не предпросмотр, а окно: пользователь тянет картинку и меняет
+// масштаб, и в аватарку уходит ровно то, что видно в круге. Раньше кадр
+// выбирался за него — центральный квадрат, — и портрет в полный рост
+// превращался в аватарку живота.
+.giz-avatar-crop {
+    position: relative;
+    width: 100%;
+    max-width: 30rem;
+    aspect-ratio: 1;
+    margin: 0 auto;
+    border-radius: 2rem;
+    overflow: hidden;
+    background: #0b0912;
+    cursor: grab;
+    // Без этого жест на тачскрине уедет в прокрутку страницы, а не в перетаскивание.
+    touch-action: none;
+    user-select: none;
+
+    &.is-dragging { cursor: grabbing; }
+
+    &__img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        // Размер задаёт JS в натуральных пикселях, поэтому глобальные
+        // max-width: 100% на картинках нужно снять — иначе масштаб врёт.
+        max-width: none;
+        transform-origin: center center;
+        will-change: transform;
+        pointer-events: none;
+        user-select: none;
+    }
+
+    // Маска: круг вписан в сцену, всё вокруг него притемняет внешняя тень
+    // этого же псевдоэлемента, а сцена её обрезает по своим границам.
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        box-shadow:
+            0 0 0 999px rgba(8, 6, 14, 0.74),
+            inset 0 0 0 2px rgba(255, 255, 255, 0.85);
+        pointer-events: none;
+    }
+}
+
+.giz-avatar-zoom {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    width: 100%;
+    max-width: 30rem;
+    margin: 0 auto;
+
+    i {
+        flex: none;
+        font-size: 1.5rem;
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    input[type="range"] {
+        flex: 1 1 auto;
+        min-width: 0;
+        height: 0.4rem;
+        appearance: none;
+        -webkit-appearance: none;
+        border-radius: 99px;
+        background: rgba(255, 255, 255, 0.14);
+        outline: none;
+        cursor: pointer;
+
+        &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 1.8rem;
+            height: 1.8rem;
+            border-radius: 50%;
+            border: 2px solid #16081f;
+            background: var(--gg-accent);
+            box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.5);
+            cursor: grab;
+        }
+
+        &:disabled { opacity: 0.4; cursor: default; }
     }
 }

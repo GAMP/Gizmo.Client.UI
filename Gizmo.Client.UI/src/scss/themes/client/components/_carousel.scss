@@ -25,15 +25,21 @@
 
         &-button {
             box-sizing: content-box;
-            width: 0.8rem;
-            height: 0.8rem;
+            width: 0.6rem;
+            height: 0.6rem;
             border-radius: 50%;
-            background-color: rgba(250, 250, 250, 0.16);
+            background: rgba(255, 255, 255, 0.18);
             cursor: pointer;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.35);
+            }
 
             &.active {
-                background-color: #FAFAFA;
-                border: 0.4rem solid #0078D2;
+                background: var(--gg-accent);
+                transform: scale(1.3);
+                
             }
         }
     }

@@ -5,33 +5,19 @@
 @using Gizmo.UI;
 @using Microsoft.AspNetCore.Components.Forms
 
-<LoginCard>
-    <CardHeader>
-        <div class="giz-login-links">
-            @if (UserRegisterConfigurationViewState.IsEnabled)
-            {
-                <div class="giz-login-new-user">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_NOT_A_MEMBER)) <a @onclick="UserLoginService.OpenRegistrationAsync">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_SIGN_UP_NOW))</a></div>
-            }
-        </div>
-        <div class="giz-login-alerts">
-            @if (!ViewState.HasLoginError)
-            {
-                @if (HostReservationViewState.ReservationBlockTimeReached)
-                {
-                    <Alert AlertType="AlertTypes.Info"
-                           Title="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_RESERVATION_WARNING_TITLE), HostReservationViewState.Time.GetValueOrDefault().ToShortTimeString())"
-                           Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_BLOCK_TIME_REACHED_MESSAGE))" />
+@* Бронь — свойство устройства, а не формы входа, поэтому сообщение о ней стоит
+   отдельной плиткой НАД карточкой, а не внутри её шапки. Внутри оно отодвигало
+   заголовок «Войти» и читалось как ошибка ввода. Стопка держит их вместе, чтобы
+   пара «плашка + карточка» оставалась по центру экрана. *@
+<div class="giz-login-stack">
 
-                }
-                else if (HostReservationViewState.ReservationNotificationTimeReached)
-                {
-                    <Alert AlertType="AlertTypes.Warning"
-                           Title="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_RESERVATION_WARNING_TITLE), HostReservationViewState.Time.GetValueOrDefault().ToShortTimeString())"
-                           Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_NOTIFICATION_TIME_REACHED_MESSAGE))" />
-                }
-            }
-        </div>
-    </CardHeader>
+    @if (!ViewState.HasLoginError && ReservationMessage is { } reservationMessage)
+    {
+        <ReservationNotice Time="@HostReservationViewState.Time.GetValueOrDefault().ToShortTimeString()"
+                           Message="@reservationMessage" />
+    }
+
+    <LoginCard>
 
     <CardBody>
         @if (ViewState.HasLoginError)
@@ -48,9 +34,12 @@
                 </ButtonGroup>
             </div>
             <EditForm EditContext="@UserLoginService.EditContext" @onkeydown="OnKeyDownHandle">
-                @if (ViewState.LoginType == View.UserLoginType.UsernameOrEmail)
-                {
-                    <div class="giz-form-input">
+                @* Keyed on the login type so switching Username <-> Phone
+                   remounts this row and replays the entrance animation,
+                   rather than swapping the field in place with no motion. *@
+                <div class="giz-form-input giz-form-input--swappable" @key="ViewState.LoginType">
+                    @if (ViewState.LoginType == View.UserLoginType.UsernameOrEmail)
+                    {
                         <TextInput UpdateOnInput="true"
                                    Value="@ViewState.LoginName"
                                    ValueChanged="@((string value) => UserLoginService.SetLoginName(value))"
@@ -59,12 +48,14 @@
                                    IsDisabled="@(ViewState.IsLogginIn || ViewState.IsLogginOut)"
                                    Size="InputSizes.Medium"
                                    IsFullWidth="true"
-                                   Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_USERNAME))" />
-                    </div>
-                }
-                else
-                {
-                    <div class="giz-form-input">
+                                   Label="@Gizmo.Client.UI.Localization.ShellStringOverrides.Get(LocalizationService, nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_USERNAME))" />
+                    }
+                    else
+                    {
+                        @* Поле с выбором страны вместо прежнего статического «+7»:
+                           начиная с 3.0.91 UserLoginViewService валидирует Country
+                           и сам собирает номер в E.164 — без страны вход по телефону
+                           не пройдёт проверку. *@
                         <PhoneNumberField SelectedCountryName="@ViewState.Country"
                                           PhoneValue="@ViewState.LoginName"
                                           PhoneValueExpression="@(() => ViewState.LoginName)"
@@ -74,12 +65,12 @@
                                           IsFullWidth="true"
                                           RenderWrappers="false"
                                           CountryLabel="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_COUNTRY))"
-                                          PhoneLabel="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PHONE_NUMBER))"
+                                          PhoneLabel="@Gizmo.Client.UI.Localization.ShellStringOverrides.Get(LocalizationService, nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PHONE_NUMBER))"
                                           SearchPlaceholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEARCH))"
                                           CountryChanged="@OnCountryChangedAsync"
                                           PhoneValueChanged="@OnPhoneValueChangedAsync" />
-                    </div>
-                }
+                    }
+                </div>
                 <div class="giz-form-input">
                     <PasswordInput ShowRevealButton="true"
                                    UpdateOnInput="true" Value="@ViewState.Password"
@@ -91,7 +82,7 @@
                                    Size="InputSizes.Medium"
                                    IsFullWidth="true"
                                    Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PASSWORD))" />
-                    @if (UserRegisterConfigurationViewState.IsPasswordRecoveryEnabled)
+                    @if (ShowPasswordRecovery)
                     {
                         <div class="giz-login-forgot-password">
                             <a tabindex="-1" href="@ClientRoutes.PasswordRecoveryKindRoute">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_FORGOT_YOUR_PASSWORD))</a>
@@ -121,52 +112,43 @@
                 }
 
                 <div>
-                    <Button Color="ButtonColors.Accent" LeftSVGIcon="@(!(ViewState.IsLogginIn || ViewState.IsLogginOut) ? Icons.Login_Client : null)" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="@UserLoginService.LoginAsync">
+                    <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" Class="giz-login-submit" @onclick="@UserLoginService.LoginAsync">
                         @if (ViewState.IsLogginIn || ViewState.IsLogginOut)
                         {
                             <Spinner />
                         }
                         else
                         {
-                            <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CONTINUE))</div>
+                            <div class="giz-login-submit__content">
+                                <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CONTINUE))</span>
+                                <i class="ph-bold ph-arrow-right"></i>
+                            </div>
                         }
                     </Button>
                 </div>
+
+                @* Moved inside the card (was a separate element pinned to the
+                   header's top-right corner). Still gated on the same
+                   registration-enabled config as before. *@
+                @if (UserRegisterConfigurationViewState.IsEnabled)
+                {
+                    <div class="giz-login-new-user">
+                        <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_NOT_A_MEMBER))</span>
+                        <a @onclick="UserLoginService.OpenRegistrationAsync">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_SIGN_UP_NOW))</a>
+                    </div>
+                }
             </EditForm>
 
             @* TODO: stub — social login buttons, no action. Wire up when provider auth flow is available. *@
             @* <LoginSocialButtons /> *@
         }
-
-        @if (HostQRCodeViewState.IsEnabled)
-        {
-            <div class="giz-login-or">
-                <span>@LocalizationService.GetString("GIZ_LOGIN_OR")</span>
-            </div>
-        }
-
-        @if (HostQRCodeViewState.IsEnabled)
-        {
-            <div class="giz-login-qr">
-                <div class="giz-login-qr__text">
-                    <div class="giz-login-qr__text__title">
-                        @(string.IsNullOrEmpty(HostQrCodeOptions.Value.Title)
-                            ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_QR_TITLE))
-                            : HostQrCodeOptions.Value.Title)
-                    </div>
-                    <div class="giz-login-qr__text__subtitle">
-                        @(string.IsNullOrEmpty(HostQrCodeOptions.Value.Description)
-                            ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_QR_MESSAGE))
-                            : HostQrCodeOptions.Value.Description)
-                    </div>
-                </div>
-                <div class="giz-login-qr__image">
-                    @((MarkupString)HostQRCodeViewState.HostQRCode)
-                </div>
-            </div>
-        }
     </CardBody>
     <CardFooter>
+        @* QR login block removed per the design brief. The underlying
+           HostQRCodeViewState / HostQrCodeOptions services are untouched, so
+           re-adding it later is markup-only. *@
         <InputLanguageMenu />
     </CardFooter>
-</LoginCard>
+    </LoginCard>
+
+</div>

@@ -29,16 +29,15 @@
                     </div>
                     <div class="giz-registration-redirect__provider-text">
                         <div class="giz-registration-redirect__title">
-                            @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_TITLE), GetProviderDisplayName())
+                            @Gizmo.Client.UI.Localization.ShellStringOverrides.Get(LocalizationService, nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_TITLE), GetProviderDisplayName())
                         </div>
                         <div class="giz-registration-redirect__subtitle">
-                            @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_SUBTITLE))
+                            @Gizmo.Client.UI.Localization.ShellStringOverrides.Get(LocalizationService, nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_SUBTITLE))
                         </div>
                     </div>
                 </div>
 
                 <div class="giz-registration-redirect__info">
-                    <Icon SVGIcon="Icons.Info_Client" Size="IconSizes.ExtraSmall" Class="giz-registration-redirect__info-icon" />
                     <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_SCAN_HINT))</span>
                 </div>
 
@@ -60,19 +59,17 @@
                             </div>
                         }
                     </div>
-                    <div class="giz-registration-redirect__status @(ViewState.IsQrExpired ? "giz-registration-redirect__status--expired" : null)">
-                        <span class="giz-registration-redirect__status-dot @(ViewState.IsQrExpired ? "giz-registration-redirect__status-dot--expired" : null)"></span>
-                        <span>
-                            @if (ViewState.IsQrExpired)
-                            {
-                                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_QR_EXPIRED))
-                            }
-                            else
-                            {
-                                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_WAITING_SCAN))
-                            }
-                        </span>
-                    </div>
+                    @* Строка «ожидаем сканирования» держалась под кодом всё
+                       время, хотя ничего не сообщала: пока код на экране, его и
+                       ждут. Осталась только та её половина, которая несёт
+                       новость, - что код истёк. *@
+                    @if (ViewState.IsQrExpired)
+                    {
+                        <div class="giz-registration-redirect__status giz-registration-redirect__status--expired">
+                            <span class="giz-registration-redirect__status-dot giz-registration-redirect__status-dot--expired"></span>
+                            <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_QR_EXPIRED))</span>
+                        </div>
+                    }
                 </div>
 
                 @if (ViewState.IsQrExpired)

@@ -1,17 +1,54 @@
 //============= Notifications ===============//
+// Each notification is a self-contained tinted tile: the whole card carries
+// its type's colour rather than a neutral card with a coloured stripe, and
+// there is no icon and no panel title - the copy plus the colour is the
+// whole message. The container itself is therefore invisible; it only
+// stacks and pads the cards.
+//
+// NOTE ON POSITION: on the desktop shell these render inside a separate
+// always-on-top WPF window (Host.WPF/NotificationsHost.xaml,
+// WindowStartupLocation=CenterScreen) whose placement is owned by the Gizmo
+// host EXE, not by the skin. "top: 0; left: 0" here puts the stack at the
+// top-left of that window - which is as far left as a skin can put it.
 
+// WIDTH/HEIGHT MUST NOT DEPEND ON vw/vh HERE. This element sits inside a
+// wholly separate WPF window (Host.WPF/NotificationsHost.xaml) that starts
+// with no real size; the desktop host measures THIS element once, via JS
+// getBoundingClientRect, to imperatively set that window's actual
+// Width/Height in C# (NotificationsService.RequestNotificationHostSize).
+// If that one-shot measurement happens before WebView2 has been given real
+// geometry, vw/vh can resolve to 0 - and unlike ordinary CSS (which would
+// self-correct on the next layout pass), the native window's size is a
+// one-time imperative call that never gets re-issued, so a bad first
+// measurement leaves it permanently undersized/invisible even though the
+// notification is rendering "fine" underneath. This is suspected to be
+// exactly why the popup silently stopped appearing while the (unrelated,
+// always-open, main-shell-hosted) bell-icon history list kept working. Pure
+// rem sizing removes the failure mode entirely - it can't misresolve
+// regardless of when it's measured.
 .giz-notifications {
     position: fixed;
-    top: 1rem;
-    left: 1rem;
-    width: calc(100vw - 2rem);
-    max-height: calc(100vh - 2rem);
-    border-radius: 0.4rem;
-    overflow: hidden;
-    display: grid;
-    grid-template-rows: min-content 1fr;
-    background-color: #22272B;
-    //z-index: $notifications-index;
+    top: 0;
+    // Centred horizontally, not pinned left. The host window is wider than
+    // this stack, so left:0 parked the cards against its left edge - which
+    // on screen read as "off to the left" rather than top-centre.
+    // left+margin rather than translateX: the slide in/out animations below
+    // animate `transform`, and a centring transform here would be wiped out
+    // by them mid-animation.
+    left: 50%;
+    transform: translateX(-50%);
+    width: 42rem;
+    max-height: 74rem;
+    box-sizing: border-box;
+    // This window is independently WindowStartupLocation=CenterScreen - it
+    // is not overlaid on the main shell's own top bar (different window,
+    // different coordinate space entirely), so there is nothing here to
+    // "clear" the way there would be if this rendered inside the shell's
+    // own DOM. Modest, symmetric padding only.
+    padding: 1.6rem 1.2rem;
+    display: block;
+    background: transparent;
+    z-index: 600;
 
     &.prerender {
         max-height: unset;
@@ -22,222 +59,264 @@
         }
     }
 
-    &__header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.8rem 1.2rem 1rem 0.8rem;
-        background: rgba(255, 255, 255, 0.0326);
-        @include font-m-theme-client($font-weight-regular-theme-client);
-    }
-
+    // No scrollbar chrome here at all, not even on hover: this floats over
+    // the wallpaper with nothing beside it to visually anchor a scroll
+    // track, so any bar - even a faint one - reads as a stray UI line
+    // hanging in space. Scrolling itself is unaffected.
     &__body {
         max-height: 100%;
-        overflow: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-width: none; // Firefox
+        -ms-overflow-style: none; // old Edge
+
+        &::-webkit-scrollbar {
+            display: none; // Chromium (WebView2)
+        }
     }
 
     &.slide-in {
-        animation-duration: 1s;
+        animation-duration: 0.6s;
         animation-name: notifications-slide-in-anim;
-        animation-timing-function: ease-in-out;
+        animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
         animation-fill-mode: forwards;
     }
 
     &.slide-out {
-        animation-duration: 1s;
+        animation-duration: 0.4s;
         animation-name: notifications-slide-out-anim;
-        animation-timing-function: ease-in-out;
+        animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+        animation-fill-mode: forwards;
+    }
+}
+
+// ── The tinted tile ───────────────────────────────────────────────────────
+// Flat, not glowing: a single solid tint (no diagonal gradient sheen) over a
+// dark base, a thin border, one plain dark drop shadow for lift. The earlier
+// version used a 135deg accent gradient plus a colour-matched box-shadow
+// bloom around the card - close to another card, or right at a corner, that
+// bloom read as its own hazy rectangle sitting behind the tile rather than a
+// shadow, and the diagonal sheen is exactly the kind of glowing-purple-
+// gradient look that reads as generic "AI slop" UI. Nothing here glows past
+// its own edge.
+@mixin notification-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    align-items: start;
+    gap: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    margin: 0 0 0.8rem;
+    padding: 1.4rem 1.2rem 1.5rem 1.6rem;
+    border-radius: 1.4rem;
+    background: rgba(var(--giz-notification-bg-rgb, 28, 21, 40), 0.95);
+    backdrop-filter: blur(1.8rem);
+    -webkit-backdrop-filter: blur(1.8rem);
+    border: 1px solid rgba(var(--giz-notification-accent-rgb, var(--gg-accent-rgb)), 0.32);
+    box-shadow: 0 0.8rem 2rem -0.6rem rgba(0, 0, 0, 0.55);
+}
+
+@mixin notification-body {
+    min-width: 0;
+    // The vendor markup centres some of this by inheritance; notifications
+    // are read left-to-right like everything else in the shell.
+    text-align: left;
+
+    &__title {
+        width: 100%;
+        overflow: hidden;
+        white-space: normal;
+        font-family: $font-family-header-theme-client;
+        font-weight: 700;
+        font-size: 1.5rem;
+        line-height: 2rem;
+        color: #fff;
+    }
+
+    &__message {
+        width: 100%;
+        overflow: hidden;
+        white-space: normal;
+        margin-top: 0.3rem;
+        @include font-s-theme-client($font-weight-light-theme-client);
+        color: rgba(255, 255, 255, 0.78);
+    }
+}
+
+@mixin notification-slide-wrapper {
+    overflow: hidden;
+
+    &.tmp {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        visibility: hidden;
+    }
+
+    &.slide-in {
+        height: 0;
+        animation-duration: 0.4s;
+        animation-name: notification-slide-in-anim;
+        animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+        animation-fill-mode: forwards;
+    }
+
+    &.slide-out {
+        animation-duration: 0.35s;
+        animation-name: notification-slide-out-anim;
+        animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
         animation-fill-mode: forwards;
     }
 }
 
 .giz-notification {
-    display: grid;
-    grid-template-columns: min-content 1fr min-content;
-    gap: 1.5rem;
-    width: 100%;
-    overflow: hidden;
-    padding-top: 1.3rem;
-    padding-bottom: 1.5rem;
+    @include notification-card;
 
-    &__icon {
-        width: 5.3rem;
-        padding-top: 0.3rem;
-        padding-left: 1.6rem;
+    // Info carries no modifier: it is the default look, and the mixin
+    // already falls back to the brand accent/dark-purple base when neither
+    // var is set. The bg colour is each accent shifted almost all the way
+    // to black (not a low-alpha wash of the bright accent over a shared
+    // dark layer, which is what the old dual-gradient version did) - flat
+    // and readable at full opacity regardless of what's behind the card.
+    &--success {
+        --giz-notification-accent-rgb: 52, 211, 153;
+        --giz-notification-bg-rgb: 14, 38, 30;
+    }
+    &--danger {
+        --giz-notification-accent-rgb: 248, 113, 113;
+        --giz-notification-bg-rgb: 42, 18, 20;
+    }
+    &--warning {
+        --giz-notification-accent-rgb: 251, 191, 36;
+        --giz-notification-bg-rgb: 42, 32, 12;
     }
 
     &__body {
-        display: grid;
-        grid-template-rows: min-content 1fr min-content;
-
-        &__title {
-            width: 100%;
-            overflow: hidden;
-            //white-space: nowrap;
-            white-space: normal;
-            text-overflow: ellipsis;
-            @include font-l-theme-client($font-weight-bold-theme-client);
-        }
-
-        &__message {
-            width: 100%;
-            overflow: hidden;
-            white-space: normal;
-            @include font-l-theme-client($font-weight-light-theme-client);
-        }
+        @include notification-body;
 
         &__actions {
-            margin-top: 1.6rem;
+            margin-top: 1rem;
         }
     }
 
     &__close-button {
-        padding: 0 1.2rem;
+        margin: -0.6rem -0.4rem 0 0;
+        opacity: 0.65;
+        transition: opacity 0.18s ease;
+
+        &:hover {
+            opacity: 1;
+        }
     }
 
     &-wrapper {
-        overflow: hidden;
-        border-bottom: 1px solid rgba(246, 251, 253, 0.06);
-
-        &.tmp {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            visibility: hidden;
-        }
-
-        &:last-child {
-            border-bottom: unset;
-        }
-
-        &.slide-in {
-            height: 0;
-            animation-duration: 0.5s;
-            animation-name: notification-slide-in-anim;
-            animation-timing-function: ease-in-out;
-            animation-fill-mode: forwards;
-        }
-
-        &.slide-out {
-            animation-duration: 0.5s;
-            animation-name: notification-slide-out-anim;
-            animation-timing-function: ease-in-out;
-            animation-fill-mode: forwards;
-        }
+        @include notification-slide-wrapper;
     }
 }
 
+// ── Reservation notification: same tile, always brand accent (it is a call
+// to action, not a semantic info/warning/error). ──────────────────────────
 .giz-reservation-notification {
-    display: grid;
-    grid-template-columns: min-content 1fr min-content;
-    gap: 1.5rem;
-    width: 100%;
-    overflow: hidden;
-    padding-top: 1.3rem;
-    padding-bottom: 1.5rem;
-
-    &__icon {
-        width: 5.3rem;
-        padding-top: 0.3rem;
-        padding-left: 1.6rem;
-    }
+    @include notification-card;
 
     &__body {
-        &__title {
-            width: 100%;
-            overflow: hidden;
-            //white-space: nowrap;
-            white-space: normal;
-            text-overflow: ellipsis;
-            @include font-l-theme-client($font-weight-bold-theme-client);
-        }
+        @include notification-body;
 
-        &__message {
-            width: 100%;
-            overflow: hidden;
-            white-space: normal;
-            @include font-l-theme-client($font-weight-light-theme-client);
-        }
-
+        // Кнопки в ряд и по содержимому. Раньше подпись длиннее кнопки просто
+        // вылезала за неё и наезжала на соседнюю: у кнопки была своя ширина, а
+        // у текста внутри — своё мнение.
         &__actions {
             display: flex;
             align-items: center;
             gap: 0.8rem;
-            margin-top: 1.6rem;
+            margin-top: 1.2rem;
+
+            .giz-button {
+                flex: 0 1 auto;
+                height: 3.8rem;
+                min-width: 0;
+                padding: 0 1.6rem;
+                border-radius: 1.2rem;
+                font-family: $font-family-header-theme-client;
+                font-size: 1.3rem;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+
+            .giz-button__content,
+            .giz-button__content_wrapper {
+                overflow: visible;
+                white-space: nowrap;
+            }
         }
     }
 
     &__close-button {
-        padding: 0 1.2rem;
+        margin: -0.6rem -0.4rem 0 0;
+        opacity: 0.65;
+        transition: opacity 0.18s ease;
+
+        &:hover {
+            opacity: 1;
+        }
     }
 
     &-wrapper {
-        overflow: hidden;
-        border-bottom: 1px solid rgba(246, 251, 253, 0.06);
-
-        &.tmp {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            visibility: hidden;
-        }
-
-        &:last-child {
-            border-bottom: unset;
-        }
-
-        &.slide-in {
-            height: 0;
-            animation-duration: 0.5s;
-            animation-name: notification-slide-in-anim;
-            animation-timing-function: ease-in-out;
-            animation-fill-mode: forwards;
-        }
-
-        &.slide-out {
-            animation-duration: 0.5s;
-            animation-name: notification-slide-out-anim;
-            animation-timing-function: ease-in-out;
-            animation-fill-mode: forwards;
-        }
+        @include notification-slide-wrapper;
     }
 }
 
+// Purely vertical now that the stack is centred - the old sideways drift
+// was there to match a left-pinned panel and reads as a wobble once the
+// thing is dropping in from the top of the screen. The -50% X term has to
+// stay present in every keyframe: the panel's horizontal centring IS a
+// transform now (see .giz-notifications above), and an animation's
+// "transform" property replaces the whole value rather than composing with
+// it - dropping the -50% here would snap the panel to the left edge for
+// the animation's duration.
 @keyframes notifications-slide-in-anim {
     from {
-        margin-top: -100%;
+        opacity: 0;
+        transform: translate(-50%, -1.6rem) scale(0.97);
     }
     to {
-        margin-top: 0%;
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
     }
 }
 
 @keyframes notifications-slide-out-anim {
     from {
-        margin-top: 0%;
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
     }
-
     to {
-        margin-top: -100%;
+        opacity: 0;
+        transform: translate(-50%, -1.6rem) scale(0.97);
     }
 }
 
 @keyframes notification-slide-in-anim {
     from {
         height: 0;
+        opacity: 0;
     }
     to {
         height: var(--notification-height);
+        opacity: 1;
     }
 }
 
 @keyframes notification-slide-out-anim {
     from {
         height: var(--notification-height);
+        opacity: 1;
     }
     to {
         height: 0;
+        opacity: 0;
     }
 }

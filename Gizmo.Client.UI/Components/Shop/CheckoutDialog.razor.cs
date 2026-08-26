@@ -52,6 +52,20 @@ namespace Gizmo.Client.UI.Components
 
             _paymentMethods = tmp.Where(a => a.Id != -4 && !a.IsOnline && !a.IsDeleted && a.IsEnabled).ToList(); //TODO: AAAAA
 
+            // Default to the account balance so the customer isn't forced to
+            // open the dropdown for the common case. -3 is Gizmo's own
+            // well-known id for the Deposit payment method (see the same
+            // switch in PaymentMethodViewStateLookupService.Map) - not
+            // something specific to this club's config, so it's safe to
+            // check for directly. Only applies if nothing is picked yet and
+            // the club actually has it enabled as a payment method.
+            if (Service.ViewState.PaymentMethodId is null)
+            {
+                var depositMethod = _paymentMethods.FirstOrDefault(a => a.Id == -3);
+                if (depositMethod is not null)
+                    Service.SetOrderPaymentMethod(depositMethod.Id);
+            }
+
             await base.OnInitializedAsync();
         }
 

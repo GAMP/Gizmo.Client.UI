@@ -1,26 +1,22 @@
 ﻿@namespace Gizmo.Client.UI
 @inherits CustomDOMComponentBase
+@using Gizmo.Client.UI.Shared
+
+<div class="giz-profile-header">
+    <div class="giz-profile-header__avatar">
+        <HeaderUserMenuUserAvatar />
+    </div>
+    <div class="giz-profile-header__info">
+        @if (!string.IsNullOrEmpty(UserProfileViewState.Username))
+        {
+            <div class="giz-profile-header__name">@UserProfileViewState.Username</div>
+        }
+        <div class="giz-profile-header__host"><HostNumber /></div>
+    </div>
+</div>
 
 <div class="giz-header__user-menu">
+    @* GGBook moved the action buttons out of here into UserActionsBar, which
+       now lives in the top bar. This block is the profile + balance only. *@
     <HeaderUserBalance />
-
-    <HeaderUserMenuUserReservation />
-
-    @if (UserOnlineDepositViewState.IsEnabled)
-    {
-        <HeaderUserMenuUserOnlineDeposit @onclick="ShowOnlineDeposits" />
-    }
-
-    <HeaderUserMenuActiveApps @onclick="UserMenuViewService.ToggleActiveApps" />
-    @*<div class="giz-header__user-menu-item">
-        <button class="user-menu-item-button--box">
-            <Icon SVGIcon="Icons.ContactSupport_Client" />
-        </button>
-    </div>*@
-    <HeaderUserMenuNotifications @onclick="UserMenuViewService.ToggleNotifications" />
-    @if (AssistanceRequestViewState.IsEnabled)
-    {
-        <HeaderUserMenuAssistance @onclick="UserMenuViewService.ToggleAssistanceRequests" />
-    }
-    <HeaderUserMenuUserLinks @onclick="UserMenuViewService.ToggleUserLinks" />
 </div>

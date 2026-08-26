@@ -1,11 +1,786 @@
-//=============== Page Home ================//
+//=============== Home board — «Витрина» ================//
+//
+// Two slots, two questions, and that is the whole structure:
+//
+//   ГЕРОЙ  answers "what is worth looking at" — one big picture instead of
+//          thirty small ones. Banners, or the club's popular goods on a slow
+//          rotation, or a quiet mark. Never the shop list.
+//   КАССА  answers "what can I buy" — balance, packages, bar. Always in the
+//          right column, never affected by what the hero happens to be doing.
+//
+// Because the two answer different questions they never compete for room:
+// adding a banner hides nothing, removing the last one leaves no hole. The
+// board carries nine pictures in total against the thirty it used to; the full
+// catalogues live behind the Shop and Games routes on the left rail, which is
+// what those routes are for.
+//
+// Craft rules, unchanged from the reset before this one and still the point:
+//   1. ONE accent. Purple on the buy button, the wallet's plus, the hero call
+//      to action and the hairline of whatever is hovered. Never as a glow.
+//   2. Scale carries the hierarchy, not colour: micro uppercase labels against
+//      big tabular numerals.
+//   3. Everything fluid between a floor and a ceiling, so a 1440 monitor gets
+//      the same composition larger rather than four times as many tiles.
 
-.giz-home__body {
-    padding: 1.6rem;
+// ── scale ────────────────────────────────────────────────────────────────
+$g:  clamp(0.8rem, 0.45rem + 0.6vw, 1.6rem);
+$r:  clamp(1.2rem, 0.8rem + 0.5vw, 2rem);
+$rt: clamp(0.9rem, 0.62rem + 0.36vw, 1.4rem);
+
+$t-cap:   clamp(0.98rem, 0.93rem + 0.08vw, 1.14rem);
+$t-body:  clamp(1.3rem, 1.2rem + 0.2vw, 1.5rem);
+$t-name:  clamp(1.4rem, 1.24rem + 0.3vw, 1.8rem);
+$t-sum:   clamp(2.6rem, 1.9rem + 1.5vw, 4.2rem);
+$t-hero:  clamp(2.8rem, 1.9rem + 2.1vw, 5.4rem);
+
+$ink:    #f2f0f7;
+$ink-2:  rgba(242, 240, 247, 0.62);
+$ink-3:  rgba(242, 240, 247, 0.34);
+$ink-cap: rgba(242, 240, 247, 0.42);
+$line:   rgba(255, 255, 255, 0.07);
+$line-2: rgba(255, 255, 255, 0.16);
+
+$panel: #120f1c;
+$tile:  #14111d;
+
+@mixin one-line {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@mixin quiet-scroll {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: $line-2 transparent;
+
+    &::-webkit-scrollbar { width: 0.5rem; }
+    &::-webkit-scrollbar-thumb { background: $line-2; border-radius: 99px; }
+    &::-webkit-scrollbar-track { background: transparent; }
+}
+
+// Outline as an inset shadow, never a border: a real border still paints its
+// hairlines on a zero height box, which is where the strips under old grids
+// came from.
+@mixin hairline($colour: $line) {
+    box-shadow: inset 0 0 0 1px $colour;
+}
+
+// ── entrance ─────────────────────────────────────────────────────────────
+// One orchestrated arrival rather than a scatter of little effects: the two
+// columns rise, then the hero's own text staggers in behind them.
+@keyframes gg-rise {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: none; }
+}
+
+@keyframes gg-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes gg-slide-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
+}
+
+// ── board ────────────────────────────────────────────────────────────────
+.gg-board {
     height: 100%;
-    overflow: auto;
+    min-height: 0;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(30rem, 25vw, 46rem);
+    gap: calc(#{$g} * 1.4);
 
-    &__popular {
-        margin-top: 1.6rem;
+    > * { animation: gg-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    > * + * { animation-delay: 0.07s; }
+}
+
+.gg-stage {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    display: grid;
+    // The hero takes roughly two thirds; the strip under it is a single row of
+    // covers, which is all the games need on a screen whose job is buying time.
+    grid-template-rows: minmax(0, 1.9fr) minmax(0, 1fr);
+    gap: calc(#{$g} * 1.4);
+}
+
+// ── caption: micro label, hairline to the far edge, quiet link ───────────
+.gg-cap {
+    flex: none;
+    font-family: $font-family-header-theme-client;
+    font-size: $t-cap;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: $ink-cap;
+    white-space: nowrap;
+
+    &--rule {
+        display: flex;
+        align-items: center;
+        gap: calc(#{$g} * 0.9);
+        min-width: 0;
     }
+
+    &__rule {
+        flex: 1;
+        height: 1px;
+        min-width: 0;
+        background: $line;
+    }
+
+    a {
+        flex: none;
+        color: inherit;
+        text-decoration: none;
+        letter-spacing: 0.1em;
+        transition: color 0.16s;
+
+        &:hover { color: $ink; }
+    }
+}
+
+.gg-empty {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    border-radius: $r;
+    @include hairline;
+    font-size: $t-body;
+    color: $ink-3;
+    text-align: center;
+    padding: $g;
+
+    &--small { flex: none; padding: calc(#{$g} * 1.6) $g; }
+}
+
+// ── ГЕРОЙ ────────────────────────────────────────────────────────────────
+.gg-hero {
+    position: relative;
+    min-height: 0;
+    overflow: hidden;
+    border-radius: $r;
+    background: $tile;
+    cursor: default;
+    animation: gg-fade 0.45s ease both;
+
+    &__bg {
+        position: absolute;
+        inset: 0;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    // A banner is already drawn to fill a wide frame. A product photograph is
+    // not: it is square or tall, so the background is that same picture blurred
+    // and enlarged while the sharp copy stands as a card on the right. Nothing
+    // is stretched and nothing is cropped to nonsense.
+    &--goods &__bg img {
+        filter: blur(2.6rem) saturate(1.15);
+        transform: scale(1.3);
+    }
+
+    &--goods &__bg::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(8, 6, 14, 0.5);
+    }
+
+    &__scrim {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg,
+                    rgba(8, 6, 14, 0.92) 0%,
+                    rgba(8, 6, 14, 0.58) 40%,
+                    rgba(8, 6, 14, 0.06) 74%);
+    }
+
+    &__art {
+        position: absolute;
+        z-index: 1;
+        right: clamp(2.4rem, 3vw, 6rem);
+        top: clamp(2rem, 3vh, 4.4rem);
+        bottom: clamp(2rem, 3vh, 4.4rem);
+        aspect-ratio: 1;
+        border-radius: $rt;
+        overflow: hidden;
+        background: $tile;
+        box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.85), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .giz-default-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                width: 38%;
+                height: auto;
+                object-fit: contain;
+                opacity: 0.22;
+            }
+        }
+    }
+
+    &__body {
+        position: absolute;
+        inset: auto auto 0 0;
+        z-index: 2;
+        max-width: 58%;
+        padding: 0 clamp(2.4rem, 3vw, 6rem) clamp(2.4rem, 3.4vh, 5rem);
+
+        // The one staggered reveal on the board: kicker, title, price, button
+        // arrive a beat apart, so a slide change reads as a change rather than
+        // as a flicker.
+        > * { animation: gg-slide-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        > *:nth-child(2) { animation-delay: 0.06s; }
+        > *:nth-child(3) { animation-delay: 0.12s; }
+        > *:nth-child(4) { animation-delay: 0.18s; }
+    }
+
+    &__kick {
+        font-size: $t-cap;
+        font-weight: 700;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--gg-accent);
+    }
+
+    &__title {
+        margin-top: calc(#{$g} * 0.9);
+        font-family: $font-family-header-theme-client;
+        font-size: $t-hero;
+        font-weight: 800;
+        line-height: 1.02;
+        letter-spacing: -0.025em;
+        color: $ink;
+        // Two lines at most: a club can name a promotion anything at all, and a
+        // five line headline would climb over the games below it.
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    &__price {
+        margin-top: calc(#{$g} * 0.8);
+        font-family: $font-family-numeric-theme-client;
+        font-size: clamp(1.8rem, 1.4rem + 0.9vw, 2.8rem);
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        color: $ink-2;
+    }
+
+    &__cta {
+        margin-top: calc(#{$g} * 1.5);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7em;
+        padding: 0.95em 1.7em;
+        border: 0;
+        border-radius: 99px;
+        cursor: pointer;
+        background: var(--gg-accent);
+        color: #16081f;
+        font-family: $font-family-header-theme-client;
+        font-size: clamp(1.3rem, 1.15rem + 0.28vw, 1.6rem);
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        transition: filter 0.16s, transform 0.16s;
+
+        i { font-size: 1.15em; }
+
+        &:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        &:active { transform: none; }
+
+        &:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+    }
+
+    // Nothing to show at all — a mark, not a hole.
+    &--empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background:
+            radial-gradient(60% 70% at 50% 32%, rgba(var(--gg-accent-rgb), 0.13), rgba(var(--gg-accent-rgb), 0) 68%),
+            repeating-linear-gradient(58deg, rgba(255, 255, 255, 0.02) 0 1px, rgba(255, 255, 255, 0) 1px 9px),
+            $tile;
+    }
+
+    &__mark {
+        font-family: $font-family-header-theme-client;
+        font-size: clamp(3rem, 3.6vw, 6rem);
+        font-weight: 800;
+        letter-spacing: 0.3em;
+        text-indent: 0.3em;
+        color: rgba(242, 240, 247, 0.9);
+    }
+
+    &__note {
+        margin-top: calc(#{$g} * 1.2);
+        font-size: $t-body;
+        color: $ink-3;
+    }
+}
+
+// Индикатор слайдов: слева сверху, и активная точка не просто подсвечена, а
+// заполняется полосой за то же время, что живёт слайд. Это отвечает на вопрос
+// «когда переключится», который иначе остаётся без ответа.
+//
+// Длительность держится в переменной и должна совпадать с SLIDE_INTERVAL в
+// Home.razor.cs — семь секунд.
+.gg-dots {
+    --gg-slide: 7s;
+
+    position: absolute;
+    z-index: 3;
+    left: clamp(1.6rem, 1.8vw, 3rem);
+    top: clamp(1.4rem, 1.6vh, 2.6rem);
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+
+    &__dot {
+        position: relative;
+        width: 0.7rem;
+        height: 0.4rem;
+        border-radius: 99px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.28);
+        transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+
+        &.is-on {
+            width: 3.2rem;
+            background: rgba(255, 255, 255, 0.18);
+        }
+    }
+
+    &__fill {
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 0;
+        border-radius: inherit;
+        background: var(--gg-accent);
+        animation: gg-dot-fill var(--gg-slide) linear forwards;
+    }
+}
+
+@keyframes gg-dot-fill {
+    from { width: 0; }
+    to   { width: 100%; }
+}
+
+// Без анимации полоса просто стоит заполненной - точка всё равно показывает,
+// какой слайд открыт.
+@media (prefers-reduced-motion: reduce) {
+    .gg-dots__fill { animation: none; width: 100%; }
+}
+
+// Новость в плитке героя.
+//
+// Рисует её штатный AdsCarouselItem — тот же компонент, что показывает новости
+// в обычной карусели оболочки. Здесь только подгонка под плитку: карточка
+// растягивается на всю её площадь и снимает свою рамку, потому что рамка тут
+// уже есть - это сама плитка. Всё остальное - её собственное дело.
+.gg-hero--news {
+    .giz-ads-carousel-item {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        border: 0;
+        border-radius: inherit;
+        box-shadow: none;
+        background: none;
+        transform: none;
+        opacity: 1;
+    }
+
+    // Кадр новости на всю плитку. Штатный размер картинки посчитан под
+    // карточку 76x40 rem, а плитка героя шире и ниже.
+    .giz-ads-carousel-item__image {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+}
+
+// ── полоса игр ───────────────────────────────────────────────────────────
+.gg-strip {
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $g;
+
+    &__row {
+        flex: 1;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: calc(#{$g} * 1.1);
+    }
+
+    // Карточка приложения здесь та же самая, что в общем списке, — весь её вид
+    // живёт в _app-card.scss. Полосе нужно ровно два отличия, и оба про
+    // раскладку, а не про оформление.
+    .giz-app-card {
+        min-width: 0;
+        min-height: 0;
+        // Высоту диктует строка сетки, а не пропорция постера: полоса должна
+        // добрать ровно ту высоту, что осталась под героем.
+        height: 100%;
+        border-radius: $rt;
+    }
+
+    .giz-app-card__content {
+        height: 100%;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .giz-app-card__content__image {
+        position: absolute;
+        inset: 0;
+        // ВОТ ОНА, причина «съехавших вниз» ярлыков, и она была не в центровке.
+        // Базовая пропорция 3/4 рассчитана на постер, который сам задаёт высоту
+        // карточки. Здесь высота задана снаружи, и у абсолютно позиционированного
+        // элемента явная высота перебивает bottom: 0 — блок раздувался до 397px
+        // в карточке высотой 263px, а вместе с ним и оверлей запуска.
+        aspect-ratio: auto;
+        height: auto;
+    }
+
+    // Плитка на полосе скруглена мельче общей карточки, и внутреннее
+    // скругление должно идти следом — иначе плашка выглядит круглее коробки,
+    // в которой лежит.
+    .giz-app-card__content__details { border-radius: calc(#{$rt} * 0.7); }
+
+    // Категория и «подробнее» на главной не нужны: и то и другое в одном клике
+    // за ссылкой каталога, а места на полосе меньше.
+    .giz-app-card__content__footer { display: none; }
+
+    // Раз верхней строки нет, оверлею запуска незачем держать под неё место.
+    .giz-app-card__content__image__hovered { padding: calc(#{$g} * 0.7); }
+}
+
+// ── КАССА ────────────────────────────────────────────────────────────────
+.gg-till {
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1.6rem, 1.5vw, 3rem);
+    border-radius: $r;
+    // The only filled surface on the board, lifted off the wallpaper by an
+    // accent wash that fades out within the top third. Not a glow: just enough
+    // to say this column is the one that takes money.
+    // Панель заметно светлее доски и обведена акцентом заметнее, чем раньше:
+    // это единственная поверхность на экране, и она должна читаться как объект,
+    // а не как чуть другой оттенок фона.
+    background:
+        linear-gradient(176deg, rgba(var(--gg-accent-rgb), 0.13) 0%, rgba(var(--gg-accent-rgb), 0) 38%),
+        #17132a;
+    box-shadow:
+        inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.26),
+        0 40px 80px -40px rgba(0, 0, 0, 0.95);
+
+    &__sec {
+        margin-top: calc(#{$g} * 1.6);
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        gap: $g;
+
+        // Packages take the room the bar does not need; the bar sits at the foot
+        // of the column so the two never drift apart on a tall screen.
+        &--packs { flex: 0 1 auto; }
+        // Бар прижат к низу панели: касса читается как стойка — деньги и
+        // пакеты сверху, мелочь снизу, — и свободное место собирается в одном
+        // месте между двумя группами, а не размазывается под всем содержимым.
+        &--bar { margin-top: auto; padding-top: calc(#{$g} * 1.6); flex: none; }
+    }
+}
+
+// Линии под балансом нет намеренно: сразу под ним идёт заголовок «Пакеты
+// времени» со своей линейкой, и две горизонтали подряд читались как мусор.
+.gg-wallet {
+    flex: none;
+
+    &__row {
+        margin-top: calc(#{$g} * 0.7);
+        display: flex;
+        align-items: flex-end;
+        gap: $g;
+    }
+
+    // The largest numeral on the board: a club screen answers "what have I got"
+    // before anything else, and this is that answer.
+    &__sum {
+        min-width: 0;
+        font-family: $font-family-numeric-theme-client;
+        font-size: $t-sum;
+        font-weight: 700;
+        line-height: 0.95;
+        letter-spacing: -0.02em;
+        font-variant-numeric: tabular-nums;
+        color: $ink;
+        @include one-line;
+    }
+}
+
+// ── пакеты ───────────────────────────────────────────────────────────────
+.gg-packs {
+    flex: 0 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: calc(#{$g} * 0.85);
+    // No fade over the bottom edge: it was painted whether or not the list
+    // actually overflowed, so the last package always looked half erased. The
+    // quiet scrollbar is signal enough when there is more.
+    @include quiet-scroll;
+}
+
+// Строка прайса: имя, цена, кнопка в одну линию.
+//
+// Скругление здесь ровно то же, что у плиток игр и у товаров ($rt). Пилюли в
+// 99px были четвёртым радиусом в одной колонке — панель кассы, плитки, пилюли,
+// круглые кнопки, — и именно от этого список выглядел несобранным.
+.gg-pack {
+    flex: none;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: calc(#{$g} * 0.9);
+    padding: calc(#{$g} * 0.75);
+    padding-left: calc(#{$g} * 1.1);
+    border-radius: $rt;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.04);
+    @include hairline;
+    transition: background 0.18s, box-shadow 0.18s;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.07);
+        box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.36);
+    }
+
+    // Имя и срок в одной строке: срок короткий и фиксированный, поэтому вся
+    // оставшаяся ширина достаётся названию.
+    &__info {
+        min-width: 0;
+        display: flex;
+        align-items: baseline;
+        gap: 0.7rem;
+    }
+
+    &__name {
+        min-width: 0;
+        font-family: $font-family-header-theme-client;
+        font-size: clamp(1.5rem, 1.32rem + 0.34vw, 1.9rem);
+        font-weight: 600;
+        letter-spacing: -0.005em;
+        color: $ink;
+        @include one-line;
+    }
+
+    &__dur {
+        flex: none;
+        font-family: $font-family-numeric-theme-client;
+        font-size: $t-cap;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        color: $ink-3;
+        white-space: nowrap;
+
+        // Точка-разделитель вместо второй строки.
+        &::before {
+            content: '·';
+            margin-right: 0.7rem;
+            color: $ink-3;
+        }
+    }
+
+    // Никогда не сжимается и не обрезается: обрезанная цена хуже её отсутствия.
+    &__price {
+        flex: none;
+        font-family: $font-family-numeric-theme-client;
+        font-size: clamp(1.55rem, 1.36rem + 0.4vw, 2.05rem);
+        font-weight: 700;
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+        color: $ink;
+    }
+}
+
+// Шесть фиолетовых кнопок в столбик — это стена акцента, ровно та ошибка,
+// которую я убирал в окне покупки. В покое кнопка акцентная только по краске
+// текста и обводке, а заливкой становится под курсором — на строке, к которой
+// человек уже тянется. Колонка остаётся спокойной, а кнопка не перестаёт
+// выглядеть кнопкой.
+.gg-buy {
+    flex: none;
+    padding: 0.85em 1.55em;
+    border: 0;
+    border-radius: 99px;
+    cursor: pointer;
+    background: rgba(var(--gg-accent-rgb), 0.14);
+    box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.38);
+    color: #d9befd;
+    font-family: $font-family-header-theme-client;
+    font-size: clamp(1.1rem, 1.02rem + 0.16vw, 1.3rem);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    transition: background 0.16s, color 0.16s, box-shadow 0.16s, filter 0.16s;
+
+    &:focus-visible { outline: 2px solid var(--gg-accent); outline-offset: 2px; }
+}
+
+.gg-pack:hover .gg-buy,
+.gg-buy:hover {
+    background: var(--gg-accent);
+    box-shadow: none;
+    color: #16081f;
+}
+
+.gg-buy:hover { filter: brightness(1.08); }
+
+// ── бар ──────────────────────────────────────────────────────────────────
+// A list, not a shelf of photographs: the thumbnail is the size of a coin, so
+// the product is recognisable without four more pictures on the board.
+.gg-bar {
+    display: flex;
+    flex-direction: column;
+
+    &__row {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto auto;
+        align-items: center;
+        gap: calc(#{$g} * 0.9);
+        padding: calc(#{$g} * 0.65) 0;
+        cursor: pointer;
+        border-top: 1px solid $line;
+
+        &:first-child { border-top: 0; }
+
+        &:hover .gg-bar__add {
+            background: var(--gg-accent);
+            color: #16081f;
+            box-shadow: none;
+        }
+    }
+
+    &__thumb {
+        width: 3.6rem;
+        height: 3.6rem;
+        border-radius: 50%;
+        overflow: hidden;
+        background: $tile;
+        flex: none;
+
+        img { width: 100%; height: 100%; object-fit: cover; }
+
+        .giz-default-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img { width: 52%; height: auto; object-fit: contain; opacity: 0.3; }
+        }
+    }
+
+    &__name {
+        min-width: 0;
+        font-size: $t-body;
+        font-weight: 500;
+        color: rgba(242, 240, 247, 0.88);
+        @include one-line;
+    }
+
+    &__price {
+        flex: none;
+        font-family: $font-family-numeric-theme-client;
+        font-size: $t-body;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+        color: $ink;
+    }
+
+    &__add {
+        flex: none;
+        width: 2.9rem;
+        height: 2.9rem;
+        display: grid;
+        place-items: center;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        cursor: pointer;
+        color: $ink-3;
+        background: rgba(255, 255, 255, 0.05);
+        @include hairline(rgba(255, 255, 255, 0.09));
+        font-size: 1.2rem;
+        transition: background 0.16s, color 0.16s, box-shadow 0.16s;
+
+        &:focus-visible { outline: 2px solid var(--gg-accent); outline-offset: 2px; }
+    }
+}
+
+// ── экономия высоты ──────────────────────────────────────────────────────
+// A 768 line laptop panel has to give up something. It gives up padding and a
+// slice of the games band, never a whole section.
+@media (max-height: 840px) {
+    .gg-hero__body { padding-bottom: clamp(1.8rem, 2.6vh, 3rem); }
+    .gg-till { padding: clamp(1.2rem, 1.3vw, 2rem); }
+    .gg-till__sec { margin-top: calc(#{$g} * 1.1); }
+    .gg-till__sec--bar { padding-top: calc(#{$g} * 1.1); }
+    .gg-bar__thumb { width: 3rem; height: 3rem; }
+    .gg-stage { grid-template-rows: minmax(0, 2.15fr) minmax(0, 1fr); }
+}
+
+// ── узкие окна ───────────────────────────────────────────────────────────
+// Below this the two column board stops making sense - the till would be a
+// strip. It goes under the stage, and the games band shortens to pay for it.
+@media (max-width: 1100px) {
+    .gg-board {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: minmax(0, 1.25fr) minmax(0, 1fr);
+    }
+
+    .gg-strip__row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .gg-hero__body { max-width: 72%; }
 }

@@ -1,44 +1,72 @@
-﻿@namespace Gizmo.Client.UI.Shared
+@namespace Gizmo.Client.UI.Shared
 @inherits CustomDOMComponentBase
 
-<div class="giz-dropdown-menu @(UserMenuViewState.UserLinksIsVisible ? "open" : "")"
+@* Custom glass profile card (not a list-style dropdown menu): scattered
+   icons around the avatar (hover it to reveal the change-picture overlay),
+   name, then change-password+lock sharing a row and logout full width on
+   its own below. *@
+<div class="giz-dropdown-menu giz-profile-popup @(UserMenuViewState.UserLinksIsVisible ? "open" : "")"
      id="@Id"
      @ref="@Ref">
-    <div class="giz-dropdown-menu__content giz-user-links">
-        
-        <a href="@(ViewState.IsGuest ? ClientRoutes.UserProductsRoute : ClientRoutes.UserProfileRoute)" class="giz-user-links-item" @onclick="OnClickLinkHandler">
-            <div class="giz-user-links-item__icon">
-                <Icon SVGIcon="Icons.User_Client" />
-            </div>
-            <div class="giz-user-links-item-title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_MENU_PROFILE))</div>
-        </a>
+    @* giz-dropdown-menu__content is required here even though this isn't a
+       list-style dropdown: the global click-outside-closes handler
+       (closeOpenPopups in internal.js) looks specifically for that class
+       name as a child of the popup to compute its "click landed inside"
+       bounding box - without it, the popup silently never closes on an
+       outside click, no matter where you click. *@
+    <div class="giz-dropdown-menu__content giz-profile-popup__content">
 
-        @*<div class="giz-user-links-item">
-            <div class="giz-user-links-item__icon">
-                <Icon SVGIcon="Icons.Help_Client" />
-            </div>
-            <div class="giz-user-links-item-title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_MENU_HELP))</div>
-        </div>*@
+        <div class="giz-profile-popup__avatar-zone">
+            <div class="giz-profile-popup__orbit">
+                @foreach (var ic in OrbitIcons)
+                {
+                    <i class="ph-bold @ic.IconClass giz-orbit-icon"
+                       style="font-size:@(ic.SizePx.ToString(System.Globalization.CultureInfo.InvariantCulture))px; color:@ic.Color; transform: rotate(@(ic.AngleDeg.ToString(System.Globalization.CultureInfo.InvariantCulture))deg) translate(0, -@(ic.RadiusPx.ToString(System.Globalization.CultureInfo.InvariantCulture))px) rotate(@((-ic.AngleDeg + ic.TiltDeg).ToString(System.Globalization.CultureInfo.InvariantCulture))deg);"></i>
+                }
 
-        @if (!ViewState.IsUserLockDisabled)
-        {
-            <div class="giz-user-links-item" @onclick="OnClickUserLockButtonHandler">
-                <div class="giz-user-links-item__icon">
-                    <Icon SVGIcon="Icons.Lock_Client" />
+                <div class="giz-profile-popup__avatar">
+                    @if (!string.IsNullOrEmpty(Picture))
+                    {
+                        <Avatar Image="@Picture" Variant="AvatarVariants.Circle" />
+                    }
+                    else
+                    {
+                        <i class="ph-fill ph-user"></i>
+                    }
+
+                    <button class="giz-profile-popup__avatar-edit-overlay" @onclick="OnClickEditPictureButtonHandler">
+                        <i class="ph-bold ph-camera"></i>
+                        <span>Изменить</span>
+                    </button>
                 </div>
-                <div class="giz-user-links-item-title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_MENU_LOCK_PC))</div>
             </div>
-        }
+        </div>
 
-        @if (ViewState.IsUserLogoutEnabled)
-        {
-            <div class="giz-user-links-item" @onclick="OnClickUserLogoutButtonHandler">
-                <div class="giz-user-links-item__icon">
-                    <Icon SVGIcon="Icons.Logout_Client" />
-                </div>
-                <div class="giz-user-links-item-title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_MENU_LOGOUT))</div>
+        <div class="giz-profile-popup__name">@DisplayName</div>
+
+        <div class="giz-profile-popup__actions">
+            <div class="giz-profile-popup__actions-row">
+                <button class="giz-profile-popup__change-password-btn" @onclick="OnClickChangePasswordButtonHandler">
+                    <i class="ph-bold ph-key"></i>
+                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CHANGE_PASSWORD))</span>
+                </button>
+
+                @if (!ViewState.IsUserLockDisabled)
+                {
+                    <button class="giz-profile-popup__lock-btn" @onclick="OnClickUserLockButtonHandler" title="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_MENU_LOCK_PC))">
+                        <i class="ph-bold ph-lock-simple"></i>
+                    </button>
+                }
             </div>
-        }
+
+            @if (ViewState.IsUserLogoutEnabled)
+            {
+                <button class="giz-profile-popup__logout-btn" @onclick="OnClickUserLogoutButtonHandler">
+                    <i class="ph-bold ph-sign-out"></i>
+                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_MENU_LOGOUT))</span>
+                </button>
+            }
+        </div>
 
     </div>
 </div>
