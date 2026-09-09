@@ -9,6 +9,8 @@ namespace Gizmo.Client.UI
 {
     public static class ProductHelpers
     {
+        private const int SECONDS_PER_DAY = 86400;
+
         public static string GetProductTimeImage(UserProductViewState product)
         {
             string result = "product-time-default-1.svg";
@@ -177,6 +179,7 @@ namespace Gizmo.Client.UI
                 return result;
             }
 
+            var now = DateTime.Now;
             DateTime? lastTimeRangeEnd = null;
 
             if (availability.DateRange && availability.EndDate.HasValue && availability.TimeRange)
@@ -195,17 +198,16 @@ namespace Gizmo.Client.UI
                     if (lastEndDate != null && lastEndDate.DayTimesAvailable != null)
                     {
                         var lastEndSecond = lastEndDate.DayTimesAvailable.OrderByDescending(a => a.EndSecond).Select(a => a.EndSecond).FirstOrDefault();
-                        TimeSpan endTimeSpan = TimeSpan.FromSeconds(lastEndSecond);
-                        lastTimeRangeEnd = new DateTime(date.Year, date.Month, date.Day, endTimeSpan.Hours, endTimeSpan.Minutes, endTimeSpan.Seconds);
+                        lastTimeRangeEnd = date.Date.AddSeconds(lastEndSecond);
                         break;
                     }
                 }
             }
 
-            bool startsMoreThanWeekLater = availability.StartDate.HasValue && availability.StartDate.Value.AddDays(-6) > DateTime.Now;
+            bool startsMoreThanWeekLater = availability.StartDate.HasValue && availability.StartDate.Value.AddDays(-6) > now;
 
             //It's expired if current date is greater than the end date or the last time range.
-            bool expired = (availability.EndDate.HasValue && availability.EndDate.Value.AddDays(1) < DateTime.Now) || (lastTimeRangeEnd.HasValue && lastTimeRangeEnd.Value < DateTime.Now);
+            bool expired = (availability.EndDate.HasValue && availability.EndDate.Value.AddDays(1) < now) || (lastTimeRangeEnd.HasValue && lastTimeRangeEnd.Value < now);
             bool showDateRange = !expired && availability.DateRange && (startsMoreThanWeekLater || !availability.TimeRange);
             bool showTimeRange = !expired && availability.TimeRange && !showDateRange;
 
@@ -237,127 +239,185 @@ namespace Gizmo.Client.UI
             }
             else if (showTimeRange)
             {
-                if (firstOnly)
+                var mergedRanges = MergeDayTimeRanges(availability.DaysAvailable);
+
+                //Keep a full week as seven whole days so its end cannot be confused with its start.
+                if (mergedRanges.Any(a => GetRelativeEndSecond(a) - a.StartSecond == 7 * SECONDS_PER_DAY))
                 {
-                    var today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-                    DateTime max = DateTime.Now;
-                    int daysToExpiration = int.MaxValue;
-                    bool repeatCurrentWeekDay = false;
-
-                    if (availability.StartDate.HasValue && availability.StartDate > max)
+                    mergedRanges = Enumerable.Range(0, 7).Select(day => new MergedDayTimeRange()
                     {
-                        //If the product has start date and it's greater than today then start from start date.
-                        max = availability.StartDate.Value;
-
-                        if (availability.EndDate.HasValue)
-                        {
-                            //But if the product has end date then maybe it's less than 7 days.
-                            daysToExpiration = (int)availability.EndDate.Value.AddDays(1).Subtract(max).TotalDays;
-                        }
-                    }
-                    else
-                    {
-                        if (availability.EndDate.HasValue)
-                        {
-                            //But if the product has end date then maybe it's less than 7 days.
-                            daysToExpiration = (int)availability.EndDate.Value.AddDays(1).Subtract(today).TotalDays;
-                        }
-
-                        if (daysToExpiration > 7)
-                        {
-                            repeatCurrentWeekDay = true;
-                        }
-                    }
-
-                    int days = 7; //We need to scan max 7 days (0-6).
-
-                    days = Math.Min(daysToExpiration, days);
-
-                    if (repeatCurrentWeekDay)
-                    {
-                        //If the end date is more than a week later then add 1 day to include the same week day of the next week in case of passed time range of current days.
-                        days += 1;
-                    }
-
-                    for (int i = 0; i < days; i++)
-                    {
-                        var date = max.AddDays(i);
-                        TimeSpan timeSpan = new TimeSpan(date.Hour, date.Minute, date.Second);
-                        var firstStartDate = availability.DaysAvailable.Where(a => a.Day == date.DayOfWeek).FirstOrDefault();
-                        if (firstStartDate != null)
-                        {
-                            var firstTimeRange = firstStartDate.DayTimesAvailable.Where(b => b.EndSecond > timeSpan.TotalSeconds).OrderBy(a => a.EndSecond).FirstOrDefault();
-                            if (firstTimeRange == null && i > 0 &&  repeatCurrentWeekDay)
-                            {
-                                firstTimeRange = firstStartDate.DayTimesAvailable.OrderBy(a => a.EndSecond).FirstOrDefault();
-                            }
-                            if (firstTimeRange != null)
-                            {
-                                TimeSpan startTimeSpan = TimeSpan.FromSeconds(firstTimeRange.StartSecond);
-                                TimeSpan endTimeSpan = TimeSpan.FromSeconds(firstTimeRange.EndSecond);
-
-                                result.Add($"{startTimeSpan.ToString("hh\\:mm")}-{endTimeSpan.ToString("hh\\:mm")} {CultureInfo.CurrentCulture.DateTimeFormat.GetDayName(date.DayOfWeek).Substring(0, 2)}");
-                                break;
-                            }
-                        }
-                        max = new DateTime(max.Year, max.Month, max.Day); //For today we want the hour too, for the other days we don't want the hour, just the date.
-                    }
+                        StartDay = (DayOfWeek)day,
+                        StartSecond = 0,
+                        EndDay = (DayOfWeek)((day + 1) % 7),
+                        EndSecond = 0
+                    }).ToList();
                 }
-                else
+
+                var reference = now;
+                if (availability.DateRange && availability.StartDate.HasValue && availability.StartDate.Value > reference)
+                    reference = availability.StartDate.Value;
+
+                var availableRanges = new List<(DateTime Start, DateTime End)>();
+                foreach (var range in mergedRanges)
                 {
-                    var today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-                    bool expiresMoreThanWeekLater = true;
+                    //Start with the most recent occurrence, which may still be active after midnight.
+                    int daysSinceStart = ((int)reference.DayOfWeek - (int)range.StartDay + 7) % 7;
+                    var startDay = reference.Date.AddDays(-daysSinceStart);
+                    var start = startDay.AddSeconds(range.StartSecond);
+                    var end = startDay.AddSeconds(GetRelativeEndSecond(range));
 
-                    List<DayOfWeek> includeDays = new List<DayOfWeek>();
-                    if (availability.EndDate.HasValue && availability.EndDate.Value.AddDays(-7) < today)
+                    if (start > reference)
                     {
-                        //If the product expires in less than a week we don't want to show all the days.
-                        int days = (int)availability.EndDate.Value.AddDays(1).Subtract(today).TotalDays;
-                        for (int i = 0; i < days; i++) //Loop from today to the end date and include only these days.
-                        {
-                            var date = today.AddDays(i);
-                            includeDays.Add(date.DayOfWeek);
-                        }
-                        expiresMoreThanWeekLater = false;
+                        start = start.AddDays(-7);
+                        end = end.AddDays(-7);
                     }
-                    else
+                    if (end <= reference)
                     {
-                        includeDays = ((DayOfWeek[])Enum.GetValues(typeof(DayOfWeek))).ToList();
+                        start = start.AddDays(7);
+                        end = end.AddDays(7);
                     }
 
-                    foreach (var day in availability.DaysAvailable.Where(a => a.DayTimesAvailable.Count() > 0 && includeDays.Contains(a.Day)))
+                    //The date range limits the occurrence, even if its weekly range starts earlier.
+                    if (availability.DateRange)
                     {
-                        ProductAvailabilityDayTimeViewState first = null;
-
-                        if (day.Day == DateTime.Now.DayOfWeek)
-                        {
-                            //If current day is today find the first time range that is not passed.
-                            TimeSpan timeSpan = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
-                            first = day.DayTimesAvailable.Where(a => a.EndSecond > timeSpan.TotalSeconds).OrderBy(a => a.EndSecond).FirstOrDefault();
-
-                            if (expiresMoreThanWeekLater && first == null)
-                            {
-                                //If we didn't find any time range that was not passed but the expiration is more than a week later then find the first time range.
-                                first = day.DayTimesAvailable.OrderBy(a => a.EndSecond).FirstOrDefault();
-                            }
-                        }
-                        else
-                        {
-                            first = day.DayTimesAvailable.OrderBy(a => a.EndSecond).FirstOrDefault();
-                        }
-
-                        if (first != null)
-                        {
-                            TimeSpan startTimeSpan = TimeSpan.FromSeconds(first.StartSecond);
-                            TimeSpan endTimeSpan = TimeSpan.FromSeconds(first.EndSecond);
-
-                            result.Add($"{startTimeSpan.ToString("hh\\:mm")}-{endTimeSpan.ToString("hh\\:mm")} {CultureInfo.CurrentCulture.DateTimeFormat.GetDayName(day.Day).Substring(0, 2)}");
-                        }
+                        if (availability.StartDate.HasValue && start < availability.StartDate.Value)
+                            start = availability.StartDate.Value;
+                        if (availability.EndDate.HasValue && end > availability.EndDate.Value.Date.AddDays(1))
+                            end = availability.EndDate.Value.Date.AddDays(1);
                     }
+
+                    if (start < end && end > reference)
+                        availableRanges.Add((start, end));
+                }
+
+                var orderedRanges = availableRanges.OrderBy(a => a.Start).ThenBy(a => a.End);
+                foreach (var range in firstOnly ? orderedRanges.Take(1) : orderedRanges)
+                {
+                    result.Add(GetDayTimeRangeText(range.Start, range.End));
                 }
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Merges the availability fragments, that are stored split per day, back into continuous ranges.
+        /// A range that crosses midnight is returned once, under the day it starts on.
+        /// </summary>
+        private static List<MergedDayTimeRange> MergeDayTimeRanges(IEnumerable<ProductAvailabilityDayViewState> daysAvailable)
+        {
+            var tmp = new List<MergedDayTimeRange>();
+
+            foreach (var item in daysAvailable)
+            {
+                if (item.DayTimesAvailable == null)
+                    continue;
+
+                tmp.AddRange(item.DayTimesAvailable.Select(a => new MergedDayTimeRange()
+                {
+                    StartDay = item.Day,
+                    StartSecond = a.StartSecond,
+                    EndDay = item.Day,
+                    EndSecond = a.EndSecond
+                }));
+            }
+
+            var result = new List<MergedDayTimeRange>();
+
+            for (int i = 0; i < 7; i++)
+            {
+                var currentDayRecords = tmp.Where(a => a.StartDay == (DayOfWeek)i).OrderBy(a => a.EndSecond).ToList();
+
+                if (currentDayRecords.Count == 0)
+                    continue;
+
+                result.AddRange(currentDayRecords);
+
+                foreach (var item in currentDayRecords)
+                {
+                    tmp.Remove(item);
+                }
+
+                if (i == 6)
+                    continue;
+
+                var currentDayClose = result.Where(a => a.StartDay == (DayOfWeek)i && a.EndSecond == SECONDS_PER_DAY).FirstOrDefault();
+                if (currentDayClose == null)
+                    continue;
+
+                bool done = false;
+                int nextDay = i + 1;
+
+                while (!done)
+                {
+                    //The range continues if the next day opens at midnight.
+                    var merge = tmp.Where(a => a.StartDay == (DayOfWeek)nextDay && a.StartSecond == 0).FirstOrDefault();
+                    if (merge == null)
+                    {
+                        done = true;
+                        continue;
+                    }
+
+                    currentDayClose.EndDay = merge.EndDay;
+                    currentDayClose.EndSecond = merge.EndSecond;
+
+                    tmp.Remove(merge);
+
+                    if (merge.EndSecond != SECONDS_PER_DAY || nextDay == 6)
+                        done = true;
+                    else
+                        nextDay += 1;
+                }
+            }
+
+            //A range that closes a day ends at midnight of the next one.
+            foreach (var item in result.Where(a => a.EndSecond == SECONDS_PER_DAY))
+            {
+                item.EndDay = (int)item.EndDay < 6 ? item.EndDay + 1 : DayOfWeek.Sunday;
+                item.EndSecond = 0;
+            }
+
+            //The range that closes the week continues into the one that opens it.
+            var firstDay = result.Where(a => a.StartDay == DayOfWeek.Sunday && a.StartSecond == 0).FirstOrDefault();
+            var lastDay = result.Where(a => a.EndDay == DayOfWeek.Sunday && a.EndSecond == 0).FirstOrDefault();
+
+            if (firstDay != null && lastDay != null && result.Count > 1)
+            {
+                lastDay.EndDay = firstDay.EndDay;
+                lastDay.EndSecond = firstDay.EndSecond;
+
+                result.Remove(firstDay);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the end of the range in seconds counted from the start of the day it starts on, so that
+        /// ranges crossing midnight compare after the ones that end on the same day.
+        /// </summary>
+        private static int GetRelativeEndSecond(MergedDayTimeRange range)
+        {
+            int endSecond = ((((int)range.EndDay - (int)range.StartDay) + 7) % 7 * SECONDS_PER_DAY) + range.EndSecond;
+            return endSecond <= range.StartSecond ? endSecond + 7 * SECONDS_PER_DAY : endSecond;
+        }
+
+        private static string GetDayTimeRangeText(DateTime start, DateTime end)
+        {
+            var dateTimeFormat = CultureInfo.CurrentCulture.DateTimeFormat;
+
+            return $"{dateTimeFormat.GetShortestDayName(start.DayOfWeek)} {start.ToString("HH:mm")} - {dateTimeFormat.GetShortestDayName(end.DayOfWeek)} {end.ToString("HH:mm")}";
+        }
+
+        private sealed class MergedDayTimeRange
+        {
+            public DayOfWeek StartDay { get; set; }
+
+            public int StartSecond { get; set; }
+
+            public DayOfWeek EndDay { get; set; }
+
+            public int EndSecond { get; set; }
         }
     }
 }
