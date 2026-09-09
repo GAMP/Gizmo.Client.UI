@@ -406,7 +406,7 @@ namespace Gizmo.Client.UI
         {
             var dateTimeFormat = CultureInfo.CurrentCulture.DateTimeFormat;
 
-            return $"{dateTimeFormat.GetShortestDayName(start.DayOfWeek)} {start.ToString("HH:mm")} - {dateTimeFormat.GetShortestDayName(end.DayOfWeek)} {end.ToString("HH:mm")}";
+            return $"{dateTimeFormat.GetAbbreviatedDayName(start.DayOfWeek)} {start.ToString("HH:mm")} - {dateTimeFormat.GetAbbreviatedDayName(end.DayOfWeek)} {end.ToString("HH:mm")}";
         }
 
         private sealed class MergedDayTimeRange
