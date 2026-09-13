@@ -4,13 +4,13 @@ setlocal
 rem ============================================================
 rem  GRAFIT skin for Gizmo V3 - installer
 rem
-rem    install.bat              - install / update the "grafit" skin
+rem    install.bat              - install / update the "Grafit" skin
 rem    install.bat uninstall    - put back what was there before
 rem
 rem  Requests admin rights automatically (Program Files).
 rem  The skin is a folder of its own in the server's skins directory,
 rem  next to the stock "Next". Nothing of the stock skin is touched:
-rem  a host group is switched to "grafit" in the Manager.
+rem  a host group is switched to "Grafit" in the Manager.
 rem ============================================================
 
 set "MODE=%~1"

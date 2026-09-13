@@ -17,7 +17,7 @@ it was built for.
 ## Folder layout of the skin (what the installer copies)
 
 ```
-skins\grafit\
+skins\Grafit\
   composition.json                 same content as Next's
   Gizmo.Client.UI.dll              this project
   Gizmo.Web.Components.dll         Submodules\Gizmo.Web.Components

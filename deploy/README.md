@@ -7,11 +7,11 @@ installer. It is also where the skin is built into a package (`stage.ps1`).
 
 1. Unpack the zip anywhere on the server machine.
 2. Run `install.bat` (it asks for administrator rights - the skins folder is under
-   Program Files). It copies `skin\` to `<Gizmo Server>\skins\grafit\`, taking
+   Program Files). It copies `skin\` to `<Gizmo Server>\skins\Grafit\`, taking
    `wwwroot\_framework` from the server's own `Next` skin, and keeps a backup of whatever
-   was in `skins\grafit` before under `backup\<timestamp>\`.
+   was in `skins\Grafit` before under `backup\<timestamp>\`.
 3. In the Manager, point a host group at the skin: Host groups -> the group -> Skin =
-   `grafit`. (A Skin profile with custom CSS is optional - see "Colour" below.)
+   `Grafit`. (A Skin profile with custom CSS is optional - see "Colour" below.)
 4. Restart the client on the affected PCs - fully, not a re-login. The server hands the
    skin to a client when it connects and mirrors it to
    `%PROGRAMDATA%\NETProjects\Gizmo Client\Skins\` on the PC; a running client keeps the

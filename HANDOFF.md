@@ -11,7 +11,7 @@ relates to yours.
 A skin is a folder in `<Gizmo Server>\skins\`, mirrored to every client PC by the server.
 Grafit's folder holds exactly what the stock `Next` skin holds:
 
-| In `skins\grafit\` | Built from |
+| In `skins\Grafit\` | Built from |
 |---|---|
 | `Gizmo.Client.UI.dll` | `Gizmo.Client.UI\` in this repository - the pages, components, styles and scripts |
 | `Gizmo.Web.Components.dll` | `Submodules\Gizmo.Web.Components` - with one fix, see below |
@@ -83,7 +83,7 @@ dotnet build Gizmo.Client.UI\Gizmo.Client.UI.csproj -c Release
 deploy\stage.ps1            # or stage.ps1 -Build: stages deploy\skin\ and packs deploy\dist\grafit-shell-<grafit>-gizmo-<gizmo>.zip
 ```
 
-`deploy\install.bat` (in the zip) copies the folder to `skins\grafit` with a backup;
+`deploy\install.bat` (in the zip) copies the folder to `skins\Grafit` with a backup;
 the Manager's host group "Skin" field selects it; clients need a full restart (the skin
 is handed out at connect and mirrored to `%PROGRAMDATA%\NETProjects\Gizmo Client\Skins\`).
 `deploy\README.md` is the operator's page.

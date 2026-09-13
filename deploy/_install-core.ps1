@@ -3,7 +3,7 @@
     # Where Gizmo Server is installed. The skin goes into its skins folder.
     [string]$ServerRoot = 'C:\Program Files\NETProjects\Gizmo Server',
     # The skin's folder name = the name the Manager shows for it.
-    [string]$SkinName = 'grafit'
+    [string]$SkinName = 'Grafit'
 )
 
 $ErrorActionPreference = 'Stop'
