@@ -22,6 +22,12 @@
     max-height: 100%;
     overflow: hidden;
 
+    // The vignette belongs to a club picture; over the shell's own moving gradient a
+    // full-screen backdrop-filter would be re-blurred every frame for nothing.
+    &:not(.giz-background--club):after {
+        content: none;
+    }
+
     &:after {
         content: '';
         position: absolute;

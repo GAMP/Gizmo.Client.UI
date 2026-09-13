@@ -154,7 +154,22 @@ namespace Gizmo.Client.UI.Shared
                 .If("shrink", () => _slideIn)
                 .If("grow", () => _slideOut || _locked)
                 .If("collapsed", () => !_slideIn && !_slideOut && !_previousIsIdle)
+                .If("giz-login-content--own-bg", () => !HasClubBackground)
                 .AsString();
+
+        /// <summary>
+        /// The club has put a picture (or a rotator) behind the sign-in screen.
+        /// </summary>
+        /// <remarks>
+        /// With nothing configured the vendor falls back to a stock photograph; this shell
+        /// does not. The idle screen then shows the same gradient and icons that appear
+        /// behind the sign-in card, in the accent's colours, so a club that sets nothing
+        /// gets the shell's own look rather than a picture that belongs to no club. A
+        /// configured picture stays the idle background and gives way to the gradient only
+        /// while the card is up.
+        /// </remarks>
+        private bool HasClubBackground =>
+            !string.IsNullOrEmpty(ClientUIOptions.Value.LoginBackground) || LoginRotatorViewState.IsEnabled;
 
         #endregion
 

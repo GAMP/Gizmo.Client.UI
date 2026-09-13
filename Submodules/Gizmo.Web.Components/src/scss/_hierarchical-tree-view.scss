@@ -1,0 +1,25 @@
+//=============== HierarchicalTreeView ================//
+
+.giz-hierarchical-tree-view {
+    user-select: none;
+
+    .giz-menu {
+        position: absolute !important;
+    }
+
+    &-item {
+        cursor: default;
+
+        &__body {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        &--expanded {
+            & > .giz-hierarchical-tree-view__nested {
+                display: block;
+            }
+        }
+    }
+}

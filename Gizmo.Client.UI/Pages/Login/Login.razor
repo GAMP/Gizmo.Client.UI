@@ -5,10 +5,9 @@
 @using Gizmo.UI;
 @using Microsoft.AspNetCore.Components.Forms
 
-@* Бронь — свойство устройства, а не формы входа, поэтому сообщение о ней стоит
-   отдельной плиткой НАД карточкой, а не внутри её шапки. Внутри оно отодвигало
-   заголовок «Войти» и читалось как ошибка ввода. Стопка держит их вместе, чтобы
-   пара «плашка + карточка» оставалась по центру экрана. *@
+@* A reservation is a property of the machine, not of the sign-in form, so its notice is
+   a separate tile ABOVE the card rather than inside its header. Inside, it pushed the
+   heading down and read as an input error. The stack keeps the pair centred. *@
 <div class="giz-login-stack">
 
     @if (!ViewState.HasLoginError && ReservationMessage is { } reservationMessage)
@@ -52,10 +51,9 @@
                     }
                     else
                     {
-                        @* Поле с выбором страны вместо прежнего статического «+7»:
-                           начиная с 3.0.91 UserLoginViewService валидирует Country
-                           и сам собирает номер в E.164 — без страны вход по телефону
-                           не пройдёт проверку. *@
+                        @* Country picker instead of the old static "+7": since 3.0.91
+                           UserLoginViewService validates Country and assembles the number
+                           in E.164 itself, so phone sign-in fails validation without it. *@
                         <PhoneNumberField SelectedCountryName="@ViewState.Country"
                                           PhoneValue="@ViewState.LoginName"
                                           PhoneValueExpression="@(() => ViewState.LoginName)"
@@ -100,10 +98,16 @@
                                 </div>
                             </div>
                         </div>
+                        @* The code is visible: it is not a password but a one-time code
+                           from the reservation confirmation, copied from a phone and
+                           checked character by character. Hence no reveal button. *@
                         <PasswordInput UpdateOnInput="true" Value="@ViewState.Pin"
                                        ValueChanged="@((string value) => UserLoginService.SetPin(value))"
                                        ValueExpression="@(() => ViewState.Pin)"
                                        IsDisabled="@(ViewState.IsLogginIn || ViewState.IsLogginOut)"
+                                       IsPasswordVisible="true"
+                                       ShowRevealButton="false"
+                                       Placeholder="@ShellText.Get(ShellText.LOGIN_PIN_PLACEHOLDER)"
                                        Size="InputSizes.Medium"
                                        IsFullWidth="true"
                                        HasOutline="false"

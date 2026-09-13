@@ -1,167 +1,129 @@
-﻿@namespace Gizmo.Client.UI.Components
+@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 @using Gizmo.Client.UI.View.States
 
-<div class="giz-user-balance-tooltip">
-    <div class="giz-user-balance-tooltip__header">
-        <div class="giz-user-balance-tooltip__header__title">Ваше время</div>
-        <div class="giz-user-balance-tooltip__header__link" @onclick="OpenDetails">Все пакеты</div>
-    </div>
-    <div class="giz-user-balance-tooltip__list">
-        @if (TimeProductsViewState.IsInitializing)
-        {
-            <Spinner />
-        }
-        else if (TimeProductsViewState.IsInitialized == true)
-        {
-            <DataGrid ItemSource="@TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).Take(2).ToList()"
-                      Context="timeProducts"
-                      HasStickyHeader="true"
-                      Class="giz-scrollbar--v">
-                <ChildContent>
-                    <DataGridColumn Field="@(nameof(TimeProductViewState.ActivationOrder))" TItemType="TimeProductViewState" Context="timeProduct">
-                        <HeaderTemplate>
-                            <Icon SVGIcon="Icons.ActivationOrder_Client" Size="IconSizes.Small" Class="giz-user-time-products-order-icon" />
-                        </HeaderTemplate>
-                        <CellTemplate>
-                            <div class="giz-user-time-products-order @(timeProduct.ActivationOrder == 1 ? "giz-user-time-products-order--current" : "")">
-                                @timeProduct.ActivationOrder
-                            </div>
-                        </CellTemplate>
-                    </DataGridColumn>
-                    <DataGridColumn Field="@(nameof(TimeProductViewState.TimeProductType))" TItemType="TimeProductViewState" Context="timeProduct">
-                        <HeaderTemplate>
-                            Пакет
-                        </HeaderTemplate>
-                        <CellTemplate>
-                            <ProductsProductType TimeProduct="@timeProduct" />
-                        </CellTemplate>
-                    </DataGridColumn>
-                    <DataGridColumn Field="@(nameof(TimeProductViewState.RemainingTime))" TItemType="TimeProductViewState" Context="timeProduct">
-                        <HeaderTemplate>
-                            Осталось
-                        </HeaderTemplate>
-                        <CellTemplate>
-                            @timeProduct.RemainingTime
-                        </CellTemplate>
-                    </DataGridColumn>
-                    <DataGridColumn Field="@(nameof(TimeProductViewState.UsableTime))" TItemType="TimeProductViewState" Context="timeProduct">
-                        <HeaderTemplate>
-                            <div class="giz-user-time-products-time-header">
-                                <div>
-                                    Можно потратить
-                                </div>
-                            </div>
-                        </HeaderTemplate>
-                        <CellTemplate>
-                            @if (!string.IsNullOrEmpty(timeProduct.UsableTime))
-                            {
-                                @timeProduct.UsableTime
-                            }
-                            else
-                            {
-                                <Icon SVGIcon="Icons.Infinite" Class="giz-user-time-infinite" Color="#FFC700" />
-                            }
-                        </CellTemplate>
-                    </DataGridColumn>
-                </ChildContent>
-            </DataGrid>
-        }
-    </div>
-    @if (TimeProductsViewState.IsInitialized == true)
-    {
-        @if (TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).Count() == 1)
-        {
-            if (string.IsNullOrEmpty(TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).First().UsableTime))
-            {
-                <div class="giz-user-balance-tooltip__expiration">Время не ограничено</div>
-                <div class="giz-user-balance-tooltip__message">Но деньги на счете заканчиваются</div>
-                @if (UserOnlineDepositViewState.IsEnabled || !ViewState.DisableShop)
-                {
-                    <div class="@(UserOnlineDepositViewState.IsEnabled && !ViewState.DisableShop ? "giz-user-balance-tooltip__actions" : "giz-user-balance-tooltip__action")">
-                        @if (UserOnlineDepositViewState.IsEnabled)
-                        {
-                            <Button Variant="@(ViewState.DisableShop ? ButtonVariants.Fill : ButtonVariants.Outline)"
-                                    Color="@(ViewState.DisableShop ? ButtonColors.Accent : ButtonColors.Primary)"
-                                    Text="Пополнить" @onclick="OpenUserOnlineDeposit" StopPropagation="true" />
-                        }
-                        @if (!ViewState.DisableShop)
-                        {
-                            <Button Color="ButtonColors.Accent" Text="В магазин" @onclick="OpenShop" />
-                        }
-                    </div>
-                }
-            }
-            else
-            {
-                <div class="giz-user-balance-tooltip__expiration">Время скоро закончится</div>
-                @if (UserOnlineDepositViewState.IsEnabled || !ViewState.DisableShop)
-                {
-                    @if (TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).First().InCredit)
-                    {
-                        @if (!ViewState.DisableShop && UserOnlineDepositViewState.IsEnabled)
-                        {
-                            <div class="giz-user-balance-tooltip__message">Чтобы продолжить — пополни счёт или возьми пакет времени</div>
-                        }
-                        else if (ViewState.DisableShop && !UserOnlineDepositViewState.IsEnabled)
-                        {
+@* What is on the clock right now: the active time products in the order they are
+   spent, then what to do when they run out. Shown on hover from the tariff in the top
+   bar; every line here is one that changes a decision (buy time, top up), nothing that
+   belongs to the full Time tab of the account page. *@
+@{
+    var active = TimeProductsViewState.IsInitialized == true
+        ? TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).OrderBy(a => a.ActivationOrder).Take(2).ToList()
+        : new List<TimeProductViewState>();
+    var canTopUp = UserOnlineDepositViewState.IsEnabled;
+    var canShop = !ViewState.DisableShop;
+    var hasCredit = CreditOptionsViewState.TimeCreditType != CreditType.NoCredit && CreditOptionsViewState.IsUserTimeCreditEnabled;
 
-                        }
-                        else
-                        {
-                            if (!ViewState.DisableShop)
-                            {
-                                <div class="giz-user-balance-tooltip__message">Чтобы продолжить — возьми пакет времени</div>
-                            }
-                            else
-                            {
-                                <div class="giz-user-balance-tooltip__message">Чтобы продолжить — пополни счёт</div>
-                            }
-                        }
-                    }
-                    else
-                    {
-                        @if (!ViewState.DisableShop && UserOnlineDepositViewState.IsEnabled)
-                        {
-                            <div class="giz-user-balance-tooltip__message">Чтобы продолжить — пополни счёт или возьми пакет времени</div>
-                        }
-                        else if (ViewState.DisableShop && !UserOnlineDepositViewState.IsEnabled)
-                        {
-                            
-                        }
-                        else
-                        {
-                            if (!ViewState.DisableShop)
-                            {
-                                <div class="giz-user-balance-tooltip__message">Чтобы продолжить — возьми пакет времени</div>
-                            }
-                            else
-                            {
-                                <div class="giz-user-balance-tooltip__message">Чтобы продолжить — пополни счёт</div>
-                            }
-                        }
-                    }
-                    <div class="@(UserOnlineDepositViewState.IsEnabled && !ViewState.DisableShop ? "giz-user-balance-tooltip__actions" : "giz-user-balance-tooltip__action")">
-                        @if (UserOnlineDepositViewState.IsEnabled)
-                        {
-                            <Button Variant="@(ViewState.DisableShop ? ButtonVariants.Fill : ButtonVariants.Outline)"
-                                    Color="@(ViewState.DisableShop ? ButtonColors.Accent : ButtonColors.Primary)"
-                                    Text="Пополнить" @onclick="OpenUserOnlineDeposit" StopPropagation="true" />
-                        }
-                        @if (!ViewState.DisableShop)
-                        {
-                            <Button Color="ButtonColors.Accent" Text="В магазин" @onclick="OpenShop" />
-                        }
-                    </div>
-                }
-            }
-        }
-        else
-        {
-            @if (CreditOptionsViewState.TimeCreditType != CreditType.NoCredit && CreditOptionsViewState.IsUserTimeCreditEnabled)
+    //The footer speaks only when it has something to say: the whole account's time
+    //(every package together) is nearly gone, or there is no clock at all because the
+    //session runs on money. A package with hours left gets no warning.
+    var timeLeft = UserBalanceViewState.Time;
+    var unlimited = active.Count > 0 && !timeLeft.HasValue;
+    var ending = active.Count > 0 && timeLeft.HasValue && timeLeft.Value <= LOW_TIME;
+}
+
+<div class="gg-tt">
+    <div class="gg-tt__head">
+        <div class="gg-tt__title">@ShellText.Get(ShellText.TIME_TOOLTIP_TITLE)</div>
+        <button type="button" class="gg-tt__link" @onclick="OpenDetails">
+            <span>@ShellText.Get(ShellText.TIME_TOOLTIP_ALL_PACKAGES)</span>
+            <i class="ph-bold ph-arrow-right"></i>
+        </button>
+    </div>
+
+    @if (TimeProductsViewState.IsInitializing)
+    {
+        <div class="gg-tt__wait"><Spinner /></div>
+    }
+    else if (active.Count == 0)
+    {
+        <div class="gg-tt__empty">@ShellText.Get(ShellText.TIME_TOOLTIP_EMPTY)</div>
+    }
+    else
+    {
+        <div class="gg-tt__list">
+            @foreach (var product in active)
             {
-                <div class="giz-user-balance-tooltip__credit">Вам доступен кредит времени</div>
+                <div class="gg-tt__row @(product.ActivationOrder == 1 ? "is-current" : null) @(product.InCredit ? "is-credit" : null)">
+                    <span class="gg-tt__order">@product.ActivationOrder</span>
+                    <span class="gg-tt__type"><i class="ph-fill @TimeProductText.Icon(product.TimeProductType)"></i></span>
+                    <div class="gg-tt__name">
+                        <b>@TimeProductText.Name(product)</b>
+                        <small>
+                            @ShellText.Get(TimeProductText.TypeKey(product.TimeProductType))
+                            @if (product.InCredit)
+                            {
+                                <span> · @ShellText.Get(ShellText.TIME_IN_CREDIT)</span>
+                            }
+                        </small>
+                    </div>
+                    <div class="gg-tt__stat">
+                        <small>@ShellText.Get(ShellText.TIME_TOOLTIP_LEFT)</small>
+                        <b>@TimeProductText.Span(product.RemainingTime)</b>
+                    </div>
+                    <div class="gg-tt__stat">
+                        <small>@ShellText.Get(ShellText.TIME_TOOLTIP_SPENDABLE)</small>
+                        <b>@TimeProductText.Span(product.UsableTime)</b>
+                    </div>
+                </div>
             }
-        }
+        </div>
+    }
+
+    @if (unlimited || ending)
+    {
+        <div class="gg-tt__foot">
+            <div class="gg-tt__note @(unlimited ? null : "gg-tt__note--warn")">
+                <i class="ph-fill @(unlimited ? "ph-infinity" : "ph-warning-circle")"></i>
+                <div>
+                    <b>@ShellText.Get(unlimited ? ShellText.TIME_TOOLTIP_UNLIMITED : ShellText.TIME_TOOLTIP_ENDING)</b>
+                    @if (unlimited)
+                    {
+                        <span>@ShellText.Get(ShellText.TIME_TOOLTIP_MONEY_LOW)</span>
+                    }
+                    else if (canShop && canTopUp)
+                    {
+                        <span>@ShellText.Get(ShellText.TIME_TOOLTIP_CTA_BOTH)</span>
+                    }
+                    else if (canShop)
+                    {
+                        <span>@ShellText.Get(ShellText.TIME_TOOLTIP_CTA_PACKAGE)</span>
+                    }
+                    else if (canTopUp)
+                    {
+                        <span>@ShellText.Get(ShellText.TIME_TOOLTIP_CTA_TOPUP)</span>
+                    }
+                </div>
+            </div>
+
+            @if (canTopUp || canShop)
+            {
+                <div class="gg-tt__actions">
+                    @if (canTopUp)
+                    {
+                        <button type="button" class="gg-tt__btn @(canShop ? null : "gg-tt__btn--primary")" @onclick="OpenUserOnlineDeposit" @onclick:stopPropagation="true">
+                            <i class="ph-fill ph-wallet"></i>
+                            <span>@ShellText.Get(ShellText.DEPOSIT_TITLE)</span>
+                        </button>
+                    }
+                    @if (canShop)
+                    {
+                        <button type="button" class="gg-tt__btn gg-tt__btn--primary" @onclick="OpenShop">
+                            <i class="ph-fill ph-package"></i>
+                            <span>@ShellText.Get(ShellText.GEN_TO_SHOP)</span>
+                        </button>
+                    }
+                </div>
+            }
+        </div>
+    }
+    else if (hasCredit && !TimeProductsViewState.IsInitializing)
+    {
+        <div class="gg-tt__foot">
+            <div class="gg-tt__note">
+                <i class="ph-fill ph-hand-coins"></i>
+                <div><b>@ShellText.Get(ShellText.TIME_TOOLTIP_CREDIT)</b></div>
+            </div>
+        </div>
     }
 </div>

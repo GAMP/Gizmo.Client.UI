@@ -31,6 +31,9 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         UserChangeProfileViewState ViewState { get; set; }
 
+        [Inject]
+        UserViewState UserViewState { get; set; }
+
         [Parameter]
         public DialogDisplayOptions DisplayOptions { get; set; }
 
@@ -42,7 +45,7 @@ namespace Gizmo.Client.UI.Components
 
         public List<IconSelectCountry> Countries { get; set; } = new List<IconSelectCountry>();
 
-        protected string Picture => AvatarService.Current?.Picture;
+        protected string Picture => UserViewState.Picture;
 
         public void OnClickClearValueButtonHandler(MouseEventArgs args)
         {
@@ -106,16 +109,9 @@ namespace Gizmo.Client.UI.Components
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
-
-            if (AvatarService.Current != null)
-                AvatarService.Current.Changed += OnAvatarChanged;
+            this.SubscribeChange(UserViewState);
 
             base.OnInitialized();
-        }
-
-        private void OnAvatarChanged()
-        {
-            DispatchStateHasChanged();
         }
 
         protected override async Task OnInitializedAsync()
@@ -170,10 +166,8 @@ namespace Gizmo.Client.UI.Components
 
         public override void Dispose()
         {
+            this.UnsubscribeChange(UserViewState);
             this.UnsubscribeChange(ViewState);
-
-            if (AvatarService.Current != null)
-                AvatarService.Current.Changed -= OnAvatarChanged;
 
             base.Dispose();
         }

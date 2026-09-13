@@ -2,22 +2,23 @@
 @using System.Globalization
 @using Gizmo.Web.Api.Models
 
-@* Home board — «Витрина».
+@* Home board.
 
    Two slots that answer two different questions, and because the questions are
    different they never take each other's room:
 
-     ГЕРОЙ  — «на что смотреть». Banners when the club has them, otherwise the
-              club's popular GOODS on a slow rotation, otherwise a quiet mark.
-              It is never the shop list, so adding a banner hides nothing.
-     КАССА  — «что купить». Balance, time packages and a short bar list, always
-              in the right column, unaffected by whatever the hero is doing.
+     HERO  what is worth looking at. Banners when the club has them, otherwise the
+           popular games on a slow rotation with their launch buttons, otherwise the
+           popular goods, otherwise a quiet line. It is never the shop list, so
+           adding a banner hides nothing.
+     TILL  what can I buy. Balance, time packages and a short bar list, always in
+           the right column, unaffected by whatever the hero is doing.
 
-   Under the hero, four popular games. Nine pictures on the board in total; the
-   full catalogues live behind the Shop and Games routes on the left rail.
+   Under the hero, four popular games. The full catalogues live behind the Shop and
+   Games routes on the left rail.
 
-   The reservation notice lives in the top bar (TopBarReservation), so it shows
-   on every page rather than only here.
+   The reservation notice lives in the top bar (TopBarReservation), so it shows on
+   every page rather than only here.
 
    Packages are filtered on DisallowPurchase, which the server computes from the
    availability window, guest and user group restrictions and stock. *@
@@ -26,25 +27,81 @@
 
     <div class="gg-stage">
 
-        @* ── ГЕРОЙ ──────────────────────────────────────────────────────── *@
+        @* HERO *@
         @if (Hero == HeroKind.Banner && CurrentBanner is { } banner)
         {
-            @* Новость показывает штатный AdsCarouselItem — тот же компонент, что
-               рисует новости в обычной карусели оболочки. Своей вёрстки здесь
-               нет намеренно: у новости бывает свой HTML-шаблон, картинка,
-               кнопка и медиа, и всё это её штатное поведение. Наше дело —
-               только вписать её в плитку героя, чем занимается .gg-hero--news
-               в _page-home.scss. *@
-            <section class="gg-hero gg-hero--news" aria-label="Акции" @key="@($"b{banner.Id}")">
+            @* News is drawn by the stock AdsCarouselItem - the same component the shell's
+               own carousel uses. No markup of our own here on purpose: an item may carry
+               its own HTML template, image, button and media, and all of that is its
+               normal behaviour. Fitting it to the hero tile is .gg-hero--news's job. *@
+            <section class="gg-hero gg-hero--news" aria-label="@ShellText.Get(ShellText.HERO_PROMOS)" @key="@($"b{banner.Id}")">
                 <AdsCarouselItem @key="@banner.Id" AdvertisementId="@banner.Id" SimpleMode="true" />
+            </section>
+        }
+        else if (Hero == HeroKind.App && CurrentHeroApp is { } app)
+        {
+            @* A game cover is tall: it stands as a card on the right over its own blurred
+               copy, and the launch buttons are the same UniversalExecutable the launch
+               overlay and the dock use, so deployment, progress and personal files behave
+               exactly as they do everywhere else. *@
+            <section class="gg-hero gg-hero--app" aria-label="@ShellText.Get(ShellText.HERO_POPULAR)" @key="@($"a{app.ApplicationId}")">
+                <div class="gg-hero__bg">
+                    <GizImage @key="app.ApplicationId" ImageType="Gizmo.UI.ImageType.Application" ImageId="@app.ImageId" ImageFitType="ImageFitType.Cover">
+                        <EmptyResultPlaceholder><div class="giz-default-image"></div></EmptyResultPlaceholder>
+                        <ErrorPlaceholder><div class="giz-default-image"></div></ErrorPlaceholder>
+                    </GizImage>
+                </div>
+                <div class="gg-hero__scrim"></div>
+
+                <div class="gg-hero__art gg-hero__art--tall">
+                    <GizImage @key="app.ApplicationId" ImageType="Gizmo.UI.ImageType.Application" ImageId="@app.ImageId" ImageFitType="ImageFitType.Cover">
+                        <EmptyResultPlaceholder>
+                            <div class="giz-default-image">
+                                <img src="_content/Gizmo.Client.UI/img/no-app-image.svg" alt="" />
+                            </div>
+                        </EmptyResultPlaceholder>
+                        <ErrorPlaceholder>
+                            <div class="giz-default-image">
+                                <img src="_content/Gizmo.Client.UI/img/broken-image.svg" alt="" />
+                            </div>
+                        </ErrorPlaceholder>
+                    </GizImage>
+                </div>
+
+                <div class="gg-hero__body">
+                    <div class="gg-hero__kick">@ShellText.Get(ShellText.HERO_POPULAR)</div>
+                    <div class="gg-hero__title">@app.Title</div>
+                    @{
+                        var executables = HeroExecutables(app.ApplicationId);
+                    }
+                    @* The word on a lone launch button comes in through a CSS variable: the
+                       button is the vendor's component, which prints the executable's
+                       caption or nothing, and "Counter-Strike 2" under a title that already
+                       says so is no invitation. See .gg-hero__exe--play. *@
+                    <div class="gg-hero__launch" style="--gg-play-label: '@LaunchLabel'">
+                        @foreach (var exe in executables)
+                        {
+                            var plain = IsPlainLaunch(app, exe, executables.Count);
+                            <div class="gg-hero__exe @(plain ? "gg-hero__exe--play" : null)" @key="exe.ExecutableId">
+                                <UniversalExecutable ExecutableId="@exe.ExecutableId" ShowProgressBar="true" ShowExeName="@(!plain)" />
+                            </div>
+                        }
+                        @if (!AppDetailsPageViewState.DisableAppDetails)
+                        {
+                            <button type="button" class="gg-hero__more" @onclick="@(() => OpenApp(app.ApplicationId))">
+                                <span>@ShellText.Get(ShellText.GEN_DETAILS)</span><i class="ph-bold ph-arrow-right"></i>
+                            </button>
+                        }
+                    </div>
+                </div>
             </section>
         }
         else if (Hero == HeroKind.Product && CurrentHeroProduct is { } featured)
         {
-            @* Товар вертикальной картинкой в широком блоке: фон — та же
-               картинка, размытая и укрупнённая, а резкая стоит карточкой
-               справа. Так ничего не обрезается. *@
-            <section class="gg-hero gg-hero--goods" aria-label="Популярное" @key="@($"p{featured.Id}")">
+            @* A tall product image in a wide block: the background is the same picture
+               blurred and enlarged, with the sharp copy standing as a card on the right,
+               so nothing is cropped. *@
+            <section class="gg-hero gg-hero--goods" aria-label="@ShellText.Get(ShellText.HERO_POPULAR)" @key="@($"p{featured.Id}")">
                 <div class="gg-hero__bg">
                     <GizImage @key="featured.Id" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@featured.DefaultImageId" ImageFitType="ImageFitType.Cover">
                         <EmptyResultPlaceholder><div class="giz-default-image"></div></EmptyResultPlaceholder>
@@ -69,28 +126,26 @@
                 </div>
 
                 <div class="gg-hero__body">
-                    <div class="gg-hero__kick">Популярное</div>
+                    <div class="gg-hero__kick">@ShellText.Get(ShellText.HERO_POPULAR)</div>
                     <div class="gg-hero__title">@featured.Name</div>
                     <div class="gg-hero__price">@featured.UnitPrice.ToString("C", CultureInfo.CurrentCulture)</div>
                     <button type="button" class="gg-hero__cta" @onclick="@(() => AddToCart(featured.Id))">
-                        <i class="ph-bold ph-shopping-bag"></i><span>В корзину</span>
+                        <i class="ph-bold ph-shopping-bag"></i><span>@ShellText.Get(ShellText.GEN_ADD_TO_CART)</span>
                     </button>
                 </div>
             </section>
         }
         else
         {
-            <section class="gg-hero gg-hero--empty" aria-label="Главная">
-                <div class="gg-hero__mark">GRAFIT</div>
-                <div class="gg-hero__note">Скоро здесь что-нибудь появится</div>
+            <section class="gg-hero gg-hero--empty">
+                <div class="gg-hero__empty-note">@ShellText.Get(ShellText.HERO_EMPTY)</div>
             </section>
         }
 
         @if (SlideCount > 1)
         {
-            @* @key по индексу нарочно: смена слайда пересоздаёт блок, и полоса
-               заполнения стартует заново — иначе анимация досчитывала бы старый
-               цикл поверх нового слайда. *@
+            @* Keyed on the index deliberately: changing slide recreates the block so the
+               fill bar restarts, instead of finishing the previous slide's cycle. *@
             <div class="gg-dots" @key="SlideIndex">
                 @for (var i = 0; i < SlideCount; i++)
                 {
@@ -104,12 +159,12 @@
             </div>
         }
 
-        @* ── ПОПУЛЯРНЫЕ ИГРЫ ────────────────────────────────────────────── *@
-        <section class="gg-strip" aria-label="Игры и приложения">
+        @* POPULAR GAMES *@
+        <section class="gg-strip" aria-label="@ShellText.Get(ShellText.HOME_GAMES_SECTION)">
             <div class="gg-cap gg-cap--rule">
-                <span>Популярные приложения</span>
+                <span>@ShellText.Get(ShellText.POPULAR_APPS)</span>
                 <span class="gg-cap__rule"></span>
-                <a href="@ClientRoutes.ApplicationsRoute">Все приложения</a>
+                <a href="@ClientRoutes.ApplicationsRoute">@ShellText.Get(ShellText.ALL_APPS)</a>
             </div>
 
             @if (StripApps.Count > 0)
@@ -126,18 +181,17 @@
             }
             else
             {
-                <div class="gg-empty">Пока пусто</div>
+                <div class="gg-empty">@ShellText.Get(ShellText.GEN_EMPTY)</div>
             }
         </section>
     </div>
 
-    @* ── КАССА ──────────────────────────────────────────────────────────── *@
-    <aside class="gg-till" aria-label="Покупки">
+    @* TILL *@
+    <aside class="gg-till" aria-label="@ShellText.Get(ShellText.PURCHASES)">
 
-        @* Кнопки пополнения тут нет намеренно: она уже стоит в верхней
-           панели, и второй такой же кнопкой экран не становится понятнее. *@
+        @* No top-up button here on purpose: there is already one in the top bar. *@
         <div class="gg-wallet">
-            <div class="gg-cap">На счете</div>
+            <div class="gg-cap">@ShellText.Get(ShellText.GEN_BALANCE)</div>
             <div class="gg-wallet__row">
                 <span class="gg-wallet__sum">@UserBalanceViewState.Balance.ToString("C", CultureInfo.CurrentCulture)</span>
             </div>
@@ -145,9 +199,9 @@
 
         <div class="gg-till__sec gg-till__sec--packs">
             <div class="gg-cap gg-cap--rule">
-                <span>Пакеты времени</span>
+                <span>@ShellText.Get(ShellText.HOME_TIME_PACKAGES)</span>
                 <span class="gg-cap__rule"></span>
-                <a href="@ClientRoutes.ShopRoute">Все</a>
+                <a href="@ClientRoutes.ShopRoute">@ShellText.Get(ShellText.GEN_ALL)</a>
             </div>
 
             @if (TimeProducts.Any())
@@ -155,19 +209,26 @@
                 <div class="gg-packs">
                     @foreach (var product in TimeProducts)
                     {
-                        @* Одна тонкая строка: имя, цена, кнопка. Срока тут нет
-                           намеренно — он почти всегда уже стоит в самом названии
-                           («Standart 3 часа», «5 часов»), а отдельным тегом
-                           съедал полсотни пикселей ровно у того, кому их не
-                           хватало, — у имени. Полная длительность есть в окне
-                           покупки, где место позволяет. *@
+                        @* One thin row: name, price, button. No duration tag on purpose -
+                           it is almost always already in the name ("Standard 3 hours"), and
+                           as a separate tag it took fifty pixels from the one thing that
+                           needed them. The full duration is in the purchase dialog. *@
                         <article class="gg-pack" @key="product.Id">
                             <span class="gg-pack__name" @onclick="@(() => OpenProduct(product.Id))">@product.Name</span>
-                            <span class="gg-pack__price">@product.UnitPrice.ToString("C", CultureInfo.CurrentCulture)</span>
+                            <span class="gg-pack__price">
+                                @if (IsPointsOnly(product))
+                                {
+                                    <span class="gg-pack__pts">@product.UnitPointsPrice.GetValueOrDefault().ToString("N0", CultureInfo.CurrentCulture)<i class="ph-fill ph-coins"></i></span>
+                                }
+                                else
+                                {
+                                    @product.UnitPrice.ToString("C", CultureInfo.CurrentCulture)
+                                }
+                            </span>
                             <button type="button" class="gg-buy"
                                     disabled="@(_buyingProductId.HasValue)"
                                     @onclick="@(() => BuyPackage(product.Id))">
-                                @(_buyingProductId == product.Id ? "Минуту…" : "Купить")
+                                @ShellText.Get(_buyingProductId == product.Id ? ShellText.GEN_WORKING : ShellText.GEN_BUY)
                             </button>
                         </article>
                     }
@@ -175,15 +236,15 @@
             }
             else
             {
-                <div class="gg-empty gg-empty--small">Сейчас нет пакетов, доступных к покупке</div>
+                <div class="gg-empty gg-empty--small">@ShellText.Get(ShellText.HOME_NO_PACKAGES)</div>
             }
         </div>
 
         <div class="gg-till__sec gg-till__sec--bar">
             <div class="gg-cap gg-cap--rule">
-                <span>Бар</span>
+                <span>@ShellText.Get(ShellText.HOME_BAR)</span>
                 <span class="gg-cap__rule"></span>
-                <a href="@ClientRoutes.ShopRoute">Весь магазин</a>
+                <a href="@ClientRoutes.ShopRoute">@ShellText.Get(ShellText.HOME_WHOLE_SHOP)</a>
             </div>
 
             @if (BarProducts.Count > 0)
@@ -208,7 +269,7 @@
                             </span>
                             <span class="gg-bar__name" @onclick="@(() => OpenProduct(product.Id))">@product.Name</span>
                             <span class="gg-bar__price">@product.UnitPrice.ToString("C", CultureInfo.CurrentCulture)</span>
-                            <button type="button" class="gg-bar__add" title="В корзину"
+                            <button type="button" class="gg-bar__add" title="@ShellText.Get(ShellText.GEN_ADD_TO_CART)"
                                     @onclick="@(() => AddToCart(product.Id))">
                                 <i class="ph-bold ph-plus"></i>
                             </button>
@@ -218,7 +279,7 @@
             }
             else
             {
-                <div class="gg-empty gg-empty--small">Пока пусто</div>
+                <div class="gg-empty gg-empty--small">@ShellText.Get(ShellText.GEN_EMPTY)</div>
             }
         </div>
     </aside>

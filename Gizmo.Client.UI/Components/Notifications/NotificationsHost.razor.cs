@@ -466,6 +466,8 @@ namespace Gizmo.Client.UI.Components
                 } while (!done);
 
                 ViewState.OnChange += ViewState_OnChange;
+
+                await ApplyAccentAsync();
             }
             else
             {
@@ -482,7 +484,35 @@ namespace Gizmo.Client.UI.Components
 
         protected override async Task OnInitializedAsync()
         {
+            // This window is a Blazor root of its own - App never runs here - so the
+            // string table is associated from both roots. Same process, so whichever
+            // starts first serves the other.
+            Localization.ShellStringOverrides.Associate(LocalizationService);
+
+            // The accent palette, likewise: this document has no club stylesheet to read
+            // it from, so it follows what the main window resolved - see ShellTheme.
+            Services.ShellTheme.Changed += OnAccentChanged;
+
             await base.OnInitializedAsync();
+        }
+
+        private void OnAccentChanged() => DispatchWorkflow(ApplyAccentAsync);
+
+        private async Task ApplyAccentAsync()
+        {
+            var accent = Services.ShellTheme.Accent;
+
+            if (string.IsNullOrEmpty(accent))
+                return;
+
+            try
+            {
+                await JsRuntime.InvokeVoidAsync("grafitTheme.set", accent);
+            }
+            catch (Exception exception) when (exception is JSException or InvalidOperationException)
+            {
+                // An old bundle without the hook, or a window on its way out.
+            }
         }
 
         #endregion
@@ -497,6 +527,7 @@ namespace Gizmo.Client.UI.Components
             //left another dead instance attached to the (long lived) view state, each one still
             //driving JS interop against a DOM it no longer owns.
             ViewState.OnChange -= ViewState_OnChange;
+            Services.ShellTheme.Changed -= OnAccentChanged;
 
             try
             {

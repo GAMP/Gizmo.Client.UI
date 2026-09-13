@@ -2,9 +2,9 @@
 @inherits CustomDOMComponentBase
 
 @* Custom glass profile card (not a list-style dropdown menu): scattered
-   icons around the avatar (hover it to reveal the change-picture overlay),
-   name, then change-password+lock sharing a row and logout full width on
-   its own below. *@
+   icons around the avatar, name, then change-password+lock sharing a row
+   and logout full width on its own below. The avatar is not a control:
+   the shell has no way to change the picture. *@
 <div class="giz-dropdown-menu giz-profile-popup @(UserMenuViewState.UserLinksIsVisible ? "open" : "")"
      id="@Id"
      @ref="@Ref">
@@ -21,7 +21,7 @@
                 @foreach (var ic in OrbitIcons)
                 {
                     <i class="ph-bold @ic.IconClass giz-orbit-icon"
-                       style="font-size:@(ic.SizePx.ToString(System.Globalization.CultureInfo.InvariantCulture))px; color:@ic.Color; transform: rotate(@(ic.AngleDeg.ToString(System.Globalization.CultureInfo.InvariantCulture))deg) translate(0, -@(ic.RadiusPx.ToString(System.Globalization.CultureInfo.InvariantCulture))px) rotate(@((-ic.AngleDeg + ic.TiltDeg).ToString(System.Globalization.CultureInfo.InvariantCulture))deg);"></i>
+                       style="font-size:@(ic.SizePx.ToString(System.Globalization.CultureInfo.InvariantCulture))px; opacity:@ic.Opacity; transform: rotate(@(ic.AngleDeg.ToString(System.Globalization.CultureInfo.InvariantCulture))deg) translate(0, -@(ic.RadiusPx.ToString(System.Globalization.CultureInfo.InvariantCulture))px) rotate(@((-ic.AngleDeg + ic.TiltDeg).ToString(System.Globalization.CultureInfo.InvariantCulture))deg);"></i>
                 }
 
                 <div class="giz-profile-popup__avatar">
@@ -31,13 +31,8 @@
                     }
                     else
                     {
-                        <i class="ph-fill ph-user"></i>
+                        <i class="ph ph-user"></i>
                     }
-
-                    <button class="giz-profile-popup__avatar-edit-overlay" @onclick="OnClickEditPictureButtonHandler">
-                        <i class="ph-bold ph-camera"></i>
-                        <span>Изменить</span>
-                    </button>
                 </div>
             </div>
         </div>
@@ -45,6 +40,11 @@
         <div class="giz-profile-popup__name">@DisplayName</div>
 
         <div class="giz-profile-popup__actions">
+            <button class="giz-profile-popup__account-btn" @onclick="OnClickAccountButtonHandler">
+                <i class="ph-bold ph-user"></i>
+                <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_MENU_PROFILE))</span>
+                <i class="ph-bold ph-arrow-right giz-profile-popup__account-arrow"></i>
+            </button>
             <div class="giz-profile-popup__actions-row">
                 <button class="giz-profile-popup__change-password-btn" @onclick="OnClickChangePasswordButtonHandler">
                     <i class="ph-bold ph-key"></i>

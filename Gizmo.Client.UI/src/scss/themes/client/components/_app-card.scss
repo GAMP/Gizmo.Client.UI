@@ -1,32 +1,24 @@
 //=============== Application Card ================//
 //
-// Одна карточка — один постер. Всё остальное лежит НА нём, а не под ним:
-// раньше карточка была коробкой из трёх этажей (картинка, подпись, футер с
-// категорией и кнопкой), и в сетке из двадцати штук это читалось как таблица,
-// а не как полка с играми.
+// One card is one poster; everything else sits on top of it rather than stacking below.
+// At rest only the poster and the caption plate are visible; hover dims the poster and
+// reveals the launch shortcuts, with exactly one accent - whatever can be clicked.
 //
-// Правила те же, что на главной, и это намеренно — карточка там и здесь одна:
-//   1. В покое видно только постер и плашку с названием.
-//   2. На наведении постер приглушается и чуть наезжает, поверх — таблетки
-//      ярлыков запуска. Один ярлык — одна фиолетовая таблетка, то есть кнопка.
-//   3. Служебное (категория, «подробнее») выезжает сверху только на наведении.
-//   4. Акцент ровно один: то, что сейчас можно нажать.
-//
-// --gg-card-bg и --gg-card-image-bg остаются точками входа для клубной темы.
+// --gg-card-bg and --gg-card-image-bg stay as theming entry points.
 
-$ac-r:     2rem;                                        // радиус карточки
-$ac-pad:   0.9rem;                                      // отступ плашек от краёв
-$ac-ink:   #f2f0f7;
-$ac-ink-2: rgba(242, 240, 247, 0.62);
-$ac-ink-3: rgba(242, 240, 247, 0.4);
-$ac-plate: rgba(12, 9, 20, 0.86);                       // фон плашки и таблеток
+$ac-r:     2rem;                                        // card radius
+$ac-pad:   0.9rem;                                      // inset for the plates
+$ac-ink:   var(--gg-ink);
+$ac-ink-2: rgba(var(--gg-ink-rgb), 0.62);
+$ac-ink-3: rgba(var(--gg-ink-rgb), 0.4);
+$ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and pill background
 
 .giz-app-card {
     position: relative;
     max-width: 100%;
     overflow: hidden;
     border-radius: $ac-r;
-    background: var(--gg-card-bg, #14111d);
+    background: var(--gg-card-bg, var(--gg-tile));
     transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.2s;
 
     &:hover {
@@ -34,11 +26,9 @@ $ac-plate: rgba(12, 9, 20, 0.86);                       // фон плашки �
         box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.85);
     }
 
-    // Обводка отдельным слоем поверх содержимого, а не inset-тенью на самой
-    // карточке. Inset-тень рисуется под содержимым, а постер занимает карточку
-    // целиком — и закрывал её везде, кроме полоски под собой: обводка была
-    // видна только снизу. Настоящий border тоже не годится: он забирает место
-    // в раскладке и рисует волоски на нулевой высоте.
+    // Outline as a layer over the content rather than an inset shadow on the card: an
+    // inset shadow paints under the content, and the poster covers the card entirely, so
+    // it only showed along the bottom edge. A real border would take layout space.
     &::after {
         content: '';
         position: absolute;
@@ -57,8 +47,8 @@ $ac-plate: rgba(12, 9, 20, 0.86);                       // фон плашки �
         height: 100%;
         max-width: 100%;
 
-        // Постер задаёт высоту карточки — всё остальное лежит поверх и в
-        // раскладке не участвует.
+        // The poster sets the card height; everything else sits on top of it and is out
+        // of the layout.
         &__image {
             position: relative;
             display: flex;
@@ -67,16 +57,13 @@ $ac-plate: rgba(12, 9, 20, 0.86);                       // фон плашки �
             width: 100%;
             aspect-ratio: 3 / 4;
             overflow: hidden;
-            background: var(--gg-card-image-bg, linear-gradient(160deg, #1e0a3c 0%, #0f0424 55%, #06030e 100%));
+            background: var(--gg-card-image-bg, linear-gradient(160deg, var(--gg-bg-2) 0%, var(--gg-bg-3) 55%, var(--gg-tile-deep) 100%));
 
-            // Обложка заполняет карточку и обрезается по пропорции 3:4.
-            // Показывать её целиком нельзя без одного из двух: либо поле по
-            // краям (размытая подложка — отвергнута), либо своя высота у каждой
-            // карточки. Второе в сетке не работает: у каждого приложения своя
-            // пропорция картинки, ряды поехали бы лесенкой.
+            // Cover fills the card and is cropped to 3:4. Showing it whole needs either
+            // letterboxing or a per-card height, and per-card heights stagger the rows -
+            // every application ships a different aspect ratio.
             //
-            // object-position по центру, а не по верху: обрезка симметричная,
-            // так реже режется главное.
+            // Centre object-position: symmetric cropping loses the subject less often.
             img {
                 width: 100%;
                 height: 100%;
@@ -97,11 +84,9 @@ $ac-plate: rgba(12, 9, 20, 0.86);                       // фон плашки �
             }
         }
 
-        // ── плашка с названием ──
-        // Она же и делает из постера кнопку: по треугольнику видно, что это
-        // можно запустить, а название всегда лежит на своём фоне, а не на
-        // случайном пикселе обложки. Затемнения к низу под ней нет намеренно —
-        // плашка носит фон сама.
+        // Caption plate. It is also what makes the poster read as a button, and it
+        // carries its own background so the title never sits on a random cover pixel.
+        // No gradient underneath on purpose.
         &__details {
             position: absolute;
             z-index: 2;
@@ -119,8 +104,8 @@ $ac-plate: rgba(12, 9, 20, 0.86);                       // фон плашки �
             pointer-events: none;
             transition: opacity 0.18s;
 
-            // Треугольник нарисован границами, а не иконочным шрифтом: не
-            // зависит от того, догрузился ли шрифт, и всегда в размер текста.
+            // Triangle drawn with borders rather than an icon font: no dependency on
+            // font loading, and it always matches the text size.
             &::before {
                 content: '';
                 flex: none;
@@ -132,10 +117,9 @@ $ac-plate: rgba(12, 9, 20, 0.86);                       // фон плашки �
             }
         }
 
-        // ── верхняя строка: категория и «подробнее» ──
-        // В покое её нет. Категория дублирует фильтр над сеткой, а кнопка
-        // деталей нужна раз в сто наведений — держать их постоянно значит
-        // отдать им треть карточки ни за что.
+        // Top row: hidden at rest. The category repeats the filter above the grid and
+        // the details button is used once in a hundred hovers - permanently visible they
+        // would cost a third of the card.
         &__footer {
             position: absolute;
             z-index: 6;
@@ -178,23 +162,21 @@ $ac-plate: rgba(12, 9, 20, 0.86);                       // фон плашки �
         pointer-events: auto;
     }
 
-    // ── наведение ──
+    // Hover
     &:hover {
-        // Приглушить до узнаваемости, а не погасить: под таблетками должно
-        // читаться, какая это игра. Порог выверен по самой светлой обложке.
+        // Dimmed to stay recognisable, not blacked out: the game must still read
+        // through the pills. Threshold set against the brightest cover.
         .giz-app-card__content__image > img {
             transform: scale(1.06);
             filter: brightness(0.58) saturate(0.8);
         }
 
-        // Плашку сменяет настоящий список ярлыков — держать под ним ещё и её
-        // незачем.
         .giz-app-card__content__details { opacity: 0; }
 
         .giz-app-card__content__image__hovered {
-            // Вуаль тонкая: обложку уже приглушает фильтр, здесь нужен только
-            // ровный тон под подписями.
-            background: linear-gradient(180deg, rgba(9, 6, 16, 0.28), rgba(9, 6, 16, 0.5));
+            // Thin veil only: the filter already dims the cover, this just evens the
+            // tone under the captions.
+            background: linear-gradient(180deg, rgba(var(--gg-scrim-rgb), 0.28), rgba(var(--gg-scrim-rgb), 0.5));
 
             .giz-app-card__content--hovered {
                 opacity: 1;
@@ -217,7 +199,6 @@ $ac-plate: rgba(12, 9, 20, 0.86);                       // фон плашки �
         letter-spacing: -0.005em;
     }
 
-    // Кнопка деталей: тихий стеклянный квадрат, акцент — только под курсором.
     &__open {
         flex-shrink: 0;
         width: 3rem;
@@ -239,7 +220,7 @@ $ac-plate: rgba(12, 9, 20, 0.86);                       // фон плашки �
         &:hover {
             background: var(--gg-accent);
             box-shadow: none;
-            color: #16081f;
+            color: var(--gg-on-accent);
         }
 
         &:focus-visible { outline: 2px solid var(--gg-accent); outline-offset: 2px; }
@@ -251,14 +232,13 @@ $ac-plate: rgba(12, 9, 20, 0.86);                       // фон плашки �
     }
 }
 
-// ── оверлей запуска ──────────────────────────────────────────────────────
+// Launch overlay
 .giz-app-card__content__image__hovered {
     position: absolute;
     inset: 0;
     z-index: 4;
-    // Отступ ровный со всех сторон: список центрируется по карточке, а не по
-    // остатку под верхней строкой. Столкнуться с ней он может только при
-    // девяти с лишним ярлыках — до этого срабатывает плотный режим ниже.
+    // Even padding all round: the list centres on the card, not on what is left below
+    // the top row. They can only collide past nine shortcuts, where the dense mode wins.
     padding: $ac-pad;
     background: transparent;
     transition: background 0.22s ease;
@@ -273,10 +253,9 @@ $ac-plate: rgba(12, 9, 20, 0.86);                       // фон плашки �
         overflow: hidden;
     }
 
-    // Центровка держится не на grid + place-items (ломает собственную
-    // прокрутку контейнера), а на снятии распорки: у .giz-exe-popup стоит
-    // min-height: 100%, из-за чего блок всегда во всю высоту и его
-    // justify-content: center ничего не решает.
+    // Centred by removing the strut rather than with grid + place-items, which breaks
+    // the container's own scrolling: .giz-exe-popup sets min-height: 100%, so the block
+    // is always full height and its justify-content has nothing to distribute.
     .giz-app-card__content--hovered {
         width: 100%;
         height: auto;
@@ -300,27 +279,23 @@ $ac-plate: rgba(12, 9, 20, 0.86);                       // фон плашки �
     min-height: 0;
     overflow: hidden;
 
-    // ── таблетка ярлыка ──
-    // Прежде это был вертикальный список иконок по 62px на почти непрозрачной
-    // чёрной заливке: карточка чернела целиком ради того, что у большинства
-    // приложений ярлык РОВНО ОДИН.
+    // Shortcut pill.
     .giz-universal-executable {
-        // Третья колонка — под треугольник запуска: тот же знак, что и на
-        // плашке в покое, чтобы строка читалась как действие, а не как файл.
+        // Third column carries the launch triangle - the same mark as the resting
+        // caption, so the row reads as an action rather than as a file.
         grid-template-columns: min-content 1fr min-content;
         align-items: center;
         gap: 0.55rem;
         padding: 0.5rem;
         border-radius: 0.9rem;
-        // Заливка тёмная, а не осветляющая: светлая плёнка на светлом участке
-        // обложки (снег, небо, белая полоса) оставляла белый текст почти без
-        // контраста.
-        background: rgba(12, 9, 20, 0.72);
+        // Dark fill rather than a lightening one: a light film over a bright part of the
+        // cover left white text with almost no contrast.
+        background: rgba(var(--gg-scrim-rgb), 0.72);
         box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
         transition: background 0.16s, box-shadow 0.16s, transform 0.16s, filter 0.16s;
 
-        // Стеклянная подсветка базового компонента не нужна: таблетка красится
-        // сама, а два фона друг на друге давали грязь на акценте.
+        // The base component's glass highlight is dropped - two fills over each other
+        // muddied the accent.
         &::before { content: none; }
 
         &::after {
@@ -336,8 +311,8 @@ $ac-plate: rgba(12, 9, 20, 0.86);                       // фон плашки �
             transition: border-color 0.16s;
         }
 
-        // 2.6rem вместо 6.2rem: на такой высоте шесть ярлыков — потолок,
-        // который реально встречается, — влезают в карточку без прокрутки.
+        // 2.6rem instead of 6.2rem: six shortcuts, the realistic ceiling, then fit
+        // without scrolling.
         .giz-universal-executable__icon {
             width: 2.6rem;
             height: 2.6rem;
@@ -346,8 +321,8 @@ $ac-plate: rgba(12, 9, 20, 0.86);                       // фон плашки �
                 width: 100%;
                 height: 100%;
                 border-radius: 0.6rem;
-                // contain, а не cover: иконки исполняемых файлов квадратные, а
-                // svg-заглушка при cover растягивалась.
+                // contain, not cover: executable icons are square and the svg
+                // placeholder stretched under cover.
                 object-fit: contain;
             }
         }
@@ -362,8 +337,7 @@ $ac-plate: rgba(12, 9, 20, 0.86);                       // фон плашки �
             }
         }
 
-        // Прогресс установки шёл полоской под иконкой 62px. Под иконку 26px он
-        // не встаёт — растягиваем на всю таблетку, так он и заметнее.
+        // Install progress spans the whole pill: under a 26px icon it had nowhere to sit.
         .giz-universal-executable-progress-bar {
             left: 0.5rem;
             right: 0.5rem;
@@ -376,27 +350,25 @@ $ac-plate: rgba(12, 9, 20, 0.86);                       // фон плашки �
             box-shadow: none;
             transform: translateY(-1px);
 
-            .giz-universal-executable__description__exe { color: #16081f; font-weight: 700; }
-            &::after { border-left-color: #16081f; }
+            .giz-universal-executable__description__exe { color: var(--gg-on-accent); font-weight: 700; }
+            &::after { border-left-color: var(--gg-on-accent); }
         }
 
-        // Один ярлык — сразу кнопка. Выбирать не из чего, и изображать список
-        // ради одной строки незачем.
+        // A single shortcut is the button itself - there is nothing to pick from.
         &:only-child {
             background: var(--gg-accent);
             box-shadow: none;
 
-            .giz-universal-executable__description__exe { color: #16081f; font-weight: 700; }
-            &::after { border-left-color: #16081f; }
+            .giz-universal-executable__description__exe { color: var(--gg-on-accent); font-weight: 700; }
+            &::after { border-left-color: var(--gg-on-accent); }
 
             &:hover { filter: brightness(1.1); }
         }
     }
 
-    // Пять ярлыков и больше — плотный режим. Обрезанная снизу таблетка
-    // читается как поломка, а не как «прокрути»: лучше ужать строки и показать
-    // список целиком. :has() не поддержан — правило игнорируется, остаётся
-    // обычная прокрутка, так что терять нечего.
+    // Five shortcuts or more switch to a dense mode: a pill clipped at the bottom reads
+    // as breakage rather than as "scroll". Without :has() support the rule is ignored
+    // and ordinary scrolling remains, so there is nothing to lose.
     &:has(> .giz-universal-executable:nth-child(5)) {
         gap: 0.35rem;
 

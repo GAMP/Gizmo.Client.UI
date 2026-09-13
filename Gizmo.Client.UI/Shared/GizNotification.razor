@@ -2,15 +2,19 @@
 @using Gizmo.UI;
 @inherits CustomDOMComponentBase
 
-@* The type used to be readable only from a nested <svg> wrapper's class,
-   which is why the old styling reached for :has(). Now that the icon is
-   gone the type goes straight on the card - it is the card's own colour. *@
+@* One card: a type icon, the words, a close button. The type goes on the card as a
+   modifier and colours the icon and the bar on the left; the card itself is the same
+   opaque panel for every type (see _notifications.scss for why opaque). *@
 <div class="giz-notification @TypeModifier">
+    <div class="giz-notification__icon"><i class="ph-fill @TypeIcon"></i></div>
     <div class="giz-notification__body">
         <div class="giz-notification__body__title">@Title</div>
-        <div class="giz-notification__body__message">@Message</div>
+        @if (!string.IsNullOrWhiteSpace(Message))
+        {
+            <div class="giz-notification__body__message">@Message</div>
+        }
     </div>
-    <div class="giz-notification__close-button">
-        <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseNotification()" />
-    </div>
+    <button type="button" class="giz-notification__close" @onclick="CloseNotification" aria-label="@ShellText.Get(ShellText.GEN_CLOSE)">
+        <i class="ph-bold ph-x"></i>
+    </button>
 </div>

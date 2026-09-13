@@ -1,17 +1,12 @@
 //=============== Online top-up ================//
-// This BEM tree is the exact same markup (UserOnlineDeposits.razor)
-// whether it's hosted in the top-bar's dropdown (.giz-user-online-deposit-menu)
-// or the "Пополнить" dialog (.giz-user-online-deposit-dialog) reached from
-// the tariff tooltip and the grace-period screen, so it's styled once here,
-// unscoped, rather than duplicated per host. Each host only adds its own
-// outer chrome (glass panel vs glass dialog card) on top.
+// The same markup (UserOnlineDeposits.razor) whether hosted in the top bar dropdown
+// (.giz-user-online-deposit-menu) or the top-up dialog (.giz-user-online-deposit-dialog)
+// reached from the tariff tooltip and the grace-period screen, so it is styled once here,
+// unscoped. Each host adds only its own outer chrome.
 //
-// Rewritten from the original vendor version, which put "Наведи камеру
-// телефона" / "или" on a classic fieldset-legend trick - a dark pill
-// straddling a thin box border, positioned absolutely and translated to
-// dead centre. On the new liquid-glass panels (no thin bordered box to
-// anchor a legend to) that read as a stray floating tag rather than a
-// caption, so it's gone in favour of a plain caption line in normal flow.
+// The vendor version put the caption on a fieldset-legend trick - a dark pill straddling
+// a thin box border. With no thin bordered box to anchor to, that read as a stray
+// floating tag, so it is a plain caption line in normal flow.
 
 .giz-user-online-deposit {
     color: #FAFAFA;
@@ -92,11 +87,8 @@
         display: flex;
         flex-direction: column;
         gap: 0.8rem;
-        // A little extra air above "Пополнить"/"Открыть в браузере" so it
-        // doesn't crowd the "Зачислим на счёт"/"К оплате" line right above
-        // it - that gap used to be the same 0.8rem as everything else in
-        // __body, which read as too tight given the button is a distinct,
-        // bigger action rather than another line of text.
+        // Extra air above the action button so it does not crowd the amount line above
+        // it - the shared 0.8rem read as too tight for a distinct, larger action.
         margin-top: 0.6rem;
     }
 

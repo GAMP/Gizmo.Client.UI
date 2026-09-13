@@ -1,0 +1,48 @@
+//=============== AutoComplete ================//
+
+.giz-auto-complete {
+    display: inline-block;
+    position: relative;
+
+    &--full-width {
+        display: block;
+    }
+
+    &__content {
+        position: relative;
+    }
+
+    .giz-auto-complete__dropdown {
+        &--full-width {
+            width: 100%;
+        }
+
+        &--cursor {
+            position: absolute;
+
+            & > .giz-list {
+                right: 0;
+                left: 0;
+            }
+        }
+    }
+
+    .giz-input-control {
+        .giz-input-root {
+            justify-content: space-between;
+
+            input {
+                cursor: pointer;
+            }
+
+            .giz-input__icon-right {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .giz-popup {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+}

@@ -1,4 +1,4 @@
-﻿@namespace Gizmo.Client.UI.Components
+@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Forms
@@ -17,9 +17,9 @@
             <div class="giz-user-online-deposit__success__icon">
                 <i class="ph-fill ph-check-circle"></i>
             </div>
-            <div class="giz-user-online-deposit__success__title">Успешно</div>
-            <div class="giz-user-online-deposit__success__text">Счёт пополнен на @SucceededAmountFormatted</div>
-            <div class="giz-user-online-deposit__success__hint">Окно закроется автоматически через 5 секунд</div>
+            <div class="giz-user-online-deposit__success__title">@ShellText.Get(ShellText.DEPOSIT_SUCCESS_TITLE)</div>
+            <div class="giz-user-online-deposit__success__text">@ShellText.Get(ShellText.DEPOSIT_SUCCESS_TEXT, SucceededAmountFormatted)</div>
+            <div class="giz-user-online-deposit__success__hint">@ShellText.Get(ShellText.DEPOSIT_SUCCESS_HINT)</div>
         </div>
     }
     else if (ViewState.PageIndex == 0)
@@ -27,7 +27,7 @@
         @* Russian written inline - see the note in
            MenuActiveApplicationsContainer.razor for why not resource keys. *@
         <div class="giz-user-online-deposit__body">
-            <div class="giz-user-online-deposit__label">Выберите сумму</div>
+            <div class="giz-user-online-deposit__label">@ShellText.Get(ShellText.DEPOSIT_QUICK_SELECT)</div>
             <div>
                 <ButtonGroup>
                     @foreach (var preset in ViewState.Presets)
@@ -48,11 +48,11 @@
                                     Value="@ViewState.Amount"
                                     ValueChanged="@((value) => UserOnlineDepositViewStateService.SetAmount(value))"
                                     ValueExpression="@(() => ViewState.Amount)"
-                                    Label="Или впишите свою" />
+                                    Label="@ShellText.Get(ShellText.DEPOSIT_OR_ENTER_AMOUNT)" />
                     </div>
                 </EditForm>
             }
-            <div class="giz-user-online-deposit__summary">Зачислим на счёт <span class="giz-user-online-deposit__summary__amount">@((ViewState.Amount ?? 0).ToString("C", CultureInfo.CurrentCulture))</span></div>
+            <div class="giz-user-online-deposit__summary">@ShellText.Get(ShellText.DEPOSIT_WILL_BE_CREDITED) <span class="giz-user-online-deposit__summary__amount">@((ViewState.Amount ?? 0).ToString("C", CultureInfo.CurrentCulture))</span></div>
         </div>
         <div class="giz-user-online-deposit__footer">
             <Button IsDisabled="@(ViewState.IsValid == false || ViewState.IsLoading)"
@@ -67,7 +67,7 @@
                     }
                     else
                     {
-                        <div>Пополнить</div>
+                        <div>@ShellText.Get(ShellText.DEPOSIT_TITLE)</div>
                     }
                 </ChildContent>
             </Button>
@@ -76,9 +76,9 @@
     else
     {
         <div class="giz-user-online-deposit__body">
-            <div class="giz-user-online-deposit__submitted__summary">К оплате <span class="giz-user-online-deposit__submitted__summary__amount">@((ViewState.Amount ?? 0).ToString("C", CultureInfo.CurrentCulture))</span></div>
+            <div class="giz-user-online-deposit__submitted__summary">@ShellText.Get(ShellText.DEPOSIT_TO_BE_PAID) <span class="giz-user-online-deposit__submitted__summary__amount">@((ViewState.Amount ?? 0).ToString("C", CultureInfo.CurrentCulture))</span></div>
             <div class="giz-user-online-deposit__submitted__qr">
-                <div class="giz-user-online-deposit__submitted__qr__label">Наведите камеру телефона</div>
+                <div class="giz-user-online-deposit__submitted__qr__label">@ShellText.Get(ShellText.DEPOSIT_QR_CODE)</div>
                 <div class="giz-user-online-deposit__submitted__qr__image">
                     @((MarkupString)ViewState.QrImage)
                 </div>
@@ -86,11 +86,11 @@
         </div>
         <div class="giz-user-online-deposit__footer">
             <div class="giz-user-online-deposit__submitted__action">
-                <div class="giz-user-online-deposit__submitted__action__label">или</div>
-                <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="OnClickPayFromPCHandler">Открыть в браузере</Button>
+                <div class="giz-user-online-deposit__submitted__action__label">@ShellText.Get(ShellText.DEPOSIT_OR)</div>
+                <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="OnClickPayFromPCHandler">@ShellText.Get(ShellText.DEPOSIT_PAY_FROM_PC)</Button>
             </div>
             <div class="giz-user-online-deposit-clear-button">
-                <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="OnClickClearHandler">Сбросить QR</Button>
+                <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="OnClickClearHandler">@ShellText.Get(ShellText.DEPOSIT_CLEAR)</Button>
             </div>
         </div>
     }

@@ -140,25 +140,24 @@ namespace Gizmo.Client.UI.Pages
         }
 
         /// <summary>
-        /// Показывать ли ссылку «Забыли пароль».
+        /// Whether to show the password recovery link.
         /// </summary>
         /// <remarks>
-        /// Штатное условие вендора, ничего своего. Значение приходит с сервера из
-        /// <c>USER_PASSWORD_RECOVERY / CLIENT_ENABLED</c> — переключателя, который
-        /// появился в 3.0.91 и по умолчанию выключен.
+        /// The vendor's own condition. The value comes from the server as
+        /// <c>USER_PASSWORD_RECOVERY / CLIENT_ENABLED</c>, a switch added in 3.0.91 that is
+        /// off by default.
         /// </remarks>
         private bool ShowPasswordRecovery =>
             UserRegisterConfigurationViewState.IsPasswordRecoveryEnabled;
 
         /// <summary>
-        /// Что бронь этого устройства значит прямо сейчас, словами вендора.
-        /// <c>null</c>, когда брони нет.
+        /// What this machine's reservation means right now, in the vendor's words.
+        /// <c>null</c> when there is no reservation.
         /// </summary>
         /// <remarks>
-        /// Два состояния и два разных текста: до времени брони вход ещё
-        /// разрешён и человека просто предупреждают, после — вход закрыт.
-        /// Строки вендорские, локализованные; наше здесь только то, как это
-        /// показано.
+        /// Two states, two texts: before the reservation time sign-in is still allowed and
+        /// this is a warning; after it, sign-in is closed. The strings are the vendor's,
+        /// localized; only the presentation is ours.
         /// </remarks>
         private string? ReservationMessage
         {

@@ -47,6 +47,14 @@ namespace Gizmo.Client.UI
             _ => string.Empty,
         };
 
+        protected string TypeIcon => Icon switch
+        {
+            AlertTypes.Success => "ph-check-circle",
+            AlertTypes.Danger => "ph-x-circle",
+            AlertTypes.Warning => "ph-warning",
+            _ => "ph-info",
+        };
+
         private async Task CloseNotification()
         {
             await DismissCallback.InvokeAsync();

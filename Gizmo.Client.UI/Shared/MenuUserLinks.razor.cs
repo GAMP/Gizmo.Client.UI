@@ -41,6 +41,9 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         IClientDialogService DialogService { get; set; }
 
+        [Inject]
+        NavigationService NavigationService { get; set; }
+
         #endregion
 
         // Scattered icons around the avatar. Deliberately hand-placed
@@ -50,7 +53,7 @@ namespace Gizmo.Client.UI.Shared
         // Angle/radius/size are all irregular on purpose - no two icons
         // share a radius band or a clean angle interval. Radii stay
         // outside the avatar's own edge (9.6rem/96px across = 48px radius).
-        public sealed record OrbitIcon(string IconClass, double AngleDeg, double RadiusPx, double SizePx, string Color, double TiltDeg);
+        public sealed record OrbitIcon(string IconClass, double AngleDeg, double RadiusPx, double SizePx, string Opacity, double TiltDeg);
 
         public List<OrbitIcon> OrbitIcons { get; } = BuildOrbitIcons();
 
@@ -75,8 +78,9 @@ namespace Gizmo.Client.UI.Shared
             foreach (var it in items)
             {
                 double tilt = Math.Sin(it.Angle * Math.PI / 180.0) * 15.0;
-                string color = $"rgba(180,166,214,{it.Opacity.ToString(System.Globalization.CultureInfo.InvariantCulture)})";
-                icons.Add(new OrbitIcon(it.Icon, it.Angle, it.Radius, it.Size, color, tilt));
+                //Colour comes from the stylesheet (the palette's ink), only the fade is per icon.
+                string opacity = it.Opacity.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                icons.Add(new OrbitIcon(it.Icon, it.Angle, it.Radius, it.Size, opacity, tilt));
             }
 
             return icons;
@@ -87,7 +91,7 @@ namespace Gizmo.Client.UI.Shared
                 ? LocalizationService.GetString("GIZ_GEN_GUEST")
                 : ViewState.Username;
 
-        protected string Picture => AvatarService.Current?.Picture;
+        protected string Picture => ViewState.Picture;
 
         private Task OnClickUserLockButtonHandler()
         {
@@ -107,6 +111,16 @@ namespace Gizmo.Client.UI.Shared
             return UserService.LogoutWithConfirmationAsync();
         }
 
+        // The account page. A guest has no profile tab, so the Time tab is the front door.
+        private void OnClickAccountButtonHandler()
+        {
+            _shouldRender = true;
+
+            UserMenuViewService.CloseUserLinks();
+
+            NavigationService.NavigateTo(ViewState.IsGuest ? ClientRoutes.UserProductsRoute : ClientRoutes.UserProfileRoute);
+        }
+
         private Task OnClickChangePasswordButtonHandler()
         {
             _shouldRender = true;
@@ -114,15 +128,6 @@ namespace Gizmo.Client.UI.Shared
             UserMenuViewService.CloseUserLinks();
 
             return DialogService.ShowChangePasswordDialogAsync(true);
-        }
-
-        private Task OnClickEditPictureButtonHandler()
-        {
-            _shouldRender = true;
-
-            UserMenuViewService.CloseUserLinks();
-
-            return DialogService.ShowChangePictureDialogAsync();
         }
 
         #region OVERRIDES
@@ -170,26 +175,14 @@ namespace Gizmo.Client.UI.Shared
             ViewState.OnChange += ViewState_OnChange;
             UserMenuViewState.OnChange += ViewState_OnChange;
 
-            if (AvatarService.Current != null)
-                AvatarService.Current.Changed += OnAvatarChanged;
-
             base.OnInitialized();
         }
 
-        //Both of these fire from threads this component does not own - the view state raises
-        //from the client's network/dispatcher threads, the avatar service from an HTTP
-        //continuation - and both used to be async void awaiting InvokeAsync directly. When the
-        //WebView2 browser process died during login the dispatcher call faulted, and async void
-        //rethrew it on the thread pool: "Client app domain unhandled exception. Client will
-        //exit." with this exact handler on the stack. DispatchStateHasChanged absorbs teardown
-        //faults, so a lost WebView is now just a reload instead of the whole client dying.
+        // View states raise from the client's network and dispatcher threads, not this
+        // component's. Written async void awaiting InvokeAsync, a dispatcher fault during
+        // WebView teardown was rethrown on the thread pool and took the whole client down.
+        // DispatchStateHasChanged absorbs those, so a lost WebView is only a reload.
         private void ViewState_OnChange(object sender, System.EventArgs e)
-        {
-            _shouldRender = true;
-            DispatchStateHasChanged();
-        }
-
-        private void OnAvatarChanged()
         {
             _shouldRender = true;
             DispatchStateHasChanged();
@@ -199,9 +192,6 @@ namespace Gizmo.Client.UI.Shared
         {
             UserMenuViewState.OnChange -= ViewState_OnChange;
             ViewState.OnChange -= ViewState_OnChange;
-
-            if (AvatarService.Current != null)
-                AvatarService.Current.Changed -= OnAvatarChanged;
 
             ClosePopupEventInterop?.Dispose();
 

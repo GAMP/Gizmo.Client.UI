@@ -41,6 +41,12 @@ namespace Gizmo.Client.UI.Shared
         }
 
         /// <summary>
+        /// The club has put a picture behind the shell. Without one the vendor falls
+        /// back to a stock photograph; this shell shows its atmosphere instead.
+        /// </summary>
+        private bool HasClubWallpaper => !string.IsNullOrEmpty(ClientInterfaceOptions.CurrentValue.Background);
+
+        /// <summary>
         /// Localized hour/minute abbreviation without its trailing period.
         /// </summary>
         /// <remarks>

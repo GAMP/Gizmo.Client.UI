@@ -102,7 +102,7 @@ namespace Gizmo.Client.UI.Components
             }
             else if (ViewState.PageIndex == 0)
             {
-                // Covers both "Сбросить QR" and the dropdown/dialog closing
+                // Covers both clearing the QR and the dropdown/dialog closing
                 // and reopening fresh - either way any in-flight watch from
                 // a previous QR is stale.
                 StopWatchingBalance();

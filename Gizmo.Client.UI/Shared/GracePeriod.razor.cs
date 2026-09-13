@@ -1,3 +1,4 @@
+using Gizmo.Client.UI.Localization;
 using System.Threading.Tasks;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -32,10 +33,10 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         HostReservationViewService HostReservationViewService { get; set; }
 
-        //Подтверждение кода идёт через штатный сервис диалога брони, а не через
-        //свой вызов API: там уже и валидация, и разбор ответа, и та ветка, где
-        //после подтверждения остаётся оплата. Диалог при этом не открыт — его
-        //внутренние Result(...) вызовы просто ни на что не действуют.
+        //Code confirmation goes through the stock reservation dialog service rather than a
+        //direct API call: validation, response handling and the "confirmed but unpaid"
+        //branch already live there. The dialog itself is not open, so its internal
+        //Result(...) calls simply do nothing.
         [Inject]
         ConfirmReservationDialogViewService ConfirmReservationDialogViewService { get; set; }
 
@@ -53,13 +54,12 @@ namespace Gizmo.Client.UI.Shared
         private bool _handedOffToPaymentDialog;
 
         /// <summary>
-        /// Льготный период вызван бронью, а не нулевым балансом.
+        /// The grace period was caused by a reservation rather than by a zero balance.
         /// </summary>
         /// <remarks>
-        /// Само событие льготного периода приходит от хоста без причины —
-        /// в <c>GracePeriodChangeEventArgs</c> есть только флаг и время. Зато
-        /// рядом лежит состояние брони этого компьютера, и если её время уже
-        /// наступило (или наступило время блокировки входа), причина ровно одна.
+        /// The grace period event carries no reason - <c>GracePeriodChangeEventArgs</c> has
+        /// only a flag and a time. But this machine's reservation state is right there, and
+        /// if its time has arrived (or the sign-in block time has) there is only one cause.
         /// </remarks>
         private bool IsReservationLock =>
             !_handedOffToPaymentDialog
@@ -118,8 +118,8 @@ namespace Gizmo.Client.UI.Shared
 
             try
             {
-                //Код генерирует сервер, проверять его здесь нечем и незачем -
-                //отдаём как есть, только без окружающих пробелов.
+                //The server generates the code; there is nothing to validate here, so it
+                //goes as typed, only trimmed.
                 ConfirmReservationDialogViewService.SetPin(_pin.Trim());
                 await ConfirmReservationDialogViewService.ConfirmAsync();
 
@@ -127,12 +127,12 @@ namespace Gizmo.Client.UI.Shared
 
                 if (!string.IsNullOrEmpty(state.ErrorMessage))
                 {
-                    _pinError = "Код не подошёл. Проверьте его в подтверждении брони.";
+                    _pinError = ShellStringOverrides.Get(ShellStringOverrides.GRACE_PIN_WRONG);
                     _pin = string.Empty;
                 }
                 else if (state.Step == 1)
                 {
-                    //Подтверждено, но бронь ещё не оплачена - дальше платёжный шаг.
+                    //Confirmed, but the reservation is unpaid - the payment step is next.
                 }
                 else
                 {
@@ -141,7 +141,7 @@ namespace Gizmo.Client.UI.Shared
             }
             catch
             {
-                _pinError = "Не получилось проверить код. Попробуйте ещё раз.";
+                _pinError = ShellStringOverrides.Get(ShellStringOverrides.GRACE_PIN_FAILED);
             }
             finally
             {
@@ -150,10 +150,9 @@ namespace Gizmo.Client.UI.Shared
             }
         }
 
-        //Оплату брони ведёт штатный диалог. Он рисуется в DialogHost на z-index
-        //1001, а этот оверлей сидит на 3000 - поверх него диалога не увидеть,
-        //поэтому оверлей на время оплаты уходит с экрана целиком. Ничего не
-        //блокируется: льготный период на то и льготный, что машина ещё работает.
+        //Reservation payment runs through the stock dialog, which renders in DialogHost at
+        //z-index 1001 while this overlay sits at 3000 - so the overlay leaves the screen
+        //for the duration. Nothing is blocked: a grace period means the machine still works.
         private Task OnOpenReservationPaymentAsync()
         {
             _handedOffToPaymentDialog = true;

@@ -1,4 +1,4 @@
-﻿@namespace Gizmo.Client.UI.Shared
+@namespace Gizmo.Client.UI.Shared
 @inherits CustomDOMComponentBase
 
 <div class="giz-dropdown-menu @(UserMenuViewState.NotificationsIsVisible ? "open" : "")"
@@ -8,8 +8,8 @@
         @* Russian written inline - see the note in
            MenuActiveApplicationsContainer.razor for why not resource keys. *@
         <div class="giz-menu-notifications__header">
-            <div class="giz-heading">Уведомления</div>
-            <div class="giz-menu-notifications__header__hint">Всё, что мы вам присылали</div>
+            <div class="giz-heading">@ShellText.Get(ShellText.NOTIFICATIONS_TITLE)</div>
+            <div class="giz-menu-notifications__header__hint">@ShellText.Get(ShellText.NOTIFICATIONS_HINT)</div>
         </div>
         <div class="giz-menu-notifications__body giz-scrollbar--v">
 
@@ -27,8 +27,8 @@
                 <div class="giz-menu-notification-default-item-wrapper">
                     <div class="giz-empty-state">
                         <i class="ph-fill ph-bell-slash giz-ph-icon"></i>
-                        <div class="giz-empty-state__title">Тишина</div>
-                        <div class="giz-empty-state__text">Новых уведомлений нет</div>
+                        <div class="giz-empty-state__title">@ShellText.Get(ShellText.NOTIFICATIONS_EMPTY_TITLE)</div>
+                        <div class="giz-empty-state__text">@ShellText.Get(ShellText.NOTIFICATIONS_EMPTY)</div>
                     </div>
                 </div>
             }
@@ -37,7 +37,7 @@
         @if (ViewState.Dismissed != null && ViewState.Dismissed.Any())
         {
             <div class="giz-menu-notifications__footer">
-                <div class="giz-menu-notifications__footer__action" @onclick="AcknowledgeAll">Очистить список</div>
+                <div class="giz-menu-notifications__footer__action" @onclick="AcknowledgeAll">@ShellText.Get(ShellText.NOTIFICATIONS_CLEAR)</div>
             </div>
         }
     </div>

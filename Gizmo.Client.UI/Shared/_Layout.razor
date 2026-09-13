@@ -43,7 +43,7 @@
        that showed was the near-black body colour and every panel looked like
        a flat grey box. It now fills the viewport as a fixed layer.
 
-       Base: a deep purple-charcoal gradient (#141026 → #0d0b16 → #120e1f).
+       Base: a deep purple-charcoal gradient (var(--gg-bg-2) → var(--gg-bg-1) → var(--gg-bg-3)).
        Clouds: three big, soft, coloured blobs — purple top-left, indigo
        bottom-right, magenta centre. Static, not drifting: an earlier version
        animated these with translate3d/scale, which read as the whole
@@ -51,13 +51,25 @@
        fixed gradient matches the reference design and the panels floating
        on top of it don't move relative to it either, so drift never actually
        added anything. ── */
+    /* The picture is the club's own wallpaper, and it is shown only when the club has
+       set one (.giz-background--club); with nothing configured the vendor falls back
+       to a stock photograph, and this shell shows its atmosphere instead. */
     .giz-background img { display: none; }
+    .giz-background--club { background: var(--gg-bg-0); }
+    .giz-background--club img {
+        display: block;
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
     /* The atmosphere is defined once and painted TWICE: on .giz-background and
        on html/body. That redundancy is the actual fix for the dark band that
        showed above the taskbar.
 
        The band was never "the shell failing to draw". It was the seam between
-       two differently coloured layers: body's own near black (#07050f) showing
+       two differently coloured layers: body's own near black (var(--gg-bg-0)) showing
        wherever the atmosphere layer did not land on exactly the same device
        pixel. Any of these opens such a seam, and all of them move with display
        scaling, which is why it looked scaling dependent:
@@ -71,13 +83,11 @@
        so it cannot be seen at any scale even if it still exists geometrically.
        background-attachment:fixed makes body's copy resolve against the
        viewport, so the two are pixel aligned rather than merely similar. */
+    /* The atmosphere itself is a palette token (--gg-atmosphere, _palette.scss): its
+       clouds and its base are the accent's own hues, so a club that picks another
+       accent gets a background in that colour without touching this file. */
     :root {
-        --giz-atmosphere:
-            radial-gradient(46rem 42rem at 14% 8%, rgba(139,92,246,0.42), transparent 60%),
-            radial-gradient(40rem 40rem at 60% 88%, rgba(217,70,239,0.18), transparent 60%),
-            radial-gradient(48rem 46rem at 92% 96%, rgba(99,102,241,0.34), transparent 58%),
-            radial-gradient(34rem 34rem at 80% 18%, rgba(168,85,247,0.20), transparent 62%),
-            linear-gradient(160deg, #141026 0%, #0d0b16 55%, #120e1f 100%);
+        --giz-atmosphere: var(--gg-atmosphere);
     }
 
     /* #app MUST be in this chain. It is the div the Blazor root component is
@@ -125,7 +135,11 @@
         overflow: hidden;
         position: relative;
         z-index: 1; /* sits above the fixed .giz-background atmosphere */
-        padding: 0.8rem 1.4rem 1.4rem;
+        /* The bottom inset is the same hair the top has: the content column runs to
+           the screen's edge instead of stopping a hand's width above it, which read
+           as a strip cut off the shell (the home board adds nothing of its own at the
+           bottom either - see .gg-board). */
+        padding: 0.8rem 1.4rem 0.8rem;
         gap: 1.4rem;
         box-sizing: border-box;
     }
@@ -144,32 +158,76 @@
        less obviously than before. Absolute positioning has no such
        dependency: the HUD's centre is exactly 50% of the bar, full stop,
        regardless of what's on either side. */
+    /* Three tracks: search and reservation on the left, the session tile in the middle,
+       icons and profile on the right.
+
+       The centre tile used to be absolutely positioned in the middle with flex sides. The
+       centre then depended on nothing - but the tile took no room in the flow, so anything
+       to its left slid underneath it, and the gap up to it had to be guessed as a number.
+
+       minmax(0, 1fr) on both sides is the exact centre: the side tracks are equal by
+       definition, because their lower bound is zero and their content cannot inflate them.
+       The gaps are now computed by the grid from a single gap value. */
     .giz-top-bar {
         flex-shrink: 0;
         position: relative;
-        display: flex;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
         align-items: center;
-        justify-content: space-between;
+        gap: 1.2rem;
         height: 7.2rem;
         z-index: 500;
     }
-    .giz-top-bar__hud {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
+    /* Stretched across its track and aligned inside it, not justify-self: end: an item
+       aligned at the end is sized to its content, and content wider than the track then
+       runs over the session tile in the middle. */
+    .giz-top-bar__right-group { justify-self: stretch; justify-content: flex-end; }
+    /* Left track: search and the reservation tile. The tile takes the rest of the track,
+       so the gap between it and the centre tile is exactly the gap between the search and
+       the tile - both come from the bar's own gap. */
+    .giz-top-bar__left {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        min-width: 0;
     }
+    /* When the bar is short of room the search yields, not the tile: a narrower search is
+       still a search, while a tile clipped to "This mach..." says nothing. */
+    .giz-top-bar__left .giz-top-bar__search,
+    .giz-top-bar__left .giz-header__global-search {
+        min-width: 22rem;
+        flex-shrink: 1;
+    }
+    .giz-top-bar__left .giz-resv {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+    }
+    /* The countdown tail goes first - the start time matters more. */
+    .giz-top-bar__left .giz-resv__lead { flex: none; }
+    .giz-top-bar__left .giz-resv__count {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    /* min-width: 0 so the group can be narrower than its content wants: on a 1366 panel
+       the right track is about 40rem and the icon pill, an open deployment banner and
+       the profile pill ask for 60. Without it the group kept its full width and slid
+       over the session tile. The banner is what gives way - see .giz-deploy. */
     .giz-top-bar__right-group {
         display: flex;
         align-items: center;
         gap: 1.2rem;
+        min-width: 0;
     }
-    /* Shared glass surface for every top-bar pill. */
+    /* Shared glass surface for every top-bar pill: a clear wash over the blur. The
+       panels that OPEN from these pills are a different material - see "DROPDOWN
+       PANEL" below - because they sit over content and must hide it. */
     .giz-top-bar__search .giz-global-search,
     .giz-top-bar__hud,
     .giz-top-bar__icons,
-    .giz-avatar-nudge,
     .giz-deploy,
+    .giz-resv,
     .giz-top-bar .giz-user-menu-button {
         background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
         backdrop-filter: blur(4rem) saturate(1.6);
@@ -184,6 +242,7 @@
        them, sized to its own content (no flex-grow) so it reads as a snug
        pill instead of a stretched empty bar. */
     .giz-top-bar__hud {
+        position: relative;
         display: flex;
         align-items: center;
         min-width: 0;
@@ -191,6 +250,24 @@
         padding: 0 2rem;
         gap: 2rem;
         overflow: visible;
+        /* The glass lives on ::before, not on the capsule itself: an element with
+           backdrop-filter is a "backdrop root", and any backdrop-filter inside it can
+           only see what is painted inside it. The tariff tooltip opens from within
+           this capsule, and with the blur here it could not blur the page behind it -
+           it came out see-through instead of frosted. Same trick as .giz-top-bar__icons. */
+        background: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+    .giz-top-bar__hud::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        border-radius: inherit;
+        background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+        backdrop-filter: blur(4rem) saturate(1.6);
+        -webkit-backdrop-filter: blur(4rem) saturate(1.6);
     }
     .giz-top-bar__divider {
         width: 1px;
@@ -260,8 +337,7 @@
         letter-spacing: 0.01em;
         white-space: nowrap;
     }
-    /* Profile pill — its own separate glass surface (brief: "отдельная
-       пилюля профиля"), not fused with the icon-actions pill next to it. */
+    /* Profile pill - its own separate glass surface, not fused with the icon pill. */
     .giz-top-bar__account {
         flex-shrink: 0;
     }
@@ -269,128 +345,47 @@
         height: 100% !important;
     }
 
-    /* ── Avatar nudge banner ──
-       Sits between the icon-actions pill and the profile pill as a real
-       flex item, collapsed to width:0 at rest so it takes no space. When
-       "open" it grows to its full width, which pushes the icon-actions
-       pill left via ordinary flex reflow - no fake translateX needed, the
-       "panel shifts left" effect the brief asked for falls out of the
-       layout itself. Its own glass surface comes from the shared-pill
-       selector list above (.giz-avatar-nudge added to it). */
-    .giz-avatar-nudge {
-        display: flex;
-        align-items: center;
-        height: 5.8rem;
-        width: 0;
-        padding: 0;
-        gap: 0;
-        overflow: hidden;
-        opacity: 0;
-        flex-shrink: 0;
-        transition:
-            width 0.5s cubic-bezier(0.19, 1, 0.22, 1),
-            padding 0.5s cubic-bezier(0.19, 1, 0.22, 1),
-            opacity 0.35s ease;
-    }
-    .giz-avatar-nudge.open {
-        width: 38rem;
-        padding: 0 1.6rem 0 1.4rem;
-        gap: 1.1rem;
-        opacity: 1;
-        animation: giz-avatar-nudge-pulse 3.2s ease-in-out 0.6s infinite;
-    }
-    /* Accent fill, not the shared neutral glass - this one has to be seen. */
-    .giz-avatar-nudge.open {
-        background: linear-gradient(135deg, rgba(176,107,255,0.95), rgba(124,58,237,0.85)) !important;
-        border-color: rgba(255,255,255,0.28) !important;
-    }
-    .giz-avatar-nudge__badge {
-        flex-shrink: 0;
-        font-size: 2.6rem;
-        color: #fff;
-        opacity: 0.95;
-    }
-    .giz-avatar-nudge__text {
-        flex: 1 1 auto;
-        min-width: 0;
-    }
-    /* Forced onto one line - two lines total for the banner (title + sub)
-       reads a lot cleaner than three, and there's no third element competing
-       for width anymore now that the close button is gone. */
-    .giz-avatar-nudge__text__title {
-        font-family: Rubik, sans-serif;
-        font-size: 1.28rem;
-        font-weight: 800;
-        line-height: 1.6rem;
-        color: #fff;
-        letter-spacing: 0.005em;
-        white-space: nowrap;
-    }
-    .giz-avatar-nudge__text__sub {
-        font-size: 1.2rem;
-        font-weight: 500;
-        line-height: 1.6rem;
-        color: rgba(255,255,255,0.75);
-    }
-    .giz-avatar-nudge__arrow {
-        flex-shrink: 0;
-        font-size: 1.8rem;
-        color: #fff;
-        animation: giz-avatar-nudge-arrow 1.6s ease-in-out infinite;
-    }
-    /* Breathing glow rather than a border blink - reads as "look here"
-       without flickering in the corner of the eye. */
-    @@keyframes giz-avatar-nudge-pulse {
-        0%, 100% {
-            box-shadow:
-                inset 0 1px 0 rgba(255,255,255,0.28),
-                0 1.2rem 3rem -1rem rgba(124,58,237,0.5);
-            transform: scale(1);
-        }
-        50% {
-            box-shadow:
-                inset 0 1px 0 rgba(255,255,255,0.28),
-                0 1.2rem 3rem -1rem rgba(124,58,237,0.6);
-            transform: scale(1.015);
-        }
-    }
-    @@keyframes giz-avatar-nudge-arrow {
-        0%, 100% { transform: translateX(0); opacity: 0.7; }
-        50% { transform: translateX(4px); opacity: 1; }
-    }
+    /* Deployment banner.
+       Width 0 at rest, growing when it appears, pushing the icon pill left by ordinary
+       flex reflow.
 
-    /* ── Плашка развёртывания ──
-       Тот же слот и та же механика, что у аватарки: ширина 0 в покое, рост при
-       появлении, панель иконок уезжает влево обычным перетоком флекса.
-
-       Полоса прогресса — это САМА плашка: заливка идёт слоем под содержимым от
-       левого края к правому. Отдельная тонкая полоска под текстом читалась как
-       деталь оформления, а не как «сейчас что-то происходит». */
+       Progress is a ring around the badge plus a feathered wash under the content. The
+       first version was a hard-edged fill with a bright rim, and a segment sliding along
+       the pill while the size was unknown - "a square moved along a strip". Nothing here
+       has a moving edge any more: the wash fades out over its last 7rem, the ring turns
+       in place, and the sheen is a pass of light over the whole pill. */
+    /* Sized through flex-basis rather than width so the banner can shrink when the bar is
+       short of room (a 1366 panel, or a reservation tile on the left): the text clips
+       inside it and the badge, percentage and close button stay. The growth on
+       appearance is the basis going from zero, the same motion as before. */
     .giz-deploy {
         position: relative;
         display: flex;
         align-items: center;
         height: 5.8rem;
-        width: 0;
+        flex: 0 1 0rem;
+        min-width: 0;
         padding: 0;
         gap: 0;
         overflow: hidden;
         opacity: 0;
-        flex-shrink: 0;
         transition:
-            width 0.5s cubic-bezier(0.19, 1, 0.22, 1),
+            flex-basis 0.5s cubic-bezier(0.19, 1, 0.22, 1),
             padding 0.5s cubic-bezier(0.19, 1, 0.22, 1),
             opacity 0.35s ease;
     }
     .giz-deploy.open {
-        width: 34rem;
-        padding: 0 0.7rem 0 1.2rem;
+        flex-basis: 34rem;
+        /* Never less than the badge and the close button: a banner that cannot be
+           dismissed is worse than one that overlaps by a few pixels. */
+        min-width: 9rem;
+        padding: 0 3.8rem 0 1.2rem;
         gap: 1.1rem;
         opacity: 1;
-        border-color: rgba(176,107,255,0.45) !important;
+        border-color: rgba(var(--gg-accent-rgb), 0.45) !important;
         box-shadow:
             inset 0 1px 0 rgba(255,255,255,0.16),
-            0 1.2rem 3rem -1.2rem rgba(124,58,237,0.55) !important;
+            0 1.2rem 3rem -1.2rem rgba(var(--gg-accent-rgb), 0.55) !important;
     }
     .giz-deploy.open.is-done {
         border-color: rgba(94,216,148,0.5) !important;
@@ -398,75 +393,98 @@
             inset 0 1px 0 rgba(255,255,255,0.16),
             0 1.2rem 3rem -1.2rem rgba(94,216,148,0.45) !important;
     }
-    /* Заливка. min-width нужен для нуля: «0%» без него выглядит как пустая
-       плашка, по которой не понять, началось ли вообще что-нибудь. */
+    /* The wash. Its edge is feathered by a mask over the last 7rem, so the width
+       growing once a second reads as light spreading, not as a block moving. min-width
+       keeps a whisper of it at 0%: the mask fades that whisper to nothing anyway. */
     .giz-deploy__fill {
         position: absolute;
         top: 0;
         bottom: 0;
         left: 0;
         z-index: 0;
-        min-width: 5rem;
-        background: linear-gradient(90deg, rgba(176,107,255,0.42), rgba(139,92,246,0.16));
-        /* Прогресс приходит раз в секунду — без этого заливка шла бы ступеньками. */
-        transition: width 0.9s linear;
-    }
-    /* Передний край заливки: тонкая яркая грань с дыханием. Именно она
-       читается как «процесс идёт», даже когда процент стоит на месте. */
-    .giz-deploy__fill::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        width: 0.2rem;
-        background: #d3a9ff;
-        box-shadow: 0 0 1.2rem 0.2rem rgba(176,107,255,0.55);
-        animation: giz-deploy-edge 1.6s ease-in-out infinite;
+        min-width: 6rem;
+        background: linear-gradient(90deg, rgba(var(--gg-accent-rgb), 0.3), rgba(var(--gg-accent-rgb), 0.14));
+        mask-image: linear-gradient(90deg, #000, #000 calc(100% - 7rem), transparent);
+        -webkit-mask-image: linear-gradient(90deg, #000, #000 calc(100% - 7rem), transparent);
+        /* Progress arrives once a second - without this the fill would step. */
+        transition: width 0.9s linear, opacity 0.4s ease;
     }
     .giz-deploy.is-done .giz-deploy__fill {
-        background: linear-gradient(90deg, rgba(94,216,148,0.34), rgba(63,184,122,0.14));
+        background: linear-gradient(90deg, rgba(94,216,148,0.26), rgba(63,184,122,0.1));
+        mask-image: none;
+        -webkit-mask-image: none;
     }
-    .giz-deploy.is-done .giz-deploy__fill::after { display: none; }
-    /* Размер файлов ещё неизвестен: процентов нет, поэтому по плашке ездит
-       отрезок. !important бьёт inline width из разметки. */
+    /* File sizes are not known yet: no percentage, no wash - the ring turns instead. */
     .giz-deploy.is-waiting .giz-deploy__fill {
-        width: 34% !important;
-        transition: none;
-        animation: giz-deploy-slide 1.8s ease-in-out infinite;
+        opacity: 0;
     }
-    /* Блик поверх всей плашки — второй, более медленный признак жизни.
-       z-index: 1, а не 0: псевдоэлемент ::before идёт первым ребёнком, и при
-       равном z-index заливка (настоящий элемент, позже в DOM) закрыла бы его. */
+    /* Sheen across the whole banner - a slow pass of light, the second sign of life.
+       z-index: 1 rather than 0: ::before is the first child, and at equal z-index the
+       fill (a real element, later in the DOM) would cover it. */
     .giz-deploy.open:not(.is-done)::before {
         content: '';
         position: absolute;
         inset: 0;
         z-index: 1;
         pointer-events: none;
-        background: linear-gradient(100deg, transparent 22%, rgba(255,255,255,0.09) 46%, transparent 68%);
+        background: linear-gradient(100deg, transparent 24%, rgba(255,255,255,0.07) 48%, transparent 70%);
         background-size: 240% 100%;
-        animation: giz-deploy-sheen 2.6s ease-in-out infinite;
+        animation: giz-deploy-sheen 3.4s ease-in-out infinite;
     }
+    /* The badge: the icon on a faint disc, with the progress ring drawn around it. */
     .giz-deploy__badge {
         position: relative;
         z-index: 1;
         flex-shrink: 0;
-        width: 3.4rem;
-        height: 3.4rem;
+        width: 3.6rem;
+        height: 3.6rem;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 1.1rem;
-        background: rgba(176,107,255,0.24);
-        color: #e2caff;
-        font-size: 1.9rem;
+        border-radius: 50%;
+        background: rgba(var(--gg-accent-rgb), 0.14);
+        color: var(--gg-accent-pale);
+        font-size: 1.6rem;
+    }
+    .giz-deploy__ring {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        /* The bar starts at twelve o'clock. */
+        transform: rotate(-90deg);
+    }
+    .giz-deploy__ring-track,
+    .giz-deploy__ring-bar {
+        fill: none;
+        stroke-width: 2.6;
+    }
+    .giz-deploy__ring-track {
+        stroke: rgba(255,255,255,0.12);
+    }
+    /* Circumference of the r=17.5 circle; the markup writes the offset. */
+    .giz-deploy__ring-bar {
+        stroke: var(--gg-accent-light);
+        stroke-linecap: round;
+        stroke-dasharray: 109.96;
+        transition: stroke-dashoffset 0.9s linear;
+    }
+    /* Unknown size: a short arc going round. The markup writes offset 0 for this. */
+    .giz-deploy.is-waiting .giz-deploy__ring {
+        animation: giz-deploy-spin 1.4s linear infinite;
+    }
+    .giz-deploy.is-waiting .giz-deploy__ring-bar {
+        stroke-dasharray: 26 83.96;
+        transition: none;
     }
     .giz-deploy.is-done .giz-deploy__badge {
-        background: rgba(94,216,148,0.2);
+        background: rgba(94,216,148,0.16);
         color: #7ce8ad;
     }
-    /* Тело плашки — кнопка в диспетчер приложений. */
+    .giz-deploy.is-done .giz-deploy__ring-bar {
+        stroke: #5ed894;
+    }
+    /* The banner body is a button into the application manager. */
     .giz-deploy__body {
         position: relative;
         z-index: 1;
@@ -492,6 +510,8 @@
         text-transform: uppercase;
         color: #fff;
         white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .giz-deploy__sub {
         font-size: 1.25rem;
@@ -513,8 +533,14 @@
         font-variant-numeric: tabular-nums;
         white-space: nowrap;
     }
+    /* Pinned to the right edge rather than last in the row: when the banner has been
+       squeezed, the row's tail is what gets clipped, and the close button must not be
+       part of the tail. The banner's right padding keeps the text clear of it. */
     .giz-deploy__close {
-        position: relative;
+        position: absolute;
+        right: 0.7rem;
+        top: 50%;
+        transform: translateY(-50%);
         z-index: 1;
         flex-shrink: 0;
         width: 2.8rem;
@@ -535,26 +561,22 @@
         background: rgba(255,255,255,0.1);
         color: #fff;
     }
-    @@keyframes giz-deploy-edge {
-        0%, 100% { opacity: 0.55; }
-        50% { opacity: 1; }
-    }
     @@keyframes giz-deploy-sheen {
         0% { background-position: 130% 0; }
         100% { background-position: -30% 0; }
     }
-    @@keyframes giz-deploy-slide {
-        0% { transform: translateX(-105%); }
-        100% { transform: translateX(300%); }
+    @@keyframes giz-deploy-spin {
+        from { transform: rotate(-90deg); }
+        to { transform: rotate(270deg); }
     }
 
-    /* Топ-бар не обрезает выпадающие меню */
+    /* The top bar must not clip dropdown menus */
     .giz-top-bar { overflow: visible !important; }
     .giz-actions-bar { overflow: visible !important; }
     .giz-top-bar .giz-header__user-menu-item { overflow: visible !important; }
-    /* Дропдауны: z-index внутри стэкинг-контекста топ-бара (z-index: 500).
-       overflow и max-height не трогаем — скин управляет ими через внутренние элементы,
-       которые имеют box-shadow/border-radius (overflow:hidden обрезает тени). */
+    /* Dropdowns: z-index inside the top bar's stacking context (z-index: 500).
+       overflow and max-height are left alone - the skin drives them through inner
+       elements that carry box-shadow/border-radius, which overflow:hidden would clip. */
     .giz-top-bar .giz-dropdown-menu {
         z-index: 9000 !important;
         position: absolute !important;
@@ -702,9 +724,8 @@
     }
     .giz-sidebar__fill { display: none; }
 
-    /* Override skin CSS: vertical icon-only nav. Items are a fixed ~52px
-       square (icon 32px + 10px padding each side) with an 8px gap, per the
-       brief's "пункты одинаковой высоты (~52px), одинаковый gap (8px)". */
+    /* Override skin CSS: vertical icon-only nav. Items are a fixed ~52px square
+       (icon 32px + 10px padding each side) with an 8px gap. */
     .giz-left-panel .giz-header__modules-menu {
         display: flex !important;
         flex-direction: column !important;
@@ -729,10 +750,9 @@
         height: auto !important;
         width: 100% !important;
         box-sizing: border-box !important;
-        /* Без подложки и без обводки. В этой колонке ниже стоят голые цветные
-           иконки приложений, и коробки над ними читались как другой интерфейс,
-           вклеенный сверху. Заметность даёт не рамка, а размер и яркость
-           самого глифа. */
+        /* No plate and no outline. Below this column stand bare coloured application
+           icons, and boxes above them read as a different interface pasted on top.
+           Prominence comes from the glyph's size and brightness, not from a frame. */
         color: rgba(255,255,255,0.66) !important;
         background: transparent !important;
         box-shadow: none !important;
@@ -745,9 +765,9 @@
     }
     /* Active item: a soft translucent purple squircle, not a solid fill
        (brief: explicitly calls out the old solid-fill treatment as wrong). */
-    /* Активный раздел — акцентный глиф и короткая метка у левого края рейла,
-       а не залитая коробка. Метка стоит вне потока, поэтому размер и положение
-       самих пунктов от переключения раздела не меняются. */
+    /* Active section: an accented glyph and a short marker at the rail's left edge rather
+       than a filled box. The marker is out of flow, so the items themselves do not move
+       when the section changes. */
     .giz-left-panel .giz-header__modules-menu-item > a.active {
         background: rgba(var(--gg-accent-rgb),0.10) !important;
         color: var(--gg-accent) !important;
@@ -768,9 +788,8 @@
     .giz-left-panel .giz-header__modules-menu-item > a {
         position: relative !important;
     }
-    /* Один размер с иконками быстрого запуска под ними: раньше глиф был
-       2.2rem против ~4rem у ярлыков, и рейл выглядел так, будто наверху
-       что-то мелкое и служебное, а не главная навигация. */
+    /* Same size as the quick launch icons below: the glyph used to be 2.2rem against
+       ~4rem, which made the main navigation look like something small and secondary. */
     .giz-left-panel .giz-header__modules-menu-item > a .giz-ph-icon {
         font-size: 3.2rem;
         flex-shrink: 0;
@@ -792,7 +811,7 @@
         /* Fluid, like everything else on the board: a fixed 1.6rem gutter that
            reads as a comfortable margin on a 1080 panel leaves a tile pressed
            against the glass on a 1440 one. */
-        padding: clamp(1.2rem, 1.5vh, 2.6rem) clamp(1.4rem, 1.4vw, 3.2rem) clamp(1.4rem, 1.7vh, 2.8rem);
+        padding: clamp(1.2rem, 1.5vh, 2.6rem) clamp(1.4rem, 1.4vw, 3.2rem) 0;
     }
 
     /* ── Reservation notice ──
@@ -804,56 +823,76 @@
        in peripheral vision but it never reads as flashing, which is what a
        fast or high contrast pulse would look like on a screen someone sits in
        front of for hours. */
+    /* The reservation tile is the same tile as the rest of the bar - same height, radius
+       and glass (shared rule above) - only in a warm tone. The amber is not "warning" but
+       "this machine is booked soon": the one thing in the bar that is about the machine
+       rather than the session. */
     .giz-resv {
-        flex: none;
         display: flex;
         align-items: center;
-        gap: 0.7rem;
-        margin-left: 1.2rem;
-        padding: 0.55rem 1.1rem;
-        border-radius: 99px;
+        gap: 1rem;
+        height: 5.8rem;
+        padding: 0 1.8rem;
         white-space: nowrap;
-        font-size: 1.25rem;
-        color: #f4f2f9;
-        background: rgba(var(--gg-accent-rgb), 0.10);
-        border: 1px solid rgba(var(--gg-accent-rgb), 0.28);
-        animation: giz-resv-in 0.5s cubic-bezier(0.2, 0.8, 0.3, 1) both,
-                   giz-resv-breathe 6s ease-in-out 0.6s infinite;
+        font-size: 1.3rem;
+        color: var(--gg-ink);
+        background:
+            linear-gradient(180deg, rgba(251, 191, 36, 0.12), rgba(251, 191, 36, 0.05)),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)) !important;
+        border-color: rgba(251, 191, 36, 0.26) !important;
+        animation: giz-resv-in 0.55s cubic-bezier(0.19, 1, 0.22, 1) both;
     }
-    .giz-resv__dot {
-        width: 0.6rem;
-        height: 0.6rem;
-        border-radius: 50%;
-        background: var(--gg-accent);
+    /* An icon rather than the previous dot, which named nothing. The same calendar as the
+       reservation tile on sign-in and on the lock screen. The breathing moved onto the
+       icon: the whole tile pulsing read as a fault in a row of still ones. */
+    .giz-resv__icon {
         flex: none;
+        font-size: 1.9rem;
+        color: #fbbf24;
+        animation: giz-resv-breathe 6s ease-in-out 0.6s infinite;
     }
     .giz-resv__lead { font-weight: 700; }
-    .giz-resv__count { color: rgba(244, 242, 249, 0.5); }
-
-    /* Once the shell's own notification window is reached the pill warms up:
-       same information, more weight, no new element appearing. */
-    .giz-resv--soon {
-        background: rgba(251, 191, 36, 0.10);
-        border-color: rgba(251, 191, 36, 0.4);
+    .giz-resv__at {
+        font-family: 'Space Grotesk', 'Manrope', sans-serif;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        color: #fbbf24;
     }
-    .giz-resv--soon .giz-resv__dot { background: #fbbf24; }
+    .giz-resv__count { color: rgba(var(--gg-ink-rgb), 0.5); }
 
+    /* Time is up - same tile, more weight: a brighter outline and the icon stops
+       breathing. Nothing new appears on screen. */
+    .giz-resv--soon {
+        border-color: rgba(251, 191, 36, 0.55) !important;
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.16),
+            0 0 0 1px rgba(251, 191, 36, 0.16),
+            0 2.4rem 6rem -3.4rem rgba(0, 0, 0, 0.7) !important;
+    }
+    .giz-resv--soon .giz-resv__icon { animation: none; }
+    .giz-resv--soon .giz-resv__count { color: rgba(251, 191, 36, 0.75); }
+
+    /* Entrance matches the deployment banner: the tile unrolls left to right rather than
+       fading in place. The banner does it by growing from zero width; here the width comes
+       from the grid track, so the same gesture is a clip-path on the same curve and
+       duration. */
     @@keyframes giz-resv-in {
-        from { opacity: 0; transform: translateY(-0.4rem); }
-        to   { opacity: 1; transform: none; }
+        from { opacity: 0; clip-path: inset(0 100% 0 0 round 1.6rem); }
+        45%  { opacity: 1; }
+        to   { opacity: 1; clip-path: inset(0 0 0 0 round 1.6rem); }
     }
     @@keyframes giz-resv-breathe {
         0%, 100% { opacity: 0.72; }
         50%      { opacity: 1; }
     }
     @@media (prefers-reduced-motion: reduce) {
-        .giz-resv { animation: none; }
+        .giz-resv,
+        .giz-resv__dot { animation: none; }
     }
 
-    /* ── Search: always a wide pill with the icon and a placeholder visible
-       (brief 6.1: "широкая пилюля ... НЕ иконка-квадрат") - no more
-       collapse-to-icon. Its own floating chip; background/border/shadow come
-       from the shared .giz-top-bar__search .giz-global-search rule above. */
+    /* Search: always a wide pill with the icon and a placeholder visible, never
+       collapsing to an icon. Background, border and shadow come from the shared
+       .giz-top-bar__search .giz-global-search rule above. */
     .giz-top-bar .giz-header__global-search {
         width: auto;
         flex-shrink: 0;
@@ -899,7 +938,7 @@
         display: block !important;
     }
     .giz-top-bar .giz-global-search .giz-global-search-dropdown {
-        background: linear-gradient(180deg, rgba(40,30,58,0.82), rgba(18,13,26,0.9)) !important;
+        background: linear-gradient(180deg, rgba(var(--gg-glass-rgb), 0.97), rgba(var(--gg-glass-2-rgb), 0.985)) !important;
         backdrop-filter: blur(5rem) saturate(1.7) !important;
         -webkit-backdrop-filter: blur(5rem) saturate(1.7) !important;
         border: 1px solid rgba(255,255,255,0.14) !important;
@@ -966,9 +1005,8 @@
         align-items: center !important;
         justify-content: center !important;
     }
-    /* Icon buttons: bare glyphs, no persistent tile — a hover/open background
-       is the only surface they ever get (brief section 6.5: "Иконочные:
-       38–40px, радиус 11–12px, прозрачные, hover — rgba(255,255,255,.08)"). */
+    /* Icon buttons: bare glyphs, no persistent tile - a hover/open background is the
+       only surface they ever get. */
     .giz-top-bar .user-menu-item-button--box {
         background: transparent !important;
         color: rgba(255,255,255,0.55) !important;
@@ -1020,6 +1058,13 @@
         cursor: pointer;
         transition: background 0.15s, border-color 0.15s, color 0.15s;
     }
+    /* On a narrow bar the top-up pill keeps its icon and gives up its word, like the
+       ghost icons next to it: the room goes to the session tile and to whatever the bar
+       has to say (a deployment, a reservation). */
+    @@media (max-width: 1440px) {
+        .giz-top-bar .giz-topup-pill { padding: 0 1.1rem; }
+        .giz-top-bar .giz-topup-pill > span { display: none; }
+    }
     .giz-top-bar .giz-topup-pill:hover {
         background: rgba(var(--gg-accent-rgb),0.28);
         border-color: rgba(var(--gg-accent-rgb),0.55);
@@ -1068,7 +1113,7 @@
     }
     .giz-top-bar .giz-header__user-menu-item[data-tooltip]:hover::after,
     .giz-top-bar .giz-header__user-menu-item[data-tooltip]:hover::before { opacity: 1; }
-    /* Скрываем тултип когда дропдаун открыт */
+    /* Hide the tooltip while the dropdown is open */
     .giz-top-bar .giz-header__user-menu-item.open[data-tooltip]::after,
     .giz-top-bar .giz-header__user-menu-item.open[data-tooltip]::before { opacity: 0 !important; }
     /* Top-up already has a visible label - the tooltip would just repeat it */
@@ -1101,21 +1146,26 @@
        with a ring of glass around the edge. The Avatar component renders a
        fixed-size box by default (giz-avatar--medium = 4rem) and its img
        has no object-fit, so left alone the picture neither filled the
-       circle nor kept its aspect ratio. */
+       circle nor kept its aspect ratio. Without a picture the button stays
+       plain glass with a thin person glyph: no accent disc, nothing that
+       reads as a badge or a call to action. */
     .giz-top-bar .giz-user-menu-button { overflow: hidden !important; }
     .giz-top-bar .giz-user-menu-button .giz-user-avatar {
         width: 100% !important;
         height: 100% !important;
         min-width: 0 !important;
         border-radius: 50% !important;
-        background: linear-gradient(135deg, rgba(181,123,255,0.35), rgba(124,58,237,0.18)) !important;
-        color: var(--gg-accent) !important;
-        font-size: 2.4rem;
+        background: transparent !important;
+        color: rgba(var(--gg-ink-rgb), 0.78) !important;
+        font-size: 2.3rem;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         flex-shrink: 0 !important;
         overflow: hidden !important;
+    }
+    .giz-top-bar .giz-user-menu-button:hover .giz-user-avatar {
+        color: var(--gg-ink) !important;
     }
     .giz-top-bar .giz-user-menu-button .giz-user-avatar img {
         width: 100% !important;
@@ -1145,24 +1195,10 @@
         color: var(--gg-accent) !important;
         font-size: 1.7rem;
     }
+    /* The tariff tooltip itself is styled in _time-tooltip.scss; the wrapper only has
+       to sit above the rest of the bar. */
     .giz-topbar-tariff .giz-user-balance-tooltip-wrapper {
-        top: calc(100% + 1rem) !important;
-        left: 0 !important;
-        transform: none !important;
-        right: auto !important;
-        margin-right: 0 !important;
         z-index: 9001 !important;
-    }
-    .giz-topbar-tariff .giz-user-balance-tooltip {
-        background: linear-gradient(180deg, rgba(40,30,58,0.82), rgba(18,13,26,0.9)) !important;
-        backdrop-filter: blur(5rem) saturate(1.7) !important;
-        -webkit-backdrop-filter: blur(5rem) saturate(1.7) !important;
-        border: 1px solid rgba(255,255,255,0.14) !important;
-        border-radius: 2rem !important;
-        box-shadow:
-            inset 0 1px 0 rgba(255,255,255,0.2),
-            0 4rem 9rem -2.6rem rgba(0,0,0,0.85) !important;
-        color: rgba(255,255,255,0.9) !important;
     }
     .giz-topbar-stat {
         display: flex;
@@ -1191,16 +1227,18 @@
     }
 
     /* ══════════════════════════════════════════════
-       DROPDOWN PANEL REDESIGN — dark glass
+       DROPDOWN PANEL — frosted, effectively opaque
        ══════════════════════════════════════════════ */
-    /* Same liquid-glass recipe as the profile popup — these were still the
-       old near-opaque dark boxes (rgba(10,14,22,0.97)), which read as a
-       different material from everything else floating on the wallpaper. */
+    /* Every panel that opens from the bar (this list, the search dropdown, the
+       profile popup, the tariff tooltip) is filled at 0.97-0.985 of the glass colour.
+       They sit over the page, and the page must not show through them: a backdrop
+       blur is not something a popup inside a blurred pill can count on, so the fill
+       does the hiding and the blur only softens what little is left. */
     .giz-top-bar .giz-active-apps,
     .giz-top-bar .giz-menu-notifications,
     .giz-top-bar .giz-menu-assistance,
     .giz-top-bar .giz-user-online-deposit-menu {
-        background: linear-gradient(180deg, rgba(40,30,58,0.82), rgba(18,13,26,0.9)) !important;
+        background: linear-gradient(180deg, rgba(var(--gg-glass-rgb), 0.97), rgba(var(--gg-glass-2-rgb), 0.985)) !important;
         backdrop-filter: blur(5rem) saturate(1.7) !important;
         -webkit-backdrop-filter: blur(5rem) saturate(1.7) !important;
         border: 1px solid rgba(255,255,255,0.14) !important;
@@ -1226,7 +1264,7 @@
         inset: 0;
         z-index: -1;
         border-radius: inherit;
-        background: linear-gradient(180deg, rgba(40,30,58,0.82), rgba(18,13,26,0.9));
+        background: linear-gradient(180deg, rgba(var(--gg-glass-rgb), 0.97), rgba(var(--gg-glass-2-rgb), 0.985));
         backdrop-filter: blur(5rem) saturate(1.7);
         -webkit-backdrop-filter: blur(5rem) saturate(1.7);
     }
@@ -1279,13 +1317,15 @@
         background: rgba(255,255,255,0.05);
         border-color: rgba(255,255,255,0.08);
     }
+    /* The icon alone, no plate under it: most executables ship a square icon on
+       a transparent ground, and a tile behind it read as a second, dimmer icon. */
     .giz-top-bar .giz-active-app-card__image {
         padding: 0 !important;
         width: 4.4rem;
         height: 4.4rem;
         border-radius: 1.1rem;
         overflow: hidden;
-        background: rgba(255,255,255,0.05);
+        background: none;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1302,7 +1342,7 @@
     .giz-top-bar .giz-active-app-card__info__title {
         font-size: 1.5rem !important;
         font-weight: 600;
-        color: #f2eefb !important;
+        color: var(--gg-ink) !important;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -1368,12 +1408,10 @@
         color: #fff !important;
     }
 
-    /* ── Online top-up flyout ──
-       The shared inner content (amount picker / QR step) is styled once,
-       unscoped, in _user-online-deposit.scss - it's the exact same markup
-       whether it's hosted here in the dropdown or in the "Пополнить"
-       dialog reached from the tariff tooltip / grace period screen. Only
-       the dropdown's own outer panel chrome lives here. */
+    /* Online top-up flyout.
+       The shared inner content (amount picker / QR step) is styled once, unscoped, in
+       _user-online-deposit.scss - it is the same markup whether hosted here in the
+       dropdown or in the top-up dialog. Only the dropdown's own panel chrome is here. */
     .giz-top-bar .giz-user-online-deposit-menu {
         min-width: 40rem !important;
         border-radius: 2rem !important;
@@ -1386,12 +1424,11 @@
         border-top: none !important;
     }
 
-    /* ── Tariff tooltip ──
+    /* ── Tariff ──
        The hover state used to paint a box-shadow glow on an element the
        layout had already forced to border-radius:0 - a hard rectangular
-       halo around the tariff name, which is the "ugly square" it looked
-       like. There is no background or border left to highlight, so the
-       hover treatment is now just the text brightening. */
+       halo around the tariff name. There is no background or border left
+       to highlight, so the hover treatment is just the text brightening. */
     .giz-topbar-tariff .giz-header-user-balance {
         cursor: default;
     }
@@ -1400,63 +1437,11 @@
         box-shadow: none !important;
         filter: brightness(1.18);
     }
-    .giz-topbar-tariff .giz-user-balance-tooltip {
-        min-width: 42rem;
-        padding: 1.8rem 2rem 2rem !important;
-        border-radius: 2rem !important;
-    }
-    .giz-topbar-tariff .giz-user-balance-tooltip__header {
-        display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-        gap: 1.6rem;
-        padding-bottom: 1.2rem;
-        margin-bottom: 1.2rem;
-        border-bottom: 1px solid rgba(255,255,255,0.07);
-    }
-    .giz-topbar-tariff .giz-user-balance-tooltip__header__title {
-        font-family: Rubik, sans-serif;
-        font-size: 1.7rem;
-        font-weight: 700;
-        color: #fff;
-    }
-    .giz-topbar-tariff .giz-user-balance-tooltip__header__link {
-        font-size: 1.3rem;
-        font-weight: 600;
-        color: var(--gg-accent);
-        cursor: pointer;
-        white-space: nowrap;
-    }
-    .giz-topbar-tariff .giz-user-balance-tooltip__header__link:hover {
-        text-decoration: underline;
-    }
-    .giz-topbar-tariff .giz-user-balance-tooltip__expiration {
-        margin-top: 1.4rem;
-        font-size: 1.45rem;
-        font-weight: 700;
-        color: #fff;
-    }
-    .giz-topbar-tariff .giz-user-balance-tooltip__message,
-    .giz-topbar-tariff .giz-user-balance-tooltip__credit {
-        margin-top: 0.4rem;
-        font-size: 1.3rem;
-        color: rgba(255,255,255,0.55);
-    }
-    .giz-topbar-tariff .giz-user-balance-tooltip__actions,
-    .giz-topbar-tariff .giz-user-balance-tooltip__action {
-        display: flex;
-        gap: 0.8rem;
-        margin-top: 1.6rem;
-    }
-    .giz-topbar-tariff .giz-user-balance-tooltip__actions > *,
-    .giz-topbar-tariff .giz-user-balance-tooltip__action > * {
-        flex: 1 1 0;
-    }
 
     /* ══════════════════════════════════════════════
        PROFILE POPUP — custom glass card (not a list-style
-       dropdown): scattered icons around the avatar with an edit-picture
-       badge on it, name, then a change-password row and a lock+logout row.
+       dropdown): scattered icons around the avatar, name, then a
+       change-password row and a lock+logout row.
        ══════════════════════════════════════════════ */
     .giz-top-bar .giz-profile-popup {
         margin-top: 1rem;
@@ -1471,7 +1456,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        background: linear-gradient(180deg, rgba(40,30,58,0.85), rgba(18,13,26,0.92));
+        background: linear-gradient(180deg, rgba(var(--gg-glass-rgb), 0.97), rgba(var(--gg-glass-2-rgb), 0.985));
         backdrop-filter: blur(5rem) saturate(1.7);
         -webkit-backdrop-filter: blur(5rem) saturate(1.7);
         border: 1px solid rgba(255,255,255,0.14);
@@ -1511,8 +1496,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        color: var(--gg-ink-3);
         pointer-events: none;
     }
+    /* A plain disc of glass with a thin glyph - not a control, so no accent
+       ring, no halo, nothing to invite a click. */
     .giz-profile-popup__avatar {
         position: absolute;
         top: 50%;
@@ -1524,22 +1512,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, #3a2b5c, #1b1330);
-        border: 2px solid rgba(168,85,247,0.5);
+        background: linear-gradient(135deg, rgba(var(--gg-glass-rgb), 0.9), rgba(var(--gg-glass-2-rgb), 0.9));
+        border: 1px solid rgba(255,255,255,0.14);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
         overflow: hidden;
         z-index: 2;
     }
-    .giz-profile-popup__avatar::before {
-        content: '';
-        position: absolute;
-        inset: -30%;
-        background: radial-gradient(circle, rgba(168,85,247,0.35), transparent 65%);
-        filter: blur(1.2rem);
-        z-index: -1;
-    }
     .giz-profile-popup__avatar i {
-        font-size: 4.6rem;
-        color: #d5c3ff;
+        font-size: 4.2rem;
+        color: rgba(var(--gg-ink-rgb), 0.8);
     }
     /* Same story as the top-bar one: the Avatar component renders a fixed
        4rem box, so inside this 9.6rem circle the picture used to float
@@ -1555,44 +1536,11 @@
         object-fit: cover;
         display: block;
     }
-    /* Edit-picture affordance: invisible until the avatar itself is
-       hovered/focused, then fades over it as a dark scrim + camera icon -
-       no permanent badge cluttering the avatar at rest. */
-    .giz-profile-popup__avatar-edit-overlay {
-        position: absolute;
-        inset: 0;
-        z-index: 4;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 0.3rem;
-        border: none;
-        border-radius: 50%;
-        background: rgba(12,10,20,0.72);
-        color: #fff;
-        opacity: 0;
-        cursor: pointer;
-        transition: opacity 0.18s;
-    }
-    .giz-profile-popup__avatar:hover .giz-profile-popup__avatar-edit-overlay,
-    .giz-profile-popup__avatar-edit-overlay:focus-visible {
-        opacity: 1;
-    }
-    .giz-profile-popup__avatar-edit-overlay i {
-        font-size: 2rem;
-        color: #fff;
-    }
-    .giz-profile-popup__avatar-edit-overlay span {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: rgba(255,255,255,0.9);
-    }
     .giz-profile-popup__name {
         margin-top: 0.2rem;
         font-weight: 800;
         font-size: 2rem;
-        color: #f5f2fc;
+        color: var(--gg-ink);
         text-align: center;
     }
 
@@ -1609,6 +1557,36 @@
         display: flex;
         gap: 0.8rem;
     }
+    /* The way into the account page: the first and widest of the actions. */
+    .giz-profile-popup__account-btn {
+        width: 100%;
+        height: 5.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        padding: 0 1.6rem;
+        border-radius: 1.6rem;
+        background: rgba(var(--gg-accent-rgb), 0.14);
+        border: 1px solid rgba(var(--gg-accent-rgb), 0.3);
+        color: var(--gg-ink);
+        font-size: 1.4rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.15s, border-color 0.15s;
+    }
+    .giz-profile-popup__account-btn:hover {
+        background: rgba(var(--gg-accent-rgb), 0.24);
+        border-color: rgba(var(--gg-accent-rgb), 0.5);
+    }
+    .giz-profile-popup__account-btn i {
+        font-size: 1.7rem;
+        color: var(--gg-accent-soft);
+    }
+    .giz-profile-popup__account-btn .giz-profile-popup__account-arrow {
+        margin-left: auto;
+        font-size: 1.4rem;
+        color: var(--gg-ink-3);
+    }
     .giz-profile-popup__change-password-btn {
         flex: 1 1 auto;
         min-width: 0;
@@ -1620,19 +1598,19 @@
         border-radius: 1.6rem;
         background: rgba(255,255,255,0.05);
         border: 1px solid rgba(255,255,255,0.1);
-        color: #d8d2ea;
+        color: var(--gg-ink-2);
         font-size: 1.4rem;
         font-weight: 600;
         cursor: pointer;
         transition: background 0.15s, color 0.15s;
     }
     .giz-profile-popup__change-password-btn:hover {
-        background: rgba(168,85,247,0.16);
-        color: #f2ecff;
+        background: rgba(var(--gg-accent-rgb), 0.16);
+        color: var(--gg-ink);
     }
     .giz-profile-popup__change-password-btn i {
         font-size: 1.7rem;
-        color: #a89bd6;
+        color: var(--gg-ink-3);
     }
     .giz-profile-popup__lock-btn {
         flex: 0 0 auto;
@@ -1644,13 +1622,13 @@
         border-radius: 1.6rem;
         border: 1px solid rgba(255,255,255,0.1);
         background: rgba(255,255,255,0.05);
-        color: #cfc9e0;
+        color: var(--gg-ink-2);
         cursor: pointer;
         transition: background 0.15s, color 0.15s;
     }
     .giz-profile-popup__lock-btn:hover {
-        background: rgba(168,85,247,0.3);
-        color: #f2ecff;
+        background: rgba(var(--gg-accent-rgb), 0.3);
+        color: var(--gg-ink);
     }
     .giz-profile-popup__lock-btn i {
         font-size: 1.8rem;
@@ -1663,20 +1641,22 @@
         justify-content: center;
         gap: 0.8rem;
         border-radius: 1.6rem;
-        background: rgba(244,114,182,0.08);
-        border: 1px solid rgba(244,114,182,0.22);
-        color: #f9d5e6;
+        /* Neutral, not tinted: signing out is not the accent's business, and the
+           warmer companion hue this used to borrow read as a foreign colour. */
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: var(--gg-ink);
         font-size: 1.4rem;
         font-weight: 600;
         cursor: pointer;
         transition: background 0.15s;
     }
     .giz-profile-popup__logout-btn:hover {
-        background: rgba(244,114,182,0.16);
+        background: rgba(255,255,255,0.1);
     }
     .giz-profile-popup__logout-btn i {
         font-size: 1.8rem;
-        color: #f472b6;
+        color: var(--gg-ink-3);
     }
 
     /* Open-state teal for all icon buttons */
@@ -1742,7 +1722,7 @@
         inset: 0;
         z-index: -1;
         border-radius: inherit;
-        background: linear-gradient(180deg, rgba(40,30,58,0.86), rgba(18,13,26,0.93));
+        background: linear-gradient(180deg, rgba(var(--gg-glass-rgb), 0.97), rgba(var(--gg-glass-2-rgb), 0.985));
         backdrop-filter: blur(5rem) saturate(1.7);
         -webkit-backdrop-filter: blur(5rem) saturate(1.7);
     }
@@ -1778,15 +1758,31 @@
 }
 
 <main @onclick="OnMainClick" client-theme="true">
-    <div class="giz-background">
+    <div class="giz-background @(HasClubWallpaper ? "giz-background--club" : null)">
+        @if (!HasClubWallpaper)
+        {
+            @* The moving gradient over the atmosphere - see _flow.scss. A club picture is
+               shown as it is. *@
+            <div class="gg-flow" aria-hidden="true">
+                <span class="gg-flow__sheet gg-flow__sheet--1"></span>
+                <span class="gg-flow__sheet gg-flow__sheet--2"></span>
+            </div>
+        }
         <img src="@WallpaperViewState.Wallpaper" alt='loading' />
     </div>
     <div class="giz-root">
         <div class="giz-top-bar">
-            <div class="giz-top-bar__search">
-                <HeaderGlobalSearch />
+            @* Search and the reservation tile form one left group. The centre tile is
+               absolutely positioned in the middle of the bar and so takes no room in the
+               normal flow: following the search, the tile used to slide under it. The
+               group is width-limited to end before the centre tile - see
+               .giz-top-bar__left. *@
+            <div class="giz-top-bar__left">
+                <div class="giz-top-bar__search">
+                    <HeaderGlobalSearch />
+                </div>
+                <TopBarReservation />
             </div>
-            <TopBarReservation />
             <div class="giz-top-bar__hud">
                 <div class="giz-topbar-stat giz-topbar-stat--pc">
                     <HostNumber />
@@ -1823,11 +1819,7 @@
                 <div class="giz-top-bar__icons">
                     <UserActionsBar />
                 </div>
-                @* Обе плашки живут в одном слоте и растут из нулевой ширины.
-                   Кто кого уступает — в TopBannerArbiter: развёртывание важнее
-                   рекламы аватарки и всегда выигрывает. *@
                 <DeploymentBanner />
-                <AvatarNudgeBanner />
                 <div class="giz-top-bar__account">
                     <HeaderUserMenuUserLinks @onclick="UserMenuViewService.ToggleUserLinks" />
                 </div>
@@ -1868,6 +1860,9 @@
 
     <GracePeriod />
     <UserBan />
+
+    @* Renders nothing: reports whether anybody is looking at the shell. *@
+    <ShellActivityWatcher />
 
 </main>
 

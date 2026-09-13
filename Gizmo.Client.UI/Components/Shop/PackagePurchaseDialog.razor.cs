@@ -1,10 +1,12 @@
+using Gizmo.Client.UI.Localization;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
-using Gizmo.UI.Services;
-using Gizmo.Web.Components;
+using Gizmo.Server.Exceptions;
+using Gizmo.Web.Api.Clients;
+using Gizmo.Web.Api.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,170 +16,65 @@ namespace Gizmo.Client.UI.Components
     /// Buying a time package in one step, without a trip through the shop cart.
     /// </summary>
     /// <remarks>
-    /// The cart is still what actually charges the customer - there is exactly
-    /// one server side cart per user and no single-product order endpoint on the
-    /// client, so "bypassing the cart" means bypassing the cart SCREEN, not the
-    /// cart itself. This dialog therefore puts the package in the cart when it
-    /// opens, so the total it shows is the real, server computed one (tax, fees
-    /// and any promotion included), and takes the package back out again if the
-    /// customer closes without paying. Nothing is left behind either way.
-    ///
-    /// Topping up happens INSIDE this dialog rather than by sending the customer
-    /// off to another screen: dialogs here are a queue, not a stack, so a second
-    /// dialog would only appear after this one closed, and the purchase would be
-    /// lost on the way. The existing deposit component is reused as a second
-    /// step with the shortfall already filled in, and when the balance lands the
-    /// dialog returns to the confirmation with the money in place.
+    /// <para>
+    /// "Bypassing the cart" means bypassing the cart SCREEN, not the cart itself - see
+    /// <see cref="CartDialogBase"/>. The caller puts the package in the cart before
+    /// opening this dialog, so every figure shown is the real, server computed one, and
+    /// the package is taken back out again if the customer closes without paying.
+    /// Nothing is left behind either way.
+    /// </para>
+    /// <para>
+    /// Points are offered here, on the line, because they used to be unreachable: the
+    /// choice lived on the cart screen, and closing this dialog to get there removed the
+    /// package.
+    /// </para>
+    /// <para>
+    /// The order is accepted through <see cref="ClientServerCartViewService"/> directly
+    /// rather than through the shop's <c>UserCartViewService.CheckoutAsync</c>. That method
+    /// validates the balance against a cached figure before talking to the server and
+    /// returns silently when the check fails, which cannot be told apart from success from
+    /// the outside; a stale cache after a lost balance event then reported a purchase that
+    /// never happened. The server is the only authority on the balance.
+    /// </para>
     /// </remarks>
-    public partial class PackagePurchaseDialog : CustomDOMComponentBase
+    public partial class PackagePurchaseDialog : CartDialogBase
     {
-        #region CONSTANTS
-
-        /// <summary>
-        /// Gizmo's own well known id for the Deposit (account balance) payment
-        /// method - see the switch in PaymentMethodViewStateLookupService.Map.
-        /// Not something a club configures, so it is safe to look for directly.
-        /// </summary>
-        private const int DEPOSIT_PAYMENT_METHOD_ID = -3;
-
-        #endregion
-
         #region FIELDS
 
-        private IEnumerable<PaymentMethodViewState> _paymentMethods = Enumerable.Empty<PaymentMethodViewState>();
-        private UserProductViewState? _product;
-
+        private UserProductViewState _product;
         private bool _paid;
-        private Step _step = Step.Confirm;
-
-        //Итог покупки, зафиксированный МОИМ окном в момент, когда оплата
-        //вернулась. Показывать результат из общего view state нельзя: у
-        //UserCartViewService.CheckoutAsync стоит IsComplete = true в блоке
-        //finally, то есть ДО того, как исключение дойдёт до внешнего catch и
-        //выставит HasError. Любая ошибка, не попавшая в разобранные там коды
-        //Cart и Promotion, поэтому сначала показывается как успех, а потом
-        //переписывается ошибкой. Сервис живёт в Gizmo.Client.UI.Services,
-        //которую сервер из скина не перезагружает, так что править его нельзя -
-        //но можно не давать окну переобуваться после показанного результата.
-        private bool? _outcomeOk;
-        private string _outcomeError = string.Empty;
-
-        private enum Step { Confirm, TopUp }
 
         #endregion
 
         #region PROPERTIES
 
-        [Inject] ILocalizationService LocalizationService { get; set; }
-        [Inject] UserCartViewService CartOrderService { get; set; }
-        [Inject] ClientServerCartViewService CartService { get; set; }
-        [Inject] PaymentMethodViewStateLookupService PaymentMethodLookupService { get; set; }
+        [Inject] IAssemblyResourcesLocalizationService AssemblyLocalizationService { get; set; }
         [Inject] UserProductViewStateLookupService ProductLookupService { get; set; }
-        [Inject] UserBalanceViewState UserBalanceViewState { get; set; }
-        [Inject] UserOnlineDepositViewState OnlineDepositViewState { get; set; }
-        [Inject] UserOnlineDepositViewService OnlineDepositService { get; set; }
 
         [Parameter] public int ProductId { get; set; }
 
         /// <summary>
-        /// Запись корзины, которую окно показывает и оплачивает.
+        /// The cart entry this dialog shows and pays for.
         /// </summary>
         /// <remarks>
-        /// Кладёт пакет в корзину вызывающая сторона, ДО открытия этого окна, и
-        /// передаёт сюда готовую запись. Раньше окно добавляло пакет само - и
-        /// намертво зависало на пакете с ограниченным временем использования:
-        /// проверка в ClientServerCartViewService показывает вопрос «товар сейчас
-        /// недоступен, всё равно добавить?» и ждёт ответа, а диалоги здесь -
-        /// очередь, так что вопрос стоял за моим окном и на экран не выходил.
+        /// The caller puts the package in the cart before opening the dialog and passes the
+        /// finished entry in. Adding it here used to hang the dialog on a package with a
+        /// usage availability window: the check in ClientServerCartViewService raises a
+        /// "not available right now, add anyway?" prompt and waits, and dialogs are a
+        /// queue, so that prompt sat behind this one and never reached the screen.
         /// </remarks>
         [Parameter] public Guid CartEntryId { get; set; }
-        [Parameter] public DialogDisplayOptions DisplayOptions { get; set; }
-        [Parameter] public EventCallback DismissCallback { get; set; }
 
         #endregion
 
-        #region VIEW
+        #region THE PACKAGE
 
-        private decimal Total => CartService.ViewState.Total;
+        private UserCartProductViewState Entry =>
+            CartService.ViewState.Products.FirstOrDefault(a => a.Guid == CartEntryId);
 
-        /// <summary>
-        /// Цена до скидки и сама скидка, когда она есть.
-        /// </summary>
-        /// <remarks>
-        /// Скидку считает сервер - это может быть промо, тариф группы или ручная
-        /// скидка на аккаунте. Показывать её надо: без неё «к оплате 0 ₽» под
-        /// пакетом за 650 ₽ выглядит поломкой, а не выгодой.
-        /// </remarks>
-        private decimal SubTotal => CartService.ViewState.SubTotal;
+        protected override bool IsPriced => Entry is not null;
 
-        private decimal Discount => CartService.ViewState.Discount;
-
-        private bool HasDiscount => IsPriced && Discount > 0;
-
-        private bool IsPayingFromBalance =>
-            CartOrderService.ViewState.PaymentMethodId == DEPOSIT_PAYMENT_METHOD_ID;
-
-        /// <summary>
-        /// How much the balance is short of the total, or zero.
-        /// </summary>
-        /// <remarks>
-        /// Only meaningful when paying from the balance. Every other method is
-        /// settled at the counter, so the account balance says nothing about
-        /// whether the order can go through.
-        /// </remarks>
-        private decimal Shortfall
-        {
-            get
-            {
-                if (!IsPayingFromBalance || !IsPriced)
-                    return 0;
-
-                var missing = Total - UserBalanceViewState.Balance;
-                return missing > 0 ? missing : 0;
-            }
-        }
-
-        private bool CanTopUp => OnlineDepositViewState.IsEnabled;
-
-        /// <summary>
-        /// Whether the cart already held something before this dialog opened.
-        /// </summary>
-        /// <remarks>
-        /// It cannot be hidden: there is one cart, so paying now pays for those
-        /// items too. Saying so is the only honest option - quietly charging for
-        /// a basket the customer thought they had left for later would be worse
-        /// than the extra line of text.
-        /// </remarks>
-        private bool HasOtherItems => CartService.ViewState.Products.Any(a => a.Guid != CartEntryId);
-
-        private bool IsBusy =>
-            CartOrderService.ViewState.IsLoading ||
-            CartService.ViewState.IsStateUpdating ||
-            CartService.ViewState.IsStateUpdateRequired;
-
-        /// <summary>
-        /// Запись пакета лежит в корзине, и сервер уже посчитал по ней сумму.
-        /// </summary>
-        /// <remarks>
-        /// Итог считается на сервере и приходит позже самой записи. Пока его нет,
-        /// корзина показывает ноль - а окно с «к оплате 0,00» над активной
-        /// кнопкой оплаты это способ случайно нажать её. Ни цена, ни нехватка, ни
-        /// кнопка не считаются окончательными, пока запись не на месте.
-        /// </remarks>
-        private bool IsPriced => CartService.ViewState.Products.Any(a => a.Guid == CartEntryId);
-
-        private bool IsSettled => IsPriced && !IsBusy;
-
-        /// <summary>
-        /// Оплата возможна: корзина посчитана, денег хватает и способ оплаты
-        /// выбран — либо не нужен вовсе, когда платить нечего.
-        /// </summary>
-        private bool CanPay =>
-            IsSettled &&
-            Shortfall == 0 &&
-            (Total == 0 || CartOrderService.ViewState.PaymentMethodId.HasValue);
-
-        private bool IsFree => IsPriced && Total == 0;
+        private string ProductName => _product?.Name ?? ShellStringOverrides.Get(ShellStringOverrides.BUY_FALLBACK_NAME);
 
         private string Duration
         {
@@ -189,93 +86,260 @@ namespace Gizmo.Client.UI.Components
                     return string.Empty;
 
                 if (minutes < 60)
-                    return $"{minutes} мин";
+                    return ShellStringOverrides.Get(ShellStringOverrides.DURATION_MINUTES, minutes);
 
                 var hours = minutes / 60;
                 var rest = minutes % 60;
 
-                return rest == 0 ? $"{hours} ч" : $"{hours} ч {rest} мин";
+                return rest == 0
+                    ? ShellStringOverrides.Get(ShellStringOverrides.DURATION_HOURS, hours)
+                    : ShellStringOverrides.Get(ShellStringOverrides.DURATION_HOURS_MINUTES, hours, rest);
             }
         }
 
-        #endregion
-
-        #region FUNCTIONS
-
-        private void OnPaymentMethodChanged(int? value)
+        /// <summary>
+        /// The price as the catalogue states it, under the name: money, points, "money or
+        /// points", "money and points", or free. What the cart then charges is the receipt's
+        /// business; this line only says what the package costs.
+        /// </summary>
+        private string CataloguePrice
         {
-            CartOrderService.SetOrderPaymentMethod(value);
+            get
+            {
+                if (_product is null)
+                    return string.Empty;
+
+                var money = _product.UnitPrice;
+                var points = _product.UnitPointsPrice ?? 0;
+
+                if (money <= 0 && points <= 0)
+                    return ShellStringOverrides.Get(ShellStringOverrides.PRICE_FREE);
+
+                if (money > 0 && points > 0)
+                {
+                    var joiner = ShellStringOverrides.Get(_product.PurchaseOptions == PurchaseOptionType.Or
+                        ? ShellStringOverrides.PRICE_OR
+                        : ShellStringOverrides.PRICE_AND);
+
+                    return $"{Money(money)} {joiner} {PointsWithUnit(points)}";
+                }
+
+                return money > 0 ? Money(money) : PointsWithUnit(points);
+            }
         }
 
-        private void Pay()
+        /// <summary>The package line as the server priced it, in money.</summary>
+        private decimal PackageTotal => Entry?.TotalPrice ?? 0;
+
+        /// <summary>
+        /// What the other things in the cart cost, when there are any.
+        /// </summary>
+        /// <remarks>
+        /// There is one cart per user, so paying now pays for those items too. Saying so,
+        /// with the amount, is the only honest option - quietly charging for a basket the
+        /// customer thought they had left for later would be worse than the extra line.
+        /// </remarks>
+        private decimal OtherItemsTotal =>
+            CartService.ViewState.Products
+                .Where(a => a.Guid != CartEntryId && a.PayType != OrderLinePayType.Points)
+                .Sum(a => a.TotalPrice);
+
+        private bool HasOtherItems => CartService.ViewState.Products.Any(a => a.Guid != CartEntryId);
+
+        /// <summary>
+        /// The receipt's lines above the total earn their place only when they add up to
+        /// something other than the package's own price: "price 650, to pay 650" is the
+        /// same number twice.
+        /// </summary>
+        private bool ShowLines => HasOtherItems || HasDiscount || Fees > 0;
+
+        #endregion
+
+        #region POINTS
+
+        /// <summary>
+        /// Points buy the package outright only when the product says "money OR points";
+        /// "money AND points" is a surcharge the server adds by itself.
+        /// </summary>
+        protected override bool OffersPoints =>
+            _product is not null && _product.PurchaseOptions == PurchaseOptionType.Or && (_product.UnitPointsPrice ?? 0) > 0;
+
+        protected override bool IsPayingWithPoints => Entry?.PayType == OrderLinePayType.Points;
+
+        /// <summary>
+        /// Points the server will take for the whole cart.
+        /// </summary>
+        /// <remarks>
+        /// Right after switching to points the cart has not been re-priced yet and still
+        /// reports zero; the package's own points price stands in until it has, so the
+        /// figure does not flash from zero to the real one.
+        /// </remarks>
+        protected override int PointsDue
         {
+            get
+            {
+                var fromCart = CartService.ViewState.PointsTotal;
+
+                if (fromCart > 0)
+                    return fromCart;
+
+                return IsPayingWithPoints ? (_product?.UnitPointsPrice ?? 0) : 0;
+            }
+        }
+
+        /// <summary>
+        /// The package's money price as a cell judges it: the cart's figure, or the
+        /// catalogue price while the cart is switched to points and reports the package
+        /// at zero.
+        /// </summary>
+        private decimal MoneyPrice => IsPayingWithPoints ? (_product?.UnitPrice ?? 0) : PackageTotal;
+
+        /// <summary>The package's points price as a cell judges it, by the same rule.</summary>
+        private int PointsPrice => IsPayingWithPoints ? PointsDue : (_product?.UnitPointsPrice ?? 0);
+
+        protected override bool WayIsShort(PayWay way) => way.Kind switch
+        {
+            PayWayKind.Balance => IsPriced && MoneyPrice > Balance,
+            PayWayKind.Points => IsPriced && PointsPrice > PointsBalance,
+            _ => false,
+        };
+
+        /// <summary>
+        /// Pays for the package with <paramref name="way"/>.
+        /// </summary>
+        /// <remarks>
+        /// Points are a pay type on the cart LINE; money methods are a payment method on
+        /// the ORDER. Choosing points switches the line and leaves the order method alone:
+        /// anything else in the cart is still paid in money, and a method bound to a cart
+        /// that ends up at zero is dropped at the moment of paying. Choosing money puts the
+        /// line back to cash and binds the method. Both requests are optimistic in the cart
+        /// service, so the cells switch at once and the figures follow when the server has
+        /// re-priced the cart.
+        /// </remarks>
+        protected override void Select(PayWay way)
+        {
+            if (way is null || IsSelected(way) || _paying || Entry is null)
+                return;
+
+            if (way.Kind == PayWayKind.Points)
+            {
+                SelectPoints();
+            }
+            else
+            {
+                if (IsPayingWithPoints)
+                    CartService.SetPayType(CartEntryId, OrderLinePayType.Cash);
+
+                base.Select(way);
+            }
+
+            StateHasChanged();
+        }
+
+        protected override void SelectPoints() => CartService.SetPayType(CartEntryId, OrderLinePayType.Points);
+
+        #endregion
+
+        #region PAYING
+
+        protected override string TitleKey => ShellStringOverrides.BUY_TITLE;
+
+        protected override string PayForKey => ShellStringOverrides.BUY_BUY_FOR;
+
+        private string DoneTitle => _paidWith == PayWayKind.Counter
+            ? ShellStringOverrides.Get(ShellStringOverrides.BUY_ORDERED_TITLE)
+            : ShellStringOverrides.Get(ShellStringOverrides.BUY_DONE_TITLE);
+
+        private string DoneNote => _paidWith == PayWayKind.Counter
+            ? ShellStringOverrides.Get(ShellStringOverrides.BUY_ORDERED_HINT)
+            : Duration;
+
+        /// <summary>
+        /// Places the order.
+        /// </summary>
+        /// <remarks>
+        /// The error handling mirrors the shop's checkout: cart and promotion error codes
+        /// are translated to the vendor's own messages, anything else is the generic line.
+        /// After an accepted order the cart is reset, as the shop does - the accepted cart
+        /// no longer exists on the server. A refused order leaves the cart as it was, so
+        /// the customer's other goods survive and the package is taken back on close.
+        /// </remarks>
+        protected override void Pay()
+        {
+            if (!CanPay)
+                return;
+
+            _paying = true;
+            _paidWith = SelectedWay?.Kind ?? PayWayKind.Balance;
+            StateHasChanged();
+
             DispatchWorkflow(async () =>
             {
-                //Нулевой итог (например, стопроцентная скидка) оплачивать
-                //нечем: у корзины на нуле не должно быть привязанного способа
-                //оплаты. Ровно так же поступает штатный checkout - см.
-                //UserCartViewService.SubmitAsync, где при Total == 0
-                //ShowPaymentMethods выключается. Привязка депозита с нулевой
-                //суммой - самый вероятный источник ошибки, которая приходила
-                //уже после показанного «успешно».
-                if (Total == 0 && CartOrderService.ViewState.PaymentMethodId.HasValue)
-                    CartOrderService.SetOrderPaymentMethod(null);
+                try
+                {
+                    //A cart at zero money must not carry a payment method - the server
+                    //prices a points line at zero and refuses a method bound to nothing.
+                    //The stock checkout does the same by hiding the selector at zero.
+                    if (Total == 0 && CartOrderService.ViewState.PaymentMethodId.HasValue)
+                    {
+                        CartOrderService.SetOrderPaymentMethod(null);
+                        await WaitForCartAsync();
+                    }
 
-                await CartOrderService.CheckoutAsync();
+                    await CartService.AcceptAsync(null);
 
-                var failed = CartOrderService.ViewState.HasError;
+                    _paid = true;
+                    _outcomeOk = true;
+                }
+                catch (WebApiClientException exception) when (exception.ErrorCode.HasValue && exception.IsExceptionCode(ExceptionCode.Cart))
+                {
+                    _outcomeOk = false;
+                    _outcomeError = AssemblyLocalizationService.GetLocalizedStringValue((CartErrorCode)exception.ErrorCode.Value);
+                }
+                catch (WebApiClientException exception) when (exception.ErrorCode.HasValue && exception.IsExceptionCode(ExceptionCode.Promotion))
+                {
+                    _outcomeOk = false;
+                    _outcomeError = AssemblyLocalizationService.GetLocalizedStringValue((PromotionErrorCode)exception.ErrorCode.Value);
+                }
+                catch (Exception exception)
+                {
+                    Logger?.LogError(exception, "Package purchase failed.");
 
-                _outcomeOk = !failed;
-                _outcomeError = CartOrderService.ViewState.ErrorMessage;
+                    _outcomeOk = false;
+                    _outcomeError = ShellStringOverrides.Get(ShellStringOverrides.GEN_ERROR);
+                }
 
-                //CheckoutAsync сам сбрасывает корзину при успехе, так что
-                //вынимать оттуда уже нечего.
-                _paid = !failed;
+                if (_paid)
+                {
+                    //The accepted cart is gone from the server; the local one follows. A
+                    //failure here is reported by the cart service itself and does not
+                    //change the fact that the package was bought.
+                    await CartService.ResetAsync();
+                }
+
+                _paying = false;
+                _step = Step.Done;
+                StateHasChanged();
             });
         }
 
-        /// <summary>
-        /// Switches to the top-up step with the missing amount already entered.
-        /// </summary>
-        private void TopUp()
+        protected override async Task CloseDialog()
         {
-            OnlineDepositService.SetAmount(Shortfall);
+            if (_paying)
+                return;
 
-            _step = Step.TopUp;
-            StateHasChanged();
-        }
-
-        private void BackToConfirm()
-        {
-            _step = Step.Confirm;
-            StateHasChanged();
-        }
-
-        /// <summary>
-        /// The balance landed - back to the confirmation, now payable.
-        /// </summary>
-        private void OnTopUpSucceeded()
-        {
-            OnlineDepositService.Clear();
-            BackToConfirm();
-        }
-
-        private async Task CloseDialog()
-        {
             TakeBackPackage();
 
             await DismissCallback.InvokeAsync();
-
-            CartOrderService.ClearDialog();
         }
 
         /// <summary>
-        /// Убирает из корзины ровно ту запись, ради которой открывалось окно.
-        /// Всё, что клиент положил туда сам, остаётся на месте.
+        /// Removes exactly the entry this dialog was opened for. Anything the customer put
+        /// in the cart themselves stays.
         /// </summary>
         private void TakeBackPackage()
         {
-            if (_paid || CartEntryId == Guid.Empty)
+            if (_paid || _paying || CartEntryId == Guid.Empty)
                 return;
 
             if (CartService.ViewState.Products.Any(a => a.Guid == CartEntryId))
@@ -286,13 +350,8 @@ namespace Gizmo.Client.UI.Components
 
         #region OVERRIDES
 
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnLoadingAsync()
         {
-            this.SubscribeChange(CartOrderService.ViewState);
-            this.SubscribeChange(CartService.ViewState);
-            this.SubscribeChange(UserBalanceViewState);
-            this.SubscribeChange(OnlineDepositViewState);
-
             try
             {
                 _product = await ProductLookupService.GetStateAsync(ProductId);
@@ -301,45 +360,12 @@ namespace Gizmo.Client.UI.Components
             {
                 _product = null;
             }
-
-            try
-            {
-                var all = await PaymentMethodLookupService.GetStatesAsync();
-
-                //Same filter the shop checkout uses: online methods are handled
-                //by their own deposit flow, not by an order payment.
-                _paymentMethods = all
-                    .Where(a => a.Id != -4 && !a.IsOnline && !a.IsDeleted && a.IsEnabled)
-                    .ToList();
-            }
-            catch (Exception)
-            {
-                _paymentMethods = Enumerable.Empty<PaymentMethodViewState>();
-            }
-
-            //Pay from the balance unless the club does not offer it, so the
-            //common case needs no choice at all.
-            if (CartOrderService.ViewState.PaymentMethodId is null)
-            {
-                var preferred = _paymentMethods.FirstOrDefault(a => a.Id == DEPOSIT_PAYMENT_METHOD_ID)
-                                ?? _paymentMethods.FirstOrDefault();
-
-                if (preferred is not null)
-                    CartOrderService.SetOrderPaymentMethod(preferred.Id);
-            }
-
-            await base.OnInitializedAsync();
         }
 
         public override void Dispose()
         {
             //Safety net for a teardown that did not go through CloseDialog.
             TakeBackPackage();
-
-            this.UnsubscribeChange(OnlineDepositViewState);
-            this.UnsubscribeChange(UserBalanceViewState);
-            this.UnsubscribeChange(CartService.ViewState);
-            this.UnsubscribeChange(CartOrderService.ViewState);
 
             base.Dispose();
         }

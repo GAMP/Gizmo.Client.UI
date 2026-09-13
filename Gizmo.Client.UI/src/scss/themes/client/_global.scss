@@ -1,7 +1,7 @@
 //=============== Theme Client Global ================//
 
 body {
-    background-color: #07050f;
+    background-color: var(--gg-bg-0);
     color: #FAFAFA;
     font-family: $font-family-text-theme-client;
     font-size: 1rem;
@@ -60,4 +60,13 @@ a {
 
     &:visited {
     }
+}
+
+// A scrolling page ends a hand's width above the window edge (the root's inset), and
+// content stopping dead on that line read as a strip cut off the shell. Fading the last
+// few rem out makes the edge a horizon instead. A mask, not an overlay: the background
+// behind the page is a gradient no overlay colour could match.
+@mixin gg-scroll-fade($depth: 3.6rem) {
+    mask-image: linear-gradient(to bottom, #000 calc(100% - #{$depth}), transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - #{$depth}), transparent 100%);
 }

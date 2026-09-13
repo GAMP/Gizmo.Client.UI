@@ -31,7 +31,8 @@ namespace Gizmo.Client.UI
         public EventCallback<int> OnClose { get; set; }
 
         /// <summary>
-        /// Шаг 1 — бронь уже подтверждена и ждёт оплаты, шаг 0 — ещё нужен код.
+        /// Step 1 - the reservation is confirmed and awaiting payment; step 0 - a code is
+        /// still needed.
         /// </summary>
         private bool IsPaymentStep => ConfirmReservationNotificationViewService.ViewState.Step == 1;
 

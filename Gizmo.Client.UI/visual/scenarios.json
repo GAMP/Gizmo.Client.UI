@@ -1,0 +1,303 @@
+{
+  "viewports": {
+    "all": ["1366x768", "1920x1080", "2560x1440", "3440x1440"],
+    "dialog": ["1366x768", "1920x1080"]
+  },
+  "scenarios": [
+    { "id": "home-typical", "page": "home", "viewports": "all",
+      "note": "A club with news, games, packages and a bar - the case that usually looks fine.",
+      "data": { "hero": "news", "apps": 8, "packs": 6, "bar": 4, "balance": 1250, "points": 3400, "time": "2ч 15м", "pinned": 3 } },
+
+    { "id": "home-empty", "page": "home", "viewports": "dialog",
+      "note": "Nothing configured at all: no news, no games, no shop. Every slot shows its empty line.",
+      "data": { "hero": "empty", "slides": 0, "apps": 0, "packs": 0, "bar": 0, "balance": 0, "points": 0, "pinned": 0 } },
+
+    { "id": "home-many", "page": "home", "viewports": "all",
+      "note": "More of everything than fits: 24 packages must scroll inside the till, the band shows four of many games.",
+      "data": { "hero": "news", "slides": 5, "apps": 30, "packs": 24, "bar": 4, "balance": 125000, "points": 99999, "pinned": 8 } },
+
+    { "id": "home-long-names", "page": "home", "viewports": "all",
+      "note": "Names as long as an operator can type them. Everything must clip or wrap, nothing may push its neighbour off the row.",
+      "data": { "hero": "app", "names": "long", "apps": 4, "packs": 4, "bar": 4, "balance": 1250, "points": 3400, "exes": 2, "pinned": 3 } },
+
+    { "id": "home-hero-app", "page": "home", "viewports": "dialog",
+      "note": "No news: the hero rotates popular games. One executable becomes the play button.",
+      "data": { "hero": "app", "apps": 8, "packs": 6, "bar": 4, "balance": 1250, "points": 3400, "pinned": 3 } },
+
+    { "id": "home-hero-app-three-exes", "page": "home", "viewports": "dialog",
+      "note": "A game with three executables and one of them running - all three launch buttons must sit on one row or wrap cleanly.",
+      "data": { "hero": "app", "exes": 3, "running": true, "apps": 8, "packs": 6, "bar": 4, "balance": 1250, "points": 3400, "pinned": 3 } },
+
+    { "id": "home-hero-app-no-art", "page": "home", "viewports": "dialog",
+      "note": "A game without a picture: the placeholder card, not a broken image.",
+      "data": { "hero": "app", "noArt": true, "apps": 8, "packs": 6, "bar": 4, "balance": 1250, "points": 3400, "pinned": 3 } },
+
+    { "id": "home-hero-product", "page": "home", "viewports": "dialog",
+      "note": "No news and no games: goods are the last thing the hero falls back to.",
+      "data": { "hero": "product", "apps": 0, "packs": 6, "bar": 4, "balance": 1250, "points": 3400, "pinned": 0 } },
+
+    { "id": "home-no-shop", "page": "home", "viewports": "dialog",
+      "note": "Shop disabled for this host group: the till shows its two empty lines and nothing else moves.",
+      "data": { "hero": "news", "shop": false, "apps": 8, "balance": 1250, "points": 3400, "pinned": 3 } },
+
+    { "id": "home-no-packages", "page": "home", "viewports": "dialog",
+      "note": "Packages exist but none can be bought right now (availability window) while the bar is open.",
+      "data": { "hero": "news", "apps": 8, "packs": 0, "bar": 4, "balance": 1250, "points": 3400, "pinned": 3 } },
+
+    { "id": "home-points-package", "page": "home", "viewports": "dialog",
+      "note": "A package sold for points only shows its points price on the row instead of a zero.",
+      "data": { "hero": "news", "apps": 8, "packs": 6, "bar": 4, "pointsOnlyPack": true, "balance": 1250, "points": 3400, "pinned": 3 } },
+
+    { "id": "home-deploying-waiting", "page": "home", "viewports": ["1920x1080"],
+      "note": "Deployment whose size is not known yet: the ring turns, no wash, no percentage.",
+      "data": { "hero": "news", "apps": 8, "packs": 6, "bar": 4, "balance": 1250, "points": 3400, "deploy": "waiting", "pinned": 3 } },
+    { "id": "home-apps-open", "page": "home", "viewports": ["1920x1080"],
+      "note": "The My applications panel over the home board: three rows, one of them deploying.",
+      "data": { "hero": "news", "apps": 8, "packs": 6, "bar": 4, "balance": 1250, "points": 3400, "pinned": 3, "appsOpen": "rows" } },
+    { "id": "home-apps-empty", "page": "home", "viewports": ["1920x1080"],
+      "note": "The My applications panel with nothing running: icon, title and hint centred.",
+      "data": { "hero": "news", "apps": 8, "packs": 6, "bar": 4, "balance": 1250, "points": 3400, "pinned": 3, "appsOpen": "empty" } },
+    { "id": "home-deploying", "page": "home", "viewports": "dialog",
+      "note": "A game being deployed: the banner in the top bar must not push the icon pill off the bar.",
+      "data": { "hero": "news", "apps": 8, "packs": 6, "bar": 4, "balance": 1250, "points": 3400, "deploy": "running", "pinned": 3 } },
+
+    { "id": "home-reserved", "page": "home", "viewports": "dialog",
+      "note": "The machine is reserved soon: the tile in the top bar's left track, the search yields room to it.",
+      "data": { "hero": "news", "apps": 8, "packs": 6, "bar": 4, "balance": 1250, "points": 3400, "reservation": "soon", "deploy": "done", "pinned": 3 } },
+
+    { "id": "palette-red", "page": "home", "viewports": ["1920x1080"], "accent": "red",
+      "note": "The whole board in the red palette: only the accent family changes, nothing else.",
+      "data": { "hero": "app", "apps": 8, "packs": 6, "bar": 4, "balance": 1250, "points": 3400, "pinned": 3, "deploy": "running" } },
+
+    { "id": "palette-orange", "page": "home", "viewports": ["1920x1080"], "accent": "orange",
+      "note": "The whole board in the orange palette: only the accent family changes, nothing else.",
+      "data": { "hero": "app", "apps": 8, "packs": 6, "bar": 4, "balance": 1250, "points": 3400, "pinned": 3, "deploy": "running" } },
+
+    { "id": "palette-amber", "page": "home", "viewports": ["1920x1080"], "accent": "amber",
+      "note": "The whole board in the amber palette: only the accent family changes, nothing else.",
+      "data": { "hero": "app", "apps": 8, "packs": 6, "bar": 4, "balance": 1250, "points": 3400, "pinned": 3, "deploy": "running" } },
+
+    { "id": "palette-green", "page": "home", "viewports": ["1920x1080"], "accent": "green",
+      "note": "The whole board in the green palette: only the accent family changes, nothing else.",
+      "data": { "hero": "app", "apps": 8, "packs": 6, "bar": 4, "balance": 1250, "points": 3400, "pinned": 3, "deploy": "running" } },
+
+    { "id": "palette-teal", "page": "home", "viewports": ["1920x1080"], "accent": "teal",
+      "note": "The whole board in the teal palette: only the accent family changes, nothing else.",
+      "data": { "hero": "app", "apps": 8, "packs": 6, "bar": 4, "balance": 1250, "points": 3400, "pinned": 3, "deploy": "running" } },
+
+    { "id": "notifications-stack", "page": "notifications", "viewports": ["1920x1080"],
+      "note": "The notification window's cards: one of each type and the reservation card with its buttons.",
+      "data": {} },
+
+    { "id": "notifications-long", "page": "notifications", "viewports": ["1366x768"],
+      "note": "A title and a message as long as the server can send: they wrap, the card grows, the close button stays put.",
+      "data": { "reservation": false, "items": [{ "type": "warning", "title": "Внимание: ваше игровое время на этом компьютере подходит к концу, и сессия будет завершена автоматически", "message": "Пополните счёт на стойке администратора или через приложение, либо возьмите пакет времени в магазине оболочки — иначе через несколько минут вы будете разлогинены, а несохранённый прогресс в играх может быть потерян." }] } },
+
+    { "id": "login-idle", "page": "login", "viewports": "dialog",
+      "note": "Sign-in screen at rest without a club wallpaper: the atmosphere, the aurora clouds at their first frame, the host number.",
+      "data": { "pc": 12 } },
+
+    { "id": "login-idle-red", "page": "login", "viewports": ["1920x1080"], "accent": "red",
+      "note": "The same screen in the red palette: black and red, no magenta cloud.",
+      "data": { "pc": 12 } },
+
+    { "id": "palette-purple", "page": "home", "viewports": ["1920x1080"], "accent": "purple",
+      "note": "The whole board in the purple palette (the former default; blue is the default now).",
+      "data": { "hero": "app", "apps": 8, "packs": 6, "bar": 4, "balance": 1250, "points": 3400, "pinned": 3, "deploy": "running" } },
+
+    { "id": "palette-pink", "page": "home", "viewports": ["1920x1080"], "accent": "pink",
+      "note": "The whole board in the pink palette: only the accent family changes, nothing else.",
+      "data": { "hero": "app", "apps": 8, "packs": 6, "bar": 4, "balance": 1250, "points": 3400, "pinned": 3, "deploy": "running" } },
+
+    { "id": "palette-green-buy", "page": "purchase", "viewports": ["1920x1080"], "accent": "green",
+      "note": "The purchase card in another palette: the chooser, the button and the card's wash follow the accent.",
+      "data": { "ways": ["balance", "points", "cash"], "selected": "points", "price": 650, "pointsPrice": 1200, "balance": 500, "points": 3400 } },
+
+    { "id": "cart-typical", "page": "checkout", "viewports": "dialog",
+      "note": "Three goods in the cart, paid from the balance.",
+      "data": { "count": 3, "ways": ["balance", "cash"], "balance": 1250 } },
+
+    { "id": "cart-short", "page": "checkout", "viewports": "dialog",
+      "note": "The cart costs more than the balance holds: top-up from the checkout, like the package.",
+      "data": { "count": 4, "ways": ["balance"], "balance": 300 } },
+
+    { "id": "cart-points-lines", "page": "checkout", "viewports": "dialog",
+      "note": "One line paid with points (chosen on the cart page), the rest in money: both figures in the total.",
+      "data": { "items": [{"name": "Кола 0,5", "qty": 2, "price": 90}, {"name": "Сникерс", "qty": 1, "points": 300}, {"name": "Кофе латте", "qty": 1, "price": 180}], "ways": ["balance", "cash", "card"], "balance": 1250, "points": 3400 } },
+
+    { "id": "cart-many", "page": "checkout", "viewports": "dialog",
+      "note": "Twelve lines with long names: the list scrolls, the chooser and the total stay put, the card fits a laptop panel.",
+      "data": { "count": 12, "longNames": true, "ways": ["balance", "cash", "card", "custom"], "selected": "cash", "discount": 50, "balance": 1250 } },
+
+    { "id": "cart-done", "page": "checkout", "viewports": "dialog",
+      "note": "Order paid from the balance.",
+      "data": { "step": "done" } },
+
+    { "id": "buy-balance", "page": "purchase", "viewports": "dialog",
+      "note": "The common case: enough money on the account, one way to pay.",
+      "data": { "ways": ["balance"], "price": 650, "balance": 1250 } },
+
+    { "id": "buy-balance-short", "page": "purchase", "viewports": "dialog",
+      "note": "Money short and online top-up available: the main button tops up by the difference.",
+      "data": { "ways": ["balance", "cash"], "price": 650, "balance": 500 } },
+
+    { "id": "buy-balance-short-no-topup", "page": "purchase", "viewports": "dialog",
+      "note": "Money short and no online top-up in this club: the button is dead and says why.",
+      "data": { "ways": ["balance"], "price": 650, "balance": 500, "topUpEnabled": false } },
+
+    { "id": "buy-points", "page": "purchase", "viewports": "dialog",
+      "note": "Paying with points: the points tile chosen, the total in points, points left afterwards.",
+      "data": { "ways": ["balance", "points"], "selected": "points", "price": 650, "pointsPrice": 1200, "balance": 500, "points": 3400 } },
+
+    { "id": "buy-points-short", "page": "purchase", "viewports": "dialog",
+      "note": "Not enough points and no way to earn them here: the shortfall is stated, the button is dead.",
+      "data": { "ways": ["balance", "points"], "selected": "points", "price": 650, "pointsPrice": 1200, "balance": 1250, "points": 800 } },
+
+    { "id": "buy-counter", "page": "purchase", "viewports": "dialog",
+      "note": "Paid at the counter: the balance does not matter, the button places the order.",
+      "data": { "ways": ["balance", "points", "cash", "card"], "selected": "cash", "price": 650, "balance": 0, "points": 0 } },
+
+    { "id": "buy-many-ways", "page": "purchase", "viewports": "dialog",
+      "note": "A club with every method enabled plus two of its own with long names: tiles wrap, names clip.",
+      "data": { "ways": ["balance", "points", "cash", "card", "custom", "custom2"], "price": 650, "balance": 1250 } },
+
+    { "id": "buy-discount", "page": "purchase", "viewports": "dialog",
+      "note": "A promotion and a fee: the receipt lines must add up to the total shown.",
+      "data": { "ways": ["balance"], "price": 650, "discount": 130, "fees": 20, "balance": 1250 } },
+
+    { "id": "buy-other-items", "page": "purchase", "viewports": "dialog",
+      "note": "Goods already in the cart are paid together with the package and are listed as a line.",
+      "data": { "ways": ["balance", "cash"], "price": 650, "other": 340, "balance": 1250 } },
+
+    { "id": "buy-free", "page": "purchase", "viewports": "dialog",
+      "note": "A package the club gives away: no tiles, no method, a Get button.",
+      "data": { "ways": ["balance"], "free": true, "price": 0 } },
+
+    { "id": "buy-no-ways", "page": "purchase", "viewports": "dialog",
+      "note": "The club offers no payment method to clients and the package has no points price: say so, disable.",
+      "data": { "ways": [], "price": 650 } },
+
+    { "id": "buy-long-name", "page": "purchase", "viewports": "dialog",
+      "note": "A package name as long as an operator can type: two lines, then an ellipsis.",
+      "data": { "ways": ["balance", "points"], "name": "Ночной безлимит с пятницы на субботу для VIP-зала (только для зарегистрированных гостей клуба)", "duration": "8 ч 30 мин", "price": 1250, "balance": 99999.5, "points": 123456 } },
+
+    { "id": "buy-loading", "page": "purchase", "viewports": "dialog",
+      "note": "The cart has not priced the package yet: a spinner where the receipt goes, nothing to press.",
+      "data": { "ways": ["balance"], "step": "loading" } },
+
+    { "id": "buy-paying", "page": "purchase", "viewports": "dialog",
+      "note": "The order is on its way: everything locked, the button shows the spinner.",
+      "data": { "ways": ["balance"], "step": "paying", "price": 650, "balance": 1250 } },
+
+    { "id": "buy-topup", "page": "purchase", "viewports": "dialog",
+      "note": "The top-up step inside the dialog with the shortfall already entered.",
+      "data": { "ways": ["balance"], "step": "topup", "price": 650, "balance": 500 } },
+
+    { "id": "buy-done", "page": "purchase", "viewports": "dialog",
+      "note": "Bought from the balance.",
+      "data": { "step": "done", "price": 650, "balance": 1250 } },
+
+    { "id": "buy-done-counter", "page": "purchase", "viewports": "dialog",
+      "note": "Ordered, to be paid at the counter.",
+      "data": { "step": "done", "counterPaid": true } },
+
+    { "id": "buy-error", "page": "purchase", "viewports": "dialog",
+      "note": "The server refused the order with one of its own messages.",
+      "data": { "step": "error", "error": "Покупка ограничена по времени или дате. Обратитесь к администратору клуба, чтобы уточнить, когда пакет снова будет доступен." } },
+
+    { "id": "tooltip-two", "page": "tooltip", "viewports": "dialog",
+      "note": "The tariff tooltip with two active products, the current one on top; no call to action, only the credit note.",
+      "data": { "tooltip": { "products": [{ "name": "Стандарт 3 часа", "type": "package", "left": "2 ч 15 м", "spendable": "2 ч 15 м" }, { "name": "Ночь до утра", "type": "fixed", "left": "8 ч", "spendable": "8 ч" }], "credit": true } } },
+
+    { "id": "tooltip-one-ending", "page": "tooltip", "viewports": ["1920x1080"],
+      "note": "One product about to run out: the warning and the two ways out.",
+      "data": { "tooltip": { "products": [{ "name": "Стандарт 1 час", "type": "package", "left": "12 м", "spendable": "12 м" }], "ending": true } } },
+
+    { "id": "tooltip-rate", "page": "tooltip", "viewports": ["1920x1080"],
+      "note": "A pay-as-you-go rate on credit: unlimited time, the money note, top-up only (shop off).",
+      "data": { "tooltip": { "products": [{ "name": "Стандарт", "type": "rate", "credit": true }], "unlimited": true, "shop": false } } },
+
+    { "id": "tooltip-empty", "page": "tooltip", "viewports": ["1920x1080"],
+      "note": "Nothing active: the empty line alone (the credit note only accompanies a product).",
+      "data": { "tooltip": { "products": [], "credit": true } } },
+
+    { "id": "tooltip-long", "page": "tooltip", "viewports": ["1366x768"],
+      "note": "Product names as long as an operator can type, on the smallest screen: the name clips, the figures stay.",
+      "data": { "tooltip": { "products": [{ "name": "Ночной безлимит с пятницы на субботу для VIP-зала (только для зарегистрированных гостей)", "type": "package", "left": "8 ч 30 м", "spendable": "8 ч 30 м" }, { "name": "Промо-пакет «Приведи друга» на 10 часов с двойными баллами", "type": "package", "left": "10 ч", "spendable": "10 ч" }] } } },
+
+    { "id": "account-profile", "page": "account", "viewports": "all",
+      "note": "The account page, Profile tab: head with figures, tabs, the two cards.",
+      "data": { "tab": "profile", "credit": true } },
+
+    { "id": "account-profile-empty", "page": "account", "viewports": "dialog",
+      "note": "No contacts on file, no name, no credit: the head shrinks to the username, the fields say so.",
+      "data": { "tab": "profile", "fullName": "", "email": null, "phone": null } },
+
+    { "id": "account-time", "page": "account", "viewports": "all",
+      "note": "Time tab with a queue: the current package, two waiting, one that does not work on this PC, one on credit.",
+      "data": { "tab": "time", "credit": true, "products": [
+        { "name": "Стандарт 3 часа", "type": "package", "left": "2 ч 15 м", "usable": "2 ч 15 м" },
+        { "name": "Ночь до утра", "type": "fixed", "left": "8 ч", "usable": "8 ч", "expiry": "Сгорает в 06:00 · Сгорает при выходе", "open": false },
+        { "name": "VIP 3 часа", "type": "package", "left": "3 ч", "usable": "∞", "hosts": ["VIP"], "expiry": "Не сгорает" },
+        { "name": "Стандарт", "type": "rate", "order": null, "credit": true, "bought": null, "expiry": null, "hosts": ["Зал", "VIP", "Стрим-комната", "Приставки"], "open": false }
+      ] } },
+
+    { "id": "account-time-long", "page": "account", "viewports": ["1366x768"],
+      "note": "Long package names and many host groups on the smallest screen: names clip, chips overflow into +N.",
+      "data": { "tab": "time", "products": [
+        { "name": "Ночной безлимит с пятницы на субботу для VIP-зала (только для зарегистрированных гостей клуба)", "type": "package", "left": "8 ч 30 м", "usable": "8 ч 30 м", "hosts": ["Основной зал", "VIP-зал", "Стрим-комната", "Приставки PS5", "Симуляторы"] },
+        { "name": "Промо-пакет «Приведи друга» на 10 часов с двойными баллами", "type": "package", "left": "10 ч", "usable": "10 ч" }
+      ] } },
+
+    { "id": "account-time-empty", "page": "account", "viewports": "dialog",
+      "note": "No time products at all.",
+      "data": { "tab": "time", "products": [] } },
+
+    { "id": "account-purchases", "page": "account", "viewports": "all",
+      "note": "Purchases tab: a page of orders in every status, the first one expanded.",
+      "data": { "tab": "purchases", "orders": [
+        { "open": true, "earned": 65, "note": "Без льда" },
+        { "status": "accepted", "lines": [{ "name": "Ночь до утра", "qty": 1, "price": 1200, "link": false }], "method": "Со счёта" },
+        { "status": "hold", "unpaid": true, "lines": [{ "name": "Пицца Маргарита", "qty": 1, "price": 590 }, { "name": "Кола 0,5", "qty": 3, "price": 360 }], "method": "Наличные" },
+        { "status": "completed", "lines": [{ "name": "Сникерс", "qty": 1, "pts": 300 }], "total": 0, "points": 300, "method": "Баллы" },
+        { "status": "canceled", "lines": [{ "name": "Ред Булл", "qty": 2, "price": 380 }] },
+        { "status": "voided", "lines": [{ "name": "Стандарт 5 часов", "qty": 1, "price": 900, "link": false }], "method": "Банковская карта" }
+      ] } },
+
+    { "id": "account-purchases-empty", "page": "account", "viewports": "dialog",
+      "note": "No purchases yet, no pager.",
+      "data": { "tab": "purchases", "orders": [], "pager": false } },
+
+    { "id": "account-guest", "page": "account", "viewports": ["1920x1080"],
+      "note": "A guest account: no Profile tab, the head says Guest, purchase history hidden by the club.",
+      "data": { "tab": "time", "guest": true, "noHistory": true, "products": [{ "name": "Гостевой час", "type": "fixed", "left": "45 м", "usable": "45 м", "open": false }] } },
+
+    { "id": "product-time", "page": "product", "viewports": "all",
+      "note": "A time package without a picture: the duration plate, price in money or points, every fact, related packages, the cart beside.",
+      "data": { "kind": "time", "art": false, "buy": ["Пн–Пт 10:00–22:00", "Сб–Вс 12:00–02:00"], "use": ["Пн–Пт 10:00–23:00", "Сб–Вс 12:00–06:00"], "expiry": ["Сгорает через 3 д. после покупки", "Сгорает при выходе"], "cartItems": 2 } },
+
+    { "id": "product-time-more", "page": "product", "viewports": ["1920x1080"],
+      "note": "The same package with the availability lists unfolded.",
+      "data": { "kind": "time", "art": false, "buy": ["Пн–Пт 10:00–22:00", "Сб–Вс 12:00–02:00"], "use": ["Пн–Пт 10:00–23:00", "Сб–Вс 12:00–06:00"], "more": true } },
+
+    { "id": "product-good", "page": "product", "viewports": "dialog",
+      "note": "A bar item with a photograph: money price only, no time facts, the description, related goods.",
+      "data": { "kind": "good", "price": 120, "buy": null, "description": "Классическая кола в стеклянной бутылке 0,5 л, охлаждённая." } },
+
+    { "id": "product-bundle", "page": "product", "viewports": ["1920x1080"],
+      "note": "A bundle: its contents as a row of tiles under the description.",
+      "data": { "kind": "bundle", "price": 890, "buy": null, "bundled": 3 } },
+
+    { "id": "product-unavailable", "page": "product", "viewports": ["1920x1080"],
+      "note": "A package that cannot be bought right now: the dead button says why underneath.",
+      "data": { "kind": "time", "art": false, "unavailable": "Пакет доступен для покупки только по будням с 10:00 до 22:00." } },
+
+    { "id": "product-long", "page": "product", "viewports": ["1366x768"],
+      "note": "Long name, long description, many host groups, on the smallest screen: the title clamps to three lines, nothing overflows.",
+      "data": { "kind": "time", "art": false, "name": "Ночной безлимит с пятницы на субботу для VIP-зала (только для зарегистрированных гостей клуба)", "hosts": ["Основной зал", "VIP-зал", "Стрим-комната", "Приставки PS5", "Симуляторы"], "description": "Ночной безлимит действует с 22:00 пятницы до 08:00 субботы на всех ПК VIP-зала. Пакет активируется при первом входе и не переносится на другой день. В стоимость включены два напитка на выбор из бара; оформить их можно у администратора при входе. При досрочном выходе неиспользованное время не возвращается." } },
+
+    { "id": "product-view-only", "page": "product", "viewports": ["1920x1080"],
+      "note": "Shop disabled for this host group: no buy control, no cart column, no related goods - the page is a reference card.",
+      "data": { "kind": "time", "art": false, "cart": false } }
+  ]
+}

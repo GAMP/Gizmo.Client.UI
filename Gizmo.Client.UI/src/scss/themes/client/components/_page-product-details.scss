@@ -1,412 +1,386 @@
-//=============== Page Product Details ================//
+//=============== Product page ================//
+//
+// Pages/Shop/ProductDetails.razor. The page column scrolls; the cart column on the
+// right is the same 50rem the shop page gives it, so moving between the two does not
+// shift the cart. Everything above the fold is the decision (picture, name, price,
+// buy), everything below is reading.
 
-.giz-product-details {
-    display: grid;
-    // Cart column pinned to the same fixed width the shop page uses. It was
-    // `min-content`, so the panel collapsed to whatever its content could be
-    // squeezed into - noticeably narrower than on the shop page, with the
-    // empty-state text wrapping.
-    grid-template-columns: 1fr 50rem;
+$pd-cart-w: 50rem;
+$pd-g:      clamp(1.4rem, 0.8rem + 0.9vw, 2.8rem);
+$pd-art:    clamp(22rem, 12rem + 12vw, 34rem);
+
+$pd-ink:   var(--gg-ink);
+$pd-ink-2: rgba(var(--gg-ink-rgb), 0.62);
+$pd-ink-3: rgba(var(--gg-ink-rgb), 0.38);
+$pd-line:  rgba(255, 255, 255, 0.07);
+$pd-line-2: rgba(255, 255, 255, 0.14);
+
+.gg-pd-wrap {
+    display: flex;
+    justify-content: center;
     height: 100%;
-    overflow: hidden;
-    flex-grow: 1;
-    max-width: 256rem;
+}
 
-    &-wrapper {
-        display: flex;
-        justify-content: center;
-        height: 100%;
+.gg-pd {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    height: 100%;
+    width: 100%;
+    max-width: 256rem;
+    overflow: hidden;
+
+    &--with-cart {
+        grid-template-columns: minmax(0, 1fr) $pd-cart-w;
     }
 
-    &__product {
+    &__page {
+        min-width: 0;
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        @include gg-scroll-fade;
+        padding: 0.4rem $pd-g calc(#{$pd-g} * 1.5) 0.4rem;
         display: flex;
         flex-direction: column;
-        padding: 0 1.6rem 1.6rem;
-        height: 100%;
-        overflow: auto;
-
-        // ── Back navigation ──────────────────────────────────────────
-        &__navigation {
-            flex-shrink: 0;
-            display: flex;
-            padding: 1.6rem 0 1.2rem;
-
-            & > div {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.6rem;
-                cursor: pointer;
-                background: rgba(255, 255, 255, 0.06);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                border-radius: 2rem;
-                padding: 0.55rem 1.2rem 0.55rem 0.8rem;
-                color: rgba(255, 255, 255, 0.55);
-                transition: background 0.18s, border-color 0.18s, color 0.18s;
-                @include font-m-theme-client($font-weight-regular-theme-client);
-                font-size: 1.3rem;
-
-                .giz-icon {
-                    width: 1.6rem !important;
-                    height: 1.6rem !important;
-                    color: inherit;
-                }
-
-                &:hover {
-                    background: rgba(255, 255, 255, 0.1);
-                    border-color: rgba(255, 255, 255, 0.18);
-                    color: rgba(255, 255, 255, 0.88);
-                }
-            }
-
-            &__icon {
-                display: flex;
-                align-items: center;
-            }
-        }
-
-        // ── Main product info: original 3-column grid ─────────────────
-        &__info {
-            display: grid;
-            grid-template-columns: min-content 1fr min-content;
-            gap: 3.2rem;
-            max-height: 26rem;
-            flex-shrink: 0;
-
-            &__image {
-                width: 20rem;
-                height: 22.2rem;
-                background-color: rgba(0, 0, 0, 0.75);
-                border-radius: 1.6rem;
-                border: 1px solid rgba(255, 255, 255, 0.07);
-                overflow: hidden;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-shrink: 0;
-
-                .giz-default-image {
-                    width: 100%;
-                    height: 100%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-
-                    img {
-                        max-width: 80%;
-                        max-height: 80%;
-                        object-fit: contain;
-                    }
-                }
-            }
-
-            &__basic {
-                display: grid;
-                grid-template-rows: min-content min-content min-content 1fr min-content;
-                max-width: 70.0rem;
-                width: 100%;
-                overflow: hidden;
-
-                &__category {
-                    margin-bottom: 1.2rem;
-                    color: rgba(var(--gg-accent-rgb), 0.72);
-                    text-transform: uppercase;
-                    letter-spacing: 0.07em;
-                    font-size: 1.2rem;
-                    @include font-s-theme-client($font-weight-regular-theme-client);
-                }
-
-                &__title {
-                    max-height: 8.8rem;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    display: -webkit-box;
-                    -webkit-line-clamp: 2;
-                    -webkit-box-orient: vertical;
-                    font-size: 3.2rem;
-                    line-height: 4.0rem;
-                    font-weight: 600;
-                    color: rgba(255, 255, 255, 0.95);
-                    font-family: $font-family-header-theme-client;
-                }
-
-                .giz-time-product-host-groups {
-                    gap: 0.8rem;
-                    margin-top: 1.2rem;
-
-                    &-tooltip {
-                        display: flex;
-                        gap: 0.8rem;
-                        white-space: nowrap;
-                        padding: 0.8rem 1.2rem;
-                    }
-
-                    .giz-time-product-host-group {
-                        padding: 0.5rem 0.9rem;
-                        background-color: rgba(var(--gg-accent-rgb), 0.07);
-                        border: 1px solid rgba(var(--gg-accent-rgb), 0.18);
-                        border-radius: 0.5rem;
-                        color: rgba(var(--gg-accent-rgb), 0.8);
-                        font-family: 'Noto Sans';
-                        font-style: normal;
-                        font-weight: 500;
-                        font-size: 1.3rem;
-                        line-height: 2rem;
-
-                        &--additional {
-                            padding: 0.5rem 0.9rem;
-                            background-color: rgba(var(--gg-accent-rgb), 0.07);
-                            border: 1px solid rgba(var(--gg-accent-rgb), 0.18);
-                            border-radius: 0.5rem;
-                            color: rgba(var(--gg-accent-rgb), 0.8);
-                            font-family: 'Noto Sans';
-                            font-style: normal;
-                            font-weight: 500;
-                            font-size: 1.3rem;
-                            line-height: 2rem;
-                        }
-
-                        &.active {
-                            background-color: rgba(var(--gg-accent-rgb), 0.18);
-                            border-color: rgba(var(--gg-accent-rgb), 0.4);
-                            color: var(--gg-accent);
-                        }
-                    }
-                }
-
-                &__description {
-                    margin: 2rem 0;
-                    max-height: 100%;
-                    overflow: auto;
-                    color: rgba(255, 255, 255, 0.68);
-                    @include font-l-theme-client($font-weight-light-theme-client);
-                }
-
-                &__action {
-                    display: flex;
-                    align-items: center;
-                    gap: 1.6rem;
-                    max-width: 100%;
-                    overflow: hidden;
-
-                    &__price {
-                        display: flex;
-                        align-items: center;
-                        gap: 0.8rem;
-                        max-width: 100%;
-                        overflow: hidden;
-                        margin-left: 2rem;
-                        white-space: nowrap;
-                        color: var(--gg-accent);
-                        font-family: $font-family-header-theme-client;
-                        font-size: 2.6rem;
-                        font-weight: 700;
-                        line-height: 1.2;
-
-                        .giz-product-card__price__points {
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                        }
-
-                        svg {
-                            min-width: 2.6rem;
-                            min-height: 2.6rem;
-                            width: 2.6rem;
-                            height: 2.6rem;
-                        }
-                    }
-
-                    .giz-button--fill {
-                        padding: 1.1rem 2.4rem;
-                        white-space: nowrap;
-                    }
-
-                    .giz-button--fill.accent:not(.disabled) {
-                        background: rgba(var(--gg-accent-rgb), 0.15);
-                        border: 1px solid rgba(var(--gg-accent-rgb), 0.35);
-                        color: var(--gg-accent);
-
-                        &:hover {
-                            background: rgba(var(--gg-accent-rgb), 0.28);
-                            
-                        }
-                    }
-
-                    .giz-shop-quantity-picker {
-                        width: 16.5rem;
-                    }
-                }
-            }
-
-            // Availability column (3rd column, to the right of basic)
-            &__additional {
-                margin-top: 4.4rem;
-
-                &__availability {
-                    display: grid;
-                    grid-template-columns: auto auto auto;
-                    padding: 1.4rem 1.6rem;
-                    border-radius: 0.9rem;
-                    background: rgba(var(--gg-accent-rgb), 0.05);
-                    border: 1px solid rgba(var(--gg-accent-rgb), 0.12);
-                    margin-bottom: 1.4rem;
-
-                    .giz-product-availability {
-                        white-space: nowrap;
-                        margin-right: 7.4rem;
-
-                        &__title {
-                            color: rgba(255, 255, 255, 0.5);
-                            @include font-s-theme-client($font-weight-light-theme-client);
-                            margin-bottom: 0.4rem;
-                        }
-
-                        &__body {
-                            color: rgba(255, 255, 255, 0.85);
-                            @include font-m-theme-client($font-weight-regular-theme-client);
-                        }
-                    }
-                }
-
-                &__expirations {
-                    &__header {
-                        color: rgba(255, 255, 255, 0.5);
-                        @include font-s-theme-client($font-weight-regular-theme-client);
-                        margin-bottom: 0.6rem;
-                    }
-
-                    &__body {
-                        display: flex;
-                        gap: 0.8rem;
-                        margin-top: 0.6rem;
-                        white-space: nowrap;
-                        flex-wrap: wrap;
-
-                        .giz-product-expiration {
-                            display: flex;
-                            gap: 0.5rem;
-                            align-items: center;
-                            padding: 0.3rem 0.8rem;
-                            background: rgba(255, 199, 0, 0.09);
-                            border: 1px solid rgba(255, 199, 0, 0.22);
-                            border-radius: 0.5rem;
-                            font-family: 'Noto Sans';
-                            font-style: normal;
-                            font-weight: 500;
-                            font-size: 1.3rem;
-                            line-height: 2rem;
-
-                            .giz-icon {
-                                color: #FFC700;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // ── Bundled products ─────────────────────────────────────────
-        &__bundled-products {
-            flex-shrink: 0;
-            margin-top: 2.4rem;
-            display: flex;
-            gap: 1.6rem;
-            min-height: 12rem;
-            max-width: 100%;
-            overflow: hidden;
-
-            .giz-product-time-image {
-                gap: 0.8rem;
-
-                .giz-default-image {
-                    width: 4rem;
-                    height: 4rem;
-                }
-
-                &__time {
-                    gap: 0.6rem;
-
-                    &__number {
-                        font-style: normal;
-                        font-weight: 700;
-                        font-size: 1.5rem;
-                        line-height: 0.9rem;
-                    }
-
-                    &__text {
-                        font-style: normal;
-                        font-weight: 500;
-                        font-size: 0.548649rem;
-                        line-height: 0.9rem;
-                    }
-                }
-            }
-        }
-
-        // ── Related products ─────────────────────────────────────────
-        &__related {
-            flex-shrink: 0;
-            margin-top: 3.2rem;
-            padding-bottom: 1rem;
-
-            &__header {
-                margin-bottom: 1.6rem;
-                padding-left: 1.2rem;
-                border-left: 3px solid rgba(var(--gg-accent-rgb), 0.6);
-                color: rgba(255, 255, 255, 0.95);
-                @include font-h5-theme-client($font-weight-bold-theme-client);
-            }
-
-            &__body {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-                grid-auto-rows: minmax(38rem, auto);
-                grid-column-gap: 1.6rem;
-                grid-row-gap: 1.6rem;
-            }
-        }
+        gap: calc(#{$pd-g} * 1.2);
+        animation: gg-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
-    &__order {
-        height: 100%;
-        // Matches the shop page's floating cart: a real gap instead of a
-        // hard edge, and min-width:0 so the fixed column can't overflow.
+    &__cart {
         min-width: 0;
-        overflow: visible;
-        padding-left: 1.4rem;
-        box-sizing: border-box;
-    }
-}
-
-.giz-product-availability-show-more {
-    align-self: baseline;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    cursor: pointer;
-    color: rgba(var(--gg-accent-rgb), 0.65);
-    transition: color 0.18s;
-    @include font-s-theme-client($font-weight-light-theme-client);
-
-    &:hover {
-        color: var(--gg-accent);
+        height: 100%;
+        overflow: hidden;
     }
 
-    span {
-        position: relative;
+    // ── back ─────────────────────────────────────────────────────────────
+    &__back {
+        align-self: flex-start;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        height: 3.6rem;
+        padding: 0 1.4rem 0 1.1rem;
+        border-radius: 1.2rem;
+        border: 1px solid $pd-line-2;
+        background: rgba(255, 255, 255, 0.05);
+        color: $pd-ink-2;
+        font: inherit;
+        font-size: 1.3rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
 
-        &:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            border-top: 1px solid rgba(var(--gg-accent-rgb), 0.35);
+        i {
+            font-size: 1.4rem;
+        }
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: $pd-ink;
         }
     }
+
+    // ── the decision: picture, name, price, buy, facts ───────────────────
+    &__main {
+        display: grid;
+        grid-template-columns: $pd-art minmax(0, 1fr);
+        gap: calc(#{$pd-g} * 1.4);
+        align-items: start;
+    }
+
+    &__art {
+        position: relative;
+        width: $pd-art;
+        height: $pd-art;
+        border-radius: 2.2rem;
+        overflow: hidden;
+        background: var(--gg-tile-deep);
+        box-shadow: inset 0 0 0 1px $pd-line, 0 3rem 6rem -3rem rgba(0, 0, 0, 0.8);
+
+        // GizImage renders an <img> with a fit class; fill the plate.
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .giz-image,
+        .giz-image__image {
+            width: 100%;
+            height: 100%;
+        }
+
+        &--time {
+            background:
+                radial-gradient(28rem 24rem at 20% 10%, rgba(var(--gg-accent-rgb), 0.38), transparent 62%),
+                radial-gradient(24rem 22rem at 90% 100%, rgba(var(--gg-accent-rgb), 0.22), transparent 60%),
+                var(--gg-tile);
+        }
+    }
+
+    // The face of a time package: its duration, set large - the same readout the
+    // shop card carries, at page scale.
+    &__time {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.2rem;
+
+        b {
+            font-family: $font-family-header-theme-client;
+            font-size: clamp(7rem, 4rem + 4vw, 11rem);
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            line-height: 1;
+            color: $pd-ink;
+        }
+
+        span {
+            font-family: $font-family-header-theme-client;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--gg-accent-soft);
+        }
+    }
+
+    &__no-art {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 5rem;
+        color: $pd-ink-3;
+    }
+
+    &__info {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        padding-top: 0.6rem;
+    }
+
+    &__title {
+        margin: 0;
+        font-family: $font-family-header-theme-client;
+        font-size: clamp(2.8rem, 1.8rem + 1.4vw, 4.6rem);
+        font-weight: 800;
+        letter-spacing: -0.025em;
+        line-height: 1.05;
+        color: $pd-ink;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+
+    &__price {
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        font-family: $font-family-header-theme-client;
+        font-size: clamp(2.2rem, 1.6rem + 0.9vw, 3.2rem);
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.01em;
+        color: $pd-ink;
+
+        // ProductCardPrice: "650 ₽ or 1 200 <coin>". The connective is quiet, the
+        // coin follows its number.
+        > span:not(.giz-product-card__price__points) {
+            color: $pd-ink;
+        }
+
+        > span:not(:first-child):not(.giz-product-card__price__points) {
+            font-size: 0.55em;
+            font-weight: 600;
+            color: $pd-ink-3;
+            margin: 0 0.4rem;
+        }
+
+        .giz-product-card__price__points {
+            color: $pd-ink;
+        }
+
+        .giz-icon,
+        svg {
+            width: 0.7em;
+            height: 0.7em;
+            align-self: center;
+            color: #e8b84b;
+        }
+    }
+
+    &__buy {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+        margin-top: 0.4rem;
+
+        .giz-button {
+            min-width: 22rem;
+        }
+    }
+
+    &__why {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.6rem;
+        max-width: 48rem;
+        font-size: 1.3rem;
+        line-height: 1.4;
+        color: #ffc46b;
+
+        i {
+            flex: none;
+            font-size: 1.6rem;
+            margin-top: 0.1rem;
+        }
+    }
+
+    // ── facts: label over value, icon on the left ────────────────────────
+    &__facts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem 2.4rem;
+        margin-top: 0.8rem;
+        padding-top: 1.4rem;
+        border-top: 1px solid $pd-line;
+    }
+
+    &__fact {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.9rem;
+        min-width: 0;
+        max-width: 100%;
+
+        > i {
+            flex: none;
+            width: 3.2rem;
+            height: 3.2rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 1rem;
+            background: rgba(255, 255, 255, 0.06);
+            color: $pd-ink-2;
+            font-size: 1.6rem;
+        }
+
+        > div {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            padding-top: 0.2rem;
+        }
+
+        small {
+            font-family: $font-family-header-theme-client;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: $pd-ink-3;
+            white-space: nowrap;
+        }
+
+        b {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: $pd-ink;
+        }
+
+        .giz-time-product-host-groups {
+            margin-top: 0.1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            overflow: visible;
+
+            .giz-time-product-host-group,
+            .giz-time-product-host-group--additional {
+                font-size: 1.15rem;
+                padding: 0.3rem 0.8rem;
+            }
+        }
+    }
+
+    &__more {
+        align-self: flex-end;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: var(--gg-accent-soft);
+        font: inherit;
+        font-size: 1.25rem;
+        font-weight: 700;
+        cursor: pointer;
+
+        &:hover {
+            color: var(--gg-accent-pale);
+        }
+    }
+
+    // ── reading: description, bundle, related ────────────────────────────
+    &__about,
+    &__bundle,
+    &__related {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        min-width: 0;
+    }
+
+    &__desc {
+        margin: 0;
+        max-width: 92rem;
+        font-size: 1.45rem;
+        line-height: 1.6;
+        color: $pd-ink-2;
+        white-space: pre-line;
+    }
+
+    &__bundle-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+
+        .giz-bundled-product {
+            width: 11rem;
+            height: 11rem;
+            border-radius: 1.6rem;
+            background: var(--gg-tile-deep);
+            box-shadow: inset 0 0 0 1px $pd-line;
+
+            img {
+                object-fit: cover;
+            }
+        }
+    }
+
+    &__related-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+        gap: 1.2rem;
+    }
 }
 
-.giz-product-host-groups-tooltip {
-    .giz-client-tooltip {
-        padding: 0.8rem 1.2rem;
+// The cart column is narrower than the page on a laptop panel; drop it under.
+@media (max-width: 1500px) {
+    .gg-pd--with-cart {
+        grid-template-columns: minmax(0, 1fr) 40rem;
     }
 }

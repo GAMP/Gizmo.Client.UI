@@ -1,10 +1,10 @@
-﻿@namespace Gizmo.Client.UI
+@namespace Gizmo.Client.UI
 @inherits CustomDOMComponentBase
 @using System.Globalization
 @inject Gizmo.UI.Services.ILocalizationService LocalizationService
 
 <div class="giz-header__user-menu-item giz-user-online-deposit-dropdown @(UserMenuViewState.UserOnlineDepositIsVisible ? "open" : "")" data-tooltip="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ONLINE_DEPOSIT_TITLE))">
-    @* Labelled pill in the icon-actions group - icon + "Пополнить" text,
+    @* Labelled pill in the icon-actions group - icon + top-up label,
        same 4rem height as the ghost-icon buttons next to it but accent-
        tinted so it still stands out as the one action worth calling out. *@
     <button class="giz-topup-pill" @onclick="(args) => OnClick.InvokeAsync(args)" @onclick:stopPropagation="true">

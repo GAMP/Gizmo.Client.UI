@@ -1,13 +1,10 @@
 //=============== Alert ================//
 
-// Плашка-уведомление: на экране входа это предупреждение о брони, дальше по
-// оболочке — статусы операций.
-//
-// У вендора плашки светлые: бледная заливка и тёмный текст, как в светлой теме
-// менеджера. В нашей тёмной оболочке такой блок читается как чужой прямоугольник
-// и перетягивает на себя всё внимание карточки. Оставляем ту же семантику цвета,
-// но берём её оттенком: прозрачная заливка, тонкая рамка того же тона, цветной
-// значок — и обычный светлый текст, как везде.
+// Alert plate: the reservation warning on the sign-in screen, operation status further
+// in. The vendor's plates are light - pale fill, dark text - which in a dark shell reads
+// as a foreign rectangle and pulls the whole card's attention. Same colour semantics,
+// taken as a tint: transparent fill, thin border in the same tone, coloured icon, and
+// ordinary light text.
 .giz-alert {
     display: flex;
     align-items: flex-start;
@@ -21,8 +18,8 @@
         flex-shrink: 0;
         display: flex;
         align-items: center;
-        // Значок ровно по первой строке заголовка, а не по центру всей плашки:
-        // с двумя строками текста он иначе съезжает вниз.
+        // Icon aligned to the first line of the title rather than to the centre of the
+        // block: with two lines of text it otherwise drifts down.
         min-height: 2rem;
     }
 
@@ -42,8 +39,7 @@
             @include font-m-theme-client($font-weight-light-theme-client);
         }
 
-        // Заголовок или текст может не прийти — пустая строка не должна
-        // занимать место.
+        // Title or text may be absent - an empty line must not hold space.
         &__title:empty,
         &__text:empty { display: none; }
     }

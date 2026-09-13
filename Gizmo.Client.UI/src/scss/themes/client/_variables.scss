@@ -2,18 +2,11 @@
 
 $client-theme-comp-attr: 'client-theme';
 
-//==Accent (GGBook highlight — change here to retheme everything)
-// Cyan: #00d4ff  |  Mint: #3dffc0  |  Green: #00e676  |  Purple: #b06bff
-// Grafit brand accent.
-$gg-accent: #b06bff;
-
-// CSS custom properties — auto-derived from $gg-accent at build time.
-// Override at runtime by adding a CSS file with:
-//   :root { --gg-accent: #3dffc0; --gg-accent-rgb: 61, 255, 192; }
-:root {
-    --gg-accent:     #{$gg-accent};
-    --gg-accent-rgb: #{red($gg-accent)}, #{green($gg-accent)}, #{blue($gg-accent)};
-}
+//==Accent
+// The accent and everything derived from it live in _palette.scss, as CSS custom
+// properties, so a club changes the whole shell with one word (data-accent on <html>).
+// This SCSS variable only names the default palette for the rare build-time use.
+$gg-accent: #4f8cff;
 
 //==Login screen host number placement (idle/locked screen "PC 46" label)
 // Default = top-right. Reposition at runtime via the same per-club override
@@ -50,7 +43,8 @@ $gg-accent: #b06bff;
 }
 
 //==Colors
-$primary-color-theme-client: #3F8CFF;
+// The vendor's blue, now the palette's accent: every place that used it follows the club's colour.
+$primary-color-theme-client: var(--gg-accent);
 
 $bg-alert-theme-client: #F73B3B;
 

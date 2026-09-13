@@ -1,0 +1,44 @@
+//=============== SimpleTab ================//
+
+.giz-simple-tab {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    max-height: 100%;
+    overflow: hidden;
+
+    &__header {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    &__content {
+        max-height: 100%;
+        overflow: hidden;
+    }
+
+    &--hidden {
+        display: none;
+    }
+
+    &.disabled {
+        pointer-events: none;
+        opacity: 0.4;
+
+        .giz-simple-tab__link {
+            pointer-events: none;
+            opacity: 0.4;
+        }
+    }
+
+    &-item {
+        max-height: 100%;
+        overflow: auto;
+        display: none;
+
+        &.active {
+            display: block;
+        }
+    }
+}

@@ -1,41 +1,37 @@
-﻿@namespace Gizmo.Client.UI
+@namespace Gizmo.Client.UI
 @using Gizmo.UI;
 @using Microsoft.AspNetCore.Components.Forms
 @inherits CustomDOMComponentBase
 
-@* Тексты написаны по-русски прямо здесь, а не через ресурсы: строки живут в
-   Gizmo.Client.UI.Resources.dll, которую сервер грузит свою, и правки туда до
-   реального клиента не доезжают. Заодно они стали короче — штатное
-   «Подтвердить бронирование» не влезало в кнопку и переносилось поверх соседней.
-
-   Формулировки развожу по шагам: на первом человек ещё не понимает, почему у
-   него что-то просят, на втором он уже подтвердил бронь и ждёт оплаты. *@
+@* Wording differs per step: on the first the customer does not yet know why something is
+   being asked of them; on the second the reservation is confirmed and payment is due. *@
 <div class="giz-reservation-notification">
+    <div class="giz-reservation-notification__icon"><i class="ph-fill ph-calendar-check"></i></div>
 
     <div class="giz-reservation-notification__body">
         <div class="giz-reservation-notification__body__title">
-            @(IsPaymentStep ? "Бронь ждёт оплаты" : "Этот компьютер забронирован")
+            @ShellText.Get(IsPaymentStep ? ShellText.RESV_NOTIF_TITLE_PAY : ShellText.RESV_NOTIF_TITLE_CODE)
         </div>
         <div class="giz-reservation-notification__body__message">
             @(IsPaymentStep
-                ? "Бронирование подтверждено. Осталось оплатить — иначе сеанс закроется."
-                : "Если бронировали вы, введите код бронирования, чтобы продолжить сеанс.")
+                ? ShellText.Get(ShellText.RESV_NOTIF_MSG_PAY)
+                : ShellText.Get(ShellText.RESV_NOTIF_MSG_CODE))
         </div>
         <div class="giz-reservation-notification__body__actions">
-            <Button Color="ButtonColors.Accent"
-                    Size="ButtonSizes.Medium"
-                    Text="@(IsPaymentStep ? "Оплатить" : "Ввести код")"
-                    IsDisabled="@ConfirmReservationNotificationViewService.ViewState.IsLoading"
-                    @onclick="OpenPaymentDialogAsync" />
-            <Button Variant="ButtonVariants.Outline"
-                    Size="ButtonSizes.Medium"
-                    Text="Позже"
-                    IsDisabled="@ConfirmReservationNotificationViewService.ViewState.IsLoading"
-                    @onclick="Ignore" />
+            <button type="button" class="giz-notification__btn giz-notification__btn--primary"
+                    disabled="@ConfirmReservationNotificationViewService.ViewState.IsLoading"
+                    @onclick="OpenPaymentDialogAsync">
+                @ShellText.Get(IsPaymentStep ? ShellText.PAY : ShellText.RESV_ENTER_CODE)
+            </button>
+            <button type="button" class="giz-notification__btn"
+                    disabled="@ConfirmReservationNotificationViewService.ViewState.IsLoading"
+                    @onclick="Ignore">
+                @ShellText.Get(ShellText.GEN_LATER)
+            </button>
         </div>
     </div>
 
-    <div class="giz-reservation-notification__close-button">
-        <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseNotification()" />
-    </div>
+    <button type="button" class="giz-notification__close" @onclick="CloseNotification" aria-label="@ShellText.Get(ShellText.GEN_CLOSE)">
+        <i class="ph-bold ph-x"></i>
+    </button>
 </div>

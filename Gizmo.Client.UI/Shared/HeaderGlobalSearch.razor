@@ -1,4 +1,4 @@
-﻿@namespace Gizmo.Client.UI.Shared
+@namespace Gizmo.Client.UI.Shared
 @inherits CustomDOMComponentBase
 
 <div class="giz-header__global-search">
@@ -8,7 +8,7 @@
 
         <input type="text"
                value="@ViewState.SearchPattern"
-               placeholder="Поиск по играм, приложениям и магазину"
+               placeholder="@ShellText.Get(ShellText.SEARCH_PLACEHOLDER)"
                @ref="_inputElement"
                @onfocusin="OnFocusInHandler"
                @onfocusout="OnFocusOutHandler"
@@ -30,11 +30,11 @@
                         <div class="giz-global-search-section">
                             <div class="giz-global-search-section__header">
 
-                                <div>Игры и программы</div>
+                                <div>@ShellText.Get(ShellText.SEARCH_APPS)</div>
 
                                 @if (ViewState.ExecutableResults.Count() > 10)
                                 {
-                                    <div class="giz-global-search-section__header__more" @onclick="@(() => GlobalSearchService.ViewAllResultsAsync(Gizmo.Client.UI.View.SearchResultTypes.Executables))">Показать все</div>
+                                    <div class="giz-global-search-section__header__more" @onclick="@(() => GlobalSearchService.ViewAllResultsAsync(Gizmo.Client.UI.View.SearchResultTypes.Executables))">@ShellText.Get(ShellText.SEARCH_SHOW_ALL)</div>
                                 }
                             </div>
                             <div class="giz-global-search-section__body">
@@ -52,11 +52,11 @@
                         <div class="giz-global-search-section">
                             <div class="giz-global-search-section__header">
 
-                                <div>Бар и магазин</div>
+                                <div>@ShellText.Get(ShellText.SEARCH_SHOP)</div>
 
                                 @if (ViewState.ProductResults.Count() > 10)
                                 {
-                                    <div class="giz-global-search-section__header__more" @onclick="@(() => GlobalSearchService.ViewAllResultsAsync(Gizmo.Client.UI.View.SearchResultTypes.Products))">Показать все</div>
+                                    <div class="giz-global-search-section__header__more" @onclick="@(() => GlobalSearchService.ViewAllResultsAsync(Gizmo.Client.UI.View.SearchResultTypes.Products))">@ShellText.Get(ShellText.SEARCH_SHOW_ALL)</div>
                                 }
                             </div>
                             <div class="giz-global-search-section__body">

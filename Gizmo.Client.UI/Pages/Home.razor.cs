@@ -1,4 +1,5 @@
 using Gizmo.Client.Options;
+using Gizmo.Client.UI.Localization;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -27,6 +28,7 @@ namespace Gizmo.Client.UI.Pages
         //live behind the Shop and Games routes on the left rail. Nothing here is
         //driven by a config number - these are the sizes the layout was drawn for.
         private const int HERO_SLIDES = 5;
+        private const int HERO_EXECUTABLES = 3;
         private const int BAR_ITEMS = 4;
         private const int STRIP_APPS = 4;
         private const int PACKS_CEILING = 24;
@@ -40,11 +42,16 @@ namespace Gizmo.Client.UI.Pages
         private IEnumerable<UserProductViewState> _catalogue = Enumerable.Empty<UserProductViewState>();
         private IEnumerable<AppViewState> _apps = Enumerable.Empty<AppViewState>();
 
+        //Executables of the applications the hero shows, fetched the first time a slide
+        //needs them - see HeroExecutables.
+        private readonly Dictionary<int, IReadOnlyList<AppExeViewState>> _heroExecutables = new();
+        private readonly HashSet<int> _heroExecutablesLoading = new();
+
         private Timer? _slideTimer;
         private int _slide;
 
-        //Пакет, который сейчас кладётся в корзину: кнопка на это время гаснет,
-        //иначе вторым нажатием в корзину уедет второй такой же.
+        //Package currently being added to the cart: the button goes dark meanwhile, or a
+        //second press sends a second copy.
         private int? _buyingProductId;
 
         #endregion
@@ -59,6 +66,8 @@ namespace Gizmo.Client.UI.Pages
         [Inject] ProductDetailsPageViewState ProductDetailsPageViewState { get; set; }
         [Inject] UserProductViewStateLookupService ProductLookupService { get; set; }
         [Inject] AppViewStateLookupService AppLookupService { get; set; }
+        [Inject] AppExeViewStateLookupService AppExeLookupService { get; set; }
+        [Inject] AppDetailsPageViewState AppDetailsPageViewState { get; set; }
         [Inject] ClientServerCartViewService CartService { get; set; }
         [Inject] IClientDialogService DialogService { get; set; }
         [Inject] NavigationService NavigationService { get; set; }
@@ -124,7 +133,7 @@ namespace Gizmo.Client.UI.Pages
         /// number on this page changed nothing at all. The full catalogue is read
         /// instead and the popular ones keep their order at the front.
         /// </remarks>
-        private IReadOnlyList<AppViewState> StripApps
+        private IEnumerable<AppViewState> Apps
         {
             get
             {
@@ -136,10 +145,81 @@ namespace Gizmo.Client.UI.Pages
 
                 return source
                     .OrderBy(a => popularOrder.TryGetValue(a.ApplicationId, out var rank) ? rank : int.MaxValue)
-                    .ThenBy(a => a.Title)
-                    .Take(STRIP_APPS)
-                    .ToList();
+                    .ThenBy(a => a.Title);
             }
+        }
+
+        /// <summary>
+        /// The band of games under the hero: the most popular ones, always.
+        /// </summary>
+        /// <remarks>
+        /// The band is the fixed row a person scans for the game they came to play, so
+        /// it gets the head of the popularity order regardless of what the hero shows.
+        /// </remarks>
+        private IReadOnlyList<AppViewState> StripApps => Apps.Take(STRIP_APPS).ToList();
+
+        /// <summary>
+        /// Applications the hero rotates through when the club has no news.
+        /// </summary>
+        /// <remarks>
+        /// The ones after the band: the hero is the slot for what a person would not
+        /// have looked for, so it promotes the next tier rather than repeating the
+        /// four games already on the row below. A club with fewer games than the band
+        /// holds has nothing left to promote and the hero shows the band's own instead
+        /// of going empty.
+        /// </remarks>
+        private IReadOnlyList<AppViewState> HeroApps
+        {
+            get
+            {
+                var next = Apps.Skip(STRIP_APPS).Take(HERO_SLIDES).ToList();
+
+                return next.Count > 0 ? next : Apps.Take(HERO_SLIDES).ToList();
+            }
+        }
+
+        /// <summary>
+        /// Launch buttons for the application on the hero: its executables, at most a few.
+        /// </summary>
+        /// <remarks>
+        /// Fetched the first time a slide asks for them and kept for the life of the page;
+        /// the slide renders without buttons for the moment the lookup takes and again
+        /// with them. Most applications have exactly one executable. The rest are one
+        /// click away behind Details.
+        /// </remarks>
+        private IReadOnlyList<AppExeViewState> HeroExecutables(int applicationId)
+        {
+            if (_heroExecutables.TryGetValue(applicationId, out var known))
+                return known;
+
+            if (_heroExecutablesLoading.Add(applicationId))
+            {
+                DispatchWorkflow(async () =>
+                {
+                    IReadOnlyList<AppExeViewState> executables;
+
+                    try
+                    {
+                        var all = await AppExeLookupService.GetFilteredStatesAsync(applicationId);
+
+                        executables = all
+                            .OrderBy(a => a.DisplayOrder)
+                            .Take(HERO_EXECUTABLES)
+                            .ToList();
+                    }
+                    catch (Exception)
+                    {
+                        //No buttons for this one, then; Details still opens the page.
+                        executables = Array.Empty<AppExeViewState>();
+                    }
+
+                    _heroExecutables[applicationId] = executables;
+                    _heroExecutablesLoading.Remove(applicationId);
+                    StateHasChanged();
+                });
+            }
+
+            return Array.Empty<AppExeViewState>();
         }
 
         private IEnumerable<UserProductViewState> Purchasable(Func<UserProductViewState, bool> predicate)
@@ -176,8 +256,13 @@ namespace Gizmo.Client.UI.Pages
         /// Because they answer different questions they never take each other's
         /// room - adding a banner hides nothing, and removing the last one leaves
         /// no hole.
+        /// <para>
+        /// News first, then the popular games, then goods. Games before goods because
+        /// that is what a club is: somebody who sat down came to play, and a slot this
+        /// big should show them what to play before it shows them a drink.
+        /// </para>
         /// </remarks>
-        private enum HeroKind { Banner, Product, Empty }
+        private enum HeroKind { Banner, App, Product, Empty }
 
         private HeroKind Hero
         {
@@ -186,6 +271,9 @@ namespace Gizmo.Client.UI.Pages
                 if (HasPromo)
                     return HeroKind.Banner;
 
+                if (HeroApps.Count > 0)
+                    return HeroKind.App;
+
                 return HeroProducts.Count > 0 ? HeroKind.Product : HeroKind.Empty;
             }
         }
@@ -193,6 +281,7 @@ namespace Gizmo.Client.UI.Pages
         private int SlideCount => Hero switch
         {
             HeroKind.Banner => Banners.Count,
+            HeroKind.App => HeroApps.Count,
             HeroKind.Product => HeroProducts.Count,
             _ => 0,
         };
@@ -210,21 +299,21 @@ namespace Gizmo.Client.UI.Pages
         private AdvertisementViewState? CurrentBanner =>
             Hero == HeroKind.Banner && Banners.Count > 0 ? Banners[SlideIndex] : null;
 
+        private AppViewState? CurrentHeroApp =>
+            Hero == HeroKind.App && HeroApps.Count > 0 ? HeroApps[SlideIndex] : null;
+
         private UserProductViewState? CurrentHeroProduct =>
             Hero == HeroKind.Product && HeroProducts.Count > 0 ? HeroProducts[SlideIndex] : null;
 
         /// <summary>
-        /// Новости клуба для героя, в порядке показа.
+        /// Club news for the hero, in display order.
         /// </summary>
         /// <remarks>
-        /// Берутся ВСЕ, а не только с картинкой. Раньше стоял фильтр по
-        /// изображению - и новость, набранная в менеджере одним текстом (а это
-        /// обычный случай: объявление о турнире, о ценах, о режиме работы),
-        /// отсеивалась. Герой молча откатывался на популярные товары, и со
-        /// стороны это читалось как «баннер не работает».
-        ///
-        /// Рисует новость штатный AdsCarouselItem, отсюда ему нужен только
-        /// идентификатор; список держим ради порядка показа и счётчика слайдов.
+        /// All of them, not only those with an image. The old image filter dropped news
+        /// written as plain text - a tournament notice, prices, opening hours - and the
+        /// hero silently fell back to popular products, which read as "the banner is
+        /// broken". The stock AdsCarouselItem draws the item, so only the id is needed
+        /// here; the list exists for display order and the slide count.
         /// </remarks>
         private List<AdvertisementViewState> Banners =>
             AdvertisementsViewState.Advertisements
@@ -267,6 +356,40 @@ namespace Gizmo.Client.UI.Pages
         }
 
         /// <summary>
+        /// The word on a lone launch button, as a CSS string literal.
+        /// </summary>
+        private static string LaunchLabel =>
+            ShellStringOverrides.Get(ShellStringOverrides.GEN_LAUNCH).Replace("\\", "\\\\").Replace("'", "\\'");
+
+        /// <summary>
+        /// Whether the button for <paramref name="exe"/> should say "Launch" rather than
+        /// its own caption: the application has one executable and it is named after the
+        /// application, which the title above already says.
+        /// </summary>
+        private static bool IsPlainLaunch(AppViewState app, AppExeViewState exe, int count) =>
+            count == 1 &&
+            (string.IsNullOrWhiteSpace(exe.Caption) ||
+             string.Equals(exe.Caption.Trim(), app.Title?.Trim(), StringComparison.OrdinalIgnoreCase));
+
+        /// <summary>
+        /// Opens the application's own page, where every executable is listed.
+        /// </summary>
+        private void OpenApp(int applicationId)
+        {
+            if (AppDetailsPageViewState.DisableAppDetails)
+                return;
+
+            NavigationService.NavigateTo(ClientRoutes.ApplicationDetailsRoute + $"?ApplicationId={applicationId}");
+        }
+
+        /// <summary>
+        /// The price on a package row: money, or points for a package sold for points
+        /// alone - a zero there would read as free.
+        /// </summary>
+        private static bool IsPointsOnly(UserProductViewState product) =>
+            product.UnitPrice == 0 && (product.UnitPointsPrice ?? 0) > 0;
+
+        /// <summary>
         /// Puts a shop item in the cart and takes the customer to it.
         /// </summary>
         /// <remarks>
@@ -293,7 +416,7 @@ namespace Gizmo.Client.UI.Pages
         /// </remarks>
         private void BuyPackage(int productId)
         {
-            if (DialogService is not ClientDialogService dialogService)
+            if (DialogService is not ClientDialogService)
             {
                 OpenProduct(productId);
                 return;
@@ -309,36 +432,9 @@ namespace Gizmo.Client.UI.Pages
             {
                 try
                 {
-                    //Пакет кладётся в корзину ЗДЕСЬ, до открытия окна покупки, и
-                    //это не косметика.
-                    //
-                    //ClientServerCartViewService.ValidateRequestAsync, прежде чем
-                    //добавить пакет времени, у которого сейчас не его час
-                    //(UsageAvailability), показывает штатный вопрос «товар сейчас
-                    //недоступен, всё равно добавить?» и ЖДЁТ ответа. Диалоги в
-                    //оболочке - очередь, а не стопка: пока открыто моё окно, этот
-                    //вопрос стоит в очереди за ним и на экран не выходит. Ответа
-                    //нет - запись в корзине не появляется - моё окно крутит
-                    //спиннер вечно. Ровно это и видел клуб на «Ночи» вне её окна
-                    //покупки.
-                    //
-                    //Пока моего окна нет, вопрос показывается нормально, и я
-                    //открываю окно только с уже лежащей в корзине записью.
-                    var before = CartService.ViewState.Products.Select(a => a.Guid).ToHashSet();
-
-                    CartService.AddProduct(productId);
-
-                    var entryId = await WaitForCartEntryAsync(before);
-
-                    //Ответили «нет» на предупреждение или добавление не прошло -
-                    //показывать окно не с чем.
-                    if (entryId is null)
-                        return;
-
-                    var dialog = await dialogService.ShowPackagePurchaseDialogAsync(productId, entryId.Value);
-
-                    if (dialog.Result == AddComponentResultCode.Opened)
-                        await dialog.WaitForResultAsync();
+                    //The ordering lives in PackagePurchaseFlow: the same button exists on
+                    //a package in the shop, and it must not be repeated in two places.
+                    await PackagePurchaseFlow.RunAsync(productId, CartService, DialogService);
                 }
                 finally
                 {
@@ -346,38 +442,6 @@ namespace Gizmo.Client.UI.Pages
                     StateHasChanged();
                 }
             });
-        }
-
-        /// <summary>
-        /// Ждёт появления в корзине записи, которой там не было.
-        /// </summary>
-        /// <remarks>
-        /// Опрос, а не подписка: изменение корзины приходит через RaiseChanged на
-        /// её view state, но ждать надо конкретную запись, и опрос раз в пятую
-        /// долю секунды тут дешевле и понятнее.
-        ///
-        /// Полторы минуты - это не «сколько идёт запрос», а «сколько человек
-        /// может читать предупреждение перед тем, как нажать Да»: сам запрос
-        /// укладывается в доли секунды. Отличить «читает» от «отказался» нельзя:
-        /// проверка идёт в конвейере ДО того, как корзина поднимает флаги
-        /// занятости, так что по состоянию корзины оба случая выглядят одинаково
-        /// пустыми. Поэтому просто потолок, после которого кнопка оживает.
-        /// </remarks>
-        private async Task<Guid?> WaitForCartEntryAsync(HashSet<Guid> before)
-        {
-            var deadline = DateTime.UtcNow.AddSeconds(90);
-
-            while (DateTime.UtcNow < deadline)
-            {
-                var entry = CartService.ViewState.Products.FirstOrDefault(a => !before.Contains(a.Guid));
-
-                if (entry is not null)
-                    return entry.Guid;
-
-                await Task.Delay(200);
-            }
-
-            return null;
         }
 
         #endregion
@@ -390,9 +454,55 @@ namespace Gizmo.Client.UI.Pages
             this.SubscribeChange(UserBalanceViewState);
             this.SubscribeChange(AdvertisementsViewState);
 
-            _slideTimer = new Timer(OnSlideTick, null, SLIDE_INTERVAL, SLIDE_INTERVAL);
+            ShellActivity.Changed += OnActivityChanged;
+
+            ApplySlideTimer();
 
             base.OnInitialized();
+        }
+
+        /// <summary>
+        /// Runs the hero's slide timer only while there is a slideshow worth running.
+        /// </summary>
+        /// <remarks>
+        /// A tick is a re-render of the whole board, and the host never suspends the
+        /// WebView when its window goes behind a game - so a timer left running there
+        /// costs the customer frames in the game for a hero nobody can see. One slide has
+        /// nothing to rotate to either.
+        /// </remarks>
+        private void ApplySlideTimer()
+        {
+            var wanted = ShellActivity.IsActive && SlideCount > 1;
+
+            if (wanted == (_slideTimer is not null))
+                return;
+
+            if (wanted)
+            {
+                _slideTimer = new Timer(OnSlideTick, null, SLIDE_INTERVAL, SLIDE_INTERVAL);
+            }
+            else
+            {
+                _slideTimer?.Dispose();
+                _slideTimer = null;
+            }
+        }
+
+        //Static event arriving from JS interop; marshal to the UI thread, like everything
+        //else subscribed to something that outlives the component.
+        private void OnActivityChanged() => DispatchWorkflow(() =>
+        {
+            ApplySlideTimer();
+            return Task.CompletedTask;
+        });
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await base.OnAfterRenderAsync(firstRender);
+
+            //News and products load after the first render, so the slide count moves under
+            //our feet; re-check after every render.
+            ApplySlideTimer();
         }
 
         protected override async Task OnInitializedAsync()
@@ -425,6 +535,9 @@ namespace Gizmo.Client.UI.Pages
 
         public override void Dispose()
         {
+            //Before dropping the timer: the event is static and outlives the page.
+            ShellActivity.Changed -= OnActivityChanged;
+
             _slideTimer?.Dispose();
             _slideTimer = null;
 

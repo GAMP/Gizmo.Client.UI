@@ -1,29 +1,28 @@
 @namespace Gizmo.Client.UI.Shared
 @inherits CustomDOMComponentBase
 
-@* Развёртывание — единственный момент, когда клиент нажимает «Играть» и ничего
-   не происходит. С сервера копируются файлы игры, это может занять минуты, и
-   единственное место, где это видно, — диспетчер приложений, куда никто не
-   заходит. Отсюда «игра не запускается» на стойке администратора.
+@* Deployment is the one moment where pressing Play appears to do nothing: game files
+   are copied from the server, which can take minutes, and the only place that shows it
+   is the application manager, which nobody opens.
 
-   Плашка занимает тот же слот, что и предложение поставить аватарку, и по
-   тем же правилам: в покое ширина 0, места не занимает; открываясь, растёт и
-   сдвигает панель иконок влево обычным перетоком флекса.
-
-   Текст написан по-русски прямо здесь, а не через ресурсы: строки живут в
-   Gizmo.Client.UI.Resources.dll, которую сервер грузит свою, и правки в ней
-   до реального клиента не доезжают. *@
+   The banner grows from width 0 in the top bar slot and pushes the icon pill left by
+   ordinary flex reflow. *@
 <div class="giz-deploy @(IsOpen ? "open" : null) @(IsDone ? "is-done" : null) @(IsIndeterminate && !IsDone ? "is-waiting" : null)">
 
-    @* Полоса прогресса — это сама плашка: заливка идёт слоем под содержимым,
-       от левого края к правому. Отдельная тонкая полоска под текстом читалась
-       как деталь оформления, а не как «идёт процесс». *@
+    @* Progress is read twice: the ring around the badge is the precise figure, and a
+       wash under the content fills the banner from the left with a feathered edge -
+       light filling the pill, not a block pushed along it. While nothing can be
+       measured the ring turns and the wash stays out. *@
     <span class="giz-deploy__fill" style="width: @(IsDone ? 100 : PercentValue)%"></span>
 
     <div class="giz-deploy__badge">
+        <svg class="giz-deploy__ring" viewBox="0 0 40 40" aria-hidden="true">
+            <circle class="giz-deploy__ring-track" cx="20" cy="20" r="17.5"></circle>
+            <circle class="giz-deploy__ring-bar" cx="20" cy="20" r="17.5" style="stroke-dashoffset: @RingOffset"></circle>
+        </svg>
         @if (IsDone)
         {
-            <i class="ph-fill ph-check-circle"></i>
+            <i class="ph-bold ph-check"></i>
         }
         else
         {
@@ -31,10 +30,9 @@
         }
     </div>
 
-    @* Само тело — кнопка: ведёт в диспетчер приложений, где лежат все
-       подробности и кнопка отмены. Отмену сюда не выношу намеренно: промах по
-       ней стоит заново скачанной игры. *@
-    <button type="button" class="giz-deploy__body" @onclick="OpenManager" title="Открыть «Мои приложения»">
+    @* The body opens the application manager, which holds the details and the cancel
+       button. Cancelling is deliberately not offered here: a misclick costs a re-download. *@
+    <button type="button" class="giz-deploy__body" @onclick="OpenManager" title="@ShellText.Get(ShellText.DEPLOY_OPEN_APPS)">
         <span class="giz-deploy__title">@Title</span>
         <span class="giz-deploy__sub">@Subtitle</span>
     </button>
@@ -44,7 +42,7 @@
         <div class="giz-deploy__pct">@PercentLabel</div>
     }
 
-    <button type="button" class="giz-deploy__close" @onclick="Dismiss" aria-label="Скрыть">
+    <button type="button" class="giz-deploy__close" @onclick="Dismiss" aria-label="@ShellText.Get(ShellText.GEN_HIDE)">
         <i class="ph-bold ph-x"></i>
     </button>
 

@@ -1,29 +1,25 @@
-using Gizmo.Client.UI.Services;
+﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
+using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI
 {
     public partial class HeaderUserMenuUserAvatar : CustomDOMComponentBase
     {
-        protected string Picture => AvatarService.Current?.Picture;
+        [Inject]
+        UserViewState ViewState { get; set; }
 
         protected override void OnInitialized()
         {
-            if (AvatarService.Current != null)
-                AvatarService.Current.Changed += OnAvatarChanged;
+            this.SubscribeChange(ViewState);
 
             base.OnInitialized();
         }
 
-        private void OnAvatarChanged()
-        {
-            DispatchStateHasChanged();
-        }
-
         public override void Dispose()
         {
-            if (AvatarService.Current != null)
-                AvatarService.Current.Changed -= OnAvatarChanged;
+            this.UnsubscribeChange(ViewState);
 
             base.Dispose();
         }

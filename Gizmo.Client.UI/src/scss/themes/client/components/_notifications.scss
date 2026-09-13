@@ -1,9 +1,6 @@
 //============= Notifications ===============//
-// Each notification is a self-contained tinted tile: the whole card carries
-// its type's colour rather than a neutral card with a coloured stripe, and
-// there is no icon and no panel title - the copy plus the colour is the
-// whole message. The container itself is therefore invisible; it only
-// stacks and pads the cards.
+// Each notification is an opaque card with a type icon and a coloured bar; the
+// container itself is invisible, it only stacks and pads the cards.
 //
 // NOTE ON POSITION: on the desktop shell these render inside a separate
 // always-on-top WPF window (Host.WPF/NotificationsHost.xaml,
@@ -37,7 +34,7 @@
     // by them mid-animation.
     left: 50%;
     transform: translateX(-50%);
-    width: 42rem;
+    width: 46rem;
     max-height: 74rem;
     box-sizing: border-box;
     // This window is independently WindowStartupLocation=CenterScreen - it
@@ -90,58 +87,93 @@
     }
 }
 
-// ── The tinted tile ───────────────────────────────────────────────────────
-// Flat, not glowing: a single solid tint (no diagonal gradient sheen) over a
-// dark base, a thin border, one plain dark drop shadow for lift. The earlier
-// version used a 135deg accent gradient plus a colour-matched box-shadow
-// bloom around the card - close to another card, or right at a corner, that
-// bloom read as its own hazy rectangle sitting behind the tile rather than a
-// shadow, and the diagonal sheen is exactly the kind of glowing-purple-
-// gradient look that reads as generic "AI slop" UI. Nothing here glows past
-// its own edge.
+// ── The card ─────────────────────────────────────────────────────────────
+// These render in a separate, transparent, always-on-top window (see the note above),
+// and that decides the material:
+//   - OPAQUE. backdrop-filter over a transparent window blurs nothing and paints a
+//     dark rectangle the size of the element instead - the "shadow tile" that showed
+//     under the rounded corners. No backdrop-filter anywhere in this window.
+//   - a tight shadow only: a wide soft one is composited onto whatever is on screen
+//     behind the window and reads as a smudge, not a shadow.
+// The type colours the icon disc and the bar on the left; the panel is the same for
+// every type, so a stack of three reads as one system.
+$nt-ink:   var(--gg-ink);
+$nt-ink-2: rgba(var(--gg-ink-rgb), 0.66);
+$nt-ink-3: rgba(var(--gg-ink-rgb), 0.42);
+
 @mixin notification-card {
+    --nt-rgb: var(--gg-accent-rgb);
+    --nt-soft: var(--gg-accent-soft);
+
     position: relative;
     display: grid;
-    grid-template-columns: 1fr min-content;
+    grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: start;
-    gap: 1rem;
+    gap: 1.4rem;
     width: 100%;
     box-sizing: border-box;
     overflow: hidden;
-    margin: 0 0 0.8rem;
-    padding: 1.4rem 1.2rem 1.5rem 1.6rem;
-    border-radius: 1.4rem;
-    background: rgba(var(--giz-notification-bg-rgb, 28, 21, 40), 0.95);
-    backdrop-filter: blur(1.8rem);
-    -webkit-backdrop-filter: blur(1.8rem);
-    border: 1px solid rgba(var(--giz-notification-accent-rgb, var(--gg-accent-rgb)), 0.32);
-    box-shadow: 0 0.8rem 2rem -0.6rem rgba(0, 0, 0, 0.55);
+    margin: 0 0 1rem;
+    padding: 1.7rem 1.4rem 1.7rem 2rem;
+    border-radius: 1.8rem;
+    background: var(--gg-panel);
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 0.6rem 1.6rem -0.8rem rgba(0, 0, 0, 0.6);
+    color: $nt-ink;
+
+    // The type's bar.
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 0.4rem;
+        background: rgb(var(--nt-rgb));
+    }
+}
+
+@mixin notification-icon {
+    width: 4rem;
+    height: 4rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1.2rem;
+    background: rgba(var(--nt-rgb), 0.16);
+    color: var(--nt-soft);
+    font-size: 2rem;
+    margin-top: 0.1rem;
 }
 
 @mixin notification-body {
     min-width: 0;
-    // The vendor markup centres some of this by inheritance; notifications
-    // are read left-to-right like everything else in the shell.
     text-align: left;
+    padding-top: 0.5rem;
 
     &__title {
         width: 100%;
         overflow: hidden;
         white-space: normal;
+        overflow-wrap: anywhere;
         font-family: $font-family-header-theme-client;
         font-weight: 700;
-        font-size: 1.5rem;
-        line-height: 2rem;
-        color: #fff;
+        font-size: 1.6rem;
+        line-height: 2.1rem;
+        color: $nt-ink;
     }
 
     &__message {
         width: 100%;
         overflow: hidden;
         white-space: normal;
-        margin-top: 0.3rem;
-        @include font-s-theme-client($font-weight-light-theme-client);
-        color: rgba(255, 255, 255, 0.78);
+        overflow-wrap: anywhere;
+        margin-top: 0.4rem;
+        font-size: 1.35rem;
+        line-height: 1.9rem;
+        color: $nt-ink-2;
     }
 }
 
@@ -172,44 +204,87 @@
     }
 }
 
+// The close button and the reservation's buttons are the shell's own elements, not
+// the vendor's Button: they inherit nothing surprising.
+.giz-notification__close {
+    width: 3.2rem;
+    height: 3.2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: -0.2rem -0.2rem 0 0;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: $nt-ink-3;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: $nt-ink;
+    }
+}
+
+.giz-notification__btn {
+    height: 3.8rem;
+    padding: 0 1.6rem;
+    border-radius: 1.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.06);
+    color: $nt-ink;
+    font-family: $font-family-header-theme-client;
+    font-size: 1.3rem;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.15s, filter 0.15s;
+
+    &:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: default;
+    }
+
+    &--primary {
+        background: linear-gradient(135deg, var(--gg-accent-light), var(--gg-accent-deep));
+        border-color: transparent;
+        color: var(--gg-on-accent);
+
+        &:hover:not(:disabled) {
+            background: linear-gradient(135deg, var(--gg-accent-light), var(--gg-accent-deep));
+            filter: brightness(1.08);
+        }
+    }
+}
+
 .giz-notification {
     @include notification-card;
 
-    // Info carries no modifier: it is the default look, and the mixin
-    // already falls back to the brand accent/dark-purple base when neither
-    // var is set. The bg colour is each accent shifted almost all the way
-    // to black (not a low-alpha wash of the bright accent over a shared
-    // dark layer, which is what the old dual-gradient version did) - flat
-    // and readable at full opacity regardless of what's behind the card.
     &--success {
-        --giz-notification-accent-rgb: 52, 211, 153;
-        --giz-notification-bg-rgb: 14, 38, 30;
+        --nt-rgb: 52, 211, 153;
+        --nt-soft: #86efc6;
     }
     &--danger {
-        --giz-notification-accent-rgb: 248, 113, 113;
-        --giz-notification-bg-rgb: 42, 18, 20;
+        --nt-rgb: 248, 113, 113;
+        --nt-soft: #fca5a5;
     }
     &--warning {
-        --giz-notification-accent-rgb: 251, 191, 36;
-        --giz-notification-bg-rgb: 42, 32, 12;
+        --nt-rgb: 251, 191, 36;
+        --nt-soft: #fcd77a;
+    }
+
+    &__icon {
+        @include notification-icon;
     }
 
     &__body {
         @include notification-body;
-
-        &__actions {
-            margin-top: 1rem;
-        }
-    }
-
-    &__close-button {
-        margin: -0.6rem -0.4rem 0 0;
-        opacity: 0.65;
-        transition: opacity 0.18s ease;
-
-        &:hover {
-            opacity: 1;
-        }
     }
 
     &-wrapper {
@@ -217,50 +292,23 @@
     }
 }
 
-// ── Reservation notification: same tile, always brand accent (it is a call
-// to action, not a semantic info/warning/error). ──────────────────────────
+// ── Reservation notification: same card, always the accent (it is a call to action,
+// not a semantic info/warning/error), with its two buttons under the words. ──
 .giz-reservation-notification {
     @include notification-card;
+
+    &__icon {
+        @include notification-icon;
+    }
 
     &__body {
         @include notification-body;
 
-        // Кнопки в ряд и по содержимому. Раньше подпись длиннее кнопки просто
-        // вылезала за неё и наезжала на соседнюю: у кнопки была своя ширина, а
-        // у текста внутри — своё мнение.
         &__actions {
             display: flex;
             align-items: center;
             gap: 0.8rem;
-            margin-top: 1.2rem;
-
-            .giz-button {
-                flex: 0 1 auto;
-                height: 3.8rem;
-                min-width: 0;
-                padding: 0 1.6rem;
-                border-radius: 1.2rem;
-                font-family: $font-family-header-theme-client;
-                font-size: 1.3rem;
-                font-weight: 600;
-                white-space: nowrap;
-            }
-
-            .giz-button__content,
-            .giz-button__content_wrapper {
-                overflow: visible;
-                white-space: nowrap;
-            }
-        }
-    }
-
-    &__close-button {
-        margin: -0.6rem -0.4rem 0 0;
-        opacity: 0.65;
-        transition: opacity 0.18s ease;
-
-        &:hover {
-            opacity: 1;
+            margin-top: 1.4rem;
         }
     }
 

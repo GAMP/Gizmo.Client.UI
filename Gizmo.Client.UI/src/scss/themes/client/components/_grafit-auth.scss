@@ -1,32 +1,26 @@
-//=============== Grafit: вход, регистрация, восстановление ================//
+//=============== Grafit: sign-in, registration, recovery ================//
 //
-// Слой поверх вендорских стилей нового потока авторизации (3.0.91). Вендор
-// принёс работающий функционал в своём оформлении: 'Noto Sans', голубой
-// #57bcff, скругления по 1rem, плоские рамки. Здесь он приводится к языку
-// оболочки — Manrope/Space Grotesk, единственный фиолетовый акцент, стекло и
-// крупные скругления.
+// A layer over the vendor styles for the 3.0.91 authentication flow, which ships working
+// functionality in its own look ('Noto Sans', #57bcff, 1rem radii, flat borders). Here it
+// is brought to the shell's language: Manrope/Space Grotesk, one purple accent, glass and
+// large radii.
 //
-// ПОЧЕМУ ОТДЕЛЬНЫЙ ФАЙЛ, а не правки в _layout-login.scss: вендор эту область
-// сейчас активно переписывает (весь диапазон 30.07–20.08 — только она). Правки
-// внутри его блоков дали бы конфликт в каждом следующем обновлении; отдельный
-// файл, подключённый последним, переопределяет по порядку каскада и при
-// слиянии не пересекается с ним ни одной строкой.
+// A separate file rather than edits inside _layout-login.scss, because the vendor is
+// actively rewriting this area: edits inside its blocks would conflict on every update,
+// while a file loaded last overrides by cascade order and shares no line with it.
 //
-// Трогается только вид. Ни один селектор здесь не меняет поведение, разметку
-// или условия показа — функционал вендора остаётся как есть.
+// Appearance only. No selector here changes behaviour, markup or visibility conditions.
 
 $ga-ink:      rgba(255, 255, 255, 0.95);
 $ga-ink-2:    rgba(255, 255, 255, 0.6);
 $ga-ink-3:    rgba(255, 255, 255, 0.42);
 $ga-line:     rgba(255, 255, 255, 0.12);
 $ga-surface:  linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
-$ga-r:        1.4rem;   // поля и строки
-$ga-r-card:   2.4rem;   // карточки и диалоги
+$ga-r:        1.4rem;   // fields and rows
+$ga-r-card:   2.4rem;   // cards and dialogs
 $ga-danger:   #ff6b6b;
 
-// ── Блок ошибки ──────────────────────────────────────────────────────────
-// Был в 'Noto Sans' с рамкой 0.8rem. Приводим к тому же виду, что ошибки в
-// диалоге аватарки и на экране брони: одна форма ошибки на всю оболочку.
+// Error block, brought to the single error shape used across the shell.
 .giz-error-block {
     padding: 1.1rem 1.4rem;
     border-radius: 1.3rem;
@@ -63,15 +57,14 @@ $ga-danger:   #ff6b6b;
     margin-bottom: 2rem;
 }
 
-// ── Выбор способа подтверждения ──────────────────────────────────────────
+// Verification method picker
 .giz-registration-providers-list {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
 }
 
-// Строка провайдера (Telegram, SMS, почта…) — та же таблетка, что ярлыки
-// запуска на карточках: стекло в покое, акцент под курсором.
+// Provider row (Telegram, SMS, mail) - the same pill as the launch shortcuts on cards.
 .giz-registration-provider-btn {
     width: 100%;
     height: 5.2rem;
@@ -109,8 +102,7 @@ $ga-danger:   #ff6b6b;
     }
 }
 
-// Разделитель «другие способы»: у вендора он голубой, а голубого в оболочке
-// нет вообще — только волосяная линия и микро-капитель.
+// "Other methods" separator: the vendor's is blue, and the shell has no blue at all.
 .giz-registration-providers-divider {
     display: flex;
     align-items: center;
@@ -148,7 +140,7 @@ $ga-danger:   #ff6b6b;
     line-height: 1.9rem;
 }
 
-// ── Ввод кода подтверждения ──────────────────────────────────────────────
+// Confirmation code entry
 .giz-confirmation-code {
     display: flex;
     flex-direction: column;
@@ -168,8 +160,8 @@ $ga-danger:   #ff6b6b;
     }
 }
 
-// Кнопка «отправить ещё раз» с обратным отсчётом. Время — табличными цифрами,
-// иначе секунды дёргают надпись по горизонтали на каждом тике.
+// Resend button with a countdown. Tabular figures, or the seconds shift the label
+// horizontally on every tick.
 .giz-resend-button {
     &__label {
         padding: 0 5.6rem;
@@ -187,21 +179,17 @@ $ga-danger:   #ff6b6b;
     }
 }
 
-// ── Формы регистрации ────────────────────────────────────────────────────
+// Registration forms
 .giz-registration-form-input {
     margin-bottom: 1.6rem;
 }
 
-// Пока открыт список (страны на входе, регистрации и восстановлении), его
-// строка поднимается над теми, что ниже.
+// While a dropdown is open its form row is lifted above the rows below it.
 //
-// z-index у самого списка есть и он большой, но этого мало: строка формы может
-// оказаться собственным контекстом наложения - от анимации появления, от
-// прозрачности, от чего угодно, что мы добавим потом, - и тогда любой z-index
-// внутри неё считается уже внутри. Список честно лежит поверх всего в своей
-// строке и всё равно уходит под подпись «пароль» и иконку глаза из следующей.
-// Поднимаем саму строку: это работает независимо от того, кто и почему завёл
-// контекст, и действует ровно пока список открыт.
+// The list has a high z-index of its own, but that is not enough: a form row can become
+// its own stacking context - from an entrance animation, from opacity, from anything
+// added later - and then any z-index inside it is resolved within that context. Lifting
+// the row works regardless of who created the context, and only while the list is open.
 .giz-login-card {
     :is(.giz-form-input, .giz-registration-form-input, .giz-registration-basic__field):has(.giz-popup--open) {
         position: relative;
@@ -209,11 +197,10 @@ $ga-danger:   #ff6b6b;
     }
 }
 
-// Ряд полей формы. auto-fit, а НЕ жёсткие две колонки: в этом контейнере
-// вендор держит и пару «имя + фамилия», и одиночное поле пароля. При
-// repeat(2, 1fr) одиночное поле вставало в половину ширины, а на узкой
-// карточке маска телефона переносилась на вторую строку. auto-fit сам решает:
-// один ребёнок — во всю ширину, два — в две колонки, тесно — переносит.
+// Form row. auto-fit rather than two fixed columns: the vendor puts both a name/surname
+// pair and a lone password field in this container. With repeat(2, 1fr) the lone field
+// took half the width, and on a narrow card the phone mask wrapped. auto-fit gives one
+// child the full width, two a column each, and wraps when it is tight.
 .giz-form-input-columns,
 .giz-registration-basic__fields {
     display: grid;
@@ -221,9 +208,8 @@ $ga-danger:   #ff6b6b;
     gap: 1.2rem 1.6rem;
 }
 
-// Шаг телефона: страна и номер идут друг под другом. Ставить их в две колонки
-// нельзя — маска «+7 (###) ###-##-##» в половине карточки не помещается и
-// ломается на две строки.
+// Phone step: country and number stack. Two columns do not work - the
+// "+7 (###) ###-##-##" mask does not fit half a card and breaks onto two lines.
 .giz-registration-phone__fields {
     display: flex;
     flex-direction: column;
@@ -253,30 +239,29 @@ $ga-danger:   #ff6b6b;
     }
 }
 
-// Ячейка формы. min-width: 0 обязателен: без него длинное значение в поле
-// распирает колонку сетки, и вторая уезжает за край карточки.
+// Form cell. min-width: 0 is required: without it a long value stretches the grid
+// column and the second one runs off the card.
 .giz-registration-basic__field {
     min-width: 0;
 
-    // Поле на всю ширину внутри двухколоночной сетки.
+    // Full-width field inside the two-column grid.
     &--full { grid-column: 1 / -1; }
 }
 
-// Подсказка о требованиях к паролю: выполненный пункт был болотно-зелёным
-// (#219653) — переводим на тот же зелёный, что у «Готово» в остальной оболочке.
+// Password requirement hints: the satisfied state moves off #219653 onto the same green
+// the rest of the shell uses for success.
 .giz-password-tooltip-message.passed {
     color: #5ed894;
 }
 
-// Сообщение о неверном значении под полем. Было чистым красным в полный
-// размер текста — приводим к нашей приглушённой красной гамме.
+// Validation message under a field, brought to the shell's muted red.
 .giz-input-validation-label {
     color: #ff8b8b;
     font-size: 1.2rem;
     line-height: 1.7rem;
 }
 
-// ── Экран ошибки регистрации ─────────────────────────────────────────────
+// Registration error screen
 .giz-registration-error {
     display: flex;
     flex-direction: column;
@@ -325,8 +310,8 @@ $ga-danger:   #ff6b6b;
         margin-top: 0.4rem;
     }
 
-    // Тот же порядок, что везде в оболочке: один заполненный акцент, второе
-    // действие — тихая обводка.
+    // Same order as everywhere in the shell: one filled accent, the second action is a
+    // quiet outline.
     &__btn-primary,
     &__btn-secondary {
         width: 100%;
@@ -342,7 +327,7 @@ $ga-danger:   #ff6b6b;
     &__btn-primary {
         border: 0;
         background: var(--gg-accent);
-        color: #16081f;
+        color: var(--gg-on-accent);
 
         &:hover { filter: brightness(1.1); }
     }
@@ -359,7 +344,7 @@ $ga-danger:   #ff6b6b;
     }
 }
 
-// ── Регистрация через внешний сервис (QR) ────────────────────────────────
+// External registration (QR)
 .giz-registration-redirect {
     display: flex;
     flex-direction: column;
@@ -383,10 +368,8 @@ $ga-danger:   #ff6b6b;
         line-height: 2.1rem;
     }
 
-    // Заголовок экрана: значок канала СЛЕВА от названия, одной строкой. Плитки
-    // здесь нет намеренно — на этом экране их было три вложенных друг в друга
-    // (шапка провайдера, подсказка, рамка кода). Рамка нужна только коду,
-    // остальное читается лучше просто текстом.
+    // Heading with the channel icon to the left of the name, on one line. No tile here
+    // on purpose: this screen had three nested ones. Only the code needs a frame.
     &__provider {
         display: flex;
         flex-direction: row;
@@ -399,9 +382,8 @@ $ga-danger:   #ff6b6b;
         border-radius: 0;
     }
 
-    // Плашка значка — вендорская (у Telegram это его фирменный градиент, он
-    // опознаёт канал). Трогаем только размер: рядом со строкой заголовка
-    // 4.4 rem перевешивают её.
+    // Icon plate stays the vendor's - only the size changes, since 4.4rem outweighed
+    // the heading beside it.
     &__provider-icon {
         width: 3.8rem;
         height: 3.8rem;
@@ -416,8 +398,8 @@ $ga-danger:   #ff6b6b;
         text-align: left;
     }
 
-    // Подзаголовок вендора здесь дублирует подсказку ниже. Оставлен пустым
-    // через ShellStringOverrides — прячем, чтобы не занимал строку.
+    // The vendor subtitle repeats the hint below it and is blanked through
+    // ShellStringOverrides; hidden here so it does not hold a line.
     &__subtitle:empty { display: none; }
 
     &__provider-text {
@@ -427,12 +409,10 @@ $ga-danger:   #ff6b6b;
         font-weight: 600;
     }
 
-    // Значок канала у вендора красится в его фирменный цвет (телеграмный
-    // синий и т.п.). Это единственное место, где чужой цвет уместен: он
-    // опознаёт сервис, а не украшает. Оставляем как есть.
+    // The channel icon keeps the vendor's brand colour. This is the one place a foreign
+    // colour belongs: it identifies the service rather than decorating.
 
-    // Подсказка «отсканируйте код» была отдельной плиткой в голубой рамке.
-    // Это просто строка текста — рамка ей не нужна.
+    // The "scan this code" hint is a line of text; the vendor's blue frame is dropped.
     &__info {
         display: flex;
         align-items: flex-start;
@@ -451,8 +431,7 @@ $ga-danger:   #ff6b6b;
         .giz-icon { color: var(--gg-accent); flex-shrink: 0; }
     }
 
-    // Ссылка под кодом: моноширинно и с переносом — её иногда переписывают
-    // вручную с экрана.
+    // Link under the code: monospaced and breakable - it is sometimes copied by hand.
     &__url {
         max-width: 100%;
         padding: 0.8rem 1.2rem;
@@ -465,10 +444,9 @@ $ga-danger:   #ff6b6b;
         overflow-wrap: anywhere;
     }
 
-    // Рамка вокруг кода. Белой её делать нельзя: сам код вендор рисует
-    // светлым по тёмному (__qr-image с фоном #201f1f), белая карточка вокруг
-    // тёмного квадрата выглядела бы ошибкой. Наше стекло и нейтральная
-    // обводка вместо телеграмно-синей.
+    // Frame around the code. It must not be white: the vendor draws the code light on
+    // dark (__qr-image has a #201f1f background), so a white card around a dark square
+    // would look like a fault.
     &__qr-card {
         background: $ga-surface;
         border: 1px solid $ga-line;
@@ -476,18 +454,17 @@ $ga-danger:   #ff6b6b;
         box-shadow: 0 2.4rem 5rem -2.4rem rgba(0, 0, 0, 0.8);
     }
 
-    // Наложение поверх кода — по радиусу самого кода, а не карточки, иначе
-    // углы вылезают за его границы.
+    // Overlay follows the code's own radius, not the card's, or the corners escape it.
     &__qr-overlay {
         border-radius: 1rem;
-        background: rgba(10, 8, 18, 0.86);
+        background: rgba(var(--gg-glass-2-rgb), 0.86);
         color: $ga-ink;
         font-family: $font-family-header-theme-client;
         font-size: 1.35rem;
         font-weight: 600;
     }
 
-    // Живой статус ожидания: точка дышит, пока ждём подтверждения.
+    // Live waiting status.
     &__status {
         display: flex;
         align-items: center;
@@ -547,7 +524,7 @@ $ga-danger:   #ff6b6b;
         border: 0;
         border-radius: $ga-r;
         background: var(--gg-accent);
-        color: #16081f;
+        color: var(--gg-on-accent);
         cursor: pointer;
         font-family: $font-family-header-theme-client;
         font-size: 1.5rem;
@@ -563,15 +540,14 @@ $ga-danger:   #ff6b6b;
     50% { opacity: 1; }
 }
 
-// ── Диалог соглашений ────────────────────────────────────────────────────
-// Вендорский вариант — плоская коробка #22272B. Приводим к тому же стеклу,
-// что и остальные диалоги оболочки (диалог фото профиля, покупка пакета).
+// Agreements dialog. The vendor's is a flat #22272B box; brought to the same glass as
+// the rest of the shell's dialogs.
 .giz-registration-agreements-dialog {
     width: min(52rem, 92vw);
     border-radius: 2.8rem;
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
-        linear-gradient(180deg, rgba(23, 18, 40, 0.94), rgba(12, 10, 20, 0.97));
+        linear-gradient(180deg, rgba(var(--gg-glass-rgb), 0.94), rgba(var(--gg-glass-2-rgb), 0.97));
     border: 1px solid $ga-line;
     box-shadow:
         inset 0 1.5px 0 rgba(255, 255, 255, 0.22),
@@ -620,10 +596,9 @@ $ga-danger:   #ff6b6b;
     }
 }
 
-// ── Флаги стран в выпадающем списке ──────────────────────────────────────
-// Базовый стиль растягивал svg на высоту строки: флаг у всех стран 4:3, и без
-// пропорции он плющился. Заодно скругление и волосяная рамка, иначе светлые
-// флаги (Япония, Польша) сливаются с фоном списка.
+// Country flags in the dropdown. The base style stretched the svg to the row height;
+// every flag is 4:3 and squashed without an aspect ratio. The radius and hairline border
+// keep light flags (Japan, Poland) from merging into the list background.
 .giz-icon-select-item__icon {
     width: 2.6rem;
 

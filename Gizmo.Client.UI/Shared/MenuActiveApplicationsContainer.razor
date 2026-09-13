@@ -15,8 +15,8 @@
      @ref="@Ref">
     <div class="giz-dropdown-menu__content giz-active-apps">
         <div class="giz-active-apps__header">
-            <div class="giz-heading">Мои приложения</div>
-            <div class="giz-active-apps__header__hint">Управление запущенными приложениями</div>
+            <div class="giz-heading">@ShellText.Get(ShellText.ACTIVE_APPS_TITLE)</div>
+            <div class="giz-active-apps__header__hint">@ShellText.Get(ShellText.ACTIVE_APPS_HINT)</div>
         </div>
         <div class="giz-active-apps__body giz-scrollbar--v">
             @if (ViewState.Executables.Any())
@@ -30,8 +30,8 @@
             {
                 <div class="giz-active-apps__empty">
                     <i class="ph-fill ph-game-controller giz-ph-icon"></i>
-                    <div class="giz-active-apps__empty__title">Пока пусто</div>
-                    <div class="giz-active-apps__empty__text">Запустите игру из каталога — она появится здесь</div>
+                    <div class="giz-active-apps__empty__title">@ShellText.Get(ShellText.GEN_EMPTY)</div>
+                    <div class="giz-active-apps__empty__text">@ShellText.Get(ShellText.ACTIVE_APPS_EMPTY_HINT)</div>
                 </div>
             }
         </div>

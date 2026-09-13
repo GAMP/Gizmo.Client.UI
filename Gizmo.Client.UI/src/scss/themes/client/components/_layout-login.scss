@@ -414,16 +414,18 @@
     transition:
         opacity 1.1s cubic-bezier(0.19, 1, 0.22, 1),
         transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
-    background:
-        radial-gradient(46rem 42rem at 14% 8%,  rgba(139, 92, 246, 0.42), transparent 60%),
-        radial-gradient(40rem 40rem at 60% 88%, rgba(217, 70, 239, 0.18), transparent 60%),
-        radial-gradient(48rem 46rem at 92% 96%, rgba(99, 102, 241, 0.34), transparent 58%),
-        radial-gradient(34rem 34rem at 80% 18%, rgba(168, 85, 247, 0.20), transparent 62%),
-        linear-gradient(160deg, #141026 0%, #0d0b16 55%, #120e1f 100%);
+    // The same atmosphere the signed-in shell floats on, in the accent's hues.
+    background: var(--gg-atmosphere);
 }
 
-// Faint oversized gaming icons scattered on the hard-coded background for a
-// bit of mood. Same crossfade as the background itself.
+// Idle with a club wallpaper: the shell's background is faded out, so its gradient
+// would be moving for nobody (the flow itself is in _flow.scss).
+.giz-login-content:not(.collapsed):not(.giz-login-content--own-bg) .gg-flow__sheet {
+    animation-play-state: paused;
+}
+
+// Faint oversized gaming icons scattered on the shell's background for a bit of
+// mood. Same crossfade as the background itself.
 .giz-login-hardcoded-bg__icons {
     position: absolute;
     inset: 0;
@@ -435,10 +437,11 @@
         opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1),
         transform 1.6s cubic-bezier(0.19, 1, 0.22, 1);
 
+    // In the accent's own colour, faint: a tint of the palette rather than a grey.
     i {
         position: absolute;
-        color: #fff;
-        opacity: 0.05;
+        color: var(--gg-accent-soft);
+        opacity: 0.11;
     }
 
     i:nth-child(1) { top: 18%;  left: 12%; font-size: 6.4rem; transform: rotate(-14deg); }
@@ -453,6 +456,17 @@
     .giz-login-hardcoded-bg__icons {
         opacity: 1;
         transform: scale(1);
+    }
+}
+
+// No club wallpaper configured: the shell's own background is the idle background
+// too, so nothing crossfades and no stock photograph ever shows.
+.giz-login-content--own-bg {
+    .giz-login-hardcoded-bg,
+    .giz-login-hardcoded-bg__icons {
+        opacity: 1;
+        transform: none;
+        transition: none;
     }
 }
 
@@ -539,7 +553,7 @@
         // is behind. saturate() lowered from 1.7 for the same reason.
         background:
             linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)),
-            linear-gradient(180deg, rgba(23, 18, 40, 0.82), rgba(12, 10, 20, 0.90));
+            linear-gradient(180deg, rgba(var(--gg-glass-rgb), 0.82), rgba(var(--gg-glass-2-rgb), 0.90));
         backdrop-filter: blur(56px) saturate(1.15);
         -webkit-backdrop-filter: blur(56px) saturate(1.15);
     }
@@ -583,18 +597,18 @@
         form > *:nth-child(4) { animation-delay: 0.36s; }
         form > *:nth-child(5) { animation-delay: 0.42s; }
 
-        // Login-type swap. Remounted on every switch (see the @key in
-        // Login.razor) so it replays each time. Declared last and at the
-        // same weight as the nth-child delays above so it actually wins -
-        // as a plain `.giz-login-card .giz-form-input--swappable` rule it
-        // was outranked and kept playing the staggered entrance instead.
-        // fill-mode backwards, а НЕ both. both оставляет на строке
-        // «заполняющую» анимацию навсегда, и Chrome держит для неё отдельный
-        // контекст наложения. Всё, что внутри, оказывается заперто в нём: у
-        // открытого списка стран z-index 100, но он считается уже внутри
-        // строки, и следующее поле (пароль) рисуется поверх списка своими
-        // подписью и иконкой. Конечный кадр анимации совпадает с обычным
-        // состоянием строки, так что forwards-половина ничего и не давала.
+        // Login-type swap. Remounted on every switch (see the @key in Login.razor) so it
+        // replays each time. Declared last and at the same weight as the nth-child delays
+        // above so it actually wins - as a plain `.giz-login-card
+        // .giz-form-input--swappable` rule it was outranked and kept playing the
+        // staggered entrance instead.
+        //
+        // fill-mode backwards, NOT both. `both` leaves a filling animation on the row
+        // forever, and Chrome keeps a separate stacking context for it; everything inside
+        // is then trapped in that context, so the open country list (z-index 100) is
+        // resolved inside the row and the next field draws its label and eye icon over
+        // it. The animation's end frame equals the row's normal state, so the forwards
+        // half was giving nothing anyway.
         form > .giz-form-input--swappable {
             animation-name: login-field-swap-anim;
             animation-duration: 0.42s;
@@ -691,7 +705,7 @@
 .giz-login-card .giz-button--fill.accent.giz-login-submit:not(.disabled) {
     height: 5.6rem;
     border-radius: 1.6rem;
-    background: linear-gradient(135deg, #c397ff 0%, #7c3aed 55%, #5b21b6 100%) !important;
+    background: linear-gradient(135deg, var(--gg-accent-soft) 0%, var(--gg-accent-deep) 55%, var(--gg-accent-deeper) 100%) !important;
     border: none;
     color: #fff !important;
     
@@ -728,15 +742,14 @@
     }
 }
 
-// Ссылка стоит в строке подписи поля пароля, справа: подпись слева, ссылка
-// справа, одна строка. Под полем она отодвигала кнопку входа и висела между
-// двумя блоками ничьей строчкой.
+// The link sits on the password field's label line, right aligned: label left, link
+// right, one line. Under the field it pushed the sign-in button down and hung between
+// two blocks on a line of its own.
 //
-// В разметке ссылка идёт ПОСЛЕ поля (подпись рисует сам GizInput, внутрь него
-// не встроиться), поэтому она поднимается наверх абсолютом. Родительская
-// .giz-form-input уже position: relative, так что отсчёт идёт от строки поля, а
-// line-height взят ровно как у подписи — иначе базовые линии разъезжаются на
-// полпикселя и это видно.
+// In the markup the link comes AFTER the field - GizInput draws its own label and there
+// is no way inside it - so it is lifted by absolute positioning. The parent
+// .giz-form-input is already position: relative, and the line-height matches the label
+// exactly, or the baselines drift by half a pixel and it shows.
 .giz-login-forgot-password {
     position: absolute;
     top: 0;
@@ -759,10 +772,10 @@
     }
 }
 
-// ── Плитка «компьютер забронирован» ──────────────────────────────────────
+// Reservation plate.
 //
-// Стопка держит плашку и карточку входа одной парой по центру экрана: плашка
-// сверху, карточка под ней. Ширину задаёт карточка, плашка тянется по ней.
+// The stack keeps the plate and the sign-in card together as one centred pair, plate
+// above, card below. The card sets the width and the plate follows it.
 .giz-login-stack {
     display: flex;
     flex-direction: column;
@@ -771,9 +784,9 @@
     max-width: 100%;
 }
 
-// Плашка гаснет вместе с карточкой. Пока станция простаивает, карточки нет, и
-// о брони сообщает экземпляр из шаблона экрана — поверх обоев, по центру
-// сверху. Иначе на простое висели бы две одинаковые плашки сразу.
+// The plate goes out with the card. While the station is idle there is no card, and the
+// reservation is announced by the instance in the screen template instead - otherwise an
+// idle station would show two identical plates at once.
 .giz-login-stack:has(> .giz-login-card.hidden) > .giz-login-reserved,
 .giz-login-stack:has(> .giz-login-card.slide-out) > .giz-login-reserved {
     opacity: 0;
@@ -790,9 +803,8 @@
     box-sizing: border-box;
     padding: 1.8rem 2.2rem;
     border-radius: 2rem;
-    // Тот же синий, что у экрана блокировки по брони: бронь — не ошибка и не
-    // долг, человек ничего не нарушил, просто время чужое. Красным или жёлтым
-    // это было бы обвинением.
+    // The same blue as the reservation lock screen: a reservation is not an error or a
+    // debt. Red or amber would read as an accusation.
     background:
         linear-gradient(180deg, rgba(96, 165, 250, 0.10), rgba(96, 165, 250, 0.04)),
         linear-gradient(180deg, rgba(23, 24, 40, 0.92), rgba(12, 13, 22, 0.95));
@@ -828,11 +840,23 @@
     }
 
     &__title {
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 0 0.6rem;
         font-family: $font-family-header-theme-client;
         font-size: 1.7rem;
         font-weight: 700;
         line-height: 2.2rem;
         color: #fff;
+    }
+
+    // The time is part of the heading, but in figures and in the reservation colour: the
+    // sentence reads whole while the number is still seen first.
+    &__time {
+        font-family: $font-family-numeric-theme-client;
+        font-variant-numeric: tabular-nums;
+        color: #7cb2ff;
     }
 
     &__note {
@@ -842,33 +866,10 @@
         color: rgba(255, 255, 255, 0.58);
     }
 
-    // Время — то, ради чего на плашку смотрят второй раз, поэтому оно отдельной
-    // колонкой и цифрами того же семейства, что и остальные числа в оболочке.
-    &__time {
-        flex: none;
-        text-align: right;
-    }
-
-    &__time-label {
-        font-size: 1rem;
-        font-weight: 700;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.34);
-    }
-
-    &__time-value {
-        font-family: $font-family-numeric-theme-client;
-        font-size: 2.2rem;
-        font-weight: 700;
-        line-height: 2.6rem;
-        font-variant-numeric: tabular-nums;
-        color: #7cb2ff;
-    }
 }
 
-// Экземпляр поверх обоев (простой станции) центрируется своим родителем и не
-// должен тянуть ширину карточки: там рядом с ним ничего нет.
+// The wallpaper instance (idle station) is centred by its own parent and must not take
+// the card's width: there is nothing beside it.
 .giz-login-warnings .giz-login-reserved {
     width: auto;
     min-width: 42rem;
@@ -1000,7 +1001,7 @@
         color: #FAFAFA;
         background:
             linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)),
-            linear-gradient(180deg, rgba(28, 21, 44, 0.94), rgba(14, 11, 22, 0.97));
+            linear-gradient(180deg, rgba(var(--gg-glass-rgb), 0.94), rgba(var(--gg-glass-2-rgb), 0.97));
         backdrop-filter: blur(4rem) saturate(1.6);
         -webkit-backdrop-filter: blur(4rem) saturate(1.6);
         border: 1px solid rgba(255, 255, 255, 0.12);
@@ -1030,8 +1031,9 @@
                 color: var(--gg-accent);
             }
 
-            // Бронь - не ошибка и не долг, поэтому знак спокойный, синий, а не
-            // красный: человек ничего не нарушил, просто время чужое.
+            // A reservation is not an error or a debt, so the mark is calm and blue
+            // rather than red - nothing has been done wrong, the time simply belongs to
+            // somebody else.
             &--lock {
                 background: rgba(96, 165, 250, 0.14);
                 border-color: rgba(96, 165, 250, 0.32);
@@ -1040,58 +1042,87 @@
             }
         }
 
-        // Ввод кода брони. Код настоящий, его выдаёт Gizmo при бронировании,
-        // поэтому поле моноширинное и с разрядкой - так его сверяют по буквам.
+        // Reservation code entry. Everything on the card is centred and so is this:
+        // label with glyph, field and button in one column. The blue tone matches the
+        // glyph above and the reservation tile on sign-in.
         .giz-reserve-pin {
             width: 100%;
             margin-top: 0.4rem;
-            text-align: left;
+            text-align: center;
 
             &__label {
-                margin-bottom: 0.6rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.6rem;
+                margin-bottom: 0.8rem;
                 font-size: 1.1rem;
                 font-weight: 700;
                 letter-spacing: 0.14em;
                 text-transform: uppercase;
-                color: rgba(255, 255, 255, 0.34);
+                color: rgba(124, 178, 255, 0.85);
+
+                // Same calendar as the glyph above the heading.
+                &::before {
+                    content: '\e712';
+                    font-family: 'Phosphor-Bold';
+                    font-size: 1.5rem;
+                    font-weight: normal;
+                    letter-spacing: 0;
+                    line-height: 1;
+                    color: rgba(124, 178, 255, 0.75);
+                }
             }
 
             &__row {
                 display: flex;
                 gap: 0.8rem;
+                align-items: stretch;
             }
 
             &__input {
                 flex: 1 1 auto;
                 min-width: 0;
-                height: 5rem;
+                height: 5.6rem;
                 padding: 0 1.6rem;
                 border-radius: 1.4rem;
-                border: 1px solid rgba(255, 255, 255, 0.12);
-                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(96, 165, 250, 0.24);
+                background: rgba(96, 165, 250, 0.07);
                 color: #fff;
                 font-family: 'Space Grotesk', 'Manrope', sans-serif;
-                font-size: 1.8rem;
+                font-size: 1.9rem;
                 font-weight: 700;
-                letter-spacing: 0.18em;
+                letter-spacing: 0.24em;
+                text-indent: 0.24em;
+                text-align: center;
                 text-transform: uppercase;
                 outline: none;
-                transition: border-color 0.15s, background 0.15s;
+                transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
 
                 &::placeholder {
                     font-size: 1.35rem;
                     font-weight: 500;
                     letter-spacing: 0.02em;
+                    text-indent: 0;
                     text-transform: none;
-                    color: rgba(255, 255, 255, 0.28);
+                    color: rgba(255, 255, 255, 0.3);
                 }
 
                 &:focus {
-                    border-color: rgba(var(--gg-accent-rgb), 0.6);
-                    background: rgba(255, 255, 255, 0.07);
+                    border-color: rgba(124, 178, 255, 0.65);
+                    background: rgba(96, 165, 250, 0.11);
+                    box-shadow: 0 0 0 0.3rem rgba(96, 165, 250, 0.12);
                 }
 
                 &:disabled { opacity: 0.5; }
+            }
+
+            // Button level with the field: different heights side by side read as
+            // unfinished work.
+            &__row .giz-button {
+                flex: none;
+                height: 5.6rem;
+                border-radius: 1.4rem;
             }
 
             &__error {
@@ -1137,29 +1168,36 @@
             max-width: 34rem;
         }
 
+    // Countdown. It used to be a grey box with red numerals, competing with the input
+    // above it for attention while saying something quite different. Now it is one line
+    // in its own warm tone: label left, time right.
         &__timer {
             width: 100%;
-            margin-top: 0.6rem;
-            padding: 1.4rem;
-            border-radius: 1.6rem;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 0.4rem;
+            padding: 1.1rem 1.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.2rem;
+            border-radius: 1.4rem;
+            background: rgba(255, 107, 107, 0.07);
+            border: 1px solid rgba(255, 107, 107, 0.2);
 
             &__label {
                 font-size: 1.15rem;
                 font-weight: 700;
                 letter-spacing: 0.14em;
                 text-transform: uppercase;
-                color: rgba(255, 255, 255, 0.34);
+                color: rgba(255, 255, 255, 0.42);
             }
         }
 
         &__time {
             font-family: 'Space Grotesk', 'Manrope', sans-serif;
-            font-size: 4.2rem;
+            font-size: 2.6rem;
             font-weight: 700;
             line-height: 1.1;
-            color: #ff6b6b;
+            color: #ff8b8b;
             font-variant-numeric: tabular-nums;
 
             &--small {
@@ -1276,9 +1314,9 @@
         line-height: 2.0rem;
 
         &.selected {
-            background: linear-gradient(135deg, #b57bff, #7c3aed);
+            background: linear-gradient(135deg, var(--gg-accent-light), var(--gg-accent-deep));
             color: #fff;
-            box-shadow: 0 8px 20px -10px rgba(168, 85, 247, 0.7);
+            box-shadow: 0 8px 20px -10px rgba(var(--gg-accent-rgb), 0.7);
         }
     }
 }
@@ -1330,7 +1368,7 @@
             bottom: -1px;
             height: 2px;
             border-radius: 2px;
-            background: linear-gradient(90deg, #c397ff, #7c3aed);
+            background: linear-gradient(90deg, var(--gg-accent-soft), var(--gg-accent-deep));
             transition: left 0.28s cubic-bezier(0.19, 1, 0.22, 1), right 0.28s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
@@ -1358,7 +1396,7 @@
         max-height: 21rem;
         overflow-y: auto;
         border-radius: 1.4rem;
-        background: linear-gradient(180deg, rgba(30, 24, 48, 0.98), rgba(16, 13, 26, 0.99));
+        background: linear-gradient(180deg, rgba(var(--gg-glass-rgb), 0.98), rgba(var(--gg-glass-2-rgb), 0.99));
         border: 1px solid rgba(255, 255, 255, 0.12);
         box-shadow: 0 2.4rem 5rem -1.6rem rgba(0, 0, 0, 0.8);
         scrollbar-width: thin;
@@ -1402,19 +1440,17 @@
         }
     }
 
-    // Два поля в одной строке формы. На входе по телефону страна и номер
-    // приходят голыми соседями (PhoneNumberField с RenderWrappers=false), без
-    // собственных обёрток с отступом: подпись «номер телефона» вставала
-    // вплотную к линии поля страны, и пара читалась как одно поле. Отступ
-    // ставим здесь, а не обёрткой в разметке, чтобы не трогать вендорский
-    // компонент.
+    // Two fields in one form row. On phone sign-in the country and number arrive as bare
+    // siblings (PhoneNumberField with RenderWrappers=false) with no spacing wrappers, so
+    // the number label sat flush against the country field's underline and the pair read
+    // as a single field. The gap goes here rather than into a markup wrapper, to leave
+    // the vendor component alone.
     .giz-form-input > :is(.giz-select, .giz-input-control) + :is(.giz-select, .giz-input-control) {
         margin-top: 2rem;
     }
 
-    // Каретка разворачивается, когда список открыт. У вендора поворот привязан
-    // к классу .open, который IconSelect не выставляет, — берём само состояние
-    // списка.
+    // Caret flips while the list is open. The vendor ties the rotation to a .open class
+    // that IconSelect never sets, so the list's own state is used instead.
     .giz-select:has(.giz-popup--open) .giz-input__icon-right {
         transform: rotate(180deg);
         color: var(--gg-accent);
@@ -1424,8 +1460,7 @@
         transition: color 0.18s, transform 0.22s cubic-bezier(0.19, 1, 0.22, 1);
     }
 
-    // Крестик очистки — того же веса, что и глаз у пароля: до наведения он
-    // подсказка, а не кнопка.
+    // Clear cross carries the same weight as the password eye: a hint until hovered.
     .giz-input-button-clear {
         align-self: center;
         color: rgba(255, 255, 255, 0.32);
@@ -1434,10 +1469,9 @@
         &:hover { color: rgba(255, 255, 255, 0.75); }
     }
 
-    // Сообщение о неверном значении. Чистый красный вендора на тёмной
-    // карточке бьёт по глазам и перетягивает внимание с самого поля;
-    // приглушённый читается не хуже. Селектор с той же весовой категорией,
-    // что и вендорский (.giz-input-control--invalid ...), иначе не перебить.
+    // Validation message. The vendor's pure red on a dark card pulls attention off the
+    // field itself; a muted red reads no worse. Same specificity as the vendor rule
+    // (.giz-input-control--invalid ...), or it cannot win.
     .giz-input-validation-label,
     .giz-input-control--invalid .giz-input-validation-label,
     .giz-select--invalid .giz-input-validation-label {
@@ -1446,33 +1480,70 @@
         line-height: 1.7rem;
     }
 
-    // Код бронирования. Появляется не всегда, и когда появляется — это
-    // отдельная просьба, а не ещё одно поле формы: отделяем его от пароля и
-    // подписываем в том же ключе, что остальные поля, только по центру, потому
-    // что и само поле по центру.
+    // Reservation code. Different from the sign-in fields, but not by a panel: a box
+    // inside the card is a tile within a tile. The code itself carries the difference -
+    // centred, letter spaced, in the numeric face, which is how it is checked character
+    // by character against what Gizmo sent - while the underline and label take the blue
+    // reservation tone used by the tile above and by the lock screen.
     .giz-form-input:has(> .giz-login-pin-label-wrapper) {
-        margin-top: 2.8rem;
+        margin-top: 2.6rem;
+        padding-top: 1.6rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.07);
     }
 
     .giz-login-pin-label-wrapper {
+        justify-content: center;
         margin-bottom: 0.4rem;
     }
 
     .giz-login-pin-label {
-        color: rgba(255, 255, 255, 0.42);
+        gap: 0.6rem;
+        color: rgba(124, 178, 255, 0.85);
         text-transform: uppercase;
         letter-spacing: 0.1em;
         font-family: $font-family-header-theme-client;
         font-size: 1.1rem;
         font-weight: 700;
+
+        // Reservation glyph before the label, the same calendar as the tile. Code taken
+        // from vendor/phosphor/bold/style.css (.ph-calendar-check).
+        &::before {
+            content: '\e712';
+            font-family: 'Phosphor-Bold';
+            font-size: 1.5rem;
+            font-weight: normal;
+            letter-spacing: 0;
+            line-height: 1;
+            color: rgba(124, 178, 255, 0.75);
+        }
     }
 
-    // Сам код — набор символов, а не слово: разрядка помогает считать его
-    // глазами и сверить с тем, что прислал Gizmo.
-    .giz-password-input--pin input {
-        text-align: center;
-        letter-spacing: 0.4em;
-        text-indent: 0.4em;
+    .giz-password-input--pin {
+        .giz-input-root {
+            border-bottom-color: rgba(96, 165, 250, 0.3) !important;
+
+            &:hover { border-bottom-color: rgba(96, 165, 250, 0.5) !important; }
+
+            &:after { background: linear-gradient(90deg, #7cb2ff, #4a80d8); }
+        }
+
+        input {
+            text-align: center;
+            letter-spacing: 0.32em;
+            text-indent: 0.32em;
+            font-family: $font-family-numeric-theme-client;
+            text-transform: uppercase;
+
+            // The placeholder is a phrase, not a code: centred, no letter spacing.
+            &::placeholder {
+                letter-spacing: 0;
+                text-indent: 0;
+                text-transform: none;
+                font-family: $font-family-text-theme-client;
+                font-size: 1.4rem;
+                font-weight: 400;
+            }
+        }
     }
 }
 
@@ -1954,7 +2025,7 @@
         &--active {
             width: 1.6rem;
             height: 1.6rem;
-            background-color: #0078d2;
+            background-color: var(--gg-accent);
             cursor: default;
         }
     }
@@ -2096,7 +2167,7 @@
     }
 
     &--primary {
-        background: #0078D2;
+        background: var(--gg-accent);
         border: none;
 
         &:hover {
@@ -2227,7 +2298,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #0078d2;
+        background: var(--gg-accent);
         border: none;
         border-radius: 1.0rem;
         font-family: 'Noto Sans', sans-serif;
@@ -2526,7 +2597,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #0078d2;
+        background: var(--gg-accent);
         border: none;
         border-radius: 1.0rem;
         font-family: 'Noto Sans', sans-serif;

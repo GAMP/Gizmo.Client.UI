@@ -1,3 +1,4 @@
+using Gizmo.Client.UI.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,23 +14,18 @@ using Microsoft.AspNetCore.Components;
 namespace Gizmo.Client.UI.Shared
 {
     /// <summary>
-    /// Top bar status for application deployment (server → client file sync).
+    /// Top bar status for application deployment (server to client file sync).
     /// </summary>
     /// <remarks>
+    /// Every executable has an <c>AppExeExecutionViewState</c> whose <c>IsActive</c> is
+    /// true while anything is being prepared for it, with <c>Progress</c> refreshed once a
+    /// second from the file syncer. There is no aggregate "a deployment is running" state,
+    /// so this component builds one by scanning those.
     /// <para>
-    /// Where the numbers come from: every executable has an <c>AppExeExecutionViewState</c>
-    /// whose <c>IsActive</c> is true while anything is being prepared for it, and whose
-    /// <c>Progress</c>/<c>IsIndeterminate</c> are refreshed once a second by the services
-    /// layer from the file syncer. There is no aggregate "is a deployment running" state
-    /// anywhere, so this component builds one by scanning those per-executable states.
-    /// </para>
-    /// <para>
-    /// Why polling and not subscriptions: progress updates are pushed into the individual
-    /// view states, and the lookup service's own <c>Changed</c> event only fires when
-    /// states are added/updated/removed - not when a tracked one ticks. Subscribing to
-    /// every executable in the club (a hundred of them in a real venue) to catch that
-    /// would cost more than a one second scan of an in-memory dictionary, which is also
-    /// exactly the cadence the syncer publishes at.
+    /// Polling rather than subscriptions: the lookup's <c>Changed</c> event fires when
+    /// states are added, updated or removed, not when a tracked one ticks. Subscribing to
+    /// every executable in a venue would cost more than a one second scan of an in-memory
+    /// dictionary, which is also the cadence the syncer publishes at.
     /// </para>
     /// </remarks>
     public partial class DeploymentBanner : CustomDOMComponentBase
@@ -77,6 +73,10 @@ namespace Gizmo.Client.UI.Shared
         private Timer _timer;
         private bool _scanning;
 
+        //First scan after focus returns: an executable that is no longer active did not
+        //just finish, it finished while the shell was in the background.
+        private bool _dropMissingOnce;
+
         //Everything below is what the markup reads. Recomputed on the tick, never in
         //the render pass, so a render never touches the clock and never disagrees with
         //itself between two lines of markup.
@@ -101,6 +101,21 @@ namespace Gizmo.Client.UI.Shared
         protected bool IsIndeterminate => _indeterminate;
         protected int PercentValue => _percent;
         protected string PercentLabel => _indeterminate ? "…" : $"{_percent}%";
+
+        /// <summary>
+        /// Dash offset of the progress ring: the circumference of the r=17.5 circle in the
+        /// markup, less the part that is done. Zero (a closed ring) while indeterminate -
+        /// the stylesheet shortens the dash and turns it then - and when done.
+        /// </summary>
+        protected string RingOffset
+        {
+            get
+            {
+                const double circumference = 2 * Math.PI * 17.5;
+                var done = _done || _indeterminate ? 1.0 : Math.Clamp(_percent, 0, 100) / 100.0;
+                return (circumference * (1 - done)).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
+            }
+        }
         protected string Title => _title;
         protected string Subtitle => _subtitle;
 
@@ -110,17 +125,70 @@ namespace Gizmo.Client.UI.Shared
 
         protected override void OnInitialized()
         {
-            _timer = new Timer(OnTick, null, Tick, Tick);
+            ShellActivity.Changed += OnActivityChanged;
+
+            ApplyTimer();
+
             base.OnInitialized();
         }
 
+        /// <summary>
+        /// Runs the scan only while somebody can see its result.
+        /// </summary>
+        /// <remarks>
+        /// A second is the right cadence for a progress bar being watched and pure waste
+        /// behind a running game, where the host does not suspend the WebView and every
+        /// render costs the game a frame. On the first tick after focus returns the banner
+        /// is correct again.
+        /// </remarks>
+        private void ApplyTimer()
+        {
+            var wanted = ShellActivity.IsActive;
+
+            if (wanted == (_timer is not null))
+                return;
+
+            if (wanted)
+            {
+                //Anything that finished while nobody was watching finished without us -
+                //no closing word half an hour after the game started.
+                _dropMissingOnce = true;
+
+                _timer = new Timer(OnTick, null, TimeSpan.Zero, Tick);
+            }
+            else
+            {
+                _timer?.Dispose();
+                _timer = null;
+
+                foreach (var finished in _tracks.Values
+                             .Where(a => a.FinishedUtc.HasValue)
+                             .Select(a => a.ExeId)
+                             .ToList())
+                {
+                    _tracks.Remove(finished);
+                    _dismissed.Remove(finished);
+                }
+
+                Recompute();
+            }
+        }
+
+        //Arrives from JS interop, and ApplyTimer touches _tracks, which the scan only
+        //ever reads on the UI thread.
+        private void OnActivityChanged() => DispatchWorkflow(() =>
+        {
+            ApplyTimer();
+            return Task.CompletedTask;
+        });
+
         public override void Dispose()
         {
+            //Static event, outlives the component: unsubscribe before dropping the timer.
+            ShellActivity.Changed -= OnActivityChanged;
+
             _timer?.Dispose();
             _timer = null;
-
-            //Never leave the slot marked as taken by a component that is going away.
-            TopBannerArbiter.SetDeploymentVisible(false);
 
             base.Dispose();
         }
@@ -220,13 +288,22 @@ namespace Gizmo.Client.UI.Shared
                 track.Indeterminate = state.IsIndeterminate;
             }
 
-            foreach (var track in _tracks.Values)
+            foreach (var track in _tracks.Values.ToList())
             {
                 if (activeIds.Contains(track.ExeId))
                     continue;
 
+                if (_dropMissingOnce)
+                {
+                    _tracks.Remove(track.ExeId);
+                    _dismissed.Remove(track.ExeId);
+                    continue;
+                }
+
                 track.FinishedUtc ??= now;
             }
+
+            _dropMissingOnce = false;
 
             //Drop everything that has been finished long enough to be off screen, and
             //let a customer who waved this one away be nudged again next time.
@@ -269,18 +346,20 @@ namespace Gizmo.Client.UI.Shared
 
             if (_done)
             {
-                _title = "Готово";
+                _title = ShellStringOverrides.Get(ShellStringOverrides.GEN_DONE);
                 _subtitle = justDone.Count == 1
-                    ? $"Запускаем: {Shorten(justDone[0].Caption)}"
-                    : $"{justDone.Count} {Plural(justDone.Count, "приложение", "приложения", "приложений")} готовы";
+                    ? ShellStringOverrides.Get(ShellStringOverrides.DEPLOY_LAUNCHING, Shorten(justDone[0].Caption))
+                    : ShellStringOverrides.GetPlural(ShellStringOverrides.DEPLOY_READY_COUNT, justDone.Count);
                 _indeterminate = false;
                 _percent = 100;
             }
             else if (live.Count > 0)
             {
-                //"Развёртывание" only when there is actually a deployment profile behind
-                //it; anything else preparing itself is honestly just "Подготовка".
-                _title = live.Any(a => a.HasDeploymentProfile) ? "Развёртывание" : "Подготовка";
+                //"Deployment" only when there is a deployment profile behind it; anything
+                //else preparing itself is just "Preparing".
+                _title = ShellStringOverrides.Get(live.Any(a => a.HasDeploymentProfile)
+                    ? ShellStringOverrides.DEPLOY_TITLE
+                    : ShellStringOverrides.DEPLOY_TITLE_PREPARING);
 
                 var measurable = live.Where(a => !a.Indeterminate).ToList();
 
@@ -295,13 +374,13 @@ namespace Gizmo.Client.UI.Shared
                 if (live.Count == 1)
                 {
                     _subtitle = string.IsNullOrWhiteSpace(live[0].Caption)
-                        ? "Копируем файлы игры"
+                        ? ShellStringOverrides.Get(ShellStringOverrides.DEPLOY_COPYING)
                         : Shorten(live[0].Caption);
                 }
                 else
                 {
-                    //Длиннее не влезает в пилюлю — остальное за кликом.
-                    _subtitle = $"{live.Count} {Plural(live.Count, "приложение", "приложения", "приложений")} · открыть список";
+                    //Anything longer does not fit the pill - the rest is behind the click.
+                    _subtitle = ShellStringOverrides.GetPlural(ShellStringOverrides.DEPLOY_RUNNING_COUNT, live.Count);
                 }
             }
 
@@ -311,26 +390,11 @@ namespace Gizmo.Client.UI.Shared
 
             _signature = signature;
 
-            TopBannerArbiter.SetDeploymentVisible(_open);
             DispatchStateHasChanged();
         }
 
         private static string Shorten(string value) =>
             string.IsNullOrEmpty(value) || value.Length <= 34 ? value : value[..33].TrimEnd() + "…";
-
-        private static string Plural(int count, string one, string few, string many)
-        {
-            var mod100 = count % 100;
-            if (mod100 is >= 11 and <= 14)
-                return many;
-
-            return (count % 10) switch
-            {
-                1 => one,
-                2 or 3 or 4 => few,
-                _ => many,
-            };
-        }
 
         #endregion
     }

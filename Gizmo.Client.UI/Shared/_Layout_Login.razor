@@ -18,17 +18,24 @@
             {
                 <Layout_LoginRotator />
             }
-            else
+            else if (HasClubBackground)
             {
                 <Layout_LoginWallpaper />
             }
 
-            @* Overlay layer: a fixed, hard-coded background shown while the
-               login / registration window is active. It sits on top of the
-               configured wallpaper and crossfades in/out with the window
-               (opacity + scale, driven by the .collapsed state on the parent),
-               so idle shows the club wallpaper and active shows this one. *@
-            <div class="giz-login-hardcoded-bg"></div>
+            @* Overlay layer: the shell's own background - the atmosphere in the accent's
+               colours with a few faint gaming icons. With a club wallpaper configured it
+               sits on top of that wallpaper and crossfades in while the login /
+               registration window is active (opacity + scale, driven by the .collapsed
+               state on the parent); without one it is the idle background as well
+               (.giz-login-content--own-bg). *@
+            <div class="giz-login-hardcoded-bg">
+                @* The moving gradient over the atmosphere - see _flow.scss. *@
+                <div class="gg-flow" aria-hidden="true">
+                    <span class="gg-flow__sheet gg-flow__sheet--1"></span>
+                    <span class="gg-flow__sheet gg-flow__sheet--2"></span>
+                </div>
+            </div>
             <div class="giz-login-hardcoded-bg__icons">
                 <i class="ph-fill ph-game-controller"></i>
                 <i class="ph-fill ph-desktop-tower"></i>
@@ -60,10 +67,8 @@
                 </div>
             }
 
-            @* Та же плитка, что и над карточкой входа: пока станция простаивает,
-               карточки на экране нет, и о брони сообщает этот экземпляр. Вид
-               один и тот же, чтобы одно и то же сообщение не выглядело двумя
-               разными. *@
+            @* The same notice as above the sign-in card. While the station is idle there
+               is no card on screen, so this instance carries the message. *@
             <div class="giz-login-warnings">
                 @if (_previousIsIdle || _slideOut)
                 {
@@ -105,7 +110,10 @@
     }
     else
     {
-        <Layout_LoginLock />        
+        <Layout_LoginLock />
     }
+
+    @* No ShellActivityWatcher here on purpose: the sign-in screen has no applications to
+       run, and its attract loop must keep playing to an empty room. *@
 
 </main>

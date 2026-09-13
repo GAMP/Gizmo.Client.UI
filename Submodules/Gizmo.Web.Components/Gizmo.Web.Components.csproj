@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Authors>NETProjects</Authors>
+		<Product>Gizmo</Product>
+		<OutputType>Library</OutputType>
+		<Description>Gizmo shared razor components library.</Description>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://www.gizmopowered.net/</PackageProjectUrl>
+		<PackageIcon>package_icon.png</PackageIcon>
+		<PackageIconUrl />
+		<RepositoryUrl>https://github.com/GAMP/Gizmo.Web.Components</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		
+		<!--Fixes duplicate file error on publish (.NET6 BUG)-->
+		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.6" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="Resources\package_icon.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Gizmo.Shared\Gizmo.Shared.csproj" />
+	</ItemGroup>
+	
+</Project>

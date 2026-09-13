@@ -1,4 +1,4 @@
-﻿@namespace Gizmo.Client.UI.Components
+@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 
 @if (!IsShopEnabled)
@@ -15,6 +15,22 @@ else if (_product.DisallowPurchase)
                     Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_ADD_TO_CART))" />
         </ChildContent>
     </ClientTooltip>
+}
+@* A time package is bought outright rather than added to the cart.
+
+   The cart is for goods: several at a time, paid for in one order. A time package is
+   taken one at a time and is what the customer came for, so it has one step - Buy, then
+   the purchase dialog. Same path as the button on the home board; the ordering lives in
+   PackagePurchaseFlow. *@
+else if (IsTimePackage)
+{
+    <Button Color="ButtonColors.Accent"
+            Class="giz-product-card-primary-button"
+            Size="@Size"
+            IsFullWidth="@IsFullWidth"
+            IsDisabled="@_buying"
+            Text="@ShellText.Get(_buying ? ShellText.GEN_WORKING : ShellText.GEN_BUY)"
+            @onclick="OnBuyPackageClickHandler" />
 }
 else
 {
