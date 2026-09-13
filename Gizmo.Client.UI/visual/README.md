@@ -123,4 +123,6 @@ background (`_flow.scss`) at its start only. `npm run visual:flow -- --page home
   atmosphere or a token rule across the whole set.
 - `node visual/crop.js <in.png> <out.png> <x> <y> <w> <h> [zoom]` - a region of a
   screenshot, optionally enlarged, for looking at one control or sending a detail.
+- `node visual/stack.js <out.png> <in1.png> <in2.png> ... [--gap 12]` - several crops
+  stacked into one picture (the states of one control, say).
   `visual/out` is wiped by every harness run, so write elsewhere anything worth keeping.
