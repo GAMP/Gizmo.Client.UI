@@ -34,6 +34,7 @@ const TEMPLATES = {
   product: require("./templates/product"),
   login: require("./templates/login"),
   notifications: require("./templates/notifications"),
+  progress: require("./templates/progress"),
 };
 
 function parseArgs(argv) {

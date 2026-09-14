@@ -153,6 +153,57 @@ between releases is `Gizmo.Client.UI.Services`: check its diff first. Read the b
 warnings for the shell's own files: an unresolved component tag is only a warning
 (RZ10012) and renders as an empty HTML element.
 
+## Achievements, challenges, ladder (Gizmo 3.0.95) - what the shell can reach
+
+Researched 14.09.2026 from the 3.0.95 server and client binaries (`GizmoService.dll`,
+the client's `gizmoclientsetup.exe` payload) and the GAMP repositories. The stock skin
+draws none of it yet; the data is there. Concept renders: `visual	emplates\progress.js`
+(scenarios `concept-progress*`), not a mirror of any Razor file.
+
+**Data - REST, user surface, already authenticated.** `Gizmo.Client.UI.Services`
+registers every client class of `Gizmo.Web.Api.Client` as a typed `HttpClient` with the
+server's base address (`ClientNetworkOptions.ServerUri`) and a delegating handler that
+adds the signed-in user's bearer token (the host receives the JWT at login and hands it
+to `UserAccessTokenHandler`). So the skin can `[Inject]` and call, with no plumbing:
+
+| Client (`Gizmo.Web.Api.User.Clients`) | Route | Returns |
+|---|---|---|
+| `AchievementsWebApiClient.GetAchievementsAsync()` | `GET api/user/v3/achievements` | `UserAchievementsModel` - every achievement with state, target, current value, progress, completions, period window, `IsHidden`, image guid |
+| `AchievementsWebApiClient.GetChallengesAsync()` | `GET api/user/v3/achievements/challenges` | `UserAchievementChallengesModel` - challenges with requirements + progress, rewards (points / time / product), own completions and reward statuses, state, pool remaining |
+| `AchievementLadderWebApiClient.GetStandingAsync()` | `GET api/user/v3/ladder/standing` | `LadderStandingModel` - mode (points / requirements), state (Earning / Secured / Awaiting), period, score, current and projected rank, every level with threshold, perks (discount, waiting-line priority) and emblem guid, transitions |
+| `AchievementLadderWebApiClient.GetEventsAsync(filter)` | `GET api/user/v3/ladder/events` | paged level history |
+| (no typed method in the shipped client) | `GET api/user/v3/achievements/rewards` | paged `UserAchievementRewardModel` - use `IHttpClientFactory.CreateClient("Gizmo.Web.Api.Clients.Secure")` |
+
+Models: `Submodules\Gizmo.Web.Api.Models\Models\API\Request\Achievement*`,
+`AchievementLadder`, `AchievementChallenge`; enums `UserAchievementState`,
+`UserAchievementChallengeState`, `LadderStandingState`, `AchievementChallengeRewardStatus`,
+`SignalUnit` (count / currency / duration / points / days), `CalendarPeriod`.
+
+**Live updates - push, through the host.** The server evaluates achievements on entity
+events (session, order, deposit...) with a one-second buffer and a five-minute sweep,
+and sends the user's client `UserAchievementCompletedEventMessage`,
+`UserAchievementChallengeCompletedEventMessage`, `UserAchievementLevelChangedEventMessage`
+and `UserAchievementRewardStatusChangedEventMessage` (`Gizmo.Web.Api.Messaging`). The host
+raises `IGizmoClient.OnAPIEventMessage` for every API event it receives, so the skin
+subscribes there (the vendor's `AssistanceRequestViewService` is the pattern), refreshes
+the cached models and shows a notification. No polling needed.
+
+**Images.** `{ServerUri}/files/{guid}` serves any uploaded file by guid - achievement and
+challenge pictures (`ImageGuid`), level emblems (`EmblemGuid`) - public, correct
+content-type, `Cache-Control: immutable`, SVG allowed. A plain `<img>` works.
+
+**Caveats.** Guests have no user token: hide the feature for them (`UserViewState.IsGuest`)
+and treat 401 as "not available". A club with no ladder / no achievements gets empty
+models - render nothing, not an empty tab. `IsHidden` achievements are secret until
+earned. Level names are user groups (`ToUserGroupId`): a level change is also a
+pricing/perks change, which the balance and tariff already reflect through their own
+events. Exact ladder semantics (retain threshold vs `ProjectedRank`, `PromoteOnSettleOnly`,
+`IsStepwise`) must be checked against a live server before the copy is final.
+
+**Prerequisite done 14.09:** submodules at the 3.0.95 client's commits
+(`Gizmo.Web.Api.Client` 279fea2 has the user clients, `Gizmo.Web.Api.Models` e9fe1536 the
+models); Grafit 1.0.8 builds against them.
+
 ## Not in the box
 
 Behaviour is tested by hand on a live client; the visual tests cover layout only. The

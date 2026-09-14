@@ -136,13 +136,34 @@ function topBar(d) {
         ${deploy}
         <div class="giz-top-bar__account">
           <div class="giz-header__user-menu-item giz-user-dropdown">
-            <button class="giz-user-menu-button">
+            <button class="giz-user-menu-button${d.levelRing != null ? " gg-has-level" : ""}">
               <span class="giz-user-avatar giz-user-avatar--glyph"><i class="ph ph-user"></i></span>
+              ${levelRing(d)}
             </button>
           </div>
         </div>
       </div>
     </div>`;
+}
+
+// CONCEPT (templates/progress.js): the ladder level on the avatar - a progress ring to
+// the next level around the button and the level's mark at its corner. Styles inline
+// here so nothing ships until the feature is built.
+function levelRing(d) {
+  if (d.levelRing == null) return "";
+  const C = 119.4; // r = 19
+  const off = (C * (1 - Math.max(0, Math.min(1, d.levelRing)))).toFixed(1);
+  return `<style>
+    .giz-user-menu-button.gg-has-level { position: relative; overflow: visible !important; }
+    .gg-avatar-ring { position: absolute; inset: -0.35rem; width: calc(100% + 0.7rem); height: calc(100% + 0.7rem); transform: rotate(-90deg); pointer-events: none; }
+    .gg-avatar-ring circle { fill: none; stroke-width: 2.2; }
+    .gg-avatar-ring .track { stroke: rgba(255,255,255,0.1); }
+    .gg-avatar-ring .bar { stroke: var(--gg-accent-light); stroke-linecap: round; stroke-dasharray: ${C}; }
+    .gg-avatar-mark { position: absolute; right: -0.3rem; bottom: -0.3rem; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      background: var(--gg-accent); color: var(--gg-on-accent); font-family: Manrope, sans-serif; font-weight: 800; font-size: 1rem; border: 2px solid var(--gg-bg-1); pointer-events: none; }
+  </style>
+  <svg class="gg-avatar-ring" viewBox="0 0 40 40" aria-hidden="true"><circle class="track" cx="20" cy="20" r="19"></circle><circle class="bar" cx="20" cy="20" r="19" style="stroke-dashoffset: ${off}"></circle></svg>
+  <span class="gg-avatar-mark">${d.levelRing >= 1 ? '<i class="ph-fill ph-crown"></i>' : "P"}</span>`;
 }
 
 function navItem(icon, active) {
