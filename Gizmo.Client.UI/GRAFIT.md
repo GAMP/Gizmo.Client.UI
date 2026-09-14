@@ -45,11 +45,11 @@ repository's relation to the upstream one.
 ## Versions
 
 The shell has a version of its own and it is only meaningful next to the Gizmo
-release it was built for: "Grafit 1.0.7 · Gizmo 3.0.92". Both numbers live in one
+release it was built for: "Grafit 1.0.8 · Gizmo 3.0.95". Both numbers live in one
 place, `Gizmo.Client.UI.csproj` (`GrafitVersion`, `GizmoVersion`). They reach the
-DLL's version info (`ProductVersion` = "1.0.7 (Gizmo 3.0.92)"), the package name and
+DLL's version info (`ProductVersion` = "1.0.8 (Gizmo 3.0.95)"), the package name and
 `grafit.version.txt` in the skin folder. On screen the shell shows its own number in
-exactly one place - a quiet "Grafit 1.0.7" under the cards of the account page's
+exactly one place - a quiet "Grafit 1.0.8" under the cards of the account page's
 Profile tab (`ShellVersion.Grafit`, read from the assembly metadata) - and never the
 Gizmo release or any mismatch warning. Bump `GrafitVersion` for every shell release,
 `GizmoVersion` on every vendor merge; `stage.ps1` refuses to pack a DLL whose

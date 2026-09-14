@@ -1,10 +1,10 @@
 # Grafit - handoff notes for Gizmo
 
 Grafit is a second skin for the Gizmo V3 client. This repository is a fork of
-`GAMP/Gizmo.Client.UI` (branch `version-3`, commit `e95eded`, the sources of Gizmo
-3.0.92) with the skin built on top. `GRAFIT.md` inside `Gizmo.Client.UI\` is the
-maintainer's map of the code; this file is about what is in the repository and how it
-relates to yours.
+`GAMP/Gizmo.Client.UI` (branch `version-3`; the shell project as of `14334ca`, the
+commit the stock 3.0.95 skin is built from) with the skin built on top. `GRAFIT.md`
+inside `Gizmo.Client.UI\` is the maintainer's map of the code; this file is about what
+is in the repository and how it relates to yours.
 
 ## What ships and what does not
 
@@ -32,31 +32,33 @@ assembly, the WPF host - is the client's own and is not shipped. Two consequence
 
 ## Relation to the upstream repositories
 
-Branch `grafit`. History: `e95eded` (your `version-3`) -> a snapshot of the skin as it
-was before the 3.0.92 merge -> the merge -> the current state. `vendor/version-3` is
-your branch as fetched, for diffing:
+Branch `grafit`. History: `e95eded` (your `version-3` at 3.0.92) -> a snapshot of the
+skin as it was before that merge -> the merge -> the skin's own commits -> a merge of
+`14334ca` (your 3.0.95). `vendor/version-3` is your branch as fetched, for diffing:
 
 ```
-git diff vendor/version-3 grafit --stat -- Gizmo.Client.UI
+git diff 14334ca grafit --stat -- Gizmo.Client.UI
 ```
 
-Against `e95eded` the shell project is 396 files: 141 vendor files modified, 72 files
-added (own pages, components, styles, the `visual\` harness, `deploy\`), 32 vendor
-files deleted (the profile header/navigation components, the DataGrid account pages,
-the unfinished Deposits page - replaced by `AccountFrame` and own row markup).
+Against the vendor shell project it is ~400 files: ~140 vendor files modified, ~70
+files added (own pages, components, styles, the `visual\` harness, `deploy\`), 32
+vendor files deleted (the profile header/navigation components, the DataGrid account
+pages, the unfinished Deposits page - replaced by `AccountFrame` and own row markup).
 
-Submodules are your repositories at the commits `e95eded` pins - unchanged:
+Submodules are your repositories at the commits the 3.0.95 **client** ships (read from
+each DLL's `ProductVersion` hash in `gizmoclientsetup.exe`), which are at or past the
+commits `14334ca` pins:
 
-| Submodule | Commit | Checked 2026-09-13 |
+| Submodule | Commit | Note |
 |---|---|---|
-| Gizmo.Client.Shared | `68359d8` | identical |
-| Gizmo.Client.UI.Resources | `f45f8c4` | identical |
-| Gizmo.Client.UI.Services | `5f753ac` | identical |
-| Gizmo.Server.Shared | `bc6ecbd` | identical |
-| Gizmo.Shared | `588b410` | identical |
-| Gizmo.UI | `4df4e0c` | identical |
-| Gizmo.Web.Api.Client | `568f104` | identical |
-| Gizmo.Web.Api.Models | `b53d431` | identical |
+| Gizmo.Client.Shared | `68359d8` | unchanged |
+| Gizmo.Client.UI.Resources | `c938e5b` | unchanged |
+| Gizmo.Client.UI.Services | `f922f37` | unchanged |
+| Gizmo.Server.Shared | `115b831` | unchanged |
+| Gizmo.Shared | `fe3f1e3` | unchanged |
+| Gizmo.UI | `71b02dc` | unchanged |
+| Gizmo.Web.Api.Client | `279fea2` | unchanged |
+| Gizmo.Web.Api.Models | `e9fe153` | unchanged |
 | Gizmo.Web.Components | `2217ec1` | **one file changed** - see below |
 
 Eight of them are git submodules (`git submodule update --init` after cloning).
@@ -89,7 +91,7 @@ is handed out at connect and mirrored to `%PROGRAMDATA%\NETProjects\Gizmo Client
 `deploy\README.md` is the operator's page.
 
 Versions: `GrafitVersion` and `GizmoVersion` in `Gizmo.Client.UI.csproj` -> assembly
-metadata and `ProductVersion` ("1.0.7 (Gizmo 3.0.92)"), the package name,
+metadata and `ProductVersion` ("1.0.8 (Gizmo 3.0.95)"), the package name,
 `skin\grafit.version.txt`, and one quiet line on the account page's Profile tab.
 
 ## Integration points a club uses
