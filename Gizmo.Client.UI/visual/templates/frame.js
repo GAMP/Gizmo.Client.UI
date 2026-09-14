@@ -137,56 +137,40 @@ function topBar(d) {
         ${levelHint(d)}
         <div class="giz-top-bar__account">
           <div class="giz-header__user-menu-item giz-user-dropdown">
-            <button class="giz-user-menu-button${d.levelRing != null ? " gg-has-level" : ""}">
-              <span class="giz-user-avatar giz-user-avatar--glyph"><i class="ph ph-user"></i></span>
+            <span class="gg-avatar-host">
+              <button class="giz-user-menu-button">
+                <span class="giz-user-avatar giz-user-avatar--glyph"><i class="ph ph-user"></i></span>
+              </button>
               ${levelRing(d)}
-            </button>
+            </span>
           </div>
         </div>
       </div>
     </div>`;
 }
 
-// CONCEPT (templates/progress.js): the ladder level on the avatar - a progress ring to
-// the next level around the button and the level's mark at its corner. Styles inline
-// here so nothing ships until the feature is built.
+// Shared/LoyaltyAvatarRing.razor: the ladder level worn on the avatar - a ring that
+// fills towards the next level and the level's mark at the corner, drawn on the host
+// span outside the button. `level: { progress, mark }`; nothing without a ladder.
 function levelRing(d) {
-  if (d.levelRing == null) return "";
-  const C = 119.4; // r = 19
-  const off = (C * (1 - Math.max(0, Math.min(1, d.levelRing)))).toFixed(1);
-  return `<style>
-    .giz-user-menu-button.gg-has-level { position: relative; overflow: visible !important; }
-    .gg-avatar-ring { position: absolute; inset: -0.35rem; width: calc(100% + 0.7rem); height: calc(100% + 0.7rem); transform: rotate(-90deg); pointer-events: none; }
-    .gg-avatar-ring circle { fill: none; stroke-width: 2.2; }
-    .gg-avatar-ring .track { stroke: rgba(255,255,255,0.1); }
-    .gg-avatar-ring .bar { stroke: var(--gg-accent-light); stroke-linecap: round; stroke-dasharray: ${C}; }
-    .gg-avatar-mark { position: absolute; right: -0.3rem; bottom: -0.3rem; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      background: var(--gg-accent); color: var(--gg-on-accent); font-family: Manrope, sans-serif; font-weight: 800; font-size: 1rem; border: 2px solid var(--gg-bg-1); pointer-events: none; }
-  </style>
-  <svg class="gg-avatar-ring" viewBox="0 0 40 40" aria-hidden="true"><circle class="track" cx="20" cy="20" r="19"></circle><circle class="bar" cx="20" cy="20" r="19" style="stroke-dashoffset: ${off}"></circle></svg>
-  <span class="gg-avatar-mark">${d.levelRing >= 1 ? '<i class="ph-fill ph-crown"></i>' : "P"}</span>`;
+  if (!d.level) return "";
+  const C = 2 * Math.PI * 19; // r = 19
+  const off = (C * (1 - Math.max(0, Math.min(1, d.level.progress)))).toFixed(2).replace(/\.?0+$/, "");
+  return `<svg class="gg-avatar-ring" viewBox="0 0 40 40" aria-hidden="true"><circle class="gg-avatar-ring__track" cx="20" cy="20" r="19"></circle><circle class="gg-avatar-ring__bar" cx="20" cy="20" r="19" style="stroke-dashoffset: ${off}"></circle></svg>
+  <span class="gg-avatar-mark">${esc(d.level.mark)}</span>`;
 }
 
-// CONCEPT: for ten seconds after sign-in, a pill slides out next to the avatar to say
-// what the ring on it means and what to do this month. Same pill as the deployment
-// banner, pointing at the avatar; styles inline so nothing ships.
+// Shared/LoyaltyHint.razor: for ten seconds after sign-in, a pill slides out next to
+// the avatar to say what the ring on it means. Same pill as the deployment banner,
+// without the fill. `levelHint: earning | secured`.
 function levelHint(d) {
   if (!d.levelHint) return "";
   const secured = d.levelHint === "secured";
-  return `<style>
-    .giz-deploy.gg-hint { flex-basis: 46rem; border-color: rgba(var(--gg-accent-rgb), 0.45) !important; }
-    .giz-deploy.gg-hint .giz-deploy__badge { background: var(--gg-accent); color: var(--gg-on-accent); font-family: Manrope, sans-serif; font-weight: 800; font-size: 1.5rem; }
-    .giz-deploy.gg-hint .giz-deploy__fill { display: none; }
-    .giz-deploy.gg-hint .giz-deploy__title { letter-spacing: 0.06em; font-size: 1.25rem; }
-    .giz-deploy.gg-hint .giz-deploy__sub { font-size: 1.3rem; }
-    .gg-hint__arrow { position: absolute; right: 1.1rem; top: 50%; transform: translateY(-50%); z-index: 1; font-size: 1.7rem; color: var(--gg-accent-pale); }
-  </style>
-  <div class="giz-deploy open gg-hint">
-    <span class="giz-deploy__fill"></span>
-    <div class="giz-deploy__badge">${secured ? '<i class="ph-fill ph-crown"></i>' : "P"}</div>
-    <button type="button" class="giz-deploy__body">
+  return `<div class="giz-deploy gg-hint open">
+    <div class="giz-deploy__badge gg-hint__badge">${secured ? "A" : "P"}</div>
+    <button type="button" class="giz-deploy__body" title="Мой прогресс">
       <span class="giz-deploy__title">${secured ? "Alternatif — ваш уровень" : "Praxilla — ваш уровень"}</span>
-      <span class="giz-deploy__sub">${secured ? "Закреплён до 1 октября · кольцо на аватаре — ваш прогресс" : "Ещё 1 489 очков до удержания · кольцо на аватаре — ваш прогресс"}</span>
+      <span class="giz-deploy__sub">Кольцо на аватаре — ваш прогресс</span>
     </button>
     <i class="ph-bold ph-arrow-right gg-hint__arrow"></i>
   </div>`;
@@ -235,7 +219,8 @@ function rail(d) {
     </aside>`;
 }
 
-// d: { balance, points, time, pc, tariff, reservation, deploy, pinned, active }
+// d: { balance, points, time, pc, tariff, reservation, deploy, pinned, active, level,
+//      levelHint }
 function frame(d, bodyHtml, extraHtml) {
   return `
   <div class="giz-root">

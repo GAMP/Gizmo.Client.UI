@@ -1,0 +1,85 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using Gizmo.Client.UI.Services
+@using Gizmo.Web.Api.Models
+
+@* One challenge: what it is, how many of its steps are done, the one step left, and
+   what it pays. The checklist of every requirement was tried and read as small print;
+   the step that is missing is the only one that matters. *@
+@{
+    var c = Challenge;
+    var done = LoyaltySnapshot.IsDone(c);
+    var total = c.Requirements?.Count ?? 0;
+    var met = Math.Min(total, c.MetCount ?? (c.Requirements?.Count(r => (r.CompletedCount ?? 0) >= r.RequiredCount) ?? 0));
+    var picture = Loyalty.ImageUrl(c.ImageGuid);
+    var waiting = c.MyCompletions?.Any(LoyaltySnapshot.HasRewardWaiting) == true;
+}
+<article class="gg-chal__card @(done ? "is-done" : null) @(!done && !LoyaltySnapshot.IsOpen(c) ? "is-off" : null)">
+    <div class="gg-chal__top">
+        <div class="gg-chal__art">
+            @if (picture is not null)
+            {
+                <img src="@picture" alt="" />
+            }
+            else
+            {
+                <i class="ph-fill @(done ? "ph-check" : "ph-flag-checkered")"></i>
+            }
+        </div>
+        <div class="gg-chal__head">
+            <div class="gg-chal__name">@c.Name</div>
+            <div class="gg-chal__when">@When</div>
+        </div>
+        @if (total > 0)
+        {
+            <div class="gg-chal__count">
+                @ShellText.Get(ShellText.LOYALTY_OF, met, total)
+                <small>@ShellText.Get(done ? ShellText.LOYALTY_READY : ShellText.LOYALTY_STEPS)</small>
+            </div>
+        }
+    </div>
+
+    @if (total > 0)
+    {
+        <div class="gg-chal__segs">
+            @for (var i = 0; i < total; i++)
+            {
+                <i class="@(i < met ? "is-on" : null)"></i>
+            }
+        </div>
+    }
+
+    <p class="gg-chal__todo">
+        @if (waiting)
+        {
+            @ShellText.Get(ShellText.LOYALTY_REWARD_WAITING)
+        }
+        else if (!done && Remaining is not null)
+        {
+            @ShellText.Get(ShellText.LOYALTY_REMAINING, "")<b>@Remaining.Name</b>@(RemainingProgress is null ? "" : " · " + RemainingProgress)
+        }
+        else if (!string.IsNullOrWhiteSpace(c.Description))
+        {
+            @c.Description
+        }
+    </p>
+
+    <div class="gg-chal__foot">
+        @foreach (var points in c.PointsRewards ?? Enumerable.Empty<AchievementChallengePointsRewardModel>())
+        {
+            <span class="gg-reward"><i class="ph-fill ph-coins"></i>@LoyaltyText.RewardPoints(points.Amount)</span>
+        }
+        @foreach (var time in c.TimeRewards ?? Enumerable.Empty<AchievementChallengeTimeRewardModel>())
+        {
+            <span class="gg-reward"><i class="ph-fill ph-clock"></i>@LoyaltyText.RewardTime(time.Seconds)</span>
+        }
+        @foreach (var product in c.ProductRewards ?? Enumerable.Empty<AchievementChallengeProductRewardModel>())
+        {
+            <span class="gg-reward @(waiting ? "gg-reward--claim" : null)"><i class="ph-fill ph-gift"></i>@LoyaltyText.RewardProduct(product.Quantity)</span>
+        }
+        @if (c.GlobalRemaining is int left && !done)
+        {
+            <small>@ShellText.Get(ShellText.LOYALTY_POOL_LEFT, left)</small>
+        }
+    </div>
+</article>

@@ -83,6 +83,15 @@
                     <span>@ShellText.Get(ShellText.PURCHASES)</span>
                 </NavLink>
             }
+            @* The Progress tab exists only where the club runs the ladder or achievements
+               and the customer is part of it (guests get no data). *@
+            @if (Gizmo.Client.UI.Services.Loyalty.State.IsAvailable)
+            {
+                <NavLink class="gg-account__tab" ActiveClass="is-on" href="@(ClientRoutes.UserProfileRoute + "/progress")" Match="NavLinkMatch.All">
+                    <i class="ph-bold ph-trophy"></i>
+                    <span>@ShellText.Get(ShellText.LOYALTY_TAB)</span>
+                </NavLink>
+            }
         </nav>
 
         <div class="gg-account__body">

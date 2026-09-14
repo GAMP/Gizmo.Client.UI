@@ -288,6 +288,67 @@ namespace Gizmo.Client.UI.Localization
         public const string PD_EXPIRES_AT_LOGOUT = SHELL_PREFIX + "PD_EXPIRES_AT_LOGOUT";
         public const string PD_QUANTITY = SHELL_PREFIX + "PD_QUANTITY";
 
+        // ── Loyalty: ladder level, achievements, challenges (Gizmo 3.0.95+) ──────────
+        public const string LOYALTY_TAB = SHELL_PREFIX + "LOYALTY_TAB";
+        public const string LOYALTY_HOME_CAP = SHELL_PREFIX + "LOYALTY_HOME_CAP";
+        public const string LOYALTY_MORE = SHELL_PREFIX + "LOYALTY_MORE";
+        public const string LOYALTY_LEVEL_CAP = SHELL_PREFIX + "LOYALTY_LEVEL_CAP";
+        public const string LOYALTY_STATE_EARNING = SHELL_PREFIX + "LOYALTY_STATE_EARNING";
+        public const string LOYALTY_STATE_SECURED = SHELL_PREFIX + "LOYALTY_STATE_SECURED";
+        public const string LOYALTY_STATE_AWAITING = SHELL_PREFIX + "LOYALTY_STATE_AWAITING";
+        public const string LOYALTY_RETAIN_SHORT = SHELL_PREFIX + "LOYALTY_RETAIN_SHORT";
+        public const string LOYALTY_RETAIN_LINE = SHELL_PREFIX + "LOYALTY_RETAIN_LINE";
+        public const string LOYALTY_NEXT_SHORT = SHELL_PREFIX + "LOYALTY_NEXT_SHORT";
+        public const string LOYALTY_NEXT_LINE = SHELL_PREFIX + "LOYALTY_NEXT_LINE";
+        public const string LOYALTY_SECURED_SHORT = SHELL_PREFIX + "LOYALTY_SECURED_SHORT";
+        public const string LOYALTY_SECURED_LINE = SHELL_PREFIX + "LOYALTY_SECURED_LINE";
+        public const string LOYALTY_TOP_LINE = SHELL_PREFIX + "LOYALTY_TOP_LINE";
+        public const string LOYALTY_AWAITING_LINE = SHELL_PREFIX + "LOYALTY_AWAITING_LINE";
+        public const string LOYALTY_REQUIREMENTS_LINE = SHELL_PREFIX + "LOYALTY_REQUIREMENTS_LINE";
+        public const string LOYALTY_POINTS_PERIOD = SHELL_PREFIX + "LOYALTY_POINTS_PERIOD";
+        public const string LOYALTY_PERIOD_DAY = SHELL_PREFIX + "LOYALTY_PERIOD_DAY";
+        public const string LOYALTY_PERIOD_WEEK = SHELL_PREFIX + "LOYALTY_PERIOD_WEEK";
+        public const string LOYALTY_PERIOD_MONTH = SHELL_PREFIX + "LOYALTY_PERIOD_MONTH";
+        public const string LOYALTY_PERIOD_QUARTER = SHELL_PREFIX + "LOYALTY_PERIOD_QUARTER";
+        public const string LOYALTY_PERIOD_YEAR = SHELL_PREFIX + "LOYALTY_PERIOD_YEAR";
+        public const string LOYALTY_SETTLE = SHELL_PREFIX + "LOYALTY_SETTLE";
+        public const string LOYALTY_START = SHELL_PREFIX + "LOYALTY_START";
+        public const string LOYALTY_KEEP_AT = SHELL_PREFIX + "LOYALTY_KEEP_AT";
+        public const string LOYALTY_BONUSES = SHELL_PREFIX + "LOYALTY_BONUSES";
+        public const string LOYALTY_PERK_DISCOUNT = SHELL_PREFIX + "LOYALTY_PERK_DISCOUNT";
+        public const string LOYALTY_PERK_BONUS = SHELL_PREFIX + "LOYALTY_PERK_BONUS";
+        public const string LOYALTY_PERK_QUEUE = SHELL_PREFIX + "LOYALTY_PERK_QUEUE";
+        public const string LOYALTY_CHALLENGES = SHELL_PREFIX + "LOYALTY_CHALLENGES";
+        public const string LOYALTY_ACHIEVEMENTS = SHELL_PREFIX + "LOYALTY_ACHIEVEMENTS";
+        public const string LOYALTY_OF = SHELL_PREFIX + "LOYALTY_OF";
+        public const string LOYALTY_STEPS = SHELL_PREFIX + "LOYALTY_STEPS";
+        public const string LOYALTY_READY = SHELL_PREFIX + "LOYALTY_READY";
+        public const string LOYALTY_UNTIL = SHELL_PREFIX + "LOYALTY_UNTIL";
+        public const string LOYALTY_DAYS_COUNT = SHELL_PREFIX + "LOYALTY_DAYS_COUNT";
+        public const string LOYALTY_POINTS_COUNT = SHELL_PREFIX + "LOYALTY_POINTS_COUNT";
+        public const string LOYALTY_COMPLETED_ON = SHELL_PREFIX + "LOYALTY_COMPLETED_ON";
+        public const string LOYALTY_REMAINING = SHELL_PREFIX + "LOYALTY_REMAINING";
+        public const string LOYALTY_REWARD_WAITING = SHELL_PREFIX + "LOYALTY_REWARD_WAITING";
+        public const string LOYALTY_REWARD_WAITING_SHORT = SHELL_PREFIX + "LOYALTY_REWARD_WAITING_SHORT";
+        public const string LOYALTY_REWARD_GIFT = SHELL_PREFIX + "LOYALTY_REWARD_GIFT";
+        public const string LOYALTY_POOL_LEFT = SHELL_PREFIX + "LOYALTY_POOL_LEFT";
+        public const string LOYALTY_STATE_ENDED = SHELL_PREFIX + "LOYALTY_STATE_ENDED";
+        public const string LOYALTY_STATE_DONE = SHELL_PREFIX + "LOYALTY_STATE_DONE";
+        public const string LOYALTY_EARNED = SHELL_PREFIX + "LOYALTY_EARNED";
+        public const string LOYALTY_EARNED_TIMES = SHELL_PREFIX + "LOYALTY_EARNED_TIMES";
+        public const string LOYALTY_SECRET = SHELL_PREFIX + "LOYALTY_SECRET";
+        public const string LOYALTY_SECRET_HINT = SHELL_PREFIX + "LOYALTY_SECRET_HINT";
+        public const string LOYALTY_HINT_TITLE = SHELL_PREFIX + "LOYALTY_HINT_TITLE";
+        public const string LOYALTY_HINT_RING = SHELL_PREFIX + "LOYALTY_HINT_RING";
+        public const string LOYALTY_NEWS_LEVEL_UP = SHELL_PREFIX + "LOYALTY_NEWS_LEVEL_UP";
+        public const string LOYALTY_NEWS_LEVEL_DOWN = SHELL_PREFIX + "LOYALTY_NEWS_LEVEL_DOWN";
+        public const string LOYALTY_NEWS_ACHIEVEMENT = SHELL_PREFIX + "LOYALTY_NEWS_ACHIEVEMENT";
+        public const string LOYALTY_NEWS_CHALLENGE = SHELL_PREFIX + "LOYALTY_NEWS_CHALLENGE";
+        public const string LOYALTY_NEWS_REWARD_WAITING = SHELL_PREFIX + "LOYALTY_NEWS_REWARD_WAITING";
+        public const string LOYALTY_NEWS_REWARD_GIVEN = SHELL_PREFIX + "LOYALTY_NEWS_REWARD_GIVEN";
+        public const string LOYALTY_EMPTY = SHELL_PREFIX + "LOYALTY_EMPTY";
+        public const string LOYALTY_LAST_LEVEL_CHANGE = SHELL_PREFIX + "LOYALTY_LAST_LEVEL_CHANGE";
+
         #endregion
 
         // key -> (two-letter culture -> text). Plural forms are separated by '|' in the
@@ -500,6 +561,67 @@ namespace Gizmo.Client.UI.Localization
                 [PD_EXPIRES_AFTER] = new() { ["ru"] = "Сгорает через {0}", ["en"] = "Expires after {0}" },
                 [PD_EXPIRES_AT_LOGOUT] = new() { ["ru"] = "Сгорает при выходе", ["en"] = "Expires on sign-out" },
                 [PD_QUANTITY] = new() { ["ru"] = "Количество", ["en"] = "Quantity" },
+
+                // Loyalty (the ladder, achievements and challenges of Gizmo 3.0.95+)
+                [LOYALTY_TAB] = new() { ["ru"] = "Прогресс", ["en"] = "Progress" },
+                [LOYALTY_HOME_CAP] = new() { ["ru"] = "Ваш прогресс", ["en"] = "Your progress" },
+                [LOYALTY_MORE] = new() { ["ru"] = "Мой прогресс", ["en"] = "My progress" },
+                [LOYALTY_LEVEL_CAP] = new() { ["ru"] = "Ваш уровень", ["en"] = "Your level" },
+                [LOYALTY_STATE_EARNING] = new() { ["ru"] = "Набираете", ["en"] = "Earning" },
+                [LOYALTY_STATE_SECURED] = new() { ["ru"] = "Закреплён", ["en"] = "Secured" },
+                [LOYALTY_STATE_AWAITING] = new() { ["ru"] = "Ждёт итогов", ["en"] = "Awaiting results" },
+                [LOYALTY_RETAIN_SHORT] = new() { ["ru"] = "Ещё {0}, чтобы удержать", ["en"] = "{0} more to keep it" },
+                [LOYALTY_RETAIN_LINE] = new() { ["ru"] = "Наберите ещё {0} до {1} — и уровень останется.", ["en"] = "Earn {0} more by {1} and the level stays." },
+                [LOYALTY_NEXT_SHORT] = new() { ["ru"] = "Ещё {0} до уровня {1}", ["en"] = "{0} more to {1}" },
+                [LOYALTY_NEXT_LINE] = new() { ["ru"] = "Следующий уровень — {0}: ещё {1}.", ["en"] = "Next level - {0}: {1} more." },
+                [LOYALTY_SECURED_SHORT] = new() { ["ru"] = "Закреплён до {0}", ["en"] = "Secured until {0}" },
+                [LOYALTY_SECURED_LINE] = new() { ["ru"] = "Уровень закреплён до {0}.", ["en"] = "The level is secured until {0}." },
+                [LOYALTY_TOP_LINE] = new() { ["ru"] = "Это высший уровень, и он закреплён до {0}.", ["en"] = "This is the top level, and it is secured until {0}." },
+                [LOYALTY_AWAITING_LINE] = new() { ["ru"] = "Итоги подводятся {0}.", ["en"] = "Results are settled on {0}." },
+                [LOYALTY_REQUIREMENTS_LINE] = new() { ["ru"] = "Уровень {0} даётся за достижения: {1}.", ["en"] = "{0} is earned with achievements: {1}." },
+                [LOYALTY_POINTS_PERIOD] = new() { ["ru"] = "Очки {0}", ["en"] = "Points {0}" },
+                [LOYALTY_PERIOD_DAY] = new() { ["ru"] = "за сегодня", ["en"] = "today" },
+                [LOYALTY_PERIOD_WEEK] = new() { ["ru"] = "за неделю", ["en"] = "this week" },
+                [LOYALTY_PERIOD_MONTH] = new() { ["ru"] = "за месяц", ["en"] = "this month" },
+                [LOYALTY_PERIOD_QUARTER] = new() { ["ru"] = "за квартал", ["en"] = "this quarter" },
+                [LOYALTY_PERIOD_YEAR] = new() { ["ru"] = "за год", ["en"] = "this year" },
+                [LOYALTY_SETTLE] = new() { ["ru"] = "Итоги", ["en"] = "Results" },
+                [LOYALTY_START] = new() { ["ru"] = "старт", ["en"] = "start" },
+                [LOYALTY_KEEP_AT] = new() { ["ru"] = "удержать", ["en"] = "keep" },
+                [LOYALTY_BONUSES] = new() { ["ru"] = "Ваши бонусы:", ["en"] = "Your perks:" },
+                [LOYALTY_PERK_DISCOUNT] = new() { ["ru"] = "скидка {0}", ["en"] = "{0} off" },
+                [LOYALTY_PERK_BONUS] = new() { ["ru"] = "бонус {0}", ["en"] = "{0} bonus" },
+                [LOYALTY_PERK_QUEUE] = new() { ["ru"] = "приоритет в очереди", ["en"] = "priority in the queue" },
+                [LOYALTY_CHALLENGES] = new() { ["ru"] = "Челленджи", ["en"] = "Challenges" },
+                [LOYALTY_ACHIEVEMENTS] = new() { ["ru"] = "Достижения", ["en"] = "Achievements" },
+                [LOYALTY_OF] = new() { ["ru"] = "{0} из {1}", ["en"] = "{0} of {1}" },
+                [LOYALTY_STEPS] = new() { ["ru"] = "шагов", ["en"] = "steps" },
+                [LOYALTY_READY] = new() { ["ru"] = "готово", ["en"] = "done" },
+                [LOYALTY_UNTIL] = new() { ["ru"] = "до {0}", ["en"] = "until {0}" },
+                [LOYALTY_DAYS_COUNT] = new() { ["ru"] = "{0} день|{0} дня|{0} дней", ["en"] = "{0} day|{0} days" },
+                [LOYALTY_POINTS_COUNT] = new() { ["ru"] = "{0} очко|{0} очка|{0} очков", ["en"] = "{0} point|{0} points" },
+                [LOYALTY_COMPLETED_ON] = new() { ["ru"] = "выполнен {0}", ["en"] = "completed {0}" },
+                [LOYALTY_REMAINING] = new() { ["ru"] = "Осталось: {0}", ["en"] = "Left: {0}" },
+                [LOYALTY_REWARD_WAITING] = new() { ["ru"] = "Награда ждёт вас у стойки — покажите администратору эту вкладку.", ["en"] = "Your reward is waiting at the counter - show the staff this tab." },
+                [LOYALTY_REWARD_WAITING_SHORT] = new() { ["ru"] = "Награда ждёт у стойки", ["en"] = "Reward waiting at the counter" },
+                [LOYALTY_REWARD_GIFT] = new() { ["ru"] = "Подарок", ["en"] = "Gift" },
+                [LOYALTY_POOL_LEFT] = new() { ["ru"] = "Осталось {0} на всех", ["en"] = "{0} left for everyone" },
+                [LOYALTY_STATE_ENDED] = new() { ["ru"] = "Завершён", ["en"] = "Ended" },
+                [LOYALTY_STATE_DONE] = new() { ["ru"] = "Выполнено", ["en"] = "Done" },
+                [LOYALTY_EARNED] = new() { ["ru"] = "Получено", ["en"] = "Earned" },
+                [LOYALTY_EARNED_TIMES] = new() { ["ru"] = "Получено ×{0}", ["en"] = "Earned ×{0}" },
+                [LOYALTY_SECRET] = new() { ["ru"] = "Секретное", ["en"] = "Secret" },
+                [LOYALTY_SECRET_HINT] = new() { ["ru"] = "Откроется, когда получите", ["en"] = "Revealed when you earn it" },
+                [LOYALTY_HINT_TITLE] = new() { ["ru"] = "{0} — ваш уровень", ["en"] = "{0} - your level" },
+                [LOYALTY_HINT_RING] = new() { ["ru"] = "Кольцо на аватаре — ваш прогресс", ["en"] = "The ring on your avatar is your progress" },
+                [LOYALTY_NEWS_LEVEL_UP] = new() { ["ru"] = "Новый уровень", ["en"] = "New level" },
+                [LOYALTY_NEWS_LEVEL_DOWN] = new() { ["ru"] = "Уровень изменился", ["en"] = "Level changed" },
+                [LOYALTY_NEWS_ACHIEVEMENT] = new() { ["ru"] = "Достижение получено", ["en"] = "Achievement earned" },
+                [LOYALTY_NEWS_CHALLENGE] = new() { ["ru"] = "Челлендж выполнен", ["en"] = "Challenge completed" },
+                [LOYALTY_NEWS_REWARD_WAITING] = new() { ["ru"] = "Награда ждёт у стойки", ["en"] = "Reward waiting at the counter" },
+                [LOYALTY_NEWS_REWARD_GIVEN] = new() { ["ru"] = "Награда получена", ["en"] = "Reward received" },
+                [LOYALTY_EMPTY] = new() { ["ru"] = "Пока нечего показать", ["en"] = "Nothing to show yet" },
+                [LOYALTY_LAST_LEVEL_CHANGE] = new() { ["ru"] = "{0} — уровень {1}", ["en"] = "{0} - level {1}" },
 
                 #endregion
 

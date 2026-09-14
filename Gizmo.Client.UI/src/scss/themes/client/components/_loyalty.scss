@@ -1,0 +1,404 @@
+//=============== Loyalty: ring, hint, home summary ================//
+//
+// The ladder level and achievements the server keeps for a signed-in customer, shown in
+// three places outside the Progress tab: a ring on the avatar in the top bar, a pill
+// next to it for ten seconds after sign-in, and a summary tile at the foot of the home
+// board's right column. Every progress figure here is a ring or a bar in the accent -
+// the same language as the deployment banner - and reads to the next level.
+
+$lo-g:     clamp(0.8rem, 0.45rem + 0.6vw, 1.6rem);
+$lo-ink:   var(--gg-ink);
+$lo-ink-2: rgba(var(--gg-ink-rgb), 0.65);
+$lo-ink-3: rgba(var(--gg-ink-rgb), 0.42);
+$lo-line:  rgba(255, 255, 255, 0.07);
+
+// ── the ring every loyalty figure is drawn with (r = 18 in a 40 viewBox) ─────────
+.gg-ring__track,
+.gg-ring__bar {
+    fill: none;
+    stroke-width: 2.6;
+}
+
+.gg-ring__track {
+    stroke: rgba(255, 255, 255, 0.1);
+}
+
+.gg-ring__bar {
+    stroke: var(--gg-accent-light);
+    stroke-linecap: round;
+    stroke-dasharray: 113.1;
+    transition: stroke-dashoffset 0.6s ease;
+}
+
+// ── avatar ring: around the round button, outside its clipped box ────────────────
+.gg-avatar-host {
+    position: relative;
+    display: inline-flex;
+    flex: none;
+}
+
+.gg-avatar-ring {
+    position: absolute;
+    inset: -0.35rem;
+    width: calc(100% + 0.7rem);
+    height: calc(100% + 0.7rem);
+    // The bar starts at twelve o'clock.
+    transform: rotate(-90deg);
+    pointer-events: none;
+
+    &__track,
+    &__bar {
+        fill: none;
+        stroke-width: 2.2;
+    }
+
+    &__track {
+        stroke: rgba(255, 255, 255, 0.1);
+    }
+
+    &__bar {
+        stroke: var(--gg-accent-light);
+        stroke-linecap: round;
+        // Circumference of the r = 19 circle in the markup.
+        stroke-dasharray: 119.4;
+        transition: stroke-dashoffset 0.6s ease;
+    }
+}
+
+.gg-avatar-mark {
+    position: absolute;
+    right: -0.3rem;
+    bottom: -0.3rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--gg-accent);
+    color: var(--gg-on-accent);
+    border: 2px solid var(--gg-bg-1);
+    font-family: $font-family-header-theme-client;
+    font-weight: 800;
+    font-size: 1rem;
+    line-height: 1;
+    pointer-events: none;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+// ── sign-in hint: the deployment banner's pill, pointing at the avatar ────────────
+// Layout, growth and colour come from .giz-deploy in _Layout.razor; this only says
+// what differs.
+.giz-deploy.gg-hint {
+    // So the words can go when the bar leaves the pill no room (see below).
+    container-type: inline-size;
+
+    &.open {
+        flex-basis: 46rem;
+        // The arrow needs less room than the deployment's close button.
+        padding-right: 3.2rem;
+    }
+
+    .gg-hint__badge {
+        border-radius: 50%;
+        overflow: hidden;
+        background: var(--gg-accent);
+        color: var(--gg-on-accent);
+        font-family: $font-family-header-theme-client;
+        font-weight: 800;
+        font-size: 1.5rem;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    // Two plain lines instead of the deployment's caption and line: the level, and
+    // what the ring means. The bar gives the pill some thirty rem next to the icons,
+    // so the second line may wrap once rather than lose its end.
+    .giz-deploy__body {
+        justify-content: center;
+        gap: 0.15rem;
+    }
+
+    .giz-deploy__title {
+        font-family: $font-family-header-theme-client;
+        font-size: 1.35rem;
+        font-weight: 700;
+        line-height: 1.6rem;
+        letter-spacing: 0;
+        text-transform: none;
+    }
+
+    .giz-deploy__sub {
+        font-size: 1.2rem;
+        line-height: 1.45rem;
+        white-space: normal;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+}
+
+.gg-hint__arrow {
+    position: absolute;
+    right: 1.1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    font-size: 1.7rem;
+    color: var(--gg-accent-pale);
+    pointer-events: none;
+}
+
+// A 1366-wide screen leaves the pill a dozen rem next to the icons: a few clipped
+// letters would be worse than none. The mark and the arrow stay, and the click still
+// opens the tab; the ring on the avatar speaks for itself.
+@container (max-width: 24rem) {
+    .giz-deploy.gg-hint .giz-deploy__body {
+        visibility: hidden;
+    }
+}
+
+// ── home board: the right column as two tiles ─────────────────────────────────────
+// Same rows as .gg-stage on the left (1.9fr : 1fr), so the packages tile is level with
+// the hero and the summary with the strip.
+.gg-side {
+    min-width: 0;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: minmax(0, 1.9fr) minmax(0, 1fr);
+    gap: calc(#{$lo-g} * 1.4);
+    animation: gg-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+    > .gg-till {
+        min-height: 0;
+        animation: none;
+    }
+
+    // The packages take the whole first tile now that the bar has left it.
+    .gg-till__sec--packs {
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+}
+
+.gg-till--loyal {
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+// ── the summary tile ───────────────────────────────────────────────────────────────
+.gg-loyal {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.1rem;
+
+    &__top {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+    }
+
+    &__mark {
+        position: relative;
+        width: 5.6rem;
+        height: 5.6rem;
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        &--plain {
+            border-radius: 50%;
+            background: rgba(var(--gg-accent-rgb), 0.14);
+            color: var(--gg-accent-soft);
+            font-size: 2.4rem;
+        }
+    }
+
+    &__disc {
+        width: 3.8rem;
+        height: 3.8rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: var(--gg-accent);
+        color: var(--gg-on-accent);
+        font-family: $font-family-header-theme-client;
+        font-weight: 800;
+        font-size: 1.6rem;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    &__who {
+        min-width: 0;
+        flex: 1;
+
+        b {
+            display: block;
+            font-family: $font-family-header-theme-client;
+            font-size: 2.1rem;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            line-height: 1.1;
+            color: $lo-ink;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        span {
+            display: block;
+            margin-top: 0.35rem;
+            font-size: 1.4rem;
+            color: $lo-ink-2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    &__track {
+        position: relative;
+        flex: none;
+        height: 0.7rem;
+        border-radius: 99rem;
+        background: rgba(255, 255, 255, 0.08);
+        overflow: hidden;
+
+        i {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            border-radius: 99rem;
+            background: linear-gradient(90deg, rgba(var(--gg-accent-rgb), 0.55), var(--gg-accent));
+            transition: width 0.6s ease;
+        }
+    }
+
+    // The one next step: an icon, a line, a chip with what it pays or where it stands.
+    &__next {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.2rem;
+        border-radius: 1.3rem;
+        background: rgba(255, 255, 255, 0.045);
+        border: 1px solid $lo-line;
+        font-size: 1.4rem;
+        line-height: 1.3;
+        color: rgba(var(--gg-ink-rgb), 0.85);
+
+        > i {
+            flex: none;
+            width: 3.2rem;
+            height: 3.2rem;
+            border-radius: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(var(--gg-accent-rgb), 0.14);
+            color: var(--gg-accent-soft);
+            font-size: 1.6rem;
+        }
+
+        > span {
+            min-width: 0;
+        }
+
+        b {
+            color: $lo-ink;
+            font-weight: 700;
+        }
+
+        em {
+            font-style: normal;
+            margin-left: auto;
+            flex: none;
+            padding: 0.35rem 0.8rem;
+            border-radius: 0.9rem;
+            background: rgba(var(--gg-accent-rgb), 0.14);
+            color: var(--gg-accent-pale);
+            font-size: 1.3rem;
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+
+        &--reward > i {
+            background: rgba(94, 216, 148, 0.14);
+            color: #7ce8ad;
+        }
+    }
+
+    &__more {
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+        width: 100%;
+        height: 4.6rem;
+        border-radius: 1.4rem;
+        border: 1px solid rgba(var(--gg-accent-rgb), 0.4);
+        background: rgba(var(--gg-accent-rgb), 0.16);
+        color: $lo-ink;
+        font-family: inherit;
+        font-size: 1.45rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.15s, border-color 0.15s;
+
+        i {
+            font-size: 1.6rem;
+            color: var(--gg-accent-pale);
+        }
+
+        &:hover {
+            background: rgba(var(--gg-accent-rgb), 0.26);
+            border-color: rgba(var(--gg-accent-rgb), 0.6);
+        }
+    }
+}
+
+// A short screen (1366x768) keeps the level, the bar and the button; the next step waits
+// on the tab.
+@media (max-height: 820px) {
+    .gg-loyal {
+        gap: 0.9rem;
+
+        &__next { display: none; }
+        &__mark { width: 4.8rem; height: 4.8rem; }
+        &__disc { width: 3.2rem; height: 3.2rem; font-size: 1.4rem; }
+        &__who b { font-size: 1.9rem; }
+        &__more { height: 4.2rem; }
+    }
+}

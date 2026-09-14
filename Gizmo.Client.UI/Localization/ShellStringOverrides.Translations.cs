@@ -18,6 +18,17 @@ namespace Gizmo.Client.UI.Localization
         private static readonly Dictionary<string, Dictionary<string, string>> _translations =
             new()
             {
+                [HERO_EMPTY] = new()
+                {
+                    ["az"] = "Burada hələ heç nə yoxdur",
+                    ["da"] = "Her er intet endnu",
+                    ["el"] = "Τίποτα εδώ ακόμα",
+                    ["es"] = "Aquí todavía no hay nada",
+                    ["et"] = "Siin pole veel midagi",
+                    ["pt"] = "Nada por aqui ainda",
+                    ["sl"] = "Tukaj še ni ničesar",
+                    ["tr"] = "Burada henüz bir şey yok",
+                },
                 [HERO_PROMOS] = new()
                 {
                     ["az"] = "Aksiyalar",
@@ -249,6 +260,17 @@ namespace Gizmo.Client.UI.Localization
                     ["sl"] = "Paket kupljen",
                     ["tr"] = "Paket satın alındı",
                 },
+                [BUY_FALLBACK_NAME] = new()
+                {
+                    ["az"] = "Vaxt paketi",
+                    ["da"] = "Tidspakke",
+                    ["el"] = "Πακέτο χρόνου",
+                    ["es"] = "Paquete de tiempo",
+                    ["et"] = "Ajapakett",
+                    ["pt"] = "Pacote de tempo",
+                    ["sl"] = "Časovni paket",
+                    ["tr"] = "Süre paketi",
+                },
                 [BUY_SHORTFALL] = new()
                 {
                     ["az"] = "Çatışmır",
@@ -314,6 +336,17 @@ namespace Gizmo.Client.UI.Localization
                     ["pt"] = "Faltam {0} - a compra continua assim que o dinheiro entrar",
                     ["sl"] = "Manjka {0} - nakup se nadaljuje, ko je denar na računu",
                     ["tr"] = "{0} eksik - para yüklenince satın alma devam edecek",
+                },
+                [BUY_PAY_WITH] = new()
+                {
+                    ["az"] = "Ödəniş üsulu",
+                    ["da"] = "Betalingsmetode",
+                    ["el"] = "Τρόπος πληρωμής",
+                    ["es"] = "Forma de pago",
+                    ["et"] = "Makseviis",
+                    ["pt"] = "Forma de pagamento",
+                    ["sl"] = "Način plačila",
+                    ["tr"] = "Ödeme yöntemi",
                 },
                 [BUY_WAY_BALANCE] = new()
                 {
@@ -480,6 +513,17 @@ namespace Gizmo.Client.UI.Localization
                     ["sl"] = "Ni uspelo",
                     ["tr"] = "Olmadı",
                 },
+                [BUY_AT_COUNTER] = new()
+                {
+                    ["az"] = "Kassada",
+                    ["da"] = "Ved skranken",
+                    ["el"] = "Στο ταμείο",
+                    ["es"] = "En el mostrador",
+                    ["et"] = "Leti juures",
+                    ["pt"] = "No balcão",
+                    ["sl"] = "Pri pultu",
+                    ["tr"] = "Kasada",
+                },
                 [BUY_AT_COUNTER_NOTE] = new()
                 {
                     ["az"] = "kassada",
@@ -490,6 +534,17 @@ namespace Gizmo.Client.UI.Localization
                     ["pt"] = "com a equipe",
                     ["sl"] = "pri osebju",
                     ["tr"] = "görevliye",
+                },
+                [BUY_ORDER_FOR] = new()
+                {
+                    ["az"] = "{0} qarşılığında sifariş et",
+                    ["da"] = "Bestil for {0}",
+                    ["el"] = "Παραγγελία με {0}",
+                    ["es"] = "Pedir por {0}",
+                    ["et"] = "Telli hinnaga {0}",
+                    ["pt"] = "Pedir por {0}",
+                    ["sl"] = "Naroči za {0}",
+                    ["tr"] = "{0} karşılığında sipariş ver",
                 },
                 [BUY_ORDER_PAID_TITLE] = new()
                 {
@@ -1019,6 +1074,17 @@ namespace Gizmo.Client.UI.Localization
                     ["sl"] = "Na voljo imate časovni kredit",
                     ["tr"] = "Kullanılabilir süre krediniz var",
                 },
+                [DURATION_HOURS_MINUTES] = new()
+                {
+                    ["az"] = "{0} s {1} dəq",
+                    ["da"] = "{0} t {1} min",
+                    ["el"] = "{0} ώ {1} λ",
+                    ["es"] = "{0} h {1} min",
+                    ["et"] = "{0} h {1} min",
+                    ["pt"] = "{0} h {1} min",
+                    ["sl"] = "{0} h {1} min",
+                    ["tr"] = "{0} sa {1} dk",
+                },
                 [DURATION_HOURS] = new()
                 {
                     ["az"] = "{0} s",
@@ -1051,6 +1117,17 @@ namespace Gizmo.Client.UI.Localization
                     ["pt"] = "Nenhum pacote de tempo ativo",
                     ["sl"] = "Ni aktivnih časovnih paketov",
                     ["tr"] = "Etkin süre paketi yok",
+                },
+                [ACCOUNT_TAB_PROFILE] = new()
+                {
+                    ["az"] = "Profil",
+                    ["da"] = "Profil",
+                    ["el"] = "Προφίλ",
+                    ["es"] = "Perfil",
+                    ["et"] = "Profiil",
+                    ["pt"] = "Perfil",
+                    ["sl"] = "Profil",
+                    ["tr"] = "Profil",
                 },
                 [ACCOUNT_TAB_TIME] = new()
                 {
@@ -1239,6 +1316,17 @@ namespace Gizmo.Client.UI.Localization
                     ["sl"] = "Ne poteče",
                     ["tr"] = "Süresi dolmaz",
                 },
+                [PD_INCLUDES] = new()
+                {
+                    ["az"] = "Tərkibində",
+                    ["da"] = "Indeholder",
+                    ["el"] = "Περιλαμβάνει",
+                    ["es"] = "Incluye",
+                    ["et"] = "Sisaldab",
+                    ["pt"] = "Inclui",
+                    ["sl"] = "Vključuje",
+                    ["tr"] = "İçerik",
+                },
                 [PD_WHERE] = new()
                 {
                     ["az"] = "Harada keçərlidir",
@@ -1326,6 +1414,655 @@ namespace Gizmo.Client.UI.Localization
                     ["pt"] = "Quantidade",
                     ["sl"] = "Količina",
                     ["tr"] = "Adet",
+                },
+                [LOYALTY_TAB] = new()
+                {
+                    ["az"] = "Tərəqqi",
+                    ["da"] = "Fremskridt",
+                    ["el"] = "Πρόοδος",
+                    ["es"] = "Progreso",
+                    ["et"] = "Edenemine",
+                    ["pt"] = "Progresso",
+                    ["sl"] = "Napredek",
+                    ["tr"] = "İlerleme",
+                },
+                [LOYALTY_HOME_CAP] = new()
+                {
+                    ["az"] = "Sizin tərəqqiniz",
+                    ["da"] = "Dine fremskridt",
+                    ["el"] = "Η πρόοδός σας",
+                    ["es"] = "Tu progreso",
+                    ["et"] = "Sinu edenemine",
+                    ["pt"] = "Seu progresso",
+                    ["sl"] = "Vaš napredek",
+                    ["tr"] = "İlerlemeniz",
+                },
+                [LOYALTY_MORE] = new()
+                {
+                    ["az"] = "Mənim tərəqqim",
+                    ["da"] = "Mine fremskridt",
+                    ["el"] = "Η πρόοδός μου",
+                    ["es"] = "Mi progreso",
+                    ["et"] = "Minu edenemine",
+                    ["pt"] = "Meu progresso",
+                    ["sl"] = "Moj napredek",
+                    ["tr"] = "İlerlemem",
+                },
+                [LOYALTY_LEVEL_CAP] = new()
+                {
+                    ["az"] = "Sizin səviyyəniz",
+                    ["da"] = "Dit niveau",
+                    ["el"] = "Το επίπεδό σας",
+                    ["es"] = "Tu nivel",
+                    ["et"] = "Sinu tase",
+                    ["pt"] = "Seu nível",
+                    ["sl"] = "Vaša raven",
+                    ["tr"] = "Seviyeniz",
+                },
+                [LOYALTY_STATE_EARNING] = new()
+                {
+                    ["az"] = "Toplayırsınız",
+                    ["da"] = "Optjener",
+                    ["el"] = "Συγκεντρώνετε",
+                    ["es"] = "Acumulando",
+                    ["et"] = "Kogud",
+                    ["pt"] = "Acumulando",
+                    ["sl"] = "Zbirate",
+                    ["tr"] = "Kazanıyorsunuz",
+                },
+                [LOYALTY_STATE_SECURED] = new()
+                {
+                    ["az"] = "Təsbit edilib",
+                    ["da"] = "Sikret",
+                    ["el"] = "Κατοχυρωμένο",
+                    ["es"] = "Asegurado",
+                    ["et"] = "Kindlustatud",
+                    ["pt"] = "Garantido",
+                    ["sl"] = "Zagotovljena",
+                    ["tr"] = "Güvence altında",
+                },
+                [LOYALTY_STATE_AWAITING] = new()
+                {
+                    ["az"] = "Nəticələr gözlənilir",
+                    ["da"] = "Afventer resultatet",
+                    ["el"] = "Αναμονή αποτελεσμάτων",
+                    ["es"] = "Pendiente de resultados",
+                    ["et"] = "Ootab tulemusi",
+                    ["pt"] = "Aguardando resultados",
+                    ["sl"] = "Čaka na rezultate",
+                    ["tr"] = "Sonuç bekleniyor",
+                },
+                [LOYALTY_RETAIN_SHORT] = new()
+                {
+                    ["az"] = "Saxlamaq üçün daha {0}",
+                    ["da"] = "{0} mere for at beholde det",
+                    ["el"] = "Ακόμα {0} για να το κρατήσετε",
+                    ["es"] = "{0} más para conservarlo",
+                    ["et"] = "Veel {0}, et see säilitada",
+                    ["pt"] = "Mais {0} para mantê-lo",
+                    ["sl"] = "Še {0}, da jo obdržite",
+                    ["tr"] = "Korumak için {0} daha",
+                },
+                [LOYALTY_RETAIN_LINE] = new()
+                {
+                    ["az"] = "{1} tarixinədək daha {0} toplayın — və səviyyə qalacaq.",
+                    ["da"] = "Optjen {0} mere inden {1}, så beholder du niveauet.",
+                    ["el"] = "Συγκεντρώστε ακόμα {0} μέχρι {1} και το επίπεδο μένει.",
+                    ["es"] = "Consigue {0} más antes del {1} y el nivel se mantiene.",
+                    ["et"] = "Kogu {0} juurde enne {1} ja tase jääb alles.",
+                    ["pt"] = "Ganhe mais {0} até {1} e o nível continua seu.",
+                    ["sl"] = "Zberite še {0} do {1} in raven ostane.",
+                    ["tr"] = "{1} tarihine kadar {0} daha kazanın, seviyeniz kalsın.",
+                },
+                [LOYALTY_NEXT_SHORT] = new()
+                {
+                    ["az"] = "{1} səviyyəsinə daha {0}",
+                    ["da"] = "{0} mere til {1}",
+                    ["el"] = "Ακόμα {0} μέχρι το {1}",
+                    ["es"] = "{0} más hasta {1}",
+                    ["et"] = "Veel {0} tasemeni {1}",
+                    ["pt"] = "Mais {0} até {1}",
+                    ["sl"] = "Še {0} do ravni {1}",
+                    ["tr"] = "{1} için {0} daha",
+                },
+                [LOYALTY_NEXT_LINE] = new()
+                {
+                    ["az"] = "Növbəti səviyyə — {0}: daha {1}.",
+                    ["da"] = "Næste niveau - {0}: {1} mere.",
+                    ["el"] = "Επόμενο επίπεδο - {0}: ακόμα {1}.",
+                    ["es"] = "Siguiente nivel - {0}: {1} más.",
+                    ["et"] = "Järgmine tase - {0}: veel {1}.",
+                    ["pt"] = "Próximo nível - {0}: mais {1}.",
+                    ["sl"] = "Naslednja raven - {0}: še {1}.",
+                    ["tr"] = "Sonraki seviye - {0}: {1} daha.",
+                },
+                [LOYALTY_SECURED_SHORT] = new()
+                {
+                    ["az"] = "{0} tarixinədək təsbit edilib",
+                    ["da"] = "Sikret indtil {0}",
+                    ["el"] = "Κατοχυρωμένο μέχρι {0}",
+                    ["es"] = "Asegurado hasta el {0}",
+                    ["et"] = "Kindlustatud kuni {0}",
+                    ["pt"] = "Garantido até {0}",
+                    ["sl"] = "Zagotovljena do {0}",
+                    ["tr"] = "{0} tarihine kadar güvende",
+                },
+                [LOYALTY_SECURED_LINE] = new()
+                {
+                    ["az"] = "Səviyyə {0} tarixinədək təsbit edilib.",
+                    ["da"] = "Niveauet er sikret indtil {0}.",
+                    ["el"] = "Το επίπεδο είναι κατοχυρωμένο μέχρι {0}.",
+                    ["es"] = "El nivel está asegurado hasta el {0}.",
+                    ["et"] = "Tase on kindlustatud kuni {0}.",
+                    ["pt"] = "O nível está garantido até {0}.",
+                    ["sl"] = "Raven je zagotovljena do {0}.",
+                    ["tr"] = "Seviye {0} tarihine kadar güvence altında.",
+                },
+                [LOYALTY_TOP_LINE] = new()
+                {
+                    ["az"] = "Bu ən yüksək səviyyədir və {0} tarixinədək təsbit edilib.",
+                    ["da"] = "Det er det højeste niveau, og det er sikret indtil {0}.",
+                    ["el"] = "Είναι το ανώτατο επίπεδο και είναι κατοχυρωμένο μέχρι {0}.",
+                    ["es"] = "Es el nivel máximo y está asegurado hasta el {0}.",
+                    ["et"] = "See on kõrgeim tase ja see on kindlustatud kuni {0}.",
+                    ["pt"] = "É o nível máximo e está garantido até {0}.",
+                    ["sl"] = "To je najvišja raven in je zagotovljena do {0}.",
+                    ["tr"] = "Bu en üst seviye ve {0} tarihine kadar güvence altında.",
+                },
+                [LOYALTY_AWAITING_LINE] = new()
+                {
+                    ["az"] = "Nəticələr {0} tarixində yekunlaşdırılır.",
+                    ["da"] = "Resultatet gøres op den {0}.",
+                    ["el"] = "Τα αποτελέσματα οριστικοποιούνται στις {0}.",
+                    ["es"] = "Los resultados se cierran el {0}.",
+                    ["et"] = "Tulemused tehakse kokku {0}.",
+                    ["pt"] = "Os resultados são fechados em {0}.",
+                    ["sl"] = "Rezultati se zaključijo {0}.",
+                    ["tr"] = "Sonuçlar {0} tarihinde belirlenir.",
+                },
+                [LOYALTY_REQUIREMENTS_LINE] = new()
+                {
+                    ["az"] = "{0} səviyyəsi nailiyyətlərlə qazanılır: {1}.",
+                    ["da"] = "{0} opnås med præstationer: {1}.",
+                    ["el"] = "Το {0} κερδίζεται με επιτεύγματα: {1}.",
+                    ["es"] = "{0} se consigue con logros: {1}.",
+                    ["et"] = "{0} saavutatakse saavutustega: {1}.",
+                    ["pt"] = "{0} é conquistado com conquistas: {1}.",
+                    ["sl"] = "{0} se pridobi z dosežki: {1}.",
+                    ["tr"] = "{0} seviyesi başarımlarla kazanılır: {1}.",
+                },
+                [LOYALTY_POINTS_PERIOD] = new()
+                {
+                    ["az"] = "Xallar {0}",
+                    ["da"] = "Point {0}",
+                    ["el"] = "Πόντοι {0}",
+                    ["es"] = "Puntos {0}",
+                    ["et"] = "Punktid {0}",
+                    ["pt"] = "Pontos {0}",
+                    ["sl"] = "Točke {0}",
+                    ["tr"] = "Puanlar {0}",
+                },
+                [LOYALTY_PERIOD_DAY] = new()
+                {
+                    ["az"] = "bu gün",
+                    ["da"] = "i dag",
+                    ["el"] = "σήμερα",
+                    ["es"] = "hoy",
+                    ["et"] = "täna",
+                    ["pt"] = "hoje",
+                    ["sl"] = "danes",
+                    ["tr"] = "bugün",
+                },
+                [LOYALTY_PERIOD_WEEK] = new()
+                {
+                    ["az"] = "bu həftə",
+                    ["da"] = "denne uge",
+                    ["el"] = "αυτή την εβδομάδα",
+                    ["es"] = "esta semana",
+                    ["et"] = "sel nädalal",
+                    ["pt"] = "esta semana",
+                    ["sl"] = "ta teden",
+                    ["tr"] = "bu hafta",
+                },
+                [LOYALTY_PERIOD_MONTH] = new()
+                {
+                    ["az"] = "bu ay",
+                    ["da"] = "denne måned",
+                    ["el"] = "αυτόν τον μήνα",
+                    ["es"] = "este mes",
+                    ["et"] = "sel kuul",
+                    ["pt"] = "este mês",
+                    ["sl"] = "ta mesec",
+                    ["tr"] = "bu ay",
+                },
+                [LOYALTY_PERIOD_QUARTER] = new()
+                {
+                    ["az"] = "bu rüb",
+                    ["da"] = "dette kvartal",
+                    ["el"] = "αυτό το τρίμηνο",
+                    ["es"] = "este trimestre",
+                    ["et"] = "sel kvartalil",
+                    ["pt"] = "este trimestre",
+                    ["sl"] = "to četrtletje",
+                    ["tr"] = "bu çeyrek",
+                },
+                [LOYALTY_PERIOD_YEAR] = new()
+                {
+                    ["az"] = "bu il",
+                    ["da"] = "i år",
+                    ["el"] = "φέτος",
+                    ["es"] = "este año",
+                    ["et"] = "sel aastal",
+                    ["pt"] = "este ano",
+                    ["sl"] = "to leto",
+                    ["tr"] = "bu yıl",
+                },
+                [LOYALTY_SETTLE] = new()
+                {
+                    ["az"] = "Nəticələr",
+                    ["da"] = "Resultat",
+                    ["el"] = "Αποτελέσματα",
+                    ["es"] = "Resultados",
+                    ["et"] = "Tulemused",
+                    ["pt"] = "Resultados",
+                    ["sl"] = "Rezultati",
+                    ["tr"] = "Sonuçlar",
+                },
+                [LOYALTY_START] = new()
+                {
+                    ["az"] = "başlanğıc",
+                    ["da"] = "start",
+                    ["el"] = "αρχή",
+                    ["es"] = "inicio",
+                    ["et"] = "algus",
+                    ["pt"] = "início",
+                    ["sl"] = "začetek",
+                    ["tr"] = "başlangıç",
+                },
+                [LOYALTY_KEEP_AT] = new()
+                {
+                    ["az"] = "saxlamaq",
+                    ["da"] = "beholde",
+                    ["el"] = "διατήρηση",
+                    ["es"] = "conservar",
+                    ["et"] = "säilitada",
+                    ["pt"] = "manter",
+                    ["sl"] = "obdržati",
+                    ["tr"] = "korumak",
+                },
+                [LOYALTY_BONUSES] = new()
+                {
+                    ["az"] = "Sizin bonuslarınız:",
+                    ["da"] = "Dine fordele:",
+                    ["el"] = "Τα προνόμιά σας:",
+                    ["es"] = "Tus ventajas:",
+                    ["et"] = "Sinu eelised:",
+                    ["pt"] = "Suas vantagens:",
+                    ["sl"] = "Vaše ugodnosti:",
+                    ["tr"] = "Ayrıcalıklarınız:",
+                },
+                [LOYALTY_PERK_DISCOUNT] = new()
+                {
+                    ["az"] = "{0} endirim",
+                    ["da"] = "{0} rabat",
+                    ["el"] = "έκπτωση {0}",
+                    ["es"] = "{0} de descuento",
+                    ["et"] = "{0} allahindlust",
+                    ["pt"] = "{0} de desconto",
+                    ["sl"] = "{0} popusta",
+                    ["tr"] = "{0} indirim",
+                },
+                [LOYALTY_PERK_BONUS] = new()
+                {
+                    ["az"] = "{0} bonus",
+                    ["da"] = "{0} bonus",
+                    ["el"] = "μπόνους {0}",
+                    ["es"] = "{0} de bonificación",
+                    ["et"] = "{0} boonust",
+                    ["pt"] = "{0} de bônus",
+                    ["sl"] = "{0} bonusa",
+                    ["tr"] = "{0} bonus",
+                },
+                [LOYALTY_PERK_QUEUE] = new()
+                {
+                    ["az"] = "növbədə üstünlük",
+                    ["da"] = "forrang i køen",
+                    ["el"] = "προτεραιότητα στη σειρά",
+                    ["es"] = "prioridad en la cola",
+                    ["et"] = "eelis järjekorras",
+                    ["pt"] = "prioridade na fila",
+                    ["sl"] = "prednost v vrsti",
+                    ["tr"] = "sırada öncelik",
+                },
+                [LOYALTY_CHALLENGES] = new()
+                {
+                    ["az"] = "Çağırışlar",
+                    ["da"] = "Udfordringer",
+                    ["el"] = "Προκλήσεις",
+                    ["es"] = "Retos",
+                    ["et"] = "Väljakutsed",
+                    ["pt"] = "Desafios",
+                    ["sl"] = "Izzivi",
+                    ["tr"] = "Görevler",
+                },
+                [LOYALTY_ACHIEVEMENTS] = new()
+                {
+                    ["az"] = "Nailiyyətlər",
+                    ["da"] = "Præstationer",
+                    ["el"] = "Επιτεύγματα",
+                    ["es"] = "Logros",
+                    ["et"] = "Saavutused",
+                    ["pt"] = "Conquistas",
+                    ["sl"] = "Dosežki",
+                    ["tr"] = "Başarımlar",
+                },
+                [LOYALTY_OF] = new()
+                {
+                    ["az"] = "{1}-dən {0}",
+                    ["da"] = "{0} af {1}",
+                    ["el"] = "{0} από {1}",
+                    ["es"] = "{0} de {1}",
+                    ["et"] = "{0} / {1}",
+                    ["pt"] = "{0} de {1}",
+                    ["sl"] = "{0} od {1}",
+                    ["tr"] = "{1} / {0}",
+                },
+                [LOYALTY_STEPS] = new()
+                {
+                    ["az"] = "addım",
+                    ["da"] = "trin",
+                    ["el"] = "βήματα",
+                    ["es"] = "pasos",
+                    ["et"] = "sammu",
+                    ["pt"] = "etapas",
+                    ["sl"] = "korakov",
+                    ["tr"] = "adım",
+                },
+                [LOYALTY_READY] = new()
+                {
+                    ["az"] = "hazırdır",
+                    ["da"] = "færdig",
+                    ["el"] = "έτοιμο",
+                    ["es"] = "listo",
+                    ["et"] = "valmis",
+                    ["pt"] = "pronto",
+                    ["sl"] = "končano",
+                    ["tr"] = "tamam",
+                },
+                [LOYALTY_UNTIL] = new()
+                {
+                    ["az"] = "{0} tarixinədək",
+                    ["da"] = "indtil {0}",
+                    ["el"] = "μέχρι {0}",
+                    ["es"] = "hasta el {0}",
+                    ["et"] = "kuni {0}",
+                    ["pt"] = "até {0}",
+                    ["sl"] = "do {0}",
+                    ["tr"] = "{0} tarihine kadar",
+                },
+                [LOYALTY_DAYS_COUNT] = new()
+                {
+                    ["az"] = "{0} gün|{0} gün",
+                    ["da"] = "{0} dag|{0} dage",
+                    ["el"] = "{0} ημέρα|{0} ημέρες",
+                    ["es"] = "{0} día|{0} días",
+                    ["et"] = "{0} päev|{0} päeva",
+                    ["pt"] = "{0} dia|{0} dias",
+                    ["sl"] = "{0} dan|{0} dni",
+                    ["tr"] = "{0} gün|{0} gün",
+                },
+                [LOYALTY_POINTS_COUNT] = new()
+                {
+                    ["az"] = "{0} xal|{0} xal",
+                    ["da"] = "{0} point|{0} point",
+                    ["el"] = "{0} πόντος|{0} πόντοι",
+                    ["es"] = "{0} punto|{0} puntos",
+                    ["et"] = "{0} punkt|{0} punkti",
+                    ["pt"] = "{0} ponto|{0} pontos",
+                    ["sl"] = "{0} točka|{0} točk",
+                    ["tr"] = "{0} puan|{0} puan",
+                },
+                [LOYALTY_COMPLETED_ON] = new()
+                {
+                    ["az"] = "{0} tamamlanıb",
+                    ["da"] = "fuldført {0}",
+                    ["el"] = "ολοκληρώθηκε {0}",
+                    ["es"] = "completado el {0}",
+                    ["et"] = "täidetud {0}",
+                    ["pt"] = "concluído em {0}",
+                    ["sl"] = "opravljen {0}",
+                    ["tr"] = "{0} tamamlandı",
+                },
+                [LOYALTY_REMAINING] = new()
+                {
+                    ["az"] = "Qalıb: {0}",
+                    ["da"] = "Mangler: {0}",
+                    ["el"] = "Απομένει: {0}",
+                    ["es"] = "Falta: {0}",
+                    ["et"] = "Jäänud: {0}",
+                    ["pt"] = "Falta: {0}",
+                    ["sl"] = "Preostane: {0}",
+                    ["tr"] = "Kalan: {0}",
+                },
+                [LOYALTY_REWARD_WAITING] = new()
+                {
+                    ["az"] = "Mükafatınız kassada gözləyir — bu bölməni işçiyə göstərin.",
+                    ["da"] = "Din belønning venter ved skranken - vis personalet denne fane.",
+                    ["el"] = "Η ανταμοιβή σας περιμένει στο ταμείο - δείξτε αυτή την καρτέλα στο προσωπικό.",
+                    ["es"] = "Tu recompensa te espera en el mostrador: enséñale esta pestaña al personal.",
+                    ["et"] = "Sinu auhind ootab leti juures - näita seda vahekaarti teenindajale.",
+                    ["pt"] = "Sua recompensa está esperando no balcão - mostre esta aba à equipe.",
+                    ["sl"] = "Vaša nagrada čaka pri pultu - pokažite ta zavihek osebju.",
+                    ["tr"] = "Ödülünüz kasada bekliyor - bu sekmeyi görevliye gösterin.",
+                },
+                [LOYALTY_REWARD_WAITING_SHORT] = new()
+                {
+                    ["az"] = "Mükafat kassada gözləyir",
+                    ["da"] = "Belønning venter ved skranken",
+                    ["el"] = "Ανταμοιβή στο ταμείο",
+                    ["es"] = "Recompensa en el mostrador",
+                    ["et"] = "Auhind ootab leti juures",
+                    ["pt"] = "Recompensa esperando no balcão",
+                    ["sl"] = "Nagrada čaka pri pultu",
+                    ["tr"] = "Ödül kasada bekliyor",
+                },
+                [LOYALTY_REWARD_GIFT] = new()
+                {
+                    ["az"] = "Hədiyyə",
+                    ["da"] = "Gave",
+                    ["el"] = "Δώρο",
+                    ["es"] = "Regalo",
+                    ["et"] = "Kingitus",
+                    ["pt"] = "Presente",
+                    ["sl"] = "Darilo",
+                    ["tr"] = "Hediye",
+                },
+                [LOYALTY_POOL_LEFT] = new()
+                {
+                    ["az"] = "Hamı üçün {0} qalıb",
+                    ["da"] = "{0} tilbage til alle",
+                    ["el"] = "Απομένουν {0} για όλους",
+                    ["es"] = "Quedan {0} para todos",
+                    ["et"] = "Kõigile jäänud {0}",
+                    ["pt"] = "Restam {0} para todos",
+                    ["sl"] = "Za vse ostane še {0}",
+                    ["tr"] = "Herkes için {0} kaldı",
+                },
+                [LOYALTY_STATE_ENDED] = new()
+                {
+                    ["az"] = "Bitib",
+                    ["da"] = "Afsluttet",
+                    ["el"] = "Έληξε",
+                    ["es"] = "Finalizado",
+                    ["et"] = "Lõppenud",
+                    ["pt"] = "Encerrado",
+                    ["sl"] = "Končan",
+                    ["tr"] = "Sona erdi",
+                },
+                [LOYALTY_STATE_DONE] = new()
+                {
+                    ["az"] = "Tamamlanıb",
+                    ["da"] = "Fuldført",
+                    ["el"] = "Ολοκληρώθηκε",
+                    ["es"] = "Completado",
+                    ["et"] = "Täidetud",
+                    ["pt"] = "Concluído",
+                    ["sl"] = "Opravljeno",
+                    ["tr"] = "Tamamlandı",
+                },
+                [LOYALTY_EARNED] = new()
+                {
+                    ["az"] = "Qazanılıb",
+                    ["da"] = "Opnået",
+                    ["el"] = "Κερδήθηκε",
+                    ["es"] = "Conseguido",
+                    ["et"] = "Saavutatud",
+                    ["pt"] = "Conquistado",
+                    ["sl"] = "Doseženo",
+                    ["tr"] = "Kazanıldı",
+                },
+                [LOYALTY_EARNED_TIMES] = new()
+                {
+                    ["az"] = "Qazanılıb ×{0}",
+                    ["da"] = "Opnået ×{0}",
+                    ["el"] = "Κερδήθηκε ×{0}",
+                    ["es"] = "Conseguido ×{0}",
+                    ["et"] = "Saavutatud ×{0}",
+                    ["pt"] = "Conquistado ×{0}",
+                    ["sl"] = "Doseženo ×{0}",
+                    ["tr"] = "Kazanıldı ×{0}",
+                },
+                [LOYALTY_SECRET] = new()
+                {
+                    ["az"] = "Gizli",
+                    ["da"] = "Hemmelig",
+                    ["el"] = "Μυστικό",
+                    ["es"] = "Secreto",
+                    ["et"] = "Salajane",
+                    ["pt"] = "Secreto",
+                    ["sl"] = "Skrivno",
+                    ["tr"] = "Gizli",
+                },
+                [LOYALTY_SECRET_HINT] = new()
+                {
+                    ["az"] = "Qazananda açılacaq",
+                    ["da"] = "Afsløres, når du opnår det",
+                    ["el"] = "Αποκαλύπτεται όταν το κερδίσετε",
+                    ["es"] = "Se revela cuando lo consigas",
+                    ["et"] = "Avaneb, kui selle saavutad",
+                    ["pt"] = "Revelado quando você conquistar",
+                    ["sl"] = "Razkrije se, ko ga dosežete",
+                    ["tr"] = "Kazanınca açılır",
+                },
+                [LOYALTY_HINT_TITLE] = new()
+                {
+                    ["az"] = "{0} — sizin səviyyəniz",
+                    ["da"] = "{0} - dit niveau",
+                    ["el"] = "{0} - το επίπεδό σας",
+                    ["es"] = "{0} - tu nivel",
+                    ["et"] = "{0} - sinu tase",
+                    ["pt"] = "{0} - seu nível",
+                    ["sl"] = "{0} - vaša raven",
+                    ["tr"] = "{0} - seviyeniz",
+                },
+                [LOYALTY_HINT_RING] = new()
+                {
+                    ["az"] = "Avatardakı halqa — sizin tərəqqiniz",
+                    ["da"] = "Ringen om din avatar er dine fremskridt",
+                    ["el"] = "Ο δακτύλιος στο avatar σας είναι η πρόοδός σας",
+                    ["es"] = "El anillo de tu avatar es tu progreso",
+                    ["et"] = "Ring sinu avatari ümber on sinu edenemine",
+                    ["pt"] = "O anel no seu avatar é o seu progresso",
+                    ["sl"] = "Obroč okoli avatarja je vaš napredek",
+                    ["tr"] = "Avatarınızdaki halka ilerlemenizdir",
+                },
+                [LOYALTY_NEWS_LEVEL_UP] = new()
+                {
+                    ["az"] = "Yeni səviyyə",
+                    ["da"] = "Nyt niveau",
+                    ["el"] = "Νέο επίπεδο",
+                    ["es"] = "Nuevo nivel",
+                    ["et"] = "Uus tase",
+                    ["pt"] = "Novo nível",
+                    ["sl"] = "Nova raven",
+                    ["tr"] = "Yeni seviye",
+                },
+                [LOYALTY_NEWS_LEVEL_DOWN] = new()
+                {
+                    ["az"] = "Səviyyə dəyişdi",
+                    ["da"] = "Niveauet er ændret",
+                    ["el"] = "Το επίπεδο άλλαξε",
+                    ["es"] = "El nivel ha cambiado",
+                    ["et"] = "Tase muutus",
+                    ["pt"] = "O nível mudou",
+                    ["sl"] = "Raven se je spremenila",
+                    ["tr"] = "Seviye değişti",
+                },
+                [LOYALTY_NEWS_ACHIEVEMENT] = new()
+                {
+                    ["az"] = "Nailiyyət qazanıldı",
+                    ["da"] = "Præstation opnået",
+                    ["el"] = "Επίτευγμα κερδήθηκε",
+                    ["es"] = "Logro conseguido",
+                    ["et"] = "Saavutus saavutatud",
+                    ["pt"] = "Conquista desbloqueada",
+                    ["sl"] = "Dosežek dosežen",
+                    ["tr"] = "Başarım kazanıldı",
+                },
+                [LOYALTY_NEWS_CHALLENGE] = new()
+                {
+                    ["az"] = "Çağırış tamamlandı",
+                    ["da"] = "Udfordring fuldført",
+                    ["el"] = "Πρόκληση ολοκληρώθηκε",
+                    ["es"] = "Reto completado",
+                    ["et"] = "Väljakutse täidetud",
+                    ["pt"] = "Desafio concluído",
+                    ["sl"] = "Izziv opravljen",
+                    ["tr"] = "Görev tamamlandı",
+                },
+                [LOYALTY_NEWS_REWARD_WAITING] = new()
+                {
+                    ["az"] = "Mükafat kassada gözləyir",
+                    ["da"] = "Belønning venter ved skranken",
+                    ["el"] = "Ανταμοιβή στο ταμείο",
+                    ["es"] = "Recompensa en el mostrador",
+                    ["et"] = "Auhind ootab leti juures",
+                    ["pt"] = "Recompensa esperando no balcão",
+                    ["sl"] = "Nagrada čaka pri pultu",
+                    ["tr"] = "Ödül kasada bekliyor",
+                },
+                [LOYALTY_NEWS_REWARD_GIVEN] = new()
+                {
+                    ["az"] = "Mükafat alındı",
+                    ["da"] = "Belønning modtaget",
+                    ["el"] = "Ανταμοιβή παραλήφθηκε",
+                    ["es"] = "Recompensa recibida",
+                    ["et"] = "Auhind kätte saadud",
+                    ["pt"] = "Recompensa recebida",
+                    ["sl"] = "Nagrada prejeta",
+                    ["tr"] = "Ödül alındı",
+                },
+                [LOYALTY_EMPTY] = new()
+                {
+                    ["az"] = "Hələ göstərmək üçün heç nə yoxdur",
+                    ["da"] = "Intet at vise endnu",
+                    ["el"] = "Τίποτα να δείξουμε ακόμα",
+                    ["es"] = "Todavía no hay nada que mostrar",
+                    ["et"] = "Pole veel midagi näidata",
+                    ["pt"] = "Nada para mostrar ainda",
+                    ["sl"] = "Zaenkrat ni ničesar za prikaz",
+                    ["tr"] = "Henüz gösterilecek bir şey yok",
+                },
+                [LOYALTY_LAST_LEVEL_CHANGE] = new()
+                {
+                    ["az"] = "{0} — {1} səviyyəsi",
+                    ["da"] = "{0} - niveau {1}",
+                    ["el"] = "{0} - επίπεδο {1}",
+                    ["es"] = "{0} - nivel {1}",
+                    ["et"] = "{0} - tase {1}",
+                    ["pt"] = "{0} - nível {1}",
+                    ["sl"] = "{0} - raven {1}",
+                    ["tr"] = "{0} - seviye {1}",
                 },
             };
     }

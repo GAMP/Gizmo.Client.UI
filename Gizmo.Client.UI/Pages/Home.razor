@@ -187,6 +187,14 @@
     </div>
 
     @* TILL *@
+    @* With the ladder or achievements on, the right column is two tiles that line up
+       with the left one: packages level with the hero, the loyalty summary level with the
+       strip, and the bar is one click away in the shop. Otherwise one till with the bar
+       at its foot, as always. *@
+    @if (LoyaltyOn)
+    {
+        @:<div class="gg-side">
+    }
     <aside class="gg-till" aria-label="@ShellText.Get(ShellText.PURCHASES)">
 
         @* No top-up button here on purpose: there is already one in the top bar. *@
@@ -240,6 +248,8 @@
             }
         </div>
 
+        @if (!LoyaltyOn)
+        {
         <div class="gg-till__sec gg-till__sec--bar">
             <div class="gg-cap gg-cap--rule">
                 <span>@ShellText.Get(ShellText.HOME_BAR)</span>
@@ -282,6 +292,12 @@
                 <div class="gg-empty gg-empty--small">@ShellText.Get(ShellText.GEN_EMPTY)</div>
             }
         </div>
+        }
     </aside>
+    @if (LoyaltyOn)
+    {
+        <LoyaltySummary />
+        @:</div>
+    }
 
 </div>

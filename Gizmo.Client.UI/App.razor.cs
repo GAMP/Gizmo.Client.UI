@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Gizmo.Client.UI.Localization;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.States;
+using Gizmo.UI;
 using Gizmo.UI.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -25,6 +26,8 @@ public partial class App : ComponentBase, IDisposable
     [Inject] private JSInteropService JSInteropService { get; set; }
     [Inject] private ILocalizationService LocalizationService { get; set; }
     [Inject] private ClientLocalizationViewState LocalizationViewState { get; set; }
+    [Inject] private IServiceProvider ServiceProvider { get; set; }
+    [Inject] private IClientNotificationService NotificationService { get; set; }
 
     #endregion
 
@@ -35,7 +38,30 @@ public partial class App : ComponentBase, IDisposable
         ShellStringOverrides.Associate(LocalizationService);
 
         LocalizationViewState.OnChange += OnCultureChanged;
+
+        Loyalty.Attach(ServiceProvider);
+        Loyalty.News += OnLoyaltyNews;
     }
+
+    /// <summary>
+    /// An achievement earned, a challenge done, a level change, a reward: one toast each,
+    /// through the ordinary notification pipeline so a missed one lands in the bell.
+    /// </summary>
+    private void OnLoyaltyNews(LoyaltyNews news) =>
+        _ = InvokeAsync(async () =>
+        {
+            try
+            {
+                var type = news.Kind == LoyaltyNewsKind.LevelDown ? AlertTypes.Info : AlertTypes.Success;
+                await NotificationService.ShowAlertNotification(type, news.Title, news.Name, null, null);
+            }
+            catch (Exception exception) when (exception is OperationCanceledException
+                                                or ObjectDisposedException
+                                                or InvalidOperationException)
+            {
+                // The WebView is going away; nothing to tell.
+            }
+        });
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -111,5 +137,6 @@ public partial class App : ComponentBase, IDisposable
     public void Dispose()
     {
         LocalizationViewState.OnChange -= OnCultureChanged;
+        Loyalty.News -= OnLoyaltyNews;
     }
 }

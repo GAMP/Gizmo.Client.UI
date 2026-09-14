@@ -1,5 +1,6 @@
-// The account page, mirroring Components/Profile/AccountFrame.razor and the three tabs
-// (Pages/Profile/Profile, Products, Purchases). Same class names, same nesting.
+// The account page, mirroring Components/Profile/AccountFrame.razor and its tabs
+// (Pages/Profile/Profile, Products, Purchases; Progress lives in templates/progress.js).
+// Same class names, same nesting.
 "use strict";
 
 const { esc, money, number, plural } = require("../lib/html");
@@ -32,12 +33,15 @@ function head(d) {
   </header>`;
 }
 
+// The Progress tab exists only where the club runs the ladder or achievements
+// (Loyalty.State.IsAvailable): `loyalty` in the scenario.
 function tabs(d) {
   const t = (id, icon, label) => `<a class="gg-account__tab${d.tab === id ? " is-on" : ""}" href="#"><i class="ph-bold ${icon}"></i><span>${label}</span></a>`;
   return `<nav class="gg-account__tabs">
     ${d.guest ? "" : t("profile", "ph-user", "Профиль")}
     ${t("time", "ph-hourglass-medium", "Время")}
     ${d.noHistory ? "" : t("purchases", "ph-receipt", "Покупки")}
+    ${d.loyalty ? t("progress", "ph-trophy", "Прогресс") : ""}
   </nav>`;
 }
 
@@ -64,7 +68,7 @@ function profileTab(d) {
       <div class="gg-card__actions"><button type="button" class="gg-btn"><i class="ph-bold ph-key"></i><span>Изменить пароль</span></button></div>
     </section>
   </div>
-  <div class="gg-account__version">Grafit 1.0.9</div>`;
+  <div class="gg-account__version">Grafit 1.1.0</div>`;
 }
 
 const TP_ICON = { package: "ph-package", fixed: "ph-hourglass-medium", rate: "ph-timer" };
@@ -150,11 +154,13 @@ function purchasesTab(d) {
   </section>`;
 }
 
-// d: { tab: profile|time|purchases, guest, username, fullName, email, phone, balance,
-//      points, time, credit, products: [...], orders: [...], loading, noHistory, mismatch }
+// d: { tab: profile|time|purchases|progress, guest, username, fullName, email, phone,
+//      balance, points, time, credit, products: [...], orders: [...], loading, noHistory,
+//      mismatch, loyalty }
 function render(d) {
   const tab = d.tab || "profile";
-  const bodyByTab = { profile: profileTab, time: timeTab, purchases: purchasesTab };
+  // progress.js needs head() and tabs() from here: resolved at call time, not at load.
+  const bodyByTab = { profile: profileTab, time: timeTab, purchases: purchasesTab, progress: (x) => require("./progress").progressTab(x) };
   const body = `<div class="gg-account giz-scrollbar--v">
   <div class="gg-account__inner">
     ${head(d)}
@@ -167,4 +173,4 @@ ${bodyByTab[tab](d)}
   return frame({ balance: 1250, points: 3400, time: "2ч 15м", pinned: 3, ...d, active: "profile" }, body);
 }
 
-module.exports = { render };
+module.exports = { render, head, tabs };

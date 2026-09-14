@@ -33,6 +33,7 @@ namespace Gizmo.Client.UI.Components
             this.SubscribeChange(UserViewState);
             this.SubscribeChange(Balance);
             this.SubscribeChange(Credit);
+            Loyalty.Changed += OnLoyaltyChanged;
 
             base.OnInitialized();
         }
@@ -43,8 +44,12 @@ namespace Gizmo.Client.UI.Components
             this.UnsubscribeChange(UserViewState);
             this.UnsubscribeChange(Balance);
             this.UnsubscribeChange(Credit);
+            Loyalty.Changed -= OnLoyaltyChanged;
 
             base.Dispose();
         }
+
+        //The Progress tab appears or goes with the data; raised on the client's threads.
+        private void OnLoyaltyChanged() => DispatchStateHasChanged();
     }
 }

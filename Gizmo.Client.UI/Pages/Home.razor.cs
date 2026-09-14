@@ -455,11 +455,18 @@ namespace Gizmo.Client.UI.Pages
             this.SubscribeChange(AdvertisementsViewState);
 
             ShellActivity.Changed += OnActivityChanged;
+            Loyalty.Changed += OnLoyaltyChanged;
 
             ApplySlideTimer();
 
             base.OnInitialized();
         }
+
+        /// <summary>The right column's shape depends on whether the club runs the ladder.</summary>
+        protected bool LoyaltyOn => Loyalty.State.IsAvailable;
+
+        //Static event, raised on the client's threads.
+        private void OnLoyaltyChanged() => DispatchStateHasChanged();
 
         /// <summary>
         /// Runs the hero's slide timer only while there is a slideshow worth running.
@@ -535,8 +542,9 @@ namespace Gizmo.Client.UI.Pages
 
         public override void Dispose()
         {
-            //Before dropping the timer: the event is static and outlives the page.
+            //Before dropping the timer: the events are static and outlive the page.
             ShellActivity.Changed -= OnActivityChanged;
+            Loyalty.Changed -= OnLoyaltyChanged;
 
             _slideTimer?.Dispose();
             _slideTimer = null;
