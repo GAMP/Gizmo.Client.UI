@@ -91,7 +91,7 @@ is handed out at connect and mirrored to `%PROGRAMDATA%\NETProjects\Gizmo Client
 `deploy\README.md` is the operator's page.
 
 Versions: `GrafitVersion` and `GizmoVersion` in `Gizmo.Client.UI.csproj` -> assembly
-metadata and `ProductVersion` ("1.0.8 (Gizmo 3.0.95)"), the package name,
+metadata and `ProductVersion` ("1.1.0 (Gizmo 3.0.95)"), the package name,
 `skin\grafit.version.txt`, and one quiet line on the account page's Profile tab.
 
 ## Integration points a club uses
@@ -139,9 +139,20 @@ the JavaScript twin in `internal.js` is kept in step by `npm run visual:palette`
   vendor update.
 - **No RTL.** The vendor skin has none either; the shell declares `ltr`. Full mirroring
   is ~390 directional declarations - not started.
-- **`SHELL_` strings** (119 keys) are written in Russian and English; the client's other
+- **`SHELL_` strings** (186 keys) are written in Russian and English; the client's other
   eight cultures (az, da, el, es, et, pt-BR, sl, tr) are machine-drafted in
   `ShellStringOverrides.Translations.cs` and have not been reviewed by native speakers.
+- **Achievements, challenges, ladder (3.0.95)** are on screen since Grafit 1.1.0: a
+  summary tile on the home board, a Progress tab on the account page, a level ring on
+  the avatar, toasts on the push events. The data comes from the user surface of the Web
+  API (`api/user/v3/achievements`, `.../challenges`, `.../ladder/standing`) through the
+  typed clients `Gizmo.Client.UI.Services` already registers with the user's bearer
+  token; nothing of the client protocol was touched. `Gizmo.Client.UI\GRAFIT.md`,
+  "Achievements, challenges, ladder", lists the routes, the models and the caveats. Two
+  things you can answer better than we could: whether `Progress` on levels, achievements
+  and challenges is a fraction or a percentage (the shell treats a value above one as a
+  percentage), and the exact meaning of `ProjectedRank`, `PromoteOnSettleOnly` and
+  `IsStepwise`, which the shell does not use yet.
 - **Skin switching** in the Manager takes effect at the client's next connect, and the
   Manager's host group setting beats the server default (`ClientSettingsForHostAsync`).
 
@@ -153,3 +164,6 @@ the JavaScript twin in `internal.js` is kept in step by `npm run visual:palette`
    (or calling `grafitTheme`), so a club does not have to type CSS.
 3. Fill `UserOrderViewState.Id`.
 4. A native-speaker pass over `ShellStringOverrides.Translations.cs`.
+5. A typed client for `api/user/v3/achievements/rewards` (the shipped
+   `Gizmo.Web.Api.Client` has none); the shell shows "reward waiting at the counter"
+   from the challenge completions' reward statuses instead.

@@ -36,9 +36,11 @@ Nothing else. No browser automation package, no server, no client.
 2. `templates/*.js` build the HTML for a scenario: the shell frame (`frame.js`), the
    home board (`home.js`), the package purchase dialog (`purchase.js`), the shop
    checkout (`checkout.js`), the tariff tooltip open over the board (`tooltip.js`),
-   the account page with its three tabs (`account.js`), the product page with the
-   cart beside it (`product.js`), the idle sign-in screen (`login.js`). They emit the
-   same class names and nesting as the Razor components - that is the whole contract.
+   the account page with its tabs (`account.js`; the Progress tab, the loyalty
+   summary tile and the level ring / sign-in pill come from `progress.js` and the
+   `loyalty` / `level` / `levelHint` scenario keys), the product page with the cart
+   beside it (`product.js`), the idle sign-in screen (`login.js`). They emit the same
+   class names and nesting as the Razor components - that is the whole contract.
 3. Headless Chrome renders each page at each viewport (`lib/chrome.js`). Entrance
    animations are run to their last frame, anything that spins forever is parked at
    frame zero, text is rasterised without hinting or subpixel colour, so two runs on

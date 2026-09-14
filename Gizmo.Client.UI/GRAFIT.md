@@ -45,11 +45,11 @@ repository's relation to the upstream one.
 ## Versions
 
 The shell has a version of its own and it is only meaningful next to the Gizmo
-release it was built for: "Grafit 1.0.8 · Gizmo 3.0.95". Both numbers live in one
+release it was built for: "Grafit 1.1.0 · Gizmo 3.0.95". Both numbers live in one
 place, `Gizmo.Client.UI.csproj` (`GrafitVersion`, `GizmoVersion`). They reach the
-DLL's version info (`ProductVersion` = "1.0.8 (Gizmo 3.0.95)"), the package name and
+DLL's version info (`ProductVersion` = "1.1.0 (Gizmo 3.0.95)"), the package name and
 `grafit.version.txt` in the skin folder. On screen the shell shows its own number in
-exactly one place - a quiet "Grafit 1.0.8" under the cards of the account page's
+exactly one place - a quiet "Grafit 1.1.0" under the cards of the account page's
 Profile tab (`ShellVersion.Grafit`, read from the assembly metadata) - and never the
 Gizmo release or any mismatch warning. Bump `GrafitVersion` for every shell release,
 `GizmoVersion` on every vendor merge; `stage.ps1` refuses to pack a DLL whose
@@ -70,7 +70,8 @@ version does not match the project file.
 | Idle gate (the shell stops working when unfocused) | `src\js\internal.js` activity gate, `Shared\ShellActivityWatcher.razor`, `src\scss\_idle.scss` |
 | Home board | `Pages\Home.razor(.cs)`, `_page-home.scss` |
 | Package purchase and shop checkout | `Components\Shop\CartDialogBase.cs`, `PackagePurchaseDialog`, `CheckoutDialog`, `PayWayChooser`, `CartDialogResult` |
-| Account page (Profile, Time, Purchases) | `Components\Profile\AccountFrame`, `TimeProductRow`, `Pages\Profile\*`, `_page-account.scss` |
+| Account page (Profile, Time, Purchases, Progress) | `Components\Profile\AccountFrame`, `TimeProductRow`, `Pages\Profile\*`, `_page-account.scss`, `_page-progress.scss` |
+| Loyalty: ladder, achievements, challenges | `Code\Services\Loyalty.cs` (data), `LoyaltySnapshot.cs` (derived figures), `Code\LoyaltyText.cs` (words); `Components\Loyalty\*` (home tile, cards, tiles), `Pages\Profile\Progress.razor`, `Shared\LoyaltyAvatarRing`, `Shared\LoyaltyHint`; `_loyalty.scss`, `_page-progress.scss` |
 | Product page | `Pages\Shop\ProductDetails.razor(.cs)`, `_page-product-details.scss` |
 | Tariff tooltip in the top bar | `Shared\HeaderUserBalanceCurrentTimeProductTooltip.razor`, `_time-tooltip.scss`, `Code\TimeProductText.cs` |
 | Avatar (picture or glyph, not a control) | `Shared\UserAvatar.razor`, `_user-avatar.scss` |
@@ -150,6 +151,22 @@ version does not match the project file.
   `Gizmo.Client.UI.Services` is the host's copy; the skin cannot add members to
   interfaces there (`IClientDialogService` in particular - the concrete
   `ClientDialogService` carries the shell's own dialogs).
+- **The loyalty data is one static snapshot.** `Loyalty.State` is replaced whole on
+  sign-in, on every achievement push event (debounced 1.2 s) and on reconnect after a
+  failed load; screens read it and re-render on `Loyalty.Changed`, nothing polls. A
+  401/403 means "no user token behind this session" (a guest, or the host has not
+  fetched the JWT yet): the first one is retried once after 3 s, then the feature is
+  simply absent - no tab, no tile, no ring, the bar back on the home board. A 404 is
+  a surface the server does not have. `IsAvailable` = the server returned at least
+  one level, achievement or challenge; everything on screen is gated by it.
+- **The sign-in pill is offered once per session** (`Loyalty.TakeHint`), for ten
+  seconds, and only says what the ring means; the standing itself lives on the home
+  tile and the tab. Next to the icons a 1366-wide bar leaves the pill a dozen rem, so
+  a container query hides its words and leaves the mark and the arrow.
+- **The one next step** on the home tile is chosen in `LoyaltySnapshot.NextActionOf`:
+  the running challenge closest to its reward (its first unmet requirement, resolved
+  to the achievement's name), else the achievement closest to being earned. Nothing
+  else is listed there on purpose: the tile is a summary, the tab has the rest.
 
 ## Updating to a new Gizmo release
 
@@ -163,18 +180,39 @@ between releases is `Gizmo.Client.UI.Services`: check its diff first. Read the b
 warnings for the shell's own files: an unresolved component tag is only a warning
 (RZ10012) and renders as an empty HTML element.
 
-## Achievements, challenges, ladder (Gizmo 3.0.95) - what the shell can reach
+## Achievements, challenges, ladder (Gizmo 3.0.95)
 
 Researched 14.09.2026 from the 3.0.95 server and client binaries (`GizmoService.dll`,
-the client's `gizmoclientsetup.exe` payload) and the GAMP repositories. The stock skin
-draws none of it yet; the data is there. Concept renders: `visual\templates\progress.js`
-(scenarios `concept-progress*`), not a mirror of any Razor file.
+the client's `gizmoclientsetup.exe` payload) and the GAMP repositories; on screen since
+Grafit 1.1.0. The stock skin draws none of it. What the shell shows:
+
+- **Home board** (`LoyaltySummary`): with the feature on, the right column is two tiles
+  that line up with the left one - packages level with the hero, the summary level with
+  the strip - and the bar leaves the board (it is one click away in the shop). The
+  summary: the level with its ring and mark, one line on where the customer stands, the
+  bar to the next level, the one next step with what it pays, a button to the tab. On a
+  short screen (≤ 820 px high) the next step hides.
+- **Progress tab** (`Pages\Profile\Progress`): the level card (emblem in a ring, state
+  chip, one sentence, the rail of levels with the current and the next threshold, perks),
+  challenge cards (steps done, the one step left, rewards, pool left, "reward waiting at
+  the counter"), achievement tiles (ring of this period's progress, earned check, secrets),
+  the last level change.
+- **Top bar**: a ring around the avatar (progress to the next level) with the level's
+  mark, and the pill next to it after sign-in.
+- **Notifications**: achievement earned, challenge completed, level changed, reward
+  waiting / given - one alert each through `IClientNotificationService`, so a missed one
+  lands in the bell.
+
+The harness mirrors all of it: scenarios `home-loyalty`, `home-loyalty-secured`,
+`progress`, `progress-secured`, `progress-ladder-only`.
 
 **Data - REST, user surface, already authenticated.** `Gizmo.Client.UI.Services`
 registers every client class of `Gizmo.Web.Api.Client` as a typed `HttpClient` with the
 server's base address (`ClientNetworkOptions.ServerUri`) and a delegating handler that
 adds the signed-in user's bearer token (the host receives the JWT at login and hands it
-to `UserAccessTokenHandler`). So the skin can `[Inject]` and call, with no plumbing:
+to `UserAccessTokenHandler`; the stock cart checkout relies on the same handler). The
+user surface shares its class names with the operator surface, so `Loyalty.cs` aliases
+`Gizmo.Web.Api.User.Clients.*` and resolves them from a scope:
 
 | Client (`Gizmo.Web.Api.User.Clients`) | Route | Returns |
 |---|---|---|
@@ -202,20 +240,30 @@ the cached models and shows a notification. No polling needed.
 challenge pictures (`ImageGuid`), level emblems (`EmblemGuid`) - public, correct
 content-type, `Cache-Control: immutable`, SVG allowed. A plain `<img>` works.
 
-**Caveats.** Guests have no user token: hide the feature for them (`UserViewState.IsGuest`)
-and treat 401 as "not available". A club with no ladder / no achievements gets empty
-models - render nothing, not an empty tab. `IsHidden` achievements are secret until
+**Caveats.** Guests have no user token: the feature is absent for them (`IsGuest` at
+sign-in, and 401 as the backstop). A club with no ladder / no achievements gets empty
+models - nothing is rendered, not an empty tab. `IsHidden` achievements are secret until
 earned. Level names are user groups (`ToUserGroupId`): a level change is also a
 pricing/perks change, which the balance and tariff already reflect through their own
-events. Exact ladder semantics (retain threshold vs `ProjectedRank`, `PromoteOnSettleOnly`,
-`IsStepwise`) must be checked against a live server before the copy is final.
+events. The progress figures (`Progress` on levels, achievements, challenges) are read
+as a fraction, a value above one as a percentage (`LoyaltySnapshot.Fraction`), because
+the contract does not say which; `CurrentValue / TargetValue` is preferred whenever the
+server sends both.
+
+**Not verified on a live server yet** (no club with the feature configured was reachable
+at build time; the routes answer 401 without a token as expected): the exact ladder
+semantics - retain threshold vs `ProjectedRank`, `PromoteOnSettleOnly`, `IsStepwise` -
+and the wording that follows from them (`LoyaltyLines`). First live run: sign in as a
+member of a group with a ladder, check the tile, the tab and the pill, earn one
+achievement and watch for the toast and the refresh; the client log carries
+`Grafit.Loyalty` warnings for any read that failed.
 
 **Prerequisite done 14.09:** submodules at the 3.0.95 client's commits
 (`Gizmo.Web.Api.Client` 279fea2 has the user clients, `Gizmo.Web.Api.Models` e9fe1536 the
-models); Grafit 1.0.8 builds against them.
+models).
 
 ## Not in the box
 
 Behaviour is tested by hand on a live client; the visual tests cover layout only. The
-`SHELL_` strings are translated to Russian and English; the client's other nine
-cultures fall back to English for them.
+`SHELL_` strings are written in Russian and English; the client's other eight cultures
+carry machine-drafted translations that nobody has reviewed (see "Strings" above).
