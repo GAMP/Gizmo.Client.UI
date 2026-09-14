@@ -157,7 +157,7 @@ warnings for the shell's own files: an unresolved component tag is only a warnin
 
 Researched 14.09.2026 from the 3.0.95 server and client binaries (`GizmoService.dll`,
 the client's `gizmoclientsetup.exe` payload) and the GAMP repositories. The stock skin
-draws none of it yet; the data is there. Concept renders: `visual	emplates\progress.js`
+draws none of it yet; the data is there. Concept renders: `visual\templates\progress.js`
 (scenarios `concept-progress*`), not a mirror of any Razor file.
 
 **Data - REST, user surface, already authenticated.** `Gizmo.Client.UI.Services`
