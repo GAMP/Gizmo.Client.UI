@@ -145,6 +145,60 @@ function pack(name, price, points, i) {
   </article>`;
 }
 
+// CONCEPT (see templates/progress.js): when the club runs the ladder / achievements,
+// the loyalty summary takes the bar's place at the foot of the till and the bar is one
+// click away in the shop. Styles inline so nothing ships until the tile is built.
+const LOYAL_CSS = `<style>
+.gg-loyal { display: flex; flex-direction: column; gap: 1.2rem; }
+.gg-loyal__top { display: flex; align-items: center; gap: 1.2rem; }
+.gg-loyal__mark { position: relative; width: 5.2rem; height: 5.2rem; flex: none; display: flex; align-items: center; justify-content: center; }
+.gg-loyal__mark svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.gg-loyal__mark circle { fill: none; stroke-width: 2.6; }
+.gg-loyal__mark .track { stroke: rgba(255,255,255,0.1); }
+.gg-loyal__mark .bar { stroke: var(--gg-accent-light); stroke-linecap: round; stroke-dasharray: 113.1; }
+.gg-loyal__disc { width: 3.6rem; height: 3.6rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--gg-accent); color: var(--gg-on-accent); font-family: Manrope, sans-serif; font-weight: 800; font-size: 1.5rem; }
+.gg-loyal__who { min-width: 0; flex: 1; }
+.gg-loyal__who b { display: block; font-family: Manrope, sans-serif; font-size: 1.9rem; font-weight: 800; letter-spacing: -0.01em; color: var(--gg-ink); line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gg-loyal__who span { display: block; margin-top: 0.3rem; font-size: 1.3rem; color: rgba(var(--gg-ink-rgb), 0.62); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gg-loyal__pts { flex: none; text-align: right; font-family: Manrope, sans-serif; font-size: 2rem; font-weight: 800; color: var(--gg-ink); font-variant-numeric: tabular-nums; line-height: 1; }
+.gg-loyal__pts small { display: block; margin-top: 0.3rem; font-size: 1.05rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(var(--gg-ink-rgb), 0.42); }
+.gg-loyal__track { position: relative; height: 0.6rem; border-radius: 99rem; background: rgba(255,255,255,0.08); }
+.gg-loyal__track i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 99rem; background: linear-gradient(90deg, rgba(var(--gg-accent-rgb), 0.55), var(--gg-accent)); }
+.gg-loyal__track s { position: absolute; top: -0.4rem; width: 2px; height: 1.4rem; background: rgba(var(--gg-ink-rgb), 0.55); transform: translateX(-50%); border-radius: 1px; }
+.gg-loyal__todo { display: flex; flex-direction: column; gap: 0.7rem; }
+.gg-loyal__row { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1.1rem; border-radius: 1.2rem; background: rgba(255,255,255,0.045); border: 1px solid rgba(255,255,255,0.07); font-size: 1.35rem; color: rgba(var(--gg-ink-rgb), 0.85); line-height: 1.25; }
+.gg-loyal__row i { flex: none; width: 3rem; height: 3rem; border-radius: 0.9rem; display: inline-flex; align-items: center; justify-content: center; background: rgba(var(--gg-accent-rgb), 0.14); color: var(--gg-accent-soft); font-size: 1.5rem; }
+.gg-loyal__row b { color: var(--gg-ink); font-weight: 700; }
+.gg-loyal__row em { font-style: normal; margin-left: auto; flex: none; padding: 0.3rem 0.7rem; border-radius: 0.8rem; background: rgba(var(--gg-accent-rgb), 0.12); color: var(--gg-accent-pale); font-size: 1.2rem; font-weight: 700; white-space: nowrap; }
+.gg-loyal__foot { display: flex; align-items: center; gap: 1.4rem; font-size: 1.25rem; color: rgba(var(--gg-ink-rgb), 0.55); }
+.gg-loyal__foot b { color: rgba(var(--gg-ink-rgb), 0.9); font-weight: 700; }
+.gg-loyal__more { display: flex; align-items: center; justify-content: center; gap: 0.7rem; width: 100%; height: 4.4rem; border-radius: 1.3rem; border: 1px solid rgba(var(--gg-accent-rgb), 0.4); background: rgba(var(--gg-accent-rgb), 0.16); color: var(--gg-ink); font-family: inherit; font-size: 1.4rem; font-weight: 700; cursor: pointer; }
+.gg-loyal__more i { font-size: 1.5rem; color: var(--gg-accent-pale); }
+</style>`;
+
+function loyaltyTile(d) {
+  const secured = d.loyalty === "secured";
+  const C = 113.1, p = secured ? 1 : 0.17;
+  const ring = `<svg viewBox="0 0 40 40" aria-hidden="true"><circle class="track" cx="20" cy="20" r="18"></circle><circle class="bar" cx="20" cy="20" r="18" style="stroke-dashoffset: ${(C * (1 - p)).toFixed(1)}"></circle></svg>`;
+  return `${LOYAL_CSS}<div class="gg-till__sec gg-till__sec--bar">
+    <div class="gg-cap gg-cap--rule"><span>Ваш прогресс</span><span class="gg-cap__rule"></span><a href="#">Сентябрь</a></div>
+    <div class="gg-loyal">
+      <div class="gg-loyal__top">
+        <div class="gg-loyal__mark">${ring}<div class="gg-loyal__disc">${secured ? '<i class="ph-fill ph-crown"></i>' : "P"}</div></div>
+        <div class="gg-loyal__who"><b>${secured ? "Alternatif" : "Praxilla"}</b><span>${secured ? "Уровень закреплён до 1 октября" : "Ещё 1 489 очков, чтобы удержать"}</span></div>
+        <div class="gg-loyal__pts">${secured ? "3 412" : "513"}<small>очков</small></div>
+      </div>
+      <div class="gg-loyal__track"><i style="width:${secured ? 100 : 17}%"></i>${secured ? "" : '<s style="left:66.7%"></s>'}</div>
+      <div class="gg-loyal__todo">
+        <div class="gg-loyal__row"><i class="ph-fill ph-shopping-cart"></i><span>Заказ в баре от 300 ₽ — <b>«Ночной марафон»</b></span><em>+500</em></div>
+        <div class="gg-loyal__row"><i class="ph-fill ph-fire"></i><span>Ещё 2 визита на неделе — <b>«Еженедельный гость»</b></span><em>3 из 5</em></div>
+      </div>
+      <div class="gg-loyal__foot"><span>Достижения <b>3 из 9</b></span><span>Челленджи <b>1 из 3</b></span><span>Награда <b>ждёт у стойки</b></span></div>
+      <button type="button" class="gg-loyal__more"><i class="ph-bold ph-trophy"></i>Мой прогресс<i class="ph-bold ph-arrow-right"></i></button>
+    </div>
+  </div>`;
+}
+
 function barRow(name, i) {
   return `<div class="gg-bar__row" title="${esc(name)}">
     <span class="gg-bar__thumb">${gizImage(art("product-" + ((i % 5) + 1) + ".jpg"), "cover")}</span>
@@ -155,7 +209,7 @@ function barRow(name, i) {
 }
 
 // d: { hero: news|app|product|empty, slides, apps, packs, bar, names, balance, points,
-//      shop, exes, running, noArt, pointsOnlyPack }
+//      shop, exes, running, noArt, pointsOnlyPack, loyalty: earning|secured (CONCEPT tile) }
 function render(d) {
   const names = NAMES[d.names || "normal"];
   const shop = d.shop !== false;
@@ -201,10 +255,10 @@ function render(d) {
       <div class="gg-cap gg-cap--rule"><span>Пакеты времени</span><span class="gg-cap__rule"></span><a href="#">Все</a></div>
       ${packs.length ? `<div class="gg-packs">${packs.join("\n")}</div>` : `<div class="gg-empty gg-empty--small">Сейчас нет пакетов, доступных к покупке</div>`}
     </div>
-    <div class="gg-till__sec gg-till__sec--bar">
+    ${d.loyalty ? loyaltyTile(d) : `<div class="gg-till__sec gg-till__sec--bar">
       <div class="gg-cap gg-cap--rule"><span>Бар</span><span class="gg-cap__rule"></span><a href="#">Весь магазин</a></div>
       ${bar.length ? `<div class="gg-bar">${bar.join("\n")}</div>` : `<div class="gg-empty gg-empty--small">Пока пусто</div>`}
-    </div>
+    </div>`}
   </aside>
 </div>`;
 

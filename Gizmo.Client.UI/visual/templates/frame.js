@@ -134,6 +134,7 @@ function topBar(d) {
           </div>
         </div>
         ${deploy}
+        ${levelHint(d)}
         <div class="giz-top-bar__account">
           <div class="giz-header__user-menu-item giz-user-dropdown">
             <button class="giz-user-menu-button${d.levelRing != null ? " gg-has-level" : ""}">
@@ -164,6 +165,31 @@ function levelRing(d) {
   </style>
   <svg class="gg-avatar-ring" viewBox="0 0 40 40" aria-hidden="true"><circle class="track" cx="20" cy="20" r="19"></circle><circle class="bar" cx="20" cy="20" r="19" style="stroke-dashoffset: ${off}"></circle></svg>
   <span class="gg-avatar-mark">${d.levelRing >= 1 ? '<i class="ph-fill ph-crown"></i>' : "P"}</span>`;
+}
+
+// CONCEPT: for ten seconds after sign-in, a pill slides out next to the avatar to say
+// what the ring on it means and what to do this month. Same pill as the deployment
+// banner, pointing at the avatar; styles inline so nothing ships.
+function levelHint(d) {
+  if (!d.levelHint) return "";
+  const secured = d.levelHint === "secured";
+  return `<style>
+    .giz-deploy.gg-hint { flex-basis: 46rem; border-color: rgba(var(--gg-accent-rgb), 0.45) !important; }
+    .giz-deploy.gg-hint .giz-deploy__badge { background: var(--gg-accent); color: var(--gg-on-accent); font-family: Manrope, sans-serif; font-weight: 800; font-size: 1.5rem; }
+    .giz-deploy.gg-hint .giz-deploy__fill { display: none; }
+    .giz-deploy.gg-hint .giz-deploy__title { letter-spacing: 0.06em; font-size: 1.25rem; }
+    .giz-deploy.gg-hint .giz-deploy__sub { font-size: 1.3rem; }
+    .gg-hint__arrow { position: absolute; right: 1.1rem; top: 50%; transform: translateY(-50%); z-index: 1; font-size: 1.7rem; color: var(--gg-accent-pale); }
+  </style>
+  <div class="giz-deploy open gg-hint">
+    <span class="giz-deploy__fill"></span>
+    <div class="giz-deploy__badge">${secured ? '<i class="ph-fill ph-crown"></i>' : "P"}</div>
+    <button type="button" class="giz-deploy__body">
+      <span class="giz-deploy__title">${secured ? "Alternatif — ваш уровень" : "Praxilla — ваш уровень"}</span>
+      <span class="giz-deploy__sub">${secured ? "Закреплён до 1 октября · кольцо на аватаре — ваш прогресс" : "Ещё 1 489 очков до удержания · кольцо на аватаре — ваш прогресс"}</span>
+    </button>
+    <i class="ph-bold ph-arrow-right gg-hint__arrow"></i>
+  </div>`;
 }
 
 function navItem(icon, active) {
