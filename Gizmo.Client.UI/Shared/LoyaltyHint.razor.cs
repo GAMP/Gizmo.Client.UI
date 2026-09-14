@@ -26,32 +26,31 @@ namespace Gizmo.Client.UI.Shared
 
         protected bool IsOpen => _open;
 
+        //The level when there is a ladder; the count of achievements (or of challenges,
+        //when the club runs only those) otherwise.
         protected string Title
         {
             get
             {
                 var s = Loyalty.State;
-                return s.CurrentLevel is not null
-                    ? ShellStringOverrides.Get(ShellStringOverrides.LOYALTY_HINT_TITLE, s.CurrentLevel.Name)
-                    : ShellStringOverrides.Get(ShellStringOverrides.LOYALTY_HOME_CAP);
-            }
-        }
 
-        //What the ring means, and nothing else: the standing is on the home tile and
-        //the tab, and the pill has room for one thought.
-        protected string Subtitle
-        {
-            get
-            {
-                var s = Loyalty.State;
+                if (s.HasLadder && s.CurrentLevel is not null)
+                    return ShellStringOverrides.Get(ShellStringOverrides.LOYALTY_HINT_TITLE, s.CurrentLevel.Name);
 
-                if (!s.HasLadder)
+                if (s.HasAchievements)
                     return ShellStringOverrides.Get(ShellStringOverrides.LOYALTY_ACHIEVEMENTS) + " " +
                            ShellStringOverrides.Get(ShellStringOverrides.LOYALTY_OF, s.EarnedAchievements, s.Achievements.Count);
 
-                return ShellStringOverrides.Get(ShellStringOverrides.LOYALTY_HINT_RING);
+                if (s.HasChallenges)
+                    return ShellStringOverrides.Get(ShellStringOverrides.LOYALTY_CHALLENGES) + " " +
+                           ShellStringOverrides.Get(ShellStringOverrides.LOYALTY_OF, s.DoneChallenges, s.Challenges.Count);
+
+                return ShellStringOverrides.Get(ShellStringOverrides.LOYALTY_HOME_CAP);
             }
         }
+
+        //One invitation, nothing else: the standing is on the home tile and the tab.
+        protected string Subtitle => ShellStringOverrides.Get(ShellStringOverrides.LOYALTY_HINT_MORE);
 
         protected override void OnInitialized()
         {

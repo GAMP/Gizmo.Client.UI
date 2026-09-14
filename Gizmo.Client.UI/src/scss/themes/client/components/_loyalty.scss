@@ -169,25 +169,39 @@ $lo-line:  rgba(255, 255, 255, 0.07);
 }
 
 // ── home board: the right column as two tiles ─────────────────────────────────────
-// Same rows as .gg-stage on the left (1.9fr : 1fr), so the packages tile is level with
-// the hero and the summary with the strip.
-.gg-side {
-    min-width: 0;
-    min-height: 0;
-    display: grid;
+// The board takes the stage's rows (1.9fr : 1fr, the same gap), the stage spans both,
+// and the right column's two tiles fall into place by themselves: the till level with
+// the hero, the summary level with the strip. Not a wrapper around the tiles - a
+// wrapper would be a grid cell of its own.
+.gg-board--split {
     grid-template-rows: minmax(0, 1.9fr) minmax(0, 1fr);
-    gap: calc(#{$lo-g} * 1.4);
-    animation: gg-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 
-    > .gg-till {
-        min-height: 0;
-        animation: none;
+    > .gg-stage {
+        grid-row: 1 / span 2;
     }
 
     // The packages take the whole first tile now that the bar has left it.
     .gg-till__sec--packs {
         flex: 1 1 auto;
         min-height: 0;
+    }
+}
+
+// The stage's rows change on a short screen and the board goes single-column when
+// narrow (_page-home.scss): the split follows both.
+@media (max-height: 840px) {
+    .gg-board--split {
+        grid-template-rows: minmax(0, 2.15fr) minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 1100px) {
+    .gg-board--split {
+        grid-template-rows: minmax(0, 1.25fr) minmax(0, 1fr) auto;
+
+        > .gg-stage {
+            grid-row: auto;
+        }
     }
 }
 
@@ -227,13 +241,6 @@ $lo-line:  rgba(255, 255, 255, 0.07);
             height: 100%;
             transform: rotate(-90deg);
         }
-
-        &--plain {
-            border-radius: 50%;
-            background: rgba(var(--gg-accent-rgb), 0.14);
-            color: var(--gg-accent-soft);
-            font-size: 2.4rem;
-        }
     }
 
     &__disc {
@@ -254,6 +261,13 @@ $lo-line:  rgba(255, 255, 255, 0.07);
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        // No ladder: a tinted disc with the trophy (or the flag) instead of the level.
+        &--plain {
+            background: rgba(var(--gg-accent-rgb), 0.14);
+            color: var(--gg-accent-soft);
+            font-size: 1.8rem;
         }
     }
 

@@ -41,6 +41,10 @@ Nothing else. No browser automation package, no server, no client.
    `loyalty` / `level` / `levelHint` scenario keys), the product page with the cart
    beside it (`product.js`), the idle sign-in screen (`login.js`). They emit the same
    class names and nesting as the Razor components - that is the whole contract.
+   Two helpers outside the baselines: `node visual/measure.js <scenario> <selector>`
+   prints boxes and computed styles, `node visual/hover.js <scenario> <selector>
+   <out.png>` pictures the page with the mouse over an element (hover tints,
+   tooltips).
 3. Headless Chrome renders each page at each viewport (`lib/chrome.js`). Entrance
    animations are run to their last frame, anything that spins forever is parked at
    frame zero, text is rasterised without hinting or subpixel colour, so two runs on

@@ -146,22 +146,33 @@ function pack(name, price, points, i) {
 }
 
 // Components/Loyalty/LoyaltySummary.razor: with the ladder or achievements on
-// (`loyalty: earning | secured`), the right column is two tiles that line up with the
-// left one - packages level with the hero, this summary level with the strip - and the
-// bar leaves the home board. Without it the till is one tile with the bar at its foot.
+// (`loyalty: earning | secured | achievements | challenges`), the board takes two rows
+// (.gg-board--split): the till level with the hero, this summary level with the strip,
+// and the bar leaves the home board. Without it the till is one tile with the bar at
+// its foot.
 function loyaltyTile(d) {
-  const secured = d.loyalty === "secured";
-  const p = secured ? 1 : 0.17;
+  const mode = d.loyalty;
+  const ladder = mode === "earning" || mode === "secured";
+  const secured = mode === "secured";
+  // The ring: progress to the next level, or the share of achievements / challenges.
+  const p = ladder ? (secured ? 1 : 0.17) : mode === "achievements" ? 3 / 9 : 1 / 3;
   const off = (2 * Math.PI * 18 * (1 - p)).toFixed(2).replace(/\.?0+$/, "");
   const ring = `<svg viewBox="0 0 40 40" aria-hidden="true"><circle class="gg-ring__track" cx="20" cy="20" r="18"></circle><circle class="gg-ring__bar" cx="20" cy="20" r="18" style="stroke-dashoffset: ${off}"></circle></svg>`;
+  const link = ladder ? `<a href="#">Достижения 3 из 9</a>` : mode === "achievements" ? `<a href="#">Челленджи 1 из 3</a>` : "";
+  const disc = ladder
+    ? `<div class="gg-loyal__disc">${secured ? "A" : "P"}</div>`
+    : `<div class="gg-loyal__disc gg-loyal__disc--plain"><i class="ph-fill ${mode === "achievements" ? "ph-trophy" : "ph-flag-checkered"}"></i></div>`;
+  const who = ladder
+    ? `<b>${secured ? "Alternatif" : "Praxilla"}</b><span>${secured ? "Закреплён до 1 октября" : "Ещё 1 489 очков, чтобы удержать"}</span>`
+    : mode === "achievements" ? `<b>Достижения</b><span>3 из 9</span>` : `<b>Челленджи</b><span>1 из 3</span>`;
   return `<aside class="gg-till gg-till--loyal" aria-label="Ваш прогресс">
-    <div class="gg-cap gg-cap--rule"><span>Ваш прогресс</span><span class="gg-cap__rule"></span><a href="#">Достижения 3 из 9</a></div>
+    <div class="gg-cap gg-cap--rule"><span>Ваш прогресс</span><span class="gg-cap__rule"></span>${link}</div>
     <div class="gg-loyal">
       <div class="gg-loyal__top">
-        <div class="gg-loyal__mark">${ring}<div class="gg-loyal__disc">${secured ? "A" : "P"}</div></div>
-        <div class="gg-loyal__who"><b>${secured ? "Alternatif" : "Praxilla"}</b><span>${secured ? "Закреплён до 1 октября" : "Ещё 1 489 очков, чтобы удержать"}</span></div>
+        <div class="gg-loyal__mark">${ring}${disc}</div>
+        <div class="gg-loyal__who">${who}</div>
       </div>
-      <div class="gg-loyal__track"><i style="width: ${secured ? 100 : 17}%"></i></div>
+      ${ladder ? `<div class="gg-loyal__track"><i style="width: ${secured ? 100 : 17}%"></i></div>` : ""}
       <div class="gg-loyal__next"><i class="ph-fill ph-flag-checkered"></i><span>Заказ в баре — <b>«Ночной марафон»</b></span><em>+500 очков</em></div>
       <button type="button" class="gg-loyal__more"><i class="ph-bold ph-trophy"></i>Мой прогресс<i class="ph-bold ph-arrow-right"></i></button>
     </div>
@@ -206,7 +217,7 @@ function render(d) {
   const bar = [];
   for (let i = 0; i < barCount; i++) bar.push(barRow(pick(names.goods, i), i));
 
-  const body = `<div class="gg-board">
+  const body = `<div class="gg-board${d.loyalty ? " gg-board--split" : ""}">
   <div class="gg-stage">
     ${hero}
     ${dots(d.slides == null ? (d.hero === "empty" ? 0 : 3) : d.slides)}
@@ -215,7 +226,7 @@ function render(d) {
       ${stripApps.length ? `<div class="gg-strip__row">${stripApps.join("\n")}</div>` : `<div class="gg-empty">Пока пусто</div>`}
     </section>
   </div>
-  ${d.loyalty ? `<div class="gg-side">` : ""}<aside class="gg-till" aria-label="Покупки">
+  <aside class="gg-till" aria-label="Покупки">
     <div class="gg-wallet">
       <div class="gg-cap">На счете</div>
       <div class="gg-wallet__row"><span class="gg-wallet__sum">${money(d.balance == null ? 1250 : d.balance)}</span></div>
@@ -228,11 +239,12 @@ function render(d) {
       <div class="gg-cap gg-cap--rule"><span>Бар</span><span class="gg-cap__rule"></span><a href="#">Весь магазин</a></div>
       ${bar.length ? `<div class="gg-bar">${bar.join("\n")}</div>` : `<div class="gg-empty gg-empty--small">Пока пусто</div>`}
     </div>`}
-  </aside>${d.loyalty ? loyaltyTile(d) + "</div>" : ""}
+  </aside>${d.loyalty ? loyaltyTile(d) : ""}
 </div>`;
 
-  // The ring on the avatar and the sign-in pill follow the same ladder.
-  const level = d.loyalty ? { progress: d.loyalty === "secured" ? 1 : 0.17, mark: d.loyalty === "secured" ? "A" : "P" } : null;
+  // The mark on the avatar follows the ladder (none without one).
+  const ladder = d.loyalty === "earning" || d.loyalty === "secured";
+  const level = ladder ? { progress: d.loyalty === "secured" ? 1 : 0.17, mark: d.loyalty === "secured" ? "A" : "P" } : null;
   return frame({ level, ...d, active: "home" }, body);
 }
 

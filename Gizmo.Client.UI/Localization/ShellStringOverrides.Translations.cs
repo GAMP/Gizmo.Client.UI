@@ -1965,16 +1965,16 @@ namespace Gizmo.Client.UI.Localization
                     ["sl"] = "{0} - vaša raven",
                     ["tr"] = "{0} - seviyeniz",
                 },
-                [LOYALTY_HINT_RING] = new()
+                [LOYALTY_HINT_MORE] = new()
                 {
-                    ["az"] = "Avatardakı halqa — sizin tərəqqiniz",
-                    ["da"] = "Ringen om din avatar er dine fremskridt",
-                    ["el"] = "Ο δακτύλιος στο avatar σας είναι η πρόοδός σας",
-                    ["es"] = "El anillo de tu avatar es tu progreso",
-                    ["et"] = "Ring sinu avatari ümber on sinu edenemine",
-                    ["pt"] = "O anel no seu avatar é o seu progresso",
-                    ["sl"] = "Obroč okoli avatarja je vaš napredek",
-                    ["tr"] = "Avatarınızdaki halka ilerlemenizdir",
+                    ["az"] = "Ətraflı öyrənmək üçün klikləyin",
+                    ["da"] = "Klik for at læse mere",
+                    ["el"] = "Πατήστε για να μάθετε περισσότερα",
+                    ["es"] = "Pulsa para saber más",
+                    ["et"] = "Klõpsa, et rohkem teada saada",
+                    ["pt"] = "Clique para saber mais",
+                    ["sl"] = "Kliknite za več informacij",
+                    ["tr"] = "Daha fazlası için tıklayın",
                 },
                 [LOYALTY_NEWS_LEVEL_UP] = new()
                 {

@@ -2,19 +2,23 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Client.UI.Services
 
-@* The ladder level worn on the avatar: a ring that fills towards the next level and the
-   level's mark at the corner. Drawn outside the button (which clips), over it. Nothing
-   when the club runs no ladder or the customer is a guest. *@
+@* The ladder level worn on the avatar: the level's mark at the corner and, once there
+   is at least a percent of the way to the next level, a ring that fills towards it.
+   Drawn outside the button (which clips), over it. Nothing when the club runs no ladder
+   or the customer is a guest. *@
 @{
     var s = Loyalty.State;
 }
 @if (s.HasLadder && s.CurrentLevel is not null)
 {
     var emblem = Loyalty.Image(s.CurrentLevel.EmblemGuid);
-    <svg class="gg-avatar-ring" viewBox="0 0 40 40" aria-hidden="true">
-        <circle class="gg-avatar-ring__track" cx="20" cy="20" r="19"></circle>
-        <circle class="gg-avatar-ring__bar" cx="20" cy="20" r="19" style="stroke-dashoffset: @RingOffset(s.ProgressToNext)"></circle>
-    </svg>
+    @if (s.ProgressToNext >= 0.01)
+    {
+        <svg class="gg-avatar-ring" viewBox="0 0 40 40" aria-hidden="true">
+            <circle class="gg-avatar-ring__track" cx="20" cy="20" r="19"></circle>
+            <circle class="gg-avatar-ring__bar" cx="20" cy="20" r="19" style="stroke-dashoffset: @RingOffset(s.ProgressToNext)"></circle>
+        </svg>
+    }
     <span class="gg-avatar-mark" title="@s.CurrentLevel.Name">
         @if (emblem is not null)
         {

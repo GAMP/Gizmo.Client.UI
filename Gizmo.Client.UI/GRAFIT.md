@@ -45,11 +45,11 @@ repository's relation to the upstream one.
 ## Versions
 
 The shell has a version of its own and it is only meaningful next to the Gizmo
-release it was built for: "Grafit 1.1.0 · Gizmo 3.0.95". Both numbers live in one
+release it was built for: "Grafit 1.1.1 · Gizmo 3.0.95". Both numbers live in one
 place, `Gizmo.Client.UI.csproj` (`GrafitVersion`, `GizmoVersion`). They reach the
-DLL's version info (`ProductVersion` = "1.1.0 (Gizmo 3.0.95)"), the package name and
+DLL's version info (`ProductVersion` = "1.1.1 (Gizmo 3.0.95)"), the package name and
 `grafit.version.txt` in the skin folder. On screen the shell shows its own number in
-exactly one place - a quiet "Grafit 1.1.0" under the cards of the account page's
+exactly one place - a quiet "Grafit 1.1.1" under the cards of the account page's
 Profile tab (`ShellVersion.Grafit`, read from the assembly metadata) - and never the
 Gizmo release or any mismatch warning. Bump `GrafitVersion` for every shell release,
 `GizmoVersion` on every vendor merge; `stage.ps1` refuses to pack a DLL whose
@@ -77,7 +77,7 @@ version does not match the project file.
 | Avatar (picture or glyph, not a control) | `Shared\UserAvatar.razor`, `_user-avatar.scss` |
 | Frame (top bar, rail, wallpaper rules) | `Shared\_Layout.razor` (styles inline in its `<style>`) |
 | Sign-in screen | `Shared\_Layout_Login.razor`, `_layout-login.scss`, `_grafit-auth.scss` |
-| Visual regression tests | `visual\` - `npm run visual`, see `visual\README.md`; `node visual\measure.js <scenario> <selector>` prints boxes and computed styles |
+| Visual regression tests | `visual\` - `npm run visual`, see `visual\README.md`; `node visual\measure.js <scenario> <selector>` prints boxes and computed styles; `node visual\hover.js <scenario> <selector> <out.png>` pictures a hover state |
 | Package, installer, patches for upstream | `..\deploy\` (`stage.ps1`, `install.bat`, `patches\`) |
 | Third-party licences | `THIRD-PARTY-NOTICES.md`, `src\vendor\...` |
 
@@ -151,6 +151,11 @@ version does not match the project file.
   `Gizmo.Client.UI.Services` is the host's copy; the skin cannot add members to
   interfaces there (`IClientDialogService` in particular - the concrete
   `ClientDialogService` carries the shell's own dialogs).
+- **Razor cannot open a tag in one `@if` and close it in another.** `@:<div>` inside
+  a block is auto-closed at the block's end and comes out as an empty element - on the
+  home board that empty element took a grid cell and pushed the till under the stage.
+  A conditional wrapper is a modifier class on the parent (`.gg-board--split`) or a
+  `RenderFragment` rendered in either branch, never raw tag halves.
 - **The loyalty data is one static snapshot.** `Loyalty.State` is replaced whole on
   sign-in, on every achievement push event (debounced 1.2 s) and on reconnect after a
   failed load; screens read it and re-render on `Loyalty.Changed`, nothing polls. A
@@ -160,9 +165,16 @@ version does not match the project file.
   a surface the server does not have. `IsAvailable` = the server returned at least
   one level, achievement or challenge; everything on screen is gated by it.
 - **The sign-in pill is offered once per session** (`Loyalty.TakeHint`), for ten
-  seconds, and only says what the ring means; the standing itself lives on the home
-  tile and the tab. Next to the icons a 1366-wide bar leaves the pill a dozen rem, so
-  a container query hides its words and leaves the mark and the arrow.
+  seconds: the level (or the achievements count) and "click to learn more"; the
+  standing itself lives on the home tile and the tab. Next to the icons a 1366-wide
+  bar leaves the pill a dozen rem, so a container query hides its words and leaves the
+  mark and the arrow.
+- **Any subset of the three systems works.** The headline of the home tile is the
+  level when there is a ladder, else the achievements (earned of all, the ring their
+  share), else the challenges; whichever count is not the headline goes to the
+  caption's link. The avatar wears the level mark only with a ladder, and its ring only
+  from one percent of the way to the next level. The Progress tab shows the sections
+  it has data for; the level card is kept low so the other two are on screen.
 - **The one next step** on the home tile is chosen in `LoyaltySnapshot.NextActionOf`:
   the running challenge closest to its reward (its first unmet requirement, resolved
   to the achievement's name), else the achievement closest to being earned. Nothing

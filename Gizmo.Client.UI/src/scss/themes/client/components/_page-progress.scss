@@ -28,16 +28,18 @@ $pr-ok-line: rgba(94, 216, 148, 0.3);
 }
 
 // ── level card ─────────────────────────────────────────────────────────────────────
+// Kept low on purpose: the level is one card of three, and the challenges and the
+// achievements under it should be on screen without scrolling.
 .gg-ladder {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
-    gap: clamp(2rem, 2.4vw, 3.6rem);
+    gap: clamp(1.6rem, 1.8vw, 2.6rem);
     align-items: center;
 
     &__emblem {
         position: relative;
-        width: 15rem;
-        height: 15rem;
+        width: 9.6rem;
+        height: 9.6rem;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -55,8 +57,8 @@ $pr-ok-line: rgba(94, 216, 148, 0.3);
     }
 
     &__disc {
-        width: 10.6rem;
-        height: 10.6rem;
+        width: 6.8rem;
+        height: 6.8rem;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -67,7 +69,7 @@ $pr-ok-line: rgba(94, 216, 148, 0.3);
         color: var(--gg-accent-pale);
         font-family: $pr-head;
         font-weight: 800;
-        font-size: 4rem;
+        font-size: 2.6rem;
         letter-spacing: -0.04em;
 
         img {
@@ -81,14 +83,14 @@ $pr-ok-line: rgba(94, 216, 148, 0.3);
     &__pct {
         position: absolute;
         left: 50%;
-        bottom: -0.6rem;
+        bottom: -0.5rem;
         transform: translateX(-50%);
-        padding: 0.2rem 0.8rem;
+        padding: 0.15rem 0.7rem;
         border-radius: 99rem;
         background: var(--gg-bg-1);
         border: 1px solid rgba(var(--gg-accent-rgb), 0.4);
         font-family: $pr-head;
-        font-size: 1.2rem;
+        font-size: 1.05rem;
         font-weight: 800;
         color: var(--gg-accent-pale);
         font-variant-numeric: tabular-nums;
@@ -101,34 +103,34 @@ $pr-ok-line: rgba(94, 216, 148, 0.3);
 
     &__cap {
         font-family: $pr-head;
-        font-size: 1.15rem;
+        font-size: 1.05rem;
         font-weight: 700;
-        letter-spacing: 0.18em;
+        letter-spacing: 0.16em;
         text-transform: uppercase;
         color: $pr-cap;
     }
 
     &__name {
-        margin: 0.3rem 0 0;
+        margin: 0.2rem 0 0;
         font-family: $pr-head;
-        font-size: clamp(3rem, 2.2rem + 1vw, 4rem);
+        font-size: clamp(2.2rem, 1.8rem + 0.5vw, 2.8rem);
         font-weight: 800;
         letter-spacing: -0.02em;
-        line-height: 1.05;
+        line-height: 1.1;
         color: $pr-ink;
         display: flex;
         align-items: center;
-        gap: 1.4rem;
+        gap: 1rem;
         flex-wrap: wrap;
     }
 
     &__state {
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
-        padding: 0.45rem 1.1rem;
+        gap: 0.4rem;
+        padding: 0.3rem 0.9rem;
         border-radius: 99rem;
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         font-weight: 700;
         letter-spacing: 0;
         background: rgba(var(--gg-accent-rgb), 0.14);
@@ -143,9 +145,9 @@ $pr-ok-line: rgba(94, 216, 148, 0.3);
     }
 
     &__line {
-        margin: 1rem 0 0;
-        font-size: 1.7rem;
-        line-height: 1.4;
+        margin: 0.5rem 0 0;
+        font-size: 1.45rem;
+        line-height: 1.35;
         color: $pr-ink-2;
         max-width: 72rem;
 
@@ -156,9 +158,9 @@ $pr-ok-line: rgba(94, 216, 148, 0.3);
     }
 
     &__bonus {
-        margin: 0.8rem 0 0;
-        font-size: 1.4rem;
-        line-height: 1.45;
+        margin: 0.4rem 0 0;
+        font-size: 1.3rem;
+        line-height: 1.4;
         color: $pr-ink-3;
 
         b {
@@ -172,12 +174,12 @@ $pr-ok-line: rgba(94, 216, 148, 0.3);
 // and the next stop carry their threshold.
 .gg-rail {
     position: relative;
-    margin: 2.4rem 0 0;
-    padding-bottom: 3.6rem;
+    margin: 1.4rem 0 0;
+    padding-bottom: 3rem;
 
     &__track {
         position: relative;
-        height: 0.8rem;
+        height: 0.6rem;
         border-radius: 99rem;
         background: rgba(255, 255, 255, 0.08);
     }
@@ -196,8 +198,8 @@ $pr-ok-line: rgba(94, 216, 148, 0.3);
         position: absolute;
         top: 50%;
         transform: translate(-50%, -50%);
-        width: 1.8rem;
-        height: 1.8rem;
+        width: 1.4rem;
+        height: 1.4rem;
         border-radius: 50%;
         background: var(--gg-bg-1);
         border: 2px solid rgba(255, 255, 255, 0.22);
@@ -208,27 +210,27 @@ $pr-ok-line: rgba(94, 216, 148, 0.3);
         }
 
         &.is-current {
-            width: 2.6rem;
-            height: 2.6rem;
+            width: 2rem;
+            height: 2rem;
             background: var(--gg-accent);
             border-color: #fff;
-            box-shadow: 0 0 0 0.6rem rgba(var(--gg-accent-rgb), 0.22);
+            box-shadow: 0 0 0 0.45rem rgba(var(--gg-accent-rgb), 0.22);
         }
     }
 
     &__label {
         position: absolute;
-        top: 1.8rem;
+        top: 1.3rem;
         transform: translateX(-50%);
         text-align: center;
         white-space: nowrap;
-        font-size: 1.4rem;
+        font-size: 1.25rem;
         font-weight: 700;
         color: $pr-ink-3;
 
         span {
             display: block;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 500;
             color: $pr-cap;
             font-variant-numeric: tabular-nums;

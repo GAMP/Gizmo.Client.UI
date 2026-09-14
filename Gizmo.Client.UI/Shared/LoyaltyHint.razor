@@ -2,9 +2,9 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Client.UI.Services
 
-@* Ten seconds after sign-in, a pill slides out next to the avatar and says what the
-   ring on it means. Same pill as the deployment banner - one shape for "the bar has
-   something to tell you". The body opens the Progress tab. *@
+@* Ten seconds after sign-in, a pill slides out next to the avatar with the level (or
+   the achievements) and an invitation to look. Same pill as the deployment banner -
+   one shape for "the bar has something to tell you". The body opens the Progress tab. *@
 @{
     var s = Loyalty.State;
     var level = s.CurrentLevel;
@@ -21,7 +21,7 @@
         }
         else
         {
-            <i class="ph-fill ph-trophy"></i>
+            <i class="ph-fill @(s.HasAchievements || !s.HasChallenges ? "ph-trophy" : "ph-flag-checkered")"></i>
         }
     </div>
     <button type="button" class="giz-deploy__body" @onclick="Open" title="@ShellText.Get(ShellText.LOYALTY_MORE)">

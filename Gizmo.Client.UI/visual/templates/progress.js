@@ -154,24 +154,26 @@ function history(d) {
   return `<div class="gg-hist"><i class="ph-bold ph-arrow-up"></i><span>1 сентября — уровень ${s.level.name}</span></div>`;
 }
 
-// The tab's body, for account.js as well: d.ladder = earning | secured | none (the
-// empty card), d.challenges / d.achievements = false to leave a section out.
+// The tab's body, for account.js as well: d.ladder = earning | secured | false (a club
+// without a ladder: no level card, no history), d.empty (nothing at all: the empty
+// card), d.challenges / d.achievements = false to leave a section out.
 function progressTab(d) {
-  if (d.ladder === "none") {
+  if (d.empty) {
     return `<section class="gg-card"><div class="gg-card__empty"><i class="ph-fill ph-trophy"></i><b>Пока нечего показать</b></div></section>`;
   }
+  const hasLadder = d.ladder !== false;
   return `<div class="gg-progress">
-    ${ladder(d)}
+    ${hasLadder ? ladder(d) : ""}
     ${d.challenges === false ? "" : challenges()}
     ${d.achievements === false ? "" : achievements()}
-    ${history(d)}
+    ${hasLadder ? history(d) : ""}
   </div>`;
 }
 
-// d: { ladder: earning | secured, challenges, achievements } - the ring on the avatar
-// follows the ladder.
+// d: { ladder: earning | secured | false, challenges, achievements, empty } - the mark
+// on the avatar follows the ladder.
 function render(d) {
-  const s = standing(d);
+  const level = d.ladder === false ? null : (() => { const s = standing(d); return { progress: s.progress, mark: s.level.name[0] }; })();
   const body = `<div class="gg-account giz-scrollbar--v">
   <div class="gg-account__inner">
     ${head(d)}
@@ -181,7 +183,7 @@ ${progressTab(d)}
     </div>
   </div>
 </div>`;
-  return frame({ balance: 1250, points: 3400, time: "2ч 15м", pinned: 3, level: { progress: s.progress, mark: s.level.name[0] }, ...d, active: "profile" }, body);
+  return frame({ balance: 1250, points: 3400, time: "2ч 15м", pinned: 3, level, ...d, active: "profile" }, body);
 }
 
 module.exports = { render, progressTab };

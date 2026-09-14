@@ -1022,13 +1022,16 @@
         transition: background 0.15s, color 0.15s, transform 0.12s !important;
         flex-shrink: 0 !important;
     }
+    /* Hover brightens the glyph and nothing else: a tinted square behind the icon
+       read as "a white rectangle appears" on the glass pill. The open state keeps its
+       accent disc. */
     .giz-top-bar .user-menu-item-button--box:hover {
-        background: rgba(255,255,255,0.08) !important;
         color: rgba(255,255,255,0.95) !important;
     }
     .giz-top-bar .user-menu-item-button--box:active { transform: scale(0.94) !important; }
     .giz-top-bar .open > .user-menu-item-button--box {
         background: rgba(var(--gg-accent-rgb),0.15) !important;
+        border-radius: 50% !important;
         color: var(--gg-accent) !important;
     }
     .giz-top-bar .user-menu-item-button--box .giz-ph-icon {
@@ -1139,7 +1142,7 @@
     .giz-top-bar .giz-user-menu-button:hover {
         filter: brightness(1.25);
     }
-    .giz-top-bar .giz-user-dropdown.open > .giz-user-menu-button {
+    .giz-top-bar .giz-user-dropdown.open .giz-user-menu-button {
         border-color: rgba(var(--gg-accent-rgb),0.4) !important;
     }
     /* The avatar fills the whole button rather than sitting inset inside it

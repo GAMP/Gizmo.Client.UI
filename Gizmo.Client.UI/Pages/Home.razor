@@ -23,7 +23,11 @@
    Packages are filtered on DisallowPurchase, which the server computes from the
    availability window, guest and user group restrictions and stock. *@
 
-<div class="gg-board">
+@* With the ladder or achievements on, the board takes the stage's two rows: the stage
+   spans both, the till sits level with the hero and the loyalty summary level with the
+   strip; the bar is one click away in the shop. Otherwise the two-column board with the
+   bar at the foot of the till, as always. *@
+<div class="gg-board @(LoyaltyOn ? "gg-board--split" : null)">
 
     <div class="gg-stage">
 
@@ -187,14 +191,6 @@
     </div>
 
     @* TILL *@
-    @* With the ladder or achievements on, the right column is two tiles that line up
-       with the left one: packages level with the hero, the loyalty summary level with the
-       strip, and the bar is one click away in the shop. Otherwise one till with the bar
-       at its foot, as always. *@
-    @if (LoyaltyOn)
-    {
-        @:<div class="gg-side">
-    }
     <aside class="gg-till" aria-label="@ShellText.Get(ShellText.PURCHASES)">
 
         @* No top-up button here on purpose: there is already one in the top bar. *@
@@ -297,7 +293,6 @@
     @if (LoyaltyOn)
     {
         <LoyaltySummary />
-        @:</div>
     }
 
 </div>

@@ -118,17 +118,17 @@ function topBar(d) {
       <div class="giz-top-bar__right-group">
         <div class="giz-top-bar__icons">
           <div class="giz-actions-bar">
-            <div class="giz-header__user-menu-item giz-user-online-deposit-dropdown">
+            <div class="giz-header__user-menu-item giz-user-online-deposit-dropdown" data-tooltip="Пополнить">
               <button class="giz-topup-pill"><i class="ph-fill ph-wallet giz-ph-icon"></i><span>Пополнить</span></button>
             </div>
-            <div class="giz-header__user-menu-item giz-active-apps-dropdown${d.appsOpen ? " open" : ""}">
+            <div class="giz-header__user-menu-item giz-active-apps-dropdown${d.appsOpen ? " open" : ""}" data-tooltip="Мои приложения">
               <button class="user-menu-item-button--box"><i class="ph-bold ph-squares-four giz-ph-icon"></i></button>
               ${appsPanel}
             </div>
-            <div class="giz-header__user-menu-item giz-notifications-dropdown">
+            <div class="giz-header__user-menu-item giz-notifications-dropdown" data-tooltip="Уведомления">
               ${d.unread ? `<div class="giz-badge giz-badge--corner"><span><button class="user-menu-item-button--box"><i class="ph-bold ph-bell giz-ph-icon"></i></button></span><span class="giz-badge__wrapper"><span class="giz-badge__badge">${d.unread}</span></span></div>` : `<button class="user-menu-item-button--box"><i class="ph-bold ph-bell giz-ph-icon"></i></button>`}
             </div>
-            <div class="giz-header__user-menu-item giz-assistance-dropdown">
+            <div class="giz-header__user-menu-item giz-assistance-dropdown" data-tooltip="Позвать администратора">
               <button class="user-menu-item-button--box"><i class="ph-bold ph-question giz-ph-icon"></i></button>
             </div>
           </div>
@@ -149,15 +149,18 @@ function topBar(d) {
     </div>`;
 }
 
-// Shared/LoyaltyAvatarRing.razor: the ladder level worn on the avatar - a ring that
-// fills towards the next level and the level's mark at the corner, drawn on the host
-// span outside the button. `level: { progress, mark }`; nothing without a ladder.
+// Shared/LoyaltyAvatarRing.razor: the ladder level worn on the avatar - the level's
+// mark at the corner and, from one percent of the way up, a ring that fills towards
+// the next level - drawn on the host span outside the button. `level: { progress,
+// mark }`; nothing without a ladder.
 function levelRing(d) {
   if (!d.level) return "";
   const C = 2 * Math.PI * 19; // r = 19
   const off = (C * (1 - Math.max(0, Math.min(1, d.level.progress)))).toFixed(2).replace(/\.?0+$/, "");
-  return `<svg class="gg-avatar-ring" viewBox="0 0 40 40" aria-hidden="true"><circle class="gg-avatar-ring__track" cx="20" cy="20" r="19"></circle><circle class="gg-avatar-ring__bar" cx="20" cy="20" r="19" style="stroke-dashoffset: ${off}"></circle></svg>
-  <span class="gg-avatar-mark">${esc(d.level.mark)}</span>`;
+  const ring = d.level.progress >= 0.01
+    ? `<svg class="gg-avatar-ring" viewBox="0 0 40 40" aria-hidden="true"><circle class="gg-avatar-ring__track" cx="20" cy="20" r="19"></circle><circle class="gg-avatar-ring__bar" cx="20" cy="20" r="19" style="stroke-dashoffset: ${off}"></circle></svg>`
+    : "";
+  return `${ring}<span class="gg-avatar-mark">${esc(d.level.mark)}</span>`;
 }
 
 // Shared/LoyaltyHint.razor: for ten seconds after sign-in, a pill slides out next to
@@ -170,7 +173,7 @@ function levelHint(d) {
     <div class="giz-deploy__badge gg-hint__badge">${secured ? "A" : "P"}</div>
     <button type="button" class="giz-deploy__body" title="Мой прогресс">
       <span class="giz-deploy__title">${secured ? "Alternatif — ваш уровень" : "Praxilla — ваш уровень"}</span>
-      <span class="giz-deploy__sub">Кольцо на аватаре — ваш прогресс</span>
+      <span class="giz-deploy__sub">Нажмите, чтобы узнать больше</span>
     </button>
     <i class="ph-bold ph-arrow-right gg-hint__arrow"></i>
   </div>`;

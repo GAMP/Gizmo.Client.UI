@@ -339,7 +339,7 @@ namespace Gizmo.Client.UI.Localization
         public const string LOYALTY_SECRET = SHELL_PREFIX + "LOYALTY_SECRET";
         public const string LOYALTY_SECRET_HINT = SHELL_PREFIX + "LOYALTY_SECRET_HINT";
         public const string LOYALTY_HINT_TITLE = SHELL_PREFIX + "LOYALTY_HINT_TITLE";
-        public const string LOYALTY_HINT_RING = SHELL_PREFIX + "LOYALTY_HINT_RING";
+        public const string LOYALTY_HINT_MORE = SHELL_PREFIX + "LOYALTY_HINT_MORE";
         public const string LOYALTY_NEWS_LEVEL_UP = SHELL_PREFIX + "LOYALTY_NEWS_LEVEL_UP";
         public const string LOYALTY_NEWS_LEVEL_DOWN = SHELL_PREFIX + "LOYALTY_NEWS_LEVEL_DOWN";
         public const string LOYALTY_NEWS_ACHIEVEMENT = SHELL_PREFIX + "LOYALTY_NEWS_ACHIEVEMENT";
@@ -613,7 +613,7 @@ namespace Gizmo.Client.UI.Localization
                 [LOYALTY_SECRET] = new() { ["ru"] = "Секретное", ["en"] = "Secret" },
                 [LOYALTY_SECRET_HINT] = new() { ["ru"] = "Откроется, когда получите", ["en"] = "Revealed when you earn it" },
                 [LOYALTY_HINT_TITLE] = new() { ["ru"] = "{0} — ваш уровень", ["en"] = "{0} - your level" },
-                [LOYALTY_HINT_RING] = new() { ["ru"] = "Кольцо на аватаре — ваш прогресс", ["en"] = "The ring on your avatar is your progress" },
+                [LOYALTY_HINT_MORE] = new() { ["ru"] = "Нажмите, чтобы узнать больше", ["en"] = "Click to learn more" },
                 [LOYALTY_NEWS_LEVEL_UP] = new() { ["ru"] = "Новый уровень", ["en"] = "New level" },
                 [LOYALTY_NEWS_LEVEL_DOWN] = new() { ["ru"] = "Уровень изменился", ["en"] = "Level changed" },
                 [LOYALTY_NEWS_ACHIEVEMENT] = new() { ["ru"] = "Достижение получено", ["en"] = "Achievement earned" },
@@ -758,7 +758,8 @@ namespace Gizmo.Client.UI.Localization
             var forms = Get(_localizationService, key).Split('|');
             var index = PluralIndex(count, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
 
-            return Format(forms[Math.Min(index, forms.Length - 1)], count);
+            //Grouped like every other figure on screen: "1 030 очков", not "1030".
+            return Format(forms[Math.Min(index, forms.Length - 1)], count.ToString("N0", CultureInfo.CurrentCulture));
         }
 
         /// <summary>
