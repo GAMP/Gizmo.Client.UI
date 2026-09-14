@@ -9,7 +9,7 @@
     var a = Achievement;
     var secret = LoyaltySnapshot.IsSecret(a);
     var earned = LoyaltySnapshot.IsEarned(a);
-    var picture = secret ? null : Loyalty.ImageUrl(a.ImageGuid);
+    var picture = secret ? null : Loyalty.Image(a.ImageGuid);
 }
 <div class="gg-ach__tile @(earned ? "is-earned" : null) @(secret ? "is-secret" : null)" title="@(secret ? null : a.Description)">
     <div class="gg-ach__icon">

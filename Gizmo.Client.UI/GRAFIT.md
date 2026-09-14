@@ -238,7 +238,12 @@ the cached models and shows a notification. No polling needed.
 
 **Images.** `{ServerUri}/files/{guid}` serves any uploaded file by guid - achievement and
 challenge pictures (`ImageGuid`), level emblems (`EmblemGuid`) - public, correct
-content-type, `Cache-Control: immutable`, SVG allowed. A plain `<img>` works.
+content-type, `Cache-Control: immutable`, SVG allowed. Not as a plain `<img>`, though:
+the shell's page is served from `https://0.0.0.0`, so the WebView upgrades an `http:`
+picture to `https:` and blocks it, and a self-signed `https:` one fails its certificate
+check. `Loyalty.Image(guid)` fetches the bytes with the host's own API `HttpClient`
+(which accepts the server's certificate) and hands back a data URI, cached per process;
+a miss is remembered until the next sign-in or reconnect.
 
 **Caveats.** Guests have no user token: the feature is absent for them (`IsGuest` at
 sign-in, and 401 as the backstop). A club with no ladder / no achievements gets empty

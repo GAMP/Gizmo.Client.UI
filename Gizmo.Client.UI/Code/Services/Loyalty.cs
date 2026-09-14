@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -74,6 +76,10 @@ namespace Gizmo.Client.UI.Services
         private static readonly List<IAPIEventMessage> _pendingEvents = new();
         private static bool _hintShown;
 
+        /// <summary>Pictures by guid, as data URIs; a failed fetch is a null result.</summary>
+        private static readonly ConcurrentDictionary<Guid, Task<string>> _images = new();
+        private const int ImageSizeLimit = 2 * 1024 * 1024;
+
         /// <summary>The current snapshot. Never null.</summary>
         public static LoyaltySnapshot State { get; private set; } = LoyaltySnapshot.None;
 
@@ -116,19 +122,72 @@ namespace Gizmo.Client.UI.Services
         }
 
         /// <summary>
-        /// Absolute address of a server file by its guid - achievement pictures, level
-        /// emblems - or null when there is none.
+        /// A server picture by its guid - achievement and challenge pictures, level
+        /// emblems - as a data URI, or null while it is being fetched, when there is
+        /// none, or when the server has nothing under that guid.
         /// </summary>
-        public static string ImageUrl(Guid? guid)
+        /// <remarks>
+        /// The bytes are fetched on the .NET side and inlined rather than linked: the
+        /// shell's page is served from an https origin, and a plain <c>img</c> pointing
+        /// at the server's http address (or its self-signed https one) is upgraded and
+        /// blocked by the WebView. The first call starts the fetch; <see cref="Changed"/>
+        /// is raised when it lands, so the screen that asked draws it on its next pass.
+        /// </remarks>
+        public static string Image(Guid? guid)
         {
             if (!guid.HasValue || guid.Value == Guid.Empty || _services is null)
                 return null;
 
-            var server = _services.GetService<IOptionsMonitor<ClientNetworkOptions>>()?.CurrentValue?.ServerUri;
-            if (string.IsNullOrWhiteSpace(server))
-                return null;
+            var task = _images.GetOrAdd(guid.Value, FetchImageAsync);
+            return task.IsCompletedSuccessfully ? task.Result : null;
+        }
 
-            return server.TrimEnd('/') + "/files/" + guid.Value.ToString("D");
+        private static async Task<string> FetchImageAsync(Guid guid)
+        {
+            string result = null;
+
+            try
+            {
+                var server = _services.GetService<IOptionsMonitor<ClientNetworkOptions>>()?.CurrentValue?.ServerUri;
+                var factory = _services.GetService<IHttpClientFactory>();
+                if (string.IsNullOrWhiteSpace(server) || factory is null)
+                    return null;
+
+                //The host's own API client: the server's certificate is accepted there.
+                using var client = factory.CreateClient(Gizmo.Client.UI.Constants.SecureWebApiClientsName);
+                using var response = await client.GetAsync(server.TrimEnd('/') + "/files/" + guid.ToString("D"));
+
+                var type = response.Content.Headers.ContentType?.MediaType;
+                var length = response.Content.Headers.ContentLength ?? 0;
+
+                if (response.IsSuccessStatusCode && type is not null && type.StartsWith("image/", StringComparison.OrdinalIgnoreCase) && length <= ImageSizeLimit)
+                {
+                    var bytes = await response.Content.ReadAsByteArrayAsync();
+                    if (bytes.Length > 0 && bytes.Length <= ImageSizeLimit)
+                        result = "data:" + type + ";base64," + Convert.ToBase64String(bytes);
+                }
+            }
+            catch (Exception exception)
+            {
+                _logger?.LogWarning(exception, "Loyalty: picture {guid} could not be fetched.", guid);
+            }
+
+            //A miss stays a miss until the next sign-in or reconnect (ForgetFailedImages):
+            //asking again on every render would hammer a server that just said no.
+            if (result is not null)
+                Publish(State);
+
+            return result;
+        }
+
+        /// <summary>Drops the pictures that did not arrive, so they are asked for again.</summary>
+        private static void ForgetFailedImages()
+        {
+            foreach (var pair in _images)
+            {
+                if (pair.Value.IsCompleted && (pair.Value.IsFaulted || pair.Value.IsCanceled || pair.Value.Result is null))
+                    _images.TryRemove(pair.Key, out _);
+            }
         }
 
         /// <summary>
@@ -200,8 +259,13 @@ namespace Gizmo.Client.UI.Services
         {
             try
             {
+                if (!e.IsConnected)
+                    return;
+
+                ForgetFailedImages();
+
                 //A reload that failed while the link was down is retried when it is back.
-                if (e.IsConnected && _session is not null && State.LastError is not null)
+                if (_session is not null && State.LastError is not null)
                     _ = LoadAsync(_session.Token, Array.Empty<IAPIEventMessage>());
             }
             catch (Exception exception)
@@ -241,6 +305,7 @@ namespace Gizmo.Client.UI.Services
                 _hintShown = false;
                 _pendingEvents.Clear();
                 token = _session.Token;
+                ForgetFailedImages();
 
                 if (isGuest)
                 {

@@ -26,7 +26,7 @@
             @if (s.HasLadder && s.CurrentLevel is not null)
             {
                 var level = s.CurrentLevel;
-                var emblem = Loyalty.ImageUrl(level.EmblemGuid);
+                var emblem = Loyalty.Image(level.EmblemGuid);
                 var nextLine = LoyaltyLines.Next(s);
                 var perks = level.Perks?.Select(LoyaltyText.Perk).Where(p => p is not null).ToList() ?? new List<string>();
 

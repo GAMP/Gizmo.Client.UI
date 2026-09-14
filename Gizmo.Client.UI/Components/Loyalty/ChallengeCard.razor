@@ -11,7 +11,7 @@
     var done = LoyaltySnapshot.IsDone(c);
     var total = c.Requirements?.Count ?? 0;
     var met = Math.Min(total, c.MetCount ?? (c.Requirements?.Count(r => (r.CompletedCount ?? 0) >= r.RequiredCount) ?? 0));
-    var picture = Loyalty.ImageUrl(c.ImageGuid);
+    var picture = Loyalty.Image(c.ImageGuid);
     var waiting = c.MyCompletions?.Any(LoyaltySnapshot.HasRewardWaiting) == true;
 }
 <article class="gg-chal__card @(done ? "is-done" : null) @(!done && !LoyaltySnapshot.IsOpen(c) ? "is-off" : null)">
