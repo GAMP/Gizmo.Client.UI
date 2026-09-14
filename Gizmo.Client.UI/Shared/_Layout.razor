@@ -1351,12 +1351,17 @@
         padding: 0 !important;
     }
     /* ── Empty states, shared shape ── */
+    /* white-space: normal is not decoration: the dropdown inherits nowrap from the
+       vendor's menu, and the hint line, wider than its 26rem box, overflowed to the right
+       of it - a centred box with text hanging out of one side, which read as the line
+       being shifted. Wrapped, it centres. */
     .giz-top-bar .giz-active-apps__empty,
     .giz-top-bar .giz-menu-notifications .giz-empty-state {
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
+        white-space: normal;
         gap: 0.4rem;
         padding: 4rem 2rem;
     }
@@ -1375,8 +1380,9 @@
     .giz-top-bar .giz-active-apps__empty__text,
     .giz-top-bar .giz-menu-notifications .giz-empty-state__text {
         font-size: 1.3rem !important;
+        line-height: 1.45;
         color: rgba(255,255,255,0.4) !important;
-        max-width: 26rem;
+        max-width: 30rem;
     }
 
     /* ── Notifications flyout ── */

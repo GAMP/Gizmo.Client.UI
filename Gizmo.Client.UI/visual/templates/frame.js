@@ -126,7 +126,7 @@ function topBar(d) {
               ${appsPanel}
             </div>
             <div class="giz-header__user-menu-item giz-notifications-dropdown">
-              <button class="user-menu-item-button--box"><i class="ph-bold ph-bell giz-ph-icon"></i></button>
+              ${d.unread ? `<div class="giz-badge giz-badge--corner"><span><button class="user-menu-item-button--box"><i class="ph-bold ph-bell giz-ph-icon"></i></button></span><span class="giz-badge__wrapper"><span class="giz-badge__badge">${d.unread}</span></span></div>` : `<button class="user-menu-item-button--box"><i class="ph-bold ph-bell giz-ph-icon"></i></button>`}
             </div>
             <div class="giz-header__user-menu-item giz-assistance-dropdown">
               <button class="user-menu-item-button--box"><i class="ph-bold ph-question giz-ph-icon"></i></button>

@@ -27,16 +27,38 @@ namespace Gizmo.Client.UI.Localization
     /// </description></item>
     /// <item><description>
     /// A <c>SHELL_</c> key is ours outright, with nothing in the resource manager behind
-    /// it. Those fall back to English rather than showing a raw key.
+    /// it. Those carry Russian and English here and the client's other eight cultures in
+    /// <c>ShellStringOverrides.Translations.cs</c>; anything else falls back to English
+    /// rather than showing a raw key.
     /// </description></item>
     /// </list>
     /// <para>
     /// Prefer a vendor key whenever one fits: it costs nothing and arrives translated.
     /// </para>
     /// </remarks>
-    public static class ShellStringOverrides
+    public static partial class ShellStringOverrides
     {
         private const string SHELL_PREFIX = "SHELL_";
+
+        /// <summary>
+        /// Folds the other cultures into the table. Field initialisers of both files have
+        /// run by the time a static constructor starts, whichever file the compiler took
+        /// first. Russian and English here win over anything the translations file says.
+        /// </summary>
+        static ShellStringOverrides()
+        {
+            foreach (var (key, byCulture) in _translations)
+            {
+                if (!_overrides.TryGetValue(key, out var existing))
+                {
+                    _overrides[key] = new Dictionary<string, string>(byCulture);
+                    continue;
+                }
+
+                foreach (var (culture, text) in byCulture)
+                    existing.TryAdd(culture, text);
+            }
+        }
 
         #region KEYS
 

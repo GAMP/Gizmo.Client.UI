@@ -64,7 +64,7 @@ function profileTab(d) {
       <div class="gg-card__actions"><button type="button" class="gg-btn"><i class="ph-bold ph-key"></i><span>Изменить пароль</span></button></div>
     </section>
   </div>
-  <div class="gg-account__version">Grafit 1.0.7</div>`;
+  <div class="gg-account__version">Grafit 1.0.9</div>`;
 }
 
 const TP_ICON = { package: "ph-package", fixed: "ph-hourglass-medium", rate: "ph-timer" };

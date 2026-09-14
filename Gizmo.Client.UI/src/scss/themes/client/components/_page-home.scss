@@ -47,14 +47,26 @@ $tile:  var(--gg-tile);
     white-space: nowrap;
 }
 
+// A list that may overflow. The scrollbar is a hair that appears only while the pointer
+// is over the list, in its own gutter: the rows keep clear of it (padding-right) and the
+// gutter is reserved whether or not the list overflows, so nothing shifts when it starts
+// to. Always-on and pressed against the rows, it read as a stripe stuck to the packages.
 @mixin quiet-scroll {
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: $line-2 transparent;
+    scrollbar-color: transparent transparent;
+    scrollbar-gutter: stable;
+    padding-right: calc(#{$g} * 0.6);
 
-    &::-webkit-scrollbar { width: 0.5rem; }
-    &::-webkit-scrollbar-thumb { background: $line-2; border-radius: 99px; }
+    &::-webkit-scrollbar { width: 0.4rem; }
     &::-webkit-scrollbar-track { background: transparent; }
+    &::-webkit-scrollbar-thumb { background: transparent; border-radius: 99px; }
+
+    &:hover {
+        scrollbar-color: $line-2 transparent;
+        &::-webkit-scrollbar-thumb { background: $line-2; }
+    }
+    &::-webkit-scrollbar-thumb:hover { background: rgba(var(--gg-accent-rgb), 0.45); }
 }
 
 // Outline as an inset shadow, never a border: a real border still paints its
@@ -698,6 +710,9 @@ $tile:  var(--gg-tile);
     // actually overflowed, so the last package always looked half erased. The
     // quiet scrollbar is signal enough when there is more.
     @include quiet-scroll;
+    // The scrollbar and its breathing room hang in the till's own padding, so the rows
+    // keep the caption's width instead of stopping a gutter short of it.
+    margin-right: calc(-1 * (0.4rem + #{$g} * 0.6));
 }
 
 // Price row: name, price and button on one line. The radius matches the game tiles and
