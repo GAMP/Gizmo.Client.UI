@@ -125,4 +125,8 @@ background (`_flow.scss`) at its start only. `npm run visual:flow -- --page home
   screenshot, optionally enlarged, for looking at one control or sending a detail.
 - `node visual/stack.js <out.png> <in1.png> <in2.png> ... [--gap 12]` - several crops
   stacked into one picture (the states of one control, say).
+- `node visual/measure.js <scenario-id> "<selector>" [...] [--size WxH]` - bounding boxes
+  and the computed white-space / max-width / text-align / padding / margin of matching
+  elements, for when a screenshot shows something is off but not why (the "shifted"
+  empty-state hint was a nowrap line overflowing its centred box).
   `visual/out` is wiped by every harness run, so write elsewhere anything worth keeping.

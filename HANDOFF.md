@@ -139,7 +139,9 @@ the JavaScript twin in `internal.js` is kept in step by `npm run visual:palette`
   vendor update.
 - **No RTL.** The vendor skin has none either; the shell declares `ltr`. Full mirroring
   is ~390 directional declarations - not started.
-- **`SHELL_` strings** are Russian and English only (77 keys). Other cultures get English.
+- **`SHELL_` strings** (119 keys) are written in Russian and English; the client's other
+  eight cultures (az, da, el, es, et, pt-BR, sl, tr) are machine-drafted in
+  `ShellStringOverrides.Translations.cs` and have not been reviewed by native speakers.
 - **Skin switching** in the Manager takes effect at the client's next connect, and the
   Manager's host group setting beats the server default (`ClientSettingsForHostAsync`).
 
@@ -150,5 +152,4 @@ the JavaScript twin in `internal.js` is kept in step by `npm run visual:palette`
 2. A Manager setting for the palette and the motion switch, emitting the two CSS lines
    (or calling `grafitTheme`), so a club does not have to type CSS.
 3. Fill `UserOrderViewState.Id`.
-4. Translations of the `SHELL_` keys into the other nine cultures, if the skin is to be
-   offered outside ru/en clubs.
+4. A native-speaker pass over `ShellStringOverrides.Translations.cs`.

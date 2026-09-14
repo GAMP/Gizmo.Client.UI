@@ -76,7 +76,7 @@ version does not match the project file.
 | Avatar (picture or glyph, not a control) | `Shared\UserAvatar.razor`, `_user-avatar.scss` |
 | Frame (top bar, rail, wallpaper rules) | `Shared\_Layout.razor` (styles inline in its `<style>`) |
 | Sign-in screen | `Shared\_Layout_Login.razor`, `_layout-login.scss`, `_grafit-auth.scss` |
-| Visual regression tests | `visual\` - `npm run visual`, see `visual\README.md` |
+| Visual regression tests | `visual\` - `npm run visual`, see `visual\README.md`; `node visual\measure.js <scenario> <selector>` prints boxes and computed styles |
 | Package, installer, patches for upstream | `..\deploy\` (`stage.ps1`, `install.bat`, `patches\`) |
 | Third-party licences | `THIRD-PARTY-NOTICES.md`, `src\vendor\...` |
 
@@ -128,8 +128,18 @@ version does not match the project file.
   A hard-edged fill with a rim, and a segment sliding along the pill, read as "a
   square moved along a strip" and were replaced.
 - **Strings.** The resource assembly belongs to the client, so the skin cannot add
-  keys to it. Shell strings live in `ShellStringOverrides` (`SHELL_` keys, ru + en,
-  English fallback); vendor `GIZ_` keys are reused whenever one fits.
+  keys to it. Shell strings live in `ShellStringOverrides` (`SHELL_` keys: ru + en in
+  the main file, the client's other eight cultures - az, da, el, es, et, pt, sl, tr -
+  in `ShellStringOverrides.Translations.cs`, machine-drafted and unreviewed; English
+  is the fallback for anything else); vendor `GIZ_` keys are reused whenever one
+  fits. A new `SHELL_` key gets all ten languages at once.
+- **Images must fail visibly.** The host answers an image request only while it is
+  connected and a user is signed in (it asks the server for the hash before using its
+  own cache), so a request made during a dropped connection fails or hangs. `GizImage`
+  therefore times out to the error placeholder after 15 s and retries every failed load
+  on reconnect / sign-in, and the placeholders (`src\img\no-*-image.svg`,
+  `broken-image.svg`, the loading plate) are translucent plates with a light glyph -
+  the vendor's dark ones vanished on the rail and read as "the icons disappeared".
 - **`async void` is fatal.** An unobserved exception on a handler exits the whole
   client. Anything subscribed to a view state or a static event goes through
   `DispatchWorkflow`, and every `Dispose` unsubscribes.
