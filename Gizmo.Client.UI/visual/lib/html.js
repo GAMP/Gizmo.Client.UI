@@ -72,13 +72,17 @@ function plural(count, forms) {
 }
 
 // A complete document around a body, with the shell's fonts, icons and the compiled
-// stylesheet. `accent` selects a palette the way the skin's index.html does. Screens under test render with the same root font size rules as the
-// client (10px, growing on large monitors - see src/scss/_global.scss).
-function page({ title, body, outDir, wallpaper, accent }) {
+// stylesheet. `accent` selects a built-in palette the way the skin's index.html does;
+// `tokens` (from lib/theme.js) writes a derived palette inline on <html>, the way
+// grafitTheme does for a club's own colour. Screens under test render with the same
+// root font size rules as the client (10px, growing on large monitors - see
+// src/scss/_global.scss).
+function page({ title, body, outDir, wallpaper, accent, tokens }) {
   const vendor = fileUrl(path.join(SRC, "vendor"));
   const css = (name) => fileUrl(path.join(outDir, name));
+  const inline = tokens ? ` style="${esc(Object.entries(tokens).map(([k, v]) => `${k}: ${v}`).join("; "))}"` : "";
   return `<!DOCTYPE html>
-<html lang="ru"${accent ? ` data-accent="${esc(accent)}"` : ""}>
+<html lang="ru"${accent ? ` data-accent="${esc(accent)}"` : ""}${inline}>
 <head>
 <meta charset="utf-8" />
 <title>${esc(title)}</title>

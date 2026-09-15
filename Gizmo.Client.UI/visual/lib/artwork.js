@@ -36,19 +36,21 @@ function prng(seed) {
 
 // ── colour ────────────────────────────────────────────────────────────────
 
-function hexToHue(hex) {
+// [hue, chroma 0..1] of "#rrggbb" (chroma, not HSL saturation: a light grey such as
+// #d8dee9 is "saturated" in HSL terms and still grey); purple for anything else.
+function hexToHueSat(hex) {
   const m = /^#?([0-9a-f]{6})$/i.exec(hex || "");
-  if (!m) return 268;
+  if (!m) return [268, 1];
   const n = parseInt(m[1], 16);
   const r = ((n >> 16) & 255) / 255, g = ((n >> 8) & 255) / 255, b = (n & 255) / 255;
   const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
-  if (d === 0) return 268;
+  if (d === 0) return [268, 0];
   let h;
   if (max === r) h = ((g - b) / d) % 6;
   else if (max === g) h = (b - r) / d + 2;
   else h = (r - g) / d + 4;
   h = Math.round(h * 60);
-  return h < 0 ? h + 360 : h;
+  return [h < 0 ? h + 360 : h, d];
 }
 
 function hsl(h, s, l, a) {
@@ -73,18 +75,23 @@ const SIZES = {
 function make({ kind = "cover", seed = "", accent = "#4f8cff" } = {}) {
   const [W, H] = SIZES[kind] || SIZES.cover;
   const rnd = prng(hash(kind + ":" + seed));
-  const base = hexToHue(accent);
-  const neutral = rnd() < 0.12 && kind !== "icon" && kind !== "avatar";
+  const [base, chroma] = hexToHueSat(accent);
+  // One picture in eight is almost grey; under a grey accent (a monochrome club) all
+  // of them are, with the faintest tint of its hue.
+  const grey = chroma < 0.15;
+  const neutral = grey || (rnd() < 0.12 && kind !== "icon" && kind !== "avatar");
   // How far a picture may drift from the accent: a wall of covers wants variety, the
   // one banner and the small marks (icons, the avatar) should stay the palette's.
   const drift = kind === "banner" ? 20 : kind === "icon" || kind === "avatar" ? 15 : 32;
   // A warm accent (orange, amber) drifts towards red only: a step towards green turns
   // it olive. The companion hues lean the same way.
   const warm = base >= 15 && base <= 75;
-  const hue = warm ? base - rnd() * Math.min(drift * 1.3, base - 12) : base + (rnd() * 2 - 1) * drift;
+  // A yellow-green (lime) drifts towards green only, for the same reason.
+  const lime = base > 75 && base < 110;
+  const hue = warm ? base - rnd() * Math.min(drift * 1.3, base - 12) : lime ? base + rnd() * drift : base + (rnd() * 2 - 1) * drift;
   const dir = warm ? -1 : 1;
   // Warm hues need more saturation: a half-saturated amber over black is olive.
-  const sat = neutral ? 10 : warm ? 74 + rnd() * 16 : 58 + rnd() * 22;
+  const sat = neutral ? (grey ? 6 : 10) : warm ? 74 + rnd() * 16 : 58 + rnd() * 22;
   const motif = kind === "icon" ? ["aurora", "beam", "silk"][Math.floor(rnd() * 3)]
     : kind === "avatar" ? "aurora"
     : ["aurora", "dunes", "silk", "beam"][Math.floor(rnd() * 4)];
@@ -127,7 +134,7 @@ function make({ kind = "cover", seed = "", accent = "#4f8cff" } = {}) {
     defs.push(blur(1, S * (small ? 0.12 : 0.11)));
     const count = kind === "icon" ? 2 : 3;
     for (let i = 0; i < count; i++) {
-      parts.push(wash(`${id}f1`, hue + (i === 0 ? 0 : warm ? -rnd() * 22 : rnd() * 70 - 35), 46 + rnd() * 18, 0.6 + rnd() * 0.3, i === 0 ? true : i === 1 ? false : null));
+      parts.push(wash(`${id}f1`, hue + (i === 0 ? 0 : warm ? -rnd() * 22 : lime ? rnd() * 30 : rnd() * 70 - 35), 46 + rnd() * 18, 0.6 + rnd() * 0.3, i === 0 ? true : i === 1 ? false : null));
     }
   } else if (motif === "dunes") {
     // A glow in the sky, then three ridges from the back to the front, each lit along

@@ -4,6 +4,7 @@
 //
 //   node visual/promo.js                          all scenes, all eight palettes
 //   node visual/promo.js --palette purple --palette teal
+//   node visual/promo.js --hex coral=#ff6b57 --only home-news-plain   a club's own colour
 //   node visual/promo.js --only shop              scenes whose id contains "shop"
 //   node visual/promo.js --scale 1                1920x1080 pixels instead of 3840x2160
 //   node visual/promo.js --out D:\shots           default: <fork>\deploy\dist\promo
@@ -21,6 +22,7 @@ const css = require("./lib/css");
 const chrome = require("./lib/chrome");
 const html = require("./lib/html");
 const artwork = require("./lib/artwork");
+const theme = require("./lib/theme");
 const { PALETTES, SCENES, PROFILE } = require("./promo-scenes");
 
 const VISUAL = __dirname;
@@ -45,10 +47,19 @@ const TEMPLATES = {
 };
 
 function parseArgs(argv) {
-  const args = { palettes: [], only: [], scale: 2, width: 1920, height: 1080, out: path.resolve(VISUAL, "..", "..", "deploy", "dist", "promo"), concurrency: 3 };
+  const args = { palettes: [], custom: {}, only: [], scale: 2, width: 1920, height: 1080, out: path.resolve(VISUAL, "..", "..", "deploy", "dist", "promo"), concurrency: 3 };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--palette") args.palettes.push(argv[++i]);
+    else if (a === "--hex") {
+      // A club's own colour, as `--gg-palette: #hex` gives it: "coral=#ff6b57" names
+      // the folder, a bare "#ff6b57" is filed under hex-ff6b57.
+      const m = /^(?:([a-z0-9-]+)=)?(#[0-9a-f]{6})$/i.exec(argv[++i] || "");
+      if (!m) throw new Error("--hex wants [name=]#rrggbb");
+      const name = (m[1] || "hex-" + m[2].slice(1)).toLowerCase();
+      args.custom[name] = m[2].toLowerCase();
+      args.palettes.push(name);
+    }
     else if (a === "--only") args.only.push(argv[++i]);
     else if (a === "--scale") args.scale = parseFloat(argv[++i]);
     else if (a === "--size") { const [w, h] = argv[++i].split("x").map((n) => parseInt(n, 10)); args.width = w; args.height = h; }
@@ -58,7 +69,7 @@ function parseArgs(argv) {
     else throw new Error("Unknown argument: " + a);
   }
   if (!args.palettes.length) args.palettes = Object.keys(PALETTES);
-  for (const p of args.palettes) if (!PALETTES[p]) throw new Error("Unknown palette: " + p);
+  for (const p of args.palettes) if (!PALETTES[p] && !args.custom[p]) throw new Error("Unknown palette: " + p);
   return args;
 }
 
@@ -105,7 +116,10 @@ async function main() {
   // pages can all be written up front and shot in any order.
   const shots = [];
   for (const palette of args.palettes) {
-    const accent = PALETTES[palette];
+    const accent = PALETTES[palette] || args.custom[palette];
+    // A built-in palette is the compiled one (data-accent); a colour of the club's own
+    // goes through the run-time derivation and is written inline, as in the client.
+    const tokens = PALETTES[palette] ? null : theme.derive(accent);
     html.setArtProvider((name) => artwork.forName(name, accent));
     const profile = { ...PROFILE, picture: artwork.make({ kind: "avatar", seed: "me", accent }) };
     const dir = path.join(args.out, palette);
@@ -118,7 +132,7 @@ async function main() {
       if (data.board) data.board = { ...profile, ...data.board, balance: data.balance == null ? profile.balance : data.balance, points: data.points == null ? profile.points : data.points };
       const body = template.render(data);
       const file = path.join(WORK, `${palette}-${scene.id}.html`);
-      fs.writeFileSync(file, html.page({ title: scene.id, body, outDir: WORK, accent: palette }), "utf8");
+      fs.writeFileSync(file, html.page({ title: scene.id, body, outDir: WORK, accent: tokens ? null : palette, tokens }), "utf8");
       shots.push({ palette, scene, index, html: file, png: path.join(dir, `${String(index + 1).padStart(2, "0")}-${scene.id}.png`) });
     });
   }
@@ -152,7 +166,7 @@ async function main() {
 function finish(args, palettes) {
   const sheets = path.join(args.out, "_sheets");
   fs.mkdirSync(sheets, { recursive: true });
-  const present = Object.keys(PALETTES).filter((p) => fs.existsSync(path.join(args.out, p)));
+  const present = fs.readdirSync(args.out).filter((f) => !f.startsWith("_") && fs.statSync(path.join(args.out, f)).isDirectory());
   for (const palette of present) {
     if (!palettes.includes(palette)) continue;
     const dir = path.join(args.out, palette);
