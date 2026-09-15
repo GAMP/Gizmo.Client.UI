@@ -39,7 +39,9 @@ function reservation(n) {
   </div>`;
 }
 
-// d: { items: [{ type, title, message }], reservation: bool }
+// d: { items: [{ type, title, message }], reservation: bool, board } - with `board`
+// the stack is drawn over the home board the way the customer sees it: the
+// notification window sits top-centre over whatever is on screen.
 function render(d) {
   const items = d.items || [
     { type: "info", title: "Новое сообщение от администратора", message: "Турнир по CS2 начнётся в 20:00, регистрация на стойке." },
@@ -47,12 +49,14 @@ function render(d) {
     { type: "warning", title: "Осталось 10 минут", message: "Пополните счёт или возьмите пакет, чтобы не прерываться." },
     { type: "danger", title: "Не удалось запустить игру", message: "Файлы игры ещё копируются. Попробуйте через минуту." },
   ];
-  return `<div client-theme="true" class="giz-notifications">
+  const stack = `<div client-theme="true" class="giz-notifications">
   <div class="giz-notifications__body">
     ${items.map(card).join("\n")}
     ${d.reservation === false ? "" : reservation(d)}
   </div>
 </div>`;
+  if (!d.board) return stack;
+  return require("./home").render(d.board).replace(/\n$/, "") + "\n" + stack;
 }
 
 module.exports = { render };

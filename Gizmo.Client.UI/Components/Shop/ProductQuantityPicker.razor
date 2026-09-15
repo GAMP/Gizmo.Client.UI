@@ -12,7 +12,7 @@ else if (_product.DisallowPurchase)
                     Color="ButtonColors.Accent"
                     Size="@Size"
                     IsFullWidth="@IsFullWidth"
-                    Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_ADD_TO_CART))" />
+                    Text="@ShellText.Get(ShellText.GEN_ADD_TO_CART)" />
         </ChildContent>
     </ClientTooltip>
 }
@@ -36,12 +36,14 @@ else
 {
     if (_userCartProductViewState == null || _userCartProductViewState.Quantity == 0)
     {
+        @* The short label ("В корзину"): the card is a sixth of the grid, and with the
+           icon the stock phrase wrapped onto a second line. *@
         <Button Color="ButtonColors.Accent"
                 Class="giz-product-card-primary-button"
                 Size="@Size"
                 IsFullWidth="@IsFullWidth"
                 LeftSVGIcon="Icons.Plus"
-                Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_ADD_TO_CART))"
+                Text="@ShellText.Get(ShellText.GEN_ADD_TO_CART)"
                 @onclick="OnAddProductButtonClickHandler" />
     }
     else

@@ -4,7 +4,7 @@
 "use strict";
 
 const { esc, money, number, plural } = require("../lib/html");
-const { frame } = require("./frame");
+const { frame, avatar } = require("./frame");
 
 const ITEMS = ["{0} товар", "{0} товара", "{0} товаров"];
 
@@ -24,7 +24,7 @@ function head(d) {
   if (d.credit) stats.push(stat("Кредит", d.credit === "unlimited" ? "∞" : money(500), "gg-account__stat--credit",
     d.credit === "unlimited" ? "Неограниченный кредит" : "Вы можете продолжать играть в кредит даже после того, как закончится ваше время."));
   return `<header class="gg-account__head">
-    ${d.picture ? `<span class="giz-avatar giz-avatar--circle giz-user-avatar gg-account__avatar"><img src="${d.picture}" alt="" /></span>` : `<span class="giz-user-avatar giz-user-avatar--glyph gg-account__avatar"><i class="ph ph-user"></i></span>`}
+    ${avatar(d, "gg-account__avatar")}
     <div class="gg-account__who">
       <h1 class="gg-account__name">${esc(name)}</h1>
       <div class="gg-account__sub">${full ? `<span>${esc(full)}</span>` : ""}${guest ? "" : `<span>В клубе с 12 марта 2024</span>`}</div>
@@ -68,7 +68,7 @@ function profileTab(d) {
       <div class="gg-card__actions"><button type="button" class="gg-btn"><i class="ph-bold ph-key"></i><span>Изменить пароль</span></button></div>
     </section>
   </div>
-  <div class="gg-account__version">Grafit 1.1.1</div>`;
+  <div class="gg-account__version">Grafit 1.1.2</div>`;
 }
 
 const TP_ICON = { package: "ph-package", fixed: "ph-hourglass-medium", rate: "ph-timer" };

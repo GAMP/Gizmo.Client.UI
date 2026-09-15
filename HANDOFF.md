@@ -91,7 +91,7 @@ is handed out at connect and mirrored to `%PROGRAMDATA%\NETProjects\Gizmo Client
 `deploy\README.md` is the operator's page.
 
 Versions: `GrafitVersion` and `GizmoVersion` in `Gizmo.Client.UI.csproj` -> assembly
-metadata and `ProductVersion` ("1.1.1 (Gizmo 3.0.95)"), the package name,
+metadata and `ProductVersion` ("1.1.2 (Gizmo 3.0.95)"), the package name,
 `skin\grafit.version.txt`, and one quiet line on the account page's Profile tab.
 
 ## Integration points a club uses
@@ -111,9 +111,11 @@ the JavaScript twin in `internal.js` is kept in step by `npm run visual:palette`
 
 ## Verification
 
-- `npm run visual` in `Gizmo.Client.UI\` renders 130+ screens from `visual\scenarios.json`
+- `npm run visual` in `Gizmo.Client.UI\` renders 170+ screens from `visual\scenarios.json`
   with the compiled stylesheet and compares them with `visual\baseline\` (pixelmatch).
   `visual\README.md` explains the harness; `--update` accepts a change.
+- `node visual\promo.js` - every screen in every palette with generated artwork at
+  3840x2160, for marketing (`visual\promo-scenes.js` is the list).
 - `npm run visual:palette` - Sass vs JavaScript palette parity.
 - `node visual\palette-sheet.js --page login` - one contact sheet of every palette.
 - The build has no errors. Its warnings are of the kinds the vendor tree already has

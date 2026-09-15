@@ -19,9 +19,31 @@ function img(name) {
   return fileUrl(path.join(SRC, "img", name));
 }
 
-// Test artwork from visual/fixtures/art.
+// Test artwork from visual/fixtures/art - or, when a provider is set (the promo shots,
+// see promo.js and lib/artwork.js), whatever the provider draws for that name.
+let provider = null;
+
+function setArtProvider(fn) {
+  provider = fn;
+}
+
 function art(name) {
+  if (provider) {
+    const drawn = provider(name);
+    if (drawn) return drawn;
+  }
   return fileUrl(path.join(FIXTURES, "art", name));
+}
+
+// The i-th picture of a kind ("app", "exe", "news", "product", "media"). The fixtures
+// hold a few of each and repeat; a provider draws every index its own picture, and
+// `shift` moves a template's series away from another's so the two do not share
+// pictures (it does nothing to the fixtures).
+const FIXTURE_COUNT = { app: 5, exe: 3, news: 3, product: 5 };
+
+function artFor(kind, i, shift) {
+  const count = FIXTURE_COUNT[kind];
+  return art(`${kind}-${provider || !count ? i + 1 + (shift || 0) : (i % count) + 1}.jpg`);
 }
 
 // Money the way the client formats it for a Russian club: "1 250,00 ₽". A fixed
@@ -78,4 +100,4 @@ ${body}
 `;
 }
 
-module.exports = { esc, img, art, money, number, plural, page };
+module.exports = { esc, img, art, artFor, setArtProvider, money, number, plural, page };

@@ -35,6 +35,11 @@ const TEMPLATES = {
   login: require("./templates/login"),
   notifications: require("./templates/notifications"),
   progress: require("./templates/progress"),
+  apps: require("./templates/apps"),
+  shop: require("./templates/shop"),
+  appdetails: require("./templates/appdetails"),
+  topup: require("./templates/topup"),
+  lock: require("./templates/lock"),
 };
 
 function parseArgs(argv) {
@@ -131,7 +136,7 @@ async function main() {
   try {
   await pool(shots, tabs.length, async (shot, lane) => {
     const png = path.join(OUT, "current", shot.key + ".png");
-    await tabs[lane].screenshot(css.fileUrl(shot.html), png, shot.width, shot.height);
+    await tabs[lane].screenshot(css.fileUrl(shot.html), png, shot.width, shot.height, { hover: shot.scenario.hover || null });
     shot.current = png;
     const baseline = path.join(BASELINE, shot.key + ".png");
     if (!fs.existsSync(baseline)) {

@@ -191,13 +191,26 @@ class Tab {
     this.sessionId = sessionId;
   }
 
-  async screenshot(pageUrl, outPng, width, height) {
+  // `scale` is the device pixel ratio (the promo shots take 2: a 1920x1080 page as a
+  // 3840x2160 picture); `hover` is a selector whose first match is drawn in its :hover
+  // state, the way the DevTools "force element state" does it.
+  async screenshot(pageUrl, outPng, width, height, { scale = 1, hover = null } = {}) {
     const b = this.browser;
-    await b.send("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor: 1, mobile: false }, this.sessionId);
+    await b.send("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor: scale, mobile: false }, this.sessionId);
     const loaded = b.once("Page.loadEventFired", this.sessionId);
     await b.send("Page.navigate", { url: pageUrl }, this.sessionId);
     await Promise.race([loaded, new Promise((_, reject) => setTimeout(() => reject(new Error("Timed out loading " + pageUrl)), 60000))]);
     await b.send("Runtime.evaluate", { expression: READY, awaitPromise: true }, this.sessionId);
+    if (hover) {
+      await b.send("DOM.enable", {}, this.sessionId);
+      await b.send("CSS.enable", {}, this.sessionId);
+      const { root } = await b.send("DOM.getDocument", { depth: 0 }, this.sessionId);
+      const { nodeId } = await b.send("DOM.querySelector", { nodeId: root.nodeId, selector: hover }, this.sessionId);
+      if (!nodeId) throw new Error("Nothing matches the hover selector " + hover);
+      await b.send("CSS.forcePseudoState", { nodeId, forcedPseudoClasses: ["hover"] }, this.sessionId);
+      // The forced state takes a frame to reach the screen.
+      await b.send("Runtime.evaluate", { expression: "new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)))", awaitPromise: true }, this.sessionId);
+    }
     const { data } = await b.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false }, this.sessionId);
     fs.writeFileSync(outPng, Buffer.from(data, "base64"));
     return outPng;

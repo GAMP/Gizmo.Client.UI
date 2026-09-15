@@ -26,10 +26,12 @@ const LEVELS = [
   { name: "Alternatif", threshold: 3000 },
 ];
 
+// `levels` in the scenario replaces the table (the promo shots name their own).
 function standing(d) {
+  const LEVELS = d.levels || module.exports.LEVELS;
   const secured = d.ladder === "secured";
   const rank = secured ? 3 : 2;
-  const score = secured ? 3412 : 513;
+  const score = d.score == null ? (secured ? 3412 : 513) : d.score;
   const next = LEVELS[rank + 1] || null;
   return {
     secured, rank, score, next,
@@ -40,6 +42,7 @@ function standing(d) {
 }
 
 function ladder(d) {
+  const LEVELS = d.levels || module.exports.LEVELS;
   const s = standing(d);
   const max = LEVELS[LEVELS.length - 1].threshold;
   const pct = (v) => (Math.min(1, v / max) * 100).toFixed(1).replace(/\.0$/, "");
@@ -54,7 +57,7 @@ function ladder(d) {
     ? "Это высший уровень, и он закреплён до 1 октября."
     : `Наберите ещё ${number(s.toRetain)} очков до 1 октября — и уровень останется.`;
   const perks = s.secured ? ["скидка 15 %", "приоритет в очереди"] : ["скидка 10 %", "приоритет в очереди"];
-  const nextLine = s.secured ? "" : ` Следующий уровень — Alternatif: ещё ${number(s.next.threshold - s.score)} очков.`;
+  const nextLine = s.secured ? "" : ` Следующий уровень — ${s.next.name}: ещё ${number(s.next.threshold - s.score)} очков.`;
   return `<section class="gg-card">
     <div class="gg-ladder">
       <div class="gg-ladder__emblem">
@@ -111,10 +114,11 @@ const CHALLENGES = [
     rewards: [{ icon: "ph-coins", text: "+300 очков" }] },
 ];
 
-function challenges() {
-  const done = CHALLENGES.filter((c) => c.done).length;
-  return `<div class="gg-sec"><h2>Челленджи</h2><span>${done} из ${CHALLENGES.length}</span></div>
-  <div class="gg-chal">${CHALLENGES.map(challengeCard).join("\n")}</div>`;
+function challenges(d) {
+  const list = (d && d.challengeList) || CHALLENGES;
+  const done = list.filter((c) => c.done).length;
+  return `<div class="gg-sec"><h2>Челленджи</h2><span>${done} из ${list.length}</span></div>
+  <div class="gg-chal">${list.map(challengeCard).join("\n")}</div>`;
 }
 
 // Components/Loyalty/AchievementTile.razor
@@ -143,10 +147,11 @@ const ACHIEVEMENTS = [
   { name: "Секретное", secret: true },
 ];
 
-function achievements() {
-  const earned = ACHIEVEMENTS.filter((a) => a.earned).length;
-  return `<div class="gg-sec"><h2>Достижения</h2><span>${earned} из ${ACHIEVEMENTS.length}</span></div>
-  <div class="gg-ach">${ACHIEVEMENTS.map(achievementTile).join("\n")}</div>`;
+function achievements(d) {
+  const list = (d && d.achievementList) || ACHIEVEMENTS;
+  const earned = list.filter((a) => a.earned).length;
+  return `<div class="gg-sec"><h2>Достижения</h2><span>${earned} из ${list.length}</span></div>
+  <div class="gg-ach">${list.map(achievementTile).join("\n")}</div>`;
 }
 
 function history(d) {
@@ -164,8 +169,8 @@ function progressTab(d) {
   const hasLadder = d.ladder !== false;
   return `<div class="gg-progress">
     ${hasLadder ? ladder(d) : ""}
-    ${d.challenges === false ? "" : challenges()}
-    ${d.achievements === false ? "" : achievements()}
+    ${d.challenges === false ? "" : challenges(d)}
+    ${d.achievements === false ? "" : achievements(d)}
     ${hasLadder ? history(d) : ""}
   </div>`;
 }
@@ -186,4 +191,4 @@ ${progressTab(d)}
   return frame({ balance: 1250, points: 3400, time: "2ч 15м", pinned: 3, level, ...d, active: "profile" }, body);
 }
 
-module.exports = { render, progressTab };
+module.exports = { render, progressTab, standing, LEVELS };

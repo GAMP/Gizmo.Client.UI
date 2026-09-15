@@ -4,11 +4,14 @@
 //
 // Only the parts that take space are reproduced. Dropdowns and menus are closed in
 // every scenario and contribute nothing to the layout; the exceptions are the tariff
-// tooltip, which a scenario can open with `tooltip` (see templates/tooltip.js), and the
-// "My applications" panel, opened with `appsOpen: "rows" | "empty"`.
+// tooltip, which a scenario can open with `tooltip` (see templates/tooltip.js), the
+// "My applications" panel (`appsOpen: "rows" | "empty" | [[name, state]]`), the profile
+// card (`userOpen`), the notifications list (`notificationsOpen: [{type, title,
+// message}]` or "empty") and the call-an-administrator form (`assistanceOpen: "form" |
+// "sent"`).
 "use strict";
 
-const { esc, img, art, money, number } = require("../lib/html");
+const { esc, img, art, artFor, money, number } = require("../lib/html");
 
 function topBar(d) {
   const reservation = d.reservation
@@ -32,7 +35,7 @@ function topBar(d) {
         </div>
         <button type="button" class="giz-deploy__body">
           <span class="giz-deploy__title">${d.deploy === "done" ? "1 приложение готово" : "Развёртывание"}</span>
-          <span class="giz-deploy__sub">${d.deploy === "done" ? "Counter-Strike 2" : "Копируем файлы игры"}</span>
+          <span class="giz-deploy__sub">${d.deploy === "done" ? esc(d.deployName || "Counter-Strike 2") : "Копируем файлы игры"}</span>
         </button>
         ${d.deploy === "done" ? "" : `<div class="giz-deploy__pct">${d.deploy === "waiting" ? "…" : "63%"}</div>`}
         <button type="button" class="giz-deploy__close"><i class="ph-bold ph-x"></i></button>
@@ -76,7 +79,65 @@ function topBar(d) {
                   <div class="giz-active-apps__empty__title">Пока пусто</div>
                   <div class="giz-active-apps__empty__text">Запустите игру из каталога — она появится здесь</div>
                 </div>`
-              : appRow("VALORANT", "exe-1.jpg", "running") + appRow("Genshin Impact", "exe-2.jpg", "deploying") + appRow("Counter-Strike 2", "exe-3.jpg", "idle")}
+              : (d.appsOpen === "rows" ? [["VALORANT", "running"], ["Genshin Impact", "deploying"], ["Counter-Strike 2", "idle"]] : d.appsOpen)
+                  .map((row, i) => appRow(row[0], `exe-${i + 1}.jpg`, row[1])).join("")}
+          </div>
+        </div>
+      </div>`
+    : "";
+
+  // Shared/MenuNotificationsContainer.razor with Shared/GizNotification.razor cards.
+  const ICONS = { info: "ph-info", success: "ph-check-circle", warning: "ph-warning", danger: "ph-x-circle" };
+  const notificationsPanel = d.notificationsOpen
+    ? `<div class="giz-dropdown-menu open">
+        <div class="giz-dropdown-menu__content giz-menu-notifications">
+          <div class="giz-menu-notifications__header">
+            <div class="giz-heading">Уведомления</div>
+            <div class="giz-menu-notifications__header__hint">Всё, что мы вам присылали</div>
+          </div>
+          <div class="giz-menu-notifications__body giz-scrollbar--v">
+            ${d.notificationsOpen === "empty"
+              ? `<div class="giz-menu-notification-default-item-wrapper"><div class="giz-empty-state"><i class="ph-fill ph-bell-slash giz-ph-icon"></i><div class="giz-empty-state__title">Тишина</div><div class="giz-empty-state__text">Новых уведомлений нет</div></div></div>`
+              : d.notificationsOpen.map((n) => `<div class="giz-notification-wrapper"><div class="giz-notification${(n.type || "info") === "info" ? "" : " giz-notification--" + n.type}"><div class="giz-notification__icon"><i class="ph-fill ${ICONS[n.type || "info"]}"></i></div><div class="giz-notification__body"><div class="giz-notification__body__title">${esc(n.title)}</div>${n.message ? `<div class="giz-notification__body__message">${esc(n.message)}</div>` : ""}</div><button type="button" class="giz-notification__close"><i class="ph-bold ph-x"></i></button></div></div>`).join("")}
+          </div>
+          ${d.notificationsOpen === "empty" ? "" : `<div class="giz-menu-notifications__footer"><div class="giz-menu-notifications__footer__action">Очистить список</div></div>`}
+        </div>
+      </div>`
+    : "";
+
+  // Shared/MenuAssistanceContainer.razor: the request form, or the sent state.
+  const assistancePanel = d.assistanceOpen
+    ? `<div class="giz-dropdown-menu open">
+        <div class="giz-dropdown-menu__content giz-menu-assistance">
+          ${d.assistanceOpen === "sent"
+            ? `<div class="giz-alert giz-alert--info"><div class="giz-alert__icon"><div class="giz-icon giz-icon--medium"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="2"/><path d="M12 8h.01M12 11v5" stroke-width="2" stroke-linecap="round"/></svg></div></div><div class="giz-alert__body"><div class="giz-alert__body__title">Запрос отправлен.</div><div class="giz-alert__body__text">Подождите, пока оператор рассмотрит ваш запрос. Ответ появится в разделе «Уведомления».</div><div class="giz-alert__body__actions"><button class="giz-button giz-button--small info giz-button--outline"><div class="giz-button__progress-wrapper"><div class="giz-button__progress" style="width: 0%"></div></div><div class="giz-button__content_wrapper"><div class="giz-button__content"><div>Отменить запрос</div></div></div></button></div></div></div>`
+            : `<div><div class="giz-select giz-select--full-width"><div class="giz-select__content_wrapper"><div class="giz-input-control"><label class="giz-input-label">Выберите причину обращения</label><div class="giz-input-root giz-input-root--extra-small giz-input-root--outline giz-input-root--full-width"><div class="giz-select__content" tabindex="0" style="outline: none">Не запускается игра</div><div class="giz-icon giz-icon--extra-small giz-input__icon-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div></div></div></div>
+            <div><div class="giz-text-input giz-text-input--full-width giz-input-control"><label class="giz-input-label">Чем мы можем вам помочь?</label><div class="giz-input-root giz-input-root--medium giz-input-root--full-width"><div class="giz-input-wrapper"><textarea class="giz-scrollbar--v" placeholder="Опишите проблему…">Лаунчер закрывается сразу после запуска, PC 07</textarea></div></div></div><div class="giz-menu-assistance-note-counter">45/200</div></div>
+            <div><button class="giz-button giz-button--large accent giz-button--fill giz-button--full-width"><div class="giz-button__progress-wrapper"><div class="giz-button__progress" style="width: 0%"></div></div><div class="giz-button__content_wrapper"><div class="giz-button__content"><div>Отправить</div></div></div></button></div>`}
+        </div>
+      </div>`
+    : "";
+
+  // Shared/MenuUserLinks.razor: the profile card with the icons in orbit around the
+  // avatar (the angles, radii and sizes are the component's own table).
+  const ORBIT = [["ph-game-controller", 12, 64, 15, .80], ["ph-headset", 58, 92, 10, .45], ["ph-desktop-tower", 104, 58, 13, .70], ["ph-keyboard", 146, 99, 9, .35], ["ph-crosshair-simple", 188, 70, 14, .75], ["ph-mouse", 221, 106, 8, .30], ["ph-joystick", 252, 61, 12, .65], ["ph-lightning", 283, 90, 11, .50], ["ph-cpu", 312, 73, 15, .78], ["ph-wifi-high", 341, 101, 9, .38]];
+  const userPanel = d.userOpen
+    ? `<div class="giz-dropdown-menu giz-profile-popup open">
+        <div class="giz-dropdown-menu__content giz-profile-popup__content">
+          <div class="giz-profile-popup__avatar-zone">
+            <div class="giz-profile-popup__orbit">
+              ${ORBIT.map(([icon, angle, radius, size, opacity]) => `<i class="ph-bold ${icon} giz-orbit-icon" style="font-size:${size}px; opacity:${opacity}; transform: rotate(${angle}deg) translate(0, -${radius}px) rotate(${(-angle + Math.sin(angle * Math.PI / 180) * 15).toFixed(2)}deg);"></i>`).join("")}
+              <div class="giz-profile-popup__avatar">${d.picture ? `<div class="giz-avatar giz-avatar--medium giz-avatar--circle"><img src="${d.picture}" alt=""></div>` : `<i class="ph ph-user"></i>`}</div>
+            </div>
+          </div>
+          <div class="giz-profile-popup__name">${esc(d.username || "xennon")}</div>
+          <div class="giz-profile-popup__actions">
+            <button class="giz-profile-popup__account-btn"><i class="ph-bold ph-user"></i><span>Мой профиль</span><i class="ph-bold ph-arrow-right giz-profile-popup__account-arrow"></i></button>
+            <div class="giz-profile-popup__actions-row">
+              <button class="giz-profile-popup__change-password-btn"><i class="ph-bold ph-key"></i><span>Изменить пароль</span></button>
+              <button class="giz-profile-popup__lock-btn" title="Заблокировать ПК"><i class="ph-bold ph-lock-simple"></i></button>
+            </div>
+            <button class="giz-profile-popup__logout-btn"><i class="ph-bold ph-sign-out"></i><span>Выход</span></button>
           </div>
         </div>
       </div>`
@@ -125,28 +186,39 @@ function topBar(d) {
               <button class="user-menu-item-button--box"><i class="ph-bold ph-squares-four giz-ph-icon"></i></button>
               ${appsPanel}
             </div>
-            <div class="giz-header__user-menu-item giz-notifications-dropdown" data-tooltip="Уведомления">
+            <div class="giz-header__user-menu-item giz-notifications-dropdown${d.notificationsOpen ? " open" : ""}" data-tooltip="Уведомления">
               ${d.unread ? `<div class="giz-badge giz-badge--corner"><span><button class="user-menu-item-button--box"><i class="ph-bold ph-bell giz-ph-icon"></i></button></span><span class="giz-badge__wrapper"><span class="giz-badge__badge">${d.unread}</span></span></div>` : `<button class="user-menu-item-button--box"><i class="ph-bold ph-bell giz-ph-icon"></i></button>`}
+              ${notificationsPanel}
             </div>
-            <div class="giz-header__user-menu-item giz-assistance-dropdown" data-tooltip="Позвать администратора">
+            <div class="giz-header__user-menu-item giz-assistance-dropdown${d.assistanceOpen ? " open" : ""}" data-tooltip="Позвать администратора">
               <button class="user-menu-item-button--box"><i class="ph-bold ph-question giz-ph-icon"></i></button>
+              ${assistancePanel}
             </div>
           </div>
         </div>
         ${deploy}
         ${levelHint(d)}
         <div class="giz-top-bar__account">
-          <div class="giz-header__user-menu-item giz-user-dropdown">
+          <div class="giz-header__user-menu-item giz-user-dropdown${d.userOpen ? " open" : ""}">
             <span class="gg-avatar-host">
               <button class="giz-user-menu-button">
-                <span class="giz-user-avatar giz-user-avatar--glyph"><i class="ph ph-user"></i></span>
+                ${avatar(d)}
               </button>
               ${levelRing(d)}
             </span>
+            ${userPanel}
           </div>
         </div>
       </div>
     </div>`;
+}
+
+// Shared/UserAvatar.razor: the person's picture when the account has one (`picture`),
+// otherwise the glyph.
+function avatar(d, cls) {
+  return d.picture
+    ? `<div class="giz-user-avatar ${cls || ""} giz-avatar giz-avatar--medium giz-avatar--circle"><img src="${d.picture}" alt=""></div>`
+    : `<span class="giz-user-avatar giz-user-avatar--glyph ${cls || ""}"><i class="ph ph-user"></i></span>`;
 }
 
 // Shared/LoyaltyAvatarRing.razor: the ladder level worn on the avatar - the level's
@@ -169,10 +241,11 @@ function levelRing(d) {
 function levelHint(d) {
   if (!d.levelHint) return "";
   const secured = d.levelHint === "secured";
+  const name = d.levelName || (secured ? "Alternatif" : "Praxilla");
   return `<div class="giz-deploy gg-hint open">
-    <div class="giz-deploy__badge gg-hint__badge">${secured ? "A" : "P"}</div>
+    <div class="giz-deploy__badge gg-hint__badge">${esc(d.levelMark || name[0])}</div>
     <button type="button" class="giz-deploy__body" title="Мой прогресс">
-      <span class="giz-deploy__title">${secured ? "Alternatif — ваш уровень" : "Praxilla — ваш уровень"}</span>
+      <span class="giz-deploy__title">${esc(name)} — ваш уровень</span>
       <span class="giz-deploy__sub">Нажмите, чтобы узнать больше</span>
     </button>
     <i class="ph-bold ph-arrow-right gg-hint__arrow"></i>
@@ -195,7 +268,7 @@ function rail(d) {
     dock.push(`<div class="giz-dock-item">
       <div class="giz-universal-executable">
         <div class="giz-universal-executable__icon">
-          <img src="${art("exe-" + ((i % 3) + 1) + ".jpg")}" class="giz-image--cover" alt="image" />
+          <img src="${artFor("exe", i)}" class="giz-image--cover" alt="image" />
           <div class="giz-universal-executable-progress-bar"></div>
         </div>
       </div>
@@ -223,7 +296,8 @@ function rail(d) {
 }
 
 // d: { balance, points, time, pc, tariff, reservation, deploy, pinned, active, level,
-//      levelHint }
+//      levelHint, picture, username, appsOpen, notificationsOpen, assistanceOpen,
+//      userOpen }
 function frame(d, bodyHtml, extraHtml) {
   return `
   <div class="giz-root">
@@ -238,4 +312,4 @@ ${bodyHtml}
 ${extraHtml || ""}`;
 }
 
-module.exports = { frame };
+module.exports = { frame, avatar };

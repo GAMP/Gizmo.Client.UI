@@ -21,9 +21,10 @@ function render(d) {
   let items = d.items;
   if (!items) {
     const count = d.count == null ? 3 : d.count;
+    const goods = d.goods || GOODS;
     items = [];
     for (let i = 0; i < count; i++) {
-      items.push({ name: d.longNames ? GOODS[10 + (i % 2)] : GOODS[i % GOODS.length], qty: 1 + (i % 3), price: 90 + i * 35, points: 0 });
+      items.push({ name: d.longNames ? GOODS[10 + (i % 2)] : goods[i % goods.length], qty: 1 + (i % 3), price: 90 + i * 35, points: 0 });
     }
   }
   const total0 = items.reduce((sum, it) => sum + (it.points ? 0 : it.price * it.qty), 0);

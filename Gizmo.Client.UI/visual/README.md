@@ -39,8 +39,15 @@ Nothing else. No browser automation package, no server, no client.
    the account page with its tabs (`account.js`; the Progress tab, the loyalty
    summary tile and the level ring / sign-in pill come from `progress.js` and the
    `loyalty` / `level` / `levelHint` scenario keys), the product page with the cart
-   beside it (`product.js`), the idle sign-in screen (`login.js`). They emit the same
-   class names and nesting as the Razor components - that is the whole contract.
+   beside it (`product.js`), the applications catalogue with its filters (`apps.js`),
+   the shop with its group tabs and the three kinds of card (`shop.js`), the
+   application page (`appdetails.js`), the sign-in screen idle or with the card up
+   (`login.js`), the top-up dialog (`topup.js`) and the profile lock (`lock.js`) over
+   the board, and the frame's own dropdowns - My applications, notifications, the
+   call-an-administrator form and the profile card - opened by scenario keys
+   (`appsOpen`, `notificationsOpen`, `assistanceOpen`, `userOpen`; see the head of
+   `frame.js`). They emit the same class names and nesting as the Razor components -
+   that is the whole contract.
    Two helpers outside the baselines: `node visual/measure.js <scenario> <selector>`
    prints boxes and computed styles, `node visual/hover.js <scenario> <selector>
    <out.png>` pictures the page with the mouse over an element (hover tints,
@@ -74,6 +81,9 @@ Nothing else. No browser automation package, no server, no client.
   the pictures.
 - `accent` (optional) renders the page in another palette, the way `data-accent` on
   `<html>` does in the skin's index.html: `"accent": "green"`.
+- `hover` (optional) is a selector whose first match is captured in its `:hover`
+  state (DevTools' forced element state over the protocol), for the cards that show
+  their shortcuts or their details under the cursor.
 
 The list leans on the edges on purpose - empty, too many, too long, nothing to pay
 with - because that is where layouts break. The typical case is there for the
@@ -106,6 +116,26 @@ shows the diff so a human can tell a font from a layout. Text drawn over
 `backdrop-filter` glass is the one thing Chrome does not rasterise identically from run
 to run - a few hundred pixels on a 1366 panel - which is what the 0.05 % tolerance
 absorbs. A real layout shift is ten times that at least.
+
+## Promo shots
+
+`node visual/promo.js` renders every screen of the shell in every palette at
+3840x2160 (a 1920x1080 page at device pixel ratio 2) into
+`..\deploy\dist\promo\<palette>\`, with a contact sheet per palette in `_sheets\`
+and `README.txt` listing the scenes. `--palette purple --palette teal` limits the
+palettes, `--only shop` the scenes, `--scale 1` gives plain 1080p, `--out` moves the
+output. The scenes are in `promo-scenes.js`: the same templates as the tests, fed a
+consistent person (`PROFILE`) and a fixed set of situations - about sixty of them,
+one per place in the shell.
+
+The pictures are not the fixtures. `lib/artwork.js` draws abstract SVG artwork -
+washes of light, folded ridges, a ribbon, a shaft of light - in the palette's hues,
+deterministically per name, and `lib/html.js` hands it to the templates through
+`setArtProvider` in place of `fixtures/art`; the titles in `NAMES.promo` (home.js)
+belong to no real game and the goods to no brand, so nothing in a shot is somebody's
+trademark. `node visual/art-sheet.js --accent purple` shows a sheet of the artwork on
+its own. The tests never see any of this: without a provider `art()` and `artFor()`
+return the fixtures as before.
 
 ## The palette parity check
 

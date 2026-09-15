@@ -185,9 +185,20 @@
     }
 
     // Glass pills, same material as the top bar's segments, instead of the
-    // library's default boxed inputs.
+    // library's default boxed inputs. Wide enough for the longest sorting name
+    // ("Популярные приложения") - the library sizes the field to a default width
+    // and cut the value short.
     .giz-input-root {
         min-height: 4rem;
+        min-width: 24rem;
+
+        // The value takes the room the pill has, not the browser's twenty characters.
+        .giz-input-wrapper {
+            flex: 1 1 auto;
+            min-width: 0;
+
+            input { width: 100%; }
+        }
         border-radius: 1.3rem;
         background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03));
         border: 1px solid rgba(255, 255, 255, 0.10);

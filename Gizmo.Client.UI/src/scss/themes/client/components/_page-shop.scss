@@ -52,6 +52,14 @@ $gg-cart-w:    50rem;
             display: flex;
             align-items: center;
             gap: 0.9rem;
+
+            // The icon and the name sit in one inner div (ProductsIndex.razor), so the
+            // gap belongs there too - on the item alone the two touched.
+            > div {
+                display: flex;
+                align-items: center;
+                gap: 0.9rem;
+            }
             color: var(--gg-ink-3);
             font-weight: 600;
             cursor: pointer;
@@ -125,6 +133,15 @@ $gg-cart-w:    50rem;
         overflow: visible;
         padding-left: 1.4rem;
         box-sizing: border-box;
+    }
+}
+
+// The operator's "products per row" is a maximum: beside the 50rem cart a 1366-wide
+// screen gives six cards 15rem each, and a price like "1 000,00 ₽" no longer fits.
+// Four columns there; the inline style from ProductVirtualizedCards is what is beaten.
+@media (max-width: 1500px) {
+    .giz-shop .virtual-chunk-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
     }
 }
 
