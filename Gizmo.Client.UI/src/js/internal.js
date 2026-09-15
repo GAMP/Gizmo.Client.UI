@@ -226,7 +226,7 @@ window.unregisterPopup = function unregisterPopup(element) {
     });
 
     if (objRefIndex > -1) {
-        registeredVideoComponents.splice(objRefIndex, 1);
+        registeredPopups.splice(objRefIndex, 1);
 
         //console.log('unregisterPopup');
         //console.log(element);
@@ -290,8 +290,8 @@ window.addClosePopupEventListener = function addClosePopupEventListener(
   closePopupEventListenerReferences.push(objRef);
 };
 
-window.removeClosePopupEventEventListener =
-  function removeClosePopupEventEventListener(objRef) {
+window.removeClosePopupEventListener =
+  function removeClosePopupEventListener(objRef) {
     var index = findElementIndexById(closePopupEventListenerReferences, objRef);
     if (index > -1) {
       closePopupEventListenerReferences.splice(index, 1);
