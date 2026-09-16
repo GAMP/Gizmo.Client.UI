@@ -3,8 +3,12 @@
 // giz-* block names and includes only the pieces it needs, so the achievements CSS stays
 // unchanged after the extraction.
 
-// opaque neutral chrome for profile cards and popups; no theme token exists for this tone
-$profile-card-bg: #1A1F24;
+// opaque neutral chrome for profile cards and popups; no theme token exists for this tone.
+// Figma: idle card #1A1D1F, hovered/active card #0B1820 (darker, brand-tinted), popup #22272B —
+// three distinct fills so the popup never blends into the cards it overlaps
+$profile-card-bg: #1A1D1F;
+$profile-card-highlight-bg: #0B1820;
+$profile-popup-bg: #22272B;
 
 @mixin profile-section-title {
     color: $typo-primary-theme-client;
@@ -51,10 +55,10 @@ $profile-card-bg: #1A1F24;
     }
 }
 
-// brand highlight (hover / open popup / deep-link): 7 % brand tint blended into the opaque fill,
-// brand stroke, (i) revealed. $info-selector = the card's info element class.
+// brand highlight (hover / open popup / deep-link): darker brand-tinted fill, brand stroke,
+// (i) revealed. $info-selector = the card's info element class.
 @mixin profile-card-highlight($info-selector) {
-    background-color: mix($typo-brand-theme-client, $profile-card-bg, 7%);
+    background-color: $profile-card-highlight-bg;
     border-color: $typo-brand-theme-client;
 
     #{$info-selector} {
@@ -98,7 +102,7 @@ $profile-card-bg: #1A1F24;
     flex-direction: column;
     gap: 1.2rem;
     width: 28.8rem;
-    background-color: $profile-card-bg;
+    background-color: $profile-popup-bg;
     border: 0.1rem solid rgba(255, 255, 255, 0.10);
     border-radius: 1.0rem;
     box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.3), 0 0.8rem 3.2rem rgba(0, 0, 0, 0.5);

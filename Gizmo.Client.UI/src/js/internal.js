@@ -1033,9 +1033,9 @@ window.scrollListItemIntoView = function scrollListItemIntoView(element) {
     }
 };
 //
-window.scrollElementIntoView = function scrollElementIntoView(element) {
+window.scrollElementIntoView = function scrollElementIntoView(element, block) {
     if (element)
-        element.scrollIntoView({ block: 'center' });
+        element.scrollIntoView({ block: block || 'center' });
 };
 //
 /*window.scrollDatePickerYear = function scrollDatePickerYear() {

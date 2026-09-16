@@ -72,6 +72,12 @@
         width: 122.0rem;
         overflow: hidden;
 
+        // achievements / challenges: card popups are absolutely positioned and open downwards, so the
+        // last rows would be clipped by overflow: hidden; let them spill and .giz-profile scrolls to them
+        &--cards {
+            overflow: visible;
+        }
+
         &-wrapper {
             display: flex;
             justify-content: center;

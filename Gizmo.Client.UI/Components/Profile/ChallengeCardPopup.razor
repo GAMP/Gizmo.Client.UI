@@ -51,7 +51,14 @@
             @foreach (var reward in Item.Rewards)
             {
                 <div class="giz-challenge-popup__row">
-                    <Icon SVGIcon="@(reward.Kind == ChallengeRewardKind.Points ? Icons.Coins_Client : Icons.WorkHistory_Client)" />
+                    @if (reward.Kind == ChallengeRewardKind.Points)
+                    {
+                        <Icon SVGIcon="Icons.Coins_Client" Class="giz-challenge-popup__reward-icon giz-challenge-popup__reward-icon--points" />
+                    }
+                    else
+                    {
+                        <Icon SVGIcon="Icons.WorkHistory_Client" Class="giz-challenge-popup__reward-icon giz-challenge-popup__reward-icon--time" />
+                    }
                     <span class="giz-challenge-popup__reward">@reward.Text</span>
                     @if (!string.IsNullOrEmpty(reward.StatusText))
                     {

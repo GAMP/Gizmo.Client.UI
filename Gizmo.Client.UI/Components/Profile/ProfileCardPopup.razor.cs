@@ -9,6 +9,7 @@ namespace Gizmo.Client.UI.Components
     public partial class ProfileCardPopup : CustomDOMComponentBase, IAsyncDisposable
     {
         private bool _isOpen;
+        private bool _scrollIntoViewPending;
 
         [Parameter]
         public string WrapperClass { get; set; } = string.Empty;
@@ -32,6 +33,7 @@ namespace Gizmo.Client.UI.Components
                     return;
 
                 _isOpen = value;
+                _scrollIntoViewPending = _isOpen;
                 _ = IsOpenChanged.InvokeAsync(_isOpen);
             }
         }
@@ -53,6 +55,12 @@ namespace Gizmo.Client.UI.Components
                 await JsRuntime.InvokeVoidAsync("registerPopup", Ref);
                 ClosePopupEventInterop = new ClosePopupEventInterop(JsRuntime);
                 await ClosePopupEventInterop.SetupClosePopupEventCallback(args => ClosePopupHandler(args));
+            }
+
+            if (_scrollIntoViewPending)
+            {
+                _scrollIntoViewPending = false;
+                await JsRuntime.InvokeVoidAsync("scrollElementIntoView", Ref, "nearest");
             }
         }
 
