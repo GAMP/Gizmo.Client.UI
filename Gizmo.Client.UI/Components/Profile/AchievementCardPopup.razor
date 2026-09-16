@@ -3,24 +3,20 @@
 @using Gizmo.Client.UI.Services
 @using Gizmo.Client.UI.View.States
 
-<div class="giz-achievement-popup-wrapper @(_isOpen ? "open" : "")" id="@Id" @ref="@Ref">
-    <div class="giz-dropdown-menu__content giz-achievement-popup" @onclick="DoNothing" @onclick:stopPropagation="true">
-        <div class="giz-achievement-popup__description">@Item.PopupDescription</div>
+<div class="giz-achievement-popup__description">@Item.PopupDescription</div>
 
-        @if (Item.PopupIsCompleted)
-        {
-            <div class="giz-achievement-popup__completed">@Item.PopupCompletedText</div>
-        }
-        else
-        {
-            <div class="giz-achievement-popup__progress-row">
-                <div class="giz-achievement-popup__progress-label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_ACHIEVEMENTS_POPUP_PROGRESS))</div>
-                <div class="giz-achievement-popup__progress-value">@Item.PopupProgressText</div>
-            </div>
-            <div class="giz-achievement-popup__progress">
-                <div class="giz-achievement-popup__progress-fill" style="width: @AchievementValueFormat.Percent(Item.ProgressPercent)"></div>
-            </div>
-            <div class="giz-achievement-popup__reset">@Item.PopupResetText</div>
-        }
+@if (Item.PopupIsCompleted)
+{
+    <div class="giz-achievement-popup__completed">@Item.PopupCompletedText</div>
+}
+else
+{
+    <div class="giz-achievement-popup__progress-row">
+        <div class="giz-achievement-popup__progress-label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_ACHIEVEMENTS_POPUP_PROGRESS))</div>
+        <div class="giz-achievement-popup__progress-value">@Item.PopupProgressText</div>
     </div>
-</div>
+    <div class="giz-achievement-popup__progress">
+        <div class="giz-achievement-popup__progress-fill" style="width: @AchievementValueFormat.Percent(Item.ProgressPercent)"></div>
+    </div>
+    <div class="giz-achievement-popup__reset">@Item.PopupResetText</div>
+}

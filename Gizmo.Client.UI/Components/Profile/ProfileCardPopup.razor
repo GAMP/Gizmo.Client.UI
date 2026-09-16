@@ -1,0 +1,10 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+@* popup shell shared by the profile card grids: outside-click / other-popup close is handled by
+   the global registerPopup mechanics; the content is supplied by the feature component *@
+<div class="@WrapperClass @(_isOpen ? "open" : "")" id="@Id" @ref="@Ref">
+    <div class="giz-dropdown-menu__content @ContentClass" @onclick="DoNothing" @onclick:stopPropagation="true">
+        @ChildContent
+    </div>
+</div>

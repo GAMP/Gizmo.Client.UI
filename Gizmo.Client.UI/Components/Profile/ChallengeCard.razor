@@ -1,0 +1,41 @@
+@namespace Gizmo.Client.UI.Components
+@inherits ProfileCardBase
+@using Gizmo.Client.UI.Services
+@using Gizmo.Client.UI.View.States
+
+<div class="giz-challenge-card @(IsInfoOpen ? "giz-challenge-card--active" : "")">
+    @* (i) is visible only while the card is hovered or its popup is open — CSS *@
+    <div class="giz-challenge-card__info" @onclick="ToggleInfo" @onclick:stopPropagation="true">
+        <Icon SVGIcon="Icons.Info2_Client" />
+    </div>
+
+    <ProfileCardPopup WrapperClass="giz-challenge-popup-wrapper" ContentClass="giz-challenge-popup" @bind-IsOpen="IsInfoOpen">
+        <ChallengeCardPopup Item="@Item" />
+    </ProfileCardPopup>
+
+    <div class="giz-challenge-card__top">
+        @* the pill keeps its box at zero completions (Figma: opacity 0) so titles line up across cards *@
+        <div class="giz-challenge-card__count-pill @(string.IsNullOrEmpty(Item.CountText) ? "giz-challenge-card__count-pill--hidden" : "")">@Item.CountText</div>
+        <div class="giz-challenge-card__name">@Item.Name</div>
+    </div>
+
+    <div class="giz-challenge-card__bottom">
+        @if (Item.HasChip)
+        {
+            <div class="giz-challenge-card__chip @(Item.ChipIsSuccess ? "giz-challenge-card__chip--success" : "")">@Item.ChipText</div>
+        }
+        else if (!string.IsNullOrEmpty(Item.WindowText))
+        {
+            <div class="giz-challenge-card__window @(Item.WindowIsWarning ? "giz-challenge-card__window--warning" : "")">@Item.WindowText</div>
+        }
+
+        @if (Item.ShowProgressBar)
+        {
+            <div class="giz-challenge-card__progress">
+                <div class="giz-challenge-card__progress-fill" style="width: @AchievementValueFormat.Percent(Item.ProgressPercent)"></div>
+            </div>
+        }
+
+        <div class="giz-challenge-card__requirements">@Item.RequirementsText</div>
+    </div>
+</div>

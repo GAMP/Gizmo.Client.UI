@@ -1,0 +1,129 @@
+//=============== Profile card grids (achievements, challenges) ================//
+// Shared chrome for the profile-tab card grids. Mixins, not classes: each feature keeps its own
+// giz-* block names and includes only the pieces it needs, so the achievements CSS stays
+// unchanged after the extraction.
+
+// opaque neutral chrome for profile cards and popups; no theme token exists for this tone
+$profile-card-bg: #1A1F24;
+
+@mixin profile-section-title {
+    color: $typo-primary-theme-client;
+    @include font-h5-theme-client($font-weight-regular-theme-client);
+}
+
+@mixin profile-section-status {
+    color: $typo-secondary-theme-client;
+    @include font-m-theme-client($font-weight-light-theme-client);
+}
+
+// card box: opaque neutral fill + 6 % stroke (Figma #F6FBFD 6 % over the dark page)
+@mixin profile-card-chrome {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: $profile-card-bg;
+    border: 0.1rem solid rgba(246, 251, 253, 0.06);
+    border-radius: 0.8rem;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+// (i) hint icon — hidden until the card is hovered/active; $offset = inset from the card's top/right edge
+@mixin profile-card-info($offset) {
+    position: absolute;
+    top: $offset;
+    right: $offset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.0rem;
+    height: 2.0rem;
+    color: $typo-primary-theme-client;
+    filter: drop-shadow(0 0.2rem 0.2rem rgba(0, 0, 0, 0.2)) drop-shadow(0 0.4rem 0.8rem rgba(0, 0, 0, 0.2));
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+
+    .giz-icon {
+        width: 2.0rem;
+        height: 2.0rem;
+    }
+}
+
+// brand highlight (hover / open popup / deep-link): 7 % brand tint blended into the opaque fill,
+// brand stroke, (i) revealed. $info-selector = the card's info element class.
+@mixin profile-card-highlight($info-selector) {
+    background-color: mix($typo-brand-theme-client, $profile-card-bg, 7%);
+    border-color: $typo-brand-theme-client;
+
+    #{$info-selector} {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+@mixin profile-progress-track($height, $radius) {
+    width: 100%;
+    height: $height;
+    border-radius: $radius;
+    background-color: rgba(255, 255, 255, 0.10);
+    overflow: hidden;
+}
+
+@mixin profile-progress-fill($radius) {
+    height: 100%;
+    border-radius: $radius;
+    background-color: $primary-color-theme-client;
+}
+
+// completions counter pill (Figma 28×20, radius 99, 2px translucent stroke)
+@mixin profile-count-pill {
+    min-width: 2.8rem;
+    height: 2.0rem;
+    padding: 0 0.5rem;
+    border-radius: 9.9rem;
+    background-color: $primary-color-theme-client;
+    border: 0.2rem solid rgba(246, 251, 253, 0.28);
+    color: $typo-primary-theme-client;
+    white-space: nowrap;
+    @include font-s-theme-client($font-weight-bold-theme-client);
+    line-height: 1.6rem;
+    text-align: center;
+}
+
+// info popup box (288 wide, dark, 10 % stroke, two shadows); padding is per feature
+@mixin profile-popup-box {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    width: 28.8rem;
+    background-color: $profile-card-bg;
+    border: 0.1rem solid rgba(255, 255, 255, 0.10);
+    border-radius: 1.0rem;
+    box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.3), 0 0.8rem 3.2rem rgba(0, 0, 0, 0.5);
+    color: $typo-primary-theme-client;
+    cursor: default;
+    text-align: left;
+}
+
+// popup wrapper anchored to the card (position: relative): $top = below the (i); right-aligned to
+// the card edge so the last column never overflows the profile body. First column would extend
+// past the body's left edge (overflow: hidden) — open it to the right instead; $columns = cards
+// per row, keep in sync with the feature's grid.
+@mixin profile-popup-wrapper($top, $card-selector, $columns) {
+    position: absolute;
+    top: $top;
+    right: 0;
+    z-index: $info-tooltip-index;
+    display: none;
+
+    &.open {
+        display: block;
+    }
+
+    #{$card-selector}:nth-child(#{$columns}n + 1) & {
+        right: auto;
+        left: 0;
+    }
+}

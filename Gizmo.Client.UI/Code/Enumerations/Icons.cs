@@ -27,6 +27,8 @@
         Cash,
         Challenges_Client,
         Check,
+        CheckCircle_Client,
+        Circle_Client,
         Clock_Client,
         Close,
         Close_Client,

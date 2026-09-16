@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class AchievementCardPopup : CustomDOMComponentBase
+    public partial class ChallengeCardPopup : CustomDOMComponentBase
     {
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Parameter]
-        public UserAchievementViewState Item { get; set; } = null!;
+        public UserChallengeViewState Item { get; set; } = null!;
     }
 }

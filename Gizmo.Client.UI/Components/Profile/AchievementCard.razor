@@ -1,16 +1,19 @@
 @namespace Gizmo.Client.UI.Components
-@inherits CustomDOMComponentBase
+@inherits ProfileCardBase
 @using Gizmo.Client.UI.Services
 @using Gizmo.Client.UI.View.States
 
-<div class="giz-achievement-card @(Item.IsEarned ? "giz-achievement-card--earned" : "") @(_isOpen ? "giz-achievement-card--active" : "")">
-    @* (i) is visible only while the card is hovered or its popup is open — CSS, see Task 5.1 *@
-    <div class="giz-achievement-card__info" @onclick="ToggleInfo" @onclick:stopPropagation="true">
+<div class="giz-achievement-card @(Item.IsEarned ? "giz-achievement-card--earned" : "") @(IsInfoOpen ? "giz-achievement-card--active" : "") @(Item.IsHighlighted ? "giz-achievement-card--highlighted" : "")"
+     @ref="Ref" @onclick="OnCardClick">
+    @* (i) is visible only while the card is hovered, highlighted or its popup is open — CSS *@
+    <div class="giz-achievement-card__info" @onclick="OnInfoClick" @onclick:stopPropagation="true">
         <Icon SVGIcon="Icons.Info2_Client" />
     </div>
 
     @* popup is anchored to the card, not the icon, so it is not clipped by the icon's filter/stacking context *@
-    <AchievementCardPopup Item="@Item" @bind-IsOpen="_isOpen" />
+    <ProfileCardPopup WrapperClass="giz-achievement-popup-wrapper" ContentClass="giz-achievement-popup" @bind-IsOpen="IsInfoOpen">
+        <AchievementCardPopup Item="@Item" />
+    </ProfileCardPopup>
 
     <AchievementTile ImageUrl="@Item.ImageUrl" CountText="@Item.CountText" />
 

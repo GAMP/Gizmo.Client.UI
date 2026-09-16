@@ -1033,6 +1033,11 @@ window.scrollListItemIntoView = function scrollListItemIntoView(element) {
     }
 };
 //
+window.scrollElementIntoView = function scrollElementIntoView(element) {
+    if (element)
+        element.scrollIntoView({ block: 'center' });
+};
+//
 /*window.scrollDatePickerYear = function scrollDatePickerYear() {
   var items = document.getElementsByClassName('giz-date-picker-year-count active');
 
