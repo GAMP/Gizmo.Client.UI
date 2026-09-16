@@ -4,7 +4,6 @@
 @using Gizmo.Client.UI.View.States
 
 <div class="giz-challenge-card @(IsInfoOpen ? "giz-challenge-card--active" : "")">
-    @* (i) is visible only while the card is hovered or its popup is open — CSS *@
     <div class="giz-challenge-card__info" @onclick="ToggleInfo" @onclick:stopPropagation="true">
         <Icon SVGIcon="Icons.Info2_Client" />
     </div>
@@ -14,7 +13,6 @@
     </ProfileCardPopup>
 
     <div class="giz-challenge-card__top">
-        @* the pill keeps its box at zero completions (Figma: opacity 0) so titles line up across cards *@
         <div class="giz-challenge-card__count-pill @(string.IsNullOrEmpty(Item.CountText) ? "giz-challenge-card__count-pill--hidden" : "")">@Item.CountText</div>
         <div class="giz-challenge-card__name">@Item.Name</div>
     </div>

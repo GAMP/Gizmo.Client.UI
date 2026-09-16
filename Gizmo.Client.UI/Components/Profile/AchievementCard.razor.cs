@@ -13,7 +13,6 @@ namespace Gizmo.Client.UI.Components
 
         [Parameter] public UserAchievementViewState Item { get; set; } = null!;
 
-        // a click anywhere on the card moves the sticky highlight here (the popup stops propagation)
         private void OnCardClick() => Service.Highlight(Item.AchievementId);
 
         private Task OnInfoClick(MouseEventArgs e)
@@ -26,7 +25,6 @@ namespace Gizmo.Client.UI.Components
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            // deep-link arrival: the highlighted card is rendered once after load — bring it into view
             if (firstRender && Item.IsHighlighted)
                 await InvokeVoidAsync("scrollElementIntoView", Ref);
         }
