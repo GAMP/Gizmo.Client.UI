@@ -44,11 +44,6 @@ namespace Gizmo.Client.UI.Components
 
         }
 
-        private void Close()
-        {
-            IsOpen = false;
-        }
-
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);
