@@ -1,0 +1,373 @@
+//=============== Page User Ladder ================//
+// Figma 90:10977 — standing card 613 + gap 24 + history card 613 (1250); the 122.0rem profile body
+// gives (122.0 − 2.4) / 2 = 59.8rem per card. Shared chrome from components/_profile-cards.
+
+.giz-ladder {
+    margin-top: 4.0rem;
+
+    &__header {
+        display: flex;
+        align-items: baseline;
+        gap: 0.4rem;
+        margin-bottom: 2.4rem;
+        @include profile-section-title;
+    }
+
+    &__status {
+        @include profile-section-status;
+
+        &--error {
+            color: $typo-alert-theme-client;
+        }
+    }
+
+    &__content {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 2.4rem;
+        align-items: start;
+    }
+}
+
+// standing card (Figma 90:11197): card chrome, padding 20, vertical gap 20
+.giz-ladder-card {
+    @include profile-card-chrome;
+    align-items: stretch;
+    padding: 2.0rem;
+    gap: 2.0rem;
+}
+
+// "This month · ends Oct 1 · 22d left" (90:11198)
+.giz-ladder-period {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: $typo-secondary-theme-client;
+    @include font-m-theme-client($font-weight-light-theme-client);
+
+    &__dot {
+        color: rgba(255, 255, 255, 0.30);
+    }
+
+    &__strong {
+        color: $typo-primary-theme-client;
+        font-weight: $font-weight-regular-theme-client;
+    }
+}
+
+// rank glyph — CSS badge instead of the Material counter_N glyphs (arbitrary level counts)
+.giz-ladder-rank {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 2.0rem;
+    height: 2.0rem;
+    border-radius: 0.3rem;
+    background-color: $typo-primary-theme-client;
+    color: $profile-card-bg;
+    @include font-s-theme-client($font-weight-bold-theme-client);
+
+    &--large {
+        width: 4.8rem;
+        height: 4.8rem;
+        border-radius: 0.6rem;
+        font-size: 2.6rem;
+        line-height: 3.4rem;
+    }
+}
+
+// current level block (90:11212): 48px glyph + name / score
+.giz-ladder-level {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+
+    &__body {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    &__name {
+        color: $typo-primary-theme-client;
+        @include font-xl-theme-client($font-weight-bold-theme-client);
+    }
+
+    &__score {
+        display: flex;
+        align-items: baseline;
+        gap: 0.8rem;
+    }
+
+    // Rubik Bold 26/34
+    &__score-value {
+        color: $typo-primary-theme-client;
+        font-family: $font-family-header-theme-client;
+        font-weight: $font-weight-bold-theme-client;
+        font-size: 2.6rem;
+        line-height: 3.4rem;
+    }
+
+    &__score-unit {
+        color: $typo-secondary-theme-client;
+        @include font-s-theme-client($font-weight-light-theme-client);
+    }
+}
+
+// progress (90:11223): 8px track with round knobs at both ends, labels below
+.giz-ladder-progress {
+    &__track {
+        position: relative;
+        @include profile-progress-track(0.8rem, 0.8rem);
+    }
+
+    &__fill {
+        @include profile-progress-fill(0.8rem);
+
+        &--secured {
+            background-color: $typo-success-theme-client;
+        }
+    }
+
+    &__knob {
+        position: absolute;
+        top: 0;
+        width: 0.8rem;
+        height: 0.8rem;
+        border-radius: 50%;
+        background-color: $typo-primary-theme-client;
+
+        &--start {
+            left: 0;
+        }
+
+        &--end {
+            right: 0;
+        }
+    }
+
+    &__labels {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 0.8rem;
+        color: $typo-secondary-theme-client;
+        @include font-s-theme-client($font-weight-light-theme-client);
+    }
+
+    &__goal {
+        color: $primary-color-theme-client;
+
+        &--secured {
+            color: $typo-success-theme-client;
+        }
+    }
+}
+
+// secured banner (90:11232)
+.giz-ladder-banner {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+    padding: 1.2rem 1.6rem;
+    border-radius: 0.8rem;
+    background-color: $typo-success-theme-client;
+    color: $typo-primary-theme-client;
+    @include font-m-theme-client($font-weight-light-theme-client);
+
+    .giz-icon {
+        flex: none;
+        width: 2.4rem;
+        height: 2.4rem;
+    }
+
+    &__title {
+        font-weight: $font-weight-bold-theme-client;
+    }
+}
+
+// all levels (90:11243)
+.giz-ladder-levels {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+
+    &__label {
+        color: $typo-secondary-theme-client;
+        @include font-m-theme-client($font-weight-light-theme-client);
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+}
+
+// level row (90:11246 / 90:11273): 40px, hover/selected = brand 7 % fill + brand stroke;
+// the highlighted row keeps the 40px box (Figma draws 48px) so the list does not jump on hover
+.giz-ladder-level-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    min-height: 4.0rem;
+    padding: 0.9rem 1.2rem;
+    border: 0.1rem solid transparent;
+    border-radius: 0.6rem;
+    color: $typo-secondary-theme-client;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+    @include font-m-theme-client($font-weight-light-theme-client);
+
+    &:hover,
+    &--selected {
+        background-color: rgba($typo-brand-theme-client, 0.07);
+        border-color: $typo-brand-theme-client;
+        border-radius: 0.8rem;
+    }
+
+    &__check {
+        display: inline-flex;
+        flex: none;
+        width: 2.0rem;
+        height: 2.0rem;
+        color: $typo-secondary-theme-client;
+
+        .giz-icon {
+            width: 2.0rem;
+            height: 2.0rem;
+        }
+    }
+
+    &__name {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    // CURRENT chip (90:11281)
+    &__chip {
+        flex: none;
+        padding: 0.1rem 0.4rem;
+        border-radius: 0.4rem;
+        background-color: rgba($primary-color-theme-client, 0.32);
+        color: $typo-primary-theme-client;
+        @include font-s-theme-client($font-weight-regular-theme-client);
+    }
+
+    &__meta {
+        flex: none;
+        margin-left: auto;
+        color: rgba(255, 255, 255, 0.30);
+    }
+
+    &--current {
+        .giz-ladder-level-row__name {
+            color: $typo-primary-theme-client;
+            font-weight: $font-weight-bold-theme-client;
+        }
+
+        .giz-ladder-level-row__meta {
+            color: rgba(255, 255, 255, 0.40);
+        }
+    }
+}
+
+// history card (90:11285) — the ProfileCardPopup content box; wrapper is a plain grid cell
+.giz-ladder-history-wrapper {
+    display: none;
+
+    &.open {
+        display: block;
+    }
+}
+
+.giz-ladder-history {
+    @include profile-card-chrome;
+    align-items: stretch;
+    padding: 2.0rem;
+    gap: 1.2rem;
+    cursor: default;
+
+    &__title {
+        color: $typo-primary-theme-client;
+        @include font-m-theme-client($font-weight-regular-theme-client);
+    }
+
+    // table (90:11289): slightly darker fill, 6 % stroke, 1px separators
+    &__table {
+        display: flex;
+        flex-direction: column;
+        background-color: rgba(0, 0, 0, 0.12);
+        border: 0.1rem solid rgba(246, 251, 253, 0.06);
+        border-radius: 0.8rem;
+        overflow: hidden;
+    }
+
+    &__row {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        min-height: 4.0rem;
+        padding: 0 0.8rem;
+        color: $typo-secondary-theme-client;
+        @include font-m-theme-client($font-weight-light-theme-client);
+
+        & + & {
+            border-top: 0.1rem solid rgba(246, 251, 253, 0.06);
+        }
+
+        &--header {
+            @include font-s-theme-client($font-weight-regular-theme-client);
+        }
+
+        &--empty {
+            @include profile-section-status;
+        }
+    }
+
+    &__icon {
+        display: inline-flex;
+        flex: none;
+        width: 2.0rem;
+        height: 2.0rem;
+        color: $typo-secondary-theme-client;
+
+        .giz-icon {
+            width: 2.0rem;
+            height: 2.0rem;
+        }
+
+        &--up {
+            color: $typo-success-theme-client;
+        }
+
+        &--down {
+            color: $typo-warning-theme-client;
+            transform: rotate(180deg);
+        }
+    }
+
+    &__arrow {
+        display: inline-flex;
+        flex: none;
+        width: 2.0rem;
+        height: 2.0rem;
+        color: rgba(255, 255, 255, 0.30);
+
+        .giz-icon {
+            width: 2.0rem;
+            height: 2.0rem;
+        }
+    }
+
+    &__to {
+        color: $typo-primary-theme-client;
+    }
+
+    &__date {
+        flex: none;
+        margin-left: auto;
+    }
+}

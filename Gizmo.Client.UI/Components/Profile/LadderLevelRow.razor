@@ -1,0 +1,20 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using Gizmo.Client.UI.View.States
+
+<div class="giz-ladder-level-row @(Item.IsCurrent ? "giz-ladder-level-row--current" : "") @(Item.IsSelected ? "giz-ladder-level-row--selected" : "")"
+     @onclick="OnClick" @onclick:stopPropagation="true">
+    <span class="giz-ladder-level-row__check">
+        <Icon SVGIcon="@(Item.IsSatisfied ? Icons.CheckCircle_Client : Icons.Circle_Client)" />
+    </span>
+    <span class="giz-ladder-rank">@Item.Ordinal</span>
+    <span class="giz-ladder-level-row__name">@Item.Name</span>
+    @if (Item.IsCurrent)
+    {
+        <span class="giz-ladder-level-row__chip">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_CURRENT))</span>
+    }
+    @if (!string.IsNullOrEmpty(Item.ThresholdText))
+    {
+        <span class="giz-ladder-level-row__meta">@Item.ThresholdText</span>
+    }
+</div>

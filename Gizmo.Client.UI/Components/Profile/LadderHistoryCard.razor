@@ -1,0 +1,30 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using Gizmo.Client.UI.View.States
+
+<div class="giz-ladder-history__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_HISTORY))</div>
+
+<div class="giz-ladder-history__table">
+    <div class="giz-ladder-history__row giz-ladder-history__row--header">
+        <span class="giz-ladder-history__icon"><Icon SVGIcon="Icons.History_Client" /></span>
+        <span>@ViewState.HistoryTitleText</span>
+    </div>
+
+    @if (ViewState.HistoryRows.Any())
+    {
+        @foreach (var row in ViewState.HistoryRows)
+        {
+            <div class="giz-ladder-history__row">
+                <span class="giz-ladder-history__icon @(row.IsUp ? "giz-ladder-history__icon--up" : "giz-ladder-history__icon--down")"><Icon SVGIcon="Icons.LevelUp_Client" /></span>
+                <span class="giz-ladder-history__from">@row.FromName</span>
+                <span class="giz-ladder-history__arrow"><Icon SVGIcon="Icons.ArrowRightAlt_Client" /></span>
+                <span class="giz-ladder-history__to">@row.ToName</span>
+                <span class="giz-ladder-history__date">@row.DateText</span>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="giz-ladder-history__row giz-ladder-history__row--empty">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_HISTORY_EMPTY))</div>
+    }
+</div>
