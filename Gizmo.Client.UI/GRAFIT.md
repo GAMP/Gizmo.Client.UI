@@ -45,11 +45,11 @@ repository's relation to the upstream one.
 ## Versions
 
 The shell has a version of its own and it is only meaningful next to the Gizmo
-release it was built for: "Grafit 1.1.2 · Gizmo 3.0.95". Both numbers live in one
+release it was built for: "Grafit 1.1.3 · Gizmo 3.0.95". Both numbers live in one
 place, `Gizmo.Client.UI.csproj` (`GrafitVersion`, `GizmoVersion`). They reach the
-DLL's version info (`ProductVersion` = "1.1.2 (Gizmo 3.0.95)"), the package name and
+DLL's version info (`ProductVersion` = "1.1.3 (Gizmo 3.0.95)"), the package name and
 `grafit.version.txt` in the skin folder. On screen the shell shows its own number in
-exactly one place - a quiet "Grafit 1.1.2" under the cards of the account page's
+exactly one place - a quiet "Grafit 1.1.3" under the cards of the account page's
 Profile tab (`ShellVersion.Grafit`, read from the assembly metadata) - and never the
 Gizmo release or any mismatch warning. Bump `GrafitVersion` for every shell release,
 `GizmoVersion` on every vendor merge; `stage.ps1` refuses to pack a DLL whose
@@ -139,9 +139,11 @@ version does not match the project file.
   connected and a user is signed in (it asks the server for the hash before using its
   own cache), so a request made during a dropped connection fails or hangs. `GizImage`
   therefore times out to the error placeholder after 15 s and retries every failed load
-  on reconnect / sign-in, and the placeholders (`src\img\no-*-image.svg`,
-  `broken-image.svg`, the loading plate) are translucent plates with a light glyph -
-  the vendor's dark ones vanished on the rail and read as "the icons disappeared".
+  on reconnect / sign-in, and the application placeholders (`src\img\no-app-image.svg`,
+  `no-exe-image.svg`, `broken-image.svg`, the loading plate) are translucent plates with
+  a light glyph - the vendor's dark ones vanished on the rail and read as "the icons
+  disappeared". `no-product-image.svg` is the vendor's own: many goods in a club have no
+  picture, and the grey bag reads as "a product" where a faint frame read as "broken".
 - **`async void` is fatal.** An unobserved exception on a handler exits the whole
   client. Anything subscribed to a view state or a static event goes through
   `DispatchWorkflow`, and every `Dispose` unsubscribes.

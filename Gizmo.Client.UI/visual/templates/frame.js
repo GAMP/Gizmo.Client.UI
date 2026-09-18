@@ -131,6 +131,7 @@ function topBar(d) {
             </div>
           </div>
           <div class="giz-profile-popup__name">${esc(d.username || "xennon")}</div>
+          ${profileLoyalty(d)}
           <div class="giz-profile-popup__actions">
             <button class="giz-profile-popup__account-btn"><i class="ph-bold ph-user"></i><span>Мой профиль</span><i class="ph-bold ph-arrow-right giz-profile-popup__account-arrow"></i></button>
             <div class="giz-profile-popup__actions-row">
@@ -233,6 +234,36 @@ function levelRing(d) {
     ? `<svg class="gg-avatar-ring" viewBox="0 0 40 40" aria-hidden="true"><circle class="gg-avatar-ring__track" cx="20" cy="20" r="19"></circle><circle class="gg-avatar-ring__bar" cx="20" cy="20" r="19" style="stroke-dashoffset: ${off}"></circle></svg>`
     : "";
   return `${ring}<span class="gg-avatar-mark">${esc(d.level.mark)}</span>`;
+}
+
+// The standing block of Shared/MenuUserLinks.razor, read from the same keys as the
+// home tile (`loyalty: earning | secured | achievements | challenges`, `levelName`,
+// `levelMark`, `levelProgress`, `toRetain`) plus `perk` and `rewardWaiting`; nothing
+// without `loyalty`.
+function profileLoyalty(d) {
+  const mode = d.loyalty;
+  if (!mode) return "";
+  const ladder = mode === "earning" || mode === "secured";
+  const secured = mode === "secured";
+  const p = ladder ? (secured ? 1 : (d.levelProgress || 0.17)) : mode === "achievements" ? 3 / 9 : 1 / 3;
+  const levelName = d.levelName || (secured ? "Alternatif" : "Praxilla");
+  const disc = ladder
+    ? `<span class="gg-loyal__disc">${esc(d.levelMark || levelName[0])}</span>`
+    : `<span class="gg-loyal__disc gg-loyal__disc--plain"><i class="ph-fill ${mode === "achievements" ? "ph-trophy" : "ph-flag-checkered"}"></i></span>`;
+  const who = ladder
+    ? `<b>${esc(levelName)}</b><span>${secured ? "Закреплён до 1 октября" : `Ещё ${number(d.toRetain || 1489)} очков, чтобы удержать`}</span>`
+    : mode === "achievements" ? `<b>Достижения</b><span>3 из 9</span>` : `<b>Челленджи</b><span>1 из 3</span>`;
+  const facts = [
+    ladder ? `<span><i class="ph-fill ph-trophy"></i>3 из 9</span>` : "",
+    mode !== "challenges" ? `<span><i class="ph-fill ph-flag-checkered"></i>1 из 3</span>` : "",
+    ladder ? `<span><i class="ph-fill ph-seal-percent"></i>${esc(d.perk || "скидка 5 %")}</span>` : "",
+    d.rewardWaiting ? `<em><i class="ph-fill ph-gift"></i>Награда ждёт у стойки</em>` : "",
+  ].filter(Boolean).join("");
+  return `<button type="button" class="giz-profile-popup__loyal" title="Мой прогресс">
+            <span class="giz-profile-popup__loyal-top">${disc}<span class="giz-profile-popup__loyal-who">${who}</span><i class="ph-bold ph-arrow-right giz-profile-popup__loyal-arrow"></i></span>
+            <span class="gg-loyal__track"><i style="width: ${Math.round(p * 100)}%"></i></span>
+            ${facts ? `<span class="giz-profile-popup__loyal-facts">${facts}</span>` : ""}
+          </button>`;
 }
 
 // Shared/LoyaltyHint.razor: for ten seconds after sign-in, a pill slides out next to

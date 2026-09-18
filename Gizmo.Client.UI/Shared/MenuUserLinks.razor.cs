@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Shared
@@ -93,6 +94,26 @@ namespace Gizmo.Client.UI.Shared
 
         protected string Picture => ViewState.Picture;
 
+        //The standing block: only for a customer of a club that runs any of the ladder,
+        //achievements or challenges. A guest has no standing to show.
+        protected bool ShowLoyalty => !ViewState.IsGuest && Loyalty.State.IsAvailable;
+
+        /// <summary>The level's perks in words, joined; null when it has none the shell knows.</summary>
+        protected static string LoyaltyPerks(Gizmo.Web.Api.Models.LadderStandingLevelModel level)
+        {
+            var perks = level?.Perks?.Select(LoyaltyText.Perk).Where(p => p is not null).ToList();
+            return perks is { Count: > 0 } ? string.Join(" · ", perks) : null;
+        }
+
+        private void OnClickProgressHandler()
+        {
+            _shouldRender = true;
+
+            UserMenuViewService.CloseUserLinks();
+
+            NavigationService.NavigateTo(ClientRoutes.UserProfileRoute + "/progress");
+        }
+
         private Task OnClickUserLockButtonHandler()
         {
             _shouldRender = true;
@@ -174,6 +195,7 @@ namespace Gizmo.Client.UI.Shared
         {
             ViewState.OnChange += ViewState_OnChange;
             UserMenuViewState.OnChange += ViewState_OnChange;
+            Loyalty.Changed += OnLoyaltyChanged;
 
             base.OnInitialized();
         }
@@ -188,8 +210,16 @@ namespace Gizmo.Client.UI.Shared
             DispatchStateHasChanged();
         }
 
+        //The standing arrives and changes on the client's threads too.
+        private void OnLoyaltyChanged()
+        {
+            _shouldRender = true;
+            DispatchStateHasChanged();
+        }
+
         public override void Dispose()
         {
+            Loyalty.Changed -= OnLoyaltyChanged;
             UserMenuViewState.OnChange -= ViewState_OnChange;
             ViewState.OnChange -= ViewState_OnChange;
 
