@@ -79,6 +79,7 @@ version does not match the project file.
 | Sign-in screen | `Shared\_Layout_Login.razor`, `_layout-login.scss`, `_grafit-auth.scss` |
 | Visual regression tests | `visual\` - `npm run visual`, see `visual\README.md`; `node visual\measure.js <scenario> <selector>` prints boxes and computed styles; `node visual\hover.js <scenario> <selector> <out.png>` pictures a hover state |
 | Promo shots (every screen, every palette, 4K) | `node visual\promo.js`; the scenes in `visual\promo-scenes.js`, the generated artwork in `visual\lib\artwork.js` (`node visual\art-sheet.js` shows a sheet of it) |
+| The README pictures (`docs\img`) | `node visual\readme-shots.js` - the home, four screens, the eight palettes, rendered by promo.js from the current sources |
 | Package, installer, patches for upstream | `..\deploy\` (`stage.ps1`, `install.bat`, `patches\`) |
 | Third-party licences | `THIRD-PARTY-NOTICES.md`, `src\vendor\...` |
 

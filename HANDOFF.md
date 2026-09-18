@@ -59,10 +59,12 @@ commits `14334ca` pins:
 | Gizmo.UI | `71b02dc` | unchanged |
 | Gizmo.Web.Api.Client | `279fea2` | unchanged |
 | Gizmo.Web.Api.Models | `e9fe153` | unchanged |
-| Gizmo.Web.Components | `2217ec1` | **one file changed** - see below |
+| Gizmo.Web.Components | `2217ec1` + `5321682` | **one file changed** - see below |
 
-Eight of them are git submodules (`git submodule update --init` after cloning).
-`Gizmo.Web.Components` is committed as a plain directory because it carries the one
+All nine are git submodules (`git clone --recurse-submodules`, or
+`git submodule update --init` after cloning). Eight point at your repositories.
+`Gizmo.Web.Components` points at branch `grafit` of the fork
+`XenNon546/Gizmo.Web.Components`: your `2217ec1` plus one commit, `5321682`, with the one
 change to shared code:
 
 **`Infrastructure/Components/CustomComponentBase.cs`** - adds `DispatchWorkflow(Func<Task>)`
@@ -72,9 +74,10 @@ going away, the faulted dispatcher call surfaced on the thread pool and took the
 client down. `DispatchWorkflow` runs a handler as one dispatcher work item and absorbs
 only teardown exceptions (`OperationCanceledException`, `ObjectDisposedException`,
 `InvalidOperationException`). The shell's components use it for every handler subscribed
-to something that outlives the component. The patch is in
-`deploy\patches\Gizmo.Web.Components-DispatchWorkflow.patch`; it belongs upstream, and once
-it is there the directory can go back to being a submodule.
+to something that outlives the component. The same change is offered to
+`GAMP/Gizmo.Web.Components` as a pull request from that branch (and kept as a patch in
+`deploy\patches\Gizmo.Web.Components-DispatchWorkflow.patch`); once it is merged, the
+submodule URL in `.gitmodules` goes back to your repository and the pin to your commit.
 
 ## Build, package, install
 
@@ -160,8 +163,9 @@ the JavaScript twin in `internal.js` is kept in step by `npm run visual:palette`
 
 ## Suggested next steps on your side
 
-1. Take `DispatchWorkflow` into `Gizmo.Web.Components` (patch above), then re-pin the
-   submodule here.
+1. Take `DispatchWorkflow` into `Gizmo.Web.Components` (the pull request / patch above),
+   then re-pin the submodule here to your commit and point `.gitmodules` back at
+   `GAMP/Gizmo.Web.Components`.
 2. A Manager setting for the palette and the motion switch, emitting the two CSS lines
    (or calling `grafitTheme`), so a club does not have to type CSS.
 3. Fill `UserOrderViewState.Id`.
