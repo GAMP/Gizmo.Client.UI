@@ -34,10 +34,11 @@ assembly, the WPF host - is the client's own and is not shipped. Two consequence
 
 Branch `grafit`. History: `e95eded` (your `version-3` at 3.0.92) -> a snapshot of the
 skin as it was before that merge -> the merge -> the skin's own commits -> a merge of
-`14334ca` (your 3.0.95). `vendor/version-3` is your branch as fetched, for diffing:
+`14334ca` (your 3.0.95) -> more of the skin -> a merge of `4b1f6f9` (your `version-3`
+head of 18.09.2026). `vendor/version-3` is your branch as fetched, for diffing:
 
 ```
-git diff 14334ca grafit --stat -- Gizmo.Client.UI
+git diff vendor/version-3 grafit --stat -- Gizmo.Client.UI
 ```
 
 Against the vendor shell project it is ~400 files: ~140 vendor files modified, ~70
@@ -94,7 +95,7 @@ is handed out at connect and mirrored to `%PROGRAMDATA%\NETProjects\Gizmo Client
 `deploy\README.md` is the operator's page.
 
 Versions: `GrafitVersion` and `GizmoVersion` in `Gizmo.Client.UI.csproj` -> assembly
-metadata and `ProductVersion` ("1.1.4 (Gizmo 3.0.95)"), the package name,
+metadata and `ProductVersion` ("1.1.5 (Gizmo 3.0.95)"), the package name,
 `skin\grafit.version.txt`, and one quiet line on the account page's Profile tab.
 
 ## Integration points a club uses
