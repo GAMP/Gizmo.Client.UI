@@ -1,0 +1,49 @@
+@namespace Gizmo.Client.UI.Shared
+@inherits CustomDOMComponentBase
+
+@* Deployment is the one moment where pressing Play appears to do nothing: game files
+   are copied from the server, which can take minutes, and the only place that shows it
+   is the application manager, which nobody opens.
+
+   The banner grows from width 0 in the top bar slot and pushes the icon pill left by
+   ordinary flex reflow. *@
+<div class="giz-deploy @(IsOpen ? "open" : null) @(IsDone ? "is-done" : null) @(IsIndeterminate && !IsDone ? "is-waiting" : null)">
+
+    @* Progress is read twice: the ring around the badge is the precise figure, and a
+       wash under the content fills the banner from the left with a feathered edge -
+       light filling the pill, not a block pushed along it. While nothing can be
+       measured the ring turns and the wash stays out. *@
+    <span class="giz-deploy__fill" style="width: @(IsDone ? 100 : PercentValue)%"></span>
+
+    <div class="giz-deploy__badge">
+        <svg class="giz-deploy__ring" viewBox="0 0 40 40" aria-hidden="true">
+            <circle class="giz-deploy__ring-track" cx="20" cy="20" r="17.5"></circle>
+            <circle class="giz-deploy__ring-bar" cx="20" cy="20" r="17.5" style="stroke-dashoffset: @RingOffset"></circle>
+        </svg>
+        @if (IsDone)
+        {
+            <i class="ph-bold ph-check"></i>
+        }
+        else
+        {
+            <i class="ph-fill ph-cloud-arrow-down"></i>
+        }
+    </div>
+
+    @* The body opens the application manager, which holds the details and the cancel
+       button. Cancelling is deliberately not offered here: a misclick costs a re-download. *@
+    <button type="button" class="giz-deploy__body" @onclick="OpenManager" title="@ShellText.Get(ShellText.DEPLOY_OPEN_APPS)">
+        <span class="giz-deploy__title">@Title</span>
+        <span class="giz-deploy__sub">@Subtitle</span>
+    </button>
+
+    @if (!IsDone)
+    {
+        <div class="giz-deploy__pct">@PercentLabel</div>
+    }
+
+    <button type="button" class="giz-deploy__close" @onclick="Dismiss" aria-label="@ShellText.Get(ShellText.GEN_HIDE)">
+        <i class="ph-bold ph-x"></i>
+    </button>
+
+</div>

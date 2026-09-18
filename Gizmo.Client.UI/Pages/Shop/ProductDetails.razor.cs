@@ -2,6 +2,7 @@
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
+using Gizmo.Web.Api.Models;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 
@@ -47,6 +48,27 @@ namespace Gizmo.Client.UI.Pages
         private bool CanPurchase => ViewState.ProductDetailsNavigationEnabled;
 
         #endregion
+
+        /// <summary>
+        /// Gets whether either availability list has more than the one line shown folded.
+        /// </summary>
+        private bool HasMoreAvailability
+        {
+            get
+            {
+                var product = ViewState.Product;
+                if (product is null)
+                    return false;
+
+                if (product.PurchaseAvailability is not null
+                    && ProductHelpers.GetPurchaseAvailabilities(product, false, LocalizationService).Count > 1)
+                    return true;
+
+                return product.ProductType == ProductType.ProductTime
+                    && product.TimeProduct?.UsageAvailability is not null
+                    && ProductHelpers.GetUsageAvailabilities(product, false, LocalizationService).Count > 1;
+            }
+        }
 
         private Task OnClickBackButtonHandler()
         {

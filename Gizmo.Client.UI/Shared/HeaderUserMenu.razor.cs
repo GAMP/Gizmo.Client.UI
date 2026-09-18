@@ -23,6 +23,9 @@ namespace Gizmo.Client.UI
         [Inject]
         public AssistanceRequestViewState AssistanceRequestViewState { get; set; }
 
+        [Inject]
+        public UserProfileViewState UserProfileViewState { get; set; }
+
         private async Task ShowOnlineDeposits()
         {
             //UserMenuViewService.ToggleUserOnlineDeposit();
@@ -37,6 +40,7 @@ namespace Gizmo.Client.UI
         {
             this.SubscribeChange(UserOnlineDepositViewState);
             this.SubscribeChange(AssistanceRequestViewState);
+            this.SubscribeChange(UserProfileViewState);
 
             base.OnInitialized();
         }
@@ -45,6 +49,7 @@ namespace Gizmo.Client.UI
         {
             this.UnsubscribeChange(AssistanceRequestViewState);
             this.UnsubscribeChange(UserOnlineDepositViewState);
+            this.UnsubscribeChange(UserProfileViewState);
 
             base.Dispose();
         }

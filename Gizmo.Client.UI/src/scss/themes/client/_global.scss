@@ -1,13 +1,52 @@
 //=============== Theme Client Global ================//
 
 body {
-    background-color: #0C0F11;
+    background-color: var(--gg-bg-0);
     color: #FAFAFA;
     font-family: $font-family-text-theme-client;
     font-size: 1rem;
     font-weight: normal;
     line-height: normal;
     letter-spacing: normal;
+}
+
+// Shell-wide scrollbar baseline - every scrollable area gets the thin
+// accent-tinted look by default, not just the ones tagged with the
+// .giz-scrollbar--v opt-in utility class.
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(var(--gg-accent-rgb), 0.30) transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 0.6rem;
+    height: 0.6rem;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: rgba(var(--gg-accent-rgb), 0.30);
+    border-radius: 0.3rem;
+    border: 1px solid transparent;
+    background-clip: padding-box;
+
+    &:hover {
+        background: rgba(var(--gg-accent-rgb), 0.5);
+        background-clip: padding-box;
+    }
+}
+
+@keyframes gg-glow-pulse {
+    0%, 100% {  }
+    50%       {  }
+}
+
+@keyframes gg-border-pulse {
+    0%, 100% { border-color: rgba(var(--gg-accent-rgb), 0.25); }
+    50%       { border-color: rgba(var(--gg-accent-rgb), 0.55); }
 }
 
 a {
@@ -21,4 +60,13 @@ a {
 
     &:visited {
     }
+}
+
+// A scrolling page ends a hand's width above the window edge (the root's inset), and
+// content stopping dead on that line read as a strip cut off the shell. Fading the last
+// few rem out makes the edge a horizon instead. A mask, not an overlay: the background
+// behind the page is a gradient no overlay colour could match.
+@mixin gg-scroll-fade($depth: 3.6rem) {
+    mask-image: linear-gradient(to bottom, #000 calc(100% - #{$depth}), transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - #{$depth}), transparent 100%);
 }

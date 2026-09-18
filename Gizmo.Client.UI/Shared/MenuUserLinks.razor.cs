@@ -1,9 +1,12 @@
-﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.Services;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Shared
@@ -35,7 +38,73 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         UserMenuViewService UserMenuViewService { get; set; }
 
+        [Inject]
+        IClientDialogService DialogService { get; set; }
+
+        [Inject]
+        NavigationService NavigationService { get; set; }
+
         #endregion
+
+        // Scattered icons around the avatar. Deliberately hand-placed
+        // rather than generated from even rings: equal angle-steps at a
+        // shared radius reads as neat concentric lines/rows, not the
+        // organic "constellation" scatter this is meant to look like.
+        // Angle/radius/size are all irregular on purpose - no two icons
+        // share a radius band or a clean angle interval. Radii stay
+        // outside the avatar's own edge (9.6rem/96px across = 48px radius).
+        public sealed record OrbitIcon(string IconClass, double AngleDeg, double RadiusPx, double SizePx, string Opacity, double TiltDeg);
+
+        public List<OrbitIcon> OrbitIcons { get; } = BuildOrbitIcons();
+
+        private static List<OrbitIcon> BuildOrbitIcons()
+        {
+            var items = new (string Icon, double Angle, double Radius, double Size, double Opacity)[]
+            {
+                ("ph-game-controller",    12,  64, 15, .80),
+                ("ph-headset",            58,  92, 10, .45),
+                ("ph-desktop-tower",     104,  58, 13, .70),
+                ("ph-keyboard",          146,  99,  9, .35),
+                ("ph-crosshair-simple",  188,  70, 14, .75),
+                ("ph-mouse",             221, 106,  8, .30),
+                ("ph-joystick",          252,  61, 12, .65),
+                ("ph-lightning",         283,  90, 11, .50),
+                ("ph-cpu",               312,  73, 15, .78),
+                ("ph-wifi-high",         341, 101,  9, .38),
+            };
+
+            var icons = new List<OrbitIcon>(items.Length);
+
+            foreach (var it in items)
+            {
+                double tilt = Math.Sin(it.Angle * Math.PI / 180.0) * 15.0;
+                //Colour comes from the stylesheet (the palette's ink), only the fade is per icon.
+                string opacity = it.Opacity.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                icons.Add(new OrbitIcon(it.Icon, it.Angle, it.Radius, it.Size, opacity, tilt));
+            }
+
+            return icons;
+        }
+
+        private string DisplayName =>
+            ViewState.IsGuest || string.IsNullOrEmpty(ViewState.Username)
+                ? LocalizationService.GetString("GIZ_GEN_GUEST")
+                : ViewState.Username;
+
+        protected string Picture => ViewState.Picture;
+
+        //The standing on the card (ring, level disc, one line): only for a customer of a
+        //club that runs any of the ladder, achievements or challenges. A guest has none.
+        protected bool ShowLoyalty => !ViewState.IsGuest && Loyalty.State.IsAvailable;
+
+        private void OnClickProgressHandler()
+        {
+            _shouldRender = true;
+
+            UserMenuViewService.CloseUserLinks();
+
+            NavigationService.NavigateTo(ClientRoutes.UserProfileRoute + "/progress");
+        }
 
         private Task OnClickUserLockButtonHandler()
         {
@@ -55,11 +124,23 @@ namespace Gizmo.Client.UI.Shared
             return UserService.LogoutWithConfirmationAsync();
         }
 
-        private void OnClickLinkHandler()
+        // The account page. A guest has no profile tab, so the Time tab is the front door.
+        private void OnClickAccountButtonHandler()
         {
             _shouldRender = true;
 
             UserMenuViewService.CloseUserLinks();
+
+            NavigationService.NavigateTo(ViewState.IsGuest ? ClientRoutes.UserProductsRoute : ClientRoutes.UserProfileRoute);
+        }
+
+        private Task OnClickChangePasswordButtonHandler()
+        {
+            _shouldRender = true;
+
+            UserMenuViewService.CloseUserLinks();
+
+            return DialogService.ShowChangePasswordDialogAsync(true);
         }
 
         #region OVERRIDES
@@ -106,18 +187,31 @@ namespace Gizmo.Client.UI.Shared
         {
             ViewState.OnChange += ViewState_OnChange;
             UserMenuViewState.OnChange += ViewState_OnChange;
+            Loyalty.Changed += OnLoyaltyChanged;
 
             base.OnInitialized();
         }
 
-        private async void ViewState_OnChange(object sender, System.EventArgs e)
+        // View states raise from the client's network and dispatcher threads, not this
+        // component's. Written async void awaiting InvokeAsync, a dispatcher fault during
+        // WebView teardown was rethrown on the thread pool and took the whole client down.
+        // DispatchStateHasChanged absorbs those, so a lost WebView is only a reload.
+        private void ViewState_OnChange(object sender, System.EventArgs e)
         {
             _shouldRender = true;
-            await InvokeAsync(StateHasChanged);
+            DispatchStateHasChanged();
+        }
+
+        //The standing arrives and changes on the client's threads too.
+        private void OnLoyaltyChanged()
+        {
+            _shouldRender = true;
+            DispatchStateHasChanged();
         }
 
         public override void Dispose()
         {
+            Loyalty.Changed -= OnLoyaltyChanged;
             UserMenuViewState.OnChange -= ViewState_OnChange;
             ViewState.OnChange -= ViewState_OnChange;
 

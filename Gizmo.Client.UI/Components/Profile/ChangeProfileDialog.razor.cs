@@ -31,6 +31,9 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         UserChangeProfileViewState ViewState { get; set; }
 
+        [Inject]
+        UserViewState UserViewState { get; set; }
+
         [Parameter]
         public DialogDisplayOptions DisplayOptions { get; set; }
 
@@ -41,6 +44,8 @@ namespace Gizmo.Client.UI.Components
         public EventCallback<EmptyComponentResult> ResultCallback { get; set; }
 
         public List<IconSelectCountry> Countries { get; set; } = new List<IconSelectCountry>();
+
+        protected string Picture => UserViewState.Picture;
 
         public void OnClickClearValueButtonHandler(MouseEventArgs args)
         {
@@ -104,6 +109,7 @@ namespace Gizmo.Client.UI.Components
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
+            this.SubscribeChange(UserViewState);
 
             base.OnInitialized();
         }
@@ -160,6 +166,7 @@ namespace Gizmo.Client.UI.Components
 
         public override void Dispose()
         {
+            this.UnsubscribeChange(UserViewState);
             this.UnsubscribeChange(ViewState);
 
             base.Dispose();

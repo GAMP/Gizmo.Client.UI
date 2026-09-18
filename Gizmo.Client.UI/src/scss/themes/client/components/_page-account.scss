@@ -1,0 +1,907 @@
+//=============== Account page ================//
+//
+// Profile, Time and Purchases share one frame (AccountFrame): a head with the person
+// and their figures, a segmented row of tabs, then the tab's cards. Same language as
+// the home board - micro uppercase captions over big tabular numbers, glass cards, one
+// accent - so the account reads as a room of the same house rather than a form the
+// vendor left behind.
+
+$ac-g:     clamp(1.2rem, 0.7rem + 0.7vw, 2.2rem);
+$ac-r:     2rem;
+$ac-w:     132rem;
+
+$ac-ink:   var(--gg-ink);
+$ac-ink-2: rgba(var(--gg-ink-rgb), 0.62);
+$ac-ink-3: rgba(var(--gg-ink-rgb), 0.38);
+$ac-cap:   rgba(var(--gg-ink-rgb), 0.42);
+$ac-line:  rgba(255, 255, 255, 0.07);
+$ac-line-2: rgba(255, 255, 255, 0.14);
+
+@mixin ac-cap {
+    font-family: $font-family-header-theme-client;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $ac-cap;
+    white-space: nowrap;
+}
+
+@mixin ac-num {
+    font-family: $font-family-header-theme-client;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+}
+
+@mixin ac-one-line {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@mixin ac-glass {
+    background: linear-gradient(180deg, rgba(var(--gg-glass-rgb), 0.55), rgba(var(--gg-glass-2-rgb), 0.7));
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+// ── frame ────────────────────────────────────────────────────────────────
+.gg-account {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    @include gg-scroll-fade;
+
+    &__inner {
+        max-width: $ac-w;
+        margin: 0 auto;
+        padding: calc(#{$ac-g} * 0.5) $ac-g calc(#{$ac-g} * 2);
+        display: flex;
+        flex-direction: column;
+        gap: $ac-g;
+        animation: gg-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    // ── head: avatar, name, figures ──────────────────────────────────────
+    &__head {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: calc(#{$ac-g} * 1.2);
+        padding: calc(#{$ac-g} * 1.1) calc(#{$ac-g} * 1.4);
+        border-radius: $ac-r;
+        @include ac-glass;
+    }
+
+    &__avatar {
+        width: 8.8rem;
+        height: 8.8rem;
+        flex: none;
+
+        &.giz-avatar,
+        img {
+            width: 8.8rem !important;
+            height: 8.8rem !important;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    }
+
+    &__who {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    &__name {
+        margin: 0;
+        font-family: $font-family-header-theme-client;
+        font-size: clamp(2.4rem, 1.8rem + 0.8vw, 3.4rem);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        line-height: 1.05;
+        color: $ac-ink;
+        @include ac-one-line;
+    }
+
+    &__sub {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem 1.2rem;
+        font-size: 1.35rem;
+        color: $ac-ink-2;
+
+        > span + span::before {
+            content: "·";
+            margin-right: 1.2rem;
+            color: $ac-ink-3;
+        }
+    }
+
+    &__stats {
+        display: flex;
+        align-items: stretch;
+        gap: 0;
+    }
+
+    &__stat {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.4rem 2.4rem;
+        border-left: 1px solid $ac-line;
+        min-width: 11rem;
+
+        &:first-child {
+            border-left: 0;
+            padding-left: 0;
+        }
+
+        small {
+            @include ac-cap;
+        }
+
+        b {
+            @include ac-num;
+            font-size: clamp(1.9rem, 1.5rem + 0.5vw, 2.5rem);
+            color: $ac-ink;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            i {
+                font-size: 0.75em;
+                color: #e8b84b;
+            }
+        }
+
+        span {
+            max-width: 22rem;
+            font-size: 1.15rem;
+            line-height: 1.35;
+            color: $ac-ink-3;
+        }
+
+        &--money b {
+            color: #3ddc72;
+        }
+    }
+
+    // ── tabs: the same segmented control the payment chooser uses ────────
+    &__tabs {
+        align-self: flex-start;
+        display: flex;
+        gap: 0.4rem;
+        padding: 0.5rem;
+        border-radius: 1.6rem;
+        background: rgba(0, 0, 0, 0.26);
+        box-shadow: inset 0 0 0 1px $ac-line;
+    }
+
+    &__tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        height: 4.2rem;
+        padding: 0 1.8rem;
+        border-radius: 1.2rem;
+        color: $ac-ink-2;
+        font-size: 1.4rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: background 0.15s, color 0.15s;
+
+        i {
+            font-size: 1.7rem;
+            color: $ac-ink-3;
+            transition: color 0.15s;
+        }
+
+        &:hover {
+            color: $ac-ink;
+            background: rgba(255, 255, 255, 0.05);
+
+            i {
+                color: $ac-ink-2;
+            }
+        }
+
+        &.is-on {
+            background: linear-gradient(135deg, var(--gg-accent-light), var(--gg-accent-deep));
+            color: var(--gg-on-accent);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 0.8rem 2rem -1rem rgba(var(--gg-accent-rgb), 0.7);
+
+            i {
+                color: inherit;
+            }
+        }
+    }
+
+    &__body {
+        min-height: 0;
+    }
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 38rem), 1fr));
+        gap: $ac-g;
+        align-items: start;
+    }
+
+    // The shell's version under the Profile tab's cards, right-aligned. Quiet on
+    // purpose: it is there for whoever has to ask "which build is this".
+    &__version {
+        margin-top: calc(#{$ac-g} * 0.7);
+        text-align: right;
+        font-size: 1.1rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        color: rgba(var(--gg-ink-rgb), 0.28);
+        user-select: text;
+    }
+}
+
+// ── cards ────────────────────────────────────────────────────────────────
+.gg-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    padding: calc(#{$ac-g} * 1.1) calc(#{$ac-g} * 1.3);
+    border-radius: $ac-r;
+    @include ac-glass;
+
+    &__head {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+
+        > i {
+            width: 3.6rem;
+            height: 3.6rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 1.1rem;
+            background: rgba(var(--gg-accent-rgb), 0.14);
+            color: var(--gg-accent-soft);
+            font-size: 1.8rem;
+        }
+
+        h2 {
+            margin: 0;
+            font-family: $font-family-header-theme-client;
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            color: $ac-ink;
+        }
+    }
+
+    &__hint {
+        margin-left: auto;
+        font-size: 1.2rem;
+        color: $ac-ink-3;
+    }
+
+    &__fields {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__note {
+        margin: 0;
+        font-size: 1.25rem;
+        line-height: 1.4;
+        color: $ac-ink-3;
+    }
+
+    &__actions {
+        display: flex;
+        gap: 0.8rem;
+    }
+
+    &__wait {
+        display: flex;
+        justify-content: center;
+        padding: 3rem 0;
+
+        .giz-animate-spinner {
+            height: 4rem;
+            margin: 0;
+        }
+    }
+
+    &__empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 4rem 2rem;
+        text-align: center;
+
+        i {
+            font-size: 3.6rem;
+            color: $ac-ink-3;
+            margin-bottom: 0.6rem;
+        }
+
+        b {
+            font-size: 1.6rem;
+            color: $ac-ink;
+        }
+
+        span {
+            font-size: 1.3rem;
+            color: $ac-ink-3;
+        }
+    }
+}
+
+.gg-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 1.1rem 0;
+    border-top: 1px solid $ac-line;
+
+    &:first-child {
+        border-top: 0;
+        padding-top: 0;
+    }
+
+    small {
+        @include ac-cap;
+    }
+
+    b {
+        font-size: 1.55rem;
+        font-weight: 600;
+        color: $ac-ink;
+        @include ac-one-line;
+    }
+
+    &__empty {
+        font-size: 1.45rem;
+        color: $ac-ink-3;
+    }
+
+    &__secret {
+        letter-spacing: 0.18em;
+    }
+}
+
+.gg-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    height: 4.4rem;
+    padding: 0 1.8rem;
+    border-radius: 1.3rem;
+    border: 1px solid $ac-line-2;
+    background: rgba(255, 255, 255, 0.06);
+    color: $ac-ink;
+    font: inherit;
+    font-size: 1.4rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+
+    i {
+        font-size: 1.6rem;
+        color: var(--gg-accent-soft);
+    }
+
+    &:hover {
+        background: rgba(var(--gg-accent-rgb), 0.16);
+        border-color: rgba(var(--gg-accent-rgb), 0.4);
+    }
+}
+
+// ── tags ─────────────────────────────────────────────────────────────────
+.gg-tag {
+    display: inline-flex;
+    align-items: center;
+    height: 2.2rem;
+    padding: 0 0.8rem;
+    border-radius: 0.7rem;
+    background: rgba(255, 255, 255, 0.08);
+    color: $ac-ink-2;
+    font-family: $font-family-header-theme-client;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+
+    &--on,
+    &.is-on {
+        background: rgba(var(--gg-accent-rgb), 0.18);
+        color: var(--gg-accent-soft);
+    }
+
+    &.is-good {
+        background: rgba(61, 220, 114, 0.14);
+        color: #6fe79a;
+    }
+
+    &.is-wait {
+        background: rgba(255, 179, 71, 0.14);
+        color: #ffc46b;
+    }
+
+    &--off,
+    &.is-off {
+        background: rgba(255, 255, 255, 0.05);
+        color: $ac-ink-3;
+    }
+
+    &--credit {
+        background: rgba(255, 215, 157, 0.14);
+        color: #ffd79d;
+    }
+}
+
+// ── time products ────────────────────────────────────────────────────────
+.gg-tp {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+
+    &__row {
+        display: grid;
+        grid-template-columns: auto auto minmax(0, 1fr) auto auto auto;
+        align-items: center;
+        gap: 1.4rem;
+        padding: 1.2rem 1.4rem;
+        border-radius: 1.5rem;
+        background: rgba(255, 255, 255, 0.035);
+        box-shadow: inset 0 0 0 1px $ac-line;
+
+        &.is-current {
+            background: rgba(var(--gg-accent-rgb), 0.08);
+            box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.28);
+        }
+
+        &.is-idle {
+            opacity: 0.72;
+        }
+    }
+
+    &__order {
+        width: 2.4rem;
+        height: 2.4rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        @include ac-num;
+        font-size: 1.15rem;
+        color: $ac-ink-2;
+
+        .is-current & {
+            background: var(--gg-accent);
+            color: var(--gg-on-accent);
+        }
+    }
+
+    &__type {
+        width: 4.2rem;
+        height: 4.2rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 1.2rem;
+        background: rgba(255, 255, 255, 0.06);
+        color: $ac-ink-2;
+        font-size: 2rem;
+
+        .is-current & {
+            color: var(--gg-accent-soft);
+        }
+
+        .is-credit & {
+            color: #ffd79d;
+        }
+    }
+
+    &__main {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    &__line {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        min-width: 0;
+    }
+
+    &__name {
+        font-size: 1.55rem;
+        font-weight: 700;
+        color: $ac-ink;
+        @include ac-one-line;
+        flex: 0 1 auto;
+        min-width: 0;
+    }
+
+    &__kind {
+        font-size: 1.2rem;
+        color: $ac-ink-3;
+        white-space: nowrap;
+    }
+
+    &__meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.4rem 1.6rem;
+        min-width: 0;
+    }
+
+    &__fact {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        min-width: 0;
+        font-size: 1.2rem;
+        color: $ac-ink-2;
+
+        > i {
+            font-size: 1.4rem;
+            color: $ac-ink-3;
+        }
+
+        > span {
+            @include ac-one-line;
+        }
+
+        &--hosts {
+            flex: 1 1 12rem;
+        }
+    }
+
+    &__stat {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.3rem;
+        min-width: 8rem;
+
+        small {
+            @include ac-cap;
+        }
+
+        b {
+            @include ac-num;
+            font-size: 1.7rem;
+            color: $ac-ink;
+            white-space: nowrap;
+        }
+    }
+
+    &__open {
+        width: 3.6rem;
+        height: 3.6rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 1.1rem;
+        border: 1px solid $ac-line-2;
+        background: rgba(255, 255, 255, 0.05);
+        color: $ac-ink-2;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+
+        &:hover {
+            background: rgba(var(--gg-accent-rgb), 0.18);
+            color: $ac-ink;
+        }
+
+        &--none {
+            border: 0;
+            background: none;
+            cursor: default;
+        }
+    }
+
+    // Host-group chips (ProductsProductHosts, kept from the vendor for its
+    // overflow script) restyled as quiet pills.
+    .giz-user-time-products-host-groups {
+        display: flex;
+        gap: 0.4rem;
+        align-items: center;
+        white-space: nowrap;
+        overflow: hidden;
+        max-width: 100%;
+        min-width: 0;
+
+        .giz-user-time-products-host-group,
+        .giz-user-time-products-host-group--additional {
+            padding: 0.2rem 0.7rem;
+            border-radius: 0.6rem;
+            background: rgba(255, 255, 255, 0.07);
+            color: $ac-ink-2;
+            font-size: 1.15rem;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .giz-user-time-products-host-group.active {
+            background: rgba(var(--gg-accent-rgb), 0.16);
+            color: var(--gg-accent-soft);
+        }
+    }
+}
+
+.giz-user-time-products-host-groups-tooltip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    max-width: 32rem;
+    padding: 0.8rem 1rem;
+
+    .giz-user-time-products-host-group {
+        padding: 0.2rem 0.7rem;
+        border-radius: 0.6rem;
+        background: rgba(255, 255, 255, 0.08);
+        color: $ac-ink-2;
+        font-size: 1.15rem;
+        font-weight: 600;
+
+        &.active {
+            background: rgba(var(--gg-accent-rgb), 0.16);
+            color: var(--gg-accent-soft);
+        }
+    }
+}
+
+// ── orders ───────────────────────────────────────────────────────────────
+.gg-pager {
+    margin-left: auto;
+    display: flex;
+    gap: 0.6rem;
+
+    &__btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        height: 3.4rem;
+        padding: 0 1.2rem;
+        border-radius: 1rem;
+        border: 1px solid $ac-line-2;
+        background: rgba(255, 255, 255, 0.05);
+        color: $ac-ink-2;
+        font: inherit;
+        font-size: 1.25rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+
+        i {
+            font-size: 1.3rem;
+        }
+
+        &:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.1);
+            color: $ac-ink;
+        }
+
+        &:disabled {
+            opacity: 0.35;
+            cursor: default;
+        }
+    }
+}
+
+.gg-orders {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.gg-order {
+    border-radius: 1.5rem;
+    background: rgba(255, 255, 255, 0.035);
+    box-shadow: inset 0 0 0 1px $ac-line;
+    transition: background 0.15s;
+
+    &[open] {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    &__sum {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+        align-items: center;
+        gap: 1.6rem;
+        padding: 1.1rem 1.4rem;
+        list-style: none;
+        cursor: pointer;
+        border-radius: 1.5rem;
+
+        &::-webkit-details-marker {
+            display: none;
+        }
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+    }
+
+    &__when {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.2rem;
+        min-width: 5.6rem;
+
+        b {
+            @include ac-num;
+            font-size: 1.4rem;
+            color: $ac-ink;
+            white-space: nowrap;
+        }
+
+        small {
+            @include ac-num;
+            font-size: 1.15rem;
+            color: $ac-ink-3;
+        }
+    }
+
+    &__what {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+
+        b {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: $ac-ink;
+            @include ac-one-line;
+        }
+
+        small {
+            font-size: 1.2rem;
+            color: $ac-ink-3;
+            @include ac-one-line;
+        }
+    }
+
+    // Fixed widths for the figure and status columns: every order is its own grid,
+    // and without them the carets would wander from row to row.
+    &__sum-total {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 1rem;
+        min-width: 11rem;
+
+        b {
+            @include ac-num;
+            font-size: 1.6rem;
+            color: $ac-ink;
+            white-space: nowrap;
+        }
+    }
+
+    &__pts {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+
+        i {
+            font-size: 0.85em;
+            color: #e8b84b;
+        }
+    }
+
+    &__status {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+        min-width: 17rem;
+    }
+
+    &__caret {
+        font-size: 1.4rem;
+        color: $ac-ink-3;
+        transition: transform 0.2s;
+
+        [open] > summary & {
+            transform: rotate(180deg);
+        }
+    }
+
+    &__body {
+        padding: 0.2rem 1.4rem 1.4rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    &__lines {
+        display: flex;
+        flex-direction: column;
+        border-top: 1px solid $ac-line;
+    }
+
+    &__line {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto auto;
+        align-items: center;
+        gap: 1.6rem;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid $ac-line;
+        font-size: 1.35rem;
+        color: $ac-ink-2;
+
+        &-name {
+            @include ac-one-line;
+            color: $ac-ink;
+            text-decoration: none;
+        }
+
+        a.gg-order__line-name:hover {
+            color: var(--gg-accent-soft);
+        }
+
+        &-qty {
+            color: $ac-ink-3;
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+        }
+
+        &-sum {
+            @include ac-num;
+            font-size: 1.35rem;
+            color: $ac-ink;
+            white-space: nowrap;
+        }
+    }
+
+    &__extra {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem 2rem;
+        font-size: 1.25rem;
+        color: $ac-ink-2;
+    }
+
+    &__earned {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        i {
+            color: #e8b84b;
+        }
+    }
+
+    &__note {
+        color: $ac-ink-3;
+    }
+}
+
+// ── narrow: the head stacks, rows drop the figures under the name ────────
+@media (max-width: 1500px) {
+    .gg-account__head {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .gg-account__stats {
+        grid-column: 1 / -1;
+        padding-top: 1.4rem;
+        border-top: 1px solid $ac-line;
+    }
+}

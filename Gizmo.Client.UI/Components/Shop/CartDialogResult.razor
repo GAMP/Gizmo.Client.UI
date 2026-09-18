@@ -1,0 +1,41 @@
+@namespace Gizmo.Client.UI.Components
+@inherits ComponentBase
+
+@* The result screen shared by the purchase and checkout dialogs. The outcome is fixed
+   by the dialog at the moment of the reply and does not change again. *@
+
+<div class="giz-buy__result @(Ok ? "is-ok" : "is-error")">
+    <div class="giz-buy__result-icon">
+        <i class="ph-bold @(Ok ? "ph-check" : "ph-x")"></i>
+    </div>
+    <div class="giz-buy__result-title">@Title</div>
+    @if (Ok)
+    {
+        @if (Name is { Length: > 0 })
+        {
+            <div class="giz-buy__result-name">@Name</div>
+        }
+        @if (Note is { Length: > 0 })
+        {
+            <div class="giz-buy__result-note">@Note</div>
+        }
+    }
+    else
+    {
+        <div class="giz-buy__result-note giz-buy__result-note--error">@((MarkupString)(Error ?? string.Empty))</div>
+    }
+    <div class="giz-buy__actions giz-buy__actions--center">
+        <button type="button" class="giz-buy__btn giz-buy__btn--primary" @onclick="@(() => OnClose.InvokeAsync())">
+            @ShellText.Get(Ok ? ShellText.GEN_DONE : ShellText.GEN_CLOSE)
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter] public bool Ok { get; set; }
+    [Parameter] public string Title { get; set; }
+    [Parameter] public string Name { get; set; }
+    [Parameter] public string Note { get; set; }
+    [Parameter] public string Error { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+}

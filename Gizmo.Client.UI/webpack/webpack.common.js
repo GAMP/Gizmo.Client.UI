@@ -24,6 +24,24 @@ module.exports = {
           from: path.resolve(__dirname, "../node_modules/flag-icons/flags/4x3"),
           to: path.resolve(__dirname, "../wwwroot/img/flags"),
         },
+        // Fonts and icons are self-hosted files rather than part of the style bundle:
+        // club machines can be offline, so nothing may be fetched from a CDN. They are
+        // copied here, licence texts included, so a clean build produces a complete skin
+        // instead of leaving them to be placed by hand.
+        {
+          from: "src/vendor",
+          to: path.resolve(__dirname, "../wwwroot/vendor"),
+        },
+        {
+          from: path.resolve(__dirname, "../node_modules/flag-icons/LICENSE"),
+          to: path.resolve(__dirname, "../wwwroot/img/flags/LICENSE-flag-icons.txt"),
+          toType: "file",
+        },
+        {
+          from: "THIRD-PARTY-NOTICES.md",
+          to: path.resolve(__dirname, "../wwwroot/THIRD-PARTY-NOTICES.md"),
+          toType: "file",
+        },
       ],
     }),
   ],

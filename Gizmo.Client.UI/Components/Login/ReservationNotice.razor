@@ -1,0 +1,47 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+@* "This machine is reserved" notice on the sign-in screen.
+
+   Purely presentational: both the sign-in page and the screen template already hold
+   HostReservationViewState, so the text and time arrive as parameters rather than from a
+   second read of the state. That keeps the notice identical beside the card and over the
+   wallpaper on an idle station. *@
+
+<div class="giz-login-reserved">
+    <div class="giz-login-reserved__badge">
+        <i class="ph-fill ph-calendar-check giz-ph-icon"></i>
+    </div>
+
+    @* The time sits in the heading rather than in a tile of its own: a tile inside a
+       tile is two rectangles for one number, and the number reads with the sentence. *@
+    <div class="giz-login-reserved__text">
+        <div class="giz-login-reserved__title">
+            <span>@ShellText.Get(ShellText.RESV_PC_RESERVED)</span>
+            @if (!string.IsNullOrWhiteSpace(Time))
+            {
+                <span class="giz-login-reserved__time">@ShellText.Get(ShellText.RESV_FROM, Time)</span>
+            }
+        </div>
+        @if (!string.IsNullOrWhiteSpace(Message))
+        {
+            <div class="giz-login-reserved__note">@Message</div>
+        }
+    </div>
+</div>
+
+@code {
+
+    /// <summary>
+    /// Reservation start time, already formatted for the current culture.
+    /// </summary>
+    [Parameter]
+    public string? Time { get; set; }
+
+    /// <summary>
+    /// The vendor's explanation of what this reservation means right now.
+    /// </summary>
+    [Parameter]
+    public string? Message { get; set; }
+
+}

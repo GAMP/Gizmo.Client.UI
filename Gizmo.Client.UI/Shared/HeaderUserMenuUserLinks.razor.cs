@@ -10,12 +10,16 @@ namespace Gizmo.Client.UI
         [Inject]
         UserMenuViewState UserMenuViewState { get; set; }
 
+        [Inject]
+        UserViewState UserViewState { get; set; }
+
         [Parameter]
         public EventCallback<MouseEventArgs> OnClick { get; set; }
 
         protected override void OnInitialized()
         {
             this.SubscribeChange(UserMenuViewState);
+            this.SubscribeChange(UserViewState);
 
             base.OnInitialized();
         }
@@ -23,6 +27,7 @@ namespace Gizmo.Client.UI
         public override void Dispose()
         {
             this.UnsubscribeChange(UserMenuViewState);
+            this.UnsubscribeChange(UserViewState);
 
             base.Dispose();
         }

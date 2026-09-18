@@ -37,26 +37,34 @@ namespace Gizmo.Client.UI.Components
 
         #endregion
 
-        private async void UserIdleViewState_OnChange(object sender, System.EventArgs e)
+        //Idle changes are raised off the UI thread. This used to be async void awaiting
+        //InvokeAsync, which meant a dispatcher fault during WebView teardown was rethrown on
+        //the thread pool and exited the whole client. The slide animation is also a multi step
+        //workflow (render, wait, render), so it runs as a single dispatcher work item to keep
+        //every step on the renderer's context.
+        private void UserIdleViewState_OnChange(object sender, System.EventArgs e)
         {
             if (_locked) return;
             if (_previousIsIdle == UserIdleViewState.IsIdle) return;
 
-            if (UserIdleViewState.IsIdle)
+            DispatchWorkflow(async () =>
             {
-                _slideOut = true;
-            }
-            else
-            {
-                _slideIn = true;
-            }
+                if (UserIdleViewState.IsIdle)
+                {
+                    _slideOut = true;
+                }
+                else
+                {
+                    _slideIn = true;
+                }
 
-            await InvokeAsync(StateHasChanged);
-            await Task.Delay(1000);
-            _previousIsIdle = UserIdleViewState.IsIdle;
-            _slideIn = false;
-            _slideOut = false;
-            await InvokeAsync(StateHasChanged);
+                StateHasChanged();
+                await Task.Delay(1000);
+                _previousIsIdle = UserIdleViewState.IsIdle;
+                _slideIn = false;
+                _slideOut = false;
+                StateHasChanged();
+            });
         }
 
         protected override void OnInitialized()
@@ -67,6 +75,16 @@ namespace Gizmo.Client.UI.Components
             _locked = UserLoginOptions.Value.Disabled && !UserRegisterConfigurationViewState.IsEnabled;
 
             base.OnInitialized();
+        }
+
+        //UserIdleViewState is a singleton that outlives this card, and the card is rebuilt on
+        //every login/logout cycle. Without this the station accumulates one dead subscriber per
+        //cycle, each one still being invoked on every idle transition.
+        public override void Dispose()
+        {
+            UserIdleViewState.OnChange -= UserIdleViewState_OnChange;
+
+            base.Dispose();
         }
 
         #region CLASSMAPPERS

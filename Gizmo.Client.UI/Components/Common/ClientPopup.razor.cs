@@ -30,7 +30,10 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public TooltipOpenDirections OpenDirection { get; set; } = TooltipOpenDirections.Top;
 
-        private async void OnClickHandler(MouseEventArgs args)
+        //Returns the task instead of being async void: Open() is all JS interop, and against a
+        //WebView that is going away async void would rethrow the failure on the thread pool and
+        //exit the whole client rather than letting Blazor handle it.
+        private async Task OnClickHandler(MouseEventArgs args)
         {
             if (!_isOpen)
                 await Open();

@@ -1,0 +1,126 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using Gizmo.Client.UI.Services
+
+@* The loyalty summary at the foot of the home board's right column, in the bar's place
+   when the club runs any of the ladder, achievements or challenges: the headline with
+   its ring, one line on where the customer stands, the bar to the next level, the one
+   most useful thing to do next, and the way to the Progress tab. On a short screen the
+   next step hides (CSS) and the headline, the bar and the button remain.
+
+   The headline is the level when there is a ladder. Without one it is the achievements
+   (earned of all, the ring their share), or the challenges when the club runs only
+   those; whichever count is not the headline goes to the caption's link. *@
+@{
+    var s = Loyalty.State;
+    var level = s.CurrentLevel;
+    var ladder = s.HasLadder && level is not null;
+    var emblem = ladder ? Loyalty.Image(level.EmblemGuid) : null;
+    var action = s.NextAction;
+
+    var headlineIsAchievements = !ladder && s.HasAchievements;
+    var headlineIsChallenges = !ladder && !s.HasAchievements && s.HasChallenges;
+    var linkAchievements = ladder && s.HasAchievements;
+    var linkChallenges = s.HasChallenges && (ladder ? !s.HasAchievements : headlineIsAchievements);
+
+    var ringProgress = ladder ? s.ProgressToNext
+        : headlineIsAchievements ? (double)s.EarnedAchievements / s.Achievements.Count
+        : headlineIsChallenges ? (double)s.DoneChallenges / s.Challenges.Count
+        : 0;
+}
+<aside class="gg-till gg-till--loyal" aria-label="@ShellText.Get(ShellText.LOYALTY_HOME_CAP)">
+    <div class="gg-cap gg-cap--rule">
+        <span>@ShellText.Get(ShellText.LOYALTY_HOME_CAP)</span>
+        <span class="gg-cap__rule"></span>
+        @if (linkAchievements)
+        {
+            <a href="@ProgressRoute">@ShellText.Get(ShellText.LOYALTY_ACHIEVEMENTS) @ShellText.Get(ShellText.LOYALTY_OF, s.EarnedAchievements, s.Achievements.Count)</a>
+        }
+        else if (linkChallenges)
+        {
+            <a href="@ProgressRoute">@ShellText.Get(ShellText.LOYALTY_CHALLENGES) @ShellText.Get(ShellText.LOYALTY_OF, s.DoneChallenges, s.Challenges.Count)</a>
+        }
+    </div>
+
+    <div class="gg-loyal">
+        <div class="gg-loyal__top">
+            <div class="gg-loyal__mark">
+                <svg viewBox="0 0 40 40" aria-hidden="true">
+                    <circle class="gg-ring__track" cx="20" cy="20" r="18"></circle>
+                    <circle class="gg-ring__bar" cx="20" cy="20" r="18" style="stroke-dashoffset: @LoyaltyRing.Offset(ringProgress)"></circle>
+                </svg>
+                @if (ladder)
+                {
+                    <div class="gg-loyal__disc">
+                        @if (emblem is not null)
+                        {
+                            <img src="@emblem" alt="" />
+                        }
+                        else
+                        {
+                            @LoyaltyText.Mark(level.Name)
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="gg-loyal__disc gg-loyal__disc--plain"><i class="ph-fill @(headlineIsChallenges ? "ph-flag-checkered" : "ph-trophy")"></i></div>
+                }
+            </div>
+            <div class="gg-loyal__who">
+                @if (ladder)
+                {
+                    <b>@level.Name</b>
+                    <span>@LoyaltyLines.Short(s)</span>
+                }
+                else if (headlineIsAchievements)
+                {
+                    <b>@ShellText.Get(ShellText.LOYALTY_ACHIEVEMENTS)</b>
+                    <span>@ShellText.Get(ShellText.LOYALTY_OF, s.EarnedAchievements, s.Achievements.Count)</span>
+                }
+                else
+                {
+                    <b>@ShellText.Get(ShellText.LOYALTY_CHALLENGES)</b>
+                    <span>@ShellText.Get(ShellText.LOYALTY_OF, s.DoneChallenges, s.Challenges.Count)</span>
+                }
+            </div>
+        </div>
+        @if (ladder)
+        {
+            <div class="gg-loyal__track"><i style="width: @LoyaltyRing.Percent(s.ProgressToNext)%"></i></div>
+        }
+
+        @if (action is not null)
+        {
+            <div class="gg-loyal__next">
+                <i class="ph-fill @(action.Kind == LoyaltyActionKind.Challenge ? "ph-flag-checkered" : "ph-target")"></i>
+                <span>
+                    @action.Title
+                    @if (!string.IsNullOrEmpty(action.ChallengeName))
+                    {
+                        <text> — </text><b>«@action.ChallengeName»</b>
+                    }
+                </span>
+                @if (LoyaltyRing.RewardChip(action) is string chip)
+                {
+                    <em>@chip</em>
+                }
+                else if (action.TargetValue is > 0)
+                {
+                    <em>@LoyaltyText.Progress(action.CurrentValue, action.TargetValue, action.Unit)</em>
+                }
+            </div>
+        }
+        else if (s.RewardWaiting)
+        {
+            <div class="gg-loyal__next gg-loyal__next--reward">
+                <i class="ph-fill ph-gift"></i>
+                <span>@ShellText.Get(ShellText.LOYALTY_REWARD_WAITING_SHORT)</span>
+            </div>
+        }
+
+        <button type="button" class="gg-loyal__more" @onclick="OpenProgress">
+            <i class="ph-bold ph-trophy"></i>@ShellText.Get(ShellText.LOYALTY_MORE)<i class="ph-bold ph-arrow-right"></i>
+        </button>
+    </div>
+</aside>

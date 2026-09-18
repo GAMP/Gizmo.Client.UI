@@ -1,162 +1,271 @@
 //=============== Application Card ================//
+//
+// One card is one poster; everything else sits on top of it rather than stacking below.
+// At rest only the poster and the caption plate are visible; hover dims the poster and
+// reveals the launch shortcuts, with exactly one accent - whatever can be clicked.
+//
+// --gg-card-bg and --gg-card-image-bg stay as theming entry points.
+
+$ac-r:     2rem;                                        // card radius
+$ac-pad:   0.9rem;                                      // inset for the plates
+$ac-ink:   var(--gg-ink);
+$ac-ink-2: rgba(var(--gg-ink-rgb), 0.62);
+$ac-ink-3: rgba(var(--gg-ink-rgb), 0.4);
+$ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and pill background
 
 .giz-app-card {
     position: relative;
-    background-color: #22272B;
-    border-radius: 0.8rem;
+    max-width: 100%;
     overflow: hidden;
+    border-radius: $ac-r;
+    background: var(--gg-card-bg, var(--gg-tile));
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.2s;
 
     &:hover {
-        background-color: #020203;
-
-        .giz-app-card__action {
-            display: flex;
-        }
-
-        .giz-app-card__content__image__hovered {
-            background-color: rgba(0, 0, 0, 0.94);
-
-            .giz-app-card__content--hovered {
-                visibility: visible;
-            }
-        }
+        transform: translateY(-3px);
+        box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.85);
     }
 
-    &__content {
-        display: grid;
-        grid-template-rows: min-content 1fr min-content;
-        gap: 1.6rem;
-        height: 100%;
+    // Outline as a layer over the content rather than an inset shadow on the card: an
+    // inset shadow paints under the content, and the poster covers the card entirely, so
+    // it only showed along the bottom edge. A real border would take layout space.
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 7;
+        border-radius: inherit;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+        pointer-events: none;
+        transition: box-shadow 0.2s;
+    }
 
+    &:hover::after { box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.5); }
+
+    &__content {
+        position: relative;
+        height: 100%;
+        max-width: 100%;
+
+        // The poster sets the card height; everything else sits on top of it and is out
+        // of the layout.
         &__image {
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            height: 33.3rem;
-            background-color: #161A1D;
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            overflow: hidden;
+            background: var(--gg-card-image-bg, linear-gradient(160deg, var(--gg-bg-2) 0%, var(--gg-bg-3) 55%, var(--gg-tile-deep) 100%));
 
-            & > img {
-                /*width: 100%;
-                height: 100%;
-                object-fit: cover;*/
-                border-radius: 0.9rem 0.9rem 0 0;
-            }
-
-            &__hovered {
-                position: absolute;
-                top: 0;
-                left: 0;
+            // Cover fills the card and is cropped to 3:4. Showing it whole needs either
+            // letterboxing or a per-card height, and per-card heights stagger the rows -
+            // every application ships a different aspect ratio.
+            //
+            // Centre object-position: symmetric cropping loses the subject less often.
+            img {
                 width: 100%;
                 height: 100%;
-                z-index: 2;
-                padding: 1.6rem 0 0 0;
-                transition: background-color 0.2s;
+                object-fit: cover;
+                object-position: center;
+                transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.3, 1), filter 0.28s;
+            }
 
-                &__header {
-                    display: flex;
-                    justify-content: space-between;
-                    width: 100%;
-                    height: 100%;
-                    overflow: hidden;
-                }
+            .giz-default-image,
+            .giz-broken-image {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
 
-                .giz-app-card__content--hovered {
-                    padding: 0 0.4rem 0 0.4rem;
-                    visibility: hidden;
-                }
+                img { width: 34%; height: auto; object-fit: contain; opacity: 0.2; }
             }
         }
 
+        // Caption plate. It is also what makes the poster read as a button, and it
+        // carries its own background so the title never sits on a random cover pixel.
+        // No gradient underneath on purpose.
         &__details {
-            padding: 0 1.6rem;
-            width: 100%;
-            overflow: hidden;
+            position: absolute;
+            z-index: 2;
+            left: $ac-pad;
+            right: $ac-pad;
+            bottom: $ac-pad;
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            min-width: 0;
+            padding: 0.9rem 1.1rem;
+            border-radius: 1.3rem;
+            background: $ac-plate;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+            pointer-events: none;
+            transition: opacity 0.18s;
+
+            // Triangle drawn with borders rather than an icon font: no dependency on
+            // font loading, and it always matches the text size.
+            &::before {
+                content: '';
+                flex: none;
+                width: 0;
+                height: 0;
+                border-left: 0.85rem solid var(--gg-accent);
+                border-top: 0.52rem solid transparent;
+                border-bottom: 0.52rem solid transparent;
+            }
         }
 
+        // Top row: hidden at rest. The category repeats the filter above the grid and
+        // the details button is used once in a hundred hovers - permanently visible they
+        // would cost a third of the card.
         &__footer {
+            position: absolute;
+            z-index: 6;
+            top: $ac-pad;
+            left: $ac-pad;
+            right: $ac-pad;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            padding: 0.0rem 1.6rem 1.6rem 1.6rem;
-            width: 100%;
-            overflow: hidden;
+            gap: 0.8rem;
+            padding: 0;
+            max-width: none;
+            opacity: 0;
+            transform: translateY(-4px);
+            pointer-events: none;
+            transition: opacity 0.18s, transform 0.18s;
 
             &-category {
-                background-color: rgba(255, 255, 255, 0.1);
-                border-radius: 1.6rem;
-                color: rgba(255, 255, 255, 0.6);
-                padding: 0.6rem 1.2rem;
+                min-width: 0;
+                padding: 0.4rem 0.9rem;
+                border-radius: 0.9rem;
+                background: $ac-plate;
+                box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+                color: $ac-ink-2;
                 white-space: nowrap;
-                max-width: 100%;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                @include font-s-theme-client($font-weight-regular-theme-client);
-            }
-        }
-
-        &--hovered {
-            height: 100%;
-            width: 100%;
-            overflow: auto;
-
-            &__header {
-                display: flex;
-                justify-content: space-between;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                font-family: $font-family-header-theme-client;
+                font-size: 1rem;
+                font-weight: 700;
             }
         }
     }
 
-    &__action {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 2;
-        padding: 1.6rem;
-        display: none;
-        align-items: center;
+    &:hover &__content__footer {
+        opacity: 1;
+        transform: none;
+        pointer-events: auto;
     }
 
-    &-text {
-        overflow: hidden;
+    // Hover
+    &:hover {
+        // Dimmed to stay recognisable, not blacked out: the game must still read
+        // through the pills. Threshold set against the brightest cover.
+        .giz-app-card__content__image > img {
+            transform: scale(1.06);
+            filter: brightness(0.58) saturate(0.8);
+        }
+
+        .giz-app-card__content__details { opacity: 0; }
+
+        .giz-app-card__content__image__hovered {
+            // Thin veil only: the filter already dims the cover, this just evens the
+            // tone under the captions.
+            background: linear-gradient(180deg, rgba(var(--gg-scrim-rgb), 0.28), rgba(var(--gg-scrim-rgb), 0.5));
+
+            .giz-app-card__content--hovered {
+                opacity: 1;
+                transform: translateY(0);
+                pointer-events: auto;
+            }
+        }
     }
 
     &__title {
+        min-width: 0;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        @include font-l-theme-client($font-weight-light-theme-client);
+        color: $ac-ink;
+        font-family: $font-family-header-theme-client;
+        font-size: clamp(1.25rem, 1.14rem + 0.22vw, 1.55rem);
+        font-weight: 600;
+        line-height: 1.3;
+        letter-spacing: -0.005em;
+    }
+
+    &__open {
+        flex-shrink: 0;
+        width: 3rem;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: 0;
+        border-radius: 0.9rem;
+        cursor: pointer;
+        background: $ac-plate;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        color: $ac-ink-2;
+        transition: background 0.16s, color 0.16s, box-shadow 0.16s;
+
+        i { font-size: 1.5rem; }
+
+        &:hover {
+            background: var(--gg-accent);
+            box-shadow: none;
+            color: var(--gg-on-accent);
+        }
+
+        &:focus-visible { outline: 2px solid var(--gg-accent); outline-offset: 2px; }
+    }
+
+    &-text {
+        min-width: 0;
+        overflow: hidden;
     }
 }
 
-.giz-app-card-b1 {
-    display: flex;
-    align-items: center;
-    background-color: #1B1D21;
-    opacity: 0.9;
-    border-radius: 1.2rem;
-    padding: 0.4rem 0.8rem;
-    color: #FAFAFA;
-    @include font-s-theme-client($font-weight-light-theme-client);
+// Launch overlay
+.giz-app-card__content__image__hovered {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    // Even padding all round: the list centres on the card, not on what is left below
+    // the top row. They can only collide past nine shortcuts, where the dense mode wins.
+    padding: $ac-pad;
+    background: transparent;
+    transition: background 0.22s ease;
+    overflow: hidden;
 
-    & > svg {
-        margin-right: 0.4rem;
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
     }
-}
 
-.giz-app-card-b2 {
-    display: flex;
-    align-items: center;
-    background-color: #1B1D21;
-    opacity: 0.9;
-    border-radius: 1.2rem;
-    padding: 0.4rem 0.8rem;
-    color: #FAFAFA;
-    @include font-s-theme-client($font-weight-light-theme-client);
-
-    & > svg {
-        margin-right: 0.4rem;
+    // Centred by removing the strut rather than with grid + place-items, which breaks
+    // the container's own scrolling: .giz-exe-popup sets min-height: 100%, so the block
+    // is always full height and its justify-content has nothing to distribute.
+    .giz-app-card__content--hovered {
+        width: 100%;
+        height: auto;
+        max-height: 100%;
+        padding: 0;
+        overflow: auto;
+        opacity: 0;
+        transform: translateY(5px);
+        pointer-events: none;
+        transition: opacity 0.22s ease, transform 0.22s ease;
     }
 }
 
@@ -165,7 +274,123 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-width: 100%;
-    min-height: 100%;
+    gap: 0.55rem;
+    min-width: 0;
+    min-height: 0;
     overflow: hidden;
+
+    // Shortcut pill.
+    .giz-universal-executable {
+        // Third column carries the launch triangle - the same mark as the resting
+        // caption, so the row reads as an action rather than as a file.
+        grid-template-columns: min-content 1fr min-content;
+        align-items: center;
+        gap: 0.55rem;
+        padding: 0.5rem;
+        border-radius: 0.9rem;
+        // Dark fill rather than a lightening one: a light film over a bright part of the
+        // cover left white text with almost no contrast.
+        background: rgba(var(--gg-scrim-rgb), 0.72);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+        transition: background 0.16s, box-shadow 0.16s, transform 0.16s, filter 0.16s;
+
+        // The base component's glass highlight is dropped - two fills over each other
+        // muddied the accent.
+        &::before { content: none; }
+
+        &::after {
+            content: '';
+            align-self: center;
+            justify-self: end;
+            margin-right: 0.3rem;
+            width: 0;
+            height: 0;
+            border-left: 0.72rem solid rgba(255, 255, 255, 0.45);
+            border-top: 0.44rem solid transparent;
+            border-bottom: 0.44rem solid transparent;
+            transition: border-color 0.16s;
+        }
+
+        // 2.6rem instead of 6.2rem: six shortcuts, the realistic ceiling, then fit
+        // without scrolling.
+        .giz-universal-executable__icon {
+            width: 2.6rem;
+            height: 2.6rem;
+
+            img {
+                width: 100%;
+                height: 100%;
+                border-radius: 0.6rem;
+                // contain, not cover: executable icons are square and the svg
+                // placeholder stretched under cover.
+                object-fit: contain;
+            }
+        }
+
+        .giz-universal-executable__description {
+            padding-right: 0;
+
+            &__exe {
+                font-size: clamp(1.15rem, 1.05rem + 0.2vw, 1.4rem);
+                line-height: 1.3;
+                color: $ac-ink;
+            }
+        }
+
+        // Install progress spans the whole pill: under a 26px icon it had nowhere to sit.
+        .giz-universal-executable-progress-bar {
+            left: 0.5rem;
+            right: 0.5rem;
+            bottom: 0.3rem;
+            width: auto;
+        }
+
+        &:hover {
+            background: var(--gg-accent);
+            box-shadow: none;
+            transform: translateY(-1px);
+
+            .giz-universal-executable__description__exe { color: var(--gg-on-accent); font-weight: 700; }
+            &::after { border-left-color: var(--gg-on-accent); }
+        }
+
+        // A single shortcut is the button itself - there is nothing to pick from.
+        &:only-child {
+            background: var(--gg-accent);
+            box-shadow: none;
+
+            .giz-universal-executable__description__exe { color: var(--gg-on-accent); font-weight: 700; }
+            &::after { border-left-color: var(--gg-on-accent); }
+
+            &:hover { filter: brightness(1.1); }
+        }
+    }
+
+    // Five shortcuts or more switch to a dense mode: a pill clipped at the bottom reads
+    // as breakage rather than as "scroll". Without :has() support the rule is ignored
+    // and ordinary scrolling remains, so there is nothing to lose.
+    &:has(> .giz-universal-executable:nth-child(5)) {
+        gap: 0.35rem;
+
+        .giz-universal-executable {
+            padding: 0.34rem 0.5rem;
+
+            .giz-universal-executable__icon { width: 2.2rem; height: 2.2rem; }
+        }
+    }
+}
+
+.giz-app-card-b1,
+.giz-app-card-b2 {
+    display: flex;
+    align-items: center;
+    padding: 0.4rem 0.8rem;
+    border-radius: 1.2rem;
+    background: rgba(var(--gg-accent-rgb), 0.08);
+    border: 1px solid rgba(var(--gg-accent-rgb), 0.2);
+    color: var(--gg-accent);
+    opacity: 0.9;
+    @include font-s-theme-client($font-weight-light-theme-client);
+
+    & > svg { margin-right: 0.4rem; }
 }

@@ -2,7 +2,11 @@
 
 .virtual-chunk-grid {
   display: grid;
-  grid-auto-rows: minmax(42rem, 1fr);
+  // Rows size to their content (brief section 3: compact card, image flush
+  // to the top). The old 42rem floor was sized for the previous
+  // aspect-ratio image + taller layout and left a large empty gap under
+  // the button once the image became a fixed 16rem strip.
+  grid-auto-rows: min-content;
   gap: 1.6rem;
   margin-bottom: 1.6rem;
 }

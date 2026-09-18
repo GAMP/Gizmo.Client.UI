@@ -1,25 +1,18 @@
-﻿//plain object namespace on purpose: the .NET 10 js interop resolver (findObjectMember in blazor.webview.js)
-//only traverses intermediate path segments whose typeof is "object", so a class (typeof "function") used as
-//a namespace breaks dotted invocations like "InternalFunctions.FullScreen.SubscribeOnFullScreenChange"
-//with "('FullScreen' was undefined)".
-window.InternalFunctions = {
-  dotnetObjectReference: null,
+window.InternalFunctions = class InternalFunctions {
+  static dotnetObjectReference;
 
-  SetDotnetObjectReference(value) {
-    InternalFunctions.dotnetObjectReference = value;
-  },
+  static SetDotnetObjectReference(value) {
+    this.dotnetObjectReference = value;
+  }
 
-  FullScreen: {
-    //registered listeners kept per callback name so unsubscribe removes the exact handler instances
-    listeners: {},
-
+  static FullScreen = class FullScreen {
     /**
      * Subscribes to browser full screen change event.
      * @param {string} callbackName callBack function name.
      */
-    async SubscribeOnFullScreenChange(callbackName) {
+    static async SubscribeOnFullScreenChange(callbackName) {
       try {
-        InternalFunctions.FullScreen.subscribe(callbackName);
+        this.subscribe(callbackName);
       } catch (error) {
         await InternalFunctions.dotnetObjectReference.invokeMethodAsync(
           callbackName,
@@ -27,15 +20,15 @@ window.InternalFunctions = {
           error.message
         );
       }
-    },
+    }
 
     /**
      * Unsubscribes from browser full screen change event.
      * @param {string} callbackName callBack function name.
      */
-    async UnsubscribeOnFullScreenChange(callbackName) {
+    static async UnsubscribeOnFullScreenChange(callbackName) {
       try {
-        InternalFunctions.FullScreen.unsubscribe(callbackName);
+        this.unsubscribe(callbackName);
       } catch (error) {
         await InternalFunctions.dotnetObjectReference.invokeMethodAsync(
           callbackName,
@@ -43,41 +36,31 @@ window.InternalFunctions = {
           error.message
         );
       }
-    },
+    }
 
-    subscribe(callbackName) {
-      const fullScreen = InternalFunctions.FullScreen;
-
-      if (fullScreen.listeners[callbackName]) return;
-
-      const listener = (_) => fullScreen.fullScreenChangeHandler(callbackName);
-      fullScreen.listeners[callbackName] = listener;
+    static subscribe(callbackName) {
+      const listener = (_) => this.fullScreenChangeHandler(callbackName);
 
       window.addEventListener("fullscreenchange", listener);
       window.addEventListener("mozfullscreenchange", listener);
       window.addEventListener("webkitfullscreenchange", listener);
       window.addEventListener("msfullscreenchange", listener);
-    },
+    }
 
-    unsubscribe(callbackName) {
-      const fullScreen = InternalFunctions.FullScreen;
-
-      const listener = fullScreen.listeners[callbackName];
-      if (!listener) return;
-
-      delete fullScreen.listeners[callbackName];
+    static unsubscribe(callbackName) {
+      const listener = (_) => this.fullScreenChangeHandler(callbackName);
 
       window.removeEventListener("fullscreenchange", listener);
       window.removeEventListener("mozfullscreenchange", listener);
       window.removeEventListener("webkitfullscreenchange", listener);
       window.removeEventListener("msfullscreenchange", listener);
-    },
+    }
 
     /**
      * Handles full screen mode change events.
      * @param {string} callbackName - The name of the method to be called when the full screen mode is changed.
      */
-    async fullScreenChangeHandler(callbackName) {
+    static async fullScreenChangeHandler(callbackName) {
       try {
         let isFullScreen =
           document.fullscreenElement ||
@@ -99,8 +82,8 @@ window.InternalFunctions = {
           error.message
         );
       }
-    },
-  },
+    }
+  };
 };
 
 window.ClientFullScreen = window.appsSticky = function appsSticky() {
@@ -139,18 +122,38 @@ window.ClientFullScreen = window.appsSticky = function appsSticky() {
   }
 };
 
+// The handler measures two rects and then writes classes, which is a forced layout on
+// every scroll event - dozens per second on a long application list. Coalesced onto one
+// animation frame so it runs once per painted frame at most, and registered passive so
+// the compositor never waits on it before scrolling.
+var appsStickyFrame = null;
+
+function appsStickyScroll() {
+  if (appsStickyFrame !== null) return;
+
+  appsStickyFrame = requestAnimationFrame(function () {
+    appsStickyFrame = null;
+    appsSticky();
+  });
+}
+
 window.registerAppsSticky = function registerAppsSticky() {
   var container = document.querySelector(".giz-apps__body__content");
   if (!container) return;
 
-  container.addEventListener("scroll", appsSticky);
+  container.addEventListener("scroll", appsStickyScroll, { passive: true });
 };
 
 window.unregisterAppsSticky = function unregisterAppsSticky() {
+  if (appsStickyFrame !== null) {
+    cancelAnimationFrame(appsStickyFrame);
+    appsStickyFrame = null;
+  }
+
   var container = document.querySelector(".giz-apps__body__content");
   if (!container) return;
 
-  container.removeEventListener("scroll", appsSticky);
+  container.removeEventListener("scroll", appsStickyScroll);
 };
 
 var adsCollapsed = false;
@@ -185,7 +188,7 @@ window.registerAdsAutoCollapse = function registerAdsAutoCollapse() {
   if (!header) return;
 
   header.addEventListener("click", resetAutoHideAds);
-  container.addEventListener("scroll", autoHideAds);
+  container.addEventListener("scroll", autoHideAds, { passive: true });
 };
 
 window.unregisterAdsAutoCollapse = function unregisterAdsAutoCollapse() {
@@ -1329,3 +1332,571 @@ window.removeExpansionPanelEventListener = function removeExpansionPanelEventLis
         expansionPanelEventListenerReferences.splice(index, 1);
     }
 };
+
+// ─────────────────────── keyboard layout detection ───────────────────────
+// The desktop host's IInputLanguageService never raises LanguageChange and
+// its CurrentInputLanguage getter throws NotImplementedException, so the
+// shell has no way of hearing about an Alt+Shift layout switch from the
+// C# side. The WebView is Chromium though, and Chromium exposes the live
+// OS layout through navigator.keyboard.getLayoutMap(). Polling that is the
+// only route to the information that does not require changing the host.
+//
+// The 'layoutchange' event on navigator.keyboard exists in the spec but is
+// not shipped in most Chromium builds, hence the poll rather than a
+// listener.
+let _layoutWatchTimer = null;
+let _layoutWatchLast = null;
+let _layoutWatchTick = null;
+let _layoutWatchInterval = 800;
+
+async function _probeLayoutSampleChar() {
+    if (!navigator.keyboard || !navigator.keyboard.getLayoutMap) return null;
+    try {
+        const map = await navigator.keyboard.getLayoutMap();
+        // KeyA is present in every layout worth distinguishing here and
+        // its output identifies the script: "a" latin, "ф" cyrillic,
+        // "α" greek, ...
+        return map.get("KeyA") || null;
+    } catch {
+        return null;
+    }
+}
+
+// Follows focus: a layout switch pressed into another window cannot change what
+// this field will type, so there is nothing to poll for while the shell is behind.
+function _layoutWatchResume() {
+    if (_layoutWatchTimer !== null || _layoutWatchTick === null) return;
+
+    _layoutWatchTick();
+    _layoutWatchTimer = setInterval(_layoutWatchTick, _layoutWatchInterval);
+}
+
+function _layoutWatchSuspend() {
+    if (_layoutWatchTimer === null) return;
+
+    clearInterval(_layoutWatchTimer);
+    _layoutWatchTimer = null;
+}
+
+window.setupInputLayoutWatch = function setupInputLayoutWatch(dotNetRef, callbackName, intervalMs) {
+    window.teardownInputLayoutWatch();
+
+    _layoutWatchInterval = intervalMs || 800;
+    _layoutWatchTick = async () => {
+        const sample = await _probeLayoutSampleChar();
+        if (sample && sample !== _layoutWatchLast) {
+            _layoutWatchLast = sample;
+            try {
+                await dotNetRef.invokeMethodAsync(callbackName, sample);
+            } catch {
+                // Component went away between the poll and the callback.
+                window.teardownInputLayoutWatch();
+            }
+        }
+    };
+
+    if (window.GrafitActivity.isFocused) _layoutWatchResume();
+};
+
+window.teardownInputLayoutWatch = function teardownInputLayoutWatch() {
+    _layoutWatchSuspend();
+
+    _layoutWatchTick = null;
+    _layoutWatchLast = null;
+};
+
+// Writing direction for the current language.
+//
+// Nothing the client ships today is right-to-left - the eleven translated cultures are
+// all LTR - so this always resolves to "ltr" in practice. It exists because the document
+// has to declare a direction for any RTL work to have something to switch on: without it
+// even a fully mirrored stylesheet would never activate. See THIRD-PARTY-NOTICES.md's
+// neighbour, the RTL section of deploy/README.md, for what mirroring the stylesheet would
+// still involve.
+window.setDocumentDirection = function setDocumentDirection(direction) {
+    const value = direction === "rtl" ? "rtl" : "ltr";
+
+    if (document.documentElement.getAttribute("dir") !== value) {
+        document.documentElement.setAttribute("dir", value);
+    }
+};
+
+// ───────────────────────────── accent palette ────────────────────────────
+// Every colour the shell has an opinion about derives from one accent. Eight palettes
+// are compiled into the stylesheet (src/scss/themes/client/_palette.scss) and chosen by
+// the data-accent attribute on <html>; any other colour is derived here, at run time,
+// with the same rules, and written onto <html> as the same custom properties. This is
+// the single place either is written from.
+//
+// Where the value comes from, in order:
+//   1. The skin's index.html: <html data-accent="blue"> - the skin's default.
+//   2. A club's own stylesheet from the Manager (the StyleSheet option, served as
+//      style.css): `:root { --gg-palette: green; }` or `:root { --gg-palette: #e11d48; }`.
+//      The property is read back off the document once that stylesheet has loaded, so
+//      a club changes its colour from the Manager without touching the skin. A Manager
+//      setting for the colour, should Gizmo add one, only has to emit that line - or
+//      call grafitTheme.set().
+//   3. grafitTheme.set(nameOrColour) from anywhere at run time.
+(function () {
+    const ACCENTS = ["blue", "purple", "red", "orange", "amber", "green", "teal", "pink"];
+    const DEFAULT = ACCENTS[0];
+    const CUSTOM = "custom";
+    const root = document.documentElement;
+
+    // ── colour maths, matching the Sass functions in _palette.scss ──────────
+    function clamp01(v) {
+        return Math.min(1, Math.max(0, v));
+    }
+
+    // "#rgb", "#rrggbb", "rgb(r, g, b)" -> [r, g, b] in 0..255, or null.
+    function parseColour(text) {
+        const value = String(text || "").trim().replace(/^["']|["']$/g, "").toLowerCase();
+        let m = value.match(/^#([0-9a-f]{3})$/);
+
+        if (m) {
+            return m[1].split("").map(function (c) { return parseInt(c + c, 16); });
+        }
+
+        m = value.match(/^#([0-9a-f]{6})$/);
+
+        if (m) {
+            return [0, 2, 4].map(function (i) { return parseInt(m[1].substr(i, 2), 16); });
+        }
+
+        m = value.match(/^rgba?\(\s*(\d{1,3})\s*[, ]\s*(\d{1,3})\s*[, ]\s*(\d{1,3})/);
+
+        if (m) {
+            return [m[1], m[2], m[3]].map(function (n) { return Math.min(255, parseInt(n, 10)); });
+        }
+
+        return null;
+    }
+
+    function rgbToHsl(rgb) {
+        const r = rgb[0] / 255, g = rgb[1] / 255, b = rgb[2] / 255;
+        const max = Math.max(r, g, b), min = Math.min(r, g, b);
+        const l = (max + min) / 2;
+        let h = 0, s = 0;
+
+        if (max !== min) {
+            const d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
+            else if (max === g) h = (b - r) / d + 2;
+            else h = (r - g) / d + 4;
+            h *= 60;
+        }
+
+        return [h, s, l];
+    }
+
+    function hslToRgb(h, s, l) {
+        h = ((h % 360) + 360) % 360;
+        s = clamp01(s);
+        l = clamp01(l);
+        const c = (1 - Math.abs(2 * l - 1)) * s;
+        const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+        const m = l - c / 2;
+        let r, g, b;
+
+        if (h < 60) { r = c; g = x; b = 0; }
+        else if (h < 120) { r = x; g = c; b = 0; }
+        else if (h < 180) { r = 0; g = c; b = x; }
+        else if (h < 240) { r = 0; g = x; b = c; }
+        else if (h < 300) { r = x; g = 0; b = c; }
+        else { r = c; g = 0; b = x; }
+
+        return [(r + m) * 255, (g + m) * 255, (b + m) * 255];
+    }
+
+    function triplet(rgb) {
+        return rgb.map(function (v) { return Math.round(v); }).join(", ");
+    }
+
+    function css(rgb) {
+        return "rgb(" + triplet(rgb) + ")";
+    }
+
+    // color.adjust($c, $hue: deg)
+    function rotate(rgb, deg) {
+        const hsl = rgbToHsl(rgb);
+        return hslToRgb(hsl[0] + deg, hsl[1], hsl[2]);
+    }
+
+    // color.scale($c, $lightness: -pct%)
+    function darken(rgb, pct) {
+        const hsl = rgbToHsl(rgb);
+        return hslToRgb(hsl[0], hsl[1], hsl[2] * (1 - pct));
+    }
+
+    // color.mix(#fff, $c, pct%)
+    function lighten(rgb, pct) {
+        return rgb.map(function (v) { return 255 * pct + v * (1 - pct); });
+    }
+
+    // ── the rules (see _palette.scss: gg-is-red, gg-is-warm, gg-dark, gg-ink) ──
+    function isRed(h) { return h >= 340 || h < 12; }
+    function isWarm(h) { return h >= 15 && h <= 75; }
+
+    function tokensFor(accent) {
+        const h = rgbToHsl(accent)[0];
+        const tint = isWarm(h) ? 0.35 : 1;
+        const shift = isRed(h) ? 0 : -16;
+        const dark = function (l, s) { return hslToRgb(h + shift, s * tint, l); };
+        const ink = function (l, s) { return hslToRgb(h - 11, s * tint, l); };
+        const inkMain = ink(0.95, 0.30);
+
+        return {
+            "--gg-accent": css(accent),
+            "--gg-accent-rgb": triplet(accent),
+            "--gg-accent-2-rgb": triplet(rotate(accent, isRed(h) ? -8 : -22)),
+            "--gg-accent-3-rgb": triplet(rotate(accent, isRed(h) ? 16 : 28)),
+            "--gg-accent-deep": css(darken(accent, 0.22)),
+            "--gg-accent-deeper": css(darken(accent, 0.45)),
+            "--gg-accent-light": css(lighten(accent, 0.18)),
+            "--gg-accent-soft": css(lighten(accent, 0.45)),
+            "--gg-accent-pale": css(lighten(accent, 0.62)),
+            "--gg-on-accent": css(hslToRgb(h + 8, 0.59, 0.08)),
+            "--gg-ink": css(inkMain),
+            "--gg-ink-rgb": triplet(inkMain),
+            "--gg-ink-2": css(ink(0.84, 0.22)),
+            "--gg-ink-3": css(ink(0.72, 0.42)),
+            "--gg-bg-0": css(dark(0.04, 0.50)),
+            "--gg-bg-1": css(dark(0.06, 0.33)),
+            "--gg-bg-2": css(dark(0.11, 0.41)),
+            "--gg-bg-3": css(dark(0.09, 0.38)),
+            "--gg-panel": css(dark(0.12, 0.38)),
+            "--gg-tile": css(dark(0.09, 0.26)),
+            "--gg-tile-2": css(dark(0.08, 0.30)),
+            "--gg-tile-deep": css(dark(0.04, 0.45)),
+            "--gg-glass-rgb": triplet(dark(0.17, 0.32)),
+            "--gg-glass-2-rgb": triplet(dark(0.08, 0.33)),
+            "--gg-scrim-rgb": triplet(dark(0.04, 0.40)),
+            "--gg-lock-rgb": triplet(dark(0.13, 0.30))
+        };
+    }
+
+    let customTokens = null;
+
+    function clearCustom() {
+        if (!customTokens) {
+            return;
+        }
+
+        Object.keys(customTokens).forEach(function (name) {
+            root.style.removeProperty(name);
+        });
+        customTokens = null;
+    }
+
+    function applyCustom(accent) {
+        const tokens = tokensFor(accent);
+
+        Object.keys(tokens).forEach(function (name) {
+            root.style.setProperty(name, tokens[name]);
+        });
+        customTokens = tokens;
+    }
+
+    let current = null;
+
+    const theme = {
+        accents: ACCENTS.slice(),
+
+        // The value in force: a palette name, or the colour a club named.
+        get: function () {
+            return current || root.getAttribute("data-accent") || DEFAULT;
+        },
+
+        // A palette name, or any colour ("#e11d48", "rgb(225, 29, 72)"). Returns false
+        // for anything else, leaving the shell as it was.
+        set: function (value) {
+            const wanted = String(value || "").trim().replace(/^["']|["']$/g, "");
+            const name = wanted.toLowerCase();
+
+            if (ACCENTS.indexOf(name) >= 0) {
+                if (current === name) {
+                    return true;
+                }
+
+                clearCustom();
+                root.setAttribute("data-accent", name);
+                current = name;
+                return true;
+            }
+
+            const colour = parseColour(wanted);
+
+            if (!colour) {
+                return false;
+            }
+
+            if (current === name) {
+                return true;
+            }
+
+            // No compiled palette matches "custom", so the stylesheet falls back to the
+            // default tokens and the inline ones written here win over them.
+            root.setAttribute("data-accent", CUSTOM);
+            applyCustom(colour);
+            current = name;
+            return true;
+        },
+
+        // Applies --gg-palette and --gg-motion from whatever stylesheets are loaded.
+        // Called after the shell starts and again whenever a stylesheet finishes
+        // loading, so the club's style.css wins over the skin's default no matter
+        // which arrives first.
+        sync: function () {
+            const computed = getComputedStyle(root);
+            const wanted = computed.getPropertyValue("--gg-palette");
+
+            if (wanted) {
+                theme.set(wanted);
+            }
+
+            // `:root { --gg-motion: on; }` turns the moving background on (_flow.scss).
+            const motion = computed.getPropertyValue("--gg-motion");
+
+            if (motion) {
+                theme.motion(motion);
+            }
+        },
+
+        // "on" or "off": the moving background behind the sign-in screen and the shell.
+        // Off unless asked, so a club that never heard of it pays nothing for it.
+        motion: function (value) {
+            const wanted = String(value || "").trim().replace(/["']/g, "").toLowerCase();
+
+            if (wanted === "on") {
+                root.setAttribute("data-motion", "on");
+                return true;
+            }
+
+            if (wanted === "off") {
+                root.removeAttribute("data-motion");
+                return true;
+            }
+
+            return false;
+        }
+    };
+
+    document.addEventListener("load", function (event) {
+        if (event.target && event.target.tagName === "LINK") {
+            theme.sync();
+        }
+    }, true);
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", theme.sync);
+    } else {
+        theme.sync();
+    }
+
+    window.grafitTheme = theme;
+})();
+
+// ───────────────────────────── activity gate ─────────────────────────────
+// The host never clears the WebView's IsVisible when its window goes behind
+// another application, so document.hidden stays false and Chromium keeps
+// painting this page at the monitor's refresh rate for nobody. Focus is the only
+// usable signal, and it is also the right one: an application started outside
+// Gizmo is invisible to the shell, so no cleverer condition would catch it.
+//
+// ShellActivityWatcher holds a veto on the .NET side and lifts sleeping while a
+// deployment is running.
+//
+// Event driven with at most one pending timeout - a gate that polled to learn
+// whether it was idle would be the cost it exists to remove.
+
+// Long enough that a host-owned window taking focus for a moment does not read
+// as leaving, and that entrance animations finish before anything is frozen.
+const GRAFIT_IDLE_GRACE_MS = 2000;
+
+let _grafitUnfocused = false;
+// Starts closed and is only opened from .NET, so a document with no watcher -
+// the notification window - never sleeps.
+let _grafitIdleAllowed = false;
+let _grafitIdle = false;
+
+let _grafitIdleTimer = null;
+let _grafitLastInput = 0;
+let _grafitFocusSeen = false;
+let _grafitPausedMedia = [];
+let _grafitDotNetRef = null;
+let _grafitDotNetCallback = null;
+const _grafitListeners = [];
+
+function _grafitApplyIdle() {
+    const idle = _grafitUnfocused && _grafitIdleAllowed;
+    if (idle === _grafitIdle) return;
+
+    _grafitIdle = idle;
+
+    // The attribute is what the stylesheet keys its animation-play-state off.
+    // Paused rather than removed: an animation stopped this way resumes from the
+    // same frame, so coming back to the shell is not a visible restart.
+    if (idle) {
+        document.documentElement.setAttribute("data-giz-idle", "1");
+    } else {
+        document.documentElement.removeAttribute("data-giz-idle");
+    }
+
+    // Video keeps decoding whatever CSS says, so it has to be told separately.
+    // Only what we paused ourselves is resumed - a clip the shell had already
+    // stopped stays stopped.
+    if (idle) {
+        _grafitPausedMedia = Array.prototype.filter.call(
+            document.getElementsByTagName("video"),
+            (video) => !video.paused && !video.ended
+        );
+        _grafitPausedMedia.forEach((video) => {
+            try { video.pause(); } catch { /* element gone */ }
+        });
+    } else {
+        const resume = _grafitPausedMedia;
+        _grafitPausedMedia = [];
+        resume.forEach((video) => {
+            try { video.play(); } catch { /* element gone or not playable */ }
+        });
+    }
+
+    _grafitListeners.forEach((listener) => {
+        try { listener(!idle); } catch { /* one bad subscriber must not stop the rest */ }
+    });
+}
+
+function _grafitSetUnfocused(value) {
+    if (value === _grafitUnfocused) return;
+
+    _grafitUnfocused = value;
+
+    // The layout poll follows focus, not sleep: without the keyboard there is
+    // nothing to poll for either way.
+    if (value) _layoutWatchSuspend(); else _layoutWatchResume();
+
+    // .NET receives the focus answer; it holds the other condition itself.
+    _grafitPush(!value);
+
+    _grafitApplyIdle();
+}
+
+// The .NET half is reached through an object reference handed over by
+// ShellActivityWatcher, the same route every other callback in this shell uses.
+// Nothing here depends on it being there: if the shell is not attached - not
+// rendered yet, or torn down - the CSS half still does its job.
+function _grafitPush(isFocused) {
+    if (_grafitDotNetRef === null) return;
+
+    try {
+        _grafitDotNetRef.invokeMethodAsync(_grafitDotNetCallback, isFocused).catch(() => { });
+    } catch {
+        // Reference already disposed on the .NET side.
+        _grafitDotNetRef = null;
+    }
+}
+
+window.attachShellActivity = function attachShellActivity(dotNetRef, callbackName) {
+    _grafitDotNetRef = dotNetRef;
+    _grafitDotNetCallback = callbackName;
+
+    // Answer straight away - the shell may already be in the background.
+    _grafitPush(!_grafitUnfocused);
+};
+
+window.detachShellActivity = function detachShellActivity() {
+    _grafitDotNetRef = null;
+
+    // No .NET side means no permission to sleep - waking is the safe direction.
+    window.setShellIdleAllowed(false);
+};
+
+/** Permission to sleep, from ShellActivityWatcher. Withdrawn during a deployment. */
+window.setShellIdleAllowed = function setShellIdleAllowed(allowed) {
+    allowed = !!allowed;
+    if (allowed === _grafitIdleAllowed) return;
+
+    _grafitIdleAllowed = allowed;
+
+    _grafitApplyIdle();
+};
+
+function _grafitEvaluate() {
+    if (_grafitIdleTimer !== null) {
+        clearTimeout(_grafitIdleTimer);
+        _grafitIdleTimer = null;
+    }
+
+    // Should the host ever start hiding the WebView properly, this is the cheap
+    // path and Chromium has already stopped rendering by itself.
+    if (document.visibilityState !== "visible") {
+        _grafitSetUnfocused(true);
+        return;
+    }
+
+    if (document.hasFocus()) {
+        _grafitFocusSeen = true;
+        _grafitSetUnfocused(false);
+        return;
+    }
+
+    // Only trust "unfocused" once focus has been seen at least once. In a host
+    // where the WebView never receives focus the answer means nothing, and leaving
+    // the shell running is the only honest conclusion.
+    if (!_grafitFocusSeen) {
+        _grafitSetUnfocused(false);
+        return;
+    }
+
+    const waited = Date.now() - _grafitLastInput;
+    if (waited >= GRAFIT_IDLE_GRACE_MS) {
+        _grafitSetUnfocused(true);
+        return;
+    }
+
+    _grafitIdleTimer = setTimeout(_grafitEvaluate, GRAFIT_IDLE_GRACE_MS - waited);
+}
+
+// Input is the fallback signal. Mouse and keys can only reach this page while it
+// is the window in front, so if focus reporting is ever unreliable the gate still
+// opens the moment the customer touches anything.
+function _grafitInput(e) {
+    _grafitLastInput = Date.now();
+
+    // A click or a keystroke landing here is proof the window can hold focus,
+    // whatever hasFocus() says at this instant. Pointer moves are not: they arrive
+    // over an unfocused window too.
+    if (e && (e.type === "pointerdown" || e.type === "keydown")) _grafitFocusSeen = true;
+
+    if (_grafitUnfocused) _grafitSetUnfocused(false);
+}
+
+function _grafitFocused() {
+    _grafitFocusSeen = true;
+    _grafitEvaluate();
+}
+
+window.GrafitActivity = {
+    get isActive() { return !_grafitIdle; },
+    get isFocused() { return !_grafitUnfocused; },
+
+    subscribe(listener) {
+        if (typeof listener === "function") _grafitListeners.push(listener);
+    },
+
+    unsubscribe(listener) {
+        const index = _grafitListeners.indexOf(listener);
+        if (index > -1) _grafitListeners.splice(index, 1);
+    },
+};
+
+window.addEventListener("focus", _grafitFocused);
+window.addEventListener("blur", _grafitEvaluate);
+document.addEventListener("visibilitychange", _grafitEvaluate);
+
+["pointerdown", "pointermove", "keydown", "wheel"].forEach((name) => {
+    window.addEventListener(name, _grafitInput, { passive: true, capture: true });
+});
+
+_grafitEvaluate();

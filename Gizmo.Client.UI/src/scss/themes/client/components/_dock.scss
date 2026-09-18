@@ -17,9 +17,13 @@
         box-sizing: content-box;
 
         &-tooltip {
-            background-color: #2B2D33;
-            box-shadow: 0 0.4rem 2.0rem rgba(0, 0, 0, 0.08);
-            border-radius: 0.8rem;
+            background: rgba(8, 11, 20, 0.97);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6),
+                        0 0 0 1px rgba(var(--gg-accent-rgb), 0.05);
+            border-radius: 1rem;
             padding: 1.2rem;
             white-space: nowrap;
             min-width: 23.4rem;
@@ -33,6 +37,7 @@
                 left: 0;
                 padding-top: 0.8rem;
                 visibility: hidden;
+                z-index: 50;
 
                 &--visible {
                     visibility: visible;
@@ -59,9 +64,22 @@
 }
 
 .giz-dock-item-content {
+    border-radius: 1rem;
+    padding: 0.3rem;
+    transition: background 0.18s, transform 0.18s;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.07);
+        transform: translateY(-2px);
+
+        .giz-default-image img {
+        }
+    }
+
     .giz-default-image {
         img {
-            filter: drop-shadow(0 0.4rem 0.8rem rgba(0, 0, 0, 0.16));
+            filter: drop-shadow(0 0.4rem 0.8rem rgba(0, 0, 0, 0.25));
+            transition: filter 0.18s;
         }
     }
 }

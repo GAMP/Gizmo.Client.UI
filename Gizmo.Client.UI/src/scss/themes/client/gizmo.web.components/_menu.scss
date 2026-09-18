@@ -41,19 +41,24 @@
             }
 
             .giz-list {
-                padding: unset;
-                border-radius: unset;
-                border: 0.1rem solid $unknown-color;
-                box-shadow: $elevation-4-theme-client;
-                background-color: rgba(9, 11, 16, 0.9);
+                padding: 0.4rem;
+                border-radius: 0.8rem;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55),
+                            0 0 0 1px rgba(var(--gg-accent-rgb), 0.06);
+                background: rgba(8, 11, 20, 0.97);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
 
                 .giz-list-item {
-                    border-radius: unset;
+                    border-radius: 0.6rem;
                     background-color: unset;
-                    color: white;
+                    color: rgba(255, 255, 255, 0.78);
+                    transition: background 0.15s, color 0.15s;
 
                     &:hover {
-                        background-color: $unknown-color;
+                        background: rgba(var(--gg-accent-rgb), 0.10);
+                        color: var(--gg-accent);
                     }
 
                     .giz-list-item__icon {

@@ -367,35 +367,25 @@ namespace Gizmo.Client.UI.Components
             return Task.CompletedTask;
         }
 
-        private async Task CloseNotifications()
+        private void ViewState_OnChange(object sender, System.EventArgs e)
         {
-            if (await _animationLock.WaitAsync(TimeSpan.FromMinutes(1)))
+            Logger.LogDebug($"NotificationsMessage: ViewState_OnChange {this.ToString()}");
+
+            DispatchWorkflow(async () =>
             {
                 try
                 {
-                    _dismissAllItems = _visible.Select(a => a.Identifier).ToList();
-                    NotificationsService.DismissAll();
-
-                    await SlideWindowOut();
-
-                    _visible.Clear();
-                    await Rerender();
+                    await UpdateUI();
                 }
-                catch
+                catch (Exception ex)
                 {
-                    throw;
+                    //This was async void, so anything UpdateUI threw - most often JS interop
+                    //against a WebView that is going away - got rethrown on the thread pool and
+                    //exited the entire client. A notification failing to animate is never worth
+                    //a restart, so it is logged and dropped instead.
+                    Logger.LogError(ex, "NotificationsMessage: notification update failed.");
                 }
-                finally
-                {
-                    _animationLock.Release();
-                }
-            }
-        }
-
-        private async void ViewState_OnChange(object sender, System.EventArgs e)
-        {
-            Logger.LogDebug($"NotificationsMessage: ViewState_OnChange {this.ToString()}");
-            await UpdateUI();
+            });
         }
 
         private Task AnimationHandler(AnimationEventArgs args)
@@ -476,6 +466,8 @@ namespace Gizmo.Client.UI.Components
                 } while (!done);
 
                 ViewState.OnChange += ViewState_OnChange;
+
+                await ApplyAccentAsync();
             }
             else
             {
@@ -492,7 +484,35 @@ namespace Gizmo.Client.UI.Components
 
         protected override async Task OnInitializedAsync()
         {
+            // This window is a Blazor root of its own - App never runs here - so the
+            // string table is associated from both roots. Same process, so whichever
+            // starts first serves the other.
+            Localization.ShellStringOverrides.Associate(LocalizationService);
+
+            // The accent palette, likewise: this document has no club stylesheet to read
+            // it from, so it follows what the main window resolved - see ShellTheme.
+            Services.ShellTheme.Changed += OnAccentChanged;
+
             await base.OnInitializedAsync();
+        }
+
+        private void OnAccentChanged() => DispatchWorkflow(ApplyAccentAsync);
+
+        private async Task ApplyAccentAsync()
+        {
+            var accent = Services.ShellTheme.Accent;
+
+            if (string.IsNullOrEmpty(accent))
+                return;
+
+            try
+            {
+                await JsRuntime.InvokeVoidAsync("grafitTheme.set", accent);
+            }
+            catch (Exception exception) when (exception is JSException or InvalidOperationException)
+            {
+                // An old bundle without the hook, or a window on its way out.
+            }
         }
 
         #endregion
@@ -502,6 +522,12 @@ namespace Gizmo.Client.UI.Components
         public async ValueTask DisposeAsync()
         {
             Logger.LogDebug($"NotificationsMessage: DisposeAsync {this.ToString()}");
+
+            //Subscribed in OnAfterRenderAsync but never detached, so every rebuild of this host
+            //left another dead instance attached to the (long lived) view state, each one still
+            //driving JS interop against a DOM it no longer owns.
+            ViewState.OnChange -= ViewState_OnChange;
+            Services.ShellTheme.Changed -= OnAccentChanged;
 
             try
             {

@@ -1,14 +1,19 @@
-﻿@namespace Gizmo.Client.UI
+@namespace Gizmo.Client.UI
 @inherits CustomDOMComponentBase
+@using Gizmo.UI.Services
+@inject ILocalizationService LocalizationService
 
+@* Profile pill: just the avatar, round, nothing else - no name, no
+   chevron. The hover/open tint on the circle itself is the only
+   "this opens something" signal. *@
 <div class="giz-header__user-menu-item giz-user-dropdown @(UserMenuViewState.UserLinksIsVisible ? "open" : "")">
-    <button class="giz-user-menu-button" @onclick="(args) => OnClick.InvokeAsync(args)" @onclick:stopPropagation="true">
-        <HeaderUserMenuUserAvatar />
-
-        <div><HostNumber /></div>
-
-        <Icon Size="IconSizes.ExtraLarge" SVGIcon="Icons.Select_Client" />
-
-    </button>
+    @* The ring and the level mark sit on a host around the button: the button clips its
+       own overflow, and the ring is drawn outside it. *@
+    <span class="gg-avatar-host">
+        <button class="giz-user-menu-button" @onclick="(args) => OnClick.InvokeAsync(args)" @onclick:stopPropagation="true">
+            <HeaderUserMenuUserAvatar />
+        </button>
+        <LoyaltyAvatarRing />
+    </span>
     <MenuUserLinks />
 </div>

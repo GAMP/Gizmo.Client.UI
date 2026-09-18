@@ -1,25 +1,18 @@
 ﻿@namespace Gizmo.Client.UI.Pages
 @inherits CustomDOMComponentBase
 
+@* Stock V3 gave this page its own quick-launch + news header row. Quick
+   launch now lives in the persistent rail under the nav sidebar (see
+   _Layout.razor), so rendering it here too would just double it up - and the
+   news rotator has no content in this environment, so its half of the row
+   showed up as an empty backed panel with nothing in it. *@
 <div class="giz-home-apps-wrapper">
     <div class="giz-home-apps">
-        <div class="giz-home-apps__header @(!FeedsViewState.IsEnabled ? "full-quick-launcher" : "")">
-            <div class="giz-home-apps__header__quick-launch">
-                <QuickLauncher />
-            </div>
-            @if (FeedsViewState.IsEnabled)
-            {
-                <div class="giz-home-apps__header__ads">
-                    <NewsRotator />
-                </div>
-            }
-        </div>
         <div class="giz-apps__body">
-            <div class="giz-section giz-section--stuck">
-                <div class="giz-section__header">
-                    <AppFilters />
-                </div>
-            </div>
+            @* The duplicate "stuck" copy of AppFilters that used to sit here
+               is gone. It rendered a second, identical filter bar whose
+               visibility was driven by a clip-path/scroll hack; the one
+               inside the popular section below is the real one. *@
             <div class="giz-apps__body__content giz-ads-container giz-scrollbar--v">
                 @if (AdvertisementsViewState.Advertisements.Count() > 0)
                 {

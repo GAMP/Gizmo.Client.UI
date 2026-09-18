@@ -1,9 +1,11 @@
 ﻿using System.Threading.Tasks;
 
 using Gizmo.Client.Options;
+using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
+using Gizmo.Web.Api.Models;
 using Gizmo.Web.Components;
 
 using Microsoft.AspNetCore.Components;
@@ -37,6 +39,9 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         IOptionsMonitor<ClientShopOptions> ShopOptions { get; set; }
 
+        [Inject]
+        IClientDialogService DialogService { get; set; }
+
         public bool IsShopEnabled => !ShopOptions.CurrentValue.Disabled;
 
         [Parameter]
@@ -51,10 +56,50 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<MouseEventArgs> OnClick { get; set; }
 
+        /// <summary>
+        /// Time package: bought outright rather than added to the cart.
+        /// </summary>
+        private bool IsTimePackage => _product?.ProductType == ProductType.ProductTime;
+
+        //While the purchase dialog is open the button goes dark, or a second press sends a
+        //second copy of the package to the cart.
+        private bool _buying;
+
         public async Task OnAddProductButtonClickHandler(MouseEventArgs args)
         {
             await OnClick.InvokeAsync(args);
             ClientServerCartViewService.AddProduct(ProductId);
+        }
+
+        /// <summary>
+        /// Buy on a time package: add to the cart and open the purchase dialog.
+        /// </summary>
+        /// <remarks>
+        /// The click is deliberately NOT bubbled through <see cref="OnClick"/>: on a product
+        /// card that opens the product page, and the customer has already said what they
+        /// want.
+        /// </remarks>
+        public Task OnBuyPackageClickHandler(MouseEventArgs args)
+        {
+            if (_buying)
+                return Task.CompletedTask;
+
+            _buying = true;
+
+            DispatchWorkflow(async () =>
+            {
+                try
+                {
+                    await PackagePurchaseFlow.RunAsync(ProductId, ClientServerCartViewService, DialogService);
+                }
+                finally
+                {
+                    _buying = false;
+                    StateHasChanged();
+                }
+            });
+
+            return Task.CompletedTask;
         }
 
         public async Task OnRemoveQuantityButtonClickHandler(MouseEventArgs args)
@@ -88,22 +133,28 @@ namespace Gizmo.Client.UI.Components
             await base.OnInitializedAsync();
         }
 
-        private async void ViewState_OnChange(object sender, System.EventArgs e)
+        //Cart changes are raised off the UI thread. Not async void: a dispatcher fault during
+        //host teardown would be rethrown on the thread pool and exit the client (see
+        //CustomComponentBase.DispatchWorkflow).
+        private void ViewState_OnChange(object sender, System.EventArgs e)
         {
-            var tmp = await ClientServerCartViewService.GetUserCartProductViewStateAsync(ProductId);
-
-            if (_userCartProductViewState != tmp)
+            DispatchWorkflow(async () =>
             {
-                if (_userCartProductViewState != null)
-                    this.UnsubscribeChange(_userCartProductViewState);
+                var tmp = await ClientServerCartViewService.GetUserCartProductViewStateAsync(ProductId);
 
-                _userCartProductViewState = tmp;
+                if (_userCartProductViewState != tmp)
+                {
+                    if (_userCartProductViewState != null)
+                        this.UnsubscribeChange(_userCartProductViewState);
 
-                if (_userCartProductViewState != null)
-                    this.SubscribeChange(_userCartProductViewState);
+                    _userCartProductViewState = tmp;
 
-                await InvokeAsync(StateHasChanged);
-            }
+                    if (_userCartProductViewState != null)
+                        this.SubscribeChange(_userCartProductViewState);
+
+                    StateHasChanged();
+                }
+            });
         }
 
         public override void Dispose()

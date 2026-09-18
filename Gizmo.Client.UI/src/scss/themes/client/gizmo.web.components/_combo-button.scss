@@ -71,31 +71,43 @@
             }
 
             .giz-list {
-                background-color: #201F1F;
-                box-shadow: 0 0.4rem 2.0rem rgba(0, 0, 0, 0.08);
-                border-radius: 0.8rem;
-                color: #E4E6EB;
-                padding: 0.8rem 0;
+                background: rgba(8, 11, 20, 0.98);
+                border: 1px solid rgba(255, 255, 255, 0.09);
+                box-shadow: 0 1.6rem 4.8rem rgba(0, 0, 0, 0.7),
+                            0 0 0 1px rgba(255, 255, 255, 0.04);
+                border-radius: 1rem;
+                color: rgba(255, 255, 255, 0.8);
+                padding: 0.5rem;
 
                 .giz-list-item {
-                    padding: 0.9rem 1.6rem;
+                    padding: 0.9rem 1.2rem;
                     color: #E4E6EB;
-                    border-radius: 0;
+                    border-radius: 0.7rem;
                     white-space: nowrap;
                     @include font-m-theme-client($font-weight-light-theme-client);
+                    color: rgba(255, 255, 255, 0.72);
+                    transition: background 0.15s, color 0.15s;
+
+                    .giz-icon {
+                        color: rgba(255, 255, 255, 0.38);
+                        transition: color 0.15s;
+                    }
 
                     &.active {
-                        background-color: #373839;
-                        color: #E4E6EB;
+                        background: rgba(var(--gg-accent-rgb), 0.12);
+                        color: var(--gg-accent);
+
+                        .giz-icon { color: var(--gg-accent); }
                     }
                 }
 
                 &.giz-list--selectable {
                     .giz-list-item {
                         &.selected {
-                            //Default Theme
-                            background-color: #373839;
-                            color: #E4E6EB;
+                            background: rgba(var(--gg-accent-rgb), 0.12);
+                            color: var(--gg-accent);
+
+                            .giz-icon { color: var(--gg-accent); }
                         }
                     }
                 }
@@ -103,9 +115,10 @@
                 &.giz-list--clickable {
                     .giz-list-item {
                         &:hover {
-                            //Default Theme
-                            background-color: #373839;
-                            color: #E4E6EB;
+                            background: rgba(255, 255, 255, 0.07);
+                            color: rgba(255, 255, 255, 0.95);
+
+                            .giz-icon { color: rgba(255, 255, 255, 0.65); }
                         }
                     }
                 }

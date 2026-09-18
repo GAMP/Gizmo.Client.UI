@@ -3,42 +3,50 @@
 .giz-menu-notifications {
     display: grid;
     grid-template-rows: min-content 1fr min-content;
-    background-color: #22272B;
+    background: rgba(8, 11, 20, 0.97);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: none;
     width: 36.8rem;
     min-height: 53.3rem;
-    border-radius: 0 0 0.8rem 0.8rem;
-    box-shadow: 0px 32px 64px rgba(0, 0, 0, 0.37), 0px 2px 21px rgba(0, 0, 0, 0.37);
+    border-radius: 0 0 1rem 1rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(var(--gg-accent-rgb), 0.06);
     max-height: 100%;
     overflow: hidden;
 
     &__header {
-        color: #E4E6EB;
-        padding: 0.8rem 1.6rem;
+        color: rgba(255, 255, 255, 0.95);
+        padding: 1rem 1.6rem;
         @include font-h5-theme-client($font-weight-bold-theme-client);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 
         span {
-            color: rgba(255, 255, 255, 0.75);
+            color: rgba(255, 255, 255, 0.5);
             @include font-s-theme-client($font-weight-light-theme-client);
         }
     }
 
     &__body {
-        padding: 0.8rem;
+        padding: 0.6rem;
         overflow: auto;
     }
 
     &__footer {
         display: flex;
         justify-content: center;
-        color: #0F7CFE;
+        color: var(--gg-accent);
         padding: 1.1rem;
         @include font-l-theme-client($font-weight-regular-theme-client);
-        border-top: 0.1rem solid rgba(255, 255, 255, 0.2);
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
         white-space: normal;
         text-align: center;
+        transition: opacity 0.15s;
 
         &__action {
             cursor: pointer;
+            &:hover { opacity: 0.75; }
         }
     }
 }
@@ -52,10 +60,10 @@
     position: relative;
     border-radius: 0.8rem;
     white-space: normal;
-    transition: background-color 0.2s;
+    transition: background 0.15s;
 
     &:hover {
-        background-color: #373839;
+        background: rgba(var(--gg-accent-rgb), 0.08);
     }
 
     &:last-child {
@@ -70,7 +78,7 @@
         display: flex;
 
         svg {
-            fill: $primary-color-theme-client;
+            fill: var(--gg-accent);
             width: 1.2rem;
             height: 1.2rem;
         }
@@ -84,7 +92,7 @@
         @include font-s-theme-client($font-weight-light-theme-client);
 
         &__time {
-            color: #2E89FF;
+            color: rgba(var(--gg-accent-rgb), 0.75);
         }
 
         &__action {

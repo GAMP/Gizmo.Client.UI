@@ -1,66 +1,118 @@
-﻿using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.Localization;
 using Gizmo.Client.UI.View.States;
-using Gizmo.UI.Services;
-using Gizmo.Web.Components;
-using Microsoft.AspNetCore.Components;
+using Gizmo.Web.Api.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class CheckoutDialog : CustomDOMComponentBase
+    /// <summary>
+    /// Checkout of the shop cart: what is in it, what to pay with, what it comes to.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Opened by the shop's own <c>UserCartViewService.SubmitAsync</c> from the cart
+    /// panel, and the order is placed through its <c>CheckoutAsync</c>: the shop owns
+    /// this dialog's lifetime - it closes it when the cart is reset under it - and the
+    /// flag that keeps it open through the reset is set inside that method.
+    /// </para>
+    /// <para>
+    /// Points are not offered here: in the cart each line chooses money or points on the
+    /// cart page, and the checkout only shows what those choices add up to.
+    /// </para>
+    /// </remarks>
+    public partial class CheckoutDialog : CartDialogBase
     {
-        private IEnumerable<PaymentMethodViewState> _paymentMethods = Enumerable.Empty<PaymentMethodViewState>();
+        #region THE CART
 
-        [Inject]
-        ILocalizationService LocalizationService { get; set; }
+        protected override bool IsPriced => CartService.ViewState.Products.Any();
 
-        [Inject]
-        UserCartViewService Service { get; set; }
+        private IEnumerable<UserCartProductViewState> Items =>
+            CartService.ViewState.Products.OrderBy(a => a.Number);
 
-        [Inject]
-        ClientServerCartViewService ClientServerCartViewService { get; set; }
+        private int ItemCount => CartService.ViewState.Products.Sum(a => a.Quantity);
 
-        [Inject]
-        PaymentMethodViewStateLookupService PaymentMethodViewStateLookupService { get; set; }
+        private string ItemsTitle => ShellStringOverrides.GetPlural(ShellStringOverrides.BUY_ITEMS_COUNT, ItemCount);
 
-        [Parameter]
-        public DialogDisplayOptions DisplayOptions { get; set; }
+        private static bool IsPointsLine(UserCartProductViewState item) =>
+            item.PayType == OrderLinePayType.Points;
 
-        [Parameter]
-        public EventCallback DismissCallback { get; set; }
+        #endregion
 
-        private void ValueChangedHandler(int? value)
+        #region PAYING
+
+        protected override string TitleKey => ShellStringOverrides.SHOP_CHECKOUT_TITLE;
+
+        protected override string PayForKey => ShellStringOverrides.BUY_ORDER_FOR;
+
+        private string DoneTitle => _paidWith == PayWayKind.Counter
+            ? ShellStringOverrides.Get(ShellStringOverrides.BUY_ORDERED_TITLE)
+            : ShellStringOverrides.Get(ShellStringOverrides.BUY_ORDER_PAID_TITLE);
+
+        private string DoneNote => _paidWith == PayWayKind.Counter
+            ? ShellStringOverrides.Get(ShellStringOverrides.BUY_ORDERED_HINT)
+            : string.Empty;
+
+        /// <summary>
+        /// Places the order through the shop's own checkout.
+        /// </summary>
+        /// <remarks>
+        /// That method validates the balance against a cached figure before talking to
+        /// the server and returns without a word when the check fails. It marks the order
+        /// complete only once the server has answered, so "not complete" after it returns
+        /// means the check failed: the balances are re-read and the dialog stays on the
+        /// confirmation, where the shortfall now shows, rather than reporting success.
+        /// </remarks>
+        protected override void Pay()
         {
-            Service.SetOrderPaymentMethod(value);
+            if (!CanPay)
+                return;
+
+            _paying = true;
+            _paidWith = SelectedWay?.Kind ?? PayWayKind.Balance;
+            StateHasChanged();
+
+            DispatchWorkflow(async () =>
+            {
+                if (Total == 0 && CartOrderService.ViewState.PaymentMethodId.HasValue)
+                {
+                    CartOrderService.SetOrderPaymentMethod(null);
+                    await WaitForCartAsync();
+                }
+
+                await CartOrderService.CheckoutAsync();
+
+                var state = CartOrderService.ViewState;
+
+                if (!state.IsComplete)
+                {
+                    await RefreshBalanceAsync();
+
+                    _paying = false;
+                    StateHasChanged();
+                    return;
+                }
+
+                _outcomeOk = !state.HasError;
+                _outcomeError = state.ErrorMessage;
+
+                _paying = false;
+                _step = Step.Done;
+                StateHasChanged();
+            });
         }
 
-        private async Task CloseDialog()
+        protected override async Task CloseDialog()
         {
+            if (_paying)
+                return;
+
             await DismissCallback.InvokeAsync();
 
-            Service.ClearDialog();
+            CartOrderService.ClearDialog();
         }
 
-        protected override async Task OnInitializedAsync()
-        {
-            this.SubscribeChange(Service.ViewState);
-            this.SubscribeChange(ClientServerCartViewService.ViewState);
-
-            var tmp = await PaymentMethodViewStateLookupService.GetStatesAsync();
-
-            _paymentMethods = tmp.Where(a => a.Id != -4 && !a.IsOnline && !a.IsDeleted && a.IsEnabled).ToList(); //TODO: AAAAA
-
-            await base.OnInitializedAsync();
-        }
-
-        public override void Dispose()
-        {
-            this.UnsubscribeChange(ClientServerCartViewService.ViewState);
-            this.UnsubscribeChange(Service.ViewState);
-
-            base.Dispose();
-        }
+        #endregion
     }
 }

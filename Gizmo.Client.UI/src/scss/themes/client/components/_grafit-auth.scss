@@ -1,0 +1,613 @@
+//=============== Grafit: sign-in, registration, recovery ================//
+//
+// A layer over the vendor styles for the 3.0.91 authentication flow, which ships working
+// functionality in its own look ('Noto Sans', #57bcff, 1rem radii, flat borders). Here it
+// is brought to the shell's language: Manrope/Space Grotesk, one purple accent, glass and
+// large radii.
+//
+// A separate file rather than edits inside _layout-login.scss, because the vendor is
+// actively rewriting this area: edits inside its blocks would conflict on every update,
+// while a file loaded last overrides by cascade order and shares no line with it.
+//
+// Appearance only. No selector here changes behaviour, markup or visibility conditions.
+
+$ga-ink:      rgba(255, 255, 255, 0.95);
+$ga-ink-2:    rgba(255, 255, 255, 0.6);
+$ga-ink-3:    rgba(255, 255, 255, 0.42);
+$ga-line:     rgba(255, 255, 255, 0.12);
+$ga-surface:  linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+$ga-r:        1.4rem;   // fields and rows
+$ga-r-card:   2.4rem;   // cards and dialogs
+$ga-danger:   #ff6b6b;
+
+// Error block, brought to the single error shape used across the shell.
+.giz-error-block {
+    padding: 1.1rem 1.4rem;
+    border-radius: 1.3rem;
+    background: rgba(238, 80, 90, 0.12);
+    border: 1px solid rgba(238, 80, 90, 0.3);
+    color: #ffd7da;
+    font-family: $font-family-text-theme-client;
+    font-size: 1.3rem;
+    line-height: 1.9rem;
+
+    &--with-icon {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.2rem 1.4rem;
+        border-radius: 1.3rem;
+        background: rgba(238, 80, 90, 0.12);
+        border-color: rgba(238, 80, 90, 0.3);
+        color: #ffd7da;
+        font-family: $font-family-text-theme-client;
+        font-size: 1.3rem;
+        line-height: 1.9rem;
+        text-align: left;
+    }
+
+    &__icon {
+        flex-shrink: 0;
+        margin-top: 0.1rem;
+        color: $ga-danger;
+    }
+}
+
+.giz-login-error-block {
+    margin-bottom: 2rem;
+}
+
+// Verification method picker
+.giz-registration-providers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+// Provider row (Telegram, SMS, mail) - the same pill as the launch shortcuts on cards.
+.giz-registration-provider-btn {
+    width: 100%;
+    height: 5.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0 1.6rem;
+    border-radius: $ga-r;
+    background: $ga-surface;
+    border: 1px solid $ga-line;
+    color: $ga-ink;
+    font-family: $font-family-header-theme-client;
+    font-size: 1.45rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.16s, border-color 0.16s, transform 0.16s;
+
+    .giz-icon {
+        flex-shrink: 0;
+        width: 2.2rem;
+        height: 2.2rem;
+        color: var(--gg-accent);
+    }
+
+    &:hover {
+        background: rgba(var(--gg-accent-rgb), 0.1);
+        border-color: rgba(var(--gg-accent-rgb), 0.5);
+        transform: translateY(-1px);
+    }
+
+    &:disabled {
+        opacity: 0.45;
+        cursor: default;
+        transform: none;
+    }
+}
+
+// "Other methods" separator: the vendor's is blue, and the shell has no blue at all.
+.giz-registration-providers-divider {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin: 2.4rem 0 1.2rem;
+
+    &__line {
+        flex: 1;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    &__badge {
+        height: auto;
+        padding: 0;
+        background: none;
+        border: 0;
+        border-radius: 0;
+        color: $ga-ink-3;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+}
+
+.giz-registration-providers-hint,
+.giz-registration-providers-terms {
+    margin: 0 0 1.6rem;
+    color: $ga-ink-2;
+    font-family: $font-family-text-theme-client;
+    font-size: 1.3rem;
+    line-height: 1.9rem;
+}
+
+// Confirmation code entry
+.giz-confirmation-code {
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+        margin-bottom: 0.4rem;
+    }
+
+    &__form {
+        margin-bottom: 1.6rem;
+    }
+
+    &__actions {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+// Resend button with a countdown. Tabular figures, or the seconds shift the label
+// horizontally on every tick.
+.giz-resend-button {
+    &__label {
+        padding: 0 5.6rem;
+        font-family: $font-family-header-theme-client;
+        font-weight: 600;
+    }
+
+    &__time {
+        right: 2rem;
+        color: $ga-ink-3;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.35rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+// Registration forms
+.giz-registration-form-input {
+    margin-bottom: 1.6rem;
+}
+
+// While a dropdown is open its form row is lifted above the rows below it.
+//
+// The list has a high z-index of its own, but that is not enough: a form row can become
+// its own stacking context - from an entrance animation, from opacity, from anything
+// added later - and then any z-index inside it is resolved within that context. Lifting
+// the row works regardless of who created the context, and only while the list is open.
+.giz-login-card {
+    :is(.giz-form-input, .giz-registration-form-input, .giz-registration-basic__field):has(.giz-popup--open) {
+        position: relative;
+        z-index: 60;
+    }
+}
+
+// Form row. auto-fit rather than two fixed columns: the vendor puts both a name/surname
+// pair and a lone password field in this container. With repeat(2, 1fr) the lone field
+// took half the width, and on a narrow card the phone mask wrapped. auto-fit gives one
+// child the full width, two a column each, and wraps when it is tight.
+.giz-form-input-columns,
+.giz-registration-basic__fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: 1.2rem 1.6rem;
+}
+
+// Phone step: country and number stack. Two columns do not work - the
+// "+7 (###) ###-##-##" mask does not fit half a card and breaks onto two lines.
+.giz-registration-phone__fields {
+    display: flex;
+    flex-direction: column;
+}
+
+.giz-registration-basic,
+.giz-registration-phone {
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+        margin-bottom: 0.4rem;
+    }
+
+    &__title {
+        color: rgba(255, 255, 255, 0.98);
+        font-family: $font-family-header-theme-client;
+        font-size: 3.6rem;
+        font-weight: 800;
+        line-height: 1.15;
+        letter-spacing: -0.01em;
+        margin-bottom: 1.2rem;
+    }
+
+    &__submit {
+        margin-top: 2rem;
+    }
+}
+
+// Form cell. min-width: 0 is required: without it a long value stretches the grid
+// column and the second one runs off the card.
+.giz-registration-basic__field {
+    min-width: 0;
+
+    // Full-width field inside the two-column grid.
+    &--full { grid-column: 1 / -1; }
+}
+
+// Password requirement hints: the satisfied state moves off #219653 onto the same green
+// the rest of the shell uses for success.
+.giz-password-tooltip-message.passed {
+    color: #5ed894;
+}
+
+// Validation message under a field, brought to the shell's muted red.
+.giz-input-validation-label {
+    color: #ff8b8b;
+    font-size: 1.2rem;
+    line-height: 1.7rem;
+}
+
+// Registration error screen
+.giz-registration-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.6rem;
+
+    &__icon {
+        width: 7.2rem;
+        height: 7.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(238, 80, 90, 0.12);
+        border: 1px solid rgba(238, 80, 90, 0.3);
+        color: $ga-danger;
+    }
+
+    &__title {
+        color: rgba(255, 255, 255, 0.98);
+        font-family: $font-family-header-theme-client;
+        font-size: 2.8rem;
+        font-weight: 800;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+    }
+
+    &__subtitle {
+        margin-top: 0.8rem;
+        color: $ga-ink-2;
+        font-family: $font-family-text-theme-client;
+        font-size: 1.45rem;
+        line-height: 2.1rem;
+    }
+
+    &__alert {
+        width: 100%;
+    }
+
+    &__buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        width: 100%;
+        margin-top: 0.4rem;
+    }
+
+    // Same order as everywhere in the shell: one filled accent, the second action is a
+    // quiet outline.
+    &__btn-primary,
+    &__btn-secondary {
+        width: 100%;
+        height: 5.2rem;
+        border-radius: $ga-r;
+        cursor: pointer;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.5rem;
+        font-weight: 600;
+        transition: filter 0.16s, background 0.16s, border-color 0.16s;
+    }
+
+    &__btn-primary {
+        border: 0;
+        background: var(--gg-accent);
+        color: var(--gg-on-accent);
+
+        &:hover { filter: brightness(1.1); }
+    }
+
+    &__btn-secondary {
+        background: transparent;
+        border: 1px solid $ga-line;
+        color: $ga-ink;
+
+        &:hover {
+            border-color: rgba(var(--gg-accent-rgb), 0.5);
+            background: rgba(var(--gg-accent-rgb), 0.1);
+        }
+    }
+}
+
+// External registration (QR)
+.giz-registration-redirect {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.4rem;
+
+    &__title {
+        color: rgba(255, 255, 255, 0.98);
+        font-family: $font-family-header-theme-client;
+        font-size: 2.8rem;
+        font-weight: 800;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+    }
+
+    &__subtitle {
+        color: $ga-ink-2;
+        font-family: $font-family-text-theme-client;
+        font-size: 1.45rem;
+        line-height: 2.1rem;
+    }
+
+    // Heading with the channel icon to the left of the name, on one line. No tile here
+    // on purpose: this screen had three nested ones. Only the code needs a frame.
+    &__provider {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 1.2rem;
+        padding: 0;
+        background: none;
+        border: 0;
+        border-radius: 0;
+    }
+
+    // Icon plate stays the vendor's - only the size changes, since 4.4rem outweighed
+    // the heading beside it.
+    &__provider-icon {
+        width: 3.8rem;
+        height: 3.8rem;
+        min-width: 3.8rem;
+        border-radius: 1.1rem;
+    }
+
+    &__provider-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        text-align: left;
+    }
+
+    // The vendor subtitle repeats the hint below it and is blanked through
+    // ShellStringOverrides; hidden here so it does not hold a line.
+    &__subtitle:empty { display: none; }
+
+    &__provider-text {
+        color: $ga-ink;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+
+    // The channel icon keeps the vendor's brand colour. This is the one place a foreign
+    // colour belongs: it identifies the service rather than decorating.
+
+    // The "scan this code" hint is a line of text; the vendor's blue frame is dropped.
+    &__info {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 0.7rem;
+        max-width: 34rem;
+        padding: 0;
+        background: none;
+        border: 0;
+        border-radius: 0;
+        color: $ga-ink-2;
+        font-family: $font-family-text-theme-client;
+        font-size: 1.35rem;
+        line-height: 2rem;
+
+        .giz-icon { color: var(--gg-accent); flex-shrink: 0; }
+    }
+
+    // Link under the code: monospaced and breakable - it is sometimes copied by hand.
+    &__url {
+        max-width: 100%;
+        padding: 0.8rem 1.2rem;
+        border-radius: 1.1rem;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: $ga-ink-2;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.2rem;
+        overflow-wrap: anywhere;
+    }
+
+    // Frame around the code. It must not be white: the vendor draws the code light on
+    // dark (__qr-image has a #201f1f background), so a white card around a dark square
+    // would look like a fault.
+    &__qr-card {
+        background: $ga-surface;
+        border: 1px solid $ga-line;
+        border-radius: $ga-r-card;
+        box-shadow: 0 2.4rem 5rem -2.4rem rgba(0, 0, 0, 0.8);
+    }
+
+    // Overlay follows the code's own radius, not the card's, or the corners escape it.
+    &__qr-overlay {
+        border-radius: 1rem;
+        background: rgba(var(--gg-glass-2-rgb), 0.86);
+        color: $ga-ink;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.35rem;
+        font-weight: 600;
+    }
+
+    // Live waiting status.
+    &__status {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        color: $ga-ink-2;
+        font-family: $font-family-text-theme-client;
+        font-size: 1.3rem;
+    }
+
+    &__status-dot {
+        width: 0.8rem;
+        height: 0.8rem;
+        border-radius: 50%;
+        background: #5ed894;
+        box-shadow: 0 0 0 0.4rem rgba(94, 216, 148, 0.16);
+        animation: giz-auth-pulse 2s ease-in-out infinite;
+
+        &.expired,
+        &--expired {
+            background: $ga-danger;
+            box-shadow: 0 0 0 0.4rem rgba(255, 107, 107, 0.16);
+            animation: none;
+        }
+    }
+
+    &__expired-alert {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        width: 100%;
+        padding: 1.2rem 1.4rem;
+        border-radius: 1.3rem;
+        background: rgba(255, 196, 107, 0.12);
+        border: 1px solid rgba(255, 196, 107, 0.3);
+        color: #ffe0b2;
+        font-family: $font-family-text-theme-client;
+        font-size: 1.3rem;
+        line-height: 1.9rem;
+        text-align: left;
+    }
+
+    &__expired-alert-icon {
+        flex-shrink: 0;
+        color: #ffc46b;
+    }
+
+    &__expired-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        width: 100%;
+    }
+
+    &__btn-primary {
+        width: 100%;
+        height: 5.2rem;
+        border: 0;
+        border-radius: $ga-r;
+        background: var(--gg-accent);
+        color: var(--gg-on-accent);
+        cursor: pointer;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.5rem;
+        font-weight: 600;
+        transition: filter 0.16s;
+
+        &:hover { filter: brightness(1.1); }
+    }
+}
+
+@keyframes giz-auth-pulse {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+}
+
+// Agreements dialog. The vendor's is a flat #22272B box; brought to the same glass as
+// the rest of the shell's dialogs.
+.giz-registration-agreements-dialog {
+    width: min(52rem, 92vw);
+    border-radius: 2.8rem;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+        linear-gradient(180deg, rgba(var(--gg-glass-rgb), 0.94), rgba(var(--gg-glass-2-rgb), 0.97));
+    border: 1px solid $ga-line;
+    box-shadow:
+        inset 0 1.5px 0 rgba(255, 255, 255, 0.22),
+        0 4rem 9rem -3rem rgba(0, 0, 0, 0.9);
+    color: rgba(255, 255, 255, 0.92);
+
+    &__header {
+        padding: 2.4rem 2.4rem 0;
+    }
+
+    &__title {
+        font-family: $font-family-header-theme-client;
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: rgba(255, 255, 255, 0.98);
+    }
+
+    &__body {
+        padding: 1.8rem 2.4rem;
+    }
+
+    &__section {
+        margin-bottom: 1.8rem;
+
+        &:last-child { margin-bottom: 0; }
+    }
+
+    &__section-title {
+        margin-bottom: 0.6rem;
+        color: rgba(255, 255, 255, 0.95);
+        font-family: $font-family-header-theme-client;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    &__section-text {
+        color: $ga-ink-2;
+        font-family: $font-family-text-theme-client;
+        font-size: 1.35rem;
+        line-height: 2rem;
+    }
+
+    &__footer {
+        padding: 0 2.4rem 2.4rem;
+        gap: 1rem;
+    }
+}
+
+// Country flags in the dropdown. The base style stretched the svg to the row height;
+// every flag is 4:3 and squashed without an aspect ratio. The radius and hairline border
+// keep light flags (Japan, Poland) from merging into the list background.
+.giz-icon-select-item__icon {
+    width: 2.6rem;
+
+    img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        border-radius: 0.3rem;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+    }
+}

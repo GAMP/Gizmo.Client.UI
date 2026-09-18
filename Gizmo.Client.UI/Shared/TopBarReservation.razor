@@ -1,0 +1,20 @@
+@namespace Gizmo.Client.UI.Shared
+@inherits CustomDOMComponentBase
+
+@* Reservation notice for this machine, in the top bar's left track. One line, no
+   buttons: it states a fact about the machine rather than asking for anything - the
+   shell raises its own notification when the reservation is actually due. Styling is
+   .giz-resv in _Layout.razor. *@
+
+@if (HasReservation)
+{
+    <div class="giz-resv @(IsClose ? "giz-resv--soon" : "")">
+        <i class="ph-fill ph-calendar-check giz-resv__icon"></i>
+        <b class="giz-resv__lead">@ShellText.Get(ShellText.RESV_DEVICE_RESERVED)</b>
+        <span class="giz-resv__at">@ShellText.Get(ShellText.RESV_FROM, StartText)</span>
+        @if (CountdownText is string countdown)
+        {
+            <span class="giz-resv__count">@ShellText.Get(ShellText.RESV_IN, countdown)</span>
+        }
+    </div>
+}

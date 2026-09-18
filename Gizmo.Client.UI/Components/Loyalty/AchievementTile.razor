@@ -1,0 +1,38 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using Gizmo.Client.UI.Services
+
+@* One achievement: its picture (or a glyph) inside a ring of this period's progress, the
+   name, one line of where it stands. Earned ones carry the accent and a check; a hidden
+   one that has never been earned is a secret. *@
+@{
+    var a = Achievement;
+    var secret = LoyaltySnapshot.IsSecret(a);
+    var earned = LoyaltySnapshot.IsEarned(a);
+    var picture = secret ? null : Loyalty.Image(a.ImageGuid);
+}
+<div class="gg-ach__tile @(earned ? "is-earned" : null) @(secret ? "is-secret" : null)" title="@(secret ? null : a.Description)">
+    <div class="gg-ach__icon">
+        @if (!secret)
+        {
+            <svg viewBox="0 0 40 40" aria-hidden="true">
+                <circle class="gg-ring__track" cx="20" cy="20" r="18"></circle>
+                <circle class="gg-ring__bar" cx="20" cy="20" r="18" style="stroke-dashoffset: @LoyaltyRing.Offset(LoyaltySnapshot.AchievementFraction(a))"></circle>
+            </svg>
+        }
+        @if (picture is not null)
+        {
+            <img src="@picture" alt="" />
+        }
+        else
+        {
+            <i class="ph-fill @(secret ? "ph-question" : "ph-medal")"></i>
+        }
+        @if (earned)
+        {
+            <span class="gg-ach__check"><i class="ph-bold ph-check"></i></span>
+        }
+    </div>
+    <div class="gg-ach__name">@(secret ? ShellText.Get(ShellText.LOYALTY_SECRET) : a.Name)</div>
+    <div class="gg-ach__meta">@Meta</div>
+</div>

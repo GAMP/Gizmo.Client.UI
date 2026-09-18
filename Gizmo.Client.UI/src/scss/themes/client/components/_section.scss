@@ -1,21 +1,33 @@
 .giz-section {
-  &__header {
-    margin-bottom: 1.6rem;
-    color: #fafafa;
-    @include font-h5-theme-client($font-weight-bold-theme-client);
-    display: flex;
-    align-items: center;
+    padding-top: 0.4rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 
-    &__filters {
-      display: flex;
-      gap: 0.8rem;
-
-      &__title {
-        margin-bottom: 0.4rem;
-        @include font-m-theme-client($font-weight-light-theme-client);
-      }
+    &:first-child {
+        border-top: none;
+        padding-top: 0;
     }
-  }
-  &__body {
-  }
+
+    &__header {
+        margin-bottom: 1.2rem;
+        padding-left: 1.2rem;
+        border-left: 3px solid var(--gg-accent);
+        
+        color: rgba(255, 255, 255, 0.97);
+        @include font-h5-theme-client($font-weight-bold-theme-client);
+        display: flex;
+        align-items: center;
+        letter-spacing: 0.02em;
+
+        &__filters {
+            display: flex;
+            gap: 0.8rem;
+
+            &__title {
+                margin-bottom: 0.4rem;
+                @include font-m-theme-client($font-weight-light-theme-client);
+            }
+        }
+    }
+    &__body {
+    }
 }

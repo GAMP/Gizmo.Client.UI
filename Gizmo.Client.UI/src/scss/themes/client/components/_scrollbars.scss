@@ -1,46 +1,70 @@
 //============= Scrollbars ===============//
+// Track and thumb are transparent at rest and only fade in on hover - a
+// permanently-visible thin bar down the side of every glass panel (even
+// ones with nothing to scroll past a couple of items) read as UI chrome
+// rather than glass. The scroll gutter itself is unchanged (still 0.5rem/
+// 0.3rem wide) so content reflow on hover doesn't happen - only visibility
+// does.
 
 .giz-scrollbar--v {
-    /* Track */
-    &::-webkit-scrollbar-track {
-        background: rgba(246, 251, 253, 0.06);
-    }
-    /* Handle */
-    &::-webkit-scrollbar-thumb {
-        background: rgba(246, 251, 253, 0.24);
-    }
-    /* width */
     &::-webkit-scrollbar {
-        width: 0.8rem;
+        width: 0.5rem;
+    }
+    &::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: 0.3rem;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: transparent;
+        border-radius: 0.3rem;
+        transition: background 0.2s ease;
+    }
+    &:hover::-webkit-scrollbar-thumb {
+        background: rgba(var(--gg-accent-rgb), 0.30);
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: rgba(var(--gg-accent-rgb), 0.50);
     }
 }
 
 .giz-scrollbar-slim--v {
-    /* Track */
-    &::-webkit-scrollbar-track {
-        background: rgba(246, 251, 253, 0.06);
-    }
-    /* Handle */
-    &::-webkit-scrollbar-thumb {
-        background: rgba(246, 251, 253, 0.24);
-    }
-    /* width */
     &::-webkit-scrollbar {
-        width: 0.4rem;
+        width: 0.3rem;
+    }
+    &::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: 0.2rem;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: transparent;
+        border-radius: 0.2rem;
+        transition: background 0.2s ease;
+    }
+    &:hover::-webkit-scrollbar-thumb {
+        background: rgba(var(--gg-accent-rgb), 0.28);
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: rgba(var(--gg-accent-rgb), 0.45);
     }
 }
 
 .giz-scrollbar--h {
-    /* Track */
-    &::-webkit-scrollbar-track {
-        background: rgba(246, 251, 253, 0.06);
-    }
-    /* Handle */
-    &::-webkit-scrollbar-thumb {
-        background: rgba(246, 251, 253, 0.24);
-    }
-    /* height */
     &::-webkit-scrollbar {
-        height: 0.8rem;
+        height: 0.5rem;
+    }
+    &::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: 0.3rem;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: transparent;
+        border-radius: 0.3rem;
+        transition: background 0.2s ease;
+    }
+    &:hover::-webkit-scrollbar-thumb {
+        background: rgba(var(--gg-accent-rgb), 0.30);
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: rgba(var(--gg-accent-rgb), 0.50);
     }
 }

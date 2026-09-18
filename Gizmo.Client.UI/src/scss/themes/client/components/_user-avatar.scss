@@ -1,0 +1,23 @@
+//=============== User avatar ================//
+//
+// The person's picture, or a quiet glyph when the account has none. Whoever places
+// it sets the size; the glyph scales with the box (container units), so one rule
+// serves the 5.6rem button in the top bar and the 11rem disc on the account page.
+// Deliberately not a control: no accent disc, no ring, nothing that asks for a click.
+
+.giz-user-avatar--glyph {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    color: rgba(var(--gg-ink-rgb), 0.78);
+    line-height: 1;
+    container-type: inline-size;
+
+    i {
+        font-size: 44cqw;
+    }
+}

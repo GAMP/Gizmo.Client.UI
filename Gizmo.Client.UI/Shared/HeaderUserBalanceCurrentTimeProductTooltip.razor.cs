@@ -11,8 +11,17 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class HeaderUserBalanceCurrentTimeProductTooltip : CustomDOMComponentBase
     {
+        /// <summary>
+        /// Remaining time at which the tooltip starts urging: enough to top up or buy a
+        /// package before the session ends, not so much that it nags all evening.
+        /// </summary>
+        private static readonly System.TimeSpan LOW_TIME = System.TimeSpan.FromMinutes(15);
+
         [Inject]
         IClientDialogService DialogService { get; set; }
+
+        [Inject]
+        UserBalanceViewState UserBalanceViewState { get; set; }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -70,6 +79,7 @@ namespace Gizmo.Client.UI.Components
         protected override Task OnInitializedAsync()
         {
             this.SubscribeChange(TimeProductsViewState);
+            this.SubscribeChange(UserBalanceViewState);
 
             return base.OnInitializedAsync();
         }
@@ -77,6 +87,7 @@ namespace Gizmo.Client.UI.Components
         public override void Dispose()
         {
             this.UnsubscribeChange(TimeProductsViewState);
+            this.UnsubscribeChange(UserBalanceViewState);
 
             base.Dispose();
         }

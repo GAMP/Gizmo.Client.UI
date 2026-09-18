@@ -1,13 +1,23 @@
+// The autostart row is the one item in this menu that carries a checkbox
+// instead of a .giz-list-item__icon, so it has to line its box and its text up
+// with the icon rows by hand. Sizing goes through the checkbox's own variable
+// rather than overriding width/height directly - the tick is positioned from
+// that variable, and overriding the box alone is exactly what left the tick
+// sitting off-centre.
 .giz-app-autostart {
+    --giz-check-box-size: 2.0rem;
+
     & input {
         & + label {
-            span {
-                margin-left: 1.7rem !important;
-            }
+            // Zero the base 0.4rem block margin: the neighbouring rows have no
+            // such margin, so it made this row taller than the others and the
+            // whole set read as unevenly spaced.
+            margin: 0;
 
-            &:before {
-                width: 2.0rem !important;
-                height: 2.0rem !important;
+            span {
+                // Matches .giz-list-item__icon's trailing gap below, so the label starts
+                // on the same x as the other menu entries.
+                margin-left: 1.3rem;
             }
         }
     }

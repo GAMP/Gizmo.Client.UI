@@ -1,140 +1,33 @@
-//=============== Spinner ================//
+//=============== Online top-up ================//
+// The same markup (UserOnlineDeposits.razor) whether hosted in the top bar dropdown
+// (.giz-user-online-deposit-menu) or the top-up dialog (.giz-user-online-deposit-dialog)
+// reached from the tariff tooltip and the grace-period screen, so it is styled once here,
+// unscoped. Each host adds only its own outer chrome.
+//
+// The vendor version put the caption on a fieldset-legend trick - a dark pill straddling
+// a thin box border. With no thin bordered box to anchor to, that read as a stray
+// floating tag, so it is a plain caption line in normal flow.
 
 .giz-user-online-deposit {
     color: #FAFAFA;
 
-    &-menu {
-        width: 45.6rem;
-        padding: 2rem;
-        background-color: #22272B;
-        border-radius: 0 0 0.8rem 0.8rem;
-        box-shadow: 0px 32px 64px rgba(0, 0, 0, 0.37), 0px 2px 21px rgba(0, 0, 0, 0.37);
-    }
-
-    .giz-button-group {
-        margin: 0.8rem 0 2.4rem 0;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(12.8rem, 1fr));
-        gap: 0.8rem;
-        border: none;
-
-        .giz-button {
-            flex: 1;
-            border-radius: 0.8rem;
-            background-color: #F4F4F4;
-            color: #2B2D33;
-            //Font ?
-            font-weight: 500;
-            font-size: 1.6rem;
-            line-height: 2.0rem;
-
-            &.selected {
-                background-color: #0078D2;
-                color: #FFFFFF;
-            }
-        }
-    }
-
     &__body {
-        @include font-m-theme-client($font-weight-bold-theme-client);
-
-        .giz-input-control {
-            .giz-input-label {
-                @include font-s-theme-client($font-weight-light-theme-client);
-            }
-        }
+        display: flex;
+        flex-direction: column;
+        gap: 1.4rem;
     }
 
-    &__summary {
-        border-top: 0.1rem solid rgba(246, 251, 253, 0.06);
-        border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
-        padding: 1.2rem 0;
-        //margin-top: 2.4rem;
-        margin-bottom: 2.9rem;
-        @include font-m-theme-client($font-weight-light-theme-client);
-
-        &__amount {
-            @include font-m-theme-client($font-weight-bold-theme-client);
-        }
+    &__label {
+        font-size: 1.15rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.32);
+        font-family: $font-family-header-theme-client;
     }
-
-    &__submitted {
-        &__summary {
-            //border-top: 0.1rem solid rgba(246, 251, 253, 0.06);
-            border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
-            padding: 1.2rem 0;
-            margin-bottom: 2.4rem;
-            @include font-m-theme-client($font-weight-bold-theme-client);
-
-            &__amount {
-                @include font-m-theme-client($font-weight-light-theme-client);
-            }
-        }
-
-        &__qr {
-            display: flex;
-            justify-content: center;
-            position: relative;
-            border: 0.1rem solid rgba(246, 251, 253, 0.06);
-            border-radius: 0.5rem;
-            margin-bottom: 2.4rem;
-            @include font-m-theme-client($font-weight-regular-theme-client);
-
-            &__image {
-                margin: 1.6rem;
-                padding: 2.4rem;
-                background-color: white;
-
-                svg {
-                    width: 24rem;
-                    height: 24rem;
-                    shape-rendering: crispedges;
-                }
-            }
-
-            &__label {
-                color: rgba(255, 255, 255, 0.6);
-                background-color: #22272B;
-                padding: 0 1.4rem;
-                position: absolute;
-                top: 0;
-                left: 50%;
-                transform: translate(calc(-50%), calc(-50%));
-            }
-        }
-
-        &__action {
-            display: flex;
-            justify-content: center;
-            position: relative;
-            border: 0.1rem solid rgba(246, 251, 253, 0.06);
-            border-radius: 0.5rem;
-            @include font-m-theme-client($font-weight-light-theme-client);
-
-            & > .giz-button {
-                margin: 2.0rem;
-            }
-
-            &__label {
-                color: rgba(255, 255, 255, 0.6);
-                background-color: #22272B;
-                padding: 0 1.4rem;
-                position: absolute;
-                top: 0;
-                left: 50%;
-                transform: translate(calc(-50%), calc(-50%));
-                @include font-m-theme-client($font-weight-light-theme-client);
-            }
-        }
-    }
-}
-
-.giz-user-online-deposit-dialog {
-    color: #FAFAFA;
-    width: 60.0rem;
 
     .giz-button-group {
-        margin: 0.8rem 0 2.4rem 0;
+        margin: 0;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(12.8rem, 1fr));
         gap: 0.8rem;
@@ -142,89 +35,219 @@
 
         .giz-button {
             flex: 1;
-            border-radius: 0.8rem;
-            background-color: #F4F4F4;
-            color: #2B2D33;
-            //Font ?
-            font-weight: 500;
-            font-size: 1.6rem;
-            line-height: 2.0rem;
+            border-radius: 1.2rem;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+            font-size: 1.5rem;
+            line-height: 2rem;
+            transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+
+            &:hover:not(.selected) {
+                background: rgba(var(--gg-accent-rgb), 0.10);
+                border-color: rgba(var(--gg-accent-rgb), 0.25);
+                color: rgba(255, 255, 255, 0.9);
+            }
 
             &.selected {
-                background-color: #0078D2;
-                color: #FFFFFF;
+                background: rgba(var(--gg-accent-rgb), 0.20);
+                border-color: rgba(var(--gg-accent-rgb), 0.45);
+                color: var(--gg-accent);
+                
             }
         }
     }
 
-    .giz-client-dialog__body {
-        @include font-m-theme-client($font-weight-bold-theme-client);
+    // Plain text line, no pill/badge box. A boxed background around a
+    // single restating sentence (the buttons above it already show the
+    // amount) read as decoration for its own sake rather than something
+    // that needed calling out - the weight now comes from the number's own
+    // size/weight, not from a container around it.
+    &__summary,
+    &__submitted__summary {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+        font-size: 1.3rem;
+        color: rgba(255, 255, 255, 0.42);
     }
 
-    &__summary {
-        border-top: 0.1rem solid rgba(246, 251, 253, 0.06);
-        border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
-        padding: 1.2rem 0;
-        margin-top: 2.4rem;
-        @include font-m-theme-client($font-weight-light-theme-client);
+    &__summary__amount,
+    &__submitted__summary__amount {
+        font-family: 'Space Grotesk', 'Manrope', sans-serif;
+        font-size: 1.9rem;
+        font-weight: 700;
+        color: #fff;
+        white-space: nowrap;
     }
 
-    &__submitted {
-        &__summary {
-            border-top: 0.1rem solid rgba(246, 251, 253, 0.06);
-            border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
-            padding: 1.2rem 0;
-            margin-bottom: 2.4rem;
-            @include font-m-theme-client($font-weight-bold-theme-client);
+    &__footer {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        // Extra air above the action button so it does not crowd the amount line above
+        // it - the shared 0.8rem read as too tight for a distinct, larger action.
+        margin-top: 0.6rem;
+    }
+
+    // ── QR step ── plain captions in normal flow, no floating legend
+    // badge and no bordered box underneath it to anchor one.
+    &__submitted__qr {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+
+        &__label {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.5);
         }
 
-        &__qr {
+        &__image {
+            padding: 1.2rem;
+            border-radius: 1.4rem;
+            background: #fff;
+            line-height: 0;
+
+            svg {
+                width: 24rem;
+                height: 24rem;
+                shape-rendering: crispedges;
+            }
+        }
+    }
+
+    &__submitted__action {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+
+        &__label {
+            text-align: center;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.35);
+        }
+    }
+
+    // ── Success state ── shown in place of the QR once the balance figure
+    // catches up to what was submitted (see UserOnlineDeposits.razor.cs).
+    // No footer/buttons here - it closes itself.
+    &__success {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.4rem;
+        padding: 2.8rem 0 1.6rem;
+        position: relative; // anchors the countdown strip to the top edge
+
+        // Slim progress strip pinned to the very top of the success view -
+        // depletes left-to-right over the same 5s the component actually
+        // waits before closing (kept in sync with SuccessAnimationDuration
+        // in the code-behind). A transform on a dedicated fill element
+        // rather than animating width - width changes force layout on every
+        // frame, transform:scaleX doesn't.
+        &__countdown {
+            position: absolute;
+            top: 0;
+            left: 0.4rem;
+            right: 0.4rem;
+            height: 0.3rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+
+            &__fill {
+                width: 100%;
+                height: 100%;
+                transform-origin: left center;
+                background: linear-gradient(90deg, #34d399, #6ee7b7);
+                animation: giz-deposit-countdown 5s linear forwards;
+            }
+        }
+
+        &__icon {
+            width: 6.4rem;
+            height: 6.4rem;
             display: flex;
+            align-items: center;
             justify-content: center;
-            position: relative;
-            border: 0.1rem solid rgba(246, 251, 253, 0.06);
-            border-radius: 0.5rem;
+            border-radius: 50%;
+            background: rgba(52, 211, 153, 0.16);
+            border: 1px solid rgba(52, 211, 153, 0.4);
+            margin-bottom: 0.8rem;
+            animation: giz-deposit-success-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 
-            &__image {
-                margin: 2.0rem;
-            }
-
-            &__label {
-                color: rgba(255, 255, 255, 0.6);
-                background-color: #22272B;
-                padding: 0 1.4rem;
-                position: absolute;
-                top: 0;
-                left: 50%;
-                transform: translate(calc(-50%), calc(-50%));
+            i {
+                font-size: 3.6rem;
+                color: #34d399;
             }
         }
 
-        &__action {
-            display: flex;
-            justify-content: center;
-            position: relative;
-            border: 0.1rem solid rgba(246, 251, 253, 0.06);
-            border-radius: 0.5rem;
+        &__title {
+            font-family: $font-family-header-theme-client;
+            font-weight: 800;
+            font-size: 2rem;
+            color: #fff;
+        }
 
-            & > .giz-button {
-                margin: 2.0rem;
-            }
+        &__text {
+            font-size: 1.35rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
 
-            &__label {
-                color: rgba(255, 255, 255, 0.6);
-                background-color: #22272B;
-                padding: 0 1.4rem;
-                position: absolute;
-                top: 0;
-                left: 50%;
-                transform: translate(calc(-50%), calc(-50%));
-                @include font-m-theme-client($font-weight-light-theme-client);
-            }
+        &__hint {
+            margin-top: 0.6rem;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.38);
         }
     }
 }
 
-.giz-user-online-deposit-clear-button {
-    padding: 2rem;
+@keyframes giz-deposit-success-pop {
+    0% {
+        transform: scale(0.4);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.08);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes giz-deposit-countdown {
+    from {
+        transform: scaleX(1);
+    }
+    to {
+        transform: scaleX(0);
+    }
+}
+
+// Dialog-hosted variant: same content, its own card width. Chrome (glass
+// background, border, header/footer rules) comes from the shared
+// .giz-client-dialog rules - only sizing lives here.
+.giz-user-online-deposit-dialog {
+    width: 52rem;
+
+    // The header's X is this dialog's only close affordance (the success
+    // screen doesn't get a second one of its own - see
+    // UserOnlineDeposits.razor). Every other dialog's close button is a
+    // bare ghost icon; here it gets a quiet always-visible disc behind it
+    // so it reads as a real button on sight, not just on hover - one step
+    // up, not a redesign.
+    .close-btn {
+        background: rgba(255, 255, 255, 0.07);
+        border-radius: 50%;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.14);
+        }
+    }
 }
