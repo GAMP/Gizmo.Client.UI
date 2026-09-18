@@ -62,8 +62,10 @@ commits `14334ca` pins:
 | Gizmo.Web.Api.Models | `e9fe153` | unchanged |
 | Gizmo.Web.Components | `2217ec1` + `5321682` | **one file changed** - see below |
 
-All nine are git submodules (`git clone --recurse-submodules`, or
-`git submodule update --init` after cloning). Eight point at your repositories.
+All nine are git submodules: `git submodule update --init` after cloning, one level -
+`--recursive` (and `clone --recurse-submodules`) stops on `Gizmo.Web.Api.Client`, whose
+nested links have no `.gitmodules` at its pin; nothing here needs them. Eight point at
+your repositories.
 `Gizmo.Web.Components` points at branch `grafit` of the fork
 `XenNon546/Gizmo.Web.Components`: your `2217ec1` plus one commit, `5321682`, with the one
 change to shared code:
