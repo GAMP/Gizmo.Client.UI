@@ -120,6 +120,7 @@ function topBar(d) {
 
   // Shared/MenuUserLinks.razor: the profile card with the icons in orbit around the
   // avatar (the angles, radii and sizes are the component's own table).
+  const standing = profileStanding(d);
   const ORBIT = [["ph-game-controller", 12, 64, 15, .80], ["ph-headset", 58, 92, 10, .45], ["ph-desktop-tower", 104, 58, 13, .70], ["ph-keyboard", 146, 99, 9, .35], ["ph-crosshair-simple", 188, 70, 14, .75], ["ph-mouse", 221, 106, 8, .30], ["ph-joystick", 252, 61, 12, .65], ["ph-lightning", 283, 90, 11, .50], ["ph-cpu", 312, 73, 15, .78], ["ph-wifi-high", 341, 101, 9, .38]];
   const userPanel = d.userOpen
     ? `<div class="giz-dropdown-menu giz-profile-popup open">
@@ -127,11 +128,12 @@ function topBar(d) {
           <div class="giz-profile-popup__avatar-zone">
             <div class="giz-profile-popup__orbit">
               ${ORBIT.map(([icon, angle, radius, size, opacity]) => `<i class="ph-bold ${icon} giz-orbit-icon" style="font-size:${size}px; opacity:${opacity}; transform: rotate(${angle}deg) translate(0, -${radius}px) rotate(${(-angle + Math.sin(angle * Math.PI / 180) * 15).toFixed(2)}deg);"></i>`).join("")}
-              <div class="giz-profile-popup__avatar">${d.picture ? `<div class="giz-avatar giz-avatar--medium giz-avatar--circle"><img src="${d.picture}" alt=""></div>` : `<i class="ph ph-user"></i>`}</div>
+              <div class="giz-profile-popup__avatar${d.loyalty ? " giz-profile-popup__avatar--ringed" : ""}">${d.picture ? `<div class="giz-avatar giz-avatar--medium giz-avatar--circle"><img src="${d.picture}" alt=""></div>` : `<i class="ph ph-user"></i>`}${standing.ring}</div>
+              ${standing.level}
             </div>
           </div>
           <div class="giz-profile-popup__name">${esc(d.username || "xennon")}</div>
-          ${profileLoyalty(d)}
+          ${standing.line}
           <div class="giz-profile-popup__actions">
             <button class="giz-profile-popup__account-btn"><i class="ph-bold ph-user"></i><span>Мой профиль</span><i class="ph-bold ph-arrow-right giz-profile-popup__account-arrow"></i></button>
             <div class="giz-profile-popup__actions-row">
@@ -236,34 +238,28 @@ function levelRing(d) {
   return `${ring}<span class="gg-avatar-mark">${esc(d.level.mark)}</span>`;
 }
 
-// The standing block of Shared/MenuUserLinks.razor, read from the same keys as the
-// home tile (`loyalty: earning | secured | achievements | challenges`, `levelName`,
-// `levelMark`, `levelProgress`, `toRetain`) plus `perk` and `rewardWaiting`; nothing
-// without `loyalty`.
-function profileLoyalty(d) {
+// The standing on Shared/MenuUserLinks.razor, read from the same keys as the home tile
+// (`loyalty: earning | secured | achievements | challenges`, `levelName`, `levelMark`,
+// `levelProgress`, `toRetain`) plus `rewardWaiting`: the ring inside the avatar's rim,
+// the level disc at its corner, one line under the name. Empty strings without `loyalty`.
+function profileStanding(d) {
   const mode = d.loyalty;
-  if (!mode) return "";
+  if (!mode) return { ring: "", level: "", line: "" };
   const ladder = mode === "earning" || mode === "secured";
   const secured = mode === "secured";
   const p = ladder ? (secured ? 1 : (d.levelProgress || 0.17)) : mode === "achievements" ? 3 / 9 : 1 / 3;
+  const off = (2 * Math.PI * 18 * (1 - p)).toFixed(2).replace(/\.?0+$/, "");
   const levelName = d.levelName || (secured ? "Alternatif" : "Praxilla");
-  const disc = ladder
-    ? `<span class="gg-loyal__disc">${esc(d.levelMark || levelName[0])}</span>`
-    : `<span class="gg-loyal__disc gg-loyal__disc--plain"><i class="ph-fill ${mode === "achievements" ? "ph-trophy" : "ph-flag-checkered"}"></i></span>`;
-  const who = ladder
-    ? `<b>${esc(levelName)}</b><span>${secured ? "Закреплён до 1 октября" : `Ещё ${number(d.toRetain || 1489)} очков, чтобы удержать`}</span>`
-    : mode === "achievements" ? `<b>Достижения</b><span>3 из 9</span>` : `<b>Челленджи</b><span>1 из 3</span>`;
-  const facts = [
-    ladder ? `<span><i class="ph-fill ph-trophy"></i>3 из 9</span>` : "",
-    mode !== "challenges" ? `<span><i class="ph-fill ph-flag-checkered"></i>1 из 3</span>` : "",
-    ladder ? `<span><i class="ph-fill ph-seal-percent"></i>${esc(d.perk || "скидка 5 %")}</span>` : "",
-    d.rewardWaiting ? `<em><i class="ph-fill ph-gift"></i>Награда ждёт у стойки</em>` : "",
-  ].filter(Boolean).join("");
-  return `<button type="button" class="giz-profile-popup__loyal" title="Мой прогресс">
-            <span class="giz-profile-popup__loyal-top">${disc}<span class="giz-profile-popup__loyal-who">${who}</span><i class="ph-bold ph-arrow-right giz-profile-popup__loyal-arrow"></i></span>
-            <span class="gg-loyal__track"><i style="width: ${Math.round(p * 100)}%"></i></span>
-            ${facts ? `<span class="giz-profile-popup__loyal-facts">${facts}</span>` : ""}
-          </button>`;
+  const ring = `<svg class="giz-profile-popup__ring" viewBox="0 0 40 40" aria-hidden="true"><circle class="gg-ring__track" cx="20" cy="20" r="18"></circle><circle class="gg-ring__bar" cx="20" cy="20" r="18" style="stroke-dashoffset: ${off}"></circle></svg>`;
+  const level = ladder
+    ? `<div class="giz-profile-popup__level" title="${esc(levelName)}">${esc(d.levelMark || levelName[0])}</div>`
+    : `<div class="giz-profile-popup__level giz-profile-popup__level--plain"><i class="ph-fill ${mode === "achievements" ? "ph-trophy" : "ph-flag-checkered"}"></i></div>`;
+  const head = ladder ? levelName : mode === "achievements" ? "Достижения" : "Челленджи";
+  const rest = d.rewardWaiting ? `<em>Награда ждёт у стойки</em>`
+    : ladder ? `<span>${secured ? "Закреплён до 1 октября" : `Ещё ${number(d.toRetain || 1489)} очков, чтобы удержать`}</span>`
+    : mode === "achievements" ? `<span>3 из 9</span>` : `<span>1 из 3</span>`;
+  const line = `<button type="button" class="giz-profile-popup__standing" title="Мой прогресс"><b>${esc(head)}</b>${rest}</button>`;
+  return { ring, level, line };
 }
 
 // Shared/LoyaltyHint.razor: for ten seconds after sign-in, a pill slides out next to

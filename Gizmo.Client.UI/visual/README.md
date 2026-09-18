@@ -46,9 +46,9 @@ Nothing else. No browser automation package, no server, no client.
    the board, and the frame's own dropdowns - My applications, notifications, the
    call-an-administrator form and the profile card - opened by scenario keys
    (`appsOpen`, `notificationsOpen`, `assistanceOpen`, `userOpen`; see the head of
-   `frame.js`; the profile card shows the standing block when `loyalty` is set, with
-   `perk` and `rewardWaiting` for its facts). They emit the same class names and
-   nesting as the Razor components - that is the whole contract.
+   `frame.js`; the profile card wears the standing when `loyalty` is set - the ring,
+   the level disc, one line, `rewardWaiting` for the reward). They emit the same class
+   names and nesting as the Razor components - that is the whole contract.
    Two helpers outside the baselines: `node visual/measure.js <scenario> <selector>`
    prints boxes and computed styles, `node visual/hover.js <scenario> <selector>
    <out.png>` pictures the page with the mouse over an element (hover tints,

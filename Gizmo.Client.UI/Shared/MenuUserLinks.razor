@@ -4,10 +4,15 @@
 @using Gizmo.Client.UI.Components
 
 @* Custom glass profile card (not a list-style dropdown menu): scattered
-   icons around the avatar, name, the customer's standing when the club
-   runs the loyalty system, then change-password+lock sharing a row and
-   logout full width on its own below. The avatar is not a control: the
-   shell has no way to change the picture. *@
+   icons around the avatar, name, then change-password+lock sharing a row
+   and logout full width on its own below. The avatar is not a control: the
+   shell has no way to change the picture.
+
+   When the club runs the loyalty system the standing is worn, not listed:
+   the ring on the avatar is the progress to the next level (or the share of
+   achievements), the disc at its corner is the level, and one line under the
+   name says where the customer stands. All of it opens the Progress tab;
+   the counts and the perks live there. *@
 <div class="giz-dropdown-menu giz-profile-popup @(UserMenuViewState.UserLinksIsVisible ? "open" : "")"
      id="@Id"
      @ref="@Ref">
@@ -18,6 +23,17 @@
        bounding box - without it, the popup silently never closes on an
        outside click, no matter where you click. *@
     <div class="giz-dropdown-menu__content giz-profile-popup__content">
+        @{
+            var s = Loyalty.State;
+            var level = s.CurrentLevel;
+            var ladder = ShowLoyalty && s.HasLadder && level is not null;
+            var achievements = ShowLoyalty && !ladder && s.HasAchievements;
+            var emblem = ladder ? Loyalty.Image(level.EmblemGuid) : null;
+            var progress = !ShowLoyalty ? 0
+                : ladder ? s.ProgressToNext
+                : achievements ? (double)s.EarnedAchievements / s.Achievements.Count
+                : s.Challenges.Count > 0 ? (double)s.DoneChallenges / s.Challenges.Count : 0;
+        }
 
         <div class="giz-profile-popup__avatar-zone">
             <div class="giz-profile-popup__orbit">
@@ -27,7 +43,7 @@
                        style="font-size:@(ic.SizePx.ToString(System.Globalization.CultureInfo.InvariantCulture))px; opacity:@ic.Opacity; transform: rotate(@(ic.AngleDeg.ToString(System.Globalization.CultureInfo.InvariantCulture))deg) translate(0, -@(ic.RadiusPx.ToString(System.Globalization.CultureInfo.InvariantCulture))px) rotate(@((-ic.AngleDeg + ic.TiltDeg).ToString(System.Globalization.CultureInfo.InvariantCulture))deg);"></i>
                 }
 
-                <div class="giz-profile-popup__avatar">
+                <div class="giz-profile-popup__avatar @(ShowLoyalty ? "giz-profile-popup__avatar--ringed" : null)">
                     @if (!string.IsNullOrEmpty(Picture))
                     {
                         <Avatar Image="@Picture" Variant="AvatarVariants.Circle" />
@@ -36,91 +52,56 @@
                     {
                         <i class="ph ph-user"></i>
                     }
+                    @if (ShowLoyalty)
+                    {
+                        <svg class="giz-profile-popup__ring" viewBox="0 0 40 40" aria-hidden="true">
+                            <circle class="gg-ring__track" cx="20" cy="20" r="18"></circle>
+                            <circle class="gg-ring__bar" cx="20" cy="20" r="18" style="stroke-dashoffset: @LoyaltyRing.Offset(progress)"></circle>
+                        </svg>
+                    }
                 </div>
+
+                @if (ShowLoyalty)
+                {
+                    <div class="giz-profile-popup__level @(ladder ? null : "giz-profile-popup__level--plain")" title="@(ladder ? level.Name : null)">
+                        @if (emblem is not null)
+                        {
+                            <img src="@emblem" alt="" />
+                        }
+                        else if (ladder)
+                        {
+                            @LoyaltyText.Mark(level.Name)
+                        }
+                        else
+                        {
+                            <i class="ph-fill @(achievements ? "ph-trophy" : "ph-flag-checkered")"></i>
+                        }
+                    </div>
+                }
             </div>
         </div>
 
         <div class="giz-profile-popup__name">@DisplayName</div>
 
-        @* The standing, the same reading as the home tile: the level (or the achievements,
-           or the challenges when the club runs only those), one line on where the customer
-           stands, the bar to the next level, and the counts the headline did not say. The
-           whole block is the way to the Progress tab. *@
         @if (ShowLoyalty)
         {
-            var s = Loyalty.State;
-            var level = s.CurrentLevel;
-            var ladder = s.HasLadder && level is not null;
-            var emblem = ladder ? Loyalty.Image(level.EmblemGuid) : null;
-            var headlineIsAchievements = !ladder && s.HasAchievements;
-            var progress = ladder ? s.ProgressToNext
-                : headlineIsAchievements ? (double)s.EarnedAchievements / s.Achievements.Count
-                : (double)s.DoneChallenges / s.Challenges.Count;
-            var perks = ladder ? LoyaltyPerks(level) : null;
-            //Counts the headline did not say, the level's perks, a reward to collect.
-            var factAchievements = ladder && s.HasAchievements;
-            var factChallenges = s.HasChallenges && (ladder || headlineIsAchievements);
-            var hasFacts = factAchievements || factChallenges || !string.IsNullOrEmpty(perks) || s.RewardWaiting;
-
-            <button type="button" class="giz-profile-popup__loyal" @onclick="OnClickProgressHandler" title="@ShellText.Get(ShellText.LOYALTY_MORE)">
-                <span class="giz-profile-popup__loyal-top">
-                    @if (ladder)
-                    {
-                        <span class="gg-loyal__disc">
-                            @if (emblem is not null)
-                            {
-                                <img src="@emblem" alt="" />
-                            }
-                            else
-                            {
-                                @LoyaltyText.Mark(level.Name)
-                            }
-                        </span>
-                    }
-                    else
-                    {
-                        <span class="gg-loyal__disc gg-loyal__disc--plain"><i class="ph-fill @(headlineIsAchievements ? "ph-trophy" : "ph-flag-checkered")"></i></span>
-                    }
-                    <span class="giz-profile-popup__loyal-who">
-                        @if (ladder)
-                        {
-                            <b>@level.Name</b>
-                            <span>@LoyaltyLines.Short(s)</span>
-                        }
-                        else if (headlineIsAchievements)
-                        {
-                            <b>@ShellText.Get(ShellText.LOYALTY_ACHIEVEMENTS)</b>
-                            <span>@ShellText.Get(ShellText.LOYALTY_OF, s.EarnedAchievements, s.Achievements.Count)</span>
-                        }
-                        else
-                        {
-                            <b>@ShellText.Get(ShellText.LOYALTY_CHALLENGES)</b>
-                            <span>@ShellText.Get(ShellText.LOYALTY_OF, s.DoneChallenges, s.Challenges.Count)</span>
-                        }
-                    </span>
-                    <i class="ph-bold ph-arrow-right giz-profile-popup__loyal-arrow"></i>
-                </span>
-                <span class="gg-loyal__track"><i style="width: @LoyaltyRing.Percent(progress)%"></i></span>
-                @if (hasFacts)
+            <button type="button" class="giz-profile-popup__standing" @onclick="OnClickProgressHandler" title="@ShellText.Get(ShellText.LOYALTY_MORE)">
+                <b>@(ladder ? level.Name : ShellText.Get(achievements ? ShellText.LOYALTY_ACHIEVEMENTS : ShellText.LOYALTY_CHALLENGES))</b>
+                @if (s.RewardWaiting)
                 {
-                    <span class="giz-profile-popup__loyal-facts">
-                        @if (factAchievements)
-                        {
-                            <span><i class="ph-fill ph-trophy"></i>@ShellText.Get(ShellText.LOYALTY_OF, s.EarnedAchievements, s.Achievements.Count)</span>
-                        }
-                        @if (factChallenges)
-                        {
-                            <span><i class="ph-fill ph-flag-checkered"></i>@ShellText.Get(ShellText.LOYALTY_OF, s.DoneChallenges, s.Challenges.Count)</span>
-                        }
-                        @if (!string.IsNullOrEmpty(perks))
-                        {
-                            <span><i class="ph-fill ph-seal-percent"></i>@perks</span>
-                        }
-                        @if (s.RewardWaiting)
-                        {
-                            <em><i class="ph-fill ph-gift"></i>@ShellText.Get(ShellText.LOYALTY_REWARD_WAITING_SHORT)</em>
-                        }
-                    </span>
+                    <em>@ShellText.Get(ShellText.LOYALTY_REWARD_WAITING_SHORT)</em>
+                }
+                else if (ladder)
+                {
+                    <span>@LoyaltyLines.Short(s)</span>
+                }
+                else if (achievements)
+                {
+                    <span>@ShellText.Get(ShellText.LOYALTY_OF, s.EarnedAchievements, s.Achievements.Count)</span>
+                }
+                else
+                {
+                    <span>@ShellText.Get(ShellText.LOYALTY_OF, s.DoneChallenges, s.Challenges.Count)</span>
                 }
             </button>
         }
