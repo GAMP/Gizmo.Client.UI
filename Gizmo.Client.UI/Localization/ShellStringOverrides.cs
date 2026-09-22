@@ -351,6 +351,31 @@ namespace Gizmo.Client.UI.Localization
 
         #endregion
 
+        #region AVATARS (the club's own picture service - off unless --gg-avatars says on)
+
+        public const string AVATAR_EDIT = SHELL_PREFIX + "AVATAR_EDIT";
+        public const string AVATAR_TITLE = SHELL_PREFIX + "AVATAR_TITLE";
+        public const string AVATAR_HINT = SHELL_PREFIX + "AVATAR_HINT";
+        public const string AVATAR_PICK = SHELL_PREFIX + "AVATAR_PICK";
+        public const string AVATAR_PASTE = SHELL_PREFIX + "AVATAR_PASTE";
+        public const string AVATAR_ZOOM = SHELL_PREFIX + "AVATAR_ZOOM";
+        public const string AVATAR_ANOTHER = SHELL_PREFIX + "AVATAR_ANOTHER";
+        public const string AVATAR_URL = SHELL_PREFIX + "AVATAR_URL";
+        public const string AVATAR_EDITOR_FAILED = SHELL_PREFIX + "AVATAR_EDITOR_FAILED";
+        public const string AVATAR_LOAD_FAILED = SHELL_PREFIX + "AVATAR_LOAD_FAILED";
+        public const string AVATAR_CROP_FAILED = SHELL_PREFIX + "AVATAR_CROP_FAILED";
+        public const string AVATAR_SAVE_FAILED = SHELL_PREFIX + "AVATAR_SAVE_FAILED";
+        public const string AVATAR_TOO_BIG = SHELL_PREFIX + "AVATAR_TOO_BIG";
+        public const string AVATAR_NOT_IMAGE = SHELL_PREFIX + "AVATAR_NOT_IMAGE";
+        public const string AVATAR_NO_SERVER = SHELL_PREFIX + "AVATAR_NO_SERVER";
+        public const string AVATAR_NO_SERVICE = SHELL_PREFIX + "AVATAR_NO_SERVICE";
+        public const string AVATAR_NO_ACCOUNT = SHELL_PREFIX + "AVATAR_NO_ACCOUNT";
+        public const string AVATAR_REJECTED = SHELL_PREFIX + "AVATAR_REJECTED";
+        public const string AVATAR_NUDGE_TITLE = SHELL_PREFIX + "AVATAR_NUDGE_TITLE";
+        public const string AVATAR_NUDGE_SUB = SHELL_PREFIX + "AVATAR_NUDGE_SUB";
+
+        #endregion
+
         // key -> (two-letter culture -> text). Plural forms are separated by '|' in the
         // order the culture's rule returns; see PluralIndex.
         private static readonly Dictionary<string, Dictionary<string, string>> _overrides =
@@ -622,6 +647,31 @@ namespace Gizmo.Client.UI.Localization
                 [LOYALTY_NEWS_REWARD_GIVEN] = new() { ["ru"] = "Награда получена", ["en"] = "Reward received" },
                 [LOYALTY_EMPTY] = new() { ["ru"] = "Пока нечего показать", ["en"] = "Nothing to show yet" },
                 [LOYALTY_LAST_LEVEL_CHANGE] = new() { ["ru"] = "{0} — уровень {1}", ["en"] = "{0} - level {1}" },
+
+                #endregion
+
+                #region AVATARS
+
+                [AVATAR_EDIT] = new() { ["ru"] = "Изменить", ["en"] = "Change" },
+                [AVATAR_TITLE] = new() { ["ru"] = "Фото профиля", ["en"] = "Profile picture" },
+                [AVATAR_HINT] = new() { ["ru"] = "Перетащите файл, выберите на диске или вставьте из буфера — Ctrl+V", ["en"] = "Drop a file, pick one from the disk, or paste from the clipboard with Ctrl+V" },
+                [AVATAR_PICK] = new() { ["ru"] = "Выбрать файл", ["en"] = "Choose a file" },
+                [AVATAR_PASTE] = new() { ["ru"] = "Вставить из буфера", ["en"] = "Paste from the clipboard" },
+                [AVATAR_ZOOM] = new() { ["ru"] = "Масштаб", ["en"] = "Zoom" },
+                [AVATAR_ANOTHER] = new() { ["ru"] = "Другое фото", ["en"] = "Another picture" },
+                [AVATAR_URL] = new() { ["ru"] = "…или ссылка на картинку", ["en"] = "…or a link to a picture" },
+                [AVATAR_EDITOR_FAILED] = new() { ["ru"] = "Не получилось открыть редактор.", ["en"] = "The editor could not be opened." },
+                [AVATAR_LOAD_FAILED] = new() { ["ru"] = "Не получилось загрузить картинку.", ["en"] = "That picture could not be loaded." },
+                [AVATAR_CROP_FAILED] = new() { ["ru"] = "Не получилось обрезать картинку.", ["en"] = "The picture could not be cropped." },
+                [AVATAR_SAVE_FAILED] = new() { ["ru"] = "Не получилось сохранить. Попробуйте позже.", ["en"] = "It could not be saved. Try again later." },
+                [AVATAR_TOO_BIG] = new() { ["ru"] = "Файл больше {0} МБ.", ["en"] = "The file is larger than {0} MB." },
+                [AVATAR_NOT_IMAGE] = new() { ["ru"] = "Это не картинка.", ["en"] = "That is not a picture." },
+                [AVATAR_NO_SERVER] = new() { ["ru"] = "Не настроен адрес сервера.", ["en"] = "The server address is not configured." },
+                [AVATAR_NO_SERVICE] = new() { ["ru"] = "{0} не отвечает — служба фото не запущена.", ["en"] = "{0} is not answering - the picture service is not running." },
+                [AVATAR_NO_ACCOUNT] = new() { ["ru"] = "Не удалось определить аккаунт.", ["en"] = "The account could not be determined." },
+                [AVATAR_REJECTED] = new() { ["ru"] = "Сервер отклонил загрузку ({0}).", ["en"] = "The server refused the upload ({0})." },
+                [AVATAR_NUDGE_TITLE] = new() { ["ru"] = "Сделайте профиль своим", ["en"] = "Make the profile yours" },
+                [AVATAR_NUDGE_SUB] = new() { ["ru"] = "Добавьте фото", ["en"] = "Add a picture" },
 
                 #endregion
 

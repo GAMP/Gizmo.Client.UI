@@ -44,7 +44,22 @@
                 }
 
                 <div class="giz-profile-popup__avatar @(ShowLoyalty ? "giz-profile-popup__avatar--ringed" : null)">
-                    @if (!string.IsNullOrEmpty(Picture))
+                    @if (AvatarService.IsEnabled)
+                    {
+                        @* The club runs a picture service: the circle is the way to change it. *@
+                        <button type="button" class="giz-profile-popup__avatar-edit" @onclick="OnClickPictureHandler" title="@ShellText.Get(ShellText.AVATAR_EDIT)">
+                            @if (!string.IsNullOrEmpty(Shown))
+                            {
+                                <Avatar Image="@Shown" Variant="AvatarVariants.Circle" />
+                            }
+                            else
+                            {
+                                <i class="ph ph-user"></i>
+                            }
+                            <span class="giz-profile-popup__avatar-veil"><i class="ph-bold ph-camera"></i></span>
+                        </button>
+                    }
+                    else if (!string.IsNullOrEmpty(Picture))
                     {
                         <Avatar Image="@Picture" Variant="AvatarVariants.Circle" />
                     }

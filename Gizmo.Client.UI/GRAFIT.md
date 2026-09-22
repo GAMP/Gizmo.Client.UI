@@ -45,11 +45,11 @@ repository's relation to the upstream one.
 ## Versions
 
 The shell has a version of its own and it is only meaningful next to the Gizmo
-release it was built for: "Grafit 1.1.6 · Gizmo 3.0.95". Both numbers live in one
+release it was built for: "Grafit 1.1.7 · Gizmo 3.0.95". Both numbers live in one
 place, `Gizmo.Client.UI.csproj` (`GrafitVersion`, `GizmoVersion`). They reach the
-DLL's version info (`ProductVersion` = "1.1.6 (Gizmo 3.0.95)"), the package name and
+DLL's version info (`ProductVersion` = "1.1.7 (Gizmo 3.0.95)"), the package name and
 `grafit.version.txt` in the skin folder. On screen the shell shows its own number in
-exactly one place - a quiet "Grafit 1.1.6" under the cards of the account page's
+exactly one place - a quiet "Grafit 1.1.7" under the cards of the account page's
 Profile tab (`ShellVersion.Grafit`, read from the assembly metadata) - and never the
 Gizmo release or any mismatch warning. Bump `GrafitVersion` for every shell release,
 `GizmoVersion` on every vendor merge; `stage.ps1` refuses to pack a DLL whose
@@ -79,6 +79,7 @@ version does not match the project file.
 | Sign-in screen | `Shared\_Layout_Login.razor`, `_layout-login.scss`, `_grafit-auth.scss` |
 | Visual regression tests | `visual\` - `npm run visual`, see `visual\README.md`; `node visual\measure.js <scenario> <selector>` prints boxes and computed styles; `node visual\hover.js <scenario> <selector> <out.png>` pictures a hover state |
 | Promo shots (every screen, every palette, 4K) | `node visual\promo.js`; the scenes in `visual\promo-scenes.js`, the generated artwork in `visual\lib\artwork.js` (`node visual\art-sheet.js` shows a sheet of it) |
+| Customers' own pictures (optional, `--gg-avatars`) | `Code\Services\AvatarService.cs`, `Components\Profile\ChangePictureDialog.razor`, `Shared\AvatarNudgeBanner.razor`, the crop/paste block in `src\js\internal.js`; the club's service in `..\deploy\avatar-proxy` |
 | The README pictures (`docs\img`) | `node visual\readme-shots.js` - the home, four screens, the eight palettes, rendered by promo.js from the current sources |
 | Package and installer | `..\deploy\` (`stage.ps1`, `install.bat`) |
 | Third-party licences | `THIRD-PARTY-NOTICES.md`, `src\vendor\...` |

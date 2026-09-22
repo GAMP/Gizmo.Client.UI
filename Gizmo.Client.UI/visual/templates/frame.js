@@ -128,7 +128,7 @@ function topBar(d) {
           <div class="giz-profile-popup__avatar-zone">
             <div class="giz-profile-popup__orbit">
               ${ORBIT.map(([icon, angle, radius, size, opacity]) => `<i class="ph-bold ${icon} giz-orbit-icon" style="font-size:${size}px; opacity:${opacity}; transform: rotate(${angle}deg) translate(0, -${radius}px) rotate(${(-angle + Math.sin(angle * Math.PI / 180) * 15).toFixed(2)}deg);"></i>`).join("")}
-              <div class="giz-profile-popup__avatar${d.loyalty ? " giz-profile-popup__avatar--ringed" : ""}">${d.picture ? `<div class="giz-avatar giz-avatar--medium giz-avatar--circle"><img src="${d.picture}" alt=""></div>` : `<i class="ph ph-user"></i>`}${standing.ring}</div>
+              <div class="giz-profile-popup__avatar${d.loyalty ? " giz-profile-popup__avatar--ringed" : ""}">${d.avatars ? `<button type="button" class="giz-profile-popup__avatar-edit" title="Изменить">${d.picture ? `<div class="giz-avatar giz-avatar--medium giz-avatar--circle"><img src="${d.picture}" alt=""></div>` : `<i class="ph ph-user"></i>`}<span class="giz-profile-popup__avatar-veil"><i class="ph-bold ph-camera"></i></span></button>` : (d.picture ? `<div class="giz-avatar giz-avatar--medium giz-avatar--circle"><img src="${d.picture}" alt=""></div>` : `<i class="ph ph-user"></i>`)}${standing.ring}</div>
               ${standing.level}
             </div>
           </div>
@@ -151,9 +151,10 @@ function topBar(d) {
       <div class="giz-top-bar__left">
         <div class="giz-top-bar__search">
           <div class="giz-header__global-search">
-            <div class="giz-global-search" tabindex="0">
+            <div class="giz-global-search${d.globalSearch ? " open nonemtpy" : ""}" tabindex="0">
               <i class="ph-bold ph-magnifying-glass giz-ph-icon"></i>
-              <input type="text" value="" placeholder="Поиск" />
+              <input type="text" value="${esc(d.globalSearch || "")}" placeholder="Поиск" />
+              ${searchDropdown(d)}
             </div>
           </div>
         </div>
@@ -200,7 +201,7 @@ function topBar(d) {
           </div>
         </div>
         ${deploy}
-        ${levelHint(d)}
+        ${levelHint(d)}${avatarNudge(d)}
         <div class="giz-top-bar__account">
           <div class="giz-header__user-menu-item giz-user-dropdown${d.userOpen ? " open" : ""}">
             <span class="gg-avatar-host">
@@ -218,6 +219,41 @@ function topBar(d) {
 
 // Shared/UserAvatar.razor: the person's picture when the account has one (`picture`),
 // otherwise the glyph.
+// Shared/HeaderGlobalSearch.razor with HeaderGlobalSearchProductResultCard.razor:
+// the dropdown under the search field. `globalSearch` is what was typed (the catalogue
+// page uses `search` for its own filter) and `searchProducts` the goods it found, as
+// [name, category] pairs or plain names.
+function searchDropdown(d) {
+  if (!d.globalSearch) return "";
+  const products = (d.searchProducts || []).map((p) => (Array.isArray(p) ? p : [p, "Бар"]));
+  const section = (title, body, more) => `<div class="giz-global-search-section">
+      <div class="giz-global-search-section__header"><div>${esc(title)}</div>${more ? `<div class="giz-global-search-section__header__more">Показать все</div>` : ""}</div>
+      <div class="giz-global-search-section__body">${body}</div>
+    </div>`;
+  const card = (name, category, i) => `<div class="giz-global-search-result-card giz-global-search-result-card--product">
+      <div class="giz-global-search-result-card__image">${gizImage(artFor("product", i, 40), "cover")}</div>
+      <div class="giz-global-search-result-card__category">${esc(category)}</div>
+      <div class="giz-global-search-result-card__title">${esc(name)}</div>
+      <div class="giz-global-search-result-card__action">
+        <button class="giz-button giz-button--medium primary giz-button--outline" type="button">
+          <div class="giz-button__progress-wrapper"><div class="giz-button__progress" style="width: 0%"></div></div>
+          <div class="giz-button__content_wrapper"><div class="giz-button__content"><div>В корзину</div></div></div>
+        </button>
+      </div>
+    </div>`;
+  const body = products.length
+    ? section("Бар и магазин", products.map(([name, category], i) => card(name, category, i)).join(""), products.length > 10)
+    : `<div class="giz-global-search-empty"><div class="giz-empty-state"><div class="giz-empty-state__title">Ничего не нашлось</div><div class="giz-empty-state__text">Попробуйте другое слово</div></div></div>`;
+  return `<div class="giz-global-search-dropdown open">
+      <div class="giz-dropdown-menu__content giz-global-search-dropdown__body">${body}</div>
+    </div>`;
+}
+
+// A picture the way GizImage renders one (see templates/home.js).
+function gizImage(src, fit) {
+  return `<img src="${src}" class="giz-image--${fit}" alt="" />`;
+}
+
 function avatar(d, cls) {
   return d.picture
     ? `<div class="giz-user-avatar ${cls || ""} giz-avatar giz-avatar--medium giz-avatar--circle"><img src="${d.picture}" alt=""></div>`
@@ -265,6 +301,20 @@ function profileStanding(d) {
 // Shared/LoyaltyHint.razor: for ten seconds after sign-in, a pill slides out next to
 // the avatar to say what the ring on it means. Same pill as the deployment banner,
 // without the fill. `levelHint: earning | secured`.
+// Shared/AvatarNudgeBanner.razor: the invitation to add a picture, shown when the club
+// runs its own picture service. `avatarNudge: true`.
+function avatarNudge(d) {
+  if (!d.avatarNudge) return "";
+  return `<div class="giz-avatar-nudge open">
+    <i class="ph-fill ph-user-circle-plus giz-avatar-nudge__badge"></i>
+    <div class="giz-avatar-nudge__text">
+      <div class="giz-avatar-nudge__text__title">Сделайте профиль своим</div>
+      <div class="giz-avatar-nudge__text__sub">Добавьте фото</div>
+    </div>
+    <i class="ph-bold ph-caret-right giz-avatar-nudge__arrow"></i>
+  </div>`;
+}
+
 function levelHint(d) {
   if (!d.levelHint) return "";
   const secured = d.levelHint === "secured";
