@@ -93,9 +93,22 @@ namespace Gizmo.Client.UI.Shared
 
         protected string Picture => ViewState.Picture;
 
+        /// <summary>The account's picture, or the one the club's own service holds.</summary>
+        protected string Shown => string.IsNullOrEmpty(Picture) ? AvatarService.Current?.Picture : Picture;
+
         //The standing on the card (ring, level disc, one line): only for a customer of a
         //club that runs any of the ladder, achievements or challenges. A guest has none.
         protected bool ShowLoyalty => !ViewState.IsGuest && Loyalty.State.IsAvailable;
+
+        //Only offered when the club runs the picture service; see AvatarService.
+        private Task OnClickPictureHandler()
+        {
+            _shouldRender = true;
+
+            UserMenuViewService.CloseUserLinks();
+
+            return DialogService.ShowChangePictureDialogAsync();
+        }
 
         private void OnClickProgressHandler()
         {
@@ -189,6 +202,9 @@ namespace Gizmo.Client.UI.Shared
             UserMenuViewState.OnChange += ViewState_OnChange;
             Loyalty.Changed += OnLoyaltyChanged;
 
+            if (AvatarService.Current is not null)
+                AvatarService.Current.Changed += OnLoyaltyChanged;
+
             base.OnInitialized();
         }
 
@@ -211,6 +227,9 @@ namespace Gizmo.Client.UI.Shared
 
         public override void Dispose()
         {
+            if (AvatarService.Current is not null)
+                AvatarService.Current.Changed -= OnLoyaltyChanged;
+
             Loyalty.Changed -= OnLoyaltyChanged;
             UserMenuViewState.OnChange -= ViewState_OnChange;
             ViewState.OnChange -= ViewState_OnChange;

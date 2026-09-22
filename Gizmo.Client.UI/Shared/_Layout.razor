@@ -226,6 +226,7 @@
     .giz-top-bar__search .giz-global-search,
     .giz-top-bar__hud,
     .giz-top-bar__icons,
+    .giz-avatar-nudge,
     .giz-deploy,
     .giz-resv,
     .giz-top-bar .giz-user-menu-button {
@@ -354,6 +355,92 @@
        the pill while the size was unknown - "a square moved along a strip". Nothing here
        has a moving edge any more: the wash fades out over its last 7rem, the ring turns
        in place, and the sheen is a pass of light over the whole pill. */
+    /* ── The invitation to add a picture ──
+       Same slot and same mechanics as the deployment pill: width 0 at rest, growing in
+       when it has something to say, the icon cluster sliding left by ordinary reflow.
+       Only ever shown when the club runs its own picture service (--gg-avatars), and it
+       steps aside while the slot holds anything that matters more (TopBannerArbiter). */
+    .giz-avatar-nudge {
+        display: flex;
+        align-items: center;
+        height: 5.8rem;
+        width: 0;
+        padding: 0;
+        gap: 0;
+        overflow: hidden;
+        opacity: 0;
+        flex-shrink: 0;
+        cursor: pointer;
+        transition:
+            width 0.5s cubic-bezier(0.19, 1, 0.22, 1),
+            padding 0.5s cubic-bezier(0.19, 1, 0.22, 1),
+            opacity 0.35s ease;
+    }
+    /* The accent, not the shared neutral glass: this one has to be seen. */
+    .giz-avatar-nudge.open {
+        width: 34rem;
+        padding: 0 1.6rem 0 1.4rem;
+        gap: 1.1rem;
+        opacity: 1;
+        background: linear-gradient(135deg, rgba(var(--gg-accent-rgb),0.95), rgba(var(--gg-accent-rgb),0.7)) !important;
+        border-color: rgba(255,255,255,0.28) !important;
+        animation: giz-avatar-nudge-pulse 3.2s ease-in-out 0.6s infinite;
+    }
+    .giz-avatar-nudge__badge {
+        flex-shrink: 0;
+        font-size: 2.6rem;
+        color: var(--gg-on-accent);
+        opacity: 0.95;
+    }
+    .giz-avatar-nudge__text {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+    /* One line each: two lines for the pill reads cleaner than three. */
+    .giz-avatar-nudge__text__title {
+        font-family: Rubik, sans-serif;
+        font-size: 1.28rem;
+        font-weight: 800;
+        line-height: 1.6rem;
+        color: var(--gg-on-accent);
+        letter-spacing: 0.005em;
+        white-space: nowrap;
+    }
+    .giz-avatar-nudge__text__sub {
+        font-size: 1.2rem;
+        font-weight: 500;
+        line-height: 1.6rem;
+        color: var(--gg-on-accent);
+        opacity: 0.75;
+        white-space: nowrap;
+    }
+    .giz-avatar-nudge__arrow {
+        flex-shrink: 0;
+        font-size: 1.8rem;
+        color: var(--gg-on-accent);
+        animation: giz-avatar-nudge-arrow 1.6s ease-in-out infinite;
+    }
+    /* A breathing glow rather than a blinking border: "look here" without flickering
+       in the corner of the eye. */
+    @@keyframes giz-avatar-nudge-pulse {
+        0%, 100% {
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.28),
+                0 1.2rem 3rem -1rem rgba(var(--gg-accent-rgb),0.5);
+            transform: scale(1);
+        }
+        50% {
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.28),
+                0 1.2rem 3rem -1rem rgba(var(--gg-accent-rgb),0.6);
+            transform: scale(1.015);
+        }
+    }
+    @@keyframes giz-avatar-nudge-arrow {
+        0%, 100% { transform: translateX(0); opacity: 0.7; }
+        50% { transform: translateX(4px); opacity: 1; }
+    }
+
     /* Sized through flex-basis rather than width so the banner can shrink when the bar is
        short of room (a 1366 panel, or a reservation tile on the left): the text clips
        inside it and the badge, percentage and close button stay. The growth on
@@ -976,7 +1063,13 @@
         cursor: pointer;
         white-space: nowrap;
     }
-    .giz-top-bar .giz-global-search-section__body {
+    /* One result per row: the vendor's two columns assume its own 80.9rem panel, and
+       in the 54rem one above the picture and the button ate the row - the name was
+       left with about 40px and simply vanished. Three classes deep to outrank the
+       bundle's own nesting. */
+    .giz-top-bar .giz-global-search .giz-global-search-section__body {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 0.4rem;
         padding: 0 0.8rem 0.8rem;
     }
     .giz-top-bar .giz-global-search-empty {
@@ -1547,6 +1640,57 @@
         object-fit: cover;
         display: block;
     }
+    /* The picture as a control, only where the club runs its own picture service
+       (--gg-avatars). At rest it is exactly the avatar; the veil and the camera come
+       in under the cursor, so nothing invites a click when nothing can be changed. */
+    .giz-profile-popup__avatar-edit,
+    .giz-user-avatar-edit {
+        position: relative;
+        display: block;
+        padding: 0;
+        border: none;
+        background: transparent;
+        border-radius: 50%;
+        overflow: hidden;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+        line-height: 0;
+    }
+    .giz-profile-popup__avatar-edit > i,
+    .giz-user-avatar-edit > .giz-user-avatar--glyph {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        font-size: 4.2rem;
+        color: rgba(var(--gg-ink-rgb), 0.8);
+    }
+    .giz-profile-popup__avatar-veil,
+    .giz-user-avatar-edit__veil {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(0,0,0,0.55);
+        color: #fff;
+        opacity: 0;
+        transition: opacity 0.15s;
+    }
+    .giz-profile-popup__avatar-veil i,
+    .giz-user-avatar-edit__veil i {
+        font-size: 2.2rem;
+    }
+    .giz-profile-popup__avatar-edit:hover .giz-profile-popup__avatar-veil,
+    .giz-profile-popup__avatar-edit:focus-visible .giz-profile-popup__avatar-veil,
+    .giz-user-avatar-edit:hover .giz-user-avatar-edit__veil,
+    .giz-user-avatar-edit:focus-visible .giz-user-avatar-edit__veil {
+        opacity: 1;
+    }
+
     .giz-profile-popup__name {
         margin-top: 0.2rem;
         font-weight: 800;
@@ -1932,6 +2076,7 @@
                 </div>
                 <DeploymentBanner />
                 <LoyaltyHint />
+                <AvatarNudgeBanner />
                 <div class="giz-top-bar__account">
                     <HeaderUserMenuUserLinks @onclick="UserMenuViewService.ToggleUserLinks" />
                 </div>

@@ -1333,6 +1333,296 @@ window.removeExpansionPanelEventListener = function removeExpansionPanelEventLis
     }
 };
 
+// ───────────────────────────── avatar editor ─────────────────────────────
+// Only ever used when the club turns pictures on (--gg-avatars) and opens the
+// editor; nothing here runs otherwise. The framing is done here rather than in
+// Blazor because a pointermove per frame has no business crossing interop.
+
+var _avatarPasteHandler = null;
+
+window.setupAvatarPaste = function setupAvatarPaste(dotNetRef, callbackName) {
+    window.teardownAvatarPaste();
+
+    _avatarPasteHandler = function (event) {
+        const items = (event.clipboardData || window.clipboardData || {}).items;
+        if (!items) return;
+
+        for (const item of items) {
+            if (item.type && item.type.startsWith("image/")) {
+                const blob = item.getAsFile();
+                const reader = new FileReader();
+                reader.onload = () => {
+                    dotNetRef.invokeMethodAsync(callbackName, reader.result);
+                };
+                reader.readAsDataURL(blob);
+                event.preventDefault();
+                break;
+            }
+        }
+    };
+
+    document.addEventListener("paste", _avatarPasteHandler);
+};
+
+window.teardownAvatarPaste = function teardownAvatarPaste() {
+    if (_avatarPasteHandler) {
+        document.removeEventListener("paste", _avatarPasteHandler);
+        _avatarPasteHandler = null;
+    }
+};
+
+//=============== Avatar crop editor =================//
+// Раньше картинка резалась сразу и вслепую: бралась центральная квадратная
+// область и сжималась в 512px. Для портрета в полный рост это означало
+// «аватарка — живот». Теперь пользователь сам выбирает область: тянет
+// картинку и меняет масштаб, а в круг попадает ровно то, что видно.
+//
+// Геометрия. Сцена квадратная со стороной S, круг вписан, диаметр D = S.
+// Картинка натуральных размеров nw*nh лежит по центру сцены и двигается
+// трансформом translate(tx,ty) scale(s). Тогда точка изображения под центром
+// круга это (nw/2 - tx/s, nh/2 - ty/s), а диаметр круга в пикселях исходника
+// равен D/s — из этого и считается прямоугольник для canvas при экспорте.
+//
+// Минимальный масштаб — тот, при котором круг ещё полностью закрыт картинкой:
+// s >= D / min(nw, nh). Смещение всегда зажимается так, чтобы за краем круга
+// не оказалось пустоты, поэтому «дырок» в аватарке не бывает в принципе.
+
+var _avatarCrop = null;
+
+function _avatarCropClamp() {
+    const c = _avatarCrop;
+    if (!c) return;
+
+    const maxX = Math.max(0, (c.nw * c.scale - c.d) / 2);
+    const maxY = Math.max(0, (c.nh * c.scale - c.d) / 2);
+
+    c.tx = Math.min(maxX, Math.max(-maxX, c.tx));
+    c.ty = Math.min(maxY, Math.max(-maxY, c.ty));
+}
+
+function _avatarCropApply() {
+    const c = _avatarCrop;
+    if (!c) return;
+
+    _avatarCropClamp();
+    c.img.style.transform =
+        "translate(-50%, -50%) translate(" + c.tx + "px, " + c.ty + "px) scale(" + c.scale + ")";
+}
+
+window.avatarCropInit = function avatarCropInit(stage, dataUrl) {
+    window.avatarCropDispose();
+
+    return new Promise((resolve, reject) => {
+        if (!stage) {
+            reject(new Error("No crop stage element."));
+            return;
+        }
+
+        const img = new Image();
+        img.onload = () => {
+            const d = Math.min(stage.clientWidth, stage.clientHeight);
+            const nw = img.naturalWidth;
+            const nh = img.naturalHeight;
+            const base = d / Math.min(nw, nh);
+
+            img.className = "giz-avatar-crop__img";
+            img.draggable = false;
+            img.style.width = nw + "px";
+            img.style.height = nh + "px";
+
+            stage.appendChild(img);
+
+            _avatarCrop = {
+                stage: stage, img: img, nw: nw, nh: nh, d: d,
+                base: base,
+                scale: base,
+                tx: 0, ty: 0,
+                dragging: false,
+                lastX: 0, lastY: 0,
+                pointerId: null,
+            };
+
+            const onDown = (e) => {
+                const c = _avatarCrop;
+                if (!c) return;
+                c.dragging = true;
+                c.pointerId = e.pointerId;
+                c.lastX = e.clientX;
+                c.lastY = e.clientY;
+                stage.setPointerCapture(e.pointerId);
+                stage.classList.add("is-dragging");
+            };
+
+            const onMove = (e) => {
+                const c = _avatarCrop;
+                if (!c || !c.dragging || e.pointerId !== c.pointerId) return;
+                c.tx += e.clientX - c.lastX;
+                c.ty += e.clientY - c.lastY;
+                c.lastX = e.clientX;
+                c.lastY = e.clientY;
+                _avatarCropApply();
+            };
+
+            const onUp = (e) => {
+                const c = _avatarCrop;
+                if (!c) return;
+                c.dragging = false;
+                c.pointerId = null;
+                try { stage.releasePointerCapture(e.pointerId); } catch (err) { /* уже отпущен */ }
+                stage.classList.remove("is-dragging");
+            };
+
+            const onWheel = (e) => {
+                const c = _avatarCrop;
+                if (!c) return;
+                e.preventDefault();
+                // Колесо меняет масштаб от центра круга: зум «в точку курсора»
+                // выглядит богаче, но на тачпаде уводит картинку из-под руки.
+                const step = e.deltaY < 0 ? 1.08 : 1 / 1.08;
+                window.avatarCropSetZoom((c.scale * step) / c.base);
+            };
+
+            stage.addEventListener("pointerdown", onDown);
+            stage.addEventListener("pointermove", onMove);
+            stage.addEventListener("pointerup", onUp);
+            stage.addEventListener("pointercancel", onUp);
+            stage.addEventListener("wheel", onWheel, { passive: false });
+
+            _avatarCrop.listeners = { onDown: onDown, onMove: onMove, onUp: onUp, onWheel: onWheel };
+
+            _avatarCropApply();
+            resolve({ width: nw, height: nh });
+        };
+        img.onerror = () => reject(new Error("Image failed to load."));
+        img.src = dataUrl;
+    });
+};
+
+// zoom — множитель к минимальному масштабу, 1 = картинка ровно закрывает круг.
+window.avatarCropSetZoom = function avatarCropSetZoom(zoom) {
+    const c = _avatarCrop;
+    if (!c) return 1;
+
+    const clamped = Math.min(4, Math.max(1, zoom));
+    c.scale = c.base * clamped;
+    _avatarCropApply();
+    return clamped;
+};
+
+window.avatarCropExport = function avatarCropExport(outSize, quality) {
+    const c = _avatarCrop;
+    if (!c) throw new Error("Crop editor is not initialised.");
+
+    const side = c.d / c.scale;                       // сторона выреза в пикселях исходника
+    const sx = c.nw / 2 - c.tx / c.scale - side / 2;
+    const sy = c.nh / 2 - c.ty / c.scale - side / 2;
+
+    const out = Math.min(Math.round(side), outSize);  // не растягиваем мелкий исходник
+    const canvas = document.createElement("canvas");
+    canvas.width = out;
+    canvas.height = out;
+
+    const ctx = canvas.getContext("2d");
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(c.img, sx, sy, side, side, 0, 0, out, out);
+
+    const tryExport = (type) => new Promise((resolve, reject) => {
+        canvas.toBlob((blob) => {
+            if (blob) resolve(blob);
+            else reject(new Error("Canvas export to " + type + " failed."));
+        }, type, quality);
+    });
+
+    return tryExport("image/webp")
+        .catch(() => tryExport("image/jpeg"))
+        .then((blob) => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve({
+                dataUrl: reader.result,
+                contentType: blob.type,
+                byteLength: blob.size,
+                width: out,
+                height: out,
+            });
+            reader.onerror = () => reject(new Error("Reading cropped blob failed."));
+            reader.readAsDataURL(blob);
+        }));
+};
+
+window.avatarCropDispose = function avatarCropDispose() {
+    const c = _avatarCrop;
+    if (!c) return;
+
+    const l = c.listeners || {};
+    c.stage.removeEventListener("pointerdown", l.onDown);
+    c.stage.removeEventListener("pointermove", l.onMove);
+    c.stage.removeEventListener("pointerup", l.onUp);
+    c.stage.removeEventListener("pointercancel", l.onUp);
+    c.stage.removeEventListener("wheel", l.onWheel);
+
+    if (c.img && c.img.parentNode) c.img.parentNode.removeChild(c.img);
+
+    _avatarCrop = null;
+};
+
+// Исходник для редактора: только декодируем и, если картинка огромная,
+// уменьшаем — резать будет уже пользователь. Верхняя граница нужна, чтобы
+// снимок с телефона на 12 мегапикселей не жил в памяти WebView целиком.
+function _avatarSourceFromImage(img, maxDim) {
+    const nw = img.naturalWidth || img.width;
+    const nh = img.naturalHeight || img.height;
+    const factor = Math.min(1, maxDim / Math.max(nw, nh));
+
+    if (factor >= 1) {
+        return Promise.resolve({ dataUrl: img.src, width: nw, height: nh });
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(nw * factor);
+    canvas.height = Math.round(nh * factor);
+
+    const ctx = canvas.getContext("2d");
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    return new Promise((resolve, reject) => {
+        canvas.toBlob((blob) => {
+            if (!blob) { reject(new Error("Canvas export failed.")); return; }
+            const reader = new FileReader();
+            reader.onload = () => resolve({
+                dataUrl: reader.result,
+                width: canvas.width,
+                height: canvas.height,
+            });
+            reader.onerror = () => reject(new Error("Reading source blob failed."));
+            reader.readAsDataURL(blob);
+        }, "image/webp", 0.92);
+    });
+}
+
+window.avatarSourceFromInputElement = async function avatarSourceFromInputElement(inputElement, maxDim) {
+    if (!inputElement || !inputElement.files || inputElement.files.length === 0) {
+        throw new Error("No file selected.");
+    }
+    const objectUrl = URL.createObjectURL(inputElement.files[0]);
+    try {
+        const img = await _loadImageFromObjectUrl(objectUrl, false);
+        return await _avatarSourceFromImage(img, maxDim);
+    } finally {
+        URL.revokeObjectURL(objectUrl);
+    }
+};
+
+window.avatarSourceFromDataUrl = async function avatarSourceFromDataUrl(dataUrl, maxDim) {
+    const img = await _loadImageFromObjectUrl(dataUrl, false);
+    return await _avatarSourceFromImage(img, maxDim);
+};
+
+window.avatarSourceFromUrl = async function avatarSourceFromUrl(url, maxDim) {
+    const img = await _loadImageFromObjectUrl(url, true);
+    return await _avatarSourceFromImage(img, maxDim);
+};
+
 // ─────────────────────── keyboard layout detection ───────────────────────
 // The desktop host's IInputLanguageService never raises LanguageChange and
 // its CurrentInputLanguage getter throws NotImplementedException, so the
@@ -1661,6 +1951,15 @@ window.setDocumentDirection = function setDocumentDirection(direction) {
             if (motion) {
                 theme.motion(motion);
             }
+        },
+
+        // `:root { --gg-avatars: on; }` - or an address, when the club's picture
+        // service does not sit on the server's own machine. Read once by the shell
+        // after its first render; see AvatarService.Configure.
+        avatars: function () {
+            return String(getComputedStyle(root).getPropertyValue("--gg-avatars") || "")
+                .trim()
+                .replace(/["']/g, "");
         },
 
         // "on" or "off": the moving background behind the sign-in screen and the shell.

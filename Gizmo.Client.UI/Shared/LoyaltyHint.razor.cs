@@ -63,6 +63,8 @@ namespace Gizmo.Client.UI.Shared
 
         public override void Dispose()
         {
+            TopBannerArbiter.SetHintVisible(false);
+
             Loyalty.Changed -= OnLoyaltyChanged;
 
             _timer?.Dispose();
@@ -83,10 +85,12 @@ namespace Gizmo.Client.UI.Shared
                 return;
 
             _open = true;
+            TopBannerArbiter.SetHintVisible(true);
             _timer?.Dispose();
             _timer = new Timer(_ => DispatchWorkflow(() =>
             {
                 _open = false;
+                TopBannerArbiter.SetHintVisible(false);
                 StateHasChanged();
                 return Task.CompletedTask;
             }), null, ShowFor, Timeout.InfiniteTimeSpan);
@@ -97,6 +101,7 @@ namespace Gizmo.Client.UI.Shared
         private void Open()
         {
             _open = false;
+            TopBannerArbiter.SetHintVisible(false);
             _timer?.Dispose();
             _timer = null;
 

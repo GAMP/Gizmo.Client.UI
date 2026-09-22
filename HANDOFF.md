@@ -79,6 +79,17 @@ Outside `Gizmo.Client.UI` the branch has exactly three things, all of them addit
   its own copy in the bundle, so this is for your debugging, not for the product.
 - four `Submodules` pins, see above.
 
+**Customers' own pictures** are in the branch but off: the club turns them on with
+`--gg-avatars` in its stylesheet, and they need a small service of the club's own next to
+the server (`deploy\avatar-proxy`). The reason is an API gap rather than a preference:
+the user surface has no picture route, `UserProfileModelUpdate` carries no picture, and
+`GET/PUT api/v3/users/{id}/picture` is the management API, so a station cannot read or
+write one without operator credentials - which is also why your own
+`ChangePictureDialog` never uploaded anything. Give the user surface a picture of its
+own (`api/user/v3/users/picture`, or a field in the self-service profile) and the service
+disappears: only `AvatarService.RefreshAsync` and `UploadAsync` would change, and the
+feature could go on by default.
+
 One thing worth knowing, since the shell works around it rather than touching your code.
 A logged production crash: an `async void` view-state handler awaited `InvokeAsync` while
 the WebView2 process was going away, the faulted dispatcher call surfaced on the thread
@@ -106,7 +117,7 @@ is handed out at connect and mirrored to `%PROGRAMDATA%\NETProjects\Gizmo Client
 `deploy\README.md` is the operator's page.
 
 Versions: `GrafitVersion` and `GizmoVersion` in `Gizmo.Client.UI.csproj` -> assembly
-metadata and `ProductVersion` ("1.1.6 (Gizmo 3.0.95)"), the package name,
+metadata and `ProductVersion` ("1.1.7 (Gizmo 3.0.95)"), the package name,
 `skin\grafit.version.txt`, and one quiet line on the account page's Profile tab.
 
 ## Integration points a club uses
