@@ -1,10 +1,11 @@
 # Grafit - handoff notes for Gizmo
 
-Grafit is a second skin for the Gizmo V3 client. This repository is a fork of
-`GAMP/Gizmo.Client.UI` (branch `version-3`; the shell project as of `14334ca`, the
-commit the stock 3.0.95 skin is built from) with the skin built on top. `GRAFIT.md`
-inside `Gizmo.Client.UI\` is the maintainer's map of the code; this file is about what
-is in the repository and how it relates to yours.
+Grafit is a second skin for the Gizmo V3 client, built on `GAMP/Gizmo.Client.UI`
+(branch `version-3`; the shell project as of `14334ca`, the commit the stock 3.0.95 skin
+is built from). Since 21.09.2026 the work lives in your repository as the branch
+`grafit-dev`; it was developed in a clone that is still where the packages are built and
+released. `GRAFIT.md` inside `Gizmo.Client.UI\` is the maintainer's map of the code;
+this file is about what is in the branch and how it relates to the rest of your tree.
 
 ## What ships and what does not
 
@@ -32,7 +33,8 @@ assembly, the WPF host - is the client's own and is not shipped. Two consequence
 
 ## Relation to the upstream repositories
 
-Branch `grafit`. History: `e95eded` (your `version-3` at 3.0.92) -> a snapshot of the
+Branch `grafit-dev` here (`grafit` in the clone it is pushed from - same commits).
+History: `e95eded` (your `version-3` at 3.0.92) -> a snapshot of the
 skin as it was before that merge -> the merge -> the skin's own commits -> a merge of
 `14334ca` (your 3.0.95) -> more of the skin -> a merge of `4b1f6f9` (your `version-3`
 head of 18.09.2026). `vendor/version-3` is your branch as fetched, for diffing:
