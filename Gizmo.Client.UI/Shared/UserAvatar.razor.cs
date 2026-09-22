@@ -16,9 +16,8 @@ namespace Gizmo.Client.UI
         [Parameter]
         public string Picture { get; set; }
 
-        /// <summary>Extra classes for the rendered avatar.</summary>
-        [Parameter]
-        public string Class { get; set; }
+        //`Class` comes from CustomDOMComponentBase; declaring it again here made
+        //Blazor refuse the component outright ("more than one parameter matching 'class'").
 
         /// <summary>
         /// Whether this avatar is the signed-in customer's own and big enough to offer
