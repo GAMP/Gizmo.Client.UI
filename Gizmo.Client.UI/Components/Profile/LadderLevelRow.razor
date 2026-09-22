@@ -13,8 +13,16 @@
     {
         <span class="giz-ladder-level-row__chip">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_CURRENT))</span>
     }
-    @if (!string.IsNullOrEmpty(Item.ThresholdText))
+    else if (Item.IsNext)
     {
-        <span class="giz-ladder-level-row__meta">@Item.ThresholdText</span>
+        <span class="giz-ladder-level-row__chip giz-ladder-level-row__chip--next">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_NEXT))</span>
+    }
+    else if (Item.IsLocked)
+    {
+        <span class="giz-ladder-level-row__chip giz-ladder-level-row__chip--locked">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_LOCKED))</span>
+    }
+    @if (!string.IsNullOrEmpty(MetaText))
+    {
+        <span class="giz-ladder-level-row__meta">@MetaText</span>
     }
 </div>

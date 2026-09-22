@@ -18,5 +18,7 @@ namespace Gizmo.Client.UI.Components
         public UserLadderLevelViewState Item { get; set; } = null!;
 
         private void OnClick() => Service.SelectLevel(Item.Rank);
+
+        private string MetaText => !string.IsNullOrEmpty(Item.MetaText) ? Item.MetaText : Item.ThresholdText;
     }
 }

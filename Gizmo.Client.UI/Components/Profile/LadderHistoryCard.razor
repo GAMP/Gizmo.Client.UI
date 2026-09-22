@@ -15,7 +15,7 @@
         @foreach (var row in ViewState.HistoryRows)
         {
             <div class="giz-ladder-history__row">
-                <span class="giz-ladder-history__icon @(row.IsUp ? "giz-ladder-history__icon--up" : "giz-ladder-history__icon--down")"><Icon SVGIcon="Icons.LevelUp_Client" /></span>
+                <span class="giz-ladder-history__icon @(row.IsUp ? "giz-ladder-history__icon--up" : "giz-ladder-history__icon--down")"><Icon SVGIcon="@(row.IsUp ? Icons.LevelUp_Client : Icons.LevelDown_Client)" /></span>
                 <span class="giz-ladder-history__from">@row.FromName</span>
                 <span class="giz-ladder-history__arrow"><Icon SVGIcon="Icons.ArrowRightAlt_Client" /></span>
                 <span class="giz-ladder-history__to">@row.ToName</span>

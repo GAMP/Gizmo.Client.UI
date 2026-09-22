@@ -96,6 +96,7 @@
         Keyboard_Client,
         Ladder_Client,
         Language_Client,
+        LevelDown_Client,
         LevelUp_Client,
         Lock,
         Lock_Client,
