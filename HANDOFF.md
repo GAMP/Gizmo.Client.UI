@@ -67,8 +67,17 @@ commits `14334ca` pins:
 All nine are git submodules: `git submodule update --init` after cloning, one level -
 `--recursive` (and `clone --recurse-submodules`) stops on `Gizmo.Web.Api.Client`, whose
 nested links have no `.gitmodules` at its pin; nothing here needs them. All nine point at
-your repositories at your commits: **this branch changes nothing outside
-`Gizmo.Client.UI`.**
+your repositories, and `Gizmo.Web.Components` at your commit: **none of your code
+outside `Gizmo.Client.UI` is modified.**
+
+Outside `Gizmo.Client.UI` the branch has exactly three things, all of them additive:
+
+- `deploy\` - packaging and the installer for the skin folder (new, yours to keep or drop).
+- `Gizmo.Client.UI.Host.WPF\wwwroot\vendor\` and the same under `Host.Web`, plus the
+  `<link>`s for them in each `index.html`: the icon and text fonts, self-hosted so that
+  running a host with F5 shows the shell as it really looks. The packaged skin carries
+  its own copy in the bundle, so this is for your debugging, not for the product.
+- four `Submodules` pins, see above.
 
 One thing worth knowing, since the shell works around it rather than touching your code.
 A logged production crash: an `async void` view-state handler awaited `InvokeAsync` while

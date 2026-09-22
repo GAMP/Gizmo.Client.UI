@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using Gizmo.Client.UI;
 using Gizmo.Client.UI.Services;
 using Gizmo.UI;
 
