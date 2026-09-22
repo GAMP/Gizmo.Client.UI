@@ -1653,9 +1653,32 @@
         border-radius: 50%;
         overflow: hidden;
         cursor: pointer;
+        line-height: 0;
+    }
+    /* In the profile card the circle around it carries the size; everywhere else the
+       page's own class lands on the button itself (gg-account__avatar and the like), so
+       a size must not be forced here - it used to flatten the account header's picture
+       to nothing. */
+    .giz-profile-popup__avatar-edit {
         width: 100%;
         height: 100%;
-        line-height: 0;
+    }
+    /* The button now carries the size the page gave the avatar (gg-account__avatar and
+       the like), so whatever the Avatar component renders inside has to fill it: left
+       alone it draws its own 4rem box and the picture sat squeezed in a corner. */
+    .giz-user-avatar-edit > .giz-avatar,
+    .giz-user-avatar-edit > .giz-user-avatar {
+        width: 100% !important;
+        height: 100% !important;
+        min-width: 0 !important;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    .giz-user-avatar-edit img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover;
+        display: block;
     }
     .giz-profile-popup__avatar-edit > i,
     .giz-user-avatar-edit > .giz-user-avatar--glyph {

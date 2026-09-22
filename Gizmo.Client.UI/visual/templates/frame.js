@@ -254,7 +254,16 @@ function gizImage(src, fit) {
   return `<img src="${src}" class="giz-image--${fit}" alt="" />`;
 }
 
+// Shared/UserAvatar.razor. With the club's picture service on (`avatars`) the picture
+// itself is a button into the editor, and the size the page asked for lands on that
+// button - whatever is drawn inside has to fill it.
 function avatar(d, cls) {
+  const inner = d.picture
+    ? `<div class="giz-user-avatar giz-avatar giz-avatar--medium giz-avatar--circle"><img src="${d.picture}" alt=""></div>`
+    : `<span class="giz-user-avatar giz-user-avatar--glyph"><i class="ph ph-user"></i></span>`;
+  if (d.avatars) {
+    return `<button type="button" class="giz-user-avatar-edit ${cls || ""}" title="Изменить">${inner}<span class="giz-user-avatar-edit__veil"><i class="ph-bold ph-camera"></i></span></button>`;
+  }
   return d.picture
     ? `<div class="giz-user-avatar ${cls || ""} giz-avatar giz-avatar--medium giz-avatar--circle"><img src="${d.picture}" alt=""></div>`
     : `<span class="giz-user-avatar giz-user-avatar--glyph ${cls || ""}"><i class="ph ph-user"></i></span>`;
