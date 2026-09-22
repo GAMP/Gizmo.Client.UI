@@ -15,7 +15,7 @@ using Microsoft.JSInterop;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class NotificationsHost : CustomDOMComponentBase, IAsyncDisposable
+    public partial class NotificationsHost : ShellComponentBase, IAsyncDisposable
     {
         private enum NotificationsAnimations
         {

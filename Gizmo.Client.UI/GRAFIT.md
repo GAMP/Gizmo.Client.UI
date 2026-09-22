@@ -45,11 +45,11 @@ repository's relation to the upstream one.
 ## Versions
 
 The shell has a version of its own and it is only meaningful next to the Gizmo
-release it was built for: "Grafit 1.1.5 · Gizmo 3.0.95". Both numbers live in one
+release it was built for: "Grafit 1.1.6 · Gizmo 3.0.95". Both numbers live in one
 place, `Gizmo.Client.UI.csproj` (`GrafitVersion`, `GizmoVersion`). They reach the
-DLL's version info (`ProductVersion` = "1.1.5 (Gizmo 3.0.95)"), the package name and
+DLL's version info (`ProductVersion` = "1.1.6 (Gizmo 3.0.95)"), the package name and
 `grafit.version.txt` in the skin folder. On screen the shell shows its own number in
-exactly one place - a quiet "Grafit 1.1.5" under the cards of the account page's
+exactly one place - a quiet "Grafit 1.1.6" under the cards of the account page's
 Profile tab (`ShellVersion.Grafit`, read from the assembly metadata) - and never the
 Gizmo release or any mismatch warning. Bump `GrafitVersion` for every shell release,
 `GizmoVersion` on every vendor merge; `stage.ps1` refuses to pack a DLL whose
@@ -80,7 +80,7 @@ version does not match the project file.
 | Visual regression tests | `visual\` - `npm run visual`, see `visual\README.md`; `node visual\measure.js <scenario> <selector>` prints boxes and computed styles; `node visual\hover.js <scenario> <selector> <out.png>` pictures a hover state |
 | Promo shots (every screen, every palette, 4K) | `node visual\promo.js`; the scenes in `visual\promo-scenes.js`, the generated artwork in `visual\lib\artwork.js` (`node visual\art-sheet.js` shows a sheet of it) |
 | The README pictures (`docs\img`) | `node visual\readme-shots.js` - the home, four screens, the eight palettes, rendered by promo.js from the current sources |
-| Package, installer, patches for upstream | `..\deploy\` (`stage.ps1`, `install.bat`, `patches\`) |
+| Package and installer | `..\deploy\` (`stage.ps1`, `install.bat`) |
 | Third-party licences | `THIRD-PARTY-NOTICES.md`, `src\vendor\...` |
 
 ## Rules that are not obvious from the code
@@ -147,7 +147,8 @@ version does not match the project file.
   picture, and the grey bag reads as "a product" where a faint frame read as "broken".
 - **`async void` is fatal.** An unobserved exception on a handler exits the whole
   client. Anything subscribed to a view state or a static event goes through
-  `DispatchWorkflow`, and every `Dispose` unsubscribes.
+  `DispatchWorkflow` (`Code\ShellComponentBase.cs` - the shell's own; nothing is
+  changed in `Gizmo.Web.Components`), and every `Dispose` unsubscribes.
 - **The host never suspends the WebView.** Everything that runs on a timer or an
   infinite animation must stop when the shell loses focus - `ShellActivity` for timers,
   `_idle.scss` for animations.
@@ -187,10 +188,10 @@ version does not match the project file.
 ## Updating to a new Gizmo release
 
 The vendor repository is `github.com/GAMP/Gizmo.Client.UI`, branch `version-3`, fetched
-here as `vendor/version-3`. Merge the new release commit into `grafit` (eight
-`Submodules` are gitlinks and follow the vendor's pins; `Gizmo.Web.Components` is a
-plain directory carrying one patch - bring its files to the new pin by hand and re-apply
-`deploy\patches\...`), build with `--no-incremental`, run `npm run visual`, look at the
+here as `vendor/version-3`. Merge the new release commit into `grafit` (all nine
+`Submodules` are gitlinks at the commits the client of that release ships - not the
+heads of `version-3`/`dev`, or the skin will not load), build with `--no-incremental`,
+run `npm run visual`, look at the
 report, accept the baselines that moved on purpose. The area that actually breaks
 between releases is `Gizmo.Client.UI.Services`: check its diff first. Read the build's
 warnings for the shell's own files: an unresolved component tag is only a warning

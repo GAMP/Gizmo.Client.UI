@@ -10,7 +10,7 @@ using Microsoft.JSInterop;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class InputLanguageMenu : CustomDOMComponentBase
+    public partial class InputLanguageMenu : ShellComponentBase
     {
         [Inject]
         public InputLanguageViewService LanguageService { get; set; }
@@ -36,7 +36,7 @@ namespace Gizmo.Client.UI.Components
 
         //Raised from the localization service, not the UI thread. Not async void: a dispatcher
         //fault during host teardown would be rethrown on the thread pool and exit the client
-        //(see CustomComponentBase.DispatchWorkflow).
+        //(see ShellComponentBase.DispatchWorkflow).
         private void OnClientCultureChanged(object sender, EventArgs e)
         {
             DispatchWorkflow(async () =>

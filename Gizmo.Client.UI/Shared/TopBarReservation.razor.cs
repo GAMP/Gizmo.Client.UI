@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Shared
 {
-    public partial class TopBarReservation : CustomDOMComponentBase
+    public partial class TopBarReservation : ShellComponentBase
     {
         #region FIELDS
 
@@ -97,7 +97,7 @@ namespace Gizmo.Client.UI.Shared
         /// A countdown that silently freezes is worse than none, so it ticks while the tile
         /// is up and never otherwise: with no reservation there is nothing to redraw, and
         /// behind a game there is nobody reading it. The tick fires on a pool thread, hence
-        /// <see cref="DispatchStateHasChanged"/>, which marshals to the renderer and
+        /// <see cref="ShellComponentBase.DispatchRender"/>, which marshals to the renderer and
         /// absorbs teardown faults.
         /// </remarks>
         private void ApplyCountdown()
@@ -109,7 +109,7 @@ namespace Gizmo.Client.UI.Shared
 
             if (wanted)
             {
-                _countdownTick = new Timer(_ => DispatchStateHasChanged(), null,
+                _countdownTick = new Timer(_ => DispatchRender(), null,
                     COUNTDOWN_INTERVAL, COUNTDOWN_INTERVAL);
             }
             else

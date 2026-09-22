@@ -14,7 +14,7 @@ using Microsoft.Extensions.Options;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class ProductQuantityPicker : CustomDOMComponentBase
+    public partial class ProductQuantityPicker : ShellComponentBase
     {
         private UserProductViewState _product;
 
@@ -135,7 +135,7 @@ namespace Gizmo.Client.UI.Components
 
         //Cart changes are raised off the UI thread. Not async void: a dispatcher fault during
         //host teardown would be rethrown on the thread pool and exit the client (see
-        //CustomComponentBase.DispatchWorkflow).
+        //ShellComponentBase.DispatchWorkflow).
         private void ViewState_OnChange(object sender, System.EventArgs e)
         {
             DispatchWorkflow(async () =>

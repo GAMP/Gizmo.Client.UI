@@ -12,7 +12,7 @@ using Microsoft.JSInterop;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class UserOnlineDeposits : CustomDOMComponentBase
+    public partial class UserOnlineDeposits : ShellComponentBase
     {
         [Inject]
         ILocalizationService LocalizationService { get; set; }

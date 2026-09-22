@@ -15,7 +15,7 @@ Grafit's folder holds exactly what the stock `Next` skin holds:
 | In `skins\Grafit\` | Built from |
 |---|---|
 | `Gizmo.Client.UI.dll` | `Gizmo.Client.UI\` in this repository - the pages, components, styles and scripts |
-| `Gizmo.Web.Components.dll` | `Submodules\Gizmo.Web.Components` - with one fix, see below |
+| `Gizmo.Web.Components.dll` | `Submodules\Gizmo.Web.Components` - yours, unchanged |
 | `wwwroot\index.html`, `wwwroot\_content\Gizmo.Client.UI\...` | the webpack bundle from `Gizmo.Client.UI\src\` |
 | `wwwroot\_framework\` | copied from the server's own `Next` skin at install |
 | `composition.json` | written by `deploy\stage.ps1`; same content as `Next`'s |
@@ -62,27 +62,25 @@ commits `14334ca` pins:
 | Gizmo.UI | `71b02dc` | unchanged |
 | Gizmo.Web.Api.Client | `279fea2` | unchanged |
 | Gizmo.Web.Api.Models | `e9fe153` | unchanged |
-| Gizmo.Web.Components | `2217ec1` + `5321682` | **one file changed** - see below |
+| Gizmo.Web.Components | `2217ec1` | unchanged |
 
 All nine are git submodules: `git submodule update --init` after cloning, one level -
 `--recursive` (and `clone --recurse-submodules`) stops on `Gizmo.Web.Api.Client`, whose
-nested links have no `.gitmodules` at its pin; nothing here needs them. Eight point at
-your repositories.
-`Gizmo.Web.Components` points at branch `grafit` of the fork
-`XenNon546/Gizmo.Web.Components`: your `2217ec1` plus one commit, `5321682`, with the one
-change to shared code:
+nested links have no `.gitmodules` at its pin; nothing here needs them. All nine point at
+your repositories at your commits: **this branch changes nothing outside
+`Gizmo.Client.UI`.**
 
-**`Infrastructure/Components/CustomComponentBase.cs`** - adds `DispatchWorkflow(Func<Task>)`
-and routes `DispatchStateHasChanged()` through it. Background: a logged production crash
-- an `async void` view-state handler awaited `InvokeAsync` while the WebView2 process was
-going away, the faulted dispatcher call surfaced on the thread pool and took the whole
-client down. `DispatchWorkflow` runs a handler as one dispatcher work item and absorbs
-only teardown exceptions (`OperationCanceledException`, `ObjectDisposedException`,
-`InvalidOperationException`). The shell's components use it for every handler subscribed
-to something that outlives the component. The same change is offered to
-`GAMP/Gizmo.Web.Components` as a pull request from that branch (and kept as a patch in
-`deploy\patches\Gizmo.Web.Components-DispatchWorkflow.patch`); once it is merged, the
-submodule URL in `.gitmodules` goes back to your repository and the pin to your commit.
+One thing worth knowing, since the shell works around it rather than touching your code.
+A logged production crash: an `async void` view-state handler awaited `InvokeAsync` while
+the WebView2 process was going away, the faulted dispatcher call surfaced on the thread
+pool and exited the whole client (`[FTL] Client app domain unhandled exception. Client
+will exit.`). Nothing here is written `async void` any more: every handler subscribed to
+something that outlives its component goes through `ShellDispatch` /
+`ShellComponentBase.DispatchWorkflow` (`Gizmo.Client.UI\Code\ShellComponentBase.cs`),
+which runs the handler as one dispatcher work item, observes the task and absorbs only
+teardown exceptions. `CustomComponentBase.DispatchStateHasChanged` guards the render
+itself but leaves the dispatcher call unobserved, and that call throws synchronously once
+the renderer is gone - worth a look on your side, but it is yours to decide.
 
 ## Build, package, install
 
@@ -99,7 +97,7 @@ is handed out at connect and mirrored to `%PROGRAMDATA%\NETProjects\Gizmo Client
 `deploy\README.md` is the operator's page.
 
 Versions: `GrafitVersion` and `GizmoVersion` in `Gizmo.Client.UI.csproj` -> assembly
-metadata and `ProductVersion` ("1.1.5 (Gizmo 3.0.95)"), the package name,
+metadata and `ProductVersion` ("1.1.6 (Gizmo 3.0.95)"), the package name,
 `skin\grafit.version.txt`, and one quiet line on the account page's Profile tab.
 
 ## Integration points a club uses
@@ -168,9 +166,12 @@ the JavaScript twin in `internal.js` is kept in step by `npm run visual:palette`
 
 ## Suggested next steps on your side
 
-1. Take `DispatchWorkflow` into `Gizmo.Web.Components` (the pull request / patch above),
-   then re-pin the submodule here to your commit and point `.gitmodules` back at
-   `GAMP/Gizmo.Web.Components`.
+1. Services for the ladder, achievements and challenges (view states + a view
+   service). `Gizmo.Client.UI\Code\Services\Loyalty.cs` is the stand-in the shell reads
+   today; it goes the day yours lands. The user surface also has no rewards client
+   (`Gizmo.Web.Api.User.Clients` has `ladder` and `achievements` only), and level emblems
+   and achievement pictures have no `ImageType`, so the shell fetches `/files/{guid}`
+   itself.
 2. A Manager setting for the palette and the motion switch, emitting the two CSS lines
    (or calling `grafitTheme`), so a club does not have to type CSS.
 3. Fill `UserOrderViewState.Id`.

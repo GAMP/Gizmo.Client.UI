@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class ListItem : CustomDOMComponentBase
+    public partial class ListItem : ShellComponentBase
     {
         #region CONSTRUCTOR
         public ListItem()
@@ -149,7 +149,7 @@ namespace Gizmo.Client.UI.Components
 
         //NavigationManager outlives every list item subscribed to it, so this can fire against a
         //component that is on its way out. Not async void: the failure would be rethrown on the
-        //thread pool and exit the client (see CustomComponentBase.DispatchWorkflow).
+        //thread pool and exit the client (see ShellComponentBase.DispatchWorkflow).
         private void NavigationManager_LocationChanged(object sender, LocationChangedEventArgs e)
         {
             if (Href == null)

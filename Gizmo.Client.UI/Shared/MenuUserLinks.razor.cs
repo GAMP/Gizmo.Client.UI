@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Shared
 {
-    public partial class MenuUserLinks : CustomDOMComponentBase
+    public partial class MenuUserLinks : ShellComponentBase
     {
         protected bool _shouldRender;
 
@@ -195,18 +195,18 @@ namespace Gizmo.Client.UI.Shared
         // View states raise from the client's network and dispatcher threads, not this
         // component's. Written async void awaiting InvokeAsync, a dispatcher fault during
         // WebView teardown was rethrown on the thread pool and took the whole client down.
-        // DispatchStateHasChanged absorbs those, so a lost WebView is only a reload.
+        // DispatchRender absorbs those, so a lost WebView is only a reload.
         private void ViewState_OnChange(object sender, System.EventArgs e)
         {
             _shouldRender = true;
-            DispatchStateHasChanged();
+            DispatchRender();
         }
 
         //The standing arrives and changes on the client's threads too.
         private void OnLoyaltyChanged()
         {
             _shouldRender = true;
-            DispatchStateHasChanged();
+            DispatchRender();
         }
 
         public override void Dispose()

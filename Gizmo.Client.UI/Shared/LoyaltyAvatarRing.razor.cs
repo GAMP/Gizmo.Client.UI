@@ -6,7 +6,7 @@ using Gizmo.Web.Components;
 
 namespace Gizmo.Client.UI.Shared
 {
-    public partial class LoyaltyAvatarRing : CustomDOMComponentBase
+    public partial class LoyaltyAvatarRing : ShellComponentBase
     {
         //Circumference of the r=19 circle in the markup.
         private const double CIRCUMFERENCE = 2 * Math.PI * 19;
@@ -26,7 +26,7 @@ namespace Gizmo.Client.UI.Shared
         }
 
         //Raised on the client's threads; the renderer is reached through the dispatcher.
-        private void OnLoyaltyChanged() => DispatchStateHasChanged();
+        private void OnLoyaltyChanged() => DispatchRender();
 
         protected static string RingOffset(double progress) =>
             (CIRCUMFERENCE * (1 - Math.Clamp(progress, 0, 1))).ToString("0.##", CultureInfo.InvariantCulture);

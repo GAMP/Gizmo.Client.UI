@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class LoginCard : CustomDOMComponentBase
+    public partial class LoginCard : ShellComponentBase
     {
         private bool _previousIsIdle = false;
         private bool _slideIn = false;

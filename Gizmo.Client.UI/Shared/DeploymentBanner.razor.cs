@@ -28,7 +28,7 @@ namespace Gizmo.Client.UI.Shared
     /// dictionary, which is also the cadence the syncer publishes at.
     /// </para>
     /// </remarks>
-    public partial class DeploymentBanner : CustomDOMComponentBase
+    public partial class DeploymentBanner : ShellComponentBase
     {
         /// <summary>
         /// How long a preparation has to run before it is worth interrupting the screen for.
@@ -199,7 +199,7 @@ namespace Gizmo.Client.UI.Shared
 
         //Timer callbacks arrive on a pool thread. This must not be async void: an
         //exception from one would come back on the pool and take the whole client
-        //down with it (see CustomComponentBase.DispatchWorkflow).
+        //down with it (see ShellComponentBase.DispatchWorkflow).
         private void OnTick(object _)
         {
             if (_scanning)
@@ -390,7 +390,7 @@ namespace Gizmo.Client.UI.Shared
 
             _signature = signature;
 
-            DispatchStateHasChanged();
+            DispatchRender();
         }
 
         private static string Shorten(string value) =>

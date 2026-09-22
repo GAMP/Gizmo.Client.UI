@@ -8,7 +8,7 @@ using Microsoft.JSInterop;
 
 namespace Gizmo.Client.UI.Shared
 {
-    public partial class Layout_LoginRotator : CustomDOMComponentBase
+    public partial class Layout_LoginRotator : ShellComponentBase
     {
         private LoginRotatorItemViewState _previousItem;
         private LoginRotatorItemViewState _currentItem;
@@ -48,7 +48,7 @@ namespace Gizmo.Client.UI.Shared
         //The rotator ticks on a background timer, so this arrives off the UI thread. Written
         //async void it would rethrow a teardown dispatcher fault on the thread pool and exit the
         //client; the whole render/wait/render animation therefore runs as one dispatcher work
-        //item instead (see CustomComponentBase.DispatchWorkflow).
+        //item instead (see ShellComponentBase.DispatchWorkflow).
         private void ViewState_OnChange(object sender, System.EventArgs e)
         {
             _previousItem = _currentItem;

@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class AdsCarousel : CustomDOMComponentBase
+    public partial class AdsCarousel : ShellComponentBase
     {
         const int ANIMATION_TIME = 500;
 

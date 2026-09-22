@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class AccountFrame : CustomDOMComponentBase
+    public partial class AccountFrame : ShellComponentBase
     {
         [Inject]
         UserProfileViewState Profile { get; set; }
@@ -50,6 +50,6 @@ namespace Gizmo.Client.UI.Components
         }
 
         //The Progress tab appears or goes with the data; raised on the client's threads.
-        private void OnLoyaltyChanged() => DispatchStateHasChanged();
+        private void OnLoyaltyChanged() => DispatchRender();
     }
 }

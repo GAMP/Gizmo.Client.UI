@@ -10,7 +10,7 @@ using Microsoft.JSInterop;
 
 namespace Gizmo.Client.UI.Shared
 {
-    public partial class GracePeriod : CustomDOMComponentBase
+    public partial class GracePeriod : ShellComponentBase
     {
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -114,7 +114,7 @@ namespace Gizmo.Client.UI.Shared
 
             _pinBusy = true;
             _pinError = null;
-            DispatchStateHasChanged();
+            DispatchRender();
 
             try
             {
@@ -146,7 +146,7 @@ namespace Gizmo.Client.UI.Shared
             finally
             {
                 _pinBusy = false;
-                DispatchStateHasChanged();
+                DispatchRender();
             }
         }
 
@@ -156,7 +156,7 @@ namespace Gizmo.Client.UI.Shared
         private Task OnOpenReservationPaymentAsync()
         {
             _handedOffToPaymentDialog = true;
-            DispatchStateHasChanged();
+            DispatchRender();
 
             return HostReservationViewService.ShowDialog();
         }

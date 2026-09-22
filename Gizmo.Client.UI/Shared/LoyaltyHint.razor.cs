@@ -15,7 +15,7 @@ namespace Gizmo.Client.UI.Shared
     /// The sign-in hint about the level ring. Offered once per session, for ten seconds,
     /// as soon as the loyalty data has arrived.
     /// </summary>
-    public partial class LoyaltyHint : CustomDOMComponentBase
+    public partial class LoyaltyHint : ShellComponentBase
     {
         private static readonly TimeSpan ShowFor = TimeSpan.FromSeconds(10);
 
@@ -91,7 +91,7 @@ namespace Gizmo.Client.UI.Shared
                 return Task.CompletedTask;
             }), null, ShowFor, Timeout.InfiniteTimeSpan);
 
-            DispatchStateHasChanged();
+            DispatchRender();
         }
 
         private void Open()

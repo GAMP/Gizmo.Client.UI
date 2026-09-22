@@ -7,7 +7,7 @@ using Gizmo.Web.Components;
 
 namespace Gizmo.Client.UI.Pages
 {
-    public partial class Progress : CustomDOMComponentBase
+    public partial class Progress : ShellComponentBase
     {
         protected override void OnInitialized()
         {
@@ -23,7 +23,7 @@ namespace Gizmo.Client.UI.Pages
             base.Dispose();
         }
 
-        private void OnLoyaltyChanged() => DispatchStateHasChanged();
+        private void OnLoyaltyChanged() => DispatchRender();
 
         /// <summary>Position on the rail, in percent of the top level's threshold.</summary>
         protected static string Pct(decimal value, decimal max) =>

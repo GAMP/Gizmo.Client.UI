@@ -58,7 +58,7 @@ namespace Gizmo.Client.UI.Components
     /// and the purchase would be lost on the way.
     /// </para>
     /// </remarks>
-    public abstract class CartDialogBase : CustomDOMComponentBase
+    public abstract class CartDialogBase : ShellComponentBase
     {
         #region CONSTANTS
 

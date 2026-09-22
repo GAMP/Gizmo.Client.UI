@@ -36,7 +36,7 @@ namespace Gizmo.Client.UI.Shared
     /// callback in this shell already relies on.
     /// </para>
     /// </remarks>
-    public partial class ShellActivityWatcher : CustomDOMComponentBase
+    public partial class ShellActivityWatcher : ShellComponentBase
     {
         /// <summary>Same cadence the file syncer publishes progress at.</summary>
         private static readonly TimeSpan ScanInterval = TimeSpan.FromSeconds(1);

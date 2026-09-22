@@ -61,8 +61,8 @@ namespace Gizmo.Client.UI.Shared
         //Idle transitions arrive off the UI thread. As async void, a dispatcher fault while the
         //WebView was being torn down got rethrown on the thread pool and took the whole client
         //with it ("Client app domain unhandled exception. Client will exit."). This layout is a
-        //LayoutComponentBase so it cannot use CustomComponentBase.DispatchWorkflow - the same
-        //guarantee is reproduced inline below.
+        //LayoutComponentBase, so it cannot inherit ShellComponentBase; it calls the same helper
+        //directly instead.
         private void UserIdleViewState_OnChange(object sender, EventArgs e)
         {
             if (_previousIsIdle == UserIdleViewState.IsIdle)
@@ -93,49 +93,13 @@ namespace Gizmo.Client.UI.Shared
         /// </summary>
         /// <param name="workflow">Work to run on the UI thread.</param>
         /// <remarks>
-        /// Mirrors <c>CustomComponentBase.DispatchWorkflow</c>, which this layout cannot inherit.
-        /// Running the whole workflow as one work item also keeps every await after the first
-        /// on the renderer's context.
+        /// The shell's components get this from <see cref="ShellComponentBase"/>; a layout
+        /// has a base of its own, so it hands <see cref="ShellDispatch"/> what it needs.
         /// </remarks>
         private void DispatchWorkflow(Func<Task> workflow)
         {
-            if (workflow == null || _disposed)
-                return;
-
-            try
-            {
-                var dispatched = InvokeAsync(async () =>
-                {
-                    try
-                    {
-                        if (!_disposed)
-                            await workflow();
-                    }
-                    catch (Exception ex) when (IsTeardownException(ex))
-                    {
-                    }
-                });
-
-                if (!dispatched.IsCompletedSuccessfully)
-                {
-                    dispatched.ContinueWith(static faulted => { _ = faulted.Exception; },
-                        System.Threading.CancellationToken.None,
-                        TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously,
-                        TaskScheduler.Default);
-                }
-            }
-            catch (Exception ex) when (IsTeardownException(ex))
-            {
-            }
+            ShellDispatch.Run(InvokeAsync, () => _disposed, workflow);
         }
-
-        private static bool IsTeardownException(Exception exception)
-        {
-            return exception is OperationCanceledException
-                or ObjectDisposedException
-                or InvalidOperationException;
-        }
-
 
         protected override void OnInitialized()
         {

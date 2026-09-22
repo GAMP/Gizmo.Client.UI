@@ -20,7 +20,7 @@ namespace Gizmo.Client.UI.Pages
     [ModuleGuid(KnownModules.MODULE_HOME)]
     [PageUIModule(TitleLocalizationKey = "GIZ_MODULE_PAGE_HOME_TITLE", DescriptionLocalizationKey = "GIZ_MODULE_PAGE_HOME_TITLE"), ModuleDisplayOrder(0)]
     [Route(ClientRoutes.HomeRoute)]
-    public partial class Home : CustomDOMComponentBase
+    public partial class Home : ShellComponentBase
     {
         #region CONSTANTS
 
@@ -340,7 +340,7 @@ namespace Gizmo.Client.UI.Pages
                 return;
 
             _slide++;
-            DispatchStateHasChanged();
+            DispatchRender();
         }
 
         #endregion
@@ -466,7 +466,7 @@ namespace Gizmo.Client.UI.Pages
         protected bool LoyaltyOn => Loyalty.State.IsAvailable;
 
         //Static event, raised on the client's threads.
-        private void OnLoyaltyChanged() => DispatchStateHasChanged();
+        private void OnLoyaltyChanged() => DispatchRender();
 
         /// <summary>
         /// Runs the hero's slide timer only while there is a slideshow worth running.

@@ -25,7 +25,7 @@ namespace Gizmo.Client.UI.Components
     /// a shimmer, and any image in an error state is requested again when the client
     /// reconnects or a user signs in.
     /// </remarks>
-    public partial class GizImage : CustomDOMComponentBase
+    public partial class GizImage : ShellComponentBase
     {
         /// <summary>
         /// How long a load may stay unanswered before the error placeholder replaces the
@@ -145,7 +145,7 @@ namespace Gizmo.Client.UI.Components
         #region EVENTS
 
         //Both arrive from the client's own threads; the retry touches component state, so
-        //it goes through the renderer (never async void - see CustomComponentBase).
+        //it goes through the renderer (never async void - see ShellDispatch).
         private void OnConnectionStateChange(object sender, ConnectionStateEventArgs e)
         {
             if (e.IsConnected)

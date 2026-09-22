@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class LoyaltySummary : CustomDOMComponentBase
+    public partial class LoyaltySummary : ShellComponentBase
     {
         [Inject] NavigationService NavigationService { get; set; }
 
@@ -30,7 +30,7 @@ namespace Gizmo.Client.UI.Components
             base.Dispose();
         }
 
-        private void OnLoyaltyChanged() => DispatchStateHasChanged();
+        private void OnLoyaltyChanged() => DispatchRender();
 
         private void OpenProgress() => NavigationService.NavigateTo(ProgressRoute);
     }
