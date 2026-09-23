@@ -85,13 +85,54 @@
     background-color: $typo-primary-theme-client;
     color: $profile-card-bg;
     @include font-s-theme-client($font-weight-bold-theme-client);
+}
 
-    &--large {
+// level badge (L-5): emblem image layered over the ordinal rank glyph, ordinal-only fallback
+// when there is no emblem or its image fails to load (LadderLevelBadge.razor). The emblem stays
+// invisible until its onload adds --loaded; only then the rank behind it is hidden, so a
+// transparent emblem never shows the rank through and a failed load leaves the rank visible
+.giz-ladder-badge {
+    position: relative;
+    display: inline-flex;
+    flex: none;
+
+    &__emblem {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: inherit;
+        visibility: hidden;
+
+        &--loaded {
+            visibility: visible;
+        }
+
+        &--loaded + .giz-ladder-rank {
+            visibility: hidden;
+        }
+    }
+
+    // standing card (90:11197): 48px
+    &--large .giz-ladder-rank {
         width: 4.8rem;
         height: 4.8rem;
         border-radius: 0.6rem;
         font-size: 2.6rem;
         line-height: 3.4rem;
+    }
+
+    // profile-header block (90:11104 / 96:11202): 24px
+    &--header .giz-ladder-rank {
+        width: 2.4rem;
+        height: 2.4rem;
+    }
+
+    // top-bar block (96:11176/96:11177): 20px — same as the default row size
+    &--topbar .giz-ladder-rank {
+        width: 2.0rem;
+        height: 2.0rem;
     }
 }
 
@@ -302,6 +343,14 @@
             cursor: pointer;
         }
     }
+
+    // multi-completion counter (L2-4): "{completed}/{required}", empty for single-completion requirements
+    &__count {
+        flex: none;
+        margin-left: auto;
+        color: $typo-secondary-theme-client;
+        @include font-m-theme-client($font-weight-light-theme-client);
+    }
 }
 
 // secured banner (90:11232)
@@ -347,6 +396,7 @@
 // level row (90:11246 / 90:11273): 40px, hover/selected = brand 7 % fill + brand stroke;
 // the highlighted row keeps the 40px box (Figma draws 48px) so the list does not jump on hover
 .giz-ladder-level-row {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 0.8rem;
@@ -375,6 +425,25 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+
+    // level description hint (L-1 / L2-1): shown only when the level has a Description
+    &__info {
+        display: inline-flex;
+        flex: none;
+        align-items: center;
+        justify-content: center;
+        width: 2.0rem;
+        height: 2.0rem;
+        color: $typo-secondary-theme-client;
+        cursor: pointer;
+
+        .giz-icon {
+            width: 1.6rem;
+            height: 1.6rem;
+            min-width: 1.6rem;
+            min-height: 1.6rem;
+        }
     }
 
     // CURRENT chip (90:11281)
@@ -414,6 +483,31 @@
         .giz-ladder-level-row__meta {
             color: rgba(255, 255, 255, 0.40);
         }
+    }
+}
+
+// level-row description popup (L-1 / L2-1): right-aligned to the row so it never overflows
+// the levels list, same box as the achievements/challenges info popups (P-1 background)
+.giz-ladder-level-popup-wrapper {
+    position: absolute;
+    top: 4.0rem;
+    right: 0;
+    z-index: $info-tooltip-index;
+    display: none;
+
+    &.open {
+        display: block;
+    }
+}
+
+.giz-ladder-level-popup {
+    @include profile-popup-box;
+    padding: 1.6rem;
+
+    &__description {
+        color: rgba(255, 255, 255, 0.7);
+        white-space: normal;
+        @include font-m-theme-client($font-weight-light-theme-client);
     }
 }
 

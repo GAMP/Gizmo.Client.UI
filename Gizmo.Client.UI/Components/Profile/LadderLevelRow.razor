@@ -7,8 +7,17 @@
     <span class="giz-ladder-level-row__check">
         <Icon SVGIcon="@(Item.IsSatisfied ? Icons.CheckCircle_Client : Icons.Circle_Client)" />
     </span>
-    <span class="giz-ladder-rank">@Item.Ordinal</span>
+    <LadderLevelBadge Ordinal="@Item.Ordinal" EmblemUrl="@Item.EmblemUrl" />
     <span class="giz-ladder-level-row__name">@Item.Name</span>
+    @if (Item.HasDescription)
+    {
+        <span class="giz-ladder-level-row__info" @onclick="OnInfoClick" @onclick:stopPropagation="true">
+            <Icon SVGIcon="Icons.Info2_Client" Size="IconSizes.Small" />
+        </span>
+        <ProfileCardPopup WrapperClass="giz-ladder-level-popup-wrapper" ContentClass="giz-ladder-level-popup" @bind-IsOpen="_isInfoOpen">
+            <div class="giz-ladder-level-popup__description">@Item.Description</div>
+        </ProfileCardPopup>
+    }
     @if (Item.IsCurrent)
     {
         <span class="giz-ladder-level-row__chip">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_CURRENT))</span>
@@ -21,8 +30,8 @@
     {
         <span class="giz-ladder-level-row__chip giz-ladder-level-row__chip--locked">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_LOCKED))</span>
     }
-    @if (!string.IsNullOrEmpty(MetaText))
+    @if (!string.IsNullOrEmpty(Item.MetaText))
     {
-        <span class="giz-ladder-level-row__meta">@MetaText</span>
+        <span class="giz-ladder-level-row__meta">@Item.MetaText</span>
     }
 </div>

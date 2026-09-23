@@ -2,6 +2,7 @@
 @inherits CustomDOMComponentBase
 
 <div class="giz-header__user-menu-item giz-user-dropdown @(UserMenuViewState.UserLinksIsVisible ? "open" : "")">
+    <HeaderUserMenuLadder />
     <button class="giz-user-menu-button" @onclick="(args) => OnClick.InvokeAsync(args)" @onclick:stopPropagation="true">
         <HeaderUserMenuUserAvatar />
 

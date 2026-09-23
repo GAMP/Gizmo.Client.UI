@@ -15,9 +15,13 @@
 
     <div class="giz-ladder-level-block">
         <div class="giz-ladder-level">
-            <span class="giz-ladder-rank giz-ladder-rank--large">@ViewState.CurrentOrdinal</span>
+            <LadderLevelBadge Ordinal="@ViewState.CurrentOrdinal" EmblemUrl="@ViewState.CurrentEmblemUrl" Class="giz-ladder-badge--large" />
             <div class="giz-ladder-level__body">
                 <div class="giz-ladder-level__name">@ViewState.CurrentLevelName</div>
+                @if (ViewState.ShowProgressUpdating)
+                {
+                    <div class="giz-ladder-level__status">@ViewState.ProgressUpdatingText</div>
+                }
                 @if (ViewState.ShowScore)
                 {
                     <div class="giz-ladder-level__score">

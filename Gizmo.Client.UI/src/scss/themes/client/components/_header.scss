@@ -141,6 +141,52 @@
   }
 }
 
+// top-bar ladder block (L2-13, Figma 96:11176/96:11177): left button + 1×24 divider, rendered
+// as the first children of .giz-header__user-menu-item.giz-user-dropdown, before the user button
+.giz-header-ladder {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  height: 4.8rem;
+  padding: 0 0.7rem;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+  //Button
+  background-color: transparent;
+  border: none;
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    max-width: 14rem;
+  }
+
+  &__name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #fafafa;
+    @include font-m-theme-client($font-weight-regular-theme-client);
+  }
+
+  &__progress {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: $typo-success-theme-client;
+    @include font-s-theme-client($font-weight-light-theme-client);
+  }
+}
+
+.giz-header-ladder-divider {
+  flex: none;
+  width: 0.1rem;
+  height: 2.4rem;
+  background-color: rgba(255, 255, 255, 0.10);
+}
+
 .user-menu-item-button {
   display: flex;
   cursor: pointer;

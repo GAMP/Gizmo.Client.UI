@@ -1,5 +1,52 @@
 //=============== Page User Profile Header ================//
 
+// ladder level block (L-2 / L2-2, Figma 90:11104 / 96:11202): between the username and the
+// stats row; button reset, same text treatment as the stats items (.giz-title / .giz-numbers)
+.giz-profile-header-ladder {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+
+    &__text {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        gap: 0.2rem;
+    }
+
+    &__status {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: rgba(255, 255, 255, 0.6);
+        text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
+        @include font-s-theme-client($font-weight-light-theme-client);
+    }
+
+    &__name {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #FAFAFA;
+        text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
+        @include font-m-theme-client($font-weight-regular-theme-client);
+    }
+
+    &__chevron {
+        flex: none;
+        width: 2.0rem;
+        height: 2.0rem;
+        color: rgba(255, 255, 255, 0.6);
+    }
+}
+
 .giz-profile-header__info__stats-credit-item {
     &__header {
         display: flex;

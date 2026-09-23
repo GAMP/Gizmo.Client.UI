@@ -14,4 +14,8 @@
     {
         <span class="giz-ladder-requirement-row__name @(Item.IsMet ? "giz-ladder-requirement-row__name--met" : "")">@Item.Name</span>
     }
+    @if (!string.IsNullOrEmpty(Item.CountText))
+    {
+        <span class="giz-ladder-requirement-row__count">@Item.CountText</span>
+    }
 </div>
