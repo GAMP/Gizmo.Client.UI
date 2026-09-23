@@ -179,6 +179,11 @@
         margin-top: 0.2rem;
         color: $typo-secondary-theme-client;
         @include font-s-theme-client($font-weight-light-theme-client);
+
+        // requirements mode: the current level is not kept yet this period (L2-11 Keep)
+        &--warning {
+            color: $typo-warning-theme-client;
+        }
     }
 }
 
@@ -344,10 +349,18 @@
         }
     }
 
-    // multi-completion counter (L2-4): "{completed}/{required}", empty for single-completion requirements
-    &__count {
+    // right-aligned progress group: completions counter (L2-4) and live value (L2-11), "2/5 · 3.5 h / 10 h"
+    &__progress {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
         flex: none;
         margin-left: auto;
+    }
+
+    &__count,
+    &__dot,
+    &__value {
         color: $typo-secondary-theme-client;
         @include font-m-theme-client($font-weight-light-theme-client);
     }
@@ -505,6 +518,23 @@
     padding: 1.6rem;
 
     &__description {
+        color: rgba(255, 255, 255, 0.7);
+        white-space: normal;
+        @include font-m-theme-client($font-weight-light-theme-client);
+    }
+
+    // level perks (L-4 / L2-11), below the description when there is one
+    &__description + &__perks {
+        margin-top: 1.2rem;
+    }
+
+    &__label {
+        margin-bottom: 0.4rem;
+        color: $typo-secondary-theme-client;
+        @include font-s-theme-client($font-weight-light-theme-client);
+    }
+
+    &__perk {
         color: rgba(255, 255, 255, 0.7);
         white-space: normal;
         @include font-m-theme-client($font-weight-light-theme-client);

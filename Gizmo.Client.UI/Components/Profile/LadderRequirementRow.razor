@@ -14,8 +14,21 @@
     {
         <span class="giz-ladder-requirement-row__name @(Item.IsMet ? "giz-ladder-requirement-row__name--met" : "")">@Item.Name</span>
     }
-    @if (!string.IsNullOrEmpty(Item.CountText))
+    @if (!string.IsNullOrEmpty(Item.CountText) || !string.IsNullOrEmpty(Item.ValueText))
     {
-        <span class="giz-ladder-requirement-row__count">@Item.CountText</span>
+        <span class="giz-ladder-requirement-row__progress">
+            @if (!string.IsNullOrEmpty(Item.CountText))
+            {
+                <span class="giz-ladder-requirement-row__count">@Item.CountText</span>
+            }
+            @if (!string.IsNullOrEmpty(Item.CountText) && !string.IsNullOrEmpty(Item.ValueText))
+            {
+                <span class="giz-ladder-requirement-row__dot">·</span>
+            }
+            @if (!string.IsNullOrEmpty(Item.ValueText))
+            {
+                <span class="giz-ladder-requirement-row__value">@Item.ValueText</span>
+            }
+        </span>
     }
 </div>
