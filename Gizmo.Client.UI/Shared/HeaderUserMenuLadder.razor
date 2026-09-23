@@ -1,5 +1,6 @@
 @namespace Gizmo.Client.UI
 @inherits CustomDOMComponentBase
+@using Gizmo.Client.UI.Services
 
 @if (ViewState.HasLevel)
 {
@@ -7,9 +8,11 @@
         <LadderLevelBadge Ordinal="@ViewState.Ordinal" EmblemUrl="@ViewState.EmblemUrl" Class="giz-ladder-badge--topbar" />
         <span class="giz-header-ladder__text">
             <span class="giz-header-ladder__name">@ViewState.LevelName</span>
-            @if (!string.IsNullOrEmpty(ViewState.TopBarProgressText))
+            @if (ViewState.ShowTopBarProgress)
             {
-                <span class="giz-header-ladder__progress">@ViewState.TopBarProgressText</span>
+                <span class="giz-header-ladder__progress">
+                    <span class="giz-header-ladder__progress-fill @(ViewState.TopBarProgressIsFull ? "giz-header-ladder__progress-fill--full" : "")" style="width: @AchievementValueFormat.Percent(ViewState.TopBarProgressPercent)"></span>
+                </span>
             }
         </span>
     </button>
