@@ -1,0 +1,101 @@
+@namespace Gizmo.Client.UI.Components
+@inherits ShellComponentBase
+@using System.Globalization
+@using Gizmo.Client.UI.View.States
+
+@* The account page's frame: who is signed in and what they have, the three tabs, then
+   whatever the tab shows. One component so Profile, Products and Purchases cannot
+   drift apart. *@
+@{
+    var name = UserViewState.IsGuest || string.IsNullOrWhiteSpace(Profile.Username)
+        ? ShellText.Get(ShellText.GEN_GUEST)
+        : Profile.Username;
+    var fullName = string.Join(" ", new[] { Profile.FirstName, Profile.LastName }.Where(s => !string.IsNullOrWhiteSpace(s)));
+    var hasTimeCredit = Credit.TimeCreditType != CreditType.NoCredit && Credit.IsUserTimeCreditEnabled;
+    var hasSalesCredit = Credit.SalesCreditType != CreditType.NoCredit;
+    var creditUnlimited = Credit.TimeCreditType == CreditType.Unlimited || Credit.SalesCreditType == CreditType.Unlimited;
+}
+
+<div class="gg-account giz-scrollbar--v">
+    <div class="gg-account__inner">
+
+        <header class="gg-account__head">
+            <UserAvatar Picture="@Profile.Picture" Class="gg-account__avatar" Editable="true" />
+
+            <div class="gg-account__who">
+                <h1 class="gg-account__name">@name</h1>
+                <div class="gg-account__sub">
+                    @if (!string.IsNullOrEmpty(fullName))
+                    {
+                        <span>@fullName</span>
+                    }
+                    @if (!UserViewState.IsGuest && Profile.RegistrationDate != default)
+                    {
+                        <span>@ShellText.Get(ShellText.ACCOUNT_MEMBER_SINCE, Profile.RegistrationDate.ToLocalTime().ToString("d MMMM yyyy", CultureInfo.CurrentCulture))</span>
+                    }
+                </div>
+            </div>
+
+            <div class="gg-account__stats">
+                <div class="gg-account__stat gg-account__stat--money">
+                    <small>@ShellText.Get(ShellText.GEN_BALANCE)</small>
+                    <b>@Balance.Balance.ToString("C", CultureInfo.CurrentCulture)</b>
+                </div>
+                <div class="gg-account__stat">
+                    <small>@ShellText.Get(ShellText.GEN_POINTS)</small>
+                    <b>@Balance.PointsBalance.ToString("N0", CultureInfo.CurrentCulture) <i class="ph-fill ph-coins"></i></b>
+                </div>
+                <div class="gg-account__stat">
+                    <small>@ShellText.Get(ShellText.GEN_TIME)</small>
+                    <b>@(Balance.Time.HasValue ? $"{(int)Balance.Time.Value.TotalHours}:{Balance.Time.Value:mm}" : "∞")</b>
+                </div>
+                @if (hasTimeCredit || hasSalesCredit)
+                {
+                    <div class="gg-account__stat gg-account__stat--credit">
+                        <small>@ShellText.Get(ShellText.CREDIT)</small>
+                        <b>@(creditUnlimited ? "∞" : Credit.CreditLimit.ToString("C", CultureInfo.CurrentCulture))</b>
+                        <span>
+                            @(creditUnlimited
+                                ? ShellText.Get(ShellText.CREDIT_UNLIMITED)
+                                : ShellText.Get(hasTimeCredit ? ShellText.CREDIT_TIME_NOTE : ShellText.CREDIT_SALES_NOTE))
+                        </span>
+                    </div>
+                }
+            </div>
+        </header>
+
+        <nav class="gg-account__tabs" aria-label="@ShellText.Get(ShellText.USER_DETAILS)">
+            @if (!UserViewState.IsGuest)
+            {
+                <NavLink class="gg-account__tab" ActiveClass="is-on" href="@ClientRoutes.UserProfileRoute" Match="NavLinkMatch.All">
+                    <i class="ph-bold ph-user"></i>
+                    <span>@ShellText.Get(ShellText.ACCOUNT_TAB_PROFILE)</span>
+                </NavLink>
+            }
+            <NavLink class="gg-account__tab" ActiveClass="is-on" href="@ClientRoutes.UserProductsRoute" Match="NavLinkMatch.All">
+                <i class="ph-bold ph-hourglass-medium"></i>
+                <span>@ShellText.Get(ShellText.ACCOUNT_TAB_TIME)</span>
+            </NavLink>
+            @if (!InterfaceOptions.CurrentValue.DisableUserPurchaseHistory)
+            {
+                <NavLink class="gg-account__tab" ActiveClass="is-on" href="@ClientRoutes.UserPurchasesRoute" Match="NavLinkMatch.All">
+                    <i class="ph-bold ph-receipt"></i>
+                    <span>@ShellText.Get(ShellText.PURCHASES)</span>
+                </NavLink>
+            }
+            @* The Progress tab exists only where the club runs the ladder or achievements
+               and the customer is part of it (guests get no data). *@
+            @if (Gizmo.Client.UI.Services.Loyalty.State.IsAvailable)
+            {
+                <NavLink class="gg-account__tab" ActiveClass="is-on" href="@(ClientRoutes.UserProfileRoute + "/progress")" Match="NavLinkMatch.All">
+                    <i class="ph-bold ph-trophy"></i>
+                    <span>@ShellText.Get(ShellText.LOYALTY_TAB)</span>
+                </NavLink>
+            }
+        </nav>
+
+        <div class="gg-account__body">
+            @ChildContent
+        </div>
+    </div>
+</div>

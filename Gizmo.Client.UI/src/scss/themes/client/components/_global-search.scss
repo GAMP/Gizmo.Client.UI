@@ -42,7 +42,7 @@
 
     &:focus-within {
         width: 34.4rem;
-        border: 0.2rem solid #0078D2;
+        border: 0.2rem solid var(--gg-accent);
 
         input {
             display: block;
@@ -110,7 +110,7 @@
                 @include font-l-theme-client($font-weight-regular-theme-client);
 
                 &__more {
-                    color: #0078D2;
+                    color: var(--gg-accent);
                     cursor: pointer;
                     @include font-m-theme-client($font-weight-light-theme-client);
                 }
@@ -128,11 +128,13 @@
 
     &-result-card {
         display: grid;
-        grid-template-columns: min-content 1fr max-content;
+        // The name keeps a floor of its own: with a plain minmax(0, 1fr) it
+        // collapsed to nothing as soon as the row was tight, leaving a picture and
+        // a button with no idea what they were for.
+        grid-template-columns: min-content minmax(6rem, 1fr) minmax(0, max-content);
         align-items: center;
         column-gap: 0.8rem;
         row-gap: 0.8rem;
-        word-break: break-word;
         border-radius: 0.8rem;
         padding: 1.2rem;
 
@@ -179,6 +181,10 @@
             grid-row-end: 2;
             color: rgba(255, 255, 255, 0.6);
             @include font-s-theme-client($font-weight-light-theme-client);
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         &__title {
@@ -186,11 +192,22 @@
             grid-row-end: 3;
             color: #FAFAFA;
             @include font-m-theme-client($font-weight-regular-theme-client);
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         &__action {
             grid-row-start: 1;
             grid-row-end: 3;
+            min-width: 0;
+
+            .giz-button__content {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
         }
     }
 
@@ -228,7 +245,7 @@
         height: 3.2rem;
 
         .giz-spinner {
-            color: #0078D2;
+            color: var(--gg-accent);
         }
     }
 

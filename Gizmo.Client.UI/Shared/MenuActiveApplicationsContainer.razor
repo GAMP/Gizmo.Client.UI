@@ -1,20 +1,39 @@
-﻿@namespace Gizmo.Client.UI.Shared
+@namespace Gizmo.Client.UI.Shared
 @inherits CustomDOMComponentBase
+@using System.Linq
 
+@* Copy is written in Russian directly rather than through resource keys:
+   the resource strings live in Gizmo.Client.UI.Resources.dll, which is not
+   listed in composition.json's AdditionalAssemblies, so the host keeps its
+   own resident copy and any edit shipped there is silently ignored.
+
+   The rows are plain divs now, not a <table>. The table bought nothing -
+   there is no header row and no column alignment worth preserving - and it
+   made the row layout awkward to control (td widths, no gap, no radius). *@
 <div class="giz-dropdown-menu @(UserMenuViewState.ActiveAppsIsVisible ? "open" : "")"
      id="@Id"
      @ref="@Ref">
     <div class="giz-dropdown-menu__content giz-active-apps">
         <div class="giz-active-apps__header">
-            <div class="giz-heading">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ACTIVE_APPS_TITLE))</div>
+            <div class="giz-heading">@ShellText.Get(ShellText.ACTIVE_APPS_TITLE)</div>
+            <div class="giz-active-apps__header__hint">@ShellText.Get(ShellText.ACTIVE_APPS_HINT)</div>
         </div>
         <div class="giz-active-apps__body giz-scrollbar--v">
-            <table>
+            @if (ViewState.Executables.Any())
+            {
                 @foreach (var executable in ViewState.Executables)
                 {
                     <MenuActiveApplicationCard Executable="@executable" />
                 }
-            </table>
+            }
+            else
+            {
+                <div class="giz-active-apps__empty">
+                    <i class="ph-fill ph-game-controller giz-ph-icon"></i>
+                    <div class="giz-active-apps__empty__title">@ShellText.Get(ShellText.GEN_EMPTY)</div>
+                    <div class="giz-active-apps__empty__text">@ShellText.Get(ShellText.ACTIVE_APPS_EMPTY_HINT)</div>
+                </div>
+            }
         </div>
     </div>
 </div>

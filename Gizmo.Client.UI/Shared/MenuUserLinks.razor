@@ -1,44 +1,154 @@
-﻿@namespace Gizmo.Client.UI.Shared
-@inherits CustomDOMComponentBase
+@namespace Gizmo.Client.UI.Shared
+@inherits ShellComponentBase
+@using Gizmo.Client.UI.Services
+@using Gizmo.Client.UI.Components
 
-<div class="giz-dropdown-menu @(UserMenuViewState.UserLinksIsVisible ? "open" : "")"
+@* Custom glass profile card (not a list-style dropdown menu): scattered
+   icons around the avatar, name, then change-password+lock sharing a row
+   and logout full width on its own below. The avatar is not a control: the
+   shell has no way to change the picture.
+
+   When the club runs the loyalty system the standing is worn, not listed:
+   the ring on the avatar is the progress to the next level (or the share of
+   achievements), the disc at its corner is the level, and one line under the
+   name says where the customer stands. All of it opens the Progress tab;
+   the counts and the perks live there. *@
+<div class="giz-dropdown-menu giz-profile-popup @(UserMenuViewState.UserLinksIsVisible ? "open" : "")"
      id="@Id"
      @ref="@Ref">
-    <div class="giz-dropdown-menu__content giz-user-links">
-        
-        <a href="@(ViewState.IsGuest ? ClientRoutes.UserProductsRoute : ClientRoutes.UserProfileRoute)" class="giz-user-links-item" @onclick="OnClickLinkHandler">
-            <div class="giz-user-links-item__icon">
-                <Icon SVGIcon="Icons.User_Client" />
-            </div>
-            <div class="giz-user-links-item-title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_MENU_PROFILE))</div>
-        </a>
-
-        @*<div class="giz-user-links-item">
-            <div class="giz-user-links-item__icon">
-                <Icon SVGIcon="Icons.Help_Client" />
-            </div>
-            <div class="giz-user-links-item-title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_MENU_HELP))</div>
-        </div>*@
-
-        @if (!ViewState.IsUserLockDisabled)
-        {
-            <div class="giz-user-links-item" @onclick="OnClickUserLockButtonHandler">
-                <div class="giz-user-links-item__icon">
-                    <Icon SVGIcon="Icons.Lock_Client" />
-                </div>
-                <div class="giz-user-links-item-title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_MENU_LOCK_PC))</div>
-            </div>
+    @* giz-dropdown-menu__content is required here even though this isn't a
+       list-style dropdown: the global click-outside-closes handler
+       (closeOpenPopups in internal.js) looks specifically for that class
+       name as a child of the popup to compute its "click landed inside"
+       bounding box - without it, the popup silently never closes on an
+       outside click, no matter where you click. *@
+    <div class="giz-dropdown-menu__content giz-profile-popup__content">
+        @{
+            var s = Loyalty.State;
+            var level = s.CurrentLevel;
+            var ladder = ShowLoyalty && s.HasLadder && level is not null;
+            var achievements = ShowLoyalty && !ladder && s.HasAchievements;
+            var emblem = ladder ? Loyalty.Image(level.EmblemGuid) : null;
+            var progress = !ShowLoyalty ? 0
+                : ladder ? s.ProgressToNext
+                : achievements ? (double)s.EarnedAchievements / s.Achievements.Count
+                : s.Challenges.Count > 0 ? (double)s.DoneChallenges / s.Challenges.Count : 0;
         }
 
-        @if (ViewState.IsUserLogoutEnabled)
-        {
-            <div class="giz-user-links-item" @onclick="OnClickUserLogoutButtonHandler">
-                <div class="giz-user-links-item__icon">
-                    <Icon SVGIcon="Icons.Logout_Client" />
+        <div class="giz-profile-popup__avatar-zone">
+            <div class="giz-profile-popup__orbit">
+                @foreach (var ic in OrbitIcons)
+                {
+                    <i class="ph-bold @ic.IconClass giz-orbit-icon"
+                       style="font-size:@(ic.SizePx.ToString(System.Globalization.CultureInfo.InvariantCulture))px; opacity:@ic.Opacity; transform: rotate(@(ic.AngleDeg.ToString(System.Globalization.CultureInfo.InvariantCulture))deg) translate(0, -@(ic.RadiusPx.ToString(System.Globalization.CultureInfo.InvariantCulture))px) rotate(@((-ic.AngleDeg + ic.TiltDeg).ToString(System.Globalization.CultureInfo.InvariantCulture))deg);"></i>
+                }
+
+                <div class="giz-profile-popup__avatar @(ShowLoyalty ? "giz-profile-popup__avatar--ringed" : null)">
+                    @if (AvatarService.IsEnabled)
+                    {
+                        @* The club runs a picture service: the circle is the way to change it. *@
+                        <button type="button" class="giz-profile-popup__avatar-edit" @onclick="OnClickPictureHandler" title="@ShellText.Get(ShellText.AVATAR_EDIT)">
+                            @if (!string.IsNullOrEmpty(Shown))
+                            {
+                                <Avatar Image="@Shown" Variant="AvatarVariants.Circle" />
+                            }
+                            else
+                            {
+                                <i class="ph ph-user"></i>
+                            }
+                            <span class="giz-profile-popup__avatar-veil"><i class="ph-bold ph-camera"></i></span>
+                        </button>
+                    }
+                    else if (!string.IsNullOrEmpty(Picture))
+                    {
+                        <Avatar Image="@Picture" Variant="AvatarVariants.Circle" />
+                    }
+                    else
+                    {
+                        <i class="ph ph-user"></i>
+                    }
+                    @if (ShowLoyalty)
+                    {
+                        <svg class="giz-profile-popup__ring" viewBox="0 0 40 40" aria-hidden="true">
+                            <circle class="gg-ring__track" cx="20" cy="20" r="18"></circle>
+                            <circle class="gg-ring__bar" cx="20" cy="20" r="18" style="stroke-dashoffset: @LoyaltyRing.Offset(progress)"></circle>
+                        </svg>
+                    }
                 </div>
-                <div class="giz-user-links-item-title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_MENU_LOGOUT))</div>
+
+                @if (ShowLoyalty)
+                {
+                    <div class="giz-profile-popup__level @(ladder ? null : "giz-profile-popup__level--plain")" title="@(ladder ? level.Name : null)">
+                        @if (emblem is not null)
+                        {
+                            <img src="@emblem" alt="" />
+                        }
+                        else if (ladder)
+                        {
+                            @LoyaltyText.Mark(level.Name)
+                        }
+                        else
+                        {
+                            <i class="ph-fill @(achievements ? "ph-trophy" : "ph-flag-checkered")"></i>
+                        }
+                    </div>
+                }
             </div>
+        </div>
+
+        <div class="giz-profile-popup__name">@DisplayName</div>
+
+        @if (ShowLoyalty)
+        {
+            <button type="button" class="giz-profile-popup__standing" @onclick="OnClickProgressHandler" title="@ShellText.Get(ShellText.LOYALTY_MORE)">
+                <b>@(ladder ? level.Name : ShellText.Get(achievements ? ShellText.LOYALTY_ACHIEVEMENTS : ShellText.LOYALTY_CHALLENGES))</b>
+                @if (s.RewardWaiting)
+                {
+                    <em>@ShellText.Get(ShellText.LOYALTY_REWARD_WAITING_SHORT)</em>
+                }
+                else if (ladder)
+                {
+                    <span>@LoyaltyLines.Short(s)</span>
+                }
+                else if (achievements)
+                {
+                    <span>@ShellText.Get(ShellText.LOYALTY_OF, s.EarnedAchievements, s.Achievements.Count)</span>
+                }
+                else
+                {
+                    <span>@ShellText.Get(ShellText.LOYALTY_OF, s.DoneChallenges, s.Challenges.Count)</span>
+                }
+            </button>
         }
+
+        <div class="giz-profile-popup__actions">
+            <button class="giz-profile-popup__account-btn" @onclick="OnClickAccountButtonHandler">
+                <i class="ph-bold ph-user"></i>
+                <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_MENU_PROFILE))</span>
+                <i class="ph-bold ph-arrow-right giz-profile-popup__account-arrow"></i>
+            </button>
+            <div class="giz-profile-popup__actions-row">
+                <button class="giz-profile-popup__change-password-btn" @onclick="OnClickChangePasswordButtonHandler">
+                    <i class="ph-bold ph-key"></i>
+                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CHANGE_PASSWORD))</span>
+                </button>
+
+                @if (!ViewState.IsUserLockDisabled)
+                {
+                    <button class="giz-profile-popup__lock-btn" @onclick="OnClickUserLockButtonHandler" title="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_MENU_LOCK_PC))">
+                        <i class="ph-bold ph-lock-simple"></i>
+                    </button>
+                }
+            </div>
+
+            @if (ViewState.IsUserLogoutEnabled)
+            {
+                <button class="giz-profile-popup__logout-btn" @onclick="OnClickUserLogoutButtonHandler">
+                    <i class="ph-bold ph-sign-out"></i>
+                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_MENU_LOGOUT))</span>
+                </button>
+            }
+        </div>
 
     </div>
 </div>

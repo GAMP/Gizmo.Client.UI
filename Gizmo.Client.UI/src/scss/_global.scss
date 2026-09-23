@@ -35,6 +35,12 @@ img, svg {
     }
 }
 
+@media (min-width: 3840px) {
+    html {
+        font-size: 16px;
+    }
+}
+
 .giz-registration-form-input {
     margin-bottom: 1.0rem;
 }
@@ -51,6 +57,30 @@ img, svg {
     & > div {
         flex: 1;
     }
+}
+
+.giz-reg-ref-row {
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-end;
+
+    & > :first-child {
+        flex: 1;
+    }
+
+    .giz-button {
+        flex-shrink: 0;
+        height: 3.8rem;
+        white-space: nowrap;
+    }
+}
+
+.giz-reg-ref-status {
+    margin-top: 0.4rem;
+    font-size: 1.2rem;
+
+    &--valid   { color: #24C38E; }
+    &--invalid { color: #FF4443; }
 }
 
 //Compo.razor

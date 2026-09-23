@@ -1,156 +1,47 @@
-﻿@namespace Gizmo.Client.UI.Pages
+@namespace Gizmo.Client.UI.Pages
 @inherits CustomDOMComponentBase
 @using Gizmo.Client.UI.View.States
 
-<div class="giz-profile giz-scrollbar--v">
-    <div class="giz-profile__body-wrapper">
-        <div class="giz-profile__body">
-            <ProfileHeader />
-    
-            <ProfileNavigation />
-
-            <div class="giz-user-history giz-user-time-products">
-                <div class="giz-user-history__header">
-                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_TITLE))
-                </div>
-
-                <div class="giz-user-history__body">
-                    @if (ViewState.IsInitializing)
-                    {
-                        <Spinner />
-                    }
-                    else if (ViewState.IsInitialized == true)
-                    {
-                        <DataGrid ItemSource="@ViewState.TimeProducts.ToList()"
-                                  Context="timeProducts"
-                                  Class="giz-scrollbar--v">
-                            <ChildContent>
-                                <DataGridColumn Field="@(nameof(TimeProductViewState.ActivationOrder))" TItemType="TimeProductViewState" Context="timeProduct">
-                                    <HeaderTemplate>
-                                        <Icon SVGIcon="Icons.ActivationOrder_Client" Size="IconSizes.Small" Class="giz-user-time-products-order-icon" />
-                                    </HeaderTemplate>
-                                    <CellTemplate>
-                                        <div class="giz-user-time-products-order @(timeProduct.ActivationOrder == 1 ? "giz-user-time-products-order--current" : "")">
-                                            @timeProduct.ActivationOrder
-                                        </div>
-                                    </CellTemplate>
-                                </DataGridColumn>
-                                <DataGridColumn Field="@(nameof(TimeProductViewState.TimeProductType))" TItemType="TimeProductViewState" Context="timeProduct">
-                                    <HeaderTemplate>
-                                        <div class="giz-user-time-products-properties-header">
-                                            <div>
-                                                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_TIME_PRODUCT))
-                                            </div>
-                                            <ClientPopup>
-                                                <Activator>
-                                                    <Icon SVGIcon="Icons.Info2_Client" Size="IconSizes.Small" Class="giz-user-time-products-properties-icon" />
-                                                </Activator>
-                                                <ChildContent>
-                                                    <ProductsProductTitleHeaderTooltip />
-                                                </ChildContent>
-                                            </ClientPopup>
-                                        </div>
-                                    </HeaderTemplate>
-                                    <CellTemplate>
-                                        <ProductsProductType TimeProduct="@timeProduct" />
-                                    </CellTemplate>
-                                </DataGridColumn>
-                                <DataGridColumn Field="@(nameof(TimeProductViewState.RemainingTime))" TItemType="TimeProductViewState" Context="timeProduct">
-                                    <HeaderTemplate>
-                                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_REMAINING_TIME))
-                                    </HeaderTemplate>
-                                    <CellTemplate>
-                                        @if (!string.IsNullOrEmpty(timeProduct.RemainingTime))
-                                        {
-                                            @timeProduct.RemainingTime
-                                        }
-                                        else
-                                        {
-                                            <Icon SVGIcon="Icons.Infinite" Class="giz-user-time-infinite" Color="#FFC700" />
-                                        }
-                                    </CellTemplate>
-                                </DataGridColumn>
-                                <DataGridColumn Field="@(nameof(TimeProductViewState.UsableTime))" TItemType="TimeProductViewState" Context="timeProduct">
-                                    <HeaderTemplate>
-                                        <div class="giz-user-time-products-time-header">
-                                            <div>
-                                                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_USABLE_TIME))
-                                            </div>
-                                        </div>
-                                    </HeaderTemplate>
-                                    <CellTemplate>
-                                        @timeProduct.UsableTime
-                                    </CellTemplate>
-                                </DataGridColumn>
-                                <DataGridColumn Field="@(nameof(TimeProductViewState.PurchaseTime))" TItemType="TimeProductViewState" Context="timeProduct">
-                                    <HeaderTemplate>
-                                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PURCHASE_DATE))
-                                    </HeaderTemplate>
-                                    <CellTemplate>
-                                        @if (timeProduct.PurchaseTime.HasValue)
-                                        {
-                                            @timeProduct.PurchaseTime.Value.ToLocalTime().ToString()
-                                        }
-                                    </CellTemplate>
-                                </DataGridColumn>
-                                @* <DataGridColumn Field="@(nameof(TimeProductViewState.ExpirationDate))" TItemType="TimeProductViewState" Context="timeProduct">
-                                    <HeaderTemplate>
-                                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_EXPIRES))
-                                    </HeaderTemplate>
-                                    <CellTemplate>
-                                        @if (timeProduct.ExpirationDate.HasValue)
-                                        {
-                                            @timeProduct.ExpirationDate.Value.ToLocalTime().ToString()
-                                        }
-                                    </CellTemplate>
-                                </DataGridColumn> *@
-                                <DataGridColumn Field="@(nameof(TimeProductViewState.ProductId))" TItemType="TimeProductViewState" Context="timeProduct">
-                                    <HeaderTemplate>
-                                        <div class="giz-user-time-products-properties-header">
-                                            <div>
-                                                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PROPERTIES))
-                                            </div>
-                                            <ClientPopup>
-                                                <Activator>
-                                                    <Icon SVGIcon="Icons.Info2_Client" Size="IconSizes.Small" Class="giz-user-time-products-properties-icon" />
-                                                </Activator>
-                                                <ChildContent>
-                                                    <ProductsProductPropertiesHeaderTooltip />
-                                                </ChildContent>
-                                            </ClientPopup>
-                                        </div>
-                                    </HeaderTemplate>
-                                    <CellTemplate>
-                                        @if (@timeProduct.ProductId.HasValue)
-                                        {
-                                            <ProductsProductProperties ProductId="@timeProduct.ProductId.Value" PurchaseTime="@timeProduct.PurchaseTime" FirstUse="@timeProduct.FirstUsageTime" />
-                                        }
-                                    </CellTemplate>
-                                </DataGridColumn>
-                                <DataGridColumn Field="@(nameof(TimeProductViewState.AvailableHostGroups))" TItemType="TimeProductViewState" Context="timeProduct">
-                                    <HeaderTemplate>
-                                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_HOSTS))
-                                    </HeaderTemplate>
-                                    <CellTemplate>
-                                        <ProductsProductHosts TimeProduct="@timeProduct" />
-                                    </CellTemplate>
-                                </DataGridColumn>
-                                <DataGridColumn Field="@(nameof(TimeProductViewState.AvailableHostGroups))" TItemType="TimeProductViewState" Context="timeProduct">
-                                    <HeaderTemplate></HeaderTemplate>
-                                    <CellTemplate>
-                                        @if (ProductDetailsNavigationEnabled && timeProduct.TimeProductType == UsageType.TimeOffer && timeProduct.ProductId.HasValue)
-                                        {
-                                            <IconButton Size="ButtonSizes.Small" Variant="ButtonVariants.Text" SVGIcon="Icons.Open_Client" Class="giz-user-time-products-action" @onclick="@(() => OpenDetails(timeProduct.ProductId.Value))" />
-                                        }
-                                    </CellTemplate>
-                                </DataGridColumn>
-                            </ChildContent>
-                        </DataGrid>
-                    }
-                </div>
-
-            </div>
-
+@* Time tab: every time product on the account, in the order the client spends them. *@
+<AccountFrame>
+    <section class="gg-card gg-card--list">
+        <div class="gg-card__head">
+            <i class="ph-fill ph-hourglass-medium"></i>
+            <h2>@ShellText.Get(ShellText.TIME_PRODUCTS_TITLE)</h2>
+            <span class="gg-card__hint">@ShellText.Get(ShellText.ACCOUNT_TIME_HINT)</span>
         </div>
-    </div>
-</div>
+
+        @if (ViewState.IsInitializing)
+        {
+            <div class="gg-card__wait"><Spinner /></div>
+        }
+        else if (ViewState.IsInitialized == true)
+        {
+            var products = ViewState.TimeProducts
+                .OrderBy(p => p.ActivationOrder.HasValue ? 0 : 1)
+                .ThenBy(p => p.ActivationOrder)
+                .ToList();
+
+            if (products.Count == 0)
+            {
+                <div class="gg-card__empty">
+                    <i class="ph ph-hourglass"></i>
+                    <b>@ShellText.Get(ShellText.ACCOUNT_NO_TIME)</b>
+                    <span>@ShellText.Get(ShellText.ACCOUNT_NO_TIME_HINT)</span>
+                </div>
+            }
+            else
+            {
+                <div class="gg-tp">
+                    @foreach (var product in products)
+                    {
+                        <TimeProductRow @key="product"
+                                        Product="@product"
+                                        CanOpen="@(ProductDetailsNavigationEnabled && product.TimeProductType == UsageType.TimeOffer && product.ProductId.HasValue)"
+                                        OnOpen="@(() => OpenDetails(product.ProductId.Value))" />
+                    }
+                </div>
+            }
+        }
+    </section>
+</AccountFrame>

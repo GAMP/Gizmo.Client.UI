@@ -1,0 +1,561 @@
+//=============== Progress tab ================//
+//
+// The account page's fourth tab: the level card with the rail of levels, the challenge
+// cards, the achievement tiles, the last level change. Fewer, larger words: one sentence
+// per card says what to do, the figures back it up. Rings are shared with _loyalty.scss.
+
+$pr-g:     clamp(1.2rem, 0.7rem + 0.7vw, 2.2rem);
+$pr-ink:   var(--gg-ink);
+$pr-ink-2: rgba(var(--gg-ink-rgb), 0.78);
+$pr-ink-3: rgba(var(--gg-ink-rgb), 0.55);
+$pr-cap:   rgba(var(--gg-ink-rgb), 0.45);
+$pr-line:  rgba(255, 255, 255, 0.07);
+$pr-head:  $font-family-header-theme-client;
+$pr-ok:    #7ce8ad;
+$pr-ok-bg: rgba(94, 216, 148, 0.14);
+$pr-ok-line: rgba(94, 216, 148, 0.3);
+
+@mixin pr-glass {
+    background: linear-gradient(180deg, rgba(var(--gg-glass-rgb), 0.55), rgba(var(--gg-glass-2-rgb), 0.7));
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.gg-progress {
+    display: flex;
+    flex-direction: column;
+    gap: $pr-g;
+}
+
+// ── level card ─────────────────────────────────────────────────────────────────────
+// Kept low on purpose: the level is one card of three, and the challenges and the
+// achievements under it should be on screen without scrolling.
+.gg-ladder {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: clamp(1.6rem, 1.8vw, 2.6rem);
+    align-items: center;
+
+    &__emblem {
+        position: relative;
+        width: 9.6rem;
+        height: 9.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .gg-ring__track,
+        .gg-ring__bar { stroke-width: 2.4; }
+    }
+
+    &__disc {
+        width: 6.8rem;
+        height: 6.8rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: radial-gradient(circle at 35% 30%, rgba(var(--gg-accent-rgb), 0.55), rgba(var(--gg-accent-rgb), 0.12) 70%);
+        border: 1px solid rgba(var(--gg-accent-rgb), 0.4);
+        color: var(--gg-accent-pale);
+        font-family: $pr-head;
+        font-weight: 800;
+        font-size: 2.6rem;
+        letter-spacing: -0.04em;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    // The score, worn under the emblem.
+    &__pct {
+        position: absolute;
+        left: 50%;
+        bottom: -0.5rem;
+        transform: translateX(-50%);
+        padding: 0.15rem 0.7rem;
+        border-radius: 99rem;
+        background: var(--gg-bg-1);
+        border: 1px solid rgba(var(--gg-accent-rgb), 0.4);
+        font-family: $pr-head;
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: var(--gg-accent-pale);
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+    }
+
+    &__body {
+        min-width: 0;
+    }
+
+    &__cap {
+        font-family: $pr-head;
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: $pr-cap;
+    }
+
+    &__name {
+        margin: 0.2rem 0 0;
+        font-family: $pr-head;
+        font-size: clamp(2.2rem, 1.8rem + 0.5vw, 2.8rem);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        color: $pr-ink;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    &__state {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.3rem 0.9rem;
+        border-radius: 99rem;
+        font-size: 1.2rem;
+        font-weight: 700;
+        letter-spacing: 0;
+        background: rgba(var(--gg-accent-rgb), 0.14);
+        color: var(--gg-accent-pale);
+        border: 1px solid rgba(var(--gg-accent-rgb), 0.35);
+
+        &--secured {
+            background: $pr-ok-bg;
+            color: $pr-ok;
+            border-color: $pr-ok-line;
+        }
+    }
+
+    &__line {
+        margin: 0.5rem 0 0;
+        font-size: 1.45rem;
+        line-height: 1.35;
+        color: $pr-ink-2;
+        max-width: 72rem;
+
+        b {
+            color: $pr-ink;
+            font-weight: 800;
+        }
+    }
+
+    &__bonus {
+        margin: 0.4rem 0 0;
+        font-size: 1.3rem;
+        line-height: 1.4;
+        color: $pr-ink-3;
+
+        b {
+            color: rgba(var(--gg-ink-rgb), 0.9);
+            font-weight: 700;
+        }
+    }
+}
+
+// The rail: every level is a stop, the fill is this period's points. Only the current
+// and the next stop carry their threshold.
+.gg-rail {
+    position: relative;
+    margin: 1.4rem 0 0;
+    padding-bottom: 3rem;
+
+    &__track {
+        position: relative;
+        height: 0.6rem;
+        border-radius: 99rem;
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    &__fill {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        border-radius: 99rem;
+        background: linear-gradient(90deg, rgba(var(--gg-accent-rgb), 0.55), var(--gg-accent));
+        transition: width 0.6s ease;
+    }
+
+    &__stop {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 1.4rem;
+        height: 1.4rem;
+        border-radius: 50%;
+        background: var(--gg-bg-1);
+        border: 2px solid rgba(255, 255, 255, 0.22);
+
+        &.is-passed {
+            background: var(--gg-accent);
+            border-color: var(--gg-accent-light);
+        }
+
+        &.is-current {
+            width: 2rem;
+            height: 2rem;
+            background: var(--gg-accent);
+            border-color: #fff;
+            box-shadow: 0 0 0 0.45rem rgba(var(--gg-accent-rgb), 0.22);
+        }
+    }
+
+    &__label {
+        position: absolute;
+        top: 1.3rem;
+        transform: translateX(-50%);
+        text-align: center;
+        white-space: nowrap;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: $pr-ink-3;
+
+        span {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: $pr-cap;
+            font-variant-numeric: tabular-nums;
+        }
+
+        &.is-current {
+            color: var(--gg-accent-pale);
+
+            span { color: rgba(var(--gg-ink-rgb), 0.7); }
+        }
+
+        // The first and the last label stay inside the card.
+        &:first-of-type {
+            transform: none;
+            text-align: left;
+        }
+
+        &:last-of-type {
+            transform: translateX(-100%);
+            text-align: right;
+        }
+    }
+}
+
+// ── section head ───────────────────────────────────────────────────────────────────
+.gg-sec {
+    display: flex;
+    align-items: baseline;
+    gap: 1.2rem;
+    margin: 0.8rem 0 0;
+
+    h2 {
+        margin: 0;
+        font-family: $pr-head;
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        color: $pr-ink;
+    }
+
+    span {
+        font-size: 1.4rem;
+        color: $pr-ink-3;
+    }
+}
+
+// ── challenges: one card = one thing left to do ───────────────────────────────────
+.gg-chal {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(34rem, 1fr));
+    gap: 1.4rem;
+
+    &__card {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        padding: 2rem 2.2rem 1.8rem;
+        border-radius: 2rem;
+        @include pr-glass;
+
+        &.is-done { border-color: $pr-ok-line; }
+        &.is-off { opacity: 0.55; }
+    }
+
+    &__top {
+        display: flex;
+        align-items: center;
+        gap: 1.4rem;
+    }
+
+    &__art {
+        width: 5.6rem;
+        height: 5.6rem;
+        flex: none;
+        border-radius: 1.6rem;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(var(--gg-accent-rgb), 0.14);
+        color: var(--gg-accent-soft);
+        font-size: 2.6rem;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    &__card.is-done &__art {
+        background: $pr-ok-bg;
+        color: $pr-ok;
+    }
+
+    &__head {
+        min-width: 0;
+        flex: 1;
+    }
+
+    &__name {
+        font-family: $pr-head;
+        font-size: 1.8rem;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        line-height: 1.15;
+        color: $pr-ink;
+    }
+
+    &__when {
+        margin-top: 0.3rem;
+        font-size: 1.3rem;
+        color: $pr-ink-3;
+    }
+
+    &__count {
+        margin-left: auto;
+        flex: none;
+        text-align: right;
+        font-family: $pr-head;
+        font-size: 2rem;
+        font-weight: 800;
+        color: $pr-ink;
+        font-variant-numeric: tabular-nums;
+
+        small {
+            display: block;
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: $pr-cap;
+        }
+    }
+
+    &__segs {
+        display: flex;
+        gap: 0.5rem;
+
+        i {
+            flex: 1;
+            height: 0.7rem;
+            border-radius: 99rem;
+            background: rgba(255, 255, 255, 0.09);
+
+            &.is-on { background: var(--gg-accent); }
+        }
+    }
+
+    &__card.is-done &__segs i.is-on { background: #5ed894; }
+
+    &__todo {
+        margin: 0;
+        font-size: 1.55rem;
+        line-height: 1.35;
+        color: rgba(var(--gg-ink-rgb), 0.85);
+
+        b {
+            color: $pr-ink;
+            font-weight: 800;
+        }
+    }
+
+    &__foot {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        flex-wrap: wrap;
+        margin-top: auto;
+        padding-top: 1.2rem;
+        border-top: 1px solid $pr-line;
+
+        &:empty { display: none; }
+
+        small {
+            margin-left: auto;
+            font-size: 1.2rem;
+            color: $pr-ink-3;
+        }
+    }
+}
+
+.gg-reward {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 1.1rem;
+    border-radius: 1rem;
+    background: rgba(var(--gg-accent-rgb), 0.1);
+    border: 1px solid rgba(var(--gg-accent-rgb), 0.22);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--gg-accent-pale);
+    font-variant-numeric: tabular-nums;
+
+    i { font-size: 1.5rem; }
+
+    &--claim {
+        background: rgba(94, 216, 148, 0.12);
+        border-color: $pr-ok-line;
+        color: $pr-ok;
+    }
+}
+
+// ── achievements ───────────────────────────────────────────────────────────────────
+.gg-ach {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+    gap: 1.2rem;
+
+    &__tile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.9rem;
+        padding: 2rem 1.4rem 1.8rem;
+        border-radius: 2rem;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.035);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+
+        &.is-earned {
+            border-color: rgba(var(--gg-accent-rgb), 0.45);
+            background: rgba(var(--gg-accent-rgb), 0.08);
+        }
+
+        &.is-secret { opacity: 0.5; }
+    }
+
+    &__icon {
+        position: relative;
+        width: 7.2rem;
+        height: 7.2rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.06);
+        color: rgba(var(--gg-ink-rgb), 0.85);
+        font-size: 3rem;
+
+        svg {
+            position: absolute;
+            inset: -0.5rem;
+            width: calc(100% + 1rem);
+            height: calc(100% + 1rem);
+            transform: rotate(-90deg);
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    }
+
+    &__tile.is-earned &__icon {
+        background: rgba(var(--gg-accent-rgb), 0.22);
+        color: var(--gg-accent-pale);
+
+        .gg-ring__bar { stroke: var(--gg-accent); }
+    }
+
+    &__check {
+        position: absolute;
+        right: -0.2rem;
+        bottom: -0.2rem;
+        width: 2.6rem;
+        height: 2.6rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #5ed894;
+        color: #06180d;
+        font-size: 1.5rem;
+        border: 2px solid var(--gg-bg-1);
+    }
+
+    &__name {
+        font-size: 1.5rem;
+        font-weight: 800;
+        line-height: 1.2;
+        color: $pr-ink;
+    }
+
+    &__meta {
+        font-size: 1.3rem;
+        color: $pr-ink-3;
+        font-variant-numeric: tabular-nums;
+    }
+
+    &__tile.is-earned &__meta { color: var(--gg-accent-pale); }
+}
+
+// ── the last level change, one quiet line ─────────────────────────────────────────
+.gg-hist {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.4rem 2rem;
+    border-radius: 1.6rem;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid $pr-line;
+    font-size: 1.4rem;
+    color: rgba(var(--gg-ink-rgb), 0.7);
+
+    i {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(var(--gg-accent-rgb), 0.14);
+        color: var(--gg-accent-soft);
+        font-size: 1.5rem;
+    }
+}
+
+// Narrow account column: the emblem goes above the text.
+@media (max-width: 1100px) {
+    .gg-ladder {
+        grid-template-columns: 1fr;
+        justify-items: start;
+    }
+}

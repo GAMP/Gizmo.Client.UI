@@ -1,0 +1,314 @@
+//=============== Tariff tooltip ================//
+//
+// The card that opens under the tariff in the top bar (HeaderUserBalanceCurrentTimeProduct
+// and its Tooltip). One glass surface: the wrapper only positions, the card paints -
+// the old version painted both, which put a second outline inside the first.
+
+$tt-w: 52rem;
+$tt-ink:   var(--gg-ink);
+$tt-ink-2: rgba(var(--gg-ink-rgb), 0.62);
+$tt-ink-3: rgba(var(--gg-ink-rgb), 0.38);
+$tt-line:  rgba(255, 255, 255, 0.07);
+
+.giz-user-balance-tooltip-wrapper {
+    position: absolute;
+    top: calc(100% + 1.2rem);
+    left: 0;
+    z-index: $header-dropdown-index;
+    display: none;
+    // A hand-off zone between the tariff and the card, so the pointer can travel
+    // down without the card closing under it.
+    padding-top: 1.2rem;
+    margin-top: -1.2rem;
+
+    &--visible {
+        display: block;
+    }
+}
+
+.gg-tt {
+    width: $tt-w;
+    max-width: calc(100vw - 4rem);
+    box-sizing: border-box;
+    padding: 2rem 2.2rem 2.2rem;
+    border-radius: 2rem;
+    // Effectively opaque, like every panel that opens over the page: the fill hides
+    // what is underneath, the blur (which the HUD's ::before glass lets through) only
+    // softens the edge of what little remains.
+    background: linear-gradient(180deg, rgba(var(--gg-glass-rgb), 0.97), rgba(var(--gg-glass-2-rgb), 0.985));
+    backdrop-filter: blur(4rem) saturate(1.6);
+    -webkit-backdrop-filter: blur(4rem) saturate(1.6);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        0 4rem 9rem -2.6rem rgba(0, 0, 0, 0.85);
+    color: $tt-ink;
+    white-space: normal;
+    cursor: default;
+    animation: gg-fade 0.16s ease-out both;
+
+    &__head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1.6rem;
+        margin-bottom: 1.4rem;
+    }
+
+    &__title {
+        font-family: $font-family-header-theme-client;
+        font-size: 1.7rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+    }
+
+    &__link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: var(--gg-accent-soft);
+        font: inherit;
+        font-size: 1.3rem;
+        font-weight: 600;
+        white-space: nowrap;
+        cursor: pointer;
+
+        i {
+            font-size: 1.2rem;
+            transition: transform 0.15s;
+        }
+
+        &:hover {
+            color: var(--gg-accent-pale);
+
+            i {
+                transform: translateX(0.2rem);
+            }
+        }
+    }
+
+    &__wait {
+        display: flex;
+        justify-content: center;
+        padding: 1.6rem 0;
+
+        .giz-animate-spinner {
+            height: 3.2rem;
+            margin: 0;
+        }
+    }
+
+    &__empty {
+        padding: 1.2rem 0;
+        color: $tt-ink-3;
+        font-size: 1.35rem;
+    }
+
+    // ── rows: order, kind, name, two figures ─────────────────────────────
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+    }
+
+    &__row {
+        display: grid;
+        grid-template-columns: auto auto minmax(0, 1fr) auto auto;
+        align-items: center;
+        gap: 1.2rem;
+        padding: 1rem 1.2rem;
+        border-radius: 1.4rem;
+        background: rgba(255, 255, 255, 0.04);
+        box-shadow: inset 0 0 0 1px $tt-line;
+
+        &.is-current {
+            background: rgba(var(--gg-accent-rgb), 0.1);
+            box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.3);
+        }
+    }
+
+    &__order {
+        width: 2rem;
+        height: 2rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        font-family: $font-family-header-theme-client;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: $tt-ink-2;
+
+        .is-current & {
+            background: var(--gg-accent);
+            color: var(--gg-on-accent);
+        }
+    }
+
+    &__type {
+        width: 3.4rem;
+        height: 3.4rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 1rem;
+        background: rgba(255, 255, 255, 0.06);
+        color: $tt-ink-2;
+        font-size: 1.8rem;
+
+        .is-current & {
+            color: var(--gg-accent-soft);
+        }
+
+        .is-credit & {
+            color: #ffd79d;
+        }
+    }
+
+    &__name {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+
+        b {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        small {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 1.15rem;
+            color: $tt-ink-3;
+        }
+    }
+
+    &__stat {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.2rem;
+        min-width: 6rem;
+
+        small {
+            font-family: $font-family-header-theme-client;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: $tt-ink-3;
+            white-space: nowrap;
+        }
+
+        b {
+            font-family: $font-family-header-theme-client;
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+    }
+
+    // ── what to do next ──────────────────────────────────────────────────
+    &__foot {
+        margin-top: 1.4rem;
+        padding-top: 1.4rem;
+        border-top: 1px solid $tt-line;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+    }
+
+    &__note {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        font-size: 1.3rem;
+        line-height: 1.4;
+
+        > i {
+            flex: none;
+            font-size: 1.8rem;
+            margin-top: 0.1rem;
+            color: var(--gg-accent-soft);
+        }
+
+        > div {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        b {
+            font-weight: 700;
+        }
+
+        span {
+            color: $tt-ink-2;
+        }
+
+        &--warn > i {
+            color: #ffb347;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        gap: 0.8rem;
+
+        > * {
+            flex: 1 1 0;
+        }
+    }
+
+    &__btn {
+        height: 4.2rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.7rem;
+        padding: 0 1.4rem;
+        border-radius: 1.3rem;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.06);
+        color: $tt-ink;
+        font: inherit;
+        font-size: 1.35rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.15s, border-color 0.15s, filter 0.15s;
+
+        i {
+            font-size: 1.6rem;
+        }
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        &--primary {
+            background: linear-gradient(135deg, var(--gg-accent-light), var(--gg-accent-deep));
+            border-color: transparent;
+            color: var(--gg-on-accent);
+
+            i {
+                color: inherit;
+            }
+
+            &:hover {
+                background: linear-gradient(135deg, var(--gg-accent-light), var(--gg-accent-deep));
+                filter: brightness(1.08);
+            }
+        }
+    }
+}

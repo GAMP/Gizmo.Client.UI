@@ -1,0 +1,39 @@
+// Paused while the shell is in the background.
+//
+// The host never clears the WebView's IsVisible, so Chromium keeps painting at the
+// monitor's refresh rate behind a running game and every repaint re-runs the
+// backdrop-filters above it. GrafitActivity (internal.js) sets the attribute.
+//
+// animation-play-state, not `animation: none`: the animation resumes from the same frame,
+// so returning to the shell is not a visible restart, and filling animations keep their
+// end state.
+//
+// The list is explicit rather than `html[data-giz-idle] *`. Only infinite animations are
+// a standing cost; one-shot ones (a card appearing, a notification sliding in) save
+// nothing and would freeze at frame zero - opacity 0 - if they started while paused.
+// Spinners and the indeterminate progress bar are left out on purpose: a frozen spinner
+// reads as a hung program, and they only exist while an operation is in flight.
+//
+// A new infinite animation in the skin needs a new line here.
+
+html[data-giz-idle="1"] {
+    // Bundle
+    .running,                                   // running application indicator
+    .giz-image-loading--activity,               // shimmer over a loading image
+    .giz-registration-redirect__status-dot,
+
+    // Finite, but it tracks the hero slide timer, which is stopped while asleep.
+    .gg-dots__fill,
+
+    // The moving gradient behind the sign-in screen and the shell (_flow.scss)
+    .gg-flow__sheet,
+
+    // Top bar, styled inline in _Layout.razor
+    .giz-avatar-nudge.open,                     // the invitation's breathing glow
+    .giz-avatar-nudge__arrow,
+    .giz-deploy.is-waiting .giz-deploy__ring,
+    .giz-deploy.open:not(.is-done)::before,
+    .giz-resv__icon {
+        animation-play-state: paused !important;
+    }
+}

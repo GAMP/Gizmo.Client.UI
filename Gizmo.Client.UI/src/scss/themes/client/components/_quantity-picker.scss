@@ -1,68 +1,74 @@
+// Was a plain white-outlined rectangle (border: 1px solid #FFFFFF) - a
+// leftover default that read as unstyled next to every other rounded/glass
+// control in the shop. Now a soft glass pill with round icon-buttons either
+// side of the number, matching the rest of the shell's button language
+// (accent tint on hover, not a flat white stroke).
 .giz-shop-quantity-picker {
-    display: grid;
-    grid-template-columns: min-content 1fr min-content;
+    display: inline-flex;
     align-items: center;
-    border: 0.1rem solid #FFFFFF;
-    border-radius: 0.8rem;
-    text-align: center;
-    color: #FFFFFF;
-    padding: 0 0.6rem;
-    @include font-l-theme-client($font-weight-regular-theme-client);
+    justify-content: center;
+    gap: 0.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+    color: #fff;
+    padding: 0 0.3rem;
+    box-sizing: border-box;
 
-    button {
-        background-color: initial;
-        border: none;
-        color: #FFFFFF;
-        cursor: pointer;
-        padding: 0 0.6rem;
-        @include font-l-theme-client($font-weight-regular-theme-client);
+    span {
+        min-width: 2.2rem;
+        text-align: center;
+        font-family: 'Space Grotesk', 'Manrope', sans-serif;
+        font-weight: 600;
+    }
+
+    .giz-button {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: rgba(255, 255, 255, 0.72) !important;
+        border-radius: 50% !important;
+        padding: 0 !important;
+        transition: background 0.15s, color 0.15s;
+
+        &:hover:not(.disabled) {
+            background: rgba(var(--gg-accent-rgb), 0.16) !important;
+            color: var(--gg-accent) !important;
+        }
+
+        &.disabled {
+            opacity: 0.3;
+        }
+
+        .giz-button__content {
+            font-weight: 500;
+        }
     }
 
     &--small {
-        height: 3.2rem;
+        height: 3rem;
 
-        .giz-decrease-btn {
-            .giz-button__content {
-                @include font-l-theme-client($font-weight-regular-theme-client);
-            }
-        }
-
-        .giz-increase-btn {
-            .giz-button__content {
-                @include font-l-theme-client($font-weight-regular-theme-client);
-            }
+        .giz-button {
+            width: 2.4rem;
+            height: 2.4rem;
         }
     }
 
     &--medium {
-        height: 3.6rem;
+        height: 3.4rem;
 
-        .giz-decrease-btn {
-            .giz-button__content {
-                @include font-xl-theme-client($font-weight-regular-theme-client);
-            }
-        }
-
-        .giz-increase-btn {
-            .giz-button__content {
-                @include font-xl-theme-client($font-weight-regular-theme-client);
-            }
+        .giz-button {
+            width: 2.8rem;
+            height: 2.8rem;
         }
     }
 
     &--extra-large {
-        height: 4.8rem;
+        height: 4.4rem;
 
-        .giz-decrease-btn {
-            .giz-button__content {
-                @include font-xxl-theme-client($font-weight-regular-theme-client);
-            }
-        }
-
-        .giz-increase-btn {
-            .giz-button__content {
-                @include font-xxl-theme-client($font-weight-regular-theme-client);
-            }
+        .giz-button {
+            width: 3.6rem;
+            height: 3.6rem;
         }
     }
 }

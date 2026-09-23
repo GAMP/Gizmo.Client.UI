@@ -9,16 +9,23 @@
                     <ClientTab>
                         <ClientTabItem Class="@(!ViewState.SelectedUserProductGroupId.HasValue ? "active" : "")">
                             <div @onclick=@(() => ShopService.UpdateUserGroupedProductsAsync(null))>
-                                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ALL))
+                                <i class="ph-fill ph-squares-four"></i>
+                                <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ALL))</span>
                             </div>
                         </ClientTabItem>
                         @if (ViewState.UserProductGroups != null)
                         {
+                            @* One generic icon for every group tab rather than trying to
+                               match an icon to each group's name: product groups are
+                               server-configured per club and can be anything (the icon
+                               set would need to be club-specific to mean anything, which
+                               is a separate follow-up, not a guess baked in now). *@
                             @foreach (var productGroup in ViewState.UserProductGroups)
                             {
                                 <ClientTabItem Class="@(productGroup.ProductGroupId == ViewState.SelectedUserProductGroupId ? "active" : "")" OnClick=@(() => ShopService.UpdateUserGroupedProductsAsync(productGroup.ProductGroupId))>
                                     <div>
-                                        @productGroup.Name
+                                        <i class="ph-fill ph-tag"></i>
+                                        <span>@productGroup.Name</span>
                                     </div>
                                 </ClientTabItem>
                             }
@@ -26,20 +33,7 @@
                     </ClientTab>
                 </div>
             </div>
-            <div class="giz-shop__products__body giz-ads-container giz-scrollbar--v">
-                @if (AdvertisementsViewState.Advertisements.Count() > 0)
-                {
-                    <div class="giz-shop__products__body__ads">
-                        <ExpansionPanel IsCollapsed="@AdvertisementsViewState.IsCollapsed" IsCollapsedChanged="@((value) => AdvertisementsViewStateService.SetCollapsed(value))">
-                            <ExpansionPanelHeader>
-                                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ADS))
-                            </ExpansionPanelHeader>
-                            <ChildContent>
-                                <AdsCarousel Interval="5000" />
-                            </ChildContent>
-                        </ExpansionPanel>
-                    </div>
-                }
+            <div class="giz-shop__products__body giz-scrollbar--v">
                 @if (!string.IsNullOrEmpty(ViewState.SearchPattern))
                 {
                     <div class="giz-section">
@@ -65,10 +59,12 @@
                 }
                 @foreach (var productGroup in ViewState.UserGroupedProducts)
                 {
-                    <div class="giz-section">
-                        <ProductsIndexSectionHeader @key="productGroup.Key" ProductGroupId="@productGroup.Key" />
+                    @* Keyed so switching category recreates the section
+                       (and its Virtualize) rather than reusing it positionally. *@
+                    <div class="giz-section" @key="productGroup.Key">
+                        <ProductsIndexSectionHeader ProductGroupId="@productGroup.Key" />
                         <div class="giz-section__body">
-                            <ProductVirtualizedCards Items="productGroup" ColumnsCount="ClientInterfaceOptions.CurrentValue.ProductsPageMaxItemsPerRow" />
+                            <ProductVirtualizedCards @key="productGroup.Key" Items="productGroup" ColumnsCount="ClientInterfaceOptions.CurrentValue.ProductsPageMaxItemsPerRow" />
                         </div>
                     </div>
                 }

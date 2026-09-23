@@ -12,16 +12,35 @@
 <main client-theme="true">
     <div class="giz-main-container">
         <div class="giz-login-content @ClassName">
+            @* Base layer: the club's configured wallpaper (skin config). Shown
+               when the station is idle (no login window). *@
             @if (LoginRotatorViewState.IsEnabled)
             {
                 <Layout_LoginRotator />
             }
-            else
+            else if (HasClubBackground)
             {
                 <Layout_LoginWallpaper />
             }
 
-            @* <Layout_LoginCarousel /> *@
+            @* Overlay layer: the shell's own background - the atmosphere in the accent's
+               colours with a few faint gaming icons. With a club wallpaper configured it
+               sits on top of that wallpaper and crossfades in while the login /
+               registration window is active (opacity + scale, driven by the .collapsed
+               state on the parent); without one it is the idle background as well
+               (.giz-login-content--own-bg). *@
+            <div class="giz-login-hardcoded-bg">
+                @* The moving gradient over the atmosphere - see _flow.scss. *@
+                <div class="gg-flow" aria-hidden="true">
+                    <span class="gg-flow__sheet gg-flow__sheet--1"></span>
+                    <span class="gg-flow__sheet gg-flow__sheet--2"></span>
+                </div>
+            </div>
+            <div class="giz-login-hardcoded-bg__icons">
+                <i class="ph-fill ph-game-controller"></i>
+                <i class="ph-fill ph-desktop-tower"></i>
+                <i class="ph-fill ph-headset"></i>
+            </div>
 
             @if (HostNumberViewState.HostNumberIsEnabled)
             {
@@ -48,21 +67,20 @@
                 </div>
             }
 
+            @* The same notice as above the sign-in card. While the station is idle there
+               is no card on screen, so this instance carries the message. *@
             <div class="giz-login-warnings">
                 @if (_previousIsIdle || _slideOut)
                 {
                     @if (HostReservationViewState.ReservationBlockTimeReached)
                     {
-                        <Alert AlertType="AlertTypes.Info"
-                               Title="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_RESERVATION_WARNING_TITLE), HostReservationViewState.Time.Value.ToShortTimeString())"
-                               Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_BLOCK_TIME_REACHED_MESSAGE))" />
-
+                        <ReservationNotice Time="@HostReservationViewState.Time.Value.ToShortTimeString()"
+                                           Message="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_BLOCK_TIME_REACHED_MESSAGE))" />
                     }
                     else if (HostReservationViewState.ReservationNotificationTimeReached)
                     {
-                        <Alert AlertType="AlertTypes.Warning"
-                               Title="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_RESERVATION_WARNING_TITLE), HostReservationViewState.Time.Value.ToShortTimeString())"
-                               Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_NOTIFICATION_TIME_REACHED_MESSAGE))" />
+                        <ReservationNotice Time="@HostReservationViewState.Time.Value.ToShortTimeString()"
+                                           Message="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_NOTIFICATION_TIME_REACHED_MESSAGE))" />
                     }
                 }
             </div>
@@ -78,6 +96,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
         <div class="giz-login__login @ClassName">
             @Body
@@ -91,7 +110,10 @@
     }
     else
     {
-        <Layout_LoginLock />        
+        <Layout_LoginLock />
     }
+
+    @* No ShellActivityWatcher here on purpose: the sign-in screen has no applications to
+       run, and its attract loop must keep playing to an empty room. *@
 
 </main>

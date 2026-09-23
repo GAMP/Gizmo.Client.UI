@@ -1,10 +1,11 @@
 ﻿@namespace Gizmo.Client.UI
 @inherits CustomDOMComponentBase
+@inject Gizmo.UI.Services.ILocalizationService LocalizationService
 
-<div class="giz-header__user-menu-item giz-notifications-dropdown @(UserMenuViewState.NotificationsIsVisible ? "open" : "")">
+<div class="giz-header__user-menu-item giz-notifications-dropdown @(UserMenuViewState.NotificationsIsVisible ? "open" : "")" data-tooltip="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_NOTIFICATIONS_TITLE))">
     <Badge Label="@ViewState.Dismissed?.Count().ToString()" IsVisible="@(ViewState.Dismissed?.Count() > 0)">
         <button class="user-menu-item-button--box" @onclick="(args) => OnClick.InvokeAsync(args)" @onclick:stopPropagation="true">
-            <Icon SVGIcon="Icons.Notifications_Client" />
+            <i class="ph-bold ph-bell giz-ph-icon"></i>
         </button>
     </Badge>
     <MenuNotificationsContainer />

@@ -1,0 +1,85 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using System.Globalization
+@using Gizmo.Client.UI.View.States
+@* ProductsProductHosts is a page-namespace component (the vendor's, kept for its JS
+   overflow fit); without this line the tag is emitted as an unknown HTML element. *@
+@using Gizmo.Client.UI.Pages
+
+@* One time product on the account page: place in the queue, what it is, how much is
+   left, and the small print (bought when, expires how, works where) as plain words
+   instead of the vendor's icon codes. *@
+@{
+    var order = Product.ActivationOrder;
+    var isCurrent = order == 1;
+    var isIdle = !order.HasValue;
+}
+
+<div class="gg-tp__row @(isCurrent ? "is-current" : null) @(isIdle ? "is-idle" : null) @(Product.InCredit ? "is-credit" : null)">
+    <div class="gg-tp__order">@(order.HasValue ? order.Value.ToString(CultureInfo.CurrentCulture) : "–")</div>
+
+    <div class="gg-tp__type"><i class="ph-fill @TimeProductText.Icon(Product.TimeProductType)"></i></div>
+
+    <div class="gg-tp__main">
+        <div class="gg-tp__line">
+            <b class="gg-tp__name">@TimeProductText.Name(Product)</b>
+            <span class="gg-tp__kind">@ShellText.Get(TimeProductText.TypeKey(Product.TimeProductType))</span>
+            @if (isCurrent)
+            {
+                <span class="gg-tag gg-tag--on">@ShellText.Get(ShellText.ACCOUNT_ACTIVE_NOW)</span>
+            }
+            else if (order.HasValue)
+            {
+                <span class="gg-tag">@ShellText.Get(ShellText.ACCOUNT_QUEUE_POSITION, order.Value)</span>
+            }
+            else
+            {
+                <span class="gg-tag gg-tag--off">@ShellText.Get(ShellText.ACCOUNT_NOT_HERE)</span>
+            }
+            @if (Product.InCredit)
+            {
+                <span class="gg-tag gg-tag--credit">@ShellText.Get(ShellText.TIME_IN_CREDIT)</span>
+            }
+        </div>
+        <div class="gg-tp__meta">
+            @if (Product.PurchaseTime.HasValue)
+            {
+                <span class="gg-tp__fact">
+                    <i class="ph ph-calendar-blank"></i>
+                    <span>@ShellText.Get(ShellText.TIME_BOUGHT): @Product.PurchaseTime.Value.ToLocalTime().ToString("g", CultureInfo.CurrentCulture)</span>
+                </span>
+            }
+            @if (!string.IsNullOrEmpty(Expiry))
+            {
+                <span class="gg-tp__fact">
+                    <i class="ph ph-hourglass-low"></i>
+                    <span>@Expiry</span>
+                </span>
+            }
+            <span class="gg-tp__fact gg-tp__fact--hosts">
+                <i class="ph ph-desktop"></i>
+                <ProductsProductHosts TimeProduct="@Product" />
+            </span>
+        </div>
+    </div>
+
+    <div class="gg-tp__stat">
+        <small>@ShellText.Get(ShellText.TIME_REMAINING)</small>
+        <b>@TimeProductText.Span(Product.RemainingTime)</b>
+    </div>
+    <div class="gg-tp__stat">
+        <small>@ShellText.Get(ShellText.TIME_USABLE_HERE)</small>
+        <b>@TimeProductText.Span(Product.UsableTime)</b>
+    </div>
+
+    @if (CanOpen)
+    {
+        <button type="button" class="gg-tp__open" title="@ShellText.Get(ShellText.GEN_DETAILS)" @onclick="OnOpen">
+            <i class="ph-bold ph-arrow-up-right"></i>
+        </button>
+    }
+    else
+    {
+        <span class="gg-tp__open gg-tp__open--none"></span>
+    }
+</div>

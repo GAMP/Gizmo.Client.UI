@@ -10,8 +10,11 @@
                 <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="@OnDismissHandler" />
             }
         </div>
-        <div class="giz-user-online-deposit-dialog__content">
-            <UserOnlineDeposits OnClickPayFromPC="@OnClickPayFromPCHandler" OnClickClear="@OnClickClearHandler" />
+        @* giz-client-dialog__body rather than a bespoke wrapper class - that's
+           what gives every other dialog in the shell its padding, so this one
+           matches instead of needing its own copy of the same rule. *@
+        <div class="giz-client-dialog__body">
+            <UserOnlineDeposits OnClickPayFromPC="@OnClickPayFromPCHandler" OnClickClear="@OnClickClearHandler" OnPaymentSucceeded="@OnPaymentSucceededHandler" />
         </div>
     </div>
 </HostedDialog>

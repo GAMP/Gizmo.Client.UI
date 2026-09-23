@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
@@ -9,7 +9,29 @@
     <BuildCompressionFormats></BuildCompressionFormats>
     <PublishCompressionFormats></PublishCompressionFormats>
 	</PropertyGroup>
-  
+
+	<!-- The shell's version and the Gizmo release it is built for. The only place either
+	     number is written: they end up in the assembly's version info and metadata, and
+	     deploy\stage.ps1 reads them from here for the package name and grafit.version.txt.
+	     The Profile tab shows GrafitVersion in its corner (Code/ShellVersion.cs). Bump it for
+	     every shell release, and GizmoVersion on every vendor merge (the server's own
+	     GizmoService.dll carries it). -->
+	<PropertyGroup>
+		<GrafitVersion>1.1.7</GrafitVersion>
+		<GizmoVersion>3.0.95</GizmoVersion>
+		<Product>Grafit</Product>
+		<Description>Grafit skin for the Gizmo client, built for Gizmo $(GizmoVersion).</Description>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<FileVersion>$(GrafitVersion).0</FileVersion>
+		<InformationalVersion>$(GrafitVersion) (Gizmo $(GizmoVersion))</InformationalVersion>
+		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<AssemblyMetadata Include="GrafitVersion" Value="$(GrafitVersion)" />
+		<AssemblyMetadata Include="GizmoVersion" Value="$(GizmoVersion)" />
+	</ItemGroup>
+
 	<ItemGroup>
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="10.0.6" />
 		<ProjectReference Include="..\Submodules\Gizmo.Client.UI.Services\Gizmo.Client.UI.Services\Gizmo.Client.UI.Services.csproj" />

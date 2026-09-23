@@ -1,0 +1,88 @@
+//=============== Flow: the moving gradient ================//
+//
+// The shell's own background - the sign-in screen and the signed-in shell alike, when
+// the club has not set a wallpaper - is a gradient that slowly changes. Two oversized
+// sheets, each painted once with a wide diagonal band of the accent, drift across each
+// other over the static atmosphere; where the bands overlap the colour deepens, where
+// they part it thins, and the whole field breathes. One hue only, like the atmosphere
+// under it: light moving over the field, not colours changing. No shapes: the bands
+// are wider than the screen and fade over half their width, so nothing ever reads as a
+// circle or an edge.
+//
+// Built to cost nothing worth measuring:
+//   - only transform and opacity animate: the compositor moves two textures painted
+//     once, the main thread does nothing per frame; no filter, no repaint;
+//   - two layers, not more - every glass panel above the background re-blurs its patch
+//     when the background under it moves, so the count of moving layers is the cost;
+//   - long cycles (60 s / 84 s, back and forth) - the picture never repeats in a night;
+//   - paused with everything else when the shell loses focus (_idle.scss), off under
+//     prefers-reduced-motion - and OFF unless the club turns it on:
+//     `:root { --gg-motion: on; }` in the Manager's custom CSS (grafitTheme mirrors it
+//     to data-motion on <html>).
+// Not a video: a decoder is a standing cost for the same picture, cannot follow the
+// palette, and weighs megabytes.
+
+// Off by default. `:root { --gg-motion: on; }` in the club's custom CSS (or
+// grafitTheme.motion("on"), or data-motion="on" on <html> in index.html) turns it on;
+// without it the sheets are not even laid out and the background is the static
+// atmosphere at no cost at all.
+.gg-flow {
+    display: none;
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    contain: strict;
+    pointer-events: none;
+
+    &__sheet {
+        position: absolute;
+        // 150% of the viewport on each axis, hung 25% over every edge: the drift below
+        // never exposes a corner.
+        inset: -25%;
+        will-change: transform, opacity;
+        animation: gg-flow-1 60s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+    }
+
+    // Bands narrower than the screen and faint: the near-black stays near-black and the
+    // colour is a passing light on it, not a tint over everything.
+    &__sheet--1 {
+        background: linear-gradient(112deg,
+            rgba(var(--gg-accent-rgb), 0)    30%,
+            rgba(var(--gg-accent-rgb), 0.10) 41%,
+            rgba(var(--gg-accent-rgb), 0.17) 50%,
+            rgba(var(--gg-accent-rgb), 0.08) 59%,
+            rgba(var(--gg-accent-rgb), 0)    70%);
+    }
+
+    &__sheet--2 {
+        background: linear-gradient(-32deg,
+            rgba(var(--gg-accent-rgb), 0)    34%,
+            rgba(var(--gg-accent-rgb), 0.08) 45%,
+            rgba(var(--gg-accent-rgb), 0.14) 55%,
+            rgba(var(--gg-accent-rgb), 0)    67%);
+        animation-name: gg-flow-2;
+        animation-duration: 84s;
+    }
+}
+
+html[data-motion="on"] .gg-flow {
+    display: block;
+}
+
+// Percentages are of the sheet, 150% of the viewport: 8% here is 12% of the screen,
+// well inside the 25% overhang.
+@keyframes gg-flow-1 {
+    from { transform: translate3d(-7%, -5%, 0) scale(1);    opacity: 0.85; }
+    to   { transform: translate3d(7%, 4%, 0)   scale(1.06); opacity: 1; }
+}
+
+@keyframes gg-flow-2 {
+    from { transform: translate3d(6%, 5%, 0)   scale(1.05); opacity: 1; }
+    to   { transform: translate3d(-7%, -6%, 0) scale(1);    opacity: 0.7; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gg-flow__sheet {
+        animation: none;
+    }
+}

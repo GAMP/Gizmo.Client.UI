@@ -6,59 +6,62 @@
      @onclick="OpenDetails">
     <div class="giz-product-card__content">
 
-        <div class="giz-product-card__content__image giz-product-card__content__image--time" @onmouseover="OnVisibleImageContent">
-            @if(_isVisibleImageContent)
-            {
-                <div class="giz-product-card__content__image__hovered">
-                    <div class="giz-product-card__content__image__hovered__header">
-
-                        <div class="giz-product-card__content--hovered">
-                            <ProductTimeCardHover @key="Product.Id" Product="@Product" />
+        @* Wrapper establishes the positioning context for the hover overlay
+           below, so it covers exactly the image+details area without
+           contributing to grid track sizing (position:absolute is excluded
+           from sizing entirely - a plain grid item is not, which is why the
+           previous approach inflated the card height with the hidden
+           panel's own content size). The footer/button sits outside this
+           wrapper and stays untouched. *@
+        <div class="giz-product-card__content__top">
+            <div class="giz-product-card__content__image giz-product-card__content__image--time" @onmouseover="OnVisibleImageContent">
+                <GizImage @key="Product.Id" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Product.DefaultImageId" ImageFitType="ImageFitType.Cover">
+                    <EmptyResultPlaceholder>
+                        <div class="giz-product-time-image-wrapper">
+                            <div class="giz-product-time-image">
+                                <div class="giz-default-image">
+                                    <img src="_content/Gizmo.Client.UI/img/@ProductHelpers.GetProductTimeImage(Product)" alt='loading' />
+                                </div>
+                                <div class="giz-product-time-image__time">
+                                    <div class="giz-product-time-image__time__number">@ProductHelpers.GetProductTimeNumber(Product)</div>
+                                    <div class="giz-product-time-image__time__text">@ProductHelpers.GetProductTimeText(Product, LocalizationService)</div>
+                                </div>
+                            </div>
                         </div>
-
-                        <div class="giz-product-card-award-indicator">
-                            @if (Product.UnitPointsAward > 0)
-                            {
-                                <PointsAward2Icon />
-                            }
+                    </EmptyResultPlaceholder>
+                    <ErrorPlaceholder>
+                        <div class="giz-default-image">
+                            <img src="_content/Gizmo.Client.UI/img/broken-image.svg" alt='loading' />
                         </div>
+                    </ErrorPlaceholder>
+                </GizImage>
 
-                    </div>
+            </div>
+
+            <div class="giz-product-card__content__details">
+                <div class="giz-product-card__price">
+                    <ProductCardPrice @key="Product.Id" Product="@Product" />
                 </div>
-            }
+                <div class="giz-product-card__title">
+                    @Product.Name
+                </div>
+                <ProductTimeHostGroups @key="Product.Id" Product="@Product" />
+            </div>
 
-            <GizImage @key="Product.Id" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Product.DefaultImageId" ImageFitType="ImageFitType.Cover">
-                <EmptyResultPlaceholder>
-                    <div class="giz-product-time-image-wrapper">
-                        <div class="giz-product-time-image">
-                            <div class="giz-default-image">
-                                <img src="_content/Gizmo.Client.UI/img/@ProductHelpers.GetProductTimeImage(Product)" alt='loading' />
-                            </div>
-                            <div class="giz-product-time-image__time">
-                                <div class="giz-product-time-image__time__number">@ProductHelpers.GetProductTimeNumber(Product)</div>
-                                <div class="giz-product-time-image__time__text">@ProductHelpers.GetProductTimeText(Product, LocalizationService)</div>
-                            </div>
-                        </div>
-                    </div>
-                </EmptyResultPlaceholder>
-                <ErrorPlaceholder>
-                    <div class="giz-default-image">
-                        <img src="_content/Gizmo.Client.UI/img/broken-image.svg" alt='loading' />
-                    </div>
-                </ErrorPlaceholder>
-            </GizImage>
+            <div class="giz-product-card__hover-overlay">
+                <div class="giz-product-card__content--hovered">
+                    <ProductTimeCardHover @key="Product.Id" Product="@Product" />
+                </div>
 
+                <div class="giz-product-card-award-indicator">
+                    @if (Product.UnitPointsAward > 0)
+                    {
+                        <PointsAward2Icon />
+                    }
+                </div>
+            </div>
         </div>
 
-        <div class="giz-product-card__content__details">
-            <div class="giz-product-card__price">
-                <ProductCardPrice @key="Product.Id" Product="@Product" />
-            </div>
-            <div class="giz-product-card__title">
-                @Product.Name
-            </div>
-            <ProductTimeHostGroups @key="Product.Id" Product="@Product" />
-        </div>
         <div class="giz-product-card__content__footer">
             <ProductQuantityPicker @key="Product.Id" ProductId="@Product.Id" OnClick="@Ignore" />
         </div>

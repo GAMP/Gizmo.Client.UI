@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 
+using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
@@ -13,7 +14,7 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace Gizmo.Client.UI.Components
 {
-    public partial class AdsCarousel : CustomDOMComponentBase
+    public partial class AdsCarousel : ShellComponentBase
     {
         const int ANIMATION_TIME = 500;
 
@@ -237,7 +238,9 @@ namespace Gizmo.Client.UI.Components
                     }
                     _timer = new System.Timers.Timer(Interval);
                     _timer.Elapsed += timer_Elapsed;
-                    _timer.Start();
+
+                    if (ShellActivity.IsActive)
+                        _timer.Start();
                 }
                 else
                 {
@@ -268,11 +271,31 @@ namespace Gizmo.Client.UI.Components
         {
             this.SubscribeChange(ViewState);
 
+            ShellActivity.Changed += OnActivityChanged;
+
             base.OnInitialized();
         }
 
+        //The carousel already pauses under the cursor; behind another window it pauses the
+        //same way. The applications page is the one games are launched from, so it is the
+        //page the shell most often sits on for a whole session.
+        private void OnActivityChanged() => DispatchWorkflow(() =>
+        {
+            if (_timer != null)
+            {
+                if (ShellActivity.IsActive)
+                    _timer.Start();
+                else
+                    _timer.Stop();
+            }
+
+            return Task.CompletedTask;
+        });
+
         public override void Dispose()
         {
+            ShellActivity.Changed -= OnActivityChanged;
+
             this.UnsubscribeChange(ViewState);
 
             if (_timer != null)

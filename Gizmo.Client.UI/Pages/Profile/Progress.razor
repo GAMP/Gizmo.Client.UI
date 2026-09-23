@@ -1,0 +1,160 @@
+@page "/profile/progress"
+@namespace Gizmo.Client.UI.Pages
+@inherits ShellComponentBase
+@using Gizmo.Client.UI.Services
+@using Gizmo.Web.Api.Models
+
+@* Progress tab: the ladder level, the challenges and the achievements the server keeps
+   for this customer. One sentence per card says what to do; the figures back it up. *@
+<AccountFrame>
+    @{
+        var s = Loyalty.State;
+    }
+    @if (!s.IsAvailable)
+    {
+        <section class="gg-card">
+            <div class="gg-card__empty">
+                <i class="ph-fill ph-trophy"></i>
+                <b>@ShellText.Get(ShellText.LOYALTY_EMPTY)</b>
+            </div>
+        </section>
+    }
+    else
+    {
+        <div class="gg-progress">
+
+            @if (s.HasLadder && s.CurrentLevel is not null)
+            {
+                var level = s.CurrentLevel;
+                var emblem = Loyalty.Image(level.EmblemGuid);
+                var nextLine = LoyaltyLines.Next(s);
+                var perks = level.Perks?.Select(LoyaltyText.Perk).Where(p => p is not null).ToList() ?? new List<string>();
+
+                <section class="gg-card">
+                    <div class="gg-ladder">
+                        <div class="gg-ladder__emblem">
+                            <svg viewBox="0 0 40 40" aria-hidden="true">
+                                <circle class="gg-ring__track" cx="20" cy="20" r="18"></circle>
+                                <circle class="gg-ring__bar" cx="20" cy="20" r="18" style="stroke-dashoffset: @LoyaltyRing.Offset(s.ProgressToNext)"></circle>
+                            </svg>
+                            <div class="gg-ladder__disc">
+                                @if (emblem is not null)
+                                {
+                                    <img src="@emblem" alt="" />
+                                }
+                                else
+                                {
+                                    @LoyaltyText.Mark(level.Name)
+                                }
+                            </div>
+                            @if (s.IsPointsLadder)
+                            {
+                                <span class="gg-ladder__pct">@LoyaltyText.Points(s.Score)</span>
+                            }
+                        </div>
+                        <div class="gg-ladder__body">
+                            <div class="gg-ladder__cap">
+                                @ShellText.Get(ShellText.LOYALTY_LEVEL_CAP)
+                                @if (s.Standing is not null)
+                                {
+                                    <text> · </text>@LoyaltyText.Period(s.Standing.PeriodKind)
+                                }
+                            </div>
+                            <h2 class="gg-ladder__name">
+                                @level.Name
+                                <span class="gg-ladder__state @(s.LadderState == LadderStandingState.Secured ? "gg-ladder__state--secured" : null)">
+                                    <i class="ph-bold @(s.LadderState == LadderStandingState.Secured ? "ph-check" : "ph-trend-up")"></i>@LoyaltyLines.StateWord(s)
+                                </span>
+                            </h2>
+                            <p class="gg-ladder__line">@LoyaltyLines.Long(s)</p>
+
+                            @if (s.IsPointsLadder && s.Levels.Count > 1)
+                            {
+                                var max = (decimal)(s.Levels.Max(l => l.Threshold ?? 0));
+                                if (max > 0)
+                                {
+                                    <div class="gg-rail">
+                                        <div class="gg-rail__track">
+                                            <span class="gg-rail__fill" style="width: @Pct(s.Score, max)%"></span>
+                                            @foreach (var l in s.Levels)
+                                            {
+                                                <span class="gg-rail__stop @(l.Rank < level.Rank ? "is-passed" : null) @(l.Rank == level.Rank ? "is-current" : null)" style="left: @Pct(l.Threshold ?? 0, max)%"></span>
+                                            }
+                                        </div>
+                                        @foreach (var l in s.Levels)
+                                        {
+                                            var labelled = l.Rank == level.Rank || (s.NextLevel is not null && l.Rank == s.NextLevel.Rank);
+                                            <span class="gg-rail__label @(l.Rank == level.Rank ? "is-current" : null)" style="left: @Pct(l.Threshold ?? 0, max)%">
+                                                @l.Name
+                                                @if (labelled && l.Threshold.HasValue)
+                                                {
+                                                    <span>@(l.Rank == level.Rank && s.PointsToRetain.HasValue ? ShellText.Get(ShellText.LOYALTY_KEEP_AT) + " · " : "")@l.Threshold.Value.ToString("N0", System.Globalization.CultureInfo.CurrentCulture)</span>
+                                                }
+                                            </span>
+                                        }
+                                    </div>
+                                }
+                            }
+
+                            @if (perks.Count > 0 || !string.IsNullOrEmpty(nextLine))
+                            {
+                                <p class="gg-ladder__bonus">
+                                    @if (perks.Count > 0)
+                                    {
+                                        @ShellText.Get(ShellText.LOYALTY_BONUSES)
+                                        @for (var i = 0; i < perks.Count; i++)
+                                        {
+                                            <text> </text><b>@perks[i]</b>@(i < perks.Count - 1 ? " ·" : ".")
+                                        }
+                                    }
+                                    @if (!string.IsNullOrEmpty(nextLine))
+                                    {
+                                        <text> </text>@nextLine
+                                    }
+                                </p>
+                            }
+                        </div>
+                    </div>
+                </section>
+            }
+
+            @if (s.HasChallenges)
+            {
+                <div class="gg-sec">
+                    <h2>@ShellText.Get(ShellText.LOYALTY_CHALLENGES)</h2>
+                    <span>@ShellText.Get(ShellText.LOYALTY_OF, s.DoneChallenges, s.Challenges.Count)</span>
+                </div>
+                <div class="gg-chal">
+                    @foreach (var c in s.Challenges.OrderBy(ChallengeOrder))
+                    {
+                        <ChallengeCard @key="c.ChallengeId" Challenge="@c" Snapshot="@s" />
+                    }
+                </div>
+            }
+
+            @if (s.HasAchievements)
+            {
+                <div class="gg-sec">
+                    <h2>@ShellText.Get(ShellText.LOYALTY_ACHIEVEMENTS)</h2>
+                    <span>@ShellText.Get(ShellText.LOYALTY_OF, s.EarnedAchievements, s.Achievements.Count)</span>
+                </div>
+                <div class="gg-ach">
+                    @foreach (var a in s.Achievements.OrderBy(AchievementOrder))
+                    {
+                        <AchievementTile @key="a.AchievementId" Achievement="@a" />
+                    }
+                </div>
+            }
+
+            @if (s.Standing?.Transitions is { Count: > 0 } transitions)
+            {
+                var last = transitions.OrderByDescending(t => t.Time).First();
+                var toName = s.Levels.FirstOrDefault(l => l.Rank == last.ToRank)?.Name ?? last.ToRank.ToString();
+                <div class="gg-hist">
+                    <i class="ph-bold @(last.ToRank >= last.FromRank ? "ph-arrow-up" : "ph-arrow-down")"></i>
+                    <span>@ShellText.Get(ShellText.LOYALTY_LAST_LEVEL_CHANGE, LoyaltyText.Day(LoyaltySnapshot.ToLocal(last.Time)), toName)</span>
+                </div>
+            }
+        </div>
+    }
+</AccountFrame>

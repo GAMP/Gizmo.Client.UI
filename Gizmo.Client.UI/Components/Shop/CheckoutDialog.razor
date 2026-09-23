@@ -1,154 +1,187 @@
-﻿@namespace Gizmo.Client.UI.Components
-@inherits CustomDOMComponentBase
+@namespace Gizmo.Client.UI.Components
+@inherits CartDialogBase
 
 @using Gizmo.Client.UI.View.States
-@using Microsoft.AspNetCore.Components.Forms
-@using System.Globalization
+@using Gizmo.Web.Api.Models
+
+@* Shop checkout, in the same card as the package purchase: the items, the pay chooser,
+   the total, the button. The chooser and the result screen are shared components.
+
+   Styling lives in _package-purchase-dialog.scss. The markup is mirrored by the visual
+   test template (visual/templates/checkout.js): change one, change the other. *@
 
 <HostedDialog>
-    <div class="giz-client-dialog giz-checkout-dialog">
-        <div class="giz-client-dialog__header">
-            @if (!@Service.ViewState.IsComplete)
-            {
-                <div class="giz-client-dialog__header__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_CHECKOUT_TITLE))</div>
-            }
-            @if (DisplayOptions.Closable)
-            {
-                <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseDialog()" />
-            }
-        </div>
+    <div class="giz-buy giz-buy--checkout @(_step == Step.Done ? "giz-buy--done" : null)">
 
-        @if (!@Service.ViewState.IsComplete)
+        @if (_step == Step.Done && _outcomeOk is { } ok)
         {
-            <div class="giz-client-dialog__body">
-                <div class="giz-checkout">
-                    <div class="giz-checkout__list">
-                        <DataGrid ItemSource="@ClientServerCartViewService.ViewState.Products.ToArray()"
-                                  Context="products"
-                                  HasStickyHeader="true"
-                                  RerenderOnStateChange="true"
-                                  Class="giz-scrollbar--v">
-                            <ChildContent>
-                                <DataGridColumn Field="@(nameof(UserCartProductViewState.ProductId))" TItemType="UserCartProductViewState" Context="product">
-                                    <HeaderTemplate>
-                                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_PRODUCT_NAME))
-                                    </HeaderTemplate>
-                                    <CellTemplate>
-                                        @product.ProductName
-                                    </CellTemplate>
-                                </DataGridColumn>
-                                <DataGridColumn TextAlignment="TextAlignments.Right" Field="@(nameof(UserCartProductViewState.ProductId))" TItemType="UserCartProductViewState" Context="product">
-                                    <HeaderTemplate>
-                                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_PRICE))
-                                    </HeaderTemplate>
-                                    <CellTemplate>
-                                        @product.UnitPrice.ToString("C", CultureInfo.CurrentCulture)
-                                    </CellTemplate>
-                                </DataGridColumn>
-                                <DataGridColumn TextAlignment="TextAlignments.Right" Field="@(nameof(UserCartProductViewState.Quantity))" TItemType="UserCartProductViewState" Context="product">
-                                    <HeaderTemplate>
-                                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_QUANTITY))
-                                    </HeaderTemplate>
-                                    <CellTemplate>
-                                        @product.Quantity
-                                    </CellTemplate>
-                                </DataGridColumn>
-                                <DataGridColumn TextAlignment="TextAlignments.Right" Field="@(nameof(UserCartProductViewState.TotalPrice))" TItemType="UserCartProductViewState" Context="product">
-                                    <HeaderTemplate>
-                                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_SUBTOTAL))
-                                    </HeaderTemplate>
-                                    <CellTemplate>
-                                        @product.TotalPrice.ToString("C", CultureInfo.CurrentCulture)
-                                    </CellTemplate>
-                                </DataGridColumn>
-                            </ChildContent>
-                        </DataGrid>
-                    </div>
-                    <div class="giz-checkout__summary">
-                        <div class="giz-checkout__summary__total">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_TOTAL))</div>
-                        <ICartViewStateLoader ViewState="@ClientServerCartViewService.ViewState" MinimumHeight="2.2rem">
-                            <div class="giz-checkout__summary__amount"><span>@ClientServerCartViewService.ViewState.Total.ToString("C", CultureInfo.CurrentCulture) @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_AND)) @ClientServerCartViewService.ViewState.PointsTotal</span><PointsIcon /></div>
-                        </ICartViewStateLoader>
-                    </div>
-                    @if (Service.ViewState.ShowPaymentMethods)
-                    {
-                        <div class="giz-checkout__payment-method">
-                            <div class="giz-checkout__payment-method__label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_PAYMENT_METHOD))</div>
-                            <EditForm EditContext="@Service.EditContext">
-                                <Select IsDisabled="@(Service.ViewState.IsLoading)"
-                                        IsTransparent="true"
-                                        HandleSVGIcon="Icons.Select_Client"
-                                        TValue="int?"
-                                        Value="@Service.ViewState.PaymentMethodId"
-                                        ValueChanged="@ValueChangedHandler"
-                                        ValueExpression="@(() => Service.ViewState.PaymentMethodId)"
-                                        Size="InputSizes.Small"
-                                        IsFullWidth="true"
-                                        OpenDirection="PopupOpenDirections.Cursor"
-                                        PopupClass="giz-scrollbar--v">
-                                    @if (PaymentMethodViewStateLookupService != null)
-                                    {
-                                        @foreach (var paymentMethod in _paymentMethods)
-                                        {
-                                            <SelectItem TValue="int?" Value="@paymentMethod.Id">@paymentMethod.Name</SelectItem>
-                                        }
-                                    }
-                                </Select>
-                            </EditForm>
-                        </div>
-                    }
-                    @*<div class="giz-checkout__notes">
-                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_CHECKOUT_MESSAGE))
-                    </div>*@
-                    <div class="giz-checkout__actions">
-                        <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="() => CloseDialog()">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CANCEL))</Button>
-                        <Button IsDisabled="@(ClientServerCartViewService.ViewState.IsStateUpdateRequired || ClientServerCartViewService.ViewState.IsStateUpdating || Service.ViewState.IsLoading || Service.ViewState.IsValid == false)"
-                                Color="ButtonColors.Accent"
-                                Size="ButtonSizes.Large"
-                                @onclick="() => Service.CheckoutAsync()">
-                            <ChildContent>
-                                @if (Service.ViewState.IsLoading)
-                                {
-                                    <Spinner />
-                                }
-                                else
-                                {
-                                    <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_PLACE_ORDER))</div>
-                                }
-                            </ChildContent>
-                        </Button>
-                    </div>
-                </div>
-            </div>
+            <CartDialogResult Ok="@ok"
+                              Title="@(ok ? DoneTitle : ShellText.Get(ShellText.BUY_FAILED_TITLE))"
+                              Note="@DoneNote"
+                              Error="@_outcomeError"
+                              OnClose="@CloseDialog" />
         }
         else
         {
-            @if (Service.ViewState.HasError)
+            <header class="giz-buy__head">
+                <div class="giz-buy__kick">@Kicker</div>
+                @if (DisplayOptions.Closable)
+                {
+                    <button type="button" class="giz-buy__close" @onclick="CloseDialog" disabled="@_paying" aria-label="@ShellText.Get(ShellText.GEN_CLOSE)">
+                        <i class="ph-bold ph-x"></i>
+                    </button>
+                }
+                <h2 class="giz-buy__title">@ItemsTitle</h2>
+                @if (_step == Step.TopUp)
+                {
+                    <div class="giz-buy__sub">@ShellText.Get(ShellText.BUY_TOPUP_SUB, Money(Shortfall))</div>
+                }
+            </header>
+
+            @if (_step == Step.TopUp)
             {
-                <div class="giz-client-alert-dialog">
-                    <div class="giz-client-alert-dialog__icon giz-client-alert-dialog__icon--error">
-                        <Icon Size="IconSizes.Large" SVGIcon="Icons.Close_Client" />
-                    </div>
-                    <div class="giz-client-alert-dialog__body giz-scrollbar--v">
-                        <div class="giz-client-alert-message">@((MarkupString)Service.ViewState.ErrorMessage)</div>
-                    </div>
-                    <div class="giz-client-alert-dialog__footer">
-                        <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="@(() => CloseDialog())" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CLOSE))" />
-                    </div>
+                <div class="giz-buy__topup">
+                    <UserOnlineDeposits OnPaymentSucceeded="@OnTopUpSucceeded" />
+                </div>
+
+                <div class="giz-buy__actions">
+                    <button type="button" class="giz-buy__btn" @onclick="BackToConfirm">@ShellText.Get(ShellText.GEN_BACK)</button>
                 </div>
             }
             else
             {
-                <div class="giz-client-alert-dialog">
-                    <div class="giz-client-alert-dialog__icon giz-client-alert-dialog__icon--success">
-                        <Icon Size="IconSizes.Large" SVGIcon="Icons.Check" />
-                    </div>
-                    <div class="giz-client-alert-dialog__body">
-                        @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SUCCESS))
-                    </div>
-                    <div class="giz-client-alert-dialog__footer">
-                        <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.Large" @onclick="@(() => CloseDialog())" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CLOSE))" />
-                    </div>
+                @* WHAT IS IN THE CART. A line paid with points shows its points; the
+                   choice itself is made on the cart page, not here. *@
+                <div class="giz-buy__items giz-scrollbar--v">
+                    @foreach (var item in Items)
+                    {
+                        <div class="giz-buy__row" @key="item.Guid">
+                            <span class="giz-buy__row-name">@item.ProductName</span>
+                            @if (item.Quantity > 1)
+                            {
+                                <span class="giz-buy__row-qty">× @item.Quantity</span>
+                            }
+                            @if (IsPointsLine(item))
+                            {
+                                <span class="giz-buy__row-sum giz-buy__pts">@Points(item.TotalPointsPrice ?? 0)<i class="ph-fill ph-coins"></i></span>
+                            }
+                            else
+                            {
+                                <span class="giz-buy__row-sum">@Money(item.TotalPrice)</span>
+                            }
+                        </div>
+                    }
+                </div>
+
+                @if (!IsFree)
+                {
+                    <PayWayChooser Caption="@WaysCaption"
+                                   Segments="@(_ways.Count > 1 ? Segments : null)"
+                                   Single="@(_ways.Count == 1 ? _ways[0] : null)"
+                                   SingleNote="@(_ways.Count == 1 ? SingleWayNote(_ways[0]) : null)"
+                                   Chips="@CounterWays"
+                                   ShowChips="@ShowChips"
+                                   Selected="@SelectedWay"
+                                   Disabled="@(_paying || !IsPriced)"
+                                   OnSegment="@SelectSegment"
+                                   OnWay="@Select" />
+                }
+
+                @* WHAT IT COMES TO *@
+                <section class="giz-buy__bill @(IsBusy ? "is-busy" : null)">
+                    @if (!IsPriced)
+                    {
+                        <div class="giz-buy__wait"><Spinner /></div>
+                    }
+                    else
+                    {
+                        @if (HasDiscount)
+                        {
+                            <div class="giz-buy__line giz-buy__line--good">
+                                <span>@ShellText.Get(ShellText.BUY_DISCOUNT)</span>
+                                <span>−@Money(Discount)</span>
+                            </div>
+                        }
+                        @if (Fees > 0)
+                        {
+                            <div class="giz-buy__line">
+                                <span>@ShellText.Get(ShellText.BUY_FEES)</span>
+                                <span>@Money(Fees)</span>
+                            </div>
+                        }
+
+                        <div class="giz-buy__total @(HasDiscount || Fees > 0 ? "giz-buy__total--ruled" : null)">
+                            <span class="giz-buy__total-label">@ShellText.Get(ShellText.DEPOSIT_TO_BE_PAID)</span>
+                            <span class="giz-buy__total-sum">
+                                @if (IsFree)
+                                {
+                                    <span class="giz-buy__total-free">@ShellText.Get(ShellText.BUY_FREE)</span>
+                                }
+                                else
+                                {
+                                    @if (PointsDue > 0)
+                                    {
+                                        <span class="giz-buy__pts">@Points(PointsDue)<i class="ph-fill ph-coins"></i></span>
+                                    }
+                                    @if (Total > 0)
+                                    {
+                                        <span>@(PointsDue > 0 ? "+ " : null)@Money(Total)</span>
+                                    }
+                                }
+                            </span>
+                        </div>
+
+                        @if (NoWayToPay)
+                        {
+                            <div class="giz-buy__short">@ShellText.Get(ShellText.BUY_NO_WAYS)</div>
+                        }
+                        else if (Shortfall > 0)
+                        {
+                            <div class="giz-buy__short">
+                                <span>@ShellText.Get(ShellText.BUY_SHORTFALL)</span>
+                                <span class="giz-buy__short-sum">@Money(Shortfall)</span>
+                            </div>
+                        }
+                        else if (PointsShortfall > 0)
+                        {
+                            <div class="giz-buy__short">
+                                <span>@ShellText.Get(ShellText.BUY_SHORTFALL)</span>
+                                <span class="giz-buy__short-sum">@PointsWithUnit(PointsShortfall)</span>
+                            </div>
+                        }
+                        else if (IsPayingFromBalance && Total > 0)
+                        {
+                            <div class="giz-buy__after">
+                                <span>@ShellText.Get(ShellText.BUY_LEFT_AFTER)</span>
+                                <span>@Money(BalanceAfter)</span>
+                            </div>
+                        }
+                        else if (Total == 0 && PointsDue > 0)
+                        {
+                            <div class="giz-buy__after">
+                                <span>@ShellText.Get(ShellText.BUY_POINTS_LEFT_AFTER)</span>
+                                <span>@PointsWithUnit(PointsAfter)</span>
+                            </div>
+                        }
+                        else if (IsPayingAtCounter)
+                        {
+                            <div class="giz-buy__after giz-buy__after--hint">@ShellText.Get(ShellText.BUY_COUNTER_NOTE)</div>
+                        }
+                    }
+                </section>
+
+                <div class="giz-buy__actions">
+                    <button type="button" class="giz-buy__btn" @onclick="CloseDialog" disabled="@_paying">@ShellText.Get(ShellText.GEN_CANCEL)</button>
+                    <button type="button" class="giz-buy__btn giz-buy__btn--primary" @onclick="Primary" disabled="@(!PrimaryEnabled)">
+                        @if (_paying)
+                        {
+                            <Spinner />
+                        }
+                        else
+                        {
+                            @PrimaryText
+                        }
+                    </button>
                 </div>
             }
         }

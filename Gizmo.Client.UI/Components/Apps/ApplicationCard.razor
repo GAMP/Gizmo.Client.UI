@@ -45,7 +45,12 @@
             </div>
             @if (!AppDetailsPageViewState.DisableAppDetails)
             {
-                <IconButton Variant="ButtonVariants.Text" SVGIcon="Icons.Open_Client" Size="ButtonSizes.Small" @onclick="OpenDetails" />
+                @* Phosphor icon on a plain button rather than IconButton +
+                   the legacy SVG set, matching the rest of the reskin. Same
+                   handler, same DisableAppDetails gate. *@
+                <button type="button" class="giz-app-card__open" @onclick="OpenDetails" title="@Application?.Title">
+                    <i class="ph-bold ph-arrow-square-out"></i>
+                </button>
             }
         </div>
     </div>

@@ -1,0 +1,32 @@
+@namespace Gizmo.Client.UI.Shared
+@inherits ShellComponentBase
+@using Gizmo.Client.UI.Services
+
+@* Ten seconds after sign-in, a pill slides out next to the avatar with the level (or
+   the achievements) and an invitation to look. Same pill as the deployment banner -
+   one shape for "the bar has something to tell you". The body opens the Progress tab. *@
+@{
+    var s = Loyalty.State;
+    var level = s.CurrentLevel;
+}
+<div class="giz-deploy gg-hint @(IsOpen ? "open" : null)">
+    <div class="giz-deploy__badge gg-hint__badge">
+        @if (level is not null && Loyalty.Image(level.EmblemGuid) is string emblem)
+        {
+            <img src="@emblem" alt="" />
+        }
+        else if (level is not null)
+        {
+            @LoyaltyText.Mark(level.Name)
+        }
+        else
+        {
+            <i class="ph-fill @(s.HasAchievements || !s.HasChallenges ? "ph-trophy" : "ph-flag-checkered")"></i>
+        }
+    </div>
+    <button type="button" class="giz-deploy__body" @onclick="Open" title="@ShellText.Get(ShellText.LOYALTY_MORE)">
+        <span class="giz-deploy__title">@Title</span>
+        <span class="giz-deploy__sub">@Subtitle</span>
+    </button>
+    <i class="ph-bold ph-arrow-right gg-hint__arrow"></i>
+</div>

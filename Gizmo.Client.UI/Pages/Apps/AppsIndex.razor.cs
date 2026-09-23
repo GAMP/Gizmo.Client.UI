@@ -34,12 +34,6 @@ namespace Gizmo.Client.UI.Pages
         [Inject()]
         public AppsPageViewState ViewState { get; set; }
 
-        [Inject]
-        AdvertisementsViewService AdvertisementsViewStateService { get; set; }
-
-        [Inject]
-        AdvertisementsViewState AdvertisementsViewState { get; set; }
-
         #region PARAMETERS
 
         /// <summary>

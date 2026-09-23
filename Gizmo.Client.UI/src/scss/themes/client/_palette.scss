@@ -1,0 +1,177 @@
+//=============== Palette ================//
+//
+// Every colour the shell has an opinion about is a custom property written here, and
+// the rest of the stylesheet only ever reads them: `var(--gg-accent)`,
+// `rgba(var(--gg-accent-rgb), .2)`, `var(--gg-panel)`, `var(--gg-ink)` and so on. No
+// component file carries a literal in the accent's family - that is what lets a club
+// change the whole shell by changing one word.
+//
+// Everything derives from ONE accent per palette, by Sass, at build time:
+//   - the accent family: the accent, its light and deep steps, and two companion hues
+//     (one cooler, one warmer) that the shell itself no longer paints with - the
+//     atmosphere is one hue since 13.09 - but keeps for a club's own CSS;
+//   - the surfaces: near-blacks carrying the accent's hue, the way the original
+//     purple shell carried purple (its surfaces sat 16° cooler than its accent, which
+//     is reproduced here to within a unit). Warm accents - orange, amber - get a much
+//     lighter touch: at the purple shell's saturation their near-blacks read as brown;
+//   - the ink: white with a whisper of the accent.
+//
+// How a club picks a palette, in order of precedence:
+//   1. `data-accent="green"` on <html> in the skin's index.html. One attribute, one word;
+//      the skin ships with "blue".
+//   2. `:root { --gg-palette: green; }` in the club's own stylesheet from the Manager (the
+//      StyleSheet option). grafitTheme in internal.js reads it once that stylesheet has
+//      loaded. A Manager setting for the colour, should Gizmo add one, only has to emit
+//      that line - or call window.grafitTheme.set("green").
+//   3. Any colour, not only the eight: `:root { --gg-palette: #e11d48; }` in that same
+//      stylesheet (or grafitTheme.set("#e11d48")). grafitTheme derives every token from
+//      it with the rules below, ported to JavaScript, and writes them on <html>.
+
+@use "sass:color";
+@use "sass:map";
+@use "sass:math";
+
+$gg-palettes: (
+    "blue":   #4f8cff,
+    "purple": #b06bff,
+    "red":    #ff3b46,
+    "orange": #ff8a3d,
+    "amber":  #f0b83d,
+    "green":  #4ade80,
+    "teal":   #22d3ee,
+    "pink":   #ff5fa8,
+);
+
+// The palette a fresh skin starts in, before index.html or a club's stylesheet says
+// otherwise (index.html carries the same word).
+$gg-default-accent: map.get($gg-palettes, "blue");
+
+// ── derivation rules ─────────────────────────────────────────────────────
+//
+// These functions ARE the palette: every token below comes out of them and the one
+// accent. grafitTheme in internal.js carries the same rules in JavaScript so a club can
+// name any colour at run time (`--gg-palette: #e11d48`) and get the same shell the
+// build would have produced for it. Change a rule here, change it there.
+
+@function gg-rgb($c) {
+    @return "#{math.round(color.channel($c, "red", $space: rgb))}, #{math.round(color.channel($c, "green", $space: rgb))}, #{math.round(color.channel($c, "blue", $space: rgb))}";
+}
+
+@function gg-hue($c) {
+    @return color.channel($c, "hue", $space: hsl);
+}
+
+// Reds (340°-12°) keep their hue: nudged cooler they turn magenta and the shell reads
+// pink, which is not what "red" means to anyone.
+@function gg-is-red($h) {
+    @return $h >= 340deg or $h < 12deg;
+}
+
+// Oranges and yellows (15°-75°) take a third of the surface tint: at full tint their
+// near-blacks read as brown.
+@function gg-is-warm($h) {
+    @return $h >= 15deg and $h <= 75deg;
+}
+
+@function gg-surface-tint($accent) {
+    @if gg-is-warm(gg-hue($accent)) {
+        @return 0.35;
+    }
+    @return 1;
+}
+
+// Surfaces lean 16° cooler than the accent (the original purple shell: accent at 268°,
+// surfaces at 252°) - except reds, which stay put.
+@function gg-surface-shift($accent) {
+    @if gg-is-red(gg-hue($accent)) {
+        @return 0deg;
+    }
+    @return -16deg;
+}
+
+// The two companion hues: one cooler, one warmer than the accent. Reds keep them
+// close, or the cooler one is magenta.
+@function gg-cloud-2-shift($accent) {
+    @if gg-is-red(gg-hue($accent)) {
+        @return -8deg;
+    }
+    @return -22deg;
+}
+
+@function gg-cloud-3-shift($accent) {
+    @if gg-is-red(gg-hue($accent)) {
+        @return 16deg;
+    }
+    @return 28deg;
+}
+
+// Surfaces: near-black with the accent's hue.
+@function gg-dark($accent, $lightness, $saturation) {
+    @return hsl(gg-hue($accent) + gg-surface-shift($accent), $saturation * gg-surface-tint($accent), $lightness);
+}
+
+// Ink: white with a whisper of the accent.
+@function gg-ink($accent, $lightness, $saturation) {
+    @return hsl(gg-hue($accent) - 11deg, $saturation * gg-surface-tint($accent), $lightness);
+}
+
+@mixin gg-tokens($accent) {
+    $accent-2: color.adjust($accent, $hue: gg-cloud-2-shift($accent));
+    $accent-3: color.adjust($accent, $hue: gg-cloud-3-shift($accent));
+    $ink: gg-ink($accent, 95%, 30%);
+
+    // The accent family.
+    --gg-accent:         #{$accent};
+    --gg-accent-rgb:     #{gg-rgb($accent)};
+    --gg-accent-2-rgb:   #{gg-rgb($accent-2)};   // companion hue, cooler (for club CSS)
+    --gg-accent-3-rgb:   #{gg-rgb($accent-3)};   // companion hue, warmer (for club CSS)
+    --gg-accent-deep:    #{color.scale($accent, $lightness: -22%)};
+    --gg-accent-deeper:  #{color.scale($accent, $lightness: -45%)};
+    --gg-accent-light:   #{color.mix(#fff, $accent, 18%)};
+    --gg-accent-soft:    #{color.mix(#fff, $accent, 45%)};
+    --gg-accent-pale:    #{color.mix(#fff, $accent, 62%)};
+    --gg-on-accent:      #{hsl(gg-hue($accent) + 8deg, 59%, 8%)};
+
+    // Ink.
+    --gg-ink:            #{$ink};
+    --gg-ink-rgb:        #{gg-rgb($ink)};
+    --gg-ink-2:          #{gg-ink($accent, 84%, 22%)};
+    --gg-ink-3:          #{gg-ink($accent, 72%, 42%)};
+
+    // Surfaces.
+    --gg-bg-0:           #{gg-dark($accent, 4%, 50%)};    // body
+    --gg-bg-1:           #{gg-dark($accent, 6%, 33%)};    // atmosphere, mid
+    --gg-bg-2:           #{gg-dark($accent, 11%, 41%)};   // atmosphere, top
+    --gg-bg-3:           #{gg-dark($accent, 9%, 38%)};    // atmosphere, bottom
+    --gg-panel:          #{gg-dark($accent, 12%, 38%)};   // till, dialog card
+    --gg-tile:           #{gg-dark($accent, 9%, 26%)};    // hero, cards
+    --gg-tile-2:         #{gg-dark($accent, 8%, 30%)};
+    --gg-tile-deep:      #{gg-dark($accent, 4%, 45%)};    // card image plate, bottom
+    --gg-glass-rgb:      #{gg-rgb(gg-dark($accent, 17%, 32%))};   // glass gradient, top
+    --gg-glass-2-rgb:    #{gg-rgb(gg-dark($accent, 8%, 33%))};    // glass gradient, bottom
+    --gg-scrim-rgb:      #{gg-rgb(gg-dark($accent, 4%, 40%))};    // scrims over pictures
+    --gg-lock-rgb:       #{gg-rgb(gg-dark($accent, 13%, 30%))};
+}
+
+:root {
+    // The atmosphere: the field every glass panel floats on, painted wherever a
+    // background is needed (body, .giz-background, the sign-in screen). One hue only,
+    // the accent's: two washes anchored in opposite corners, feathered over most of
+    // their radius, and a diagonal sweep between them over the tinted near-black base.
+    // Anchored in a corner, an ellipse reads as light entering the field, not as a
+    // disc; the companion hues that used to sit in it read as foreign colours on a
+    // purple shell. The motion over it is in _flow.scss.
+    --gg-atmosphere:
+        radial-gradient(150rem 105rem at 0% 0%, rgba(var(--gg-accent-rgb), 0.5) 0%, rgba(var(--gg-accent-rgb), 0.2) 36%, rgba(var(--gg-accent-rgb), 0.05) 62%, transparent 78%),
+        radial-gradient(130rem 95rem at 100% 100%, rgba(var(--gg-accent-rgb), 0.3) 0%, rgba(var(--gg-accent-rgb), 0.1) 40%, transparent 74%),
+        linear-gradient(150deg, rgba(var(--gg-accent-rgb), 0.12) 0%, rgba(var(--gg-accent-rgb), 0.04) 45%, transparent 70%),
+        linear-gradient(160deg, var(--gg-bg-2) 0%, var(--gg-bg-1) 55%, var(--gg-bg-3) 100%);
+
+    @include gg-tokens($gg-default-accent);
+}
+
+@each $name, $accent in $gg-palettes {
+    :root[data-accent="#{$name}"] {
+        @include gg-tokens($accent);
+    }
+}

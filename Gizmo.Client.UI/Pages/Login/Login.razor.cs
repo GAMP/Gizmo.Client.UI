@@ -1,3 +1,4 @@
+using System;
 using Gizmo.Client.Options;
 using Gizmo.Client.UI.Components;
 using Gizmo.Client.UI.View.Services;
@@ -92,6 +93,29 @@ namespace Gizmo.Client.UI.Pages
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Swallows a country digit typed into the subscriber-number field.
+        /// </summary>
+        /// <remarks>
+        /// "+7" is rendered as a static prefix next to the field, so a 7 (or
+        /// the domestic 8) typed as the very first character is the user
+        /// repeating the country code and must not become the first
+        /// subscriber digit. Only the leading one is dropped - 7s anywhere
+        /// else in the number are real digits and are left alone.
+        /// </remarks>
+        internal static string StripLeadingCountryDigit(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return value;
+
+            return value[0] == '7' || value[0] == '8' ? value.Substring(1) : value;
+        }
+
+        private void SetPhoneLoginName(string value)
+        {
+            UserLoginService.SetLoginName(StripLeadingCountryDigit(value));
+        }
+
         private void SelectLoginType(ICollection<Button> selectedItems)
         {
             if (selectedItems.Any(a => a.Name == "Username"))
@@ -113,6 +137,40 @@ namespace Gizmo.Client.UI.Pages
         public void OnCloseButtonClickHandler()
         {
             UserLoginService.Reset();
+        }
+
+        /// <summary>
+        /// Whether to show the password recovery link.
+        /// </summary>
+        /// <remarks>
+        /// The vendor's own condition. The value comes from the server as
+        /// <c>USER_PASSWORD_RECOVERY / CLIENT_ENABLED</c>, a switch added in 3.0.91 that is
+        /// off by default.
+        /// </remarks>
+        private bool ShowPasswordRecovery =>
+            UserRegisterConfigurationViewState.IsPasswordRecoveryEnabled;
+
+        /// <summary>
+        /// What this machine's reservation means right now, in the vendor's words.
+        /// <c>null</c> when there is no reservation.
+        /// </summary>
+        /// <remarks>
+        /// Two states, two texts: before the reservation time sign-in is still allowed and
+        /// this is a warning; after it, sign-in is closed. The strings are the vendor's,
+        /// localized; only the presentation is ours.
+        /// </remarks>
+        private string? ReservationMessage
+        {
+            get
+            {
+                if (HostReservationViewState.ReservationBlockTimeReached)
+                    return LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_BLOCK_TIME_REACHED_MESSAGE));
+
+                if (HostReservationViewState.ReservationNotificationTimeReached)
+                    return LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_NOTIFICATION_TIME_REACHED_MESSAGE));
+
+                return null;
+            }
         }
 
         protected override async Task OnInitializedAsync()

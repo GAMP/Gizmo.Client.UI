@@ -1,11 +1,4 @@
-﻿@namespace Gizmo.Client.UI
+@namespace Gizmo.Client.UI
 @inherits CustomDOMComponentBase
 
-@if (!string.IsNullOrEmpty(ViewState.Picture))
-{
-    <Avatar Image="@ViewState.Picture" Variant="AvatarVariants.Circle" Class="giz-user-avatar" />
-}
-else
-{
-    <Icon SVGIcon="Icons.AccountCircle_Client" Class="giz-user-avatar" />
-}
+<UserAvatar Picture="@ViewState.Picture" />

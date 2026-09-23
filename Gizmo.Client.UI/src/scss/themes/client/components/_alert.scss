@@ -1,47 +1,81 @@
 //=============== Alert ================//
 
+// Alert plate: the reservation warning on the sign-in screen, operation status further
+// in. The vendor's plates are light - pale fill, dark text - which in a dark shell reads
+// as a foreign rectangle and pulls the whole card's attention. Same colour semantics,
+// taken as a tint: transparent fill, thin border in the same tone, coloured icon, and
+// ordinary light text.
 .giz-alert {
     display: flex;
-    border-radius: 0.8rem;
-    padding: 1.6rem;
-    gap: 1.6rem;
+    align-items: flex-start;
+    border-radius: 1.4rem;
+    padding: 1.4rem 1.6rem;
+    gap: 1.2rem;
+    border: 1px solid transparent;
+    color: rgba(255, 255, 255, 0.88);
+
+    &__icon {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        // Icon aligned to the first line of the title rather than to the centre of the
+        // block: with two lines of text it otherwise drifts down.
+        min-height: 2rem;
+    }
 
     &__body {
-        display: grid;
-        grid-template-rows: min-content 1fr;
-        gap: 0.8rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        min-width: 0;
 
         &__title {
-            @include font-m-theme-client($font-weight-regular-theme-client);
+            color: #fff;
+            @include font-m-theme-client($font-weight-bold-theme-client);
         }
 
         &__text {
+            color: rgba(255, 255, 255, 0.62);
             @include font-m-theme-client($font-weight-light-theme-client);
         }
+
+        // Title or text may be absent - an empty line must not hold space.
+        &__title:empty,
+        &__text:empty { display: none; }
     }
 
     &--warning {
-        background-color: #FEF3EC;
-        color: #CB662F;
+        background-color: rgba(255, 176, 86, 0.09);
+        border-color: rgba(255, 176, 86, 0.26);
+
+        .giz-alert__icon { color: #ffb056; }
     }
 
     &--success {
-        background-color: #E8F7F4;
-        color: #008E7D;
+        background-color: rgba(94, 216, 148, 0.09);
+        border-color: rgba(94, 216, 148, 0.26);
+
+        .giz-alert__icon { color: #5ed894; }
     }
 
     &--danger {
-        background-color: #FDEEEE;
-        color: #C74952;
+        background-color: rgba(255, 139, 139, 0.09);
+        border-color: rgba(255, 139, 139, 0.26);
+
+        .giz-alert__icon { color: #ff8b8b; }
     }
 
     &--info {
-        background-color: #F4F4F4;
-        color: #2B2D33;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.14);
+
+        .giz-alert__icon { color: rgba(255, 255, 255, 0.62); }
     }
 
     &--accent {
-        background-color: #D9E8FF;
-        color: $primary-color-theme-client;
+        background-color: rgba(var(--gg-accent-rgb), 0.10);
+        border-color: rgba(var(--gg-accent-rgb), 0.32);
+
+        .giz-alert__icon { color: var(--gg-accent); }
     }
 }

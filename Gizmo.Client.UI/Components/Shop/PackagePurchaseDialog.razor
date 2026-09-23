@@ -1,0 +1,203 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CartDialogBase
+
+@using Gizmo.Client.UI.View.States
+@using Gizmo.Web.Api.Models
+
+@* Package purchase.
+
+   One card, read top to bottom in the order a customer thinks: what am I buying, what
+   do I pay with, what does it come to, and the one button that does it. The chooser and
+   the result screen are shared with the shop checkout (PayWayChooser, CartDialogResult).
+
+   Styling lives in _package-purchase-dialog.scss. The markup is mirrored by the visual
+   test template (visual/templates/purchase.js): change one, change the other. *@
+
+<HostedDialog>
+    <div class="giz-buy @(_step == Step.Done ? "giz-buy--done" : null)">
+
+        @if (_step == Step.Done && _outcomeOk is { } ok)
+        {
+            <CartDialogResult Ok="@ok"
+                              Title="@(ok ? DoneTitle : ShellText.Get(ShellText.BUY_FAILED_TITLE))"
+                              Name="@ProductName"
+                              Note="@DoneNote"
+                              Error="@_outcomeError"
+                              OnClose="@CloseDialog" />
+        }
+        else
+        {
+            <header class="giz-buy__head">
+                <div class="giz-buy__kick">@Kicker</div>
+                @if (DisplayOptions.Closable)
+                {
+                    <button type="button" class="giz-buy__close" @onclick="CloseDialog" disabled="@_paying" aria-label="@ShellText.Get(ShellText.GEN_CLOSE)">
+                        <i class="ph-bold ph-x"></i>
+                    </button>
+                }
+                <h2 class="giz-buy__title">@ProductName</h2>
+                @if (_step == Step.TopUp)
+                {
+                    <div class="giz-buy__sub">@ShellText.Get(ShellText.BUY_TOPUP_SUB, Money(Shortfall))</div>
+                }
+                else if (CataloguePrice is { Length: > 0 })
+                {
+                    <div class="giz-buy__sub">@CataloguePrice</div>
+                }
+            </header>
+
+            @if (_step == Step.TopUp)
+            {
+                @* The existing deposit component as a second step, with the shortfall
+                   already entered. When the money lands the dialog returns to the
+                   confirmation with the balance in place. *@
+                <div class="giz-buy__topup">
+                    <UserOnlineDeposits OnPaymentSucceeded="@OnTopUpSucceeded" />
+                </div>
+
+                <div class="giz-buy__actions">
+                    <button type="button" class="giz-buy__btn" @onclick="BackToConfirm">@ShellText.Get(ShellText.GEN_BACK)</button>
+                </div>
+            }
+            else
+            {
+                @if (!IsFree)
+                {
+                    <PayWayChooser Caption="@WaysCaption"
+                                   Segments="@(_ways.Count > 1 ? Segments : null)"
+                                   Single="@(_ways.Count == 1 ? _ways[0] : null)"
+                                   SingleNote="@(_ways.Count == 1 ? SingleWayNote(_ways[0]) : null)"
+                                   Chips="@CounterWays"
+                                   ShowChips="@ShowChips"
+                                   Selected="@SelectedWay"
+                                   Disabled="@(_paying || !IsPriced)"
+                                   OnSegment="@SelectSegment"
+                                   OnWay="@Select" />
+                }
+
+                @* WHAT IT COMES TO *@
+                <section class="giz-buy__bill @(IsBusy ? "is-busy" : null)">
+                    @if (!IsPriced)
+                    {
+                        @* The cart is priced server side: until the total arrives this is a
+                           spinner, not a zero above a live button. *@
+                        <div class="giz-buy__wait"><Spinner /></div>
+                    }
+                    else
+                    {
+                        @if (ShowLines)
+                        {
+                            <div class="giz-buy__line">
+                                <span>@ShellText.Get(ShellText.SHOP_PRICE)</span>
+                                @if (IsPayingWithPoints)
+                                {
+                                    <span class="giz-buy__pts">@Points(PointsDue)<i class="ph-fill ph-coins"></i></span>
+                                }
+                                else
+                                {
+                                    <span>@Money(PackageTotal)</span>
+                                }
+                            </div>
+                            @if (HasOtherItems)
+                            {
+                                @* There is one cart per user, so these goods are paid for
+                                   together with the package. It has to be said. *@
+                                <div class="giz-buy__line">
+                                    <span>@ShellText.Get(ShellText.BUY_OTHER_ITEMS)</span>
+                                    <span>@Money(OtherItemsTotal)</span>
+                                </div>
+                            }
+                            @if (HasDiscount)
+                            {
+                                <div class="giz-buy__line giz-buy__line--good">
+                                    <span>@ShellText.Get(ShellText.BUY_DISCOUNT)</span>
+                                    <span>−@Money(Discount)</span>
+                                </div>
+                            }
+                            @if (Fees > 0)
+                            {
+                                <div class="giz-buy__line">
+                                    <span>@ShellText.Get(ShellText.BUY_FEES)</span>
+                                    <span>@Money(Fees)</span>
+                                </div>
+                            }
+                        }
+
+                        <div class="giz-buy__total @(ShowLines ? "giz-buy__total--ruled" : null)">
+                            <span class="giz-buy__total-label">@ShellText.Get(ShellText.DEPOSIT_TO_BE_PAID)</span>
+                            <span class="giz-buy__total-sum">
+                                @if (IsFree)
+                                {
+                                    <span class="giz-buy__total-free">@ShellText.Get(ShellText.BUY_FREE)</span>
+                                }
+                                else
+                                {
+                                    @if (PointsDue > 0)
+                                    {
+                                        <span class="giz-buy__pts">@Points(PointsDue)<i class="ph-fill ph-coins"></i></span>
+                                    }
+                                    @if (Total > 0)
+                                    {
+                                        <span>@(PointsDue > 0 ? "+ " : null)@Money(Total)</span>
+                                    }
+                                }
+                            </span>
+                        </div>
+
+                        @* Where the customer stands afterwards, or what is in the way. *@
+                        @if (NoWayToPay)
+                        {
+                            <div class="giz-buy__short">@ShellText.Get(ShellText.BUY_NO_WAYS)</div>
+                        }
+                        else if (Shortfall > 0)
+                        {
+                            <div class="giz-buy__short">
+                                <span>@ShellText.Get(ShellText.BUY_SHORTFALL)</span>
+                                <span class="giz-buy__short-sum">@Money(Shortfall)</span>
+                            </div>
+                        }
+                        else if (PointsShortfall > 0)
+                        {
+                            <div class="giz-buy__short">
+                                <span>@ShellText.Get(ShellText.BUY_SHORTFALL)</span>
+                                <span class="giz-buy__short-sum">@PointsWithUnit(PointsShortfall)</span>
+                            </div>
+                        }
+                        else if (IsPayingWithPoints && Total == 0)
+                        {
+                            <div class="giz-buy__after">
+                                <span>@ShellText.Get(ShellText.BUY_POINTS_LEFT_AFTER)</span>
+                                <span>@PointsWithUnit(PointsAfter)</span>
+                            </div>
+                        }
+                        else if (IsPayingFromBalance && Total > 0)
+                        {
+                            <div class="giz-buy__after">
+                                <span>@ShellText.Get(ShellText.BUY_LEFT_AFTER)</span>
+                                <span>@Money(BalanceAfter)</span>
+                            </div>
+                        }
+                        else if (IsPayingAtCounter)
+                        {
+                            <div class="giz-buy__after giz-buy__after--hint">@ShellText.Get(ShellText.BUY_COUNTER_NOTE)</div>
+                        }
+                    }
+                </section>
+
+                <div class="giz-buy__actions">
+                    <button type="button" class="giz-buy__btn" @onclick="CloseDialog" disabled="@_paying">@ShellText.Get(ShellText.GEN_CANCEL)</button>
+                    <button type="button" class="giz-buy__btn giz-buy__btn--primary" @onclick="Primary" disabled="@(!PrimaryEnabled)">
+                        @if (_paying)
+                        {
+                            <Spinner />
+                        }
+                        else
+                        {
+                            @PrimaryText
+                        }
+                    </button>
+                </div>
+            }
+        }
+    </div>
+</HostedDialog>

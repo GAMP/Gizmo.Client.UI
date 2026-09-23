@@ -1,0 +1,36 @@
+@namespace Gizmo.Client.UI
+@inherits ShellComponentBase
+@using Gizmo.Client.UI.Services
+
+@* A person's picture when the account has one, otherwise a quiet glyph.
+
+   Gizmo 3.0.95 does not give a station the customer's picture, so the picture comes
+   from the club's own service when the club runs one (--gg-avatars, see AvatarService);
+   without it there is nothing to show and nothing to change, and the glyph is a plain
+   placeholder rather than an invitation. `Editable` adds the way into the editor - only
+   where the picture is the signed-in customer's own and large enough to click. *@
+@{
+    var picture = Shown;
+}
+@if (Editable && AvatarService.IsEnabled)
+{
+    <button type="button" class="@("giz-user-avatar-edit " + Class)" @onclick="OpenEditor" title="@ShellText.Get(ShellText.AVATAR_EDIT)">
+        @if (!string.IsNullOrEmpty(picture))
+        {
+            <Avatar Image="@picture" Variant="AvatarVariants.Circle" Class="giz-user-avatar" />
+        }
+        else
+        {
+            <span class="giz-user-avatar giz-user-avatar--glyph"><i class="ph ph-user"></i></span>
+        }
+        <span class="giz-user-avatar-edit__veil"><i class="ph-bold ph-camera"></i></span>
+    </button>
+}
+else if (!string.IsNullOrEmpty(picture))
+{
+    <Avatar Image="@picture" Variant="AvatarVariants.Circle" Class="@("giz-user-avatar " + Class)" />
+}
+else
+{
+    <span class="@("giz-user-avatar giz-user-avatar--glyph " + Class)"><i class="ph ph-user"></i></span>
+}

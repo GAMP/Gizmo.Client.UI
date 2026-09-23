@@ -4,6 +4,7 @@
 <div class="giz-header__modules-menu">
     @foreach (var pageModule in ViewState.PageModules)
     {
+        if (!ShouldShowModule(pageModule.MetaData.Guid)) { continue; }
         <div class="giz-header__modules-menu-item">
             <HeaderModulesMenuItem MetaData="@pageModule.MetaData" />
         </div>

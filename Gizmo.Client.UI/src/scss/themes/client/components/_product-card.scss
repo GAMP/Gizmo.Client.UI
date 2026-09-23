@@ -1,127 +1,154 @@
 //============= Product Card ===============//
+//
+// The card answers three questions in a fixed order: what it is (photo and title), how
+// much (price, large, in white - the one purple on the card is the button), and the
+// details, which appear on hover over the image only so the price and title stay put.
+
+$pc-img-h:    18rem;                                    // image and panel height
+$pc-r:        2rem;                                     // card radius
+$pc-ink:      var(--gg-ink);
+$pc-ink-2:    rgba(var(--gg-ink-rgb), 0.6);
+$pc-ink-3:    rgba(var(--gg-ink-rgb), 0.42);
+$pc-line:     rgba(255, 255, 255, 0.07);
+$pc-panel:    rgba(var(--gg-glass-2-rgb), 0.98);
+// Soft radial behind the photo: without it a shot on a white background reads as a
+// sticker on a dark card.
+$gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.16), rgba(255, 255, 255, 0.02) 70%);
 
 .giz-product-card {
     position: relative;
-    background-color: #22272B;
-    border-radius: 0.8rem;
-    transition: background-color 0.2s;
     max-width: 100%;
     overflow: hidden;
+    border-radius: $pc-r;
+    background: var(--gg-card-bg, var(--gg-tile));
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.2s;
 
-    .giz-button--fill.accent.giz-product-card-primary-button {
-        background-color: rgba(250, 250, 250, 0.16);
+    // Outline as a layer over the content. An inset shadow paints under the content, so
+    // an image running flush to the edges covered it at the top and sides - the outline
+    // was only visible around the lower half.
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 7;
+        border-radius: inherit;
+        box-shadow: inset 0 0 0 1px $pc-line;
+        pointer-events: none;
+        transition: box-shadow 0.2s;
     }
 
+    &:hover::after { box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.45); }
+
     &:hover {
-        background-color: #050607;
+        transform: translateY(-3px);
+        box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.85);
 
-        .giz-product-card__content__image__hovered {
-            background-color: rgba(0, 0, 0, 0.84);
-
-            .giz-product-card__content--hovered {
-                visibility: visible;
-            }
+        .giz-product-card__hover-overlay {
+            background: $pc-panel;
+            pointer-events: auto;
         }
 
-        .giz-button--fill.accent.giz-product-card-primary-button {
-            background-color: #0078d2;
+        .giz-product-card__content--hovered {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
         }
     }
 
     &__content {
         display: grid;
-        grid-template-rows: min-content 1fr min-content;
+        // Top stretches, the button footer sizes to content.
+        grid-template-rows: 1fr min-content;
         height: 100%;
         max-width: 100%;
 
-        &__image {
+        // Positioning context for the hover panel. An absolutely positioned block takes
+        // no part in grid row sizing; as an ordinary element the hidden panel used to
+        // inflate the card height with its content.
+        &__top {
+            position: relative;
+            display: grid;
+            grid-template-rows: min-content 1fr;
+        }
+
+        &__image,
+        &__image--time {
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            height: 24.6rem;
-            background-color: #161A1D;
+            height: $pc-img-h;
             max-width: 100%;
-
-            & > img {
-                /*width: 100%;
-                height: 100%;
-                object-fit: cover;*/
-                border-radius: 0.9rem 0.9rem 0 0;
-            }
-
-            &__hovered {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: 2;
-                padding: 1.6rem 1.6rem 0 1.6rem;
-                transition: background-color 0.2s;
-                overflow: hidden;
-
-                &__header {
-                    position: relative;
-                    width: 100%;
-                    height: 100%;
-                }
-
-                .giz-product-card__content--hovered {
-                    visibility: hidden;
-                }
-            }
-        }
-
-        &__image--time {
-            position: relative;
-            height: 24.6rem;
-            border-radius: 0.8rem 0.8rem 0 0;
             overflow: hidden;
-            max-width: 100%;
-            /*&:after {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.84);
-            }*/
+            background: $gg-image-bg;
 
-            & > img {
+            // No gradient at the foot of the image: no text sits over it, and the card
+            // is already separated by its own background.
+            img {
                 width: 100%;
                 height: 100%;
+                object-fit: cover;
             }
 
-            & > svg {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: 1;
+            .giz-default-image,
+            .giz-broken-image {
+                width: 4.8rem;
+                height: 4.8rem;
+                color: rgba(255, 255, 255, 0.16);
             }
         }
 
+        &__image--time > svg {
+            position: absolute;
+            top: 11%;
+            left: 11%;
+            width: 78%;
+            height: 78%;
+            z-index: 1;
+        }
+
+        // What it is, and how much
         &__details {
             display: flex;
             flex-direction: column;
-            padding: 0 1.6rem;
-            margin: 1.2rem 0 0 0;
+            gap: 0.6rem;
+            padding: 1.4rem 1.6rem 0;
             width: 100%;
-            overflow: hidden;
             max-width: 100%;
+            overflow: hidden;
+
+            // Markup order is price then title, and the markup is shared with the other
+            // skins - so display order is changed here rather than there.
+            .giz-product-card__title { order: 1; }
+            .giz-product-card__price { order: 2; }
+            .giz-time-product-host-groups,
+            .giz-product-card__host-group { order: 3; }
 
             .giz-product-card__price {
                 display: flex;
-                align-items: center;
-                gap: 0.4rem;
+                align-items: baseline;
+                gap: 0.5rem;
                 white-space: nowrap;
+                color: $pc-ink;
+                font-family: $font-family-numeric-theme-client;
+                font-size: 2rem;
+                font-weight: 700;
+                line-height: 1.1;
+                font-variant-numeric: tabular-nums;
+
+                // "or" / "and" between money and points is a connective, not a value.
+                span + span:not(.giz-product-card__price__points) {
+                    color: $pc-ink-3;
+                    font-family: $font-family-text-theme-client;
+                    font-size: 1.2rem;
+                    font-weight: 500;
+                }
 
                 .giz-product-card__price__points {
                     overflow: hidden;
                     text-overflow: ellipsis;
+                    color: var(--gg-accent);
                 }
 
                 svg {
@@ -129,225 +156,333 @@
                     min-height: 1.6rem;
                     width: 1.6rem;
                     height: 1.6rem;
+                    fill: var(--gg-accent);
+                    align-self: center;
                 }
             }
         }
 
         &__footer {
-            padding: 1.6rem;
+            padding: 1.4rem;
             max-width: 100%;
 
-            .giz-client-tooltip-root {
-                white-space: nowrap;
-                display: block;
-            }
-
-            .giz-tooltip-root {
-                //display: none;
-                //white-space: nowrap;
-                display: block;
-
-                .giz-tooltip {
-                    //white-space: nowrap;
-                    display: block;
-                }
-            }
+            .giz-client-tooltip-root,
+            .giz-tooltip-root { display: block; white-space: nowrap; }
+            .giz-tooltip-root .giz-tooltip { display: block; }
         }
     }
 
     &__title {
-        flex-grow: 1;
-        color: rgba(255, 255, 255, 0.6);
-        @include font-m-theme-client($font-weight-light-theme-client);
+        color: $pc-ink;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.5rem;
+        font-weight: 600;
+        line-height: 1.35;
+        letter-spacing: -0.005em;
         overflow: hidden;
         text-overflow: ellipsis;
-        //white-space: nowrap;
-        max-height: 4.4rem;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
+                // min as well as max: the two-line box is held even for a one-line title,
+                // otherwise prices in a row do not line up.
+        min-height: 4.1rem;
+        max-height: 4.1rem;
     }
 
-    .giz-time-product-host-groups {
-        gap: 0.4rem;
-        margin-top: auto;
-
-        &-tooltip {
-            display: flex;
-            gap: 0.4rem;
-            white-space: nowrap;
-            padding: 0.8rem 1.2rem;
+    // Button. One accent per card: a quiet fill at rest, full under the cursor. Height
+    // and radius are identical in every state, including disabled, or a row of cards
+    // jumps.
+    [#{$client-theme-comp-attr}] & {
+        .giz-button {
+            height: 4.2rem;
+            border-radius: 1.3rem;
+            font-family: $font-family-header-theme-client;
+            font-size: 1.35rem;
+            font-weight: 600;
         }
 
-        .giz-time-product-host-group {
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            padding: 0.1rem 0.4rem;
-            background-color: rgba(250, 250, 250, 0.16);
-            border-radius: 0.5rem;
-            color: rgba(255, 255, 255, 0.75);
-            @include font-s-theme-client($font-weight-light-theme-client);
+        .giz-button--fill.accent:not(.disabled):not([disabled]) {
+            background: rgba(var(--gg-accent-rgb), 0.16);
+            border: 0;
+            box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.34);
+            color: var(--gg-accent);
+            transition: background 0.16s, box-shadow 0.16s, color 0.16s;
 
-            &--additional { //
-                white-space: nowrap;
-                display: flex;
-                align-items: center;
-                gap: 0.6rem;
-                padding: 0.1rem 0.4rem;
-                background-color: rgba(250, 250, 250, 0.16);
-                border-radius: 0.5rem;
-                color: rgba(255, 255, 255, 0.75);
-                @include font-s-theme-client($font-weight-light-theme-client);
+            &:hover {
+                background: var(--gg-accent);
+                box-shadow: none;
+                color: var(--gg-on-accent);
             }
+        }
 
-            &.active {
-                background-color: rgba(0, 120, 210, 0.32);
-            }
+        .giz-button--fill.disabled,
+        .giz-button--fill[disabled] {
+            background: rgba(255, 255, 255, 0.035);
+            border: 0;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+            color: rgba(var(--gg-ink-rgb), 0.3);
         }
     }
 
-    &__price {
-        @include font-l-theme-client($font-weight-light-theme-client);
+    &:hover .giz-button--fill.accent:not(.disabled):not([disabled]) {
+        background: rgba(var(--gg-accent-rgb), 0.24);
+    }
 
-        svg {
-            fill: white;
-        }
+    // Detail panel, over the image only: price, title and button stay visible.
+    //
+    // Deliberately a single-class selector (0-1-0) rather than nested inside &__content:
+    // nested, the resting opacity: 0 rule scored 0-3-0, tied the :hover rule and won on
+    // order, so the panel could never appear.
+    &__hover-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: auto;
+        // Grows with its content, but never shorter than the image and never past the
+        // button. A package with two expiry dates has more rows than the image can hold,
+        // so the panel then covers the title as well; a short list covers exactly the
+        // image.
+        height: auto;
+        min-height: $pc-img-h;
+        max-height: calc(100% - 6.6rem);
+        z-index: 5;
+        padding: 1.2rem 1.4rem;
+        background: transparent;
+        transition: background 0.22s ease;
+        overflow-x: hidden;
+        overflow-y: auto;
+        scrollbar-width: none;
+        // Transparent at rest but still a box over the image: without pointer-events
+        // disabled it silently swallowed the image's own mouseover.
+        pointer-events: none;
+        &::-webkit-scrollbar { display: none; }
+    }
 
-        .inactive {
-        }
+    &__content--hovered {
+        opacity: 0;
+        transform: translateY(5px);
+        pointer-events: none;
+        transition: opacity 0.22s ease, transform 0.22s ease;
     }
 }
 
-.giz-product-card-alternative-button {
-    display: none;
-}
-
+// Detail list
 .giz-timeline {
-    position: relative;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 
     &-header {
         display: flex;
         align-items: center;
-        color: rgba(255, 255, 255, 0.6);
-        margin-bottom: 1.6rem;
-        position: relative;
-        @include font-s-theme-client($font-weight-light-theme-client);
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        color: $pc-ink-3;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        line-height: 1.2;
 
         svg {
-            margin-right: 0.4rem;
-        }
-
-        &:after {
-            content: '';
-            border-left: 0.1rem solid rgba(255, 255, 255, 0.6);
-            position: absolute;
-            top: calc(50% + 0.5rem);
-            left: 0.2rem;
-            height: calc(100% + 0.3rem);
+            flex: none;
+            width: 1rem;
+            height: 1rem;
+            color: var(--gg-accent);
+            opacity: 0.85;
         }
     }
 
     &-item {
-        //color: #FFAC33;
-        color: #FFC700;
-        margin-bottom: 0.8rem;
-        position: relative;
-        @include font-s-theme-client($font-weight-regular-theme-client);
+        // Rhythm set by the tallest case - a time package with two expiry dates: four
+        // rows plus a heading must fit the panel whole, because the scrollbar is hidden
+        // here and a clipped row would read as breakage.
+        padding: 0.38rem 0;
 
-        & > div {
-            margin-left: 0.9rem;
-        }
-
-        &:before {
-            content: '';
-            background-color: rgba(255, 255, 255, 0.6);
-            border: 0.1rem solid rgba(255, 255, 255, 0.6);
-            border-radius: 50%;
-            width: 0.2rem;
-            height: 0.2rem;
-            position: absolute;
-            //top: 50%;
-            top: 0.9rem;
-            left: 0.1rem;
-            transform: translate(0, -50%);
-        }
-
-        &:after {
-            content: '';
-            border-left: 0.1rem solid rgba(255, 255, 255, 0.6);
-            position: absolute;
-            //top: calc(50% + 0.4rem);
-            top: 1.3rem;
-            left: 0.2rem;
-            height: calc(100% + 0.8rem);
-        }
-
-        &:last-child {
-            &:after {
-                height: 102.4rem;
-            }
+        // Separator as a shadow rather than a border: at zero height a real border still
+        // paints its line.
+        & + .giz-timeline-item {
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
         }
     }
 }
 
+// Label above the value, not beside it. Cards are around 200px wide in the club grid,
+// so a pair like "Available for purchase - 07:00-12:00 Thu" does not fit on one line:
+// the label wrapped and the value ran into the right edge, where the panel clips. In a
+// column each half gets the full width.
 .giz-time-product-details {
     display: flex;
-    justify-content: space-between;
-    color: #FAFAFA;
-    @include font-s-theme-client($font-weight-light-theme-client);
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
 
+    // Label
+    > div:first-child {
+        min-width: 0;
+        color: $pc-ink-3;
+        font-family: $font-family-header-theme-client;
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        line-height: 1.3;
+    }
+
+    // Value
     .giz-time-product-time-availabile {
-        text-align: right;
+        min-width: 0;
+        text-align: left;
+        color: $pc-ink;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.25rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        line-height: 1.3;
+        overflow-wrap: anywhere;
 
         .giz-icon {
-            color: #ffc700;
+            color: var(--gg-accent);
+            width: 1.5rem;
+            height: 1.5rem;
         }
     }
+}
 
-    span {
-        margin-left: 0.8rem;
-        color: #FFAC33;
-        @include font-s-theme-client($font-weight-regular-theme-client);
+// Package duration - the one value in the panel allowed to shout.
+.giz-time-product-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gg-accent);
+    font-family: $font-family-header-theme-client;
+    font-size: 1.45rem;
+    font-weight: 700;
+    line-height: 1.2;
+
+    .giz-icon {
+        width: 1.5rem;
+        height: 1.5rem;
     }
 }
 
-.giz-time-product-time {
+// Expiry: amber, but as text. A plate per row turned the panel into patchwork, and
+// there is only ever one warning here.
+.giz-time-product-expirations {
     display: flex;
-    align-items: center;
-    gap: 0.4rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
 }
 
+.giz-time-product-expiration {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #ffc46b;
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-align: left;
+}
+
+// Bundle contents
 .giz-bundle-product-details {
     display: grid;
     grid-template-columns: min-content 1fr min-content;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.6rem;
     overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    color: #FFC700;
-    text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2), 0px 1px 1px rgba(0, 0, 0, 0.2);
+    color: $pc-ink;
+    font-size: 1.25rem;
+    line-height: 1.3;
+
+    .giz-icon {
+        width: 1.4rem;
+        height: 1.4rem;
+        color: var(--gg-accent);
+    }
 
     &__product-name {
         max-width: 100%;
         overflow: hidden;
+        white-space: nowrap;
         text-overflow: ellipsis;
     }
 
+// Quantity
     & > span {
-        color: #FAFAFA;
-        text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2), 0px 1px 1px rgba(0, 0, 0, 0.2);
+        margin-left: 0;
+        color: $pc-ink-3;
+        font-family: $font-family-numeric-theme-client;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
     }
+}
+
+// PC groups on a time package
+.giz-time-product-host-groups {
+    display: flex;
+    gap: 0.4rem;
+    margin-top: auto;
+    overflow: hidden;
+
+    &-tooltip {
+        display: flex;
+        gap: 0.4rem;
+        white-space: nowrap;
+        padding: 0.8rem 1.2rem;
+    }
+
+    .giz-time-product-host-group,
+    .giz-time-product-host-group--additional {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.25rem 0.7rem;
+        border: 0;
+        border-radius: 0.7rem;
+        background: rgba(255, 255, 255, 0.05);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+        color: $pc-ink-2;
+        white-space: nowrap;
+        font-size: 1.05rem;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+
+        // The group this client belongs to - the only one worth highlighting.
+        &.active {
+            background: rgba(var(--gg-accent-rgb), 0.16);
+            box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.42);
+            color: var(--gg-accent);
+        }
+    }
+}
+
+// Time package face. A package has no photograph, so the top of the card is a readout
+// of its duration. The circle icon above the number is dropped inside the card - next to
+// a large numeral it read as an element that had failed to load.
+.giz-product-card .giz-product-card__content__image--time {
+    background: linear-gradient(180deg,
+        rgba(var(--gg-accent-rgb), 0.17),
+        rgba(var(--gg-accent-rgb), 0.05) 60%,
+        rgba(255, 255, 255, 0.02));
+}
+
+.giz-product-card .giz-product-time-image {
+    gap: 0;
+
+    > .giz-default-image { display: none; }
 }
 
 .giz-product-time-image {
     position: relative;
     display: grid;
     grid-template-rows: min-content min-content;
-    gap: 2rem;
+    gap: 0.8rem;
 
     &-wrapper {
         display: flex;
@@ -368,39 +503,53 @@
 
         &__number {
             text-align: center;
-            //text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 8px rgba(0, 0, 0, 0.2);
-            //Font ?
-            font-family: $font-family-header-theme-client;
+            font-family: $font-family-numeric-theme-client;
             font-weight: 700;
-            font-size: 4.2rem;
-            line-height: 5rem;
+            font-size: 5.2rem;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            font-variant-numeric: tabular-nums;
+            color: $pc-ink;
         }
 
         &__text {
+            margin-top: 0.6rem;
             text-align: center;
-            @include font-m-theme-client($font-weight-regular-theme-client);
+            color: $pc-ink-3;
+            font-family: $font-family-header-theme-client;
+            font-size: 1.15rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
         }
     }
 }
 
-.giz-time-product-expirations {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-}
-
-.giz-time-product-expiration {
-    padding: 0.1rem 0.4rem;
-    color: #FFFFFF;
-    background: rgba(255, 199, 0, 0.32);
-    border-radius: 0.4rem;
-    margin-bottom: 0.8rem;
-    text-align: right;
-    @include font-s-theme-client($font-weight-regular-theme-client);
-}
-
+// Points badge, styled like every other plate that sits over an image.
 .giz-product-card-award-indicator {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 0.9rem;
+    background: rgba(var(--gg-scrim-rgb), 0.8);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    color: var(--gg-accent);
+
+    svg {
+        width: 1.5rem;
+        height: 1.5rem;
+        fill: currentColor;
+    }
+
+    &:empty { display: none; }
+    &:not(:has(svg)) { display: none; }
+}
+
+.giz-product-card-alternative-button {
+    display: none;
 }

@@ -1,0 +1,438 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Grafit Counter</title>
+</head><body>
+
+<style>
+  html{background:#08060e;color-scheme:dark}
+
+  :root{
+    --ground:#0b0813;
+    --zone:rgba(255,255,255,.026);
+    --raised:rgba(255,255,255,.045);
+    --raised-2:rgba(255,255,255,.075);
+
+    --ink:#f4f2f9;
+    --ink-2:#b3abc6;
+    --ink-3:#79738c;
+    --hair:rgba(255,255,255,.075);
+    --hair-2:rgba(255,255,255,.13);
+
+    --accent:#a86bf0;
+    --accent-rgb:168,107,240;
+
+    --u:clamp(.5rem,.28rem + .5vw,1rem);
+    --t-xl:clamp(1.2rem,.85rem + .8vw,1.9rem);
+    --t-lg:clamp(1rem,.82rem + .4vw,1.3rem);
+    --t-md:clamp(.85rem,.75rem + .22vw,1rem);
+    --t-sm:clamp(.74rem,.68rem + .16vw,.86rem);
+    --t-label:clamp(.62rem,.58rem + .1vw,.72rem);
+
+    --r:clamp(.7rem,.45rem + .5vw,1.1rem);
+
+    --display:"Space Grotesk","Segoe UI Variable Display","Segoe UI",system-ui,sans-serif;
+    --body:"Manrope","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  body{
+    font-family:var(--body);color:var(--ink);
+    /* the ambient wash stays - it is the shell's identity - but pulled well
+       down so nothing on the board has to compete with it */
+    background:
+      radial-gradient(64rem 52rem at 4% -14%, rgba(124,84,190,.16), transparent 64%),
+      radial-gradient(52rem 46rem at 100% 112%, rgba(88,92,180,.12), transparent 62%),
+      linear-gradient(168deg,#141024 0%,var(--ground) 60%,#100d1c 100%);
+    background-attachment:fixed;
+    min-height:100vh;padding:clamp(.8rem,2vw,2rem);
+    font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;
+  }
+
+  .page{max-width:1660px;margin:0 auto;display:flex;flex-direction:column;gap:1.2rem}
+  .doc h1{font-family:var(--display);font-size:1.5rem;font-weight:700;letter-spacing:-.02em;text-wrap:balance}
+  .doc p{color:var(--ink-2);font-size:.93rem;max-width:78ch;margin-top:.35rem}
+
+  .sizer{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+  .sizer__cap{font-size:var(--t-label);letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink-3);margin-right:.3rem}
+  .sizer button{font:inherit;font-size:.84rem;font-weight:600;color:var(--ink-2);cursor:pointer;
+    background:var(--raised);border:1px solid var(--hair);border-radius:99px;padding:.4rem .9rem;
+    transition:color .15s,border-color .15s,background .15s}
+  .sizer button:hover{color:var(--ink);border-color:var(--hair-2)}
+  .sizer button[aria-pressed="true"]{background:rgba(var(--accent-rgb),.14);border-color:rgba(var(--accent-rgb),.4);color:#ddc9f7}
+  .sizer button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .shell{
+    width:100%;border:1px solid var(--hair);border-radius:calc(var(--r) * 1.3);overflow:hidden;
+    background:rgba(8,6,14,.5);
+    display:flex;flex-direction:column;height:clamp(580px,80vh,880px);
+    transition:width .3s cubic-bezier(.2,.8,.3,1);
+  }
+
+  /* ══ TOP BAR — search · reservation · hud · account ══════════ */
+  .topbar{
+    display:flex;align-items:center;gap:calc(var(--u) * 1.2);
+    padding:calc(var(--u) * 1) calc(var(--u) * 1.3);flex:none;border-bottom:1px solid var(--hair);
+  }
+  .search{
+    flex:0 1 clamp(9rem,18%,20rem);min-width:0;
+    font-size:var(--t-sm);color:var(--ink-3);
+    padding:.5em .9em;border-radius:99px;background:var(--raised);border:1px solid var(--hair);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .hud{
+    margin-left:auto;display:flex;align-items:center;gap:calc(var(--u) * 1.4);
+    font-size:var(--t-sm);color:var(--ink-3);white-space:nowrap;
+  }
+  .hud b{color:var(--ink);font-family:var(--display);font-weight:600;font-variant-numeric:tabular-nums}
+  .acct{display:flex;align-items:center;gap:.6rem;flex:none}
+  .ava{width:1.9rem;height:1.9rem;border-radius:50%;background:linear-gradient(150deg,#4c3d70,#2a2140);border:1px solid var(--hair)}
+
+  /* ── reservation notice: sits between search and the HUD ──
+     Attention comes from a slow breath, not from brightness. The whole pill
+     drifts between two very close opacities over six seconds, which the eye
+     catches in motion but never reads as flashing. ── */
+  .resv{
+    flex:none;display:flex;align-items:center;gap:.6em;
+    padding:.45em .95em;border-radius:99px;
+    background:rgba(var(--accent-rgb),.10);
+    border:1px solid rgba(var(--accent-rgb),.28);
+    font-size:var(--t-sm);color:var(--ink);white-space:nowrap;
+    animation:resv-in .5s cubic-bezier(.2,.8,.3,1) both, resv-breathe 6s ease-in-out 0.6s infinite;
+  }
+  .resv__dot{
+    width:.45em;height:.45em;border-radius:50%;background:var(--accent);flex:none;
+  }
+  .resv b{font-weight:700}
+  .resv span{color:var(--ink-3)}
+
+  @keyframes resv-in{
+    from{opacity:0;transform:translateY(-.4rem)}
+    to{opacity:1;transform:none}
+  }
+  @keyframes resv-breathe{
+    0%,100%{opacity:.72}
+    50%    {opacity:1}
+  }
+
+  .frame{flex:1;min-height:0;display:grid;grid-template-columns:auto 1fr}
+  .rail{border-right:1px solid var(--hair);display:flex;flex-direction:column;align-items:center;
+    gap:calc(var(--u) * .7);padding:calc(var(--u) * 1.2) calc(var(--u) * .9)}
+  .rail i{width:1.6rem;height:1.6rem;border-radius:.45rem;background:rgba(255,255,255,.05);display:block}
+  .rail i.on{background:rgba(var(--accent-rgb),.3)}
+
+  /* BOARD -----------------------------------------------------
+     Left third: the packages list plus the banner under it. Right two
+     thirds: shop on top, apps below and clearly larger than the shop.
+
+     Two rules that earlier versions kept breaking:
+     - packages run in ONE column, never several. A list that reflows into
+       columns stops reading as a list;
+     - the app strip is no longer allowed to outweigh what is for sale. Apps
+       get the larger half of the right column, the shop the smaller, and the
+       whole left third belongs to buying time. */
+  .board{
+    min-width:0;min-height:0;overflow:hidden;
+    padding:calc(var(--u) * 1.4);
+    display:grid;gap:calc(var(--u) * 1.4);
+    grid-template-columns:minmax(0,.44fr) minmax(0,1fr);
+    grid-template-rows:minmax(0,1fr);
+    grid-template-areas:"left right";
+  }
+  .z-left{
+    grid-area:left;min-width:0;min-height:0;
+    display:flex;flex-direction:column;gap:calc(var(--u) * 1.4);
+  }
+  .z-right{
+    grid-area:right;min-width:0;min-height:0;
+    display:grid;gap:calc(var(--u) * 1.4);
+    grid-template-rows:minmax(0,1fr) minmax(0,1.7fr);
+  }
+
+  .zone{
+    background:var(--zone);border:1px solid var(--hair);border-radius:var(--r);
+    padding:calc(var(--u) * 1.15);display:flex;flex-direction:column;
+    gap:calc(var(--u) * .9);min-height:0;min-width:0;
+  }
+  .zone__hd{display:flex;align-items:baseline;gap:.7rem;flex:none;min-width:0}
+  .zone__label{font-family:var(--display);font-size:var(--t-label);letter-spacing:.16em;
+    text-transform:uppercase;font-weight:700;color:var(--ink-3);white-space:nowrap}
+  .zone__more{margin-left:auto;font-size:var(--t-sm);font-weight:600;color:var(--ink-3);
+    text-decoration:none;white-space:nowrap;transition:color .15s}
+  .zone__more:hover{color:var(--accent)}
+  .zone__more:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:.3rem}
+
+  /* TIME: one column, always. Rows share the height so the zone is filled
+     rather than leaving a hole under a short list. */
+  .z-time{flex:1;min-height:0}
+  .packs{
+    flex:1;min-height:0;display:flex;flex-direction:column;
+    gap:calc(var(--u) * .5);
+    overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--hair-2) transparent;
+  }
+  .packs::-webkit-scrollbar{width:.35rem}
+  .packs::-webkit-scrollbar-thumb{background:var(--hair-2);border-radius:99px}
+  .packs::-webkit-scrollbar-track{background:transparent}
+
+  .pk{
+    flex:1 1 auto;min-height:calc(var(--u) * 4.4);
+    display:grid;align-items:center;grid-template-columns:minmax(0,1fr) auto;
+    gap:calc(var(--u) * .9);padding:calc(var(--u) * .7) calc(var(--u) * .95);
+    border-radius:calc(var(--r) * .8);
+    background:var(--raised);border:1px solid transparent;
+    transition:background .16s,border-color .16s;
+  }
+  .pk:hover{background:var(--raised-2);border-color:var(--hair-2)}
+  .pk__info{display:flex;flex-direction:column;gap:.1em;min-width:0}
+  .pk__name{font-size:var(--t-md);font-weight:600;color:var(--ink);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pk__price{font-family:var(--display);font-size:var(--t-lg);font-weight:700;
+    font-variant-numeric:tabular-nums;color:var(--ink-2)}
+  .pk__buy{
+    flex:none;font:inherit;font-family:var(--body);
+    font-size:var(--t-sm);font-weight:700;cursor:pointer;
+    padding:.55em 1.2em;border-radius:99px;border:0;white-space:nowrap;
+    background:var(--accent);color:#160a26;transition:filter .15s;
+  }
+  .pk__buy:hover{filter:brightness(1.12)}
+  .pk__buy:focus-visible{outline:2px solid #fff;outline-offset:2px}
+
+  /* BANNER: width is the left column, height follows the shell ratio 1.9:1 */
+  .z-promo{
+    flex:none;width:100%;aspect-ratio:19 / 10;
+    padding:0;overflow:hidden;
+    background:var(--zone);border:1px solid var(--hair);border-radius:var(--r);
+  }
+  .promo{position:relative;width:100%;height:100%}
+  .promo__s{position:absolute;inset:0;opacity:0}
+  .promo__s img,.promo__s .promo__ph{width:100%;height:100%;object-fit:cover;display:block}
+  .promo__ph{background:linear-gradient(150deg,#2a2142,#171227)}
+  .promo__cap{position:absolute;inset:auto 0 0 0;padding:1.8rem .9rem .7rem;
+    background:linear-gradient(180deg,transparent,rgba(8,6,14,.92));
+    font-size:var(--t-sm);font-weight:600;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .promo--of1 .promo__s{opacity:1}
+  @keyframes promo3{0%{opacity:0}6%{opacity:1}27%{opacity:1}33%{opacity:0}100%{opacity:0}}
+  .promo--of3 .promo__s{animation:promo3 18s linear infinite}
+  .promo--of3 .promo__s:nth-child(2){animation-delay:6s}
+  .promo--of3 .promo__s:nth-child(3){animation-delay:12s}
+
+  /* SHOP: the smaller half of the right column, rows in several columns */
+  .shop{
+    flex:1;min-height:0;display:grid;align-content:start;
+    grid-template-columns:repeat(auto-fill,minmax(clamp(11rem,15vw,16rem),1fr));
+    gap:calc(var(--u) * .35) calc(var(--u) * 1.2);
+    overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--hair-2) transparent;
+  }
+  .shop::-webkit-scrollbar{width:.35rem}
+  .shop::-webkit-scrollbar-thumb{background:var(--hair-2);border-radius:99px}
+  .shop::-webkit-scrollbar-track{background:transparent}
+
+  .gd{
+    display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;
+    gap:calc(var(--u) * .7);padding:calc(var(--u) * .4);
+    border-radius:calc(var(--r) * .7);cursor:pointer;transition:background .15s;
+  }
+  .gd:hover{background:var(--raised)}
+  .gd__img{width:clamp(1.8rem,2.6vw,2.3rem);aspect-ratio:1;flex:none;
+    border-radius:calc(var(--r) * .5);background:linear-gradient(150deg,#241d3a,#171227)}
+  .gd__n{font-size:var(--t-sm);color:var(--ink-2);min-width:0;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .gd__p{font-family:var(--display);font-size:var(--t-sm);font-weight:700;
+    font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink)}
+
+  /* APPS: the larger half. Rows are equal, so two rows of covers fill it. */
+  .apps{
+    flex:1;min-height:0;overflow:hidden;
+    display:grid;gap:calc(var(--u) * .9);
+    grid-template-columns:repeat(auto-fill,minmax(clamp(7rem,10vw,11rem),1fr));
+    grid-auto-rows:1fr;
+  }
+  .gm{position:relative;border-radius:calc(var(--r) * .8);overflow:hidden;cursor:pointer;
+    background:var(--raised);transition:transform .18s cubic-bezier(.2,.8,.3,1)}
+  .gm:hover{transform:translateY(-3px)}
+  .gm__img{position:absolute;inset:0;background:linear-gradient(155deg,#241d3c,#141122)}
+  .gm__veil{position:absolute;inset:46% 0 0 0;background:linear-gradient(180deg,transparent,rgba(8,6,14,.93))}
+  .gm__n{position:absolute;inset:auto 0 0 0;padding:0 .55rem .45rem;font-size:var(--t-sm);font-weight:600;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .gm__go{position:absolute;inset:0;display:grid;place-items:center;opacity:0;
+    background:rgba(9,6,17,.55);transition:opacity .16s}
+  .gm:hover .gm__go{opacity:1}
+  .gm__go span{background:var(--accent);color:#160a26;font-weight:700;font-size:var(--t-sm);
+    padding:.35em .9em;border-radius:99px}
+
+  .board--nopromo .z-promo{display:none}
+
+  .notes{border-top:1px solid var(--hair);padding-top:1.1rem;display:flex;flex-direction:column;gap:.8rem}
+  .notes h2{font-family:var(--display);font-size:1rem;font-weight:700}
+  .notes ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+  .notes li{display:grid;grid-template-columns:auto 1fr;gap:.7rem;font-size:.91rem;color:var(--ink-2);line-height:1.55}
+  .notes li::before{content:"";width:.32rem;height:.32rem;border-radius:50%;background:var(--accent);margin-top:.62rem}
+  .notes li b{color:var(--ink);font-weight:700}
+
+  @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+  @media (max-width:900px){
+    .board{grid-template-columns:1fr;grid-template-rows:auto auto auto auto;
+      grid-template-areas:"time" "apps" "shop" "promo"}
+    .board--nopromo{grid-template-areas:"time" "apps" "shop"}
+    .hud{display:none}
+  }
+</style>
+
+<div class="page">
+
+  <header class="doc">
+    <h1>Треть слева, две трети справа</h1>
+    <p>Слева треть: пакеты одним столбцом и баннер под ними. Справа две трети: магазин сверху компактно, приложения снизу и заметно крупнее магазина. Пакеты больше не разъезжаются в несколько колонок, а строки делят высоту зоны, поэтому под коротким списком не остаётся дыры.</p>
+  </header>
+
+  <div class="sizer" role="group" aria-label="Разрешение экрана">
+    <span class="sizer__cap">Экран</span>
+    <button type="button" data-w="100%" aria-pressed="true">по ширине окна</button>
+    <button type="button" data-w="1920px" aria-pressed="false">1920</button>
+    <button type="button" data-w="1600px" aria-pressed="false">1600</button>
+    <button type="button" data-w="1366px" aria-pressed="false">1366</button>
+    <button type="button" data-w="1024px" aria-pressed="false">1024</button>
+    <span class="sizer__cap" style="margin-left:1rem">Баннер</span>
+    <button type="button" id="promo-on"  aria-pressed="true">есть</button>
+    <button type="button" id="promo-off" aria-pressed="false">нет</button>
+  </div>
+
+  <main class="shell" id="shell">
+
+    <div class="topbar">
+      <div class="search">Поиск по играм, приложениям и магазину</div>
+
+      <div class="resv">
+        <span class="resv__dot"></span>
+        <b>Бронь в 19:30</b>
+        <span>через 1 ч 12 мин</span>
+      </div>
+
+      <div class="hud">
+        <span>ПК <b>100</b></span>
+        <span>Тариф <b>Standart</b></span>
+        <span>Осталось <b>0ч 04м</b></span>
+        <span>Баллы <b>18</b></span>
+        <span>Счёт <b>1.50 ₽</b></span>
+      </div>
+
+      <div class="acct"><div class="ava"></div></div>
+    </div>
+
+    <div class="frame">
+      <nav class="rail" aria-label="Разделы"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></nav>
+
+      <div class="board" id="board">
+
+        <div class="z-left">
+
+          <section class="zone z-time" aria-label="Игровое время">
+            <div class="zone__hd">
+              <span class="zone__label">Игровое время</span>
+              <a class="zone__more" href="#">Все пакеты</a>
+            </div>
+            <div class="packs">
+              <div class="pk"><span class="pk__info"><span class="pk__name">Standart 1 час</span><span class="pk__price">150 ₽</span></span><button class="pk__buy" type="button">Купить</button></div>
+              <div class="pk"><span class="pk__info"><span class="pk__name">Standart 3 часа</span><span class="pk__price">420 ₽</span></span><button class="pk__buy" type="button">Купить</button></div>
+              <div class="pk"><span class="pk__info"><span class="pk__name">Standart 5 часов</span><span class="pk__price">650 ₽</span></span><button class="pk__buy" type="button">Купить</button></div>
+              <div class="pk"><span class="pk__info"><span class="pk__name">Пакет «Ночь», 10 часов</span><span class="pk__price">700 ₽</span></span><button class="pk__buy" type="button">Купить</button></div>
+              <div class="pk"><span class="pk__info"><span class="pk__name">Выходной, 8 часов</span><span class="pk__price">600 ₽</span></span><button class="pk__buy" type="button">Купить</button></div>
+              <div class="pk"><span class="pk__info"><span class="pk__name">Утренний, 4 часа</span><span class="pk__price">440 ₽</span></span><button class="pk__buy" type="button">Купить</button></div>
+            </div>
+          </section>
+
+          <section class="z-promo" aria-label="Акции">
+            <div class="promo promo--of3">
+              <div class="promo__s"><div class="promo__ph"></div><div class="promo__cap">Ночной пакет −20%</div></div>
+              <div class="promo__s"><div class="promo__ph"></div><div class="promo__cap">Турнир по CS2 в субботу</div></div>
+              <div class="promo__s"><div class="promo__ph"></div><div class="promo__cap">Кофе в подарок</div></div>
+            </div>
+          </section>
+
+        </div>
+
+        <div class="z-right">
+
+          <section class="zone z-shop" aria-label="Магазин">
+            <div class="zone__hd">
+              <span class="zone__label">Магазин</span>
+              <a class="zone__more" href="#">Весь магазин</a>
+            </div>
+            <div class="shop">
+              <div class="gd"><span class="gd__img"></span><span class="gd__n">Сэндвич</span><span class="gd__p">180 ₽</span></div>
+              <div class="gd"><span class="gd__img"></span><span class="gd__n">Френч-дог</span><span class="gd__p">180 ₽</span></div>
+              <div class="gd"><span class="gd__img"></span><span class="gd__n">Корн-дог</span><span class="gd__p">170 ₽</span></div>
+              <div class="gd"><span class="gd__img"></span><span class="gd__n">Бутерброд</span><span class="gd__p">220 ₽</span></div>
+              <div class="gd"><span class="gd__img"></span><span class="gd__n">Snickers Super</span><span class="gd__p">120 ₽</span></div>
+              <div class="gd"><span class="gd__img"></span><span class="gd__n">Энергетик</span><span class="gd__p">160 ₽</span></div>
+              <div class="gd"><span class="gd__img"></span><span class="gd__n">Вода 0.5</span><span class="gd__p">90 ₽</span></div>
+              <div class="gd"><span class="gd__img"></span><span class="gd__n">Чипсы</span><span class="gd__p">140 ₽</span></div>
+              <div class="gd"><span class="gd__img"></span><span class="gd__n">Пицца-слайс</span><span class="gd__p">210 ₽</span></div>
+              <div class="gd"><span class="gd__img"></span><span class="gd__n">Кофе</span><span class="gd__p">110 ₽</span></div>
+            </div>
+          </section>
+
+          <section class="zone z-apps" aria-label="Игры и приложения">
+            <div class="zone__hd">
+              <span class="zone__label">Игры и приложения</span>
+              <a class="zone__more" href="#">Весь каталог</a>
+            </div>
+            <div class="apps">
+              <article class="gm"><div class="gm__img"></div><div class="gm__veil"></div><div class="gm__n">Counter-Strike 2</div><div class="gm__go"><span>Запустить</span></div></article>
+              <article class="gm"><div class="gm__img"></div><div class="gm__veil"></div><div class="gm__n">Arena Breakout</div><div class="gm__go"><span>Запустить</span></div></article>
+              <article class="gm"><div class="gm__img"></div><div class="gm__veil"></div><div class="gm__n">Riot Games</div><div class="gm__go"><span>Запустить</span></div></article>
+              <article class="gm"><div class="gm__img"></div><div class="gm__veil"></div><div class="gm__n">Steam</div><div class="gm__go"><span>Запустить</span></div></article>
+              <article class="gm"><div class="gm__img"></div><div class="gm__veil"></div><div class="gm__n">VK Play</div><div class="gm__go"><span>Запустить</span></div></article>
+              <article class="gm"><div class="gm__img"></div><div class="gm__veil"></div><div class="gm__n">Telegram</div><div class="gm__go"><span>Запустить</span></div></article>
+              <article class="gm"><div class="gm__img"></div><div class="gm__veil"></div><div class="gm__n">Chrome</div><div class="gm__go"><span>Запустить</span></div></article>
+              <article class="gm"><div class="gm__img"></div><div class="gm__veil"></div><div class="gm__n">Dota 2</div><div class="gm__go"><span>Запустить</span></div></article>
+              <article class="gm"><div class="gm__img"></div><div class="gm__veil"></div><div class="gm__n">Cyberpunk 2077</div><div class="gm__go"><span>Запустить</span></div></article>
+              <article class="gm"><div class="gm__img"></div><div class="gm__veil"></div><div class="gm__n">Discord</div><div class="gm__go"><span>Запустить</span></div></article>
+              <article class="gm"><div class="gm__img"></div><div class="gm__veil"></div><div class="gm__n">Valorant</div><div class="gm__go"><span>Запустить</span></div></article>
+              <article class="gm"><div class="gm__img"></div><div class="gm__veil"></div><div class="gm__n">Epic Games</div><div class="gm__go"><span>Запустить</span></div></article>
+            </div>
+          </section>
+
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <section class="notes">
+    <h2>Ответы на вопросы</h2>
+    <ul>
+      <li><b>Пакеты — один столбец, всегда.</b> Список, который перетекает в несколько колонок, перестаёт читаться как список; в прошлой версии это и выглядело кринжово. Строки к тому же делят высоту зоны между собой, поэтому короткий список не оставляет пустоты под собой.</li>
+      <li><b>Треть против двух третей.</b> Слева покупка времени и баннер под ней, справа всё остальное. Баннер занимает ровно ширину левой колонки, а высоту берёт из соотношения 1.9:1 — то есть примерно четверть колонки, не больше.</li>
+      <li><b>Приложения крупнее магазина.</b> В правой колонке магазин получает меньшую долю, приложения — большую. Раньше линия приложений весила больше, чем всё, что продаётся, и это был перекос.</li>
+      <li><b>1.9:1 — не на глаз.</b> Штатные рамки объявлений в оболочке: 72.2×38rem и 76×40rem. Ровно это соотношение и стоит, картинку клуба не обрежет.</li>
+      <li><b>Без баннера левая колонка отдаёт высоту пакетам.</b> Блок не рендерится вовсе — посмотри переключателем «Баннер: есть / нет».</li>
+      <li><b>Свечения нет нигде.</b> Акцент встречается в трёх местах: кнопка покупки, точка брони, активный пункт навигации. Бронь живёт в верхней панели и дышит раз в шесть секунд.</li>
+    </ul>
+  </section>
+
+</div>
+
+<script>
+  (function () {
+    var shell = document.getElementById("shell");
+    document.querySelectorAll(".sizer button").forEach(function (b) {
+      b.addEventListener("click", function () {
+        document.querySelectorAll(".sizer button").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+        b.setAttribute("aria-pressed", "true");
+        shell.style.width = b.dataset.w;
+      });
+    });
+    var board = document.getElementById("board");
+    var on = document.getElementById("promo-on");
+    var off = document.getElementById("promo-off");
+    function setPromo(has){
+      board.classList.toggle("board--nopromo", !has);
+      on.setAttribute("aria-pressed", has ? "true" : "false");
+      off.setAttribute("aria-pressed", has ? "false" : "true");
+    }
+    on.addEventListener("click", function(){ setPromo(true); });
+    off.addEventListener("click", function(){ setPromo(false); });
+  })();
+</script>
+</body></html>

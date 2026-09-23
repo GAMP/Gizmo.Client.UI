@@ -1,5 +1,5 @@
 ﻿@namespace Gizmo.Client.UI.Components
-@inherits CustomDOMComponentBase
+@inherits ShellComponentBase
 
 @if (!string.IsNullOrEmpty(ClientInterfaceOptions.CurrentValue.StyleSheet))
 {
@@ -14,13 +14,8 @@
          @onmouseout="OnMouseOutHandler"
          id="@Id"
          @ref="@Ref">
-        <div class="giz-notifications__header">
-            <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_NOTIFICATIONS_TITLE))</div>
-            <div>
-                <IconButton SVGIcon="Icons.Close" Visibility="(_visible.Count() > 1 ? Visibilities.Visible : Visibilities.Collapse)" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="() => CloseNotifications()" />
-            </div>
-        </div>
-        <div class="giz-notifications__body giz-scrollbar--v">
+        @* No title bar - the cards say what they are. *@
+        <div class="giz-notifications__body">
             @foreach (var controller in _visible)
             {
                 <div data-id="@controller.Identifier" class="giz-notification-wrapper @(_newlyAddedItemId == controller.Identifier ? "tmp" : (_slideInItemId == controller.Identifier ? "slide-in" : (_slideOutItemId == controller.Identifier ? "slide-out" : "")))">

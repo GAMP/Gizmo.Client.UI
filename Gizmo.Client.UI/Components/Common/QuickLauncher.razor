@@ -1,14 +1,9 @@
-﻿@namespace Gizmo.Client.UI.Components
+@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 
+@* No more rocket/history switch - just the pinned apps. The switch was too
+   small to read well in the rail and the recent-launches view it toggled to
+   isn't something worth exposing here. *@
 <div class="quick-launcher">
-    <QuickLauncherSwitch SelectedTabIndex="@ViewState.SelectedTabIndex" SelectedTabIndexChanged="@SelectedTabIndexChanged" />
-    @if (ViewState.SelectedTabIndex == 0)
-    {
-        <QuickLauncherQuickLaunch />
-    }
-    else
-    {
-        <QuickLauncherFavorites />
-    }
+    <QuickLauncherQuickLaunch />
 </div>

@@ -1,14 +1,139 @@
-﻿@namespace Gizmo.Client.UI.Shared
-@inherits CustomDOMComponentBase
+@namespace Gizmo.Client.UI.Shared
+@inherits ShellComponentBase
 
+@* Copy is written in Russian directly rather than through resource keys -
+   see the note in MenuActiveApplicationsContainer.razor for why. *@
 @if (ViewState.IsInGracePeriod)
 {
     <div class="giz-login-overlay">
         <div class="giz-grace-period-wrapper">
             <div class="giz-grace-period">
-                <div class="giz-grace-period__message">@((MarkupString)LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GRACE_PERIOD_MESSAGE)))</div>
-                <div class="giz-grace-period__time">@string.Format("{0:mm\\:ss}", ViewState.Time)</div>
-                <div class="giz-grace-period__action"><Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GRACE_PERIOD_LOGOUT))" @onclick="@(() => UserService.LogoutAsync())" /></div>
+                @if (IsReservationLock)
+                {
+                    @* Same grace period, different cause: not "out of money" but "this
+                       machine is reserved". Offering a top-up here would be a lie - no
+                       amount keeps the session open. So: what is happening, the
+                       reservation code, and sign out. *@
+                    <div class="giz-grace-period__badge giz-grace-period__badge--lock">
+                        <i class="ph-fill ph-calendar-check giz-ph-icon"></i>
+                    </div>
+                    <div class="giz-grace-period__title">@ShellText.Get(ShellText.RESV_PC_RESERVED)</div>
+                    <div class="giz-grace-period__message">
+                        @if (ReservationTimeText is { Length: > 0 })
+                        {
+                            @ShellText.Get(ShellText.GRACE_RESERVED_AT, ReservationTimeText)
+                        }
+                        @ShellText.Get(ShellText.GRACE_RESERVED_HINT)
+                    </div>
+
+                    @if (_reservationConfirmed)
+                    {
+                        <div class="giz-reserve-pin__ok">
+                            <i class="ph-fill ph-check-circle"></i>
+                            <span>@ShellText.Get(ShellText.GRACE_CONFIRMED)</span>
+                        </div>
+                    }
+                    else if (ReservationNeedsPayment)
+                    {
+                        <div class="giz-grace-period__message">
+                            @ShellText.Get(ShellText.GRACE_CONFIRMED_UNPAID)
+                        </div>
+                        <div class="giz-grace-period__actions">
+                            <Button Color="ButtonColors.Accent"
+                                    Size="ButtonSizes.ExtraLarge"
+                                    Text="@ShellText.Get(ShellText.GO_TO_PAYMENT)"
+                                    @onclick="@OnOpenReservationPaymentAsync" />
+                            <Button Variant="ButtonVariants.Outline"
+                                    Size="ButtonSizes.ExtraLarge"
+                                    Text="@ShellText.Get(ShellText.LOGOUT)"
+                                    @onclick="@(() => UserService.LogoutAsync())" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="giz-reserve-pin">
+                            <div class="giz-reserve-pin__label">@ShellText.Get(ShellText.GRACE_PIN_LABEL)</div>
+                            <div class="giz-reserve-pin__row">
+                                <input type="text"
+                                       class="giz-reserve-pin__input"
+                                       inputmode="latin"
+                                       autocomplete="off"
+                                       spellcheck="false"
+                                       placeholder="@ShellText.Get(ShellText.LOGIN_PIN_PLACEHOLDER)"
+                                       value="@_pin"
+                                       disabled="@_pinBusy"
+                                       @oninput="@((ChangeEventArgs e) => OnPinInput(e))"
+                                       @onkeydown="@OnPinKeyDown" />
+                                <Button Color="ButtonColors.Accent"
+                                        Size="ButtonSizes.Large"
+                                        Text="@ShellText.Get(ShellText.GEN_CONFIRM)"
+                                        IsDisabled="@(_pinBusy || string.IsNullOrWhiteSpace(_pin))"
+                                        @onclick="@OnConfirmPinAsync" />
+                            </div>
+                            @if (!string.IsNullOrEmpty(_pinError))
+                            {
+                                <div class="giz-reserve-pin__error">@_pinError</div>
+                            }
+                        </div>
+                    }
+
+                    <div class="giz-grace-period__timer">
+                        <div class="giz-grace-period__timer__label">@ShellText.Get(ShellText.GRACE_TIME_LEFT)</div>
+                        <div class="giz-grace-period__time">@ViewState.Time.ToString(@"mm\:ss")</div>
+                    </div>
+
+                    @if (!ReservationNeedsPayment && !_reservationConfirmed)
+                    {
+                        <div class="giz-grace-period__actions">
+                            <Button Variant="ButtonVariants.Outline"
+                                    Size="ButtonSizes.ExtraLarge"
+                                    Text="@ShellText.Get(ShellText.LOGOUT)"
+                                    @onclick="@(() => UserService.LogoutAsync())" />
+                        </div>
+                    }
+                }
+                else if (!_showDeposit)
+                {
+                    <div class="giz-grace-period__badge">
+                        <i class="ph-fill ph-hourglass-high giz-ph-icon"></i>
+                    </div>
+                    <div class="giz-grace-period__title">@ShellText.Get(ShellText.GRACE_TIME_UP)</div>
+                    <div class="giz-grace-period__message">
+                        @ShellText.Get(ShellText.GRACE_TIME_UP_MESSAGE)
+                    </div>
+                    <div class="giz-grace-period__timer">
+                        <div class="giz-grace-period__timer__label">@ShellText.Get(ShellText.GRACE_TIME_LEFT)</div>
+                        <div class="giz-grace-period__time">@string.Format("{0:mm\\:ss}", ViewState.Time)</div>
+                    </div>
+                    <div class="giz-grace-period__actions">
+                        @* The top-up form is embedded rather than opened as a
+                           dialog: this overlay sits at z-index 3000 and the
+                           dialog host at 1001, so a dialog raised from here
+                           would render behind the overlay. *@
+                        @if (UserOnlineDepositViewState.IsEnabled)
+                        {
+                            <Button Color="ButtonColors.Accent"
+                                    Size="ButtonSizes.ExtraLarge"
+                                    Text="@ShellText.Get(ShellText.GRACE_TOP_UP_ACCOUNT)"
+                                    @onclick="@(() => _showDeposit = true)" />
+                        }
+                        <Button Variant="ButtonVariants.Outline"
+                                Size="ButtonSizes.ExtraLarge"
+                                Text="@ShellText.Get(ShellText.LOGOUT)"
+                                @onclick="@(() => UserService.LogoutAsync())" />
+                    </div>
+                }
+                else
+                {
+                    <div class="giz-grace-period__deposit">
+                        <div class="giz-grace-period__deposit__head">
+                            <div class="giz-grace-period__title">@ShellText.Get(ShellText.DEPOSIT_PAGE_TITLE)</div>
+                            <div class="giz-grace-period__time giz-grace-period__time--small">@string.Format("{0:mm\\:ss}", ViewState.Time)</div>
+                        </div>
+                        <UserOnlineDeposits OnClickPayFromPC="@OnClickPayFromPCHandler" OnClickClear="@OnClickClearHandler" OnPaymentSucceeded="@OnPaymentSucceededHandler" />
+                        <div class="giz-grace-period__back" @onclick="@(() => _showDeposit = false)">@ShellText.Get(ShellText.GEN_BACK)</div>
+                    </div>
+                }
             </div>
         </div>
     </div>

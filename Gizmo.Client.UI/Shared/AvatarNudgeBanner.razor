@@ -1,0 +1,19 @@
+@namespace Gizmo.Client.UI.Shared
+@inherits ShellComponentBase
+@using Gizmo.Client.UI.Services
+
+@* Between the bar's icons and the profile circle. At rest it is width:0 and takes no
+   space; when the club's picture service says this sign-in is worth an invitation, it
+   grows in - pushing the cluster left by ordinary flex reflow - and points at the circle
+   next to it. The whole pill opens the editor.
+
+   Unlike every other pill up there this one is deliberately not neutral glass: it is an
+   advertisement, and a quiet grey pill among quiet grey pills is one nobody reads. *@
+<div class="giz-avatar-nudge @(IsVisible ? "open" : "")" @onclick="OnClick">
+    <i class="ph-fill ph-user-circle-plus giz-avatar-nudge__badge"></i>
+    <div class="giz-avatar-nudge__text">
+        <div class="giz-avatar-nudge__text__title">@ShellText.Get(ShellText.AVATAR_NUDGE_TITLE)</div>
+        <div class="giz-avatar-nudge__text__sub">@ShellText.Get(ShellText.AVATAR_NUDGE_SUB)</div>
+    </div>
+    <i class="ph-bold ph-caret-right giz-avatar-nudge__arrow"></i>
+</div>

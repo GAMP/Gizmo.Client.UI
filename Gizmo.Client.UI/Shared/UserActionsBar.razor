@@ -1,0 +1,22 @@
+@namespace Gizmo.Client.UI
+@inherits CustomDOMComponentBase
+
+<div class="giz-actions-bar">
+    @* Right-side icon group per the brief (section 6.1): wallet, apps grid,
+       bell, question. Top-up is leftmost and keeps its icon+label (unlike
+       the bare ghost icons next to it) with an accent tint so it still
+       reads as the one action worth calling out. GGBook also placed their
+       PromoCode and SteamTopup buttons here - both are GGBook-platform
+       features that require their server, so they are not part of this
+       port. *@
+    @if (UserOnlineDepositViewState.IsEnabled)
+    {
+        <HeaderUserMenuUserOnlineDeposit @onclick="ShowOnlineDeposits" />
+    }
+    <HeaderUserMenuActiveApps @onclick="UserMenuViewService.ToggleActiveApps" />
+    <HeaderUserMenuNotifications @onclick="UserMenuViewService.ToggleNotifications" />
+    @if (AssistanceRequestViewState.IsEnabled)
+    {
+        <HeaderUserMenuAssistance @onclick="UserMenuViewService.ToggleAssistanceRequests" />
+    }
+</div>

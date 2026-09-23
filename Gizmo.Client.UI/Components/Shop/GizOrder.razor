@@ -1,10 +1,14 @@
-﻿@namespace Gizmo.Client.UI.Components
+@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 @using System.Globalization
 
 <div class="giz-order">
     <div class="giz-order__items">
-        <div class="giz-order__items__header">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_ORDER_TITLE))</div>
+        <div class="giz-order__items__header">
+            <i class="ph-fill ph-shopping-cart-simple"></i>
+            <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_ORDER_TITLE))</span>
+            <span class="giz-order__items__header__count">@ClientServerCartViewService.ViewState.Products.Count()</span>
+        </div>
         <div class="giz-order__items__body giz-scrollbar--v">
             @if (ClientServerCartViewService.ViewState.Products.Count() > 0)
             {
@@ -19,24 +23,27 @@
             {
                 <div class="giz-no-order-wrapper">
                     <div class="giz-empty-state">
+                        <div class="giz-empty-state__icon"><i class="ph-bold ph-shopping-bag-open"></i></div>
                         <div class="giz-empty-state__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_NO_PRODUCTS_MESSAGE))</div>
                         <div class="giz-empty-state__text">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_NO_PRODUCTS_RETRY_MESSAGE))</div>
                     </div>
                 </div>
             }
         </div>
-        <div class="giz-order__items__footer">
-            <Button IsDisabled="@(ClientServerCartViewService.ViewState.Products.Count() == 0)"
-                    Variant="ButtonVariants.Text"
-                    Size="ButtonSizes.Small"
-                    LeftSVGIcon="Icons.Trash3_Client"
-                    Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CLEAR))"
-                    @onclick="@(() => Service.ClearUserCartProductsAsync())" />
-        </div>
     </div>
 
     <div class="giz-order__notes">
-        <div class="giz-order__notes__header">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_ORDER_NOTE))</div>
+        <div class="giz-order__notes__header">
+            <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_ORDER_NOTE))</span>
+            @if (ClientServerCartViewService.ViewState.Products.Count() > 0)
+            {
+                <Button Variant="ButtonVariants.Text"
+                        Size="ButtonSizes.Small"
+                        LeftSVGIcon="Icons.Trash3_Client"
+                        Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CLEAR))"
+                        @onclick="@(() => Service.ClearUserCartProductsAsync())" />
+            }
+        </div>
         <div class="giz-order__notes__body">
             <TextInput IsTransparent="true"
                        ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
@@ -60,16 +67,26 @@
                        UpdateOnInput="true"
                        IsFullWidth="true"
                        Placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_ORDER_PROMOCODE_PLACEHOLDER))" />
+            @* Outline, not the accent fill the order button uses - same fill+glow
+               on both meant this button and the real order button were
+               visually identical, and customers were clicking this one by
+               mistake. Also disabled until there's actually a code typed
+               in, rather than just re-running the same (failing) empty
+               apply on every click. *@
             @if (string.IsNullOrEmpty(ClientServerCartViewService.ViewState.PromoCodeViewState.PromoCode))
             {
                 <Button Size="ButtonSizes.ExtraLarge"
-                        IsDisabled="@(ClientServerCartViewService.ViewState.IsStateUpdateRequired || ClientServerCartViewService.ViewState.IsStateUpdating || ClientServerCartViewService.ViewState.PromoCodeViewState.IsLoading)"
+                        Variant="ButtonVariants.Outline"
+                        Color="ButtonColors.Accent"
+                        IsDisabled="@(ClientServerCartViewService.ViewState.IsStateUpdateRequired || ClientServerCartViewService.ViewState.IsStateUpdating || ClientServerCartViewService.ViewState.PromoCodeViewState.IsLoading || string.IsNullOrWhiteSpace(ClientServerCartViewService.ViewState.PromoCodeViewState.InputPromoCode))"
                         Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_APPLY_PROMOCODE))"
                         @onclick="@(() => ClientServerCartViewService.AddPromoCode(ClientServerCartViewService.ViewState.PromoCodeViewState.InputPromoCode))" />
             }
             else
             {
                 <Button Size="ButtonSizes.ExtraLarge"
+                        Variant="ButtonVariants.Outline"
+                        Color="ButtonColors.Accent"
                         IsDisabled="@(ClientServerCartViewService.ViewState.IsStateUpdateRequired || ClientServerCartViewService.ViewState.IsStateUpdating || ClientServerCartViewService.ViewState.PromoCodeViewState.IsLoading)"
                         LeftSVGIcon="Icons.Trash3_Client"
                         @onclick="@(() => ClientServerCartViewService.RemovePromoCode())" />

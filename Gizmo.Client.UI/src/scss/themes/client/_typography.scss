@@ -1,7 +1,13 @@
 //=============== Theme Client Typography ================//
 
-$font-family-header-theme-client: Rubik, sans-serif;
-$font-family-text-theme-client: 'Noto Sans', sans-serif;
+// Manrope for both headers and body text (Nexus Play brief, section 3) -
+// Rubik/Noto Sans stay loaded below as a fallback chain only, in case the
+// Google Fonts CDN is unreachable on a given club PC.
+$font-family-header-theme-client: 'Manrope', Rubik, sans-serif;
+$font-family-text-theme-client: 'Manrope', 'Noto Sans', sans-serif;
+// Numeric displays only (timer, prices, balance) - applied via
+// font-family-numeric-theme-client() below, not globally.
+$font-family-numeric-theme-client: 'Space Grotesk', 'Manrope', sans-serif;
 
 $font-weight-light-theme-client: 400;
 $font-weight-regular-theme-client: 500;
@@ -98,4 +104,10 @@ $font-weight-bold-theme-client: 700;
     font-size: 2.0rem;
     line-height: 3.0rem;
     letter-spacing: initial;
+}
+
+// Space Grotesk for numeric displays - timer, prices, balance.
+@mixin font-numeric-theme-client($font-weight: 600) {
+    font-family: $font-family-numeric-theme-client;
+    font-weight: $font-weight;
 }
