@@ -35,6 +35,10 @@
     {
         <span class="giz-ladder-level-row__chip">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_CURRENT))</span>
     }
+    else if (Item.IsProjected)
+    {
+        <span class="giz-ladder-level-row__chip @(Item.IsProjectedDown ? "giz-ladder-level-row__chip--projected-down" : "giz-ladder-level-row__chip--next")">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_PROJECTED))</span>
+    }
     else if (Item.IsNext)
     {
         <span class="giz-ladder-level-row__chip giz-ladder-level-row__chip--next">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_NEXT))</span>

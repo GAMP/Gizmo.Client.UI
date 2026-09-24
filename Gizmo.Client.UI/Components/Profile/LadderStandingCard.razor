@@ -22,11 +22,30 @@
                 {
                     <div class="giz-ladder-level__status">@ViewState.ProgressUpdatingText</div>
                 }
+                @if (ViewState.ShowFrozen)
+                {
+                    <div class="giz-ladder-level__status">@ViewState.FrozenText</div>
+                }
                 @if (ViewState.ShowScore)
                 {
                     <div class="giz-ladder-level__score">
                         <span class="giz-ladder-level__score-value">@ViewState.ScoreText</span>
                         <span class="giz-ladder-level__score-unit">@ViewState.ScoreUnitText</span>
+                        @if (ViewState.HasBreakdown)
+                        {
+                            <span class="giz-ladder-level__score-info" @onclick="OnBreakdownClick" @onclick:stopPropagation="true">
+                                <Icon SVGIcon="Icons.Info2_Client" Size="IconSizes.Small" />
+                            </span>
+                            <ProfileCardPopup WrapperClass="giz-ladder-score-popup-wrapper" ContentClass="giz-ladder-level-popup" @bind-IsOpen="_isBreakdownOpen">
+                                <div class="giz-ladder-level-popup__perks">
+                                    <div class="giz-ladder-level-popup__label">@ViewState.BreakdownLabelText</div>
+                                    @foreach (var text in ViewState.BreakdownTexts)
+                                    {
+                                        <div class="giz-ladder-level-popup__perk">@text</div>
+                                    }
+                                </div>
+                            </ProfileCardPopup>
+                        }
                     </div>
                 }
                 @if (ViewState.ShowStatusLine)
