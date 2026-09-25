@@ -1,0 +1,8 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<div class="@WrapperClass @(_isOpen ? "open" : "")" id="@Id" @ref="@Ref">
+    <div class="giz-dropdown-menu__content @ContentClass" @onclick="DoNothing" @onclick:stopPropagation="true">
+        @ChildContent
+    </div>
+</div>

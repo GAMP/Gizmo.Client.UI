@@ -1,0 +1,44 @@
+@namespace Gizmo.Client.UI.Pages
+@inherits CustomDOMComponentBase
+
+<div class="giz-profile giz-scrollbar--v">
+    <div class="giz-profile__body-wrapper">
+        <div class="giz-profile__body giz-profile__body--cards">
+            <ProfileHeader />
+
+            <ProfileNavigation />
+
+            <div class="giz-challenges">
+                <div class="giz-challenges__header">
+                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CHALLENGES))</span>
+                    @if (!ViewState.IsLoading && !ViewState.HasError)
+                    {
+                        <span class="giz-challenges__count">@ViewState.CompletedCountText</span>
+                    }
+                </div>
+
+                @if (ViewState.IsLoading)
+                {
+                    <div class="giz-challenges__status">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CHALLENGES_LOADING))</div>
+                }
+                else if (ViewState.HasError)
+                {
+                    <div class="giz-challenges__status giz-challenges__status--error">@ViewState.ErrorMessage</div>
+                }
+                else if (!ViewState.Challenges.Any())
+                {
+                    <div class="giz-challenges__status">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CHALLENGES_EMPTY))</div>
+                }
+                else
+                {
+                    <div class="giz-challenges__grid">
+                        @foreach (var item in ViewState.Challenges)
+                        {
+                            <ChallengeCard @key="item.ChallengeId" Item="@item" />
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

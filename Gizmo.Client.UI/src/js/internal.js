@@ -226,7 +226,7 @@ window.unregisterPopup = function unregisterPopup(element) {
     });
 
     if (objRefIndex > -1) {
-        registeredVideoComponents.splice(objRefIndex, 1);
+        registeredPopups.splice(objRefIndex, 1);
 
         //console.log('unregisterPopup');
         //console.log(element);
@@ -248,9 +248,12 @@ window.isPointWithinRect = function isPointWithinRect(
   return true;
 };
 
-window.closeOpenPopups = function closeOpenPopups(event) {
+window.closeOpenPopups = function closeOpenPopups(event, exceptSelector) {
     registeredPopups.forEach(function (value, index, array) {
         const popup = value.element;
+        if (exceptSelector && popup.matches(exceptSelector)) {
+            return;
+        }
         if (popup.classList.contains("open")) {
             var popupContent;
             if (popup.classList.contains("giz-client-popup")) {
@@ -290,8 +293,8 @@ window.addClosePopupEventListener = function addClosePopupEventListener(
   closePopupEventListenerReferences.push(objRef);
 };
 
-window.removeClosePopupEventEventListener =
-  function removeClosePopupEventEventListener(objRef) {
+window.removeClosePopupEventListener =
+  function removeClosePopupEventListener(objRef) {
     var index = findElementIndexById(closePopupEventListenerReferences, objRef);
     if (index > -1) {
       closePopupEventListenerReferences.splice(index, 1);
@@ -1031,6 +1034,11 @@ window.scrollListItemIntoView = function scrollListItemIntoView(element) {
 
         parent.parentElement.parentElement.scrollTop = eTop - pTop;
     }
+};
+//
+window.scrollElementIntoView = function scrollElementIntoView(element, block) {
+    if (element)
+        element.scrollIntoView({ block: block || 'center' });
 };
 //
 /*window.scrollDatePickerYear = function scrollDatePickerYear() {

@@ -1,0 +1,194 @@
+//=============== Page User Achievements ================//
+// shared card/popup chrome comes from components/_profile-cards (mixins)
+
+.giz-achievements {
+    margin-top: 4.0rem;
+
+    &__header {
+        margin-bottom: 2.4rem;
+        @include profile-section-title;
+    }
+
+    &__status {
+        @include profile-section-status;
+
+        &--error {
+            color: $typo-alert-theme-client;
+        }
+    }
+
+    &__grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.2rem;
+    }
+}
+
+.giz-achievement-card {
+    @include profile-card-chrome;
+    width: 14.2rem;
+    min-height: 20.8rem;
+    padding: 0.9rem 1.2rem;
+
+    // (i) — hidden by default, shown on hover / while the popup is open (Figma 77:11271)
+    &__info {
+        @include profile-card-info(0.9rem);
+    }
+
+    // hover, open popup, and the sticky deep-link highlight share one look
+    &:hover,
+    &--active,
+    &--highlighted {
+        @include profile-card-highlight('.giz-achievement-card__info');
+    }
+
+    // while the popup is open the card must stack above the cards that follow it in the grid,
+    // otherwise the popup (opening downwards) is painted under the next row
+    &--active {
+        z-index: $info-tooltip-index;
+    }
+
+    &__name {
+        margin-top: 1.0rem;
+        min-height: 4.4rem;
+        color: $typo-primary-theme-client;
+        text-align: center;
+        @include font-m-theme-client($font-weight-regular-theme-client);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    &__progress {
+        @include profile-progress-track(0.4rem, 0.2rem);
+        margin-top: 0.8rem;
+
+        &-fill {
+            @include profile-progress-fill(0.2rem);
+        }
+    }
+
+    &__standing {
+        margin-top: 0.8rem;
+        color: rgba(255, 255, 255, 0.6);
+        text-align: center;
+        @include font-s-theme-client($font-weight-light-theme-client);
+    }
+
+    // Figma 76:11553: tinted chip, fill 15 % / stroke 35 % / text in the success color
+    &__chip {
+        margin-top: 1.6rem;
+        padding: 0.2rem 0.8rem;
+        border-radius: 0.4rem;
+        background-color: rgba($typo-success-theme-client, 0.15);
+        border: 0.1rem solid rgba($typo-success-theme-client, 0.35);
+        color: $typo-success-theme-client;
+        @include font-s-theme-client($font-weight-regular-theme-client);
+    }
+
+    &--earned {
+        .giz-achievement-card__progress-fill {
+            background-color: $typo-success-theme-client;
+        }
+
+        .giz-achievement-card__standing {
+            color: $typo-success-theme-client;
+        }
+    }
+}
+
+.giz-achievement-tile {
+    position: relative;
+    width: 7.2rem;
+    height: 7.2rem;
+    margin-top: 0.6rem;
+    border-radius: 1.0rem;
+    overflow: visible;
+
+    &__image {
+        width: 100%;
+        height: 100%;
+        border-radius: 1.0rem;
+        object-fit: cover;
+    }
+
+    &__fallback {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        border-radius: 1.0rem;
+        background-color: rgba(255, 255, 255, 0.08);
+        color: $typo-secondary-theme-client;
+
+        .giz-icon {
+            width: 3.2rem;
+            height: 3.2rem;
+        }
+    }
+
+    // counter pill centered on the tile's top edge (Figma 77:11199: 28×20, y = -6)
+    &__count {
+        position: absolute;
+        top: -0.6rem;
+        left: 50%;
+        transform: translateX(-50%);
+        @include profile-count-pill;
+    }
+}
+
+.giz-achievement-popup {
+    @include profile-popup-box;
+    padding: 1.4rem 1.6rem;
+
+    // 8 cards per row at the 122.0rem body width (8 × 14.2rem + 7 × 1.2rem); (i) sits at
+    // top 0.9rem + 2.0rem + 0.4rem gap
+    &-wrapper {
+        @include profile-popup-wrapper(3.3rem, '.giz-achievement-card', 8);
+    }
+
+    &__description {
+        color: rgba(255, 255, 255, 0.7);
+        @include font-s-theme-client($font-weight-light-theme-client);
+        font-size: 1.3rem;
+    }
+
+    &__progress-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 0.8rem;
+    }
+
+    &__progress-label {
+        color: rgba(255, 255, 255, 0.5);
+        @include font-s-theme-client($font-weight-light-theme-client);
+    }
+
+    &__progress-value {
+        color: $typo-primary-theme-client;
+        @include font-s-theme-client($font-weight-bold-theme-client);
+        font-size: 1.3rem;
+    }
+
+    &__progress {
+        @include profile-progress-track(0.5rem, 0.25rem);
+
+        &-fill {
+            @include profile-progress-fill(0.25rem);
+        }
+    }
+
+    &__reset {
+        color: rgba(255, 255, 255, 0.4);
+        @include font-s-theme-client($font-weight-light-theme-client);
+    }
+
+    &__completed {
+        color: $typo-success-theme-client;
+        @include font-s-theme-client($font-weight-light-theme-client);
+        font-size: 1.3rem;
+    }
+}

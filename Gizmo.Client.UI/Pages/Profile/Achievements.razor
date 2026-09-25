@@ -1,0 +1,40 @@
+@namespace Gizmo.Client.UI.Pages
+@inherits CustomDOMComponentBase
+
+<div class="giz-profile giz-scrollbar--v">
+    <div class="giz-profile__body-wrapper">
+        <div class="giz-profile__body giz-profile__body--cards">
+            <ProfileHeader />
+
+            <ProfileNavigation />
+
+            <div class="giz-achievements">
+                <div class="giz-achievements__header">
+                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_ACHIEVEMENTS))
+                </div>
+
+                @if (ViewState.IsLoading)
+                {
+                    <div class="giz-achievements__status">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_ACHIEVEMENTS_LOADING))</div>
+                }
+                else if (ViewState.HasError)
+                {
+                    <div class="giz-achievements__status giz-achievements__status--error">@ViewState.ErrorMessage</div>
+                }
+                else if (!ViewState.Achievements.Any())
+                {
+                    <div class="giz-achievements__status">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_ACHIEVEMENTS_EMPTY))</div>
+                }
+                else
+                {
+                    <div class="giz-achievements__grid">
+                        @foreach (var item in ViewState.Achievements)
+                        {
+                            <AchievementCard @key="item.AchievementId" Item="@item" />
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

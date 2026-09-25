@@ -30,6 +30,28 @@
         </div>
     }
 
+    @if (!ViewState.IsGuest)
+    {
+        <div class="giz-profile-navigation-item">
+            <NavLink href="@ClientRoutes.UserLadderRoute" Match="NavLinkMatch.All">
+                <Icon SVGIcon="Icons.Ladder_Client" />
+                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER))
+            </NavLink>
+        </div>
+        <div class="giz-profile-navigation-item">
+            <NavLink href="@ClientRoutes.UserAchievementsRoute" Match="NavLinkMatch.All">
+                <Icon SVGIcon="Icons.Trophy_Client" />
+                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_ACHIEVEMENTS))
+            </NavLink>
+        </div>
+        <div class="giz-profile-navigation-item">
+            <NavLink href="@ClientRoutes.UserChallengesRoute" Match="NavLinkMatch.All">
+                <Icon SVGIcon="Icons.Challenges_Client" />
+                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CHALLENGES))
+            </NavLink>
+        </div>
+    }
+
     @*<div class="giz-profile-navigation-item">
         <NavLink href="@ClientRoutes.UserDepositsRoute" Match="NavLinkMatch.All">
             <Icon SVGIcon="Icons.WiFi_Client" />

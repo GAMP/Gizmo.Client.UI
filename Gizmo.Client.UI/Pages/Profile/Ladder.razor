@@ -1,0 +1,41 @@
+@namespace Gizmo.Client.UI.Pages
+@inherits CustomDOMComponentBase
+
+<div class="giz-profile giz-scrollbar--v">
+    <div class="giz-profile__body-wrapper">
+        <div class="giz-profile__body giz-profile__body--cards">
+            <ProfileHeader />
+
+            <ProfileNavigation />
+
+            <div class="giz-ladder">
+                <div class="giz-ladder__header">
+                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER))</span>
+                </div>
+
+                @if (ViewState.IsLoading)
+                {
+                    <div class="giz-ladder__status">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_LOADING))</div>
+                }
+                else if (ViewState.HasError)
+                {
+                    <div class="giz-ladder__status giz-ladder__status--error">@ViewState.ErrorMessage</div>
+                }
+                else if (!ViewState.HasStanding)
+                {
+                    <div class="giz-ladder__status">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_EMPTY))</div>
+                }
+                else
+                {
+                    <div class="giz-ladder__content">
+                        <LadderStandingCard />
+
+                        <ProfileCardPopup WrapperClass="giz-ladder-history-wrapper" ContentClass="giz-ladder-history" IsOpen="@ViewState.HasSelection" IsOpenChanged="OnHistoryOpenChanged">
+                            <LadderHistoryCard />
+                        </ProfileCardPopup>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

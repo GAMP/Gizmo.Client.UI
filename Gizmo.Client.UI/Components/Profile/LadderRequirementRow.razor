@@ -1,0 +1,34 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using Gizmo.Client.UI.View.States
+
+<div class="giz-ladder-requirement-row">
+    <span class="giz-ladder-requirement-row__check">
+        <Icon SVGIcon="@(Item.IsMet ? Icons.CheckCircle_Client : Icons.Circle_Client)" />
+    </span>
+    @if (Item.IsLink)
+    {
+        <NavLink class="giz-ladder-requirement-row__name giz-ladder-requirement-row__name--link" href="@($"{ClientRoutes.UserAchievementsRoute}?AchievementId={Item.AchievementId}")">@Item.Name</NavLink>
+    }
+    else
+    {
+        <span class="giz-ladder-requirement-row__name @(Item.IsMet ? "giz-ladder-requirement-row__name--met" : "")">@Item.Name</span>
+    }
+    @if (!string.IsNullOrEmpty(Item.CountText) || !string.IsNullOrEmpty(Item.ValueText))
+    {
+        <span class="giz-ladder-requirement-row__progress">
+            @if (!string.IsNullOrEmpty(Item.CountText))
+            {
+                <span class="giz-ladder-requirement-row__count">@Item.CountText</span>
+            }
+            @if (!string.IsNullOrEmpty(Item.CountText) && !string.IsNullOrEmpty(Item.ValueText))
+            {
+                <span class="giz-ladder-requirement-row__dot">·</span>
+            }
+            @if (!string.IsNullOrEmpty(Item.ValueText))
+            {
+                <span class="giz-ladder-requirement-row__value">@Item.ValueText</span>
+            }
+        </span>
+    }
+</div>
