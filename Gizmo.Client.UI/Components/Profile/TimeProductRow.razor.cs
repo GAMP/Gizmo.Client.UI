@@ -2,17 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Api.Models;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
-using ShellText = Gizmo.Client.UI.Localization.ShellStringOverrides;
 
 namespace Gizmo.Client.UI.Components
 {
     public partial class TimeProductRow : CustomDOMComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         protected int? Order => Product.ActivationOrder;
 
         protected bool IsCurrent => Order == 1;
@@ -70,31 +73,31 @@ namespace Gizmo.Client.UI.Components
                 {
                     var unit = time.ExpireAfterType switch
                     {
-                        ExpireAfterType.Day => ShellText.EXPIRE_DAYS_ABBR,
-                        ExpireAfterType.Hour => ShellText.EXPIRE_HOURS_ABBR,
-                        _ => ShellText.EXPIRE_MINUTES_ABBR,
+                        ExpireAfterType.Day => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_DAYS_ABBREVIATED),
+                        ExpireAfterType.Hour => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_HOURS_ABBREVIATED),
+                        _ => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_MINUTES_ABBREVIATED),
                     };
                     var fromUse = time.ExpireFromOptions == ExpireFromOptionType.Use;
-                    var span = $"{time.ExpiresAfter} {ShellText.Get(unit)}";
-                    var from = ShellText.Get(fromUse ? ShellText.TIME_EXPIRES_FROM_USE : ShellText.TIME_EXPIRES_FROM_PURCHASE, span);
+                    var span = $"{time.ExpiresAfter} {GrafitLocalization.GetString(unit)}";
+                    var from = GrafitLocalization.GetString(fromUse ? nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PROPERTIES_EXPIRES_FROM_USE) : nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PROPERTIES_EXPIRES_FROM_PURCHASE), span);
 
-                    parts.Add(ShellText.Get(ShellText.PD_EXPIRES_AFTER, from));
+                    parts.Add(GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PD_EXPIRES_AFTER, from));
 
                     var started = fromUse ? Product.FirstUsageTime : Product.PurchaseTime;
                     if (started.HasValue)
-                        parts.Add(ShellText.Get(ShellText.TIME_ACTIVATED, started.Value.ToLocalTime().ToString("g", culture)));
+                        parts.Add(GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PROPERTIES_EXPIRES_ACTIVATED), started.Value.ToLocalTime().ToString("g", culture)));
                 }
                 else if (options.HasFlag(ProductTimeExpirationOptionType.ExpireAtDayTime))
                 {
                     var at = DateTime.Today.AddMinutes(time.ExpireAtDayTimeMinute).ToString("t", culture);
-                    parts.Add(ShellText.Get(ShellText.PD_EXPIRES_AT_DAYTIME, at));
+                    parts.Add(GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PD_EXPIRES_AT_DAYTIME, at));
                 }
 
                 if (options.HasFlag(ProductTimeExpirationOptionType.ExpiresAtLogout))
-                    parts.Add(ShellText.Get(ShellText.PD_EXPIRES_AT_LOGOUT));
+                    parts.Add(GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PD_EXPIRES_AT_LOGOUT));
 
                 return parts.Count == 0
-                    ? ShellText.Get(ShellText.ACCOUNT_EXPIRES_NEVER)
+                    ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_EXPIRES_NEVER)
                     : string.Join(" · ", parts);
             }
         }

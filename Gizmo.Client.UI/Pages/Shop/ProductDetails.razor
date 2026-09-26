@@ -7,7 +7,7 @@
 
             <button type="button" class="giz-product-page__back" @onclick="OnClickBackButtonHandler">
                 <i class="ph-bold ph-arrow-left"></i>
-                <span>@ShellText.Get(ShellText.GEN_BACK)</span>
+                <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BACK))</span>
             </button>
 
             @if (Product is not null)
@@ -63,7 +63,7 @@
                                 <div class="giz-product-page__fact">
                                     <i class="ph ph-desktop"></i>
                                     <div>
-                                        <small>@ShellText.Get(ShellText.PD_WHERE)</small>
+                                        <small>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PD_WHERE)</small>
                                         <ProductTimeHostGroups @key="ProductId" Product="@Product" />
                                     </div>
                                 </div>
@@ -73,18 +73,18 @@
                                     <div class="giz-product-page__fact">
                                         <i class="ph ph-hourglass-low"></i>
                                         <div>
-                                            <small>@ShellText.Get(ShellText.PRODUCT_EXPIRY)</small>
+                                            <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRES))</small>
                                             @if (TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAtDayTime))
                                             {
-                                                <b>@ShellText.Get(ShellText.PD_EXPIRES_AT_DAYTIME, ProductHelpers.GetDayTimeFromMinute(TimeProduct.ExpireAtDayTimeMinute))</b>
+                                                <b>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PD_EXPIRES_AT_DAYTIME, ProductHelpers.GetDayTimeFromMinute(TimeProduct.ExpireAtDayTimeMinute))</b>
                                             }
                                             @if (TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAfterTime))
                                             {
-                                                <b>@ShellText.Get(ShellText.PD_EXPIRES_AFTER, ProductHelpers.GetExpiresAfterText(TimeProduct, LocalizationService))</b>
+                                                <b>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PD_EXPIRES_AFTER, ProductHelpers.GetExpiresAfterText(TimeProduct, LocalizationService))</b>
                                             }
                                             @if (TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpiresAtLogout))
                                             {
-                                                <b>@ShellText.Get(ShellText.PD_EXPIRES_AT_LOGOUT)</b>
+                                                <b>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PD_EXPIRES_AT_LOGOUT)</b>
                                             }
                                         </div>
                                     </div>
@@ -96,7 +96,7 @@
                                 <div class="giz-product-page__fact">
                                     <i class="ph ph-shopping-cart-simple"></i>
                                     <div>
-                                        <small>@ShellText.Get(ShellText.PRODUCT_BUY_WINDOW)</small>
+                                        <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_BUYING_TIME))</small>
                                         @foreach (var line in ProductHelpers.GetPurchaseAvailabilities(Product, !_showMore, LocalizationService))
                                         {
                                             <b>@line</b>
@@ -110,7 +110,7 @@
                                 <div class="giz-product-page__fact">
                                     <i class="ph ph-play-circle"></i>
                                     <div>
-                                        <small>@ShellText.Get(ShellText.PRODUCT_USE_WINDOW)</small>
+                                        <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_ACTION_TIME))</small>
                                         @foreach (var line in ProductHelpers.GetUsageAvailabilities(Product, !_showMore, LocalizationService))
                                         {
                                             <b>@line</b>
@@ -122,7 +122,7 @@
                             @if (HasMoreAvailability)
                             {
                                 <button type="button" class="giz-product-page__more" @onclick="ToggleMore">
-                                    <span>@ShellText.Get(_showMore ? ShellText.PRODUCT_LESS : ShellText.PRODUCT_MORE)</span>
+                                    <span>@GrafitLocalization.GetString(_showMore ? nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_DETAILS_LESS) : nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_DETAILS_MORE))</span>
                                     <i class="ph-bold @(_showMore ? "ph-caret-up" : "ph-caret-down")"></i>
                                 </button>
                             }
@@ -133,7 +133,7 @@
                 @if (!string.IsNullOrWhiteSpace(Product.Description))
                 {
                     <section class="giz-product-page__about">
-                        <div class="giz-caption giz-caption--rule"><span>@ShellText.Get(ShellText.PD_ABOUT)</span><span class="giz-caption__rule"></span></div>
+                        <div class="giz-caption giz-caption--rule"><span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PD_ABOUT)</span><span class="giz-caption__rule"></span></div>
                         <p class="giz-product-page__desc">@Product.Description</p>
                     </section>
                 }
@@ -141,7 +141,7 @@
                 @if (IsBundle && Product.BundledProducts.Any())
                 {
                     <section class="giz-product-page__bundle">
-                        <div class="giz-caption giz-caption--rule"><span>@ShellText.Get(ShellText.PD_INCLUDES)</span><span class="giz-caption__rule"></span></div>
+                        <div class="giz-caption giz-caption--rule"><span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PD_INCLUDES)</span><span class="giz-caption__rule"></span></div>
                         <div class="giz-product-page__bundle-row">
                             @foreach (var bundled in Product.BundledProducts)
                             {
@@ -154,7 +154,7 @@
                 @if (CanPurchase && ViewState.RelatedProducts != null && ViewState.RelatedProducts.Any())
                 {
                     <section class="giz-product-page__related">
-                        <div class="giz-caption giz-caption--rule"><span>@ShellText.Get(ShellText.SHOP_RELATED)</span><span class="giz-caption__rule"></span></div>
+                        <div class="giz-caption giz-caption--rule"><span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_RELATED_PRODUCTS))</span><span class="giz-caption__rule"></span></div>
                         <div class="giz-product-page__related-row">
                             @foreach (var related in ViewState.RelatedProducts)
                             {

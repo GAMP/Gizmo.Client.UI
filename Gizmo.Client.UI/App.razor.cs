@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
-using Gizmo.Client.UI.Localization;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI;
@@ -26,8 +26,8 @@ public partial class App : ComponentBase, IDisposable
     [Inject] private JSInteropService JSInteropService { get; set; }
     [Inject] private ILocalizationService LocalizationService { get; set; }
     [Inject] private ClientLocalizationViewState LocalizationViewState { get; set; }
-    [Inject] private IServiceProvider ServiceProvider { get; set; }
-    [Inject] private IClientNotificationService NotificationService { get; set; }
+
+    protected GrafitLocalizationService GrafitLocalization { get; private set; }
 
     #endregion
 
@@ -35,7 +35,7 @@ public partial class App : ComponentBase, IDisposable
     {
         JSRuntimeService.AssociateJSRuntime(JSRuntime);
         NavigationService.AssociateNavigationManager(NavigationManager);
-        ShellStringOverrides.Associate(LocalizationService);
+        GrafitLocalization = new GrafitLocalizationService(LocalizationService);
 
         LocalizationViewState.OnChange += OnCultureChanged;
     }
@@ -52,8 +52,6 @@ public partial class App : ComponentBase, IDisposable
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    /// <summary>
-    /// </summary>
     private async Task PublishAccentAsync()
     {
         try
@@ -69,8 +67,6 @@ public partial class App : ComponentBase, IDisposable
         }
     }
 
-    /// <summary>
-    /// </summary>
     private Task ApplyDocumentDirectionAsync()
     {
         var direction = CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? "rtl" : "ltr";

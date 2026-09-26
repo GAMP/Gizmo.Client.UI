@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -7,25 +8,25 @@ using Gizmo.Web.Api.Models;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 
-using ShellText = Gizmo.Client.UI.Localization.ShellStringOverrides;
-
 namespace Gizmo.Client.UI.Pages
 {
     [Route(ClientRoutes.UserPurchasesRoute)]
     public partial class Purchases : CustomDOMComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         protected bool HasOrders => ViewState.Orders.Any();
 
         protected static bool IsVoided(UserOrderViewState order) => order.Invoice?.IsVoided == true;
 
         protected static string StatusKey(UserOrderViewState order) => IsVoided(order)
-            ? ShellText.ORDER_STATUS_VOIDED
+            ? nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_STATUS_VOIDED)
             : order.OrderStatus switch
             {
-                OrderStatus.Completed => ShellText.ORDER_STATUS_COMPLETED,
-                OrderStatus.Accepted => ShellText.ORDER_STATUS_ACCEPTED,
-                OrderStatus.Canceled => ShellText.ORDER_STATUS_CANCELED,
-                _ => ShellText.ORDER_STATUS_ON_HOLD,
+                OrderStatus.Completed => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_STATUS_COMPLETED),
+                OrderStatus.Accepted => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_STATUS_ACCEPTED),
+                OrderStatus.Canceled => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_STATUS_CANCELED),
+                _ => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_STATUS_ON_HOLD),
             };
 
         protected static string StatusClass(UserOrderViewState order) => IsVoided(order)
@@ -40,8 +41,8 @@ namespace Gizmo.Client.UI.Pages
 
         protected static string PaymentKey(UserOrderViewState order) => order.Invoice?.PaymentStatus switch
         {
-            InvoiceStatus.Unpaid => ShellText.INVOICE_UNPAID,
-            InvoiceStatus.PartiallyPaid => ShellText.INVOICE_PARTIALLY_PAID,
+            InvoiceStatus.Unpaid => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_INVOICE_STATUS_UNPAID),
+            InvoiceStatus.PartiallyPaid => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_INVOICE_STATUS_PARTIALLY_PAID),
             _ => null,
         };
 

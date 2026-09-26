@@ -1,4 +1,5 @@
-using Gizmo.Client.UI.Localization;
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
@@ -12,6 +13,8 @@ namespace Gizmo.Client.UI.Shared
 {
     public partial class TopBarReservation : ShellComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         #region FIELDS
 
         private static readonly TimeSpan COUNTDOWN_INTERVAL = TimeSpan.FromSeconds(30);
@@ -48,17 +51,17 @@ namespace Gizmo.Client.UI.Shared
             }
         }
 
-        private static string FormatSpan(TimeSpan span)
+        private string FormatSpan(TimeSpan span)
         {
             var hours = (int)span.TotalHours;
             var minutes = span.Minutes;
 
             if (hours > 0)
                 return minutes > 0
-                    ? ShellStringOverrides.Get(ShellStringOverrides.DURATION_HOURS_MINUTES, hours, minutes)
-                    : ShellStringOverrides.Get(ShellStringOverrides.DURATION_HOURS, hours);
+                    ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DURATION_HOURS_MINUTES, hours, minutes)
+                    : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DURATION_HOURS, hours);
 
-            return ShellStringOverrides.Get(ShellStringOverrides.DURATION_MINUTES, Math.Max(minutes, 1));
+            return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DURATION_MINUTES, Math.Max(minutes, 1));
         }
 
         #endregion

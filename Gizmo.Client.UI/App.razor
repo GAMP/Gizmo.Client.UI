@@ -1,17 +1,19 @@
 ﻿@inherits ComponentBase;
 
-<Router AppAssembly="@ComponentDiscoveryService.AppAssembly" AdditionalAssemblies="@ComponentDiscoveryService.AdditionalAssemblies">
-    <NotFound>
-        <Gizmo.Client.UI.Pages.NotFoundPage />
-    </NotFound>
-    <Found Context="routeData">
-        <ErrorBoundary>
-            <ChildContent>
-                <RouteView RouteData="@routeData" DefaultLayout="@typeof(_Layout)" />
-            </ChildContent>
-            <ErrorContent>
-                <Gizmo.Client.UI.Pages.CriticalErrorPage />
-            </ErrorContent>
-        </ErrorBoundary>
-    </Found>
-</Router>
+<CascadingValue Value="@GrafitLocalization" IsFixed="true">
+    <Router AppAssembly="@ComponentDiscoveryService.AppAssembly" AdditionalAssemblies="@ComponentDiscoveryService.AdditionalAssemblies">
+        <NotFound>
+            <Gizmo.Client.UI.Pages.NotFoundPage />
+        </NotFound>
+        <Found Context="routeData">
+            <ErrorBoundary>
+                <ChildContent>
+                    <RouteView RouteData="@routeData" DefaultLayout="@typeof(_Layout)" />
+                </ChildContent>
+                <ErrorContent>
+                    <Gizmo.Client.UI.Pages.CriticalErrorPage />
+                </ErrorContent>
+            </ErrorBoundary>
+        </Found>
+    </Router>
+</CascadingValue>

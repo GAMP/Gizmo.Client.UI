@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -11,6 +12,8 @@ namespace Gizmo.Client.UI.Pages
     [Route(ClientRoutes.ProductDetailsRoute)]
     public partial class ProductDetails : CustomDOMComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         protected UserProductViewState Product => ViewState.Product;
 
         protected bool IsTime => Product?.ProductType == ProductType.ProductTime;

@@ -6,8 +6,8 @@
     <section class="giz-account-card giz-account-card--list">
         <div class="giz-account-card__head">
             <i class="ph-fill ph-hourglass-medium"></i>
-            <h2>@ShellText.Get(ShellText.TIME_PRODUCTS_TITLE)</h2>
-            <span class="giz-account-card__hint">@ShellText.Get(ShellText.ACCOUNT_TIME_HINT)</span>
+            <h2>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_TITLE))</h2>
+            <span class="giz-account-card__hint">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_TIME_HINT)</span>
         </div>
 
         @if (ViewState.IsInitializing)
@@ -25,8 +25,8 @@
             {
                 <div class="giz-account-card__empty">
                     <i class="ph ph-hourglass"></i>
-                    <b>@ShellText.Get(ShellText.ACCOUNT_NO_TIME)</b>
-                    <span>@ShellText.Get(ShellText.ACCOUNT_NO_TIME_HINT)</span>
+                    <b>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_NO_TIME)</b>
+                    <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_NO_TIME_HINT)</span>
                 </div>
             }
             else

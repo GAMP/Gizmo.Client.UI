@@ -8,13 +8,13 @@
 
         @if (Hero == HeroKind.Banner && CurrentBanner is { } banner)
         {
-            <section class="giz-home-hero giz-home-hero--news" aria-label="@ShellText.Get(ShellText.HERO_PROMOS)" @key="@($"b{banner.Id}")">
+            <section class="giz-home-hero giz-home-hero--news" aria-label="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HERO_PROMOS)" @key="@($"b{banner.Id}")">
                 <AdsCarouselItem @key="@banner.Id" AdvertisementId="@banner.Id" SimpleMode="true" />
             </section>
         }
         else if (Hero == HeroKind.App && CurrentHeroApp is { } app)
         {
-            <section class="giz-home-hero giz-home-hero--app" aria-label="@ShellText.Get(ShellText.HERO_POPULAR)" @key="@($"a{app.ApplicationId}")">
+            <section class="giz-home-hero giz-home-hero--app" aria-label="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HERO_POPULAR)" @key="@($"a{app.ApplicationId}")">
                 <div class="giz-home-hero__bg">
                     <GizImage @key="app.ApplicationId" ImageType="Gizmo.UI.ImageType.Application" ImageId="@app.ImageId" ImageFitType="ImageFitType.Cover">
                         <EmptyResultPlaceholder><div class="giz-default-image"></div></EmptyResultPlaceholder>
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="giz-home-hero__body">
-                    <div class="giz-home-hero__kick">@ShellText.Get(ShellText.HERO_POPULAR)</div>
+                    <div class="giz-home-hero__kick">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HERO_POPULAR)</div>
                     <div class="giz-home-hero__title">@app.Title</div>
                     <div class="giz-home-hero__launch" style="--giz-play-label: '@LaunchLabel'">
                         @foreach (var exe in HeroExecutables(app.ApplicationId))
@@ -51,7 +51,7 @@
                         @if (!AppDetailsPageViewState.DisableAppDetails)
                         {
                             <button type="button" class="giz-home-hero__more" @onclick="@(() => OpenApp(app.ApplicationId))">
-                                <span>@ShellText.Get(ShellText.GEN_DETAILS)</span><i class="ph-bold ph-arrow-right"></i>
+                                <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_DETAILS))</span><i class="ph-bold ph-arrow-right"></i>
                             </button>
                         }
                     </div>
@@ -60,7 +60,7 @@
         }
         else if (Hero == HeroKind.Product && CurrentHeroProduct is { } featured)
         {
-            <section class="giz-home-hero giz-home-hero--goods" aria-label="@ShellText.Get(ShellText.HERO_POPULAR)" @key="@($"p{featured.Id}")">
+            <section class="giz-home-hero giz-home-hero--goods" aria-label="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HERO_POPULAR)" @key="@($"p{featured.Id}")">
                 <div class="giz-home-hero__bg">
                     <GizImage @key="featured.Id" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@featured.DefaultImageId" ImageFitType="ImageFitType.Cover">
                         <EmptyResultPlaceholder><div class="giz-default-image"></div></EmptyResultPlaceholder>
@@ -85,11 +85,11 @@
                 </div>
 
                 <div class="giz-home-hero__body">
-                    <div class="giz-home-hero__kick">@ShellText.Get(ShellText.HERO_POPULAR)</div>
+                    <div class="giz-home-hero__kick">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HERO_POPULAR)</div>
                     <div class="giz-home-hero__title">@featured.Name</div>
                     <div class="giz-home-hero__price">@featured.UnitPrice.ToString("C", CultureInfo.CurrentCulture)</div>
                     <button type="button" class="giz-home-hero__cta" @onclick="@(() => AddToCart(featured.Id))">
-                        <i class="ph-bold ph-shopping-bag"></i><span>@ShellText.Get(ShellText.GEN_ADD_TO_CART)</span>
+                        <i class="ph-bold ph-shopping-bag"></i><span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ADD_TO_CART))</span>
                     </button>
                 </div>
             </section>
@@ -97,7 +97,7 @@
         else
         {
             <section class="giz-home-hero giz-home-hero--empty">
-                <div class="giz-home-hero__empty-note">@ShellText.Get(ShellText.HERO_EMPTY)</div>
+                <div class="giz-home-hero__empty-note">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HERO_EMPTY)</div>
             </section>
         }
 
@@ -116,11 +116,11 @@
             </div>
         }
 
-        <section class="giz-home-strip" aria-label="@ShellText.Get(ShellText.HOME_GAMES_SECTION)">
+        <section class="giz-home-strip" aria-label="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_GAMES_SECTION)">
             <div class="giz-caption giz-caption--rule">
-                <span>@ShellText.Get(ShellText.POPULAR_APPS)</span>
+                <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_POPULAR_APPS))</span>
                 <span class="giz-caption__rule"></span>
-                <a href="@ClientRoutes.ApplicationsRoute">@ShellText.Get(ShellText.ALL_APPS)</a>
+                <a href="@ClientRoutes.ApplicationsRoute">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APP_FILTERS_ALL_APPS))</a>
             </div>
 
             @if (StripApps.Count > 0)
@@ -134,15 +134,15 @@
             }
             else
             {
-                <div class="giz-home-empty">@ShellText.Get(ShellText.GEN_EMPTY)</div>
+                <div class="giz-home-empty">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GEN_EMPTY)</div>
             }
         </section>
     </div>
 
-    <aside class="giz-home-till" aria-label="@ShellText.Get(ShellText.PURCHASES)">
+    <aside class="giz-home-till" aria-label="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES))">
 
         <div class="giz-home-wallet">
-            <div class="giz-caption">@ShellText.Get(ShellText.GEN_BALANCE)</div>
+            <div class="giz-caption">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BALANCE))</div>
             <div class="giz-home-wallet__row">
                 <span class="giz-home-wallet__sum">@UserBalanceViewState.Balance.ToString("C", CultureInfo.CurrentCulture)</span>
             </div>
@@ -150,9 +150,9 @@
 
         <div class="giz-home-till__sec giz-home-till__sec--packs">
             <div class="giz-caption giz-caption--rule">
-                <span>@ShellText.Get(ShellText.HOME_TIME_PACKAGES)</span>
+                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_TIME_PACKAGES)</span>
                 <span class="giz-caption__rule"></span>
-                <a href="@ClientRoutes.ShopRoute">@ShellText.Get(ShellText.GEN_ALL)</a>
+                <a href="@ClientRoutes.ShopRoute">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ALL))</a>
             </div>
 
             @if (TimeProducts.Any())
@@ -175,7 +175,7 @@
                             <button type="button" class="giz-home-buy"
                                     disabled="@(_buyingProductId.HasValue)"
                                     @onclick="@(() => BuyPackage(product.Id))">
-                                @ShellText.Get(_buyingProductId == product.Id ? ShellText.GEN_WORKING : ShellText.GEN_BUY)
+                                @GrafitLocalization.GetString(_buyingProductId == product.Id ? GrafitResourceKeys.SHELL_GEN_WORKING : GrafitResourceKeys.SHELL_GEN_BUY)
                             </button>
                         </article>
                     }
@@ -183,15 +183,15 @@
             }
             else
             {
-                <div class="giz-home-empty giz-home-empty--small">@ShellText.Get(ShellText.HOME_NO_PACKAGES)</div>
+                <div class="giz-home-empty giz-home-empty--small">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_NO_PACKAGES)</div>
             }
         </div>
 
         <div class="giz-home-till__sec giz-home-till__sec--bar">
             <div class="giz-caption giz-caption--rule">
-                <span>@ShellText.Get(ShellText.HOME_BAR)</span>
+                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_BAR)</span>
                 <span class="giz-caption__rule"></span>
-                <a href="@ClientRoutes.ShopRoute">@ShellText.Get(ShellText.HOME_WHOLE_SHOP)</a>
+                <a href="@ClientRoutes.ShopRoute">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_WHOLE_SHOP)</a>
             </div>
 
             @if (BarProducts.Count > 0)
@@ -216,7 +216,7 @@
                             </span>
                             <span class="giz-home-bar__name" @onclick="@(() => OpenProduct(product.Id))">@product.Name</span>
                             <span class="giz-home-bar__price">@product.UnitPrice.ToString("C", CultureInfo.CurrentCulture)</span>
-                            <button type="button" class="giz-home-bar__add" title="@ShellText.Get(ShellText.GEN_ADD_TO_CART)"
+                            <button type="button" class="giz-home-bar__add" title="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ADD_TO_CART))"
                                     @onclick="@(() => AddToCart(product.Id))">
                                 <i class="ph-bold ph-plus"></i>
                             </button>
@@ -226,7 +226,7 @@
             }
             else
             {
-                <div class="giz-home-empty giz-home-empty--small">@ShellText.Get(ShellText.GEN_EMPTY)</div>
+                <div class="giz-home-empty giz-home-empty--small">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GEN_EMPTY)</div>
             }
         </div>
     </aside>

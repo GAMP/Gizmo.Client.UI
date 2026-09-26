@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 
 using Gizmo.Client.Options;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -16,6 +17,8 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class ProductQuantityPicker : ShellComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         private UserProductViewState _product;
 
         private UserCartProductViewState _userCartProductViewState;

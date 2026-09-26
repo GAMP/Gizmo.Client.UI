@@ -1,4 +1,5 @@
-using Gizmo.Client.UI.Localization;
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -64,6 +65,7 @@ namespace Gizmo.Client.UI.Components
         [Inject] protected UserOnlineDepositViewState OnlineDepositViewState { get; set; }
         [Inject] protected UserOnlineDepositViewService OnlineDepositService { get; set; }
         [Inject] protected IGizmoClient GizmoClient { get; set; }
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
 
         [Parameter] public DialogDisplayOptions DisplayOptions { get; set; }
         [Parameter] public EventCallback DismissCallback { get; set; }
@@ -163,14 +165,14 @@ namespace Gizmo.Client.UI.Components
 
                         case PayWayKind.Counter when !CounterIsGrouped:
                             cells.Add(new PaySegment(way.Kind, way, way.Name,
-                                ShellStringOverrides.Get(ShellStringOverrides.BUY_AT_COUNTER_NOTE), false, false, IsSelected(way)));
+                                GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_AT_COUNTER_NOTE), false, false, IsSelected(way)));
                             break;
 
                         case PayWayKind.Counter when cells.All(a => a.Kind != PayWayKind.Counter):
                             var chosen = SelectedWay?.Kind == PayWayKind.Counter ? SelectedWay : null;
                             cells.Add(new PaySegment(way.Kind, null,
-                                ShellStringOverrides.Get(ShellStringOverrides.BUY_AT_COUNTER),
-                                chosen?.Name ?? ShellStringOverrides.Get(ShellStringOverrides.BUY_AT_COUNTER_NOTE),
+                                GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_AT_COUNTER),
+                                chosen?.Name ?? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_AT_COUNTER_NOTE),
                                 false, false, chosen is not null));
                             break;
                     }
@@ -210,12 +212,12 @@ namespace Gizmo.Client.UI.Components
 
         protected string SingleWayNote(PayWay way) => way.Kind switch
         {
-            PayWayKind.Balance => ShellStringOverrides.Get(ShellStringOverrides.BUY_ON_ACCOUNT, Money(Balance)),
-            PayWayKind.Points => ShellStringOverrides.Get(ShellStringOverrides.BUY_YOU_HAVE, PointsWithUnit(PointsBalance)),
-            _ => ShellStringOverrides.Get(ShellStringOverrides.BUY_WAY_COUNTER_HINT),
+            PayWayKind.Balance => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_ON_ACCOUNT, Money(Balance)),
+            PayWayKind.Points => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_YOU_HAVE, PointsWithUnit(PointsBalance)),
+            _ => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_WAY_COUNTER_HINT),
         };
 
-        protected string WaysCaption => ShellStringOverrides.Get(ShellStringOverrides.BUY_PAY_WITH);
+        protected string WaysCaption => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_PAY_WITH);
 
         protected async Task LoadWaysAsync()
         {
@@ -239,10 +241,10 @@ namespace Gizmo.Client.UI.Components
             var deposit = methods.FirstOrDefault(a => a.Id == DEPOSIT_PAYMENT_METHOD_ID);
 
             if (deposit is not null)
-                _ways.Add(new PayWay(PayWayKind.Balance, deposit.Id, ShellStringOverrides.Get(ShellStringOverrides.BUY_WAY_BALANCE)));
+                _ways.Add(new PayWay(PayWayKind.Balance, deposit.Id, GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_WAY_BALANCE)));
 
             if (OffersPoints)
-                _ways.Add(new PayWay(PayWayKind.Points, null, ShellStringOverrides.Get(ShellStringOverrides.BUY_WAY_POINTS)));
+                _ways.Add(new PayWay(PayWayKind.Points, null, GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_WAY_POINTS)));
 
             foreach (var method in methods.Where(a => a.Id != DEPOSIT_PAYMENT_METHOD_ID))
                 _ways.Add(new PayWay(PayWayKind.Counter, method.Id, method.Name));
@@ -373,20 +375,20 @@ namespace Gizmo.Client.UI.Components
             get
             {
                 if (IsFree)
-                    return ShellStringOverrides.Get(ShellStringOverrides.BUY_GET_FREE);
+                    return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_GET_FREE);
 
                 if (PrimaryIsTopUp)
                     return CanTopUp
-                        ? ShellStringOverrides.Get(ShellStringOverrides.BUY_TOP_UP_BY, Money(Shortfall))
-                        : ShellStringOverrides.Get(ShellStringOverrides.BUY_TOP_UP_AT_COUNTER);
+                        ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_TOP_UP_BY, Money(Shortfall))
+                        : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_TOP_UP_AT_COUNTER);
 
                 if (Total == 0 && PointsDue > 0)
-                    return ShellStringOverrides.Get(PayForKey, PointsWithUnit(PointsDue));
+                    return GrafitLocalization.GetString(PayForKey, PointsWithUnit(PointsDue));
 
                 if (IsPayingAtCounter)
-                    return ShellStringOverrides.Get(ShellStringOverrides.SHOP_PLACE_ORDER);
+                    return GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_PLACE_ORDER));
 
-                return ShellStringOverrides.Get(PayForKey, Money(Total));
+                return GrafitLocalization.GetString(PayForKey, Money(Total));
             }
         }
 
@@ -464,15 +466,15 @@ namespace Gizmo.Client.UI.Components
 
         protected abstract string TitleKey { get; }
 
-        protected string Kicker => ShellStringOverrides.Get(
-            _step == Step.TopUp ? ShellStringOverrides.BUY_TITLE_TOPUP : TitleKey);
+        protected string Kicker => GrafitLocalization.GetString(
+            _step == Step.TopUp ? GrafitResourceKeys.SHELL_BUY_TITLE_TOPUP : TitleKey);
 
         protected string Money(decimal amount) => amount.ToString("C", CultureInfo.CurrentCulture);
 
         protected string Points(int amount) => amount.ToString("N0", CultureInfo.CurrentCulture);
 
         protected string PointsWithUnit(int amount) =>
-            ShellStringOverrides.GetPlural(ShellStringOverrides.BUY_POINTS_COUNT, amount);
+            GrafitLocalization.GetPluralString(GrafitResourceKeys.SHELL_BUY_POINTS_COUNT, amount);
 
         #endregion
 

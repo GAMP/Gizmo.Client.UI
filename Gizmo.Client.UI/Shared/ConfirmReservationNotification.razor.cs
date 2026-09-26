@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Gizmo.Client.UI.Components;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
@@ -9,6 +10,8 @@ namespace Gizmo.Client.UI
 {
     public partial class ConfirmReservationNotification : CustomDOMComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 

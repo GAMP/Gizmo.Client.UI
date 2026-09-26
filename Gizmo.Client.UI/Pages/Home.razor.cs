@@ -1,5 +1,5 @@
 ﻿using Gizmo.Client.Options;
-using Gizmo.Client.UI.Localization;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -22,6 +22,8 @@ namespace Gizmo.Client.UI.Pages
     [Route(ClientRoutes.HomeRoute)]
     public partial class Home : ShellComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         #region CONSTANTS
 
         private const int HERO_SLIDES = 5;
@@ -239,8 +241,8 @@ namespace Gizmo.Client.UI.Pages
             NavigationService.NavigateTo(ClientRoutes.ProductDetailsRoute + $"?ProductId={productId}");
         }
 
-        private static string LaunchLabel =>
-            ShellStringOverrides.Get(ShellStringOverrides.GEN_LAUNCH).Replace("\\", "\\\\").Replace("'", "\\'");
+        private string LaunchLabel =>
+            GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_LAUNCH)).Replace("\\", "\\\\").Replace("'", "\\'");
 
         private bool IsPlainLaunch(AppViewState app, AppExeViewState exe) =>
             HeroExecutables(app.ApplicationId).Count == 1 &&

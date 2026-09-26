@@ -8,16 +8,16 @@
     <section class="giz-account-card giz-account-card--list">
         <div class="giz-account-card__head">
             <i class="ph-fill ph-receipt"></i>
-            <h2>@ShellText.Get(ShellText.PURCHASES_HISTORY)</h2>
+            <h2>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_HISTORY))</h2>
             @if (ViewState.PrevCursor != null || ViewState.NextCursor != null)
             {
                 <div class="giz-account-pager">
                     <button type="button" class="giz-account-pager__btn" disabled="@(ViewState.PrevCursor == null)" @onclick="PurchasesService.LoadPrevious">
                         <i class="ph-bold ph-arrow-left"></i>
-                        <span>@ShellText.Get(ShellText.ACCOUNT_NEWER)</span>
+                        <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_NEWER)</span>
                     </button>
                     <button type="button" class="giz-account-pager__btn" disabled="@(ViewState.NextCursor == null)" @onclick="PurchasesService.LoadNext">
-                        <span>@ShellText.Get(ShellText.ACCOUNT_OLDER)</span>
+                        <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_OLDER)</span>
                         <i class="ph-bold ph-arrow-right"></i>
                     </button>
                 </div>
@@ -28,8 +28,8 @@
         {
             <div class="giz-account-card__empty">
                 <i class="ph ph-receipt"></i>
-                <b>@ShellText.Get(ShellText.ACCOUNT_NO_PURCHASES)</b>
-                <span>@ShellText.Get(ShellText.ACCOUNT_NO_PURCHASES_HINT)</span>
+                <b>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_NO_PURCHASES)</b>
+                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_NO_PURCHASES_HINT)</span>
             </div>
         }
         else
@@ -48,9 +48,9 @@
                                 <small>
                                     @if (order.Id > 0)
                                     {
-                                        <span class="giz-account-order__fact">@ShellText.Get(ShellText.ACCOUNT_ORDER_NUMBER, order.Id)</span>
+                                        <span class="giz-account-order__fact">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_ORDER_NUMBER, order.Id)</span>
                                     }
-                                    <span class="giz-account-order__fact">@ShellText.GetPlural(ShellText.BUY_ITEMS_COUNT, order.OrderLines.Count())</span>
+                                    <span class="giz-account-order__fact">@GrafitLocalization.GetPluralString(GrafitResourceKeys.SHELL_BUY_ITEMS_COUNT, order.OrderLines.Count())</span>
                                     @if (!string.IsNullOrWhiteSpace(order.Invoice?.PaymentMethodNames))
                                     {
                                         <span class="giz-account-order__fact">@order.Invoice.PaymentMethodNames</span>
@@ -68,10 +68,10 @@
                                 }
                             </div>
                             <div class="giz-account-order__status">
-                                <span class="giz-account-tag @StatusClass(order)">@ShellText.Get(StatusKey(order))</span>
+                                <span class="giz-account-tag @StatusClass(order)">@GrafitLocalization.GetString(StatusKey(order))</span>
                                 @if (ShowPaymentStatus(order))
                                 {
-                                    <span class="giz-account-tag giz-account-tag--off">@ShellText.Get(PaymentKey(order))</span>
+                                    <span class="giz-account-tag giz-account-tag--off">@GrafitLocalization.GetString(PaymentKey(order))</span>
                                 }
                             </div>
                             <i class="ph-bold ph-caret-down giz-account-order__caret"></i>
@@ -90,7 +90,7 @@
                                         {
                                             <span class="giz-account-order__line-name">@line.ProductName</span>
                                         }
-                                        <span class="giz-account-order__line-qty">@line.Quantity @ShellText.Get(ShellText.GEN_PIECES_ABBR)</span>
+                                        <span class="giz-account-order__line-qty">@line.Quantity @GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PIECES_ABBREVIATED))</span>
                                         <span class="giz-account-order__line-sum">
                                             @if (line.TotalPointsPrice > 0)
                                             {
@@ -111,12 +111,12 @@
                                     {
                                         <span class="giz-account-order__earned">
                                             <i class="ph-fill ph-sparkle"></i>
-                                            @ShellText.Get(ShellText.ORDER_EARNED_POINTS) @order.TotalPointsAward.ToString("N0", CultureInfo.CurrentCulture)
+                                            @GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_EARNED_POINTS)) @order.TotalPointsAward.ToString("N0", CultureInfo.CurrentCulture)
                                         </span>
                                     }
                                     @if (!string.IsNullOrWhiteSpace(order.Notes))
                                     {
-                                        <span class="giz-account-order__note">@ShellText.Get(ShellText.ORDER_NOTE) @order.Notes</span>
+                                        <span class="giz-account-order__note">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_NOTE)) @order.Notes</span>
                                     }
                                 </div>
                             }

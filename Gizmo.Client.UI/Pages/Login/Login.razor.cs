@@ -1,6 +1,7 @@
 using System;
 using Gizmo.Client.Options;
 using Gizmo.Client.UI.Components;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -18,6 +19,8 @@ namespace Gizmo.Client.UI.Pages
     [Route(ClientRoutes.LoginRoute)]
     public partial class Login : CustomDOMComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         private FieldIdentifier? _countryFieldIdentifier;
 
         // Calling-code digits of the last selected country, used to re-seed the login name

@@ -5,11 +5,11 @@
 {
     <div class="giz-resv @(IsClose ? "giz-resv--soon" : "")">
         <i class="ph-fill ph-calendar-check giz-resv__icon"></i>
-        <b class="giz-resv__lead">@ShellText.Get(ShellText.RESV_DEVICE_RESERVED)</b>
-        <span class="giz-resv__at">@ShellText.Get(ShellText.RESV_FROM, StartText)</span>
+        <b class="giz-resv__lead">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_RESV_DEVICE_RESERVED)</b>
+        <span class="giz-resv__at">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_RESV_FROM, StartText)</span>
         @if (CountdownText is string countdown)
         {
-            <span class="giz-resv__count">@ShellText.Get(ShellText.RESV_IN, countdown)</span>
+            <span class="giz-resv__count">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_RESV_IN, countdown)</span>
         }
     </div>
 }

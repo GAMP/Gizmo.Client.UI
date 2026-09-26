@@ -1,3 +1,4 @@
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -9,6 +10,8 @@ namespace Gizmo.Client.UI.Pages
     [Route(ClientRoutes.PasswordRecoverySetNewPasswordRoute)]
     public partial class PasswordRecoverySetNewPassword : CustomDOMComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 

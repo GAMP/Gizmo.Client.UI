@@ -1,4 +1,5 @@
-using Gizmo.Client.UI.Localization;
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Server.Exceptions;
@@ -39,7 +40,7 @@ namespace Gizmo.Client.UI.Components
 
         protected override bool IsPriced => Entry is not null;
 
-        private string ProductName => _product?.Name ?? ShellStringOverrides.Get(ShellStringOverrides.BUY_FALLBACK_NAME);
+        private string ProductName => _product?.Name ?? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_FALLBACK_NAME);
 
         private string Duration
         {
@@ -51,14 +52,14 @@ namespace Gizmo.Client.UI.Components
                     return string.Empty;
 
                 if (minutes < 60)
-                    return ShellStringOverrides.Get(ShellStringOverrides.DURATION_MINUTES, minutes);
+                    return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DURATION_MINUTES, minutes);
 
                 var hours = minutes / 60;
                 var rest = minutes % 60;
 
                 return rest == 0
-                    ? ShellStringOverrides.Get(ShellStringOverrides.DURATION_HOURS, hours)
-                    : ShellStringOverrides.Get(ShellStringOverrides.DURATION_HOURS_MINUTES, hours, rest);
+                    ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DURATION_HOURS, hours)
+                    : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DURATION_HOURS_MINUTES, hours, rest);
             }
         }
 
@@ -73,13 +74,13 @@ namespace Gizmo.Client.UI.Components
                 var points = _product.UnitPointsPrice ?? 0;
 
                 if (money <= 0 && points <= 0)
-                    return ShellStringOverrides.Get(ShellStringOverrides.PRICE_FREE);
+                    return GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_PRICE_FREE));
 
                 if (money > 0 && points > 0)
                 {
-                    var joiner = ShellStringOverrides.Get(_product.PurchaseOptions == PurchaseOptionType.Or
-                        ? ShellStringOverrides.PRICE_OR
-                        : ShellStringOverrides.PRICE_AND);
+                    var joiner = GrafitLocalization.GetString(_product.PurchaseOptions == PurchaseOptionType.Or
+                        ? nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_PRICE_PURCHASE_OPTION_OR)
+                        : nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_PRICE_PURCHASE_OPTION_AND));
 
                     return $"{Money(money)} {joiner} {PointsWithUnit(points)}";
                 }
@@ -158,16 +159,16 @@ namespace Gizmo.Client.UI.Components
 
         #region PAYING
 
-        protected override string TitleKey => ShellStringOverrides.BUY_TITLE;
+        protected override string TitleKey => GrafitResourceKeys.SHELL_BUY_TITLE;
 
-        protected override string PayForKey => ShellStringOverrides.BUY_BUY_FOR;
+        protected override string PayForKey => GrafitResourceKeys.SHELL_BUY_BUY_FOR;
 
         private string DoneTitle => _paidWith == PayWayKind.Counter
-            ? ShellStringOverrides.Get(ShellStringOverrides.BUY_ORDERED_TITLE)
-            : ShellStringOverrides.Get(ShellStringOverrides.BUY_DONE_TITLE);
+            ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_ORDERED_TITLE)
+            : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_DONE_TITLE);
 
         private string DoneNote => _paidWith == PayWayKind.Counter
-            ? ShellStringOverrides.Get(ShellStringOverrides.BUY_ORDERED_HINT)
+            ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_ORDERED_HINT)
             : Duration;
 
         protected override void Pay()
@@ -209,7 +210,7 @@ namespace Gizmo.Client.UI.Components
                     Logger?.LogError(exception, "Package purchase failed.");
 
                     _outcomeOk = false;
-                    _outcomeError = ShellStringOverrides.Get(ShellStringOverrides.GEN_ERROR);
+                    _outcomeError = GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_AN_ERROR_HAS_OCCURRED));
                 }
 
                 if (_paid)

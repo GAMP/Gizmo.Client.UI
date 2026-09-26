@@ -1,4 +1,5 @@
-﻿using Gizmo.Web.Components;
+﻿using Gizmo.Client.UI.Localization.Services;
+using Gizmo.Web.Components;
 
 using Microsoft.AspNetCore.Components;
 
@@ -6,6 +7,8 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class CartDialogResult : ComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         [Parameter]
         public bool Ok { get; set; }
 

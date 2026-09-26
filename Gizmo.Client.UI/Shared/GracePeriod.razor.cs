@@ -1,5 +1,6 @@
-﻿using Gizmo.Client.UI.Localization;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -12,6 +13,8 @@ namespace Gizmo.Client.UI.Shared
 {
     public partial class GracePeriod : ShellComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
@@ -101,7 +104,7 @@ namespace Gizmo.Client.UI.Shared
 
                 if (!string.IsNullOrEmpty(state.ErrorMessage))
                 {
-                    _pinError = ShellStringOverrides.Get(ShellStringOverrides.GRACE_PIN_WRONG);
+                    _pinError = GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_PIN_WRONG);
                     _pin = string.Empty;
                 }
                 else if (state.Step == 1)
@@ -114,7 +117,7 @@ namespace Gizmo.Client.UI.Shared
             }
             catch
             {
-                _pinError = ShellStringOverrides.Get(ShellStringOverrides.GRACE_PIN_FAILED);
+                _pinError = GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_PIN_FAILED);
             }
             finally
             {

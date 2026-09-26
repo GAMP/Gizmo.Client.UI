@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.UI;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -8,6 +9,8 @@ namespace Gizmo.Client.UI
 {
     public partial class GizNotification : CustomDOMComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         [Parameter]
         public AlertTypes Icon { get; set; }
 

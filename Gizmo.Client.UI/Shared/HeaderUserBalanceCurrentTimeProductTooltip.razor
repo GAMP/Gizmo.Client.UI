@@ -4,9 +4,9 @@
 
 <div class="giz-time-tooltip">
     <div class="giz-time-tooltip__head">
-        <div class="giz-time-tooltip__title">@ShellText.Get(ShellText.TIME_TOOLTIP_TITLE)</div>
+        <div class="giz-time-tooltip__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TIME_TOOLTIP_TITLE)</div>
         <button type="button" class="giz-time-tooltip__link" @onclick="OpenDetails">
-            <span>@ShellText.Get(ShellText.TIME_TOOLTIP_ALL_PACKAGES)</span>
+            <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TIME_TOOLTIP_ALL_PACKAGES)</span>
             <i class="ph-bold ph-arrow-right"></i>
         </button>
     </div>
@@ -17,7 +17,7 @@
     }
     else if (ActiveProducts.Count == 0)
     {
-        <div class="giz-time-tooltip__empty">@ShellText.Get(ShellText.TIME_TOOLTIP_EMPTY)</div>
+        <div class="giz-time-tooltip__empty">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TIME_TOOLTIP_EMPTY)</div>
     }
     else
     {
@@ -28,22 +28,22 @@
                     <span class="giz-time-tooltip__order">@product.ActivationOrder</span>
                     <span class="giz-time-tooltip__type"><i class="ph-fill @TimeProductText.Icon(product.TimeProductType)"></i></span>
                     <div class="giz-time-tooltip__name">
-                        <b>@TimeProductText.Name(product)</b>
+                        <b>@TimeProductText.Name(product, GrafitLocalization)</b>
                         <small>
-                            @ShellText.Get(TimeProductText.TypeKey(product.TimeProductType))
+                            @GrafitLocalization.GetString(TimeProductText.TypeKey(product.TimeProductType))
                             @if (product.InCredit)
                             {
-                                <span class="giz-time-tooltip__credit-mark">@ShellText.Get(ShellText.TIME_IN_CREDIT)</span>
+                                <span class="giz-time-tooltip__credit-mark">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_TITLE_USING_CREDIT))</span>
                             }
                         </small>
                     </div>
                     <div class="giz-time-tooltip__stat">
-                        <small>@ShellText.Get(ShellText.TIME_TOOLTIP_LEFT)</small>
-                        <b>@TimeProductText.Span(product.RemainingTime)</b>
+                        <small>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TIME_TOOLTIP_LEFT)</small>
+                        <b><TimeAmount Value="@product.RemainingTime" /></b>
                     </div>
                     <div class="giz-time-tooltip__stat">
-                        <small>@ShellText.Get(ShellText.TIME_TOOLTIP_SPENDABLE)</small>
-                        <b>@TimeProductText.Span(product.UsableTime)</b>
+                        <small>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TIME_TOOLTIP_SPENDABLE)</small>
+                        <b><TimeAmount Value="@product.UsableTime" /></b>
                     </div>
                 </div>
             }

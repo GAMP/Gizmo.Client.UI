@@ -11,56 +11,56 @@
                     <div class="giz-grace-period__badge giz-grace-period__badge--lock">
                         <i class="ph-fill ph-calendar-check giz-ph-icon"></i>
                     </div>
-                    <div class="giz-grace-period__title">@ShellText.Get(ShellText.RESV_PC_RESERVED)</div>
+                    <div class="giz-grace-period__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_RESV_PC_RESERVED)</div>
                     <div class="giz-grace-period__message">
                         @if (ReservationTimeText is { Length: > 0 })
                         {
-                            @ShellText.Get(ShellText.GRACE_RESERVED_AT, ReservationTimeText)
+                            @GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_RESERVED_AT, ReservationTimeText)
                         }
-                        @ShellText.Get(ShellText.GRACE_RESERVED_HINT)
+                        @GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_RESERVED_HINT)
                     </div>
 
                     @if (_reservationConfirmed)
                     {
                         <div class="giz-reserve-pin__ok">
                             <i class="ph-fill ph-check-circle"></i>
-                            <span>@ShellText.Get(ShellText.GRACE_CONFIRMED)</span>
+                            <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_CONFIRMED)</span>
                         </div>
                     }
                     else if (ReservationNeedsPayment)
                     {
                         <div class="giz-grace-period__message">
-                            @ShellText.Get(ShellText.GRACE_CONFIRMED_UNPAID)
+                            @GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_CONFIRMED_UNPAID)
                         </div>
                         <div class="giz-grace-period__actions">
                             <Button Color="ButtonColors.Accent"
                                     Size="ButtonSizes.ExtraLarge"
-                                    Text="@ShellText.Get(ShellText.GO_TO_PAYMENT)"
+                                    Text="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_NOTIFICATION_PAYMENT_GO_TO_PAYMENT_BUTTON))"
                                     @onclick="@OnOpenReservationPaymentAsync" />
                             <Button Variant="ButtonVariants.Outline"
                                     Size="ButtonSizes.ExtraLarge"
-                                    Text="@ShellText.Get(ShellText.LOGOUT)"
+                                    Text="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GRACE_PERIOD_LOGOUT))"
                                     @onclick="@(() => UserService.LogoutAsync())" />
                         </div>
                     }
                     else
                     {
                         <div class="giz-reserve-pin">
-                            <div class="giz-reserve-pin__label">@ShellText.Get(ShellText.GRACE_PIN_LABEL)</div>
+                            <div class="giz-reserve-pin__label">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_PIN_LABEL)</div>
                             <div class="giz-reserve-pin__row">
                                 <input type="text"
                                        class="giz-reserve-pin__input"
                                        inputmode="latin"
                                        autocomplete="off"
                                        spellcheck="false"
-                                       placeholder="@ShellText.Get(ShellText.LOGIN_PIN_PLACEHOLDER)"
+                                       placeholder="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOGIN_PIN_PLACEHOLDER)"
                                        value="@_pin"
                                        disabled="@_pinBusy"
                                        @oninput="@((ChangeEventArgs e) => OnPinInput(e))"
                                        @onkeydown="@OnPinKeyDown" />
                                 <Button Color="ButtonColors.Accent"
                                         Size="ButtonSizes.Large"
-                                        Text="@ShellText.Get(ShellText.GEN_CONFIRM)"
+                                        Text="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GEN_CONFIRM)"
                                         IsDisabled="@(_pinBusy || string.IsNullOrWhiteSpace(_pin))"
                                         @onclick="@OnConfirmPinAsync" />
                             </div>
@@ -72,7 +72,7 @@
                     }
 
                     <div class="giz-grace-period__timer">
-                        <div class="giz-grace-period__timer__label">@ShellText.Get(ShellText.GRACE_TIME_LEFT)</div>
+                        <div class="giz-grace-period__timer__label">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_TIME_LEFT)</div>
                         <div class="giz-grace-period__time">@ViewState.Time.ToString(@"mm\:ss")</div>
                     </div>
 
@@ -81,7 +81,7 @@
                         <div class="giz-grace-period__actions">
                             <Button Variant="ButtonVariants.Outline"
                                     Size="ButtonSizes.ExtraLarge"
-                                    Text="@ShellText.Get(ShellText.LOGOUT)"
+                                    Text="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GRACE_PERIOD_LOGOUT))"
                                     @onclick="@(() => UserService.LogoutAsync())" />
                         </div>
                     }
@@ -91,12 +91,12 @@
                     <div class="giz-grace-period__badge">
                         <i class="ph-fill ph-hourglass-high giz-ph-icon"></i>
                     </div>
-                    <div class="giz-grace-period__title">@ShellText.Get(ShellText.GRACE_TIME_UP)</div>
+                    <div class="giz-grace-period__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_TIME_UP)</div>
                     <div class="giz-grace-period__message">
-                        @ShellText.Get(ShellText.GRACE_TIME_UP_MESSAGE)
+                        @GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_TIME_UP_MESSAGE)
                     </div>
                     <div class="giz-grace-period__timer">
-                        <div class="giz-grace-period__timer__label">@ShellText.Get(ShellText.GRACE_TIME_LEFT)</div>
+                        <div class="giz-grace-period__timer__label">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_TIME_LEFT)</div>
                         <div class="giz-grace-period__time">@string.Format("{0:mm\\:ss}", ViewState.Time)</div>
                     </div>
                     <div class="giz-grace-period__actions">
@@ -104,12 +104,12 @@
                         {
                             <Button Color="ButtonColors.Accent"
                                     Size="ButtonSizes.ExtraLarge"
-                                    Text="@ShellText.Get(ShellText.GRACE_TOP_UP_ACCOUNT)"
+                                    Text="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_TOP_UP_ACCOUNT)"
                                     @onclick="@(() => _showDeposit = true)" />
                         }
                         <Button Variant="ButtonVariants.Outline"
                                 Size="ButtonSizes.ExtraLarge"
-                                Text="@ShellText.Get(ShellText.LOGOUT)"
+                                Text="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GRACE_PERIOD_LOGOUT))"
                                 @onclick="@(() => UserService.LogoutAsync())" />
                     </div>
                 }
@@ -117,11 +117,11 @@
                 {
                     <div class="giz-grace-period__deposit">
                         <div class="giz-grace-period__deposit__head">
-                            <div class="giz-grace-period__title">@ShellText.Get(ShellText.DEPOSIT_PAGE_TITLE)</div>
+                            <div class="giz-grace-period__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DEPOSIT_PAGE_TITLE)</div>
                             <div class="giz-grace-period__time giz-grace-period__time--small">@string.Format("{0:mm\\:ss}", ViewState.Time)</div>
                         </div>
                         <UserOnlineDeposits OnClickPayFromPC="@OnClickPayFromPCHandler" OnClickClear="@OnClickClearHandler" OnPaymentSucceeded="@OnPaymentSucceededHandler" />
-                        <div class="giz-grace-period__back" @onclick="@(() => _showDeposit = false)">@ShellText.Get(ShellText.GEN_BACK)</div>
+                        <div class="giz-grace-period__back" @onclick="@(() => _showDeposit = false)">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BACK))</div>
                     </div>
                 }
             </div>

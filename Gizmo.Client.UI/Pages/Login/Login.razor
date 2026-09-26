@@ -41,7 +41,7 @@
                                    IsDisabled="@(ViewState.IsLogginIn || ViewState.IsLogginOut)"
                                    Size="InputSizes.Medium"
                                    IsFullWidth="true"
-                                   Label="@Gizmo.Client.UI.Localization.ShellStringOverrides.Get(LocalizationService, nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_USERNAME))" />
+                                   Label="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_USERNAME))" />
                     }
                     else
                     {
@@ -54,7 +54,7 @@
                                           IsFullWidth="true"
                                           RenderWrappers="false"
                                           CountryLabel="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_COUNTRY))"
-                                          PhoneLabel="@Gizmo.Client.UI.Localization.ShellStringOverrides.Get(LocalizationService, nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PHONE_NUMBER))"
+                                          PhoneLabel="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PHONE_NUMBER))"
                                           SearchPlaceholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEARCH))"
                                           CountryChanged="@OnCountryChangedAsync"
                                           PhoneValueChanged="@OnPhoneValueChangedAsync" />
@@ -95,7 +95,7 @@
                                        IsDisabled="@(ViewState.IsLogginIn || ViewState.IsLogginOut)"
                                        IsPasswordVisible="true"
                                        ShowRevealButton="false"
-                                       Placeholder="@ShellText.Get(ShellText.LOGIN_PIN_PLACEHOLDER)"
+                                       Placeholder="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOGIN_PIN_PLACEHOLDER)"
                                        Size="InputSizes.Medium"
                                        IsFullWidth="true"
                                        HasOutline="false"

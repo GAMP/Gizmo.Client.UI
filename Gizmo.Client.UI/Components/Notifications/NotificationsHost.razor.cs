@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Gizmo.Client.Options;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.UI.Services;
 using Gizmo.UI.View.States;
 using Gizmo.Web.Components;
@@ -74,6 +75,8 @@ namespace Gizmo.Client.UI.Components
 
         [Inject]
         private INotificationsService NotificationsService { get; set; } = null!;
+
+        protected GrafitLocalizationService GrafitLocalization { get; private set; }
 
         #endregion
 
@@ -479,7 +482,7 @@ namespace Gizmo.Client.UI.Components
 
         protected override async Task OnInitializedAsync()
         {
-            Localization.ShellStringOverrides.Associate(LocalizationService);
+            GrafitLocalization = new GrafitLocalizationService(LocalizationService);
 
             Services.ShellTheme.Changed += OnAccentChanged;
 

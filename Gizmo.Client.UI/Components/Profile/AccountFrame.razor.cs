@@ -1,6 +1,8 @@
 using System.Globalization;
 using System.Linq;
 using Gizmo.Client.Options;
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -9,21 +11,21 @@ using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
 
-using ShellText = Gizmo.Client.UI.Localization.ShellStringOverrides;
-
 namespace Gizmo.Client.UI.Components
 {
     public partial class AccountFrame : ShellComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         protected string DisplayName => UserViewState.IsGuest || string.IsNullOrWhiteSpace(Profile.Username)
-            ? ShellText.Get(ShellText.GEN_GUEST)
+            ? GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_GUEST))
             : Profile.Username;
 
         protected string FullName => string.Join(" ", new[] { Profile.FirstName, Profile.LastName }.Where(part => !string.IsNullOrWhiteSpace(part)));
 
         protected bool ShowMemberSince => !UserViewState.IsGuest && Profile.RegistrationDate != default;
 
-        protected string MemberSince => ShellText.Get(ShellText.ACCOUNT_MEMBER_SINCE, Profile.RegistrationDate.ToLocalTime().ToString("d MMMM yyyy", CultureInfo.CurrentCulture));
+        protected string MemberSince => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_MEMBER_SINCE, Profile.RegistrationDate.ToLocalTime().ToString("d MMMM yyyy", CultureInfo.CurrentCulture));
 
         protected string TimeText => Balance.Time is { } time ? $"{(int)time.TotalHours}:{time:mm}" : string.Empty;
 
@@ -38,8 +40,8 @@ namespace Gizmo.Client.UI.Components
         protected string CreditLimitText => Credit.CreditLimit.ToString("C", CultureInfo.CurrentCulture);
 
         protected string CreditNote => CreditUnlimited
-            ? ShellText.Get(ShellText.CREDIT_UNLIMITED)
-            : ShellText.Get(HasTimeCredit ? ShellText.CREDIT_TIME_NOTE : ShellText.CREDIT_SALES_NOTE);
+            ? GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PROFILE_CREDIT_TOOLTIP_UNLIMITED_CREDIT_DESCRIPTION))
+            : GrafitLocalization.GetString(HasTimeCredit ? nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PROFILE_CREDIT_TOOLTIP_TIME_CREDIT_DESCRIPTION) : nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PROFILE_CREDIT_TOOLTIP_SALES_CREDIT_DESCRIPTION));
 
         [Inject]
         UserProfileViewState Profile { get; set; }

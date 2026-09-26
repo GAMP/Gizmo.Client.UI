@@ -11,23 +11,23 @@
 
     <div class="giz-account-time__main">
         <div class="giz-account-time__line">
-            <b class="giz-account-time__name">@TimeProductText.Name(Product)</b>
-            <span class="giz-account-time__kind">@ShellText.Get(TimeProductText.TypeKey(Product.TimeProductType))</span>
+            <b class="giz-account-time__name">@TimeProductText.Name(Product, GrafitLocalization)</b>
+            <span class="giz-account-time__kind">@GrafitLocalization.GetString(TimeProductText.TypeKey(Product.TimeProductType))</span>
             @if (IsCurrent)
             {
-                <span class="giz-account-tag giz-account-tag--on">@ShellText.Get(ShellText.ACCOUNT_ACTIVE_NOW)</span>
+                <span class="giz-account-tag giz-account-tag--on">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_ACTIVE_NOW)</span>
             }
             else if (Order.HasValue)
             {
-                <span class="giz-account-tag">@ShellText.Get(ShellText.ACCOUNT_QUEUE_POSITION, Order.Value)</span>
+                <span class="giz-account-tag">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_QUEUE_POSITION, Order.Value)</span>
             }
             else
             {
-                <span class="giz-account-tag giz-account-tag--off">@ShellText.Get(ShellText.ACCOUNT_NOT_HERE)</span>
+                <span class="giz-account-tag giz-account-tag--off">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_NOT_HERE)</span>
             }
             @if (Product.InCredit)
             {
-                <span class="giz-account-tag giz-account-tag--credit">@ShellText.Get(ShellText.TIME_IN_CREDIT)</span>
+                <span class="giz-account-tag giz-account-tag--credit">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_TITLE_USING_CREDIT))</span>
             }
         </div>
         <div class="giz-account-time__meta">
@@ -35,7 +35,7 @@
             {
                 <span class="giz-account-time__fact">
                     <i class="ph ph-calendar-blank"></i>
-                    <span>@ShellText.Get(ShellText.TIME_BOUGHT): @Product.PurchaseTime.Value.ToLocalTime().ToString("g", CultureInfo.CurrentCulture)</span>
+                    <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PURCHASE_DATE)): @Product.PurchaseTime.Value.ToLocalTime().ToString("g", CultureInfo.CurrentCulture)</span>
                 </span>
             }
             @if (!string.IsNullOrEmpty(Expiry))
@@ -53,17 +53,17 @@
     </div>
 
     <div class="giz-account-time__stat">
-        <small>@ShellText.Get(ShellText.TIME_REMAINING)</small>
-        <b>@TimeProductText.Span(Product.RemainingTime)</b>
+        <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_REMAINING_TIME))</small>
+        <b><TimeAmount Value="@Product.RemainingTime" /></b>
     </div>
     <div class="giz-account-time__stat">
-        <small>@ShellText.Get(ShellText.TIME_USABLE_HERE)</small>
-        <b>@TimeProductText.Span(Product.UsableTime)</b>
+        <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_USABLE_TIME))</small>
+        <b><TimeAmount Value="@Product.UsableTime" /></b>
     </div>
 
     @if (CanOpen)
     {
-        <button type="button" class="giz-account-time__open" title="@ShellText.Get(ShellText.GEN_DETAILS)" @onclick="OnOpen">
+        <button type="button" class="giz-account-time__open" title="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_DETAILS))" @onclick="OnOpen">
             <i class="ph-bold ph-arrow-up-right"></i>
         </button>
     }

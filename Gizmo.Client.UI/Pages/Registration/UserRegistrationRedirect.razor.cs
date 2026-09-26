@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Gizmo;
 using Gizmo.Client;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -14,6 +15,8 @@ namespace Gizmo.Client.UI.Pages.Registration
     [Route(ClientRoutes.RegistrationRedirectRoute)]
     public partial class UserRegistrationRedirect : CustomDOMComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 

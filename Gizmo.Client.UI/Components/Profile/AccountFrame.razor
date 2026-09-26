@@ -26,15 +26,15 @@
 
             <div class="giz-account__stats">
                 <div class="giz-account__stat giz-account__stat--money">
-                    <small>@ShellText.Get(ShellText.GEN_BALANCE)</small>
+                    <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BALANCE))</small>
                     <b>@Balance.Balance.ToString("C", CultureInfo.CurrentCulture)</b>
                 </div>
                 <div class="giz-account__stat">
-                    <small>@ShellText.Get(ShellText.GEN_POINTS)</small>
+                    <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_POINTS))</small>
                     <b>@Balance.PointsBalance.ToString("N0", CultureInfo.CurrentCulture) <i class="ph-fill ph-coins"></i></b>
                 </div>
                 <div class="giz-account__stat">
-                    <small>@ShellText.Get(ShellText.GEN_TIME)</small>
+                    <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_TIME))</small>
                     <b>
                         @if (Balance.Time.HasValue)
                         {
@@ -49,7 +49,7 @@
                 @if (HasCredit)
                 {
                     <div class="giz-account__stat giz-account__stat--credit">
-                        <small>@ShellText.Get(ShellText.CREDIT)</small>
+                        <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PROFILE_HEADER_CREDIT))</small>
                         <b>
                             @if (CreditUnlimited)
                             {
@@ -66,23 +66,23 @@
             </div>
         </header>
 
-        <nav class="giz-account__tabs" aria-label="@ShellText.Get(ShellText.USER_DETAILS)">
+        <nav class="giz-account__tabs" aria-label="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_DETAILS))">
             @if (!UserViewState.IsGuest)
             {
                 <NavLink class="giz-account__tab" href="@ClientRoutes.UserProfileRoute" Match="NavLinkMatch.All">
                     <i class="ph-bold ph-user"></i>
-                    <span>@ShellText.Get(ShellText.ACCOUNT_TAB_PROFILE)</span>
+                    <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_TAB_PROFILE)</span>
                 </NavLink>
             }
             <NavLink class="giz-account__tab" href="@ClientRoutes.UserProductsRoute" Match="NavLinkMatch.All">
                 <i class="ph-bold ph-hourglass-medium"></i>
-                <span>@ShellText.Get(ShellText.ACCOUNT_TAB_TIME)</span>
+                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_TAB_TIME)</span>
             </NavLink>
             @if (!InterfaceOptions.CurrentValue.DisableUserPurchaseHistory)
             {
                 <NavLink class="giz-account__tab" href="@ClientRoutes.UserPurchasesRoute" Match="NavLinkMatch.All">
                     <i class="ph-bold ph-receipt"></i>
-                    <span>@ShellText.Get(ShellText.PURCHASES)</span>
+                    <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES))</span>
                 </NavLink>
             }
             @if (!UserViewState.IsGuest)

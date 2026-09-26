@@ -1,10 +1,11 @@
-using Gizmo.Client.UI.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Web.Components;
@@ -15,6 +16,8 @@ namespace Gizmo.Client.UI.Shared
 {
     public partial class DeploymentBanner : ShellComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         private static readonly TimeSpan ShowAfter = TimeSpan.FromSeconds(3);
 
         private static readonly TimeSpan DoneLinger = TimeSpan.FromSeconds(5);
@@ -284,18 +287,18 @@ namespace Gizmo.Client.UI.Shared
 
             if (_done)
             {
-                _title = ShellStringOverrides.Get(ShellStringOverrides.GEN_DONE);
+                _title = GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GEN_DONE);
                 _subtitle = justDone.Count == 1
-                    ? ShellStringOverrides.Get(ShellStringOverrides.DEPLOY_LAUNCHING, Shorten(justDone[0].Caption))
-                    : ShellStringOverrides.GetPlural(ShellStringOverrides.DEPLOY_READY_COUNT, justDone.Count);
+                    ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DEPLOY_LAUNCHING, Shorten(justDone[0].Caption))
+                    : GrafitLocalization.GetPluralString(GrafitResourceKeys.SHELL_DEPLOY_READY_COUNT, justDone.Count);
                 _indeterminate = false;
                 _percent = 100;
             }
             else if (live.Count > 0)
             {
-                _title = ShellStringOverrides.Get(live.Any(a => a.HasDeploymentProfile)
-                    ? ShellStringOverrides.DEPLOY_TITLE
-                    : ShellStringOverrides.DEPLOY_TITLE_PREPARING);
+                _title = GrafitLocalization.GetString(live.Any(a => a.HasDeploymentProfile)
+                    ? GrafitResourceKeys.SHELL_DEPLOY_TITLE
+                    : GrafitResourceKeys.SHELL_DEPLOY_TITLE_PREPARING);
 
                 var measurable = live.Where(a => !a.Indeterminate).ToList();
 
@@ -307,12 +310,12 @@ namespace Gizmo.Client.UI.Shared
                 if (live.Count == 1)
                 {
                     _subtitle = string.IsNullOrWhiteSpace(live[0].Caption)
-                        ? ShellStringOverrides.Get(ShellStringOverrides.DEPLOY_COPYING)
+                        ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DEPLOY_COPYING)
                         : Shorten(live[0].Caption);
                 }
                 else
                 {
-                    _subtitle = ShellStringOverrides.GetPlural(ShellStringOverrides.DEPLOY_RUNNING_COUNT, live.Count);
+                    _subtitle = GrafitLocalization.GetPluralString(GrafitResourceKeys.SHELL_DEPLOY_RUNNING_COUNT, live.Count);
                 }
             }
 

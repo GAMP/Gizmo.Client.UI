@@ -44,6 +44,13 @@
     <EmbeddedResource Include="wwwroot\notifications.html"></EmbeddedResource>
   </ItemGroup>
 
+	<!-- Grafit's strings, every language inside Gizmo.Client.UI.dll: the client loads no
+	     satellite assemblies from a skin folder. GrafitLocalizationService reads them. -->
+	<ItemGroup>
+		<EmbeddedResource Update="Localization\Resources\GrafitResources.resx" LogicalName="Gizmo.Client.UI.Localization.Resources.GrafitResources.resources" />
+		<EmbeddedResource Update="Localization\Resources\GrafitResources.*.resx" WithCulture="false" LogicalName="Gizmo.Client.UI.Localization.Resources.%(Filename).resources" />
+	</ItemGroup>
+
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="npm install" WorkingDirectory="." />
     <Exec Condition="'$(Configuration)' == 'Debug'" Command="npm run build_dev" WorkingDirectory="." />

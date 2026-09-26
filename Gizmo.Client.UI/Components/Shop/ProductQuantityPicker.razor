@@ -12,7 +12,7 @@ else if (_product.DisallowPurchase)
                     Color="ButtonColors.Accent"
                     Size="@Size"
                     IsFullWidth="@IsFullWidth"
-                    Text="@ShellText.Get(ShellText.GEN_ADD_TO_CART)" />
+                    Text="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ADD_TO_CART))" />
         </ChildContent>
     </ClientTooltip>
 }
@@ -23,7 +23,7 @@ else if (IsTimePackage)
             Size="@Size"
             IsFullWidth="@IsFullWidth"
             IsDisabled="@_buying"
-            Text="@ShellText.Get(_buying ? ShellText.GEN_WORKING : ShellText.GEN_BUY)"
+            Text="@GrafitLocalization.GetString(_buying ? GrafitResourceKeys.SHELL_GEN_WORKING : GrafitResourceKeys.SHELL_GEN_BUY)"
             @onclick="OnBuyPackageClickHandler" />
 }
 else
@@ -35,7 +35,7 @@ else
                 Size="@Size"
                 IsFullWidth="@IsFullWidth"
                 LeftSVGIcon="Icons.Plus"
-                Text="@ShellText.Get(ShellText.GEN_ADD_TO_CART)"
+                Text="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ADD_TO_CART))"
                 @onclick="OnAddProductButtonClickHandler" />
     }
     else

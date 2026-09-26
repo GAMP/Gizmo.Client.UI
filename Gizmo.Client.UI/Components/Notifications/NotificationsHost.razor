@@ -9,18 +9,20 @@
 }
 
 <CascadingValue Value="@this" IsFixed="true">
-    <div client-theme="true" class="@ClassName"
-         @onmouseover="OnMouseOverHandler"
-         @onmouseout="OnMouseOutHandler"
-         id="@Id"
-         @ref="@Ref">
-        <div class="giz-notifications__body">
-            @foreach (var controller in _visible)
-            {
-                <div data-id="@controller.Identifier" class="giz-notification-wrapper @(_newlyAddedItemId == controller.Identifier ? "tmp" : (_slideInItemId == controller.Identifier ? "slide-in" : (_slideOutItemId == controller.Identifier ? "slide-out" : "")))">
-                    <DynamicComponent Parameters="controller.Parameters" Type="controller.ComponentType" @key=controller.Identifier></DynamicComponent>
-                </div>
-            }
+    <CascadingValue Value="@GrafitLocalization" IsFixed="true">
+        <div client-theme="true" class="@ClassName"
+             @onmouseover="OnMouseOverHandler"
+             @onmouseout="OnMouseOutHandler"
+             id="@Id"
+             @ref="@Ref">
+            <div class="giz-notifications__body">
+                @foreach (var controller in _visible)
+                {
+                    <div data-id="@controller.Identifier" class="giz-notification-wrapper @(_newlyAddedItemId == controller.Identifier ? "tmp" : (_slideInItemId == controller.Identifier ? "slide-in" : (_slideOutItemId == controller.Identifier ? "slide-out" : "")))">
+                        <DynamicComponent Parameters="controller.Parameters" Type="controller.ComponentType" @key=controller.Identifier></DynamicComponent>
+                    </div>
+                }
+            </div>
         </div>
-    </div>
+    </CascadingValue>
 </CascadingValue>

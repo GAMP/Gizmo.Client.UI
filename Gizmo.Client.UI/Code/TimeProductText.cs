@@ -1,6 +1,6 @@
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Api.Models;
-using ShellText = Gizmo.Client.UI.Localization.ShellStringOverrides;
 
 namespace Gizmo.Client.UI
 {
@@ -16,18 +16,15 @@ namespace Gizmo.Client.UI
 
         public static string TypeKey(UsageType type) => type switch
         {
-            UsageType.TimeOffer => ShellText.TIME_TYPE_PACKAGE,
-            UsageType.TimeFixed => ShellText.TIME_TYPE_FIXED,
-            UsageType.Rate => ShellText.TIME_TYPE_RATE,
-            _ => ShellText.TIME_TYPE_NONE,
+            UsageType.TimeOffer => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_TITLE_TIME_OFFER),
+            UsageType.TimeFixed => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_TITLE_FIXED_TIME),
+            UsageType.Rate => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_TITLE_RATE),
+            _ => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USAGE_TYPE_NONE),
         };
 
-        public static string Name(TimeProductViewState product) =>
+        public static string Name(TimeProductViewState product, GrafitLocalizationService localization) =>
             product.TimeProductType == UsageType.None || string.IsNullOrWhiteSpace(product.TimeProductName)
-                ? ShellText.Get(ShellText.TIME_TYPE_NONE)
+                ? localization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USAGE_TYPE_NONE))
                 : product.TimeProductName;
-
-        public static string Span(string value) =>
-            string.IsNullOrWhiteSpace(value) ? "∞" : value;
     }
 }

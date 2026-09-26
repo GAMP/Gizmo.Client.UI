@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.Localization;
+﻿using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Api.Models;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace Gizmo.Client.UI.Components
 
         private int ItemCount => CartService.ViewState.Products.Sum(a => a.Quantity);
 
-        private string ItemsTitle => ShellStringOverrides.GetPlural(ShellStringOverrides.BUY_ITEMS_COUNT, ItemCount);
+        private string ItemsTitle => GrafitLocalization.GetPluralString(GrafitResourceKeys.SHELL_BUY_ITEMS_COUNT, ItemCount);
 
         private static bool IsPointsLine(UserCartProductViewState item) =>
             item.PayType == OrderLinePayType.Points;
@@ -27,16 +28,16 @@ namespace Gizmo.Client.UI.Components
 
         #region PAYING
 
-        protected override string TitleKey => ShellStringOverrides.SHOP_CHECKOUT_TITLE;
+        protected override string TitleKey => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_CHECKOUT_TITLE);
 
-        protected override string PayForKey => ShellStringOverrides.BUY_ORDER_FOR;
+        protected override string PayForKey => GrafitResourceKeys.SHELL_BUY_ORDER_FOR;
 
         private string DoneTitle => _paidWith == PayWayKind.Counter
-            ? ShellStringOverrides.Get(ShellStringOverrides.BUY_ORDERED_TITLE)
-            : ShellStringOverrides.Get(ShellStringOverrides.BUY_ORDER_PAID_TITLE);
+            ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_ORDERED_TITLE)
+            : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_ORDER_PAID_TITLE);
 
         private string DoneNote => _paidWith == PayWayKind.Counter
-            ? ShellStringOverrides.Get(ShellStringOverrides.BUY_ORDERED_HINT)
+            ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_ORDERED_HINT)
             : string.Empty;
 
         protected override void Pay()
