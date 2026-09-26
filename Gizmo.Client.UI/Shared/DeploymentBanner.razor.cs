@@ -100,6 +100,7 @@ namespace Gizmo.Client.UI.Shared
         protected bool IsDone => _done;
         protected bool IsIndeterminate => _indeterminate;
         protected int PercentValue => _percent;
+        protected string ProgressWidth => $"{(_done ? 100 : _percent)}%";
         protected string PercentLabel => _indeterminate ? "…" : $"{_percent}%";
 
         /// <summary>

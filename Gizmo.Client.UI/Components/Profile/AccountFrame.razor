@@ -6,16 +6,6 @@
 @* The account page's frame: who is signed in and what they have, the three tabs, then
    whatever the tab shows. One component so Profile, Products and Purchases cannot
    drift apart. *@
-@{
-    var name = UserViewState.IsGuest || string.IsNullOrWhiteSpace(Profile.Username)
-        ? ShellText.Get(ShellText.GEN_GUEST)
-        : Profile.Username;
-    var fullName = string.Join(" ", new[] { Profile.FirstName, Profile.LastName }.Where(s => !string.IsNullOrWhiteSpace(s)));
-    var hasTimeCredit = Credit.TimeCreditType != CreditType.NoCredit && Credit.IsUserTimeCreditEnabled;
-    var hasSalesCredit = Credit.SalesCreditType != CreditType.NoCredit;
-    var creditUnlimited = Credit.TimeCreditType == CreditType.Unlimited || Credit.SalesCreditType == CreditType.Unlimited;
-}
-
 <div class="giz-account giz-scrollbar--v">
     <div class="giz-account__inner">
 
@@ -23,15 +13,15 @@
             <UserAvatar Picture="@Profile.Picture" Class="giz-account__avatar" />
 
             <div class="giz-account__who">
-                <h1 class="giz-account__name">@name</h1>
+                <h1 class="giz-account__name">@DisplayName</h1>
                 <div class="giz-account__sub">
-                    @if (!string.IsNullOrEmpty(fullName))
+                    @if (!string.IsNullOrEmpty(FullName))
                     {
-                        <span>@fullName</span>
+                        <span>@FullName</span>
                     }
-                    @if (!UserViewState.IsGuest && Profile.RegistrationDate != default)
+                    @if (ShowMemberSince)
                     {
-                        <span>@ShellText.Get(ShellText.ACCOUNT_MEMBER_SINCE, Profile.RegistrationDate.ToLocalTime().ToString("d MMMM yyyy", CultureInfo.CurrentCulture))</span>
+                        <span>@MemberSince</span>
                     }
                 </div>
                 <ProfileHeaderLadderLevel />
@@ -48,18 +38,32 @@
                 </div>
                 <div class="giz-account__stat">
                     <small>@ShellText.Get(ShellText.GEN_TIME)</small>
-                    <b>@(Balance.Time.HasValue ? $"{(int)Balance.Time.Value.TotalHours}:{Balance.Time.Value:mm}" : "∞")</b>
+                    <b>
+                        @if (Balance.Time.HasValue)
+                        {
+                            @TimeText
+                        }
+                        else
+                        {
+                            <i class="ph-bold ph-infinity"></i>
+                        }
+                    </b>
                 </div>
-                @if (hasTimeCredit || hasSalesCredit)
+                @if (HasCredit)
                 {
                     <div class="giz-account__stat giz-account__stat--credit">
                         <small>@ShellText.Get(ShellText.CREDIT)</small>
-                        <b>@(creditUnlimited ? "∞" : Credit.CreditLimit.ToString("C", CultureInfo.CurrentCulture))</b>
-                        <span>
-                            @(creditUnlimited
-                                ? ShellText.Get(ShellText.CREDIT_UNLIMITED)
-                                : ShellText.Get(hasTimeCredit ? ShellText.CREDIT_TIME_NOTE : ShellText.CREDIT_SALES_NOTE))
-                        </span>
+                        <b>
+                            @if (CreditUnlimited)
+                            {
+                                <i class="ph-bold ph-infinity"></i>
+                            }
+                            else
+                            {
+                                @CreditLimitText
+                            }
+                        </b>
+                        <span>@CreditNote</span>
                     </div>
                 }
             </div>

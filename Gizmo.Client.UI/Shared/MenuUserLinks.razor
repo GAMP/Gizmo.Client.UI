@@ -27,8 +27,7 @@
             <div class="giz-profile-popup__orbit">
                 @foreach (var ic in OrbitIcons)
                 {
-                    <i class="ph-bold @ic.IconClass giz-orbit-icon"
-                       style="font-size:@(ic.SizePx.ToString(System.Globalization.CultureInfo.InvariantCulture))px; opacity:@ic.Opacity; transform: rotate(@(ic.AngleDeg.ToString(System.Globalization.CultureInfo.InvariantCulture))deg) translate(0, -@(ic.RadiusPx.ToString(System.Globalization.CultureInfo.InvariantCulture))px) rotate(@((-ic.AngleDeg + ic.TiltDeg).ToString(System.Globalization.CultureInfo.InvariantCulture))deg);"></i>
+                    <i class="ph-bold @ic.IconClass giz-orbit-icon" style="@OrbitStyle(ic)"></i>
                 }
 
                 <div class="giz-profile-popup__avatar">

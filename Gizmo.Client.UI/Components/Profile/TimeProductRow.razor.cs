@@ -13,6 +13,33 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class TimeProductRow : CustomDOMComponentBase
     {
+        protected int? Order => Product.ActivationOrder;
+
+        protected bool IsCurrent => Order == 1;
+
+        protected bool IsIdle => !Order.HasValue;
+
+        protected string OrderText => Order?.ToString(CultureInfo.CurrentCulture) ?? string.Empty;
+
+        protected string RowClass
+        {
+            get
+            {
+                var css = "giz-account-time__row";
+
+                if (IsCurrent)
+                    css += " giz-account-time__row--current";
+
+                if (IsIdle)
+                    css += " giz-account-time__row--idle";
+
+                if (Product.InCredit)
+                    css += " giz-account-time__row--credit";
+
+                return css;
+            }
+        }
+
         //The catalogue product behind the time product, for its expiry rules. Null while
         //loading, for a product that is no longer in the catalogue, and for rate-based time.
         private UserProductViewState _product;

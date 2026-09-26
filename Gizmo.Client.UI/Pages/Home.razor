@@ -71,19 +71,15 @@
                 <div class="giz-home-hero__body">
                     <div class="giz-home-hero__kick">@ShellText.Get(ShellText.HERO_POPULAR)</div>
                     <div class="giz-home-hero__title">@app.Title</div>
-                    @{
-                        var executables = HeroExecutables(app.ApplicationId);
-                    }
                     @* The word on a lone launch button comes in through a CSS variable: the
                        button is the vendor's component, which prints the executable's
                        caption or nothing, and "Counter-Strike 2" under a title that already
                        says so is no invitation. See .giz-home-hero__exe--play. *@
                     <div class="giz-home-hero__launch" style="--giz-play-label: '@LaunchLabel'">
-                        @foreach (var exe in executables)
+                        @foreach (var exe in HeroExecutables(app.ApplicationId))
                         {
-                            var plain = IsPlainLaunch(app, exe, executables.Count);
-                            <div class="giz-home-hero__exe @(plain ? "giz-home-hero__exe--play" : null)" @key="exe.ExecutableId">
-                                <UniversalExecutable ExecutableId="@exe.ExecutableId" ShowProgressBar="true" ShowExeName="@(!plain)" />
+                            <div class="@HeroExeClass(app, exe)" @key="exe.ExecutableId">
+                                <UniversalExecutable ExecutableId="@exe.ExecutableId" ShowProgressBar="true" ShowExeName="@(!IsPlainLaunch(app, exe))" />
                             </div>
                         }
                         @if (!AppDetailsPageViewState.DisableAppDetails)

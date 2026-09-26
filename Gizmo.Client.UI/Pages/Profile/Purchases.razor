@@ -26,11 +26,7 @@
             }
         </div>
 
-        @{
-            var orders = ViewState.Orders.ToList();
-        }
-
-        @if (orders.Count == 0)
+        @if (!HasOrders)
         {
             <div class="giz-account-card__empty">
                 <i class="ph ph-receipt"></i>
@@ -41,29 +37,12 @@
         else
         {
             <div class="giz-account-orders">
-                @foreach (var order in orders)
+                @foreach (var order in ViewState.Orders)
                 {
-                    var voided = order.Invoice?.IsVoided == true;
-                    var (statusKey, statusClass) = voided
-                        ? (ShellText.ORDER_STATUS_VOIDED, "giz-account-tag--off")
-                        : order.OrderStatus switch
-                        {
-                            OrderStatus.Completed => (ShellText.ORDER_STATUS_COMPLETED, "giz-account-tag--good"),
-                            OrderStatus.Accepted => (ShellText.ORDER_STATUS_ACCEPTED, "giz-account-tag--on"),
-                            OrderStatus.Canceled => (ShellText.ORDER_STATUS_CANCELED, "giz-account-tag--off"),
-                            _ => (ShellText.ORDER_STATUS_ON_HOLD, "giz-account-tag--wait"),
-                        };
-                    var paymentKey = order.Invoice?.PaymentStatus switch
-                    {
-                        InvoiceStatus.Unpaid => ShellText.INVOICE_UNPAID,
-                        InvoiceStatus.PartiallyPaid => ShellText.INVOICE_PARTIALLY_PAID,
-                        _ => null,
-                    };
-                    var lines = order.OrderLines.ToList();
 
                     @* Keyed by the object: the vendor leaves Id at 0 on every order, and two
                        siblings with one key make Blazor throw on the next re-render. *@
-                    <details class="giz-account-order @statusClass" @key="order">
+                    <details class="giz-account-order @StatusClass(order)" @key="order">
                         <summary class="giz-account-order__sum">
                             <div class="giz-account-order__when">
                                 <b>@order.OrderDate.ToString("d MMM", CultureInfo.CurrentCulture)</b>
@@ -74,12 +53,12 @@
                                 <small>
                                     @if (order.Id > 0)
                                     {
-                                        <span>@ShellText.Get(ShellText.ACCOUNT_ORDER_NUMBER, order.Id) · </span>
+                                        <span class="giz-account-order__fact">@ShellText.Get(ShellText.ACCOUNT_ORDER_NUMBER, order.Id)</span>
                                     }
-                                    @ShellText.GetPlural(ShellText.BUY_ITEMS_COUNT, lines.Count)
+                                    <span class="giz-account-order__fact">@ShellText.GetPlural(ShellText.BUY_ITEMS_COUNT, order.OrderLines.Count())</span>
                                     @if (!string.IsNullOrWhiteSpace(order.Invoice?.PaymentMethodNames))
                                     {
-                                        <span> · @order.Invoice.PaymentMethodNames</span>
+                                        <span class="giz-account-order__fact">@order.Invoice.PaymentMethodNames</span>
                                     }
                                 </small>
                             </div>
@@ -94,10 +73,10 @@
                                 }
                             </div>
                             <div class="giz-account-order__status">
-                                <span class="giz-account-tag @statusClass">@ShellText.Get(statusKey)</span>
-                                @if (paymentKey is not null && !voided)
+                                <span class="giz-account-tag @StatusClass(order)">@ShellText.Get(StatusKey(order))</span>
+                                @if (ShowPaymentStatus(order))
                                 {
-                                    <span class="giz-account-tag giz-account-tag--off">@ShellText.Get(paymentKey)</span>
+                                    <span class="giz-account-tag giz-account-tag--off">@ShellText.Get(PaymentKey(order))</span>
                                 }
                             </div>
                             <i class="ph-bold ph-caret-down giz-account-order__caret"></i>
@@ -105,17 +84,12 @@
 
                         <div class="giz-account-order__body">
                             <div class="giz-account-order__lines">
-                                @foreach (var line in lines)
+                                @foreach (var line in order.OrderLines)
                                 {
-                                    var linkable = ProductDetailsNavigationEnabled
-                                        && line.LineType != LineType.SessionTime
-                                        && line.LineType != LineType.FixedTime
-                                        && line.ProductId.HasValue;
-
                                     <div class="giz-account-order__line">
-                                        @if (linkable)
+                                        @if (IsLinkable(line))
                                         {
-                                            <a class="giz-account-order__line-name" href="@($"{ClientRoutes.ProductDetailsRoute}?ProductId={line.ProductId.Value}")">@line.ProductName</a>
+                                            <a class="giz-account-order__line-name" href="@ProductLink(line)">@line.ProductName</a>
                                         }
                                         else
                                         {

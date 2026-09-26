@@ -1,6 +1,5 @@
 ﻿@namespace Gizmo.Client.UI
 @inherits CustomDOMComponentBase
-@inject Gizmo.UI.Services.ILocalizationService LocalizationService
 
 <div class="giz-header__user-menu-item giz-notifications-dropdown @(UserMenuViewState.NotificationsIsVisible ? "open" : "")" data-tooltip="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_NOTIFICATIONS_TITLE))">
     <Badge Label="@ViewState.Dismissed?.Count().ToString()" IsVisible="@(ViewState.Dismissed?.Count() > 0)">

@@ -366,10 +366,13 @@ namespace Gizmo.Client.UI.Pages
         /// its own caption: the application has one executable and it is named after the
         /// application, which the title above already says.
         /// </summary>
-        private static bool IsPlainLaunch(AppViewState app, AppExeViewState exe, int count) =>
-            count == 1 &&
+        private bool IsPlainLaunch(AppViewState app, AppExeViewState exe) =>
+            HeroExecutables(app.ApplicationId).Count == 1 &&
             (string.IsNullOrWhiteSpace(exe.Caption) ||
              string.Equals(exe.Caption.Trim(), app.Title?.Trim(), StringComparison.OrdinalIgnoreCase));
+
+        private string HeroExeClass(AppViewState app, AppExeViewState exe) =>
+            IsPlainLaunch(app, exe) ? "giz-home-hero__exe giz-home-hero__exe--play" : "giz-home-hero__exe";
 
         /// <summary>
         /// Opens the application's own page, where every executable is listed.

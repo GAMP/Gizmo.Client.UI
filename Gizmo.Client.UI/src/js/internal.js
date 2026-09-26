@@ -103,6 +103,19 @@ window.InternalFunctions = {
   },
 };
 
+// Replays the page entrance (.giz-app__body > *) after a navigation.
+window.restartPageTransition = function restartPageTransition() {
+    const page = document.querySelector(".giz-app__body > *");
+
+    if (!page) {
+        return;
+    }
+
+    page.style.animation = "none";
+    void page.offsetWidth;
+    page.style.animation = "";
+};
+
 window.ClientFullScreen = window.appsSticky = function appsSticky() {
   var container = document.querySelector(".giz-apps__body__content");
   if (!container) return;

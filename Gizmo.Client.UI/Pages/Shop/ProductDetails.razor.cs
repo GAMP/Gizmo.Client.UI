@@ -11,6 +11,14 @@ namespace Gizmo.Client.UI.Pages
     [Route(ClientRoutes.ProductDetailsRoute)]
     public partial class ProductDetails : CustomDOMComponentBase
     {
+        protected UserProductViewState Product => ViewState.Product;
+
+        protected bool IsTime => Product?.ProductType == ProductType.ProductTime;
+
+        protected bool IsBundle => Product?.ProductType == ProductType.ProductBundle;
+
+        protected UserProductTimeViewState TimeProduct => IsTime ? Product.TimeProduct : null;
+
         #region FIELDS
         private UserProductGroupViewState _userProductGroupViewState;
         private int _previousProductId;

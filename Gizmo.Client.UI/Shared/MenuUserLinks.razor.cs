@@ -86,6 +86,14 @@ namespace Gizmo.Client.UI.Shared
             return icons;
         }
 
+        private static string OrbitStyle(OrbitIcon icon)
+        {
+            var culture = System.Globalization.CultureInfo.InvariantCulture;
+
+            return string.Create(culture,
+                $"--giz-orbit-size: {icon.SizePx}px; --giz-orbit-opacity: {icon.Opacity}; --giz-orbit-angle: {icon.AngleDeg}deg; --giz-orbit-radius: {icon.RadiusPx}px; --giz-orbit-tilt: {-icon.AngleDeg + icon.TiltDeg}deg");
+        }
+
         private string DisplayName =>
             ViewState.IsGuest || string.IsNullOrEmpty(ViewState.Username)
                 ? LocalizationService.GetString("GIZ_GEN_GUEST")

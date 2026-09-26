@@ -1,11 +1,6 @@
 @namespace Gizmo.Client.UI.Components
 @inherits ComponentBase
 
-@* The pay chooser shared by the purchase and checkout dialogs: one control with two or
-   three cells, chips under it when several counter methods share a cell, and a plain
-   line when there is only one way to pay. Styling is in _package-purchase-dialog.scss;
-   the markup is mirrored by visual/templates/purchase.js. *@
-
 @if (Single is not null)
 {
     <div class="giz-buy__way-line">
@@ -38,7 +33,7 @@ else if (Segments is { Count: > 0 })
         </div>
         @if (ShowChips)
         {
-            @* Which of the counter methods: the club's own names, as chips. *@
+            
             <div class="giz-buy__chips">
                 @foreach (var way in Chips)
                 {
@@ -50,17 +45,4 @@ else if (Segments is { Count: > 0 })
             </div>
         }
     </section>
-}
-
-@code {
-    [Parameter] public string Caption { get; set; }
-    [Parameter] public IReadOnlyList<PaySegment> Segments { get; set; }
-    [Parameter] public IEnumerable<PayWay> Chips { get; set; } = System.Array.Empty<PayWay>();
-    [Parameter] public bool ShowChips { get; set; }
-    [Parameter] public PayWay Selected { get; set; }
-    [Parameter] public PayWay Single { get; set; }
-    [Parameter] public string SingleNote { get; set; }
-    [Parameter] public bool Disabled { get; set; }
-    [Parameter] public EventCallback<PaySegment> OnSegment { get; set; }
-    [Parameter] public EventCallback<PayWay> OnWay { get; set; }
 }

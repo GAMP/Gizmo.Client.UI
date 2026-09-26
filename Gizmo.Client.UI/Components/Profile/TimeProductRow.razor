@@ -9,14 +9,8 @@
 @* One time product on the account page: place in the queue, what it is, how much is
    left, and the small print (bought when, expires how, works where) as plain words
    instead of the vendor's icon codes. *@
-@{
-    var order = Product.ActivationOrder;
-    var isCurrent = order == 1;
-    var isIdle = !order.HasValue;
-}
-
-<div class="giz-account-time__row @(isCurrent ? "giz-account-time__row--current" : null) @(isIdle ? "giz-account-time__row--idle" : null) @(Product.InCredit ? "giz-account-time__row--credit" : null)">
-    <div class="giz-account-time__order">@(order.HasValue ? order.Value.ToString(CultureInfo.CurrentCulture) : "–")</div>
+<div class="@RowClass">
+    <div class="giz-account-time__order">@OrderText</div>
 
     <div class="giz-account-time__type"><i class="ph-fill @TimeProductText.Icon(Product.TimeProductType)"></i></div>
 
@@ -24,13 +18,13 @@
         <div class="giz-account-time__line">
             <b class="giz-account-time__name">@TimeProductText.Name(Product)</b>
             <span class="giz-account-time__kind">@ShellText.Get(TimeProductText.TypeKey(Product.TimeProductType))</span>
-            @if (isCurrent)
+            @if (IsCurrent)
             {
                 <span class="giz-account-tag giz-account-tag--on">@ShellText.Get(ShellText.ACCOUNT_ACTIVE_NOW)</span>
             }
-            else if (order.HasValue)
+            else if (Order.HasValue)
             {
-                <span class="giz-account-tag">@ShellText.Get(ShellText.ACCOUNT_QUEUE_POSITION, order.Value)</span>
+                <span class="giz-account-tag">@ShellText.Get(ShellText.ACCOUNT_QUEUE_POSITION, Order.Value)</span>
             }
             else
             {

@@ -1,10 +1,6 @@
 @inherits LayoutComponentBase
 @using Microsoft.Extensions.Options
 @using System.Globalization
-@inject IJSRuntime JS
-@inject NavigationManager Nav
-@inject Gizmo.UI.Services.ILocalizationService LocalizationService
-@implements IDisposable
 
 @if (!string.IsNullOrEmpty(ClientInterfaceOptions.CurrentValue.StyleSheet))
 {
@@ -49,21 +45,19 @@
                 </div>
                 <span class="giz-top-bar__divider"></span>
                 <div class="giz-top-bar__time">
-                    @if (UserBalanceViewState.Time.HasValue)
+                    <i class="ph-bold ph-clock giz-ph-icon"></i>
+                    @if (HasTimeLimit)
                     {
-                        var t = UserBalanceViewState.Time.Value;
-                        <i class="ph-bold ph-clock giz-ph-icon"></i>
-                        <span class="giz-top-bar__time-value">@((int)t.TotalHours)@TimeUnitAbbreviation(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_HOUR_ABBREVIATED)) @(t.Minutes.ToString("00"))@TimeUnitAbbreviation(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_MINUTE_ABBREVIATED))</span>
+                        <span class="giz-top-bar__time-value">@TimeLeftText</span>
                     }
                     else
                     {
-                        <i class="ph-bold ph-clock giz-ph-icon"></i>
-                        <i class="ph-bold ph-infinity giz-ph-icon" style="color:#FFC700"></i>
+                        <i class="ph-bold ph-infinity giz-ph-icon giz-top-bar__time-unlimited"></i>
                     }
                 </div>
                 <span class="giz-top-bar__divider"></span>
                 <div class="giz-topbar-stat giz-topbar-stat--points">
-                    <i class="ph-fill ph-coins giz-ph-icon" style="color:#e8b84b"></i>
+                    <i class="ph-fill ph-coins giz-ph-icon"></i>
                     <span>@UserBalanceViewState.PointsBalance</span>
                 </div>
                 <span class="giz-top-bar__divider"></span>
@@ -121,41 +115,3 @@
     <ShellActivityWatcher />
 
 </main>
-
-@code {
-    private bool _playTransition;
-
-    protected override void OnInitialized()
-    {
-        Nav.LocationChanged += OnLocationChanged;
-    }
-
-    private void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
-    {
-        _playTransition = true;
-        InvokeAsync(StateHasChanged);
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender || _playTransition)
-        {
-            _playTransition = false;
-            await JS.InvokeVoidAsync("eval", @"
-                (function() {
-                    var el = document.querySelector('.giz-app__body > *');
-                    if (!el) return;
-                    el.style.animation = 'none';
-                    el.offsetWidth;
-                    el.style.animation = '';
-                })();
-            ");
-        }
-    }
-
-    public void Dispose()
-    {
-        Nav.LocationChanged -= OnLocationChanged;
-        this.UnsubscribeChange(UserBalanceViewState);
-    }
-}
