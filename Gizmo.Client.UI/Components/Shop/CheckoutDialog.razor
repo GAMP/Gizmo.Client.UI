@@ -4,12 +4,6 @@
 @using Gizmo.Client.UI.View.States
 @using Gizmo.Web.Api.Models
 
-@* Shop checkout, in the same card as the package purchase: the items, the pay chooser,
-   the total, the button. The chooser and the result screen are shared components.
-
-   Styling lives in _package-purchase-dialog.scss. The markup is mirrored by the visual
-   test template (visual/templates/checkout.js): change one, change the other. *@
-
 <HostedDialog>
     <div class="giz-buy giz-buy--checkout @(_step == Step.Done ? "giz-buy--done" : null)">
 
@@ -50,8 +44,6 @@
             }
             else
             {
-                @* WHAT IS IN THE CART. A line paid with points shows its points; the
-                   choice itself is made on the cart page, not here. *@
                 <div class="giz-buy__items giz-scrollbar--v">
                     @foreach (var item in Items)
                     {
@@ -87,7 +79,6 @@
                                    OnWay="@Select" />
                 }
 
-                @* WHAT IT COMES TO *@
                 <section class="giz-buy__bill @(IsBusy ? "giz-buy__bill--busy" : null)">
                     @if (!IsPriced)
                     {

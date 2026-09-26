@@ -4,8 +4,6 @@
 @using Gizmo.Client.UI.View.States
 @using Gizmo
 
-@* Purchases tab: orders newest first, one row each, the lines behind a native
-   disclosure so a long history stays a list and not a ledger. *@
 <AccountFrame>
     <section class="giz-account-card giz-account-card--list">
         <div class="giz-account-card__head">
@@ -39,9 +37,6 @@
             <div class="giz-account-orders">
                 @foreach (var order in ViewState.Orders)
                 {
-
-                    @* Keyed by the object: the vendor leaves Id at 0 on every order, and two
-                       siblings with one key make Blazor throw on the next re-render. *@
                     <details class="giz-account-order @StatusClass(order)" @key="order">
                         <summary class="giz-account-order__sum">
                             <div class="giz-account-order__when">

@@ -2,48 +2,18 @@
 @using System.Globalization
 @using Gizmo.Web.Api.Models
 
-@* Home board.
-
-   Two slots that answer two different questions, and because the questions are
-   different they never take each other's room:
-
-     HERO  what is worth looking at. Banners when the club has them, otherwise the
-           popular games on a slow rotation with their launch buttons, otherwise the
-           popular goods, otherwise a quiet line. It is never the shop list, so
-           adding a banner hides nothing.
-     TILL  what can I buy. Balance, time packages and a short bar list, always in
-           the right column, unaffected by whatever the hero is doing.
-
-   Under the hero, four popular games. The full catalogues live behind the Shop and
-   Games routes on the left rail.
-
-   The reservation notice lives in the top bar (TopBarReservation), so it shows on
-   every page rather than only here.
-
-   Packages are filtered on DisallowPurchase, which the server computes from the
-   availability window, guest and user group restrictions and stock. *@
-
 <div class="giz-home-board">
 
     <div class="giz-home-stage">
 
-        @* HERO *@
         @if (Hero == HeroKind.Banner && CurrentBanner is { } banner)
         {
-            @* News is drawn by the stock AdsCarouselItem - the same component the shell's
-               own carousel uses. No markup of our own here on purpose: an item may carry
-               its own HTML template, image, button and media, and all of that is its
-               normal behaviour. Fitting it to the hero tile is .giz-home-hero--news's job. *@
             <section class="giz-home-hero giz-home-hero--news" aria-label="@ShellText.Get(ShellText.HERO_PROMOS)" @key="@($"b{banner.Id}")">
                 <AdsCarouselItem @key="@banner.Id" AdvertisementId="@banner.Id" SimpleMode="true" />
             </section>
         }
         else if (Hero == HeroKind.App && CurrentHeroApp is { } app)
         {
-            @* A game cover is tall: it stands as a card on the right over its own blurred
-               copy, and the launch buttons are the same UniversalExecutable the launch
-               overlay and the dock use, so deployment, progress and personal files behave
-               exactly as they do everywhere else. *@
             <section class="giz-home-hero giz-home-hero--app" aria-label="@ShellText.Get(ShellText.HERO_POPULAR)" @key="@($"a{app.ApplicationId}")">
                 <div class="giz-home-hero__bg">
                     <GizImage @key="app.ApplicationId" ImageType="Gizmo.UI.ImageType.Application" ImageId="@app.ImageId" ImageFitType="ImageFitType.Cover">
@@ -71,10 +41,6 @@
                 <div class="giz-home-hero__body">
                     <div class="giz-home-hero__kick">@ShellText.Get(ShellText.HERO_POPULAR)</div>
                     <div class="giz-home-hero__title">@app.Title</div>
-                    @* The word on a lone launch button comes in through a CSS variable: the
-                       button is the vendor's component, which prints the executable's
-                       caption or nothing, and "Counter-Strike 2" under a title that already
-                       says so is no invitation. See .giz-home-hero__exe--play. *@
                     <div class="giz-home-hero__launch" style="--giz-play-label: '@LaunchLabel'">
                         @foreach (var exe in HeroExecutables(app.ApplicationId))
                         {
@@ -94,9 +60,6 @@
         }
         else if (Hero == HeroKind.Product && CurrentHeroProduct is { } featured)
         {
-            @* A tall product image in a wide block: the background is the same picture
-               blurred and enlarged, with the sharp copy standing as a card on the right,
-               so nothing is cropped. *@
             <section class="giz-home-hero giz-home-hero--goods" aria-label="@ShellText.Get(ShellText.HERO_POPULAR)" @key="@($"p{featured.Id}")">
                 <div class="giz-home-hero__bg">
                     <GizImage @key="featured.Id" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@featured.DefaultImageId" ImageFitType="ImageFitType.Cover">
@@ -140,8 +103,6 @@
 
         @if (SlideCount > 1)
         {
-            @* Keyed on the index deliberately: changing slide recreates the block so the
-               fill bar restarts, instead of finishing the previous slide's cycle. *@
             <div class="giz-home-dots" @key="SlideIndex">
                 @for (var i = 0; i < SlideCount; i++)
                 {
@@ -155,7 +116,6 @@
             </div>
         }
 
-        @* POPULAR GAMES *@
         <section class="giz-home-strip" aria-label="@ShellText.Get(ShellText.HOME_GAMES_SECTION)">
             <div class="giz-caption giz-caption--rule">
                 <span>@ShellText.Get(ShellText.POPULAR_APPS)</span>
@@ -166,9 +126,6 @@
             @if (StripApps.Count > 0)
             {
                 <div class="giz-home-strip__row">
-                    @* The shared ApplicationCard, so hovering a game still opens
-                       its real launch overlay with every executable, exactly as
-                       on the Apps page. Only the frame is restyled, in CSS. *@
                     @foreach (var app in StripApps)
                     {
                         <ApplicationCard @key="app.ApplicationId" Application="@app" />
@@ -182,10 +139,8 @@
         </section>
     </div>
 
-    @* TILL *@
     <aside class="giz-home-till" aria-label="@ShellText.Get(ShellText.PURCHASES)">
 
-        @* No top-up button here on purpose: there is already one in the top bar. *@
         <div class="giz-home-wallet">
             <div class="giz-caption">@ShellText.Get(ShellText.GEN_BALANCE)</div>
             <div class="giz-home-wallet__row">
@@ -205,10 +160,6 @@
                 <div class="giz-home-packs">
                     @foreach (var product in TimeProducts)
                     {
-                        @* One thin row: name, price, button. No duration tag on purpose -
-                           it is almost always already in the name ("Standard 3 hours"), and
-                           as a separate tag it took fifty pixels from the one thing that
-                           needed them. The full duration is in the purchase dialog. *@
                         <article class="giz-home-pack" @key="product.Id">
                             <span class="giz-home-pack__name" @onclick="@(() => OpenProduct(product.Id))">@product.Name</span>
                             <span class="giz-home-pack__price">

@@ -3,25 +3,9 @@
 @using Gizmo.Client.UI.Services
 @using Gizmo.Client.UI.Components
 
-@* Custom glass profile card (not a list-style dropdown menu): scattered
-   icons around the avatar, name, then change-password+lock sharing a row
-   and logout full width on its own below. The avatar is not a control: the
-   shell has no way to change the picture.
-
-   When the club runs the loyalty system the standing is worn, not listed:
-   the ring on the avatar is the progress to the next level (or the share of
-   achievements), the disc at its corner is the level, and one line under the
-   name says where the customer stands. All of it opens the Progress tab;
-   the counts and the perks live there. *@
 <div class="giz-dropdown-menu giz-profile-popup @(UserMenuViewState.UserLinksIsVisible ? "open" : "")"
      id="@Id"
      @ref="@Ref">
-    @* giz-dropdown-menu__content is required here even though this isn't a
-       list-style dropdown: the global click-outside-closes handler
-       (closeOpenPopups in internal.js) looks specifically for that class
-       name as a child of the popup to compute its "click landed inside"
-       bounding box - without it, the popup silently never closes on an
-       outside click, no matter where you click. *@
     <div class="giz-dropdown-menu__content giz-profile-popup__content">
         <div class="giz-profile-popup__avatar-zone">
             <div class="giz-profile-popup__orbit">
@@ -45,7 +29,6 @@
         </div>
 
         <div class="giz-profile-popup__name">@DisplayName</div>
-
 
         <div class="giz-profile-popup__actions">
             <button class="giz-profile-popup__account-btn" @onclick="OnClickAccountButtonHandler">

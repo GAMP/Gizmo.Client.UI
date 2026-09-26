@@ -12,8 +12,6 @@
 <main client-theme="true">
     <div class="giz-main-container">
         <div class="giz-login-content @ClassName">
-            @* Base layer: the club's configured wallpaper (skin config). Shown
-               when the station is idle (no login window). *@
             @if (LoginRotatorViewState.IsEnabled)
             {
                 <Layout_LoginRotator />
@@ -23,14 +21,7 @@
                 <Layout_LoginWallpaper />
             }
 
-            @* Overlay layer: the shell's own background - the atmosphere in the accent's
-               colours with a few faint gaming icons. With a club wallpaper configured it
-               sits on top of that wallpaper and crossfades in while the login /
-               registration window is active (opacity + scale, driven by the .collapsed
-               state on the parent); without one it is the idle background as well
-               (.giz-login-content--own-bg). *@
             <div class="giz-login-hardcoded-bg">
-                @* The moving gradient over the atmosphere - see _flow.scss. *@
                 <div class="giz-flow" aria-hidden="true">
                     <span class="giz-flow__sheet giz-flow__sheet--1"></span>
                     <span class="giz-flow__sheet giz-flow__sheet--2"></span>
@@ -67,8 +58,6 @@
                 </div>
             }
 
-            @* The same notice as above the sign-in card. While the station is idle there
-               is no card on screen, so this instance carries the message. *@
             <div class="giz-login-warnings">
                 @if (_previousIsIdle || _slideOut)
                 {
@@ -112,8 +101,5 @@
     {
         <Layout_LoginLock />
     }
-
-    @* No ShellActivityWatcher here on purpose: the sign-in screen has no applications to
-       run, and its attract loop must keep playing to an empty room. *@
 
 </main>

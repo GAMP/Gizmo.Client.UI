@@ -6,10 +6,6 @@
 <div class="giz-user-online-deposit">
     @if (_paymentSucceeded)
     {
-        @* Detected by watching the live balance figure catch up to what
-           was submitted - see UserOnlineDeposits.razor.cs. Self-closing:
-           the host is told via OnPaymentSucceeded once this has been on
-           screen long enough to read. *@
         <div class="giz-user-online-deposit__success">
             <div class="giz-user-online-deposit__success__countdown">
                 <div class="giz-user-online-deposit__success__countdown__fill"></div>
@@ -24,8 +20,6 @@
     }
     else if (ViewState.PageIndex == 0)
     {
-        @* Russian written inline - see the note in
-           MenuActiveApplicationsContainer.razor for why not resource keys. *@
         <div class="giz-user-online-deposit__body">
             <div class="giz-user-online-deposit__label">@ShellText.Get(ShellText.DEPOSIT_QUICK_SELECT)</div>
             <div>

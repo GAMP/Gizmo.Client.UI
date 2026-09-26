@@ -21,13 +21,6 @@
         <div class="giz-order-item__details">
             @if (_product?.PurchaseOptions.HasFlag(PurchaseOptionType.Or) == true)
             {
-                @* A real either/or choice - each radio sits with the value
-                   it selects, instead of two radios floating to the side of
-                   a shared price/points pair (which read as "pick one of
-                   these two unlabeled dots" on its own). *@
-                @* Not <label> - RadioButton already renders its own
-                   internal <input>+<label for>, so an outer label here would
-                   nest labels (invalid HTML, double-toggle risk). *@
                 <div class="giz-order-item__details__option">
                     <RadioButton @key="Guid.NewGuid()" GroupName="@GetPurchaseOptionsGroup()" IsChecked="@(UserCartProductViewState.PayType == OrderLinePayType.Cash)" IsCheckedChanged="@((isChecked) => SetPayType(isChecked, OrderLinePayType.Cash))" />
                     <span class="giz-order-item__details__price">@UserCartProductViewState.TotalPrice.ToString("C", CultureInfo.CurrentCulture)</span>
@@ -40,8 +33,6 @@
             else
             {
                 <div class="giz-order-item__details__price">@UserCartProductViewState.TotalPrice.ToString("C", CultureInfo.CurrentCulture)</div>
-                @* Points only shown when this item actually earns some -
-                   every line displaying "& 0" regardless was pure noise. *@
                 @if (UserCartProductViewState.TotalPointsPrice.GetValueOrDefault() > 0)
                 {
                     <div class="giz-order-item__details__points"><Points2Icon />@UserCartProductViewState.TotalPointsPrice.GetValueOrDefault().ToString("N0")</div>

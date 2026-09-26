@@ -35,10 +35,6 @@ namespace Gizmo.Client.UI
         [Parameter]
         public EventCallback<int> OnClose { get; set; }
 
-        /// <summary>
-        /// Type modifier for the card. Info deliberately has none - it is
-        /// the default look (brand accent), so it needs no override.
-        /// </summary>
         protected string TypeModifier => Icon switch
         {
             AlertTypes.Success => "giz-notification--success",

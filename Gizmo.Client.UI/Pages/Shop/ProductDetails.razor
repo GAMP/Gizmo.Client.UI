@@ -1,10 +1,6 @@
 @namespace Gizmo.Client.UI.Pages
 @inherits CustomDOMComponentBase
 
-@* One Product, the whole story: picture, name, price and the buy control at the top;
-   the small print (where it works, when it expires, when it can be bought) as plain
-   facts under them; description, bundle contents and related goods below. The cart
-   keeps its column on the right, as on the shop page. *@
 <div class="giz-product-page-wrap">
     <div class="giz-product-page @(CanPurchase ? "giz-product-page--with-cart" : null)">
         <div class="giz-product-page__page giz-scrollbar--v">
@@ -149,7 +145,6 @@
                         <div class="giz-product-page__bundle-row">
                             @foreach (var bundled in Product.BundledProducts)
                             {
-                                @* Not keyed by id: a bundle can hold the same Product twice. *@
                                 <ProductDetailsBundledProduct @key="@bundled" ProductId="@bundled.Id" Quantity="bundled.Quantity" />
                             }
                         </div>

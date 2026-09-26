@@ -1,9 +1,6 @@
 @namespace Gizmo.Client.UI.Pages
 @inherits CustomDOMComponentBase
 
-@* Profile tab: what the club knows about the person, and the one thing they can change
-   here - the password. Contact details are read-only in the client on purpose: the
-   club verifies them at the counter. *@
 <AccountFrame>
     <div class="giz-account__grid">
 
@@ -61,8 +58,6 @@
 
     </div>
 
-    @* The shell's version, the one place it is shown: tiny and muted, under the cards
-       on the right. Support asks for it when something looks wrong; nobody else looks. *@
     @if (!string.IsNullOrEmpty(ShellVersion.Grafit))
     {
         <div class="giz-account__version">Grafit @ShellVersion.Grafit</div>

@@ -18,12 +18,6 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         public InputLanguageViewState ViewState { get; set; }
 
-        // The keyboard-layout tile in the login screen's bottom-right corner
-        // used to be completely independent of the interface language picked
-        // in the bottom-left one: switching the shell to Russian left the
-        // corner still saying ENG, with no way to tell it was even related.
-        // Following the interface language is what people expect from these
-        // two sitting on the same screen.
         [Inject]
         public ClientLocalizationViewState LocalizationViewState { get; set; }
 
@@ -34,9 +28,6 @@ namespace Gizmo.Client.UI.Components
             return LanguageService.SetCurrentInputLanguageAsync(culture.TwoLetterISOLanguageName);
         }
 
-        //Raised from the localization service, not the UI thread. Not async void: a dispatcher
-        //fault during host teardown would be rethrown on the thread pool and exit the client
-        //(see ShellComponentBase.DispatchWorkflow).
         private void OnClientCultureChanged(object sender, EventArgs e)
         {
             DispatchWorkflow(async () =>
@@ -50,19 +41,6 @@ namespace Gizmo.Client.UI.Components
             });
         }
 
-        /// <summary>
-        /// Called from JS whenever the OS keyboard layout changes (Alt+Shift
-        /// and friends), with the character the physical A key now produces.
-        /// </summary>
-        /// <remarks>
-        /// The desktop host's IInputLanguageService declares a LanguageChange
-        /// event that it never raises, and its CurrentInputLanguage getter
-        /// throws NotImplementedException - so nothing on the C# side ever
-        /// learns about an Alt+Shift switch and this tile sat frozen on
-        /// whatever was last picked through the UI. That service lives in the
-        /// host EXE, which a skin cannot replace, so the layout is detected
-        /// browser-side instead (see setupInputLayoutWatch in internal.js).
-        /// </remarks>
         [JSInvokable]
         public async Task OnKeyboardLayoutDetected(string sampleChar)
         {
@@ -74,11 +52,6 @@ namespace Gizmo.Client.UI.Components
             await InvokeAsync(StateHasChanged);
         }
 
-        /// <summary>
-        /// Maps the character produced by the physical A key to a language,
-        /// by script. Covers the scripts this shell actually ships layouts
-        /// for; anything else stays unrecognised rather than guessing.
-        /// </summary>
         private static string LanguageFromSampleChar(string sampleChar)
         {
             if (string.IsNullOrEmpty(sampleChar))
@@ -103,8 +76,6 @@ namespace Gizmo.Client.UI.Components
             if (string.Equals(ViewState.CurrentInputLanguage?.TwoLetterISOLanguageName, twoLetterIsoName, StringComparison.OrdinalIgnoreCase))
                 return Task.CompletedTask;
 
-            // Only follow when that layout is actually installed on this
-            // station - otherwise leave the customer's own choice alone.
             if (!ViewState.AvailableInputLanguages.Any(a => string.Equals(a.TwoLetterISOLanguageName, twoLetterIsoName, StringComparison.OrdinalIgnoreCase)))
                 return Task.CompletedTask;
 
@@ -141,7 +112,6 @@ namespace Gizmo.Client.UI.Components
             }
             catch
             {
-                // JS runtime may already be gone - nothing left to clean up.
             }
 
             _selfRef?.Dispose();

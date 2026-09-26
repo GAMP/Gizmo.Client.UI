@@ -58,7 +58,6 @@ namespace Gizmo.Client.UI.Pages
         #endregion
 
         /// <summary>
-        /// Gets whether either availability list has more than the one line shown folded.
         /// </summary>
         private bool HasMoreAvailability
         {

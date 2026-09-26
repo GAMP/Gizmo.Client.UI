@@ -1,8 +1,6 @@
 @namespace Gizmo.Client.UI.Shared
 @inherits ShellComponentBase
 
-@* Copy is written in Russian directly rather than through resource keys -
-   see the note in MenuActiveApplicationsContainer.razor for why. *@
 @if (ViewState.IsInGracePeriod)
 {
     <div class="giz-login-overlay">
@@ -10,10 +8,6 @@
             <div class="giz-grace-period">
                 @if (IsReservationLock)
                 {
-                    @* Same grace period, different cause: not "out of money" but "this
-                       machine is reserved". Offering a top-up here would be a lie - no
-                       amount keeps the session open. So: what is happening, the
-                       reservation code, and sign out. *@
                     <div class="giz-grace-period__badge giz-grace-period__badge--lock">
                         <i class="ph-fill ph-calendar-check giz-ph-icon"></i>
                     </div>
@@ -106,10 +100,6 @@
                         <div class="giz-grace-period__time">@string.Format("{0:mm\\:ss}", ViewState.Time)</div>
                     </div>
                     <div class="giz-grace-period__actions">
-                        @* The top-up form is embedded rather than opened as a
-                           dialog: this overlay sits at z-index 3000 and the
-                           dialog host at 1001, so a dialog raised from here
-                           would render behind the overlay. *@
                         @if (UserOnlineDepositViewState.IsEnabled)
                         {
                             <Button Color="ButtonColors.Accent"

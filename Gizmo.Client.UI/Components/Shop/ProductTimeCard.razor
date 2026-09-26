@@ -6,13 +6,6 @@
      @onclick="OpenDetails">
     <div class="giz-product-card__content">
 
-        @* Wrapper establishes the positioning context for the hover overlay
-           below, so it covers exactly the image+details area without
-           contributing to grid track sizing (position:absolute is excluded
-           from sizing entirely - a plain grid item is not, which is why the
-           previous approach inflated the card height with the hidden
-           panel's own content size). The footer/button sits outside this
-           wrapper and stays untouched. *@
         <div class="giz-product-card__content__top">
             <div class="giz-product-card__content__image giz-product-card__content__image--time" @onmouseover="OnVisibleImageContent">
                 <GizImage @key="Product.Id" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Product.DefaultImageId" ImageFitType="ImageFitType.Cover">

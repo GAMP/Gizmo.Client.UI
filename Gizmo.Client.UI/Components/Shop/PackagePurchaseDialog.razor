@@ -4,15 +4,6 @@
 @using Gizmo.Client.UI.View.States
 @using Gizmo.Web.Api.Models
 
-@* Package purchase.
-
-   One card, read top to bottom in the order a customer thinks: what am I buying, what
-   do I pay with, what does it come to, and the one button that does it. The chooser and
-   the result screen are shared with the shop checkout (PayWayChooser, CartDialogResult).
-
-   Styling lives in _package-purchase-dialog.scss. The markup is mirrored by the visual
-   test template (visual/templates/purchase.js): change one, change the other. *@
-
 <HostedDialog>
     <div class="giz-buy @(_step == Step.Done ? "giz-buy--done" : null)">
 
@@ -48,9 +39,6 @@
 
             @if (_step == Step.TopUp)
             {
-                @* The existing deposit component as a second step, with the shortfall
-                   already entered. When the money lands the dialog returns to the
-                   confirmation with the balance in place. *@
                 <div class="giz-buy__topup">
                     <UserOnlineDeposits OnPaymentSucceeded="@OnTopUpSucceeded" />
                 </div>
@@ -75,12 +63,9 @@
                                    OnWay="@Select" />
                 }
 
-                @* WHAT IT COMES TO *@
                 <section class="giz-buy__bill @(IsBusy ? "giz-buy__bill--busy" : null)">
                     @if (!IsPriced)
                     {
-                        @* The cart is priced server side: until the total arrives this is a
-                           spinner, not a zero above a live button. *@
                         <div class="giz-buy__wait"><Spinner /></div>
                     }
                     else
@@ -100,8 +85,6 @@
                             </div>
                             @if (HasOtherItems)
                             {
-                                @* There is one cart per user, so these goods are paid for
-                                   together with the package. It has to be said. *@
                                 <div class="giz-buy__line">
                                     <span>@ShellText.Get(ShellText.BUY_OTHER_ITEMS)</span>
                                     <span>@Money(OtherItemsTotal)</span>
@@ -144,7 +127,6 @@
                             </span>
                         </div>
 
-                        @* Where the customer stands afterwards, or what is in the way. *@
                         @if (NoWayToPay)
                         {
                             <div class="giz-buy__short">@ShellText.Get(ShellText.BUY_NO_WAYS)</div>

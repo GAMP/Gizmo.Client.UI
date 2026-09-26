@@ -1,18 +1,8 @@
 @namespace Gizmo.Client.UI.Shared
 @inherits ShellComponentBase
 
-@* Deployment is the one moment where pressing Play appears to do nothing: game files
-   are copied from the server, which can take minutes, and the only place that shows it
-   is the application manager, which nobody opens.
-
-   The banner grows from width 0 in the top bar slot and pushes the icon pill left by
-   ordinary flex reflow. *@
 <div class="giz-deploy @(IsOpen ? "open" : null) @(IsDone ? "giz-deploy--done" : null) @(IsIndeterminate && !IsDone ? "giz-deploy--waiting" : null)">
 
-    @* Progress is read twice: the ring around the badge is the precise figure, and a
-       wash under the content fills the banner from the left with a feathered edge -
-       light filling the pill, not a block pushed along it. While nothing can be
-       measured the ring turns and the wash stays out. *@
     <span class="giz-deploy__fill" style="--giz-deploy-progress: @ProgressWidth"></span>
 
     <div class="giz-deploy__badge">
@@ -30,8 +20,6 @@
         }
     </div>
 
-    @* The body opens the application manager, which holds the details and the cancel
-       button. Cancelling is deliberately not offered here: a misclick costs a re-download. *@
     <button type="button" class="giz-deploy__body" @onclick="OpenManager" title="@ShellText.Get(ShellText.DEPLOY_OPEN_APPS)">
         <span class="giz-deploy__title">@Title</span>
         <span class="giz-deploy__sub">@Subtitle</span>

@@ -46,13 +46,6 @@ namespace Gizmo.Client.UI.Shared
 
         #endregion
 
-        // Scattered icons around the avatar. Deliberately hand-placed
-        // rather than generated from even rings: equal angle-steps at a
-        // shared radius reads as neat concentric lines/rows, not the
-        // organic "constellation" scatter this is meant to look like.
-        // Angle/radius/size are all irregular on purpose - no two icons
-        // share a radius band or a clean angle interval. Radii stay
-        // outside the avatar's own edge (9.6rem/96px across = 48px radius).
         public sealed record OrbitIcon(string IconClass, double AngleDeg, double RadiusPx, double SizePx, string Opacity, double TiltDeg);
 
         public List<OrbitIcon> OrbitIcons { get; } = BuildOrbitIcons();
@@ -78,7 +71,6 @@ namespace Gizmo.Client.UI.Shared
             foreach (var it in items)
             {
                 double tilt = Math.Sin(it.Angle * Math.PI / 180.0) * 15.0;
-                //Colour comes from the stylesheet (the palette's ink), only the fade is per icon.
                 string opacity = it.Opacity.ToString(System.Globalization.CultureInfo.InvariantCulture);
                 icons.Add(new OrbitIcon(it.Icon, it.Angle, it.Radius, it.Size, opacity, tilt));
             }
@@ -119,7 +111,6 @@ namespace Gizmo.Client.UI.Shared
             return UserService.LogoutWithConfirmationAsync();
         }
 
-        // The account page. A guest has no profile tab, so the Time tab is the front door.
         private void OnClickAccountButtonHandler()
         {
             _shouldRender = true;
@@ -183,14 +174,9 @@ namespace Gizmo.Client.UI.Shared
             ViewState.OnChange += ViewState_OnChange;
             UserMenuViewState.OnChange += ViewState_OnChange;
 
-
             base.OnInitialized();
         }
 
-        // View states raise from the client's network and dispatcher threads, not this
-        // component's. Written async void awaiting InvokeAsync, a dispatcher fault during
-        // WebView teardown was rethrown on the thread pool and took the whole client down.
-        // DispatchRender absorbs those, so a lost WebView is only a reload.
         private void ViewState_OnChange(object sender, System.EventArgs e)
         {
             _shouldRender = true;

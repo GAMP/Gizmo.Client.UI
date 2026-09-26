@@ -2,14 +2,6 @@
 @inherits CustomDOMComponentBase
 @using System.Linq
 
-@* Copy is written in Russian directly rather than through resource keys:
-   the resource strings live in Gizmo.Client.UI.Resources.dll, which is not
-   listed in composition.json's AdditionalAssemblies, so the host keeps its
-   own resident copy and any edit shipped there is silently ignored.
-
-   The rows are plain divs now, not a <table>. The table bought nothing -
-   there is no header row and no column alignment worth preserving - and it
-   made the row layout awkward to control (td widths, no gap, no radius). *@
 <div class="giz-dropdown-menu @(UserMenuViewState.ActiveAppsIsVisible ? "open" : "")"
      id="@Id"
      @ref="@Ref">

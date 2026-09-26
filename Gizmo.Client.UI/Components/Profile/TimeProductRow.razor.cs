@@ -40,8 +40,6 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        //The catalogue product behind the time product, for its expiry rules. Null while
-        //loading, for a product that is no longer in the catalogue, and for rate-based time.
         private UserProductViewState _product;
 
         [Inject]
@@ -56,11 +54,6 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback OnOpen { get; set; }
 
-        /// <summary>
-        /// When the product stops working, in words: "Expires after 3 d. from purchase ·
-        /// Activated 12.03.2026 14:00", "Expires at 06:00", "Expires on sign-out", or
-        /// "Does not expire". Null until the catalogue product is known.
-        /// </summary>
         private string Expiry
         {
             get
@@ -87,8 +80,6 @@ namespace Gizmo.Client.UI.Components
 
                     parts.Add(ShellText.Get(ShellText.PD_EXPIRES_AFTER, from));
 
-                    //The countdown has started once the product was used (or bought, for
-                    //the other rule); say when, since that is what the remaining time hangs on.
                     var started = fromUse ? Product.FirstUsageTime : Product.PurchaseTime;
                     if (started.HasValue)
                         parts.Add(ShellText.Get(ShellText.TIME_ACTIVATED, started.Value.ToLocalTime().ToString("g", culture)));
@@ -118,7 +109,6 @@ namespace Gizmo.Client.UI.Components
                 }
                 catch (Exception)
                 {
-                    //A product that has left the catalogue: the row shows without its expiry.
                     _product = null;
                 }
 

@@ -5,9 +5,6 @@
 @using Gizmo.UI;
 @using Microsoft.AspNetCore.Components.Forms
 
-@* A reservation is a property of the machine, not of the sign-in form, so its notice is
-   a separate tile ABOVE the card rather than inside its header. Inside, it pushed the
-   heading down and read as an input error. The stack keeps the pair centred. *@
 <div class="giz-login-stack">
 
     @if (!ViewState.HasLoginError && ReservationMessage is { } reservationMessage)
@@ -33,9 +30,6 @@
                 </ButtonGroup>
             </div>
             <EditForm EditContext="@UserLoginService.EditContext" @onkeydown="OnKeyDownHandle">
-                @* Keyed on the login type so switching Username <-> Phone
-                   remounts this row and replays the entrance animation,
-                   rather than swapping the field in place with no motion. *@
                 <div class="giz-form-input giz-form-input--swappable" @key="ViewState.LoginType">
                     @if (ViewState.LoginType == View.UserLoginType.UsernameOrEmail)
                     {
@@ -51,9 +45,6 @@
                     }
                     else
                     {
-                        @* Country picker instead of the old static "+7": since 3.0.91
-                           UserLoginViewService validates Country and assembles the number
-                           in E.164 itself, so phone sign-in fails validation without it. *@
                         <PhoneNumberField SelectedCountryName="@ViewState.Country"
                                           PhoneValue="@ViewState.LoginName"
                                           PhoneValueExpression="@(() => ViewState.LoginName)"
@@ -98,9 +89,6 @@
                                 </div>
                             </div>
                         </div>
-                        @* The code is visible: it is not a password but a one-time code
-                           from the reservation confirmation, copied from a phone and
-                           checked character by character. Hence no reveal button. *@
                         <PasswordInput UpdateOnInput="true" Value="@ViewState.Pin"
                                        ValueChanged="@((string value) => UserLoginService.SetPin(value))"
                                        ValueExpression="@(() => ViewState.Pin)"
@@ -131,9 +119,6 @@
                     </Button>
                 </div>
 
-                @* Moved inside the card (was a separate element pinned to the
-                   header's top-right corner). Still gated on the same
-                   registration-enabled config as before. *@
                 @if (UserRegisterConfigurationViewState.IsEnabled)
                 {
                     <div class="giz-login-new-user">

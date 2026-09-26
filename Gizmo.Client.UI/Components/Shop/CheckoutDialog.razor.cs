@@ -7,21 +7,6 @@ using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
-    /// <summary>
-    /// Checkout of the shop cart: what is in it, what to pay with, what it comes to.
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// Opened by the shop's own <c>UserCartViewService.SubmitAsync</c> from the cart
-    /// panel, and the order is placed through its <c>CheckoutAsync</c>: the shop owns
-    /// this dialog's lifetime - it closes it when the cart is reset under it - and the
-    /// flag that keeps it open through the reset is set inside that method.
-    /// </para>
-    /// <para>
-    /// Points are not offered here: in the cart each line chooses money or points on the
-    /// cart page, and the checkout only shows what those choices add up to.
-    /// </para>
-    /// </remarks>
     public partial class CheckoutDialog : CartDialogBase
     {
         #region THE CART
@@ -54,16 +39,6 @@ namespace Gizmo.Client.UI.Components
             ? ShellStringOverrides.Get(ShellStringOverrides.BUY_ORDERED_HINT)
             : string.Empty;
 
-        /// <summary>
-        /// Places the order through the shop's own checkout.
-        /// </summary>
-        /// <remarks>
-        /// That method validates the balance against a cached figure before talking to
-        /// the server and returns without a word when the check fails. It marks the order
-        /// complete only once the server has answered, so "not complete" after it returns
-        /// means the check failed: the balances are re-read and the dialog stays on the
-        /// confirmation, where the shortfall now shows, rather than reporting success.
-        /// </remarks>
         protected override void Pay()
         {
             if (!CanPay)

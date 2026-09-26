@@ -12,24 +12,10 @@ using Microsoft.AspNetCore.Components;
 namespace Gizmo.Client.UI.Components
 {
     /// <summary>
-    /// An image served by the host's image service, with the loading / empty / error
-    /// placeholders the markup supplies.
     /// </summary>
-    /// <remarks>
-    /// The host answers an image request only while it is connected and a user is signed
-    /// in: it asks the server for the image's hash before it will use its own cache. A
-    /// request made during a dropped connection therefore fails or hangs, and every image
-    /// on screen that happened to be re-requested at that moment (a changed view state
-    /// re-keys its image) stayed a placeholder for the rest of the session. So: a load that
-    /// has not answered in <see cref="LoadTimeout"/> shows the error placeholder instead of
-    /// a shimmer, and any image in an error state is requested again when the client
-    /// reconnects or a user signs in.
-    /// </remarks>
     public partial class GizImage : ShellComponentBase
     {
         /// <summary>
-        /// How long a load may stay unanswered before the error placeholder replaces the
-        /// loading one. The request itself is left running; a late answer still lands.
         /// </summary>
         private static readonly TimeSpan LoadTimeout = TimeSpan.FromSeconds(15);
 
@@ -93,8 +79,6 @@ namespace Gizmo.Client.UI.Components
         readonly CancellationTokenSource _cancellationTokenSource = new();
         private bool _loaded;
 
-        //Serial number of the latest load: an answer from an earlier one (a retry started
-        //while it was still running) must not overwrite a newer result.
         private int _loadSerial;
 
         #endregion
@@ -144,8 +128,6 @@ namespace Gizmo.Client.UI.Components
 
         #region EVENTS
 
-        //Both arrive from the client's own threads; the retry touches component state, so
-        //it goes through the renderer (never async void - see ShellDispatch).
         private void OnConnectionStateChange(object sender, ConnectionStateEventArgs e)
         {
             if (e.IsConnected)
@@ -160,8 +142,6 @@ namespace Gizmo.Client.UI.Components
 
         private void RetryIfFailed()
         {
-            //Only a failed load is worth repeating: a picture that arrived stays, and a
-            //load still in flight will answer on its own now that the connection is back.
             if (_imageResultStatusCode != 2 || !ImageId.HasValue)
                 return;
 
@@ -173,8 +153,6 @@ namespace Gizmo.Client.UI.Components
         #region HELPERS
 
         /// <summary>
-        /// Re-renders unless the component is already gone: a load answering after
-        /// disposal (the page was left) must not throw into the renderer.
         /// </summary>
         private async Task RenderAsync()
         {
@@ -212,10 +190,6 @@ namespace Gizmo.Client.UI.Components
             {
                 var load = ImageService.ImageSourceGetAsync(ImageType, ImageId.Value, _cancellationTokenSource.Token).AsTask();
 
-                //A request the host cannot answer (connection dropped between the ask and
-                //the reply) would leave a shimmer on screen for good. After the timeout
-                //the error placeholder takes over and a reconnect asks again; should the
-                //original request answer after all, its picture is still shown.
                 var first = await Task.WhenAny(load, Task.Delay(LoadTimeout, _cancellationTokenSource.Token));
                 if (first != load && serial == _loadSerial)
                 {

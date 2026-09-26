@@ -348,7 +348,6 @@ namespace Gizmo.Client.UI.Components
 
         public async Task UpdateItem(int identifier)
         {
-
         }
 
         #endregion
@@ -379,10 +378,6 @@ namespace Gizmo.Client.UI.Components
                 }
                 catch (Exception ex)
                 {
-                    //This was async void, so anything UpdateUI threw - most often JS interop
-                    //against a WebView that is going away - got rethrown on the thread pool and
-                    //exited the entire client. A notification failing to animate is never worth
-                    //a restart, so it is logged and dropped instead.
                     Logger.LogError(ex, "NotificationsMessage: notification update failed.");
                 }
             });
@@ -484,13 +479,8 @@ namespace Gizmo.Client.UI.Components
 
         protected override async Task OnInitializedAsync()
         {
-            // This window is a Blazor root of its own - App never runs here - so the
-            // string table is associated from both roots. Same process, so whichever
-            // starts first serves the other.
             Localization.ShellStringOverrides.Associate(LocalizationService);
 
-            // The accent palette, likewise: this document has no club stylesheet to read
-            // it from, so it follows what the main window resolved - see ShellTheme.
             Services.ShellTheme.Changed += OnAccentChanged;
 
             await base.OnInitializedAsync();
@@ -511,7 +501,6 @@ namespace Gizmo.Client.UI.Components
             }
             catch (Exception exception) when (exception is JSException or InvalidOperationException)
             {
-                // An old bundle without the hook, or a window on its way out.
             }
         }
 
@@ -523,9 +512,6 @@ namespace Gizmo.Client.UI.Components
         {
             Logger.LogDebug($"NotificationsMessage: DisposeAsync {this.ToString()}");
 
-            //Subscribed in OnAfterRenderAsync but never detached, so every rebuild of this host
-            //left another dead instance attached to the (long lived) view state, each one still
-            //driving JS interop against a DOM it no longer owns.
             ViewState.OnChange -= ViewState_OnChange;
             Services.ShellTheme.Changed -= OnAccentChanged;
 

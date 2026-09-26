@@ -15,11 +15,6 @@
                         </ClientTabItem>
                         @if (ViewState.UserProductGroups != null)
                         {
-                            @* One generic icon for every group tab rather than trying to
-                               match an icon to each group's name: product groups are
-                               server-configured per club and can be anything (the icon
-                               set would need to be club-specific to mean anything, which
-                               is a separate follow-up, not a guess baked in now). *@
                             @foreach (var productGroup in ViewState.UserProductGroups)
                             {
                                 <ClientTabItem Class="@(productGroup.ProductGroupId == ViewState.SelectedUserProductGroupId ? "active" : "")" OnClick=@(() => ShopService.UpdateUserGroupedProductsAsync(productGroup.ProductGroupId))>
@@ -59,8 +54,6 @@
                 }
                 @foreach (var productGroup in ViewState.UserGroupedProducts)
                 {
-                    @* Keyed so switching category recreates the section
-                       (and its Virtualize) rather than reusing it positionally. *@
                     <div class="giz-section" @key="productGroup.Key">
                         <ProductsIndexSectionHeader ProductGroupId="@productGroup.Key" />
                         <div class="giz-section__body">

@@ -56,13 +56,8 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<MouseEventArgs> OnClick { get; set; }
 
-        /// <summary>
-        /// Time package: bought outright rather than added to the cart.
-        /// </summary>
         private bool IsTimePackage => _product?.ProductType == ProductType.ProductTime;
 
-        //While the purchase dialog is open the button goes dark, or a second press sends a
-        //second copy of the package to the cart.
         private bool _buying;
 
         public async Task OnAddProductButtonClickHandler(MouseEventArgs args)
@@ -71,14 +66,6 @@ namespace Gizmo.Client.UI.Components
             ClientServerCartViewService.AddProduct(ProductId);
         }
 
-        /// <summary>
-        /// Buy on a time package: add to the cart and open the purchase dialog.
-        /// </summary>
-        /// <remarks>
-        /// The click is deliberately NOT bubbled through <see cref="OnClick"/>: on a product
-        /// card that opens the product page, and the customer has already said what they
-        /// want.
-        /// </remarks>
         public Task OnBuyPackageClickHandler(MouseEventArgs args)
         {
             if (_buying)
@@ -133,9 +120,6 @@ namespace Gizmo.Client.UI.Components
             await base.OnInitializedAsync();
         }
 
-        //Cart changes are raised off the UI thread. Not async void: a dispatcher fault during
-        //host teardown would be rethrown on the thread pool and exit the client (see
-        //ShellComponentBase.DispatchWorkflow).
         private void ViewState_OnChange(object sender, System.EventArgs e)
         {
             DispatchWorkflow(async () =>

@@ -147,9 +147,6 @@ namespace Gizmo.Client.UI.Components
             await OnClick.InvokeAsync(args);
         }
 
-        //NavigationManager outlives every list item subscribed to it, so this can fire against a
-        //component that is on its way out. Not async void: the failure would be rethrown on the
-        //thread pool and exit the client (see ShellComponentBase.DispatchWorkflow).
         private void NavigationManager_LocationChanged(object sender, LocationChangedEventArgs e)
         {
             if (Href == null)

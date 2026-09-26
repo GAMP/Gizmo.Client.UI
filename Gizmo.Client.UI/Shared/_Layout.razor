@@ -13,8 +13,6 @@
     <div class="giz-background @(HasClubWallpaper ? "giz-background--club" : null)">
         @if (!HasClubWallpaper)
         {
-            @* The moving gradient over the atmosphere - see _flow.scss. A club picture is
-               shown as it is. *@
             <div class="giz-flow" aria-hidden="true">
                 <span class="giz-flow__sheet giz-flow__sheet--1"></span>
                 <span class="giz-flow__sheet giz-flow__sheet--2"></span>
@@ -24,11 +22,6 @@
     </div>
     <div class="giz-root">
         <div class="giz-top-bar">
-            @* Search and the reservation tile form one left group. The centre tile is
-               absolutely positioned in the middle of the bar and so takes no room in the
-               normal flow: following the search, the tile used to slide under it. The
-               group is width-limited to end before the centre tile - see
-               .giz-top-bar__left. *@
             <div class="giz-top-bar__left">
                 <div class="giz-top-bar__search">
                     <HeaderGlobalSearch />
@@ -111,7 +104,6 @@
     <GracePeriod />
     <UserBan />
 
-    @* Renders nothing: reports whether anybody is looking at the shell. *@
     <ShellActivityWatcher />
 
 </main>

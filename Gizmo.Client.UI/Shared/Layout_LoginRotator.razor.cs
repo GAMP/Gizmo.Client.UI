@@ -45,10 +45,6 @@ namespace Gizmo.Client.UI.Shared
             }
         }
 
-        //The rotator ticks on a background timer, so this arrives off the UI thread. Written
-        //async void it would rethrow a teardown dispatcher fault on the thread pool and exit the
-        //client; the whole render/wait/render animation therefore runs as one dispatcher work
-        //item instead (see ShellComponentBase.DispatchWorkflow).
         private void ViewState_OnChange(object sender, System.EventArgs e)
         {
             _previousItem = _currentItem;
@@ -77,9 +73,6 @@ namespace Gizmo.Client.UI.Shared
             base.OnInitialized();
         }
 
-        //The rotator view state outlives this component, which is recreated on every return to
-        //the login screen. Leaving the handler attached leaks a dead subscriber per cycle that
-        //keeps being invoked on every rotator tick.
         public override void Dispose()
         {
             ViewState.OnChange -= ViewState_OnChange;
