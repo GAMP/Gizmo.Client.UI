@@ -54,6 +54,14 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         IOptions<HostQRCodeOptions> HostQrCodeOptions { get; set; }
 
+        protected string QrTitle => string.IsNullOrEmpty(HostQrCodeOptions.Value.Title)
+            ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_QR_TITLE))
+            : HostQrCodeOptions.Value.Title;
+
+        protected string QrMessage => string.IsNullOrEmpty(HostQrCodeOptions.Value.Description)
+            ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_QR_MESSAGE))
+            : HostQrCodeOptions.Value.Description;
+
         private FieldIdentifier GetCountryFieldIdentifier()
         {
             _countryFieldIdentifier ??= new FieldIdentifier(ViewState, nameof(ViewState.Country));

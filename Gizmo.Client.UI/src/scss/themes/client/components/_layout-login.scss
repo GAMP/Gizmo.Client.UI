@@ -2056,28 +2056,19 @@
 }
 
 .giz-login-or {
-    position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 1.2rem;
     width: 100%;
     margin-top: 2.4rem;
+    color: rgba(var(--gg-ink-rgb), 0.55);
+    @include font-m-theme-client($font-weight-light-theme-client);
 
-    &::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 0;
-        width: 100%;
-        border-top: 0.1rem solid rgba(#f6fbfd, 0.06);
-    }
-
-    span {
-        position: relative;
-        background-color: #0c0f11;
-        padding: 0 0.8rem;
-        color: rgba(#ffffff, 0.6);
-        @include font-m-theme-client($font-weight-light-theme-client);
+    &::before,
+    &::after {
+        content: "";
+        flex: 1;
+        border-top: 1px solid rgba(var(--gg-ink-rgb), 0.1);
     }
 }
 
@@ -2091,14 +2082,15 @@
     &__text {
         display: flex;
         flex-direction: column;
-        gap: 1.6rem;
+        gap: 1.2rem;
 
         &__title {
+            color: var(--gg-ink);
             @include font-h5-theme-client($font-weight-bold-theme-client);
         }
 
         &__subtitle {
-            color: rgba(#ffffff, 0.6);
+            color: rgba(var(--gg-ink-rgb), 0.6);
             @include font-m-theme-client($font-weight-light-theme-client);
         }
     }
@@ -2107,9 +2099,10 @@
         width: 15.4rem;
         height: 15.4rem;
         min-width: 15.4rem;
-        background-color: #201f1f;
-        border-radius: 0.86rem;
         padding: 0.8rem;
+        border: 1px solid rgba(var(--gg-ink-rgb), 0.08);
+        border-radius: 1.2rem;
+        background-color: var(--gg-tile-deep);
 
         svg {
             width: 100%;

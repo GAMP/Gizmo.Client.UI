@@ -146,11 +146,25 @@
             @* TODO: stub — social login buttons, no action. Wire up when provider auth flow is available. *@
             @* <LoginSocialButtons /> *@
         }
+
+        @if (HostQRCodeViewState.IsEnabled)
+        {
+            <div class="giz-login-or">
+                <span>@LocalizationService.GetString("GIZ_LOGIN_OR")</span>
+            </div>
+
+            <div class="giz-login-qr">
+                <div class="giz-login-qr__text">
+                    <div class="giz-login-qr__text__title">@QrTitle</div>
+                    <div class="giz-login-qr__text__subtitle">@QrMessage</div>
+                </div>
+                <div class="giz-login-qr__image">
+                    @((MarkupString)HostQRCodeViewState.HostQRCode)
+                </div>
+            </div>
+        }
     </CardBody>
     <CardFooter>
-        @* QR login block removed per the design brief. The underlying
-           HostQRCodeViewState / HostQrCodeOptions services are untouched, so
-           re-adding it later is markup-only. *@
         <InputLanguageMenu />
     </CardFooter>
     </LoginCard>

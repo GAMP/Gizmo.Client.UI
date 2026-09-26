@@ -124,7 +124,7 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         background: rgba(255, 255, 255, 0.04);
         box-shadow: inset 0 0 0 1px $tt-line;
 
-        &.is-current {
+        &--current {
             background: rgba(var(--gg-accent-rgb), 0.1);
             box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.3);
         }
@@ -143,7 +143,7 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         font-weight: 700;
         color: $tt-ink-2;
 
-        .is-current & {
+        .gg-tt__row--current & {
             background: var(--gg-accent);
             color: var(--gg-on-accent);
         }
@@ -160,11 +160,11 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         color: $tt-ink-2;
         font-size: 1.8rem;
 
-        .is-current & {
+        .gg-tt__row--current & {
             color: var(--gg-accent-soft);
         }
 
-        .is-credit & {
+        .gg-tt__row--credit & {
             color: #ffd79d;
         }
     }
@@ -190,6 +190,10 @@ $tt-line:  rgba(255, 255, 255, 0.07);
             font-size: 1.15rem;
             color: $tt-ink-3;
         }
+    }
+
+    &__credit-mark::before {
+        content: " \00b7 ";
     }
 
     &__stat {

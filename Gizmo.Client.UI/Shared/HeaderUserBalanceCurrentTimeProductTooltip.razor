@@ -1,32 +1,12 @@
-@namespace Gizmo.Client.UI.Components
+﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 @using Gizmo.Client.UI.View.States
 
-@* What is on the clock right now: the active time products in the order they are
-   spent, then what to do when they run out. Shown on hover from the tariff in the top
-   bar; every line here is one that changes a decision (buy time, top up), nothing that
-   belongs to the full Time tab of the account page. *@
-@{
-    var active = TimeProductsViewState.IsInitialized == true
-        ? TimeProductsViewState.TimeProducts.Where(a => a.ActivationOrder.HasValue).OrderBy(a => a.ActivationOrder).Take(2).ToList()
-        : new List<TimeProductViewState>();
-    var canTopUp = UserOnlineDepositViewState.IsEnabled;
-    var canShop = !ViewState.DisableShop;
-    var hasCredit = CreditOptionsViewState.TimeCreditType != CreditType.NoCredit && CreditOptionsViewState.IsUserTimeCreditEnabled;
-
-    //The footer speaks only when it has something to say: the whole account's time
-    //(every package together) is nearly gone, or there is no clock at all because the
-    //session runs on money. A package with hours left gets no warning.
-    var timeLeft = UserBalanceViewState.Time;
-    var unlimited = active.Count > 0 && !timeLeft.HasValue;
-    var ending = active.Count > 0 && timeLeft.HasValue && timeLeft.Value <= LOW_TIME;
-}
-
 <div class="gg-tt">
     <div class="gg-tt__head">
-        <div class="gg-tt__title">@ShellText.Get(ShellText.TIME_TOOLTIP_TITLE)</div>
+        <div class="gg-tt__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_TITLE))</div>
         <button type="button" class="gg-tt__link" @onclick="OpenDetails">
-            <span>@ShellText.Get(ShellText.TIME_TOOLTIP_ALL_PACKAGES)</span>
+            <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_SEE_ALL_AVAILABLE_TIME))</span>
             <i class="ph-bold ph-arrow-right"></i>
         </button>
     </div>
@@ -35,16 +15,16 @@
     {
         <div class="gg-tt__wait"><Spinner /></div>
     }
-    else if (active.Count == 0)
+    else if (ActiveProducts.Count == 0)
     {
         <div class="gg-tt__empty">@ShellText.Get(ShellText.TIME_TOOLTIP_EMPTY)</div>
     }
     else
     {
         <div class="gg-tt__list">
-            @foreach (var product in active)
+            @foreach (var product in ActiveProducts)
             {
-                <div class="gg-tt__row @(product.ActivationOrder == 1 ? "is-current" : null) @(product.InCredit ? "is-credit" : null)">
+                <div class="@RowClass(product)">
                     <span class="gg-tt__order">@product.ActivationOrder</span>
                     <span class="gg-tt__type"><i class="ph-fill @TimeProductText.Icon(product.TimeProductType)"></i></span>
                     <div class="gg-tt__name">
@@ -53,7 +33,7 @@
                             @ShellText.Get(TimeProductText.TypeKey(product.TimeProductType))
                             @if (product.InCredit)
                             {
-                                <span> · @ShellText.Get(ShellText.TIME_IN_CREDIT)</span>
+                                <span class="gg-tt__credit-mark">@ShellText.Get(ShellText.TIME_IN_CREDIT)</span>
                             }
                         </small>
                     </div>
@@ -70,59 +50,77 @@
         </div>
     }
 
-    @if (unlimited || ending)
+    @if (SessionWillNotExpire)
     {
         <div class="gg-tt__foot">
-            <div class="gg-tt__note @(unlimited ? null : "gg-tt__note--warn")">
-                <i class="ph-fill @(unlimited ? "ph-infinity" : "ph-warning-circle")"></i>
+            <div class="gg-tt__note">
+                <i class="ph-fill ph-infinity"></i>
                 <div>
-                    <b>@ShellText.Get(unlimited ? ShellText.TIME_TOOLTIP_UNLIMITED : ShellText.TIME_TOOLTIP_ENDING)</b>
-                    @if (unlimited)
-                    {
-                        <span>@ShellText.Get(ShellText.TIME_TOOLTIP_MONEY_LOW)</span>
-                    }
-                    else if (canShop && canTopUp)
-                    {
-                        <span>@ShellText.Get(ShellText.TIME_TOOLTIP_CTA_BOTH)</span>
-                    }
-                    else if (canShop)
-                    {
-                        <span>@ShellText.Get(ShellText.TIME_TOOLTIP_CTA_PACKAGE)</span>
-                    }
-                    else if (canTopUp)
-                    {
-                        <span>@ShellText.Get(ShellText.TIME_TOOLTIP_CTA_TOPUP)</span>
-                    }
+                    <b>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_SESSION_WILL_NOT_EXPIRE_MESSAGE))</b>
+                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_CLOSE_BALANCE_MESSAGE))</span>
                 </div>
             </div>
-
-            @if (canTopUp || canShop)
+            @if (HasActions)
             {
                 <div class="gg-tt__actions">
-                    @if (canTopUp)
+                    @if (CanTopUp)
                     {
-                        <button type="button" class="gg-tt__btn @(canShop ? null : "gg-tt__btn--primary")" @onclick="OpenUserOnlineDeposit" @onclick:stopPropagation="true">
+                        <button type="button" class="@TopUpButtonClass" @onclick="OpenUserOnlineDeposit" @onclick:stopPropagation="true">
                             <i class="ph-fill ph-wallet"></i>
-                            <span>@ShellText.Get(ShellText.DEPOSIT_TITLE)</span>
+                            <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_TOP_UP))</span>
                         </button>
                     }
-                    @if (canShop)
+                    @if (CanShop)
                     {
                         <button type="button" class="gg-tt__btn gg-tt__btn--primary" @onclick="OpenShop">
                             <i class="ph-fill ph-package"></i>
-                            <span>@ShellText.Get(ShellText.GEN_TO_SHOP)</span>
+                            <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_GO_TO_SHOP))</span>
                         </button>
                     }
                 </div>
             }
         </div>
     }
-    else if (hasCredit && !TimeProductsViewState.IsInitializing)
+    else if (SessionWillExpire)
+    {
+        <div class="gg-tt__foot">
+            <div class="@ExpireNoteClass">
+                <i class="ph-fill @ExpireNoteIcon"></i>
+                <div>
+                    <b>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_SESSION_WILL_EXPIRE_MESSAGE))</b>
+                    @if (ContinueMessageKey is not null)
+                    {
+                        <span>@LocalizationService.GetString(ContinueMessageKey)</span>
+                    }
+                </div>
+            </div>
+            @if (HasActions)
+            {
+                <div class="gg-tt__actions">
+                    @if (CanTopUp)
+                    {
+                        <button type="button" class="@TopUpButtonClass" @onclick="OpenUserOnlineDeposit" @onclick:stopPropagation="true">
+                            <i class="ph-fill ph-wallet"></i>
+                            <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_TOP_UP))</span>
+                        </button>
+                    }
+                    @if (CanShop)
+                    {
+                        <button type="button" class="gg-tt__btn gg-tt__btn--primary" @onclick="OpenShop">
+                            <i class="ph-fill ph-package"></i>
+                            <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_GO_TO_SHOP))</span>
+                        </button>
+                    }
+                </div>
+            }
+        </div>
+    }
+    else if (ShowCreditNote)
     {
         <div class="gg-tt__foot">
             <div class="gg-tt__note">
                 <i class="ph-fill ph-hand-coins"></i>
-                <div><b>@ShellText.Get(ShellText.TIME_TOOLTIP_CREDIT)</b></div>
+                <div><b>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_CREDIT))</b></div>
             </div>
         </div>
     }

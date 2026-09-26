@@ -96,6 +96,26 @@
         }*/
     }
 
+    // Keeps the native input hidden even where the [client-theme] reset does not reach the dialog.
+    .giz-check-box {
+        display: inline-flex;
+
+        input {
+            position: absolute;
+            left: -9999px;
+        }
+
+        input + label {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        input:checked + label:after {
+            left: 0.7rem;
+        }
+    }
+
     .giz-user-agreement-checkboxes {
         margin-bottom: 2.4rem;
 
