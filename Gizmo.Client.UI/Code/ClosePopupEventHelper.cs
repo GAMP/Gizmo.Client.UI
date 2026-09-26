@@ -35,8 +35,13 @@ namespace Gizmo.Client.UI
 
         public void Dispose()
         {
+            if (Reference == null)
+                return;
+
+            // the reference is serialized synchronously by InvokeAsync, so it is safe to release it right after
             _jsRuntime.InvokeAsync<string>("removeClosePopupEventListener", Reference);
-            //Reference?.Dispose();
+            Reference.Dispose();
+            Reference = null;
         }
     }
 }

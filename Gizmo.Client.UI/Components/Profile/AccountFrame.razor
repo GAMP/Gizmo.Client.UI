@@ -34,6 +34,7 @@
                         <span>@ShellText.Get(ShellText.ACCOUNT_MEMBER_SINCE, Profile.RegistrationDate.ToLocalTime().ToString("d MMMM yyyy", CultureInfo.CurrentCulture))</span>
                     }
                 </div>
+                <ProfileHeaderLadderLevel />
             </div>
 
             <div class="gg-account__stats">
@@ -83,13 +84,19 @@
                     <span>@ShellText.Get(ShellText.PURCHASES)</span>
                 </NavLink>
             }
-            @* The Progress tab exists only where the club runs the ladder or achievements
-               and the customer is part of it (guests get no data). *@
-            @if (Gizmo.Client.UI.Services.Loyalty.State.IsAvailable)
+            @if (!UserViewState.IsGuest)
             {
-                <NavLink class="gg-account__tab" ActiveClass="is-on" href="@(ClientRoutes.UserProfileRoute + "/progress")" Match="NavLinkMatch.All">
+                <NavLink class="gg-account__tab" ActiveClass="is-on" href="@ClientRoutes.UserLadderRoute" Match="NavLinkMatch.All">
+                    <i class="ph-bold ph-ranking"></i>
+                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER))</span>
+                </NavLink>
+                <NavLink class="gg-account__tab" ActiveClass="is-on" href="@ClientRoutes.UserAchievementsRoute" Match="NavLinkMatch.All">
                     <i class="ph-bold ph-trophy"></i>
-                    <span>@ShellText.Get(ShellText.LOYALTY_TAB)</span>
+                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_ACHIEVEMENTS))</span>
+                </NavLink>
+                <NavLink class="gg-account__tab" ActiveClass="is-on" href="@ClientRoutes.UserChallengesRoute" Match="NavLinkMatch.All">
+                    <i class="ph-bold ph-flag-checkered"></i>
+                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CHALLENGES))</span>
                 </NavLink>
             }
         </nav>

@@ -1,0 +1,19 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<div class="giz-achievement-tile">
+    @if (!string.IsNullOrEmpty(ImageUrl))
+    {
+        <img class="giz-achievement-tile__image" src="@ImageUrl" alt="" loading="lazy" />
+    }
+    else
+    {
+        <div class="giz-achievement-tile__fallback">
+            <Icon SVGIcon="Icons.Trophy_Client" />
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(CountText))
+    {
+        <div class="giz-achievement-tile__count">@CountText</div>
+    }
+</div>

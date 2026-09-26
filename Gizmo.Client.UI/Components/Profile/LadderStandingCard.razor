@@ -1,0 +1,132 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using Gizmo.Client.UI.Services
+@using Gizmo.Client.UI.View.States
+
+<div class="giz-ladder-card">
+    <div class="giz-ladder-period">
+        <span>@ViewState.PeriodText</span>
+        <span class="giz-ladder-period__dot">·</span>
+        <span>@ViewState.PeriodEndsLabelText</span>
+        <span class="giz-ladder-period__strong">@ViewState.PeriodEndText</span>
+        <span class="giz-ladder-period__dot">·</span>
+        <span class="giz-ladder-period__strong">@ViewState.DaysLeftText</span>
+    </div>
+
+    <div class="giz-ladder-level-block">
+        <div class="giz-ladder-level">
+            <LadderLevelBadge Ordinal="@ViewState.CurrentOrdinal" EmblemUrl="@ViewState.CurrentEmblemUrl" Class="giz-ladder-badge--large" />
+            <div class="giz-ladder-level__body">
+                <div class="giz-ladder-level__name">@ViewState.CurrentLevelName</div>
+                @if (ViewState.ShowProgressUpdating)
+                {
+                    <div class="giz-ladder-level__status">@ViewState.ProgressUpdatingText</div>
+                }
+                @if (ViewState.ShowFrozen)
+                {
+                    <div class="giz-ladder-level__status">@ViewState.FrozenText</div>
+                }
+                @if (ViewState.ShowScore)
+                {
+                    <div class="giz-ladder-level__score">
+                        <span class="giz-ladder-level__score-value">@ViewState.ScoreText</span>
+                        <span class="giz-ladder-level__score-unit">@ViewState.ScoreUnitText</span>
+                        @if (ViewState.HasBreakdown)
+                        {
+                            <span class="giz-ladder-level__score-info" @onclick="OnBreakdownClick" @onclick:stopPropagation="true">
+                                <Icon SVGIcon="Icons.Info2_Client" Size="IconSizes.Small" />
+                            </span>
+                            <ProfileCardPopup WrapperClass="giz-ladder-score-popup-wrapper" ContentClass="giz-ladder-level-popup" @bind-IsOpen="_isBreakdownOpen">
+                                <div class="giz-ladder-level-popup__perks">
+                                    <div class="giz-ladder-level-popup__label">@ViewState.BreakdownLabelText</div>
+                                    @foreach (var text in ViewState.BreakdownTexts)
+                                    {
+                                        <div class="giz-ladder-level-popup__perk">@text</div>
+                                    }
+                                </div>
+                            </ProfileCardPopup>
+                        }
+                    </div>
+                }
+                @if (ViewState.ShowStatusLine)
+                {
+                    <div class="giz-ladder-level__status">@ViewState.StatusLineText</div>
+                }
+                @if (ViewState.ShowKeepWarning)
+                {
+                    <div class="giz-ladder-level__status giz-ladder-level__status--warning">@ViewState.KeepWarningText</div>
+                }
+            </div>
+        </div>
+
+        @if (ViewState.ShowSegments)
+        {
+            <div class="giz-ladder-segments">
+                <div class="giz-ladder-segments__label">@ViewState.ProgressLabelText</div>
+                <div class="giz-ladder-segments__track">
+                    @for (int index = 0; index < ViewState.SegmentCount; index++)
+                    {
+                        <span class="giz-ladder-segments__segment @(index < ViewState.SegmentsLit ? "giz-ladder-segments__segment--lit" : "")"></span>
+                    }
+                </div>
+                <div class="giz-ladder-segments__labels">
+                    <span>0</span>
+                    <span class="giz-ladder-segments__count">
+                        <span class="giz-ladder-segments__count-value">@ViewState.ProgressCountText</span>
+                        <span class="giz-ladder-segments__count-unit">@ViewState.ProgressUnitText</span>
+                    </span>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (ViewState.ShowProgress)
+    {
+        <div class="giz-ladder-progress">
+            <div class="giz-ladder-progress__track">
+                <div class="giz-ladder-progress__fill @(ViewState.ProgressIsSecured ? "giz-ladder-progress__fill--secured" : "")" style="width: @AchievementValueFormat.Percent(ViewState.ProgressPercent)"></div>
+                <span class="giz-ladder-progress__knob giz-ladder-progress__knob--start"></span>
+                <span class="giz-ladder-progress__knob giz-ladder-progress__knob--end"></span>
+            </div>
+            <div class="giz-ladder-progress__labels">
+                <span>0</span>
+                <span class="giz-ladder-progress__goal @(ViewState.ProgressIsSecured ? "giz-ladder-progress__goal--secured" : "")">@ViewState.ProgressGoalText</span>
+            </div>
+        </div>
+    }
+
+    @if (ViewState.ShowRequirements)
+    {
+        <div class="giz-ladder-requirements">
+            <div class="giz-ladder-requirements__label">@ViewState.RequirementsLabelText</div>
+            <div class="giz-ladder-requirements__list">
+                @foreach (var requirement in ViewState.Requirements)
+                {
+                    <LadderRequirementRow Item="@requirement" />
+                }
+            </div>
+        </div>
+    }
+
+    @if (ViewState.ShowBanner)
+    {
+        <div class="giz-ladder-banner">
+            <Icon SVGIcon="Icons.CheckCircle_Client" />
+            <span class="giz-ladder-banner__title">@ViewState.BannerTitleText</span>
+            @if (!string.IsNullOrEmpty(ViewState.BannerDetailText))
+            {
+                <span class="giz-ladder-banner__detail">@ViewState.BannerDetailText</span>
+            }
+        </div>
+    }
+
+    <div class="giz-ladder-levels">
+        <div class="giz-ladder-levels__label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_ALL_LEVELS))</div>
+        <div class="giz-ladder-levels__list">
+            @foreach (var level in ViewState.Levels)
+            {
+                <LadderLevelRow @key="level.Rank" Item="@level" />
+            }
+        </div>
+    </div>
+</div>

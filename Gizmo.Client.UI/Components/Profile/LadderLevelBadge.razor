@@ -1,0 +1,12 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<span class="giz-ladder-badge @Class">
+    @if (!string.IsNullOrEmpty(EmblemUrl))
+    {
+        <img class="giz-ladder-badge__emblem" src="@EmblemUrl" alt=""
+             onload="this.classList.add('giz-ladder-badge__emblem--loaded')"
+             onerror="this.classList.remove('giz-ladder-badge__emblem--loaded')" />
+    }
+    <span class="giz-ladder-rank">@Ordinal</span>
+</span>

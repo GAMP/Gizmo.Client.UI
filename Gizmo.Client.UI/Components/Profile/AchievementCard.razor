@@ -1,0 +1,31 @@
+@namespace Gizmo.Client.UI.Components
+@inherits ProfileCardBase
+@using Gizmo.Client.UI.Services
+@using Gizmo.Client.UI.View.States
+
+<div class="giz-achievement-card @(Item.IsEarned ? "giz-achievement-card--earned" : "") @(IsInfoOpen ? "giz-achievement-card--active" : "") @(Item.IsHighlighted ? "giz-achievement-card--highlighted" : "")"
+     @ref="Ref" @onclick="OnCardClick">
+    <div class="giz-achievement-card__info" @onclick="OnInfoClick" @onclick:stopPropagation="true">
+        <Icon SVGIcon="Icons.Info2_Client" />
+    </div>
+
+    <ProfileCardPopup WrapperClass="giz-achievement-popup-wrapper" ContentClass="giz-achievement-popup" @bind-IsOpen="IsInfoOpen">
+        <AchievementCardPopup Item="@Item" />
+    </ProfileCardPopup>
+
+    <AchievementTile ImageUrl="@Item.ImageUrl" CountText="@Item.CountText" />
+
+    <div class="giz-achievement-card__name">@Item.Name</div>
+
+    @if (Item.HasChip)
+    {
+        <div class="giz-achievement-card__chip">@Item.ChipText</div>
+    }
+    else
+    {
+        <div class="giz-achievement-card__progress">
+            <div class="giz-achievement-card__progress-fill" style="width: @AchievementValueFormat.Percent(Item.ProgressPercent)"></div>
+        </div>
+        <div class="giz-achievement-card__standing">@Item.StandingText</div>
+    }
+</div>

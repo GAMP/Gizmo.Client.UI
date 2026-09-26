@@ -1,0 +1,54 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using Gizmo.Client.UI.View.States
+
+<div class="giz-ladder-level-row @(Item.IsCurrent ? "giz-ladder-level-row--current" : "") @(Item.IsSelected ? "giz-ladder-level-row--selected" : "")"
+     @onclick="OnClick" @onclick:stopPropagation="true">
+    <span class="giz-ladder-level-row__check">
+        <Icon SVGIcon="@(Item.IsSatisfied ? Icons.CheckCircle_Client : Icons.Circle_Client)" />
+    </span>
+    <LadderLevelBadge Ordinal="@Item.Ordinal" EmblemUrl="@Item.EmblemUrl" />
+    <span class="giz-ladder-level-row__name">@Item.Name</span>
+    @if (Item.HasInfo)
+    {
+        <span class="giz-ladder-level-row__info" @onclick="OnInfoClick" @onclick:stopPropagation="true">
+            <Icon SVGIcon="Icons.Info2_Client" Size="IconSizes.Small" />
+        </span>
+        <ProfileCardPopup WrapperClass="giz-ladder-level-popup-wrapper" ContentClass="giz-ladder-level-popup" @bind-IsOpen="_isInfoOpen">
+            @if (Item.HasDescription)
+            {
+                <div class="giz-ladder-level-popup__description">@Item.Description</div>
+            }
+            @if (Item.HasPerks)
+            {
+                <div class="giz-ladder-level-popup__perks">
+                    <div class="giz-ladder-level-popup__label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_PERKS))</div>
+                    @foreach (var perk in Item.PerkTexts)
+                    {
+                        <div class="giz-ladder-level-popup__perk">@perk</div>
+                    }
+                </div>
+            }
+        </ProfileCardPopup>
+    }
+    @if (Item.IsCurrent)
+    {
+        <span class="giz-ladder-level-row__chip">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_CURRENT))</span>
+    }
+    else if (Item.IsProjected)
+    {
+        <span class="giz-ladder-level-row__chip @(Item.IsProjectedDown ? "giz-ladder-level-row__chip--projected-down" : "giz-ladder-level-row__chip--next")">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_PROJECTED))</span>
+    }
+    else if (Item.IsNext)
+    {
+        <span class="giz-ladder-level-row__chip giz-ladder-level-row__chip--next">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_NEXT))</span>
+    }
+    else if (Item.IsLocked)
+    {
+        <span class="giz-ladder-level-row__chip giz-ladder-level-row__chip--locked">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_LOCKED))</span>
+    }
+    @if (!string.IsNullOrEmpty(Item.MetaText))
+    {
+        <span class="giz-ladder-level-row__meta">@Item.MetaText</span>
+    }
+</div>

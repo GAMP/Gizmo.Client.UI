@@ -1,6 +1,7 @@
 using Gizmo.Client.Options;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.States;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
@@ -24,6 +25,9 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         IOptionsMonitor<ClientInterfaceOptions> InterfaceOptions { get; set; }
 
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
         [Parameter]
         public RenderFragment ChildContent { get; set; }
 
@@ -33,7 +37,6 @@ namespace Gizmo.Client.UI.Components
             this.SubscribeChange(UserViewState);
             this.SubscribeChange(Balance);
             this.SubscribeChange(Credit);
-            Loyalty.Changed += OnLoyaltyChanged;
 
             base.OnInitialized();
         }
@@ -44,12 +47,8 @@ namespace Gizmo.Client.UI.Components
             this.UnsubscribeChange(UserViewState);
             this.UnsubscribeChange(Balance);
             this.UnsubscribeChange(Credit);
-            Loyalty.Changed -= OnLoyaltyChanged;
 
             base.Dispose();
         }
-
-        //The Progress tab appears or goes with the data; raised on the client's threads.
-        private void OnLoyaltyChanged() => DispatchRender();
     }
 }

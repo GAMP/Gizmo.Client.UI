@@ -23,18 +23,6 @@
        bounding box - without it, the popup silently never closes on an
        outside click, no matter where you click. *@
     <div class="giz-dropdown-menu__content giz-profile-popup__content">
-        @{
-            var s = Loyalty.State;
-            var level = s.CurrentLevel;
-            var ladder = ShowLoyalty && s.HasLadder && level is not null;
-            var achievements = ShowLoyalty && !ladder && s.HasAchievements;
-            var emblem = ladder ? Loyalty.Image(level.EmblemGuid) : null;
-            var progress = !ShowLoyalty ? 0
-                : ladder ? s.ProgressToNext
-                : achievements ? (double)s.EarnedAchievements / s.Achievements.Count
-                : s.Challenges.Count > 0 ? (double)s.DoneChallenges / s.Challenges.Count : 0;
-        }
-
         <div class="giz-profile-popup__avatar-zone">
             <div class="giz-profile-popup__orbit">
                 @foreach (var ic in OrbitIcons)
@@ -43,7 +31,7 @@
                        style="font-size:@(ic.SizePx.ToString(System.Globalization.CultureInfo.InvariantCulture))px; opacity:@ic.Opacity; transform: rotate(@(ic.AngleDeg.ToString(System.Globalization.CultureInfo.InvariantCulture))deg) translate(0, -@(ic.RadiusPx.ToString(System.Globalization.CultureInfo.InvariantCulture))px) rotate(@((-ic.AngleDeg + ic.TiltDeg).ToString(System.Globalization.CultureInfo.InvariantCulture))deg);"></i>
                 }
 
-                <div class="giz-profile-popup__avatar @(ShowLoyalty ? "giz-profile-popup__avatar--ringed" : null)">
+                <div class="giz-profile-popup__avatar">
                     @if (AvatarService.IsEnabled)
                     {
                         @* The club runs a picture service: the circle is the way to change it. *@
@@ -67,59 +55,13 @@
                     {
                         <i class="ph ph-user"></i>
                     }
-                    @if (ShowLoyalty)
-                    {
-                        <svg class="giz-profile-popup__ring" viewBox="0 0 40 40" aria-hidden="true">
-                            <circle class="gg-ring__track" cx="20" cy="20" r="18"></circle>
-                            <circle class="gg-ring__bar" cx="20" cy="20" r="18" style="stroke-dashoffset: @LoyaltyRing.Offset(progress)"></circle>
-                        </svg>
-                    }
                 </div>
 
-                @if (ShowLoyalty)
-                {
-                    <div class="giz-profile-popup__level @(ladder ? null : "giz-profile-popup__level--plain")" title="@(ladder ? level.Name : null)">
-                        @if (emblem is not null)
-                        {
-                            <img src="@emblem" alt="" />
-                        }
-                        else if (ladder)
-                        {
-                            @LoyaltyText.Mark(level.Name)
-                        }
-                        else
-                        {
-                            <i class="ph-fill @(achievements ? "ph-trophy" : "ph-flag-checkered")"></i>
-                        }
-                    </div>
-                }
             </div>
         </div>
 
         <div class="giz-profile-popup__name">@DisplayName</div>
 
-        @if (ShowLoyalty)
-        {
-            <button type="button" class="giz-profile-popup__standing" @onclick="OnClickProgressHandler" title="@ShellText.Get(ShellText.LOYALTY_MORE)">
-                <b>@(ladder ? level.Name : ShellText.Get(achievements ? ShellText.LOYALTY_ACHIEVEMENTS : ShellText.LOYALTY_CHALLENGES))</b>
-                @if (s.RewardWaiting)
-                {
-                    <em>@ShellText.Get(ShellText.LOYALTY_REWARD_WAITING_SHORT)</em>
-                }
-                else if (ladder)
-                {
-                    <span>@LoyaltyLines.Short(s)</span>
-                }
-                else if (achievements)
-                {
-                    <span>@ShellText.Get(ShellText.LOYALTY_OF, s.EarnedAchievements, s.Achievements.Count)</span>
-                }
-                else
-                {
-                    <span>@ShellText.Get(ShellText.LOYALTY_OF, s.DoneChallenges, s.Challenges.Count)</span>
-                }
-            </button>
-        }
 
         <div class="giz-profile-popup__actions">
             <button class="giz-profile-popup__account-btn" @onclick="OnClickAccountButtonHandler">
