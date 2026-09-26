@@ -613,11 +613,14 @@
 .giz-login-card .giz-button--fill.accent.giz-login-submit:not(.disabled) {
     height: 5.6rem;
     border-radius: 1.6rem;
-    background: linear-gradient(135deg, var(--giz-accent-soft) 0%, var(--giz-accent-deep) 55%, var(--giz-accent-deeper) 100%) !important;
     border: none;
-    color: var(--giz-white) !important;
-    
     transition: filter 0.18s, box-shadow 0.18s;
+
+    &,
+    &:hover:not(.disabled) {
+        background: linear-gradient(135deg, var(--giz-accent-soft) 0%, var(--giz-accent-deep) 55%, var(--giz-accent-deeper) 100%);
+        color: var(--giz-white);
+    }
 
     &:hover:not(.disabled) {
         filter: brightness(1.08);
@@ -1195,23 +1198,23 @@
     .giz-input-wrapper,
     .giz-input-root,
     input {
-        outline: none !important;
-        box-shadow: none !important;
+        outline: none;
+        box-shadow: none;
     }
 
     .giz-input-root {
         position: relative;
-        background: transparent !important;
-        border: none !important;
-        border-bottom: 1px solid rgba(var(--giz-white-rgb), 0.16) !important;
-        border-radius: 0 !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid rgba(var(--giz-white-rgb), 0.16);
+        border-radius: 0;
+        padding-left: 0;
+        padding-right: 0;
         min-height: 4.4rem;
         transition: border-color 0.22s ease;
 
         &:hover {
-            border-bottom-color: rgba(var(--giz-white-rgb), 0.32) !important;
+            border-bottom-color: rgba(var(--giz-white-rgb), 0.32);
         }
 
         &:after {
@@ -1233,14 +1236,43 @@
     }
 
     input {
-        background: transparent !important;
-        color: rgba(var(--giz-white-rgb), 0.96) !important;
+        background: transparent;
+        color: rgba(var(--giz-white-rgb), 0.96);
         font-family: $font-family-text-theme-client;
         font-size: 1.9rem;
         font-weight: 600;
 
         &::placeholder {
-            color: rgba(var(--giz-white-rgb), 0.25) !important;
+            color: rgba(var(--giz-white-rgb), 0.25);
+        }
+    }
+
+    // The input theme styles the outline variant per state and size (up to five classes),
+    // so the underline field restates itself at that weight.
+    .giz-input-control .giz-input-root.giz-input-root--outline {
+        &,
+        &:hover,
+        &:focus-within {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(var(--giz-white-rgb), 0.16);
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+            box-shadow: none;
+        }
+
+        &:hover {
+            border-bottom-color: rgba(var(--giz-white-rgb), 0.32);
+        }
+
+        input {
+            background: transparent;
+            color: rgba(var(--giz-white-rgb), 0.96);
+
+            &::placeholder {
+                color: rgba(var(--giz-white-rgb), 0.25);
+            }
         }
     }
 
@@ -1352,10 +1384,11 @@
     }
 
     .giz-password-input--pin {
-        .giz-input-root {
-            border-bottom-color: rgba(var(--giz-info-rgb), 0.3) !important;
+        .giz-input-root.giz-input-root--outline {
+            &,
+            &:focus-within { border-bottom-color: rgba(var(--giz-info-rgb), 0.3); }
 
-            &:hover { border-bottom-color: rgba(var(--giz-info-rgb), 0.5) !important; }
+            &:hover { border-bottom-color: rgba(var(--giz-info-rgb), 0.5); }
 
             &:after { background: linear-gradient(90deg, var(--giz-info-light), var(--giz-info-deep)); }
         }
@@ -1381,11 +1414,14 @@
 }
 
 .giz-login-card .giz-button--fill.accent:not(.disabled) {
-    background: linear-gradient(135deg, var(--giz-accent), color-mix(in srgb, var(--giz-accent) 65%, black)) !important;
-    color: var(--giz-night) !important;
     border: none;
-    
     transition: box-shadow 0.2s, filter 0.2s;
+
+    &,
+    &:hover {
+        background: linear-gradient(135deg, var(--giz-accent), color-mix(in srgb, var(--giz-accent) 65%, black));
+        color: var(--giz-night);
+    }
 
     .giz-icon {
         color: var(--giz-night);

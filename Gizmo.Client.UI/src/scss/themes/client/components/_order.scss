@@ -232,15 +232,15 @@
         .giz-order-notes {
             .giz-input-root {
                 min-height: 5.2rem;
-                background: rgba(var(--giz-white-rgb), 0.03) !important;
-                border-color: rgba(var(--giz-white-rgb), 0.07) !important;
+                background: rgba(var(--giz-white-rgb), 0.03);
+                border-color: rgba(var(--giz-white-rgb), 0.07);
                 border-radius: 0.8rem;
-            }
 
-            textarea, input {
-                color: rgba(var(--giz-white-rgb), 0.72) !important;
-                background: transparent !important;
-                &::placeholder { color: rgba(var(--giz-white-rgb), 0.25) !important; }
+                textarea, input {
+                    color: rgba(var(--giz-white-rgb), 0.72);
+                    background: transparent;
+                    &::placeholder { color: rgba(var(--giz-white-rgb), 0.25); }
+                }
             }
         }
     }
@@ -251,11 +251,14 @@
         padding: 2.4rem;
 
         .giz-button--fill.accent:not(.disabled) {
-            background: linear-gradient(135deg, var(--giz-accent), color-mix(in srgb, var(--giz-accent) 65%, black)) !important;
-            color: var(--giz-night) !important;
             border: none;
-            
             transition: box-shadow 0.2s, filter 0.2s;
+
+            &,
+            &:hover {
+                background: linear-gradient(135deg, var(--giz-accent), color-mix(in srgb, var(--giz-accent) 65%, black));
+                color: var(--giz-night);
+            }
 
             &:hover {
                 filter: brightness(1.1);
@@ -273,15 +276,15 @@
             margin-bottom: 1.2rem;
 
             .giz-input-root {
-                background: rgba(var(--giz-white-rgb), 0.03) !important;
-                border-color: rgba(var(--giz-white-rgb), 0.07) !important;
+                background: rgba(var(--giz-white-rgb), 0.03);
+                border-color: rgba(var(--giz-white-rgb), 0.07);
                 border-radius: 0.8rem;
-            }
 
-            input {
-                color: rgba(var(--giz-white-rgb), 0.72) !important;
-                background: transparent !important;
-                &::placeholder { color: rgba(var(--giz-white-rgb), 0.25) !important; }
+                input {
+                    color: rgba(var(--giz-white-rgb), 0.72);
+                    background: transparent;
+                    &::placeholder { color: rgba(var(--giz-white-rgb), 0.25); }
+                }
             }
         }
 

@@ -17,18 +17,19 @@
         font-weight: 600;
     }
 
-    .giz-button {
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        color: rgba(var(--giz-white-rgb), 0.72) !important;
-        border-radius: 50% !important;
-        padding: 0 !important;
+    // Both steppers are text buttons; the class pair outranks the button theme inside cards.
+    .giz-button.giz-button--text {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        color: rgba(var(--giz-white-rgb), 0.72);
+        border-radius: 50%;
+        padding: 0;
         transition: background 0.15s, color 0.15s;
 
         &:hover:not(.disabled) {
-            background: rgba(var(--giz-accent-rgb), 0.16) !important;
-            color: var(--giz-accent) !important;
+            background: rgba(var(--giz-accent-rgb), 0.16);
+            color: var(--giz-accent);
         }
 
         &.disabled {
