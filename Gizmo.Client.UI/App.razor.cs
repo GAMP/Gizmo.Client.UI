@@ -39,7 +39,6 @@ public partial class App : ComponentBase, IDisposable
 
         LocalizationViewState.OnChange += OnCultureChanged;
 
-        AvatarService.Attach(ServiceProvider);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -49,7 +48,6 @@ public partial class App : ComponentBase, IDisposable
             await JSInteropService.InitializeAsync(default);
             await ApplyDocumentDirectionAsync();
             await PublishAccentAsync();
-            await ApplyAvatarsKeyAsync();
         }
 
         await base.OnAfterRenderAsync(firstRender);
@@ -77,31 +75,6 @@ public partial class App : ComponentBase, IDisposable
         catch (Exception exception) when (exception is JSException or InvalidOperationException)
         {
             // An old bundle without the hook: the default palette stands.
-        }
-    }
-
-    /// <summary>
-    /// Turns the club's own picture service on, if the club asked for it.
-    /// </summary>
-    /// <remarks>
-    /// `:root { --gg-avatars: on; }` in the club's stylesheet, or the address of the
-    /// service when it does not sit on the Gizmo server's own machine. Read once, the
-    /// same way the palette is - see <see cref="AvatarService"/>.
-    /// </remarks>
-    private async Task ApplyAvatarsKeyAsync()
-    {
-        if (AvatarService.Current is null)
-            return;
-
-        try
-        {
-            var key = await JSRuntime.InvokeAsync<string>("grafitTheme.avatars");
-
-            AvatarService.Current.Configure(key);
-        }
-        catch (Exception exception) when (exception is JSException or InvalidOperationException)
-        {
-            // An old bundle without the hook: pictures stay off.
         }
     }
 

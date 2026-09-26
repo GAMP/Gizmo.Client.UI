@@ -93,19 +93,6 @@ namespace Gizmo.Client.UI.Shared
 
         protected string Picture => ViewState.Picture;
 
-        /// <summary>The account's picture, or the one the club's own service holds.</summary>
-        protected string Shown => string.IsNullOrEmpty(Picture) ? AvatarService.Current?.Picture : Picture;
-
-        //Only offered when the club runs the picture service; see AvatarService.
-        private Task OnClickPictureHandler()
-        {
-            _shouldRender = true;
-
-            UserMenuViewService.CloseUserLinks();
-
-            return DialogService.ShowChangePictureDialogAsync();
-        }
-
         private Task OnClickUserLockButtonHandler()
         {
             _shouldRender = true;
@@ -188,8 +175,6 @@ namespace Gizmo.Client.UI.Shared
             ViewState.OnChange += ViewState_OnChange;
             UserMenuViewState.OnChange += ViewState_OnChange;
 
-            if (AvatarService.Current is not null)
-                AvatarService.Current.Changed += OnPictureChanged;
 
             base.OnInitialized();
         }
@@ -204,17 +189,8 @@ namespace Gizmo.Client.UI.Shared
             DispatchRender();
         }
 
-        private void OnPictureChanged()
-        {
-            _shouldRender = true;
-            DispatchRender();
-        }
-
         public override void Dispose()
         {
-            if (AvatarService.Current is not null)
-                AvatarService.Current.Changed -= OnPictureChanged;
-
             UserMenuViewState.OnChange -= ViewState_OnChange;
             ViewState.OnChange -= ViewState_OnChange;
 

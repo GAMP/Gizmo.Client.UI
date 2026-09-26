@@ -184,7 +184,6 @@ namespace Gizmo.Client.UI.Shared
 
         public override void Dispose()
         {
-            TopBannerArbiter.SetDeploymentVisible(false);
 
             //Static event, outlives the component: unsubscribe before dropping the timer.
             ShellActivity.Changed -= OnActivityChanged;
@@ -347,7 +346,6 @@ namespace Gizmo.Client.UI.Shared
             _done = live.Count == 0 && justDone.Count > 0;
 
             //The slot is shared; an advertisement waits while this is in it.
-            TopBannerArbiter.SetDeploymentVisible(_open);
 
             if (_done)
             {
