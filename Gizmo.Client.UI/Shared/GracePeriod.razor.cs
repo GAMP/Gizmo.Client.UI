@@ -1,4 +1,4 @@
-using Gizmo.Client.UI.Localization;
+﻿using Gizmo.Client.UI.Localization;
 using System.Threading.Tasks;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;

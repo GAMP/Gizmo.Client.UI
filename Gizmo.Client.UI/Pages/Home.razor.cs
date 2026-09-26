@@ -1,4 +1,4 @@
-using Gizmo.Client.Options;
+﻿using Gizmo.Client.Options;
 using Gizmo.Client.UI.Localization;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;

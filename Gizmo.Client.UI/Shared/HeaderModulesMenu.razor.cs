@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.States;
 using Microsoft.AspNetCore.Components;

@@ -1,4 +1,4 @@
-using Gizmo.Client.UI.Localization;
+﻿using Gizmo.Client.UI.Localization;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Api.Models;
 using System.Collections.Generic;
