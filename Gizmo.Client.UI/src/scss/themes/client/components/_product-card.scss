@@ -6,9 +6,9 @@ $pc-r:        2rem;                                     // card radius
 $pc-ink:      var(--giz-ink);
 $pc-ink-2:    rgba(var(--giz-ink-rgb), 0.6);
 $pc-ink-3:    rgba(var(--giz-ink-rgb), 0.42);
-$pc-line:     rgba(255, 255, 255, 0.07);
+$pc-line:     rgba(var(--giz-white-rgb), 0.07);
 $pc-panel:    rgba(var(--giz-glass-2-rgb), 0.98);
-$giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 0.16), rgba(255, 255, 255, 0.02) 70%);
+$giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 0.16), rgba(var(--giz-white-rgb), 0.02) 70%);
 
 .giz-product-card {
     position: relative;
@@ -34,7 +34,7 @@ $giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 
 
     &:hover {
         transform: translateY(-3px);
-        box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.85);
+        box-shadow: 0 18px 40px -20px rgba(var(--giz-black-rgb), 0.85);
 
         .giz-product-card__hover-overlay {
             background: $pc-panel;
@@ -82,7 +82,7 @@ $giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 
             .giz-broken-image {
                 width: 4.8rem;
                 height: 4.8rem;
-                color: rgba(255, 255, 255, 0.16);
+                color: rgba(var(--giz-white-rgb), 0.16);
             }
         }
 
@@ -198,9 +198,9 @@ $giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 
 
         .giz-button--fill.disabled,
         .giz-button--fill[disabled] {
-            background: rgba(255, 255, 255, 0.035);
+            background: rgba(var(--giz-white-rgb), 0.035);
             border: 0;
-            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 0 0 1px rgba(var(--giz-white-rgb), 0.08);
             color: rgba(var(--giz-ink-rgb), 0.3);
         }
     }
@@ -269,7 +269,7 @@ $giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 
         padding: 0.38rem 0;
 
         & + .giz-timeline-item {
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            box-shadow: inset 0 1px 0 rgba(var(--giz-white-rgb), 0.06);
         }
     }
 }
@@ -341,7 +341,7 @@ $giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 
     padding: 0;
     border: 0;
     background: none;
-    color: #ffc46b;
+    color: var(--giz-warning-soft);
     font-size: 1.2rem;
     font-weight: 600;
     line-height: 1.3;
@@ -404,8 +404,8 @@ $giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 
         padding: 0.25rem 0.7rem;
         border: 0;
         border-radius: 0.7rem;
-        background: rgba(255, 255, 255, 0.05);
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+        background: rgba(var(--giz-white-rgb), 0.05);
+        box-shadow: inset 0 0 0 1px rgba(var(--giz-white-rgb), 0.08);
         color: $pc-ink-2;
         white-space: nowrap;
         font-size: 1.05rem;
@@ -425,7 +425,7 @@ $giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 
     background: linear-gradient(180deg,
         rgba(var(--giz-accent-rgb), 0.17),
         rgba(var(--giz-accent-rgb), 0.05) 60%,
-        rgba(255, 255, 255, 0.02));
+        rgba(var(--giz-white-rgb), 0.02));
 }
 
 .giz-product-card .giz-product-time-image {
@@ -493,7 +493,7 @@ $giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 
     height: 2.8rem;
     border-radius: 0.9rem;
     background: rgba(var(--giz-scrim-rgb), 0.8);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 0 0 1px rgba(var(--giz-white-rgb), 0.1);
     color: var(--giz-accent);
 
     svg {

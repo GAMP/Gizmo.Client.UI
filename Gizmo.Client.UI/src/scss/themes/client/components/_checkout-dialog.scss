@@ -4,13 +4,13 @@
     width: 60.0rem;
 
     .giz-client-dialog {
-        background: rgba(10, 14, 22, 0.94);
+        background: rgba(var(--giz-night-rgb), 0.94);
         backdrop-filter: blur(24px);
         -webkit-backdrop-filter: blur(24px);
-        border: 1px solid rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(var(--giz-white-rgb), 0.07);
 
         &__header__title {
-            color: rgba(255, 255, 255, 0.97);
+            color: rgba(var(--giz-white-rgb), 0.97);
         }
 
         &__body {
@@ -28,8 +28,8 @@
             white-space: normal;
 
             .giz-input-root {
-                background-color: rgba(255, 255, 255, 0.03);
-                border-color: rgba(255, 255, 255, 0.07);
+                background-color: rgba(var(--giz-white-rgb), 0.03);
+                border-color: rgba(var(--giz-white-rgb), 0.07);
             }
         }
 
@@ -39,7 +39,7 @@
 
             .giz-data-grid {
                 background-color: transparent;
-                color: rgba(255, 255, 255, 0.7);
+                color: rgba(var(--giz-white-rgb), 0.7);
                 @include font-m-theme-client($font-weight-light-theme-client);
 
                 tr {
@@ -62,23 +62,23 @@
 
                 thead th, thead td {
                     background-color: transparent;
-                    color: rgba(255, 255, 255, 0.5);
+                    color: rgba(var(--giz-white-rgb), 0.5);
                     text-transform: uppercase;
                     letter-spacing: 0.05em;
                     font-size: 1.1rem;
                     @include font-s-theme-client($font-weight-regular-theme-client);
-                    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+                    border-bottom: 1px solid rgba(var(--giz-white-rgb), 0.07);
                 }
 
                 & > tbody > tr:not(.giz-data-grid-row-detail) {
                     border-top: unset;
 
                     &:hover {
-                        background-color: rgba(255, 255, 255, 0.03);
+                        background-color: rgba(var(--giz-white-rgb), 0.03);
                     }
 
                     td {
-                        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                        border-bottom: 1px solid rgba(var(--giz-white-rgb), 0.05);
                     }
 
                     &:last-child {
@@ -94,13 +94,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: rgba(255, 255, 255, 0.85);
+            color: rgba(var(--giz-white-rgb), 0.85);
             padding-top: 1.4rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.07);
+            border-top: 1px solid rgba(var(--giz-white-rgb), 0.07);
             @include font-m-theme-client($font-weight-regular-theme-client);
 
             &__total {
-                color: rgba(255, 255, 255, 0.6);
+                color: rgba(var(--giz-white-rgb), 0.6);
             }
 
             &__amount {
@@ -125,10 +125,10 @@
             //align-items: center;
             gap: 1.4rem;
             white-space: nowrap;
-            color: rgba(255, 255, 255, 0.85);
+            color: rgba(var(--giz-white-rgb), 0.85);
             margin-top: 1.2rem;
             padding-top: 1.2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.07);
+            border-top: 1px solid rgba(var(--giz-white-rgb), 0.07);
             @include font-m-theme-client($font-weight-regular-theme-client);
 
             &__label {
@@ -141,7 +141,7 @@
             margin-top: 1.2rem;
             padding-top: 2.4rem;
             padding-bottom: 2.4rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.07);
+            border-top: 1px solid rgba(var(--giz-white-rgb), 0.07);
             @include font-s-theme-client($font-weight-light-theme-client);
         }
 

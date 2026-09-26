@@ -3,7 +3,7 @@ $tt-w: 52rem;
 $tt-ink:   var(--giz-ink);
 $tt-ink-2: rgba(var(--giz-ink-rgb), 0.62);
 $tt-ink-3: rgba(var(--giz-ink-rgb), 0.38);
-$tt-line:  rgba(255, 255, 255, 0.07);
+$tt-line:  rgba(var(--giz-white-rgb), 0.07);
 
 .giz-user-balance-tooltip-wrapper {
     position: absolute;
@@ -28,10 +28,10 @@ $tt-line:  rgba(255, 255, 255, 0.07);
     background: linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.97), rgba(var(--giz-glass-2-rgb), 0.985));
     backdrop-filter: blur(4rem) saturate(1.6);
     -webkit-backdrop-filter: blur(4rem) saturate(1.6);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(var(--giz-white-rgb), 0.14);
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.18),
-        0 4rem 9rem -2.6rem rgba(0, 0, 0, 0.85);
+        inset 0 1px 0 rgba(var(--giz-white-rgb), 0.18),
+        0 4rem 9rem -2.6rem rgba(var(--giz-black-rgb), 0.85);
     color: $tt-ink;
     white-space: normal;
     cursor: default;
@@ -111,7 +111,7 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         gap: 1.2rem;
         padding: 1rem 1.2rem;
         border-radius: 1.4rem;
-        background: rgba(255, 255, 255, 0.04);
+        background: rgba(var(--giz-white-rgb), 0.04);
         box-shadow: inset 0 0 0 1px $tt-line;
 
         &--current {
@@ -127,7 +127,7 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(var(--giz-white-rgb), 0.1);
         font-family: $font-family-header-theme-client;
         font-size: 1.1rem;
         font-weight: 700;
@@ -146,7 +146,7 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         align-items: center;
         justify-content: center;
         border-radius: 1rem;
-        background: rgba(255, 255, 255, 0.06);
+        background: rgba(var(--giz-white-rgb), 0.06);
         color: $tt-ink-2;
         font-size: 1.8rem;
 
@@ -155,7 +155,7 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         }
 
         .giz-time-tooltip__row--credit & {
-            color: #ffd79d;
+            color: var(--giz-warning-light);
         }
     }
 
@@ -251,7 +251,7 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         }
 
         &--warn > i {
-            color: #ffb347;
+            color: var(--giz-warning-amber);
         }
     }
 
@@ -272,8 +272,8 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         gap: 0.7rem;
         padding: 0 1.4rem;
         border-radius: 1.3rem;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(var(--giz-white-rgb), 0.12);
+        background: rgba(var(--giz-white-rgb), 0.06);
         color: $tt-ink;
         font: inherit;
         font-size: 1.35rem;
@@ -286,8 +286,8 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         }
 
         &:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(var(--giz-white-rgb), 0.1);
+            border-color: rgba(var(--giz-white-rgb), 0.2);
         }
 
         &--primary {

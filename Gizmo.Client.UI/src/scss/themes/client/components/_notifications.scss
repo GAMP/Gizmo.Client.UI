@@ -69,10 +69,10 @@ $nt-ink-3: rgba(var(--giz-ink-rgb), 0.42);
     padding: 1.7rem 1.4rem 1.7rem 2rem;
     border-radius: 1.8rem;
     background: var(--giz-panel);
-    border: 1px solid rgba(255, 255, 255, 0.11);
+    border: 1px solid rgba(var(--giz-white-rgb), 0.11);
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.08),
-        0 0.6rem 1.6rem -0.8rem rgba(0, 0, 0, 0.6);
+        inset 0 1px 0 rgba(var(--giz-white-rgb), 0.08),
+        0 0.6rem 1.6rem -0.8rem rgba(var(--giz-black-rgb), 0.6);
     color: $nt-ink;
 
     // The type's bar.
@@ -173,7 +173,7 @@ $nt-ink-3: rgba(var(--giz-ink-rgb), 0.42);
     transition: background 0.15s, color 0.15s;
 
     &:hover {
-        background: rgba(255, 255, 255, 0.08);
+        background: rgba(var(--giz-white-rgb), 0.08);
         color: $nt-ink;
     }
 }
@@ -182,8 +182,8 @@ $nt-ink-3: rgba(var(--giz-ink-rgb), 0.42);
     height: 3.8rem;
     padding: 0 1.6rem;
     border-radius: 1.2rem;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(var(--giz-white-rgb), 0.14);
+    background: rgba(var(--giz-white-rgb), 0.06);
     color: $nt-ink;
     font-family: $font-family-header-theme-client;
     font-size: 1.3rem;
@@ -193,7 +193,7 @@ $nt-ink-3: rgba(var(--giz-ink-rgb), 0.42);
     transition: background 0.15s, filter 0.15s;
 
     &:hover:not(:disabled) {
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(var(--giz-white-rgb), 0.1);
     }
 
     &:disabled {
@@ -218,15 +218,15 @@ $nt-ink-3: rgba(var(--giz-ink-rgb), 0.42);
 
     &--success {
         --nt-rgb: 52, 211, 153;
-        --nt-soft: #86efc6;
+        --nt-soft: var(--giz-success-mint);
     }
     &--danger {
         --nt-rgb: 248, 113, 113;
-        --nt-soft: #fca5a5;
+        --nt-soft: var(--giz-danger-light);
     }
     &--warning {
         --nt-rgb: 251, 191, 36;
-        --nt-soft: #fcd77a;
+        --nt-soft: var(--giz-warning-sun);
     }
 
     &__icon {

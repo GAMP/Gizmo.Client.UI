@@ -14,8 +14,8 @@ $ink:    var(--giz-ink);
 $ink-2:  rgba(var(--giz-ink-rgb), 0.62);
 $ink-3:  rgba(var(--giz-ink-rgb), 0.34);
 $ink-cap: rgba(var(--giz-ink-rgb), 0.42);
-$line:   rgba(255, 255, 255, 0.07);
-$line-2: rgba(255, 255, 255, 0.16);
+$line:   rgba(var(--giz-white-rgb), 0.07);
+$line-2: rgba(var(--giz-white-rgb), 0.16);
 
 $panel: var(--giz-tile-2);
 $tile:  var(--giz-tile);
@@ -187,7 +187,7 @@ $tile:  var(--giz-tile);
         border-radius: $rt;
         overflow: hidden;
         background: $tile;
-        box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.85), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        box-shadow: 0 24px 60px -20px rgba(var(--giz-black-rgb), 0.85), inset 0 0 0 1px rgba(var(--giz-white-rgb), 0.1);
 
         img {
             width: 100%;
@@ -277,7 +277,7 @@ $tile:  var(--giz-tile);
         &:hover { filter: brightness(1.1); transform: translateY(-1px); }
         &:active { transform: none; }
 
-        &:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+        &:focus-visible { outline: 2px solid var(--giz-white); outline-offset: 2px; }
     }
 
     &--app &__bg img {
@@ -311,8 +311,8 @@ $tile:  var(--giz-tile);
             padding: 0.4em 1.4em 0.4em 0.4em;
             border-radius: 99px;
             cursor: pointer;
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+            background: rgba(var(--giz-white-rgb), 0.08);
+            box-shadow: inset 0 0 0 1px rgba(var(--giz-white-rgb), 0.14);
             color: $ink;
             font-family: $font-family-header-theme-client;
             font-size: clamp(1.3rem, 1.15rem + 0.28vw, 1.6rem);
@@ -322,7 +322,7 @@ $tile:  var(--giz-tile);
 
             &::before { display: none; }
 
-            &:hover { background: rgba(255, 255, 255, 0.14); transform: translateY(-1px); }
+            &:hover { background: rgba(var(--giz-white-rgb), 0.14); transform: translateY(-1px); }
             &:active { transform: none; }
         }
 
@@ -347,7 +347,7 @@ $tile:  var(--giz-tile);
             flex: none;
             border-radius: 50%;
             overflow: hidden;
-            background: rgba(0, 0, 0, 0.25);
+            background: rgba(var(--giz-black-rgb), 0.25);
 
             img {
                 width: 100%;
@@ -403,8 +403,8 @@ $tile:  var(--giz-tile);
         letter-spacing: 0.02em;
         transition: color 0.16s, background 0.16s;
 
-        &:hover { color: $ink; background: rgba(255, 255, 255, 0.06); }
-        &:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+        &:hover { color: $ink; background: rgba(var(--giz-white-rgb), 0.06); }
+        &:focus-visible { outline: 2px solid var(--giz-white); outline-offset: 2px; }
     }
 
     &--empty {
@@ -414,7 +414,7 @@ $tile:  var(--giz-tile);
         padding: 0 calc(#{$g} * 2);
         text-align: center;
         background:
-            repeating-linear-gradient(58deg, rgba(255, 255, 255, 0.02) 0 1px, rgba(255, 255, 255, 0) 1px 9px),
+            repeating-linear-gradient(58deg, rgba(var(--giz-white-rgb), 0.02) 0 1px, rgba(var(--giz-white-rgb), 0) 1px 9px),
             $tile;
     }
 
@@ -445,12 +445,12 @@ $tile:  var(--giz-tile);
         height: 0.4rem;
         border-radius: 99px;
         overflow: hidden;
-        background: rgba(255, 255, 255, 0.28);
+        background: rgba(var(--giz-white-rgb), 0.28);
         transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 
         &--on {
             width: 3.2rem;
-            background: rgba(255, 255, 255, 0.18);
+            background: rgba(var(--giz-white-rgb), 0.18);
         }
     }
 
@@ -595,7 +595,7 @@ $tile:  var(--giz-tile);
         var(--giz-panel);
     box-shadow:
         inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.26),
-        0 40px 80px -40px rgba(0, 0, 0, 0.95);
+        0 40px 80px -40px rgba(var(--giz-black-rgb), 0.95);
 
     &__sec {
         margin-top: calc(#{$g} * 1.6);
@@ -653,12 +653,12 @@ $tile:  var(--giz-tile);
     padding-left: calc(#{$g} * 1.1);
     border-radius: $rt;
     cursor: pointer;
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(var(--giz-white-rgb), 0.04);
     @include hairline;
     transition: background 0.18s, box-shadow 0.18s;
 
     &:hover {
-        background: rgba(255, 255, 255, 0.07);
+        background: rgba(var(--giz-white-rgb), 0.07);
         box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.36);
     }
 
@@ -713,7 +713,7 @@ $tile:  var(--giz-tile);
         align-items: center;
         gap: 0.35em;
 
-        i { font-size: 0.85em; color: #e8b84b; }
+        i { font-size: 0.85em; color: var(--giz-points); }
     }
 }
 
@@ -817,8 +817,8 @@ $tile:  var(--giz-tile);
         border-radius: 50%;
         cursor: pointer;
         color: $ink-3;
-        background: rgba(255, 255, 255, 0.05);
-        @include hairline(rgba(255, 255, 255, 0.09));
+        background: rgba(var(--giz-white-rgb), 0.05);
+        @include hairline(rgba(var(--giz-white-rgb), 0.09));
         font-size: 1.2rem;
         transition: background 0.16s, color 0.16s, box-shadow 0.16s;
 

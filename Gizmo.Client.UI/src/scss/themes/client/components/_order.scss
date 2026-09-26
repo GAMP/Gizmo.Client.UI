@@ -4,14 +4,14 @@
     height: 100%;
     overflow: hidden;
     min-width: 0;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    background: linear-gradient(180deg, rgba(var(--giz-white-rgb), 0.08), rgba(var(--giz-white-rgb), 0.03));
     backdrop-filter: blur(40px) saturate(1.6);
     -webkit-backdrop-filter: blur(40px) saturate(1.6);
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(var(--giz-white-rgb), 0.10);
     border-radius: 1.8rem;
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.16),
-        0 24px 60px -34px rgba(0, 0, 0, 0.7);
+        inset 0 1px 0 rgba(var(--giz-white-rgb), 0.16),
+        0 24px 60px -34px rgba(var(--giz-black-rgb), 0.7);
 
     &__items {
         display: grid;
@@ -24,10 +24,10 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid rgba(var(--giz-white-rgb), 0.06);
             padding: 2.2rem 2.4rem;
             @include font-xl-theme-client($font-weight-bold-theme-client);
-            color: rgba(255, 255, 255, 0.97);
+            color: rgba(var(--giz-white-rgb), 0.97);
             letter-spacing: 0.01em;
 
             > i {
@@ -50,7 +50,7 @@
                 align-items: center;
                 justify-content: center;
                 background: var(--giz-accent);
-                color: #0a0e16;
+                color: var(--giz-night);
                 font-family: $font-family-numeric-theme-client;
                 font-size: 1.2rem;
                 font-weight: 700;
@@ -75,7 +75,7 @@
                     column-gap: 1.2rem;
                     row-gap: 0.6rem;
                     padding: 1.5rem 0;
-                    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                    border-bottom: 1px solid rgba(var(--giz-white-rgb), 0.05);
 
                     &__thumb {
                         grid-column: 1;
@@ -88,7 +88,7 @@
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        background: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 0.22), rgba(255, 255, 255, 0.03) 70%);
+                        background: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 0.22), rgba(var(--giz-white-rgb), 0.03) 70%);
 
                         img {
                             width: 100%;
@@ -98,7 +98,7 @@
 
                         i {
                             font-size: 1.8rem;
-                            color: rgba(255, 255, 255, 0.35);
+                            color: rgba(var(--giz-white-rgb), 0.35);
                         }
                     }
 
@@ -141,8 +141,8 @@
                             gap: 0.4rem;
                             padding: 0.2rem 0.7rem 0.2rem 0.5rem;
                             border-radius: 999px;
-                            background: rgba(242, 201, 76, 0.14);
-                            color: #f2c94c;
+                            background: rgba(var(--giz-warning-gold-rgb), 0.14);
+                            color: var(--giz-warning-gold);
                             font-family: 'Space Grotesk', 'Manrope', sans-serif;
                             font-size: 1.2rem;
                             font-weight: 600;
@@ -196,7 +196,7 @@
 
     &__notes {
         flex-shrink: 0;
-        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        border-top: 1px solid rgba(var(--giz-white-rgb), 0.06);
         padding: 1.6rem 2.4rem;
 
         &__header {
@@ -214,11 +214,11 @@
             .giz-button {
                 text-transform: none;
                 letter-spacing: normal;
-                color: rgba(255, 100, 100, 0.75);
+                color: rgba(var(--giz-danger-2-rgb), 0.75);
                 transition: color 0.18s;
 
                 &:hover:not([disabled]) {
-                    color: rgba(255, 80, 80, 0.95);
+                    color: rgba(var(--giz-danger-3-rgb), 0.95);
                 }
 
                 .giz-icon--small {
@@ -232,27 +232,27 @@
         .giz-order-notes {
             .giz-input-root {
                 min-height: 5.2rem;
-                background: rgba(255, 255, 255, 0.03) !important;
-                border-color: rgba(255, 255, 255, 0.07) !important;
+                background: rgba(var(--giz-white-rgb), 0.03) !important;
+                border-color: rgba(var(--giz-white-rgb), 0.07) !important;
                 border-radius: 0.8rem;
             }
 
             textarea, input {
-                color: rgba(255, 255, 255, 0.72) !important;
+                color: rgba(var(--giz-white-rgb), 0.72) !important;
                 background: transparent !important;
-                &::placeholder { color: rgba(255, 255, 255, 0.25) !important; }
+                &::placeholder { color: rgba(var(--giz-white-rgb), 0.25) !important; }
             }
         }
     }
 
     &__totals {
-        border-top: 1px solid rgba(255, 255, 255, 0.09);
-        background: rgba(255, 255, 255, 0.02);
+        border-top: 1px solid rgba(var(--giz-white-rgb), 0.09);
+        background: rgba(var(--giz-white-rgb), 0.02);
         padding: 2.4rem;
 
         .giz-button--fill.accent:not(.disabled) {
             background: linear-gradient(135deg, var(--giz-accent), color-mix(in srgb, var(--giz-accent) 65%, black)) !important;
-            color: #0a0e16 !important;
+            color: var(--giz-night) !important;
             border: none;
             
             transition: box-shadow 0.2s, filter 0.2s;
@@ -273,15 +273,15 @@
             margin-bottom: 1.2rem;
 
             .giz-input-root {
-                background: rgba(255, 255, 255, 0.03) !important;
-                border-color: rgba(255, 255, 255, 0.07) !important;
+                background: rgba(var(--giz-white-rgb), 0.03) !important;
+                border-color: rgba(var(--giz-white-rgb), 0.07) !important;
                 border-radius: 0.8rem;
             }
 
             input {
-                color: rgba(255, 255, 255, 0.72) !important;
+                color: rgba(var(--giz-white-rgb), 0.72) !important;
                 background: transparent !important;
-                &::placeholder { color: rgba(255, 255, 255, 0.25) !important; }
+                &::placeholder { color: rgba(var(--giz-white-rgb), 0.25) !important; }
             }
         }
 
@@ -296,7 +296,7 @@
 
             .giz-order-summary-text-bold {
                 @include font-m-theme-client($font-weight-regular-theme-client);
-                color: rgba(255, 255, 255, 0.82);
+                color: rgba(var(--giz-white-rgb), 0.82);
             }
 
             .giz-order-summary-total {
@@ -337,12 +337,12 @@
                 line-height: 2.8rem;
                 letter-spacing: initial;
                 margin: 0 1.5rem;
-                color: rgba(255, 255, 255, 0.3);
+                color: rgba(var(--giz-white-rgb), 0.3);
             }
 
             &-text {
                 @include font-m-theme-client($font-weight-light-theme-client);
-                color: rgba(255, 255, 255, 0.68);
+                color: rgba(var(--giz-white-rgb), 0.68);
             }
 
             .giz-order-summary-points-award {
@@ -375,24 +375,24 @@
         height: 6.4rem;
         margin-bottom: 0.4rem;
         border-radius: 1.8rem;
-        border: 1px dashed rgba(255, 255, 255, 0.14);
+        border: 1px dashed rgba(var(--giz-white-rgb), 0.14);
         display: flex;
         align-items: center;
         justify-content: center;
 
         i {
             font-size: 2.6rem;
-            color: rgba(255, 255, 255, 0.3);
+            color: rgba(var(--giz-white-rgb), 0.3);
         }
     }
 
     &__title {
-        color: rgba(255, 255, 255, 0.78);
+        color: rgba(var(--giz-white-rgb), 0.78);
         @include font-xl-theme-client($font-weight-regular-theme-client);
     }
 
     &__text {
-        color: rgba(255, 255, 255, 0.5);
+        color: rgba(var(--giz-white-rgb), 0.5);
         @include font-m-theme-client($font-weight-light-theme-client);
     }
 }

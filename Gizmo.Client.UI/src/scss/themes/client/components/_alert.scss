@@ -7,7 +7,7 @@
     padding: 1.4rem 1.6rem;
     gap: 1.2rem;
     border: 1px solid transparent;
-    color: rgba(255, 255, 255, 0.88);
+    color: rgba(var(--giz-white-rgb), 0.88);
 
     &__icon {
         flex-shrink: 0;
@@ -23,12 +23,12 @@
         min-width: 0;
 
         &__title {
-            color: #fff;
+            color: var(--giz-white);
             @include font-m-theme-client($font-weight-bold-theme-client);
         }
 
         &__text {
-            color: rgba(255, 255, 255, 0.62);
+            color: rgba(var(--giz-white-rgb), 0.62);
             @include font-m-theme-client($font-weight-light-theme-client);
         }
 
@@ -38,31 +38,31 @@
     }
 
     &--warning {
-        background-color: rgba(255, 176, 86, 0.09);
-        border-color: rgba(255, 176, 86, 0.26);
+        background-color: rgba(var(--giz-warning-orange-rgb), 0.09);
+        border-color: rgba(var(--giz-warning-orange-rgb), 0.26);
 
-        .giz-alert__icon { color: #ffb056; }
+        .giz-alert__icon { color: var(--giz-warning-orange); }
     }
 
     &--success {
-        background-color: rgba(94, 216, 148, 0.09);
-        border-color: rgba(94, 216, 148, 0.26);
+        background-color: rgba(var(--giz-success-rgb), 0.09);
+        border-color: rgba(var(--giz-success-rgb), 0.26);
 
-        .giz-alert__icon { color: #5ed894; }
+        .giz-alert__icon { color: var(--giz-success); }
     }
 
     &--danger {
-        background-color: rgba(255, 139, 139, 0.09);
-        border-color: rgba(255, 139, 139, 0.26);
+        background-color: rgba(var(--giz-danger-soft-rgb), 0.09);
+        border-color: rgba(var(--giz-danger-soft-rgb), 0.26);
 
-        .giz-alert__icon { color: #ff8b8b; }
+        .giz-alert__icon { color: var(--giz-danger-soft); }
     }
 
     &--info {
-        background-color: rgba(255, 255, 255, 0.05);
-        border-color: rgba(255, 255, 255, 0.14);
+        background-color: rgba(var(--giz-white-rgb), 0.05);
+        border-color: rgba(var(--giz-white-rgb), 0.14);
 
-        .giz-alert__icon { color: rgba(255, 255, 255, 0.62); }
+        .giz-alert__icon { color: rgba(var(--giz-white-rgb), 0.62); }
     }
 
     &--accent {

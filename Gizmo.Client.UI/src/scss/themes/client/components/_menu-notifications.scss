@@ -3,27 +3,27 @@
 .giz-menu-notifications {
     display: grid;
     grid-template-rows: min-content 1fr min-content;
-    background: rgba(8, 11, 20, 0.97);
+    background: rgba(var(--giz-night-rgb), 0.97);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(var(--giz-white-rgb), 0.08);
     border-top: none;
     width: 36.8rem;
     min-height: 53.3rem;
     border-radius: 0 0 1rem 1rem;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6),
+    box-shadow: 0 20px 60px rgba(var(--giz-black-rgb), 0.6),
                 0 0 0 1px rgba(var(--giz-accent-rgb), 0.06);
     max-height: 100%;
     overflow: hidden;
 
     &__header {
-        color: rgba(255, 255, 255, 0.95);
+        color: rgba(var(--giz-white-rgb), 0.95);
         padding: 1rem 1.6rem;
         @include font-h5-theme-client($font-weight-bold-theme-client);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        border-bottom: 1px solid rgba(var(--giz-white-rgb), 0.06);
 
         span {
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(var(--giz-white-rgb), 0.5);
             @include font-s-theme-client($font-weight-light-theme-client);
         }
     }
@@ -39,7 +39,7 @@
         color: var(--giz-accent);
         padding: 1.1rem;
         @include font-l-theme-client($font-weight-regular-theme-client);
-        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        border-top: 1px solid rgba(var(--giz-white-rgb), 0.06);
         white-space: normal;
         text-align: center;
         transition: opacity 0.15s;
@@ -124,7 +124,7 @@
 }
 
 .giz-top-bar .giz-menu-notifications__footer {
-    border-top: 1px solid rgba(255,255,255,0.07) !important;
+    border-top: 1px solid rgba(var(--giz-white-rgb), 0.07) !important;
     padding: 1rem !important;
 }
 
@@ -137,11 +137,11 @@
     cursor: pointer;
     font-size: 1.35rem !important;
     font-weight: 600;
-    color: rgba(255,255,255,0.6) !important;
+    color: rgba(var(--giz-white-rgb), 0.6) !important;
     transition: background 0.15s, color 0.15s;
 }
 
 .giz-top-bar .giz-menu-notifications__footer__action:hover {
-    background: rgba(255,255,255,0.07);
-    color: #fff !important;
+    background: rgba(var(--giz-white-rgb), 0.07);
+    color: var(--giz-white) !important;
 }

@@ -26,15 +26,15 @@
     opacity: 1;
     border-color: rgba(var(--giz-accent-rgb), 0.45) !important;
     box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.16),
+        inset 0 1px 0 rgba(var(--giz-white-rgb), 0.16),
         0 1.2rem 3rem -1.2rem rgba(var(--giz-accent-rgb), 0.55) !important;
 }
 
 .giz-deploy.open.giz-deploy--done {
-    border-color: rgba(94,216,148,0.5) !important;
+    border-color: rgba(var(--giz-success-rgb), 0.5) !important;
     box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.16),
-        0 1.2rem 3rem -1.2rem rgba(94,216,148,0.45) !important;
+        inset 0 1px 0 rgba(var(--giz-white-rgb), 0.16),
+        0 1.2rem 3rem -1.2rem rgba(var(--giz-success-rgb), 0.45) !important;
 }
 
 .giz-deploy__fill {
@@ -46,14 +46,14 @@
     z-index: 0;
     min-width: 6rem;
     background: linear-gradient(90deg, rgba(var(--giz-accent-rgb), 0.3), rgba(var(--giz-accent-rgb), 0.14));
-    mask-image: linear-gradient(90deg, #000, #000 calc(100% - 7rem), transparent);
-    -webkit-mask-image: linear-gradient(90deg, #000, #000 calc(100% - 7rem), transparent);
+    mask-image: linear-gradient(90deg, var(--giz-black), var(--giz-black) calc(100% - 7rem), transparent);
+    -webkit-mask-image: linear-gradient(90deg, var(--giz-black), var(--giz-black) calc(100% - 7rem), transparent);
 
     transition: width 0.9s linear, opacity 0.4s ease;
 }
 
 .giz-deploy--done .giz-deploy__fill {
-    background: linear-gradient(90deg, rgba(94,216,148,0.26), rgba(63,184,122,0.1));
+    background: linear-gradient(90deg, rgba(var(--giz-success-rgb), 0.26), rgba(var(--giz-success-deep-rgb), 0.1));
     mask-image: none;
     -webkit-mask-image: none;
 }
@@ -68,7 +68,7 @@
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    background: linear-gradient(100deg, transparent 24%, rgba(255,255,255,0.07) 48%, transparent 70%);
+    background: linear-gradient(100deg, transparent 24%, rgba(var(--giz-white-rgb), 0.07) 48%, transparent 70%);
     background-size: 240% 100%;
     animation: giz-deploy-sheen 3.4s ease-in-out infinite;
 }
@@ -105,7 +105,7 @@
 }
 
 .giz-deploy__ring-track {
-    stroke: rgba(255,255,255,0.12);
+    stroke: rgba(var(--giz-white-rgb), 0.12);
 }
 
 .giz-deploy__ring-bar {
@@ -125,12 +125,12 @@
 }
 
 .giz-deploy--done .giz-deploy__badge {
-    background: rgba(94,216,148,0.16);
-    color: #7ce8ad;
+    background: rgba(var(--giz-success-rgb), 0.16);
+    color: var(--giz-success-light);
 }
 
 .giz-deploy--done .giz-deploy__ring-bar {
-    stroke: #5ed894;
+    stroke: var(--giz-success);
 }
 
 .giz-deploy__body {
@@ -157,7 +157,7 @@
     line-height: 1.6rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #fff;
+    color: var(--giz-white);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -167,7 +167,7 @@
     font-size: 1.25rem;
     font-weight: 500;
     line-height: 1.7rem;
-    color: rgba(255,255,255,0.78);
+    color: rgba(var(--giz-white-rgb), 0.78);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -180,7 +180,7 @@
     font-family: 'Space Grotesk', 'Manrope', sans-serif;
     font-size: 1.7rem;
     font-weight: 700;
-    color: #fff;
+    color: var(--giz-white);
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
 }
@@ -201,15 +201,15 @@
     border: 0;
     border-radius: 50%;
     background: transparent;
-    color: rgba(255,255,255,0.5);
+    color: rgba(var(--giz-white-rgb), 0.5);
     font-size: 1.3rem;
     cursor: pointer;
     transition: background 0.16s, color 0.16s;
 }
 
 .giz-deploy__close:hover {
-    background: rgba(255,255,255,0.1);
-    color: #fff;
+    background: rgba(var(--giz-white-rgb), 0.1);
+    color: var(--giz-white);
 }
 
 @keyframes giz-deploy-sheen {

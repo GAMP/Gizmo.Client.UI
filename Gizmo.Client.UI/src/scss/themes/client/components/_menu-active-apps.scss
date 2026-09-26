@@ -3,11 +3,11 @@
 .giz-active-apps {
     display: grid;
     grid-template-rows: min-content 1fr;
-    background: rgba(8, 11, 20, 0.97);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(var(--giz-night-rgb), 0.97);
+    border: 1px solid rgba(var(--giz-white-rgb), 0.08);
     border-top: none;
     border-radius: 0 0 1rem 1rem;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6),
+    box-shadow: 0 20px 60px rgba(var(--giz-black-rgb), 0.6),
                 0 0 0 1px rgba(var(--giz-accent-rgb), 0.06);
     max-height: 100%;
     overflow: hidden;
@@ -37,11 +37,11 @@
     }
 
     &__header {
-        color: rgba(255, 255, 255, 0.95);
+        color: rgba(var(--giz-white-rgb), 0.95);
         padding: 1rem 1.6rem;
         white-space: nowrap;
         @include font-h5-theme-client($font-weight-bold-theme-client);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        border-bottom: 1px solid rgba(var(--giz-white-rgb), 0.06);
     }
 
     &__body {
@@ -83,7 +83,7 @@
 
 .giz-active-app-card {
     padding: 1.6rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(var(--giz-white-rgb), 0.05);
 
     &:last-child {
         border-bottom: none;
@@ -161,8 +161,8 @@
 }
 
 .giz-top-bar .giz-active-app-card:hover {
-    background: rgba(255,255,255,0.05);
-    border-color: rgba(255,255,255,0.08);
+    background: rgba(var(--giz-white-rgb), 0.05);
+    border-color: rgba(var(--giz-white-rgb), 0.08);
 }
 
 .giz-top-bar .giz-active-app-card__image {

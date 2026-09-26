@@ -7,8 +7,8 @@ $pd-art:    clamp(22rem, 12rem + 12vw, 34rem);
 $pd-ink:   var(--giz-ink);
 $pd-ink-2: rgba(var(--giz-ink-rgb), 0.62);
 $pd-ink-3: rgba(var(--giz-ink-rgb), 0.38);
-$pd-line:  rgba(255, 255, 255, 0.07);
-$pd-line-2: rgba(255, 255, 255, 0.14);
+$pd-line:  rgba(var(--giz-white-rgb), 0.07);
+$pd-line-2: rgba(var(--giz-white-rgb), 0.14);
 
 .giz-product-page-wrap {
     display: flex;
@@ -57,7 +57,7 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
         padding: 0 1.4rem 0 1.1rem;
         border-radius: 1.2rem;
         border: 1px solid $pd-line-2;
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(var(--giz-white-rgb), 0.05);
         color: $pd-ink-2;
         font: inherit;
         font-size: 1.3rem;
@@ -70,7 +70,7 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
         }
 
         &:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(var(--giz-white-rgb), 0.1);
             color: $pd-ink;
         }
     }
@@ -90,7 +90,7 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
         border-radius: 2.2rem;
         overflow: hidden;
         background: var(--giz-tile-deep);
-        box-shadow: inset 0 0 0 1px $pd-line, 0 3rem 6rem -3rem rgba(0, 0, 0, 0.8);
+        box-shadow: inset 0 0 0 1px $pd-line, 0 3rem 6rem -3rem rgba(var(--giz-black-rgb), 0.8);
 
         // GizImage renders an <img> with a fit class; fill the plate.
         img {
@@ -206,7 +206,7 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
             width: 0.7em;
             height: 0.7em;
             align-self: center;
-            color: #e8b84b;
+            color: var(--giz-points);
         }
     }
 
@@ -229,7 +229,7 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
         max-width: 48rem;
         font-size: 1.3rem;
         line-height: 1.4;
-        color: #ffc46b;
+        color: var(--giz-warning-soft);
 
         i {
             flex: none;
@@ -263,7 +263,7 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
             align-items: center;
             justify-content: center;
             border-radius: 1rem;
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(var(--giz-white-rgb), 0.06);
             color: $pd-ink-2;
             font-size: 1.6rem;
         }
