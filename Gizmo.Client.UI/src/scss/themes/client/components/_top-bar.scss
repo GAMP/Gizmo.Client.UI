@@ -1,0 +1,356 @@
+//=============== Top bar ================//
+
+.giz-top-bar {
+    flex-shrink: 0;
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 1.2rem;
+    height: 7.2rem;
+    z-index: 500;
+}
+
+.giz-top-bar__right-group { justify-self: stretch; justify-content: flex-end; }
+
+.giz-top-bar__left {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    min-width: 0;
+}
+
+.giz-top-bar__left .giz-top-bar__search,
+.giz-top-bar__left .giz-header__global-search {
+    min-width: 22rem;
+    flex-shrink: 1;
+}
+
+.giz-top-bar__right-group {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    min-width: 0;
+}
+
+.giz-top-bar__search .giz-global-search,
+.giz-top-bar__hud,
+.giz-top-bar__icons,
+.giz-deploy,
+.giz-resv,
+.giz-top-bar .giz-user-menu-button {
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+    backdrop-filter: blur(4rem) saturate(1.6);
+    -webkit-backdrop-filter: blur(4rem) saturate(1.6);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 1.6rem;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.16),
+        0 2.4rem 6rem -3.4rem rgba(0,0,0,0.7);
+}
+
+.giz-top-bar__hud {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    height: 5.8rem;
+    padding: 0 2rem;
+    gap: 2rem;
+    overflow: visible;
+
+    background: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.giz-top-bar__hud::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+    backdrop-filter: blur(4rem) saturate(1.6);
+    -webkit-backdrop-filter: blur(4rem) saturate(1.6);
+}
+
+.giz-top-bar__divider {
+    width: 1px;
+    height: 2.2rem;
+    background: rgba(255,255,255,0.10);
+    flex-shrink: 0;
+}
+
+.giz-top-bar__icons {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 5.8rem;
+    padding: 0 0.6rem;
+    background: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.giz-top-bar__icons::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+    backdrop-filter: blur(4rem) saturate(1.6);
+    -webkit-backdrop-filter: blur(4rem) saturate(1.6);
+}
+
+.giz-actions-bar {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 0.2rem;
+}
+
+.giz-top-bar__time {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.giz-top-bar__time .giz-ph-icon {
+    font-size: 1.7rem;
+    color: rgba(255,255,255,0.4);
+}
+
+.giz-top-bar__time-value {
+    font-family: 'Space Grotesk', 'Manrope', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+}
+
+.giz-top-bar__account {
+    flex-shrink: 0;
+}
+
+.giz-top-bar .giz-header__user-menu-item {
+    height: 100% !important;
+}
+
+.giz-top-bar { overflow: visible !important; }
+
+.giz-actions-bar { overflow: visible !important; }
+
+.giz-top-bar .giz-header__user-menu-item { overflow: visible !important; }
+
+.giz-top-bar .giz-dropdown-menu {
+    z-index: 9000 !important;
+    position: absolute !important;
+    top: 100% !important;
+    right: 0 !important;
+    overflow: visible !important;
+}
+
+.giz-top-bar .giz-header__user-menu-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.giz-top-bar .user-menu-item-button--box {
+    background: transparent !important;
+    color: rgba(255,255,255,0.55) !important;
+    border: none !important;
+    border-radius: 1.2rem !important;
+    width: 4rem !important;
+    height: 4rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    box-shadow: none !important;
+    transition: background 0.15s, color 0.15s, transform 0.12s !important;
+    flex-shrink: 0 !important;
+}
+
+.giz-top-bar .user-menu-item-button--box:hover {
+    color: rgba(255,255,255,0.95) !important;
+}
+
+.giz-top-bar .user-menu-item-button--box:active { transform: scale(0.94) !important; }
+
+.giz-top-bar .open > .user-menu-item-button--box {
+    background: rgba(var(--gg-accent-rgb),0.15) !important;
+    color: var(--gg-accent) !important;
+}
+
+.giz-top-bar .user-menu-item-button--box .giz-ph-icon {
+    font-size: 2.1rem;
+    color: inherit;
+}
+
+.giz-top-bar .giz-topup-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    height: 4rem;
+    padding: 0 1.4rem 0 1.1rem;
+    border-radius: 1.2rem;
+    background: rgba(var(--gg-accent-rgb),0.16);
+    border: 1px solid rgba(var(--gg-accent-rgb),0.35);
+    color: var(--gg-accent);
+    font-size: 1.3rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+@media (max-width: 1440px) {
+    .giz-top-bar .giz-topup-pill { padding: 0 1.1rem; }
+    .giz-top-bar .giz-topup-pill > span { display: none; }
+}
+
+.giz-top-bar .giz-topup-pill:hover {
+    background: rgba(var(--gg-accent-rgb),0.28);
+    border-color: rgba(var(--gg-accent-rgb),0.55);
+    color: #fff;
+}
+
+.giz-top-bar .giz-topup-pill .giz-ph-icon {
+    font-size: 1.8rem;
+    color: inherit;
+}
+
+.giz-top-bar .giz-header__user-menu-item[data-tooltip] { position: relative; }
+
+.giz-top-bar .giz-header__user-menu-item[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(8,11,18,0.97);
+    color: #d0d8e4;
+    font-size: 1.15rem;
+    font-weight: 600;
+    font-family: Rubik, sans-serif;
+    white-space: nowrap;
+    padding: 0.45rem 1rem;
+    border-radius: 0.7rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0.6rem 1.6rem rgba(0,0,0,0.6);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 9500;
+}
+
+.giz-top-bar .giz-header__user-menu-item[data-tooltip]::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 0.45rem solid transparent;
+    border-bottom-color: rgba(8,11,18,0.97);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 9500;
+}
+
+.giz-top-bar .giz-header__user-menu-item[data-tooltip]:hover::after,
+.giz-top-bar .giz-header__user-menu-item[data-tooltip]:hover::before { opacity: 1; }
+
+.giz-top-bar .giz-header__user-menu-item.open[data-tooltip]::after,
+.giz-top-bar .giz-header__user-menu-item.open[data-tooltip]::before { opacity: 0 !important; }
+
+.giz-top-bar .giz-user-online-deposit-dropdown[data-tooltip]::after,
+.giz-top-bar .giz-user-online-deposit-dropdown[data-tooltip]::before { content: none !important; }
+
+.giz-top-bar .giz-user-menu-button {
+    width: 5.6rem !important;
+    height: 5.6rem !important;
+    border-radius: 50% !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: filter 0.15s !important;
+    flex-shrink: 0 !important;
+}
+
+.giz-top-bar .giz-user-menu-button:hover {
+    filter: brightness(1.25);
+}
+
+.giz-top-bar .giz-user-dropdown.open .giz-user-menu-button {
+    border-color: rgba(var(--gg-accent-rgb),0.4) !important;
+}
+
+.giz-top-bar .giz-user-menu-button { overflow: hidden !important; }
+
+.giz-top-bar .giz-user-menu-button .giz-user-avatar {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    color: rgba(var(--gg-ink-rgb), 0.78) !important;
+    font-size: 2.3rem;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    overflow: hidden !important;
+}
+
+.giz-top-bar .giz-user-menu-button:hover .giz-user-avatar {
+    color: var(--gg-ink) !important;
+}
+
+.giz-top-bar .giz-user-menu-button .giz-user-avatar img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+.giz-topbar-stat {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+}
+
+.giz-topbar-stat .giz-ph-icon {
+    font-size: 1.7rem;
+    color: rgba(255,255,255,0.4);
+    flex-shrink: 0;
+}
+
+.giz-topbar-stat--pc {
+    font-family: 'Space Grotesk', 'Manrope', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.giz-topbar-stat--balance {
+    font-family: 'Space Grotesk', 'Manrope', sans-serif;
+    color: #3ddc72 !important;
+    font-weight: 700 !important;
+}
+
+.giz-top-bar .giz-active-apps-dropdown.open .user-menu-item-button--box,
+.giz-top-bar .giz-notifications-dropdown.open .user-menu-item-button--box,
+.giz-top-bar .giz-assistance-dropdown.open .user-menu-item-button--box,
+.giz-top-bar .giz-user-online-deposit-dropdown.open .user-menu-item-button--box {
+    background: rgba(var(--gg-accent-rgb),0.15) !important;
+    color: var(--gg-accent) !important;
+}

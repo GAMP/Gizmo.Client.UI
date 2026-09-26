@@ -130,3 +130,83 @@
         padding: 1.6rem;
     }
 }
+
+.giz-top-bar .giz-active-apps {
+    position: relative;
+    background: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+.giz-top-bar .giz-active-apps::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(var(--gg-glass-rgb), 0.97), rgba(var(--gg-glass-2-rgb), 0.985));
+    backdrop-filter: blur(5rem) saturate(1.7);
+    -webkit-backdrop-filter: blur(5rem) saturate(1.7);
+}
+
+.giz-top-bar .giz-active-apps {
+    min-width: 46rem !important;
+    border-radius: 2rem !important;
+}
+
+.giz-top-bar .giz-active-apps__body {
+    padding: 0.8rem !important;
+}
+
+.giz-top-bar .giz-active-app-card {
+    display: grid;
+    grid-template-columns: min-content 1fr min-content;
+    align-items: center;
+    gap: 1.4rem;
+    padding: 1rem 1.2rem !important;
+    border: 1px solid transparent;
+    border-bottom: none !important;
+    border-radius: 1.4rem;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.giz-top-bar .giz-active-app-card:hover {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.08);
+}
+
+.giz-top-bar .giz-active-app-card__image {
+    padding: 0 !important;
+    width: 4.4rem;
+    height: 4.4rem;
+    border-radius: 1.1rem;
+    overflow: hidden;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.giz-top-bar .giz-active-app-card__image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+}
+
+.giz-top-bar .giz-active-app-card__info {
+    padding: 0 !important;
+    min-width: 0;
+}
+
+.giz-top-bar .giz-active-app-card__info__title {
+    font-size: 1.5rem !important;
+    font-weight: 600;
+    color: var(--gg-ink) !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.giz-top-bar .giz-active-app-card__actions {
+    padding: 0 !important;
+}

@@ -45,3 +45,45 @@
         grid-column-end: 3;
     }
 }
+
+[client-theme] .giz-client-dialog {
+    position: relative;
+    background: none !important;
+    border: 1px solid rgba(255,255,255,0.14) !important;
+    border-radius: 2.4rem !important;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.2),
+        0 4rem 9rem -2.6rem rgba(0,0,0,0.9) !important;
+    color: rgba(255,255,255,0.9) !important;
+}
+
+[client-theme] .giz-client-dialog::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(var(--gg-glass-rgb), 0.97), rgba(var(--gg-glass-2-rgb), 0.985));
+    backdrop-filter: blur(5rem) saturate(1.7);
+    -webkit-backdrop-filter: blur(5rem) saturate(1.7);
+}
+
+[client-theme] .giz-client-dialog__header__title {
+    color: rgba(255,255,255,0.95) !important;
+}
+
+[client-theme] .giz-client-dialog__header__subtitle {
+    color: rgba(255,255,255,0.5) !important;
+}
+
+[client-theme] .giz-client-dialog__header {
+    border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+    padding-bottom: 1.6rem !important;
+    margin-bottom: 1.6rem !important;
+}
+
+[client-theme] .giz-client-dialog__footer {
+    border-top: 1px solid rgba(255,255,255,0.07) !important;
+    padding-top: 1.6rem !important;
+    margin-top: 1.6rem !important;
+}

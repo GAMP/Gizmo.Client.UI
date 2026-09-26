@@ -15,3 +15,88 @@
         overflow: hidden;
     }
 }
+
+@keyframes gg-page-in {
+    from { opacity: 0; transform: translateY(7px); }
+    to   { opacity: 1; transform: none; }
+}
+
+.giz-app__body > * {
+    animation: gg-page-in 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.giz-background img { display: none; }
+
+.giz-background--club { background: var(--gg-bg-0); }
+
+.giz-background--club img {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+:root {
+    --giz-atmosphere: var(--gg-atmosphere);
+}
+
+html, body, #app {
+    height: 100%;
+}
+
+html, body {
+    background: var(--giz-atmosphere);
+    background-attachment: fixed;
+}
+
+.giz-background {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    background: var(--giz-atmosphere);
+}
+
+main[client-theme] {
+    height: 100%;
+}
+
+.giz-root {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+
+    padding: 0.8rem 1.4rem 0.8rem;
+    gap: 1.4rem;
+    box-sizing: border-box;
+}
+
+.giz-container {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    flex: 1 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    position: relative !important;
+    gap: 1.4rem;
+}
+
+.giz-app__header { display: none !important; }
+
+.giz-app__body {
+    flex: 1 !important;
+    align-self: stretch !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+}

@@ -261,3 +261,120 @@
         @include font-m-theme-client($font-weight-light-theme-client);
     }
 }
+
+.giz-top-bar .giz-header__global-search {
+    width: auto;
+    flex-shrink: 0;
+}
+
+.giz-top-bar .giz-global-search {
+    display: grid !important;
+    grid-template-columns: min-content 1fr min-content !important;
+    width: 36rem !important;
+    height: 5.8rem !important;
+    border-radius: 1.6rem !important;
+    overflow: visible !important;
+    transition: border-color 0.2s, box-shadow 0.2s !important;
+}
+
+.giz-top-bar .giz-global-search:focus-within {
+    border-color: rgba(var(--gg-accent-rgb),0.4) !important;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.16),
+        0 0 0 1px rgba(var(--gg-accent-rgb),0.12),
+        0 2.4rem 6rem -3.4rem rgba(0,0,0,0.7) !important;
+}
+
+.giz-top-bar .giz-global-search input {
+    display: block !important;
+    font-size: 1.35rem !important;
+    color: rgba(255,255,255,0.9) !important;
+    line-height: normal !important;
+}
+
+.giz-top-bar .giz-global-search input::placeholder {
+    color: rgba(255,255,255,0.32) !important;
+}
+
+.giz-top-bar .giz-global-search > .giz-ph-icon {
+    font-size: 1.9rem;
+    color: rgba(255,255,255,0.38) !important;
+    margin-left: 1.4rem;
+    margin-right: 1rem;
+}
+
+.giz-top-bar .giz-global-search.open .giz-close-button,
+.giz-top-bar .giz-global-search.nonemtpy .giz-close-button,
+.giz-top-bar .giz-global-search:hover .giz-close-button,
+.giz-top-bar .giz-global-search:focus-within .giz-close-button {
+    display: block !important;
+}
+
+.giz-top-bar .giz-global-search .giz-global-search-dropdown {
+    background: linear-gradient(180deg, rgba(var(--gg-glass-rgb), 0.97), rgba(var(--gg-glass-2-rgb), 0.985)) !important;
+    backdrop-filter: blur(5rem) saturate(1.7) !important;
+    -webkit-backdrop-filter: blur(5rem) saturate(1.7) !important;
+    border: 1px solid rgba(255,255,255,0.14) !important;
+    border-radius: 2rem !important;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.2),
+        0 4rem 9rem -2.6rem rgba(0,0,0,0.85) !important;
+    width: 54rem !important;
+    left: 0 !important;
+    transform: none !important;
+    z-index: 9001 !important;
+    margin-top: 0.8rem !important;
+    overflow: hidden !important;
+}
+
+.giz-top-bar .giz-global-search-section__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.6rem;
+    padding: 1.6rem 1.8rem 0.8rem;
+    font-family: Rubik, sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.32);
+}
+
+.giz-top-bar .giz-global-search-section__header__more {
+    letter-spacing: 0.02em;
+    text-transform: none;
+    font-size: 1.25rem;
+    color: var(--gg-accent);
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.giz-top-bar .giz-global-search .giz-global-search-section__body {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.4rem;
+    padding: 0 0.8rem 0.8rem;
+}
+
+.giz-top-bar .giz-global-search-empty {
+    padding: 3.6rem 2rem;
+}
+
+.giz-top-bar .giz-global-search-empty .giz-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.4rem;
+}
+
+.giz-top-bar .giz-global-search-empty .giz-empty-state__title {
+    font-size: 1.6rem !important;
+    font-weight: 700;
+    color: rgba(255,255,255,0.8) !important;
+}
+
+.giz-top-bar .giz-global-search-empty .giz-empty-state__text {
+    font-size: 1.3rem !important;
+    color: rgba(255,255,255,0.4) !important;
+}
