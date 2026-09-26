@@ -60,8 +60,6 @@ namespace Gizmo.Client.UI.Pages
 
         #endregion
 
-        /// <summary>
-        /// </summary>
         private bool HasMoreAvailability
         {
             get

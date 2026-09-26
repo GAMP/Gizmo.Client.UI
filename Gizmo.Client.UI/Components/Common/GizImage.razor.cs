@@ -11,12 +11,8 @@ using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI.Components
 {
-    /// <summary>
-    /// </summary>
     public partial class GizImage : ShellComponentBase
     {
-        /// <summary>
-        /// </summary>
         private static readonly TimeSpan LoadTimeout = TimeSpan.FromSeconds(15);
 
         #region PROPERTIES
@@ -152,8 +148,6 @@ namespace Gizmo.Client.UI.Components
 
         #region HELPERS
 
-        /// <summary>
-        /// </summary>
         private async Task RenderAsync()
         {
             if (IsDisposed)

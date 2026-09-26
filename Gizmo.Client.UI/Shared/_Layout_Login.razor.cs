@@ -83,8 +83,6 @@ namespace Gizmo.Client.UI.Shared
             });
         }
 
-        /// <summary>
-        /// </summary>
         private void DispatchWorkflow(Func<Task> workflow)
         {
             ShellDispatch.Run(InvokeAsync, () => _disposed, workflow);
@@ -110,8 +108,6 @@ namespace Gizmo.Client.UI.Shared
                 .If("giz-login-content--own-bg", () => !HasClubBackground)
                 .AsString();
 
-        /// <summary>
-        /// </summary>
         private bool HasClubBackground =>
             !string.IsNullOrEmpty(ClientUIOptions.Value.LoginBackground) || LoginRotatorViewState.IsEnabled;
 
@@ -144,8 +140,6 @@ namespace Gizmo.Client.UI.Shared
             });
         }
 
-        /// <summary>
-        /// </summary>
         public void Dispose()
         {
             if (_disposed)
