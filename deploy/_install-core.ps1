@@ -18,8 +18,11 @@ $BackupRt  = Join-Path $PSScriptRoot 'backup'
 # (composition.json, the two assemblies, wwwroot). Nothing of the stock skin is touched
 # - a host group is switched to it in the Manager, and switched back to leave it.
 #
-# The only thing taken from the stock skin is wwwroot\_framework: it belongs to the
-# server version, so the server's own copy beats the one in the package.
+# Two things are taken from the stock skin at install time, because they belong to the
+# server rather than to the shell: wwwroot\_framework (the server version's Blazor runtime)
+# and static\ (the club's files the client serves as https://static/, among them the
+# fallback pictures of the sign-in rotator). Both are copies: after a server update the
+# stock skin changes and Grafit has to be installed again to pick that up.
 
 function Say($t, $c = 'Gray') { Write-Host $t -ForegroundColor $c }
 
@@ -110,10 +113,20 @@ if (Test-Path $refFramework) {
     exit 1
 }
 
+$refStatic = Join-Path $Reference 'static'
+$dstStatic = Join-Path $Target 'static'
+New-Item -ItemType Directory -Path $dstStatic -Force | Out-Null
+if (Test-Path $refStatic) {
+    Copy-Item (Join-Path $refStatic '*') $dstStatic -Recurse -Force
+    Say "Took static\ from the server's own Next skin" 'DarkGray'
+} else {
+    Say "The stock skin has no static\ folder - an empty one is created" 'DarkGray'
+}
+
 # ── sanity ──────────────────────────────────────────────────────────────────
 foreach ($must in @('composition.json', 'Gizmo.Client.UI.dll', 'Gizmo.Web.Components.dll',
                     'wwwroot\index.html', 'wwwroot\_framework\blazor.webview.js',
-                    'wwwroot\_content\Gizmo.Client.UI\vendor\fonts\fonts.css')) {
+                    'wwwroot\_content\Gizmo.Client.UI\vendor\fonts\fonts.css', 'static')) {
     if (-not (Test-Path (Join-Path $Target $must))) {
         Say "Missing after install: $must" 'Red'
         exit 1
@@ -127,4 +140,7 @@ Say "      then restart the Gizmo Client on a PC of that group (the whole client
 Say "      the client receives its skin name and the skin files only when it connects." 'Yellow'
 Say "Check on the PC: %PROGRAMDATA%\NETProjects\Gizmo Client\Skins\$SkinName must appear after the restart." 'DarkGray'
 Say "Colour: data-accent in $Target\wwwroot\index.html, or ':root { --giz-palette: green; }' in the Manager's custom CSS." 'DarkGray'
+$minClient = Get-Content (Join-Path $Src 'grafit.version.txt') -ErrorAction SilentlyContinue | Where-Object { $_ -like 'Client *' }
+if ($minClient) { Say "Clients: $($minClient -replace '^Client\s+', '') - an older Gizmo Client will not start the shell." 'DarkGray' }
+Say "After every Gizmo Server update, run install.bat again: _framework and static\ are copies of the stock skin's." 'Yellow'
 Say "Rollback:  install.bat uninstall" 'DarkGray'
