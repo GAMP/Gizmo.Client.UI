@@ -64,7 +64,7 @@ namespace Gizmo.Client.UI.Pages
         [Inject] AppExeViewStateLookupService AppExeLookupService { get; set; }
         [Inject] AppDetailsPageViewState AppDetailsPageViewState { get; set; }
         [Inject] ClientServerCartViewService CartService { get; set; }
-        [Inject] IClientDialogService DialogService { get; set; }
+        [Inject] UserCartViewService CheckoutService { get; set; }
         [Inject] NavigationService NavigationService { get; set; }
 
         #endregion
@@ -271,12 +271,6 @@ namespace Gizmo.Client.UI.Pages
 
         private void BuyPackage(int productId)
         {
-            if (DialogService is not ClientDialogService)
-            {
-                OpenProduct(productId);
-                return;
-            }
-
             if (_buyingProductId.HasValue)
                 return;
 
@@ -287,7 +281,7 @@ namespace Gizmo.Client.UI.Pages
             {
                 try
                 {
-                    await PackagePurchaseFlow.RunAsync(productId, CartService, DialogService);
+                    await PackagePurchaseFlow.RunAsync(productId, CartService, CheckoutService);
                 }
                 finally
                 {

@@ -43,7 +43,7 @@ namespace Gizmo.Client.UI.Components
         IOptionsMonitor<ClientShopOptions> ShopOptions { get; set; }
 
         [Inject]
-        IClientDialogService DialogService { get; set; }
+        UserCartViewService UserCartViewService { get; set; }
 
         public bool IsShopEnabled => !ShopOptions.CurrentValue.Disabled;
 
@@ -80,7 +80,7 @@ namespace Gizmo.Client.UI.Components
             {
                 try
                 {
-                    await PackagePurchaseFlow.RunAsync(ProductId, ClientServerCartViewService, DialogService);
+                    await PackagePurchaseFlow.RunAsync(ProductId, ClientServerCartViewService, UserCartViewService);
                 }
                 finally
                 {

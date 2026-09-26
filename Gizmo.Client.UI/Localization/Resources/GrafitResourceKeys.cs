@@ -16,7 +16,6 @@
         public const string SHELL_GEN_DONE = nameof(SHELL_GEN_DONE);
         public const string SHELL_GEN_LATER = nameof(SHELL_GEN_LATER);
         public const string SHELL_GEN_HIDE = nameof(SHELL_GEN_HIDE);
-        public const string SHELL_GEN_TO_SHOP = nameof(SHELL_GEN_TO_SHOP);
         public const string SHELL_DEPOSIT_SUCCESS_TITLE = nameof(SHELL_DEPOSIT_SUCCESS_TITLE);
         public const string SHELL_DEPOSIT_SUCCESS_TEXT = nameof(SHELL_DEPOSIT_SUCCESS_TEXT);
         public const string SHELL_DEPOSIT_SUCCESS_HINT = nameof(SHELL_DEPOSIT_SUCCESS_HINT);
@@ -24,7 +23,6 @@
         public const string SHELL_BUY_TITLE = nameof(SHELL_BUY_TITLE);
         public const string SHELL_BUY_TITLE_TOPUP = nameof(SHELL_BUY_TITLE_TOPUP);
         public const string SHELL_BUY_DONE_TITLE = nameof(SHELL_BUY_DONE_TITLE);
-        public const string SHELL_BUY_FALLBACK_NAME = nameof(SHELL_BUY_FALLBACK_NAME);
         public const string SHELL_BUY_SHORTFALL = nameof(SHELL_BUY_SHORTFALL);
         public const string SHELL_BUY_DISCOUNT = nameof(SHELL_BUY_DISCOUNT);
         public const string SHELL_BUY_FREE = nameof(SHELL_BUY_FREE);
@@ -38,7 +36,6 @@
         public const string SHELL_BUY_COUNTER_NOTE = nameof(SHELL_BUY_COUNTER_NOTE);
         public const string SHELL_BUY_ON_ACCOUNT = nameof(SHELL_BUY_ON_ACCOUNT);
         public const string SHELL_BUY_YOU_HAVE = nameof(SHELL_BUY_YOU_HAVE);
-        public const string SHELL_BUY_OTHER_ITEMS = nameof(SHELL_BUY_OTHER_ITEMS);
         public const string SHELL_BUY_FEES = nameof(SHELL_BUY_FEES);
         public const string SHELL_BUY_LEFT_AFTER = nameof(SHELL_BUY_LEFT_AFTER);
         public const string SHELL_BUY_POINTS_LEFT_AFTER = nameof(SHELL_BUY_POINTS_LEFT_AFTER);
@@ -91,13 +88,6 @@
         public const string SHELL_TIME_TOOLTIP_ALL_PACKAGES = nameof(SHELL_TIME_TOOLTIP_ALL_PACKAGES);
         public const string SHELL_TIME_TOOLTIP_LEFT = nameof(SHELL_TIME_TOOLTIP_LEFT);
         public const string SHELL_TIME_TOOLTIP_SPENDABLE = nameof(SHELL_TIME_TOOLTIP_SPENDABLE);
-        public const string SHELL_TIME_TOOLTIP_UNLIMITED = nameof(SHELL_TIME_TOOLTIP_UNLIMITED);
-        public const string SHELL_TIME_TOOLTIP_MONEY_LOW = nameof(SHELL_TIME_TOOLTIP_MONEY_LOW);
-        public const string SHELL_TIME_TOOLTIP_ENDING = nameof(SHELL_TIME_TOOLTIP_ENDING);
-        public const string SHELL_TIME_TOOLTIP_CTA_BOTH = nameof(SHELL_TIME_TOOLTIP_CTA_BOTH);
-        public const string SHELL_TIME_TOOLTIP_CTA_PACKAGE = nameof(SHELL_TIME_TOOLTIP_CTA_PACKAGE);
-        public const string SHELL_TIME_TOOLTIP_CTA_TOPUP = nameof(SHELL_TIME_TOOLTIP_CTA_TOPUP);
-        public const string SHELL_TIME_TOOLTIP_CREDIT = nameof(SHELL_TIME_TOOLTIP_CREDIT);
         public const string SHELL_DURATION_HOURS_MINUTES = nameof(SHELL_DURATION_HOURS_MINUTES);
         public const string SHELL_DURATION_HOURS = nameof(SHELL_DURATION_HOURS);
         public const string SHELL_DURATION_MINUTES = nameof(SHELL_DURATION_MINUTES);
@@ -123,11 +113,8 @@
         public const string SHELL_PD_INCLUDES = nameof(SHELL_PD_INCLUDES);
         public const string SHELL_PD_WHERE = nameof(SHELL_PD_WHERE);
         public const string SHELL_PD_ABOUT = nameof(SHELL_PD_ABOUT);
-        public const string SHELL_PD_NO_DESCRIPTION = nameof(SHELL_PD_NO_DESCRIPTION);
-        public const string SHELL_PD_UNAVAILABLE = nameof(SHELL_PD_UNAVAILABLE);
         public const string SHELL_PD_EXPIRES_AT_DAYTIME = nameof(SHELL_PD_EXPIRES_AT_DAYTIME);
         public const string SHELL_PD_EXPIRES_AFTER = nameof(SHELL_PD_EXPIRES_AFTER);
         public const string SHELL_PD_EXPIRES_AT_LOGOUT = nameof(SHELL_PD_EXPIRES_AT_LOGOUT);
-        public const string SHELL_PD_QUANTITY = nameof(SHELL_PD_QUANTITY);
     }
 }

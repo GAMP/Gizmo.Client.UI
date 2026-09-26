@@ -5,12 +5,13 @@
 @using Gizmo.Web.Api.Models
 
 <HostedDialog>
-    <div class="giz-buy giz-buy--checkout @(_step == Step.Done ? "giz-buy--done" : null)">
+    <div class="giz-buy @(IsPackage ? null : "giz-buy--checkout") @(_step == Step.Done ? "giz-buy--done" : null)">
 
         @if (_step == Step.Done && _outcomeOk is { } ok)
         {
             <CartDialogResult Ok="@ok"
                               Title="@(ok ? DoneTitle : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_FAILED_TITLE))"
+                              Name="@_doneName"
                               Note="@DoneNote"
                               Error="@_outcomeError"
                               OnClose="@CloseDialog" />
@@ -25,10 +26,14 @@
                         <i class="ph-bold ph-x"></i>
                     </button>
                 }
-                <h2 class="giz-buy__title">@ItemsTitle</h2>
+                <h2 class="giz-buy__title">@Title</h2>
                 @if (_step == Step.TopUp)
                 {
                     <div class="giz-buy__sub">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_TOPUP_SUB, Money(Shortfall))</div>
+                }
+                else if (IsPackage)
+                {
+                    <div class="giz-buy__sub">@CataloguePrice</div>
                 }
             </header>
 
@@ -44,26 +49,29 @@
             }
             else
             {
-                <div class="giz-buy__items giz-scrollbar--v">
-                    @foreach (var item in Items)
-                    {
-                        <div class="giz-buy__row" @key="item.Guid">
-                            <span class="giz-buy__row-name">@item.ProductName</span>
-                            @if (item.Quantity > 1)
-                            {
-                                <span class="giz-buy__row-qty">× @item.Quantity</span>
-                            }
-                            @if (IsPointsLine(item))
-                            {
-                                <span class="giz-buy__row-sum giz-buy__pts">@Points(item.TotalPointsPrice ?? 0)<i class="ph-fill ph-coins"></i></span>
-                            }
-                            else
-                            {
-                                <span class="giz-buy__row-sum">@Money(item.TotalPrice)</span>
-                            }
-                        </div>
-                    }
-                </div>
+                @if (!IsPackage)
+                {
+                    <div class="giz-buy__items giz-scrollbar--v">
+                        @foreach (var item in Items)
+                        {
+                            <div class="giz-buy__row" @key="item.Guid">
+                                <span class="giz-buy__row-name">@item.ProductName</span>
+                                @if (item.Quantity > 1)
+                                {
+                                    <span class="giz-buy__row-qty">@item.Quantity</span>
+                                }
+                                @if (IsPointsLine(item))
+                                {
+                                    <span class="giz-buy__row-sum giz-buy__pts">@Points(item.TotalPointsPrice ?? 0)<i class="ph-fill ph-coins"></i></span>
+                                }
+                                else
+                                {
+                                    <span class="giz-buy__row-sum">@Money(item.TotalPrice)</span>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
 
                 @if (!IsFree)
                 {
@@ -86,6 +94,20 @@
                     }
                     else
                     {
+                        @if (IsPackage && ShowLines)
+                        {
+                            <div class="giz-buy__line">
+                                <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_PRICE))</span>
+                                @if (IsPayingWithPoints)
+                                {
+                                    <span class="giz-buy__pts">@Points(PointsDue)<i class="ph-fill ph-coins"></i></span>
+                                }
+                                else
+                                {
+                                    <span>@Money(PackageLine.TotalPrice)</span>
+                                }
+                            </div>
+                        }
                         @if (HasDiscount)
                         {
                             <div class="giz-buy__line giz-buy__line--good">

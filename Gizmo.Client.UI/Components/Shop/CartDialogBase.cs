@@ -50,9 +50,6 @@ namespace Gizmo.Client.UI.Components
         protected string _outcomeError = string.Empty;
         protected PayWayKind _paidWith;
 
-        protected decimal? _serverBalance;
-        protected int? _serverPoints;
-
         #endregion
 
         #region PROPERTIES
@@ -64,7 +61,6 @@ namespace Gizmo.Client.UI.Components
         [Inject] protected UserBalanceViewState UserBalanceViewState { get; set; }
         [Inject] protected UserOnlineDepositViewState OnlineDepositViewState { get; set; }
         [Inject] protected UserOnlineDepositViewService OnlineDepositService { get; set; }
-        [Inject] protected IGizmoClient GizmoClient { get; set; }
         [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
 
         [Parameter] public DialogDisplayOptions DisplayOptions { get; set; }
@@ -281,15 +277,9 @@ namespace Gizmo.Client.UI.Components
 
         #region BALANCES
 
-        protected decimal Balance =>
-            _serverBalance is { } fetched && fetched > UserBalanceViewState.Balance
-                ? fetched
-                : UserBalanceViewState.Balance;
+        protected decimal Balance => UserBalanceViewState.Balance;
 
-        protected int PointsBalance =>
-            _serverPoints is { } fetched && fetched > UserBalanceViewState.PointsBalance
-                ? fetched
-                : UserBalanceViewState.PointsBalance;
+        protected int PointsBalance => UserBalanceViewState.PointsBalance;
 
         protected decimal Shortfall
         {
@@ -320,20 +310,6 @@ namespace Gizmo.Client.UI.Components
         protected int PointsAfter => PointsBalance - PointsDue;
 
         protected bool CanTopUp => OnlineDepositViewState.IsEnabled;
-
-        protected async Task RefreshBalanceAsync()
-        {
-            try
-            {
-                var balance = await GizmoClient.UserBalanceGetAsync();
-
-                _serverBalance = balance.Balance;
-                _serverPoints = balance.Points;
-            }
-            catch (Exception)
-            {
-            }
-        }
 
         #endregion
 
@@ -414,24 +390,13 @@ namespace Gizmo.Client.UI.Components
 
         protected void TopUp()
         {
-            if (!CanTopUp)
+            if (!CanTopUp || Shortfall == 0)
                 return;
 
-            DispatchWorkflow(async () =>
-            {
-                await RefreshBalanceAsync();
+            OnlineDepositService.SetAmount(Shortfall);
 
-                if (Shortfall == 0)
-                {
-                    StateHasChanged();
-                    return;
-                }
-
-                OnlineDepositService.SetAmount(Shortfall);
-
-                _step = Step.TopUp;
-                StateHasChanged();
-            });
+            _step = Step.TopUp;
+            StateHasChanged();
         }
 
         protected void BackToConfirm()
@@ -444,12 +409,7 @@ namespace Gizmo.Client.UI.Components
         {
             OnlineDepositService.Clear();
 
-            DispatchWorkflow(async () =>
-            {
-                await RefreshBalanceAsync();
-
-                BackToConfirm();
-            });
+            BackToConfirm();
         }
 
         protected virtual Task CloseDialog()
@@ -487,18 +447,12 @@ namespace Gizmo.Client.UI.Components
             this.SubscribeChange(UserBalanceViewState);
             this.SubscribeChange(OnlineDepositViewState);
 
-            await RefreshBalanceAsync();
-
-            await OnLoadingAsync();
-
             await LoadWaysAsync();
 
             SelectDefaultWay();
 
             await base.OnInitializedAsync();
         }
-
-        protected virtual Task OnLoadingAsync() => Task.CompletedTask;
 
         public override void Dispose()
         {

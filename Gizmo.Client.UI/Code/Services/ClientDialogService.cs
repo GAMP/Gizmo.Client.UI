@@ -90,19 +90,6 @@ namespace Gizmo.Client.UI.Services
             }, default, cancellationToken);
         }
 
-        public Task<AddDialogResult<EmptyComponentResult>> ShowPackagePurchaseDialogAsync(int productId, Guid cartEntryId, CancellationToken cancellationToken = default)
-        {
-            return ShowDialogAsync<PackagePurchaseDialog>(new Dictionary<string, object>()
-            {
-                { nameof(PackagePurchaseDialog.ProductId), productId },
-                { nameof(PackagePurchaseDialog.CartEntryId), cartEntryId }
-            }, new DialogDisplayOptions()
-            {
-                Closable = true,
-                CloseOnClick = false
-            }, default, cancellationToken);
-        }
-
         public Task<AddDialogResult<EmptyComponentResult>> ShowUserOnlineDepositsDialogAsync(CancellationToken cancellationToken = default)
         {
             return ShowDialogAsync<UserOnlineDepositsDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()

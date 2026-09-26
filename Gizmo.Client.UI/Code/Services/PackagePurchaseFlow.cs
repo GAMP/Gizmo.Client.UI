@@ -1,56 +1,41 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gizmo.Client.UI.View.Services;
-using Gizmo.UI;
-using Gizmo.UI.Services;
 
 namespace Gizmo.Client.UI.Services
 {
     internal static class PackagePurchaseFlow
     {
-        private static readonly TimeSpan WAIT_CEILING = TimeSpan.FromSeconds(90);
+        private static readonly TimeSpan WAIT_CEILING = TimeSpan.FromSeconds(30);
 
-        public static async Task<bool> RunAsync(int productId,
+        public static async Task RunAsync(int productId,
             ClientServerCartViewService cartService,
-            IClientDialogService dialogService)
+            UserCartViewService checkoutService)
         {
-            if (dialogService is not ClientDialogService dialogs)
-                return false;
-
-            var before = cartService.ViewState.Products.Select(a => a.Guid).ToHashSet();
-
             cartService.AddProduct(productId);
 
-            var entryId = await WaitForCartEntryAsync(cartService, before);
+            if (!await WaitForProductInCartAsync(cartService, productId))
+                return;
 
-            if (entryId is null)
-                return false;
-
-            var dialog = await dialogs.ShowPackagePurchaseDialogAsync(productId, entryId.Value);
-
-            if (dialog.Result == AddComponentResultCode.Opened)
-                await dialog.WaitForResultAsync();
-
-            return true;
+            await checkoutService.SubmitAsync();
         }
 
-        private static async Task<Guid?> WaitForCartEntryAsync(ClientServerCartViewService cartService, HashSet<Guid> before)
+        private static async Task<bool> WaitForProductInCartAsync(ClientServerCartViewService cartService, int productId)
         {
             var deadline = DateTime.UtcNow.Add(WAIT_CEILING);
 
             while (DateTime.UtcNow < deadline)
             {
-                var entry = cartService.ViewState.Products.FirstOrDefault(a => !before.Contains(a.Guid));
+                var state = cartService.ViewState;
 
-                if (entry is not null)
-                    return entry.Guid;
+                if (!state.IsStateUpdateRequired && !state.IsStateUpdating && state.Products.Any(a => a.ProductId == productId))
+                    return true;
 
                 await Task.Delay(200);
             }
 
-            return null;
+            return false;
         }
     }
 }
