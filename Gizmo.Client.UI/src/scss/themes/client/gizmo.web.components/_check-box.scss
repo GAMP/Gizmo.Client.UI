@@ -3,12 +3,6 @@
 .giz-check-box {
     [#{$client-theme-comp-attr}] & {
         display: inline-flex;
-        // Single source of truth for the box size. The tick below is placed
-        // from this, so anything that wants a different sized checkbox (see
-        // .giz-app-autostart) overrides this one variable and the tick follows.
-        // Previously the tick's `left` was a constant tuned for a 2.2rem box,
-        // so .giz-app-autostart shrinking the box to 2rem left the tick sitting
-        // off-centre inside it.
         --giz-check-box-size: 2.2rem;
 
         & input {
@@ -53,19 +47,6 @@
                 border-color: var(--giz-accent);
             }
 
-            // Tick anchored to the box, not the label. The box is the first
-            // flex item and align-items:center keeps it vertically centred, so
-            // top:50% + translateY centres the tick on the box regardless of
-            // how tall the label's text wraps - the old fixed top:0.5rem was
-            // measured from the label top and drifted off the box on
-            // multi-line labels.
-            //
-            // `left` is derived from the box size for the same reason: as a
-            // constant it silently went off-centre whenever the box was
-            // resized. The 0.32rem term is the tick's own half width once
-            // rotated; at the default 2.2rem box this resolves to the 0.78rem
-            // that was previously hard coded, so the standard checkbox is
-            // pixel identical to before.
             &:checked + label:after {
                 content: '';
                 position: absolute;

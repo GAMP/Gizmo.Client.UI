@@ -1,9 +1,6 @@
 //=============== Page Apps ================//
 
 .giz-home-apps {
-    // Used to be a 2-row grid (quick-launch/news header, then body) - the
-    // header row is gone now that quick-launch lives in its own permanent
-    // rail, so this is just the body filling the page.
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -46,21 +43,12 @@
             z-index: $app-section-header-index;
             margin-bottom: 0;
             padding-bottom: 1.6rem;
-            // Title on the left, filter cluster pushed to the right, both on
-            // one baseline. AppFilters emits the title as a bare <div>
-            // followed by .giz-apps-filters, so the row is laid out here
-            // rather than inside that component.
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 1.6rem;
             flex-wrap: wrap;
 
-            // _section.scss puts the accent bar on the header element
-            // itself. That works where the header is only a title, but here
-            // the header also holds the filter cluster, so the bar stretched
-            // to the full row height - a ~85px stripe next to 24px of text.
-            // The bar moves to the title below; the header keeps none.
             padding-left: 0;
             border-left: none;
             box-shadow: none;
@@ -69,8 +57,6 @@
                 display: none;
             }
 
-            // The sorting-option caption ("Popular apps" / "All apps" / ...).
-            // Same accent-bar heading as the shop and home feeds.
             > div:not(.giz-apps-filters):not(.giz-section__header__filters) {
                 padding-left: 1.2rem;
                 border-left: 3px solid var(--giz-accent);
@@ -79,10 +65,6 @@
                 @include font-h5-theme-client($font-weight-bold-theme-client);
             }
         }
-
-        // The "--stuck" duplicate header was removed from AppsIndex.razor
-        // along with its second AppFilters copy; the clip-path hack that
-        // revealed it went with it.
     }
 }
 
@@ -154,11 +136,6 @@
     gap: 1rem;
     flex-wrap: wrap;
 
-    // Field captions ("Sort by:", "Category:", ...) were full-size grey body
-    // text stacked above each control, which made the filter cluster twice
-    // as tall as the heading beside it and read as unstyled leftovers.
-    // Small caps, tight to their control, same treatment as the login
-    // screen's field labels.
     .giz-input-label,
     label {
         display: block;
@@ -184,10 +161,6 @@
         color: var(--giz-accent);
     }
 
-    // Glass pills, same material as the top bar's segments, instead of the
-    // library's default boxed inputs. Wide enough for the longest sorting name
-    // ("Популярные приложения") - the library sizes the field to a default width
-    // and cut the value short.
     .giz-input-root {
         min-height: 4rem;
         min-width: 24rem;

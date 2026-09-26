@@ -1,9 +1,6 @@
 //=============== Clien UI Login ================//
 
 .giz-main-container {
-    // Was a two-column grid (background | 740px card column), which is what
-    // pinned the form to the right edge. Now the background fills the whole
-    // screen and the card overlays it dead centre.
     position: relative;
     display: block;
     height: 100vh;
@@ -12,7 +9,6 @@
     max-width: 100vw;
 
     .giz-login {
-
         &-content {
             display: grid;
             grid-template-rows: min-content 1fr min-content;
@@ -22,8 +18,6 @@
             &.collapsed {
                 .giz-host-number {
                     margin-right: var(--giz-host-number-shift);
-                    // Stays at the big display size when the card is up -
-                    // no shrink (see .giz-host-number base below).
                     font-family: 'Rubik';
                     font-style: normal;
                     font-weight: 700;
@@ -38,8 +32,6 @@
             }
 
             &.shrink {
-                // Host number no longer animates size (see .giz-host-number
-                // below) - only the status cluster / warnings still transition.
                 .giz-host-number { animation: none; }
 
                 .giz-client-status {
@@ -166,11 +158,6 @@
                 padding: 2.4rem 3.2rem;
                 transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
                 z-index: 2;
-                // Always the big display size, like the base shell's idle
-                // number - it no longer shrinks when the card appears (the
-                // shrink/grow size animations are neutralised below, and the
-                // .collapsed state above keeps this size too). Our card is
-                // centred, so the number never has to move out of its way.
                 font-family: 'Rubik';
                 font-style: normal;
                 font-weight: 700;
@@ -250,10 +237,6 @@
                 transform: translateX(-50%);
             }
 
-            // Interface-language switch (globe) + version - bottom-left.
-            // There used to be a keyboard-layout switch in the opposite
-            // corner; it's gone (see the note by .giz-input-language-menu
-            // further down for why).
             .giz-client-status {
                 position: absolute;
                 display: flex;
@@ -310,12 +293,6 @@
             padding: 2rem 0;
             box-sizing: border-box;
             z-index: 1;
-            // Nothing in this chain scrolls. Moving the scroll here just
-            // moved the problem: an open dropdown is still counted as
-            // overflowing content, so the whole screen became scrollable
-            // instead of the card. The dropdown is height-capped below so
-            // it always fits, and the card itself is short enough that no
-            // scrolling is needed at any realistic client resolution.
             overflow: visible;
             pointer-events: none;
 
@@ -399,11 +376,6 @@
     }
 }
 
-// ── Hard-coded login background (shown when the window is active) ────────────
-// Sits above the club's configured wallpaper and crossfades with the login
-// window: opaque + settled while the card is up (.collapsed), gone while idle
-// so the wallpaper shows through. The base linear-gradient is opaque, so at
-// full opacity it fully hides the wallpaper.
 .giz-login-hardcoded-bg {
     position: absolute;
     inset: 0;
@@ -418,14 +390,10 @@
     background: var(--giz-atmosphere);
 }
 
-// Idle with a club wallpaper: the shell's background is faded out, so its gradient
-// would be moving for nobody (the flow itself is in _flow.scss).
 .giz-login-content:not(.collapsed):not(.giz-login-content--own-bg) .giz-flow__sheet {
     animation-play-state: paused;
 }
 
-// Faint oversized gaming icons scattered on the shell's background for a bit of
-// mood. Same crossfade as the background itself.
 .giz-login-hardcoded-bg__icons {
     position: absolute;
     inset: 0;
@@ -449,8 +417,6 @@
     i:nth-child(3) { top: 30%;  right: 14%; font-size: 5.8rem; transform: rotate(8deg); }
 }
 
-// Active window (card present) → fade the hard-coded background in and let it
-// settle from a slight zoom. Idle → both revert to 0, revealing the wallpaper.
 .giz-login-content.collapsed {
     .giz-login-hardcoded-bg,
     .giz-login-hardcoded-bg__icons {
@@ -459,8 +425,6 @@
     }
 }
 
-// No club wallpaper configured: the shell's own background is the idle background
-// too, so nothing crossfades and no stock photograph ever shows.
 .giz-login-content--own-bg {
     .giz-login-hardcoded-bg,
     .giz-login-hardcoded-bg__icons {
@@ -497,8 +461,6 @@
 }
 
 .giz-login-card {
-    // Centred glass card. Same material language as the shell's top bar /
-    // rail so login and the shell read as one product.
     position: relative;
     display: flex;
     flex-direction: column;
@@ -507,19 +469,10 @@
     flex-shrink: 0;
     padding: 3.2rem;
     box-sizing: border-box;
-    // NOT overflow-y:auto. An open <select> dropdown is absolutely
-    // positioned but still counts towards a scroll container's scrollHeight,
-    // so the country list made the whole card scrollable far past its
-    // content. The card sizes to its content instead and the dropdown is
-    // capped below; the wrapper handles the rare too-tall case.
     overflow: visible;
     border-radius: 3.2rem;
-    // Stacking context for the ::before glow/glass layer below, and so that
-    // layer can't bleed past this card's own children.
     isolation: isolate;
     border: 1px solid rgba(255, 255, 255, 0.12);
-    // The purple glow is a shadow layer rather than an oversized ::before
-    // with negative insets, which would count as overflowing content.
     box-shadow:
         inset 0 1.5px 0 rgba(255, 255, 255, 0.28),
         0 60px 120px -34px rgba(0, 0, 0, 0.9);
@@ -527,30 +480,12 @@
         opacity 0.9s cubic-bezier(0.19, 1, 0.22, 1),
         transform 0.9s cubic-bezier(0.19, 1, 0.22, 1);
 
-    // Glass fill + blur live on a ::before instead of directly on the card.
-    // backdrop-filter on an element (like transform/filter/perspective)
-    // makes THAT element the containing block for any position:fixed
-    // descendant - and this card hosts <Select> dropdowns and the password
-    // <ClientTooltip>, which are position:fixed and anchor themselves via
-    // JS using viewport-relative getBoundingClientRect() math. With
-    // backdrop-filter directly on .giz-login-card, "fixed" stopped
-    // resolving against the real viewport and started resolving against
-    // this small centred card instead, so those popups rendered nowhere
-    // near their trigger (dropdowns/tooltips landing in the screen corner
-    // on the registration form). Keeping backdrop-filter off the card
-    // element itself and on this non-ancestor pseudo instead keeps the
-    // exact same look without touching the containing block.
     &::before {
         content: '';
         position: absolute;
         inset: 0;
         z-index: -1;
         border-radius: inherit;
-        // Dark base FIRST, white sheen on top. A pure white-alpha gradient
-        // over backdrop-filter let the wallpaper's bright neon through and
-        // the card read as a light-theme panel; the near-opaque dark layer
-        // keeps it a dark card while the blur still tints it with whatever
-        // is behind. saturate() lowered from 1.7 for the same reason.
         background:
             linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)),
             linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.82), rgba(var(--giz-glass-2-rgb), 0.90));
@@ -558,10 +493,6 @@
         -webkit-backdrop-filter: blur(56px) saturate(1.15);
     }
 
-    // Idle hide/show keeps working exactly as before (same .hidden /
-    // .slide-in / .slide-out classes driven by UserIdleViewState) - only
-    // the technique changed, from sliding 74rem off the right edge to a
-    // fade + scale, which is what a centred card can actually do.
     &.hidden {
         opacity: 0;
         transform: translateY(1.2rem) scale(0.97);
@@ -577,11 +508,6 @@
         pointer-events: none;
     }
 
-    // ── Staggered entrance ──────────────────────────────────────────
-    // Rows rise in sequence whenever the card is on screen (first paint
-    // and every wake-from-idle, since .slide-in remounts the animation).
-    // `backwards` fill keeps each row invisible during its own delay
-    // instead of flashing at full opacity first.
     &:not(.hidden) {
         .giz-login-title,
         .giz-login-method,
@@ -597,18 +523,6 @@
         form > *:nth-child(4) { animation-delay: 0.36s; }
         form > *:nth-child(5) { animation-delay: 0.42s; }
 
-        // Login-type swap. Remounted on every switch (see the @key in Login.razor) so it
-        // replays each time. Declared last and at the same weight as the nth-child delays
-        // above so it actually wins - as a plain `.giz-login-card
-        // .giz-form-input--swappable` rule it was outranked and kept playing the
-        // staggered entrance instead.
-        //
-        // fill-mode backwards, NOT both. `both` leaves a filling animation on the row
-        // forever, and Chrome keeps a separate stacking context for it; everything inside
-        // is then trapped in that context, so the open country list (z-index 100) is
-        // resolved inside the row and the next field draws its label and eye icon over
-        // it. The animation's end frame equals the row's normal state, so the forwards
-        // half was giving nothing anyway.
         form > .giz-form-input--swappable {
             animation-name: login-field-swap-anim;
             animation-duration: 0.42s;
@@ -617,8 +531,6 @@
         }
     }
 
-    // The old 17.1rem side padding was sized for the 74rem full-height
-    // panel; the card supplies its own padding now.
     &__header {
         width: 100%;
 
@@ -698,10 +610,6 @@
     }
 }
 
-// Submit button: full width, 5.6rem tall, accent gradient, arrow on the right.
-// Selector deliberately carries .giz-button--fill.accent:not(.disabled) too,
-// so it outweighs the generic accent-button rule further down this file
-// (which is !important and would otherwise win on specificity).
 .giz-login-card .giz-button--fill.accent.giz-login-submit:not(.disabled) {
     height: 5.6rem;
     border-radius: 1.6rem;
@@ -713,7 +621,6 @@
 
     &:hover:not(.disabled) {
         filter: brightness(1.08);
-        
     }
 
     .giz-login-submit__content {
@@ -742,14 +649,6 @@
     }
 }
 
-// The link sits on the password field's label line, right aligned: label left, link
-// right, one line. Under the field it pushed the sign-in button down and hung between
-// two blocks on a line of its own.
-//
-// In the markup the link comes AFTER the field - GizInput draws its own label and there
-// is no way inside it - so it is lifted by absolute positioning. The parent
-// .giz-form-input is already position: relative, and the line-height matches the label
-// exactly, or the baselines drift by half a pixel and it shows.
 .giz-login-forgot-password {
     position: absolute;
     top: 0;
@@ -772,10 +671,6 @@
     }
 }
 
-// Reservation plate.
-//
-// The stack keeps the plate and the sign-in card together as one centred pair, plate
-// above, card below. The card sets the width and the plate follows it.
 .giz-login-stack {
     display: flex;
     flex-direction: column;
@@ -784,9 +679,6 @@
     max-width: 100%;
 }
 
-// The plate goes out with the card. While the station is idle there is no card, and the
-// reservation is announced by the instance in the screen template instead - otherwise an
-// idle station would show two identical plates at once.
 .giz-login-stack:has(> .giz-login-card.hidden) > .giz-login-reserved,
 .giz-login-stack:has(> .giz-login-card.slide-out) > .giz-login-reserved {
     opacity: 0;
@@ -803,8 +695,6 @@
     box-sizing: border-box;
     padding: 1.8rem 2.2rem;
     border-radius: 2rem;
-    // The same blue as the reservation lock screen: a reservation is not an error or a
-    // debt. Red or amber would read as an accusation.
     background:
         linear-gradient(180deg, rgba(96, 165, 250, 0.10), rgba(96, 165, 250, 0.04)),
         linear-gradient(180deg, rgba(23, 24, 40, 0.92), rgba(12, 13, 22, 0.95));
@@ -851,8 +741,6 @@
         color: #fff;
     }
 
-    // The time is part of the heading, but in figures and in the reservation colour: the
-    // sentence reads whole while the number is still seen first.
     &__time {
         font-family: $font-family-numeric-theme-client;
         font-variant-numeric: tabular-nums;
@@ -865,11 +753,8 @@
         line-height: 1.75rem;
         color: rgba(255, 255, 255, 0.58);
     }
-
 }
 
-// The wallpaper instance (idle station) is centred by its own parent and must not take
-// the card's width: there is nothing beside it.
 .giz-login-warnings .giz-login-reserved {
     width: auto;
     min-width: 42rem;
@@ -880,11 +765,6 @@
     padding-top: 2rem;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
 
-    // The decorative "OR" divider is dropped (design anti-pattern, and it
-    // was purely ornamental). The QR block itself stays - it's a real login
-    // method, still gated on HostQRCode.Enabled - but compacted so the card
-    // doesn't need to scroll. Set HostQRCode.Enabled=false in appsettings
-    // to hide it entirely.
     &__separator {
         display: none;
     }
@@ -982,11 +862,6 @@
         }
     }
 
-    // Grace period: the customer is out of money but still mid-session. The
-    // old screen was a wall of h1 text plus a lone "log out" button, which
-    // framed the only way forward as leaving. It is now a glass card that
-    // leads with the reassurance (nothing is lost) and offers topping up
-    // first, with logging out as the secondary option.
     .giz-grace-period {
         display: flex;
         flex-direction: column;
@@ -1031,9 +906,6 @@
                 color: var(--giz-accent);
             }
 
-            // A reservation is not an error or a debt, so the mark is calm and blue
-            // rather than red - nothing has been done wrong, the time simply belongs to
-            // somebody else.
             &--lock {
                 background: rgba(96, 165, 250, 0.14);
                 border-color: rgba(96, 165, 250, 0.32);
@@ -1042,9 +914,6 @@
             }
         }
 
-        // Reservation code entry. Everything on the card is centred and so is this:
-        // label with glyph, field and button in one column. The blue tone matches the
-        // glyph above and the reservation tile on sign-in.
         .giz-reserve-pin {
             width: 100%;
             margin-top: 0.4rem;
@@ -1117,8 +986,6 @@
                 &:disabled { opacity: 0.5; }
             }
 
-            // Button level with the field: different heights side by side read as
-            // unfinished work.
             &__row .giz-button {
                 flex: none;
                 height: 5.6rem;
@@ -1168,9 +1035,6 @@
             max-width: 34rem;
         }
 
-    // Countdown. It used to be a grey box with red numerals, competing with the input
-    // above it for attention while saying something quite different. Now it is one line
-    // in its own warm tone: label left, time right.
         &__timer {
             width: 100%;
             margin-top: 0.4rem;
@@ -1282,7 +1146,6 @@
 
     &__body {
         &__title {
-
             @include font-m-theme-client($font-weight-regular-theme-client);
         }
 
@@ -1321,19 +1184,12 @@
     }
 }
 
-// ── Minimal underline fields (no boxes, no lock icons) ──────────────
-// Scoped to the login card so the same shared inputs keep their normal
-// boxed look everywhere else in the shell.
 .giz-login-card {
     .giz-form-input {
         position: relative;
         margin-bottom: 2.2rem;
     }
 
-    // Nothing in the field chain may draw a ring/halo - the underline is the
-    // entire focus affordance. Killing outline + box-shadow on every wrapper
-    // (not just the input) because the faint rounded rectangle came from the
-    // shared input chrome, not from the input element itself.
     .giz-input-control,
     .giz-text-input,
     .giz-input-wrapper,
@@ -1358,8 +1214,6 @@
             border-bottom-color: rgba(255, 255, 255, 0.32) !important;
         }
 
-        // Accent line grows out from the centre on focus, sitting exactly on
-        // top of the static 1px rule.
         &:after {
             content: '';
             position: absolute;
@@ -1390,8 +1244,6 @@
         }
     }
 
-    // Country list and any other select inside the card: capped so a long
-    // list scrolls inside its own panel instead of stretching the screen.
     .giz-select__dropdown {
         max-height: 21rem;
         overflow-y: auto;
@@ -1425,8 +1277,6 @@
         line-height: 1.6rem;
     }
 
-    // Reveal (eye) button sits on the line, vertically centred with the
-    // value, not floating against the field's top edge.
     .giz-input__icon-right {
         display: flex;
         align-items: center;
@@ -1440,17 +1290,10 @@
         }
     }
 
-    // Two fields in one form row. On phone sign-in the country and number arrive as bare
-    // siblings (PhoneNumberField with RenderWrappers=false) with no spacing wrappers, so
-    // the number label sat flush against the country field's underline and the pair read
-    // as a single field. The gap goes here rather than into a markup wrapper, to leave
-    // the vendor component alone.
     .giz-form-input > :is(.giz-select, .giz-input-control) + :is(.giz-select, .giz-input-control) {
         margin-top: 2rem;
     }
 
-    // Caret flips while the list is open. The vendor ties the rotation to a .open class
-    // that IconSelect never sets, so the list's own state is used instead.
     .giz-select:has(.giz-popup--open) .giz-input__icon-right {
         transform: rotate(180deg);
         color: var(--giz-accent);
@@ -1469,9 +1312,6 @@
         &:hover { color: rgba(255, 255, 255, 0.75); }
     }
 
-    // Validation message. The vendor's pure red on a dark card pulls attention off the
-    // field itself; a muted red reads no worse. Same specificity as the vendor rule
-    // (.giz-input-control--invalid ...), or it cannot win.
     .giz-input-validation-label,
     .giz-input-control--invalid .giz-input-validation-label,
     .giz-select--invalid .giz-input-validation-label {
@@ -1480,11 +1320,6 @@
         line-height: 1.7rem;
     }
 
-    // Reservation code. Different from the sign-in fields, but not by a panel: a box
-    // inside the card is a tile within a tile. The code itself carries the difference -
-    // centred, letter spaced, in the numeric face, which is how it is checked character
-    // by character against what Gizmo sent - while the underline and label take the blue
-    // reservation tone used by the tile above and by the lock screen.
     .giz-form-input:has(> .giz-login-pin-label-wrapper) {
         margin-top: 2.6rem;
         padding-top: 1.6rem;
@@ -1505,8 +1340,6 @@
         font-size: 1.1rem;
         font-weight: 700;
 
-        // Reservation glyph before the label, the same calendar as the tile. Code taken
-        // from vendor/phosphor/bold/style.css (.ph-calendar-check).
         &::before {
             content: '\e712';
             font-family: 'Phosphor-Bold';
@@ -1560,7 +1393,6 @@
 
     &:hover {
         filter: brightness(1.1);
-        
     }
 }
 
@@ -1590,14 +1422,6 @@
     }
 }
 
-// Keyboard-layout switch removed from the login screen entirely - the
-// corner tile it used to live in relied on the WPF host's
-// IInputLanguageService, whose LanguageChange event is declared but never
-// raised,
-// so the tile never reflected an Alt+Shift switch and just sat there
-// wrong. The per-page copies in each card footer stay hidden rather than
-// shown as a fallback - a keyboard indicator that's frozen on the wrong
-// language is worse than no indicator at all.
 .giz-login-card .giz-input-language-menu {
     display: none;
 }
@@ -1693,19 +1517,11 @@
     }
 }
 
-// Header row of the registration / password-recovery steps: back button on
-// the left, "already a member?" link on the right. The old margins were
-// tuned for the 74rem panel and left the row visibly off-centre inside the
-// 48rem card, so alignment now comes from the card's own padding.
 .giz-login-links {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1.2rem;
-    // No min-height: the 4.2rem floor was padding out the row even on pages
-    // whose only content is the text link, so the back button ended up
-    // sitting lower than the row it belongs to and the gap to the title
-    // below read as uneven. The row is now exactly as tall as the button.
     margin-bottom: 1.8rem;
 
     &:empty {
@@ -1713,8 +1529,6 @@
         margin-bottom: 0;
     }
 
-    // Sits in the header row here, not centred under a submit button, so the
-    // centred/margin-top treatment from the login screen must not apply.
     .giz-login-new-user {
         margin-top: 0;
         margin-left: auto;
@@ -1759,10 +1573,6 @@
     }
 }
 
-// Replaces the old right:-74rem slide pair - a centred card can't slide
-// off-screen, so idle hide/show is a fade + subtle scale/lift instead.
-// Animating transform/opacity only (the old pair animated `right`, which
-// forced layout on every frame).
 @keyframes login-card-fade-in-anim {
     from {
         opacity: 0;
@@ -1799,9 +1609,6 @@
     }
 }
 
-// Username <-> phone swap: same easing as the card's entrance, but sliding
-// in horizontally so the change reads as "the field was replaced" rather
-// than "the form re-appeared".
 @keyframes login-field-swap-anim {
     from {
         opacity: 0;
@@ -2609,7 +2416,6 @@
             opacity: 0.8;
         }
     }
-
 }
 
 /*@keyframes login-adv-shrink-anim {

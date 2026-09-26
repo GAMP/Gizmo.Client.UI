@@ -14,7 +14,6 @@
     min-width: 52.2rem;
     width: max-content;
 
-    // backdrop-filter removed to stop trapping position:fixed; z must be > top-bar z-index (500)
     .giz-popup-wrapper {
         z-index: 600 !important;
     }
@@ -90,13 +89,6 @@
         border-bottom: none;
     }
 
-    // NOTE: none of these carry height:100% any more. That was left over from
-    // when each row was a <table> and these were <td> cells, where it did
-    // nothing harmful. The rows are grid now (see _Layout.razor), and on a grid
-    // item height:100% overrides align-items:center - the item fills the whole
-    // row and its own content then sits at the top of that box. That is what
-    // pushed the app name above the icon and the Launch button instead of
-    // level with them. Let the row centre them.
     &__image {
         padding: 1.6rem;
 
@@ -108,8 +100,6 @@
 
     &__info {
         padding: 1.6rem;
-        // Own centring too, so a future second line (category, status) keeps
-        // the block centred rather than growing downwards only.
         display: flex;
         flex-direction: column;
         justify-content: center;

@@ -2,8 +2,6 @@
 
 .giz-user-agreement-dialog {
     max-width: 60.0rem;
-    // Same glass recipe and radius language as the login card / top bar, so
-    // the consent step doesn't read as a leftover default dialog.
     border-radius: 2.8rem;
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
@@ -38,8 +36,6 @@
         line-height: 2.2rem;
     }
 
-    // Legal text sits in its own recessed well so the scroll region is
-    // visually bounded instead of floating loose in the dialog.
     .giz-client-dialog__body {
         border-radius: 1.6rem;
         background: rgba(0, 0, 0, 0.22);
@@ -61,7 +57,6 @@
 
         &:hover {
             filter: brightness(1.08);
-            
         }
     }
 
@@ -70,12 +65,6 @@
         position: relative;
         overflow-y: auto;
 
-        // No visible scrollbar at all - the text still scrolls (wheel, drag,
-        // keyboard), the bar is simply hidden. The well's own border already
-        // bounds the region, so nothing is lost by removing the stripe.
-        // Deliberately not using a mask-image fade here: this element also
-        // draws the well's background and border, and a mask would fade
-        // those out along with the text.
         scrollbar-width: none;
         -ms-overflow-style: none;
 
@@ -96,7 +85,6 @@
         }*/
     }
 
-    // Keeps the native input hidden even where the [client-theme] reset does not reach the dialog.
     .giz-check-box {
         display: inline-flex;
 
@@ -119,8 +107,6 @@
     .giz-user-agreement-checkboxes {
         margin-bottom: 2.4rem;
 
-        // Align the box with the FIRST line of a wrapping consent label
-        // instead of vertical-centering the whole two-line block.
         .giz-check-box label {
             align-items: flex-start;
         }
@@ -140,10 +126,6 @@
         }
     }
 
-    // "Required" and NOT yet agreed: a subtle red-tinted box on the dark
-    // dialog (the old light-pink fill glared against it). Scoped to
-    // :not(:checked) so that once ticked the normal accent-filled state
-    // takes over instead of staying red.
     .giz-user-agreement-checkbox--required {
         input:not(:checked) + label:before {
             border-color: rgba(238, 80, 90, 0.8);

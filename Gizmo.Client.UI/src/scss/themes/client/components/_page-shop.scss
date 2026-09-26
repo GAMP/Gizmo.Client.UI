@@ -5,9 +5,6 @@ $giz-cart-w:    50rem;
 
 .giz-shop {
     display: grid;
-    // GGBook's V2 shop had a third column for their category sidebar. V3 keeps
-    // categories as horizontal tabs inside __products, so the grid is two
-    // columns here - products and cart - matching the actual V3 markup.
     grid-template-columns: 1fr $giz-cart-w;
     height: 100%;
     overflow: hidden;
@@ -20,10 +17,6 @@ $giz-cart-w:    50rem;
         height: 100%;
     }
 
-    // ── Category tabs: glass segment control with icons (brief section 1) ──
-    // Scoped to .giz-shop rather than editing _client-tab.scss directly -
-    // ClientTab/ClientTabItem are shared components also used on the App
-    // Details page's media gallery tabs, which should keep their own look.
     &__products__header__tab {
         margin-bottom: 1.6rem;
 
@@ -53,8 +46,6 @@ $giz-cart-w:    50rem;
             align-items: center;
             gap: 0.9rem;
 
-            // The icon and the name sit in one inner div (ProductsIndex.razor), so the
-            // gap belongs there too - on the item alone the two touched.
             > div {
                 display: flex;
                 align-items: center;
@@ -75,10 +66,6 @@ $giz-cart-w:    50rem;
                 filter: brightness(1.15);
             }
 
-            // Fill replaces the old underline indicator entirely - no
-            // bottom-bar state marker any more. ClientTab's own shared CSS
-            // still draws a ::before underline bar on .active, so it has to
-            // be killed explicitly here rather than just left unstyled.
             &.active {
                 background: linear-gradient(135deg, var(--giz-accent-light), var(--giz-accent-deep));
                 box-shadow: 0 8px 20px -10px rgba(var(--giz-accent-rgb), 0.7);
@@ -98,13 +85,6 @@ $giz-cart-w:    50rem;
     // ── Center: products ───────────────────────────────────────────
     &__products {
         display: grid;
-        // Two children (__header + __body). With a single `1fr` track the
-        // header landed in the explicit 1fr row and the body fell into an
-        // implicit `auto` row - so the header absorbed all the leftover
-        // height and pushed the products to the bottom of the viewport
-        // whenever the body's content was short (i.e. any single category;
-        // "All" has enough content to squeeze the 1fr row back down, which
-        // is why it looked fine there).
         grid-template-rows: min-content 1fr;
         height: 100%;
         overflow: hidden;
@@ -125,9 +105,6 @@ $giz-cart-w:    50rem;
         }
     }
 
-    // ── Right: cart ────────────────────────────────────────────────
-    // Floating cart panel: the divider border is replaced by a real gap, so
-    // the panel reads as a detached island like the top bar and the rail.
     &__order {
         height: 100%;
         overflow: visible;
@@ -136,19 +113,12 @@ $giz-cart-w:    50rem;
     }
 }
 
-// The operator's "products per row" is a maximum: beside the 50rem cart a 1366-wide
-// screen gives six cards 15rem each, and a price like "1 000,00 ₽" no longer fits.
-// Four columns there; the inline style from ProductVirtualizedCards is what is beaten.
 @media (max-width: 1500px) {
     .giz-shop .virtual-chunk-grid {
         grid-template-columns: repeat(4, 1fr) !important;
     }
 }
 
-// GGBook's responsive block at this point only reflowed their category
-// sidebar, which V3 has no markup for, and its grid-row rules assumed that
-// sidebar occupied row 1. Dropped rather than ported - applying it to V3
-// would have left an empty row above the product grid.
 .giz-wm-icart-loader {
     position: relative;
 

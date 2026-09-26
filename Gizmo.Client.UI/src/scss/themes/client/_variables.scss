@@ -2,36 +2,8 @@
 
 $client-theme-comp-attr: 'client-theme';
 
-//==Accent
-// The accent and everything derived from it live in _palette.scss, as CSS custom
-// properties, so a club changes the whole shell with one word (data-accent on <html>).
-// This SCSS variable only names the default palette for the rare build-time use.
 $giz-accent: #4f8cff;
 
-//==Login screen host number placement (idle/locked screen "PC 46" label)
-// Default = top-right. Reposition at runtime via the same per-club override
-// CSS file used for --giz-accent — no code changes needed. Examples:
-//
-//   Top-left:
-//     :root {
-//         --giz-host-number-top: 2.4rem; --giz-host-number-right: auto;
-//         --giz-host-number-left: 3.2rem; --giz-host-number-align: left;
-//         --giz-host-number-shift: 0;
-//     }
-//
-//   Top-center:
-//     :root {
-//         --giz-host-number-top: 2.4rem; --giz-host-number-right: auto;
-//         --giz-host-number-left: 50%; --giz-host-number-transform: translateX(-50%);
-//         --giz-host-number-align: center; --giz-host-number-shift: 0;
-//     }
-//
-// --giz-host-number-shift only matters when anchored via "right" — it's the
-// extra margin that slides the number clear of the login card once it's open.
-// The card is centred now instead of being a 74rem panel pinned to the right
-// edge, so nothing needs to be pushed out of its way: shift is 0. Position
-// itself stays top-right and stays overridable from the per-club CSS, exactly
-// as before — it is not hardcoded anywhere in the layout.
 :root {
     --giz-host-number-top:       2.4rem;
     --giz-host-number-right:     3.2rem;
@@ -43,7 +15,6 @@ $giz-accent: #4f8cff;
 }
 
 //==Colors
-// The vendor's blue, now the palette's accent: every place that used it follows the club's colour.
 $primary-color-theme-client: var(--giz-accent);
 
 $bg-alert-theme-client: #F73B3B;

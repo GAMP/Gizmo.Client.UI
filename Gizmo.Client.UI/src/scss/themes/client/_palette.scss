@@ -1,31 +1,3 @@
-//=============== Palette ================//
-//
-// Every colour the shell has an opinion about is a custom property written here, and
-// the rest of the stylesheet only ever reads them: `var(--giz-accent)`,
-// `rgba(var(--giz-accent-rgb), .2)`, `var(--giz-panel)`, `var(--giz-ink)` and so on. No
-// component file carries a literal in the accent's family - that is what lets a club
-// change the whole shell by changing one word.
-//
-// Everything derives from ONE accent per palette, by Sass, at build time:
-//   - the accent family: the accent, its light and deep steps, and two companion hues
-//     (one cooler, one warmer) that the shell itself no longer paints with - the
-//     atmosphere is one hue since 13.09 - but keeps for a club's own CSS;
-//   - the surfaces: near-blacks carrying the accent's hue, the way the original
-//     purple shell carried purple (its surfaces sat 16° cooler than its accent, which
-//     is reproduced here to within a unit). Warm accents - orange, amber - get a much
-//     lighter touch: at the purple shell's saturation their near-blacks read as brown;
-//   - the ink: white with a whisper of the accent.
-//
-// How a club picks a palette, in order of precedence:
-//   1. `data-accent="green"` on <html> in the skin's index.html. One attribute, one word;
-//      the skin ships with "blue".
-//   2. `:root { --giz-palette: green; }` in the club's own stylesheet from the Manager (the
-//      StyleSheet option). grafitTheme in internal.js reads it once that stylesheet has
-//      loaded. A Manager setting for the colour, should Gizmo add one, only has to emit
-//      that line - or call window.grafitTheme.set("green").
-//   3. Any colour, not only the eight: `:root { --giz-palette: #e11d48; }` in that same
-//      stylesheet (or grafitTheme.set("#e11d48")). grafitTheme derives every token from
-//      it with the rules below, ported to JavaScript, and writes them on <html>.
 
 @use "sass:color";
 @use "sass:map";
@@ -42,16 +14,7 @@ $giz-palettes: (
     "pink":   #ff5fa8,
 );
 
-// The palette a fresh skin starts in, before index.html or a club's stylesheet says
-// otherwise (index.html carries the same word).
 $giz-default-accent: map.get($giz-palettes, "blue");
-
-// ── derivation rules ─────────────────────────────────────────────────────
-//
-// These functions ARE the palette: every token below comes out of them and the one
-// accent. grafitTheme in internal.js carries the same rules in JavaScript so a club can
-// name any colour at run time (`--giz-palette: #e11d48`) and get the same shell the
-// build would have produced for it. Change a rule here, change it there.
 
 @function giz-rgb($c) {
     @return "#{math.round(color.channel($c, "red", $space: rgb))}, #{math.round(color.channel($c, "green", $space: rgb))}, #{math.round(color.channel($c, "blue", $space: rgb))}";
@@ -61,14 +24,10 @@ $giz-default-accent: map.get($giz-palettes, "blue");
     @return color.channel($c, "hue", $space: hsl);
 }
 
-// Reds (340°-12°) keep their hue: nudged cooler they turn magenta and the shell reads
-// pink, which is not what "red" means to anyone.
 @function giz-is-red($h) {
     @return $h >= 340deg or $h < 12deg;
 }
 
-// Oranges and yellows (15°-75°) take a third of the surface tint: at full tint their
-// near-blacks read as brown.
 @function giz-is-warm($h) {
     @return $h >= 15deg and $h <= 75deg;
 }
@@ -80,8 +39,6 @@ $giz-default-accent: map.get($giz-palettes, "blue");
     @return 1;
 }
 
-// Surfaces lean 16° cooler than the accent (the original purple shell: accent at 268°,
-// surfaces at 252°) - except reds, which stay put.
 @function giz-surface-shift($accent) {
     @if giz-is-red(giz-hue($accent)) {
         @return 0deg;
@@ -89,8 +46,6 @@ $giz-default-accent: map.get($giz-palettes, "blue");
     @return -16deg;
 }
 
-// The two companion hues: one cooler, one warmer than the accent. Reds keep them
-// close, or the cooler one is magenta.
 @function giz-cloud-2-shift($accent) {
     @if giz-is-red(giz-hue($accent)) {
         @return -8deg;
@@ -154,13 +109,6 @@ $giz-default-accent: map.get($giz-palettes, "blue");
 }
 
 :root {
-    // The atmosphere: the field every glass panel floats on, painted wherever a
-    // background is needed (body, .giz-background, the sign-in screen). One hue only,
-    // the accent's: two washes anchored in opposite corners, feathered over most of
-    // their radius, and a diagonal sweep between them over the tinted near-black base.
-    // Anchored in a corner, an ellipse reads as light entering the field, not as a
-    // disc; the companion hues that used to sit in it read as foreign colours on a
-    // purple shell. The motion over it is in _flow.scss.
     --giz-atmosphere:
         radial-gradient(150rem 105rem at 0% 0%, rgba(var(--giz-accent-rgb), 0.5) 0%, rgba(var(--giz-accent-rgb), 0.2) 36%, rgba(var(--giz-accent-rgb), 0.05) 62%, transparent 78%),
         radial-gradient(130rem 95rem at 100% 100%, rgba(var(--giz-accent-rgb), 0.3) 0%, rgba(var(--giz-accent-rgb), 0.1) 40%, transparent 74%),

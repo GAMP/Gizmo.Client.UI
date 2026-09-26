@@ -3,11 +3,7 @@
     grid-template-rows: 1fr min-content min-content;
     height: 100%;
     overflow: hidden;
-    // was min-width: 50rem, which is the exact width of the grid column it
-    // sits in; the floating gap would have pushed it into overflow.
     min-width: 0;
-    // Same shared glass recipe as the top bar / left rail (Nexus Play brief
-    // section 4) - one material system across the whole shell.
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
     backdrop-filter: blur(40px) saturate(1.6);
     -webkit-backdrop-filter: blur(40px) saturate(1.6);
@@ -79,8 +75,6 @@
                     column-gap: 1.2rem;
                     row-gap: 0.6rem;
                     padding: 1.5rem 0;
-                    // Thin row separators instead of a bordered card per row
-                    // (brief section 4.2) - this is the only per-row border.
                     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 
                     &__thumb {
@@ -119,11 +113,6 @@
                         @include font-m-theme-client($font-weight-regular-theme-client);
                     }
 
-                    // ICartViewStateLoader's own wrapper - carries the price /
-                    // points / pay-type radios column, right-aligned and
-                    // vertically centered across both rows. It's a plain
-                    // block by default, so it needs its own flex centering
-                    // to vertically center __details within the row span.
                     > .giz-wm-icart-loader {
                         grid-column: 3;
                         grid-row: 1 / 3;
@@ -132,14 +121,6 @@
                         justify-content: flex-end;
                     }
 
-                    // Price is the one number that always matters, so it
-                    // carries the weight (bold, accent colour, larger). The
-                    // points value used to sit underneath it on every row
-                    // joined by a bare "&" - visual noise when (as for most
-                    // products) it was just "& 0". It's now a small warm
-                    // pill, shown only when there's a real points component
-                    // (either a genuine either/or choice, or a non-zero
-                    // reward), so a plain-price item is just its price.
                     &__details {
                         display: flex;
                         flex-direction: column;
@@ -173,8 +154,6 @@
                             }
                         }
 
-                        // Either/or: each radio paired with the value it
-                        // picks, not floating separately from it.
                         &__option {
                             display: flex;
                             align-items: center;
@@ -183,9 +162,6 @@
                         }
                     }
 
-                    // Remove + quantity share the same cell, pinned to
-                    // opposite edges, so they sit side by side under the
-                    // name without further markup changes.
                     &__remove {
                         grid-column: 2;
                         grid-row: 2;
@@ -216,12 +192,8 @@
                 }
             }
         }
-
     }
 
-    // Comment zone (brief section 4.3): clear-cart button lives here now,
-    // next to the note label, instead of its own separate footer row - the
-    // brief groups them as one zone.
     &__notes {
         flex-shrink: 0;
         border-top: 1px solid rgba(255, 255, 255, 0.06);
@@ -287,7 +259,6 @@
 
             &:hover {
                 filter: brightness(1.1);
-                
             }
         }
 
@@ -301,10 +272,6 @@
             grid-row-gap: 0.4rem;
             margin-bottom: 1.2rem;
 
-            // Same glass input recipe as the order-notes textarea - was
-            // left on the library's plain default look before, which read
-            // as a different, unstyled panel stuck under the rest of the
-            // (otherwise fully re-skinned) cart.
             .giz-input-root {
                 background: rgba(255, 255, 255, 0.03) !important;
                 border-color: rgba(255, 255, 255, 0.07) !important;

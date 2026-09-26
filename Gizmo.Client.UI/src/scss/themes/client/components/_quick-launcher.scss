@@ -1,24 +1,9 @@
 //=============== Quick Launcher ================//
-//
-// Lives in its own floating panel under the nav rail (.giz-left-panel in
-// _Layout.razor), not in the Home hero strip, so this stacks vertically -
-// pinned apps scrolling top to bottom - instead of running left-to-right in
-// a single wide row. GizDock itself defaults to a horizontal row
-// (_dock.scss); it has no other caller right now, so the vertical variant is
-// overridden here rather than changing that default. No rocket/history
-// switch above it any more - just the pinned-apps list.
 
 .quick-launcher {
     display: flex;
     flex-direction: column;
     align-items: center;
-    // Sizes to its content, no forced 100% height. The single scroll point
-    // for the whole rail is .giz-left-panel__quicklaunch (in _Layout.razor):
-    // the dock and this wrapper both size to content and NEVER scroll on
-    // their own. Previously the dock had its own overflow-y:auto + height:100%
-    // in a circular flex-basis:0% chain, which produced a scrollbar even when
-    // a few icons fit fine - and the global *::-webkit-scrollbar rule showed
-    // it despite a width:0 override.
     width: 100%;
     padding: 0.8rem 0;
 
@@ -40,9 +25,6 @@
         padding: 0;
     }
 
-    // Tooltip opens rightward instead of downward - this rail sits flush
-    // against the left edge of the window, so a downward-opening tooltip
-    // would either clip against that edge or land on the icon below it.
     .giz-dock-item-tooltip-wrapper {
         top: 0;
         left: 100%;

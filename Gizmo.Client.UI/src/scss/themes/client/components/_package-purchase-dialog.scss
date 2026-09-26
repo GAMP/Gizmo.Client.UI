@@ -1,16 +1,3 @@
-//=============== Package purchase ================//
-//
-// One card in the language of the home board's till: the same lifted surface with an
-// accent wash, micro uppercase captions, big tabular numerals. It is deliberately NOT the
-// shop's checkout dialog restyled - that dialog is a table of goods with a drop-down
-// under it, and a single package with a choice of how to pay is a different thing to
-// read.
-//
-// Order on the card: what is bought (name, price), what to pay with (one chooser with
-// two or three cells, not separate boxes), what it comes to, the button. The shop
-// checkout is the same card with the cart's lines where the package name goes.
-// Markup: PackagePurchaseDialog.razor, CheckoutDialog.razor, PayWayChooser.razor,
-// CartDialogResult.razor - mirrored by visual/templates/purchase.js and checkout.js.
 
 $buy-w:      52rem;
 $buy-ink:    var(--giz-ink);
@@ -67,8 +54,6 @@ $buy-on-accent: var(--giz-on-accent);
     padding: 2.8rem 3.2rem 3.2rem;
     border-radius: $buy-r;
     color: $buy-ink;
-    // The till's surface: lifted off the wallpaper by an accent wash that fades out
-    // within the top third. Not a glow, just enough to say this card takes money.
     background:
         linear-gradient(176deg, rgba(var(--giz-accent-rgb), 0.14) 0%, rgba(var(--giz-accent-rgb), 0) 34%),
         var(--giz-panel);
@@ -141,11 +126,6 @@ $buy-on-accent: var(--giz-on-accent);
         margin-bottom: 1rem;
     }
 
-    // ── what to pay with ────────────────────────────────────────────────────
-    // One chooser, two or three cells in a sunken track: the chosen cell lifts in the
-    // accent, the others stay quiet. Under each name is what the customer has for it,
-    // so the choice is made with the figures in sight and nothing else on the card
-    // has to repeat them.
     &__seg {
         display: grid;
         grid-auto-flow: column;
@@ -213,8 +193,6 @@ $buy-on-accent: var(--giz-on-accent);
 
         .giz-buy__seg-item--on & { color: rgba(var(--giz-ink-rgb), 0.82); }
 
-        // The figure goes red when it is not enough - the only red on the chooser, and
-        // an amount rather than an error.
         .giz-buy__seg-item--short & { color: rgba($buy-red, 0.92); }
     }
 
@@ -280,9 +258,6 @@ $buy-on-accent: var(--giz-on-accent);
         color: $buy-ink-3;
     }
 
-    // ── the cart's lines (checkout) ─────────────────────────────────────────
-    // A list, not the shop's table: name, quantity when more than one, the line's
-    // figure. Scrolls past eight or so rows; the chooser and the total stay put.
     &__items {
         max-height: 24rem;
         overflow-y: auto;
@@ -341,8 +316,6 @@ $buy-on-accent: var(--giz-on-accent);
         border-top: 1px solid $buy-line;
         transition: opacity 0.15s;
 
-        // The server is re-pricing: the old figures dim rather than vanish, so the card
-        // does not jump while the new ones are on their way.
         &--busy { opacity: 0.5; }
     }
 
@@ -431,8 +404,6 @@ $buy-on-accent: var(--giz-on-accent);
         &--hint { justify-content: flex-start; }
     }
 
-    // The shortfall is the only red box on the card and must read as an amount rather
-    // than an error: the same muted red as the validation messages on sign-in.
     &__short {
         display: flex;
         justify-content: space-between;
@@ -512,10 +483,6 @@ $buy-on-accent: var(--giz-on-accent);
         }
     }
 
-    // ── top-up step ─────────────────────────────────────────────────────────
-    // The existing deposit component, no frame of its own: a second frame inside the
-    // card would look like a nested tile. Height is capped so a laptop panel keeps the
-    // Back button on screen; the content scrolls, not the card.
     &__topup {
         max-height: 52vh;
         overflow-y: auto;
