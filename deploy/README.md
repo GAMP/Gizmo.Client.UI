@@ -26,9 +26,9 @@ built for another release fails to load on the client (the host's assemblies dif
 ## Colour and motion (Manager -> Skin profile -> Custom CSS)
 
 ```css
-:root { --gg-palette: purple; }     /* blue (default), purple, red, orange, amber, green, teal, pink */
-:root { --gg-palette: #e11d48; }    /* or any colour - the whole palette is derived from it */
-:root { --gg-motion: on; }          /* slow moving gradient behind the shell; off by default */
+:root { --giz-palette: purple; }     /* blue (default), purple, red, orange, amber, green, teal, pink */
+:root { --giz-palette: #e11d48; }    /* or any colour - the whole palette is derived from it */
+:root { --giz-motion: on; }          /* slow moving gradient behind the shell; off by default */
 ```
 
 ## Build a package (developers)

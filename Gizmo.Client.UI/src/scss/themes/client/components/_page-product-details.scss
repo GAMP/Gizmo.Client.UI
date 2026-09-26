@@ -9,19 +9,19 @@ $pd-cart-w: 50rem;
 $pd-g:      clamp(1.4rem, 0.8rem + 0.9vw, 2.8rem);
 $pd-art:    clamp(22rem, 12rem + 12vw, 34rem);
 
-$pd-ink:   var(--gg-ink);
-$pd-ink-2: rgba(var(--gg-ink-rgb), 0.62);
-$pd-ink-3: rgba(var(--gg-ink-rgb), 0.38);
+$pd-ink:   var(--giz-ink);
+$pd-ink-2: rgba(var(--giz-ink-rgb), 0.62);
+$pd-ink-3: rgba(var(--giz-ink-rgb), 0.38);
 $pd-line:  rgba(255, 255, 255, 0.07);
 $pd-line-2: rgba(255, 255, 255, 0.14);
 
-.gg-pd-wrap {
+.giz-product-page-wrap {
     display: flex;
     justify-content: center;
     height: 100%;
 }
 
-.gg-pd {
+.giz-product-page {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     height: 100%;
@@ -38,12 +38,12 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
         height: 100%;
         overflow-y: auto;
         overflow-x: hidden;
-        @include gg-scroll-fade;
+        @include giz-scroll-fade;
         padding: 0.4rem $pd-g calc(#{$pd-g} * 1.5) 0.4rem;
         display: flex;
         flex-direction: column;
         gap: calc(#{$pd-g} * 1.2);
-        animation: gg-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        animation: giz-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     &__cart {
@@ -94,7 +94,7 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
         height: $pd-art;
         border-radius: 2.2rem;
         overflow: hidden;
-        background: var(--gg-tile-deep);
+        background: var(--giz-tile-deep);
         box-shadow: inset 0 0 0 1px $pd-line, 0 3rem 6rem -3rem rgba(0, 0, 0, 0.8);
 
         // GizImage renders an <img> with a fit class; fill the plate.
@@ -113,9 +113,9 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
 
         &--time {
             background:
-                radial-gradient(28rem 24rem at 20% 10%, rgba(var(--gg-accent-rgb), 0.38), transparent 62%),
-                radial-gradient(24rem 22rem at 90% 100%, rgba(var(--gg-accent-rgb), 0.22), transparent 60%),
-                var(--gg-tile);
+                radial-gradient(28rem 24rem at 20% 10%, rgba(var(--giz-accent-rgb), 0.38), transparent 62%),
+                radial-gradient(24rem 22rem at 90% 100%, rgba(var(--giz-accent-rgb), 0.22), transparent 60%),
+                var(--giz-tile);
         }
     }
 
@@ -145,7 +145,7 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
             font-weight: 700;
             letter-spacing: 0.22em;
             text-transform: uppercase;
-            color: var(--gg-accent-soft);
+            color: var(--giz-accent-soft);
         }
     }
 
@@ -323,14 +323,14 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
         padding: 0;
         border: 0;
         background: none;
-        color: var(--gg-accent-soft);
+        color: var(--giz-accent-soft);
         font: inherit;
         font-size: 1.25rem;
         font-weight: 700;
         cursor: pointer;
 
         &:hover {
-            color: var(--gg-accent-pale);
+            color: var(--giz-accent-pale);
         }
     }
 
@@ -362,7 +362,7 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
             width: 11rem;
             height: 11rem;
             border-radius: 1.6rem;
-            background: var(--gg-tile-deep);
+            background: var(--giz-tile-deep);
             box-shadow: inset 0 0 0 1px $pd-line;
 
             img {
@@ -380,7 +380,7 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
 
 // The cart column is narrower than the page on a laptop panel; drop it under.
 @media (max-width: 1500px) {
-    .gg-pd--with-cart {
+    .giz-product-page--with-cart {
         grid-template-columns: minmax(0, 1fr) 40rem;
     }
 }

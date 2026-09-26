@@ -126,5 +126,5 @@ Say "Next: Manager -> the PC's host group -> Skin = '$SkinName' (a group's own S
 Say "      then restart the Gizmo Client on a PC of that group (the whole client, not a sign-out):" 'Yellow'
 Say "      the client receives its skin name and the skin files only when it connects." 'Yellow'
 Say "Check on the PC: %PROGRAMDATA%\NETProjects\Gizmo Client\Skins\$SkinName must appear after the restart." 'DarkGray'
-Say "Colour: data-accent in $Target\wwwroot\index.html, or ':root { --gg-palette: green; }' in the Manager's custom CSS." 'DarkGray'
+Say "Colour: data-accent in $Target\wwwroot\index.html, or ':root { --giz-palette: green; }' in the Manager's custom CSS." 'DarkGray'
 Say "Rollback:  install.bat uninstall" 'DarkGray'

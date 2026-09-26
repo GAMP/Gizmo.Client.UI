@@ -4,16 +4,16 @@
 
 @* Time tab: every time product on the account, in the order the client spends them. *@
 <AccountFrame>
-    <section class="gg-card gg-card--list">
-        <div class="gg-card__head">
+    <section class="giz-account-card giz-account-card--list">
+        <div class="giz-account-card__head">
             <i class="ph-fill ph-hourglass-medium"></i>
             <h2>@ShellText.Get(ShellText.TIME_PRODUCTS_TITLE)</h2>
-            <span class="gg-card__hint">@ShellText.Get(ShellText.ACCOUNT_TIME_HINT)</span>
+            <span class="giz-account-card__hint">@ShellText.Get(ShellText.ACCOUNT_TIME_HINT)</span>
         </div>
 
         @if (ViewState.IsInitializing)
         {
-            <div class="gg-card__wait"><Spinner /></div>
+            <div class="giz-account-card__wait"><Spinner /></div>
         }
         else if (ViewState.IsInitialized == true)
         {
@@ -24,7 +24,7 @@
 
             if (products.Count == 0)
             {
-                <div class="gg-card__empty">
+                <div class="giz-account-card__empty">
                     <i class="ph ph-hourglass"></i>
                     <b>@ShellText.Get(ShellText.ACCOUNT_NO_TIME)</b>
                     <span>@ShellText.Get(ShellText.ACCOUNT_NO_TIME_HINT)</span>
@@ -32,7 +32,7 @@
             }
             else
             {
-                <div class="gg-tp">
+                <div class="giz-account-time">
                     @foreach (var product in products)
                     {
                         <TimeProductRow @key="product"

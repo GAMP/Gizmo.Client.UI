@@ -16,15 +16,15 @@
     var creditUnlimited = Credit.TimeCreditType == CreditType.Unlimited || Credit.SalesCreditType == CreditType.Unlimited;
 }
 
-<div class="gg-account giz-scrollbar--v">
-    <div class="gg-account__inner">
+<div class="giz-account giz-scrollbar--v">
+    <div class="giz-account__inner">
 
-        <header class="gg-account__head">
-            <UserAvatar Picture="@Profile.Picture" Class="gg-account__avatar" />
+        <header class="giz-account__head">
+            <UserAvatar Picture="@Profile.Picture" Class="giz-account__avatar" />
 
-            <div class="gg-account__who">
-                <h1 class="gg-account__name">@name</h1>
-                <div class="gg-account__sub">
+            <div class="giz-account__who">
+                <h1 class="giz-account__name">@name</h1>
+                <div class="giz-account__sub">
                     @if (!string.IsNullOrEmpty(fullName))
                     {
                         <span>@fullName</span>
@@ -37,22 +37,22 @@
                 <ProfileHeaderLadderLevel />
             </div>
 
-            <div class="gg-account__stats">
-                <div class="gg-account__stat gg-account__stat--money">
+            <div class="giz-account__stats">
+                <div class="giz-account__stat giz-account__stat--money">
                     <small>@ShellText.Get(ShellText.GEN_BALANCE)</small>
                     <b>@Balance.Balance.ToString("C", CultureInfo.CurrentCulture)</b>
                 </div>
-                <div class="gg-account__stat">
+                <div class="giz-account__stat">
                     <small>@ShellText.Get(ShellText.GEN_POINTS)</small>
                     <b>@Balance.PointsBalance.ToString("N0", CultureInfo.CurrentCulture) <i class="ph-fill ph-coins"></i></b>
                 </div>
-                <div class="gg-account__stat">
+                <div class="giz-account__stat">
                     <small>@ShellText.Get(ShellText.GEN_TIME)</small>
                     <b>@(Balance.Time.HasValue ? $"{(int)Balance.Time.Value.TotalHours}:{Balance.Time.Value:mm}" : "∞")</b>
                 </div>
                 @if (hasTimeCredit || hasSalesCredit)
                 {
-                    <div class="gg-account__stat gg-account__stat--credit">
+                    <div class="giz-account__stat giz-account__stat--credit">
                         <small>@ShellText.Get(ShellText.CREDIT)</small>
                         <b>@(creditUnlimited ? "∞" : Credit.CreditLimit.ToString("C", CultureInfo.CurrentCulture))</b>
                         <span>
@@ -65,43 +65,43 @@
             </div>
         </header>
 
-        <nav class="gg-account__tabs" aria-label="@ShellText.Get(ShellText.USER_DETAILS)">
+        <nav class="giz-account__tabs" aria-label="@ShellText.Get(ShellText.USER_DETAILS)">
             @if (!UserViewState.IsGuest)
             {
-                <NavLink class="gg-account__tab" ActiveClass="is-on" href="@ClientRoutes.UserProfileRoute" Match="NavLinkMatch.All">
+                <NavLink class="giz-account__tab" href="@ClientRoutes.UserProfileRoute" Match="NavLinkMatch.All">
                     <i class="ph-bold ph-user"></i>
                     <span>@ShellText.Get(ShellText.ACCOUNT_TAB_PROFILE)</span>
                 </NavLink>
             }
-            <NavLink class="gg-account__tab" ActiveClass="is-on" href="@ClientRoutes.UserProductsRoute" Match="NavLinkMatch.All">
+            <NavLink class="giz-account__tab" href="@ClientRoutes.UserProductsRoute" Match="NavLinkMatch.All">
                 <i class="ph-bold ph-hourglass-medium"></i>
                 <span>@ShellText.Get(ShellText.ACCOUNT_TAB_TIME)</span>
             </NavLink>
             @if (!InterfaceOptions.CurrentValue.DisableUserPurchaseHistory)
             {
-                <NavLink class="gg-account__tab" ActiveClass="is-on" href="@ClientRoutes.UserPurchasesRoute" Match="NavLinkMatch.All">
+                <NavLink class="giz-account__tab" href="@ClientRoutes.UserPurchasesRoute" Match="NavLinkMatch.All">
                     <i class="ph-bold ph-receipt"></i>
                     <span>@ShellText.Get(ShellText.PURCHASES)</span>
                 </NavLink>
             }
             @if (!UserViewState.IsGuest)
             {
-                <NavLink class="gg-account__tab" ActiveClass="is-on" href="@ClientRoutes.UserLadderRoute" Match="NavLinkMatch.All">
+                <NavLink class="giz-account__tab" href="@ClientRoutes.UserLadderRoute" Match="NavLinkMatch.All">
                     <i class="ph-bold ph-ranking"></i>
                     <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER))</span>
                 </NavLink>
-                <NavLink class="gg-account__tab" ActiveClass="is-on" href="@ClientRoutes.UserAchievementsRoute" Match="NavLinkMatch.All">
+                <NavLink class="giz-account__tab" href="@ClientRoutes.UserAchievementsRoute" Match="NavLinkMatch.All">
                     <i class="ph-bold ph-trophy"></i>
                     <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_ACHIEVEMENTS))</span>
                 </NavLink>
-                <NavLink class="gg-account__tab" ActiveClass="is-on" href="@ClientRoutes.UserChallengesRoute" Match="NavLinkMatch.All">
+                <NavLink class="giz-account__tab" href="@ClientRoutes.UserChallengesRoute" Match="NavLinkMatch.All">
                     <i class="ph-bold ph-flag-checkered"></i>
                     <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CHALLENGES))</span>
                 </NavLink>
             }
         </nav>
 
-        <div class="gg-account__body">
+        <div class="giz-account__body">
             @ChildContent
         </div>
     </div>

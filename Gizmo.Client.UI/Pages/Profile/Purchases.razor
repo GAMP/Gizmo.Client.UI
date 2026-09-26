@@ -7,18 +7,18 @@
 @* Purchases tab: orders newest first, one row each, the lines behind a native
    disclosure so a long history stays a list and not a ledger. *@
 <AccountFrame>
-    <section class="gg-card gg-card--list">
-        <div class="gg-card__head">
+    <section class="giz-account-card giz-account-card--list">
+        <div class="giz-account-card__head">
             <i class="ph-fill ph-receipt"></i>
             <h2>@ShellText.Get(ShellText.PURCHASES_HISTORY)</h2>
             @if (ViewState.PrevCursor != null || ViewState.NextCursor != null)
             {
-                <div class="gg-pager">
-                    <button type="button" class="gg-pager__btn" disabled="@(ViewState.PrevCursor == null)" @onclick="PurchasesService.LoadPrevious">
+                <div class="giz-account-pager">
+                    <button type="button" class="giz-account-pager__btn" disabled="@(ViewState.PrevCursor == null)" @onclick="PurchasesService.LoadPrevious">
                         <i class="ph-bold ph-arrow-left"></i>
                         <span>@ShellText.Get(ShellText.ACCOUNT_NEWER)</span>
                     </button>
-                    <button type="button" class="gg-pager__btn" disabled="@(ViewState.NextCursor == null)" @onclick="PurchasesService.LoadNext">
+                    <button type="button" class="giz-account-pager__btn" disabled="@(ViewState.NextCursor == null)" @onclick="PurchasesService.LoadNext">
                         <span>@ShellText.Get(ShellText.ACCOUNT_OLDER)</span>
                         <i class="ph-bold ph-arrow-right"></i>
                     </button>
@@ -32,7 +32,7 @@
 
         @if (orders.Count == 0)
         {
-            <div class="gg-card__empty">
+            <div class="giz-account-card__empty">
                 <i class="ph ph-receipt"></i>
                 <b>@ShellText.Get(ShellText.ACCOUNT_NO_PURCHASES)</b>
                 <span>@ShellText.Get(ShellText.ACCOUNT_NO_PURCHASES_HINT)</span>
@@ -40,18 +40,18 @@
         }
         else
         {
-            <div class="gg-orders">
+            <div class="giz-account-orders">
                 @foreach (var order in orders)
                 {
                     var voided = order.Invoice?.IsVoided == true;
                     var (statusKey, statusClass) = voided
-                        ? (ShellText.ORDER_STATUS_VOIDED, "is-off")
+                        ? (ShellText.ORDER_STATUS_VOIDED, "giz-account-tag--off")
                         : order.OrderStatus switch
                         {
-                            OrderStatus.Completed => (ShellText.ORDER_STATUS_COMPLETED, "is-good"),
-                            OrderStatus.Accepted => (ShellText.ORDER_STATUS_ACCEPTED, "is-on"),
-                            OrderStatus.Canceled => (ShellText.ORDER_STATUS_CANCELED, "is-off"),
-                            _ => (ShellText.ORDER_STATUS_ON_HOLD, "is-wait"),
+                            OrderStatus.Completed => (ShellText.ORDER_STATUS_COMPLETED, "giz-account-tag--good"),
+                            OrderStatus.Accepted => (ShellText.ORDER_STATUS_ACCEPTED, "giz-account-tag--on"),
+                            OrderStatus.Canceled => (ShellText.ORDER_STATUS_CANCELED, "giz-account-tag--off"),
+                            _ => (ShellText.ORDER_STATUS_ON_HOLD, "giz-account-tag--wait"),
                         };
                     var paymentKey = order.Invoice?.PaymentStatus switch
                     {
@@ -63,13 +63,13 @@
 
                     @* Keyed by the object: the vendor leaves Id at 0 on every order, and two
                        siblings with one key make Blazor throw on the next re-render. *@
-                    <details class="gg-order @statusClass" @key="order">
-                        <summary class="gg-order__sum">
-                            <div class="gg-order__when">
+                    <details class="giz-account-order @statusClass" @key="order">
+                        <summary class="giz-account-order__sum">
+                            <div class="giz-account-order__when">
                                 <b>@order.OrderDate.ToString("d MMM", CultureInfo.CurrentCulture)</b>
                                 <small>@order.OrderDate.ToString("HH:mm", CultureInfo.CurrentCulture)</small>
                             </div>
-                            <div class="gg-order__what">
+                            <div class="giz-account-order__what">
                                 <b>@order.ProductNames</b>
                                 <small>
                                     @if (order.Id > 0)
@@ -83,28 +83,28 @@
                                     }
                                 </small>
                             </div>
-                            <div class="gg-order__sum-total">
+                            <div class="giz-account-order__sum-total">
                                 @if (order.TotalPrice > 0 || order.TotalPointsPrice == 0)
                                 {
                                     <b>@order.TotalPrice.ToString("C", CultureInfo.CurrentCulture)</b>
                                 }
                                 @if (order.TotalPointsPrice > 0)
                                 {
-                                    <b class="gg-order__pts">@order.TotalPointsPrice.ToString("N0", CultureInfo.CurrentCulture) <i class="ph-fill ph-coins"></i></b>
+                                    <b class="giz-account-order__pts">@order.TotalPointsPrice.ToString("N0", CultureInfo.CurrentCulture) <i class="ph-fill ph-coins"></i></b>
                                 }
                             </div>
-                            <div class="gg-order__status">
-                                <span class="gg-tag @statusClass">@ShellText.Get(statusKey)</span>
+                            <div class="giz-account-order__status">
+                                <span class="giz-account-tag @statusClass">@ShellText.Get(statusKey)</span>
                                 @if (paymentKey is not null && !voided)
                                 {
-                                    <span class="gg-tag gg-tag--off">@ShellText.Get(paymentKey)</span>
+                                    <span class="giz-account-tag giz-account-tag--off">@ShellText.Get(paymentKey)</span>
                                 }
                             </div>
-                            <i class="ph-bold ph-caret-down gg-order__caret"></i>
+                            <i class="ph-bold ph-caret-down giz-account-order__caret"></i>
                         </summary>
 
-                        <div class="gg-order__body">
-                            <div class="gg-order__lines">
+                        <div class="giz-account-order__body">
+                            <div class="giz-account-order__lines">
                                 @foreach (var line in lines)
                                 {
                                     var linkable = ProductDetailsNavigationEnabled
@@ -112,20 +112,20 @@
                                         && line.LineType != LineType.FixedTime
                                         && line.ProductId.HasValue;
 
-                                    <div class="gg-order__line">
+                                    <div class="giz-account-order__line">
                                         @if (linkable)
                                         {
-                                            <a class="gg-order__line-name" href="@($"{ClientRoutes.ProductDetailsRoute}?ProductId={line.ProductId.Value}")">@line.ProductName</a>
+                                            <a class="giz-account-order__line-name" href="@($"{ClientRoutes.ProductDetailsRoute}?ProductId={line.ProductId.Value}")">@line.ProductName</a>
                                         }
                                         else
                                         {
-                                            <span class="gg-order__line-name">@line.ProductName</span>
+                                            <span class="giz-account-order__line-name">@line.ProductName</span>
                                         }
-                                        <span class="gg-order__line-qty">@line.Quantity @ShellText.Get(ShellText.GEN_PIECES_ABBR)</span>
-                                        <span class="gg-order__line-sum">
+                                        <span class="giz-account-order__line-qty">@line.Quantity @ShellText.Get(ShellText.GEN_PIECES_ABBR)</span>
+                                        <span class="giz-account-order__line-sum">
                                             @if (line.TotalPointsPrice > 0)
                                             {
-                                                <span class="gg-order__pts">@line.TotalPointsPrice.ToString("N0", CultureInfo.CurrentCulture) <i class="ph-fill ph-coins"></i></span>
+                                                <span class="giz-account-order__pts">@line.TotalPointsPrice.ToString("N0", CultureInfo.CurrentCulture) <i class="ph-fill ph-coins"></i></span>
                                             }
                                             else
                                             {
@@ -137,17 +137,17 @@
                             </div>
                             @if (order.TotalPointsAward > 0 || !string.IsNullOrWhiteSpace(order.Notes))
                             {
-                                <div class="gg-order__extra">
+                                <div class="giz-account-order__extra">
                                     @if (order.TotalPointsAward > 0)
                                     {
-                                        <span class="gg-order__earned">
+                                        <span class="giz-account-order__earned">
                                             <i class="ph-fill ph-sparkle"></i>
                                             @ShellText.Get(ShellText.ORDER_EARNED_POINTS) @order.TotalPointsAward.ToString("N0", CultureInfo.CurrentCulture)
                                         </span>
                                     }
                                     @if (!string.IsNullOrWhiteSpace(order.Notes))
                                     {
-                                        <span class="gg-order__note">@ShellText.Get(ShellText.ORDER_NOTE) @order.Notes</span>
+                                        <span class="giz-account-order__note">@ShellText.Get(ShellText.ORDER_NOTE) @order.Notes</span>
                                     }
                                 </div>
                             }

@@ -24,13 +24,13 @@
     padding: 0 3.8rem 0 1.2rem;
     gap: 1.1rem;
     opacity: 1;
-    border-color: rgba(var(--gg-accent-rgb), 0.45) !important;
+    border-color: rgba(var(--giz-accent-rgb), 0.45) !important;
     box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.16),
-        0 1.2rem 3rem -1.2rem rgba(var(--gg-accent-rgb), 0.55) !important;
+        0 1.2rem 3rem -1.2rem rgba(var(--giz-accent-rgb), 0.55) !important;
 }
 
-.giz-deploy.open.is-done {
+.giz-deploy.open.giz-deploy--done {
     border-color: rgba(94,216,148,0.5) !important;
     box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.16),
@@ -44,24 +44,24 @@
     left: 0;
     z-index: 0;
     min-width: 6rem;
-    background: linear-gradient(90deg, rgba(var(--gg-accent-rgb), 0.3), rgba(var(--gg-accent-rgb), 0.14));
+    background: linear-gradient(90deg, rgba(var(--giz-accent-rgb), 0.3), rgba(var(--giz-accent-rgb), 0.14));
     mask-image: linear-gradient(90deg, #000, #000 calc(100% - 7rem), transparent);
     -webkit-mask-image: linear-gradient(90deg, #000, #000 calc(100% - 7rem), transparent);
 
     transition: width 0.9s linear, opacity 0.4s ease;
 }
 
-.giz-deploy.is-done .giz-deploy__fill {
+.giz-deploy--done .giz-deploy__fill {
     background: linear-gradient(90deg, rgba(94,216,148,0.26), rgba(63,184,122,0.1));
     mask-image: none;
     -webkit-mask-image: none;
 }
 
-.giz-deploy.is-waiting .giz-deploy__fill {
+.giz-deploy--waiting .giz-deploy__fill {
     opacity: 0;
 }
 
-.giz-deploy.open:not(.is-done)::before {
+.giz-deploy.open:not(.giz-deploy--done)::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -82,8 +82,8 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: rgba(var(--gg-accent-rgb), 0.14);
-    color: var(--gg-accent-pale);
+    background: rgba(var(--giz-accent-rgb), 0.14);
+    color: var(--giz-accent-pale);
     font-size: 1.6rem;
 }
 
@@ -107,27 +107,27 @@
 }
 
 .giz-deploy__ring-bar {
-    stroke: var(--gg-accent-light);
+    stroke: var(--giz-accent-light);
     stroke-linecap: round;
     stroke-dasharray: 109.96;
     transition: stroke-dashoffset 0.9s linear;
 }
 
-.giz-deploy.is-waiting .giz-deploy__ring {
+.giz-deploy--waiting .giz-deploy__ring {
     animation: giz-deploy-spin 1.4s linear infinite;
 }
 
-.giz-deploy.is-waiting .giz-deploy__ring-bar {
+.giz-deploy--waiting .giz-deploy__ring-bar {
     stroke-dasharray: 26 83.96;
     transition: none;
 }
 
-.giz-deploy.is-done .giz-deploy__badge {
+.giz-deploy--done .giz-deploy__badge {
     background: rgba(94,216,148,0.16);
     color: #7ce8ad;
 }
 
-.giz-deploy.is-done .giz-deploy__ring-bar {
+.giz-deploy--done .giz-deploy__ring-bar {
     stroke: #5ed894;
 }
 

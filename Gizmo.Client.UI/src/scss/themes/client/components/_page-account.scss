@@ -10,10 +10,10 @@ $ac-g:     clamp(1.2rem, 0.7rem + 0.7vw, 2.2rem);
 $ac-r:     2rem;
 $ac-w:     132rem;
 
-$ac-ink:   var(--gg-ink);
-$ac-ink-2: rgba(var(--gg-ink-rgb), 0.62);
-$ac-ink-3: rgba(var(--gg-ink-rgb), 0.38);
-$ac-cap:   rgba(var(--gg-ink-rgb), 0.42);
+$ac-ink:   var(--giz-ink);
+$ac-ink-2: rgba(var(--giz-ink-rgb), 0.62);
+$ac-ink-3: rgba(var(--giz-ink-rgb), 0.38);
+$ac-cap:   rgba(var(--giz-ink-rgb), 0.42);
 $ac-line:  rgba(255, 255, 255, 0.07);
 $ac-line-2: rgba(255, 255, 255, 0.14);
 
@@ -41,17 +41,17 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
 }
 
 @mixin ac-glass {
-    background: linear-gradient(180deg, rgba(var(--gg-glass-rgb), 0.55), rgba(var(--gg-glass-2-rgb), 0.7));
+    background: linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.55), rgba(var(--giz-glass-2-rgb), 0.7));
     border: 1px solid rgba(255, 255, 255, 0.09);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 // ── frame ────────────────────────────────────────────────────────────────
-.gg-account {
+.giz-account {
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-    @include gg-scroll-fade;
+    @include giz-scroll-fade;
 
     &__inner {
         max-width: $ac-w;
@@ -60,7 +60,7 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         display: flex;
         flex-direction: column;
         gap: $ac-g;
-        animation: gg-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        animation: giz-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     // ── head: avatar, name, figures ──────────────────────────────────────
@@ -209,10 +209,10 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
             }
         }
 
-        &.is-on {
-            background: linear-gradient(135deg, var(--gg-accent-light), var(--gg-accent-deep));
-            color: var(--gg-on-accent);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 0.8rem 2rem -1rem rgba(var(--gg-accent-rgb), 0.7);
+        &.active {
+            background: linear-gradient(135deg, var(--giz-accent-light), var(--giz-accent-deep));
+            color: var(--giz-on-accent);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 0.8rem 2rem -1rem rgba(var(--giz-accent-rgb), 0.7);
 
             i {
                 color: inherit;
@@ -239,13 +239,13 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         font-size: 1.1rem;
         font-weight: 500;
         letter-spacing: 0.04em;
-        color: rgba(var(--gg-ink-rgb), 0.28);
+        color: rgba(var(--giz-ink-rgb), 0.28);
         user-select: text;
     }
 }
 
 // ── cards ────────────────────────────────────────────────────────────────
-.gg-card {
+.giz-account-card {
     display: flex;
     flex-direction: column;
     gap: 1.6rem;
@@ -266,8 +266,8 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
             align-items: center;
             justify-content: center;
             border-radius: 1.1rem;
-            background: rgba(var(--gg-accent-rgb), 0.14);
-            color: var(--gg-accent-soft);
+            background: rgba(var(--giz-accent-rgb), 0.14);
+            color: var(--giz-accent-soft);
             font-size: 1.8rem;
         }
 
@@ -341,7 +341,7 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
     }
 }
 
-.gg-field {
+.giz-account-field {
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
@@ -374,7 +374,7 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
     }
 }
 
-.gg-btn {
+.giz-account-button {
     display: inline-flex;
     align-items: center;
     gap: 0.8rem;
@@ -392,17 +392,17 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
 
     i {
         font-size: 1.6rem;
-        color: var(--gg-accent-soft);
+        color: var(--giz-accent-soft);
     }
 
     &:hover {
-        background: rgba(var(--gg-accent-rgb), 0.16);
-        border-color: rgba(var(--gg-accent-rgb), 0.4);
+        background: rgba(var(--giz-accent-rgb), 0.16);
+        border-color: rgba(var(--giz-accent-rgb), 0.4);
     }
 }
 
 // ── tags ─────────────────────────────────────────────────────────────────
-.gg-tag {
+.giz-account-tag {
     display: inline-flex;
     align-items: center;
     height: 2.2rem;
@@ -418,23 +418,23 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
     white-space: nowrap;
 
     &--on,
-    &.is-on {
-        background: rgba(var(--gg-accent-rgb), 0.18);
-        color: var(--gg-accent-soft);
+    &--on {
+        background: rgba(var(--giz-accent-rgb), 0.18);
+        color: var(--giz-accent-soft);
     }
 
-    &.is-good {
+    &--good {
         background: rgba(61, 220, 114, 0.14);
         color: #6fe79a;
     }
 
-    &.is-wait {
+    &--wait {
         background: rgba(255, 179, 71, 0.14);
         color: #ffc46b;
     }
 
     &--off,
-    &.is-off {
+    &--off {
         background: rgba(255, 255, 255, 0.05);
         color: $ac-ink-3;
     }
@@ -446,7 +446,7 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
 }
 
 // ── time products ────────────────────────────────────────────────────────
-.gg-tp {
+.giz-account-time {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
@@ -461,12 +461,12 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         background: rgba(255, 255, 255, 0.035);
         box-shadow: inset 0 0 0 1px $ac-line;
 
-        &.is-current {
-            background: rgba(var(--gg-accent-rgb), 0.08);
-            box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.28);
+        &--current {
+            background: rgba(var(--giz-accent-rgb), 0.08);
+            box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.28);
         }
 
-        &.is-idle {
+        &--idle {
             opacity: 0.72;
         }
     }
@@ -483,9 +483,9 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         font-size: 1.15rem;
         color: $ac-ink-2;
 
-        .is-current & {
-            background: var(--gg-accent);
-            color: var(--gg-on-accent);
+        .giz-account-time__row--current & {
+            background: var(--giz-accent);
+            color: var(--giz-on-accent);
         }
     }
 
@@ -500,11 +500,11 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         color: $ac-ink-2;
         font-size: 2rem;
 
-        .is-current & {
-            color: var(--gg-accent-soft);
+        .giz-account-time__row--current & {
+            color: var(--giz-accent-soft);
         }
 
-        .is-credit & {
+        .giz-account-time__row--credit & {
             color: #ffd79d;
         }
     }
@@ -602,7 +602,7 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         transition: background 0.15s, color 0.15s;
 
         &:hover {
-            background: rgba(var(--gg-accent-rgb), 0.18);
+            background: rgba(var(--giz-accent-rgb), 0.18);
             color: $ac-ink;
         }
 
@@ -636,8 +636,8 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         }
 
         .giz-user-time-products-host-group.active {
-            background: rgba(var(--gg-accent-rgb), 0.16);
-            color: var(--gg-accent-soft);
+            background: rgba(var(--giz-accent-rgb), 0.16);
+            color: var(--giz-accent-soft);
         }
     }
 }
@@ -658,14 +658,14 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         font-weight: 600;
 
         &.active {
-            background: rgba(var(--gg-accent-rgb), 0.16);
-            color: var(--gg-accent-soft);
+            background: rgba(var(--giz-accent-rgb), 0.16);
+            color: var(--giz-accent-soft);
         }
     }
 }
 
 // ── orders ───────────────────────────────────────────────────────────────
-.gg-pager {
+.giz-account-pager {
     margin-left: auto;
     display: flex;
     gap: 0.6rem;
@@ -702,13 +702,13 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
     }
 }
 
-.gg-orders {
+.giz-account-orders {
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
 }
 
-.gg-order {
+.giz-account-order {
     border-radius: 1.5rem;
     background: rgba(255, 255, 255, 0.035);
     box-shadow: inset 0 0 0 1px $ac-line;
@@ -852,8 +852,8 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
             text-decoration: none;
         }
 
-        a.gg-order__line-name:hover {
-            color: var(--gg-accent-soft);
+        a.giz-account-order__line-name:hover {
+            color: var(--giz-accent-soft);
         }
 
         &-qty {
@@ -895,11 +895,11 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
 
 // ── narrow: the head stacks, rows drop the figures under the name ────────
 @media (max-width: 1500px) {
-    .gg-account__head {
+    .giz-account__head {
         grid-template-columns: auto minmax(0, 1fr);
     }
 
-    .gg-account__stats {
+    .giz-account__stats {
         grid-column: 1 / -1;
         padding-top: 1.4rem;
         border-top: 1px solid $ac-line;

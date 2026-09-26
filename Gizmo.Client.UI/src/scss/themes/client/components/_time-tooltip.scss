@@ -5,9 +5,9 @@
 // the old version painted both, which put a second outline inside the first.
 
 $tt-w: 52rem;
-$tt-ink:   var(--gg-ink);
-$tt-ink-2: rgba(var(--gg-ink-rgb), 0.62);
-$tt-ink-3: rgba(var(--gg-ink-rgb), 0.38);
+$tt-ink:   var(--giz-ink);
+$tt-ink-2: rgba(var(--giz-ink-rgb), 0.62);
+$tt-ink-3: rgba(var(--giz-ink-rgb), 0.38);
 $tt-line:  rgba(255, 255, 255, 0.07);
 
 .giz-user-balance-tooltip-wrapper {
@@ -26,7 +26,7 @@ $tt-line:  rgba(255, 255, 255, 0.07);
     }
 }
 
-.gg-tt {
+.giz-time-tooltip {
     width: $tt-w;
     max-width: calc(100vw - 4rem);
     box-sizing: border-box;
@@ -35,7 +35,7 @@ $tt-line:  rgba(255, 255, 255, 0.07);
     // Effectively opaque, like every panel that opens over the page: the fill hides
     // what is underneath, the blur (which the HUD's ::before glass lets through) only
     // softens the edge of what little remains.
-    background: linear-gradient(180deg, rgba(var(--gg-glass-rgb), 0.97), rgba(var(--gg-glass-2-rgb), 0.985));
+    background: linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.97), rgba(var(--giz-glass-2-rgb), 0.985));
     backdrop-filter: blur(4rem) saturate(1.6);
     -webkit-backdrop-filter: blur(4rem) saturate(1.6);
     border: 1px solid rgba(255, 255, 255, 0.14);
@@ -45,7 +45,7 @@ $tt-line:  rgba(255, 255, 255, 0.07);
     color: $tt-ink;
     white-space: normal;
     cursor: default;
-    animation: gg-fade 0.16s ease-out both;
+    animation: giz-fade 0.16s ease-out both;
 
     &__head {
         display: flex;
@@ -69,7 +69,7 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         padding: 0;
         border: 0;
         background: none;
-        color: var(--gg-accent-soft);
+        color: var(--giz-accent-soft);
         font: inherit;
         font-size: 1.3rem;
         font-weight: 600;
@@ -82,7 +82,7 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         }
 
         &:hover {
-            color: var(--gg-accent-pale);
+            color: var(--giz-accent-pale);
 
             i {
                 transform: translateX(0.2rem);
@@ -125,8 +125,8 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         box-shadow: inset 0 0 0 1px $tt-line;
 
         &--current {
-            background: rgba(var(--gg-accent-rgb), 0.1);
-            box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.3);
+            background: rgba(var(--giz-accent-rgb), 0.1);
+            box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.3);
         }
     }
 
@@ -143,9 +143,9 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         font-weight: 700;
         color: $tt-ink-2;
 
-        .gg-tt__row--current & {
-            background: var(--gg-accent);
-            color: var(--gg-on-accent);
+        .giz-time-tooltip__row--current & {
+            background: var(--giz-accent);
+            color: var(--giz-on-accent);
         }
     }
 
@@ -160,11 +160,11 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         color: $tt-ink-2;
         font-size: 1.8rem;
 
-        .gg-tt__row--current & {
-            color: var(--gg-accent-soft);
+        .giz-time-tooltip__row--current & {
+            color: var(--giz-accent-soft);
         }
 
-        .gg-tt__row--credit & {
+        .giz-time-tooltip__row--credit & {
             color: #ffd79d;
         }
     }
@@ -243,7 +243,7 @@ $tt-line:  rgba(255, 255, 255, 0.07);
             flex: none;
             font-size: 1.8rem;
             margin-top: 0.1rem;
-            color: var(--gg-accent-soft);
+            color: var(--giz-accent-soft);
         }
 
         > div {
@@ -301,16 +301,16 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         }
 
         &--primary {
-            background: linear-gradient(135deg, var(--gg-accent-light), var(--gg-accent-deep));
+            background: linear-gradient(135deg, var(--giz-accent-light), var(--giz-accent-deep));
             border-color: transparent;
-            color: var(--gg-on-accent);
+            color: var(--giz-on-accent);
 
             i {
                 color: inherit;
             }
 
             &:hover {
-                background: linear-gradient(135deg, var(--gg-accent-light), var(--gg-accent-deep));
+                background: linear-gradient(135deg, var(--giz-accent-light), var(--giz-accent-deep));
                 filter: brightness(1.08);
             }
         }
@@ -326,7 +326,7 @@ $tt-line:  rgba(255, 255, 255, 0.07);
     background-color: transparent !important;
     border: none !important;
     border-radius: 0 !important;
-    color: var(--gg-accent) !important;
+    color: var(--giz-accent) !important;
     padding: 0 !important;
     height: auto !important;
     font-size: 1.5rem !important;
@@ -335,7 +335,7 @@ $tt-line:  rgba(255, 255, 255, 0.07);
 }
 
 .giz-topbar-tariff .giz-header-user-balance > .giz-ph-icon {
-    color: var(--gg-accent) !important;
+    color: var(--giz-accent) !important;
     font-size: 1.7rem;
 }
 

@@ -97,13 +97,13 @@
 //     behind the window and reads as a smudge, not a shadow.
 // The type colours the icon disc and the bar on the left; the panel is the same for
 // every type, so a stack of three reads as one system.
-$nt-ink:   var(--gg-ink);
-$nt-ink-2: rgba(var(--gg-ink-rgb), 0.66);
-$nt-ink-3: rgba(var(--gg-ink-rgb), 0.42);
+$nt-ink:   var(--giz-ink);
+$nt-ink-2: rgba(var(--giz-ink-rgb), 0.66);
+$nt-ink-3: rgba(var(--giz-ink-rgb), 0.42);
 
 @mixin notification-card {
-    --nt-rgb: var(--gg-accent-rgb);
-    --nt-soft: var(--gg-accent-soft);
+    --nt-rgb: var(--giz-accent-rgb);
+    --nt-soft: var(--giz-accent-soft);
 
     position: relative;
     display: grid;
@@ -116,7 +116,7 @@ $nt-ink-3: rgba(var(--gg-ink-rgb), 0.42);
     margin: 0 0 1rem;
     padding: 1.7rem 1.4rem 1.7rem 2rem;
     border-radius: 1.8rem;
-    background: var(--gg-panel);
+    background: var(--giz-panel);
     border: 1px solid rgba(255, 255, 255, 0.11);
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.08),
@@ -252,12 +252,12 @@ $nt-ink-3: rgba(var(--gg-ink-rgb), 0.42);
     }
 
     &--primary {
-        background: linear-gradient(135deg, var(--gg-accent-light), var(--gg-accent-deep));
+        background: linear-gradient(135deg, var(--giz-accent-light), var(--giz-accent-deep));
         border-color: transparent;
-        color: var(--gg-on-accent);
+        color: var(--giz-on-accent);
 
         &:hover:not(:disabled) {
-            background: linear-gradient(135deg, var(--gg-accent-light), var(--gg-accent-deep));
+            background: linear-gradient(135deg, var(--giz-accent-light), var(--giz-accent-deep));
             filter: brightness(1.08);
         }
     }

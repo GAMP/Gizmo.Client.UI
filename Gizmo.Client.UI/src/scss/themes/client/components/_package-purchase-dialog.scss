@@ -13,17 +13,17 @@
 // CartDialogResult.razor - mirrored by visual/templates/purchase.js and checkout.js.
 
 $buy-w:      52rem;
-$buy-ink:    var(--gg-ink);
-$buy-ink-2:  rgba(var(--gg-ink-rgb), 0.62);
-$buy-ink-3:  rgba(var(--gg-ink-rgb), 0.4);
-$buy-cap:    rgba(var(--gg-ink-rgb), 0.42);
+$buy-ink:    var(--giz-ink);
+$buy-ink-2:  rgba(var(--giz-ink-rgb), 0.62);
+$buy-ink-3:  rgba(var(--giz-ink-rgb), 0.4);
+$buy-cap:    rgba(var(--giz-ink-rgb), 0.42);
 $buy-line:   rgba(255, 255, 255, 0.07);
 $buy-r:      2.2rem;
 $buy-rt:     1.4rem;
 $buy-red:    #ff8b8b;
 $buy-green:  #5ed894;
 $buy-coin:   #e8b84b;
-$buy-on-accent: var(--gg-on-accent);
+$buy-on-accent: var(--giz-on-accent);
 
 @mixin buy-one-line {
     overflow: hidden;
@@ -70,10 +70,10 @@ $buy-on-accent: var(--gg-on-accent);
     // The till's surface: lifted off the wallpaper by an accent wash that fades out
     // within the top third. Not a glow, just enough to say this card takes money.
     background:
-        linear-gradient(176deg, rgba(var(--gg-accent-rgb), 0.14) 0%, rgba(var(--gg-accent-rgb), 0) 34%),
-        var(--gg-panel);
+        linear-gradient(176deg, rgba(var(--giz-accent-rgb), 0.14) 0%, rgba(var(--giz-accent-rgb), 0) 34%),
+        var(--giz-panel);
     box-shadow:
-        inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.28),
+        inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.28),
         0 40px 90px -30px rgba(0, 0, 0, 0.95);
     animation: giz-buy-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
 
@@ -85,7 +85,7 @@ $buy-on-accent: var(--gg-on-accent);
 
     &__kick {
         @include buy-cap;
-        color: var(--gg-accent);
+        color: var(--giz-accent);
     }
 
     &__close {
@@ -107,7 +107,7 @@ $buy-on-accent: var(--gg-on-accent);
 
         &:hover:not(:disabled) { background: rgba(255, 255, 255, 0.12); color: $buy-ink; }
         &:disabled { opacity: 0.4; cursor: default; }
-        &:focus-visible { outline: 2px solid var(--gg-accent); outline-offset: 2px; }
+        &:focus-visible { outline: 2px solid var(--giz-accent); outline-offset: 2px; }
     }
 
     &__title {
@@ -172,22 +172,22 @@ $buy-on-accent: var(--gg-on-accent);
         background: transparent;
         transition: background 0.16s, color 0.16s, box-shadow 0.16s;
 
-        &:hover:not(:disabled):not(.is-on) {
+        &:hover:not(:disabled):not(.giz-buy__seg-item--on) {
             background: rgba(255, 255, 255, 0.05);
             color: $buy-ink;
         }
 
-        &.is-on {
+        &--on {
             color: #fff;
-            background: linear-gradient(180deg, rgba(var(--gg-accent-rgb), 0.34), rgba(var(--gg-accent-rgb), 0.2));
+            background: linear-gradient(180deg, rgba(var(--giz-accent-rgb), 0.34), rgba(var(--giz-accent-rgb), 0.2));
             box-shadow:
-                inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.62),
+                inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.62),
                 inset 0 1px 0 rgba(255, 255, 255, 0.14),
-                0 10px 24px -14px rgba(var(--gg-accent-rgb), 0.9);
+                0 10px 24px -14px rgba(var(--giz-accent-rgb), 0.9);
         }
 
         &:disabled { cursor: default; }
-        &:focus-visible { outline: 2px solid var(--gg-accent); outline-offset: 2px; }
+        &:focus-visible { outline: 2px solid var(--giz-accent); outline-offset: 2px; }
     }
 
     &__seg-name {
@@ -211,11 +211,11 @@ $buy-on-accent: var(--gg-on-accent);
 
         i { font-size: 0.95em; color: $buy-coin; }
 
-        .is-on & { color: rgba(var(--gg-ink-rgb), 0.82); }
+        .giz-buy__seg-item--on & { color: rgba(var(--giz-ink-rgb), 0.82); }
 
         // The figure goes red when it is not enough - the only red on the chooser, and
         // an amount rather than an error.
-        .is-short & { color: rgba($buy-red, 0.92); }
+        .giz-buy__seg-item--short & { color: rgba($buy-red, 0.92); }
     }
 
     // The club's own counter methods, once there are several: chips under the chooser.
@@ -241,16 +241,16 @@ $buy-on-accent: var(--gg-on-accent);
         @include buy-one-line;
         transition: background 0.16s, color 0.16s, box-shadow 0.16s;
 
-        &:hover:not(:disabled):not(.is-on) { background: rgba(255, 255, 255, 0.1); color: $buy-ink; }
+        &:hover:not(:disabled):not(.giz-buy__chip--on) { background: rgba(255, 255, 255, 0.1); color: $buy-ink; }
 
-        &.is-on {
+        &--on {
             color: #fff;
-            background: rgba(var(--gg-accent-rgb), 0.2);
-            box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.62);
+            background: rgba(var(--giz-accent-rgb), 0.2);
+            box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.62);
         }
 
         &:disabled { cursor: default; }
-        &:focus-visible { outline: 2px solid var(--gg-accent); outline-offset: 2px; }
+        &:focus-visible { outline: 2px solid var(--giz-accent); outline-offset: 2px; }
     }
 
     // One way only: a line, not a chooser with a single cell.
@@ -343,7 +343,7 @@ $buy-on-accent: var(--gg-on-accent);
 
         // The server is re-pricing: the old figures dim rather than vanish, so the card
         // does not jump while the new ones are on their way.
-        &.is-busy { opacity: 0.5; }
+        &--busy { opacity: 0.5; }
     }
 
     &__wait {
@@ -445,7 +445,7 @@ $buy-on-accent: var(--gg-on-accent);
         box-shadow: inset 0 0 0 1px rgba($buy-red, 0.22);
         font-size: 1.35rem;
         line-height: 1.35;
-        color: rgba(var(--gg-ink-rgb), 0.78);
+        color: rgba(var(--giz-ink-rgb), 0.78);
     }
 
     &__short-sum {
@@ -492,12 +492,12 @@ $buy-on-accent: var(--gg-on-accent);
             min-width: 16rem;
             padding: 0 2.4rem;
             color: $buy-on-accent;
-            background: var(--gg-accent);
+            background: var(--giz-accent);
             box-shadow: none;
 
             &:hover:not(:disabled) {
                 color: $buy-on-accent;
-                background: var(--gg-accent);
+                background: var(--giz-accent);
                 filter: brightness(1.08);
             }
 
@@ -548,13 +548,13 @@ $buy-on-accent: var(--gg-on-accent);
         font-size: 3.2rem;
         animation: giz-buy-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 
-        .is-ok & {
+        .giz-buy__result--ok & {
             color: $buy-green;
             background: rgba($buy-green, 0.14);
             box-shadow: inset 0 0 0 1px rgba($buy-green, 0.4);
         }
 
-        .is-error & {
+        .giz-buy__result--error & {
             color: $buy-red;
             background: rgba($buy-red, 0.12);
             box-shadow: inset 0 0 0 1px rgba($buy-red, 0.36);

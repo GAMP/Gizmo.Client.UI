@@ -100,21 +100,21 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        protected string ExpireNoteClass => SoleProductInCredit ? "gg-tt__note gg-tt__note--warn" : "gg-tt__note";
+        protected string ExpireNoteClass => SoleProductInCredit ? "giz-time-tooltip__note giz-time-tooltip__note--warn" : "giz-time-tooltip__note";
 
         protected string ExpireNoteIcon => SoleProductInCredit ? "ph-warning-circle" : "ph-hourglass-medium";
 
-        protected string TopUpButtonClass => CanShop ? "gg-tt__btn" : "gg-tt__btn gg-tt__btn--primary";
+        protected string TopUpButtonClass => CanShop ? "giz-time-tooltip__btn" : "giz-time-tooltip__btn giz-time-tooltip__btn--primary";
 
         protected static string RowClass(TimeProductViewState product)
         {
-            var css = "gg-tt__row";
+            var css = "giz-time-tooltip__row";
 
             if (product.ActivationOrder == 1)
-                css += " gg-tt__row--current";
+                css += " giz-time-tooltip__row--current";
 
             if (product.InCredit)
-                css += " gg-tt__row--credit";
+                css += " giz-time-tooltip__row--credit";
 
             return css;
         }

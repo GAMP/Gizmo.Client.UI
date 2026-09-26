@@ -6,21 +6,21 @@
 
 $pc-img-h:    18rem;                                    // image and panel height
 $pc-r:        2rem;                                     // card radius
-$pc-ink:      var(--gg-ink);
-$pc-ink-2:    rgba(var(--gg-ink-rgb), 0.6);
-$pc-ink-3:    rgba(var(--gg-ink-rgb), 0.42);
+$pc-ink:      var(--giz-ink);
+$pc-ink-2:    rgba(var(--giz-ink-rgb), 0.6);
+$pc-ink-3:    rgba(var(--giz-ink-rgb), 0.42);
 $pc-line:     rgba(255, 255, 255, 0.07);
-$pc-panel:    rgba(var(--gg-glass-2-rgb), 0.98);
+$pc-panel:    rgba(var(--giz-glass-2-rgb), 0.98);
 // Soft radial behind the photo: without it a shot on a white background reads as a
 // sticker on a dark card.
-$gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.16), rgba(255, 255, 255, 0.02) 70%);
+$giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 0.16), rgba(255, 255, 255, 0.02) 70%);
 
 .giz-product-card {
     position: relative;
     max-width: 100%;
     overflow: hidden;
     border-radius: $pc-r;
-    background: var(--gg-card-bg, var(--gg-tile));
+    background: var(--giz-card-bg, var(--giz-tile));
     cursor: pointer;
     transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.2s;
 
@@ -38,7 +38,7 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
         transition: box-shadow 0.2s;
     }
 
-    &:hover::after { box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.45); }
+    &:hover::after { box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.45); }
 
     &:hover {
         transform: translateY(-3px);
@@ -81,7 +81,7 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
             height: $pc-img-h;
             max-width: 100%;
             overflow: hidden;
-            background: $gg-image-bg;
+            background: $giz-image-bg;
 
             // No gradient at the foot of the image: no text sits over it, and the card
             // is already separated by its own background.
@@ -148,7 +148,7 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
                 .giz-product-card__price__points {
                     overflow: hidden;
                     text-overflow: ellipsis;
-                    color: var(--gg-accent);
+                    color: var(--giz-accent);
                 }
 
                 svg {
@@ -156,7 +156,7 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
                     min-height: 1.6rem;
                     width: 1.6rem;
                     height: 1.6rem;
-                    fill: var(--gg-accent);
+                    fill: var(--giz-accent);
                     align-self: center;
                 }
             }
@@ -203,16 +203,16 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
         }
 
         .giz-button--fill.accent:not(.disabled):not([disabled]) {
-            background: rgba(var(--gg-accent-rgb), 0.16);
+            background: rgba(var(--giz-accent-rgb), 0.16);
             border: 0;
-            box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.34);
-            color: var(--gg-accent);
+            box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.34);
+            color: var(--giz-accent);
             transition: background 0.16s, box-shadow 0.16s, color 0.16s;
 
             &:hover {
-                background: var(--gg-accent);
+                background: var(--giz-accent);
                 box-shadow: none;
-                color: var(--gg-on-accent);
+                color: var(--giz-on-accent);
             }
         }
 
@@ -221,12 +221,12 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
             background: rgba(255, 255, 255, 0.035);
             border: 0;
             box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
-            color: rgba(var(--gg-ink-rgb), 0.3);
+            color: rgba(var(--giz-ink-rgb), 0.3);
         }
     }
 
     &:hover .giz-button--fill.accent:not(.disabled):not([disabled]) {
-        background: rgba(var(--gg-accent-rgb), 0.24);
+        background: rgba(var(--giz-accent-rgb), 0.24);
     }
 
     // Detail panel, over the image only: price, title and button stay visible.
@@ -290,7 +290,7 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
             flex: none;
             width: 1rem;
             height: 1rem;
-            color: var(--gg-accent);
+            color: var(--giz-accent);
             opacity: 0.85;
         }
     }
@@ -344,7 +344,7 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
         overflow-wrap: anywhere;
 
         .giz-icon {
-            color: var(--gg-accent);
+            color: var(--giz-accent);
             width: 1.5rem;
             height: 1.5rem;
         }
@@ -356,7 +356,7 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    color: var(--gg-accent);
+    color: var(--giz-accent);
     font-family: $font-family-header-theme-client;
     font-size: 1.45rem;
     font-weight: 700;
@@ -403,7 +403,7 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
     .giz-icon {
         width: 1.4rem;
         height: 1.4rem;
-        color: var(--gg-accent);
+        color: var(--giz-accent);
     }
 
     &__product-name {
@@ -455,9 +455,9 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
 
         // The group this client belongs to - the only one worth highlighting.
         &.active {
-            background: rgba(var(--gg-accent-rgb), 0.16);
-            box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.42);
-            color: var(--gg-accent);
+            background: rgba(var(--giz-accent-rgb), 0.16);
+            box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.42);
+            color: var(--giz-accent);
         }
     }
 }
@@ -467,8 +467,8 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
 // a large numeral it read as an element that had failed to load.
 .giz-product-card .giz-product-card__content__image--time {
     background: linear-gradient(180deg,
-        rgba(var(--gg-accent-rgb), 0.17),
-        rgba(var(--gg-accent-rgb), 0.05) 60%,
+        rgba(var(--giz-accent-rgb), 0.17),
+        rgba(var(--giz-accent-rgb), 0.05) 60%,
         rgba(255, 255, 255, 0.02));
 }
 
@@ -536,9 +536,9 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
     width: 2.8rem;
     height: 2.8rem;
     border-radius: 0.9rem;
-    background: rgba(var(--gg-scrim-rgb), 0.8);
+    background: rgba(var(--giz-scrim-rgb), 0.8);
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-    color: var(--gg-accent);
+    color: var(--giz-accent);
 
     svg {
         width: 1.5rem;

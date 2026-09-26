@@ -258,3 +258,36 @@ html { font-size: 11px; }               /* scale entire UI up ~10% */
 | Recolor scrollbars | `.giz-scrollbar*` thumb/track | A |
 | Fix overlay stacking | `$*-index` vars | B |
 ```
+
+---
+
+## 10. Grafit skin — club variables
+
+The Grafit skin reads a few custom properties that a club sets in the Manager's custom CSS
+(Configuration → Skins → Skin Profiles → Custom CSS). They are read once the club's
+stylesheet has loaded, so no rebuild is needed.
+
+| Variable | Values | Effect |
+|---|---|---|
+| `--giz-palette` | `blue` (default), `purple`, `red`, `orange`, `amber`, `green`, `teal`, `pink`, or any colour such as `#e11d48` | The whole palette - accent steps, surfaces, ink and glass - is derived from this one accent. |
+| `--giz-motion` | `off` (default) / `on` | The slow moving gradient behind the sign-in screen and the shell (only when the club has no wallpaper of its own). |
+| `--giz-host-number-top`, `--giz-host-number-right`, `--giz-host-number-bottom`, `--giz-host-number-left` | a length or `auto` | Where the station number sits on the sign-in screen. Defaults: top `2.4rem`, right `3.2rem`. |
+| `--giz-host-number-transform` | a CSS transform | For example `translateX(-50%)` to centre it together with `left: 50%`. |
+| `--giz-host-number-align` | `left` / `center` / `right` | Text alignment of the station number. |
+| `--giz-host-number-shift` | a length | Extra space to the right of the number when it is anchored with `right`. |
+
+```css
+:root { --giz-palette: purple; }
+:root { --giz-palette: #e11d48; --giz-motion: on; }
+:root {
+    --giz-host-number-left: 50%;
+    --giz-host-number-right: auto;
+    --giz-host-number-transform: translateX(-50%);
+    --giz-host-number-align: center;
+}
+```
+
+The palette's own tokens (`--giz-accent`, `--giz-accent-rgb`, `--giz-ink`, `--giz-panel`,
+`--giz-tile`, `--giz-glass-rgb`, …) are set by the skin from `--giz-palette`; a club's own
+CSS may read them (`rgba(var(--giz-accent-rgb), 0.2)`) so that its additions follow the
+chosen palette.

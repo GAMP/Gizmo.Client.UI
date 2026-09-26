@@ -22,7 +22,7 @@ else if (Segments is { Count: > 0 })
             @foreach (var segment in Segments)
             {
                 <button type="button" @key="segment.Kind"
-                        class="giz-buy__seg-item @(segment.IsOn ? "is-on" : null) @(segment.IsShort ? "is-short" : null)"
+                        class="giz-buy__seg-item @(segment.IsOn ? "giz-buy__seg-item--on" : null) @(segment.IsShort ? "giz-buy__seg-item--short" : null)"
                         disabled="@Disabled"
                         @onclick="@(() => OnSegment.InvokeAsync(segment))">
                     <span class="giz-buy__seg-name">@segment.Name</span>
@@ -43,7 +43,7 @@ else if (Segments is { Count: > 0 })
                 @foreach (var way in Chips)
                 {
                     <button type="button" @key="way"
-                            class="giz-buy__chip @(way == Selected ? "is-on" : null)"
+                            class="giz-buy__chip @(way == Selected ? "giz-buy__chip--on" : null)"
                             disabled="@Disabled"
                             @onclick="@(() => OnWay.InvokeAsync(way))">@way.Name</button>
                 }

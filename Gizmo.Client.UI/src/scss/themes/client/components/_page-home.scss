@@ -31,15 +31,15 @@ $t-name:  clamp(1.4rem, 1.24rem + 0.3vw, 1.8rem);
 $t-sum:   clamp(2.6rem, 1.9rem + 1.5vw, 4.2rem);
 $t-hero:  clamp(2.8rem, 1.9rem + 2.1vw, 5.4rem);
 
-$ink:    var(--gg-ink);
-$ink-2:  rgba(var(--gg-ink-rgb), 0.62);
-$ink-3:  rgba(var(--gg-ink-rgb), 0.34);
-$ink-cap: rgba(var(--gg-ink-rgb), 0.42);
+$ink:    var(--giz-ink);
+$ink-2:  rgba(var(--giz-ink-rgb), 0.62);
+$ink-3:  rgba(var(--giz-ink-rgb), 0.34);
+$ink-cap: rgba(var(--giz-ink-rgb), 0.42);
 $line:   rgba(255, 255, 255, 0.07);
 $line-2: rgba(255, 255, 255, 0.16);
 
-$panel: var(--gg-tile-2);
-$tile:  var(--gg-tile);
+$panel: var(--giz-tile-2);
+$tile:  var(--giz-tile);
 
 @mixin one-line {
     overflow: hidden;
@@ -66,7 +66,7 @@ $tile:  var(--gg-tile);
         scrollbar-color: $line-2 transparent;
         &::-webkit-scrollbar-thumb { background: $line-2; }
     }
-    &::-webkit-scrollbar-thumb:hover { background: rgba(var(--gg-accent-rgb), 0.45); }
+    &::-webkit-scrollbar-thumb:hover { background: rgba(var(--giz-accent-rgb), 0.45); }
 }
 
 // Outline as an inset shadow, never a border: a real border still paints its
@@ -79,23 +79,23 @@ $tile:  var(--gg-tile);
 // ── entrance ─────────────────────────────────────────────────────────────
 // One orchestrated arrival rather than a scatter of little effects: the two
 // columns rise, then the hero's own text staggers in behind them.
-@keyframes gg-rise {
+@keyframes giz-rise {
     from { opacity: 0; transform: translateY(12px); }
     to   { opacity: 1; transform: none; }
 }
 
-@keyframes gg-fade {
+@keyframes giz-fade {
     from { opacity: 0; }
     to   { opacity: 1; }
 }
 
-@keyframes gg-slide-in {
+@keyframes giz-slide-in {
     from { opacity: 0; transform: translateY(14px); }
     to   { opacity: 1; transform: none; }
 }
 
 // ── board ────────────────────────────────────────────────────────────────
-.gg-board {
+.giz-home-board {
     height: 100%;
     min-height: 0;
     min-width: 0;
@@ -103,11 +103,11 @@ $tile:  var(--gg-tile);
     grid-template-columns: minmax(0, 1fr) clamp(30rem, 25vw, 46rem);
     gap: calc(#{$g} * 1.4);
 
-    > * { animation: gg-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    > * { animation: giz-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
     > * + * { animation-delay: 0.07s; }
 }
 
-.gg-stage {
+.giz-home-stage {
     position: relative;
     min-width: 0;
     min-height: 0;
@@ -119,7 +119,7 @@ $tile:  var(--gg-tile);
 }
 
 // ── caption: micro label, hairline to the far edge, quiet link ───────────
-.gg-cap {
+.giz-caption {
     flex: none;
     font-family: $font-family-header-theme-client;
     font-size: $t-cap;
@@ -154,7 +154,7 @@ $tile:  var(--gg-tile);
     }
 }
 
-.gg-empty {
+.giz-home-empty {
     flex: 1;
     display: grid;
     place-items: center;
@@ -169,14 +169,14 @@ $tile:  var(--gg-tile);
 }
 
 // HERO
-.gg-hero {
+.giz-home-hero {
     position: relative;
     min-height: 0;
     overflow: hidden;
     border-radius: $r;
     background: $tile;
     cursor: default;
-    animation: gg-fade 0.45s ease both;
+    animation: giz-fade 0.45s ease both;
 
     &__bg {
         position: absolute;
@@ -202,16 +202,16 @@ $tile:  var(--gg-tile);
         content: '';
         position: absolute;
         inset: 0;
-        background: rgba(var(--gg-scrim-rgb), 0.5);
+        background: rgba(var(--giz-scrim-rgb), 0.5);
     }
 
     &__scrim {
         position: absolute;
         inset: 0;
         background: linear-gradient(90deg,
-                    rgba(var(--gg-scrim-rgb), 0.92) 0%,
-                    rgba(var(--gg-scrim-rgb), 0.58) 40%,
-                    rgba(var(--gg-scrim-rgb), 0.06) 74%);
+                    rgba(var(--giz-scrim-rgb), 0.92) 0%,
+                    rgba(var(--giz-scrim-rgb), 0.58) 40%,
+                    rgba(var(--giz-scrim-rgb), 0.06) 74%);
     }
 
     &__art {
@@ -258,7 +258,7 @@ $tile:  var(--gg-tile);
         // The one staggered reveal on the board: kicker, title, price, button
         // arrive a beat apart, so a slide change reads as a change rather than
         // as a flicker.
-        > * { animation: gg-slide-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        > * { animation: giz-slide-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
         > *:nth-child(2) { animation-delay: 0.06s; }
         > *:nth-child(3) { animation-delay: 0.12s; }
         > *:nth-child(4) { animation-delay: 0.18s; }
@@ -269,7 +269,7 @@ $tile:  var(--gg-tile);
         font-weight: 700;
         letter-spacing: 0.24em;
         text-transform: uppercase;
-        color: var(--gg-accent);
+        color: var(--giz-accent);
     }
 
     &__title {
@@ -306,8 +306,8 @@ $tile:  var(--gg-tile);
         border: 0;
         border-radius: 99px;
         cursor: pointer;
-        background: var(--gg-accent);
-        color: var(--gg-on-accent);
+        background: var(--giz-accent);
+        color: var(--giz-on-accent);
         font-family: $font-family-header-theme-client;
         font-size: clamp(1.3rem, 1.15rem + 0.28vw, 1.6rem);
         font-weight: 700;
@@ -334,7 +334,7 @@ $tile:  var(--gg-tile);
         content: '';
         position: absolute;
         inset: 0;
-        background: rgba(var(--gg-scrim-rgb), 0.5);
+        background: rgba(var(--giz-scrim-rgb), 0.5);
     }
 
     &__art--tall {
@@ -377,21 +377,21 @@ $tile:  var(--gg-tile);
 
         // Each button sits in a wrapper of its own (see Home.razor); the wrapper is
         // invisible to the layout so the pills are the row's items.
-        .gg-hero__exe { display: contents; }
+        .giz-home-hero__exe { display: contents; }
 
-        .gg-hero__exe:first-child .giz-universal-executable {
-            background: var(--gg-accent);
+        .giz-home-hero__exe:first-child .giz-universal-executable {
+            background: var(--giz-accent);
             box-shadow: none;
-            color: var(--gg-on-accent);
+            color: var(--giz-on-accent);
 
-            &:hover { background: var(--gg-accent); filter: brightness(1.1); }
+            &:hover { background: var(--giz-accent); filter: brightness(1.1); }
         }
 
         // A lone button named after the game says "Launch" instead of repeating the
         // title. The component prints nothing in that case, and the word arrives as a
         // CSS variable set on the row, so it is still the club's language.
-        .gg-hero__exe--play .giz-universal-executable::after {
-            content: var(--gg-play-label, "Launch");
+        .giz-home-hero__exe--play .giz-universal-executable::after {
+            content: var(--giz-play-label, "Launch");
             padding-right: 0.2em;
         }
 
@@ -427,7 +427,7 @@ $tile:  var(--gg-tile);
         }
 
         // The running mark is accent coloured, invisible on the accent pill.
-        .gg-hero__exe:first-child .running { background: rgba(var(--gg-scrim-rgb), 0.85); }
+        .giz-home-hero__exe:first-child .running { background: rgba(var(--giz-scrim-rgb), 0.85); }
 
         .giz-universal-executable__description {
             width: auto;
@@ -483,7 +483,7 @@ $tile:  var(--gg-tile);
         font-weight: 600;
         letter-spacing: 0.01em;
         line-height: 1.3;
-        color: rgba(var(--gg-ink-rgb), 0.38);
+        color: rgba(var(--giz-ink-rgb), 0.38);
     }
 }
 
@@ -491,8 +491,8 @@ $tile:  var(--gg-tile);
 // answers "when does it change" - otherwise unanswered.
 //
 // The duration is held in a variable and must match SLIDE_INTERVAL in Home.razor.cs.
-.gg-dots {
-    --gg-slide: 7s;
+.giz-home-dots {
+    --giz-slide: 7s;
 
     position: absolute;
     z-index: 3;
@@ -511,7 +511,7 @@ $tile:  var(--gg-tile);
         background: rgba(255, 255, 255, 0.28);
         transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 
-        &.is-on {
+        &--on {
             width: 3.2rem;
             background: rgba(255, 255, 255, 0.18);
         }
@@ -530,25 +530,25 @@ $tile:  var(--gg-tile);
         transform-origin: left center;
 
         border-radius: inherit;
-        background: var(--gg-accent);
-        animation: gg-dot-fill var(--gg-slide) linear forwards;
+        background: var(--giz-accent);
+        animation: giz-dot-fill var(--giz-slide) linear forwards;
     }
 }
 
-@keyframes gg-dot-fill {
+@keyframes giz-dot-fill {
     from { transform: scaleX(0); }
     to   { transform: scaleX(1); }
 }
 
 // Without animation the bar simply sits filled - the dot still shows which slide is up.
 @media (prefers-reduced-motion: reduce) {
-    .gg-dots__fill { animation: none; transform: scaleX(1); }
+    .giz-home-dots__fill { animation: none; transform: scaleX(1); }
 }
 
 // News inside the hero tile, drawn by the stock AdsCarouselItem - the same component the
 // shell's own carousel uses. Only the fit is adjusted: the card fills the tile and drops
 // its own border, because the tile already is one.
-.gg-hero--news {
+.giz-home-hero--news {
     .giz-ads-carousel-item {
         position: absolute;
         inset: 0;
@@ -611,7 +611,7 @@ $tile:  var(--gg-tile);
 }
 
 // Games band
-.gg-strip {
+.giz-home-strip {
     min-width: 0;
     min-height: 0;
     display: flex;
@@ -668,7 +668,7 @@ $tile:  var(--gg-tile);
 }
 
 // TILL
-.gg-till {
+.giz-home-till {
     min-width: 0;
     min-height: 0;
     display: flex;
@@ -679,10 +679,10 @@ $tile:  var(--gg-tile);
     // that fades out within the top third. Not a glow: just enough to say this column is
     // the one that takes money.
     background:
-        linear-gradient(176deg, rgba(var(--gg-accent-rgb), 0.13) 0%, rgba(var(--gg-accent-rgb), 0) 38%),
-        var(--gg-panel);
+        linear-gradient(176deg, rgba(var(--giz-accent-rgb), 0.13) 0%, rgba(var(--giz-accent-rgb), 0) 38%),
+        var(--giz-panel);
     box-shadow:
-        inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.26),
+        inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.26),
         0 40px 80px -40px rgba(0, 0, 0, 0.95);
 
     &__sec {
@@ -704,7 +704,7 @@ $tile:  var(--gg-tile);
 
 // No rule under the balance on purpose: the "Time packages" heading right below it
 // brings its own, and two horizontals in a row read as noise.
-.gg-wallet {
+.giz-home-wallet {
     flex: none;
 
     &__row {
@@ -730,7 +730,7 @@ $tile:  var(--gg-tile);
 }
 
 // Packages
-.gg-packs {
+.giz-home-packs {
     flex: 0 1 auto;
     min-height: 0;
     display: flex;
@@ -748,7 +748,7 @@ $tile:  var(--gg-tile);
 // Price row: name, price and button on one line. The radius matches the game tiles and
 // the products ($rt). 99px pills were a fourth radius in a single column - panel, tiles,
 // pills, round buttons - which is what made the list look unassembled.
-.gg-pack {
+.giz-home-pack {
     flex: none;
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto auto;
@@ -764,7 +764,7 @@ $tile:  var(--gg-tile);
 
     &:hover {
         background: rgba(255, 255, 255, 0.07);
-        box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.36);
+        box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.36);
     }
 
     // Name and duration on one line: the duration is short and fixed, so the rest of
@@ -830,15 +830,15 @@ $tile:  var(--gg-tile);
 // accented only by its text and outline and fills under the cursor - on the row the
 // customer is already reaching for. The column stays calm and the button still reads as
 // a button.
-.gg-buy {
+.giz-home-buy {
     flex: none;
     padding: 0.85em 1.55em;
     border: 0;
     border-radius: 99px;
     cursor: pointer;
-    background: rgba(var(--gg-accent-rgb), 0.14);
-    box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.38);
-    color: var(--gg-accent-soft);
+    background: rgba(var(--giz-accent-rgb), 0.14);
+    box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.38);
+    color: var(--giz-accent-soft);
     font-family: $font-family-header-theme-client;
     font-size: clamp(1.1rem, 1.02rem + 0.16vw, 1.3rem);
     font-weight: 700;
@@ -846,21 +846,21 @@ $tile:  var(--gg-tile);
     white-space: nowrap;
     transition: background 0.16s, color 0.16s, box-shadow 0.16s, filter 0.16s;
 
-    &:focus-visible { outline: 2px solid var(--gg-accent); outline-offset: 2px; }
+    &:focus-visible { outline: 2px solid var(--giz-accent); outline-offset: 2px; }
 }
 
-.gg-pack:hover .gg-buy,
-.gg-buy:hover {
-    background: var(--gg-accent);
+.giz-home-pack:hover .giz-home-buy,
+.giz-home-buy:hover {
+    background: var(--giz-accent);
     box-shadow: none;
-    color: var(--gg-on-accent);
+    color: var(--giz-on-accent);
 }
 
-.gg-buy:hover { filter: brightness(1.08); }
+.giz-home-buy:hover { filter: brightness(1.08); }
 
 // Bar. A list, not a shelf of photographs: the thumbnail is the size of a coin, so the
 // product is recognisable without four more pictures on the board.
-.gg-bar {
+.giz-home-bar {
     display: flex;
     flex-direction: column;
 
@@ -875,9 +875,9 @@ $tile:  var(--gg-tile);
 
         &:first-child { border-top: 0; }
 
-        &:hover .gg-bar__add {
-            background: var(--gg-accent);
-            color: var(--gg-on-accent);
+        &:hover .giz-home-bar__add {
+            background: var(--giz-accent);
+            color: var(--giz-on-accent);
             box-shadow: none;
         }
     }
@@ -907,7 +907,7 @@ $tile:  var(--gg-tile);
         min-width: 0;
         font-size: $t-body;
         font-weight: 500;
-        color: rgba(var(--gg-ink-rgb), 0.88);
+        color: rgba(var(--giz-ink-rgb), 0.88);
         @include one-line;
     }
 
@@ -937,35 +937,35 @@ $tile:  var(--gg-tile);
         font-size: 1.2rem;
         transition: background 0.16s, color 0.16s, box-shadow 0.16s;
 
-        &:focus-visible { outline: 2px solid var(--gg-accent); outline-offset: 2px; }
+        &:focus-visible { outline: 2px solid var(--giz-accent); outline-offset: 2px; }
     }
 }
 
 // Height saving. A 768 line laptop panel has to give up something. It gives up padding
 // and a slice of the games band, never a whole section.
 @media (max-height: 840px) {
-    .gg-hero__body { padding-bottom: clamp(1.8rem, 2.6vh, 3rem); }
-    .gg-till { padding: clamp(1.2rem, 1.3vw, 2rem); }
-    .gg-till__sec { margin-top: calc(#{$g} * 1.1); }
-    .gg-till__sec--bar { padding-top: calc(#{$g} * 1.1); }
-    .gg-bar__thumb { width: 3rem; height: 3rem; }
-    .gg-stage { grid-template-rows: minmax(0, 2.15fr) minmax(0, 1fr); }
+    .giz-home-hero__body { padding-bottom: clamp(1.8rem, 2.6vh, 3rem); }
+    .giz-home-till { padding: clamp(1.2rem, 1.3vw, 2rem); }
+    .giz-home-till__sec { margin-top: calc(#{$g} * 1.1); }
+    .giz-home-till__sec--bar { padding-top: calc(#{$g} * 1.1); }
+    .giz-home-bar__thumb { width: 3rem; height: 3rem; }
+    .giz-home-stage { grid-template-rows: minmax(0, 2.15fr) minmax(0, 1fr); }
 }
 
 // Narrow windows. Below this the two column board stops making sense - the till would
 // be a strip. It goes under the stage, and the games band shortens to pay for it.
 @media (max-width: 1100px) {
-    .gg-board {
+    .giz-home-board {
         grid-template-columns: minmax(0, 1fr);
         grid-template-rows: minmax(0, 1.25fr) minmax(0, 1fr);
     }
 
-    .gg-strip__row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .giz-home-strip__row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
-    .gg-hero__body { max-width: 72%; }
+    .giz-home-hero__body { max-width: 72%; }
 }
 
-.gg-board {
+.giz-home-board {
     flex: 1 !important;
     min-height: 0 !important;
 

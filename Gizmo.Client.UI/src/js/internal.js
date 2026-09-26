@@ -1456,7 +1456,7 @@ window.setDocumentDirection = function setDocumentDirection(direction) {
 // Where the value comes from, in order:
 //   1. The skin's index.html: <html data-accent="blue"> - the skin's default.
 //   2. A club's own stylesheet from the Manager (the StyleSheet option, served as
-//      style.css): `:root { --gg-palette: green; }` or `:root { --gg-palette: #e11d48; }`.
+//      style.css): `:root { --giz-palette: green; }` or `:root { --giz-palette: #e11d48; }`.
 //      The property is read back off the document once that stylesheet has loaded, so
 //      a club changes its colour from the Manager without touching the skin. A Manager
 //      setting for the colour, should Gizmo add one, only has to emit that line - or
@@ -1559,7 +1559,7 @@ window.setDocumentDirection = function setDocumentDirection(direction) {
         return rgb.map(function (v) { return 255 * pct + v * (1 - pct); });
     }
 
-    // ── the rules (see _palette.scss: gg-is-red, gg-is-warm, gg-dark, gg-ink) ──
+    // ── the rules (see _palette.scss: giz-is-red, giz-is-warm, giz-dark, giz-ink) ──
     function isRed(h) { return h >= 340 || h < 12; }
     function isWarm(h) { return h >= 15 && h <= 75; }
 
@@ -1572,32 +1572,32 @@ window.setDocumentDirection = function setDocumentDirection(direction) {
         const inkMain = ink(0.95, 0.30);
 
         return {
-            "--gg-accent": css(accent),
-            "--gg-accent-rgb": triplet(accent),
-            "--gg-accent-2-rgb": triplet(rotate(accent, isRed(h) ? -8 : -22)),
-            "--gg-accent-3-rgb": triplet(rotate(accent, isRed(h) ? 16 : 28)),
-            "--gg-accent-deep": css(darken(accent, 0.22)),
-            "--gg-accent-deeper": css(darken(accent, 0.45)),
-            "--gg-accent-light": css(lighten(accent, 0.18)),
-            "--gg-accent-soft": css(lighten(accent, 0.45)),
-            "--gg-accent-pale": css(lighten(accent, 0.62)),
-            "--gg-on-accent": css(hslToRgb(h + 8, 0.59, 0.08)),
-            "--gg-ink": css(inkMain),
-            "--gg-ink-rgb": triplet(inkMain),
-            "--gg-ink-2": css(ink(0.84, 0.22)),
-            "--gg-ink-3": css(ink(0.72, 0.42)),
-            "--gg-bg-0": css(dark(0.04, 0.50)),
-            "--gg-bg-1": css(dark(0.06, 0.33)),
-            "--gg-bg-2": css(dark(0.11, 0.41)),
-            "--gg-bg-3": css(dark(0.09, 0.38)),
-            "--gg-panel": css(dark(0.12, 0.38)),
-            "--gg-tile": css(dark(0.09, 0.26)),
-            "--gg-tile-2": css(dark(0.08, 0.30)),
-            "--gg-tile-deep": css(dark(0.04, 0.45)),
-            "--gg-glass-rgb": triplet(dark(0.17, 0.32)),
-            "--gg-glass-2-rgb": triplet(dark(0.08, 0.33)),
-            "--gg-scrim-rgb": triplet(dark(0.04, 0.40)),
-            "--gg-lock-rgb": triplet(dark(0.13, 0.30))
+            "--giz-accent": css(accent),
+            "--giz-accent-rgb": triplet(accent),
+            "--giz-accent-2-rgb": triplet(rotate(accent, isRed(h) ? -8 : -22)),
+            "--giz-accent-3-rgb": triplet(rotate(accent, isRed(h) ? 16 : 28)),
+            "--giz-accent-deep": css(darken(accent, 0.22)),
+            "--giz-accent-deeper": css(darken(accent, 0.45)),
+            "--giz-accent-light": css(lighten(accent, 0.18)),
+            "--giz-accent-soft": css(lighten(accent, 0.45)),
+            "--giz-accent-pale": css(lighten(accent, 0.62)),
+            "--giz-on-accent": css(hslToRgb(h + 8, 0.59, 0.08)),
+            "--giz-ink": css(inkMain),
+            "--giz-ink-rgb": triplet(inkMain),
+            "--giz-ink-2": css(ink(0.84, 0.22)),
+            "--giz-ink-3": css(ink(0.72, 0.42)),
+            "--giz-bg-0": css(dark(0.04, 0.50)),
+            "--giz-bg-1": css(dark(0.06, 0.33)),
+            "--giz-bg-2": css(dark(0.11, 0.41)),
+            "--giz-bg-3": css(dark(0.09, 0.38)),
+            "--giz-panel": css(dark(0.12, 0.38)),
+            "--giz-tile": css(dark(0.09, 0.26)),
+            "--giz-tile-2": css(dark(0.08, 0.30)),
+            "--giz-tile-deep": css(dark(0.04, 0.45)),
+            "--giz-glass-rgb": triplet(dark(0.17, 0.32)),
+            "--giz-glass-2-rgb": triplet(dark(0.08, 0.33)),
+            "--giz-scrim-rgb": triplet(dark(0.04, 0.40)),
+            "--giz-lock-rgb": triplet(dark(0.13, 0.30))
         };
     }
 
@@ -1668,20 +1668,20 @@ window.setDocumentDirection = function setDocumentDirection(direction) {
             return true;
         },
 
-        // Applies --gg-palette and --gg-motion from whatever stylesheets are loaded.
+        // Applies --giz-palette and --giz-motion from whatever stylesheets are loaded.
         // Called after the shell starts and again whenever a stylesheet finishes
         // loading, so the club's style.css wins over the skin's default no matter
         // which arrives first.
         sync: function () {
             const computed = getComputedStyle(root);
-            const wanted = computed.getPropertyValue("--gg-palette");
+            const wanted = computed.getPropertyValue("--giz-palette");
 
             if (wanted) {
                 theme.set(wanted);
             }
 
-            // `:root { --gg-motion: on; }` turns the moving background on (_flow.scss).
-            const motion = computed.getPropertyValue("--gg-motion");
+            // `:root { --giz-motion: on; }` turns the moving background on (_flow.scss).
+            const motion = computed.getPropertyValue("--giz-motion");
 
             if (motion) {
                 theme.motion(motion);

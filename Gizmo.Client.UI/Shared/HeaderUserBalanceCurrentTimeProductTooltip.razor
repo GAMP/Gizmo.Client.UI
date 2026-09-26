@@ -2,10 +2,10 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Client.UI.View.States
 
-<div class="gg-tt">
-    <div class="gg-tt__head">
-        <div class="gg-tt__title">@ShellText.Get(ShellText.TIME_TOOLTIP_TITLE)</div>
-        <button type="button" class="gg-tt__link" @onclick="OpenDetails">
+<div class="giz-time-tooltip">
+    <div class="giz-time-tooltip__head">
+        <div class="giz-time-tooltip__title">@ShellText.Get(ShellText.TIME_TOOLTIP_TITLE)</div>
+        <button type="button" class="giz-time-tooltip__link" @onclick="OpenDetails">
             <span>@ShellText.Get(ShellText.TIME_TOOLTIP_ALL_PACKAGES)</span>
             <i class="ph-bold ph-arrow-right"></i>
         </button>
@@ -13,35 +13,35 @@
 
     @if (TimeProductsViewState.IsInitializing)
     {
-        <div class="gg-tt__wait"><Spinner /></div>
+        <div class="giz-time-tooltip__wait"><Spinner /></div>
     }
     else if (ActiveProducts.Count == 0)
     {
-        <div class="gg-tt__empty">@ShellText.Get(ShellText.TIME_TOOLTIP_EMPTY)</div>
+        <div class="giz-time-tooltip__empty">@ShellText.Get(ShellText.TIME_TOOLTIP_EMPTY)</div>
     }
     else
     {
-        <div class="gg-tt__list">
+        <div class="giz-time-tooltip__list">
             @foreach (var product in ActiveProducts)
             {
                 <div class="@RowClass(product)">
-                    <span class="gg-tt__order">@product.ActivationOrder</span>
-                    <span class="gg-tt__type"><i class="ph-fill @TimeProductText.Icon(product.TimeProductType)"></i></span>
-                    <div class="gg-tt__name">
+                    <span class="giz-time-tooltip__order">@product.ActivationOrder</span>
+                    <span class="giz-time-tooltip__type"><i class="ph-fill @TimeProductText.Icon(product.TimeProductType)"></i></span>
+                    <div class="giz-time-tooltip__name">
                         <b>@TimeProductText.Name(product)</b>
                         <small>
                             @ShellText.Get(TimeProductText.TypeKey(product.TimeProductType))
                             @if (product.InCredit)
                             {
-                                <span class="gg-tt__credit-mark">@ShellText.Get(ShellText.TIME_IN_CREDIT)</span>
+                                <span class="giz-time-tooltip__credit-mark">@ShellText.Get(ShellText.TIME_IN_CREDIT)</span>
                             }
                         </small>
                     </div>
-                    <div class="gg-tt__stat">
+                    <div class="giz-time-tooltip__stat">
                         <small>@ShellText.Get(ShellText.TIME_TOOLTIP_LEFT)</small>
                         <b>@TimeProductText.Span(product.RemainingTime)</b>
                     </div>
-                    <div class="gg-tt__stat">
+                    <div class="giz-time-tooltip__stat">
                         <small>@ShellText.Get(ShellText.TIME_TOOLTIP_SPENDABLE)</small>
                         <b>@TimeProductText.Span(product.UsableTime)</b>
                     </div>
@@ -52,8 +52,8 @@
 
     @if (SessionWillNotExpire)
     {
-        <div class="gg-tt__foot">
-            <div class="gg-tt__note">
+        <div class="giz-time-tooltip__foot">
+            <div class="giz-time-tooltip__note">
                 <i class="ph-fill ph-infinity"></i>
                 <div>
                     <b>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_SESSION_WILL_NOT_EXPIRE_MESSAGE))</b>
@@ -62,7 +62,7 @@
             </div>
             @if (HasActions)
             {
-                <div class="gg-tt__actions">
+                <div class="giz-time-tooltip__actions">
                     @if (CanTopUp)
                     {
                         <button type="button" class="@TopUpButtonClass" @onclick="OpenUserOnlineDeposit" @onclick:stopPropagation="true">
@@ -72,7 +72,7 @@
                     }
                     @if (CanShop)
                     {
-                        <button type="button" class="gg-tt__btn gg-tt__btn--primary" @onclick="OpenShop">
+                        <button type="button" class="giz-time-tooltip__btn giz-time-tooltip__btn--primary" @onclick="OpenShop">
                             <i class="ph-fill ph-package"></i>
                             <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_GO_TO_SHOP))</span>
                         </button>
@@ -83,7 +83,7 @@
     }
     else if (SessionWillExpire)
     {
-        <div class="gg-tt__foot">
+        <div class="giz-time-tooltip__foot">
             <div class="@ExpireNoteClass">
                 <i class="ph-fill @ExpireNoteIcon"></i>
                 <div>
@@ -96,7 +96,7 @@
             </div>
             @if (HasActions)
             {
-                <div class="gg-tt__actions">
+                <div class="giz-time-tooltip__actions">
                     @if (CanTopUp)
                     {
                         <button type="button" class="@TopUpButtonClass" @onclick="OpenUserOnlineDeposit" @onclick:stopPropagation="true">
@@ -106,7 +106,7 @@
                     }
                     @if (CanShop)
                     {
-                        <button type="button" class="gg-tt__btn gg-tt__btn--primary" @onclick="OpenShop">
+                        <button type="button" class="giz-time-tooltip__btn giz-time-tooltip__btn--primary" @onclick="OpenShop">
                             <i class="ph-fill ph-package"></i>
                             <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_GO_TO_SHOP))</span>
                         </button>
@@ -117,8 +117,8 @@
     }
     else if (ShowCreditNote)
     {
-        <div class="gg-tt__foot">
-            <div class="gg-tt__note">
+        <div class="giz-time-tooltip__foot">
+            <div class="giz-time-tooltip__note">
                 <i class="ph-fill ph-hand-coins"></i>
                 <div><b>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_CREDIT))</b></div>
             </div>

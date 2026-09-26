@@ -4,21 +4,21 @@
 // At rest only the poster and the caption plate are visible; hover dims the poster and
 // reveals the launch shortcuts, with exactly one accent - whatever can be clicked.
 //
-// --gg-card-bg and --gg-card-image-bg stay as theming entry points.
+// --giz-card-bg and --giz-card-image-bg stay as theming entry points.
 
 $ac-r:     2rem;                                        // card radius
 $ac-pad:   0.9rem;                                      // inset for the plates
-$ac-ink:   var(--gg-ink);
-$ac-ink-2: rgba(var(--gg-ink-rgb), 0.62);
-$ac-ink-3: rgba(var(--gg-ink-rgb), 0.4);
-$ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and pill background
+$ac-ink:   var(--giz-ink);
+$ac-ink-2: rgba(var(--giz-ink-rgb), 0.62);
+$ac-ink-3: rgba(var(--giz-ink-rgb), 0.4);
+$ac-plate: rgba(var(--giz-scrim-rgb), 0.86);                       // plate and pill background
 
 .giz-app-card {
     position: relative;
     max-width: 100%;
     overflow: hidden;
     border-radius: $ac-r;
-    background: var(--gg-card-bg, var(--gg-tile));
+    background: var(--giz-card-bg, var(--giz-tile));
     transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.2s;
 
     &:hover {
@@ -40,7 +40,7 @@ $ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and p
         transition: box-shadow 0.2s;
     }
 
-    &:hover::after { box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.5); }
+    &:hover::after { box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.5); }
 
     &__content {
         position: relative;
@@ -58,7 +58,7 @@ $ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and p
             // 2:3 - the shape game covers ship in (600x900)
             aspect-ratio: 2 / 3;
             overflow: hidden;
-            background: var(--gg-card-image-bg, linear-gradient(160deg, var(--gg-bg-2) 0%, var(--gg-bg-3) 55%, var(--gg-tile-deep) 100%));
+            background: var(--giz-card-image-bg, linear-gradient(160deg, var(--giz-bg-2) 0%, var(--giz-bg-3) 55%, var(--giz-tile-deep) 100%));
 
             // Cover fills the card and is cropped to 3:4. Showing it whole needs either
             // letterboxing or a per-card height, and per-card heights stagger the rows -
@@ -112,7 +112,7 @@ $ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and p
                 flex: none;
                 width: 0;
                 height: 0;
-                border-left: 0.85rem solid var(--gg-accent);
+                border-left: 0.85rem solid var(--giz-accent);
                 border-top: 0.52rem solid transparent;
                 border-bottom: 0.52rem solid transparent;
             }
@@ -177,7 +177,7 @@ $ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and p
         .giz-app-card__content__image__hovered {
             // Thin veil only: the filter already dims the cover, this just evens the
             // tone under the captions.
-            background: linear-gradient(180deg, rgba(var(--gg-scrim-rgb), 0.28), rgba(var(--gg-scrim-rgb), 0.5));
+            background: linear-gradient(180deg, rgba(var(--giz-scrim-rgb), 0.28), rgba(var(--giz-scrim-rgb), 0.5));
 
             .giz-app-card__content--hovered {
                 opacity: 1;
@@ -219,12 +219,12 @@ $ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and p
         i { font-size: 1.5rem; }
 
         &:hover {
-            background: var(--gg-accent);
+            background: var(--giz-accent);
             box-shadow: none;
-            color: var(--gg-on-accent);
+            color: var(--giz-on-accent);
         }
 
-        &:focus-visible { outline: 2px solid var(--gg-accent); outline-offset: 2px; }
+        &:focus-visible { outline: 2px solid var(--giz-accent); outline-offset: 2px; }
     }
 
     &-text {
@@ -291,7 +291,7 @@ $ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and p
         border-radius: 0.9rem;
         // Dark fill rather than a lightening one: a light film over a bright part of the
         // cover left white text with almost no contrast.
-        background: rgba(var(--gg-scrim-rgb), 0.72);
+        background: rgba(var(--giz-scrim-rgb), 0.72);
         box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
         transition: background 0.16s, box-shadow 0.16s, transform 0.16s, filter 0.16s;
 
@@ -347,21 +347,21 @@ $ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and p
         }
 
         &:hover {
-            background: var(--gg-accent);
+            background: var(--giz-accent);
             box-shadow: none;
             transform: translateY(-1px);
 
-            .giz-universal-executable__description__exe { color: var(--gg-on-accent); font-weight: 700; }
-            &::after { border-left-color: var(--gg-on-accent); }
+            .giz-universal-executable__description__exe { color: var(--giz-on-accent); font-weight: 700; }
+            &::after { border-left-color: var(--giz-on-accent); }
         }
 
         // A single shortcut is the button itself - there is nothing to pick from.
         &:only-child {
-            background: var(--gg-accent);
+            background: var(--giz-accent);
             box-shadow: none;
 
-            .giz-universal-executable__description__exe { color: var(--gg-on-accent); font-weight: 700; }
-            &::after { border-left-color: var(--gg-on-accent); }
+            .giz-universal-executable__description__exe { color: var(--giz-on-accent); font-weight: 700; }
+            &::after { border-left-color: var(--giz-on-accent); }
 
             &:hover { filter: brightness(1.1); }
         }
@@ -387,9 +387,9 @@ $ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and p
     align-items: center;
     padding: 0.4rem 0.8rem;
     border-radius: 1.2rem;
-    background: rgba(var(--gg-accent-rgb), 0.08);
-    border: 1px solid rgba(var(--gg-accent-rgb), 0.2);
-    color: var(--gg-accent);
+    background: rgba(var(--giz-accent-rgb), 0.08);
+    border: 1px solid rgba(var(--giz-accent-rgb), 0.2);
+    color: var(--giz-accent);
     opacity: 0.9;
     @include font-s-theme-client($font-weight-light-theme-client);
 

@@ -5,30 +5,30 @@
    here - the password. Contact details are read-only in the client on purpose: the
    club verifies them at the counter. *@
 <AccountFrame>
-    <div class="gg-account__grid">
+    <div class="giz-account__grid">
 
-        <section class="gg-card">
-            <div class="gg-card__head">
+        <section class="giz-account-card">
+            <div class="giz-account-card__head">
                 <i class="ph-fill ph-address-book"></i>
                 <h2>@ShellText.Get(ShellText.USER_CONTACT_INFO)</h2>
             </div>
-            <div class="gg-card__fields">
-                <div class="gg-field">
+            <div class="giz-account-card__fields">
+                <div class="giz-account-field">
                     <small>@ShellText.Get(ShellText.GEN_EMAIL_ADDRESS)</small>
                     @if (string.IsNullOrWhiteSpace(ViewState.Email))
                     {
-                        <span class="gg-field__empty">@ShellText.Get(ShellText.ACCOUNT_NOT_SET)</span>
+                        <span class="giz-account-field__empty">@ShellText.Get(ShellText.ACCOUNT_NOT_SET)</span>
                     }
                     else
                     {
                         <b>@ViewState.Email</b>
                     }
                 </div>
-                <div class="gg-field">
+                <div class="giz-account-field">
                     <small>@ShellText.Get(ShellText.GEN_PHONE)</small>
                     @if (string.IsNullOrWhiteSpace(ViewState.MobilePhone))
                     {
-                        <span class="gg-field__empty">@ShellText.Get(ShellText.ACCOUNT_NOT_SET)</span>
+                        <span class="giz-account-field__empty">@ShellText.Get(ShellText.ACCOUNT_NOT_SET)</span>
                     }
                     else
                     {
@@ -36,23 +36,23 @@
                     }
                 </div>
             </div>
-            <p class="gg-card__note">@ShellText.Get(ShellText.ACCOUNT_CONTACTS_NOTE)</p>
+            <p class="giz-account-card__note">@ShellText.Get(ShellText.ACCOUNT_CONTACTS_NOTE)</p>
         </section>
 
-        <section class="gg-card">
-            <div class="gg-card__head">
+        <section class="giz-account-card">
+            <div class="giz-account-card__head">
                 <i class="ph-fill ph-shield-check"></i>
                 <h2>@ShellText.Get(ShellText.USER_SECURITY)</h2>
             </div>
-            <div class="gg-card__fields">
-                <div class="gg-field">
+            <div class="giz-account-card__fields">
+                <div class="giz-account-field">
                     <small>@ShellText.Get(ShellText.GEN_PASSWORD)</small>
-                    <b class="gg-field__secret">••••••••</b>
+                    <b class="giz-account-field__secret">••••••••</b>
                 </div>
             </div>
-            <p class="gg-card__note">@ShellText.Get(ShellText.ACCOUNT_PASSWORD_NOTE)</p>
-            <div class="gg-card__actions">
-                <button type="button" class="gg-btn" @onclick="OnClickChangePasswordButtonHandler">
+            <p class="giz-account-card__note">@ShellText.Get(ShellText.ACCOUNT_PASSWORD_NOTE)</p>
+            <div class="giz-account-card__actions">
+                <button type="button" class="giz-account-button" @onclick="OnClickChangePasswordButtonHandler">
                     <i class="ph-bold ph-key"></i>
                     <span>@ShellText.Get(ShellText.USER_CHANGE_PASSWORD)</span>
                 </button>
@@ -65,6 +65,6 @@
        on the right. Support asks for it when something looks wrong; nobody else looks. *@
     @if (!string.IsNullOrEmpty(ShellVersion.Grafit))
     {
-        <div class="gg-account__version">Grafit @ShellVersion.Grafit</div>
+        <div class="giz-account__version">Grafit @ShellVersion.Grafit</div>
     }
 </AccountFrame>

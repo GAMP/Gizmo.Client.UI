@@ -9,7 +9,7 @@ namespace Gizmo.Client.UI.Services
     /// <para>
     /// The palette is chosen on the page: the <c>data-accent</c> attribute on
     /// <c>&lt;html&gt;</c>, written by <c>grafitTheme</c> in internal.js from the skin's
-    /// index.html or from a club's stylesheet (<c>--gg-palette</c>). The notifications
+    /// index.html or from a club's stylesheet (<c>--giz-palette</c>). The notifications
     /// window is a separate WebView with its own document and no club stylesheet, so it
     /// cannot find the word by itself; the main window publishes what it resolved here
     /// and the notifications host applies it. Both roots share this process, which is

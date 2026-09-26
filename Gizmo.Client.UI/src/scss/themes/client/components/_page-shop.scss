@@ -1,14 +1,14 @@
 //=============== Page Shop ================//
 
-$gg-sidebar-w: 17rem;
-$gg-cart-w:    50rem;
+$giz-sidebar-w: 17rem;
+$giz-cart-w:    50rem;
 
 .giz-shop {
     display: grid;
     // GGBook's V2 shop had a third column for their category sidebar. V3 keeps
     // categories as horizontal tabs inside __products, so the grid is two
     // columns here - products and cart - matching the actual V3 markup.
-    grid-template-columns: 1fr $gg-cart-w;
+    grid-template-columns: 1fr $giz-cart-w;
     height: 100%;
     overflow: hidden;
     flex-grow: 1;
@@ -60,14 +60,14 @@ $gg-cart-w:    50rem;
                 align-items: center;
                 gap: 0.9rem;
             }
-            color: var(--gg-ink-3);
+            color: var(--giz-ink-3);
             font-weight: 600;
             cursor: pointer;
             transition: filter 0.16s, background 0.16s, color 0.16s;
 
             i {
                 font-size: 1.8rem;
-                color: var(--gg-ink-3);
+                color: var(--giz-ink-3);
                 transition: color 0.16s;
             }
 
@@ -80,8 +80,8 @@ $gg-cart-w:    50rem;
             // still draws a ::before underline bar on .active, so it has to
             // be killed explicitly here rather than just left unstyled.
             &.active {
-                background: linear-gradient(135deg, var(--gg-accent-light), var(--gg-accent-deep));
-                box-shadow: 0 8px 20px -10px rgba(var(--gg-accent-rgb), 0.7);
+                background: linear-gradient(135deg, var(--giz-accent-light), var(--giz-accent-deep));
+                box-shadow: 0 8px 20px -10px rgba(var(--giz-accent-rgb), 0.7);
                 color: #fff;
 
                 &::before {
@@ -113,7 +113,7 @@ $gg-cart-w:    50rem;
             padding: 1.6rem;
             height: 100%;
             overflow: auto;
-            @include gg-scroll-fade;
+            @include giz-scroll-fade;
 
             .giz-section {
                 margin-top: 2rem;
