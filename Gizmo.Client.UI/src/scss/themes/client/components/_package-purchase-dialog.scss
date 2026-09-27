@@ -1,10 +1,10 @@
 
 $buy-w:      52rem;
 $buy-ink:    var(--giz-ink);
-$buy-ink-2:  rgba(var(--giz-ink-rgb), 0.62);
-$buy-ink-3:  rgba(var(--giz-ink-rgb), 0.4);
-$buy-cap:    rgba(var(--giz-ink-rgb), 0.42);
-$buy-line:   rgba(var(--giz-white-rgb), 0.07);
+$buy-ink-2:  var(--giz-text-2);
+$buy-ink-3:  var(--giz-text-3);
+$buy-cap:    var(--giz-text-3);
+$buy-line:   var(--giz-glass-6);
 $buy-r:      2.2rem;
 $buy-rt:     1.4rem;
 $buy-red:    var(--giz-danger-soft);
@@ -20,9 +20,9 @@ $buy-on-accent: var(--giz-on-accent);
 
 @mixin buy-cap {
     font-family: $font-family-header-theme-client;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     color: $buy-cap;
 }
@@ -87,12 +87,11 @@ $buy-on-accent: var(--giz-on-accent);
         cursor: pointer;
         font-size: 1.6rem;
         color: $buy-ink-2;
-        background: rgba(var(--giz-white-rgb), 0.06);
+        background: var(--giz-glass-5);
         transition: background 0.16s, color 0.16s;
 
-        &:hover:not(:disabled) { background: rgba(var(--giz-white-rgb), 0.12); color: $buy-ink; }
+        &:hover:not(:disabled) { background: var(--giz-glass-10); color: $buy-ink; }
         &:disabled { opacity: 0.4; cursor: default; }
-        &:focus-visible { outline: 2px solid var(--giz-accent); outline-offset: 2px; }
     }
 
     &__title {
@@ -134,7 +133,7 @@ $buy-on-accent: var(--giz-on-accent);
         padding: 0.4rem;
         border-radius: 1.5rem;
         background: rgba(var(--giz-black-rgb), 0.26);
-        box-shadow: inset 0 0 0 1px rgba(var(--giz-white-rgb), 0.06), inset 0 1px 2px rgba(var(--giz-black-rgb), 0.35);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-5), inset 0 1px 2px rgba(var(--giz-black-rgb), 0.35);
     }
 
     &__seg-item {
@@ -153,7 +152,7 @@ $buy-on-accent: var(--giz-on-accent);
         transition: background 0.16s, color 0.16s, box-shadow 0.16s;
 
         &:hover:not(:disabled):not(.giz-buy__seg-item--on) {
-            background: rgba(var(--giz-white-rgb), 0.05);
+            background: var(--giz-glass-4);
             color: $buy-ink;
         }
 
@@ -162,12 +161,11 @@ $buy-on-accent: var(--giz-on-accent);
             background: linear-gradient(180deg, rgba(var(--giz-accent-rgb), 0.34), rgba(var(--giz-accent-rgb), 0.2));
             box-shadow:
                 inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.62),
-                inset 0 1px 0 rgba(var(--giz-white-rgb), 0.14),
+                inset 0 1px 0 var(--giz-glass-11),
                 0 10px 24px -14px rgba(var(--giz-accent-rgb), 0.9);
         }
 
         &:disabled { cursor: default; }
-        &:focus-visible { outline: 2px solid var(--giz-accent); outline-offset: 2px; }
     }
 
     &__seg-name {
@@ -214,12 +212,12 @@ $buy-on-accent: var(--giz-on-accent);
         font-size: 1.25rem;
         font-weight: 600;
         color: $buy-ink-2;
-        background: rgba(var(--giz-white-rgb), 0.06);
-        box-shadow: inset 0 0 0 1px rgba(var(--giz-white-rgb), 0.1);
+        background: var(--giz-glass-5);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-9);
         @include buy-one-line;
         transition: background 0.16s, color 0.16s, box-shadow 0.16s;
 
-        &:hover:not(:disabled):not(.giz-buy__chip--on) { background: rgba(var(--giz-white-rgb), 0.1); color: $buy-ink; }
+        &:hover:not(:disabled):not(.giz-buy__chip--on) { background: var(--giz-glass-9); color: $buy-ink; }
 
         &--on {
             color: var(--giz-white);
@@ -228,7 +226,6 @@ $buy-on-accent: var(--giz-on-accent);
         }
 
         &:disabled { cursor: default; }
-        &:focus-visible { outline: 2px solid var(--giz-accent); outline-offset: 2px; }
     }
 
     // One way only: a line, not a chooser with a single cell.
@@ -456,13 +453,12 @@ $buy-on-accent: var(--giz-on-accent);
         font-weight: 700;
         letter-spacing: 0.02em;
         color: $buy-ink-2;
-        background: rgba(var(--giz-white-rgb), 0.06);
-        box-shadow: inset 0 0 0 1px rgba(var(--giz-white-rgb), 0.1);
+        background: var(--giz-glass-5);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-9);
         transition: background 0.16s, color 0.16s, filter 0.16s, opacity 0.16s;
 
-        &:hover:not(:disabled) { background: rgba(var(--giz-white-rgb), 0.1); color: $buy-ink; }
+        &:hover:not(:disabled) { background: var(--giz-glass-9); color: $buy-ink; }
         &:disabled { cursor: default; opacity: 0.45; }
-        &:focus-visible { outline: 2px solid var(--giz-white); outline-offset: 2px; }
 
         // The one filled button on the card, in the accent of the hero call to action.
         &--primary {
@@ -478,7 +474,13 @@ $buy-on-accent: var(--giz-on-accent);
                 filter: brightness(1.08);
             }
 
-            &:disabled { opacity: 0.35; }
+            &:disabled { @include giz-action-off; }
+
+            &.giz-buy__btn--busy {
+                background: var(--giz-action-bg);
+                color: $buy-on-accent;
+                opacity: 0.85;
+            }
 
             .giz-animate-spinner {
                 width: 2rem;

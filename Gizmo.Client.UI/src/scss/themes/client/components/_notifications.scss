@@ -69,8 +69,8 @@
 }
 
 $nt-ink:   var(--giz-ink);
-$nt-ink-2: rgba(var(--giz-ink-rgb), 0.66);
-$nt-ink-3: rgba(var(--giz-ink-rgb), 0.42);
+$nt-ink-2: var(--giz-text-2);
+$nt-ink-3: var(--giz-text-3);
 
 @mixin notification-card {
     --nt-rgb: var(--giz-accent-rgb);
@@ -90,7 +90,7 @@ $nt-ink-3: rgba(var(--giz-ink-rgb), 0.42);
     background: var(--giz-panel);
     border: 1px solid rgba(var(--giz-white-rgb), 0.11);
     box-shadow:
-        inset 0 1px 0 rgba(var(--giz-white-rgb), 0.08),
+        inset 0 1px 0 var(--giz-glass-7),
         0 0.6rem 1.6rem -0.8rem rgba(var(--giz-black-rgb), 0.6);
     color: $nt-ink;
 
@@ -193,7 +193,7 @@ $nt-ink-3: rgba(var(--giz-ink-rgb), 0.42);
     transition: background 0.15s, color 0.15s;
 
     &:hover {
-        background: rgba(var(--giz-white-rgb), 0.08);
+        background: var(--giz-glass-7);
         color: $nt-ink;
     }
 }
@@ -202,8 +202,8 @@ $nt-ink-3: rgba(var(--giz-ink-rgb), 0.42);
     height: 3.8rem;
     padding: 0 1.6rem;
     border-radius: 1.2rem;
-    border: 1px solid rgba(var(--giz-white-rgb), 0.14);
-    background: rgba(var(--giz-white-rgb), 0.06);
+    border: 1px solid var(--giz-glass-11);
+    background: var(--giz-glass-5);
     color: $nt-ink;
     font-family: $font-family-header-theme-client;
     font-size: 1.3rem;
@@ -213,7 +213,7 @@ $nt-ink-3: rgba(var(--giz-ink-rgb), 0.42);
     transition: background 0.15s, filter 0.15s;
 
     &:hover:not(:disabled) {
-        background: rgba(var(--giz-white-rgb), 0.1);
+        background: var(--giz-glass-9);
     }
 
     &:disabled {
@@ -222,12 +222,12 @@ $nt-ink-3: rgba(var(--giz-ink-rgb), 0.42);
     }
 
     &--primary {
-        background: linear-gradient(135deg, var(--giz-accent-light), var(--giz-accent-deep));
+        background: var(--giz-action-bg);
         border-color: transparent;
-        color: var(--giz-on-accent);
+        color: var(--giz-action-ink);
 
         &:hover:not(:disabled) {
-            background: linear-gradient(135deg, var(--giz-accent-light), var(--giz-accent-deep));
+            background: var(--giz-action-bg);
             filter: brightness(1.08);
         }
     }

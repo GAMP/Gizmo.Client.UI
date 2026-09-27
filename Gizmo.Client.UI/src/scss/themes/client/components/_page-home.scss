@@ -4,18 +4,18 @@ $g:  clamp(0.8rem, 0.45rem + 0.6vw, 1.6rem);
 $r:  clamp(1.2rem, 0.8rem + 0.5vw, 2rem);
 $rt: clamp(0.9rem, 0.62rem + 0.36vw, 1.4rem);
 
-$t-cap:   clamp(0.98rem, 0.93rem + 0.08vw, 1.14rem);
+$t-cap:   clamp(1.1rem, 1.02rem + 0.08vw, 1.2rem);
 $t-body:  clamp(1.3rem, 1.2rem + 0.2vw, 1.5rem);
 $t-name:  clamp(1.4rem, 1.24rem + 0.3vw, 1.8rem);
 $t-sum:   clamp(2.6rem, 1.9rem + 1.5vw, 4.2rem);
 $t-hero:  clamp(2.8rem, 1.9rem + 2.1vw, 5.4rem);
 
 $ink:    var(--giz-ink);
-$ink-2:  rgba(var(--giz-ink-rgb), 0.62);
-$ink-3:  rgba(var(--giz-ink-rgb), 0.34);
-$ink-cap: rgba(var(--giz-ink-rgb), 0.42);
-$line:   rgba(var(--giz-white-rgb), 0.07);
-$line-2: rgba(var(--giz-white-rgb), 0.16);
+$ink-2:  var(--giz-text-2);
+$ink-3:  var(--giz-text-3);
+$ink-cap: var(--giz-text-3);
+$line:   var(--giz-glass-6);
+$line-2: var(--giz-glass-12);
 
 $panel: var(--giz-tile-2);
 $tile:  var(--giz-tile);
@@ -112,19 +112,32 @@ $tile:  var(--giz-tile);
 
     a {
         flex: none;
-        color: inherit;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+        margin: -0.6rem -0.9rem;
+        padding: 0.6rem 0.9rem;
+        border-radius: $giz-r-pill;
+        color: var(--giz-accent-soft);
         text-decoration: none;
         letter-spacing: 0.1em;
-        transition: color 0.16s;
+        transition: color 0.16s, background 0.16s;
 
-        &:hover { color: $ink; }
+        &::after { content: "\2192"; letter-spacing: 0; }
+
+        &:hover {
+            color: $ink;
+            background: var(--giz-action-quiet-bg);
+        }
     }
 }
 
 .giz-home-empty {
     flex: 1;
     display: grid;
-    place-items: center;
+    place-content: center;
+    justify-items: center;
+    gap: 0.8rem;
     border-radius: $r;
     @include hairline;
     font-size: $t-body;
@@ -132,7 +145,21 @@ $tile:  var(--giz-tile);
     text-align: center;
     padding: $g;
 
-    &--small { flex: none; padding: calc(#{$g} * 1.6) $g; }
+    // Phosphor "tray".
+    &::before {
+        content: "\e4aa";
+        font-family: "Phosphor";
+        font-size: 3.2rem;
+        line-height: 1;
+        color: var(--giz-text-off);
+    }
+
+    &--small {
+        flex: none;
+        padding: calc(#{$g} * 1.6) $g;
+
+        &::before { font-size: 2.2rem; }
+    }
 }
 
 // HERO
@@ -187,7 +214,7 @@ $tile:  var(--giz-tile);
         border-radius: $rt;
         overflow: hidden;
         background: $tile;
-        box-shadow: 0 24px 60px -20px rgba(var(--giz-black-rgb), 0.85), inset 0 0 0 1px rgba(var(--giz-white-rgb), 0.1);
+        box-shadow: 0 24px 60px -20px rgba(var(--giz-black-rgb), 0.85), inset 0 0 0 1px var(--giz-glass-9);
 
         img {
             width: 100%;
@@ -277,7 +304,6 @@ $tile:  var(--giz-tile);
         &:hover { filter: brightness(1.1); transform: translateY(-1px); }
         &:active { transform: none; }
 
-        &:focus-visible { outline: 2px solid var(--giz-white); outline-offset: 2px; }
     }
 
     &--app &__bg img {
@@ -303,86 +329,15 @@ $tile:  var(--giz-tile);
         align-items: center;
         gap: 0.8rem;
 
-        .giz-universal-executable {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.8em;
-            max-width: 100%;
-            padding: 0.4em 1.4em 0.4em 0.4em;
-            border-radius: 99px;
-            cursor: pointer;
-            background: rgba(var(--giz-white-rgb), 0.08);
-            box-shadow: inset 0 0 0 1px rgba(var(--giz-white-rgb), 0.14);
-            color: $ink;
-            font-family: $font-family-header-theme-client;
-            font-size: clamp(1.3rem, 1.15rem + 0.28vw, 1.6rem);
-            font-weight: 700;
-            letter-spacing: 0.02em;
-            transition: background 0.16s, filter 0.16s, transform 0.16s;
-
-            &::before { display: none; }
-
-            &:hover { background: rgba(var(--giz-white-rgb), 0.14); transform: translateY(-1px); }
-            &:active { transform: none; }
-        }
+        .giz-universal-executable { @include giz-launch-pill; }
 
         .giz-home-hero__exe { display: contents; }
 
-        .giz-home-hero__exe:first-child .giz-universal-executable {
-            background: var(--giz-accent);
-            box-shadow: none;
-            color: var(--giz-on-accent);
-
-            &:hover { background: var(--giz-accent); filter: brightness(1.1); }
-        }
+        .giz-home-hero__exe:first-child .giz-universal-executable { @include giz-launch-pill-primary; }
 
         .giz-home-hero__exe--play .giz-universal-executable::after {
             content: var(--giz-play-label, "Launch");
             padding-right: 0.2em;
-        }
-
-        .giz-universal-executable__icon {
-            width: 2.9em;
-            height: 2.9em;
-            flex: none;
-            border-radius: 50%;
-            overflow: hidden;
-            background: rgba(var(--giz-black-rgb), 0.25);
-
-            img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-
-            .giz-default-image img {
-                width: 60%;
-                height: auto;
-                opacity: 0.5;
-            }
-        }
-
-        .giz-universal-executable-progress-bar {
-            left: 18%;
-            right: 18%;
-            bottom: 0.32em;
-            width: auto;
-        }
-
-        // The running mark is accent coloured, invisible on the accent pill.
-        .giz-home-hero__exe:first-child .running { background: rgba(var(--giz-scrim-rgb), 0.85); }
-
-        .giz-universal-executable__description {
-            width: auto;
-            min-width: 0;
-            padding: 0;
-        }
-
-        .giz-universal-executable__description__exe {
-            max-width: 24rem;
-            font: inherit;
-            color: inherit;
-            @include one-line;
         }
     }
 
@@ -403,8 +358,7 @@ $tile:  var(--giz-tile);
         letter-spacing: 0.02em;
         transition: color 0.16s, background 0.16s;
 
-        &:hover { color: $ink; background: rgba(var(--giz-white-rgb), 0.06); }
-        &:focus-visible { outline: 2px solid var(--giz-white); outline-offset: 2px; }
+        &:hover { color: $ink; background: var(--giz-glass-5); }
     }
 
     &--empty {
@@ -414,7 +368,7 @@ $tile:  var(--giz-tile);
         padding: 0 calc(#{$g} * 2);
         text-align: center;
         background:
-            repeating-linear-gradient(58deg, rgba(var(--giz-white-rgb), 0.02) 0 1px, rgba(var(--giz-white-rgb), 0) 1px 9px),
+            repeating-linear-gradient(58deg, var(--giz-glass-1) 0 1px, rgba(var(--giz-white-rgb), 0) 1px 9px),
             $tile;
     }
 
@@ -424,7 +378,19 @@ $tile:  var(--giz-tile);
         font-weight: 600;
         letter-spacing: 0.01em;
         line-height: 1.3;
-        color: rgba(var(--giz-ink-rgb), 0.38);
+        color: var(--giz-text-3);
+
+        // Phosphor "sparkle".
+        &::before {
+            content: "\e6a2";
+            display: block;
+            margin-bottom: 1.6rem;
+            font-family: "Phosphor";
+            font-size: 4.8rem;
+            font-weight: normal;
+            line-height: 1;
+            color: rgba(var(--giz-accent-rgb), 0.55);
+        }
     }
 }
 
@@ -438,6 +404,9 @@ $tile:  var(--giz-tile);
     display: flex;
     align-items: center;
     gap: 0.7rem;
+    padding: 0.7rem 0.9rem;
+    border-radius: $giz-r-pill;
+    background: rgba(var(--giz-scrim-rgb), 0.45);
 
     &__dot {
         position: relative;
@@ -532,9 +501,54 @@ $tile:  var(--giz-tile);
         }
     }
 
-    .giz-ads-carousel-item__content__body img {
-        max-width: 100%;
-        max-height: 100%;
+    .giz-ads-carousel-item__content:not(.giz-ads-carousel-item__content--custom) {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-start;
+        padding: 0 clamp(2.4rem, 3vw, 6rem) clamp(2.4rem, 3.4vh, 5rem);
+        background: linear-gradient(0deg, rgba(var(--giz-scrim-rgb), 0.88) 0%, rgba(var(--giz-scrim-rgb), 0.5) 38%, transparent 66%);
+        font-size: $t-name;
+        line-height: 1.45;
+        color: var(--giz-text-2);
+    }
+
+    .giz-ads-carousel-item__content__body {
+        max-width: 58%;
+
+        > * { margin: 0; }
+        > * + * { margin-top: 0.5em; }
+
+        h1, h2, h3, h4 {
+            font-family: $font-family-header-theme-client;
+            font-size: $t-hero;
+            font-weight: 800;
+            line-height: 1.02;
+            letter-spacing: -0.025em;
+            color: var(--giz-text-1);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    }
+
+    .giz-ads-carousel-item__content__actions {
+        position: static;
+        margin-top: calc(#{$g} * 1.5);
+        gap: $g;
+
+        &:not(:has(.giz-button)) { display: none; }
+
+        .giz-button--fill.primary:not(.disabled) {
+            border: 0;
+            @include giz-action-primary;
+        }
     }
 }
 
@@ -580,10 +594,13 @@ $tile:  var(--giz-tile);
 
     // With no top row, the launch overlay need not reserve space for one.
     .giz-app-card__content__image__hovered { padding: calc(#{$g} * 0.7); }
+
+    .giz-app-card:hover .giz-app-card__content__details { opacity: 0; }
 }
 
 // TILL
 .giz-home-till {
+    container: giz-till / inline-size;
     min-width: 0;
     min-height: 0;
     display: flex;
@@ -640,6 +657,8 @@ $tile:  var(--giz-tile);
     flex-direction: column;
     gap: calc(#{$g} * 0.85);
     @include quiet-scroll;
+    @include giz-scroll-fade(3.2rem);
+    padding-bottom: 3.2rem;
     margin-right: calc(-1 * (0.4rem + #{$g} * 0.6));
 }
 
@@ -653,20 +672,13 @@ $tile:  var(--giz-tile);
     padding-left: calc(#{$g} * 1.1);
     border-radius: $rt;
     cursor: pointer;
-    background: rgba(var(--giz-white-rgb), 0.04);
+    background: var(--giz-glass-3);
     @include hairline;
     transition: background 0.18s, box-shadow 0.18s;
 
     &:hover {
-        background: rgba(var(--giz-white-rgb), 0.07);
+        background: var(--giz-glass-6);
         box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.36);
-    }
-
-    &__info {
-        min-width: 0;
-        display: flex;
-        align-items: baseline;
-        gap: 0.7rem;
     }
 
     &__name {
@@ -677,23 +689,6 @@ $tile:  var(--giz-tile);
         letter-spacing: -0.005em;
         color: $ink;
         @include one-line;
-    }
-
-    &__dur {
-        flex: none;
-        font-family: $font-family-numeric-theme-client;
-        font-size: $t-cap;
-        font-weight: 600;
-        letter-spacing: 0.05em;
-        color: $ink-3;
-        white-space: nowrap;
-
-        // Separator dot instead of a second line.
-        &::before {
-            content: '·';
-            margin-right: 0.7rem;
-            color: $ink-3;
-        }
     }
 
     // Never shrinks or clips: a clipped price is worse than no price.
@@ -722,7 +717,9 @@ $tile:  var(--giz-tile);
 
 .giz-home-buy {
     flex: none;
-    padding: 0.85em 1.55em;
+    min-width: 7.6em;
+    padding: 0.85em 1.2em;
+    text-align: center;
     border: 0;
     border-radius: 99px;
     cursor: pointer;
@@ -736,7 +733,6 @@ $tile:  var(--giz-tile);
     white-space: nowrap;
     transition: background 0.16s, color 0.16s, box-shadow 0.16s, filter 0.16s;
 
-    &:focus-visible { outline: 2px solid var(--giz-accent); outline-offset: 2px; }
 }
 
 .giz-home-pack:hover .giz-home-buy,
@@ -747,6 +743,24 @@ $tile:  var(--giz-tile);
 }
 
 .giz-home-buy:hover { filter: brightness(1.08); }
+
+@container giz-till (max-width: 50rem) {
+    .giz-home-pack {
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas: "name buy" "price buy";
+        row-gap: 0.3rem;
+    }
+
+    .giz-home-pack__name { grid-area: name; }
+
+    .giz-home-pack__price {
+        grid-area: price;
+        font-size: $t-body;
+        color: $ink-2;
+    }
+
+    .giz-home-buy { grid-area: buy; }
+}
 
 .giz-home-bar {
     display: flex;
@@ -820,12 +834,11 @@ $tile:  var(--giz-tile);
         border-radius: 50%;
         cursor: pointer;
         color: $ink-3;
-        background: rgba(var(--giz-white-rgb), 0.05);
-        @include hairline(rgba(var(--giz-white-rgb), 0.09));
+        background: var(--giz-glass-4);
+        @include hairline(var(--giz-glass-8));
         font-size: 1.2rem;
         transition: background 0.16s, color 0.16s, box-shadow 0.16s;
 
-        &:focus-visible { outline: 2px solid var(--giz-accent); outline-offset: 2px; }
     }
 }
 

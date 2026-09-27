@@ -4,15 +4,6 @@
     width: 60.0rem;
 
     .giz-client-dialog {
-        background: rgba(var(--giz-night-rgb), 0.94);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
-        border: 1px solid rgba(var(--giz-white-rgb), 0.07);
-
-        &__header__title {
-            color: rgba(var(--giz-white-rgb), 0.97);
-        }
-
         &__body {
             max-height: 44.5rem;
         }
@@ -28,8 +19,7 @@
             white-space: normal;
 
             .giz-input-root {
-                background-color: rgba(var(--giz-white-rgb), 0.03);
-                border-color: rgba(var(--giz-white-rgb), 0.07);
+                background-color: #201F1F;
             }
         }
 
@@ -38,8 +28,7 @@
             overflow: hidden;
 
             .giz-data-grid {
-                background-color: transparent;
-                color: rgba(var(--giz-white-rgb), 0.7);
+                color: rgba(255, 255, 255, 0.6);
                 @include font-m-theme-client($font-weight-light-theme-client);
 
                 tr {
@@ -60,25 +49,16 @@
                     }
                 }
 
-                thead th, thead td {
-                    background-color: transparent;
-                    color: rgba(var(--giz-white-rgb), 0.5);
-                    text-transform: uppercase;
-                    letter-spacing: 0.05em;
-                    font-size: 1.1rem;
-                    @include font-s-theme-client($font-weight-regular-theme-client);
-                    border-bottom: 1px solid rgba(var(--giz-white-rgb), 0.07);
+                thead {
+                    th {
+                        color: rgba(255, 255, 255, 0.6);
+                        @include font-s-theme-client($font-weight-regular-theme-client);
+                    }
                 }
 
                 & > tbody > tr:not(.giz-data-grid-row-detail) {
-                    border-top: unset;
-
-                    &:hover {
-                        background-color: rgba(var(--giz-white-rgb), 0.03);
-                    }
-
                     td {
-                        border-bottom: 1px solid rgba(var(--giz-white-rgb), 0.05);
+                        border-bottom: 0.1rem solid rgba(246, 251, 253, 0.06);
                     }
 
                     &:last-child {
@@ -93,30 +73,10 @@
         &__summary {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            color: rgba(var(--giz-white-rgb), 0.85);
-            padding-top: 1.4rem;
-            border-top: 1px solid rgba(var(--giz-white-rgb), 0.07);
-            @include font-m-theme-client($font-weight-regular-theme-client);
-
-            &__total {
-                color: rgba(var(--giz-white-rgb), 0.6);
-            }
-
-            &__amount {
-                display: flex;
-                align-items: center;
-                gap: 0.6rem;
-                color: var(--giz-accent);
-                font-weight: 700;
-                @include font-h5-theme-client($font-weight-bold-theme-client);
-
-                svg {
-                    width: 2rem;
-                    height: 2rem;
-                    fill: var(--giz-accent);
-                }
-            }
+            color: #FAFAFA;
+            padding-top: 1.2rem;
+            border-top: 0.1rem solid rgba(246, 251, 253, 0.06);
+            @include font-m-theme-client($font-weight-bold-theme-client);
         }
 
         &__payment-method {
@@ -125,11 +85,11 @@
             //align-items: center;
             gap: 1.4rem;
             white-space: nowrap;
-            color: rgba(var(--giz-white-rgb), 0.85);
+            color: #FAFAFA;
             margin-top: 1.2rem;
             padding-top: 1.2rem;
-            border-top: 1px solid rgba(var(--giz-white-rgb), 0.07);
-            @include font-m-theme-client($font-weight-regular-theme-client);
+            border-top: 0.1rem solid rgba(246, 251, 253, 0.06);
+            @include font-m-theme-client($font-weight-bold-theme-client);
 
             &__label {
                 padding-top: 0.9rem;
@@ -141,7 +101,7 @@
             margin-top: 1.2rem;
             padding-top: 2.4rem;
             padding-bottom: 2.4rem;
-            border-top: 1px solid rgba(var(--giz-white-rgb), 0.07);
+            border-top: 0.1rem solid rgba(246, 251, 253, 0.06);
             @include font-s-theme-client($font-weight-light-theme-client);
         }
 

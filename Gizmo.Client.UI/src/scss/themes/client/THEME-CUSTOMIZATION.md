@@ -291,3 +291,22 @@ The palette's own tokens (`--giz-accent`, `--giz-accent-rgb`, `--giz-ink`, `--gi
 `--giz-tile`, `--giz-glass-rgb`, …) are set by the skin from `--giz-palette`; a club's own
 CSS may read them (`rgba(var(--giz-accent-rgb), 0.2)`) so that its additions follow the
 chosen palette.
+
+### 10.1 Tokens a club may retune
+
+Set on `:root` in the same custom CSS; everything that uses them follows.
+
+| Tokens | What they are |
+|---|---|
+| `--giz-glass-1` … `--giz-glass-12` | The white layers the shell is built of - surfaces, hairlines, hovers - from 2 % to 16 % white. Raise them all a step for a lighter, more glassy look; lower them for a flatter one. |
+| `--giz-text-1`, `--giz-text-2`, `--giz-text-3`, `--giz-text-off` | Text on the dark surfaces: body, secondary, captions (keep `--giz-text-3` at about 5:1 contrast or more), decoration and disabled. |
+| `--giz-action-bg`, `--giz-action-ink` | The primary button (one per screen): its fill and its label. Default: the accent with dark ink. |
+| `--giz-action-tonal-bg`, `--giz-action-tonal-line`, `--giz-action-tonal-ink` | Repeated actions in lists (Buy, Add to cart). |
+| `--giz-action-quiet-bg`, `--giz-action-quiet-line` | Secondary buttons. |
+| `--giz-action-off-bg`, `--giz-action-off-ink` | A button that cannot be pressed yet. |
+| `--giz-focus` | The keyboard focus ring on every control. |
+
+```css
+:root { --giz-glass-6: rgba(255, 255, 255, 0.09); --giz-glass-9: rgba(255, 255, 255, 0.13); }
+:root { --giz-action-ink: #ffffff; }
+```

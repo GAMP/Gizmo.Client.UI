@@ -200,6 +200,39 @@ $giz-default-accent: map.get($giz-palettes, "blue");
     --giz-points-rgb: 232, 184, 75;
     --giz-unlimited: #ffc700;
 
+    // Glass: the white layers of the surfaces, hairlines and hovers, weakest to strongest.
+    --giz-glass-1: rgba(var(--giz-white-rgb), 0.02);
+    --giz-glass-2: rgba(var(--giz-white-rgb), 0.03);
+    --giz-glass-3: rgba(var(--giz-white-rgb), 0.04);
+    --giz-glass-4: rgba(var(--giz-white-rgb), 0.05);
+    --giz-glass-5: rgba(var(--giz-white-rgb), 0.06);
+    --giz-glass-6: rgba(var(--giz-white-rgb), 0.07);
+    --giz-glass-7: rgba(var(--giz-white-rgb), 0.08);
+    --giz-glass-8: rgba(var(--giz-white-rgb), 0.09);
+    --giz-glass-9: rgba(var(--giz-white-rgb), 0.10);
+    --giz-glass-10: rgba(var(--giz-white-rgb), 0.12);
+    --giz-glass-11: rgba(var(--giz-white-rgb), 0.14);
+    --giz-glass-12: rgba(var(--giz-white-rgb), 0.16);
+
+    // Text on the dark surfaces: body, secondary, captions (the floor for anything meant
+    // to be read, about 5:1 on panels), and decoration or disabled.
+    --giz-text-1: var(--giz-ink);
+    --giz-text-2: rgba(var(--giz-ink-rgb), 0.7);
+    --giz-text-3: rgba(var(--giz-ink-rgb), 0.55);
+    --giz-text-off: rgba(var(--giz-ink-rgb), 0.38);
+
+    // Actions: the primary (one per screen), tonal (repeated in lists), quiet, off.
+    --giz-action-bg: var(--giz-accent);
+    --giz-action-ink: var(--giz-on-accent);
+    --giz-action-tonal-bg: rgba(var(--giz-accent-rgb), 0.14);
+    --giz-action-tonal-line: rgba(var(--giz-accent-rgb), 0.36);
+    --giz-action-tonal-ink: var(--giz-accent-soft);
+    --giz-action-quiet-bg: rgba(var(--giz-white-rgb), 0.06);
+    --giz-action-quiet-line: rgba(var(--giz-white-rgb), 0.12);
+    --giz-action-off-bg: rgba(var(--giz-white-rgb), 0.05);
+    --giz-action-off-ink: rgba(var(--giz-ink-rgb), 0.38);
+    --giz-focus: var(--giz-accent-soft);
+
     @include giz-tokens($giz-default-accent);
 }
 

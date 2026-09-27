@@ -152,10 +152,8 @@ window.ClientFullScreen = window.appsSticky = function appsSticky() {
   }
 };
 
-// The handler measures two rects and then writes classes, which is a forced layout on
-// every scroll event - dozens per second on a long application list. Coalesced onto one
-// animation frame so it runs once per painted frame at most, and registered passive so
-// the compositor never waits on it before scrolling.
+// Measures two rects and writes classes: coalesced onto one animation frame and
+// registered passive, so a long list scrolls without a forced layout per event.
 var appsStickyFrame = null;
 
 function appsStickyScroll() {
@@ -1469,9 +1467,7 @@ window.setDocumentDirection = function setDocumentDirection(direction) {
 //   2. A club's own stylesheet from the Manager (the StyleSheet option, served as
 //      style.css): `:root { --giz-palette: green; }` or `:root { --giz-palette: #e11d48; }`.
 //      The property is read back off the document once that stylesheet has loaded, so
-//      a club changes its colour from the Manager without touching the skin. A Manager
-//      setting for the colour, should Gizmo add one, only has to emit that line - or
-//      call grafitTheme.set().
+//      a club changes its colour from the Manager without touching the skin.
 //   3. grafitTheme.set(nameOrColour) from anywhere at run time.
 (function () {
     const ACCENTS = ["blue", "purple", "red", "orange", "amber", "green", "teal", "pink"];
@@ -1753,17 +1749,10 @@ window.setDocumentDirection = function setDocumentDirection(direction) {
 })();
 
 // ───────────────────────────── activity gate ─────────────────────────────
-// The host never clears the WebView's IsVisible when its window goes behind
-// another application, so document.hidden stays false and Chromium keeps
-// painting this page at the monitor's refresh rate for nobody. Focus is the only
-// usable signal, and it is also the right one: an application started outside
-// Gizmo is invisible to the shell, so no cleverer condition would catch it.
-//
-// ShellActivityWatcher holds a veto on the .NET side and lifts sleeping while a
-// deployment is running.
-//
-// Event driven with at most one pending timeout - a gate that polled to learn
-// whether it was idle would be the cost it exists to remove.
+// The host never clears the WebView's IsVisible when its window goes behind another
+// application, so document.hidden stays false and Chromium keeps painting for nobody.
+// Focus is the signal. ShellActivityWatcher (.NET) holds a veto and keeps the shell
+// awake while a deployment runs. Event driven, at most one pending timeout.
 
 // Long enough that a host-owned window taking focus for a moment does not read
 // as leaving, and that entrance animations finish before anything is frozen.
@@ -1883,8 +1872,6 @@ function _grafitEvaluate() {
         _grafitIdleTimer = null;
     }
 
-    // Should the host ever start hiding the WebView properly, this is the cheap
-    // path and Chromium has already stopped rendering by itself.
     if (document.visibilityState !== "visible") {
         _grafitSetUnfocused(true);
         return;

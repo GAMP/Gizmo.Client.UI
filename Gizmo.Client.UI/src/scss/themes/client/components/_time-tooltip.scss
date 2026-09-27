@@ -1,9 +1,9 @@
 
 $tt-w: 52rem;
 $tt-ink:   var(--giz-ink);
-$tt-ink-2: rgba(var(--giz-ink-rgb), 0.62);
-$tt-ink-3: rgba(var(--giz-ink-rgb), 0.38);
-$tt-line:  rgba(var(--giz-white-rgb), 0.07);
+$tt-ink-2: var(--giz-text-2);
+$tt-ink-3: var(--giz-text-3);
+$tt-line:  var(--giz-glass-6);
 
 .giz-user-balance-tooltip-wrapper {
     position: absolute;
@@ -28,7 +28,7 @@ $tt-line:  rgba(var(--giz-white-rgb), 0.07);
     background: linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.97), rgba(var(--giz-glass-2-rgb), 0.985));
     backdrop-filter: blur(4rem) saturate(1.6);
     -webkit-backdrop-filter: blur(4rem) saturate(1.6);
-    border: 1px solid rgba(var(--giz-white-rgb), 0.14);
+    border: 1px solid var(--giz-glass-11);
     box-shadow:
         inset 0 1px 0 rgba(var(--giz-white-rgb), 0.18),
         0 4rem 9rem -2.6rem rgba(var(--giz-black-rgb), 0.85);
@@ -111,7 +111,7 @@ $tt-line:  rgba(var(--giz-white-rgb), 0.07);
         gap: 1.2rem;
         padding: 1rem 1.2rem;
         border-radius: 1.4rem;
-        background: rgba(var(--giz-white-rgb), 0.04);
+        background: var(--giz-glass-3);
         box-shadow: inset 0 0 0 1px $tt-line;
 
         &--current {
@@ -127,7 +127,7 @@ $tt-line:  rgba(var(--giz-white-rgb), 0.07);
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-        background: rgba(var(--giz-white-rgb), 0.1);
+        background: var(--giz-glass-9);
         font-family: $font-family-header-theme-client;
         font-size: 1.1rem;
         font-weight: 700;
@@ -146,7 +146,7 @@ $tt-line:  rgba(var(--giz-white-rgb), 0.07);
         align-items: center;
         justify-content: center;
         border-radius: 1rem;
-        background: rgba(var(--giz-white-rgb), 0.06);
+        background: var(--giz-glass-5);
         color: $tt-ink-2;
         font-size: 1.8rem;
 
@@ -195,7 +195,7 @@ $tt-line:  rgba(var(--giz-white-rgb), 0.07);
 
         small {
             font-family: $font-family-header-theme-client;
-            font-size: 0.95rem;
+            font-size: 1.1rem;
             font-weight: 700;
             letter-spacing: 0.12em;
             text-transform: uppercase;
@@ -272,8 +272,8 @@ $tt-line:  rgba(var(--giz-white-rgb), 0.07);
         gap: 0.7rem;
         padding: 0 1.4rem;
         border-radius: 1.3rem;
-        border: 1px solid rgba(var(--giz-white-rgb), 0.12);
-        background: rgba(var(--giz-white-rgb), 0.06);
+        border: 1px solid var(--giz-glass-10);
+        background: var(--giz-glass-5);
         color: $tt-ink;
         font: inherit;
         font-size: 1.35rem;
@@ -286,21 +286,21 @@ $tt-line:  rgba(var(--giz-white-rgb), 0.07);
         }
 
         &:hover {
-            background: rgba(var(--giz-white-rgb), 0.1);
+            background: var(--giz-glass-9);
             border-color: rgba(var(--giz-white-rgb), 0.2);
         }
 
         &--primary {
-            background: linear-gradient(135deg, var(--giz-accent-light), var(--giz-accent-deep));
+            background: var(--giz-action-bg);
             border-color: transparent;
-            color: var(--giz-on-accent);
+            color: var(--giz-action-ink);
 
             i {
                 color: inherit;
             }
 
             &:hover {
-                background: linear-gradient(135deg, var(--giz-accent-light), var(--giz-accent-deep));
+                background: var(--giz-action-bg);
                 filter: brightness(1.08);
             }
         }

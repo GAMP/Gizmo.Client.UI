@@ -19,7 +19,7 @@
         border-radius: 1.0rem;
         color: rgba(#ffc8be, 0.85);
         font-size: 1.2rem;
-        font-family: 'Noto Sans', sans-serif;
+        font-family: $font-family-text-theme-client;
         line-height: 1.6;
     }
 
@@ -27,5 +27,38 @@
         flex-shrink: 0;
         margin-top: 0.2rem;
         color: rgba(#ff5050, 0.65);
+    }
+}
+
+// Error block, brought to the single error shape used across the shell.
+.giz-error-block {
+    padding: 1.1rem 1.4rem;
+    border-radius: 1.3rem;
+    background: rgba(var(--giz-danger-rgb), 0.12);
+    border: 1px solid rgba(var(--giz-danger-rgb), 0.3);
+    color: var(--giz-danger-pale);
+    font-family: $font-family-text-theme-client;
+    font-size: 1.3rem;
+    line-height: 1.9rem;
+
+    &--with-icon {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.2rem 1.4rem;
+        border-radius: 1.3rem;
+        background: rgba(var(--giz-danger-rgb), 0.12);
+        border-color: rgba(var(--giz-danger-rgb), 0.3);
+        color: var(--giz-danger-pale);
+        font-family: $font-family-text-theme-client;
+        font-size: 1.3rem;
+        line-height: 1.9rem;
+        text-align: left;
+    }
+
+    &__icon {
+        flex-shrink: 0;
+        margin-top: 0.1rem;
+        color: var(--giz-danger-coral);
     }
 }

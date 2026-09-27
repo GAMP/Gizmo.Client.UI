@@ -4,11 +4,11 @@ $ac-r:     2rem;
 $ac-w:     132rem;
 
 $ac-ink:   var(--giz-ink);
-$ac-ink-2: rgba(var(--giz-ink-rgb), 0.62);
-$ac-ink-3: rgba(var(--giz-ink-rgb), 0.38);
-$ac-cap:   rgba(var(--giz-ink-rgb), 0.42);
-$ac-line:  rgba(var(--giz-white-rgb), 0.07);
-$ac-line-2: rgba(var(--giz-white-rgb), 0.14);
+$ac-ink-2: var(--giz-text-2);
+$ac-ink-3: var(--giz-text-3);
+$ac-cap:   var(--giz-text-3);
+$ac-line:  var(--giz-glass-6);
+$ac-line-2: var(--giz-glass-11);
 
 @mixin ac-cap {
     font-family: $font-family-header-theme-client;
@@ -35,8 +35,8 @@ $ac-line-2: rgba(var(--giz-white-rgb), 0.14);
 
 @mixin ac-glass {
     background: linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.55), rgba(var(--giz-glass-2-rgb), 0.7));
-    border: 1px solid rgba(var(--giz-white-rgb), 0.09);
-    box-shadow: inset 0 1px 0 rgba(var(--giz-white-rgb), 0.1);
+    border: 1px solid var(--giz-glass-8);
+    box-shadow: inset 0 1px 0 var(--giz-glass-9);
 }
 
 // ── frame ────────────────────────────────────────────────────────────────
@@ -195,7 +195,7 @@ $ac-line-2: rgba(var(--giz-white-rgb), 0.14);
 
         &:hover {
             color: $ac-ink;
-            background: rgba(var(--giz-white-rgb), 0.05);
+            background: var(--giz-glass-4);
 
             i {
                 color: $ac-ink-2;
@@ -203,8 +203,8 @@ $ac-line-2: rgba(var(--giz-white-rgb), 0.14);
         }
 
         &.active {
-            background: linear-gradient(135deg, var(--giz-accent-light), var(--giz-accent-deep));
-            color: var(--giz-on-accent);
+            background: var(--giz-action-bg);
+            color: var(--giz-action-ink);
             box-shadow: inset 0 1px 0 rgba(var(--giz-white-rgb), 0.25), 0 0.8rem 2rem -1rem rgba(var(--giz-accent-rgb), 0.7);
 
             i {
@@ -375,7 +375,7 @@ $ac-line-2: rgba(var(--giz-white-rgb), 0.14);
     padding: 0 1.8rem;
     border-radius: 1.3rem;
     border: 1px solid $ac-line-2;
-    background: rgba(var(--giz-white-rgb), 0.06);
+    background: var(--giz-glass-5);
     color: $ac-ink;
     font: inherit;
     font-size: 1.4rem;
@@ -401,7 +401,7 @@ $ac-line-2: rgba(var(--giz-white-rgb), 0.14);
     height: 2.2rem;
     padding: 0 0.8rem;
     border-radius: 0.7rem;
-    background: rgba(var(--giz-white-rgb), 0.08);
+    background: var(--giz-glass-7);
     color: $ac-ink-2;
     font-family: $font-family-header-theme-client;
     font-size: 1.05rem;
@@ -428,7 +428,7 @@ $ac-line-2: rgba(var(--giz-white-rgb), 0.14);
 
     &--off,
     &--off {
-        background: rgba(var(--giz-white-rgb), 0.05);
+        background: var(--giz-glass-4);
         color: $ac-ink-3;
     }
 
@@ -471,7 +471,7 @@ $ac-line-2: rgba(var(--giz-white-rgb), 0.14);
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-        background: rgba(var(--giz-white-rgb), 0.1);
+        background: var(--giz-glass-9);
         @include ac-num;
         font-size: 1.15rem;
         color: $ac-ink-2;
@@ -489,7 +489,7 @@ $ac-line-2: rgba(var(--giz-white-rgb), 0.14);
         align-items: center;
         justify-content: center;
         border-radius: 1.2rem;
-        background: rgba(var(--giz-white-rgb), 0.06);
+        background: var(--giz-glass-5);
         color: $ac-ink-2;
         font-size: 2rem;
 
@@ -588,7 +588,7 @@ $ac-line-2: rgba(var(--giz-white-rgb), 0.14);
         justify-content: center;
         border-radius: 1.1rem;
         border: 1px solid $ac-line-2;
-        background: rgba(var(--giz-white-rgb), 0.05);
+        background: var(--giz-glass-4);
         color: $ac-ink-2;
         font-size: 1.5rem;
         cursor: pointer;
@@ -619,7 +619,7 @@ $ac-line-2: rgba(var(--giz-white-rgb), 0.14);
         .giz-user-time-products-host-group--additional {
             padding: 0.2rem 0.7rem;
             border-radius: 0.6rem;
-            background: rgba(var(--giz-white-rgb), 0.07);
+            background: var(--giz-glass-6);
             color: $ac-ink-2;
             font-size: 1.15rem;
             font-weight: 600;
@@ -643,7 +643,7 @@ $ac-line-2: rgba(var(--giz-white-rgb), 0.14);
     .giz-user-time-products-host-group {
         padding: 0.2rem 0.7rem;
         border-radius: 0.6rem;
-        background: rgba(var(--giz-white-rgb), 0.08);
+        background: var(--giz-glass-7);
         color: $ac-ink-2;
         font-size: 1.15rem;
         font-weight: 600;
@@ -669,7 +669,7 @@ $ac-line-2: rgba(var(--giz-white-rgb), 0.14);
         padding: 0 1.2rem;
         border-radius: 1rem;
         border: 1px solid $ac-line-2;
-        background: rgba(var(--giz-white-rgb), 0.05);
+        background: var(--giz-glass-4);
         color: $ac-ink-2;
         font: inherit;
         font-size: 1.25rem;
@@ -682,7 +682,7 @@ $ac-line-2: rgba(var(--giz-white-rgb), 0.14);
         }
 
         &:hover:not(:disabled) {
-            background: rgba(var(--giz-white-rgb), 0.1);
+            background: var(--giz-glass-9);
             color: $ac-ink;
         }
 
@@ -706,7 +706,7 @@ $ac-line-2: rgba(var(--giz-white-rgb), 0.14);
     transition: background 0.15s;
 
     &[open] {
-        background: rgba(var(--giz-white-rgb), 0.05);
+        background: var(--giz-glass-4);
     }
 
     &__sum {
@@ -724,7 +724,7 @@ $ac-line-2: rgba(var(--giz-white-rgb), 0.14);
         }
 
         &:hover {
-            background: rgba(var(--giz-white-rgb), 0.03);
+            background: var(--giz-glass-2);
         }
     }
 

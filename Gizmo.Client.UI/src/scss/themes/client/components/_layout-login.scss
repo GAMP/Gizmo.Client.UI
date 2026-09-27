@@ -18,7 +18,7 @@
             &.collapsed {
                 .giz-host-number {
                     margin-right: var(--giz-host-number-shift);
-                    font-family: 'Rubik';
+                    font-family: $font-family-header-theme-client;
                     font-style: normal;
                     font-weight: 700;
                     font-size: 12.8rem;
@@ -158,7 +158,7 @@
                 padding: 2.4rem 3.2rem;
                 transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
                 z-index: 2;
-                font-family: 'Rubik';
+                font-family: $font-family-header-theme-client;
                 font-style: normal;
                 font-weight: 700;
                 font-size: 12.8rem;
@@ -472,7 +472,7 @@
     overflow: visible;
     border-radius: 3.2rem;
     isolation: isolate;
-    border: 1px solid rgba(var(--giz-white-rgb), 0.12);
+    border: 1px solid var(--giz-glass-10);
     box-shadow:
         inset 0 1.5px 0 rgba(var(--giz-white-rgb), 0.28),
         0 60px 120px -34px rgba(var(--giz-black-rgb), 0.9);
@@ -487,7 +487,7 @@
         z-index: -1;
         border-radius: inherit;
         background:
-            linear-gradient(180deg, rgba(var(--giz-white-rgb), 0.07), rgba(var(--giz-white-rgb), 0.02)),
+            linear-gradient(180deg, var(--giz-glass-6), var(--giz-glass-1)),
             linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.82), rgba(var(--giz-glass-2-rgb), 0.90));
         backdrop-filter: blur(56px) saturate(1.15);
         -webkit-backdrop-filter: blur(56px) saturate(1.15);
@@ -618,8 +618,8 @@
 
     &,
     &:hover:not(.disabled) {
-        background: linear-gradient(135deg, var(--giz-accent-soft) 0%, var(--giz-accent-deep) 55%, var(--giz-accent-deeper) 100%);
-        color: var(--giz-white);
+        background: var(--giz-action-bg);
+        color: var(--giz-action-ink);
     }
 
     &:hover:not(.disabled) {
@@ -703,7 +703,7 @@
         linear-gradient(180deg, rgba(var(--giz-night-2-rgb), 0.92), rgba(var(--giz-night-rgb), 0.95));
     border: 1px solid rgba(var(--giz-info-rgb), 0.26);
     box-shadow:
-        inset 0 1px 0 rgba(var(--giz-white-rgb), 0.10),
+        inset 0 1px 0 var(--giz-glass-9),
         0 2.6rem 6rem -2.4rem rgba(var(--giz-black-rgb), 0.85);
     color: var(--giz-snow);
     transition:
@@ -766,7 +766,7 @@
 .giz-alternative-login {
     margin-top: 2rem;
     padding-top: 2rem;
-    border-top: 1px solid rgba(var(--giz-white-rgb), 0.08);
+    border-top: 1px solid var(--giz-glass-7);
 
     &__separator {
         display: none;
@@ -878,11 +878,11 @@
         text-align: center;
         color: var(--giz-snow);
         background:
-            linear-gradient(180deg, rgba(var(--giz-white-rgb), 0.07), rgba(var(--giz-white-rgb), 0.02)),
+            linear-gradient(180deg, var(--giz-glass-6), var(--giz-glass-1)),
             linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.94), rgba(var(--giz-glass-2-rgb), 0.97));
         backdrop-filter: blur(4rem) saturate(1.6);
         -webkit-backdrop-filter: blur(4rem) saturate(1.6);
-        border: 1px solid rgba(var(--giz-white-rgb), 0.12);
+        border: 1px solid var(--giz-glass-10);
         box-shadow:
             inset 0 1.5px 0 rgba(var(--giz-white-rgb), 0.18),
             0 4rem 9rem -2.6rem rgba(var(--giz-black-rgb), 0.85);
@@ -961,7 +961,7 @@
                 border: 1px solid rgba(var(--giz-info-rgb), 0.24);
                 background: rgba(var(--giz-info-rgb), 0.07);
                 color: var(--giz-white);
-                font-family: 'Space Grotesk', 'Manrope', sans-serif;
+                font-family: $font-family-numeric-theme-client;
                 font-size: 1.9rem;
                 font-weight: 700;
                 letter-spacing: 0.24em;
@@ -1060,7 +1060,7 @@
         }
 
         &__time {
-            font-family: 'Space Grotesk', 'Manrope', sans-serif;
+            font-family: $font-family-numeric-theme-client;
             font-size: 2.6rem;
             font-weight: 700;
             line-height: 1.1;
@@ -1163,8 +1163,8 @@
     display: flex;
     padding: 0.5rem;
     margin-bottom: 2.8rem;
-    background: rgba(var(--giz-white-rgb), 0.05);
-    border: 1px solid rgba(var(--giz-white-rgb), 0.09);
+    background: var(--giz-glass-4);
+    border: 1px solid var(--giz-glass-8);
     border-radius: 1.6rem;
 
     .giz-button {
@@ -1180,8 +1180,8 @@
         line-height: 2.0rem;
 
         &.selected {
-            background: linear-gradient(135deg, var(--giz-accent-light), var(--giz-accent-deep));
-            color: var(--giz-white);
+            background: var(--giz-action-bg);
+            color: var(--giz-action-ink);
             box-shadow: 0 8px 20px -10px rgba(var(--giz-accent-rgb), 0.7);
         }
     }
@@ -1206,7 +1206,7 @@
         position: relative;
         background: transparent;
         border: none;
-        border-bottom: 1px solid rgba(var(--giz-white-rgb), 0.16);
+        border-bottom: 1px solid var(--giz-glass-12);
         border-radius: 0;
         padding-left: 0;
         padding-right: 0;
@@ -1255,7 +1255,7 @@
         &:focus-within {
             background: transparent;
             border: none;
-            border-bottom: 1px solid rgba(var(--giz-white-rgb), 0.16);
+            border-bottom: 1px solid var(--giz-glass-12);
             border-radius: 0;
             padding-left: 0;
             padding-right: 0;
@@ -1281,7 +1281,7 @@
         overflow-y: auto;
         border-radius: 1.4rem;
         background: linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.98), rgba(var(--giz-glass-2-rgb), 0.99));
-        border: 1px solid rgba(var(--giz-white-rgb), 0.12);
+        border: 1px solid var(--giz-glass-10);
         box-shadow: 0 2.4rem 5rem -1.6rem rgba(var(--giz-black-rgb), 0.8);
         scrollbar-width: thin;
         scrollbar-color: rgba(var(--giz-white-rgb), 0.18) transparent;
@@ -1355,7 +1355,7 @@
     .giz-form-input:has(> .giz-login-pin-label-wrapper) {
         margin-top: 2.6rem;
         padding-top: 1.6rem;
-        border-top: 1px solid rgba(var(--giz-white-rgb), 0.07);
+        border-top: 1px solid var(--giz-glass-6);
     }
 
     .giz-login-pin-label-wrapper {
@@ -1419,12 +1419,12 @@
 
     &,
     &:hover {
-        background: linear-gradient(135deg, var(--giz-accent), color-mix(in srgb, var(--giz-accent) 65%, black));
-        color: var(--giz-night);
+        background: var(--giz-action-bg);
+        color: var(--giz-action-ink);
     }
 
     .giz-icon {
-        color: var(--giz-night);
+        color: var(--giz-action-ink);
     }
 
     &:hover {
@@ -1975,7 +1975,7 @@
     align-items: center;
     padding: 0 1.6rem;
     gap: 1.3rem;
-    font-family: 'Noto Sans', sans-serif;
+    font-family: $font-family-text-theme-client;
     font-size: 1.4rem;
     font-weight: 500;
     color: #ffffff;
@@ -2033,7 +2033,7 @@
         border: 0.1rem solid rgba(#57bcff, 0.28);
         border-radius: 9999px;
         font-size: 1.1rem;
-        font-family: 'Noto Sans', sans-serif;
+        font-family: $font-family-text-theme-client;
         font-weight: 600;
         color: #57bcff;
         white-space: nowrap;
@@ -2043,7 +2043,7 @@
 .giz-registration-providers-hint {
     margin: 1.2rem 0 2.0rem;
     font-size: 1.2rem;
-    font-family: 'Noto Sans', sans-serif;
+    font-family: $font-family-text-theme-client;
     color: rgba(#57bcff, 0.70);
     line-height: 1.5;
     text-align: center;
@@ -2053,7 +2053,7 @@
     margin-top: auto;
     padding-top: 2.0rem;
     font-size: 1.1rem;
-    font-family: 'Noto Sans', sans-serif;
+    font-family: $font-family-text-theme-client;
     color: rgba(#ffffff, 0.30);
     line-height: 1.55;
     text-align: center;
@@ -2099,7 +2099,7 @@
     }
 
     &__title {
-        font-family: 'Rubik', sans-serif;
+        font-family: $font-family-header-theme-client;
         font-size: 2.1rem;
         font-weight: 700;
         color: #ffffff;
@@ -2108,7 +2108,7 @@
     }
 
     &__subtitle {
-        font-family: 'Noto Sans', sans-serif;
+        font-family: $font-family-text-theme-client;
         font-size: 1.3rem;
         font-weight: 400;
         color: rgba(#ffffff, 0.60);
@@ -2137,7 +2137,7 @@
         background: var(--giz-accent);
         border: none;
         border-radius: 1.0rem;
-        font-family: 'Noto Sans', sans-serif;
+        font-family: $font-family-text-theme-client;
         font-size: 1.4rem;
         font-weight: 500;
         color: #ffffff;
@@ -2162,7 +2162,7 @@
         justify-content: center;
         background: none;
         border: none;
-        font-family: 'Noto Sans', sans-serif;
+        font-family: $font-family-text-theme-client;
         font-size: 1.3rem;
         font-weight: 500;
         color: rgba(#ffffff, 0.38);
@@ -2193,7 +2193,7 @@
         background: none;
         cursor: pointer;
         appearance: none;
-        font-family: 'Noto Sans', sans-serif;
+        font-family: $font-family-text-theme-client;
         font-size: 1.3rem;
         font-weight: 500;
         color: rgba(#ffffff, 0.5);
@@ -2251,7 +2251,7 @@
     }
 
     &__title {
-        font-family: 'Rubik', sans-serif;
+        font-family: $font-family-header-theme-client;
         font-size: 2.2rem;
         font-weight: 700;
         line-height: 1.5;
@@ -2259,7 +2259,7 @@
     }
 
     &__subtitle {
-        font-family: 'Noto Sans', sans-serif;
+        font-family: $font-family-text-theme-client;
         font-size: 1.3rem;
         font-weight: 400;
         line-height: 1.5;
@@ -2274,7 +2274,7 @@
         background: rgba(#57bcff, 0.04);
         border: 0.1rem solid rgba(#57bcff, 0.1);
         border-radius: 1.1rem;
-        font-family: 'Noto Sans', sans-serif;
+        font-family: $font-family-text-theme-client;
         font-size: 1.2rem;
         font-weight: 400;
         line-height: 1.65;
@@ -2339,7 +2339,7 @@
         justify-content: center;
         gap: 0.6rem;
         background: rgba(#0c0f11, 0.88);
-        font-family: 'Noto Sans', sans-serif;
+        font-family: $font-family-text-theme-client;
         font-size: 1.3rem;
         font-weight: 500;
         line-height: 1.5;
@@ -2374,7 +2374,7 @@
         align-items: center;
         justify-content: center;
         gap: 0.7rem;
-        font-family: 'Noto Sans', sans-serif;
+        font-family: $font-family-text-theme-client;
         font-size: 1.2rem;
         font-weight: 400;
         line-height: 1.5;
@@ -2414,7 +2414,7 @@
         background: rgba(#ff3b30, 0.06);
         border: 0.1rem solid rgba(#ff3b30, 0.2);
         border-radius: 1.2rem;
-        font-family: 'Noto Sans', sans-serif;
+        font-family: $font-family-text-theme-client;
         font-size: 1.2rem;
         font-weight: 400;
         line-height: 1.65;
@@ -2436,7 +2436,7 @@
         background: var(--giz-accent);
         border: none;
         border-radius: 1.0rem;
-        font-family: 'Noto Sans', sans-serif;
+        font-family: $font-family-text-theme-client;
         font-size: 1.4rem;
         font-weight: 500;
         color: #ffffff;
@@ -2528,4 +2528,8 @@
         flex-direction: column;
         gap: 1.2rem;
     }
+}
+
+.giz-login-error-block {
+    margin-bottom: 2rem;
 }

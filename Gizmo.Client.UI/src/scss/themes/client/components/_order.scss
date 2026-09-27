@@ -4,13 +4,13 @@
     height: 100%;
     overflow: hidden;
     min-width: 0;
-    background: linear-gradient(180deg, rgba(var(--giz-white-rgb), 0.08), rgba(var(--giz-white-rgb), 0.03));
+    background: linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-2));
     backdrop-filter: blur(40px) saturate(1.6);
     -webkit-backdrop-filter: blur(40px) saturate(1.6);
-    border: 1px solid rgba(var(--giz-white-rgb), 0.10);
+    border: 1px solid var(--giz-glass-9);
     border-radius: 1.8rem;
     box-shadow:
-        inset 0 1px 0 rgba(var(--giz-white-rgb), 0.16),
+        inset 0 1px 0 var(--giz-glass-12),
         0 24px 60px -34px rgba(var(--giz-black-rgb), 0.7);
 
     &__items {
@@ -24,7 +24,7 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-            border-bottom: 1px solid rgba(var(--giz-white-rgb), 0.06);
+            border-bottom: 1px solid var(--giz-glass-5);
             padding: 2.2rem 2.4rem;
             @include font-xl-theme-client($font-weight-bold-theme-client);
             color: rgba(var(--giz-white-rgb), 0.97);
@@ -75,7 +75,7 @@
                     column-gap: 1.2rem;
                     row-gap: 0.6rem;
                     padding: 1.5rem 0;
-                    border-bottom: 1px solid rgba(var(--giz-white-rgb), 0.05);
+                    border-bottom: 1px solid var(--giz-glass-4);
 
                     &__thumb {
                         grid-column: 1;
@@ -88,7 +88,7 @@
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        background: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 0.22), rgba(var(--giz-white-rgb), 0.03) 70%);
+                        background: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 0.22), var(--giz-glass-2) 70%);
 
                         img {
                             width: 100%;
@@ -129,8 +129,8 @@
                         text-align: right;
 
                         &__price {
-                            color: var(--giz-accent);
-                            font-family: 'Space Grotesk', 'Manrope', sans-serif;
+                            color: var(--giz-text-1);
+                            font-family: $font-family-numeric-theme-client;
                             font-weight: 700;
                             font-size: 1.6rem;
                         }
@@ -143,7 +143,7 @@
                             border-radius: 999px;
                             background: rgba(var(--giz-warning-gold-rgb), 0.14);
                             color: var(--giz-warning-gold);
-                            font-family: 'Space Grotesk', 'Manrope', sans-serif;
+                            font-family: $font-family-numeric-theme-client;
                             font-size: 1.2rem;
                             font-weight: 600;
 
@@ -196,7 +196,7 @@
 
     &__notes {
         flex-shrink: 0;
-        border-top: 1px solid rgba(var(--giz-white-rgb), 0.06);
+        border-top: 1px solid var(--giz-glass-5);
         padding: 1.6rem 2.4rem;
 
         &__header {
@@ -232,8 +232,8 @@
         .giz-order-notes {
             .giz-input-root {
                 min-height: 5.2rem;
-                background: rgba(var(--giz-white-rgb), 0.03);
-                border-color: rgba(var(--giz-white-rgb), 0.07);
+                background: var(--giz-glass-2);
+                border-color: var(--giz-glass-6);
                 border-radius: 0.8rem;
 
                 textarea, input {
@@ -246,8 +246,8 @@
     }
 
     &__totals {
-        border-top: 1px solid rgba(var(--giz-white-rgb), 0.09);
-        background: rgba(var(--giz-white-rgb), 0.02);
+        border-top: 1px solid var(--giz-glass-8);
+        background: var(--giz-glass-1);
         padding: 2.4rem;
 
         .giz-button--fill.accent:not(.disabled) {
@@ -256,8 +256,8 @@
 
             &,
             &:hover {
-                background: linear-gradient(135deg, var(--giz-accent), color-mix(in srgb, var(--giz-accent) 65%, black));
-                color: var(--giz-night);
+                background: var(--giz-action-bg);
+                color: var(--giz-action-ink);
             }
 
             &:hover {
@@ -276,8 +276,8 @@
             margin-bottom: 1.2rem;
 
             .giz-input-root {
-                background: rgba(var(--giz-white-rgb), 0.03);
-                border-color: rgba(var(--giz-white-rgb), 0.07);
+                background: var(--giz-glass-2);
+                border-color: var(--giz-glass-6);
                 border-radius: 0.8rem;
 
                 input {
@@ -309,14 +309,15 @@
                     display: flex;
                     align-items: center;
                     gap: 0.4rem;
-                    color: var(--giz-accent);
+                    color: var(--giz-text-1);
                     font-weight: 700;
                     @include font-h5-theme-client($font-weight-bold-theme-client);
+                    font-family: $font-family-numeric-theme-client;
 
                     svg {
                         width: 2.4rem;
                         height: 2.4rem;
-                        fill: var(--giz-accent);
+                        fill: var(--giz-points);
                     }
                 }
             }
@@ -330,7 +331,7 @@
                 display: flex;
                 align-items: center;
                 text-align: right;
-                color: var(--giz-accent);
+                color: var(--giz-text-1);
                 @include font-h5-theme-client($font-weight-bold-theme-client);
             }
 
@@ -378,7 +379,7 @@
         height: 6.4rem;
         margin-bottom: 0.4rem;
         border-radius: 1.8rem;
-        border: 1px dashed rgba(var(--giz-white-rgb), 0.14);
+        border: 1px dashed var(--giz-glass-11);
         display: flex;
         align-items: center;
         justify-content: center;

@@ -5,8 +5,8 @@
         display: inline-block;
         position: relative;
         cursor: pointer;
-        border-radius: 0.8rem;
-        color: white;
+        border-radius: $giz-r-pill;
+        color: var(--giz-text-1);
         border: none;
         //outline: $outline-0;
         text-align: center;
@@ -28,7 +28,7 @@
                 height: 100%;
                 width: 100%;
                 overflow: hidden;
-                border-radius: 0.8rem;
+                border-radius: $giz-r-pill;
             }
         }
 
@@ -65,17 +65,16 @@
             }
 
             &.disabled, &[disabled] {
-                //background-color: rgba(250, 250, 250, 0.16);
-                background-color: #323536;
-                color: rgba(255, 255, 255, 0.24);
+                background-color: var(--giz-action-off-bg);
+                color: var(--giz-action-off-ink);
             }
 
             &.warning {
             }
 
             &.primary:not(.disabled) {
-                background: rgba(var(--giz-white-rgb), 0.07);
-                border: 1px solid rgba(var(--giz-white-rgb), 0.10);
+                background: var(--giz-glass-6);
+                border: 1px solid var(--giz-glass-9);
                 transition: background 0.18s, border-color 0.18s, color 0.18s, box-shadow 0.18s;
 
                 &:hover {
@@ -89,12 +88,10 @@
                 }
             }
 
-            &.secondary {
-                background-color: $unknown-color;
-            }
-
+            &.secondary,
             &.info {
-                background-color: $unknown-color;
+                background-color: var(--giz-action-quiet-bg);
+                border: 1px solid var(--giz-action-quiet-line);
             }
 
             &.danger {
@@ -102,7 +99,7 @@
                 border: 1px solid rgba(var(--giz-danger-deep-rgb), 0.5);
 
                 &:hover {
-                    background-color: #E01325;
+                    background-color: var(--giz-danger-strong);
                     box-shadow: 0 0 14px rgba(var(--giz-danger-strong-rgb), 0.35);
                 }
 
@@ -111,14 +108,9 @@
             }
 
             &.accent:not(.disabled) {
-                background: rgba(var(--giz-accent-rgb), 0.16);
-                border: 1px solid rgba(var(--giz-accent-rgb), 0.35);
-                color: var(--giz-accent);
-                transition: background 0.18s, box-shadow 0.18s;
-
-                &:hover {
-                    background: rgba(var(--giz-accent-rgb), 0.26);
-                }
+                border: 1px solid transparent;
+                transition: filter 0.18s, box-shadow 0.18s;
+                @include giz-action-primary;
             }
         }
 
@@ -129,8 +121,8 @@
             transition: border-color 0.18s, color 0.18s, box-shadow 0.18s;
 
             &.info {
-                border: 2px solid #D5D5D6;
-                color: #2B2D33;
+                border: 1px solid var(--giz-action-quiet-line);
+                color: var(--giz-text-2);
             }
 
             &:hover {
@@ -160,7 +152,7 @@
             }
 
             &.disabled, &[disabled] {
-                color: rgba(255, 255, 255, 0.24);
+                color: var(--giz-action-off-ink);
             }
         }
 
@@ -169,15 +161,15 @@
             }
 
             &.disabled, &[disabled] {
-                background-color: rgba(250, 250, 250, 0.16);
-                color: rgba(255, 255, 255, 0.24);
+                background-color: var(--giz-action-off-bg);
+                color: var(--giz-action-off-ink);
             }
 
             &.warning {
             }
 
             &.primary:not(.disabled) {
-                background: rgba(var(--giz-white-rgb), 0.06);
+                background: var(--giz-glass-5);
 
                 .giz-button__progress {
                     background: rgba(var(--giz-accent-rgb), 0.35);
@@ -195,12 +187,9 @@
                 }
             }
 
-            &.secondary {
-                background-color: $unknown-color;
-            }
-
+            &.secondary,
             &.info {
-                background-color: $unknown-color;
+                background-color: var(--giz-action-quiet-bg);
             }
 
             &.accent:not(.disabled) {
@@ -223,14 +212,14 @@
                 background: rgba(var(--giz-danger-deep-rgb), 0.35);
 
                 .giz-button__progress {
-                    background-color: #B81423;
+                    background-color: var(--giz-danger-deep);
                 }
 
                 &:hover {
                     background: rgba(var(--giz-danger-strong-rgb), 0.5);
 
                     .giz-button__progress {
-                        background-color: #E01325;
+                        background-color: var(--giz-danger-strong);
                     }
                 }
             }
@@ -244,7 +233,7 @@
         &--extra-small {
             height: 2.4rem;
             padding: 0.3rem;
-            border-radius: 0.4rem;
+            border-radius: $giz-r-pill;
             @include font-s-theme-client($font-weight-regular-theme-client);
 
             .giz-icon--small {
@@ -258,7 +247,7 @@
         &--small {
             height: 3.2rem;
             padding: 0.5rem;
-            border-radius: 0.8rem;
+            border-radius: $giz-r-pill;
             @include font-m-theme-client($font-weight-regular-theme-client);
 
             .giz-icon--small {
@@ -272,7 +261,7 @@
         &--medium {
             height: 3.6rem;
             padding: 0.7rem;
-            border-radius: 0.8rem;
+            border-radius: $giz-r-pill;
             @include font-m-theme-client($font-weight-regular-theme-client);
 
             .giz-icon--medium {
@@ -286,7 +275,7 @@
         &--large {
             height: 4.0rem;
             padding: 0.9rem;
-            border-radius: 0.8rem;
+            border-radius: $giz-r-pill;
             @include font-m-theme-client($font-weight-regular-theme-client);
 
             .giz-icon--large {
@@ -300,7 +289,7 @@
         &--extra-large {
             height: 4.8rem;
             padding: 1.1rem;
-            border-radius: 0.8rem;
+            border-radius: $giz-r-pill;
             @include font-l-theme-client($font-weight-regular-theme-client);
 
             .giz-icon--extra-large {

@@ -1,0 +1,82 @@
+//=============== Registration error ================//
+
+// Registration error screen
+.giz-registration-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.6rem;
+
+    &__icon {
+        width: 7.2rem;
+        height: 7.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(var(--giz-danger-rgb), 0.12);
+        border: 1px solid rgba(var(--giz-danger-rgb), 0.3);
+        color: var(--giz-danger-coral);
+    }
+
+    &__title {
+        color: rgba(var(--giz-white-rgb), 0.98);
+        font-family: $font-family-header-theme-client;
+        font-size: 2.8rem;
+        font-weight: 800;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+    }
+
+    &__subtitle {
+        margin-top: 0.8rem;
+        color: var(--giz-text-2);
+        font-family: $font-family-text-theme-client;
+        font-size: 1.45rem;
+        line-height: 2.1rem;
+    }
+
+    &__alert {
+        width: 100%;
+    }
+
+    &__buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        width: 100%;
+        margin-top: 0.4rem;
+    }
+
+    &__btn-primary,
+    &__btn-secondary {
+        width: 100%;
+        height: 5.2rem;
+        border-radius: 1.4rem;
+        cursor: pointer;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.5rem;
+        font-weight: 600;
+        transition: filter 0.16s, background 0.16s, border-color 0.16s;
+    }
+
+    &__btn-primary {
+        border: 0;
+        background: var(--giz-accent);
+        color: var(--giz-on-accent);
+
+        &:hover { filter: brightness(1.1); }
+    }
+
+    &__btn-secondary {
+        background: transparent;
+        border: 1px solid var(--giz-glass-10);
+        color: var(--giz-text-1);
+
+        &:hover {
+            border-color: rgba(var(--giz-accent-rgb), 0.5);
+            background: rgba(var(--giz-accent-rgb), 0.1);
+        }
+    }
+}

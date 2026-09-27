@@ -34,7 +34,7 @@
     cursor: default;
     background:
         linear-gradient(180deg, rgba(var(--giz-warning-rgb), 0.12), rgba(var(--giz-warning-rgb), 0.05)),
-        linear-gradient(180deg, rgba(var(--giz-white-rgb), 0.06), rgba(var(--giz-white-rgb), 0.02));
+        linear-gradient(180deg, var(--giz-glass-5), var(--giz-glass-1));
     border-color: rgba(var(--giz-warning-rgb), 0.26);
     animation: giz-resv-in 0.55s cubic-bezier(0.19, 1, 0.22, 1) both;
 }
@@ -49,7 +49,7 @@
 .giz-resv__lead { font-weight: 700; }
 
 .giz-resv__at {
-    font-family: 'Space Grotesk', 'Manrope', sans-serif;
+    font-family: $font-family-numeric-theme-client;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     color: var(--giz-warning);
@@ -60,7 +60,7 @@
 .giz-resv--soon {
     border-color: rgba(var(--giz-warning-rgb), 0.55);
     box-shadow:
-        inset 0 1px 0 rgba(var(--giz-white-rgb), 0.16),
+        inset 0 1px 0 var(--giz-glass-12),
         0 0 0 1px rgba(var(--giz-warning-rgb), 0.16),
         0 2.4rem 6rem -3.4rem rgba(var(--giz-black-rgb), 0.7);
 }
@@ -97,6 +97,5 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .giz-resv,
-    .giz-resv__dot { animation: none; }
+    .giz-resv { animation: none; }
 }
