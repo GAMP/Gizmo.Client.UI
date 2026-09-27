@@ -369,6 +369,27 @@ namespace Gizmo.Client.UI.Components
             return Task.CompletedTask;
         }
 
+        private async Task CloseNotifications()
+        {
+            if (await _animationLock.WaitAsync(TimeSpan.FromMinutes(1)))
+            {
+                try
+                {
+                    _dismissAllItems = _visible.Select(a => a.Identifier).ToList();
+                    NotificationsService.DismissAll();
+
+                    await SlideWindowOut();
+
+                    _visible.Clear();
+                    await Rerender();
+                }
+                finally
+                {
+                    _animationLock.Release();
+                }
+            }
+        }
+
         private void ViewState_OnChange(object sender, System.EventArgs e)
         {
             Logger.LogDebug($"NotificationsMessage: ViewState_OnChange {this.ToString()}");

@@ -1,6 +1,7 @@
 using Gizmo.Client.UI.Localization.Resources;
 using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.Services;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -23,20 +24,26 @@ namespace Gizmo.Client.UI.Shared
         #endregion
 
         [Inject]
-        HostReservationViewState ViewState { get; set; } = null!;
+        HostReservationViewService ReservationService { get; set; } = null!;
+
+        private HostReservationViewState ViewState => ReservationService.ViewState;
 
         #region PROPERTIES
 
         private bool HasReservation =>
             ViewState.ReservationId.HasValue
             && ViewState.Time.HasValue
-            && !ViewState.Ignored
             && ViewState.Time.Value > DateTime.Now;
+
+        private bool IsIgnored => HasReservation && ViewState.Ignored;
 
         private bool IsClose => HasReservation && ViewState.ReservationNotificationTimeReached;
 
         private string StartText =>
-            ViewState.Time?.ToString("HH:mm", CultureInfo.CurrentCulture) ?? string.Empty;
+            ViewState.Time?.ToString("t", CultureInfo.CurrentCulture) ?? string.Empty;
+
+        private Task OpenReservation() =>
+            IsIgnored ? ReservationService.ShowDialog() : Task.CompletedTask;
 
         private string? CountdownText
         {

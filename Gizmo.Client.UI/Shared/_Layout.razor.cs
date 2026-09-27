@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Globalization;
 using System.Threading.Tasks;
 
 using Gizmo.Client.Options;
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -42,6 +45,9 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         UserBalanceViewState UserBalanceViewState { get; set; }
 
+        [CascadingParameter]
+        GrafitLocalizationService GrafitLocalization { get; set; }
+
         private bool HasClubWallpaper => !string.IsNullOrEmpty(ClientInterfaceOptions.CurrentValue.Background);
 
         private bool HasTimeLimit => UserBalanceViewState.Time.HasValue;
@@ -61,15 +67,30 @@ namespace Gizmo.Client.UI.Shared
             }
         }
 
+        private string PointsText => UserBalanceViewState.PointsBalance.ToString("N0", CultureInfo.CurrentCulture);
+
+        private string BalanceText => UserBalanceViewState.Balance.ToString("C", CultureInfo.CurrentCulture);
+
+        private string FiguresHiddenText =>
+            LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_IS_HIDDEN));
+
+        private string FiguresToggleLabel =>
+            GrafitLocalization.GetString(_figuresHidden ? GrafitResourceKeys.SHELL_BALANCE_SHOW : GrafitResourceKeys.SHELL_BALANCE_HIDE);
+
+        private string FiguresToggleIcon => _figuresHidden ? "ph-eye" : "ph-eye-slash";
+
         #endregion
 
         #region FIELDS
 
         private bool _playTransition;
+        private bool _figuresHidden;
 
         #endregion
 
         #region METHODS
+
+        private void ToggleFigures() => _figuresHidden = !_figuresHidden;
 
         private string TimeUnitAbbreviation(string resourceKey) =>
             LocalizationService.GetString(resourceKey)?.TrimEnd('.', ' ') ?? string.Empty;

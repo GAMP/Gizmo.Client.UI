@@ -91,10 +91,22 @@ namespace Gizmo.Client.UI.Localization.Services
             });
         }
 
-        // Russian and its neighbours take three forms; two cover English and the other
-        // languages the client ships. A language with fewer forms than the index uses its last.
+        // Russian and its neighbours take three forms, Slovenian four (one, two, few, other); two
+        // cover English and the other languages the client ships. A language with fewer forms
+        // than the index uses its last.
         private static int PluralIndex(int count, string language)
         {
+            if (language is "sl")
+            {
+                return (count % 100) switch
+                {
+                    1 => 0,
+                    2 => 1,
+                    3 or 4 => 2,
+                    _ => 3,
+                };
+            }
+
             if (language is "ru" or "uk" or "be")
             {
                 var mod100 = count % 100;

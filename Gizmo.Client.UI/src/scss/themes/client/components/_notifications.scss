@@ -22,6 +22,25 @@
         }
     }
 
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin: 0 0 1rem;
+        padding: 0.5rem 0.5rem 0.5rem 1.8rem;
+        border-radius: 1.4rem;
+        background: var(--giz-panel);
+        border: 1px solid rgba(var(--giz-white-rgb), 0.11);
+        box-shadow: 0 0.6rem 1.6rem -0.8rem rgba(var(--giz-black-rgb), 0.6);
+        font-family: $font-family-header-theme-client;
+        font-size: 1.2rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(var(--giz-ink-rgb), 0.66);
+    }
+
     &__body {
         max-height: 100%;
         overflow-y: auto;
@@ -156,7 +175,8 @@ $nt-ink-3: rgba(var(--giz-ink-rgb), 0.42);
     }
 }
 
-.giz-notification__close {
+.giz-notification__close,
+.giz-notifications__close {
     width: 3.2rem;
     height: 3.2rem;
     display: inline-flex;
@@ -217,15 +237,15 @@ $nt-ink-3: rgba(var(--giz-ink-rgb), 0.42);
     @include notification-card;
 
     &--success {
-        --nt-rgb: 52, 211, 153;
+        --nt-rgb: var(--giz-success-teal-rgb);
         --nt-soft: var(--giz-success-mint);
     }
     &--danger {
-        --nt-rgb: 248, 113, 113;
+        --nt-rgb: var(--giz-danger-coral-rgb);
         --nt-soft: var(--giz-danger-light);
     }
     &--warning {
-        --nt-rgb: 251, 191, 36;
+        --nt-rgb: var(--giz-warning-rgb);
         --nt-soft: var(--giz-warning-sun);
     }
 

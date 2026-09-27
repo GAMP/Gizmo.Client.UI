@@ -37,15 +37,19 @@
                 <i class="ph-bold ph-arrow-right giz-profile-popup__account-arrow"></i>
             </button>
             <div class="giz-profile-popup__actions-row">
-                <button class="giz-profile-popup__change-password-btn" @onclick="OnClickChangePasswordButtonHandler">
-                    <i class="ph-bold ph-key"></i>
-                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CHANGE_PASSWORD))</span>
-                </button>
+                @if (!ViewState.IsGuest)
+                {
+                    <button class="giz-profile-popup__change-password-btn" @onclick="OnClickChangePasswordButtonHandler">
+                        <i class="ph-bold ph-key"></i>
+                        <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CHANGE_PASSWORD))</span>
+                    </button>
+                }
 
                 @if (!ViewState.IsUserLockDisabled)
                 {
                     <button class="giz-profile-popup__lock-btn" @onclick="OnClickUserLockButtonHandler" title="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_MENU_LOCK_PC))">
                         <i class="ph-bold ph-lock-simple"></i>
+                        <span class="giz-profile-popup__lock-label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_MENU_LOCK_PC))</span>
                     </button>
                 }
             </div>

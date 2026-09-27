@@ -116,5 +116,7 @@
         public const string SHELL_PD_EXPIRES_AT_DAYTIME = nameof(SHELL_PD_EXPIRES_AT_DAYTIME);
         public const string SHELL_PD_EXPIRES_AFTER = nameof(SHELL_PD_EXPIRES_AFTER);
         public const string SHELL_PD_EXPIRES_AT_LOGOUT = nameof(SHELL_PD_EXPIRES_AT_LOGOUT);
+        public const string SHELL_BALANCE_HIDE = nameof(SHELL_BALANCE_HIDE);
+        public const string SHELL_BALANCE_SHOW = nameof(SHELL_BALANCE_SHOW);
     }
 }
