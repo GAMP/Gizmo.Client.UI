@@ -1,5 +1,4 @@
 ﻿@inherits ShellComponentBase
-@using System.Globalization
 @using Gizmo.Web.Api.Models
 
 <div class="giz-home-board">
@@ -87,7 +86,16 @@
                 <div class="giz-home-hero__body">
                     <div class="giz-home-hero__kick">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HERO_POPULAR)</div>
                     <div class="giz-home-hero__title">@featured.Name</div>
-                    <div class="giz-home-hero__price">@featured.UnitPrice.ToString("C", CultureInfo.CurrentCulture)</div>
+                    <div class="giz-home-hero__price">
+                        @if (IsPointsOnly(featured))
+                        {
+                            <span class="giz-home-hero__pts">@PointsPrice(featured)<i class="ph-fill ph-coins"></i></span>
+                        }
+                        else
+                        {
+                            @Money(featured.UnitPrice)
+                        }
+                    </div>
                     <button type="button" class="giz-home-hero__cta" @onclick="@(() => AddToCart(featured.Id))">
                         <i class="ph-bold ph-shopping-bag"></i><span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ADD_TO_CART))</span>
                     </button>
@@ -144,7 +152,7 @@
         <div class="giz-home-wallet">
             <div class="giz-caption">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BALANCE))</div>
             <div class="giz-home-wallet__row">
-                <span class="giz-home-wallet__sum">@UserBalanceViewState.Balance.ToString("C", CultureInfo.CurrentCulture)</span>
+                <span class="giz-home-wallet__sum">@Money(UserBalanceViewState.Balance)</span>
             </div>
         </div>
 
@@ -165,11 +173,11 @@
                             <span class="giz-home-pack__price">
                                 @if (IsPointsOnly(product))
                                 {
-                                    <span class="giz-home-pack__pts">@product.UnitPointsPrice.GetValueOrDefault().ToString("N0", CultureInfo.CurrentCulture)<i class="ph-fill ph-coins"></i></span>
+                                    <span class="giz-home-pack__pts">@PointsPrice(product)<i class="ph-fill ph-coins"></i></span>
                                 }
                                 else
                                 {
-                                    @product.UnitPrice.ToString("C", CultureInfo.CurrentCulture)
+                                    @Money(product.UnitPrice)
                                 }
                             </span>
                             <button type="button" class="giz-home-buy"
@@ -215,7 +223,16 @@
                                 </GizImage>
                             </span>
                             <span class="giz-home-bar__name" @onclick="@(() => OpenProduct(product.Id))">@product.Name</span>
-                            <span class="giz-home-bar__price">@product.UnitPrice.ToString("C", CultureInfo.CurrentCulture)</span>
+                            <span class="giz-home-bar__price">
+                                @if (IsPointsOnly(product))
+                                {
+                                    <span class="giz-home-bar__pts">@PointsPrice(product)<i class="ph-fill ph-coins"></i></span>
+                                }
+                                else
+                                {
+                                    @Money(product.UnitPrice)
+                                }
+                            </span>
                             <button type="button" class="giz-home-bar__add" title="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ADD_TO_CART))"
                                     @onclick="@(() => AddToCart(product.Id))">
                                 <i class="ph-bold ph-plus"></i>

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 using Gizmo.Client.Options;
 using Gizmo.Client.UI.Localization.Services;
@@ -62,6 +63,7 @@ namespace Gizmo.Client.UI.Components
         private bool IsTimePackage => _product?.ProductType == ProductType.ProductTime;
 
         private bool _buying;
+        private readonly CancellationTokenSource _lifetime = new();
 
         public async Task OnAddProductButtonClickHandler(MouseEventArgs args)
         {
@@ -80,12 +82,14 @@ namespace Gizmo.Client.UI.Components
             {
                 try
                 {
-                    await PackagePurchaseFlow.RunAsync(ProductId, ClientServerCartViewService, UserCartViewService);
+                    await PackagePurchaseFlow.RunAsync(ProductId, ClientServerCartViewService, UserCartViewService, _lifetime.Token);
                 }
                 finally
                 {
                     _buying = false;
-                    StateHasChanged();
+
+                    if (!IsDisposed)
+                        StateHasChanged();
                 }
             });
 
@@ -146,6 +150,10 @@ namespace Gizmo.Client.UI.Components
 
         public override void Dispose()
         {
+            _lifetime.Cancel();
+
+            ClientServerCartViewService.ViewState.OnChange -= ViewState_OnChange;
+
             if (_userCartProductViewState != null)
                 this.UnsubscribeChange(_userCartProductViewState);
 

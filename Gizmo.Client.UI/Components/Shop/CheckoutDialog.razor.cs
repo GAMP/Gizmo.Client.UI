@@ -176,29 +176,32 @@ namespace Gizmo.Client.UI.Components
 
             DispatchWorkflow(async () =>
             {
-                if (Total == 0 && CartOrderService.ViewState.PaymentMethodId.HasValue)
+                try
                 {
-                    CartOrderService.SetOrderPaymentMethod(null);
-                    await WaitForCartAsync();
+                    if (Total == 0 && CartOrderService.ViewState.PaymentMethodId.HasValue)
+                    {
+                        CartOrderService.SetOrderPaymentMethod(null);
+                        await WaitForCartAsync();
+                    }
+
+                    await CartOrderService.CheckoutAsync();
+
+                    var state = CartOrderService.ViewState;
+
+                    if (state.IsComplete)
+                    {
+                        _outcomeOk = !state.HasError;
+                        _outcomeError = state.ErrorMessage;
+                        _step = Step.Done;
+                    }
                 }
-
-                await CartOrderService.CheckoutAsync();
-
-                var state = CartOrderService.ViewState;
-
-                if (!state.IsComplete)
+                finally
                 {
                     _paying = false;
-                    StateHasChanged();
-                    return;
+
+                    if (!IsDisposed)
+                        StateHasChanged();
                 }
-
-                _outcomeOk = !state.HasError;
-                _outcomeError = state.ErrorMessage;
-
-                _paying = false;
-                _step = Step.Done;
-                StateHasChanged();
             });
         }
 
@@ -206,6 +209,8 @@ namespace Gizmo.Client.UI.Components
         {
             if (_paying)
                 return;
+
+            LeaveTopUp();
 
             await DismissCallback.InvokeAsync();
 

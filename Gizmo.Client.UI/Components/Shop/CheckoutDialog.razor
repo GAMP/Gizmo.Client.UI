@@ -40,7 +40,7 @@
             @if (_step == Step.TopUp)
             {
                 <div class="giz-buy__topup">
-                    <UserOnlineDeposits OnPaymentSucceeded="@OnTopUpSucceeded" />
+                    <UserOnlineDeposits OnClickPayFromPC="@PayTopUpFromThisPc" OnClickClear="@ResetTopUp" OnPaymentSucceeded="@OnTopUpSucceeded" />
                 </div>
 
                 <div class="giz-buy__actions">
@@ -112,7 +112,7 @@
                         {
                             <div class="giz-buy__line giz-buy__line--good">
                                 <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_DISCOUNT)</span>
-                                <span>−@Money(Discount)</span>
+                                <span class="giz-buy__minus">@Money(Discount)</span>
                             </div>
                         }
                         @if (Fees > 0)
@@ -138,7 +138,7 @@
                                     }
                                     @if (Total > 0)
                                     {
-                                        <span>@(PointsDue > 0 ? "+ " : null)@Money(Total)</span>
+                                        <span class="giz-buy__money">@Money(Total)</span>
                                     }
                                 }
                             </span>

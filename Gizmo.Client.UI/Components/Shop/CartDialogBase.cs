@@ -401,21 +401,34 @@ namespace Gizmo.Client.UI.Components
 
         protected void BackToConfirm()
         {
+            OnlineDepositService.Clear();
+
             _step = Step.Confirm;
             StateHasChanged();
         }
 
-        protected void OnTopUpSucceeded()
-        {
-            OnlineDepositService.Clear();
+        protected void OnTopUpSucceeded() => BackToConfirm();
 
-            BackToConfirm();
+        protected async Task PayTopUpFromThisPc()
+        {
+            if (OnlineDepositViewState.PaymentUrl is { } url)
+                await InvokeVoidAsync("open", url);
+        }
+
+        protected void ResetTopUp() => OnlineDepositService.Clear();
+
+        protected void LeaveTopUp()
+        {
+            if (_step == Step.TopUp)
+                OnlineDepositService.Clear();
         }
 
         protected virtual Task CloseDialog()
         {
             if (_paying)
                 return Task.CompletedTask;
+
+            LeaveTopUp();
 
             return DismissCallback.InvokeAsync();
         }

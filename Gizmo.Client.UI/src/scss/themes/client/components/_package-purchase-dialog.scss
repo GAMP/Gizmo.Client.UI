@@ -379,7 +379,11 @@ $buy-on-accent: var(--giz-on-accent);
         color: $buy-ink;
 
         .giz-buy__pts i { font-size: 0.7em; align-self: center; }
+
+        .giz-buy__pts + .giz-buy__money::before { content: "+\00a0"; }
     }
+
+    &__minus::before { content: "\2212"; }
 
     &__total-free {
         font-family: $font-family-header-theme-client;

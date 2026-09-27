@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -48,6 +49,7 @@ namespace Gizmo.Client.UI.Pages
         private int _slide;
 
         private int? _buyingProductId;
+        private readonly CancellationTokenSource _lifetime = new();
 
         #endregion
 
@@ -220,14 +222,16 @@ namespace Gizmo.Client.UI.Pages
 
         private bool HasPromo => Banners.Count > 0;
 
-        private void OnSlideTick(object? _)
+        private void OnSlideTick(object? _) => DispatchWorkflow(() =>
         {
-            if (SlideCount <= 1)
-                return;
+            if (SlideCount > 1)
+            {
+                _slide++;
+                StateHasChanged();
+            }
 
-            _slide++;
-            DispatchRender();
-        }
+            return Task.CompletedTask;
+        });
 
         #endregion
 
@@ -263,6 +267,11 @@ namespace Gizmo.Client.UI.Pages
         private static bool IsPointsOnly(UserProductViewState product) =>
             product.UnitPrice == 0 && (product.UnitPointsPrice ?? 0) > 0;
 
+        private static string Money(decimal amount) => amount.ToString("C", CultureInfo.CurrentCulture);
+
+        private static string PointsPrice(UserProductViewState product) =>
+            product.UnitPointsPrice.GetValueOrDefault().ToString("N0", CultureInfo.CurrentCulture);
+
         private void AddToCart(int productId)
         {
             CartService.AddProduct(productId);
@@ -281,12 +290,14 @@ namespace Gizmo.Client.UI.Pages
             {
                 try
                 {
-                    await PackagePurchaseFlow.RunAsync(productId, CartService, CheckoutService);
+                    await PackagePurchaseFlow.RunAsync(productId, CartService, CheckoutService, _lifetime.Token);
                 }
                 finally
                 {
                     _buyingProductId = null;
-                    StateHasChanged();
+
+                    if (!IsDisposed)
+                        StateHasChanged();
                 }
             });
         }
@@ -365,6 +376,8 @@ namespace Gizmo.Client.UI.Pages
         public override void Dispose()
         {
             ShellActivity.Changed -= OnActivityChanged;
+
+            _lifetime.Cancel();
 
             _slideTimer?.Dispose();
             _slideTimer = null;
