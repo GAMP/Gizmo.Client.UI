@@ -16,12 +16,7 @@
         }
         else if (ViewState.IsInitialized == true)
         {
-            var products = ViewState.TimeProducts
-                .OrderBy(p => p.ActivationOrder.HasValue ? 0 : 1)
-                .ThenBy(p => p.ActivationOrder)
-                .ToList();
-
-            if (products.Count == 0)
+            if (OrderedTimeProducts.Count == 0)
             {
                 <div class="giz-account-card__empty">
                     <i class="ph ph-hourglass"></i>
@@ -32,7 +27,7 @@
             else
             {
                 <div class="giz-account-time">
-                    @foreach (var product in products)
+                    @foreach (var product in OrderedTimeProducts)
                     {
                         <TimeProductRow @key="product"
                                         Product="@product"

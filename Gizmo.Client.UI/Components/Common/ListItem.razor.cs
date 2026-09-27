@@ -267,6 +267,8 @@ namespace Gizmo.Client.UI.Components
                 {
                     Parent.Unregister(this);
                 }
+
+                NavigationManager.LocationChanged -= NavigationManager_LocationChanged;
             }
             catch (Exception) { }
 

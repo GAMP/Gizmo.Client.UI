@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -42,33 +43,78 @@ namespace Gizmo.Client.UI.Components
         }
 
         [JSInvokable]
-        public async Task OnKeyboardLayoutDetected(string sampleChar)
+        public async Task OnKeyboardLayoutDetected(string sample)
         {
-            var language = LanguageFromSampleChar(sampleChar);
-
-            if (language is not null)
-                await ApplyDetectedLanguageAsync(language);
+            if (ScriptOfSample(sample) is { } script)
+                await FollowLayoutAsync(script, ExactLanguageOfSample(sample));
 
             await InvokeAsync(StateHasChanged);
         }
 
-        private static string LanguageFromSampleChar(string sampleChar)
+        private enum Script { Latin, Cyrillic, Greek }
+
+        private static readonly HashSet<string> CYRILLIC_LANGUAGES = new(StringComparer.OrdinalIgnoreCase)
         {
-            if (string.IsNullOrEmpty(sampleChar))
+            "ru", "uk", "be", "bg", "mk", "sr", "kk", "ky", "mn", "tg", "tt", "ba",
+        };
+
+        private static Script? ScriptOfSample(string sample)
+        {
+            if (string.IsNullOrEmpty(sample))
                 return null;
 
-            var c = sampleChar[0];
+            var c = sample[0];
 
             if (c >= 'Ѐ' && c <= 'ӿ')
-                return "ru";
+                return Script.Cyrillic;
 
             if (c >= 'Ͱ' && c <= 'Ͽ')
-                return "el";
+                return Script.Greek;
 
-            if (c < 'ɐ')
-                return "en";
+            return c < 'ɐ' ? Script.Latin : null;
+        }
 
-            return null;
+        private static string ExactLanguageOfSample(string sample)
+        {
+            if (sample is null || sample.Length < 3 || ScriptOfSample(sample) != Script.Cyrillic)
+                return null;
+
+            return (sample[1], sample[2]) switch
+            {
+                ('ы', 'щ') => "ru",
+                ('і', 'ў') => "be",
+                ('і', 'щ') => "uk",
+                _ => null,
+            };
+        }
+
+        private static Script ScriptOf(string language)
+        {
+            if (string.Equals(language, "el", StringComparison.OrdinalIgnoreCase))
+                return Script.Greek;
+
+            return language is not null && CYRILLIC_LANGUAGES.Contains(language) ? Script.Cyrillic : Script.Latin;
+        }
+
+        private Task FollowLayoutAsync(Script script, string exactLanguage)
+        {
+            var current = ViewState.CurrentInputLanguage?.TwoLetterISOLanguageName;
+
+            if (exactLanguage is not null)
+                return ApplyDetectedLanguageAsync(exactLanguage);
+
+            if (current is not null && ScriptOf(current) == script)
+                return Task.CompletedTask;
+
+            var uiLanguage = LocalizationViewState.CurrentCulture?.TwoLetterISOLanguageName;
+
+            var match = ViewState.AvailableInputLanguages
+                .Select(a => a.TwoLetterISOLanguageName)
+                .Where(a => ScriptOf(a) == script)
+                .OrderBy(a => string.Equals(a, uiLanguage, StringComparison.OrdinalIgnoreCase) ? 0 : 1)
+                .FirstOrDefault();
+
+            return match is null ? Task.CompletedTask : ApplyDetectedLanguageAsync(match);
         }
 
         private Task ApplyDetectedLanguageAsync(string twoLetterIsoName)

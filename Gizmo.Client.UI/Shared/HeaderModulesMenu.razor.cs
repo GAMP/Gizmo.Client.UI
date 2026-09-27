@@ -1,6 +1,4 @@
-﻿using System;
-using Gizmo.Client.UI.Services;
-using Gizmo.Client.UI.View.States;
+﻿using Gizmo.Client.UI.View.States;
 using Microsoft.AspNetCore.Components;
 
 namespace Gizmo.Client.UI
@@ -10,9 +8,7 @@ namespace Gizmo.Client.UI
         [Inject()]
         private PageModulesViewState ViewState
         {
-            get; set;
+            get;set;
         }
-
-        private static bool ShouldShowModule(string guid) => true;
     }
 }

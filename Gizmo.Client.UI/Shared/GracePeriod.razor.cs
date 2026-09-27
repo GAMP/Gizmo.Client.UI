@@ -55,7 +55,7 @@ namespace Gizmo.Client.UI.Shared
         private bool ReservationNeedsPayment => ConfirmReservationDialogViewService.ViewState.Step == 1;
 
         private string ReservationTimeText => HostReservationViewState.Time.HasValue
-            ? HostReservationViewState.Time.Value.ToString("HH:mm")
+            ? HostReservationViewState.Time.Value.ToString("t", System.Globalization.CultureInfo.CurrentCulture)
             : string.Empty;
 
         private async Task OnClickPayFromPCHandler()

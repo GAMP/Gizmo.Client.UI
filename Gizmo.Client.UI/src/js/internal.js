@@ -1372,36 +1372,26 @@ window.removeExpansionPanelEventListener = function removeExpansionPanelEventLis
 };
 
 // ─────────────────────── keyboard layout detection ───────────────────────
-// The desktop host's IInputLanguageService never raises LanguageChange and
-// its CurrentInputLanguage getter throws NotImplementedException, so the
-// shell has no way of hearing about an Alt+Shift layout switch from the
-// C# side. The WebView is Chromium though, and Chromium exposes the live
-// OS layout through navigator.keyboard.getLayoutMap(). Polling that is the
-// only route to the information that does not require changing the host.
-//
-// The 'layoutchange' event on navigator.keyboard exists in the spec but is
-// not shipped in most Chromium builds, hence the poll rather than a
-// listener.
+// The host's input-language service raises no event on an Alt+Shift switch, so the live OS
+// layout is read from navigator.keyboard.getLayoutMap() while the shell has focus.
 let _layoutWatchTimer = null;
 let _layoutWatchLast = null;
 let _layoutWatchTick = null;
 let _layoutWatchInterval = 800;
 
+// What KeyA, KeyS and KeyO type: enough to tell the script, and Russian from Ukrainian
+// and Belarusian ("фыщ", "фіщ", "фіў").
 async function _probeLayoutSampleChar() {
     if (!navigator.keyboard || !navigator.keyboard.getLayoutMap) return null;
     try {
         const map = await navigator.keyboard.getLayoutMap();
-        // KeyA is present in every layout worth distinguishing here and
-        // its output identifies the script: "a" latin, "ф" cyrillic,
-        // "α" greek, ...
-        return map.get("KeyA") || null;
+        const sample = ["KeyA", "KeyS", "KeyO"].map((code) => map.get(code) || "").join("");
+        return sample || null;
     } catch {
         return null;
     }
 }
 
-// Follows focus: a layout switch pressed into another window cannot change what
-// this field will type, so there is nothing to poll for while the shell is behind.
 function _layoutWatchResume() {
     if (_layoutWatchTimer !== null || _layoutWatchTick === null) return;
 
@@ -1427,7 +1417,6 @@ window.setupInputLayoutWatch = function setupInputLayoutWatch(dotNetRef, callbac
             try {
                 await dotNetRef.invokeMethodAsync(callbackName, sample);
             } catch {
-                // Component went away between the poll and the callback.
                 window.teardownInputLayoutWatch();
             }
         }
@@ -1443,14 +1432,23 @@ window.teardownInputLayoutWatch = function teardownInputLayoutWatch() {
     _layoutWatchLast = null;
 };
 
+// The rail clips and scrolls its quick-launch list, so an item's tooltip is fixed and placed
+// beside the item it belongs to, inside the window.
+document.addEventListener("mouseover", function placeDockTooltip(event) {
+    const item = event.target instanceof Element ? event.target.closest(".giz-left-panel .giz-dock-item") : null;
+    const tip = item ? item.querySelector(".giz-dock-item-tooltip-wrapper") : null;
+
+    if (!tip) return;
+
+    const itemBox = item.getBoundingClientRect();
+    const railBox = item.closest(".giz-left-panel").getBoundingClientRect();
+    const top = Math.max(8, Math.min(itemBox.top, window.innerHeight - tip.offsetHeight - 8));
+
+    tip.style.setProperty("--giz-dock-tip-top", top + "px");
+    tip.style.setProperty("--giz-dock-tip-left", railBox.right + "px");
+}, true);
+
 // Writing direction for the current language.
-//
-// Nothing the client ships today is right-to-left - the eleven translated cultures are
-// all LTR - so this always resolves to "ltr" in practice. It exists because the document
-// has to declare a direction for any RTL work to have something to switch on: without it
-// even a fully mirrored stylesheet would never activate. See THIRD-PARTY-NOTICES.md's
-// neighbour, the RTL section of deploy/README.md, for what mirroring the stylesheet would
-// still involve.
 window.setDocumentDirection = function setDocumentDirection(direction) {
     const value = direction === "rtl" ? "rtl" : "ltr";
 
@@ -1637,6 +1635,17 @@ window.setDocumentDirection = function setDocumentDirection(direction) {
     }
 
     let current = null;
+    let watcher = null;
+
+    function notify() {
+        if (!watcher) {
+            return;
+        }
+
+        watcher.ref.invokeMethodAsync(watcher.method, theme.get()).catch(function () {
+            watcher = null;
+        });
+    }
 
     const theme = {
         accents: ACCENTS.slice(),
@@ -1660,6 +1669,7 @@ window.setDocumentDirection = function setDocumentDirection(direction) {
                 clearCustom();
                 root.setAttribute("data-accent", name);
                 current = name;
+                notify();
                 return true;
             }
 
@@ -1678,7 +1688,14 @@ window.setDocumentDirection = function setDocumentDirection(direction) {
             root.setAttribute("data-accent", CUSTOM);
             applyCustom(colour);
             current = name;
+            notify();
             return true;
+        },
+
+        // Tells .NET every accent applied from here on (the club's style.css can load after
+        // the shell has started).
+        watch: function (dotNetRef, method) {
+            watcher = dotNetRef ? { ref: dotNetRef, method: method } : null;
         },
 
         // Applies --giz-palette and --giz-motion from whatever stylesheets are loaded.

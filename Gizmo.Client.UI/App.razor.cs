@@ -29,6 +29,8 @@ public partial class App : ComponentBase, IDisposable
 
     protected GrafitLocalizationService GrafitLocalization { get; private set; }
 
+    private DotNetObjectReference<App> _selfRef;
+
     #endregion
 
     protected override void OnInitialized()
@@ -56,6 +58,9 @@ public partial class App : ComponentBase, IDisposable
     {
         try
         {
+            _selfRef ??= DotNetObjectReference.Create(this);
+
+            await JSRuntime.InvokeVoidAsync("grafitTheme.watch", _selfRef, nameof(OnAccentApplied));
             await JSRuntime.InvokeVoidAsync("grafitTheme.sync");
 
             var accent = await JSRuntime.InvokeAsync<string>("grafitTheme.get");
@@ -67,29 +72,32 @@ public partial class App : ComponentBase, IDisposable
         }
     }
 
-    private Task ApplyDocumentDirectionAsync()
+    [JSInvokable]
+    public void OnAccentApplied(string accent) => ShellTheme.Set(accent);
+
+    private async Task ApplyDocumentDirectionAsync()
     {
         var direction = CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? "rtl" : "ltr";
 
-        return JSRuntime.InvokeVoidAsync("setDocumentDirection", direction).AsTask();
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("setDocumentDirection", direction);
+        }
+        catch (Exception exception) when (exception is JSException
+                                            or OperationCanceledException
+                                            or ObjectDisposedException
+                                            or InvalidOperationException)
+        {
+        }
     }
 
     private void OnCultureChanged(object sender, EventArgs e) =>
-        _ = InvokeAsync(async () =>
-        {
-            try
-            {
-                await ApplyDocumentDirectionAsync();
-            }
-            catch (Exception exception) when (exception is OperationCanceledException
-                                                or ObjectDisposedException
-                                                or InvalidOperationException)
-            {
-            }
-        });
+        _ = InvokeAsync(ApplyDocumentDirectionAsync);
 
     public void Dispose()
     {
         LocalizationViewState.OnChange -= OnCultureChanged;
+
+        _selfRef?.Dispose();
     }
 }

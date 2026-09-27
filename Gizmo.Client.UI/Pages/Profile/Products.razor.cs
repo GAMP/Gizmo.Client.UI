@@ -1,4 +1,6 @@
-﻿using Gizmo.Client.UI.Localization.Services;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
@@ -28,6 +30,11 @@ namespace Gizmo.Client.UI.Pages
         /// Disabled when the shop is off or product details are disabled.
         /// </summary>
         private bool ProductDetailsNavigationEnabled => ProductDetailsPageViewState.ProductDetailsNavigationEnabled;
+
+        private IReadOnlyList<TimeProductViewState> OrderedTimeProducts => ViewState.TimeProducts
+            .OrderBy(p => p.ActivationOrder.HasValue ? 0 : 1)
+            .ThenBy(p => p.ActivationOrder)
+            .ToList();
 
         public void OpenDetails(int productId)
         {

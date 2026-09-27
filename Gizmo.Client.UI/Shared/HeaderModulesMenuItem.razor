@@ -2,7 +2,9 @@
 @inherits ComponentBase
 
 <NavLink href="@MetaData.DefaultRoute"
-         Match=@((NavLinkMatch)MetaData.DefaultRouteMatch)>
+         Match=@((NavLinkMatch)MetaData.DefaultRouteMatch)
+         title="@Title"
+         aria-label="@Title">
 
     @switch (MetaData.Guid)
     {
@@ -39,6 +41,11 @@
             @if (!string.IsNullOrEmpty(MetaData.Icon))
             {
                 <img src="@MetaData.Icon" alt='loading' class="giz-module-icon" />
+            }
+            else
+            {
+                <i class="ph-bold ph-squares-four giz-ph-icon giz-nav-icon--bold"></i>
+                <i class="ph-fill ph-squares-four giz-ph-icon giz-nav-icon--fill"></i>
             }
 
             break;

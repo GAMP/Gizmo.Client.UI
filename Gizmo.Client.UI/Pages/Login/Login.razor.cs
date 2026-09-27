@@ -104,19 +104,6 @@ namespace Gizmo.Client.UI.Pages
             return Task.CompletedTask;
         }
 
-        internal static string StripLeadingCountryDigit(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-                return value;
-
-            return value[0] == '7' || value[0] == '8' ? value.Substring(1) : value;
-        }
-
-        private void SetPhoneLoginName(string value)
-        {
-            UserLoginService.SetLoginName(StripLeadingCountryDigit(value));
-        }
-
         private void SelectLoginType(ICollection<Button> selectedItems)
         {
             if (selectedItems.Any(a => a.Name == "Username"))
