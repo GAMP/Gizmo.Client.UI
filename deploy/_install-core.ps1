@@ -1,5 +1,8 @@
 ﻿param(
+    # Back to what was in skins\<SkinName> before Grafit was first installed.
     [switch]$Uninstall,
+    # Back to the version installed before the current one.
+    [switch]$Rollback,
     # Where Gizmo Server is installed. The skin goes into its skins folder.
     [string]$ServerRoot = 'C:\Program Files\NETProjects\Gizmo Server',
     # The skin's folder name = the name the Manager shows for it.
@@ -13,6 +16,7 @@ $Target    = Join-Path $Skins $SkinName
 $Reference = Join-Path $Skins 'Next'
 $Src       = Join-Path $PSScriptRoot 'skin'
 $BackupRt  = Join-Path $PSScriptRoot 'backup'
+$Stage     = Join-Path $PSScriptRoot 'staging'
 
 # Grafit is a skin of its own: a folder next to the stock "Next" with the same layout
 # (composition.json, the two assemblies, wwwroot). Nothing of the stock skin is touched
@@ -23,8 +27,39 @@ $BackupRt  = Join-Path $PSScriptRoot 'backup'
 # and static\ (the club's files the client serves as https://static/, among them the
 # fallback pictures of the sign-in rotator). Both are copies: after a server update the
 # stock skin changes and Grafit has to be installed again to pick that up.
+#
+# Every install keeps what it replaced in backup\<timestamp>\ (the old skin, or absent.txt
+# when there was none). "rollback" restores the newest backup and drops it; "uninstall"
+# restores the oldest one - the state before Grafit.
+
+$Required = @('composition.json', 'Gizmo.Client.UI.dll', 'Gizmo.Web.Components.dll',
+              'wwwroot\index.html', 'wwwroot\_framework\blazor.webview.js',
+              'wwwroot\_content\Gizmo.Client.UI\vendor\fonts\fonts.css', 'static')
 
 function Say($t, $c = 'Gray') { Write-Host $t -ForegroundColor $c }
+
+function Copy-Tree($from, $to) {
+    New-Item -ItemType Directory -Path $to -Force | Out-Null
+    if (Get-ChildItem $from -Force -ErrorAction SilentlyContinue) {
+        Copy-Item (Join-Path $from '*') $to -Recurse -Force
+    }
+}
+
+function Restore-Backup($backup) {
+    if (Test-Path $Target) { Remove-Item $Target -Recurse -Force }
+
+    $saved = Join-Path $backup.FullName $SkinName
+    if (Test-Path $saved) {
+        Copy-Tree $saved $Target
+        return $true
+    }
+
+    return $false
+}
+
+function Backups {
+    Get-ChildItem $BackupRt -Directory -ErrorAction SilentlyContinue | Sort-Object Name
+}
 
 if (-not (Test-Path $Skins)) {
     Say "Not found: $Skins" 'Red'
@@ -32,55 +67,40 @@ if (-not (Test-Path $Skins)) {
     exit 1
 }
 
-# ── rollback ────────────────────────────────────────────────────────────────
-if ($Uninstall) {
-    $last = Get-ChildItem $BackupRt -Directory -ErrorAction SilentlyContinue |
-            Sort-Object Name -Descending | Select-Object -First 1
-    if (-not $last) {
+# ── rollback / uninstall ────────────────────────────────────────────────────
+if ($Uninstall -or $Rollback) {
+    $all = @(Backups)
+    if ($all.Count -eq 0) {
         Say "No backup found in $BackupRt - nothing to restore." 'Red'
         exit 1
     }
 
-    Say "Restoring from $($last.FullName)" 'DarkGray'
+    $backup = if ($Uninstall) { $all[0] } else { $all[-1] }
+    Say "Restoring from $($backup.FullName)" 'DarkGray'
 
-    if (Test-Path $Target) { Remove-Item $Target -Recurse -Force }
-
-    $saved = Join-Path $last.FullName $SkinName
-    if (Test-Path $saved) {
-        New-Item -ItemType Directory -Path $Target -Force | Out-Null
-        Copy-Item (Join-Path $saved '*') $Target -Recurse -Force
-        Say "Previous '$SkinName' skin put back." 'Green'
+    if (Restore-Backup $backup) {
+        Say "The '$SkinName' skin from $($backup.Name) is back." 'Green'
     } else {
-        Say "There was no '$SkinName' skin before - the folder is removed." 'Green'
+        Say "There was no '$SkinName' skin then - the folder is removed." 'Green'
         Say "Host groups still pointing at '$SkinName' must be switched to another skin in the Manager." 'Yellow'
     }
 
-    Say "Restart the client shell on the machines." 'Yellow'
+    if ($Uninstall) {
+        $all | ForEach-Object { Remove-Item $_.FullName -Recurse -Force }
+    } else {
+        Remove-Item $backup.FullName -Recurse -Force
+    }
+
+    Say "Restart the Gizmo Client on the machines." 'Yellow'
     exit 0
 }
 
+# ── stage ───────────────────────────────────────────────────────────────────
 if (-not (Test-Path $Src)) {
     Say "Missing 'skin' folder next to the installer." 'Red'
     exit 1
 }
 
-# ── backup ──────────────────────────────────────────────────────────────────
-$stamp  = Get-Date -Format 'yyyyMMdd-HHmmss'
-$backup = Join-Path $BackupRt $stamp
-New-Item -ItemType Directory -Path $backup -Force | Out-Null
-
-if (Test-Path $Target) {
-    $saved = Join-Path $backup $SkinName
-    New-Item -ItemType Directory -Path $saved -Force | Out-Null
-    Copy-Item (Join-Path $Target '*') $saved -Recurse -Force
-    Say "Backup: $saved" 'DarkGray'
-} else {
-    # A marker so a rollback knows to remove the folder rather than restore it.
-    Set-Content (Join-Path $backup 'absent.txt') "No '$SkinName' skin existed before $stamp."
-    Say "No previous '$SkinName' skin - first install." 'DarkGray'
-}
-
-# ── install ─────────────────────────────────────────────────────────────────
 # The shell's version travels in the assembly: "1.0.0 (Gizmo 3.0.92)". Say which one is
 # going in, and warn when the server is not the release it was built for.
 $dll = Join-Path $Src 'Gizmo.Client.UI.dll'
@@ -96,51 +116,86 @@ if (Test-Path $serverDll) {
     Say "Shell $shellVersion" 'DarkGray'
 }
 
-if (Test-Path $Target) { Remove-Item $Target -Recurse -Force }
-New-Item -ItemType Directory -Path $Target -Force | Out-Null
-Copy-Item (Join-Path $Src '*') $Target -Recurse -Force
-Say "Installed skin: $Target" 'DarkGray'
+# The new skin is put together next to the installer and checked before anything in the
+# server's skins folder changes.
+if (Test-Path $Stage) { Remove-Item $Stage -Recurse -Force }
+Copy-Tree $Src $Stage
 
 $refFramework = Join-Path $Reference 'wwwroot\_framework'
 if (Test-Path $refFramework) {
-    $dstFramework = Join-Path $Target 'wwwroot\_framework'
-    Remove-Item $dstFramework -Recurse -Force -ErrorAction SilentlyContinue
-    New-Item -ItemType Directory -Path $dstFramework -Force | Out-Null
-    Copy-Item (Join-Path $refFramework '*') $dstFramework -Recurse -Force
+    $dstFramework = Join-Path $Stage 'wwwroot\_framework'
+    if (Test-Path $dstFramework) { Remove-Item $dstFramework -Recurse -Force }
+    Copy-Tree $refFramework $dstFramework
     Say "Took wwwroot\_framework from the server's own Next skin" 'DarkGray'
-} elseif (-not (Test-Path (Join-Path $Target 'wwwroot\_framework\blazor.webview.js'))) {
-    Say "No _framework found in the stock skin or the package - the shell will not start!" 'Red'
-    exit 1
 }
 
 $refStatic = Join-Path $Reference 'static'
-$dstStatic = Join-Path $Target 'static'
-New-Item -ItemType Directory -Path $dstStatic -Force | Out-Null
+$dstStatic = Join-Path $Stage 'static'
 if (Test-Path $refStatic) {
-    Copy-Item (Join-Path $refStatic '*') $dstStatic -Recurse -Force
+    Copy-Tree $refStatic $dstStatic
     Say "Took static\ from the server's own Next skin" 'DarkGray'
 } else {
+    New-Item -ItemType Directory -Path $dstStatic -Force | Out-Null
     Say "The stock skin has no static\ folder - an empty one is created" 'DarkGray'
 }
 
-# ── sanity ──────────────────────────────────────────────────────────────────
-foreach ($must in @('composition.json', 'Gizmo.Client.UI.dll', 'Gizmo.Web.Components.dll',
-                    'wwwroot\index.html', 'wwwroot\_framework\blazor.webview.js',
-                    'wwwroot\_content\Gizmo.Client.UI\vendor\fonts\fonts.css', 'static')) {
-    if (-not (Test-Path (Join-Path $Target $must))) {
-        Say "Missing after install: $must" 'Red'
-        exit 1
-    }
+$missing = $Required | Where-Object { -not (Test-Path (Join-Path $Stage $_)) }
+if ($missing) {
+    $missing | ForEach-Object { Say "Missing: $_" 'Red' }
+    Say "Nothing was installed; the server's skins folder is unchanged." 'Yellow'
+    Remove-Item $Stage -Recurse -Force
+    exit 1
 }
 
+# ── backup ──────────────────────────────────────────────────────────────────
+$stamp = Get-Date -Format 'yyyyMMdd-HHmmss-fff'
+while (Test-Path (Join-Path $BackupRt $stamp)) { Start-Sleep -Milliseconds 5; $stamp = Get-Date -Format 'yyyyMMdd-HHmmss-fff' }
+$backup = Get-Item (New-Item -ItemType Directory -Path (Join-Path $BackupRt $stamp) -Force)
+
+if (Test-Path $Target) {
+    $saved = Join-Path $backup.FullName $SkinName
+    Copy-Tree $Target $saved
+    Say "Backup: $saved" 'DarkGray'
+} else {
+    # A marker so a rollback knows to remove the folder rather than restore it.
+    Set-Content (Join-Path $backup.FullName 'absent.txt') "No '$SkinName' skin existed before $stamp."
+    Say "No previous '$SkinName' skin - first install." 'DarkGray'
+}
+
+# ── install ─────────────────────────────────────────────────────────────────
+try {
+    if (Test-Path $Target) { Remove-Item $Target -Recurse -Force }
+    Copy-Tree $Stage $Target
+
+    $missing = $Required | Where-Object { -not (Test-Path (Join-Path $Target $_)) }
+    if ($missing) { throw "Missing after copy: $($missing -join ', ')" }
+}
+catch {
+    Say "Install failed: $($_.Exception.Message)" 'Red'
+    try {
+        if (Restore-Backup $backup) { Say "The previous '$SkinName' skin is back." 'Yellow' }
+        else { Say "The half-copied folder is removed." 'Yellow' }
+        Remove-Item $backup.FullName -Recurse -Force
+    }
+    catch {
+        Say "Could not put the previous skin back: $($_.Exception.Message). It is in $($backup.FullName)." 'Red'
+    }
+    exit 1
+}
+finally {
+    if (Test-Path $Stage) { Remove-Item $Stage -Recurse -Force -ErrorAction SilentlyContinue }
+}
+
+Say "Installed skin: $Target" 'DarkGray'
 Say ""
 Say "Done. Skin '$SkinName' ($shellVersion) is installed next to the stock one." 'Green'
 Say "Next: Manager -> the PC's host group -> Skin = '$SkinName' (a group's own Skin beats the server default)," 'Yellow'
 Say "      then restart the Gizmo Client on a PC of that group (the whole client, not a sign-out):" 'Yellow'
 Say "      the client receives its skin name and the skin files only when it connects." 'Yellow'
 Say "Check on the PC: %PROGRAMDATA%\NETProjects\Gizmo Client\Skins\$SkinName must appear after the restart." 'DarkGray'
-Say "Colour: data-accent in $Target\wwwroot\index.html, or ':root { --giz-palette: green; }' in the Manager's custom CSS." 'DarkGray'
+Say "Colour: ':root { --giz-palette: green; }' in the Manager's Skin profile custom CSS (it survives reinstalls)." 'DarkGray'
 $minClient = Get-Content (Join-Path $Src 'grafit.version.txt') -ErrorAction SilentlyContinue | Where-Object { $_ -like 'Client *' }
 if ($minClient) { Say "Clients: $($minClient -replace '^Client\s+', '') - an older Gizmo Client will not start the shell." 'DarkGray' }
 Say "After every Gizmo Server update, run install.bat again: _framework and static\ are copies of the stock skin's." 'Yellow'
-Say "Rollback:  install.bat uninstall" 'DarkGray'
+Say "Back to the previous version:  install.bat rollback" 'DarkGray'
+Say "Remove Grafit completely:      install.bat uninstall" 'DarkGray'

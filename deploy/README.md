@@ -7,10 +7,11 @@ installer. It is also where the skin is built into a package (`stage.ps1`).
 
 1. Unpack the zip anywhere on the server machine.
 2. Run `install.bat` (it asks for administrator rights - the skins folder is under
-   Program Files). It copies `skin\` to `<Gizmo Server>\skins\Grafit\`, taking
+   Program Files). It puts the skin together next to itself - `skin\` plus
    `wwwroot\_framework` and `static\` from the server's own `Next` skin (an empty
-   `static\` if `Next` has none), and keeps a backup of whatever was in `skins\Grafit`
-   before under `backup\<timestamp>\`.
+   `static\` if `Next` has none) - checks it, and only then replaces
+   `<Gizmo Server>\skins\Grafit\`. Whatever was there before is kept under
+   `backup\<timestamp>\`; if the copy fails half-way, it is put back.
 3. In the Manager, point a host group at the skin: Host groups -> the group -> Skin =
    `Grafit`. (A Skin profile with custom CSS is optional - see "Colour" below.)
 4. Restart the client on the affected PCs - fully, not a re-login. The server hands the
@@ -18,8 +19,12 @@ installer. It is also where the skin is built into a package (`stage.ps1`).
    `%PROGRAMDATA%\NETProjects\Gizmo Client\Skins\` on the PC; a running client keeps the
    skin it started with.
 
-`install.bat uninstall` puts back the last backup, or removes the folder if there was
-nothing before. The stock `Next` skin is never touched.
+- `install.bat rollback` goes back to the version installed before the current one (run
+  it again to go further back).
+- `install.bat uninstall` goes back to what was in `skins\Grafit` before Grafit was first
+  installed - usually nothing, so the folder is removed.
+
+The stock `Next` skin is never touched.
 
 ## Versions
 
@@ -36,6 +41,9 @@ nothing before. The stock `Next` skin is never touched.
   Grafit keeps the old `blazor.webview.js`.
 
 ## Colour and motion (Manager -> Skin profile -> Custom CSS)
+
+Set these in the Manager, not in the installed files: a reinstall (after every server
+update) replaces `skins\Grafit`, the Manager's custom CSS stays.
 
 ```css
 :root { --giz-palette: purple; }     /* blue (default), purple, red, orange, amber, green, teal, pink */

@@ -1,4 +1,4 @@
-param(
+﻿param(
     # The Gizmo.Client.UI project folder; by default the one next to this deploy folder.
     [string]$Project = (Join-Path (Split-Path $PSScriptRoot -Parent) 'Gizmo.Client.UI'),
     # Where skin\ and dist\ are written; by default next to this script.
@@ -51,22 +51,20 @@ if ($built -ne "$grafit (Gizmo $gizmo)") {
 
 # ── stage ───────────────────────────────────────────────────────────────────
 $content = Join-Path $skin 'wwwroot\_content\Gizmo.Client.UI'
+if (Test-Path $skin) { Remove-Item $skin -Recurse -Force }
 New-Item -ItemType Directory -Path $skin -Force | Out-Null
 Copy-Item (Join-Path $bin 'Gizmo.Client.UI.dll')       (Join-Path $skin 'Gizmo.Client.UI.dll')       -Force
 Copy-Item (Join-Path $bin 'Gizmo.Web.Components.dll')  (Join-Path $skin 'Gizmo.Web.Components.dll')  -Force
 New-Item -ItemType Directory -Path (Join-Path $skin 'wwwroot') -Force | Out-Null
 Copy-Item (Join-Path $wwwroot 'index.html') (Join-Path $skin 'wwwroot\index.html') -Force
 
-if (Test-Path $content) { Remove-Item $content -Recurse -Force }
 New-Item -ItemType Directory -Path $content -Force | Out-Null
 Get-ChildItem $wwwroot -Force | Where-Object { $_.Name -ne 'index.html' } |
     ForEach-Object { Copy-Item $_.FullName (Join-Path $content $_.Name) -Recurse -Force }
 
-# composition.json is the skin's own (same content as the stock skin's); keep it if
-# staged before, write it otherwise.
+# composition.json is the skin's own (same content as the stock skin's).
 $composition = Join-Path $skin 'composition.json'
-if (-not (Test-Path $composition)) {
-    Set-Content $composition @'
+Set-Content $composition @'
 {
   "UIComposition": {
     "AppAssembly": "Gizmo.Client.UI.dll",
@@ -76,7 +74,6 @@ if (-not (Test-Path $composition)) {
   }
 }
 '@
-}
 
 Set-Content (Join-Path $skin 'grafit.version.txt') @(
     "Grafit $grafit",
