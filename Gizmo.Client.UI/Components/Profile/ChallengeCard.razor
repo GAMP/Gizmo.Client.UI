@@ -3,7 +3,7 @@
 @using Gizmo.Client.UI.Services
 @using Gizmo.Client.UI.View.States
 
-<div class="giz-challenge-card @(IsInfoOpen ? "giz-challenge-card--active" : "")">
+<div class="@CardClass">
     <div class="giz-challenge-card__info" @onclick="ToggleInfo" @onclick:stopPropagation="true">
         <Icon SVGIcon="Icons.Info2_Client" />
     </div>
@@ -13,27 +13,59 @@
     </ProfileCardPopup>
 
     <div class="giz-challenge-card__top">
-        <div class="giz-challenge-card__count-pill @(string.IsNullOrEmpty(Item.CountText) ? "giz-challenge-card__count-pill--hidden" : "")">@Item.CountText</div>
-        <div class="giz-challenge-card__name">@Item.Name</div>
+        <div class="giz-challenge-card__art"><i class="ph-fill @ArtIcon"></i></div>
+        <div class="giz-challenge-card__head">
+            <div class="giz-challenge-card__name">@Item.Name</div>
+            @if (!string.IsNullOrEmpty(Item.WindowText))
+            {
+                <div class="@WindowClass">@Item.WindowText</div>
+            }
+        </div>
+        @if (!string.IsNullOrEmpty(Item.CountText))
+        {
+            <div class="giz-challenge-card__count-pill">@Item.CountText</div>
+        }
     </div>
 
-    <div class="giz-challenge-card__bottom">
+    @if (Item.Requirements.Count > 0)
+    {
+        <div class="giz-challenge-card__segments">
+            @foreach (var requirement in Item.Requirements)
+            {
+                <span class="@SegmentClass(requirement)"></span>
+            }
+        </div>
+    }
+    else if (Item.ShowProgressBar)
+    {
+        <div class="giz-challenge-card__progress" style="--giz-ring-progress: @ProgressValue">
+            <div class="giz-challenge-card__progress-fill"></div>
+        </div>
+    }
+
+    <div class="giz-challenge-card__requirements">
+        @if (NextRequirement is not null)
+        {
+            <b>@NextRequirement.Name</b>
+        }
+        <span>@Item.RequirementsText</span>
+    </div>
+
+    <div class="giz-challenge-card__foot">
         @if (Item.HasChip)
         {
-            <div class="giz-challenge-card__chip @(Item.ChipIsSuccess ? "giz-challenge-card__chip--success" : "")">@Item.ChipText</div>
+            <span class="@ChipClass">@Item.ChipText</span>
         }
-        else if (!string.IsNullOrEmpty(Item.WindowText))
+        @foreach (var reward in Item.Rewards)
         {
-            <div class="giz-challenge-card__window @(Item.WindowIsWarning ? "giz-challenge-card__window--warning" : "")">@Item.WindowText</div>
+            <span class="giz-challenge-card__reward">
+                <i class="ph-fill @RewardIcon(reward)"></i>
+                <span>@reward.Text</span>
+                @if (!string.IsNullOrEmpty(reward.StatusText))
+                {
+                    <small>@reward.StatusText</small>
+                }
+            </span>
         }
-
-        @if (Item.ShowProgressBar)
-        {
-            <div class="giz-challenge-card__progress">
-                <div class="giz-challenge-card__progress-fill" style="width: @AchievementValueFormat.Percent(Item.ProgressPercent)"></div>
-            </div>
-        }
-
-        <div class="giz-challenge-card__requirements">@Item.RequirementsText</div>
     </div>
 </div>

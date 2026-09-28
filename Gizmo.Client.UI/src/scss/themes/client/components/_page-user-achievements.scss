@@ -192,3 +192,164 @@
         font-size: 1.3rem;
     }
 }
+
+//=============== Grafit: achievements ================//
+
+.giz-achievements {
+    margin-top: 0;
+    container-type: inline-size;
+
+    &__header {
+        @include giz-profile-title;
+    }
+
+    &__status {
+        @include giz-profile-status;
+
+        &--error {
+            color: var(--giz-danger-light);
+        }
+    }
+
+    &__grid {
+        @include giz-achievement-grid;
+    }
+}
+
+.giz-achievement-card {
+    width: auto;
+    min-height: 0;
+    gap: 0.9rem;
+    padding: 2.2rem 1.4rem 1.8rem;
+    text-align: center;
+    cursor: pointer;
+    @include giz-profile-card;
+
+    &--earned {
+        background: rgba(var(--giz-accent-rgb), 0.08);
+        border-color: rgba(var(--giz-accent-rgb), 0.45);
+    }
+
+    &:hover,
+    &--active,
+    &--highlighted {
+        @include giz-profile-card-hover;
+    }
+
+    &__info {
+        top: 1.2rem;
+        right: 1.2rem;
+        color: var(--giz-text-2);
+    }
+
+    &__mark {
+        position: relative;
+        flex: none;
+        width: 7.2rem;
+        height: 7.2rem;
+        margin-top: 0.4rem;
+    }
+
+    &__ring {
+        @include giz-ring-svg(-0.6rem);
+    }
+
+    &__track {
+        @include giz-ring-track(2.4);
+    }
+
+    // r = 18
+    &__bar {
+        @include giz-ring-bar(113.1, 2.4);
+    }
+
+    &--earned &__bar {
+        stroke: var(--giz-accent);
+    }
+
+    &__check {
+        position: absolute;
+        right: -0.5rem;
+        bottom: -0.5rem;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.6rem;
+        height: 2.6rem;
+        border-radius: 50%;
+        background: var(--giz-success);
+        border: 0.2rem solid var(--giz-bg-1);
+        color: var(--giz-night);
+        font-size: 1.4rem;
+    }
+
+    &__name {
+        margin-top: 0.4rem;
+        min-height: 0;
+        font-family: inherit;
+        font-size: 1.5rem;
+        font-weight: 800;
+        line-height: 1.2;
+        color: var(--giz-text-1);
+    }
+
+    &__standing,
+    &--earned &__standing {
+        margin-top: 0;
+        font-size: 1.3rem;
+        color: var(--giz-text-3);
+        font-variant-numeric: tabular-nums;
+    }
+
+    &--earned &__standing {
+        color: var(--giz-accent-pale);
+    }
+
+    &__chip {
+        margin-top: 0;
+        padding: 0.3rem 0.9rem;
+        border-radius: $giz-r-pill;
+        background: rgba(var(--giz-success-rgb), 0.14);
+        border: 1px solid rgba(var(--giz-success-rgb), 0.3);
+        color: var(--giz-success-light);
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+}
+
+.giz-achievement-card .giz-achievement-tile {
+    width: 100%;
+    height: 100%;
+    margin-top: 0;
+    border-radius: 50%;
+
+    &__image,
+    &__fallback {
+        border-radius: 50%;
+    }
+
+    &__fallback {
+        background: var(--giz-glass-5);
+        color: var(--giz-text-2);
+
+        .giz-icon {
+            width: 3rem;
+            height: 3rem;
+        }
+    }
+
+    &__count {
+        top: -1.2rem;
+        border-color: var(--giz-bg-1);
+    }
+}
+
+.giz-achievement-card--earned .giz-achievement-tile__fallback {
+    background: rgba(var(--giz-accent-rgb), 0.22);
+    color: var(--giz-accent-pale);
+}
+
+.giz-achievement-popup {
+    @include giz-profile-popup;
+}

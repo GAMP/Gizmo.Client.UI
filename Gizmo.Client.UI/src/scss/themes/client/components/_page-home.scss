@@ -897,3 +897,39 @@ $tile:  var(--giz-tile);
 
     padding: clamp(1.2rem, 1.5vh, 2.6rem) clamp(1.4rem, 1.4vw, 3.2rem) 0;
 }
+
+// ── split: the right column as two tiles ─────────────────────────────────
+// With the progress tile the board takes the stage's rows (same fr, same gap) and the stage
+// spans both: the till lines up with the hero, the progress tile with the strip.
+.giz-home-board--split {
+    grid-template-rows: minmax(0, 1.9fr) minmax(0, 1fr);
+
+    > .giz-home-stage {
+        grid-row: 1 / span 2;
+    }
+
+    .giz-home-till__sec--packs,
+    .giz-home-packs {
+        flex: 1 1 auto;
+    }
+}
+
+.giz-home-till--progress {
+    justify-content: space-between;
+}
+
+@media (max-height: 840px) {
+    .giz-home-board--split {
+        grid-template-rows: minmax(0, 2.15fr) minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 1100px) {
+    .giz-home-board--split {
+        grid-template-rows: minmax(0, 1.25fr) minmax(0, 1fr) auto;
+
+        > .giz-home-stage {
+            grid-row: auto;
+        }
+    }
+}

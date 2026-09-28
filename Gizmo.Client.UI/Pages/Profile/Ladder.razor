@@ -1,33 +1,62 @@
 @namespace Gizmo.Client.UI.Pages
-@inherits CustomDOMComponentBase
+@inherits ShellComponentBase
 
 <AccountFrame>
-    <div class="giz-ladder">
-        <div class="giz-ladder__header">
-            <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER))</span>
-        </div>
-
-        @if (ViewState.IsLoading)
+    <div class="giz-progress-page">
+        @if (ViewState.IsLoading && !ViewState.HasStanding)
         {
-            <div class="giz-ladder__status">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_LOADING))</div>
+            <div class="giz-progress-page__status">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_LOADING))</div>
         }
         else if (ViewState.HasError)
         {
-            <div class="giz-ladder__status giz-ladder__status--error">@ViewState.ErrorMessage</div>
+            <div class="giz-progress-page__status giz-progress-page__status--error">@ViewState.ErrorMessage</div>
         }
-        else if (!ViewState.HasStanding)
+        else if (ViewState.HasStanding)
         {
-            <div class="giz-ladder__status">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_EMPTY))</div>
-        }
-        else
-        {
-            <div class="giz-ladder__content">
+            <div class="giz-progress-page__ladder">
                 <LadderStandingCard />
 
                 <ProfileCardPopup WrapperClass="giz-ladder-history-wrapper" ContentClass="giz-ladder-history" IsOpen="@ViewState.HasSelection" IsOpenChanged="OnHistoryOpenChanged">
                     <LadderHistoryCard />
                 </ProfileCardPopup>
             </div>
+        }
+
+        @if (Challenges.Challenges.Any())
+        {
+            <section class="giz-progress-page__section">
+                <h2 class="giz-progress-page__title">
+                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CHALLENGES))</span>
+                    <small>@ChallengesCountText</small>
+                </h2>
+                <div class="giz-progress-page__grid giz-progress-page__grid--challenges">
+                    @foreach (var item in Challenges.Challenges)
+                    {
+                        <ChallengeCard @key="item.ChallengeId" Item="@item" />
+                    }
+                </div>
+            </section>
+        }
+
+        @if (Achievements.Achievements.Any())
+        {
+            <section class="giz-progress-page__section">
+                <h2 class="giz-progress-page__title">
+                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_ACHIEVEMENTS))</span>
+                    <small>@AchievementsCountText</small>
+                </h2>
+                <div class="giz-progress-page__grid giz-progress-page__grid--achievements">
+                    @foreach (var item in Achievements.Achievements)
+                    {
+                        <AchievementCard @key="item.AchievementId" Item="@item" />
+                    }
+                </div>
+            </section>
+        }
+
+        @if (IsEmpty)
+        {
+            <div class="giz-progress-page__status">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_EMPTY))</div>
         }
     </div>
 </AccountFrame>

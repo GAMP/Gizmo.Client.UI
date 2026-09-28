@@ -14,6 +14,22 @@ namespace Gizmo.Client.UI.Components
 
         private bool _isBreakdownOpen;
 
+        private decimal RingPercent
+        {
+            get
+            {
+                if (ViewState.ShowProgress)
+                    return ViewState.ProgressPercent;
+
+                if (ViewState.ShowSegments && ViewState.SegmentCount > 0)
+                    return 100m * ViewState.SegmentsLit / ViewState.SegmentCount;
+
+                return ViewState.ShowBanner ? 100m : 0m;
+            }
+        }
+
+        private string RingValue => RingPercent.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 

@@ -112,18 +112,10 @@
             }
             @if (!UserViewState.IsGuest)
             {
-                <NavLink class="giz-account__tab" href="@ClientRoutes.UserLadderRoute" Match="NavLinkMatch.All">
-                    <i class="ph-bold ph-ranking"></i>
-                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER))</span>
-                </NavLink>
-                <NavLink class="giz-account__tab" href="@ClientRoutes.UserAchievementsRoute" Match="NavLinkMatch.All">
+                <a class="@ProgressTabClass" href="@ClientRoutes.UserLadderRoute">
                     <i class="ph-bold ph-trophy"></i>
-                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_ACHIEVEMENTS))</span>
-                </NavLink>
-                <NavLink class="giz-account__tab" href="@ClientRoutes.UserChallengesRoute" Match="NavLinkMatch.All">
-                    <i class="ph-bold ph-flag-checkered"></i>
-                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CHALLENGES))</span>
-                </NavLink>
+                    <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PROGRESS_TAB)</span>
+                </a>
             }
         </nav>
 

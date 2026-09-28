@@ -73,7 +73,26 @@ namespace Gizmo.Client.UI.Components
         IOptionsMonitor<ClientInterfaceOptions> InterfaceOptions { get; set; }
 
         [Inject]
-        ILocalizationService LocalizationService { get; set; }
+        NavigationManager NavigationManager { get; set; }
+
+        private static readonly string[] PROGRESS_ROUTES =
+        {
+            ClientRoutes.UserLadderRoute,
+            ClientRoutes.UserAchievementsRoute,
+            ClientRoutes.UserChallengesRoute,
+        };
+
+        private bool IsProgressRoute
+        {
+            get
+            {
+                var path = "/" + NavigationManager.ToBaseRelativePath(NavigationManager.Uri).Split('?', '#')[0].TrimEnd('/');
+
+                return PROGRESS_ROUTES.Any(route => string.Equals(route, path, System.StringComparison.OrdinalIgnoreCase));
+            }
+        }
+
+        private string ProgressTabClass => IsProgressRoute ? "giz-account__tab active" : "giz-account__tab";
 
         [Parameter]
         public RenderFragment ChildContent { get; set; }

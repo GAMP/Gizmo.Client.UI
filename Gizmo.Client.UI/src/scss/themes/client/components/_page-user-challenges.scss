@@ -289,3 +289,259 @@
         }
     }
 }
+
+//=============== Grafit: challenges ================//
+
+.giz-challenges {
+    margin-top: 0;
+
+    &__header {
+        @include giz-profile-title;
+    }
+
+    &__count {
+        font-family: inherit;
+        font-size: 1.4rem;
+        font-weight: 400;
+        color: var(--giz-text-3);
+    }
+
+    &__status {
+        @include giz-profile-status;
+
+        &--error {
+            color: var(--giz-danger-light);
+        }
+    }
+
+    &__grid {
+        @include giz-challenge-grid;
+    }
+}
+
+.giz-challenge-card {
+    align-items: stretch;
+    justify-content: flex-start;
+    min-height: 0;
+    gap: 1.2rem;
+    padding: 2rem 2.2rem 1.8rem;
+    @include giz-profile-card;
+
+    &:hover,
+    &--active {
+        @include giz-profile-card-hover;
+    }
+
+    &--done {
+        border-color: rgba(var(--giz-success-rgb), 0.3);
+    }
+
+    &--off {
+        opacity: 0.55;
+    }
+
+    &__info {
+        color: var(--giz-text-2);
+    }
+
+    &__top {
+        flex-direction: row;
+        align-items: center;
+        gap: 1.4rem;
+        padding-right: 1.6rem;
+    }
+
+    &__art {
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 5.6rem;
+        height: 5.6rem;
+        border-radius: 1.6rem;
+        background: rgba(var(--giz-accent-rgb), 0.14);
+        color: var(--giz-accent-soft);
+        font-size: 2.6rem;
+    }
+
+    &--done &__art {
+        background: rgba(var(--giz-success-rgb), 0.14);
+        color: var(--giz-success-light);
+    }
+
+    &__head {
+        flex: 1;
+        min-width: 0;
+    }
+
+    &__name {
+        min-height: 0;
+        text-align: left;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.8rem;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        line-height: 1.15;
+        color: var(--giz-text-1);
+    }
+
+    &__window {
+        margin-top: 0.3rem;
+        text-align: left;
+        font-size: 1.3rem;
+        color: var(--giz-text-3);
+
+        &--warning {
+            color: var(--giz-warning-orange);
+        }
+    }
+
+    &__count-pill {
+        flex: none;
+        margin-left: auto;
+    }
+
+    &__segments {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    &__segment {
+        flex: 1;
+        min-width: 0;
+        height: 0.7rem;
+        border-radius: $giz-r-pill;
+        background: var(--giz-glass-8);
+
+        &--met {
+            background: var(--giz-accent);
+        }
+    }
+
+    &--done &__segment--met {
+        background: var(--giz-success);
+    }
+
+    &__progress {
+        height: 0.7rem;
+        border-radius: $giz-r-pill;
+        background: var(--giz-glass-8);
+
+        &-fill {
+            width: calc(var(--giz-ring-progress, 0) * 1%);
+            border-radius: $giz-r-pill;
+            background: var(--giz-accent);
+            transition: width 0.6s ease;
+        }
+    }
+
+    &--done &__progress-fill {
+        background: var(--giz-success);
+    }
+
+    &__requirements {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+        text-align: left;
+        font-size: 1.3rem;
+        line-height: 1.35;
+        color: var(--giz-text-3);
+
+        b {
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: var(--giz-text-1);
+        }
+    }
+
+    &__foot {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.7rem;
+        margin-top: auto;
+        padding-top: 1.2rem;
+        border-top: 1px solid var(--giz-glass-6);
+
+        &:empty {
+            display: none;
+        }
+    }
+
+    &__chip {
+        padding: 0.35rem 0.9rem;
+        border-radius: $giz-r-pill;
+        background: var(--giz-glass-7);
+        color: var(--giz-text-2);
+        font-size: 1.2rem;
+        font-weight: 700;
+
+        &--success {
+            background: rgba(var(--giz-success-rgb), 0.14);
+            box-shadow: inset 0 0 0 1px rgba(var(--giz-success-rgb), 0.3);
+            color: var(--giz-success-light);
+        }
+    }
+
+    &__reward {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.6rem 1.1rem;
+        border-radius: 1rem;
+        background: rgba(var(--giz-accent-rgb), 0.1);
+        border: 1px solid rgba(var(--giz-accent-rgb), 0.22);
+        color: var(--giz-accent-pale);
+        font-size: 1.35rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+
+        i {
+            font-size: 1.5rem;
+        }
+
+        small {
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: var(--giz-text-3);
+        }
+    }
+
+    &--done &__reward {
+        background: rgba(var(--giz-success-rgb), 0.12);
+        border-color: rgba(var(--giz-success-rgb), 0.3);
+        color: var(--giz-success-light);
+    }
+}
+
+.giz-challenge-popup {
+    @include giz-profile-popup;
+
+    &__row {
+        border-top-color: var(--giz-glass-6);
+
+        .giz-challenge-popup__reward-icon--points {
+            color: var(--giz-points);
+        }
+    }
+
+    &__chip {
+        border-radius: $giz-r-pill;
+        background: rgba(var(--giz-success-rgb), 0.14);
+        color: var(--giz-success-light);
+    }
+
+    &__requirement {
+        color: var(--giz-text-off);
+
+        &--unmet {
+            color: var(--giz-text-1);
+            text-decoration-color: var(--giz-accent-soft);
+        }
+    }
+
+    &__footer--warning {
+        color: var(--giz-warning-orange);
+    }
+}

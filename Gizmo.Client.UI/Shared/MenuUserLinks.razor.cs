@@ -44,6 +44,9 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         NavigationService NavigationService { get; set; }
 
+        [Inject]
+        UserLadderSummaryViewState LadderSummary { get; set; }
+
         #endregion
 
         public sealed record OrbitIcon(string IconClass, double AngleDeg, double RadiusPx, double SizePx, string Opacity, double TiltDeg);
@@ -120,6 +123,15 @@ namespace Gizmo.Client.UI.Shared
             NavigationService.NavigateTo(ViewState.IsGuest ? ClientRoutes.UserProductsRoute : ClientRoutes.UserProfileRoute);
         }
 
+        private void OnClickProgressHandler()
+        {
+            _shouldRender = true;
+
+            UserMenuViewService.CloseUserLinks();
+
+            NavigationService.NavigateTo(ClientRoutes.UserLadderRoute);
+        }
+
         private Task OnClickChangePasswordButtonHandler()
         {
             _shouldRender = true;
@@ -173,6 +185,7 @@ namespace Gizmo.Client.UI.Shared
         {
             ViewState.OnChange += ViewState_OnChange;
             UserMenuViewState.OnChange += ViewState_OnChange;
+            LadderSummary.OnChange += ViewState_OnChange;
 
             base.OnInitialized();
         }
@@ -185,6 +198,7 @@ namespace Gizmo.Client.UI.Shared
 
         public override void Dispose()
         {
+            LadderSummary.OnChange -= ViewState_OnChange;
             UserMenuViewState.OnChange -= ViewState_OnChange;
             ViewState.OnChange -= ViewState_OnChange;
 

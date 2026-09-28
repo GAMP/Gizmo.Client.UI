@@ -180,3 +180,33 @@ a {
     mask-image: linear-gradient(to bottom, var(--giz-black) calc(100% - #{$depth}), transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, var(--giz-black) calc(100% - #{$depth}), transparent 100%);
 }
+
+// Progress ring: an SVG in a 40 viewBox over its host, starting at twelve o'clock.
+@mixin giz-ring-svg($inset: 0rem) {
+    position: absolute;
+    inset: $inset;
+    width: calc(100% - 2 * #{$inset});
+    height: calc(100% - 2 * #{$inset});
+    overflow: visible;
+    transform: rotate(-90deg);
+    pointer-events: none;
+}
+
+@mixin giz-ring-track($width: 2.6) {
+    fill: none;
+    stroke: var(--giz-glass-9);
+    stroke-width: $width;
+}
+
+// $c = the circle's circumference (r 18 → 113.1, r 19 → 119.38); the dash is cut by
+// --giz-ring-progress (0–100) from the markup, and an empty ring shows no round-cap dot.
+@mixin giz-ring-bar($c, $width: 2.6) {
+    fill: none;
+    stroke: var(--giz-accent-light);
+    stroke-width: $width;
+    stroke-linecap: round;
+    stroke-dasharray: $c;
+    stroke-dashoffset: calc(#{$c} * (1 - var(--giz-ring-progress, 0) / 100));
+    stroke-opacity: clamp(0, var(--giz-ring-progress, 0) * 1000, 1);
+    transition: stroke-dashoffset 0.6s ease;
+}

@@ -119,5 +119,9 @@
         public const string SHELL_BALANCE_HIDE = nameof(SHELL_BALANCE_HIDE);
         public const string SHELL_BALANCE_SHOW = nameof(SHELL_BALANCE_SHOW);
         public const string SHELL_NOTIFICATIONS_CLOSE_ALL = nameof(SHELL_NOTIFICATIONS_CLOSE_ALL);
+        public const string SHELL_PROGRESS_TAB = nameof(SHELL_PROGRESS_TAB);
+        public const string SHELL_PROGRESS_HOME_CAP = nameof(SHELL_PROGRESS_HOME_CAP);
+        public const string SHELL_PROGRESS_MORE = nameof(SHELL_PROGRESS_MORE);
+        public const string SHELL_PROGRESS_OF = nameof(SHELL_PROGRESS_OF);
     }
 }

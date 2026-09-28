@@ -14,21 +14,36 @@
                     <i class="ph-bold @ic.IconClass giz-orbit-icon" style="@OrbitStyle(ic)"></i>
                 }
 
-                <div class="giz-profile-popup__avatar">
-                    @if (!string.IsNullOrEmpty(Picture))
-                    {
-                        <Avatar Image="@Picture" Variant="AvatarVariants.Circle" />
-                    }
-                    else
-                    {
-                        <i class="ph ph-user"></i>
-                    }
-                </div>
+                <span class="giz-avatar-level giz-avatar-level--large">
+                    <div class="giz-profile-popup__avatar">
+                        @if (!string.IsNullOrEmpty(Picture))
+                        {
+                            <Avatar Image="@Picture" Variant="AvatarVariants.Circle" />
+                        }
+                        else
+                        {
+                            <i class="ph ph-user"></i>
+                        }
+                    </div>
+                    <LadderAvatarRing />
+                </span>
 
             </div>
         </div>
 
         <div class="giz-profile-popup__name">@DisplayName</div>
+
+        @if (LadderSummary.HasLevel)
+        {
+            <button type="button" class="giz-profile-popup__standing" @onclick="OnClickProgressHandler">
+                <b>@LadderSummary.LevelName</b>
+                @if (!string.IsNullOrEmpty(LadderSummary.HeaderStatusText))
+                {
+                    <span>@LadderSummary.HeaderStatusText</span>
+                }
+                <i class="ph-bold ph-arrow-right"></i>
+            </button>
+        }
 
         <div class="giz-profile-popup__actions">
             <button class="giz-profile-popup__account-btn" @onclick="OnClickAccountButtonHandler">

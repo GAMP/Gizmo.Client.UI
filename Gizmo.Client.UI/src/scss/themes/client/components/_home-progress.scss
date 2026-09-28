@@ -1,0 +1,239 @@
+//=============== Home progress ================//
+// The home board's second right-hand tile: the ladder level (or the achievements/challenges
+// tally when the club runs no ladder) with its ring and bar, the one next challenge step,
+// and the way to the Progress tab.
+
+.giz-home-progress {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.1rem;
+    margin-top: clamp(0.8rem, 0.45rem + 0.6vw, 1.6rem);
+
+    &__top {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        min-width: 0;
+    }
+
+    &__mark {
+        position: relative;
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 5.6rem;
+        height: 5.6rem;
+
+        .giz-ladder-badge {
+            width: 3.8rem;
+            height: 3.8rem;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--giz-accent);
+            color: var(--giz-on-accent);
+        }
+
+        .giz-ladder-rank {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: transparent;
+            color: inherit;
+            font-family: $font-family-header-theme-client;
+            font-size: 1.6rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+    }
+
+    &__ring {
+        @include giz-ring-svg;
+    }
+
+    &__track {
+        @include giz-ring-track;
+    }
+
+    // r = 18
+    &__bar {
+        @include giz-ring-bar(113.1);
+    }
+
+    &__plain {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 3.8rem;
+        height: 3.8rem;
+        border-radius: 50%;
+        background: rgba(var(--giz-accent-rgb), 0.14);
+        color: var(--giz-accent-soft);
+        font-size: 1.8rem;
+    }
+
+    &__who {
+        flex: 1;
+        min-width: 0;
+
+        b,
+        span {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        b {
+            font-family: $font-family-header-theme-client;
+            font-size: 2.1rem;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            line-height: 1.1;
+            color: var(--giz-text-1);
+        }
+
+        span {
+            margin-top: 0.35rem;
+            font-size: 1.4rem;
+            color: var(--giz-text-2);
+        }
+    }
+
+    &__line {
+        position: relative;
+        flex: none;
+        height: 0.7rem;
+        border-radius: $giz-r-pill;
+        background: var(--giz-glass-7);
+        overflow: hidden;
+
+        i {
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: calc(var(--giz-ring-progress, 0) * 1%);
+            border-radius: $giz-r-pill;
+            background: linear-gradient(90deg, rgba(var(--giz-accent-rgb), 0.55), var(--giz-accent));
+            transition: width 0.6s ease;
+        }
+    }
+
+    &__next {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        min-width: 0;
+        padding: 1rem 1.2rem;
+        border-radius: 1.3rem;
+        background: var(--giz-glass-3);
+        border: 1px solid var(--giz-glass-6);
+        font-size: 1.4rem;
+        line-height: 1.3;
+        color: var(--giz-text-2);
+
+        > i {
+            flex: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3.2rem;
+            height: 3.2rem;
+            border-radius: 1rem;
+            background: rgba(var(--giz-accent-rgb), 0.14);
+            color: var(--giz-accent-soft);
+            font-size: 1.6rem;
+        }
+
+        > span {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        b {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: var(--giz-text-1);
+            font-weight: 700;
+        }
+
+        em {
+            flex: none;
+            margin-left: auto;
+            max-width: 40%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0.35rem 0.8rem;
+            border-radius: 0.9rem;
+            background: rgba(var(--giz-accent-rgb), 0.14);
+            color: var(--giz-accent-pale);
+            font-size: 1.3rem;
+            font-style: normal;
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+    }
+
+    &__step {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 1.2rem;
+        color: var(--giz-text-3);
+    }
+
+    &__more {
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+        width: 100%;
+        height: 4.6rem;
+        border-radius: 1.4rem;
+        border: 1px solid rgba(var(--giz-accent-rgb), 0.4);
+        background: rgba(var(--giz-accent-rgb), 0.16);
+        color: var(--giz-text-1);
+        font-family: inherit;
+        font-size: 1.45rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.15s, border-color 0.15s;
+
+        i {
+            font-size: 1.6rem;
+            color: var(--giz-accent-pale);
+        }
+
+        &:hover {
+            background: rgba(var(--giz-accent-rgb), 0.26);
+            border-color: rgba(var(--giz-accent-rgb), 0.6);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--giz-focus);
+            outline-offset: 2px;
+        }
+    }
+}
+
+// A short screen (1366x768) keeps the level, the bar and the button; the next step waits
+// on the Progress tab.
+@media (max-height: 840px) {
+    .giz-home-progress {
+        gap: 0.9rem;
+
+        &__next { display: none; }
+        &__mark { width: 4.8rem; height: 4.8rem; }
+        &__mark .giz-ladder-badge,
+        &__plain { width: 3.2rem; height: 3.2rem; }
+        &__mark .giz-ladder-rank { font-size: 1.4rem; }
+        &__who b { font-size: 1.9rem; }
+        &__more { height: 4.2rem; }
+    }
+}
