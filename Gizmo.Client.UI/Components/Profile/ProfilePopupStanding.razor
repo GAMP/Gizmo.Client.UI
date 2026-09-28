@@ -1,0 +1,14 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+@if (ViewState.HasLevel)
+{
+    <button type="button" class="giz-profile-popup__standing" @onclick="OnOpen">
+        <b>@ViewState.LevelName</b>
+        @if (!string.IsNullOrEmpty(ViewState.HeaderStatusText))
+        {
+            <span>@ViewState.HeaderStatusText</span>
+        }
+        <i class="ph-bold ph-arrow-right"></i>
+    </button>
+}

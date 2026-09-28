@@ -1,8 +1,10 @@
 using System.Globalization;
+using System.Threading;
 using System.Linq;
 using Gizmo.Client.UI.Localization.Resources;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.Localization.Services;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Microsoft.AspNetCore.Components;
@@ -15,10 +17,16 @@ namespace Gizmo.Client.UI.Components
 
         [Inject] UserLadderSummaryViewState Ladder { get; set; }
         [Inject] UserChallengesViewState Challenges { get; set; }
+        [Inject] UserChallengesViewService ChallengesService { get; set; }
         [Inject] UserAchievementsViewState Achievements { get; set; }
+        [Inject] UserAchievementsViewService AchievementsService { get; set; }
         [Inject] NavigationService NavigationService { get; set; }
 
+        private readonly CancellationTokenSource _lifetime = new();
+
         private bool HasLadder => Ladder.HasLevel;
+
+        private bool ProgressOn => HasLadder || TotalChallenges > 0 || TotalAchievements > 0;
 
         private int EarnedAchievements => Achievements.Achievements.Count(a => a.IsEarned);
 
@@ -124,11 +132,20 @@ namespace Gizmo.Client.UI.Components
             this.SubscribeChange(Challenges);
             this.SubscribeChange(Achievements);
 
+            if (!Challenges.IsLoading)
+                DispatchWorkflow(() => ChallengesService.LoadAsync(_lifetime.Token));
+
+            if (!Achievements.IsLoading)
+                DispatchWorkflow(() => AchievementsService.LoadAsync(_lifetime.Token));
+
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
+            _lifetime.Cancel();
+            _lifetime.Dispose();
+
             this.UnsubscribeChange(Achievements);
             this.UnsubscribeChange(Challenges);
             this.UnsubscribeChange(Ladder);

@@ -1,53 +1,56 @@
 @namespace Gizmo.Client.UI.Components
 @inherits ShellComponentBase
 
-<aside class="giz-home-till giz-home-till--progress" aria-label="@Caption">
-    <div class="giz-caption giz-caption--rule">
-        <span>@Caption</span>
-        <span class="giz-caption__rule"></span>
-        @if (LinkText is not null)
-        {
-            <a href="@LinkRoute">@LinkText</a>
-        }
-    </div>
-
-    <button type="button" class="giz-home-progress" @onclick="OpenProgress">
-        <span class="giz-home-progress__top">
-            @if (HasLadder)
+@if (ProgressOn)
+{
+    <aside class="giz-home-till giz-home-till--progress" aria-label="@Caption">
+        <div class="giz-caption giz-caption--rule">
+            <span>@Caption</span>
+            <span class="giz-caption__rule"></span>
+            @if (LinkText is not null)
             {
-                <LadderLevelBadge Ordinal="@Ladder.Ordinal" EmblemUrl="@Ladder.EmblemUrl" />
+                <a href="@LinkRoute">@LinkText</a>
             }
-            <span class="giz-home-progress__who">
-                <b>@Title</b>
-                @if (!string.IsNullOrEmpty(Subtitle))
+        </div>
+
+        <button type="button" class="giz-home-progress" @onclick="OpenProgress">
+            <span class="giz-home-progress__top">
+                @if (HasLadder)
                 {
-                    <span>@Subtitle</span>
+                    <LadderLevelBadge Ordinal="@Ladder.Ordinal" EmblemUrl="@Ladder.EmblemUrl" />
                 }
-            </span>
-            <i class="ph-bold ph-arrow-right giz-home-progress__go"></i>
-        </span>
-
-        @if (ShowLine)
-        {
-            <span class="giz-home-progress__line" style="--giz-ring-progress: @LineValue"><i></i></span>
-        }
-
-        @if (NextChallenge is not null)
-        {
-            <span class="giz-home-progress__next">
-                <i class="ph-bold ph-flag-checkered"></i>
-                <span class="giz-home-progress__step">
-                    @if (NextStepName is not null)
+                <span class="giz-home-progress__who">
+                    <b>@Title</b>
+                    @if (!string.IsNullOrEmpty(Subtitle))
                     {
-                        <b>@NextStepName</b>
+                        <span>@Subtitle</span>
                     }
-                    <span>@NextChallenge.Name</span>
                 </span>
-                @if (NextReward is not null)
-                {
-                    <em><i class="@NextRewardIcon"></i>@NextReward.Text</em>
-                }
+                <i class="ph-bold ph-arrow-right giz-home-progress__go"></i>
             </span>
-        }
-    </button>
-</aside>
+
+            @if (ShowLine)
+            {
+                <span class="giz-home-progress__line" style="--giz-ring-progress: @LineValue"><i></i></span>
+            }
+
+            @if (NextChallenge is not null)
+            {
+                <span class="giz-home-progress__next">
+                    <i class="ph-bold ph-flag-checkered"></i>
+                    <span class="giz-home-progress__step">
+                        @if (NextStepName is not null)
+                        {
+                            <b>@NextStepName</b>
+                        }
+                        <span>@NextChallenge.Name</span>
+                    </span>
+                    @if (NextReward is not null)
+                    {
+                        <em><i class="@NextRewardIcon"></i>@NextReward.Text</em>
+                    }
+                </span>
+            }
+        </button>
+    </aside>
+}

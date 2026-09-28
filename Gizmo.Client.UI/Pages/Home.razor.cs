@@ -68,11 +68,6 @@ namespace Gizmo.Client.UI.Pages
         [Inject] ClientServerCartViewService CartService { get; set; }
         [Inject] UserCartViewService CheckoutService { get; set; }
         [Inject] NavigationService NavigationService { get; set; }
-        [Inject] UserLadderSummaryViewState LadderSummary { get; set; }
-        [Inject] UserChallengesViewState ChallengesViewState { get; set; }
-        [Inject] UserChallengesViewService ChallengesService { get; set; }
-        [Inject] UserAchievementsViewState AchievementsViewState { get; set; }
-        [Inject] UserAchievementsViewService AchievementsService { get; set; }
 
         #endregion
 
@@ -269,18 +264,6 @@ namespace Gizmo.Client.UI.Pages
             NavigationService.NavigateTo(ClientRoutes.ApplicationDetailsRoute + $"?ApplicationId={applicationId}");
         }
 
-        private bool ProgressOn =>
-            LadderSummary.HasLevel || ChallengesViewState.Challenges.Any() || AchievementsViewState.Achievements.Any();
-
-        private void LoadProgress()
-        {
-            if (!ChallengesViewState.IsLoading)
-                DispatchWorkflow(() => ChallengesService.LoadAsync(_lifetime.Token));
-
-            if (!AchievementsViewState.IsLoading)
-                DispatchWorkflow(() => AchievementsService.LoadAsync(_lifetime.Token));
-        }
-
         private static bool IsPointsOnly(UserProductViewState product) =>
             product.UnitPrice == 0 && (product.UnitPointsPrice ?? 0) > 0;
 
@@ -328,12 +311,6 @@ namespace Gizmo.Client.UI.Pages
             this.SubscribeChange(ViewState);
             this.SubscribeChange(UserBalanceViewState);
             this.SubscribeChange(AdvertisementsViewState);
-            this.SubscribeChange(LadderSummary);
-            this.SubscribeChange(ChallengesViewState);
-            this.SubscribeChange(AchievementsViewState);
-
-            LoadProgress();
-
             ShellActivity.Changed += OnActivityChanged;
 
             ApplySlideTimer();
@@ -404,9 +381,6 @@ namespace Gizmo.Client.UI.Pages
             _slideTimer?.Dispose();
             _slideTimer = null;
 
-            this.UnsubscribeChange(AchievementsViewState);
-            this.UnsubscribeChange(ChallengesViewState);
-            this.UnsubscribeChange(LadderSummary);
             this.UnsubscribeChange(AdvertisementsViewState);
             this.UnsubscribeChange(UserBalanceViewState);
             this.UnsubscribeChange(ViewState);

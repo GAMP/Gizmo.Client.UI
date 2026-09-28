@@ -899,9 +899,10 @@ $tile:  var(--giz-tile);
 }
 
 // ── split: the right column as two tiles ─────────────────────────────────
-// With the progress tile the board takes the stage's rows (same fr, same gap) and the stage
-// spans both: the till lines up with the hero, the progress tile with the strip.
-.giz-home-board--split {
+// When the progress tile is there (a client with the ladder and a customer with something to
+// show) the board takes the stage's rows (same fr, same gap) and the stage spans both: the
+// till lines up with the hero, the progress tile with the strip, and the bar leaves the till.
+.giz-home-board:has(> .giz-home-till--progress) {
     grid-template-rows: minmax(0, 1.9fr) minmax(0, 1fr);
 
     > .giz-home-stage {
@@ -912,6 +913,10 @@ $tile:  var(--giz-tile);
     .giz-home-packs {
         flex: 1 1 auto;
     }
+
+    .giz-home-till__sec--bar {
+        display: none;
+    }
 }
 
 .giz-home-till--progress {
@@ -919,13 +924,13 @@ $tile:  var(--giz-tile);
 }
 
 @media (max-height: 840px) {
-    .giz-home-board--split {
+    .giz-home-board:has(> .giz-home-till--progress) {
         grid-template-rows: minmax(0, 2.15fr) minmax(0, 1fr);
     }
 }
 
 @media (max-width: 1100px) {
-    .giz-home-board--split {
+    .giz-home-board:has(> .giz-home-till--progress) {
         grid-template-rows: minmax(0, 1.25fr) minmax(0, 1fr) auto;
 
         > .giz-home-stage {
