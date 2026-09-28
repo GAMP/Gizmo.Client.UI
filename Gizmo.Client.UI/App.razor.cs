@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
-using Gizmo.Client.UI.Localization;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI;
@@ -26,8 +26,10 @@ public partial class App : ComponentBase, IDisposable
     [Inject] private JSInteropService JSInteropService { get; set; }
     [Inject] private ILocalizationService LocalizationService { get; set; }
     [Inject] private ClientLocalizationViewState LocalizationViewState { get; set; }
-    [Inject] private IServiceProvider ServiceProvider { get; set; }
-    [Inject] private IClientNotificationService NotificationService { get; set; }
+
+    protected GrafitLocalizationService GrafitLocalization { get; private set; }
+
+    private DotNetObjectReference<App> _selfRef;
 
     #endregion
 
@@ -35,35 +37,10 @@ public partial class App : ComponentBase, IDisposable
     {
         JSRuntimeService.AssociateJSRuntime(JSRuntime);
         NavigationService.AssociateNavigationManager(NavigationManager);
-        ShellStringOverrides.Associate(LocalizationService);
+        GrafitLocalization = new GrafitLocalizationService(LocalizationService);
 
         LocalizationViewState.OnChange += OnCultureChanged;
-
-        Loyalty.Attach(ServiceProvider);
-        Loyalty.News += OnLoyaltyNews;
-
-        AvatarService.Attach(ServiceProvider);
     }
-
-    /// <summary>
-    /// An achievement earned, a challenge done, a level change, a reward: one toast each,
-    /// through the ordinary notification pipeline so a missed one lands in the bell.
-    /// </summary>
-    private void OnLoyaltyNews(LoyaltyNews news) =>
-        _ = InvokeAsync(async () =>
-        {
-            try
-            {
-                var type = news.Kind == LoyaltyNewsKind.LevelDown ? AlertTypes.Info : AlertTypes.Success;
-                await NotificationService.ShowAlertNotification(type, news.Title, news.Name, null, null);
-            }
-            catch (Exception exception) when (exception is OperationCanceledException
-                                                or ObjectDisposedException
-                                                or InvalidOperationException)
-            {
-                // The WebView is going away; nothing to tell.
-            }
-        });
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -72,25 +49,18 @@ public partial class App : ComponentBase, IDisposable
             await JSInteropService.InitializeAsync(default);
             await ApplyDocumentDirectionAsync();
             await PublishAccentAsync();
-            await ApplyAvatarsKeyAsync();
         }
 
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    /// <summary>
-    /// Reads the accent palette the page resolved and publishes it for the
-    /// notifications window, which has a document of its own - see <see cref="ShellTheme"/>.
-    /// </summary>
-    /// <remarks>
-    /// A club's stylesheet can still be on its way at this point; grafitTheme applies it
-    /// when it lands, and a change after this read only leaves the notifications window
-    /// on the skin's default palette, which is not worth a watcher.
-    /// </remarks>
     private async Task PublishAccentAsync()
     {
         try
         {
+            _selfRef ??= DotNetObjectReference.Create(this);
+
+            await JSRuntime.InvokeVoidAsync("grafitTheme.watch", _selfRef, nameof(OnAccentApplied));
             await JSRuntime.InvokeVoidAsync("grafitTheme.sync");
 
             var accent = await JSRuntime.InvokeAsync<string>("grafitTheme.get");
@@ -99,72 +69,35 @@ public partial class App : ComponentBase, IDisposable
         }
         catch (Exception exception) when (exception is JSException or InvalidOperationException)
         {
-            // An old bundle without the hook: the default palette stands.
         }
     }
 
-    /// <summary>
-    /// Turns the club's own picture service on, if the club asked for it.
-    /// </summary>
-    /// <remarks>
-    /// `:root { --gg-avatars: on; }` in the club's stylesheet, or the address of the
-    /// service when it does not sit on the Gizmo server's own machine. Read once, the
-    /// same way the palette is - see <see cref="AvatarService"/>.
-    /// </remarks>
-    private async Task ApplyAvatarsKeyAsync()
-    {
-        if (AvatarService.Current is null)
-            return;
+    [JSInvokable]
+    public void OnAccentApplied(string accent) => ShellTheme.Set(accent);
 
-        try
-        {
-            var key = await JSRuntime.InvokeAsync<string>("grafitTheme.avatars");
-
-            AvatarService.Current.Configure(key);
-        }
-        catch (Exception exception) when (exception is JSException or InvalidOperationException)
-        {
-            // An old bundle without the hook: pictures stay off.
-        }
-    }
-
-    /// <summary>
-    /// Declares the document's writing direction for the current language.
-    /// </summary>
-    /// <remarks>
-    /// Every culture the client currently ships is left-to-right, so today this always
-    /// writes "ltr". It is here because the direction has to be declared for any
-    /// right-to-left support to have something to switch on - a mirrored stylesheet with
-    /// no <c>dir</c> on the document would never apply. The stylesheet itself is not
-    /// mirrored; see the RTL section of deploy/README.md for what that would take.
-    /// </remarks>
-    private Task ApplyDocumentDirectionAsync()
+    private async Task ApplyDocumentDirectionAsync()
     {
         var direction = CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? "rtl" : "ltr";
 
-        return JSRuntime.InvokeVoidAsync("setDocumentDirection", direction).AsTask();
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("setDocumentDirection", direction);
+        }
+        catch (Exception exception) when (exception is JSException
+                                            or OperationCanceledException
+                                            or ObjectDisposedException
+                                            or InvalidOperationException)
+        {
+        }
     }
 
-    // The language menu switches culture at runtime, so the direction is re-applied rather
-    // than only read at startup. Not async void: a fault here would come back on the pool.
     private void OnCultureChanged(object sender, EventArgs e) =>
-        _ = InvokeAsync(async () =>
-        {
-            try
-            {
-                await ApplyDocumentDirectionAsync();
-            }
-            catch (Exception exception) when (exception is OperationCanceledException
-                                                or ObjectDisposedException
-                                                or InvalidOperationException)
-            {
-                // The WebView is going away; there is no document left to mark.
-            }
-        });
+        _ = InvokeAsync(ApplyDocumentDirectionAsync);
 
     public void Dispose()
     {
         LocalizationViewState.OnChange -= OnCultureChanged;
-        Loyalty.News -= OnLoyaltyNews;
+
+        _selfRef?.Dispose();
     }
 }

@@ -2,7 +2,9 @@
 @inherits ComponentBase
 
 <NavLink href="@MetaData.DefaultRoute"
-         Match=@((NavLinkMatch)MetaData.DefaultRouteMatch)>
+         Match=@((NavLinkMatch)MetaData.DefaultRouteMatch)
+         title="@Title"
+         aria-label="@Title">
 
     @switch (MetaData.Guid)
     {
@@ -34,15 +36,16 @@
 
             break;
 
-        @* GGBook mapped icons for their own Cases and Tasks page modules here.
-           Neither module ships with V3, so both cases are dropped; the default
-           branch already handles any module by its own metadata icon. *@
-
         default:
 
             @if (!string.IsNullOrEmpty(MetaData.Icon))
             {
                 <img src="@MetaData.Icon" alt='loading' class="giz-module-icon" />
+            }
+            else
+            {
+                <i class="ph-bold ph-squares-four giz-ph-icon giz-nav-icon--bold"></i>
+                <i class="ph-fill ph-squares-four giz-ph-icon giz-nav-icon--fill"></i>
             }
 
             break;

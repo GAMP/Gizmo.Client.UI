@@ -3,19 +3,15 @@
     grid-template-rows: 1fr min-content min-content;
     height: 100%;
     overflow: hidden;
-    // was min-width: 50rem, which is the exact width of the grid column it
-    // sits in; the floating gap would have pushed it into overflow.
     min-width: 0;
-    // Same shared glass recipe as the top bar / left rail (Nexus Play brief
-    // section 4) - one material system across the whole shell.
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    background: linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-2));
     backdrop-filter: blur(40px) saturate(1.6);
     -webkit-backdrop-filter: blur(40px) saturate(1.6);
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    border: 1px solid var(--giz-glass-9);
     border-radius: 1.8rem;
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.16),
-        0 24px 60px -34px rgba(0, 0, 0, 0.7);
+        inset 0 1px 0 var(--giz-glass-12),
+        0 24px 60px -34px rgba(var(--giz-black-rgb), 0.7);
 
     &__items {
         display: grid;
@@ -28,15 +24,15 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid var(--giz-glass-5);
             padding: 2.2rem 2.4rem;
             @include font-xl-theme-client($font-weight-bold-theme-client);
-            color: rgba(255, 255, 255, 0.97);
+            color: var(--giz-text-1);
             letter-spacing: 0.01em;
 
             > i {
                 font-size: 2rem;
-                color: var(--gg-accent);
+                color: var(--giz-accent);
             }
 
             > span:first-of-type {
@@ -53,8 +49,8 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                background: var(--gg-accent);
-                color: #0a0e16;
+                background: var(--giz-accent);
+                color: var(--giz-night);
                 font-family: $font-family-numeric-theme-client;
                 font-size: 1.2rem;
                 font-weight: 700;
@@ -79,9 +75,7 @@
                     column-gap: 1.2rem;
                     row-gap: 0.6rem;
                     padding: 1.5rem 0;
-                    // Thin row separators instead of a bordered card per row
-                    // (brief section 4.2) - this is the only per-row border.
-                    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                    border-bottom: 1px solid var(--giz-glass-4);
 
                     &__thumb {
                         grid-column: 1;
@@ -94,7 +88,7 @@
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        background: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.22), rgba(255, 255, 255, 0.03) 70%);
+                        background: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 0.22), var(--giz-glass-2) 70%);
 
                         img {
                             width: 100%;
@@ -104,7 +98,7 @@
 
                         i {
                             font-size: 1.8rem;
-                            color: rgba(255, 255, 255, 0.35);
+                            color: var(--giz-text-3);
                         }
                     }
 
@@ -119,11 +113,6 @@
                         @include font-m-theme-client($font-weight-regular-theme-client);
                     }
 
-                    // ICartViewStateLoader's own wrapper - carries the price /
-                    // points / pay-type radios column, right-aligned and
-                    // vertically centered across both rows. It's a plain
-                    // block by default, so it needs its own flex centering
-                    // to vertically center __details within the row span.
                     > .giz-wm-icart-loader {
                         grid-column: 3;
                         grid-row: 1 / 3;
@@ -132,14 +121,6 @@
                         justify-content: flex-end;
                     }
 
-                    // Price is the one number that always matters, so it
-                    // carries the weight (bold, accent colour, larger). The
-                    // points value used to sit underneath it on every row
-                    // joined by a bare "&" - visual noise when (as for most
-                    // products) it was just "& 0". It's now a small warm
-                    // pill, shown only when there's a real points component
-                    // (either a genuine either/or choice, or a non-zero
-                    // reward), so a plain-price item is just its price.
                     &__details {
                         display: flex;
                         flex-direction: column;
@@ -148,8 +129,8 @@
                         text-align: right;
 
                         &__price {
-                            color: var(--gg-accent);
-                            font-family: 'Space Grotesk', 'Manrope', sans-serif;
+                            color: var(--giz-text-1);
+                            font-family: $font-family-numeric-theme-client;
                             font-weight: 700;
                             font-size: 1.6rem;
                         }
@@ -160,9 +141,9 @@
                             gap: 0.4rem;
                             padding: 0.2rem 0.7rem 0.2rem 0.5rem;
                             border-radius: 999px;
-                            background: rgba(242, 201, 76, 0.14);
-                            color: #f2c94c;
-                            font-family: 'Space Grotesk', 'Manrope', sans-serif;
+                            background: rgba(var(--giz-warning-gold-rgb), 0.14);
+                            color: var(--giz-warning-gold);
+                            font-family: $font-family-numeric-theme-client;
                             font-size: 1.2rem;
                             font-weight: 600;
 
@@ -173,8 +154,6 @@
                             }
                         }
 
-                        // Either/or: each radio paired with the value it
-                        // picks, not floating separately from it.
                         &__option {
                             display: flex;
                             align-items: center;
@@ -183,9 +162,6 @@
                         }
                     }
 
-                    // Remove + quantity share the same cell, pinned to
-                    // opposite edges, so they sit side by side under the
-                    // name without further markup changes.
                     &__remove {
                         grid-column: 2;
                         grid-row: 2;
@@ -216,15 +192,11 @@
                 }
             }
         }
-
     }
 
-    // Comment zone (brief section 4.3): clear-cart button lives here now,
-    // next to the note label, instead of its own separate footer row - the
-    // brief groups them as one zone.
     &__notes {
         flex-shrink: 0;
-        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        border-top: 1px solid var(--giz-glass-5);
         padding: 1.6rem 2.4rem;
 
         &__header {
@@ -233,7 +205,7 @@
             justify-content: space-between;
             gap: 1.2rem;
             margin-bottom: 0.8rem;
-            color: rgba(var(--gg-accent-rgb), 0.72);
+            color: rgba(var(--giz-accent-rgb), 0.72);
             @include font-m-theme-client($font-weight-light-theme-client);
             text-transform: uppercase;
             letter-spacing: 0.07em;
@@ -242,11 +214,11 @@
             .giz-button {
                 text-transform: none;
                 letter-spacing: normal;
-                color: rgba(255, 100, 100, 0.75);
+                color: rgba(var(--giz-danger-2-rgb), 0.75);
                 transition: color 0.18s;
 
                 &:hover:not([disabled]) {
-                    color: rgba(255, 80, 80, 0.95);
+                    color: rgba(var(--giz-danger-3-rgb), 0.95);
                 }
 
                 .giz-icon--small {
@@ -260,34 +232,36 @@
         .giz-order-notes {
             .giz-input-root {
                 min-height: 5.2rem;
-                background: rgba(255, 255, 255, 0.03) !important;
-                border-color: rgba(255, 255, 255, 0.07) !important;
+                background: var(--giz-glass-2);
+                border-color: var(--giz-glass-6);
                 border-radius: 0.8rem;
-            }
 
-            textarea, input {
-                color: rgba(255, 255, 255, 0.72) !important;
-                background: transparent !important;
-                &::placeholder { color: rgba(255, 255, 255, 0.25) !important; }
+                textarea, input {
+                    color: var(--giz-text-2);
+                    background: transparent;
+                    &::placeholder { color: rgba(var(--giz-white-rgb), 0.25); }
+                }
             }
         }
     }
 
     &__totals {
-        border-top: 1px solid rgba(255, 255, 255, 0.09);
-        background: rgba(255, 255, 255, 0.02);
+        border-top: 1px solid var(--giz-glass-8);
+        background: var(--giz-glass-1);
         padding: 2.4rem;
 
         .giz-button--fill.accent:not(.disabled) {
-            background: linear-gradient(135deg, var(--gg-accent), color-mix(in srgb, var(--gg-accent) 65%, black)) !important;
-            color: #0a0e16 !important;
             border: none;
-            
             transition: box-shadow 0.2s, filter 0.2s;
+
+            &,
+            &:hover {
+                background: var(--giz-action-bg);
+                color: var(--giz-action-ink);
+            }
 
             &:hover {
                 filter: brightness(1.1);
-                
             }
         }
 
@@ -301,20 +275,16 @@
             grid-row-gap: 0.4rem;
             margin-bottom: 1.2rem;
 
-            // Same glass input recipe as the order-notes textarea - was
-            // left on the library's plain default look before, which read
-            // as a different, unstyled panel stuck under the rest of the
-            // (otherwise fully re-skinned) cart.
             .giz-input-root {
-                background: rgba(255, 255, 255, 0.03) !important;
-                border-color: rgba(255, 255, 255, 0.07) !important;
+                background: var(--giz-glass-2);
+                border-color: var(--giz-glass-6);
                 border-radius: 0.8rem;
-            }
 
-            input {
-                color: rgba(255, 255, 255, 0.72) !important;
-                background: transparent !important;
-                &::placeholder { color: rgba(255, 255, 255, 0.25) !important; }
+                input {
+                    color: var(--giz-text-2);
+                    background: transparent;
+                    &::placeholder { color: rgba(var(--giz-white-rgb), 0.25); }
+                }
             }
         }
 
@@ -329,7 +299,7 @@
 
             .giz-order-summary-text-bold {
                 @include font-m-theme-client($font-weight-regular-theme-client);
-                color: rgba(255, 255, 255, 0.82);
+                color: var(--giz-text-1);
             }
 
             .giz-order-summary-total {
@@ -339,14 +309,15 @@
                     display: flex;
                     align-items: center;
                     gap: 0.4rem;
-                    color: var(--gg-accent);
+                    color: var(--giz-text-1);
                     font-weight: 700;
                     @include font-h5-theme-client($font-weight-bold-theme-client);
+                    font-family: $font-family-numeric-theme-client;
 
                     svg {
                         width: 2.4rem;
                         height: 2.4rem;
-                        fill: var(--gg-accent);
+                        fill: var(--giz-points);
                     }
                 }
             }
@@ -360,7 +331,7 @@
                 display: flex;
                 align-items: center;
                 text-align: right;
-                color: var(--gg-accent);
+                color: var(--giz-text-1);
                 @include font-h5-theme-client($font-weight-bold-theme-client);
             }
 
@@ -370,12 +341,12 @@
                 line-height: 2.8rem;
                 letter-spacing: initial;
                 margin: 0 1.5rem;
-                color: rgba(255, 255, 255, 0.3);
+                color: var(--giz-text-off);
             }
 
             &-text {
                 @include font-m-theme-client($font-weight-light-theme-client);
-                color: rgba(255, 255, 255, 0.68);
+                color: var(--giz-text-2);
             }
 
             .giz-order-summary-points-award {
@@ -408,24 +379,24 @@
         height: 6.4rem;
         margin-bottom: 0.4rem;
         border-radius: 1.8rem;
-        border: 1px dashed rgba(255, 255, 255, 0.14);
+        border: 1px dashed var(--giz-glass-11);
         display: flex;
         align-items: center;
         justify-content: center;
 
         i {
             font-size: 2.6rem;
-            color: rgba(255, 255, 255, 0.3);
+            color: var(--giz-text-off);
         }
     }
 
     &__title {
-        color: rgba(255, 255, 255, 0.78);
+        color: var(--giz-text-1);
         @include font-xl-theme-client($font-weight-regular-theme-client);
     }
 
     &__text {
-        color: rgba(255, 255, 255, 0.5);
+        color: var(--giz-text-3);
         @include font-m-theme-client($font-weight-light-theme-client);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.View.Services;
+﻿using Gizmo.Client.UI.Localization.Services;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.UI.View.States;
@@ -12,6 +13,8 @@ namespace Gizmo.Client.UI.Shared
 {
     public partial class MenuNotificationsContainer : CustomDOMComponentBase, IAsyncDisposable
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         #region PROPERTIES
 
         [Inject]

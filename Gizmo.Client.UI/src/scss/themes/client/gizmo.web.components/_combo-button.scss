@@ -71,12 +71,12 @@
             }
 
             .giz-list {
-                background: rgba(8, 11, 20, 0.98);
-                border: 1px solid rgba(255, 255, 255, 0.09);
-                box-shadow: 0 1.6rem 4.8rem rgba(0, 0, 0, 0.7),
-                            0 0 0 1px rgba(255, 255, 255, 0.04);
+                background: rgba(var(--giz-night-rgb), 0.98);
+                border: 1px solid var(--giz-glass-8);
+                box-shadow: 0 1.6rem 4.8rem rgba(var(--giz-black-rgb), 0.7),
+                            0 0 0 1px var(--giz-glass-3);
                 border-radius: 1rem;
-                color: rgba(255, 255, 255, 0.8);
+                color: var(--giz-text-1);
                 padding: 0.5rem;
 
                 .giz-list-item {
@@ -85,29 +85,29 @@
                     border-radius: 0.7rem;
                     white-space: nowrap;
                     @include font-m-theme-client($font-weight-light-theme-client);
-                    color: rgba(255, 255, 255, 0.72);
+                    color: var(--giz-text-2);
                     transition: background 0.15s, color 0.15s;
 
                     .giz-icon {
-                        color: rgba(255, 255, 255, 0.38);
+                        color: var(--giz-text-3);
                         transition: color 0.15s;
                     }
 
                     &.active {
-                        background: rgba(var(--gg-accent-rgb), 0.12);
-                        color: var(--gg-accent);
+                        background: rgba(var(--giz-accent-rgb), 0.12);
+                        color: var(--giz-accent);
 
-                        .giz-icon { color: var(--gg-accent); }
+                        .giz-icon { color: var(--giz-accent); }
                     }
                 }
 
                 &.giz-list--selectable {
                     .giz-list-item {
                         &.selected {
-                            background: rgba(var(--gg-accent-rgb), 0.12);
-                            color: var(--gg-accent);
+                            background: rgba(var(--giz-accent-rgb), 0.12);
+                            color: var(--giz-accent);
 
-                            .giz-icon { color: var(--gg-accent); }
+                            .giz-icon { color: var(--giz-accent); }
                         }
                     }
                 }
@@ -115,10 +115,10 @@
                 &.giz-list--clickable {
                     .giz-list-item {
                         &:hover {
-                            background: rgba(255, 255, 255, 0.07);
-                            color: rgba(255, 255, 255, 0.95);
+                            background: var(--giz-glass-6);
+                            color: var(--giz-text-1);
 
-                            .giz-icon { color: rgba(255, 255, 255, 0.65); }
+                            .giz-icon { color: rgba(var(--giz-white-rgb), 0.65); }
                         }
                     }
                 }

@@ -1,18 +1,25 @@
-window.InternalFunctions = class InternalFunctions {
-  static dotnetObjectReference;
+﻿//plain object namespace on purpose: the .NET 10 js interop resolver (findObjectMember in blazor.webview.js)
+//only traverses intermediate path segments whose typeof is "object", so a class (typeof "function") used as
+//a namespace breaks dotted invocations like "InternalFunctions.FullScreen.SubscribeOnFullScreenChange"
+//with "('FullScreen' was undefined)".
+window.InternalFunctions = {
+  dotnetObjectReference: null,
 
-  static SetDotnetObjectReference(value) {
-    this.dotnetObjectReference = value;
-  }
+  SetDotnetObjectReference(value) {
+    InternalFunctions.dotnetObjectReference = value;
+  },
 
-  static FullScreen = class FullScreen {
+  FullScreen: {
+    //registered listeners kept per callback name so unsubscribe removes the exact handler instances
+    listeners: {},
+
     /**
      * Subscribes to browser full screen change event.
      * @param {string} callbackName callBack function name.
      */
-    static async SubscribeOnFullScreenChange(callbackName) {
+    async SubscribeOnFullScreenChange(callbackName) {
       try {
-        this.subscribe(callbackName);
+        InternalFunctions.FullScreen.subscribe(callbackName);
       } catch (error) {
         await InternalFunctions.dotnetObjectReference.invokeMethodAsync(
           callbackName,
@@ -20,15 +27,15 @@ window.InternalFunctions = class InternalFunctions {
           error.message
         );
       }
-    }
+    },
 
     /**
      * Unsubscribes from browser full screen change event.
      * @param {string} callbackName callBack function name.
      */
-    static async UnsubscribeOnFullScreenChange(callbackName) {
+    async UnsubscribeOnFullScreenChange(callbackName) {
       try {
-        this.unsubscribe(callbackName);
+        InternalFunctions.FullScreen.unsubscribe(callbackName);
       } catch (error) {
         await InternalFunctions.dotnetObjectReference.invokeMethodAsync(
           callbackName,
@@ -36,31 +43,41 @@ window.InternalFunctions = class InternalFunctions {
           error.message
         );
       }
-    }
+    },
 
-    static subscribe(callbackName) {
-      const listener = (_) => this.fullScreenChangeHandler(callbackName);
+    subscribe(callbackName) {
+      const fullScreen = InternalFunctions.FullScreen;
+
+      if (fullScreen.listeners[callbackName]) return;
+
+      const listener = (_) => fullScreen.fullScreenChangeHandler(callbackName);
+      fullScreen.listeners[callbackName] = listener;
 
       window.addEventListener("fullscreenchange", listener);
       window.addEventListener("mozfullscreenchange", listener);
       window.addEventListener("webkitfullscreenchange", listener);
       window.addEventListener("msfullscreenchange", listener);
-    }
+    },
 
-    static unsubscribe(callbackName) {
-      const listener = (_) => this.fullScreenChangeHandler(callbackName);
+    unsubscribe(callbackName) {
+      const fullScreen = InternalFunctions.FullScreen;
+
+      const listener = fullScreen.listeners[callbackName];
+      if (!listener) return;
+
+      delete fullScreen.listeners[callbackName];
 
       window.removeEventListener("fullscreenchange", listener);
       window.removeEventListener("mozfullscreenchange", listener);
       window.removeEventListener("webkitfullscreenchange", listener);
       window.removeEventListener("msfullscreenchange", listener);
-    }
+    },
 
     /**
      * Handles full screen mode change events.
      * @param {string} callbackName - The name of the method to be called when the full screen mode is changed.
      */
-    static async fullScreenChangeHandler(callbackName) {
+    async fullScreenChangeHandler(callbackName) {
       try {
         let isFullScreen =
           document.fullscreenElement ||
@@ -82,8 +99,21 @@ window.InternalFunctions = class InternalFunctions {
           error.message
         );
       }
+    },
+  },
+};
+
+// Replays the page entrance (.giz-app__body > *) after a navigation.
+window.restartPageTransition = function restartPageTransition() {
+    const page = document.querySelector(".giz-app__body > *");
+
+    if (!page) {
+        return;
     }
-  };
+
+    page.style.animation = "none";
+    void page.offsetWidth;
+    page.style.animation = "";
 };
 
 window.ClientFullScreen = window.appsSticky = function appsSticky() {
@@ -122,10 +152,8 @@ window.ClientFullScreen = window.appsSticky = function appsSticky() {
   }
 };
 
-// The handler measures two rects and then writes classes, which is a forced layout on
-// every scroll event - dozens per second on a long application list. Coalesced onto one
-// animation frame so it runs once per painted frame at most, and registered passive so
-// the compositor never waits on it before scrolling.
+// Measures two rects and writes classes: coalesced onto one animation frame and
+// registered passive, so a long list scrolls without a forced layout per event.
 var appsStickyFrame = null;
 
 function appsStickyScroll() {
@@ -229,7 +257,7 @@ window.unregisterPopup = function unregisterPopup(element) {
     });
 
     if (objRefIndex > -1) {
-        registeredVideoComponents.splice(objRefIndex, 1);
+        registeredPopups.splice(objRefIndex, 1);
 
         //console.log('unregisterPopup');
         //console.log(element);
@@ -251,9 +279,12 @@ window.isPointWithinRect = function isPointWithinRect(
   return true;
 };
 
-window.closeOpenPopups = function closeOpenPopups(event) {
+window.closeOpenPopups = function closeOpenPopups(event, exceptSelector) {
     registeredPopups.forEach(function (value, index, array) {
         const popup = value.element;
+        if (exceptSelector && popup.matches(exceptSelector)) {
+            return;
+        }
         if (popup.classList.contains("open")) {
             var popupContent;
             if (popup.classList.contains("giz-client-popup")) {
@@ -293,8 +324,8 @@ window.addClosePopupEventListener = function addClosePopupEventListener(
   closePopupEventListenerReferences.push(objRef);
 };
 
-window.removeClosePopupEventEventListener =
-  function removeClosePopupEventEventListener(objRef) {
+window.removeClosePopupEventListener =
+  function removeClosePopupEventListener(objRef) {
     var index = findElementIndexById(closePopupEventListenerReferences, objRef);
     if (index > -1) {
       closePopupEventListenerReferences.splice(index, 1);
@@ -1036,6 +1067,11 @@ window.scrollListItemIntoView = function scrollListItemIntoView(element) {
     }
 };
 //
+window.scrollElementIntoView = function scrollElementIntoView(element, block) {
+    if (element)
+        element.scrollIntoView({ block: block || 'center' });
+};
+//
 /*window.scrollDatePickerYear = function scrollDatePickerYear() {
   var items = document.getElementsByClassName('giz-date-picker-year-count active');
 
@@ -1333,327 +1369,27 @@ window.removeExpansionPanelEventListener = function removeExpansionPanelEventLis
     }
 };
 
-// ───────────────────────────── avatar editor ─────────────────────────────
-// Only ever used when the club turns pictures on (--gg-avatars) and opens the
-// editor; nothing here runs otherwise. The framing is done here rather than in
-// Blazor because a pointermove per frame has no business crossing interop.
-
-var _avatarPasteHandler = null;
-
-window.setupAvatarPaste = function setupAvatarPaste(dotNetRef, callbackName) {
-    window.teardownAvatarPaste();
-
-    _avatarPasteHandler = function (event) {
-        const items = (event.clipboardData || window.clipboardData || {}).items;
-        if (!items) return;
-
-        for (const item of items) {
-            if (item.type && item.type.startsWith("image/")) {
-                const blob = item.getAsFile();
-                const reader = new FileReader();
-                reader.onload = () => {
-                    dotNetRef.invokeMethodAsync(callbackName, reader.result);
-                };
-                reader.readAsDataURL(blob);
-                event.preventDefault();
-                break;
-            }
-        }
-    };
-
-    document.addEventListener("paste", _avatarPasteHandler);
-};
-
-window.teardownAvatarPaste = function teardownAvatarPaste() {
-    if (_avatarPasteHandler) {
-        document.removeEventListener("paste", _avatarPasteHandler);
-        _avatarPasteHandler = null;
-    }
-};
-
-//=============== Avatar crop editor =================//
-// Раньше картинка резалась сразу и вслепую: бралась центральная квадратная
-// область и сжималась в 512px. Для портрета в полный рост это означало
-// «аватарка — живот». Теперь пользователь сам выбирает область: тянет
-// картинку и меняет масштаб, а в круг попадает ровно то, что видно.
-//
-// Геометрия. Сцена квадратная со стороной S, круг вписан, диаметр D = S.
-// Картинка натуральных размеров nw*nh лежит по центру сцены и двигается
-// трансформом translate(tx,ty) scale(s). Тогда точка изображения под центром
-// круга это (nw/2 - tx/s, nh/2 - ty/s), а диаметр круга в пикселях исходника
-// равен D/s — из этого и считается прямоугольник для canvas при экспорте.
-//
-// Минимальный масштаб — тот, при котором круг ещё полностью закрыт картинкой:
-// s >= D / min(nw, nh). Смещение всегда зажимается так, чтобы за краем круга
-// не оказалось пустоты, поэтому «дырок» в аватарке не бывает в принципе.
-
-var _avatarCrop = null;
-
-function _avatarCropClamp() {
-    const c = _avatarCrop;
-    if (!c) return;
-
-    const maxX = Math.max(0, (c.nw * c.scale - c.d) / 2);
-    const maxY = Math.max(0, (c.nh * c.scale - c.d) / 2);
-
-    c.tx = Math.min(maxX, Math.max(-maxX, c.tx));
-    c.ty = Math.min(maxY, Math.max(-maxY, c.ty));
-}
-
-function _avatarCropApply() {
-    const c = _avatarCrop;
-    if (!c) return;
-
-    _avatarCropClamp();
-    c.img.style.transform =
-        "translate(-50%, -50%) translate(" + c.tx + "px, " + c.ty + "px) scale(" + c.scale + ")";
-}
-
-window.avatarCropInit = function avatarCropInit(stage, dataUrl) {
-    window.avatarCropDispose();
-
-    return new Promise((resolve, reject) => {
-        if (!stage) {
-            reject(new Error("No crop stage element."));
-            return;
-        }
-
-        const img = new Image();
-        img.onload = () => {
-            const d = Math.min(stage.clientWidth, stage.clientHeight);
-            const nw = img.naturalWidth;
-            const nh = img.naturalHeight;
-            const base = d / Math.min(nw, nh);
-
-            img.className = "giz-avatar-crop__img";
-            img.draggable = false;
-            img.style.width = nw + "px";
-            img.style.height = nh + "px";
-
-            stage.appendChild(img);
-
-            _avatarCrop = {
-                stage: stage, img: img, nw: nw, nh: nh, d: d,
-                base: base,
-                scale: base,
-                tx: 0, ty: 0,
-                dragging: false,
-                lastX: 0, lastY: 0,
-                pointerId: null,
-            };
-
-            const onDown = (e) => {
-                const c = _avatarCrop;
-                if (!c) return;
-                c.dragging = true;
-                c.pointerId = e.pointerId;
-                c.lastX = e.clientX;
-                c.lastY = e.clientY;
-                stage.setPointerCapture(e.pointerId);
-                stage.classList.add("is-dragging");
-            };
-
-            const onMove = (e) => {
-                const c = _avatarCrop;
-                if (!c || !c.dragging || e.pointerId !== c.pointerId) return;
-                c.tx += e.clientX - c.lastX;
-                c.ty += e.clientY - c.lastY;
-                c.lastX = e.clientX;
-                c.lastY = e.clientY;
-                _avatarCropApply();
-            };
-
-            const onUp = (e) => {
-                const c = _avatarCrop;
-                if (!c) return;
-                c.dragging = false;
-                c.pointerId = null;
-                try { stage.releasePointerCapture(e.pointerId); } catch (err) { /* уже отпущен */ }
-                stage.classList.remove("is-dragging");
-            };
-
-            const onWheel = (e) => {
-                const c = _avatarCrop;
-                if (!c) return;
-                e.preventDefault();
-                // Колесо меняет масштаб от центра круга: зум «в точку курсора»
-                // выглядит богаче, но на тачпаде уводит картинку из-под руки.
-                const step = e.deltaY < 0 ? 1.08 : 1 / 1.08;
-                window.avatarCropSetZoom((c.scale * step) / c.base);
-            };
-
-            stage.addEventListener("pointerdown", onDown);
-            stage.addEventListener("pointermove", onMove);
-            stage.addEventListener("pointerup", onUp);
-            stage.addEventListener("pointercancel", onUp);
-            stage.addEventListener("wheel", onWheel, { passive: false });
-
-            _avatarCrop.listeners = { onDown: onDown, onMove: onMove, onUp: onUp, onWheel: onWheel };
-
-            _avatarCropApply();
-            resolve({ width: nw, height: nh });
-        };
-        img.onerror = () => reject(new Error("Image failed to load."));
-        img.src = dataUrl;
-    });
-};
-
-// zoom — множитель к минимальному масштабу, 1 = картинка ровно закрывает круг.
-window.avatarCropSetZoom = function avatarCropSetZoom(zoom) {
-    const c = _avatarCrop;
-    if (!c) return 1;
-
-    const clamped = Math.min(4, Math.max(1, zoom));
-    c.scale = c.base * clamped;
-    _avatarCropApply();
-    return clamped;
-};
-
-window.avatarCropExport = function avatarCropExport(outSize, quality) {
-    const c = _avatarCrop;
-    if (!c) throw new Error("Crop editor is not initialised.");
-
-    const side = c.d / c.scale;                       // сторона выреза в пикселях исходника
-    const sx = c.nw / 2 - c.tx / c.scale - side / 2;
-    const sy = c.nh / 2 - c.ty / c.scale - side / 2;
-
-    const out = Math.min(Math.round(side), outSize);  // не растягиваем мелкий исходник
-    const canvas = document.createElement("canvas");
-    canvas.width = out;
-    canvas.height = out;
-
-    const ctx = canvas.getContext("2d");
-    ctx.imageSmoothingQuality = "high";
-    ctx.drawImage(c.img, sx, sy, side, side, 0, 0, out, out);
-
-    const tryExport = (type) => new Promise((resolve, reject) => {
-        canvas.toBlob((blob) => {
-            if (blob) resolve(blob);
-            else reject(new Error("Canvas export to " + type + " failed."));
-        }, type, quality);
-    });
-
-    return tryExport("image/webp")
-        .catch(() => tryExport("image/jpeg"))
-        .then((blob) => new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve({
-                dataUrl: reader.result,
-                contentType: blob.type,
-                byteLength: blob.size,
-                width: out,
-                height: out,
-            });
-            reader.onerror = () => reject(new Error("Reading cropped blob failed."));
-            reader.readAsDataURL(blob);
-        }));
-};
-
-window.avatarCropDispose = function avatarCropDispose() {
-    const c = _avatarCrop;
-    if (!c) return;
-
-    const l = c.listeners || {};
-    c.stage.removeEventListener("pointerdown", l.onDown);
-    c.stage.removeEventListener("pointermove", l.onMove);
-    c.stage.removeEventListener("pointerup", l.onUp);
-    c.stage.removeEventListener("pointercancel", l.onUp);
-    c.stage.removeEventListener("wheel", l.onWheel);
-
-    if (c.img && c.img.parentNode) c.img.parentNode.removeChild(c.img);
-
-    _avatarCrop = null;
-};
-
-// Исходник для редактора: только декодируем и, если картинка огромная,
-// уменьшаем — резать будет уже пользователь. Верхняя граница нужна, чтобы
-// снимок с телефона на 12 мегапикселей не жил в памяти WebView целиком.
-function _avatarSourceFromImage(img, maxDim) {
-    const nw = img.naturalWidth || img.width;
-    const nh = img.naturalHeight || img.height;
-    const factor = Math.min(1, maxDim / Math.max(nw, nh));
-
-    if (factor >= 1) {
-        return Promise.resolve({ dataUrl: img.src, width: nw, height: nh });
-    }
-
-    const canvas = document.createElement("canvas");
-    canvas.width = Math.round(nw * factor);
-    canvas.height = Math.round(nh * factor);
-
-    const ctx = canvas.getContext("2d");
-    ctx.imageSmoothingQuality = "high";
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-    return new Promise((resolve, reject) => {
-        canvas.toBlob((blob) => {
-            if (!blob) { reject(new Error("Canvas export failed.")); return; }
-            const reader = new FileReader();
-            reader.onload = () => resolve({
-                dataUrl: reader.result,
-                width: canvas.width,
-                height: canvas.height,
-            });
-            reader.onerror = () => reject(new Error("Reading source blob failed."));
-            reader.readAsDataURL(blob);
-        }, "image/webp", 0.92);
-    });
-}
-
-window.avatarSourceFromInputElement = async function avatarSourceFromInputElement(inputElement, maxDim) {
-    if (!inputElement || !inputElement.files || inputElement.files.length === 0) {
-        throw new Error("No file selected.");
-    }
-    const objectUrl = URL.createObjectURL(inputElement.files[0]);
-    try {
-        const img = await _loadImageFromObjectUrl(objectUrl, false);
-        return await _avatarSourceFromImage(img, maxDim);
-    } finally {
-        URL.revokeObjectURL(objectUrl);
-    }
-};
-
-window.avatarSourceFromDataUrl = async function avatarSourceFromDataUrl(dataUrl, maxDim) {
-    const img = await _loadImageFromObjectUrl(dataUrl, false);
-    return await _avatarSourceFromImage(img, maxDim);
-};
-
-window.avatarSourceFromUrl = async function avatarSourceFromUrl(url, maxDim) {
-    const img = await _loadImageFromObjectUrl(url, true);
-    return await _avatarSourceFromImage(img, maxDim);
-};
-
 // ─────────────────────── keyboard layout detection ───────────────────────
-// The desktop host's IInputLanguageService never raises LanguageChange and
-// its CurrentInputLanguage getter throws NotImplementedException, so the
-// shell has no way of hearing about an Alt+Shift layout switch from the
-// C# side. The WebView is Chromium though, and Chromium exposes the live
-// OS layout through navigator.keyboard.getLayoutMap(). Polling that is the
-// only route to the information that does not require changing the host.
-//
-// The 'layoutchange' event on navigator.keyboard exists in the spec but is
-// not shipped in most Chromium builds, hence the poll rather than a
-// listener.
+// The host's input-language service raises no event on an Alt+Shift switch, so the live OS
+// layout is read from navigator.keyboard.getLayoutMap() while the shell has focus.
 let _layoutWatchTimer = null;
 let _layoutWatchLast = null;
 let _layoutWatchTick = null;
 let _layoutWatchInterval = 800;
 
+// What KeyA, KeyS and KeyO type: enough to tell the script, and Ukrainian ("фіщ") and
+// Belarusian ("фіў") from the layouts that share Russian's keys ("фыщ": ru, kk, ky, tt...).
 async function _probeLayoutSampleChar() {
     if (!navigator.keyboard || !navigator.keyboard.getLayoutMap) return null;
     try {
         const map = await navigator.keyboard.getLayoutMap();
-        // KeyA is present in every layout worth distinguishing here and
-        // its output identifies the script: "a" latin, "ф" cyrillic,
-        // "α" greek, ...
-        return map.get("KeyA") || null;
+        const sample = ["KeyA", "KeyS", "KeyO"].map((code) => map.get(code) || "").join("");
+        return sample || null;
     } catch {
         return null;
     }
 }
 
-// Follows focus: a layout switch pressed into another window cannot change what
-// this field will type, so there is nothing to poll for while the shell is behind.
 function _layoutWatchResume() {
     if (_layoutWatchTimer !== null || _layoutWatchTick === null) return;
 
@@ -1679,7 +1415,6 @@ window.setupInputLayoutWatch = function setupInputLayoutWatch(dotNetRef, callbac
             try {
                 await dotNetRef.invokeMethodAsync(callbackName, sample);
             } catch {
-                // Component went away between the poll and the callback.
                 window.teardownInputLayoutWatch();
             }
         }
@@ -1695,14 +1430,23 @@ window.teardownInputLayoutWatch = function teardownInputLayoutWatch() {
     _layoutWatchLast = null;
 };
 
+// The rail clips and scrolls its quick-launch list, so an item's tooltip is fixed and placed
+// beside the item it belongs to, inside the window.
+document.addEventListener("mouseover", function placeDockTooltip(event) {
+    const item = event.target instanceof Element ? event.target.closest(".giz-left-panel .giz-dock-item") : null;
+    const tip = item ? item.querySelector(".giz-dock-item-tooltip-wrapper") : null;
+
+    if (!tip) return;
+
+    const itemBox = item.getBoundingClientRect();
+    const railBox = item.closest(".giz-left-panel").getBoundingClientRect();
+    const top = Math.max(8, Math.min(itemBox.top, window.innerHeight - tip.offsetHeight - 8));
+
+    tip.style.setProperty("--giz-dock-tip-top", top + "px");
+    tip.style.setProperty("--giz-dock-tip-left", railBox.right + "px");
+}, true);
+
 // Writing direction for the current language.
-//
-// Nothing the client ships today is right-to-left - the eleven translated cultures are
-// all LTR - so this always resolves to "ltr" in practice. It exists because the document
-// has to declare a direction for any RTL work to have something to switch on: without it
-// even a fully mirrored stylesheet would never activate. See THIRD-PARTY-NOTICES.md's
-// neighbour, the RTL section of deploy/README.md, for what mirroring the stylesheet would
-// still involve.
 window.setDocumentDirection = function setDocumentDirection(direction) {
     const value = direction === "rtl" ? "rtl" : "ltr";
 
@@ -1721,11 +1465,9 @@ window.setDocumentDirection = function setDocumentDirection(direction) {
 // Where the value comes from, in order:
 //   1. The skin's index.html: <html data-accent="blue"> - the skin's default.
 //   2. A club's own stylesheet from the Manager (the StyleSheet option, served as
-//      style.css): `:root { --gg-palette: green; }` or `:root { --gg-palette: #e11d48; }`.
+//      style.css): `:root { --giz-palette: green; }` or `:root { --giz-palette: #e11d48; }`.
 //      The property is read back off the document once that stylesheet has loaded, so
-//      a club changes its colour from the Manager without touching the skin. A Manager
-//      setting for the colour, should Gizmo add one, only has to emit that line - or
-//      call grafitTheme.set().
+//      a club changes its colour from the Manager without touching the skin.
 //   3. grafitTheme.set(nameOrColour) from anywhere at run time.
 (function () {
     const ACCENTS = ["blue", "purple", "red", "orange", "amber", "green", "teal", "pink"];
@@ -1824,7 +1566,7 @@ window.setDocumentDirection = function setDocumentDirection(direction) {
         return rgb.map(function (v) { return 255 * pct + v * (1 - pct); });
     }
 
-    // ── the rules (see _palette.scss: gg-is-red, gg-is-warm, gg-dark, gg-ink) ──
+    // ── the rules (see _palette.scss: giz-is-red, giz-is-warm, giz-dark, giz-ink) ──
     function isRed(h) { return h >= 340 || h < 12; }
     function isWarm(h) { return h >= 15 && h <= 75; }
 
@@ -1837,32 +1579,32 @@ window.setDocumentDirection = function setDocumentDirection(direction) {
         const inkMain = ink(0.95, 0.30);
 
         return {
-            "--gg-accent": css(accent),
-            "--gg-accent-rgb": triplet(accent),
-            "--gg-accent-2-rgb": triplet(rotate(accent, isRed(h) ? -8 : -22)),
-            "--gg-accent-3-rgb": triplet(rotate(accent, isRed(h) ? 16 : 28)),
-            "--gg-accent-deep": css(darken(accent, 0.22)),
-            "--gg-accent-deeper": css(darken(accent, 0.45)),
-            "--gg-accent-light": css(lighten(accent, 0.18)),
-            "--gg-accent-soft": css(lighten(accent, 0.45)),
-            "--gg-accent-pale": css(lighten(accent, 0.62)),
-            "--gg-on-accent": css(hslToRgb(h + 8, 0.59, 0.08)),
-            "--gg-ink": css(inkMain),
-            "--gg-ink-rgb": triplet(inkMain),
-            "--gg-ink-2": css(ink(0.84, 0.22)),
-            "--gg-ink-3": css(ink(0.72, 0.42)),
-            "--gg-bg-0": css(dark(0.04, 0.50)),
-            "--gg-bg-1": css(dark(0.06, 0.33)),
-            "--gg-bg-2": css(dark(0.11, 0.41)),
-            "--gg-bg-3": css(dark(0.09, 0.38)),
-            "--gg-panel": css(dark(0.12, 0.38)),
-            "--gg-tile": css(dark(0.09, 0.26)),
-            "--gg-tile-2": css(dark(0.08, 0.30)),
-            "--gg-tile-deep": css(dark(0.04, 0.45)),
-            "--gg-glass-rgb": triplet(dark(0.17, 0.32)),
-            "--gg-glass-2-rgb": triplet(dark(0.08, 0.33)),
-            "--gg-scrim-rgb": triplet(dark(0.04, 0.40)),
-            "--gg-lock-rgb": triplet(dark(0.13, 0.30))
+            "--giz-accent": css(accent),
+            "--giz-accent-rgb": triplet(accent),
+            "--giz-accent-2-rgb": triplet(rotate(accent, isRed(h) ? -8 : -22)),
+            "--giz-accent-3-rgb": triplet(rotate(accent, isRed(h) ? 16 : 28)),
+            "--giz-accent-deep": css(darken(accent, 0.22)),
+            "--giz-accent-deeper": css(darken(accent, 0.45)),
+            "--giz-accent-light": css(lighten(accent, 0.18)),
+            "--giz-accent-soft": css(lighten(accent, 0.45)),
+            "--giz-accent-pale": css(lighten(accent, 0.62)),
+            "--giz-on-accent": css(hslToRgb(h + 8, 0.59, 0.08)),
+            "--giz-ink": css(inkMain),
+            "--giz-ink-rgb": triplet(inkMain),
+            "--giz-ink-2": css(ink(0.84, 0.22)),
+            "--giz-ink-3": css(ink(0.72, 0.42)),
+            "--giz-bg-0": css(dark(0.04, 0.50)),
+            "--giz-bg-1": css(dark(0.06, 0.33)),
+            "--giz-bg-2": css(dark(0.11, 0.41)),
+            "--giz-bg-3": css(dark(0.09, 0.38)),
+            "--giz-panel": css(dark(0.12, 0.38)),
+            "--giz-tile": css(dark(0.09, 0.26)),
+            "--giz-tile-2": css(dark(0.08, 0.30)),
+            "--giz-tile-deep": css(dark(0.04, 0.45)),
+            "--giz-glass-rgb": triplet(dark(0.17, 0.32)),
+            "--giz-glass-2-rgb": triplet(dark(0.08, 0.33)),
+            "--giz-scrim-rgb": triplet(dark(0.04, 0.40)),
+            "--giz-lock-rgb": triplet(dark(0.13, 0.30))
         };
     }
 
@@ -1889,6 +1631,17 @@ window.setDocumentDirection = function setDocumentDirection(direction) {
     }
 
     let current = null;
+    let watcher = null;
+
+    function notify() {
+        if (!watcher) {
+            return;
+        }
+
+        watcher.ref.invokeMethodAsync(watcher.method, theme.get()).catch(function () {
+            watcher = null;
+        });
+    }
 
     const theme = {
         accents: ACCENTS.slice(),
@@ -1912,6 +1665,7 @@ window.setDocumentDirection = function setDocumentDirection(direction) {
                 clearCustom();
                 root.setAttribute("data-accent", name);
                 current = name;
+                notify();
                 return true;
             }
 
@@ -1930,36 +1684,34 @@ window.setDocumentDirection = function setDocumentDirection(direction) {
             root.setAttribute("data-accent", CUSTOM);
             applyCustom(colour);
             current = name;
+            notify();
             return true;
         },
 
-        // Applies --gg-palette and --gg-motion from whatever stylesheets are loaded.
+        // Tells .NET every accent applied from here on (the club's style.css can load after
+        // the shell has started).
+        watch: function (dotNetRef, method) {
+            watcher = dotNetRef ? { ref: dotNetRef, method: method } : null;
+        },
+
+        // Applies --giz-palette and --giz-motion from whatever stylesheets are loaded.
         // Called after the shell starts and again whenever a stylesheet finishes
         // loading, so the club's style.css wins over the skin's default no matter
         // which arrives first.
         sync: function () {
             const computed = getComputedStyle(root);
-            const wanted = computed.getPropertyValue("--gg-palette");
+            const wanted = computed.getPropertyValue("--giz-palette");
 
             if (wanted) {
                 theme.set(wanted);
             }
 
-            // `:root { --gg-motion: on; }` turns the moving background on (_flow.scss).
-            const motion = computed.getPropertyValue("--gg-motion");
+            // `:root { --giz-motion: on; }` turns the moving background on (_flow.scss).
+            const motion = computed.getPropertyValue("--giz-motion");
 
             if (motion) {
                 theme.motion(motion);
             }
-        },
-
-        // `:root { --gg-avatars: on; }` - or an address, when the club's picture
-        // service does not sit on the server's own machine. Read once by the shell
-        // after its first render; see AvatarService.Configure.
-        avatars: function () {
-            return String(getComputedStyle(root).getPropertyValue("--gg-avatars") || "")
-                .trim()
-                .replace(/["']/g, "");
         },
 
         // "on" or "off": the moving background behind the sign-in screen and the shell.
@@ -1997,17 +1749,10 @@ window.setDocumentDirection = function setDocumentDirection(direction) {
 })();
 
 // ───────────────────────────── activity gate ─────────────────────────────
-// The host never clears the WebView's IsVisible when its window goes behind
-// another application, so document.hidden stays false and Chromium keeps
-// painting this page at the monitor's refresh rate for nobody. Focus is the only
-// usable signal, and it is also the right one: an application started outside
-// Gizmo is invisible to the shell, so no cleverer condition would catch it.
-//
-// ShellActivityWatcher holds a veto on the .NET side and lifts sleeping while a
-// deployment is running.
-//
-// Event driven with at most one pending timeout - a gate that polled to learn
-// whether it was idle would be the cost it exists to remove.
+// The host never clears the WebView's IsVisible when its window goes behind another
+// application, so document.hidden stays false and Chromium keeps painting for nobody.
+// Focus is the signal. ShellActivityWatcher (.NET) holds a veto and keeps the shell
+// awake while a deployment runs. Event driven, at most one pending timeout.
 
 // Long enough that a host-owned window taking focus for a moment does not read
 // as leaving, and that entrance animations finish before anything is frozen.
@@ -2127,8 +1872,6 @@ function _grafitEvaluate() {
         _grafitIdleTimer = null;
     }
 
-    // Should the host ever start hiding the WebView properly, this is the cheap
-    // path and Chromium has already stopped rendering by itself.
     if (document.visibilityState !== "visible") {
         _grafitSetUnfocused(true);
         return;

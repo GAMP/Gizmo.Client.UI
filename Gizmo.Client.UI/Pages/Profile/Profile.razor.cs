@@ -1,3 +1,4 @@
+﻿using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI;
@@ -11,6 +12,8 @@ namespace Gizmo.Client.UI.Pages
     [Route(ClientRoutes.UserProfileRoute)]
     public partial class Profile : CustomDOMComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         [Inject]
         UserChangePasswordViewService UserChangePasswordViewStateService { get; set; }
 

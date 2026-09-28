@@ -1,22 +1,17 @@
-@namespace Gizmo.Client.UI.Components
+﻿@namespace Gizmo.Client.UI.Components
 @inherits CartDialogBase
 
 @using Gizmo.Client.UI.View.States
 @using Gizmo.Web.Api.Models
 
-@* Shop checkout, in the same card as the package purchase: the items, the pay chooser,
-   the total, the button. The chooser and the result screen are shared components.
-
-   Styling lives in _package-purchase-dialog.scss. The markup is mirrored by the visual
-   test template (visual/templates/checkout.js): change one, change the other. *@
-
 <HostedDialog>
-    <div class="giz-buy giz-buy--checkout @(_step == Step.Done ? "giz-buy--done" : null)">
+    <div class="giz-buy @(IsPackage ? null : "giz-buy--checkout") @(_step == Step.Done ? "giz-buy--done" : null)">
 
         @if (_step == Step.Done && _outcomeOk is { } ok)
         {
             <CartDialogResult Ok="@ok"
-                              Title="@(ok ? DoneTitle : ShellText.Get(ShellText.BUY_FAILED_TITLE))"
+                              Title="@(ok ? DoneTitle : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_FAILED_TITLE))"
+                              Name="@_doneName"
                               Note="@DoneNote"
                               Error="@_outcomeError"
                               OnClose="@CloseDialog" />
@@ -27,51 +22,56 @@
                 <div class="giz-buy__kick">@Kicker</div>
                 @if (DisplayOptions.Closable)
                 {
-                    <button type="button" class="giz-buy__close" @onclick="CloseDialog" disabled="@_paying" aria-label="@ShellText.Get(ShellText.GEN_CLOSE)">
+                    <button type="button" class="giz-buy__close" @onclick="CloseDialog" disabled="@_paying" aria-label="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CLOSE))">
                         <i class="ph-bold ph-x"></i>
                     </button>
                 }
-                <h2 class="giz-buy__title">@ItemsTitle</h2>
+                <h2 class="giz-buy__title">@Title</h2>
                 @if (_step == Step.TopUp)
                 {
-                    <div class="giz-buy__sub">@ShellText.Get(ShellText.BUY_TOPUP_SUB, Money(Shortfall))</div>
+                    <div class="giz-buy__sub">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_TOPUP_SUB, Money(Shortfall))</div>
+                }
+                else if (IsPackage)
+                {
+                    <div class="giz-buy__sub">@CataloguePrice</div>
                 }
             </header>
 
             @if (_step == Step.TopUp)
             {
                 <div class="giz-buy__topup">
-                    <UserOnlineDeposits OnPaymentSucceeded="@OnTopUpSucceeded" />
+                    <UserOnlineDeposits OnClickPayFromPC="@PayTopUpFromThisPc" OnClickClear="@ResetTopUp" OnPaymentSucceeded="@OnTopUpSucceeded" />
                 </div>
 
                 <div class="giz-buy__actions">
-                    <button type="button" class="giz-buy__btn" @onclick="BackToConfirm">@ShellText.Get(ShellText.GEN_BACK)</button>
+                    <button type="button" class="giz-buy__btn" @onclick="BackToConfirm">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BACK))</button>
                 </div>
             }
             else
             {
-                @* WHAT IS IN THE CART. A line paid with points shows its points; the
-                   choice itself is made on the cart page, not here. *@
-                <div class="giz-buy__items giz-scrollbar--v">
-                    @foreach (var item in Items)
-                    {
-                        <div class="giz-buy__row" @key="item.Guid">
-                            <span class="giz-buy__row-name">@item.ProductName</span>
-                            @if (item.Quantity > 1)
-                            {
-                                <span class="giz-buy__row-qty">× @item.Quantity</span>
-                            }
-                            @if (IsPointsLine(item))
-                            {
-                                <span class="giz-buy__row-sum giz-buy__pts">@Points(item.TotalPointsPrice ?? 0)<i class="ph-fill ph-coins"></i></span>
-                            }
-                            else
-                            {
-                                <span class="giz-buy__row-sum">@Money(item.TotalPrice)</span>
-                            }
-                        </div>
-                    }
-                </div>
+                @if (!IsPackage)
+                {
+                    <div class="giz-buy__items giz-scrollbar--v">
+                        @foreach (var item in Items)
+                        {
+                            <div class="giz-buy__row" @key="item.Guid">
+                                <span class="giz-buy__row-name">@item.ProductName</span>
+                                @if (item.Quantity > 1)
+                                {
+                                    <span class="giz-buy__row-qty">@item.Quantity</span>
+                                }
+                                @if (IsPointsLine(item))
+                                {
+                                    <span class="giz-buy__row-sum giz-buy__pts">@Points(item.TotalPointsPrice ?? 0)<i class="ph-fill ph-coins"></i></span>
+                                }
+                                else
+                                {
+                                    <span class="giz-buy__row-sum">@Money(item.TotalPrice)</span>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
 
                 @if (!IsFree)
                 {
@@ -87,35 +87,48 @@
                                    OnWay="@Select" />
                 }
 
-                @* WHAT IT COMES TO *@
-                <section class="giz-buy__bill @(IsBusy ? "is-busy" : null)">
+                <section class="giz-buy__bill @(IsBusy ? "giz-buy__bill--busy" : null)">
                     @if (!IsPriced)
                     {
                         <div class="giz-buy__wait"><Spinner /></div>
                     }
                     else
                     {
+                        @if (IsPackage && ShowLines)
+                        {
+                            <div class="giz-buy__line">
+                                <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_PRICE))</span>
+                                @if (IsPayingWithPoints)
+                                {
+                                    <span class="giz-buy__pts">@Points(PointsDue)<i class="ph-fill ph-coins"></i></span>
+                                }
+                                else
+                                {
+                                    <span>@Money(PackageLine.TotalPrice)</span>
+                                }
+                            </div>
+                        }
                         @if (HasDiscount)
                         {
                             <div class="giz-buy__line giz-buy__line--good">
-                                <span>@ShellText.Get(ShellText.BUY_DISCOUNT)</span>
-                                <span>−@Money(Discount)</span>
+                                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_DISCOUNT)</span>
+                                <span class="giz-buy__minus">@Money(Discount)</span>
                             </div>
                         }
                         @if (Fees > 0)
                         {
                             <div class="giz-buy__line">
-                                <span>@ShellText.Get(ShellText.BUY_FEES)</span>
+                                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_FEES)</span>
                                 <span>@Money(Fees)</span>
                             </div>
                         }
 
                         <div class="giz-buy__total @(HasDiscount || Fees > 0 ? "giz-buy__total--ruled" : null)">
-                            <span class="giz-buy__total-label">@ShellText.Get(ShellText.DEPOSIT_TO_BE_PAID)</span>
+                            <span class="giz-buy__total-label">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ONLINE_DEPOSIT_TO_BE_PAID))</span>
                             <span class="giz-buy__total-sum">
                                 @if (IsFree)
                                 {
-                                    <span class="giz-buy__total-free">@ShellText.Get(ShellText.BUY_FREE)</span>
+                                    <span class="giz-buy__total-free">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_FREE)</span>
                                 }
                                 else
                                 {
@@ -125,7 +138,7 @@
                                     }
                                     @if (Total > 0)
                                     {
-                                        <span>@(PointsDue > 0 ? "+ " : null)@Money(Total)</span>
+                                        <span class="giz-buy__money">@Money(Total)</span>
                                     }
                                 }
                             </span>
@@ -133,46 +146,46 @@
 
                         @if (NoWayToPay)
                         {
-                            <div class="giz-buy__short">@ShellText.Get(ShellText.BUY_NO_WAYS)</div>
+                            <div class="giz-buy__short">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_NO_WAYS)</div>
                         }
                         else if (Shortfall > 0)
                         {
                             <div class="giz-buy__short">
-                                <span>@ShellText.Get(ShellText.BUY_SHORTFALL)</span>
+                                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_SHORTFALL)</span>
                                 <span class="giz-buy__short-sum">@Money(Shortfall)</span>
                             </div>
                         }
                         else if (PointsShortfall > 0)
                         {
                             <div class="giz-buy__short">
-                                <span>@ShellText.Get(ShellText.BUY_SHORTFALL)</span>
+                                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_SHORTFALL)</span>
                                 <span class="giz-buy__short-sum">@PointsWithUnit(PointsShortfall)</span>
                             </div>
                         }
                         else if (IsPayingFromBalance && Total > 0)
                         {
                             <div class="giz-buy__after">
-                                <span>@ShellText.Get(ShellText.BUY_LEFT_AFTER)</span>
+                                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_LEFT_AFTER)</span>
                                 <span>@Money(BalanceAfter)</span>
                             </div>
                         }
                         else if (Total == 0 && PointsDue > 0)
                         {
                             <div class="giz-buy__after">
-                                <span>@ShellText.Get(ShellText.BUY_POINTS_LEFT_AFTER)</span>
+                                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_POINTS_LEFT_AFTER)</span>
                                 <span>@PointsWithUnit(PointsAfter)</span>
                             </div>
                         }
                         else if (IsPayingAtCounter)
                         {
-                            <div class="giz-buy__after giz-buy__after--hint">@ShellText.Get(ShellText.BUY_COUNTER_NOTE)</div>
+                            <div class="giz-buy__after giz-buy__after--hint">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_COUNTER_NOTE)</div>
                         }
                     }
                 </section>
 
                 <div class="giz-buy__actions">
-                    <button type="button" class="giz-buy__btn" @onclick="CloseDialog" disabled="@_paying">@ShellText.Get(ShellText.GEN_CANCEL)</button>
-                    <button type="button" class="giz-buy__btn giz-buy__btn--primary" @onclick="Primary" disabled="@(!PrimaryEnabled)">
+                    <button type="button" class="giz-buy__btn" @onclick="CloseDialog" disabled="@_paying">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CANCEL))</button>
+                    <button type="button" class="giz-buy__btn giz-buy__btn--primary @(_paying ? "giz-buy__btn--busy" : null)" @onclick="Primary" disabled="@(!PrimaryEnabled)">
                         @if (_paying)
                         {
                             <Spinner />

@@ -1,21 +1,9 @@
 ﻿@namespace Gizmo.Client.UI.Pages
 @inherits CustomDOMComponentBase
 
-@* Stock V3 gave this page its own quick-launch + news header row. Quick
-   launch now lives in the persistent rail under the nav sidebar (see
-   _Layout.razor), so rendering it here too would just double it up - and the
-   news rotator has no content in this environment, so its half of the row
-   showed up as an empty backed panel with nothing in it. *@
 <div class="giz-home-apps-wrapper">
     <div class="giz-home-apps">
         <div class="giz-apps__body">
-            @* The duplicate "stuck" copy of AppFilters that used to sit here
-               is gone. It rendered a second, identical filter bar whose
-               visibility was driven by a clip-path/scroll hack; the one
-               inside the popular section below is the real one. *@
-            @* The news belongs on the home board and nowhere else: a customer who
-               opened the catalogue came for the games, and a rotating banner above
-               them pushed the first row of cards off the screen. *@
             <div class="giz-apps__body__content giz-scrollbar--v">
                 <div class="giz-apps__body__content__popular">
                     <div class="giz-section">

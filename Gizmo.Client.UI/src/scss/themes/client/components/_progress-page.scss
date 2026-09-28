@@ -1,0 +1,60 @@
+//=============== Progress page ================//
+// The account's Progress tab (UserLadderRoute): the level card, then the challenges and the
+// achievements. The level history opens under the card.
+
+$pp-g: clamp(1.2rem, 0.7rem + 0.7vw, 2.2rem);
+
+.giz-progress-page {
+    display: flex;
+    flex-direction: column;
+    gap: calc(#{$pp-g} * 1.2);
+    container-type: inline-size;
+
+    &__status {
+        @include giz-profile-status;
+
+        &--error {
+            color: var(--giz-danger-light);
+        }
+    }
+
+    &__ladder {
+        display: flex;
+        flex-direction: column;
+        gap: $pp-g;
+        container-type: inline-size;
+    }
+
+    &__section {
+        display: flex;
+        flex-direction: column;
+        gap: 1.4rem;
+    }
+
+    &__title {
+        display: flex;
+        align-items: baseline;
+        gap: 1.2rem;
+        margin: 0;
+
+        span {
+            @include giz-profile-title;
+        }
+
+        small {
+            font-size: 1.4rem;
+            color: var(--giz-text-3);
+            font-variant-numeric: tabular-nums;
+        }
+    }
+
+    &__grid {
+        &--challenges {
+            @include giz-challenge-grid;
+        }
+
+        &--achievements {
+            @include giz-achievement-grid;
+        }
+    }
+}

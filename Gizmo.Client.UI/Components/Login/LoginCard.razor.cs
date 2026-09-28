@@ -37,11 +37,6 @@ namespace Gizmo.Client.UI.Components
 
         #endregion
 
-        //Idle changes are raised off the UI thread. This used to be async void awaiting
-        //InvokeAsync, which meant a dispatcher fault during WebView teardown was rethrown on
-        //the thread pool and exited the whole client. The slide animation is also a multi step
-        //workflow (render, wait, render), so it runs as a single dispatcher work item to keep
-        //every step on the renderer's context.
         private void UserIdleViewState_OnChange(object sender, System.EventArgs e)
         {
             if (_locked) return;
@@ -77,9 +72,6 @@ namespace Gizmo.Client.UI.Components
             base.OnInitialized();
         }
 
-        //UserIdleViewState is a singleton that outlives this card, and the card is rebuilt on
-        //every login/logout cycle. Without this the station accumulates one dead subscriber per
-        //cycle, each one still being invoked on every idle transition.
         public override void Dispose()
         {
             UserIdleViewState.OnChange -= UserIdleViewState_OnChange;

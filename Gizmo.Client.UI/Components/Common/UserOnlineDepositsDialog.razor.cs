@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -50,11 +50,6 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        // Clearing the QR resets back to the amount-selection screen and the
-        // dialog stays open (matches the top-bar dropdown's own Clear
-        // behaviour) - it used to also invoke ResultCallback here, which
-        // closes the whole dialog, so the reset was never actually visible
-        // before the dialog vanished.
         private void OnClickClearHandler()
         {
             UserOnlineDepositViewStateService.Clear();

@@ -3,20 +3,19 @@
 .giz-active-apps {
     display: grid;
     grid-template-rows: min-content 1fr;
-    background: rgba(8, 11, 20, 0.97);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(var(--giz-night-rgb), 0.97);
+    border: 1px solid var(--giz-glass-7);
     border-top: none;
     border-radius: 0 0 1rem 1rem;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6),
-                0 0 0 1px rgba(var(--gg-accent-rgb), 0.06);
+    box-shadow: 0 20px 60px rgba(var(--giz-black-rgb), 0.6),
+                0 0 0 1px rgba(var(--giz-accent-rgb), 0.06);
     max-height: 100%;
     overflow: hidden;
     min-width: 52.2rem;
     width: max-content;
 
-    // backdrop-filter removed to stop trapping position:fixed; z must be > top-bar z-index (500)
     .giz-popup-wrapper {
-        z-index: 600 !important;
+        z-index: 600;
     }
 
     .giz-combo-button {
@@ -38,11 +37,11 @@
     }
 
     &__header {
-        color: rgba(255, 255, 255, 0.95);
+        color: var(--giz-text-1);
         padding: 1rem 1.6rem;
         white-space: nowrap;
         @include font-h5-theme-client($font-weight-bold-theme-client);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        border-bottom: 1px solid var(--giz-glass-5);
     }
 
     &__body {
@@ -84,19 +83,12 @@
 
 .giz-active-app-card {
     padding: 1.6rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--giz-glass-4);
 
     &:last-child {
         border-bottom: none;
     }
 
-    // NOTE: none of these carry height:100% any more. That was left over from
-    // when each row was a <table> and these were <td> cells, where it did
-    // nothing harmful. The rows are grid now (see _Layout.razor), and on a grid
-    // item height:100% overrides align-items:center - the item fills the whole
-    // row and its own content then sits at the top of that box. That is what
-    // pushed the app name above the icon and the Launch button instead of
-    // level with them. Let the row centre them.
     &__image {
         padding: 1.6rem;
 
@@ -108,8 +100,6 @@
 
     &__info {
         padding: 1.6rem;
-        // Own centring too, so a future second line (category, status) keeps
-        // the block centred rather than growing downwards only.
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -129,4 +119,84 @@
     &__actions {
         padding: 1.6rem;
     }
+}
+
+.giz-top-bar .giz-active-apps {
+    position: relative;
+    background: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.giz-top-bar .giz-active-apps::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.97), rgba(var(--giz-glass-2-rgb), 0.985));
+    backdrop-filter: blur(5rem) saturate(1.7);
+    -webkit-backdrop-filter: blur(5rem) saturate(1.7);
+}
+
+.giz-top-bar .giz-active-apps {
+    min-width: 46rem;
+    border-radius: 2rem;
+}
+
+.giz-top-bar .giz-active-apps__body {
+    padding: 0.8rem;
+}
+
+.giz-top-bar .giz-active-app-card {
+    display: grid;
+    grid-template-columns: min-content 1fr min-content;
+    align-items: center;
+    gap: 1.4rem;
+    padding: 1rem 1.2rem;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-radius: 1.4rem;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.giz-top-bar .giz-active-app-card:hover {
+    background: var(--giz-glass-4);
+    border-color: var(--giz-glass-7);
+}
+
+.giz-top-bar .giz-active-app-card__image {
+    padding: 0;
+    width: 4.4rem;
+    height: 4.4rem;
+    border-radius: 1.1rem;
+    overflow: hidden;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.giz-top-bar .giz-active-app-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.giz-top-bar .giz-active-app-card__info {
+    padding: 0;
+    min-width: 0;
+}
+
+.giz-top-bar .giz-active-app-card__info__title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--giz-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.giz-top-bar .giz-active-app-card__actions {
+    padding: 0;
 }

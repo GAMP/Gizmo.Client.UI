@@ -27,12 +27,12 @@
                 align-items: center;
                 margin: 2.8rem 0;
                 cursor: pointer;
-                color: rgba(255, 255, 255, 0.65);
+                color: var(--giz-text-2);
                 transition: color 0.18s;
                 @include font-l-theme-client($font-weight-light-theme-client);
 
                 &:hover {
-                    color: var(--gg-accent);
+                    color: var(--giz-accent);
                 }
             }
 
@@ -54,14 +54,14 @@
 
             &__main {
                 overflow: auto;
-                @include gg-scroll-fade;
+                @include giz-scroll-fade;
             }
 
             &__image {
                 width: 22.2rem;
                 height: 33.3rem;
-                background: rgba(10, 14, 22, 0.7);
-                border: 1px solid rgba(255, 255, 255, 0.07);
+                background: rgba(var(--giz-night-rgb), 0.7);
+                border: 1px solid var(--giz-glass-6);
                 backdrop-filter: blur(12px);
                 -webkit-backdrop-filter: blur(12px);
                 border-radius: 1.6rem;
@@ -105,16 +105,17 @@
 
                 &__category {
                     margin-bottom: 1.6rem;
-                    color: var(--gg-accent);
+                    color: var(--giz-accent);
                     @include font-xl-theme-client($font-weight-regular-theme-client);
                 }
 
                 &__title {
                     margin-bottom: 2.4rem;
-                    //Font ?
-                    font-size: 3.6rem;
-                    line-height: 4.4rem;
-                    font-weight: 500;
+                    font-family: $font-family-header-theme-client;
+                    font-size: 4rem;
+                    line-height: 1.1;
+                    font-weight: 800;
+                    letter-spacing: -0.02em;
                 }
 
                 &__description {
@@ -122,9 +123,15 @@
                 }
 
                 &__executables {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    margin: 3.6rem 0;
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    gap: 0.8rem;
+                    margin: 3.2rem 0;
+
+                    .giz-universal-executable { @include giz-launch-pill; }
+
+                    .giz-universal-executable:first-child { @include giz-launch-pill-primary; }
                 }
             }
 
@@ -140,9 +147,9 @@
                     //margin-bottom: 4.2rem;
 
                     .giz-app-tag {
-                        color: rgba(255, 255, 255, 0.72);
-                        background: rgba(255, 255, 255, 0.06);
-                        border: 1px solid rgba(255, 255, 255, 0.1);
+                        color: var(--giz-text-2);
+                        background: var(--giz-glass-5);
+                        border: 1px solid var(--giz-glass-9);
                         border-radius: 0.4rem;
                         padding: 0.2rem 1.2rem;
                         font-weight: 400;
@@ -151,9 +158,9 @@
                         transition: background 0.18s, border-color 0.18s, color 0.18s;
 
                         &:hover {
-                            background: rgba(var(--gg-accent-rgb), 0.1);
-                            border-color: rgba(var(--gg-accent-rgb), 0.28);
-                            color: var(--gg-accent);
+                            background: rgba(var(--giz-accent-rgb), 0.1);
+                            border-color: rgba(var(--giz-accent-rgb), 0.28);
+                            color: var(--giz-accent);
                         }
                     }
                 }
@@ -178,12 +185,12 @@
         column-gap: 1.8rem;
         margin-top: 2.4rem;
         white-space: nowrap;
-        color: rgba(255, 255, 255, 0.45);
+        color: var(--giz-text-3);
         @include font-s-theme-client($font-weight-regular-theme-client);
 
         .giz-app-details-card-brand-text {
             text-align: right;
-            color: rgba(255, 255, 255, 0.85);
+            color: var(--giz-text-1);
         }
     }
 }
@@ -192,16 +199,24 @@
     width: 29.2rem;
     height: 16.4rem;
     overflow: hidden;
+    border-radius: 1.2rem;
+    background: var(--giz-tile);
+    cursor: pointer;
 
     img {
         width: 100%;
         height: 100%;
+        object-fit: cover;
+        color: transparent;
+        transition: transform 0.2s;
     }
+
+    &:hover img { transform: scale(1.03); }
 }
 
 .giz-app-link-item {
     & > a {
-        color: var(--gg-accent);
+        color: var(--giz-accent);
         @include font-m-theme-client($font-weight-light-theme-client);
     }
 }

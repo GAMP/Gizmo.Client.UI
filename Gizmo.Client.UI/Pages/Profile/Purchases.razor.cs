@@ -1,6 +1,10 @@
-﻿using Gizmo.Client.UI.View.Services;
+﻿using System.Linq;
+
+using Gizmo.Client.UI.Localization.Services;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
+using Gizmo.Web.Api.Models;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 
@@ -9,6 +13,48 @@ namespace Gizmo.Client.UI.Pages
     [Route(ClientRoutes.UserPurchasesRoute)]
     public partial class Purchases : CustomDOMComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
+        protected bool HasOrders => ViewState.Orders.Any();
+
+        protected static bool IsVoided(UserOrderViewState order) => order.Invoice?.IsVoided == true;
+
+        protected static string StatusKey(UserOrderViewState order) => IsVoided(order)
+            ? nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_STATUS_VOIDED)
+            : order.OrderStatus switch
+            {
+                OrderStatus.Completed => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_STATUS_COMPLETED),
+                OrderStatus.Accepted => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_STATUS_ACCEPTED),
+                OrderStatus.Canceled => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_STATUS_CANCELED),
+                _ => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_STATUS_ON_HOLD),
+            };
+
+        protected static string StatusClass(UserOrderViewState order) => IsVoided(order)
+            ? "giz-account-tag--off"
+            : order.OrderStatus switch
+            {
+                OrderStatus.Completed => "giz-account-tag--good",
+                OrderStatus.Accepted => "giz-account-tag--on",
+                OrderStatus.Canceled => "giz-account-tag--off",
+                _ => "giz-account-tag--wait",
+            };
+
+        protected static string PaymentKey(UserOrderViewState order) => order.Invoice?.PaymentStatus switch
+        {
+            InvoiceStatus.Unpaid => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_INVOICE_STATUS_UNPAID),
+            InvoiceStatus.PartiallyPaid => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_INVOICE_STATUS_PARTIALLY_PAID),
+            _ => null,
+        };
+
+        protected static bool ShowPaymentStatus(UserOrderViewState order) => PaymentKey(order) is not null && !IsVoided(order);
+
+        protected bool IsLinkable(UserOrderLineViewState line) => ProductDetailsNavigationEnabled
+            && line.LineType != LineType.SessionTime
+            && line.LineType != LineType.FixedTime
+            && line.ProductId.HasValue;
+
+        protected static string ProductLink(UserOrderLineViewState line) => $"{ClientRoutes.ProductDetailsRoute}?ProductId={line.ProductId}";
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 

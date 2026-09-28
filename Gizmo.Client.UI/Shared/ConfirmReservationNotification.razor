@@ -1,37 +1,35 @@
-@namespace Gizmo.Client.UI
+﻿@namespace Gizmo.Client.UI
 @using Gizmo.UI;
 @using Microsoft.AspNetCore.Components.Forms
 @inherits CustomDOMComponentBase
 
-@* Wording differs per step: on the first the customer does not yet know why something is
-   being asked of them; on the second the reservation is confirmed and payment is due. *@
 <div class="giz-reservation-notification">
     <div class="giz-reservation-notification__icon"><i class="ph-fill ph-calendar-check"></i></div>
 
     <div class="giz-reservation-notification__body">
         <div class="giz-reservation-notification__body__title">
-            @ShellText.Get(IsPaymentStep ? ShellText.RESV_NOTIF_TITLE_PAY : ShellText.RESV_NOTIF_TITLE_CODE)
+            @GrafitLocalization.GetString(IsPaymentStep ? GrafitResourceKeys.SHELL_RESV_NOTIF_TITLE_PAY : GrafitResourceKeys.SHELL_RESV_NOTIF_TITLE_CODE)
         </div>
         <div class="giz-reservation-notification__body__message">
             @(IsPaymentStep
-                ? ShellText.Get(ShellText.RESV_NOTIF_MSG_PAY)
-                : ShellText.Get(ShellText.RESV_NOTIF_MSG_CODE))
+                ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_RESV_NOTIF_MSG_PAY)
+                : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_RESV_NOTIF_MSG_CODE))
         </div>
         <div class="giz-reservation-notification__body__actions">
             <button type="button" class="giz-notification__btn giz-notification__btn--primary"
                     disabled="@ConfirmReservationNotificationViewService.ViewState.IsLoading"
                     @onclick="OpenPaymentDialogAsync">
-                @ShellText.Get(IsPaymentStep ? ShellText.PAY : ShellText.RESV_ENTER_CODE)
+                @GrafitLocalization.GetString(IsPaymentStep ? nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_CONFIRM_RESERVATION_DIALOG_PAY_BUTTON) : GrafitResourceKeys.SHELL_RESV_ENTER_CODE)
             </button>
             <button type="button" class="giz-notification__btn"
                     disabled="@ConfirmReservationNotificationViewService.ViewState.IsLoading"
                     @onclick="Ignore">
-                @ShellText.Get(ShellText.GEN_LATER)
+                @GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GEN_LATER)
             </button>
         </div>
     </div>
 
-    <button type="button" class="giz-notification__close" @onclick="CloseNotification" aria-label="@ShellText.Get(ShellText.GEN_CLOSE)">
+    <button type="button" class="giz-notification__close" @onclick="CloseNotification" aria-label="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CLOSE))">
         <i class="ph-bold ph-x"></i>
     </button>
 </div>

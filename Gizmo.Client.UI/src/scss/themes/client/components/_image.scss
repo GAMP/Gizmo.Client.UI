@@ -46,18 +46,13 @@
       position: relative;
       height: 100%;
       width: 100%;
-      // A translucent plate, not the vendor's #161a1d: on the near-black rail that plate
-      // was invisible, and an image stuck loading read as an icon that had vanished.
-      background-color: rgba(255, 255, 255, 0.06);
+      background-color: var(--giz-glass-5);
       z-index: 2;
       overflow: hidden;
       border-radius: 0.5rem;
     }
     &--activity {
       position: absolute;
-      // The sweep moves by transform, not by left: left is layout, and every frame of a
-      // running bar would recompute it. Same start: the sweep is 45% of the wrapper, so
-      // translateX(-100%) puts it where left: -45% did.
       left: 0;
       transform: translateX(-100%);
       height: 100%;
@@ -92,8 +87,6 @@
   }
 }
 
-// 222.222% of the sweep's own width (45% of the wrapper) is exactly 100% of the wrapper,
-// the same end point left: 100% had.
 @keyframes gradientAnimation {
   0% {
     transform: translateX(-100%);

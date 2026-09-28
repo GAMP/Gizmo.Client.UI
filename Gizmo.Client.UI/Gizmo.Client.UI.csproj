@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
@@ -10,15 +10,16 @@
     <PublishCompressionFormats></PublishCompressionFormats>
 	</PropertyGroup>
 
-	<!-- The shell's version and the Gizmo release it is built for. The only place either
-	     number is written: they end up in the assembly's version info and metadata, and
-	     deploy\stage.ps1 reads them from here for the package name and grafit.version.txt.
-	     The Profile tab shows GrafitVersion in its corner (Code/ShellVersion.cs). Bump it for
-	     every shell release, and GizmoVersion on every vendor merge (the server's own
-	     GizmoService.dll carries it). -->
+	<!-- The shell's version, the Gizmo release it is built for and the oldest client it
+	     starts on. The only place these numbers are written: they end up in the assembly's
+	     version info and metadata, and deploy\stage.ps1 reads them from here for the package
+	     name and grafit.version.txt. The Profile tab shows GrafitVersion in its corner
+	     (Code/ShellVersion.cs). Bump it for every shell release, and GizmoVersion on every
+	     vendor merge (the server's own GizmoService.dll carries it). -->
 	<PropertyGroup>
 		<GrafitVersion>1.1.7</GrafitVersion>
 		<GizmoVersion>3.0.95</GizmoVersion>
+		<GizmoClientMinVersion>newer than 3.0.95 (the release with ladder, achievements and challenges)</GizmoClientMinVersion>
 		<Product>Grafit</Product>
 		<Description>Grafit skin for the Gizmo client, built for Gizmo $(GizmoVersion).</Description>
 		<AssemblyVersion>1.0.0.0</AssemblyVersion>
@@ -30,6 +31,7 @@
 	<ItemGroup>
 		<AssemblyMetadata Include="GrafitVersion" Value="$(GrafitVersion)" />
 		<AssemblyMetadata Include="GizmoVersion" Value="$(GizmoVersion)" />
+		<AssemblyMetadata Include="GizmoClientMinVersion" Value="$(GizmoClientMinVersion)" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -41,6 +43,13 @@
   <ItemGroup>
     <EmbeddedResource Include="wwwroot\notifications.html"></EmbeddedResource>
   </ItemGroup>
+
+	<!-- Grafit's strings, every language inside Gizmo.Client.UI.dll: the client loads no
+	     satellite assemblies from a skin folder. GrafitLocalizationService reads them. -->
+	<ItemGroup>
+		<EmbeddedResource Update="Localization\Resources\GrafitResources.resx" LogicalName="Gizmo.Client.UI.Localization.Resources.GrafitResources.resources" />
+		<EmbeddedResource Update="Localization\Resources\GrafitResources.*.resx" WithCulture="false" LogicalName="Gizmo.Client.UI.Localization.Resources.%(Filename).resources" />
+	</ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="npm install" WorkingDirectory="." />

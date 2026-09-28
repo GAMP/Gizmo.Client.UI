@@ -1,39 +1,35 @@
-// Was a plain white-outlined rectangle (border: 1px solid #FFFFFF) - a
-// leftover default that read as unstyled next to every other rounded/glass
-// control in the shop. Now a soft glass pill with round icon-buttons either
-// side of the number, matching the rest of the shell's button language
-// (accent tint on hover, not a flat white stroke).
 .giz-shop-quantity-picker {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.2rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--giz-glass-9);
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.04);
-    color: #fff;
+    background: var(--giz-glass-3);
+    color: var(--giz-white);
     padding: 0 0.3rem;
     box-sizing: border-box;
 
     span {
         min-width: 2.2rem;
         text-align: center;
-        font-family: 'Space Grotesk', 'Manrope', sans-serif;
+        font-family: $font-family-numeric-theme-client;
         font-weight: 600;
     }
 
-    .giz-button {
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        color: rgba(255, 255, 255, 0.72) !important;
-        border-radius: 50% !important;
-        padding: 0 !important;
+    // Both steppers are text buttons; the class pair outranks the button theme inside cards.
+    .giz-button.giz-button--text {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        color: var(--giz-text-2);
+        border-radius: 50%;
+        padding: 0;
         transition: background 0.15s, color 0.15s;
 
         &:hover:not(.disabled) {
-            background: rgba(var(--gg-accent-rgb), 0.16) !important;
-            color: var(--gg-accent) !important;
+            background: rgba(var(--giz-accent-rgb), 0.16);
+            color: var(--giz-accent);
         }
 
         &.disabled {
@@ -46,11 +42,18 @@
     }
 
     &--small {
-        height: 3rem;
+        height: 3.4rem;
 
         .giz-button {
-            width: 2.4rem;
-            height: 2.4rem;
+            width: 2.8rem;
+            height: 2.8rem;
+        }
+
+        .giz-icon {
+            width: 1.2rem;
+            height: 1.2rem;
+            min-width: 1.2rem;
+            min-height: 1.2rem;
         }
     }
 

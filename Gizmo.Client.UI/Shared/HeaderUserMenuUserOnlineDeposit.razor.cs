@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.UI.View.States;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -7,6 +8,9 @@ namespace Gizmo.Client.UI
 {
     public partial class HeaderUserMenuUserOnlineDeposit : CustomDOMComponentBase
     {
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
         [Inject]
         public UserMenuViewState UserMenuViewState { get; set; }
 

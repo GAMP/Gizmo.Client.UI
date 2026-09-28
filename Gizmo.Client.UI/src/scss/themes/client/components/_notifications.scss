@@ -1,47 +1,13 @@
 //============= Notifications ===============//
-// Each notification is an opaque card with a type icon and a coloured bar; the
-// container itself is invisible, it only stacks and pads the cards.
-//
-// NOTE ON POSITION: on the desktop shell these render inside a separate
-// always-on-top WPF window (Host.WPF/NotificationsHost.xaml,
-// WindowStartupLocation=CenterScreen) whose placement is owned by the Gizmo
-// host EXE, not by the skin. "top: 0; left: 0" here puts the stack at the
-// top-left of that window - which is as far left as a skin can put it.
 
-// WIDTH/HEIGHT MUST NOT DEPEND ON vw/vh HERE. This element sits inside a
-// wholly separate WPF window (Host.WPF/NotificationsHost.xaml) that starts
-// with no real size; the desktop host measures THIS element once, via JS
-// getBoundingClientRect, to imperatively set that window's actual
-// Width/Height in C# (NotificationsService.RequestNotificationHostSize).
-// If that one-shot measurement happens before WebView2 has been given real
-// geometry, vw/vh can resolve to 0 - and unlike ordinary CSS (which would
-// self-correct on the next layout pass), the native window's size is a
-// one-time imperative call that never gets re-issued, so a bad first
-// measurement leaves it permanently undersized/invisible even though the
-// notification is rendering "fine" underneath. This is suspected to be
-// exactly why the popup silently stopped appearing while the (unrelated,
-// always-open, main-shell-hosted) bell-icon history list kept working. Pure
-// rem sizing removes the failure mode entirely - it can't misresolve
-// regardless of when it's measured.
 .giz-notifications {
     position: fixed;
     top: 0;
-    // Centred horizontally, not pinned left. The host window is wider than
-    // this stack, so left:0 parked the cards against its left edge - which
-    // on screen read as "off to the left" rather than top-centre.
-    // left+margin rather than translateX: the slide in/out animations below
-    // animate `transform`, and a centring transform here would be wiped out
-    // by them mid-animation.
     left: 50%;
     transform: translateX(-50%);
     width: 46rem;
     max-height: 74rem;
     box-sizing: border-box;
-    // This window is independently WindowStartupLocation=CenterScreen - it
-    // is not overlaid on the main shell's own top bar (different window,
-    // different coordinate space entirely), so there is nothing here to
-    // "clear" the way there would be if this rendered inside the shell's
-    // own DOM. Modest, symmetric padding only.
     padding: 1.6rem 1.2rem;
     display: block;
     background: transparent;
@@ -56,10 +22,27 @@
         }
     }
 
-    // No scrollbar chrome here at all, not even on hover: this floats over
-    // the wallpaper with nothing beside it to visually anchor a scroll
-    // track, so any bar - even a faint one - reads as a stray UI line
-    // hanging in space. Scrolling itself is unaffected.
+    // Always rendered and always the same height (the host sizes its window from the
+    // first measurement plus each new card), the close button only from two cards up.
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        box-sizing: border-box;
+        min-height: 4.4rem;
+        margin: 0 0 1rem;
+        padding: 0.6rem 0.6rem 0.6rem 1.6rem;
+        border-radius: $giz-r-pill;
+        background: rgba(var(--giz-scrim-rgb), 0.72);
+        font-family: $font-family-header-theme-client;
+        font-size: 1.2rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--giz-text-2);
+    }
+
     &__body {
         max-height: 100%;
         overflow-y: auto;
@@ -87,23 +70,13 @@
     }
 }
 
-// ── The card ─────────────────────────────────────────────────────────────
-// These render in a separate, transparent, always-on-top window (see the note above),
-// and that decides the material:
-//   - OPAQUE. backdrop-filter over a transparent window blurs nothing and paints a
-//     dark rectangle the size of the element instead - the "shadow tile" that showed
-//     under the rounded corners. No backdrop-filter anywhere in this window.
-//   - a tight shadow only: a wide soft one is composited onto whatever is on screen
-//     behind the window and reads as a smudge, not a shadow.
-// The type colours the icon disc and the bar on the left; the panel is the same for
-// every type, so a stack of three reads as one system.
-$nt-ink:   var(--gg-ink);
-$nt-ink-2: rgba(var(--gg-ink-rgb), 0.66);
-$nt-ink-3: rgba(var(--gg-ink-rgb), 0.42);
+$nt-ink:   var(--giz-ink);
+$nt-ink-2: var(--giz-text-2);
+$nt-ink-3: var(--giz-text-3);
 
 @mixin notification-card {
-    --nt-rgb: var(--gg-accent-rgb);
-    --nt-soft: var(--gg-accent-soft);
+    --nt-rgb: var(--giz-accent-rgb);
+    --nt-soft: var(--giz-accent-soft);
 
     position: relative;
     display: grid;
@@ -116,11 +89,11 @@ $nt-ink-3: rgba(var(--gg-ink-rgb), 0.42);
     margin: 0 0 1rem;
     padding: 1.7rem 1.4rem 1.7rem 2rem;
     border-radius: 1.8rem;
-    background: var(--gg-panel);
-    border: 1px solid rgba(255, 255, 255, 0.11);
+    background: var(--giz-panel);
+    border: 1px solid rgba(var(--giz-white-rgb), 0.11);
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.08),
-        0 0.6rem 1.6rem -0.8rem rgba(0, 0, 0, 0.6);
+        inset 0 1px 0 var(--giz-glass-7),
+        0 0.6rem 1.6rem -0.8rem rgba(var(--giz-black-rgb), 0.6);
     color: $nt-ink;
 
     // The type's bar.
@@ -204,8 +177,33 @@ $nt-ink-3: rgba(var(--gg-ink-rgb), 0.42);
     }
 }
 
-// The close button and the reservation's buttons are the shell's own elements, not
-// the vendor's Button: they inherit nothing surprising.
+.giz-notifications__close {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    height: 3.2rem;
+    padding: 0 1.2rem;
+    border: 0;
+    border-radius: $giz-r-pill;
+    background: var(--giz-action-quiet-bg);
+    box-shadow: inset 0 0 0 1px var(--giz-action-quiet-line);
+    color: var(--giz-text-2);
+    font-family: $font-family-header-theme-client;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+
+    i { font-size: 1.3rem; }
+
+    &:hover {
+        background: var(--giz-glass-9);
+        color: var(--giz-text-1);
+    }
+}
+
 .giz-notification__close {
     width: 3.2rem;
     height: 3.2rem;
@@ -223,7 +221,7 @@ $nt-ink-3: rgba(var(--gg-ink-rgb), 0.42);
     transition: background 0.15s, color 0.15s;
 
     &:hover {
-        background: rgba(255, 255, 255, 0.08);
+        background: var(--giz-glass-7);
         color: $nt-ink;
     }
 }
@@ -232,8 +230,8 @@ $nt-ink-3: rgba(var(--gg-ink-rgb), 0.42);
     height: 3.8rem;
     padding: 0 1.6rem;
     border-radius: 1.2rem;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--giz-glass-11);
+    background: var(--giz-glass-5);
     color: $nt-ink;
     font-family: $font-family-header-theme-client;
     font-size: 1.3rem;
@@ -243,7 +241,7 @@ $nt-ink-3: rgba(var(--gg-ink-rgb), 0.42);
     transition: background 0.15s, filter 0.15s;
 
     &:hover:not(:disabled) {
-        background: rgba(255, 255, 255, 0.1);
+        background: var(--giz-glass-9);
     }
 
     &:disabled {
@@ -252,12 +250,12 @@ $nt-ink-3: rgba(var(--gg-ink-rgb), 0.42);
     }
 
     &--primary {
-        background: linear-gradient(135deg, var(--gg-accent-light), var(--gg-accent-deep));
+        background: var(--giz-action-bg);
         border-color: transparent;
-        color: var(--gg-on-accent);
+        color: var(--giz-action-ink);
 
         &:hover:not(:disabled) {
-            background: linear-gradient(135deg, var(--gg-accent-light), var(--gg-accent-deep));
+            background: var(--giz-action-bg);
             filter: brightness(1.08);
         }
     }
@@ -267,16 +265,16 @@ $nt-ink-3: rgba(var(--gg-ink-rgb), 0.42);
     @include notification-card;
 
     &--success {
-        --nt-rgb: 52, 211, 153;
-        --nt-soft: #86efc6;
+        --nt-rgb: var(--giz-success-teal-rgb);
+        --nt-soft: var(--giz-success-mint);
     }
     &--danger {
-        --nt-rgb: 248, 113, 113;
-        --nt-soft: #fca5a5;
+        --nt-rgb: var(--giz-danger-coral-rgb);
+        --nt-soft: var(--giz-danger-light);
     }
     &--warning {
-        --nt-rgb: 251, 191, 36;
-        --nt-soft: #fcd77a;
+        --nt-rgb: var(--giz-warning-rgb);
+        --nt-soft: var(--giz-warning-sun);
     }
 
     &__icon {
@@ -292,8 +290,6 @@ $nt-ink-3: rgba(var(--gg-ink-rgb), 0.42);
     }
 }
 
-// ── Reservation notification: same card, always the accent (it is a call to action,
-// not a semantic info/warning/error), with its two buttons under the words. ──
 .giz-reservation-notification {
     @include notification-card;
 
@@ -317,14 +313,6 @@ $nt-ink-3: rgba(var(--gg-ink-rgb), 0.42);
     }
 }
 
-// Purely vertical now that the stack is centred - the old sideways drift
-// was there to match a left-pinned panel and reads as a wobble once the
-// thing is dropping in from the top of the screen. The -50% X term has to
-// stay present in every keyframe: the panel's horizontal centring IS a
-// transform now (see .giz-notifications above), and an animation's
-// "transform" property replaces the whole value rather than composing with
-// it - dropping the -50% here would snap the panel to the left edge for
-// the animation's duration.
 @keyframes notifications-slide-in-anim {
     from {
         opacity: 0;

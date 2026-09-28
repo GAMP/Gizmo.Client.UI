@@ -58,11 +58,6 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         HostNumberViewService HostHumberViewService { get; set; }
 
-        //Idle transitions arrive off the UI thread. As async void, a dispatcher fault while the
-        //WebView was being torn down got rethrown on the thread pool and took the whole client
-        //with it ("Client app domain unhandled exception. Client will exit."). This layout is a
-        //LayoutComponentBase, so it cannot inherit ShellComponentBase; it calls the same helper
-        //directly instead.
         private void UserIdleViewState_OnChange(object sender, EventArgs e)
         {
             if (_previousIsIdle == UserIdleViewState.IsIdle)
@@ -88,14 +83,6 @@ namespace Gizmo.Client.UI.Shared
             });
         }
 
-        /// <summary>
-        /// Runs a workflow on the renderer's dispatcher, swallowing host teardown faults.
-        /// </summary>
-        /// <param name="workflow">Work to run on the UI thread.</param>
-        /// <remarks>
-        /// The shell's components get this from <see cref="ShellComponentBase"/>; a layout
-        /// has a base of its own, so it hands <see cref="ShellDispatch"/> what it needs.
-        /// </remarks>
         private void DispatchWorkflow(Func<Task> workflow)
         {
             ShellDispatch.Run(InvokeAsync, () => _disposed, workflow);
@@ -121,17 +108,6 @@ namespace Gizmo.Client.UI.Shared
                 .If("giz-login-content--own-bg", () => !HasClubBackground)
                 .AsString();
 
-        /// <summary>
-        /// The club has put a picture (or a rotator) behind the sign-in screen.
-        /// </summary>
-        /// <remarks>
-        /// With nothing configured the vendor falls back to a stock photograph; this shell
-        /// does not. The idle screen then shows the same gradient and icons that appear
-        /// behind the sign-in card, in the accent's colours, so a club that sets nothing
-        /// gets the shell's own look rather than a picture that belongs to no club. A
-        /// configured picture stays the idle background and gives way to the gradient only
-        /// while the card is up.
-        /// </remarks>
         private bool HasClubBackground =>
             !string.IsNullOrEmpty(ClientUIOptions.Value.LoginBackground) || LoginRotatorViewState.IsEnabled;
 
@@ -164,16 +140,6 @@ namespace Gizmo.Client.UI.Shared
             });
         }
 
-        /// <summary>
-        /// Detaches every subscription this layout made.
-        /// </summary>
-        /// <remarks>
-        /// This layout previously had no disposal at all, while subscribing to six sources that
-        /// all outlive it (view state singletons plus the host number service). The login layout
-        /// is torn down and rebuilt on every login and logout, so each cycle left another dead
-        /// instance attached and still being invoked - exactly the population of stale handlers
-        /// that turned a WebView hiccup into a client exit.
-        /// </remarks>
         public void Dispose()
         {
             if (_disposed)

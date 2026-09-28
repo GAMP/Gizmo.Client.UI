@@ -1,8 +1,4 @@
 //=============== Toast ================//
-// Was flat solid-color blocks (orange/teal/red/dark grey - old GGBook
-// palette). Same glass + tinted-left-border language as the redesigned
-// .giz-notification cards, so an inline error toast (e.g. failed login)
-// reads as the same product instead of a leftover default.
 
 .giz-toast {
     display: grid;
@@ -11,10 +7,10 @@
     gap: 1.3rem;
     border-radius: 1.6rem;
     padding: 1.4rem 1rem 1.4rem 1.3rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-left: 3px solid rgb(var(--giz-toast-accent-rgb, var(--gg-accent-rgb)));
-    color: rgba(255, 255, 255, 0.92);
+    background: var(--giz-glass-4);
+    border: 1px solid var(--giz-glass-7);
+    border-left: 3px solid rgb(var(--giz-toast-accent-rgb, var(--giz-accent-rgb)));
+    color: var(--giz-text-1);
 
     a {
         color: inherit;
@@ -28,10 +24,10 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(var(--giz-toast-accent-rgb, var(--gg-accent-rgb)), 0.16);
+        background: rgba(var(--giz-toast-accent-rgb, var(--giz-accent-rgb)), 0.16);
         flex-shrink: 0;
 
-        .giz-icon { color: rgb(var(--giz-toast-accent-rgb, var(--gg-accent-rgb))); }
+        .giz-icon { color: rgb(var(--giz-toast-accent-rgb, var(--giz-accent-rgb))); }
     }
 
     &__body {
@@ -48,7 +44,7 @@
 
         &__text {
             @include font-s-theme-client($font-weight-light-theme-client);
-            color: rgba(255, 255, 255, 0.62);
+            color: var(--giz-text-2);
         }
     }
 
@@ -62,7 +58,7 @@
         background-color: transparent;
 
         &:hover {
-            background-color: rgba(255, 255, 255, 0.08);
+            background-color: var(--giz-glass-7);
         }
     }
 }

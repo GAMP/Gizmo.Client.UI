@@ -1,7 +1,7 @@
 //=============== Theme Client Global ================//
 
 body {
-    background-color: var(--gg-bg-0);
+    background-color: var(--giz-bg-0);
     color: #FAFAFA;
     font-family: $font-family-text-theme-client;
     font-size: 1rem;
@@ -10,12 +10,9 @@ body {
     letter-spacing: normal;
 }
 
-// Shell-wide scrollbar baseline - every scrollable area gets the thin
-// accent-tinted look by default, not just the ones tagged with the
-// .giz-scrollbar--v opt-in utility class.
 * {
     scrollbar-width: thin;
-    scrollbar-color: rgba(var(--gg-accent-rgb), 0.30) transparent;
+    scrollbar-color: rgba(var(--giz-accent-rgb), 0.30) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -28,25 +25,15 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-    background: rgba(var(--gg-accent-rgb), 0.30);
+    background: rgba(var(--giz-accent-rgb), 0.30);
     border-radius: 0.3rem;
     border: 1px solid transparent;
     background-clip: padding-box;
 
     &:hover {
-        background: rgba(var(--gg-accent-rgb), 0.5);
+        background: rgba(var(--giz-accent-rgb), 0.5);
         background-clip: padding-box;
     }
-}
-
-@keyframes gg-glow-pulse {
-    0%, 100% {  }
-    50%       {  }
-}
-
-@keyframes gg-border-pulse {
-    0%, 100% { border-color: rgba(var(--gg-accent-rgb), 0.25); }
-    50%       { border-color: rgba(var(--gg-accent-rgb), 0.55); }
 }
 
 a {
@@ -62,11 +49,169 @@ a {
     }
 }
 
-// A scrolling page ends a hand's width above the window edge (the root's inset), and
-// content stopping dead on that line read as a strip cut off the shell. Fading the last
-// few rem out makes the edge a horizon instead. A mask, not an overlay: the background
-// behind the page is a gradient no overlay colour could match.
-@mixin gg-scroll-fade($depth: 3.6rem) {
-    mask-image: linear-gradient(to bottom, #000 calc(100% - #{$depth}), transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - #{$depth}), transparent 100%);
+// Keyboard focus, the same ring on every control. Text fields keep their own focus look.
+[#{$client-theme-comp-attr}] :is(button, a, [role="button"], [tabindex]:not([tabindex="-1"]):not(input):not(textarea)):focus-visible {
+    outline: 2px solid var(--giz-focus);
+    outline-offset: 2px;
+}
+
+// Hover is stated together with the base: the vendor's button theme outweighs a lone base
+// rule the moment the pointer is on the button.
+@mixin giz-action-primary {
+    &,
+    &:hover {
+        background: var(--giz-action-bg);
+        border-color: transparent;
+        color: var(--giz-action-ink);
+    }
+
+    &:hover {
+        filter: brightness(1.08);
+    }
+}
+
+@mixin giz-action-off {
+    &,
+    &:hover {
+        background: var(--giz-action-off-bg);
+        border-color: transparent;
+        box-shadow: none;
+        color: var(--giz-action-off-ink);
+        filter: none;
+        opacity: 1;
+        cursor: default;
+    }
+}
+
+// A launch control: the executable's icon in a circle and its caption, on a pill.
+@mixin giz-launch-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8em;
+    max-width: 100%;
+    padding: 0.4em 1.4em 0.4em 0.4em;
+    border-radius: $giz-r-pill;
+    cursor: pointer;
+    background: var(--giz-glass-7);
+    box-shadow: inset 0 0 0 1px var(--giz-glass-11);
+    color: var(--giz-text-1);
+    font-family: $font-family-header-theme-client;
+    font-size: clamp(1.3rem, 1.15rem + 0.28vw, 1.6rem);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    transition: background 0.16s, filter 0.16s, transform 0.16s;
+
+    &::before { display: none; }
+
+    &:hover { background: var(--giz-glass-11); transform: translateY(-1px); }
+    &:active { transform: none; }
+
+    .giz-universal-executable__icon {
+        width: 2.9em;
+        height: 2.9em;
+        flex: none;
+        border-radius: 50%;
+        background: rgba(var(--giz-black-rgb), 0.25);
+
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .giz-default-image img {
+            width: 60%;
+            height: auto;
+            opacity: 0.5;
+        }
+    }
+
+    .giz-universal-executable-progress-bar {
+        --giz-exe-ring-w: 0.14em;
+        --giz-exe-ring-inset: -0.22em;
+        padding-bottom: 0.3em;
+    }
+
+    .giz-universal-executable__description {
+        width: auto;
+        min-width: 0;
+        padding: 0;
+    }
+
+    .giz-universal-executable__description__exe {
+        max-width: 24rem;
+        font: inherit;
+        color: inherit;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+// The one launch control that is the screen's primary action.
+@mixin giz-launch-pill-primary {
+    background: var(--giz-action-bg);
+    box-shadow: none;
+    color: var(--giz-action-ink);
+
+    &:hover { background: var(--giz-action-bg); filter: brightness(1.1); }
+
+    // The running mark and the launch ring are accent coloured, invisible on the accent pill.
+    .running { background: rgba(var(--giz-scrim-rgb), 0.85); }
+
+    .giz-universal-executable-progress-bar {
+        --giz-exe-ring-colour: var(--giz-action-ink);
+        --giz-exe-ring-track: rgba(var(--giz-black-rgb), 0.2);
+        filter: none;
+    }
+}
+
+@mixin giz-action-tonal {
+    border: 0;
+    border-radius: $giz-r-pill;
+    background: var(--giz-action-tonal-bg);
+    box-shadow: inset 0 0 0 1px var(--giz-action-tonal-line);
+    color: var(--giz-action-tonal-ink);
+
+    &:hover {
+        background: var(--giz-action-bg);
+        box-shadow: none;
+        color: var(--giz-action-ink);
+    }
+}
+
+@mixin giz-scroll-fade($depth: 3.6rem) {
+    mask-image: linear-gradient(to bottom, var(--giz-black) calc(100% - #{$depth}), transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, var(--giz-black) calc(100% - #{$depth}), transparent 100%);
+}
+
+// Progress ring: an SVG in a 40 viewBox over its host, starting at twelve o'clock.
+@mixin giz-ring-svg($inset: 0rem) {
+    position: absolute;
+    inset: $inset;
+    width: calc(100% - 2 * #{$inset});
+    height: calc(100% - 2 * #{$inset});
+    overflow: visible;
+    transform: rotate(-90deg);
+    pointer-events: none;
+}
+
+@mixin giz-ring-track($width: 2.6) {
+    fill: none;
+    stroke: var(--giz-glass-9);
+    stroke-width: $width;
+}
+
+// $c = the circle's circumference (r 18 → 113.1, r 19 → 119.38); the dash is cut by
+// --giz-ring-progress (0–100) from the markup, and an empty ring shows no round-cap dot.
+@mixin giz-ring-bar($c, $width: 2.6) {
+    fill: none;
+    stroke: var(--giz-accent-light);
+    stroke-width: $width;
+    stroke-linecap: round;
+    stroke-dasharray: $c;
+    stroke-dashoffset: calc(#{$c} * (1 - var(--giz-ring-progress, 0) / 100));
+    stroke-opacity: clamp(0, var(--giz-ring-progress, 0) * 1000, 1);
+    transition: stroke-dashoffset 0.6s ease;
 }

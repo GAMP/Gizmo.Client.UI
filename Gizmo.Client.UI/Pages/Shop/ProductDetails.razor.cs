@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -11,6 +12,16 @@ namespace Gizmo.Client.UI.Pages
     [Route(ClientRoutes.ProductDetailsRoute)]
     public partial class ProductDetails : CustomDOMComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
+        protected UserProductViewState Product => ViewState.Product;
+
+        protected bool IsTime => Product?.ProductType == ProductType.ProductTime;
+
+        protected bool IsBundle => Product?.ProductType == ProductType.ProductBundle;
+
+        protected UserProductTimeViewState TimeProduct => IsTime ? Product.TimeProduct : null;
+
         #region FIELDS
         private UserProductGroupViewState _userProductGroupViewState;
         private int _previousProductId;
@@ -49,9 +60,6 @@ namespace Gizmo.Client.UI.Pages
 
         #endregion
 
-        /// <summary>
-        /// Gets whether either availability list has more than the one line shown folded.
-        /// </summary>
         private bool HasMoreAvailability
         {
             get

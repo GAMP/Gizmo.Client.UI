@@ -1,95 +1,119 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Gizmo.Client.UI.View.Services;
-using Gizmo.UI;
-using Gizmo.UI.Services;
 
 namespace Gizmo.Client.UI.Services
 {
-    /// <summary>
-    /// Buys a time package in one step: add it to the cart, then open the purchase dialog
-    /// on that entry.
-    /// </summary>
-    /// <remarks>
-    /// Shared because there are two entry points - the buy button on the home board and the
-    /// one on a package in the shop - and the ordering below is too easy to get wrong to
-    /// duplicate. Static rather than a service: it holds no state, and registering another
-    /// service in the skin's composition is one more thing that can fail to load.
-    /// </remarks>
     internal static class PackagePurchaseFlow
     {
-        /// <summary>
-        /// How long to wait for the cart entry to appear.
-        /// </summary>
-        /// <remarks>
-        /// Sized for how long somebody may take to answer a confirmation prompt, not for
-        /// the request, which completes in a fraction of a second.
-        /// </remarks>
-        private static readonly TimeSpan WAIT_CEILING = TimeSpan.FromSeconds(90);
+        private static readonly TimeSpan PROMPT_GRACE = TimeSpan.FromSeconds(2);
+        private static readonly TimeSpan SETTLE_MINIMUM = TimeSpan.FromSeconds(1);
+        private static readonly TimeSpan WAIT_CEILING = TimeSpan.FromSeconds(30);
+        private static readonly TimeSpan LATE_CEILING = TimeSpan.FromMinutes(2);
+        private static readonly TimeSpan POLL_INTERVAL = TimeSpan.FromMilliseconds(50);
 
-        /// <summary>
-        /// Adds the package to the cart and opens the purchase dialog on that entry.
-        /// </summary>
-        /// <remarks>
-        /// The order matters. Before adding a time package that is outside its usage
-        /// availability window, <c>ClientServerCartViewService.ValidateRequestAsync</c>
-        /// raises the stock "not available right now, add anyway?" prompt and waits for an
-        /// answer. Dialogs are a queue, not a stack: with our dialog already open that
-        /// prompt never reaches the screen, no cart entry appears, and the dialog spins
-        /// forever. Adding first lets the prompt show normally.
-        /// </remarks>
-        /// <returns><c>false</c> when the dialog could not be opened.</returns>
-        public static async Task<bool> RunAsync(int productId,
+        public static bool IsCartBusy(ClientServerCartViewService cartService) =>
+            cartService.ViewState.IsStateUpdateRequired || cartService.ViewState.IsStateUpdating;
+
+        public static async Task RunAsync(int productId,
             ClientServerCartViewService cartService,
-            IClientDialogService dialogService)
+            UserCartViewService checkoutService,
+            CancellationToken cancellationToken)
         {
-            if (dialogService is not ClientDialogService dialogs)
-                return false;
+            Guid? addedLine = null;
 
-            var before = cartService.ViewState.Products.Select(a => a.Guid).ToHashSet();
-
-            cartService.AddProduct(productId);
-
-            var entryId = await WaitForCartEntryAsync(cartService, before);
-
-            //Declined the prompt, or the add failed: nothing to open the dialog on.
-            if (entryId is null)
-                return false;
-
-            var dialog = await dialogs.ShowPackagePurchaseDialogAsync(productId, entryId.Value);
-
-            if (dialog.Result == AddComponentResultCode.Opened)
-                await dialog.WaitForResultAsync();
-
-            return true;
-        }
-
-        /// <summary>
-        /// Waits for a cart entry that was not there before.
-        /// </summary>
-        /// <remarks>
-        /// Polling rather than a subscription: the cart raises a generic change, but what
-        /// is awaited here is one specific entry. "Still reading the prompt" and "answered
-        /// no" cannot be told apart - validation runs before the cart raises any busy flag -
-        /// so the wait simply has a ceiling.
-        /// </remarks>
-        private static async Task<Guid?> WaitForCartEntryAsync(ClientServerCartViewService cartService, HashSet<Guid> before)
-        {
-            var deadline = DateTime.UtcNow.Add(WAIT_CEILING);
-
-            while (DateTime.UtcNow < deadline)
+            if (!cartService.ViewState.Products.Any(a => a.ProductId == productId))
             {
-                var entry = cartService.ViewState.Products.FirstOrDefault(a => !before.Contains(a.Guid));
+                var knownLines = cartService.ViewState.Products.Select(a => a.Guid).ToHashSet();
 
-                if (entry is not null)
-                    return entry.Guid;
+                cartService.AddProduct(productId);
 
-                await Task.Delay(200);
+                var (line, requestSeen) = await WaitForNewLineAsync(cartService, productId, knownLines, PROMPT_GRACE, WAIT_CEILING);
+
+                if (line is null)
+                {
+                    if (!requestSeen)
+                        _ = FinishLateAsync(productId, cartService, checkoutService, knownLines, cancellationToken);
+
+                    return;
+                }
+
+                addedLine = line;
             }
 
-            return null;
+            await CheckoutAsync(cartService, checkoutService, addedLine, cancellationToken);
+        }
+
+        private static async Task CheckoutAsync(ClientServerCartViewService cartService,
+            UserCartViewService checkoutService,
+            Guid? addedLine,
+            CancellationToken cancellationToken)
+        {
+            if (!cancellationToken.IsCancellationRequested)
+                await checkoutService.SubmitAsync();
+
+            if (addedLine is { } line && cartService.ViewState.Products.Any(a => a.Guid == line))
+                cartService.RemoveEntry(line);
+        }
+
+        // The vendor asks before adding a package outside its hours; the answer can take longer
+        // than the button should stay busy, so the line is waited for here instead.
+        private static async Task FinishLateAsync(int productId,
+            ClientServerCartViewService cartService,
+            UserCartViewService checkoutService,
+            HashSet<Guid> knownLines,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                var (line, _) = await WaitForNewLineAsync(cartService, productId, knownLines, LATE_CEILING, LATE_CEILING);
+
+                if (line is not null)
+                    await CheckoutAsync(cartService, checkoutService, line, cancellationToken);
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private static async Task<(Guid? Line, bool RequestSeen)> WaitForNewLineAsync(ClientServerCartViewService cartService,
+            int productId,
+            HashSet<Guid> knownLines,
+            TimeSpan promptGrace,
+            TimeSpan ceiling)
+        {
+            var started = DateTime.UtcNow;
+            var requestSeen = false;
+
+            while (DateTime.UtcNow - started < ceiling)
+            {
+                var elapsed = DateTime.UtcNow - started;
+
+                if (IsCartBusy(cartService))
+                {
+                    requestSeen = true;
+                }
+                else
+                {
+                    var line = cartService.ViewState.Products.FirstOrDefault(a => a.ProductId == productId && !knownLines.Contains(a.Guid));
+
+                    if (line is not null)
+                        return (line.Guid, true);
+
+                    if (requestSeen && elapsed >= SETTLE_MINIMUM)
+                        return (null, true);
+
+                    if (!requestSeen && elapsed >= promptGrace)
+                        return (null, false);
+                }
+
+                await Task.Delay(POLL_INTERVAL);
+            }
+
+            return (null, requestSeen);
         }
     }
 }

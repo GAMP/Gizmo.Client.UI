@@ -1,4 +1,4 @@
-using Gizmo.Web.Components;
+﻿using Gizmo.Web.Components;
 
 namespace Gizmo.Client.UI.Components
 {

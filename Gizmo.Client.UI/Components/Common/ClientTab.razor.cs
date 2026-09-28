@@ -13,9 +13,6 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public TabControlsPositions ControlsPosition { get; set; } = TabControlsPositions.External;
 
-        //Returning the task rather than being async void lets Blazor own any JS interop failure
-        //(a scroll against a WebView that is going away). As async void it would instead be
-        //rethrown on the thread pool and exit the whole client.
         private Task OnClickPreviousButton()
         {
             return InvokeVoidAsync("tabScrollPrevious", Ref).AsTask();

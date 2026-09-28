@@ -1,0 +1,17 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+@if (ViewState.HasLevel)
+{
+    <button type="button" class="giz-profile-header-ladder" @onclick="Service.OpenLadder">
+        <LadderLevelBadge Ordinal="@ViewState.Ordinal" EmblemUrl="@ViewState.EmblemUrl" Class="giz-ladder-badge--header" />
+        <span class="giz-profile-header-ladder__text">
+            @if (!string.IsNullOrEmpty(ViewState.HeaderStatusText))
+            {
+                <span class="giz-profile-header-ladder__status">@ViewState.HeaderStatusText</span>
+            }
+            <span class="giz-profile-header-ladder__name">@ViewState.LevelName</span>
+        </span>
+        <Icon SVGIcon="Icons.ArrowRight_Client" Class="giz-profile-header-ladder__chevron" />
+    </button>
+}

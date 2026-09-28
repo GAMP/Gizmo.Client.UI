@@ -1,29 +1,16 @@
-//=============== Package purchase ================//
-//
-// One card in the language of the home board's till: the same lifted surface with an
-// accent wash, micro uppercase captions, big tabular numerals. It is deliberately NOT the
-// shop's checkout dialog restyled - that dialog is a table of goods with a drop-down
-// under it, and a single package with a choice of how to pay is a different thing to
-// read.
-//
-// Order on the card: what is bought (name, price), what to pay with (one chooser with
-// two or three cells, not separate boxes), what it comes to, the button. The shop
-// checkout is the same card with the cart's lines where the package name goes.
-// Markup: PackagePurchaseDialog.razor, CheckoutDialog.razor, PayWayChooser.razor,
-// CartDialogResult.razor - mirrored by visual/templates/purchase.js and checkout.js.
 
 $buy-w:      52rem;
-$buy-ink:    var(--gg-ink);
-$buy-ink-2:  rgba(var(--gg-ink-rgb), 0.62);
-$buy-ink-3:  rgba(var(--gg-ink-rgb), 0.4);
-$buy-cap:    rgba(var(--gg-ink-rgb), 0.42);
-$buy-line:   rgba(255, 255, 255, 0.07);
+$buy-ink:    var(--giz-ink);
+$buy-ink-2:  var(--giz-text-2);
+$buy-ink-3:  var(--giz-text-3);
+$buy-cap:    var(--giz-text-3);
+$buy-line:   var(--giz-glass-6);
 $buy-r:      2.2rem;
 $buy-rt:     1.4rem;
-$buy-red:    #ff8b8b;
-$buy-green:  #5ed894;
-$buy-coin:   #e8b84b;
-$buy-on-accent: var(--gg-on-accent);
+$buy-red:    var(--giz-danger-soft);
+$buy-green:  var(--giz-success);
+$buy-coin:   var(--giz-points);
+$buy-on-accent: var(--giz-on-accent);
 
 @mixin buy-one-line {
     overflow: hidden;
@@ -33,9 +20,9 @@ $buy-on-accent: var(--gg-on-accent);
 
 @mixin buy-cap {
     font-family: $font-family-header-theme-client;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     color: $buy-cap;
 }
@@ -67,14 +54,12 @@ $buy-on-accent: var(--gg-on-accent);
     padding: 2.8rem 3.2rem 3.2rem;
     border-radius: $buy-r;
     color: $buy-ink;
-    // The till's surface: lifted off the wallpaper by an accent wash that fades out
-    // within the top third. Not a glow, just enough to say this card takes money.
     background:
-        linear-gradient(176deg, rgba(var(--gg-accent-rgb), 0.14) 0%, rgba(var(--gg-accent-rgb), 0) 34%),
-        var(--gg-panel);
+        linear-gradient(176deg, rgba(var(--giz-accent-rgb), 0.14) 0%, rgba(var(--giz-accent-rgb), 0) 34%),
+        var(--giz-panel);
     box-shadow:
-        inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.28),
-        0 40px 90px -30px rgba(0, 0, 0, 0.95);
+        inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.28),
+        0 40px 90px -30px rgba(var(--giz-black-rgb), 0.95);
     animation: giz-buy-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
 
     // ── what is bought ──────────────────────────────────────────────────────
@@ -85,7 +70,7 @@ $buy-on-accent: var(--gg-on-accent);
 
     &__kick {
         @include buy-cap;
-        color: var(--gg-accent);
+        color: var(--giz-accent);
     }
 
     &__close {
@@ -102,12 +87,11 @@ $buy-on-accent: var(--gg-on-accent);
         cursor: pointer;
         font-size: 1.6rem;
         color: $buy-ink-2;
-        background: rgba(255, 255, 255, 0.06);
+        background: var(--giz-glass-5);
         transition: background 0.16s, color 0.16s;
 
-        &:hover:not(:disabled) { background: rgba(255, 255, 255, 0.12); color: $buy-ink; }
+        &:hover:not(:disabled) { background: var(--giz-glass-10); color: $buy-ink; }
         &:disabled { opacity: 0.4; cursor: default; }
-        &:focus-visible { outline: 2px solid var(--gg-accent); outline-offset: 2px; }
     }
 
     &__title {
@@ -141,11 +125,6 @@ $buy-on-accent: var(--gg-on-accent);
         margin-bottom: 1rem;
     }
 
-    // ── what to pay with ────────────────────────────────────────────────────
-    // One chooser, two or three cells in a sunken track: the chosen cell lifts in the
-    // accent, the others stay quiet. Under each name is what the customer has for it,
-    // so the choice is made with the figures in sight and nothing else on the card
-    // has to repeat them.
     &__seg {
         display: grid;
         grid-auto-flow: column;
@@ -153,8 +132,8 @@ $buy-on-accent: var(--gg-on-accent);
         gap: 0.3rem;
         padding: 0.4rem;
         border-radius: 1.5rem;
-        background: rgba(0, 0, 0, 0.26);
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06), inset 0 1px 2px rgba(0, 0, 0, 0.35);
+        background: rgba(var(--giz-black-rgb), 0.26);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-5), inset 0 1px 2px rgba(var(--giz-black-rgb), 0.35);
     }
 
     &__seg-item {
@@ -172,22 +151,21 @@ $buy-on-accent: var(--gg-on-accent);
         background: transparent;
         transition: background 0.16s, color 0.16s, box-shadow 0.16s;
 
-        &:hover:not(:disabled):not(.is-on) {
-            background: rgba(255, 255, 255, 0.05);
+        &:hover:not(:disabled):not(.giz-buy__seg-item--on) {
+            background: var(--giz-glass-4);
             color: $buy-ink;
         }
 
-        &.is-on {
-            color: #fff;
-            background: linear-gradient(180deg, rgba(var(--gg-accent-rgb), 0.34), rgba(var(--gg-accent-rgb), 0.2));
+        &--on {
+            color: var(--giz-white);
+            background: linear-gradient(180deg, rgba(var(--giz-accent-rgb), 0.34), rgba(var(--giz-accent-rgb), 0.2));
             box-shadow:
-                inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.62),
-                inset 0 1px 0 rgba(255, 255, 255, 0.14),
-                0 10px 24px -14px rgba(var(--gg-accent-rgb), 0.9);
+                inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.62),
+                inset 0 1px 0 var(--giz-glass-11),
+                0 10px 24px -14px rgba(var(--giz-accent-rgb), 0.9);
         }
 
         &:disabled { cursor: default; }
-        &:focus-visible { outline: 2px solid var(--gg-accent); outline-offset: 2px; }
     }
 
     &__seg-name {
@@ -211,11 +189,9 @@ $buy-on-accent: var(--gg-on-accent);
 
         i { font-size: 0.95em; color: $buy-coin; }
 
-        .is-on & { color: rgba(var(--gg-ink-rgb), 0.82); }
+        .giz-buy__seg-item--on & { color: rgba(var(--giz-ink-rgb), 0.82); }
 
-        // The figure goes red when it is not enough - the only red on the chooser, and
-        // an amount rather than an error.
-        .is-short & { color: rgba($buy-red, 0.92); }
+        .giz-buy__seg-item--short & { color: rgba(var(--giz-danger-soft-rgb), 0.92); }
     }
 
     // The club's own counter methods, once there are several: chips under the chooser.
@@ -236,21 +212,20 @@ $buy-on-accent: var(--gg-on-accent);
         font-size: 1.25rem;
         font-weight: 600;
         color: $buy-ink-2;
-        background: rgba(255, 255, 255, 0.06);
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        background: var(--giz-glass-5);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-9);
         @include buy-one-line;
         transition: background 0.16s, color 0.16s, box-shadow 0.16s;
 
-        &:hover:not(:disabled):not(.is-on) { background: rgba(255, 255, 255, 0.1); color: $buy-ink; }
+        &:hover:not(:disabled):not(.giz-buy__chip--on) { background: var(--giz-glass-9); color: $buy-ink; }
 
-        &.is-on {
-            color: #fff;
-            background: rgba(var(--gg-accent-rgb), 0.2);
-            box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.62);
+        &--on {
+            color: var(--giz-white);
+            background: rgba(var(--giz-accent-rgb), 0.2);
+            box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.62);
         }
 
         &:disabled { cursor: default; }
-        &:focus-visible { outline: 2px solid var(--gg-accent); outline-offset: 2px; }
     }
 
     // One way only: a line, not a chooser with a single cell.
@@ -280,9 +255,6 @@ $buy-on-accent: var(--gg-on-accent);
         color: $buy-ink-3;
     }
 
-    // ── the cart's lines (checkout) ─────────────────────────────────────────
-    // A list, not the shop's table: name, quantity when more than one, the line's
-    // figure. Scrolls past eight or so rows; the chooser and the total stay put.
     &__items {
         max-height: 24rem;
         overflow-y: auto;
@@ -312,6 +284,8 @@ $buy-on-accent: var(--gg-on-accent);
         font-size: 1.2rem;
         font-weight: 600;
         color: $buy-ink-3;
+
+        &::before { content: "\00d7\00a0"; }
     }
 
     &__row-sum {
@@ -341,9 +315,7 @@ $buy-on-accent: var(--gg-on-accent);
         border-top: 1px solid $buy-line;
         transition: opacity 0.15s;
 
-        // The server is re-pricing: the old figures dim rather than vanish, so the card
-        // does not jump while the new ones are on their way.
-        &.is-busy { opacity: 0.5; }
+        &--busy { opacity: 0.5; }
     }
 
     &__wait {
@@ -404,7 +376,11 @@ $buy-on-accent: var(--gg-on-accent);
         color: $buy-ink;
 
         .giz-buy__pts i { font-size: 0.7em; align-self: center; }
+
+        .giz-buy__pts + .giz-buy__money::before { content: "+\00a0"; }
     }
+
+    &__minus::before { content: "\2212"; }
 
     &__total-free {
         font-family: $font-family-header-theme-client;
@@ -431,8 +407,6 @@ $buy-on-accent: var(--gg-on-accent);
         &--hint { justify-content: flex-start; }
     }
 
-    // The shortfall is the only red box on the card and must read as an amount rather
-    // than an error: the same muted red as the validation messages on sign-in.
     &__short {
         display: flex;
         justify-content: space-between;
@@ -441,11 +415,11 @@ $buy-on-accent: var(--gg-on-accent);
         margin-top: 0.4rem;
         padding: 1.1rem 1.4rem;
         border-radius: $buy-rt;
-        background: rgba($buy-red, 0.08);
-        box-shadow: inset 0 0 0 1px rgba($buy-red, 0.22);
+        background: rgba(var(--giz-danger-soft-rgb), 0.08);
+        box-shadow: inset 0 0 0 1px rgba(var(--giz-danger-soft-rgb), 0.22);
         font-size: 1.35rem;
         line-height: 1.35;
-        color: rgba(var(--gg-ink-rgb), 0.78);
+        color: var(--giz-text-1);
     }
 
     &__short-sum {
@@ -479,29 +453,34 @@ $buy-on-accent: var(--gg-on-accent);
         font-weight: 700;
         letter-spacing: 0.02em;
         color: $buy-ink-2;
-        background: rgba(255, 255, 255, 0.06);
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        background: var(--giz-glass-5);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-9);
         transition: background 0.16s, color 0.16s, filter 0.16s, opacity 0.16s;
 
-        &:hover:not(:disabled) { background: rgba(255, 255, 255, 0.1); color: $buy-ink; }
+        &:hover:not(:disabled) { background: var(--giz-glass-9); color: $buy-ink; }
         &:disabled { cursor: default; opacity: 0.45; }
-        &:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
         // The one filled button on the card, in the accent of the hero call to action.
         &--primary {
             min-width: 16rem;
             padding: 0 2.4rem;
             color: $buy-on-accent;
-            background: var(--gg-accent);
+            background: var(--giz-accent);
             box-shadow: none;
 
             &:hover:not(:disabled) {
                 color: $buy-on-accent;
-                background: var(--gg-accent);
+                background: var(--giz-accent);
                 filter: brightness(1.08);
             }
 
-            &:disabled { opacity: 0.35; }
+            &:disabled:not(.giz-buy__btn--busy) { @include giz-action-off; }
+
+            &.giz-buy__btn--busy {
+                background: var(--giz-action-bg);
+                color: $buy-on-accent;
+                opacity: 0.85;
+            }
 
             .giz-animate-spinner {
                 width: 2rem;
@@ -512,10 +491,6 @@ $buy-on-accent: var(--gg-on-accent);
         }
     }
 
-    // ── top-up step ─────────────────────────────────────────────────────────
-    // The existing deposit component, no frame of its own: a second frame inside the
-    // card would look like a nested tile. Height is capped so a laptop panel keeps the
-    // Back button on screen; the content scrolls, not the card.
     &__topup {
         max-height: 52vh;
         overflow-y: auto;
@@ -548,16 +523,16 @@ $buy-on-accent: var(--gg-on-accent);
         font-size: 3.2rem;
         animation: giz-buy-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 
-        .is-ok & {
+        .giz-buy__result--ok & {
             color: $buy-green;
-            background: rgba($buy-green, 0.14);
-            box-shadow: inset 0 0 0 1px rgba($buy-green, 0.4);
+            background: rgba(var(--giz-success-rgb), 0.14);
+            box-shadow: inset 0 0 0 1px rgba(var(--giz-success-rgb), 0.4);
         }
 
-        .is-error & {
+        .giz-buy__result--error & {
             color: $buy-red;
-            background: rgba($buy-red, 0.12);
-            box-shadow: inset 0 0 0 1px rgba($buy-red, 0.36);
+            background: rgba(var(--giz-danger-soft-rgb), 0.12);
+            box-shadow: inset 0 0 0 1px rgba(var(--giz-danger-soft-rgb), 0.36);
         }
     }
 

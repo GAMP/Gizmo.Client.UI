@@ -276,9 +276,6 @@ namespace Gizmo.Client.UI.Components
             base.OnInitialized();
         }
 
-        //The carousel already pauses under the cursor; behind another window it pauses the
-        //same way. The applications page is the one games are launched from, so it is the
-        //page the shell most often sits on for a whole session.
         private void OnActivityChanged() => DispatchWorkflow(() =>
         {
             if (_timer != null)

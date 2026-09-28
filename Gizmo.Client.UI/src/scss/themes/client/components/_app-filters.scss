@@ -4,36 +4,36 @@
     gap: 0.8rem;
     margin-left: auto;
 
-    /* Override heavy dark background — make filters translucent/glassy */
-    .giz-input-root {
-        background-color: rgba(255, 255, 255, 0.06) !important;
-        color: rgba(255, 255, 255, 0.72) !important;
+    // .giz-input-control matches the specificity of the input's own theme rules.
+    .giz-input-control .giz-input-root {
+        background-color: var(--giz-glass-5);
+        color: var(--giz-text-2);
 
         input {
-            color: rgba(255, 255, 255, 0.72) !important;
+            color: var(--giz-text-2);
         }
 
         svg {
-            color: rgba(255, 255, 255, 0.45) !important;
+            color: var(--giz-text-3);
         }
     }
 
-    .giz-input-root--outline {
-        background: rgba(255, 255, 255, 0.06) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        border-radius: 2rem !important;
+    .giz-input-control .giz-input-root--outline {
+        background: var(--giz-glass-5);
+        border: 1px solid var(--giz-glass-9);
+        border-radius: 2rem;
 
         &:hover {
-            background: rgba(255, 255, 255, 0.09) !important;
-            border: 1px solid rgba(255, 255, 255, 0.16) !important;
+            background: var(--giz-glass-8);
+            border: 1px solid var(--giz-glass-12);
 
             &.giz-input-root--small { padding: 0.8rem 1.3rem; }
         }
 
         &:focus-within {
-            background: rgba(255, 255, 255, 0.08) !important;
-            border: 1px solid rgba(var(--gg-accent-rgb), 0.4) !important;
-            box-shadow: 0 0 0 1px rgba(var(--gg-accent-rgb), 0.08) !important;
+            background: var(--giz-glass-7);
+            border: 1px solid rgba(var(--giz-accent-rgb), 0.4);
+            box-shadow: 0 0 0 1px rgba(var(--giz-accent-rgb), 0.08);
 
             &.giz-input-root--small { padding: 0.8rem 1.3rem; }
         }

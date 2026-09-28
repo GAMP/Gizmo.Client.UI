@@ -7,9 +7,12 @@ installer. It is also where the skin is built into a package (`stage.ps1`).
 
 1. Unpack the zip anywhere on the server machine.
 2. Run `install.bat` (it asks for administrator rights - the skins folder is under
-   Program Files). It copies `skin\` to `<Gizmo Server>\skins\Grafit\`, taking
-   `wwwroot\_framework` from the server's own `Next` skin, and keeps a backup of whatever
-   was in `skins\Grafit` before under `backup\<timestamp>\`.
+   Program Files). It puts the skin together in `%ProgramData%\Grafit\staging` - `skin\`
+   plus `wwwroot\_framework` and `static\` from the server's own `Next` skin (an empty
+   `static\` if `Next` has none) - checks it, and only then swaps it in for
+   `<Gizmo Server>\skins\Grafit\` by renaming, so a locked file stops it before anything
+   changes. What was there before is kept in `%ProgramData%\Grafit\backup\<timestamp>\`,
+   shared by every release you install: the state before Grafit and the last five installs.
 3. In the Manager, point a host group at the skin: Host groups -> the group -> Skin =
    `Grafit`. (A Skin profile with custom CSS is optional - see "Colour" below.)
 4. Restart the client on the affected PCs - fully, not a re-login. The server hands the
@@ -17,37 +20,39 @@ installer. It is also where the skin is built into a package (`stage.ps1`).
    `%PROGRAMDATA%\NETProjects\Gizmo Client\Skins\` on the PC; a running client keeps the
    skin it started with.
 
-`install.bat uninstall` puts back the last backup, or removes the folder if there was
-nothing before. The stock `Next` skin is never touched.
+- `install.bat rollback` goes back to the version installed before the current one (run
+  it again to go further back).
+- `install.bat uninstall` goes back to what was in `skins\Grafit` before Grafit was first
+  installed - usually nothing, so the folder is removed.
 
-The package is built for one Gizmo release: `skin\grafit.version.txt` says which. A skin
-built for another release fails to load on the client (the host's assemblies differ).
+The stock `Next` skin is never touched.
+
+## Versions
+
+- **Server.** The package is built for one Gizmo release: `skin\grafit.version.txt` says
+  which. A skin built for another release fails to load on the client (the host's
+  assemblies differ). The installer compares it with the server's `GizmoService.dll` and
+  warns on a mismatch.
+- **Client.** The shell needs the Gizmo Client release that brought the ladder,
+  achievements and challenges - **newer than 3.0.95** (the `Client` line of
+  `grafit.version.txt`). On 3.0.95 and older the shell stops with an error page right
+  after sign-in: the header and the account page use the ladder's data.
+- **After every Gizmo Server update, run `install.bat` again.** `wwwroot\_framework` (the
+  Blazor runtime of the server version) and `static\` (the club's pictures served as
+  `https://static/`, including the sign-in rotator's fallback images) are copied from
+  `Next` at install time. The update refreshes `Next`, not Grafit; without a reinstall
+  Grafit keeps the old `blazor.webview.js`.
 
 ## Colour and motion (Manager -> Skin profile -> Custom CSS)
 
-```css
-:root { --gg-palette: purple; }     /* blue (default), purple, red, orange, amber, green, teal, pink */
-:root { --gg-palette: #e11d48; }    /* or any colour - the whole palette is derived from it */
-:root { --gg-motion: on; }          /* slow moving gradient behind the shell; off by default */
-:root { --gg-avatars: on; }         /* customers' own pictures; off by default, needs the service below */
-```
-
-## Customers' own pictures (optional)
-
-Off unless `--gg-avatars` says otherwise, and it needs one small service on the server
-machine: Gizmo 3.0.95 has no self-service picture, and reading or writing one goes
-through the management API, which a station must never hold credentials for. `avatar-proxy`
-in this folder keeps those credentials on the server and offers the stations a plain
-`/avatar/{id}`; its own README has the three steps to install it.
+Set these in the Manager, not in the installed files: a reinstall (after every server
+update) replaces `skins\Grafit`, the Manager's custom CSS stays.
 
 ```css
-:root { --gg-avatars: on; }                        /* service on the Gizmo server's machine, port 8765 */
-:root { --gg-avatars: "http://10.0.0.5:8765"; }    /* or wherever it runs */
+:root { --giz-palette: purple; }     /* blue (default), purple, red, orange, amber, green, teal, pink */
+:root { --giz-palette: #e11d48; }    /* or any colour - the whole palette is derived from it */
+:root { --giz-motion: on; }          /* slow moving gradient behind the shell; off by default */
 ```
-
-With it on, the customer's picture appears on the profile card, the account page and the
-bar, the picture itself is the way into the editor (crop, paste from the clipboard, a
-link), and a customer without one is invited to add it once in a while.
 
 ## Build a package (developers)
 
@@ -56,7 +61,7 @@ link), and a customer without one is invited to add it once in a while.
 .\stage.ps1             # stage + zip from an existing Release build
 ```
 
-Output: `skin\` and `dist\grafit-shell-<grafit>-gizmo-<gizmo>.zip`, with the two
-versions taken from `Gizmo.Client.UI\Gizmo.Client.UI.csproj` (`GrafitVersion`,
-`GizmoVersion`). `stage.ps1` refuses a DLL whose version does not match the project
-file, so a stale build cannot be packed by mistake.
+Output: `skin\` and `dist\grafit-shell-<grafit>-gizmo-<gizmo>.zip`, with the versions
+taken from `Gizmo.Client.UI\Gizmo.Client.UI.csproj` (`GrafitVersion`, `GizmoVersion`,
+`GizmoClientMinVersion`). `stage.ps1` refuses a DLL whose version does not match the
+project file, so a stale build cannot be packed by mistake.

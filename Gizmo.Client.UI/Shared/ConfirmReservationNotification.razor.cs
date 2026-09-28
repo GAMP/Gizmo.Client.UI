@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Gizmo.Client.UI.Components;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
@@ -9,6 +10,8 @@ namespace Gizmo.Client.UI
 {
     public partial class ConfirmReservationNotification : CustomDOMComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
@@ -30,10 +33,6 @@ namespace Gizmo.Client.UI
         [Parameter]
         public EventCallback<int> OnClose { get; set; }
 
-        /// <summary>
-        /// Step 1 - the reservation is confirmed and awaiting payment; step 0 - a code is
-        /// still needed.
-        /// </summary>
         private bool IsPaymentStep => ConfirmReservationNotificationViewService.ViewState.Step == 1;
 
         private Task OpenPaymentDialogAsync()

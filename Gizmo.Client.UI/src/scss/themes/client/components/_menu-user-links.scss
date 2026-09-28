@@ -55,3 +55,264 @@
         }
     }
 }
+
+.giz-top-bar .giz-profile-popup {
+    margin-top: 1rem;
+    height: auto;
+}
+
+.giz-top-bar .giz-profile-popup__content {
+    position: relative;
+    width: 32.8rem;
+    box-sizing: border-box;
+    padding: 2.2rem 2.2rem 2rem;
+    border-radius: 2.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.97), rgba(var(--giz-glass-2-rgb), 0.985));
+    backdrop-filter: blur(5rem) saturate(1.7);
+    -webkit-backdrop-filter: blur(5rem) saturate(1.7);
+    border: 1px solid var(--giz-glass-11);
+    box-shadow:
+        inset 0 1px 0 rgba(var(--giz-white-rgb), 0.2),
+        0 4rem 9rem -2.6rem rgba(var(--giz-black-rgb), 0.85);
+    color: var(--giz-text-1);
+}
+
+.giz-profile-popup__avatar-zone {
+    position: relative;
+    width: 20rem;
+    height: 19rem;
+    flex-shrink: 0;
+}
+
+.giz-profile-popup__orbit {
+    position: absolute;
+    inset: 0;
+}
+
+.giz-profile-popup__avatar {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 9.6rem;
+    height: 9.6rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(var(--giz-glass-rgb), 0.9), rgba(var(--giz-glass-2-rgb), 0.9));
+    border: 1px solid var(--giz-glass-11);
+    box-shadow: inset 0 1px 0 var(--giz-glass-10);
+    overflow: hidden;
+    z-index: 2;
+}
+
+.giz-profile-popup__avatar i {
+    font-size: 4.2rem;
+    color: var(--giz-text-1);
+}
+
+.giz-profile-popup__avatar .giz-avatar {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.giz-profile-popup__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.giz-profile-popup__name {
+    margin-top: 0.2rem;
+    font-weight: 800;
+    font-size: 2rem;
+    color: var(--giz-ink);
+    text-align: center;
+}
+
+.giz-profile-popup__standing {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    max-width: 100%;
+    margin-top: 0.8rem;
+    padding: 0.6rem 1.1rem 0.6rem 1.4rem;
+    border: 0;
+    border-radius: $giz-r-pill;
+    background: rgba(var(--giz-accent-rgb), 0.14);
+    box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.3);
+    color: var(--giz-text-2);
+    font-family: inherit;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: background 0.15s, box-shadow 0.15s;
+
+    b {
+        flex: none;
+        color: var(--giz-accent-pale);
+        font-weight: 800;
+    }
+
+    span {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    i {
+        flex: none;
+        font-size: 1.3rem;
+        color: var(--giz-accent-soft);
+    }
+
+    &:hover {
+        background: rgba(var(--giz-accent-rgb), 0.24);
+        box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.5);
+    }
+}
+
+.giz-profile-popup__actions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 1.8rem;
+}
+
+.giz-profile-popup__actions-row {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.giz-profile-popup__account-btn {
+    width: 100%;
+    height: 5.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0 1.6rem;
+    border-radius: 1.6rem;
+    background: rgba(var(--giz-accent-rgb), 0.14);
+    border: 1px solid rgba(var(--giz-accent-rgb), 0.3);
+    color: var(--giz-ink);
+    font-size: 1.4rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.giz-profile-popup__account-btn:hover {
+    background: rgba(var(--giz-accent-rgb), 0.24);
+    border-color: rgba(var(--giz-accent-rgb), 0.5);
+}
+
+.giz-profile-popup__account-btn i {
+    font-size: 1.7rem;
+    color: var(--giz-accent-soft);
+}
+
+.giz-profile-popup__account-btn .giz-profile-popup__account-arrow {
+    margin-left: auto;
+    font-size: 1.4rem;
+    color: var(--giz-ink-3);
+}
+
+.giz-profile-popup__change-password-btn {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 5.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    border-radius: 1.6rem;
+    background: var(--giz-glass-4);
+    border: 1px solid var(--giz-glass-9);
+    color: var(--giz-ink-2);
+    font-size: 1.4rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.giz-profile-popup__change-password-btn:hover {
+    background: rgba(var(--giz-accent-rgb), 0.16);
+    color: var(--giz-ink);
+}
+
+.giz-profile-popup__change-password-btn i {
+    font-size: 1.7rem;
+    color: var(--giz-ink-3);
+}
+
+.giz-profile-popup__lock-btn {
+    flex: 0 0 auto;
+    width: 5.2rem;
+    height: 5.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1.6rem;
+    border: 1px solid var(--giz-glass-9);
+    background: var(--giz-glass-4);
+    color: var(--giz-ink-2);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.giz-profile-popup__lock-btn:hover {
+    background: rgba(var(--giz-accent-rgb), 0.3);
+    color: var(--giz-ink);
+}
+
+.giz-profile-popup__lock-btn i {
+    font-size: 1.8rem;
+}
+
+.giz-profile-popup__lock-label {
+    display: none;
+}
+
+.giz-profile-popup__lock-btn:only-child {
+    flex: 1 1 auto;
+    width: auto;
+    gap: 0.8rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+
+    .giz-profile-popup__lock-label { display: inline; }
+}
+
+.giz-profile-popup__logout-btn {
+    width: 100%;
+    height: 5.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    border-radius: 1.6rem;
+
+    background: var(--giz-glass-5);
+    border: 1px solid var(--giz-glass-10);
+    color: var(--giz-ink);
+    font-size: 1.4rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.giz-profile-popup__logout-btn:hover {
+    background: var(--giz-glass-9);
+}
+
+.giz-profile-popup__logout-btn i {
+    font-size: 1.8rem;
+    color: var(--giz-ink-3);
+}

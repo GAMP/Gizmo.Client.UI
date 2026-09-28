@@ -1,21 +1,14 @@
-//=============== Account page ================//
-//
-// Profile, Time and Purchases share one frame (AccountFrame): a head with the person
-// and their figures, a segmented row of tabs, then the tab's cards. Same language as
-// the home board - micro uppercase captions over big tabular numbers, glass cards, one
-// accent - so the account reads as a room of the same house rather than a form the
-// vendor left behind.
 
 $ac-g:     clamp(1.2rem, 0.7rem + 0.7vw, 2.2rem);
 $ac-r:     2rem;
 $ac-w:     132rem;
 
-$ac-ink:   var(--gg-ink);
-$ac-ink-2: rgba(var(--gg-ink-rgb), 0.62);
-$ac-ink-3: rgba(var(--gg-ink-rgb), 0.38);
-$ac-cap:   rgba(var(--gg-ink-rgb), 0.42);
-$ac-line:  rgba(255, 255, 255, 0.07);
-$ac-line-2: rgba(255, 255, 255, 0.14);
+$ac-ink:   var(--giz-ink);
+$ac-ink-2: var(--giz-text-2);
+$ac-ink-3: var(--giz-text-3);
+$ac-cap:   var(--giz-text-3);
+$ac-line:  var(--giz-glass-6);
+$ac-line-2: var(--giz-glass-11);
 
 @mixin ac-cap {
     font-family: $font-family-header-theme-client;
@@ -41,17 +34,17 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
 }
 
 @mixin ac-glass {
-    background: linear-gradient(180deg, rgba(var(--gg-glass-rgb), 0.55), rgba(var(--gg-glass-2-rgb), 0.7));
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    background: linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.55), rgba(var(--giz-glass-2-rgb), 0.7));
+    border: 1px solid var(--giz-glass-8);
+    box-shadow: inset 0 1px 0 var(--giz-glass-9);
 }
 
 // ── frame ────────────────────────────────────────────────────────────────
-.gg-account {
+.giz-account {
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-    @include gg-scroll-fade;
+    @include giz-scroll-fade;
 
     &__inner {
         max-width: $ac-w;
@@ -60,7 +53,7 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         display: flex;
         flex-direction: column;
         gap: $ac-g;
-        animation: gg-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        animation: giz-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     // ── head: avatar, name, figures ──────────────────────────────────────
@@ -79,13 +72,10 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         height: 8.8rem;
         flex: none;
 
-        // `.giz-avatar` sits on the element itself when the picture is only shown, and
-        // one level in when it is a button into the editor (--gg-avatars).
         &.giz-avatar,
-        .giz-avatar,
         img {
-            width: 8.8rem !important;
-            height: 8.8rem !important;
+            width: 8.8rem;
+            height: 8.8rem;
             border-radius: 50%;
             object-fit: cover;
         }
@@ -157,7 +147,7 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
 
             i {
                 font-size: 0.75em;
-                color: #e8b84b;
+                color: var(--giz-points);
             }
         }
 
@@ -169,7 +159,37 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         }
 
         &--money b {
-            color: #3ddc72;
+            color: var(--giz-success-green);
+        }
+
+        // The HUD's eye hides the money here too.
+        .giz-root--figures-hidden &--money b,
+        .giz-root--figures-hidden &--points b {
+            font-size: 0;
+
+            > * { display: none; }
+
+            &::after {
+                content: "\2022\2022\2022\2022\2022";
+                font-size: clamp(1.9rem, 1.5rem + 0.5vw, 2.5rem);
+                letter-spacing: 0.2em;
+                color: var(--giz-text-3);
+            }
+        }
+
+        // Time and sales credit differ (one unlimited, one not): one figure each.
+        b .giz-account__credit-part {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3em;
+            max-width: none;
+            font-size: inherit;
+            line-height: inherit;
+            color: inherit;
+
+            & + .giz-account__credit-part { margin-left: 0.6em; }
+
+            .giz-account__credit-kind { color: var(--giz-text-3); }
         }
     }
 
@@ -180,7 +200,7 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         gap: 0.4rem;
         padding: 0.5rem;
         border-radius: 1.6rem;
-        background: rgba(0, 0, 0, 0.26);
+        background: rgba(var(--giz-black-rgb), 0.26);
         box-shadow: inset 0 0 0 1px $ac-line;
     }
 
@@ -205,17 +225,17 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
 
         &:hover {
             color: $ac-ink;
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--giz-glass-4);
 
             i {
                 color: $ac-ink-2;
             }
         }
 
-        &.is-on {
-            background: linear-gradient(135deg, var(--gg-accent-light), var(--gg-accent-deep));
-            color: var(--gg-on-accent);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 0.8rem 2rem -1rem rgba(var(--gg-accent-rgb), 0.7);
+        &.active {
+            background: var(--giz-action-bg);
+            color: var(--giz-action-ink);
+            box-shadow: inset 0 1px 0 rgba(var(--giz-white-rgb), 0.25), 0 0.8rem 2rem -1rem rgba(var(--giz-accent-rgb), 0.7);
 
             i {
                 color: inherit;
@@ -234,21 +254,19 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         align-items: start;
     }
 
-    // The shell's version under the Profile tab's cards, right-aligned. Quiet on
-    // purpose: it is there for whoever has to ask "which build is this".
     &__version {
         margin-top: calc(#{$ac-g} * 0.7);
         text-align: right;
         font-size: 1.1rem;
         font-weight: 500;
         letter-spacing: 0.04em;
-        color: rgba(var(--gg-ink-rgb), 0.28);
+        color: var(--giz-text-off);
         user-select: text;
     }
 }
 
 // ── cards ────────────────────────────────────────────────────────────────
-.gg-card {
+.giz-account-card {
     display: flex;
     flex-direction: column;
     gap: 1.6rem;
@@ -269,8 +287,8 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
             align-items: center;
             justify-content: center;
             border-radius: 1.1rem;
-            background: rgba(var(--gg-accent-rgb), 0.14);
-            color: var(--gg-accent-soft);
+            background: rgba(var(--giz-accent-rgb), 0.14);
+            color: var(--giz-accent-soft);
             font-size: 1.8rem;
         }
 
@@ -344,7 +362,7 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
     }
 }
 
-.gg-field {
+.giz-account-field {
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
@@ -374,10 +392,12 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
 
     &__secret {
         letter-spacing: 0.18em;
+
+        &::before { content: "\2022\2022\2022\2022\2022\2022\2022\2022"; }
     }
 }
 
-.gg-btn {
+.giz-account-button {
     display: inline-flex;
     align-items: center;
     gap: 0.8rem;
@@ -385,7 +405,7 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
     padding: 0 1.8rem;
     border-radius: 1.3rem;
     border: 1px solid $ac-line-2;
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--giz-glass-5);
     color: $ac-ink;
     font: inherit;
     font-size: 1.4rem;
@@ -395,23 +415,23 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
 
     i {
         font-size: 1.6rem;
-        color: var(--gg-accent-soft);
+        color: var(--giz-accent-soft);
     }
 
     &:hover {
-        background: rgba(var(--gg-accent-rgb), 0.16);
-        border-color: rgba(var(--gg-accent-rgb), 0.4);
+        background: rgba(var(--giz-accent-rgb), 0.16);
+        border-color: rgba(var(--giz-accent-rgb), 0.4);
     }
 }
 
 // ── tags ─────────────────────────────────────────────────────────────────
-.gg-tag {
+.giz-account-tag {
     display: inline-flex;
     align-items: center;
     height: 2.2rem;
     padding: 0 0.8rem;
     border-radius: 0.7rem;
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--giz-glass-7);
     color: $ac-ink-2;
     font-family: $font-family-header-theme-client;
     font-size: 1.05rem;
@@ -421,35 +441,35 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
     white-space: nowrap;
 
     &--on,
-    &.is-on {
-        background: rgba(var(--gg-accent-rgb), 0.18);
-        color: var(--gg-accent-soft);
+    &--on {
+        background: rgba(var(--giz-accent-rgb), 0.18);
+        color: var(--giz-accent-soft);
     }
 
-    &.is-good {
-        background: rgba(61, 220, 114, 0.14);
-        color: #6fe79a;
+    &--good {
+        background: rgba(var(--giz-success-green-rgb), 0.14);
+        color: var(--giz-success-leaf);
     }
 
-    &.is-wait {
-        background: rgba(255, 179, 71, 0.14);
-        color: #ffc46b;
+    &--wait {
+        background: rgba(var(--giz-warning-amber-rgb), 0.14);
+        color: var(--giz-warning-soft);
     }
 
     &--off,
-    &.is-off {
-        background: rgba(255, 255, 255, 0.05);
+    &--off {
+        background: var(--giz-glass-4);
         color: $ac-ink-3;
     }
 
     &--credit {
-        background: rgba(255, 215, 157, 0.14);
-        color: #ffd79d;
+        background: rgba(var(--giz-warning-light-rgb), 0.14);
+        color: var(--giz-warning-light);
     }
 }
 
 // ── time products ────────────────────────────────────────────────────────
-.gg-tp {
+.giz-account-time {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
@@ -461,15 +481,15 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         gap: 1.4rem;
         padding: 1.2rem 1.4rem;
         border-radius: 1.5rem;
-        background: rgba(255, 255, 255, 0.035);
+        background: rgba(var(--giz-white-rgb), 0.035);
         box-shadow: inset 0 0 0 1px $ac-line;
 
-        &.is-current {
-            background: rgba(var(--gg-accent-rgb), 0.08);
-            box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.28);
+        &--current {
+            background: rgba(var(--giz-accent-rgb), 0.08);
+            box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.28);
         }
 
-        &.is-idle {
+        &--idle {
             opacity: 0.72;
         }
     }
@@ -481,14 +501,14 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.1);
+        background: var(--giz-glass-9);
         @include ac-num;
         font-size: 1.15rem;
         color: $ac-ink-2;
 
-        .is-current & {
-            background: var(--gg-accent);
-            color: var(--gg-on-accent);
+        .giz-account-time__row--current & {
+            background: var(--giz-accent);
+            color: var(--giz-on-accent);
         }
     }
 
@@ -499,16 +519,16 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         align-items: center;
         justify-content: center;
         border-radius: 1.2rem;
-        background: rgba(255, 255, 255, 0.06);
+        background: var(--giz-glass-5);
         color: $ac-ink-2;
         font-size: 2rem;
 
-        .is-current & {
-            color: var(--gg-accent-soft);
+        .giz-account-time__row--current & {
+            color: var(--giz-accent-soft);
         }
 
-        .is-credit & {
-            color: #ffd79d;
+        .giz-account-time__row--credit & {
+            color: var(--giz-warning-light);
         }
     }
 
@@ -598,14 +618,14 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         justify-content: center;
         border-radius: 1.1rem;
         border: 1px solid $ac-line-2;
-        background: rgba(255, 255, 255, 0.05);
+        background: var(--giz-glass-4);
         color: $ac-ink-2;
         font-size: 1.5rem;
         cursor: pointer;
         transition: background 0.15s, color 0.15s;
 
         &:hover {
-            background: rgba(var(--gg-accent-rgb), 0.18);
+            background: rgba(var(--giz-accent-rgb), 0.18);
             color: $ac-ink;
         }
 
@@ -616,8 +636,6 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         }
     }
 
-    // Host-group chips (ProductsProductHosts, kept from the vendor for its
-    // overflow script) restyled as quiet pills.
     .giz-user-time-products-host-groups {
         display: flex;
         gap: 0.4rem;
@@ -631,7 +649,7 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         .giz-user-time-products-host-group--additional {
             padding: 0.2rem 0.7rem;
             border-radius: 0.6rem;
-            background: rgba(255, 255, 255, 0.07);
+            background: var(--giz-glass-6);
             color: $ac-ink-2;
             font-size: 1.15rem;
             font-weight: 600;
@@ -639,8 +657,8 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         }
 
         .giz-user-time-products-host-group.active {
-            background: rgba(var(--gg-accent-rgb), 0.16);
-            color: var(--gg-accent-soft);
+            background: rgba(var(--giz-accent-rgb), 0.16);
+            color: var(--giz-accent-soft);
         }
     }
 }
@@ -655,20 +673,20 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
     .giz-user-time-products-host-group {
         padding: 0.2rem 0.7rem;
         border-radius: 0.6rem;
-        background: rgba(255, 255, 255, 0.08);
+        background: var(--giz-glass-7);
         color: $ac-ink-2;
         font-size: 1.15rem;
         font-weight: 600;
 
         &.active {
-            background: rgba(var(--gg-accent-rgb), 0.16);
-            color: var(--gg-accent-soft);
+            background: rgba(var(--giz-accent-rgb), 0.16);
+            color: var(--giz-accent-soft);
         }
     }
 }
 
 // ── orders ───────────────────────────────────────────────────────────────
-.gg-pager {
+.giz-account-pager {
     margin-left: auto;
     display: flex;
     gap: 0.6rem;
@@ -681,7 +699,7 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         padding: 0 1.2rem;
         border-radius: 1rem;
         border: 1px solid $ac-line-2;
-        background: rgba(255, 255, 255, 0.05);
+        background: var(--giz-glass-4);
         color: $ac-ink-2;
         font: inherit;
         font-size: 1.25rem;
@@ -694,7 +712,7 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         }
 
         &:hover:not(:disabled) {
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--giz-glass-9);
             color: $ac-ink;
         }
 
@@ -705,20 +723,20 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
     }
 }
 
-.gg-orders {
+.giz-account-orders {
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
 }
 
-.gg-order {
+.giz-account-order {
     border-radius: 1.5rem;
-    background: rgba(255, 255, 255, 0.035);
+    background: rgba(var(--giz-white-rgb), 0.035);
     box-shadow: inset 0 0 0 1px $ac-line;
     transition: background 0.15s;
 
     &[open] {
-        background: rgba(255, 255, 255, 0.05);
+        background: var(--giz-glass-4);
     }
 
     &__sum {
@@ -736,7 +754,7 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         }
 
         &:hover {
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--giz-glass-2);
         }
     }
 
@@ -781,8 +799,6 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         }
     }
 
-    // Fixed widths for the figure and status columns: every order is its own grid,
-    // and without them the carets would wander from row to row.
     &__sum-total {
         display: flex;
         align-items: center;
@@ -805,7 +821,7 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
 
         i {
             font-size: 0.85em;
-            color: #e8b84b;
+            color: var(--giz-points);
         }
     }
 
@@ -855,8 +871,8 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
             text-decoration: none;
         }
 
-        a.gg-order__line-name:hover {
-            color: var(--gg-accent-soft);
+        a.giz-account-order__line-name:hover {
+            color: var(--giz-accent-soft);
         }
 
         &-qty {
@@ -887,7 +903,7 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
         gap: 0.5rem;
 
         i {
-            color: #e8b84b;
+            color: var(--giz-points);
         }
     }
 
@@ -898,13 +914,21 @@ $ac-line-2: rgba(255, 255, 255, 0.14);
 
 // ── narrow: the head stacks, rows drop the figures under the name ────────
 @media (max-width: 1500px) {
-    .gg-account__head {
+    .giz-account__head {
         grid-template-columns: auto minmax(0, 1fr);
     }
 
-    .gg-account__stats {
+    .giz-account__stats {
         grid-column: 1 / -1;
         padding-top: 1.4rem;
         border-top: 1px solid $ac-line;
     }
+}
+
+.giz-account-order__fact + .giz-account-order__fact::before {
+    content: "\00a0\00b7\00a0";
+}
+
+.giz-account-time__row--idle .giz-account-time__order::before {
+    content: "\2013";
 }

@@ -1,14 +1,9 @@
-//=============== Tariff tooltip ================//
-//
-// The card that opens under the tariff in the top bar (HeaderUserBalanceCurrentTimeProduct
-// and its Tooltip). One glass surface: the wrapper only positions, the card paints -
-// the old version painted both, which put a second outline inside the first.
 
 $tt-w: 52rem;
-$tt-ink:   var(--gg-ink);
-$tt-ink-2: rgba(var(--gg-ink-rgb), 0.62);
-$tt-ink-3: rgba(var(--gg-ink-rgb), 0.38);
-$tt-line:  rgba(255, 255, 255, 0.07);
+$tt-ink:   var(--giz-ink);
+$tt-ink-2: var(--giz-text-2);
+$tt-ink-3: var(--giz-text-3);
+$tt-line:  var(--giz-glass-6);
 
 .giz-user-balance-tooltip-wrapper {
     position: absolute;
@@ -16,8 +11,6 @@ $tt-line:  rgba(255, 255, 255, 0.07);
     left: 0;
     z-index: $header-dropdown-index;
     display: none;
-    // A hand-off zone between the tariff and the card, so the pointer can travel
-    // down without the card closing under it.
     padding-top: 1.2rem;
     margin-top: -1.2rem;
 
@@ -26,26 +19,23 @@ $tt-line:  rgba(255, 255, 255, 0.07);
     }
 }
 
-.gg-tt {
+.giz-time-tooltip {
     width: $tt-w;
     max-width: calc(100vw - 4rem);
     box-sizing: border-box;
     padding: 2rem 2.2rem 2.2rem;
     border-radius: 2rem;
-    // Effectively opaque, like every panel that opens over the page: the fill hides
-    // what is underneath, the blur (which the HUD's ::before glass lets through) only
-    // softens the edge of what little remains.
-    background: linear-gradient(180deg, rgba(var(--gg-glass-rgb), 0.97), rgba(var(--gg-glass-2-rgb), 0.985));
+    background: linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.97), rgba(var(--giz-glass-2-rgb), 0.985));
     backdrop-filter: blur(4rem) saturate(1.6);
     -webkit-backdrop-filter: blur(4rem) saturate(1.6);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: 1px solid var(--giz-glass-11);
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.18),
-        0 4rem 9rem -2.6rem rgba(0, 0, 0, 0.85);
+        inset 0 1px 0 rgba(var(--giz-white-rgb), 0.18),
+        0 4rem 9rem -2.6rem rgba(var(--giz-black-rgb), 0.85);
     color: $tt-ink;
     white-space: normal;
     cursor: default;
-    animation: gg-fade 0.16s ease-out both;
+    animation: giz-fade 0.16s ease-out both;
 
     &__head {
         display: flex;
@@ -69,7 +59,7 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         padding: 0;
         border: 0;
         background: none;
-        color: var(--gg-accent-soft);
+        color: var(--giz-accent-soft);
         font: inherit;
         font-size: 1.3rem;
         font-weight: 600;
@@ -82,7 +72,7 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         }
 
         &:hover {
-            color: var(--gg-accent-pale);
+            color: var(--giz-accent-pale);
 
             i {
                 transform: translateX(0.2rem);
@@ -121,12 +111,12 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         gap: 1.2rem;
         padding: 1rem 1.2rem;
         border-radius: 1.4rem;
-        background: rgba(255, 255, 255, 0.04);
+        background: var(--giz-glass-3);
         box-shadow: inset 0 0 0 1px $tt-line;
 
-        &.is-current {
-            background: rgba(var(--gg-accent-rgb), 0.1);
-            box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.3);
+        &--current {
+            background: rgba(var(--giz-accent-rgb), 0.1);
+            box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.3);
         }
     }
 
@@ -137,15 +127,15 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.1);
+        background: var(--giz-glass-9);
         font-family: $font-family-header-theme-client;
         font-size: 1.1rem;
         font-weight: 700;
         color: $tt-ink-2;
 
-        .is-current & {
-            background: var(--gg-accent);
-            color: var(--gg-on-accent);
+        .giz-time-tooltip__row--current & {
+            background: var(--giz-accent);
+            color: var(--giz-on-accent);
         }
     }
 
@@ -156,16 +146,16 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         align-items: center;
         justify-content: center;
         border-radius: 1rem;
-        background: rgba(255, 255, 255, 0.06);
+        background: var(--giz-glass-5);
         color: $tt-ink-2;
         font-size: 1.8rem;
 
-        .is-current & {
-            color: var(--gg-accent-soft);
+        .giz-time-tooltip__row--current & {
+            color: var(--giz-accent-soft);
         }
 
-        .is-credit & {
-            color: #ffd79d;
+        .giz-time-tooltip__row--credit & {
+            color: var(--giz-warning-light);
         }
     }
 
@@ -192,6 +182,10 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         }
     }
 
+    &__credit-mark::before {
+        content: "\00a0\00b7\00a0";
+    }
+
     &__stat {
         display: flex;
         flex-direction: column;
@@ -201,7 +195,7 @@ $tt-line:  rgba(255, 255, 255, 0.07);
 
         small {
             font-family: $font-family-header-theme-client;
-            font-size: 0.95rem;
+            font-size: 1.1rem;
             font-weight: 700;
             letter-spacing: 0.12em;
             text-transform: uppercase;
@@ -239,7 +233,7 @@ $tt-line:  rgba(255, 255, 255, 0.07);
             flex: none;
             font-size: 1.8rem;
             margin-top: 0.1rem;
-            color: var(--gg-accent-soft);
+            color: var(--giz-accent-soft);
         }
 
         > div {
@@ -257,7 +251,7 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         }
 
         &--warn > i {
-            color: #ffb347;
+            color: var(--giz-warning-amber);
         }
     }
 
@@ -278,8 +272,8 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         gap: 0.7rem;
         padding: 0 1.4rem;
         border-radius: 1.3rem;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--giz-glass-10);
+        background: var(--giz-glass-5);
         color: $tt-ink;
         font: inherit;
         font-size: 1.35rem;
@@ -292,23 +286,60 @@ $tt-line:  rgba(255, 255, 255, 0.07);
         }
 
         &:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
+            background: var(--giz-glass-9);
+            border-color: rgba(var(--giz-white-rgb), 0.2);
         }
 
         &--primary {
-            background: linear-gradient(135deg, var(--gg-accent-light), var(--gg-accent-deep));
+            background: var(--giz-action-bg);
             border-color: transparent;
-            color: var(--gg-on-accent);
+            color: var(--giz-action-ink);
 
             i {
                 color: inherit;
             }
 
             &:hover {
-                background: linear-gradient(135deg, var(--gg-accent-light), var(--gg-accent-deep));
+                background: var(--giz-action-bg);
                 filter: brightness(1.08);
             }
         }
     }
+}
+
+.giz-topbar-tariff {
+    display: flex;
+    align-items: center;
+}
+
+.giz-topbar-tariff .giz-header-user-balance {
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    color: var(--giz-accent);
+    padding: 0;
+    height: auto;
+    font-size: 1.5rem;
+    font-weight: 600;
+    gap: 0.5rem;
+}
+
+.giz-topbar-tariff .giz-header-user-balance > .giz-ph-icon {
+    color: var(--giz-accent);
+    font-size: 1.7rem;
+}
+
+.giz-topbar-tariff .giz-user-balance-tooltip-wrapper {
+    z-index: 9001;
+}
+
+.giz-topbar-tariff .giz-header-user-balance {
+    cursor: default;
+}
+
+.giz-topbar-tariff .giz-header-user-balance:hover {
+    background: transparent;
+    box-shadow: none;
+
+    > :not(.giz-user-balance-tooltip-wrapper) { filter: brightness(1.18); }
 }

@@ -1,32 +1,24 @@
 //============= Product Card ===============//
 //
-// The card answers three questions in a fixed order: what it is (photo and title), how
-// much (price, large, in white - the one purple on the card is the button), and the
-// details, which appear on hover over the image only so the price and title stay put.
 
 $pc-img-h:    18rem;                                    // image and panel height
 $pc-r:        2rem;                                     // card radius
-$pc-ink:      var(--gg-ink);
-$pc-ink-2:    rgba(var(--gg-ink-rgb), 0.6);
-$pc-ink-3:    rgba(var(--gg-ink-rgb), 0.42);
-$pc-line:     rgba(255, 255, 255, 0.07);
-$pc-panel:    rgba(var(--gg-glass-2-rgb), 0.98);
-// Soft radial behind the photo: without it a shot on a white background reads as a
-// sticker on a dark card.
-$gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.16), rgba(255, 255, 255, 0.02) 70%);
+$pc-ink:      var(--giz-ink);
+$pc-ink-2:    var(--giz-text-2);
+$pc-ink-3:    var(--giz-text-3);
+$pc-line:     var(--giz-glass-6);
+$pc-panel:    rgba(var(--giz-glass-2-rgb), 0.98);
+$giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 0.16), var(--giz-glass-1) 70%);
 
 .giz-product-card {
     position: relative;
     max-width: 100%;
     overflow: hidden;
     border-radius: $pc-r;
-    background: var(--gg-card-bg, var(--gg-tile));
+    background: var(--giz-card-bg, var(--giz-tile));
     cursor: pointer;
     transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.2s;
 
-    // Outline as a layer over the content. An inset shadow paints under the content, so
-    // an image running flush to the edges covered it at the top and sides - the outline
-    // was only visible around the lower half.
     &::after {
         content: '';
         position: absolute;
@@ -38,11 +30,11 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
         transition: box-shadow 0.2s;
     }
 
-    &:hover::after { box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.45); }
+    &:hover::after { box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.45); }
 
     &:hover {
         transform: translateY(-3px);
-        box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.85);
+        box-shadow: 0 18px 40px -20px rgba(var(--giz-black-rgb), 0.85);
 
         .giz-product-card__hover-overlay {
             background: $pc-panel;
@@ -63,9 +55,6 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
         height: 100%;
         max-width: 100%;
 
-        // Positioning context for the hover panel. An absolutely positioned block takes
-        // no part in grid row sizing; as an ordinary element the hidden panel used to
-        // inflate the card height with its content.
         &__top {
             position: relative;
             display: grid;
@@ -81,10 +70,8 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
             height: $pc-img-h;
             max-width: 100%;
             overflow: hidden;
-            background: $gg-image-bg;
+            background: $giz-image-bg;
 
-            // No gradient at the foot of the image: no text sits over it, and the card
-            // is already separated by its own background.
             img {
                 width: 100%;
                 height: 100%;
@@ -95,7 +82,7 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
             .giz-broken-image {
                 width: 4.8rem;
                 height: 4.8rem;
-                color: rgba(255, 255, 255, 0.16);
+                color: var(--giz-glass-12);
             }
         }
 
@@ -118,8 +105,6 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
             max-width: 100%;
             overflow: hidden;
 
-            // Markup order is price then title, and the markup is shared with the other
-            // skins - so display order is changed here rather than there.
             .giz-product-card__title { order: 1; }
             .giz-product-card__price { order: 2; }
             .giz-time-product-host-groups,
@@ -148,7 +133,7 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
                 .giz-product-card__price__points {
                     overflow: hidden;
                     text-overflow: ellipsis;
-                    color: var(--gg-accent);
+                    color: var(--giz-accent);
                 }
 
                 svg {
@@ -156,7 +141,7 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
                     min-height: 1.6rem;
                     width: 1.6rem;
                     height: 1.6rem;
-                    fill: var(--gg-accent);
+                    fill: var(--giz-accent);
                     align-self: center;
                 }
             }
@@ -184,69 +169,49 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
-                // min as well as max: the two-line box is held even for a one-line title,
-                // otherwise prices in a row do not line up.
         min-height: 4.1rem;
         max-height: 4.1rem;
     }
 
-    // Button. One accent per card: a quiet fill at rest, full under the cursor. Height
-    // and radius are identical in every state, including disabled, or a row of cards
-    // jumps.
     [#{$client-theme-comp-attr}] & {
         .giz-button {
             height: 4.2rem;
-            border-radius: 1.3rem;
+            border-radius: $giz-r-pill;
             font-family: $font-family-header-theme-client;
             font-size: 1.35rem;
             font-weight: 600;
         }
 
         .giz-button--fill.accent:not(.disabled):not([disabled]) {
-            background: rgba(var(--gg-accent-rgb), 0.16);
-            border: 0;
-            box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.34);
-            color: var(--gg-accent);
+            @include giz-action-tonal;
             transition: background 0.16s, box-shadow 0.16s, color 0.16s;
-
-            &:hover {
-                background: var(--gg-accent);
-                box-shadow: none;
-                color: var(--gg-on-accent);
-            }
         }
 
         .giz-button--fill.disabled,
         .giz-button--fill[disabled] {
-            background: rgba(255, 255, 255, 0.035);
+            background: rgba(var(--giz-white-rgb), 0.035);
             border: 0;
-            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
-            color: rgba(var(--gg-ink-rgb), 0.3);
+            box-shadow: inset 0 0 0 1px var(--giz-glass-7);
+            color: var(--giz-text-off);
         }
     }
 
     &:hover .giz-button--fill.accent:not(.disabled):not([disabled]) {
-        background: rgba(var(--gg-accent-rgb), 0.24);
+        background: rgba(var(--giz-accent-rgb), 0.24);
     }
 
-    // Detail panel, over the image only: price, title and button stay visible.
+    &:hover .giz-product-card__content__details { visibility: hidden; }
+
     //
-    // Deliberately a single-class selector (0-1-0) rather than nested inside &__content:
-    // nested, the resting opacity: 0 rule scored 0-3-0, tied the :hover rule and won on
-    // order, so the panel could never appear.
     &__hover-overlay {
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        bottom: auto;
-        // Grows with its content, but never shorter than the image and never past the
-        // button. A package with two expiry dates has more rows than the image can hold,
-        // so the panel then covers the title as well; a short list covers exactly the
-        // image.
+        bottom: 6.6rem;
         height: auto;
-        min-height: $pc-img-h;
-        max-height: calc(100% - 6.6rem);
+        min-height: 0;
+        max-height: none;
         z-index: 5;
         padding: 1.2rem 1.4rem;
         background: transparent;
@@ -254,8 +219,6 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
         overflow-x: hidden;
         overflow-y: auto;
         scrollbar-width: none;
-        // Transparent at rest but still a box over the image: without pointer-events
-        // disabled it silently swallowed the image's own mouseover.
         pointer-events: none;
         &::-webkit-scrollbar { display: none; }
     }
@@ -290,29 +253,20 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
             flex: none;
             width: 1rem;
             height: 1rem;
-            color: var(--gg-accent);
+            color: var(--giz-accent);
             opacity: 0.85;
         }
     }
 
     &-item {
-        // Rhythm set by the tallest case - a time package with two expiry dates: four
-        // rows plus a heading must fit the panel whole, because the scrollbar is hidden
-        // here and a clipped row would read as breakage.
         padding: 0.38rem 0;
 
-        // Separator as a shadow rather than a border: at zero height a real border still
-        // paints its line.
         & + .giz-timeline-item {
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            box-shadow: inset 0 1px 0 var(--giz-glass-5);
         }
     }
 }
 
-// Label above the value, not beside it. Cards are around 200px wide in the club grid,
-// so a pair like "Available for purchase - 07:00-12:00 Thu" does not fit on one line:
-// the label wrapped and the value ran into the right edge, where the panel clips. In a
-// column each half gets the full width.
 .giz-time-product-details {
     display: flex;
     flex-direction: column;
@@ -324,7 +278,7 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
         min-width: 0;
         color: $pc-ink-3;
         font-family: $font-family-header-theme-client;
-        font-size: 1rem;
+        font-size: 1.1rem;
         font-weight: 700;
         letter-spacing: 0.1em;
         text-transform: uppercase;
@@ -344,7 +298,7 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
         overflow-wrap: anywhere;
 
         .giz-icon {
-            color: var(--gg-accent);
+            color: var(--giz-accent);
             width: 1.5rem;
             height: 1.5rem;
         }
@@ -356,7 +310,7 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    color: var(--gg-accent);
+    color: var(--giz-accent);
     font-family: $font-family-header-theme-client;
     font-size: 1.45rem;
     font-weight: 700;
@@ -368,8 +322,6 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
     }
 }
 
-// Expiry: amber, but as text. A plate per row turned the panel into patchwork, and
-// there is only ever one warning here.
 .giz-time-product-expirations {
     display: flex;
     flex-direction: column;
@@ -382,7 +334,7 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
     padding: 0;
     border: 0;
     background: none;
-    color: #ffc46b;
+    color: var(--giz-warning-soft);
     font-size: 1.2rem;
     font-weight: 600;
     line-height: 1.3;
@@ -403,7 +355,7 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
     .giz-icon {
         width: 1.4rem;
         height: 1.4rem;
-        color: var(--gg-accent);
+        color: var(--giz-accent);
     }
 
     &__product-name {
@@ -445,8 +397,8 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
         padding: 0.25rem 0.7rem;
         border: 0;
         border-radius: 0.7rem;
-        background: rgba(255, 255, 255, 0.05);
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+        background: var(--giz-glass-4);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-7);
         color: $pc-ink-2;
         white-space: nowrap;
         font-size: 1.05rem;
@@ -455,21 +407,18 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
 
         // The group this client belongs to - the only one worth highlighting.
         &.active {
-            background: rgba(var(--gg-accent-rgb), 0.16);
-            box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.42);
-            color: var(--gg-accent);
+            background: rgba(var(--giz-accent-rgb), 0.16);
+            box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.42);
+            color: var(--giz-accent);
         }
     }
 }
 
-// Time package face. A package has no photograph, so the top of the card is a readout
-// of its duration. The circle icon above the number is dropped inside the card - next to
-// a large numeral it read as an element that had failed to load.
 .giz-product-card .giz-product-card__content__image--time {
     background: linear-gradient(180deg,
-        rgba(var(--gg-accent-rgb), 0.17),
-        rgba(var(--gg-accent-rgb), 0.05) 60%,
-        rgba(255, 255, 255, 0.02));
+        rgba(var(--giz-accent-rgb), 0.17),
+        rgba(var(--giz-accent-rgb), 0.05) 60%,
+        var(--giz-glass-1));
 }
 
 .giz-product-card .giz-product-time-image {
@@ -536,9 +485,9 @@ $gg-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--gg-accent-rgb), 0.
     width: 2.8rem;
     height: 2.8rem;
     border-radius: 0.9rem;
-    background: rgba(var(--gg-scrim-rgb), 0.8);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-    color: var(--gg-accent);
+    background: rgba(var(--giz-scrim-rgb), 0.8);
+    box-shadow: inset 0 0 0 1px var(--giz-glass-9);
+    color: var(--giz-accent);
 
     svg {
         width: 1.5rem;

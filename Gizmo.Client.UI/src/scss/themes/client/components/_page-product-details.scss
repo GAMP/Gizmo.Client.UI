@@ -1,27 +1,22 @@
-//=============== Product page ================//
 //
-// Pages/Shop/ProductDetails.razor. The page column scrolls; the cart column on the
-// right is the same 50rem the shop page gives it, so moving between the two does not
-// shift the cart. Everything above the fold is the decision (picture, name, price,
-// buy), everything below is reading.
 
 $pd-cart-w: 50rem;
 $pd-g:      clamp(1.4rem, 0.8rem + 0.9vw, 2.8rem);
 $pd-art:    clamp(22rem, 12rem + 12vw, 34rem);
 
-$pd-ink:   var(--gg-ink);
-$pd-ink-2: rgba(var(--gg-ink-rgb), 0.62);
-$pd-ink-3: rgba(var(--gg-ink-rgb), 0.38);
-$pd-line:  rgba(255, 255, 255, 0.07);
-$pd-line-2: rgba(255, 255, 255, 0.14);
+$pd-ink:   var(--giz-ink);
+$pd-ink-2: var(--giz-text-2);
+$pd-ink-3: var(--giz-text-3);
+$pd-line:  var(--giz-glass-6);
+$pd-line-2: var(--giz-glass-11);
 
-.gg-pd-wrap {
+.giz-product-page-wrap {
     display: flex;
     justify-content: center;
     height: 100%;
 }
 
-.gg-pd {
+.giz-product-page {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     height: 100%;
@@ -38,12 +33,12 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
         height: 100%;
         overflow-y: auto;
         overflow-x: hidden;
-        @include gg-scroll-fade;
+        @include giz-scroll-fade;
         padding: 0.4rem $pd-g calc(#{$pd-g} * 1.5) 0.4rem;
         display: flex;
         flex-direction: column;
         gap: calc(#{$pd-g} * 1.2);
-        animation: gg-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        animation: giz-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     &__cart {
@@ -62,7 +57,7 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
         padding: 0 1.4rem 0 1.1rem;
         border-radius: 1.2rem;
         border: 1px solid $pd-line-2;
-        background: rgba(255, 255, 255, 0.05);
+        background: var(--giz-glass-4);
         color: $pd-ink-2;
         font: inherit;
         font-size: 1.3rem;
@@ -75,7 +70,7 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
         }
 
         &:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--giz-glass-9);
             color: $pd-ink;
         }
     }
@@ -94,8 +89,8 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
         height: $pd-art;
         border-radius: 2.2rem;
         overflow: hidden;
-        background: var(--gg-tile-deep);
-        box-shadow: inset 0 0 0 1px $pd-line, 0 3rem 6rem -3rem rgba(0, 0, 0, 0.8);
+        background: var(--giz-tile-deep);
+        box-shadow: inset 0 0 0 1px $pd-line, 0 3rem 6rem -3rem rgba(var(--giz-black-rgb), 0.8);
 
         // GizImage renders an <img> with a fit class; fill the plate.
         img {
@@ -113,14 +108,12 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
 
         &--time {
             background:
-                radial-gradient(28rem 24rem at 20% 10%, rgba(var(--gg-accent-rgb), 0.38), transparent 62%),
-                radial-gradient(24rem 22rem at 90% 100%, rgba(var(--gg-accent-rgb), 0.22), transparent 60%),
-                var(--gg-tile);
+                radial-gradient(28rem 24rem at 20% 10%, rgba(var(--giz-accent-rgb), 0.38), transparent 62%),
+                radial-gradient(24rem 22rem at 90% 100%, rgba(var(--giz-accent-rgb), 0.22), transparent 60%),
+                var(--giz-tile);
         }
     }
 
-    // The face of a time package: its duration, set large - the same readout the
-    // shop card carries, at page scale.
     &__time {
         position: absolute;
         inset: 0;
@@ -145,7 +138,7 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
             font-weight: 700;
             letter-spacing: 0.22em;
             text-transform: uppercase;
-            color: var(--gg-accent-soft);
+            color: var(--giz-accent-soft);
         }
     }
 
@@ -193,8 +186,6 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
         letter-spacing: -0.01em;
         color: $pd-ink;
 
-        // ProductCardPrice: "650 ₽ or 1 200 <coin>". The connective is quiet, the
-        // coin follows its number.
         > span:not(.giz-product-card__price__points) {
             color: $pd-ink;
         }
@@ -215,7 +206,7 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
             width: 0.7em;
             height: 0.7em;
             align-self: center;
-            color: #e8b84b;
+            color: var(--giz-points);
         }
     }
 
@@ -238,7 +229,7 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
         max-width: 48rem;
         font-size: 1.3rem;
         line-height: 1.4;
-        color: #ffc46b;
+        color: var(--giz-warning-soft);
 
         i {
             flex: none;
@@ -272,7 +263,7 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
             align-items: center;
             justify-content: center;
             border-radius: 1rem;
-            background: rgba(255, 255, 255, 0.06);
+            background: var(--giz-glass-5);
             color: $pd-ink-2;
             font-size: 1.6rem;
         }
@@ -287,9 +278,9 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
 
         small {
             font-family: $font-family-header-theme-client;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 700;
-            letter-spacing: 0.18em;
+            letter-spacing: 0.16em;
             text-transform: uppercase;
             color: $pd-ink-3;
             white-space: nowrap;
@@ -323,14 +314,14 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
         padding: 0;
         border: 0;
         background: none;
-        color: var(--gg-accent-soft);
+        color: var(--giz-accent-soft);
         font: inherit;
         font-size: 1.25rem;
         font-weight: 700;
         cursor: pointer;
 
         &:hover {
-            color: var(--gg-accent-pale);
+            color: var(--giz-accent-pale);
         }
     }
 
@@ -362,7 +353,7 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
             width: 11rem;
             height: 11rem;
             border-radius: 1.6rem;
-            background: var(--gg-tile-deep);
+            background: var(--giz-tile-deep);
             box-shadow: inset 0 0 0 1px $pd-line;
 
             img {
@@ -380,7 +371,7 @@ $pd-line-2: rgba(255, 255, 255, 0.14);
 
 // The cart column is narrower than the page on a laptop panel; drop it under.
 @media (max-width: 1500px) {
-    .gg-pd--with-cart {
+    .giz-product-page--with-cart {
         grid-template-columns: minmax(0, 1fr) 40rem;
     }
 }

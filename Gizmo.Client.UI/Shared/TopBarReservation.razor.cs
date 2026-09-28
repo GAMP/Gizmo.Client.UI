@@ -1,8 +1,11 @@
-using Gizmo.Client.UI.Localization;
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.Services;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Globalization;
 using System.Threading;
@@ -12,6 +15,8 @@ namespace Gizmo.Client.UI.Shared
 {
     public partial class TopBarReservation : ShellComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         #region FIELDS
 
         private static readonly TimeSpan COUNTDOWN_INTERVAL = TimeSpan.FromSeconds(30);
@@ -20,35 +25,30 @@ namespace Gizmo.Client.UI.Shared
         #endregion
 
         [Inject]
-        HostReservationViewState ViewState { get; set; } = null!;
+        HostReservationViewService ReservationService { get; set; } = null!;
+
+        private HostReservationViewState ViewState => ReservationService.ViewState;
 
         #region PROPERTIES
 
-        /// <summary>
-        /// Whether this machine has a reservation worth mentioning.
-        /// </summary>
-        /// <remarks>
-        /// Ignored reservations are excluded - the shell already raises its own notification
-        /// for those.
-        /// </remarks>
         private bool HasReservation =>
             ViewState.ReservationId.HasValue
             && ViewState.Time.HasValue
-            && !ViewState.Ignored
             && ViewState.Time.Value > DateTime.Now;
 
-        /// <summary>
-        /// True once the shell's own notification window has been reached. Drives a warmer
-        /// colour rather than a second element.
-        /// </summary>
+        private bool IsIgnored => HasReservation && ViewState.Ignored;
+
         private bool IsClose => HasReservation && ViewState.ReservationNotificationTimeReached;
 
         private string StartText =>
-            ViewState.Time?.ToString("HH:mm", CultureInfo.CurrentCulture) ?? string.Empty;
+            ViewState.Time?.ToString("t", CultureInfo.CurrentCulture) ?? string.Empty;
 
-        /// <summary>
-        /// Time left until the reservation starts, or null once it has started.
-        /// </summary>
+        private Task OpenReservation() =>
+            IsIgnored ? ReservationService.ShowDialog() : Task.CompletedTask;
+
+        private Task OnReservationKey(KeyboardEventArgs args) =>
+            args.Key is "Enter" or " " ? OpenReservation() : Task.CompletedTask;
+
         private string? CountdownText
         {
             get
@@ -62,17 +62,17 @@ namespace Gizmo.Client.UI.Shared
             }
         }
 
-        private static string FormatSpan(TimeSpan span)
+        private string FormatSpan(TimeSpan span)
         {
             var hours = (int)span.TotalHours;
             var minutes = span.Minutes;
 
             if (hours > 0)
                 return minutes > 0
-                    ? ShellStringOverrides.Get(ShellStringOverrides.DURATION_HOURS_MINUTES, hours, minutes)
-                    : ShellStringOverrides.Get(ShellStringOverrides.DURATION_HOURS, hours);
+                    ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DURATION_HOURS_MINUTES, hours, minutes)
+                    : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DURATION_HOURS, hours);
 
-            return ShellStringOverrides.Get(ShellStringOverrides.DURATION_MINUTES, Math.Max(minutes, 1));
+            return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DURATION_MINUTES, Math.Max(minutes, 1));
         }
 
         #endregion
@@ -90,16 +90,6 @@ namespace Gizmo.Client.UI.Shared
             base.OnInitialized();
         }
 
-        /// <summary>
-        /// Starts or stops the countdown tick to match what is on screen.
-        /// </summary>
-        /// <remarks>
-        /// A countdown that silently freezes is worse than none, so it ticks while the tile
-        /// is up and never otherwise: with no reservation there is nothing to redraw, and
-        /// behind a game there is nobody reading it. The tick fires on a pool thread, hence
-        /// <see cref="ShellComponentBase.DispatchRender"/>, which marshals to the renderer and
-        /// absorbs teardown faults.
-        /// </remarks>
         private void ApplyCountdown()
         {
             var wanted = ShellActivity.IsActive && HasReservation;
@@ -119,7 +109,6 @@ namespace Gizmo.Client.UI.Shared
             }
         }
 
-        //Static event arriving from JS interop; marshal to the UI thread.
         private void OnActivityChanged() => DispatchWorkflow(() =>
         {
             ApplyCountdown();
@@ -130,15 +119,11 @@ namespace Gizmo.Client.UI.Shared
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            //Reservations appear and disappear on a server push, not on the tick, and a
-            //render is the signal that something changed.
             ApplyCountdown();
         }
 
         public override void Dispose()
         {
-            //Static event, outlives the component: unsubscribe before dropping the timer,
-            //or the next focus change starts it again.
             ShellActivity.Changed -= OnActivityChanged;
 
             _countdownTick?.Dispose();

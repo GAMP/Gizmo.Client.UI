@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,12 +19,6 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         public InputLanguageViewState ViewState { get; set; }
 
-        // The keyboard-layout tile in the login screen's bottom-right corner
-        // used to be completely independent of the interface language picked
-        // in the bottom-left one: switching the shell to Russian left the
-        // corner still saying ENG, with no way to tell it was even related.
-        // Following the interface language is what people expect from these
-        // two sitting on the same screen.
         [Inject]
         public ClientLocalizationViewState LocalizationViewState { get; set; }
 
@@ -34,9 +29,6 @@ namespace Gizmo.Client.UI.Components
             return LanguageService.SetCurrentInputLanguageAsync(culture.TwoLetterISOLanguageName);
         }
 
-        //Raised from the localization service, not the UI thread. Not async void: a dispatcher
-        //fault during host teardown would be rethrown on the thread pool and exit the client
-        //(see ShellComponentBase.DispatchWorkflow).
         private void OnClientCultureChanged(object sender, EventArgs e)
         {
             DispatchWorkflow(async () =>
@@ -50,52 +42,76 @@ namespace Gizmo.Client.UI.Components
             });
         }
 
-        /// <summary>
-        /// Called from JS whenever the OS keyboard layout changes (Alt+Shift
-        /// and friends), with the character the physical A key now produces.
-        /// </summary>
-        /// <remarks>
-        /// The desktop host's IInputLanguageService declares a LanguageChange
-        /// event that it never raises, and its CurrentInputLanguage getter
-        /// throws NotImplementedException - so nothing on the C# side ever
-        /// learns about an Alt+Shift switch and this tile sat frozen on
-        /// whatever was last picked through the UI. That service lives in the
-        /// host EXE, which a skin cannot replace, so the layout is detected
-        /// browser-side instead (see setupInputLayoutWatch in internal.js).
-        /// </remarks>
         [JSInvokable]
-        public async Task OnKeyboardLayoutDetected(string sampleChar)
+        public async Task OnKeyboardLayoutDetected(string sample)
         {
-            var language = LanguageFromSampleChar(sampleChar);
-
-            if (language is not null)
-                await ApplyDetectedLanguageAsync(language);
+            if (ScriptOfSample(sample) is { } script)
+                await FollowLayoutAsync(script, ExactLanguageOfSample(sample));
 
             await InvokeAsync(StateHasChanged);
         }
 
-        /// <summary>
-        /// Maps the character produced by the physical A key to a language,
-        /// by script. Covers the scripts this shell actually ships layouts
-        /// for; anything else stays unrecognised rather than guessing.
-        /// </summary>
-        private static string LanguageFromSampleChar(string sampleChar)
+        private enum Script { Latin, Cyrillic, Greek }
+
+        private static readonly HashSet<string> CYRILLIC_LANGUAGES = new(StringComparer.OrdinalIgnoreCase)
         {
-            if (string.IsNullOrEmpty(sampleChar))
+            "ru", "uk", "be", "bg", "mk", "sr", "kk", "ky", "mn", "tg", "tt", "ba",
+        };
+
+        private static Script? ScriptOfSample(string sample)
+        {
+            if (string.IsNullOrEmpty(sample))
                 return null;
 
-            var c = sampleChar[0];
+            var c = sample[0];
 
             if (c >= 'Ѐ' && c <= 'ӿ')
-                return "ru";
+                return Script.Cyrillic;
 
             if (c >= 'Ͱ' && c <= 'Ͽ')
-                return "el";
+                return Script.Greek;
 
-            if (c < 'ɐ')
-                return "en";
+            return c < 'ɐ' ? Script.Latin : null;
+        }
 
-            return null;
+        private static string ExactLanguageOfSample(string sample)
+        {
+            if (sample is null || sample.Length < 3 || ScriptOfSample(sample) != Script.Cyrillic)
+                return null;
+
+            return (sample[1], sample[2]) switch
+            {
+                ('і', 'ў') => "be",
+                ('і', 'щ') => "uk",
+                _ => null,
+            };
+        }
+
+        private static Script ScriptOf(string language)
+        {
+            if (string.Equals(language, "el", StringComparison.OrdinalIgnoreCase))
+                return Script.Greek;
+
+            return language is not null && CYRILLIC_LANGUAGES.Contains(language) ? Script.Cyrillic : Script.Latin;
+        }
+
+        private Task FollowLayoutAsync(Script script, string exactLanguage)
+        {
+            var current = ViewState.CurrentInputLanguage?.TwoLetterISOLanguageName;
+
+            if (exactLanguage is not null)
+                return ApplyDetectedLanguageAsync(exactLanguage);
+
+            if (current is not null && ScriptOf(current) == script)
+                return Task.CompletedTask;
+
+            var candidates = ViewState.AvailableInputLanguages
+                .Select(a => a.TwoLetterISOLanguageName)
+                .Where(a => ScriptOf(a) == script)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            return candidates.Count == 1 ? ApplyDetectedLanguageAsync(candidates[0]) : Task.CompletedTask;
         }
 
         private Task ApplyDetectedLanguageAsync(string twoLetterIsoName)
@@ -103,8 +119,6 @@ namespace Gizmo.Client.UI.Components
             if (string.Equals(ViewState.CurrentInputLanguage?.TwoLetterISOLanguageName, twoLetterIsoName, StringComparison.OrdinalIgnoreCase))
                 return Task.CompletedTask;
 
-            // Only follow when that layout is actually installed on this
-            // station - otherwise leave the customer's own choice alone.
             if (!ViewState.AvailableInputLanguages.Any(a => string.Equals(a.TwoLetterISOLanguageName, twoLetterIsoName, StringComparison.OrdinalIgnoreCase)))
                 return Task.CompletedTask;
 
@@ -141,7 +155,6 @@ namespace Gizmo.Client.UI.Components
             }
             catch
             {
-                // JS runtime may already be gone - nothing left to clean up.
             }
 
             _selfRef?.Dispose();

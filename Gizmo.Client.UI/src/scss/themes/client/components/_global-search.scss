@@ -42,7 +42,7 @@
 
     &:focus-within {
         width: 34.4rem;
-        border: 0.2rem solid var(--gg-accent);
+        border: 0.2rem solid var(--giz-accent);
 
         input {
             display: block;
@@ -110,7 +110,7 @@
                 @include font-l-theme-client($font-weight-regular-theme-client);
 
                 &__more {
-                    color: var(--gg-accent);
+                    color: var(--giz-accent);
                     cursor: pointer;
                     @include font-m-theme-client($font-weight-light-theme-client);
                 }
@@ -128,9 +128,6 @@
 
     &-result-card {
         display: grid;
-        // The name keeps a floor of its own: with a plain minmax(0, 1fr) it
-        // collapsed to nothing as soon as the row was tight, leaving a picture and
-        // a button with no idea what they were for.
         grid-template-columns: min-content minmax(6rem, 1fr) minmax(0, max-content);
         align-items: center;
         column-gap: 0.8rem;
@@ -157,7 +154,7 @@
                 text-align: center;
 
                 a {
-                    color: $unknown-color;
+                    color: var(--giz-accent-soft);
                     text-transform: none;
                 }
             }
@@ -245,7 +242,7 @@
         height: 3.2rem;
 
         .giz-spinner {
-            color: var(--gg-accent);
+            color: var(--giz-accent);
         }
     }
 
@@ -260,4 +257,121 @@
         margin-top: 2.0rem;
         @include font-m-theme-client($font-weight-light-theme-client);
     }
+}
+
+.giz-top-bar .giz-header__global-search {
+    width: auto;
+    flex-shrink: 0;
+}
+
+.giz-top-bar .giz-global-search {
+    display: grid;
+    grid-template-columns: min-content 1fr min-content;
+    width: 36rem;
+    height: 5.8rem;
+    border-radius: 1.6rem;
+    overflow: visible;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.giz-top-bar .giz-global-search:focus-within {
+    border-color: rgba(var(--giz-accent-rgb),0.4);
+    box-shadow:
+        inset 0 1px 0 var(--giz-glass-12),
+        0 0 0 1px rgba(var(--giz-accent-rgb),0.12),
+        0 2.4rem 6rem -3.4rem rgba(var(--giz-black-rgb), 0.7);
+}
+
+.giz-top-bar .giz-global-search input {
+    display: block;
+    font-size: 1.35rem;
+    color: var(--giz-text-1);
+    line-height: normal;
+}
+
+.giz-top-bar .giz-global-search input::placeholder {
+    color: var(--giz-text-3);
+}
+
+.giz-top-bar .giz-global-search > .giz-ph-icon {
+    font-size: 1.9rem;
+    color: var(--giz-text-3);
+    margin-left: 1.4rem;
+    margin-right: 1rem;
+}
+
+.giz-top-bar .giz-global-search.open .giz-close-button,
+.giz-top-bar .giz-global-search.nonemtpy .giz-close-button,
+.giz-top-bar .giz-global-search:hover .giz-close-button,
+.giz-top-bar .giz-global-search:focus-within .giz-close-button {
+    display: block;
+}
+
+.giz-top-bar .giz-global-search .giz-global-search-dropdown {
+    background: linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.97), rgba(var(--giz-glass-2-rgb), 0.985));
+    backdrop-filter: blur(5rem) saturate(1.7);
+    -webkit-backdrop-filter: blur(5rem) saturate(1.7);
+    border: 1px solid var(--giz-glass-11);
+    border-radius: 2rem;
+    box-shadow:
+        inset 0 1px 0 rgba(var(--giz-white-rgb), 0.2),
+        0 4rem 9rem -2.6rem rgba(var(--giz-black-rgb), 0.85);
+    width: 54rem;
+    left: 0;
+    transform: none;
+    z-index: 9001;
+    margin-top: 0.8rem;
+    overflow: hidden;
+}
+
+.giz-top-bar .giz-global-search-section__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.6rem;
+    padding: 1.6rem 1.8rem 0.8rem;
+    font-family: $font-family-header-theme-client;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--giz-text-off);
+}
+
+.giz-top-bar .giz-global-search-section__header__more {
+    letter-spacing: 0.02em;
+    text-transform: none;
+    font-size: 1.25rem;
+    color: var(--giz-accent);
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.giz-top-bar .giz-global-search .giz-global-search-section__body {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.4rem;
+    padding: 0 0.8rem 0.8rem;
+}
+
+.giz-top-bar .giz-global-search-empty {
+    padding: 3.6rem 2rem;
+}
+
+.giz-top-bar .giz-global-search-empty .giz-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.4rem;
+}
+
+.giz-top-bar .giz-global-search-empty .giz-empty-state__title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--giz-text-1);
+}
+
+.giz-top-bar .giz-global-search-empty .giz-empty-state__text {
+    font-size: 1.3rem;
+    color: var(--giz-text-3);
 }

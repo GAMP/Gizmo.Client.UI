@@ -13,32 +13,8 @@ using Microsoft.JSInterop;
 
 namespace Gizmo.Client.UI.Shared
 {
-    /// <summary>
-    /// Decides when the shell may stop rendering and running its timers.
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// Losing focus is what puts the shell to sleep. It has to be: an application started
-    /// outside Gizmo is something the shell never hears about, so any cleverer condition
-    /// would miss the commonest case.
-    /// </para>
-    /// <para>
-    /// One veto on top of that. A deployment is the only place in the shell where numbers
-    /// move on their own and where a customer may reasonably be watching from another
-    /// window, so while anything is being prepared nothing sleeps. The scan therefore runs
-    /// only between losing focus and being cleared to sleep, and stops once asleep -
-    /// preparation only starts from a launch, and a launch needs the shell in front.
-    /// </para>
-    /// <para>
-    /// Uses a <see cref="DotNetObjectReference"/> rather than a static
-    /// <c>[JSInvokable]</c>: the skin is loaded with <c>Assembly.LoadFrom</c> from the
-    /// server's skins folder, and the object reference route is the one every other JS
-    /// callback in this shell already relies on.
-    /// </para>
-    /// </remarks>
     public partial class ShellActivityWatcher : ShellComponentBase
     {
-        /// <summary>Same cadence the file syncer publishes progress at.</summary>
         private static readonly TimeSpan ScanInterval = TimeSpan.FromSeconds(1);
 
         [Inject] AppExeExecutionViewStateLookupService ExecutionStates { get; set; }
@@ -50,13 +26,9 @@ namespace Gizmo.Client.UI.Shared
         private bool _unfocused;
         private bool _idleAllowed;
 
-        /// <summary>
-        /// Called from the browser whenever focus or page visibility settles.
-        /// </summary>
         [JSInvokable]
         public void OnShellFocusChanged(bool isFocused)
         {
-            // Arrives from JS interop; everything below touches component state.
             DispatchWorkflow(() => ApplyFocusAsync(isFocused));
         }
 
@@ -66,8 +38,6 @@ namespace Gizmo.Client.UI.Shared
 
             if (isFocused)
             {
-                // Sleeping is out of the question while the shell is in front, and the
-                // previous answer is stale by the time it matters again.
                 StopScan();
                 await SetIdleAllowedAsync(false);
             }
@@ -79,7 +49,6 @@ namespace Gizmo.Client.UI.Shared
             Publish();
         }
 
-        // Due immediately: the answer is needed when focus leaves, not a second later.
         private void StartScan() => _scan ??= new Timer(OnScanTick, null, TimeSpan.Zero, ScanInterval);
 
         private void StopScan()
@@ -88,7 +57,6 @@ namespace Gizmo.Client.UI.Shared
             _scan = null;
         }
 
-        // Not async void: a fault would come back on the pool and take the client down.
         private void OnScanTick(object _)
         {
             if (_scanning)
@@ -119,7 +87,6 @@ namespace Gizmo.Client.UI.Shared
             }
             catch
             {
-                // Before login the lookup refuses outright. Not knowing means not sleeping.
                 await SetIdleAllowedAsync(false);
                 return;
             }
@@ -148,7 +115,6 @@ namespace Gizmo.Client.UI.Shared
 
             _idleAllowed = allowed;
 
-            // Own half first, so a teardown fault in interop cannot leave .NET stale.
             Publish();
 
             await InvokeVoidAsync("setShellIdleAllowed", allowed);
@@ -162,7 +128,6 @@ namespace Gizmo.Client.UI.Shared
             {
                 _selfRef = CreateDotNetObjectReference(this);
 
-                // Attaching answers with the current focus state, so nothing is guessed.
                 await InvokeVoidAsync("attachShellActivity", _selfRef, nameof(OnShellFocusChanged));
             }
 
@@ -179,10 +144,8 @@ namespace Gizmo.Client.UI.Shared
             }
             catch
             {
-                // JS runtime may already be gone.
             }
 
-            // A shell with no watcher must not be left asleep.
             ShellActivity.SetActive(true);
 
             _selfRef?.Dispose();

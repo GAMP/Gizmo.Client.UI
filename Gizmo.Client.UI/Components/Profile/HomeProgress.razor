@@ -1,0 +1,68 @@
+@namespace Gizmo.Client.UI.Components
+@inherits ShellComponentBase
+
+<aside class="giz-home-till giz-home-till--progress" aria-label="@Caption">
+    <div class="giz-caption giz-caption--rule">
+        <span>@Caption</span>
+        <span class="giz-caption__rule"></span>
+        @if (LinkText is not null)
+        {
+            <a href="@LinkRoute">@LinkText</a>
+        }
+    </div>
+
+    <div class="giz-home-progress">
+        <div class="giz-home-progress__top">
+            <div class="giz-home-progress__mark" style="--giz-ring-progress: @RingValue">
+                <svg class="giz-home-progress__ring" viewBox="0 0 40 40" aria-hidden="true">
+                    <circle class="giz-home-progress__track" cx="20" cy="20" r="18"></circle>
+                    <circle class="giz-home-progress__bar" cx="20" cy="20" r="18"></circle>
+                </svg>
+                @if (HasLadder)
+                {
+                    <LadderLevelBadge Ordinal="@Ladder.Ordinal" EmblemUrl="@Ladder.EmblemUrl" />
+                }
+                else
+                {
+                    <span class="giz-home-progress__plain"><i class="ph-fill @PlainIcon"></i></span>
+                }
+            </div>
+            <div class="giz-home-progress__who">
+                <b>@Title</b>
+                @if (!string.IsNullOrEmpty(Subtitle))
+                {
+                    <span>@Subtitle</span>
+                }
+            </div>
+        </div>
+
+        @if (ShowLine)
+        {
+            <div class="giz-home-progress__line" style="--giz-ring-progress: @RingValue"><i></i></div>
+        }
+
+        @if (NextChallenge is not null)
+        {
+            <div class="giz-home-progress__next">
+                <i class="ph-fill ph-flag-checkered"></i>
+                <span>
+                    @if (NextStepName is not null)
+                    {
+                        <span class="giz-home-progress__step">@NextStepName</span>
+                    }
+                    <b>@NextChallenge.Name</b>
+                </span>
+                @if (NextReward is not null)
+                {
+                    <em>@NextReward</em>
+                }
+            </div>
+        }
+
+        <button type="button" class="giz-home-progress__more" @onclick="OpenProgress">
+            <i class="ph-bold ph-trophy"></i>
+            <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PROGRESS_MORE)</span>
+            <i class="ph-bold ph-arrow-right"></i>
+        </button>
+    </div>
+</aside>

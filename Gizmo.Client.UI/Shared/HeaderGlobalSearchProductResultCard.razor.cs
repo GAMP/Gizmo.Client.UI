@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.View.Services;
+﻿using Gizmo.Client.UI.Localization.Services;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
@@ -9,6 +10,8 @@ namespace Gizmo.Client.UI.Shared
 {
     public partial class HeaderGlobalSearchProductResultCard : CustomDOMComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         private UserProductViewState _userProductViewState;
 
         private bool _clickHandled = false;

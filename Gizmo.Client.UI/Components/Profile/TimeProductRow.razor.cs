@@ -2,19 +2,47 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Api.Models;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
-using ShellText = Gizmo.Client.UI.Localization.ShellStringOverrides;
 
 namespace Gizmo.Client.UI.Components
 {
     public partial class TimeProductRow : CustomDOMComponentBase
     {
-        //The catalogue product behind the time product, for its expiry rules. Null while
-        //loading, for a product that is no longer in the catalogue, and for rate-based time.
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
+        protected int? Order => Product.ActivationOrder;
+
+        protected bool IsCurrent => Order == 1;
+
+        protected bool IsIdle => !Order.HasValue;
+
+        protected string OrderText => Order?.ToString(CultureInfo.CurrentCulture) ?? string.Empty;
+
+        protected string RowClass
+        {
+            get
+            {
+                var css = "giz-account-time__row";
+
+                if (IsCurrent)
+                    css += " giz-account-time__row--current";
+
+                if (IsIdle)
+                    css += " giz-account-time__row--idle";
+
+                if (Product.InCredit)
+                    css += " giz-account-time__row--credit";
+
+                return css;
+            }
+        }
+
         private UserProductViewState _product;
 
         [Inject]
@@ -29,11 +57,6 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback OnOpen { get; set; }
 
-        /// <summary>
-        /// When the product stops working, in words: "Expires after 3 d. from purchase ·
-        /// Activated 12.03.2026 14:00", "Expires at 06:00", "Expires on sign-out", or
-        /// "Does not expire". Null until the catalogue product is known.
-        /// </summary>
         private string Expiry
         {
             get
@@ -50,33 +73,31 @@ namespace Gizmo.Client.UI.Components
                 {
                     var unit = time.ExpireAfterType switch
                     {
-                        ExpireAfterType.Day => ShellText.EXPIRE_DAYS_ABBR,
-                        ExpireAfterType.Hour => ShellText.EXPIRE_HOURS_ABBR,
-                        _ => ShellText.EXPIRE_MINUTES_ABBR,
+                        ExpireAfterType.Day => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_DAYS_ABBREVIATED),
+                        ExpireAfterType.Hour => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_HOURS_ABBREVIATED),
+                        _ => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_MINUTES_ABBREVIATED),
                     };
                     var fromUse = time.ExpireFromOptions == ExpireFromOptionType.Use;
-                    var span = $"{time.ExpiresAfter} {ShellText.Get(unit)}";
-                    var from = ShellText.Get(fromUse ? ShellText.TIME_EXPIRES_FROM_USE : ShellText.TIME_EXPIRES_FROM_PURCHASE, span);
+                    var span = $"{time.ExpiresAfter} {GrafitLocalization.GetString(unit)}";
+                    var from = GrafitLocalization.GetString(fromUse ? nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PROPERTIES_EXPIRES_FROM_USE) : nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PROPERTIES_EXPIRES_FROM_PURCHASE), span);
 
-                    parts.Add(ShellText.Get(ShellText.PD_EXPIRES_AFTER, from));
+                    parts.Add(GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PD_EXPIRES_AFTER, from));
 
-                    //The countdown has started once the product was used (or bought, for
-                    //the other rule); say when, since that is what the remaining time hangs on.
                     var started = fromUse ? Product.FirstUsageTime : Product.PurchaseTime;
                     if (started.HasValue)
-                        parts.Add(ShellText.Get(ShellText.TIME_ACTIVATED, started.Value.ToLocalTime().ToString("g", culture)));
+                        parts.Add(GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PROPERTIES_EXPIRES_ACTIVATED), started.Value.ToLocalTime().ToString("g", culture)));
                 }
                 else if (options.HasFlag(ProductTimeExpirationOptionType.ExpireAtDayTime))
                 {
                     var at = DateTime.Today.AddMinutes(time.ExpireAtDayTimeMinute).ToString("t", culture);
-                    parts.Add(ShellText.Get(ShellText.PD_EXPIRES_AT_DAYTIME, at));
+                    parts.Add(GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PD_EXPIRES_AT_DAYTIME, at));
                 }
 
                 if (options.HasFlag(ProductTimeExpirationOptionType.ExpiresAtLogout))
-                    parts.Add(ShellText.Get(ShellText.PD_EXPIRES_AT_LOGOUT));
+                    parts.Add(GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PD_EXPIRES_AT_LOGOUT));
 
                 return parts.Count == 0
-                    ? ShellText.Get(ShellText.ACCOUNT_EXPIRES_NEVER)
+                    ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_EXPIRES_NEVER)
                     : string.Join(" · ", parts);
             }
         }
@@ -91,7 +112,6 @@ namespace Gizmo.Client.UI.Components
                 }
                 catch (Exception)
                 {
-                    //A product that has left the catalogue: the row shows without its expiry.
                     _product = null;
                 }
 

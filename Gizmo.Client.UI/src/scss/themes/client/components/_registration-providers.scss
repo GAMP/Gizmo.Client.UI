@@ -1,0 +1,84 @@
+//=============== Registration providers ================//
+
+// Verification method picker
+.giz-registration-providers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+// Provider row (Telegram, SMS, mail) - the same pill as the launch shortcuts on cards.
+.giz-registration-provider-btn {
+    width: 100%;
+    height: 5.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0 1.6rem;
+    border-radius: 1.4rem;
+    background: linear-gradient(180deg, var(--giz-glass-5), var(--giz-glass-1));
+    border: 1px solid var(--giz-glass-10);
+    color: var(--giz-text-1);
+    font-family: $font-family-header-theme-client;
+    font-size: 1.45rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.16s, border-color 0.16s, transform 0.16s;
+
+    .giz-icon {
+        flex-shrink: 0;
+        width: 2.2rem;
+        height: 2.2rem;
+        color: var(--giz-accent);
+    }
+
+    &:hover {
+        background: rgba(var(--giz-accent-rgb), 0.1);
+        border-color: rgba(var(--giz-accent-rgb), 0.5);
+        transform: translateY(-1px);
+    }
+
+    &:disabled {
+        opacity: 0.45;
+        cursor: default;
+        transform: none;
+    }
+}
+
+// "Other methods" separator
+.giz-registration-providers-divider {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin: 2.4rem 0 1.2rem;
+
+    &__line {
+        flex: 1;
+        height: 1px;
+        background: var(--giz-glass-9);
+    }
+
+    &__badge {
+        height: auto;
+        padding: 0;
+        background: none;
+        border: 0;
+        border-radius: 0;
+        color: var(--giz-text-3);
+        font-family: $font-family-header-theme-client;
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+}
+
+.giz-registration-providers-hint,
+.giz-registration-providers-terms {
+    margin: 0 0 1.6rem;
+    color: var(--giz-text-2);
+    font-family: $font-family-text-theme-client;
+    font-size: 1.3rem;
+    line-height: 1.9rem;
+}

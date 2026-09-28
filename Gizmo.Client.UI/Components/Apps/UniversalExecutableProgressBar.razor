@@ -7,11 +7,11 @@
     {
         @if (_appExeExecutionViewState.IsIndeterminate)
         {
-            <ProgressBar IsIndeterminate="true" />
+            <span class="giz-universal-executable-progress-bar__ring giz-universal-executable-progress-bar__ring--spin" role="progressbar"></span>
         }
         else
         {
-            <ProgressBar Value="@_appExeExecutionViewState.Progress" />
+            <span class="giz-universal-executable-progress-bar__ring" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="@ProgressValue" style="--giz-ring-progress: @ProgressValue"></span>
         }
     }
     else if (_appExeExecutionViewState.IsRunning)

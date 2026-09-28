@@ -1,39 +1,33 @@
-@namespace Gizmo.Client.UI.Pages
+﻿@namespace Gizmo.Client.UI.Pages
 @inherits CustomDOMComponentBase
 @using Gizmo.Client.UI.View.States
 
-@* Time tab: every time product on the account, in the order the client spends them. *@
 <AccountFrame>
-    <section class="gg-card gg-card--list">
-        <div class="gg-card__head">
+    <section class="giz-account-card giz-account-card--list">
+        <div class="giz-account-card__head">
             <i class="ph-fill ph-hourglass-medium"></i>
-            <h2>@ShellText.Get(ShellText.TIME_PRODUCTS_TITLE)</h2>
-            <span class="gg-card__hint">@ShellText.Get(ShellText.ACCOUNT_TIME_HINT)</span>
+            <h2>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_TITLE))</h2>
+            <span class="giz-account-card__hint">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_TIME_HINT)</span>
         </div>
 
         @if (ViewState.IsInitializing)
         {
-            <div class="gg-card__wait"><Spinner /></div>
+            <div class="giz-account-card__wait"><Spinner /></div>
         }
         else if (ViewState.IsInitialized == true)
         {
-            var products = ViewState.TimeProducts
-                .OrderBy(p => p.ActivationOrder.HasValue ? 0 : 1)
-                .ThenBy(p => p.ActivationOrder)
-                .ToList();
-
-            if (products.Count == 0)
+            if (OrderedTimeProducts.Count == 0)
             {
-                <div class="gg-card__empty">
+                <div class="giz-account-card__empty">
                     <i class="ph ph-hourglass"></i>
-                    <b>@ShellText.Get(ShellText.ACCOUNT_NO_TIME)</b>
-                    <span>@ShellText.Get(ShellText.ACCOUNT_NO_TIME_HINT)</span>
+                    <b>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_NO_TIME)</b>
+                    <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_NO_TIME_HINT)</span>
                 </div>
             }
             else
             {
-                <div class="gg-tp">
-                    @foreach (var product in products)
+                <div class="giz-account-time">
+                    @foreach (var product in OrderedTimeProducts)
                     {
                         <TimeProductRow @key="product"
                                         Product="@product"

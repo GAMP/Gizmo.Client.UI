@@ -1,69 +1,54 @@
 //=============== Application Card ================//
-//
-// One card is one poster; everything else sits on top of it rather than stacking below.
-// At rest only the poster and the caption plate are visible; hover dims the poster and
-// reveals the launch shortcuts, with exactly one accent - whatever can be clicked.
-//
-// --gg-card-bg and --gg-card-image-bg stay as theming entry points.
 
 $ac-r:     2rem;                                        // card radius
 $ac-pad:   0.9rem;                                      // inset for the plates
-$ac-ink:   var(--gg-ink);
-$ac-ink-2: rgba(var(--gg-ink-rgb), 0.62);
-$ac-ink-3: rgba(var(--gg-ink-rgb), 0.4);
-$ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and pill background
+$ac-ink:   var(--giz-ink);
+$ac-ink-2: var(--giz-text-2);
+$ac-ink-3: var(--giz-text-3);
+$ac-plate: rgba(var(--giz-scrim-rgb), 0.86);                       // plate and pill background
 
 .giz-app-card {
     position: relative;
     max-width: 100%;
     overflow: hidden;
     border-radius: $ac-r;
-    background: var(--gg-card-bg, var(--gg-tile));
+    background: var(--giz-card-bg, var(--giz-tile));
     transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.2s;
 
     &:hover {
         transform: translateY(-3px);
-        box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.85);
+        box-shadow: 0 18px 40px -20px rgba(var(--giz-black-rgb), 0.85);
     }
 
-    // Outline as a layer over the content rather than an inset shadow on the card: an
-    // inset shadow paints under the content, and the poster covers the card entirely, so
-    // it only showed along the bottom edge. A real border would take layout space.
     &::after {
         content: '';
         position: absolute;
         inset: 0;
         z-index: 7;
         border-radius: inherit;
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-6);
         pointer-events: none;
         transition: box-shadow 0.2s;
     }
 
-    &:hover::after { box-shadow: inset 0 0 0 1px rgba(var(--gg-accent-rgb), 0.5); }
+    &:hover::after { box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.5); }
 
     &__content {
         position: relative;
         height: 100%;
         max-width: 100%;
 
-        // The poster sets the card height; everything else sits on top of it and is out
-        // of the layout.
         &__image {
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 100%;
-            aspect-ratio: 3 / 4;
+            // 2:3 - the shape game covers ship in (600x900)
+            aspect-ratio: 2 / 3;
             overflow: hidden;
-            background: var(--gg-card-image-bg, linear-gradient(160deg, var(--gg-bg-2) 0%, var(--gg-bg-3) 55%, var(--gg-tile-deep) 100%));
+            background: var(--giz-card-image-bg, linear-gradient(160deg, var(--giz-bg-2) 0%, var(--giz-bg-3) 55%, var(--giz-tile-deep) 100%));
 
-            // Cover fills the card and is cropped to 3:4. Showing it whole needs either
-            // letterboxing or a per-card height, and per-card heights stagger the rows -
-            // every application ships a different aspect ratio.
-            //
-            // Centre object-position: symmetric cropping loses the subject less often.
             img {
                 width: 100%;
                 height: 100%;
@@ -84,9 +69,6 @@ $ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and p
             }
         }
 
-        // Caption plate. It is also what makes the poster read as a button, and it
-        // carries its own background so the title never sits on a random cover pixel.
-        // No gradient underneath on purpose.
         &__details {
             position: absolute;
             z-index: 2;
@@ -100,26 +82,21 @@ $ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and p
             padding: 0.9rem 1.1rem;
             border-radius: 1.3rem;
             background: $ac-plate;
-            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 0 0 1px var(--giz-glass-7);
             pointer-events: none;
             transition: opacity 0.18s;
 
-            // Triangle drawn with borders rather than an icon font: no dependency on
-            // font loading, and it always matches the text size.
             &::before {
                 content: '';
                 flex: none;
                 width: 0;
                 height: 0;
-                border-left: 0.85rem solid var(--gg-accent);
+                border-left: 0.85rem solid var(--giz-accent);
                 border-top: 0.52rem solid transparent;
                 border-bottom: 0.52rem solid transparent;
             }
         }
 
-        // Top row: hidden at rest. The category repeats the filter above the grid and
-        // the details button is used once in a hundred hovers - permanently visible they
-        // would cost a third of the card.
         &__footer {
             position: absolute;
             z-index: 6;
@@ -142,7 +119,7 @@ $ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and p
                 padding: 0.4rem 0.9rem;
                 border-radius: 0.9rem;
                 background: $ac-plate;
-                box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+                box-shadow: inset 0 0 0 1px var(--giz-glass-9);
                 color: $ac-ink-2;
                 white-space: nowrap;
                 overflow: hidden;
@@ -164,19 +141,13 @@ $ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and p
 
     // Hover
     &:hover {
-        // Dimmed to stay recognisable, not blacked out: the game must still read
-        // through the pills. Threshold set against the brightest cover.
         .giz-app-card__content__image > img {
             transform: scale(1.06);
-            filter: brightness(0.58) saturate(0.8);
+            filter: brightness(0.7) saturate(0.9);
         }
 
-        .giz-app-card__content__details { opacity: 0; }
-
         .giz-app-card__content__image__hovered {
-            // Thin veil only: the filter already dims the cover, this just evens the
-            // tone under the captions.
-            background: linear-gradient(180deg, rgba(var(--gg-scrim-rgb), 0.28), rgba(var(--gg-scrim-rgb), 0.5));
+            background: linear-gradient(180deg, rgba(var(--giz-scrim-rgb), 0.28), rgba(var(--giz-scrim-rgb), 0.5));
 
             .giz-app-card__content--hovered {
                 opacity: 1;
@@ -211,19 +182,18 @@ $ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and p
         border-radius: 0.9rem;
         cursor: pointer;
         background: $ac-plate;
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-9);
         color: $ac-ink-2;
         transition: background 0.16s, color 0.16s, box-shadow 0.16s;
 
         i { font-size: 1.5rem; }
 
         &:hover {
-            background: var(--gg-accent);
+            background: var(--giz-accent);
             box-shadow: none;
-            color: var(--gg-on-accent);
+            color: var(--giz-on-accent);
         }
 
-        &:focus-visible { outline: 2px solid var(--gg-accent); outline-offset: 2px; }
     }
 
     &-text {
@@ -237,9 +207,7 @@ $ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and p
     position: absolute;
     inset: 0;
     z-index: 4;
-    // Even padding all round: the list centres on the card, not on what is left below
-    // the top row. They can only collide past nine shortcuts, where the dense mode wins.
-    padding: $ac-pad;
+    padding: $ac-pad $ac-pad calc(#{$ac-pad} * 2 + 4.4rem);
     background: transparent;
     transition: background 0.22s ease;
     overflow: hidden;
@@ -253,9 +221,6 @@ $ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and p
         overflow: hidden;
     }
 
-    // Centred by removing the strut rather than with grid + place-items, which breaks
-    // the container's own scrolling: .giz-exe-popup sets min-height: 100%, so the block
-    // is always full height and its justify-content has nothing to distribute.
     .giz-app-card__content--hovered {
         width: 100%;
         height: auto;
@@ -281,21 +246,15 @@ $ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and p
 
     // Shortcut pill.
     .giz-universal-executable {
-        // Third column carries the launch triangle - the same mark as the resting
-        // caption, so the row reads as an action rather than as a file.
         grid-template-columns: min-content 1fr min-content;
         align-items: center;
         gap: 0.55rem;
         padding: 0.5rem;
         border-radius: 0.9rem;
-        // Dark fill rather than a lightening one: a light film over a bright part of the
-        // cover left white text with almost no contrast.
-        background: rgba(var(--gg-scrim-rgb), 0.72);
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+        background: rgba(var(--giz-scrim-rgb), 0.72);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-11);
         transition: background 0.16s, box-shadow 0.16s, transform 0.16s, filter 0.16s;
 
-        // The base component's glass highlight is dropped - two fills over each other
-        // muddied the accent.
         &::before { content: none; }
 
         &::after {
@@ -305,14 +264,12 @@ $ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and p
             margin-right: 0.3rem;
             width: 0;
             height: 0;
-            border-left: 0.72rem solid rgba(255, 255, 255, 0.45);
+            border-left: 0.72rem solid rgba(var(--giz-white-rgb), 0.45);
             border-top: 0.44rem solid transparent;
             border-bottom: 0.44rem solid transparent;
             transition: border-color 0.16s;
         }
 
-        // 2.6rem instead of 6.2rem: six shortcuts, the realistic ceiling, then fit
-        // without scrolling.
         .giz-universal-executable__icon {
             width: 2.6rem;
             height: 2.6rem;
@@ -320,10 +277,8 @@ $ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and p
             img {
                 width: 100%;
                 height: 100%;
-                border-radius: 0.6rem;
-                // contain, not cover: executable icons are square and the svg
-                // placeholder stretched under cover.
-                object-fit: contain;
+                border-radius: 50%;
+                object-fit: cover;
             }
         }
 
@@ -337,38 +292,41 @@ $ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and p
             }
         }
 
-        // Install progress spans the whole pill: under a 26px icon it had nowhere to sit.
         .giz-universal-executable-progress-bar {
-            left: 0.5rem;
-            right: 0.5rem;
-            bottom: 0.3rem;
-            width: auto;
+            --giz-exe-ring-w: 0.16rem;
+            --giz-exe-ring-inset: -0.24rem;
+        }
+
+        &:hover,
+        &:only-child {
+            .giz-universal-executable-progress-bar {
+                --giz-exe-ring-colour: var(--giz-on-accent);
+                --giz-exe-ring-track: rgba(var(--giz-black-rgb), 0.2);
+                filter: none;
+            }
         }
 
         &:hover {
-            background: var(--gg-accent);
+            background: var(--giz-accent);
             box-shadow: none;
             transform: translateY(-1px);
 
-            .giz-universal-executable__description__exe { color: var(--gg-on-accent); font-weight: 700; }
-            &::after { border-left-color: var(--gg-on-accent); }
+            .giz-universal-executable__description__exe { color: var(--giz-on-accent); font-weight: 700; }
+            &::after { border-left-color: var(--giz-on-accent); }
         }
 
         // A single shortcut is the button itself - there is nothing to pick from.
         &:only-child {
-            background: var(--gg-accent);
+            background: var(--giz-accent);
             box-shadow: none;
 
-            .giz-universal-executable__description__exe { color: var(--gg-on-accent); font-weight: 700; }
-            &::after { border-left-color: var(--gg-on-accent); }
+            .giz-universal-executable__description__exe { color: var(--giz-on-accent); font-weight: 700; }
+            &::after { border-left-color: var(--giz-on-accent); }
 
             &:hover { filter: brightness(1.1); }
         }
     }
 
-    // Five shortcuts or more switch to a dense mode: a pill clipped at the bottom reads
-    // as breakage rather than as "scroll". Without :has() support the rule is ignored
-    // and ordinary scrolling remains, so there is nothing to lose.
     &:has(> .giz-universal-executable:nth-child(5)) {
         gap: 0.35rem;
 
@@ -386,9 +344,9 @@ $ac-plate: rgba(var(--gg-scrim-rgb), 0.86);                       // plate and p
     align-items: center;
     padding: 0.4rem 0.8rem;
     border-radius: 1.2rem;
-    background: rgba(var(--gg-accent-rgb), 0.08);
-    border: 1px solid rgba(var(--gg-accent-rgb), 0.2);
-    color: var(--gg-accent);
+    background: rgba(var(--giz-accent-rgb), 0.08);
+    border: 1px solid rgba(var(--giz-accent-rgb), 0.2);
+    color: var(--giz-accent);
     opacity: 0.9;
     @include font-s-theme-client($font-weight-light-theme-client);
 

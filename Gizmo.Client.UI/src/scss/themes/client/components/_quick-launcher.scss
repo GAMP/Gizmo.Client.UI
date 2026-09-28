@@ -1,24 +1,9 @@
 //=============== Quick Launcher ================//
-//
-// Lives in its own floating panel under the nav rail (.giz-left-panel in
-// _Layout.razor), not in the Home hero strip, so this stacks vertically -
-// pinned apps scrolling top to bottom - instead of running left-to-right in
-// a single wide row. GizDock itself defaults to a horizontal row
-// (_dock.scss); it has no other caller right now, so the vertical variant is
-// overridden here rather than changing that default. No rocket/history
-// switch above it any more - just the pinned-apps list.
 
 .quick-launcher {
     display: flex;
     flex-direction: column;
     align-items: center;
-    // Sizes to its content, no forced 100% height. The single scroll point
-    // for the whole rail is .giz-left-panel__quicklaunch (in _Layout.razor):
-    // the dock and this wrapper both size to content and NEVER scroll on
-    // their own. Previously the dock had its own overflow-y:auto + height:100%
-    // in a circular flex-basis:0% chain, which produced a scrollbar even when
-    // a few icons fit fine - and the global *::-webkit-scrollbar rule showed
-    // it despite a width:0 override.
     width: 100%;
     padding: 0.8rem 0;
 
@@ -40,14 +25,38 @@
         padding: 0;
     }
 
-    // Tooltip opens rightward instead of downward - this rail sits flush
-    // against the left edge of the window, so a downward-opening tooltip
-    // would either clip against that edge or land on the icon below it.
+    // Round whatever picture the club gave the executable: the ring of a launch hugs it.
+    .giz-universal-executable {
+        width: 6.2rem;
+        margin: 0 auto;
+
+        &::before { border-radius: 50%; }
+    }
+
+    .giz-universal-executable__icon {
+        border-radius: 50%;
+
+        img { border-radius: 50%; }
+
+        .giz-default-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 4.8rem;
+            height: 4.8rem;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--giz-glass-5);
+        }
+    }
+
     .giz-dock-item-tooltip-wrapper {
-        top: 0;
-        left: 100%;
+        position: fixed;
+        top: var(--giz-dock-tip-top, 0);
+        left: var(--giz-dock-tip-left, 0);
         padding-top: 0;
         padding-left: 0.8rem;
+        z-index: 700;
     }
 }
 
@@ -59,17 +68,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--gg-accent);
+    color: var(--giz-accent);
 
     .giz-spinner {
-        color: var(--gg-accent);
+        color: var(--giz-accent);
     }
 }
 
 .running {
     width: 1.2rem;
     height: 0.35rem;
-    background: var(--gg-accent);
+    background: var(--giz-accent);
     border-radius: 0.4rem;
     
     animation: running-pulse 2s ease-in-out infinite;
@@ -78,4 +87,17 @@
 @keyframes running-pulse {
     0%, 100% { opacity: 1;  }
     50%       { opacity: 0.7;  }
+}
+
+.giz-left-panel__quicklaunch {
+    flex: 0 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar { display: none; }
 }

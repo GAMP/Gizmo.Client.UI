@@ -35,6 +35,10 @@ namespace Gizmo.Client.UI
             set { _metaData = value; }
         }
 
+        private string Title => !string.IsNullOrWhiteSpace(MetaData.TitleLocalizationKey)
+            ? LocalizationService.GetString(MetaData.TitleLocalizationKey)
+            : MetaData.Title ?? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_UNSET_STRING_VALUE));
+
         #endregion
     }
 }

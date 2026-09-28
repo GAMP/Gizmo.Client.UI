@@ -9,19 +9,30 @@
 }
 
 <CascadingValue Value="@this" IsFixed="true">
-    <div client-theme="true" class="@ClassName"
-         @onmouseover="OnMouseOverHandler"
-         @onmouseout="OnMouseOutHandler"
-         id="@Id"
-         @ref="@Ref">
-        @* No title bar - the cards say what they are. *@
-        <div class="giz-notifications__body">
-            @foreach (var controller in _visible)
-            {
-                <div data-id="@controller.Identifier" class="giz-notification-wrapper @(_newlyAddedItemId == controller.Identifier ? "tmp" : (_slideInItemId == controller.Identifier ? "slide-in" : (_slideOutItemId == controller.Identifier ? "slide-out" : "")))">
-                    <DynamicComponent Parameters="controller.Parameters" Type="controller.ComponentType" @key=controller.Identifier></DynamicComponent>
-                </div>
-            }
+    <CascadingValue Value="@GrafitLocalization" IsFixed="true">
+        <div client-theme="true" class="@ClassName"
+             @onmouseover="OnMouseOverHandler"
+             @onmouseout="OnMouseOutHandler"
+             id="@Id"
+             @ref="@Ref">
+            <div class="giz-notifications__header">
+                <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_NOTIFICATIONS_TITLE))</span>
+                @if (_visible.Count > 1)
+                {
+                    <button type="button" class="giz-notifications__close" @onclick="CloseNotifications">
+                        <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_NOTIFICATIONS_CLOSE_ALL)</span>
+                        <i class="ph-bold ph-x"></i>
+                    </button>
+                }
+            </div>
+            <div class="giz-notifications__body">
+                @foreach (var controller in _visible)
+                {
+                    <div data-id="@controller.Identifier" class="giz-notification-wrapper @(_newlyAddedItemId == controller.Identifier ? "tmp" : (_slideInItemId == controller.Identifier ? "slide-in" : (_slideOutItemId == controller.Identifier ? "slide-out" : "")))">
+                        <DynamicComponent Parameters="controller.Parameters" Type="controller.ComponentType" @key=controller.Identifier></DynamicComponent>
+                    </div>
+                }
+            </div>
         </div>
-    </div>
+    </CascadingValue>
 </CascadingValue>

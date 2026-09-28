@@ -1,0 +1,234 @@
+//=============== Deployment banner ================//
+
+.giz-deploy {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 5.8rem;
+    flex: 0 1 0rem;
+    min-width: 0;
+    padding: 0;
+    gap: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+        flex-basis 0.5s cubic-bezier(0.19, 1, 0.22, 1),
+        padding 0.5s cubic-bezier(0.19, 1, 0.22, 1),
+        opacity 0.35s ease;
+}
+
+.giz-deploy--open {
+    flex-basis: 34rem;
+
+    min-width: 9rem;
+    padding: 0 3.8rem 0 1.2rem;
+    gap: 1.1rem;
+    opacity: 1;
+    border-color: rgba(var(--giz-accent-rgb), 0.45);
+    box-shadow:
+        inset 0 1px 0 var(--giz-glass-12),
+        0 1.2rem 3rem -1.2rem rgba(var(--giz-accent-rgb), 0.55);
+}
+
+.giz-deploy--open.giz-deploy--done {
+    border-color: rgba(var(--giz-success-rgb), 0.5);
+    box-shadow:
+        inset 0 1px 0 var(--giz-glass-12),
+        0 1.2rem 3rem -1.2rem rgba(var(--giz-success-rgb), 0.45);
+}
+
+.giz-deploy__fill {
+    position: absolute;
+    width: var(--giz-deploy-progress);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+    min-width: 6rem;
+    background: linear-gradient(90deg, rgba(var(--giz-accent-rgb), 0.3), rgba(var(--giz-accent-rgb), 0.14));
+    mask-image: linear-gradient(90deg, var(--giz-black), var(--giz-black) calc(100% - 7rem), transparent);
+    -webkit-mask-image: linear-gradient(90deg, var(--giz-black), var(--giz-black) calc(100% - 7rem), transparent);
+
+    transition: width 0.9s linear, opacity 0.4s ease;
+}
+
+.giz-deploy--done .giz-deploy__fill {
+    background: linear-gradient(90deg, rgba(var(--giz-success-rgb), 0.26), rgba(var(--giz-success-deep-rgb), 0.1));
+    mask-image: none;
+    -webkit-mask-image: none;
+}
+
+.giz-deploy--waiting .giz-deploy__fill {
+    opacity: 0;
+}
+
+.giz-deploy--open:not(.giz-deploy--done)::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(100deg, transparent 24%, var(--giz-glass-6) 48%, transparent 70%);
+    background-size: 240% 100%;
+    animation: giz-deploy-sheen 3.4s ease-in-out infinite;
+}
+
+.giz-deploy__badge {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    width: 3.6rem;
+    height: 3.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(var(--giz-accent-rgb), 0.14);
+    color: var(--giz-accent-pale);
+    font-size: 1.6rem;
+}
+
+.giz-deploy__ring {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+
+    transform: rotate(-90deg);
+}
+
+.giz-deploy__ring-track,
+.giz-deploy__ring-bar {
+    fill: none;
+    stroke-dashoffset: var(--giz-deploy-ring-offset);
+    stroke-width: 2.6;
+}
+
+.giz-deploy__ring-track {
+    stroke: var(--giz-glass-10);
+}
+
+.giz-deploy__ring-bar {
+    stroke: var(--giz-accent-light);
+    stroke-linecap: round;
+    stroke-dasharray: 109.96;
+    transition: stroke-dashoffset 0.9s linear;
+}
+
+.giz-deploy--waiting .giz-deploy__ring {
+    animation: giz-deploy-spin 1.4s linear infinite;
+}
+
+.giz-deploy--waiting .giz-deploy__ring-bar {
+    stroke-dasharray: 26 83.96;
+    transition: none;
+}
+
+.giz-deploy--done .giz-deploy__badge {
+    background: rgba(var(--giz-success-rgb), 0.16);
+    color: var(--giz-success-light);
+}
+
+.giz-deploy--done .giz-deploy__ring-bar {
+    stroke: var(--giz-success);
+}
+
+.giz-deploy__body {
+    position: relative;
+    z-index: 1;
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.giz-deploy__title {
+    font-family: $font-family-header-theme-client;
+    font-size: 1.16rem;
+    font-weight: 800;
+    line-height: 1.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--giz-white);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.giz-deploy__sub {
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.7rem;
+    color: var(--giz-text-1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.giz-deploy__pct {
+    position: relative;
+    z-index: 1;
+    flex: none;
+    font-family: $font-family-numeric-theme-client;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--giz-white);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.giz-deploy__close {
+    position: absolute;
+    right: 0.7rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    flex-shrink: 0;
+    width: 2.8rem;
+    height: 2.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--giz-text-3);
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: background 0.16s, color 0.16s;
+}
+
+.giz-deploy__close:hover {
+    background: var(--giz-glass-9);
+    color: var(--giz-white);
+}
+
+@media (max-width: 1440px) {
+    .giz-deploy--open {
+        flex-basis: auto;
+        min-width: 0;
+        padding-right: 1.2rem;
+    }
+
+    .giz-deploy__body,
+    .giz-deploy--done .giz-deploy__close { display: none; }
+}
+
+@keyframes giz-deploy-sheen {
+    0% { background-position: 130% 0; }
+    100% { background-position: -30% 0; }
+}
+
+@keyframes giz-deploy-spin {
+    from { transform: rotate(-90deg); }
+    to { transform: rotate(270deg); }
+}

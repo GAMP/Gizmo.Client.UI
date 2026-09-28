@@ -1,114 +1,103 @@
-@namespace Gizmo.Client.UI.Pages
+﻿@namespace Gizmo.Client.UI.Pages
 @inherits CustomDOMComponentBase
 
-@* One product, the whole story: picture, name, price and the buy control at the top;
-   the small print (where it works, when it expires, when it can be bought) as plain
-   facts under them; description, bundle contents and related goods below. The cart
-   keeps its column on the right, as on the shop page. *@
-@{
-    var product = ViewState.Product;
-    var isTime = product?.ProductType == ProductType.ProductTime;
-    var isBundle = product?.ProductType == ProductType.ProductBundle;
-    var time = isTime ? product.TimeProduct : null;
-}
+<div class="giz-product-page-wrap">
+    <div class="giz-product-page @(CanPurchase ? "giz-product-page--with-cart" : null)">
+        <div class="giz-product-page__page giz-scrollbar--v">
 
-<div class="gg-pd-wrap">
-    <div class="gg-pd @(CanPurchase ? "gg-pd--with-cart" : null)">
-        <div class="gg-pd__page giz-scrollbar--v">
-
-            <button type="button" class="gg-pd__back" @onclick="OnClickBackButtonHandler">
+            <button type="button" class="giz-product-page__back" @onclick="OnClickBackButtonHandler">
                 <i class="ph-bold ph-arrow-left"></i>
-                <span>@ShellText.Get(ShellText.GEN_BACK)</span>
+                <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BACK))</span>
             </button>
 
-            @if (product is not null)
+            @if (Product is not null)
             {
-                <section class="gg-pd__main">
-                    <div class="gg-pd__art @(isTime ? "gg-pd__art--time" : null)">
-                        <GizImage @key="product" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@product.DefaultImageId" ImageFitType="ImageFitType.Cover">
+                <section class="giz-product-page__main">
+                    <div class="giz-product-page__art @(IsTime ? "giz-product-page__art--time" : null)">
+                        <GizImage @key="Product" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@Product.DefaultImageId" ImageFitType="ImageFitType.Cover">
                             <EmptyResultPlaceholder>
-                                @if (isTime)
+                                @if (IsTime)
                                 {
-                                    <div class="gg-pd__time">
-                                        <b>@ProductHelpers.GetProductTimeNumber(product)</b>
-                                        <span>@ProductHelpers.GetProductTimeText(product, LocalizationService)</span>
+                                    <div class="giz-product-page__time">
+                                        <b>@ProductHelpers.GetProductTimeNumber(Product)</b>
+                                        <span>@ProductHelpers.GetProductTimeText(Product, LocalizationService)</span>
                                     </div>
                                 }
                                 else
                                 {
-                                    <div class="gg-pd__no-art"><i class="ph ph-image"></i></div>
+                                    <div class="giz-product-page__no-art"><i class="ph ph-image"></i></div>
                                 }
                             </EmptyResultPlaceholder>
                             <ErrorPlaceholder>
-                                <div class="gg-pd__no-art"><i class="ph ph-image-broken"></i></div>
+                                <div class="giz-product-page__no-art"><i class="ph ph-image-broken"></i></div>
                             </ErrorPlaceholder>
                         </GizImage>
                     </div>
 
-                    <div class="gg-pd__info">
+                    <div class="giz-product-page__info">
                         @if (!string.IsNullOrWhiteSpace(UserProductGroupViewState?.Name))
                         {
-                            <div class="gg-cap">@UserProductGroupViewState.Name</div>
+                            <div class="giz-caption">@UserProductGroupViewState.Name</div>
                         }
-                        <h1 class="gg-pd__title">@product.Name</h1>
+                        <h1 class="giz-product-page__title">@Product.Name</h1>
 
-                        <div class="gg-pd__price"><ProductCardPrice @key="ProductId" Product="@product" /></div>
+                        <div class="giz-product-page__price"><ProductCardPrice @key="ProductId" Product="@Product" /></div>
 
                         @if (CanPurchase)
                         {
-                            <div class="gg-pd__buy">
+                            <div class="giz-product-page__buy">
                                 <ProductQuantityPicker @key="ProductId" ProductId="@ProductId" Size="ButtonSizes.ExtraLarge" IsFullWidth="false" />
-                                @if (product.DisallowPurchase && !string.IsNullOrWhiteSpace(product.DisallowPurchaseReason))
+                                @if (Product.DisallowPurchase && !string.IsNullOrWhiteSpace(Product.DisallowPurchaseReason))
                                 {
-                                    <div class="gg-pd__why">
+                                    <div class="giz-product-page__why">
                                         <i class="ph-fill ph-info"></i>
-                                        <span>@product.DisallowPurchaseReason</span>
+                                        <span>@Product.DisallowPurchaseReason</span>
                                     </div>
                                 }
                             </div>
                         }
 
-                        <div class="gg-pd__facts">
-                            @if (isTime)
+                        <div class="giz-product-page__facts">
+                            @if (IsTime)
                             {
-                                <div class="gg-pd__fact">
+                                <div class="giz-product-page__fact">
                                     <i class="ph ph-desktop"></i>
                                     <div>
-                                        <small>@ShellText.Get(ShellText.PD_WHERE)</small>
-                                        <ProductTimeHostGroups @key="ProductId" Product="@product" />
+                                        <small>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PD_WHERE)</small>
+                                        <ProductTimeHostGroups @key="ProductId" Product="@Product" />
                                     </div>
                                 </div>
 
-                                @if (time.ExpirationOptions != ProductTimeExpirationOptionType.None)
+                                @if (TimeProduct.ExpirationOptions != ProductTimeExpirationOptionType.None)
                                 {
-                                    <div class="gg-pd__fact">
+                                    <div class="giz-product-page__fact">
                                         <i class="ph ph-hourglass-low"></i>
                                         <div>
-                                            <small>@ShellText.Get(ShellText.PRODUCT_EXPIRY)</small>
-                                            @if (time.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAtDayTime))
+                                            <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRES))</small>
+                                            @if (TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAtDayTime))
                                             {
-                                                <b>@ShellText.Get(ShellText.PD_EXPIRES_AT_DAYTIME, ProductHelpers.GetDayTimeFromMinute(time.ExpireAtDayTimeMinute))</b>
+                                                <b>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PD_EXPIRES_AT_DAYTIME, ProductHelpers.GetDayTimeFromMinute(TimeProduct.ExpireAtDayTimeMinute))</b>
                                             }
-                                            @if (time.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAfterTime))
+                                            @if (TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAfterTime))
                                             {
-                                                <b>@ShellText.Get(ShellText.PD_EXPIRES_AFTER, ProductHelpers.GetExpiresAfterText(time, LocalizationService))</b>
+                                                <b>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PD_EXPIRES_AFTER, ProductHelpers.GetExpiresAfterText(TimeProduct, LocalizationService))</b>
                                             }
-                                            @if (time.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpiresAtLogout))
+                                            @if (TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpiresAtLogout))
                                             {
-                                                <b>@ShellText.Get(ShellText.PD_EXPIRES_AT_LOGOUT)</b>
+                                                <b>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PD_EXPIRES_AT_LOGOUT)</b>
                                             }
                                         </div>
                                     </div>
                                 }
                             }
 
-                            @if (product.PurchaseAvailability is not null)
+                            @if (Product.PurchaseAvailability is not null)
                             {
-                                <div class="gg-pd__fact">
+                                <div class="giz-product-page__fact">
                                     <i class="ph ph-shopping-cart-simple"></i>
                                     <div>
-                                        <small>@ShellText.Get(ShellText.PRODUCT_BUY_WINDOW)</small>
-                                        @foreach (var line in ProductHelpers.GetPurchaseAvailabilities(product, !_showMore, LocalizationService))
+                                        <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_BUYING_TIME))</small>
+                                        @foreach (var line in ProductHelpers.GetPurchaseAvailabilities(Product, !_showMore, LocalizationService))
                                         {
                                             <b>@line</b>
                                         }
@@ -116,13 +105,13 @@
                                 </div>
                             }
 
-                            @if (isTime && time.UsageAvailability is not null)
+                            @if (IsTime && TimeProduct.UsageAvailability is not null)
                             {
-                                <div class="gg-pd__fact">
+                                <div class="giz-product-page__fact">
                                     <i class="ph ph-play-circle"></i>
                                     <div>
-                                        <small>@ShellText.Get(ShellText.PRODUCT_USE_WINDOW)</small>
-                                        @foreach (var line in ProductHelpers.GetUsageAvailabilities(product, !_showMore, LocalizationService))
+                                        <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_ACTION_TIME))</small>
+                                        @foreach (var line in ProductHelpers.GetUsageAvailabilities(Product, !_showMore, LocalizationService))
                                         {
                                             <b>@line</b>
                                         }
@@ -132,8 +121,8 @@
 
                             @if (HasMoreAvailability)
                             {
-                                <button type="button" class="gg-pd__more" @onclick="ToggleMore">
-                                    <span>@ShellText.Get(_showMore ? ShellText.PRODUCT_LESS : ShellText.PRODUCT_MORE)</span>
+                                <button type="button" class="giz-product-page__more" @onclick="ToggleMore">
+                                    <span>@GrafitLocalization.GetString(_showMore ? nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_DETAILS_LESS) : nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_DETAILS_MORE))</span>
                                     <i class="ph-bold @(_showMore ? "ph-caret-up" : "ph-caret-down")"></i>
                                 </button>
                             }
@@ -141,22 +130,21 @@
                     </div>
                 </section>
 
-                @if (!string.IsNullOrWhiteSpace(product.Description))
+                @if (!string.IsNullOrWhiteSpace(Product.Description))
                 {
-                    <section class="gg-pd__about">
-                        <div class="gg-cap gg-cap--rule"><span>@ShellText.Get(ShellText.PD_ABOUT)</span><span class="gg-cap__rule"></span></div>
-                        <p class="gg-pd__desc">@product.Description</p>
+                    <section class="giz-product-page__about">
+                        <div class="giz-caption giz-caption--rule"><span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PD_ABOUT)</span><span class="giz-caption__rule"></span></div>
+                        <p class="giz-product-page__desc">@Product.Description</p>
                     </section>
                 }
 
-                @if (isBundle && product.BundledProducts.Any())
+                @if (IsBundle && Product.BundledProducts.Any())
                 {
-                    <section class="gg-pd__bundle">
-                        <div class="gg-cap gg-cap--rule"><span>@ShellText.Get(ShellText.PD_INCLUDES)</span><span class="gg-cap__rule"></span></div>
-                        <div class="gg-pd__bundle-row">
-                            @foreach (var bundled in product.BundledProducts)
+                    <section class="giz-product-page__bundle">
+                        <div class="giz-caption giz-caption--rule"><span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PD_INCLUDES)</span><span class="giz-caption__rule"></span></div>
+                        <div class="giz-product-page__bundle-row">
+                            @foreach (var bundled in Product.BundledProducts)
                             {
-                                @* Not keyed by id: a bundle can hold the same product twice. *@
                                 <ProductDetailsBundledProduct @key="@bundled" ProductId="@bundled.Id" Quantity="bundled.Quantity" />
                             }
                         </div>
@@ -165,9 +153,9 @@
 
                 @if (CanPurchase && ViewState.RelatedProducts != null && ViewState.RelatedProducts.Any())
                 {
-                    <section class="gg-pd__related">
-                        <div class="gg-cap gg-cap--rule"><span>@ShellText.Get(ShellText.SHOP_RELATED)</span><span class="gg-cap__rule"></span></div>
-                        <div class="gg-pd__related-row">
+                    <section class="giz-product-page__related">
+                        <div class="giz-caption giz-caption--rule"><span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_RELATED_PRODUCTS))</span><span class="giz-caption__rule"></span></div>
+                        <div class="giz-product-page__related-row">
                             @foreach (var related in ViewState.RelatedProducts)
                             {
                                 <ProductCard @key="related.Id" Product="@related" />
@@ -180,7 +168,7 @@
 
         @if (CanPurchase)
         {
-            <aside class="gg-pd__cart">
+            <aside class="giz-product-page__cart">
                 <GizOrder />
             </aside>
         }

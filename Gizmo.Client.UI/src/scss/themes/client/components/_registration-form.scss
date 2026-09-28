@@ -1,0 +1,67 @@
+//=============== Registration form ================//
+
+// Registration forms
+.giz-registration-form-input {
+    margin-bottom: 1.6rem;
+}
+
+.giz-login-card {
+    :is(.giz-form-input, .giz-registration-form-input, .giz-registration-basic__field):has(.giz-popup--open) {
+        position: relative;
+        z-index: 60;
+    }
+}
+
+.giz-form-input-columns,
+.giz-registration-basic__fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: 1.2rem 1.6rem;
+}
+
+.giz-registration-phone__fields {
+    display: flex;
+    flex-direction: column;
+}
+
+.giz-registration-basic,
+.giz-registration-phone {
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+        margin-bottom: 0.4rem;
+    }
+
+    &__title {
+        color: var(--giz-text-1);
+        font-family: $font-family-header-theme-client;
+        font-size: 3.6rem;
+        font-weight: 800;
+        line-height: 1.15;
+        letter-spacing: -0.01em;
+        margin-bottom: 1.2rem;
+    }
+
+    &__submit {
+        margin-top: 2rem;
+    }
+}
+
+.giz-registration-basic__field {
+    min-width: 0;
+
+    // Full-width field inside the two-column grid.
+    &--full { grid-column: 1 / -1; }
+}
+
+.giz-password-tooltip-message.passed {
+    color: var(--giz-success);
+}
+
+// Validation message under a field, brought to the shell's muted red.
+.giz-input-validation-label {
+    color: var(--giz-danger-soft);
+    font-size: 1.2rem;
+    line-height: 1.7rem;
+}

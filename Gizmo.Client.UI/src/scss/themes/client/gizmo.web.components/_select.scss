@@ -28,11 +28,11 @@
         }
 
         &__dropdown {
-            background: rgba(10, 14, 22, 0.97);
+            background: rgba(var(--giz-night-rgb), 0.97);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(var(--gg-accent-rgb), 0.06);
+            border: 1px solid var(--giz-glass-7);
+            box-shadow: 0 8px 32px rgba(var(--giz-black-rgb), 0.55), 0 0 0 1px rgba(var(--giz-accent-rgb), 0.06);
             border-radius: 0.8rem;
             padding: 0.8rem;
 
@@ -54,7 +54,7 @@
 
                 .giz-list-item {
                     padding: 0.9rem 1.6rem;
-                    color: rgba(255, 255, 255, 0.72);
+                    color: var(--giz-text-2);
                     border-radius: 0.6rem;
                     transition: background 0.15s, color 0.15s;
                     @include font-m-theme-client($font-weight-light-theme-client);
@@ -63,13 +63,13 @@
                 &.giz-list--selectable {
                     .giz-list-item {
                         &.selected {
-                            background: rgba(var(--gg-accent-rgb), 0.12);
-                            color: var(--gg-accent);
+                            background: rgba(var(--giz-accent-rgb), 0.12);
+                            color: var(--giz-accent);
                         }
 
                         &.active {
-                            background: rgba(255, 255, 255, 0.06);
-                            color: rgba(255, 255, 255, 0.9);
+                            background: var(--giz-glass-5);
+                            color: var(--giz-text-1);
                         }
                     }
                 }
@@ -77,8 +77,8 @@
                 &.giz-list--clickable {
                     .giz-list-item {
                         &:hover {
-                            background: rgba(var(--gg-accent-rgb), 0.08);
-                            color: rgba(255, 255, 255, 0.9);
+                            background: rgba(var(--giz-accent-rgb), 0.08);
+                            color: var(--giz-text-1);
                         }
                     }
                 }

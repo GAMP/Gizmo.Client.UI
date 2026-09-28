@@ -3,98 +3,123 @@
 @using System.Globalization
 @using Gizmo.Client.UI.View.States
 
-@* The account page's frame: who is signed in and what they have, the three tabs, then
-   whatever the tab shows. One component so Profile, Products and Purchases cannot
-   drift apart. *@
-@{
-    var name = UserViewState.IsGuest || string.IsNullOrWhiteSpace(Profile.Username)
-        ? ShellText.Get(ShellText.GEN_GUEST)
-        : Profile.Username;
-    var fullName = string.Join(" ", new[] { Profile.FirstName, Profile.LastName }.Where(s => !string.IsNullOrWhiteSpace(s)));
-    var hasTimeCredit = Credit.TimeCreditType != CreditType.NoCredit && Credit.IsUserTimeCreditEnabled;
-    var hasSalesCredit = Credit.SalesCreditType != CreditType.NoCredit;
-    var creditUnlimited = Credit.TimeCreditType == CreditType.Unlimited || Credit.SalesCreditType == CreditType.Unlimited;
-}
+<div class="giz-account giz-scrollbar--v">
+    <div class="giz-account__inner">
 
-<div class="gg-account giz-scrollbar--v">
-    <div class="gg-account__inner">
+        <header class="giz-account__head">
+            <UserAvatar Picture="@Profile.Picture" Class="giz-account__avatar" />
 
-        <header class="gg-account__head">
-            <UserAvatar Picture="@Profile.Picture" Class="gg-account__avatar" Editable="true" />
-
-            <div class="gg-account__who">
-                <h1 class="gg-account__name">@name</h1>
-                <div class="gg-account__sub">
-                    @if (!string.IsNullOrEmpty(fullName))
+            <div class="giz-account__who">
+                <h1 class="giz-account__name">@DisplayName</h1>
+                <div class="giz-account__sub">
+                    @if (!string.IsNullOrEmpty(FullName))
                     {
-                        <span>@fullName</span>
+                        <span>@FullName</span>
                     }
-                    @if (!UserViewState.IsGuest && Profile.RegistrationDate != default)
+                    @if (ShowMemberSince)
                     {
-                        <span>@ShellText.Get(ShellText.ACCOUNT_MEMBER_SINCE, Profile.RegistrationDate.ToLocalTime().ToString("d MMMM yyyy", CultureInfo.CurrentCulture))</span>
+                        <span>@MemberSince</span>
                     }
                 </div>
+                <ProfileHeaderLadderLevel />
             </div>
 
-            <div class="gg-account__stats">
-                <div class="gg-account__stat gg-account__stat--money">
-                    <small>@ShellText.Get(ShellText.GEN_BALANCE)</small>
-                    <b>@Balance.Balance.ToString("C", CultureInfo.CurrentCulture)</b>
+            <div class="giz-account__stats">
+                <div class="giz-account__stat giz-account__stat--money">
+                    <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BALANCE))</small>
+                    <b>@BalanceText</b>
                 </div>
-                <div class="gg-account__stat">
-                    <small>@ShellText.Get(ShellText.GEN_POINTS)</small>
-                    <b>@Balance.PointsBalance.ToString("N0", CultureInfo.CurrentCulture) <i class="ph-fill ph-coins"></i></b>
+                <div class="giz-account__stat giz-account__stat--points">
+                    <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_POINTS))</small>
+                    <b>@PointsText <i class="ph-fill ph-coins"></i></b>
                 </div>
-                <div class="gg-account__stat">
-                    <small>@ShellText.Get(ShellText.GEN_TIME)</small>
-                    <b>@(Balance.Time.HasValue ? $"{(int)Balance.Time.Value.TotalHours}:{Balance.Time.Value:mm}" : "∞")</b>
+                <div class="giz-account__stat">
+                    <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_TIME))</small>
+                    <b>
+                        @if (Balance.Time.HasValue)
+                        {
+                            @TimeText
+                        }
+                        else
+                        {
+                            <i class="ph-bold ph-infinity"></i>
+                        }
+                    </b>
                 </div>
-                @if (hasTimeCredit || hasSalesCredit)
+                @if (HasCredit)
                 {
-                    <div class="gg-account__stat gg-account__stat--credit">
-                        <small>@ShellText.Get(ShellText.CREDIT)</small>
-                        <b>@(creditUnlimited ? "∞" : Credit.CreditLimit.ToString("C", CultureInfo.CurrentCulture))</b>
-                        <span>
-                            @(creditUnlimited
-                                ? ShellText.Get(ShellText.CREDIT_UNLIMITED)
-                                : ShellText.Get(hasTimeCredit ? ShellText.CREDIT_TIME_NOTE : ShellText.CREDIT_SALES_NOTE))
-                        </span>
+                    <div class="giz-account__stat giz-account__stat--credit">
+                        <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PROFILE_HEADER_CREDIT))</small>
+                        <b>
+                            @if (CreditIsMixed)
+                            {
+                                <span class="giz-account__credit-part" title="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PROFILE_CREDIT_TOOLTIP_TIME_CREDIT_DESCRIPTION))">
+                                    <i class="ph-bold ph-clock giz-account__credit-kind"></i>
+                                    @if (TimeCreditUnlimited)
+                                    {
+                                        <i class="ph-bold ph-infinity"></i>
+                                    }
+                                    else
+                                    {
+                                        @CreditLimitText
+                                    }
+                                </span>
+                                <span class="giz-account__credit-part" title="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PROFILE_CREDIT_TOOLTIP_SALES_CREDIT_DESCRIPTION))">
+                                    <i class="ph-bold ph-shopping-cart-simple giz-account__credit-kind"></i>
+                                    @if (SalesCreditUnlimited)
+                                    {
+                                        <i class="ph-bold ph-infinity"></i>
+                                    }
+                                    else
+                                    {
+                                        @CreditLimitText
+                                    }
+                                </span>
+                            }
+                            else if (CreditUnlimited)
+                            {
+                                <i class="ph-bold ph-infinity"></i>
+                            }
+                            else
+                            {
+                                @CreditLimitText
+                            }
+                        </b>
+                        <span>@CreditNote</span>
                     </div>
                 }
             </div>
         </header>
 
-        <nav class="gg-account__tabs" aria-label="@ShellText.Get(ShellText.USER_DETAILS)">
+        <nav class="giz-account__tabs" aria-label="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_DETAILS))">
             @if (!UserViewState.IsGuest)
             {
-                <NavLink class="gg-account__tab" ActiveClass="is-on" href="@ClientRoutes.UserProfileRoute" Match="NavLinkMatch.All">
+                <NavLink class="giz-account__tab" href="@ClientRoutes.UserProfileRoute" Match="NavLinkMatch.All">
                     <i class="ph-bold ph-user"></i>
-                    <span>@ShellText.Get(ShellText.ACCOUNT_TAB_PROFILE)</span>
+                    <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_TAB_PROFILE)</span>
                 </NavLink>
             }
-            <NavLink class="gg-account__tab" ActiveClass="is-on" href="@ClientRoutes.UserProductsRoute" Match="NavLinkMatch.All">
+            <NavLink class="giz-account__tab" href="@ClientRoutes.UserProductsRoute" Match="NavLinkMatch.All">
                 <i class="ph-bold ph-hourglass-medium"></i>
-                <span>@ShellText.Get(ShellText.ACCOUNT_TAB_TIME)</span>
+                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_TAB_TIME)</span>
             </NavLink>
             @if (!InterfaceOptions.CurrentValue.DisableUserPurchaseHistory)
             {
-                <NavLink class="gg-account__tab" ActiveClass="is-on" href="@ClientRoutes.UserPurchasesRoute" Match="NavLinkMatch.All">
+                <NavLink class="giz-account__tab" href="@ClientRoutes.UserPurchasesRoute" Match="NavLinkMatch.All">
                     <i class="ph-bold ph-receipt"></i>
-                    <span>@ShellText.Get(ShellText.PURCHASES)</span>
+                    <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES))</span>
                 </NavLink>
             }
-            @* The Progress tab exists only where the club runs the ladder or achievements
-               and the customer is part of it (guests get no data). *@
-            @if (Gizmo.Client.UI.Services.Loyalty.State.IsAvailable)
+            @if (!UserViewState.IsGuest)
             {
-                <NavLink class="gg-account__tab" ActiveClass="is-on" href="@(ClientRoutes.UserProfileRoute + "/progress")" Match="NavLinkMatch.All">
+                <a class="@ProgressTabClass" href="@ClientRoutes.UserLadderRoute">
                     <i class="ph-bold ph-trophy"></i>
-                    <span>@ShellText.Get(ShellText.LOYALTY_TAB)</span>
-                </NavLink>
+                    <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PROGRESS_TAB)</span>
+                </a>
             }
         </nav>
 
-        <div class="gg-account__body">
+        <div class="giz-account__body">
             @ChildContent
         </div>
     </div>

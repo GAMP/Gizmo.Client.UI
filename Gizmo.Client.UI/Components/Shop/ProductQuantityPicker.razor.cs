@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 using Gizmo.Client.Options;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -16,6 +18,8 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class ProductQuantityPicker : ShellComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         private UserProductViewState _product;
 
         private UserCartProductViewState _userCartProductViewState;
@@ -40,7 +44,7 @@ namespace Gizmo.Client.UI.Components
         IOptionsMonitor<ClientShopOptions> ShopOptions { get; set; }
 
         [Inject]
-        IClientDialogService DialogService { get; set; }
+        UserCartViewService UserCartViewService { get; set; }
 
         public bool IsShopEnabled => !ShopOptions.CurrentValue.Disabled;
 
@@ -56,14 +60,10 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<MouseEventArgs> OnClick { get; set; }
 
-        /// <summary>
-        /// Time package: bought outright rather than added to the cart.
-        /// </summary>
         private bool IsTimePackage => _product?.ProductType == ProductType.ProductTime;
 
-        //While the purchase dialog is open the button goes dark, or a second press sends a
-        //second copy of the package to the cart.
         private bool _buying;
+        private readonly CancellationTokenSource _lifetime = new();
 
         public async Task OnAddProductButtonClickHandler(MouseEventArgs args)
         {
@@ -71,17 +71,9 @@ namespace Gizmo.Client.UI.Components
             ClientServerCartViewService.AddProduct(ProductId);
         }
 
-        /// <summary>
-        /// Buy on a time package: add to the cart and open the purchase dialog.
-        /// </summary>
-        /// <remarks>
-        /// The click is deliberately NOT bubbled through <see cref="OnClick"/>: on a product
-        /// card that opens the product page, and the customer has already said what they
-        /// want.
-        /// </remarks>
         public Task OnBuyPackageClickHandler(MouseEventArgs args)
         {
-            if (_buying)
+            if (_buying || PackagePurchaseFlow.IsCartBusy(ClientServerCartViewService))
                 return Task.CompletedTask;
 
             _buying = true;
@@ -90,12 +82,14 @@ namespace Gizmo.Client.UI.Components
             {
                 try
                 {
-                    await PackagePurchaseFlow.RunAsync(ProductId, ClientServerCartViewService, DialogService);
+                    await PackagePurchaseFlow.RunAsync(ProductId, ClientServerCartViewService, UserCartViewService, _lifetime.Token);
                 }
                 finally
                 {
                     _buying = false;
-                    StateHasChanged();
+
+                    if (!IsDisposed)
+                        StateHasChanged();
                 }
             });
 
@@ -133,9 +127,6 @@ namespace Gizmo.Client.UI.Components
             await base.OnInitializedAsync();
         }
 
-        //Cart changes are raised off the UI thread. Not async void: a dispatcher fault during
-        //host teardown would be rethrown on the thread pool and exit the client (see
-        //ShellComponentBase.DispatchWorkflow).
         private void ViewState_OnChange(object sender, System.EventArgs e)
         {
             DispatchWorkflow(async () =>
@@ -159,6 +150,10 @@ namespace Gizmo.Client.UI.Components
 
         public override void Dispose()
         {
+            _lifetime.Cancel();
+
+            ClientServerCartViewService.ViewState.OnChange -= ViewState_OnChange;
+
             if (_userCartProductViewState != null)
                 this.UnsubscribeChange(_userCartProductViewState);
 
