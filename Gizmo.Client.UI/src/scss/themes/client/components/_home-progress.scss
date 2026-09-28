@@ -1,78 +1,47 @@
 //=============== Home progress ================//
-// The home board's second right-hand tile: the ladder level (or the achievements/challenges
-// tally when the club runs no ladder) with its ring and bar, the one next challenge step,
-// and the way to the Progress tab.
+// The home board's second right-hand tile, one button into the Progress tab: the level plate
+// (or the tally when the club runs no ladder) with the name and status, the meter, and the
+// next challenge step under a hairline.
 
 .giz-home-progress {
     flex: 1;
     min-height: 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap: 1.1rem;
-    margin-top: clamp(0.8rem, 0.45rem + 0.6vw, 1.6rem);
+    justify-content: flex-start;
+    gap: 1.6rem;
+    width: calc(100% + 2rem);
+    margin: calc(clamp(0.8rem, 0.45rem + 0.6vw, 1.6rem) - 1rem) -1rem -1rem;
+    padding: 1rem;
+    border: 0;
+    border-radius: 1.4rem;
+    background: none;
+    transition: background 0.15s;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
 
     &__top {
         display: flex;
         align-items: center;
-        gap: 1.2rem;
+        gap: 1.4rem;
         min-width: 0;
     }
 
-    &__mark {
-        position: relative;
+    .giz-ladder-badge {
         flex: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 5.6rem;
-        height: 5.6rem;
-
-        .giz-ladder-badge {
-            width: 3.8rem;
-            height: 3.8rem;
-            border-radius: 50%;
-            overflow: hidden;
-            background: var(--giz-accent);
-            color: var(--giz-on-accent);
-        }
-
-        .giz-ladder-rank {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: transparent;
-            color: inherit;
-            font-family: $font-family-header-theme-client;
-            font-size: 1.6rem;
-            font-weight: 800;
-            line-height: 1;
-        }
+        width: 4.4rem;
+        height: 4.4rem;
+        border-radius: 0.6rem;
     }
 
-    &__ring {
-        @include giz-ring-svg;
-    }
-
-    &__track {
-        @include giz-ring-track;
-    }
-
-    // r = 18
-    &__bar {
-        @include giz-ring-bar(113.1);
-    }
-
-    &__plain {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 3.8rem;
-        height: 3.8rem;
-        border-radius: 50%;
-        background: rgba(var(--giz-accent-rgb), 0.14);
-        color: var(--giz-accent-soft);
-        font-size: 1.8rem;
+    .giz-ladder-rank {
+        width: 100%;
+        height: 100%;
+        border-radius: 0.6rem;
+        font-size: 2.2rem;
+        line-height: 1;
     }
 
     &__who {
@@ -89,34 +58,50 @@
 
         b {
             font-family: $font-family-header-theme-client;
-            font-size: 2.1rem;
+            font-size: 2.2rem;
             font-weight: 800;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.02em;
             line-height: 1.1;
             color: var(--giz-text-1);
         }
 
         span {
-            margin-top: 0.35rem;
+            margin-top: 0.3rem;
             font-size: 1.4rem;
             color: var(--giz-text-2);
         }
     }
 
-    &__line {
-        position: relative;
+    &__go {
         flex: none;
-        height: 0.7rem;
-        border-radius: $giz-r-pill;
-        background: var(--giz-glass-7);
+        font-size: 1.8rem;
+        color: var(--giz-text-3);
+        transition: color 0.15s, transform 0.15s;
+    }
+
+    &:hover {
+        background: var(--giz-glass-3);
+    }
+
+    &:hover &__go {
+        color: var(--giz-text-1);
+        transform: translateX(0.2rem);
+    }
+
+    &__line {
+        display: block;
+        flex: none;
+        margin-top: auto;
+        height: 0.5rem;
+        border-radius: 0.25rem;
+        background: var(--giz-glass-6);
         overflow: hidden;
 
         i {
-            position: absolute;
-            inset: 0 auto 0 0;
+            display: block;
             width: calc(var(--giz-ring-progress, 0) * 1%);
-            border-radius: $giz-r-pill;
-            background: linear-gradient(90deg, rgba(var(--giz-accent-rgb), 0.55), var(--giz-accent));
+            height: 100%;
+            background: var(--giz-accent);
             transition: width 0.6s ease;
         }
     }
@@ -126,114 +111,74 @@
         align-items: center;
         gap: 1rem;
         min-width: 0;
-        padding: 1rem 1.2rem;
-        border-radius: 1.3rem;
-        background: var(--giz-glass-3);
-        border: 1px solid var(--giz-glass-6);
+        margin-top: auto;
+        padding-top: 1.2rem;
+        border-top: 1px solid var(--giz-glass-6);
         font-size: 1.4rem;
-        line-height: 1.3;
-        color: var(--giz-text-2);
+
+        .giz-home-progress__line + & {
+            margin-top: 0;
+        }
 
         > i {
             flex: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 3.2rem;
-            height: 3.2rem;
-            border-radius: 1rem;
-            background: rgba(var(--giz-accent-rgb), 0.14);
-            color: var(--giz-accent-soft);
             font-size: 1.6rem;
-        }
-
-        > span {
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-        }
-
-        b {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            color: var(--giz-text-1);
-            font-weight: 700;
+            color: var(--giz-text-3);
         }
 
         em {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             flex: none;
             margin-left: auto;
             max-width: 40%;
             overflow: hidden;
             text-overflow: ellipsis;
-            padding: 0.35rem 0.8rem;
-            border-radius: 0.9rem;
-            background: rgba(var(--giz-accent-rgb), 0.14);
-            color: var(--giz-accent-pale);
-            font-size: 1.3rem;
-            font-style: normal;
-            font-weight: 800;
-            font-variant-numeric: tabular-nums;
             white-space: nowrap;
+            font-family: $font-family-numeric-theme-client;
+            font-size: 1.4rem;
+            font-style: normal;
+            font-weight: 700;
+            color: var(--giz-text-1);
         }
+    }
+
+    &__coin {
+        color: var(--giz-points);
     }
 
     &__step {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        font-size: 1.2rem;
-        color: var(--giz-text-3);
-    }
-
-    &__more {
-        flex: none;
         display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.8rem;
-        width: 100%;
-        height: 4.6rem;
-        border-radius: 1.4rem;
-        border: 1px solid rgba(var(--giz-accent-rgb), 0.4);
-        background: rgba(var(--giz-accent-rgb), 0.16);
-        color: var(--giz-text-1);
-        font-family: inherit;
-        font-size: 1.45rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: background 0.15s, border-color 0.15s;
+        flex-direction: column;
+        min-width: 0;
 
-        i {
-            font-size: 1.6rem;
-            color: var(--giz-accent-pale);
+        b,
+        span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
-        &:hover {
-            background: rgba(var(--giz-accent-rgb), 0.26);
-            border-color: rgba(var(--giz-accent-rgb), 0.6);
+        b {
+            font-weight: 700;
+            color: var(--giz-text-1);
         }
 
-        &:focus-visible {
-            outline: 2px solid var(--giz-focus);
-            outline-offset: 2px;
+        span {
+            font-size: 1.3rem;
+            color: var(--giz-text-3);
         }
     }
 }
 
-// A short screen (1366x768) keeps the level, the bar and the button; the next step waits
-// on the Progress tab.
 @media (max-height: 840px) {
     .giz-home-progress {
-        gap: 0.9rem;
+        gap: 1rem;
 
-        &__next { display: none; }
-        &__mark { width: 4.8rem; height: 4.8rem; }
-        &__mark .giz-ladder-badge,
-        &__plain { width: 3.2rem; height: 3.2rem; }
-        &__mark .giz-ladder-rank { font-size: 1.4rem; }
+        .giz-ladder-badge { width: 3.8rem; height: 3.8rem; }
+        .giz-ladder-rank { font-size: 1.9rem; }
         &__who b { font-size: 1.9rem; }
-        &__more { height: 4.2rem; }
+        &__next { padding-top: 0.9rem; }
     }
 }

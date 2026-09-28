@@ -12,26 +12,21 @@
         <AchievementCardPopup Item="@Item" />
     </ProfileCardPopup>
 
-    <div class="giz-achievement-card__mark" style="--giz-ring-progress: @RingValue">
-        <svg class="giz-achievement-card__ring" viewBox="0 0 40 40" aria-hidden="true">
-            <circle class="giz-achievement-card__track" cx="20" cy="20" r="18"></circle>
-            <circle class="giz-achievement-card__bar" cx="20" cy="20" r="18"></circle>
-        </svg>
-        <AchievementTile ImageUrl="@Item.ImageUrl" CountText="@Item.CountText" />
-        @if (Item.IsEarned)
-        {
-            <span class="giz-achievement-card__check"><i class="ph-bold ph-check"></i></span>
-        }
-    </div>
+    <AchievementTile ImageUrl="@Item.ImageUrl" CountText="@Item.CountText" />
 
     <div class="giz-achievement-card__name">@Item.Name</div>
 
     @if (Item.HasChip)
     {
-        <div class="giz-achievement-card__chip">@Item.ChipText</div>
+        <div class="@ChipClass">@Item.ChipText</div>
     }
     else
     {
         <div class="giz-achievement-card__standing">@Item.StandingText</div>
+    }
+
+    @if (ShowMeter)
+    {
+        <span class="giz-achievement-card__meter" style="--giz-ring-progress: @ProgressValue"></span>
     }
 </div>

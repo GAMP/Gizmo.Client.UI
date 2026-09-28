@@ -30,8 +30,13 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        private string RingValue => (Item.IsEarned ? 100m : Item.ShowProgressBar ? Item.ProgressPercent : 0m)
-            .ToString("0.##", CultureInfo.InvariantCulture);
+        private string ChipClass => Item.IsEarned
+            ? "giz-achievement-card__chip giz-achievement-card__chip--success"
+            : "giz-achievement-card__chip";
+
+        private bool ShowMeter => !Item.IsEarned && Item.ShowProgressBar;
+
+        private string ProgressValue => Item.ProgressPercent.ToString("0.##", CultureInfo.InvariantCulture);
 
         private void OnCardClick() => Service.Highlight(Item.AchievementId);
 

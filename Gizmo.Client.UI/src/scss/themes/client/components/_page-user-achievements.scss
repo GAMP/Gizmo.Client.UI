@@ -194,6 +194,8 @@
 }
 
 //=============== Grafit: achievements ================//
+// A collection: square art in colour once earned and a grey silhouette until then, the name,
+// where it stands, and a thin meter at the foot while it is in progress.
 
 .giz-achievements {
     margin-top: 0;
@@ -219,21 +221,20 @@
 .giz-achievement-card {
     width: auto;
     min-height: 0;
-    gap: 0.9rem;
-    padding: 2.2rem 1.4rem 1.8rem;
-    text-align: center;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1.6rem 1.6rem 1.8rem;
+    text-align: left;
     cursor: pointer;
     @include giz-profile-card;
 
-    &--earned {
-        background: rgba(var(--giz-accent-rgb), 0.08);
-        border-color: rgba(var(--giz-accent-rgb), 0.45);
+    &:hover,
+    &--active {
+        @include giz-profile-card-hover;
     }
 
-    &:hover,
-    &--active,
     &--highlighted {
-        @include giz-profile-card-hover;
+        border-color: var(--giz-accent-soft);
     }
 
     &__info {
@@ -242,112 +243,117 @@
         color: var(--giz-text-2);
     }
 
-    &__mark {
-        position: relative;
-        flex: none;
-        width: 7.2rem;
-        height: 7.2rem;
-        margin-top: 0.4rem;
-    }
-
-    &__ring {
-        @include giz-ring-svg(-0.6rem);
-    }
-
-    &__track {
-        @include giz-ring-track(2.4);
-    }
-
-    // r = 18
-    &__bar {
-        @include giz-ring-bar(113.1, 2.4);
-    }
-
-    &--earned &__bar {
-        stroke: var(--giz-accent);
-    }
-
-    &__check {
-        position: absolute;
-        right: -0.5rem;
-        bottom: -0.5rem;
-        z-index: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 2.6rem;
-        height: 2.6rem;
-        border-radius: 50%;
-        background: var(--giz-success);
-        border: 0.2rem solid var(--giz-bg-1);
-        color: var(--giz-night);
-        font-size: 1.4rem;
-    }
-
     &__name {
-        margin-top: 0.4rem;
+        margin-top: 0.8rem;
         min-height: 0;
+        text-align: left;
         font-family: inherit;
         font-size: 1.5rem;
-        font-weight: 800;
-        line-height: 1.2;
+        font-weight: 700;
+        line-height: 1.25;
         color: var(--giz-text-1);
     }
 
     &__standing,
     &--earned &__standing {
         margin-top: 0;
+        text-align: left;
+        font-family: $font-family-numeric-theme-client;
         font-size: 1.3rem;
-        color: var(--giz-text-3);
         font-variant-numeric: tabular-nums;
-    }
-
-    &--earned &__standing {
-        color: var(--giz-accent-pale);
+        color: var(--giz-text-3);
     }
 
     &__chip {
         margin-top: 0;
-        padding: 0.3rem 0.9rem;
-        border-radius: $giz-r-pill;
-        background: rgba(var(--giz-success-rgb), 0.14);
-        border: 1px solid rgba(var(--giz-success-rgb), 0.3);
-        color: var(--giz-success-light);
-        font-size: 1.2rem;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: none;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.1rem;
         font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--giz-text-off);
+
+        &--success {
+            color: var(--giz-text-3);
+        }
+    }
+
+    &__meter {
+        display: block;
+        width: 100%;
+        height: 0.3rem;
+        margin-top: auto;
+        border-radius: 0.15rem;
+        background: var(--giz-glass-6);
+        overflow: hidden;
+
+        &::after {
+            content: '';
+            display: block;
+            width: calc(var(--giz-ring-progress, 0) * 1%);
+            height: 100%;
+            background: var(--giz-accent);
+        }
     }
 }
 
 .giz-achievement-card .giz-achievement-tile {
-    width: 100%;
-    height: 100%;
+    width: 5.6rem;
+    height: 5.6rem;
     margin-top: 0;
-    border-radius: 50%;
+    border-radius: 1.2rem;
 
     &__image,
     &__fallback {
-        border-radius: 50%;
+        border-radius: 1.2rem;
     }
 
     &__fallback {
-        background: var(--giz-glass-5);
-        color: var(--giz-text-2);
+        background: var(--giz-glass-10);
+        color: var(--giz-text-1);
 
         .giz-icon {
-            width: 3rem;
-            height: 3rem;
+            width: 2.8rem;
+            height: 2.8rem;
         }
     }
 
+    // How many times: plain figures beside the art.
     &__count {
-        top: -1.2rem;
-        border-color: var(--giz-bg-1);
+        top: 0;
+        left: calc(100% + 0.8rem);
+        right: auto;
+        min-width: 0;
+        height: auto;
+        padding: 0;
+        transform: none;
+        border: 0;
+        border-radius: 0;
+        background: none;
+        color: var(--giz-text-2);
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.3rem;
+        font-weight: 700;
+        line-height: 1.3;
     }
 }
 
-.giz-achievement-card--earned .giz-achievement-tile__fallback {
-    background: rgba(var(--giz-accent-rgb), 0.22);
-    color: var(--giz-accent-pale);
+// Not earned yet: a silhouette; earning is what brings the colour.
+.giz-achievement-card:not(.giz-achievement-card--earned) {
+    .giz-achievement-tile__image {
+        filter: grayscale(1);
+        opacity: 0.7;
+    }
+
+    .giz-achievement-tile__fallback {
+        background: var(--giz-glass-3);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-6);
+        color: var(--giz-text-off);
+    }
 }
 
 .giz-achievement-popup {

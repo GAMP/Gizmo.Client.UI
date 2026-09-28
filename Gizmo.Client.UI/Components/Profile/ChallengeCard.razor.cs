@@ -25,15 +25,15 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        private string ArtIcon => Item.IsDone ? "ph-check" : "ph-flag-checkered";
-
         private string WindowClass => Item.WindowIsWarning
             ? "giz-challenge-card__window giz-challenge-card__window--warning"
             : "giz-challenge-card__window";
 
-        private string ChipClass => Item.ChipIsSuccess
-            ? "giz-challenge-card__chip giz-challenge-card__chip--success"
-            : "giz-challenge-card__chip";
+        private bool ShowStateChip => Item.HasChip && !Item.ChipIsSuccess;
+
+        private bool ShowMeta => !string.IsNullOrEmpty(Item.WindowText) || ShowStateChip;
+
+        private bool HasRewards => Item.Rewards.Any();
 
         private UserChallengeRequirementViewState NextRequirement =>
             Item.IsDone || Item.IsEnded ? null : Item.Requirements.FirstOrDefault(a => !a.IsMet);
@@ -44,11 +44,29 @@ namespace Gizmo.Client.UI.Components
             ? "giz-challenge-card__segment giz-challenge-card__segment--met"
             : "giz-challenge-card__segment";
 
+        private string RequirementClass(UserChallengeRequirementViewState requirement)
+        {
+            if (requirement.IsMet)
+                return "giz-challenge-card__step giz-challenge-card__step--met";
+
+            return ReferenceEquals(requirement, NextRequirement)
+                ? "giz-challenge-card__step giz-challenge-card__step--next"
+                : "giz-challenge-card__step";
+        }
+
+        private string RequirementIcon(UserChallengeRequirementViewState requirement)
+        {
+            if (requirement.IsMet)
+                return "ph-bold ph-check";
+
+            return ReferenceEquals(requirement, NextRequirement) ? "ph-bold ph-arrow-right" : "ph ph-circle";
+        }
+
         private static string RewardIcon(UserChallengeRewardViewState reward) => reward.Kind switch
         {
-            ChallengeRewardKind.Points => "ph-coins",
-            ChallengeRewardKind.Time => "ph-clock",
-            _ => "ph-gift",
+            ChallengeRewardKind.Points => "ph-fill ph-coins giz-challenge-card__reward-icon giz-challenge-card__reward-icon--points",
+            ChallengeRewardKind.Time => "ph-fill ph-clock giz-challenge-card__reward-icon",
+            _ => "ph-fill ph-gift giz-challenge-card__reward-icon",
         };
     }
 }
