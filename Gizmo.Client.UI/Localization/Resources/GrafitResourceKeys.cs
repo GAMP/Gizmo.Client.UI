@@ -5,8 +5,6 @@
         public const string SHELL_HERO_EMPTY = nameof(SHELL_HERO_EMPTY);
         public const string SHELL_HERO_PROMOS = nameof(SHELL_HERO_PROMOS);
         public const string SHELL_HERO_POPULAR = nameof(SHELL_HERO_POPULAR);
-        public const string SHELL_HERO_PREVIOUS = nameof(SHELL_HERO_PREVIOUS);
-        public const string SHELL_HERO_NEXT = nameof(SHELL_HERO_NEXT);
         public const string SHELL_HOME_GAMES_SECTION = nameof(SHELL_HOME_GAMES_SECTION);
         public const string SHELL_HOME_TIME_PACKAGES = nameof(SHELL_HOME_TIME_PACKAGES);
         public const string SHELL_HOME_NO_PACKAGES = nameof(SHELL_HOME_NO_PACKAGES);
