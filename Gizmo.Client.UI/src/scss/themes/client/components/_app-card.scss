@@ -277,8 +277,8 @@ $ac-plate: rgba(var(--giz-scrim-rgb), 0.86);                       // plate and 
             img {
                 width: 100%;
                 height: 100%;
-                border-radius: 0.6rem;
-                object-fit: contain;
+                border-radius: 50%;
+                object-fit: cover;
             }
         }
 
@@ -292,12 +292,18 @@ $ac-plate: rgba(var(--giz-scrim-rgb), 0.86);                       // plate and 
             }
         }
 
-        // Install progress spans the whole pill: under a 26px icon it had nowhere to sit.
         .giz-universal-executable-progress-bar {
-            left: 0.5rem;
-            right: 0.5rem;
-            bottom: 0.3rem;
-            width: auto;
+            --giz-exe-ring-w: 0.16rem;
+            --giz-exe-ring-inset: -0.24rem;
+        }
+
+        &:hover,
+        &:only-child {
+            .giz-universal-executable-progress-bar {
+                --giz-exe-ring-colour: var(--giz-on-accent);
+                --giz-exe-ring-track: rgba(var(--giz-black-rgb), 0.2);
+                filter: none;
+            }
         }
 
         &:hover {

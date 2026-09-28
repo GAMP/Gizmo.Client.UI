@@ -3,7 +3,7 @@
 @using Gizmo.Client.UI.Services
 @using Gizmo.Client.UI.View.States
 
-<div class="giz-ladder-card">
+<div class="giz-ladder-card" data-rank="@ViewState.CurrentOrdinal">
     <div class="giz-ladder-period">
         <span>@ViewState.PeriodText</span>
         <span class="giz-ladder-period__dot">·</span>
@@ -126,7 +126,7 @@
         </div>
     }
 
-    <div class="giz-ladder-levels">
+    <div class="giz-ladder-levels" style="--giz-ring-progress: @RingValue">
         <div class="giz-ladder-levels__label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_ALL_LEVELS))</div>
         <div class="giz-ladder-levels__list">
             @foreach (var level in ViewState.Levels)

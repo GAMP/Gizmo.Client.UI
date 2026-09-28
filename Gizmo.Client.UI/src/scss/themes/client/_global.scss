@@ -111,12 +111,12 @@ a {
         height: 2.9em;
         flex: none;
         border-radius: 50%;
-        overflow: hidden;
         background: rgba(var(--giz-black-rgb), 0.25);
 
         img {
             width: 100%;
             height: 100%;
+            border-radius: 50%;
             object-fit: cover;
         }
 
@@ -128,10 +128,9 @@ a {
     }
 
     .giz-universal-executable-progress-bar {
-        left: 18%;
-        right: 18%;
-        bottom: 0.32em;
-        width: auto;
+        --giz-exe-ring-w: 0.14em;
+        --giz-exe-ring-inset: -0.22em;
+        padding-bottom: 0.3em;
     }
 
     .giz-universal-executable__description {
@@ -158,8 +157,14 @@ a {
 
     &:hover { background: var(--giz-action-bg); filter: brightness(1.1); }
 
-    // The running mark is accent coloured, invisible on the accent pill.
+    // The running mark and the launch ring are accent coloured, invisible on the accent pill.
     .running { background: rgba(var(--giz-scrim-rgb), 0.85); }
+
+    .giz-universal-executable-progress-bar {
+        --giz-exe-ring-colour: var(--giz-action-ink);
+        --giz-exe-ring-track: rgba(var(--giz-black-rgb), 0.2);
+        filter: none;
+    }
 }
 
 @mixin giz-action-tonal {

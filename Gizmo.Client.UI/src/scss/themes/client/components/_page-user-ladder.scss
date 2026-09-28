@@ -659,18 +659,70 @@
 }
 
 //=============== Grafit: ladder ================//
+// The level card is the Progress tab's hero: the emblem left of the level and its score, the
+// level's number as a watermark, and every level as a road across the card below.
+
+$gl-node: 4.6rem;       // the box every stop of the road sits in (the current stop fills it)
+$gl-stop: 3.4rem;       // a stop that is not the current one
+$gl-gap: 0.5rem;        // air between a stop and the road
 
 .giz-ladder-card {
-    gap: 1.8rem;
-    padding: clamp(1.8rem, 1.6vw, 2.8rem);
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+        "mark period"
+        "mark body"
+        "mark track"
+        "reqs reqs"
+        "banner banner"
+        "levels levels";
+    column-gap: clamp(2.4rem, 3vw, 4.8rem);
+    row-gap: 0;
+    align-items: start;
+    align-content: start;
+    padding: clamp(2.2rem, 2.2vw, 3.6rem);
     @include giz-profile-card;
     background:
-        linear-gradient(176deg, rgba(var(--giz-accent-rgb), 0.12) 0%, rgba(var(--giz-accent-rgb), 0) 40%),
+        radial-gradient(52rem 34rem at 9rem 8rem, rgba(var(--giz-accent-rgb), 0.3), rgba(var(--giz-accent-rgb), 0) 70%),
         linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.55), rgba(var(--giz-glass-2-rgb), 0.7));
-    border-color: rgba(var(--giz-accent-rgb), 0.26);
+    border-color: rgba(var(--giz-accent-rgb), 0.28);
+    box-shadow:
+        inset 0 1px 0 var(--giz-glass-10),
+        0 3rem 8rem -4rem rgba(var(--giz-accent-rgb), 0.45);
+
+    // The level's number, outlined, behind everything; clipped by its own box so the card
+    // itself need not clip (its popups leave it).
+    &::before {
+        content: attr(data-rank);
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-start;
+        padding: 0 clamp(2rem, 3vw, 5rem);
+        overflow: hidden;
+        border-radius: inherit;
+        font-family: $font-family-header-theme-client;
+        font-size: clamp(18rem, 12rem + 10vw, 30rem);
+        font-weight: 800;
+        line-height: 0.82;
+        letter-spacing: -0.06em;
+        color: transparent;
+        -webkit-text-stroke: 0.2rem rgba(var(--giz-accent-rgb), 0.16);
+        pointer-events: none;
+    }
+}
+
+.giz-ladder-level-block,
+.giz-ladder-level {
+    display: contents;
 }
 
 .giz-ladder-period {
+    grid-area: period;
     flex-wrap: wrap;
     gap: 0.6rem;
     font-family: $font-family-header-theme-client;
@@ -703,33 +755,47 @@
     border-radius: 50%;
 }
 
+// ── the emblem ────────────────────────────────────────────────────────────
 .giz-ladder-level {
-    gap: clamp(1.6rem, 1.8vw, 2.6rem);
-
     &__mark {
+        grid-area: mark;
+        align-self: center;
         position: relative;
-        flex: none;
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 9.6rem;
-        height: 9.6rem;
+        width: clamp(11rem, 8rem + 4vw, 15rem);
+        aspect-ratio: 1;
+
+        // A dashed orbit outside the ring.
+        &::before {
+            content: '';
+            position: absolute;
+            inset: -1rem;
+            border-radius: 50%;
+            border: 1px dashed var(--giz-glass-10);
+        }
 
         .giz-ladder-badge {
-            width: 6.8rem;
-            height: 6.8rem;
+            width: 72%;
+            height: 72%;
             overflow: hidden;
-            background: radial-gradient(circle at 35% 30%, rgba(var(--giz-accent-rgb), 0.55), rgba(var(--giz-accent-rgb), 0.12) 70%);
-            border: 1px solid rgba(var(--giz-accent-rgb), 0.4);
+            background:
+                radial-gradient(circle at 35% 28%, rgba(var(--giz-white-rgb), 0.28), rgba(var(--giz-white-rgb), 0) 45%),
+                radial-gradient(circle at 50% 50%, var(--giz-accent), var(--giz-accent-deep));
+            box-shadow:
+                0 0 0 0.6rem rgba(var(--giz-accent-rgb), 0.12),
+                0 1.6rem 4rem -1rem rgba(var(--giz-accent-rgb), 0.7),
+                inset 0 -0.6rem 1.6rem rgba(var(--giz-black-rgb), 0.25);
         }
 
         .giz-ladder-rank {
             width: 100%;
             height: 100%;
             background: transparent;
-            color: var(--giz-accent-pale);
-            font-size: 2.6rem;
-            letter-spacing: -0.04em;
+            color: var(--giz-on-accent);
+            font-size: clamp(3.6rem, 2.6rem + 1.6vw, 5.2rem);
+            letter-spacing: -0.05em;
             line-height: 1;
         }
     }
@@ -739,40 +805,54 @@
     }
 
     &__track {
-        @include giz-ring-track(2.4);
+        @include giz-ring-track(1.6);
     }
 
     // r = 18
     &__bar {
-        @include giz-ring-bar(113.1, 2.4);
+        @include giz-ring-bar(113.1, 1.6);
+        filter: drop-shadow(0 0 0.6rem rgba(var(--giz-accent-rgb), 0.8));
+    }
+
+    &__body {
+        grid-area: body;
+        margin-top: 0.8rem;
     }
 
     &__name {
         font-family: $font-family-header-theme-client;
-        font-size: clamp(2.2rem, 1.8rem + 0.5vw, 2.8rem);
+        font-size: clamp(3rem, 2.2rem + 1.4vw, 4.6rem);
         font-weight: 800;
-        letter-spacing: -0.02em;
-        line-height: 1.1;
+        letter-spacing: -0.03em;
+        line-height: 1.02;
         color: var(--giz-text-1);
     }
 
     &__score {
-        margin-top: 0.4rem;
+        margin-top: 0.8rem;
+        gap: 0.8rem;
     }
 
     &__score-value {
+        font-size: clamp(2.4rem, 1.9rem + 0.8vw, 3.2rem);
         font-weight: 800;
+        letter-spacing: -0.02em;
+        font-variant-numeric: tabular-nums;
         color: var(--giz-accent-pale);
     }
 
-    &__score-unit,
+    &__score-unit {
+        font-size: 1.4rem;
+        color: var(--giz-text-2);
+    }
+
     &__score-info {
         color: var(--giz-text-3);
     }
 
     &__status {
-        margin-top: 0.4rem;
-        font-size: 1.4rem;
+        margin-top: 0.6rem;
+        font-size: 1.5rem;
         color: var(--giz-text-2);
 
         &--warning {
@@ -781,42 +861,52 @@
     }
 }
 
+// ── the way to the next level ───────────────────────────────────────────
+.giz-ladder-progress,
+.giz-ladder-segments {
+    grid-area: track;
+    margin-top: 2.2rem;
+    max-width: 72rem;
+}
+
 .giz-ladder-progress {
     &__track {
-        height: 0.7rem;
+        height: 1rem;
         border-radius: $giz-r-pill;
-        background: var(--giz-glass-8);
+        background: var(--giz-glass-7);
+        box-shadow: inset 0 1px 0.2rem rgba(var(--giz-black-rgb), 0.35);
         overflow: visible;
     }
 
     &__fill {
         border-radius: $giz-r-pill;
-        background: linear-gradient(90deg, rgba(var(--giz-accent-rgb), 0.55), var(--giz-accent));
+        background: linear-gradient(90deg, rgba(var(--giz-accent-rgb), 0.5), var(--giz-accent-light));
+        box-shadow: 0 0 1.6rem rgba(var(--giz-accent-rgb), 0.55);
 
         &--secured {
             background: var(--giz-success);
+            box-shadow: 0 0 1.6rem rgba(var(--giz-success-rgb), 0.45);
         }
     }
 
     &__knob {
-        top: -0.25rem;
-        width: 1.2rem;
-        height: 1.2rem;
-        background: var(--giz-bg-1);
-        border: 0.2rem solid var(--giz-glass-12);
-
         &--start {
-            left: -0.2rem;
-            border-color: var(--giz-accent-light);
-            background: var(--giz-accent);
+            display: none;
         }
 
+        // The goal: a ring at the end of the track.
         &--end {
-            right: -0.2rem;
+            top: -0.4rem;
+            right: -0.9rem;
+            width: 1.8rem;
+            height: 1.8rem;
+            background: var(--giz-bg-1);
+            border: 0.3rem solid var(--giz-glass-12);
         }
     }
 
     &__labels {
+        padding-top: 1rem;
         font-size: 1.3rem;
         color: var(--giz-text-3);
         font-variant-numeric: tabular-nums;
@@ -839,16 +929,17 @@
     }
 
     &__track {
-        gap: 0.5rem;
+        gap: 0.6rem;
     }
 
     &__segment {
-        height: 0.7rem;
+        height: 1rem;
         border-radius: $giz-r-pill;
-        background: var(--giz-glass-8);
+        background: var(--giz-glass-7);
 
         &--lit {
-            background: var(--giz-accent);
+            background: var(--giz-accent-light);
+            box-shadow: 0 0 1.2rem rgba(var(--giz-accent-rgb), 0.5);
         }
     }
 
@@ -859,6 +950,24 @@
 
     &__count-value,
     &__count-unit {
+        color: var(--giz-text-1);
+    }
+}
+
+.giz-ladder-requirements {
+    grid-area: reqs;
+    margin-top: 2.6rem;
+}
+
+.giz-ladder-banner {
+    grid-area: banner;
+    margin-top: 2.6rem;
+    border-radius: 1.4rem;
+    background: rgba(var(--giz-success-rgb), 0.14);
+    border: 1px solid rgba(var(--giz-success-rgb), 0.3);
+    color: var(--giz-success-light);
+
+    &__title {
         color: var(--giz-text-1);
     }
 }
@@ -903,59 +1012,55 @@
     }
 }
 
-.giz-ladder-banner {
-    border-radius: 1.4rem;
-    background: rgba(var(--giz-success-rgb), 0.14);
-    border: 1px solid rgba(var(--giz-success-rgb), 0.3);
-    color: var(--giz-success-light);
+// ── the road: every level a stop ─────────────────────────────────────────
+.giz-ladder-levels {
+    grid-area: levels;
+    gap: 1.2rem;
+    margin-top: 3rem;
+    padding-top: 2.4rem;
+    border-top: 1px solid var(--giz-glass-6);
 
-    &__title {
-        color: var(--giz-text-1);
+    &__list {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 0;
     }
 }
 
 .giz-ladder-level-row {
-    border-radius: 1.2rem;
+    flex: 1 1 0;
+    min-width: 0;
+    display: grid;
+    grid-template-rows: 2.2rem $gl-node auto auto;
+    justify-items: center;
+    row-gap: 0.7rem;
+    min-height: 0;
+    padding: 0.8rem 0.4rem 1rem;
+    border: 0;
+    border-radius: 1.6rem;
+    text-align: center;
     color: var(--giz-text-2);
 
     &:hover,
     &--selected {
-        background: rgba(var(--giz-accent-rgb), 0.1);
-        border-color: rgba(var(--giz-accent-rgb), 0.45);
-        border-radius: 1.2rem;
-    }
-
-    &--current {
+        border-radius: 1.6rem;
         background: rgba(var(--giz-accent-rgb), 0.08);
-
-        .giz-ladder-level-row__name {
-            color: var(--giz-text-1);
-            font-weight: 800;
-        }
-
-        .giz-ladder-rank {
-            background: var(--giz-accent);
-            color: var(--giz-on-accent);
-        }
     }
 
-    &__check,
-    &__info {
-        color: var(--giz-text-3);
-    }
-
-    .giz-ladder-rank {
-        width: 2.4rem;
-        height: 2.4rem;
+    &__check {
+        display: none;
     }
 
     &__chip {
+        grid-row: 1;
+        align-self: end;
         padding: 0.15rem 0.8rem;
         border-radius: $giz-r-pill;
         background: rgba(var(--giz-accent-rgb), 0.3);
         color: var(--giz-accent-pale);
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         font-weight: 700;
+        white-space: nowrap;
 
         &--next {
             background: var(--giz-glass-9);
@@ -973,10 +1078,139 @@
         }
     }
 
-    &__meta,
-    &--current &__meta {
+    .giz-ladder-badge {
+        grid-row: 2;
+        align-self: center;
+        position: relative;
+        z-index: 1;
+        width: $gl-stop;
+        height: $gl-stop;
+        overflow: hidden;
+        background: var(--giz-bg-1);
+        box-shadow: inset 0 0 0 0.2rem var(--giz-glass-10);
+        transition: box-shadow 0.15s;
+    }
+
+    .giz-ladder-rank {
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        color: var(--giz-text-3);
+        font-size: 1.3rem;
+    }
+
+    &__name {
+        grid-row: 3;
+        max-width: 100%;
+        font-size: 1.35rem;
+        color: var(--giz-text-2);
+    }
+
+    &__meta {
+        grid-row: 4;
+        margin-left: 0;
+        font-size: 1.2rem;
         color: var(--giz-text-3);
         font-variant-numeric: tabular-nums;
+    }
+
+    // The level's description: a small (i) on the stop's shoulder.
+    &__info {
+        position: absolute;
+        top: calc(0.8rem + 2.2rem + 0.7rem - 0.2rem);
+        left: calc(50% + #{$gl-stop} / 2 - 0.4rem);
+        z-index: 2;
+        color: var(--giz-text-3);
+    }
+
+    // The stretch of road to the next stop: a track, and a fill over it.
+    &:not(:last-child)::before,
+    &:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        top: calc(0.8rem + 2.2rem + 0.7rem + #{$gl-node} / 2 - 0.2rem);
+        left: calc(50% + #{$gl-node} / 2 + #{$gl-gap});
+        height: 0.4rem;
+        border-radius: $giz-r-pill;
+    }
+
+    &:not(:last-child)::before {
+        width: calc(100% - #{$gl-node} - 2 * #{$gl-gap});
+        background: var(--giz-glass-8);
+    }
+
+    &:not(:last-child)::after {
+        width: 0;
+        background: linear-gradient(90deg, var(--giz-accent), var(--giz-accent-light));
+        box-shadow: 0 0 1rem rgba(var(--giz-accent-rgb), 0.6);
+    }
+
+    // Stops already passed: lit, and so is the road from them.
+    &:has(~ .giz-ladder-level-row--current) {
+        .giz-ladder-badge {
+            background: var(--giz-accent);
+            box-shadow: none;
+        }
+
+        .giz-ladder-rank {
+            color: var(--giz-on-accent);
+        }
+
+        &::after {
+            width: calc(100% - #{$gl-node} - 2 * #{$gl-gap});
+        }
+    }
+
+    &--current {
+        .giz-ladder-badge {
+            width: $gl-node;
+            height: $gl-node;
+            background: radial-gradient(circle at 50% 35%, var(--giz-accent-light), var(--giz-accent-deep));
+            box-shadow:
+                0 0 0 0.5rem rgba(var(--giz-accent-rgb), 0.2),
+                0 0 2.8rem rgba(var(--giz-accent-rgb), 0.7);
+        }
+
+        .giz-ladder-rank {
+            color: var(--giz-on-accent);
+            font-size: 1.8rem;
+        }
+
+        .giz-ladder-level-row__name {
+            color: var(--giz-text-1);
+            font-weight: 800;
+        }
+
+        .giz-ladder-level-row__meta {
+            color: var(--giz-text-2);
+        }
+
+        &:not(:last-child)::after {
+            width: calc((100% - #{$gl-node} - 2 * #{$gl-gap}) * var(--giz-ring-progress, 0) / 100);
+        }
+    }
+
+    &--selected .giz-ladder-badge {
+        box-shadow: 0 0 0 0.25rem var(--giz-accent-light);
+    }
+
+    // The description popup opens under the stop, kept inside the card at both ends.
+    .giz-ladder-level-popup-wrapper {
+        top: calc(0.8rem + 2.2rem + 0.7rem + #{$gl-node} + 0.6rem);
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+    }
+
+    &:first-child .giz-ladder-level-popup-wrapper {
+        left: 0;
+        transform: none;
+    }
+
+    &:last-child .giz-ladder-level-popup-wrapper {
+        left: auto;
+        right: 0;
+        transform: none;
     }
 }
 
@@ -1040,5 +1274,25 @@
     &__date {
         color: var(--giz-text-3);
         font-variant-numeric: tabular-nums;
+    }
+}
+
+// A narrow column: the emblem above the words.
+@container (max-width: 64rem) {
+    .giz-progress-page__ladder .giz-ladder-card {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+            "mark"
+            "period"
+            "body"
+            "track"
+            "reqs"
+            "banner"
+            "levels";
+    }
+
+    .giz-progress-page__ladder .giz-ladder-level__mark {
+        justify-self: start;
+        margin: 1rem 0 1.6rem 1rem;
     }
 }

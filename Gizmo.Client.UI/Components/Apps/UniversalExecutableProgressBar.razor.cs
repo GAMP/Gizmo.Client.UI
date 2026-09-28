@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Globalization;
+using System.Threading.Tasks;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
@@ -35,6 +36,8 @@ namespace Gizmo.Client.UI.Components
 
         [Parameter]
         public int ExecutableId { get; set; }
+
+        private string ProgressValue => _appExeExecutionViewState.Progress.ToString("0.##", CultureInfo.InvariantCulture);
 
         protected override async Task OnInitializedAsync()
         {

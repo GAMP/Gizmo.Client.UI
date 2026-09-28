@@ -6,17 +6,63 @@
     grid-template-columns: min-content 1fr;
     cursor: pointer;
 
+    // Launch progress: a ring round the icon, filling while the size is known, a comet
+    // running round while it is not. Width, inset and colours are set per place.
     &-progress-bar {
+        --giz-exe-ring-w: 0.3rem;
+        --giz-exe-ring-inset: 0.2rem;
         position: absolute;
+        inset: 0;
         z-index: 3;
-        bottom: 0.1rem;
-        left: 0.7rem;
-        width: 4.8rem;
         display: flex;
+        align-items: flex-end;
         justify-content: center;
+        pointer-events: none;
 
-        .giz-progress-bar {
-            width: 100%;
+        &:has(> .giz-universal-executable-progress-bar__ring--spin) {
+            filter: drop-shadow(0 0 0.35rem rgba(var(--giz-accent-rgb), 0.55));
+        }
+
+        &__ring {
+            --giz-exe-ring-p: var(--giz-ring-progress, 0);
+            position: absolute;
+            inset: var(--giz-exe-ring-inset);
+            border-radius: 50%;
+            background: conic-gradient(var(--giz-exe-ring-colour, var(--giz-accent-light)) calc(var(--giz-exe-ring-p) * 1%), var(--giz-exe-ring-track, var(--giz-glass-9)) 0);
+            -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--giz-exe-ring-w) - 0.5px), var(--giz-black) calc(100% - var(--giz-exe-ring-w)));
+            mask: radial-gradient(farthest-side, transparent calc(100% - var(--giz-exe-ring-w) - 0.5px), var(--giz-black) calc(100% - var(--giz-exe-ring-w)));
+            transition: --giz-exe-ring-p 0.4s ease;
+
+            // Round ends: a dot where the ring starts, one where it has got to.
+            &::before,
+            &::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                border-radius: 50%;
+                background: radial-gradient(circle at 50% calc(var(--giz-exe-ring-w) / 2), var(--giz-exe-ring-colour, var(--giz-accent-light)) calc(var(--giz-exe-ring-w) / 2 - 0.5px), transparent calc(var(--giz-exe-ring-w) / 2));
+                opacity: clamp(0, var(--giz-exe-ring-p) * 1000, 1);
+            }
+
+            &::after {
+                transform: rotate(calc(var(--giz-exe-ring-p) * 3.6deg));
+            }
+
+            &--spin {
+                background:
+                    conic-gradient(transparent 0turn, transparent 0.3turn, var(--giz-exe-ring-colour, var(--giz-accent-light)) 1turn),
+                    var(--giz-exe-ring-track, var(--giz-glass-9));
+                animation: giz-exe-ring-spin 0.9s linear infinite;
+
+                &::before {
+                    content: none;
+                }
+
+                &::after {
+                    opacity: 1;
+                    transform: none;
+                }
+            }
         }
     }
 
@@ -32,6 +78,8 @@
             width: 4.8rem;
             height: 4.8rem;
             z-index: 2;
+            border-radius: 50%;
+            object-fit: cover;
         }
     }
 
@@ -82,4 +130,14 @@
             opacity: 1;
         }
     }
+}
+
+@property --giz-exe-ring-p {
+    syntax: '<number>';
+    inherits: false;
+    initial-value: 0;
+}
+
+@keyframes giz-exe-ring-spin {
+    to { transform: rotate(1turn); }
 }
