@@ -112,15 +112,29 @@
         @if (SlideCount > 1)
         {
             <div class="giz-home-dots" @key="SlideIndex">
-                @for (var i = 0; i < SlideCount; i++)
+                <button type="button" class="giz-home-dots__arrow" title="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HERO_PREVIOUS)" @onclick="PreviousSlide" @onclick:stopPropagation="true">
+                    <i class="ph-bold ph-caret-left"></i>
+                </button>
+                @if (ShowSlideDots)
                 {
-                    <span class="giz-home-dots__dot @(i == SlideIndex ? "giz-home-dots__dot--on" : null)">
-                        @if (i == SlideIndex)
-                        {
-                            <span class="giz-home-dots__fill"></span>
-                        }
-                    </span>
+                    @for (var i = 0; i < SlideCount; i++)
+                    {
+                        <span class="giz-home-dots__dot @(i == SlideIndex ? "giz-home-dots__dot--on" : null)">
+                            @if (i == SlideIndex)
+                            {
+                                <span class="giz-home-dots__fill"></span>
+                            }
+                        </span>
+                    }
                 }
+                else
+                {
+                    <span class="giz-home-dots__count">@SlidePositionText</span>
+                    <span class="giz-home-dots__dot giz-home-dots__dot--on"><span class="giz-home-dots__fill"></span></span>
+                }
+                <button type="button" class="giz-home-dots__arrow" title="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HERO_NEXT)" @onclick="NextSlide" @onclick:stopPropagation="true">
+                    <i class="ph-bold ph-caret-right"></i>
+                </button>
             </div>
         }
 

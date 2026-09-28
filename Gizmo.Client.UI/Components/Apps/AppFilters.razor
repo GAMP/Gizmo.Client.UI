@@ -16,12 +16,6 @@ else
 {
     @switch (ViewState.SelectedSortingOption)
     {
-        case ApplicationSortingOption.Popularity:
-
-            <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APP_FILTERS_POPULAR_APPS))</div>
-
-            break;
-
         case ApplicationSortingOption.AddDate:
 
             <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APP_FILTERS_RECENTLY_ADDED))</div>
@@ -34,6 +28,7 @@ else
 
             break;
 
+        case ApplicationSortingOption.Popularity:
         case ApplicationSortingOption.Title:
 
             <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APP_FILTERS_ALL_APPS))</div>

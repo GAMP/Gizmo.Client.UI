@@ -64,3 +64,34 @@
         margin-bottom: 3.2rem;
     }
 }
+
+//=============== Grafit: alert dialog ================//
+// The answers side by side across the dialog, square-ish like the dialog's other controls;
+// the first one (Yes / OK) is the action.
+
+.giz-client-alert-dialog {
+    color: var(--giz-text-1);
+
+    &__footer {
+        display: flex;
+        gap: 1.2rem;
+        width: 100%;
+
+        .giz-button {
+            flex: 1;
+            min-width: 12rem;
+            height: 4.8rem;
+            border-radius: 1.2rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+
+            .giz-button__progress-wrapper {
+                border-radius: 1.2rem;
+            }
+        }
+
+        .giz-button:first-child:not(.disabled) {
+            @include giz-action-primary;
+        }
+    }
+}

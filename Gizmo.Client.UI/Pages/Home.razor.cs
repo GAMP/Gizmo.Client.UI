@@ -28,6 +28,8 @@ namespace Gizmo.Client.UI.Pages
         #region CONSTANTS
 
         private const int HERO_SLIDES = 5;
+        private const int HERO_NEWS_CEILING = 30;
+        private const int HERO_DOTS = 10;
         private const int HERO_EXECUTABLES = 3;
         private const int BAR_ITEMS = 4;
         private const int STRIP_APPS = 4;
@@ -206,6 +208,10 @@ namespace Gizmo.Client.UI.Pages
 
         private int SlideIndex => SlideCount > 0 ? _slide % SlideCount : 0;
 
+        private bool ShowSlideDots => SlideCount <= HERO_DOTS;
+
+        private string SlidePositionText => $"{SlideIndex + 1} / {SlideCount}";
+
         private AdvertisementViewState? CurrentBanner =>
             Hero == HeroKind.Banner && Banners.Count > 0 ? Banners[SlideIndex] : null;
 
@@ -217,7 +223,7 @@ namespace Gizmo.Client.UI.Pages
 
         private List<AdvertisementViewState> Banners =>
             AdvertisementsViewState.Advertisements
-                .Take(HERO_SLIDES)
+                .Take(HERO_NEWS_CEILING)
                 .ToList();
 
         private bool HasPromo => Banners.Count > 0;
@@ -316,6 +322,19 @@ namespace Gizmo.Client.UI.Pages
             ApplySlideTimer();
 
             base.OnInitialized();
+        }
+
+        private void PreviousSlide() => StepSlide(SlideCount - 1);
+
+        private void NextSlide() => StepSlide(1);
+
+        private void StepSlide(int step)
+        {
+            if (SlideCount < 2)
+                return;
+
+            _slide = SlideIndex + step;
+            _slideTimer?.Change(SLIDE_INTERVAL, SLIDE_INTERVAL);
         }
 
         private void ApplySlideTimer()

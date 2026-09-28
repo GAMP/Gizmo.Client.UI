@@ -435,6 +435,37 @@ $tile:  var(--giz-tile);
         background: var(--giz-accent);
         animation: giz-dot-fill var(--giz-slide) linear forwards;
     }
+
+    // The arrows sit at the pill's ends, eating into its padding so it stays low.
+    &__arrow {
+        display: grid;
+        place-items: center;
+        width: 2.4rem;
+        height: 2.4rem;
+        margin: -0.4rem -0.2rem;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: none;
+        color: rgba(var(--giz-white-rgb), 0.72);
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+
+        &:hover {
+            background: var(--giz-glass-10);
+            color: var(--giz-text-1);
+        }
+    }
+
+    // Many slides: the position as figures instead of a row of dots.
+    &__count {
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.2rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        color: var(--giz-text-1);
+    }
 }
 
 @keyframes giz-dot-fill {
