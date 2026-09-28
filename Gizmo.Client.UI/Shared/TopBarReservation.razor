@@ -3,7 +3,11 @@
 
 @if (HasReservation)
 {
-    <button type="button" class="giz-resv @(IsClose ? "giz-resv--soon" : null) @(IsIgnored ? "giz-resv--ignored" : null)" disabled="@(!IsIgnored)" @onclick="OpenReservation">
+    <div class="giz-resv @(IsClose ? "giz-resv--soon" : null) @(IsIgnored ? "giz-resv--ignored" : null)"
+         role="@(IsIgnored ? "button" : null)"
+         tabindex="@(IsIgnored ? "0" : null)"
+         @onclick="OpenReservation"
+         @onkeydown="OnReservationKey">
         <i class="ph-fill ph-calendar-check giz-resv__icon"></i>
         <b class="giz-resv__lead">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_RESV_DEVICE_RESERVED)</b>
         <span class="giz-resv__at">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_RESV_FROM, StartText)</span>
@@ -15,5 +19,5 @@
         {
             <i class="ph-bold ph-caret-right giz-resv__go"></i>
         }
-    </button>
+    </div>
 }

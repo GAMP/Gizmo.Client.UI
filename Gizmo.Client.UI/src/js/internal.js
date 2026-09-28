@@ -1377,8 +1377,8 @@ let _layoutWatchLast = null;
 let _layoutWatchTick = null;
 let _layoutWatchInterval = 800;
 
-// What KeyA, KeyS and KeyO type: enough to tell the script, and Russian from Ukrainian
-// and Belarusian ("фыщ", "фіщ", "фіў").
+// What KeyA, KeyS and KeyO type: enough to tell the script, and Ukrainian ("фіщ") and
+// Belarusian ("фіў") from the layouts that share Russian's keys ("фыщ": ru, kk, ky, tt...).
 async function _probeLayoutSampleChar() {
     if (!navigator.keyboard || !navigator.keyboard.getLayoutMap) return null;
     try {

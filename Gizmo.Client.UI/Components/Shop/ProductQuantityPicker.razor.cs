@@ -73,7 +73,7 @@ namespace Gizmo.Client.UI.Components
 
         public Task OnBuyPackageClickHandler(MouseEventArgs args)
         {
-            if (_buying)
+            if (_buying || PackagePurchaseFlow.IsCartBusy(ClientServerCartViewService))
                 return Task.CompletedTask;
 
             _buying = true;

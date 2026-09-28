@@ -27,11 +27,11 @@
             <div class="giz-account__stats">
                 <div class="giz-account__stat giz-account__stat--money">
                     <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BALANCE))</small>
-                    <b>@Balance.Balance.ToString("C", CultureInfo.CurrentCulture)</b>
+                    <b>@BalanceText</b>
                 </div>
-                <div class="giz-account__stat">
+                <div class="giz-account__stat giz-account__stat--points">
                     <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_POINTS))</small>
-                    <b>@Balance.PointsBalance.ToString("N0", CultureInfo.CurrentCulture) <i class="ph-fill ph-coins"></i></b>
+                    <b>@PointsText <i class="ph-fill ph-coins"></i></b>
                 </div>
                 <div class="giz-account__stat">
                     <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_TIME))</small>
@@ -51,7 +51,32 @@
                     <div class="giz-account__stat giz-account__stat--credit">
                         <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PROFILE_HEADER_CREDIT))</small>
                         <b>
-                            @if (CreditUnlimited)
+                            @if (CreditIsMixed)
+                            {
+                                <span class="giz-account__credit-part" title="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PROFILE_CREDIT_TOOLTIP_TIME_CREDIT_DESCRIPTION))">
+                                    <i class="ph-bold ph-clock giz-account__credit-kind"></i>
+                                    @if (TimeCreditUnlimited)
+                                    {
+                                        <i class="ph-bold ph-infinity"></i>
+                                    }
+                                    else
+                                    {
+                                        @CreditLimitText
+                                    }
+                                </span>
+                                <span class="giz-account__credit-part" title="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PROFILE_CREDIT_TOOLTIP_SALES_CREDIT_DESCRIPTION))">
+                                    <i class="ph-bold ph-shopping-cart-simple giz-account__credit-kind"></i>
+                                    @if (SalesCreditUnlimited)
+                                    {
+                                        <i class="ph-bold ph-infinity"></i>
+                                    }
+                                    else
+                                    {
+                                        @CreditLimitText
+                                    }
+                                </span>
+                            }
+                            else if (CreditUnlimited)
                             {
                                 <i class="ph-bold ph-infinity"></i>
                             }

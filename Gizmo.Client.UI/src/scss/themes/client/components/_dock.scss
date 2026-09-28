@@ -17,14 +17,13 @@
         box-sizing: content-box;
 
         &-tooltip {
-            background: rgba(var(--giz-night-rgb), 0.97);
+            background: linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.97), rgba(var(--giz-glass-2-rgb), 0.985));
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--giz-glass-7);
-            box-shadow: 0 8px 32px rgba(var(--giz-black-rgb), 0.6),
-                        0 0 0 1px rgba(var(--giz-accent-rgb), 0.05);
-            border-radius: 1rem;
-            padding: 1.2rem;
+            box-shadow: 0 8px 32px rgba(var(--giz-black-rgb), 0.6);
+            border-radius: 1.6rem;
+            padding: 1.4rem 1.6rem;
             white-space: nowrap;
             min-width: 23.4rem;
             display: grid;
@@ -45,11 +44,15 @@
             }
 
             &__header {
-                @include font-s-theme-client($font-weight-bold-theme-client);
+                font-family: $font-family-header-theme-client;
+                font-size: 1.4rem;
+                font-weight: 700;
+                color: var(--giz-text-1);
             }
 
             &__body {
-                @include font-s-theme-client($font-weight-light-theme-client);
+                font-size: 1.3rem;
+                color: var(--giz-text-3);
             }
 
             &__actions {

@@ -39,9 +39,17 @@ namespace Gizmo.Client.UI.Components
 
         protected bool HasCredit => HasTimeCredit || HasSalesCredit;
 
-        protected bool CreditUnlimited =>
-            (HasTimeCredit && Credit.TimeCreditType == CreditType.Unlimited) ||
-            (HasSalesCredit && Credit.SalesCreditType == CreditType.Unlimited);
+        protected bool TimeCreditUnlimited => HasTimeCredit && Credit.TimeCreditType == CreditType.Unlimited;
+
+        protected bool SalesCreditUnlimited => HasSalesCredit && Credit.SalesCreditType == CreditType.Unlimited;
+
+        protected bool CreditUnlimited => TimeCreditUnlimited || SalesCreditUnlimited;
+
+        protected bool CreditIsMixed => HasTimeCredit && HasSalesCredit && TimeCreditUnlimited != SalesCreditUnlimited;
+
+        protected string BalanceText => Balance.Balance.ToString("C", CultureInfo.CurrentCulture);
+
+        protected string PointsText => Balance.PointsBalance.ToString("N0", CultureInfo.CurrentCulture);
 
         protected string CreditLimitText => Credit.CreditLimit.ToString("C", CultureInfo.CurrentCulture);
 

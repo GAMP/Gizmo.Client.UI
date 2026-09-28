@@ -107,7 +107,7 @@
                 }
             }
 
-            &.accent:not(.disabled) {
+            &.accent:not(.disabled):not([disabled]) {
                 border: 1px solid transparent;
                 transition: filter 0.18s, box-shadow 0.18s;
                 @include giz-action-primary;
@@ -117,7 +117,7 @@
         &--outline {
             background-color: unset;
             border: 1px solid rgba(var(--giz-frost-rgb), 0.18);
-            color: rgba(var(--giz-white-rgb), 0.75);
+            color: var(--giz-text-2);
             transition: border-color 0.18s, color 0.18s, box-shadow 0.18s;
 
             &.info {
@@ -141,7 +141,7 @@
 
         &--text {
             background-color: unset;
-            color: rgba(var(--giz-white-rgb), 0.75);
+            color: var(--giz-text-2);
             transition: color 0.15s;
 
             &:hover {

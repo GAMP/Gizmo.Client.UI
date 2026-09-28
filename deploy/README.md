@@ -7,11 +7,12 @@ installer. It is also where the skin is built into a package (`stage.ps1`).
 
 1. Unpack the zip anywhere on the server machine.
 2. Run `install.bat` (it asks for administrator rights - the skins folder is under
-   Program Files). It puts the skin together next to itself - `skin\` plus
-   `wwwroot\_framework` and `static\` from the server's own `Next` skin (an empty
-   `static\` if `Next` has none) - checks it, and only then replaces
-   `<Gizmo Server>\skins\Grafit\`. Whatever was there before is kept under
-   `backup\<timestamp>\`; if the copy fails half-way, it is put back.
+   Program Files). It puts the skin together in `%ProgramData%\Grafit\staging` - `skin\`
+   plus `wwwroot\_framework` and `static\` from the server's own `Next` skin (an empty
+   `static\` if `Next` has none) - checks it, and only then swaps it in for
+   `<Gizmo Server>\skins\Grafit\` by renaming, so a locked file stops it before anything
+   changes. What was there before is kept in `%ProgramData%\Grafit\backup\<timestamp>\`,
+   shared by every release you install: the state before Grafit and the last five installs.
 3. In the Manager, point a host group at the skin: Host groups -> the group -> Skin =
    `Grafit`. (A Skin profile with custom CSS is optional - see "Colour" below.)
 4. Restart the client on the affected PCs - fully, not a re-login. The server hands the
@@ -32,8 +33,10 @@ The stock `Next` skin is never touched.
   which. A skin built for another release fails to load on the client (the host's
   assemblies differ). The installer compares it with the server's `GizmoService.dll` and
   warns on a mismatch.
-- **Client.** The shell needs Gizmo Client **3.0.94 or newer** on the PCs (the `Client`
-  line of `grafit.version.txt`). An older client does not start it.
+- **Client.** The shell needs the Gizmo Client release that brought the ladder,
+  achievements and challenges - **newer than 3.0.95** (the `Client` line of
+  `grafit.version.txt`). On 3.0.95 and older the shell stops with an error page right
+  after sign-in: the header and the account page use the ladder's data.
 - **After every Gizmo Server update, run `install.bat` again.** `wwwroot\_framework` (the
   Blazor runtime of the server version) and `static\` (the club's pictures served as
   `https://static/`, including the sign-in rotator's fallback images) are copied from

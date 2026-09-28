@@ -419,7 +419,7 @@ $buy-on-accent: var(--giz-on-accent);
         box-shadow: inset 0 0 0 1px rgba(var(--giz-danger-soft-rgb), 0.22);
         font-size: 1.35rem;
         line-height: 1.35;
-        color: rgba(var(--giz-ink-rgb), 0.78);
+        color: var(--giz-text-1);
     }
 
     &__short-sum {
@@ -474,7 +474,7 @@ $buy-on-accent: var(--giz-on-accent);
                 filter: brightness(1.08);
             }
 
-            &:disabled { @include giz-action-off; }
+            &:disabled:not(.giz-buy__btn--busy) { @include giz-action-off; }
 
             &.giz-buy__btn--busy {
                 background: var(--giz-action-bg);

@@ -161,6 +161,36 @@ $ac-line-2: var(--giz-glass-11);
         &--money b {
             color: var(--giz-success-green);
         }
+
+        // The HUD's eye hides the money here too.
+        .giz-root--figures-hidden &--money b,
+        .giz-root--figures-hidden &--points b {
+            font-size: 0;
+
+            > * { display: none; }
+
+            &::after {
+                content: "\2022\2022\2022\2022\2022";
+                font-size: clamp(1.9rem, 1.5rem + 0.5vw, 2.5rem);
+                letter-spacing: 0.2em;
+                color: var(--giz-text-3);
+            }
+        }
+
+        // Time and sales credit differ (one unlimited, one not): one figure each.
+        b .giz-account__credit-part {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3em;
+            max-width: none;
+            font-size: inherit;
+            line-height: inherit;
+            color: inherit;
+
+            & + .giz-account__credit-part { margin-left: 0.6em; }
+
+            .giz-account__credit-kind { color: var(--giz-text-3); }
+        }
     }
 
     // ── tabs: the same segmented control the payment chooser uses ────────
@@ -230,7 +260,7 @@ $ac-line-2: var(--giz-glass-11);
         font-size: 1.1rem;
         font-weight: 500;
         letter-spacing: 0.04em;
-        color: rgba(var(--giz-ink-rgb), 0.28);
+        color: var(--giz-text-off);
         user-select: text;
     }
 }

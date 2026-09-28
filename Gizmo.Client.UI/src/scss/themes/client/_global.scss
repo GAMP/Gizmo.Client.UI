@@ -50,7 +50,7 @@ a {
 }
 
 // Keyboard focus, the same ring on every control. Text fields keep their own focus look.
-[#{$client-theme-comp-attr}] :is(button, a, [role="button"], [tabindex]:not(input):not(textarea)):focus-visible {
+[#{$client-theme-comp-attr}] :is(button, a, [role="button"], [tabindex]:not([tabindex="-1"]):not(input):not(textarea)):focus-visible {
     outline: 2px solid var(--giz-focus);
     outline-offset: 2px;
 }
@@ -160,6 +160,20 @@ a {
 
     // The running mark is accent coloured, invisible on the accent pill.
     .running { background: rgba(var(--giz-scrim-rgb), 0.85); }
+}
+
+@mixin giz-action-tonal {
+    border: 0;
+    border-radius: $giz-r-pill;
+    background: var(--giz-action-tonal-bg);
+    box-shadow: inset 0 0 0 1px var(--giz-action-tonal-line);
+    color: var(--giz-action-tonal-ink);
+
+    &:hover {
+        background: var(--giz-action-bg);
+        box-shadow: none;
+        color: var(--giz-action-ink);
+    }
 }
 
 @mixin giz-scroll-fade($depth: 3.6rem) {

@@ -81,7 +81,6 @@ namespace Gizmo.Client.UI.Components
 
             return (sample[1], sample[2]) switch
             {
-                ('ы', 'щ') => "ru",
                 ('і', 'ў') => "be",
                 ('і', 'щ') => "uk",
                 _ => null,
@@ -106,15 +105,13 @@ namespace Gizmo.Client.UI.Components
             if (current is not null && ScriptOf(current) == script)
                 return Task.CompletedTask;
 
-            var uiLanguage = LocalizationViewState.CurrentCulture?.TwoLetterISOLanguageName;
-
-            var match = ViewState.AvailableInputLanguages
+            var candidates = ViewState.AvailableInputLanguages
                 .Select(a => a.TwoLetterISOLanguageName)
                 .Where(a => ScriptOf(a) == script)
-                .OrderBy(a => string.Equals(a, uiLanguage, StringComparison.OrdinalIgnoreCase) ? 0 : 1)
-                .FirstOrDefault();
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
 
-            return match is null ? Task.CompletedTask : ApplyDetectedLanguageAsync(match);
+            return candidates.Count == 1 ? ApplyDetectedLanguageAsync(candidates[0]) : Task.CompletedTask;
         }
 
         private Task ApplyDetectedLanguageAsync(string twoLetterIsoName)

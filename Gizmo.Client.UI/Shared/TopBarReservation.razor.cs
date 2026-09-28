@@ -5,6 +5,7 @@ using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Globalization;
 using System.Threading;
@@ -44,6 +45,9 @@ namespace Gizmo.Client.UI.Shared
 
         private Task OpenReservation() =>
             IsIgnored ? ReservationService.ShowDialog() : Task.CompletedTask;
+
+        private Task OnReservationKey(KeyboardEventArgs args) =>
+            args.Key is "Enter" or " " ? OpenReservation() : Task.CompletedTask;
 
         private string? CountdownText
         {

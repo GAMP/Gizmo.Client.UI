@@ -256,6 +256,8 @@ namespace Gizmo.Client.UI.Components
 
         public override void Dispose()
         {
+            NavigationManager.LocationChanged -= NavigationManager_LocationChanged;
+
             try
             {
                 if (_previousCommand != null)
@@ -267,8 +269,6 @@ namespace Gizmo.Client.UI.Components
                 {
                     Parent.Unregister(this);
                 }
-
-                NavigationManager.LocationChanged -= NavigationManager_LocationChanged;
             }
             catch (Exception) { }
 

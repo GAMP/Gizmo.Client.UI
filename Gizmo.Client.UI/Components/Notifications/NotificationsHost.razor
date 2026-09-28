@@ -15,15 +15,16 @@
              @onmouseout="OnMouseOutHandler"
              id="@Id"
              @ref="@Ref">
-            @if (_visible.Count > 1)
-            {
-                <div class="giz-notifications__header">
-                    <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_NOTIFICATIONS_TITLE))</span>
-                    <button type="button" class="giz-notifications__close" @onclick="CloseNotifications" aria-label="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CLOSE))">
+            <div class="giz-notifications__header">
+                <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_NOTIFICATIONS_TITLE))</span>
+                @if (_visible.Count > 1)
+                {
+                    <button type="button" class="giz-notifications__close" @onclick="CloseNotifications">
+                        <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_NOTIFICATIONS_CLOSE_ALL)</span>
                         <i class="ph-bold ph-x"></i>
                     </button>
-                </div>
-            }
+                }
+            </div>
             <div class="giz-notifications__body">
                 @foreach (var controller in _visible)
                 {

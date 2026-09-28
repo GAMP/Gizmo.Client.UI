@@ -6,7 +6,11 @@
     # Where Gizmo Server is installed. The skin goes into its skins folder.
     [string]$ServerRoot = 'C:\Program Files\NETProjects\Gizmo Server',
     # The skin's folder name = the name the Manager shows for it.
-    [string]$SkinName = 'Grafit'
+    [string]$SkinName = 'Grafit',
+    # Backups and the staging folder: outside the package, so every release shares them.
+    [string]$DataRoot = (Join-Path $env:ProgramData 'Grafit'),
+    # Installs kept for rollback, besides the state before Grafit.
+    [int]$Keep = 5
 )
 
 $ErrorActionPreference = 'Stop'
@@ -15,22 +19,24 @@ $Skins     = Join-Path $ServerRoot 'skins'
 $Target    = Join-Path $Skins $SkinName
 $Reference = Join-Path $Skins 'Next'
 $Src       = Join-Path $PSScriptRoot 'skin'
-$BackupRt  = Join-Path $PSScriptRoot 'backup'
-$Stage     = Join-Path $PSScriptRoot 'staging'
+$BackupRt  = Join-Path $DataRoot 'backup'
+$Stage     = Join-Path $DataRoot 'staging'
+$OldRt     = Join-Path $PSScriptRoot 'backup'
 
 # Grafit is a skin of its own: a folder next to the stock "Next" with the same layout
 # (composition.json, the two assemblies, wwwroot). Nothing of the stock skin is touched
 # - a host group is switched to it in the Manager, and switched back to leave it.
 #
-# Two things are taken from the stock skin at install time, because they belong to the
-# server rather than to the shell: wwwroot\_framework (the server version's Blazor runtime)
-# and static\ (the club's files the client serves as https://static/, among them the
-# fallback pictures of the sign-in rotator). Both are copies: after a server update the
-# stock skin changes and Grafit has to be installed again to pick that up.
+# wwwroot\_framework (the server version's Blazor runtime) and static\ (the club's files
+# served as https://static/, among them the sign-in rotator's fallback pictures) belong to
+# the server: they are taken from the stock skin every time a skin is put in place -
+# install, rollback or uninstall - and never kept in backups.
 #
-# Every install keeps what it replaced in backup\<timestamp>\ (the old skin, or absent.txt
-# when there was none). "rollback" restores the newest backup and drops it; "uninstall"
-# restores the oldest one - the state before Grafit.
+# A skin is put together in the staging folder, checked, and swapped in by renaming, so a
+# locked file stops the swap before anything is destroyed. Every install keeps what it
+# replaced in backup\<timestamp>\ (the old skin, or absent.txt when there was none).
+# "rollback" restores the newest backup and drops it; "uninstall" restores the oldest -
+# the state before Grafit - and clears the backups.
 
 $Required = @('composition.json', 'Gizmo.Client.UI.dll', 'Gizmo.Web.Components.dll',
               'wwwroot\index.html', 'wwwroot\_framework\blazor.webview.js',
@@ -38,27 +44,82 @@ $Required = @('composition.json', 'Gizmo.Client.UI.dll', 'Gizmo.Web.Components.d
 
 function Say($t, $c = 'Gray') { Write-Host $t -ForegroundColor $c }
 
-function Copy-Tree($from, $to) {
+function Copy-Tree($from, $to, [string[]]$skip = @()) {
     New-Item -ItemType Directory -Path $to -Force | Out-Null
-    if (Get-ChildItem $from -Force -ErrorAction SilentlyContinue) {
-        Copy-Item (Join-Path $from '*') $to -Recurse -Force
+    Get-ChildItem $from -Force -ErrorAction SilentlyContinue | ForEach-Object {
+        $relative = $_.Name
+        if ($skip -notcontains $relative) {
+            Copy-Item $_.FullName (Join-Path $to $relative) -Recurse -Force
+        }
     }
 }
 
-function Restore-Backup($backup) {
-    if (Test-Path $Target) { Remove-Item $Target -Recurse -Force }
-
-    $saved = Join-Path $backup.FullName $SkinName
-    if (Test-Path $saved) {
-        Copy-Tree $saved $Target
-        return $true
-    }
-
-    return $false
+function Stamp {
+    $s = Get-Date -Format 'yyyyMMdd-HHmmss-fff'
+    while (Test-Path (Join-Path $BackupRt $s)) { Start-Sleep -Milliseconds 5; $s = Get-Date -Format 'yyyyMMdd-HHmmss-fff' }
+    return $s
 }
 
 function Backups {
     Get-ChildItem $BackupRt -Directory -ErrorAction SilentlyContinue | Sort-Object Name
+}
+
+# The server's part of a skin, fresh from the stock one.
+function Add-ServerParts($dir) {
+    $framework = Join-Path $Reference 'wwwroot\_framework'
+    $dstFramework = Join-Path $dir 'wwwroot\_framework'
+    if (Test-Path $framework) {
+        if (Test-Path $dstFramework) { Remove-Item $dstFramework -Recurse -Force }
+        Copy-Tree $framework $dstFramework
+        Say "Took wwwroot\_framework from the server's own Next skin" 'DarkGray'
+    }
+
+    $static = Join-Path $Reference 'static'
+    $dstStatic = Join-Path $dir 'static'
+    if (Test-Path $dstStatic) { Remove-Item $dstStatic -Recurse -Force }
+    if (Test-Path $static) {
+        Copy-Tree $static $dstStatic
+        Say "Took static\ from the server's own Next skin" 'DarkGray'
+    } else {
+        New-Item -ItemType Directory -Path $dstStatic -Force | Out-Null
+        Say "The stock skin has no static\ folder - an empty one is created" 'DarkGray'
+    }
+}
+
+function Test-Skin($dir) {
+    $missing = $Required | Where-Object { -not (Test-Path (Join-Path $dir $_)) }
+    $missing | ForEach-Object { Say "Missing: $_" 'Red' }
+    return -not $missing
+}
+
+# Replaces skins\<SkinName> with $Stage (or removes it when $Stage is $null). The current
+# folder is renamed out of the skins folder first: if a file is locked, that rename fails
+# and nothing has changed. Returns $true on success.
+function Swap-In($staged) {
+    $aside = Join-Path $DataRoot ("replaced-" + (Get-Date -Format 'yyyyMMdd-HHmmss-fff'))
+    $movedAside = $false
+    try {
+        if (Test-Path $Target) {
+            Move-Item $Target $aside
+            $movedAside = $true
+        }
+        if ($staged) { Move-Item $staged $Target }
+    }
+    catch {
+        Say "Could not replace $Target : $($_.Exception.Message)" 'Red'
+        if ($movedAside -and -not (Test-Path $Target)) {
+            try { Move-Item $aside $Target; Say "The previous '$SkinName' skin is back in place." 'Yellow' }
+            catch { Say "The previous skin is in $aside - move it back to $Target by hand." 'Red' }
+        } elseif (-not $movedAside) {
+            # A failed move may have left a partial copy behind; the skin itself is untouched.
+            Remove-Item $aside -Recurse -Force -ErrorAction SilentlyContinue
+            Say "Nothing was changed. Close what holds the file (or stop the Gizmo service) and run it again." 'Yellow'
+        }
+        if ($staged) { Remove-Item $staged -Recurse -Force -ErrorAction SilentlyContinue }
+        return $false
+    }
+    if ($movedAside) { Remove-Item $aside -Recurse -Force -ErrorAction SilentlyContinue }
+    return $true
 }
 
 if (-not (Test-Path $Skins)) {
@@ -66,6 +127,18 @@ if (-not (Test-Path $Skins)) {
     Say "Check the Gizmo Server install path (-ServerRoot)." 'Yellow'
     exit 1
 }
+
+New-Item -ItemType Directory -Path $BackupRt -Force | Out-Null
+
+# Backups of installers before 1.2 lived next to the package; they join the shared folder.
+if ((Test-Path $OldRt) -and ((Resolve-Path $OldRt).Path -ne (Resolve-Path $BackupRt).Path)) {
+    Get-ChildItem $OldRt -Directory | ForEach-Object {
+        $dest = Join-Path $BackupRt $_.Name
+        if (-not (Test-Path $dest)) { Move-Item $_.FullName $dest }
+    }
+}
+
+if (Test-Path $Stage) { Remove-Item $Stage -Recurse -Force }
 
 # ── rollback / uninstall ────────────────────────────────────────────────────
 if ($Uninstall -or $Rollback) {
@@ -78,18 +151,25 @@ if ($Uninstall -or $Rollback) {
     $backup = if ($Uninstall) { $all[0] } else { $all[-1] }
     Say "Restoring from $($backup.FullName)" 'DarkGray'
 
-    if (Restore-Backup $backup) {
+    $saved = Join-Path $backup.FullName $SkinName
+    if (Test-Path $saved) {
+        Copy-Tree $saved $Stage @('static')
+        Add-ServerParts $Stage
+        if (-not (Test-Skin $Stage)) {
+            Say "The backup does not make a complete skin; nothing was changed." 'Yellow'
+            Remove-Item $Stage -Recurse -Force
+            exit 1
+        }
+        if (-not (Swap-In $Stage)) { exit 1 }
         Say "The '$SkinName' skin from $($backup.Name) is back." 'Green'
     } else {
+        if (-not (Swap-In $null)) { exit 1 }
         Say "There was no '$SkinName' skin then - the folder is removed." 'Green'
         Say "Host groups still pointing at '$SkinName' must be switched to another skin in the Manager." 'Yellow'
     }
 
-    if ($Uninstall) {
-        $all | ForEach-Object { Remove-Item $_.FullName -Recurse -Force }
-    } else {
-        Remove-Item $backup.FullName -Recurse -Force
-    }
+    if ($Uninstall) { $all | ForEach-Object { Remove-Item $_.FullName -Recurse -Force } }
+    else { Remove-Item $backup.FullName -Recurse -Force }
 
     Say "Restart the Gizmo Client on the machines." 'Yellow'
     exit 0
@@ -116,74 +196,49 @@ if (Test-Path $serverDll) {
     Say "Shell $shellVersion" 'DarkGray'
 }
 
-# The new skin is put together next to the installer and checked before anything in the
-# server's skins folder changes.
-if (Test-Path $Stage) { Remove-Item $Stage -Recurse -Force }
 Copy-Tree $Src $Stage
-
-$refFramework = Join-Path $Reference 'wwwroot\_framework'
-if (Test-Path $refFramework) {
-    $dstFramework = Join-Path $Stage 'wwwroot\_framework'
-    if (Test-Path $dstFramework) { Remove-Item $dstFramework -Recurse -Force }
-    Copy-Tree $refFramework $dstFramework
-    Say "Took wwwroot\_framework from the server's own Next skin" 'DarkGray'
-}
-
-$refStatic = Join-Path $Reference 'static'
-$dstStatic = Join-Path $Stage 'static'
-if (Test-Path $refStatic) {
-    Copy-Tree $refStatic $dstStatic
-    Say "Took static\ from the server's own Next skin" 'DarkGray'
-} else {
-    New-Item -ItemType Directory -Path $dstStatic -Force | Out-Null
-    Say "The stock skin has no static\ folder - an empty one is created" 'DarkGray'
-}
-
-$missing = $Required | Where-Object { -not (Test-Path (Join-Path $Stage $_)) }
-if ($missing) {
-    $missing | ForEach-Object { Say "Missing: $_" 'Red' }
+Add-ServerParts $Stage
+if (-not (Test-Skin $Stage)) {
     Say "Nothing was installed; the server's skins folder is unchanged." 'Yellow'
     Remove-Item $Stage -Recurse -Force
     exit 1
 }
 
 # ── backup ──────────────────────────────────────────────────────────────────
-$stamp = Get-Date -Format 'yyyyMMdd-HHmmss-fff'
-while (Test-Path (Join-Path $BackupRt $stamp)) { Start-Sleep -Milliseconds 5; $stamp = Get-Date -Format 'yyyyMMdd-HHmmss-fff' }
-$backup = Get-Item (New-Item -ItemType Directory -Path (Join-Path $BackupRt $stamp) -Force)
+$stamp  = Stamp
+$backup = Join-Path $BackupRt $stamp
+New-Item -ItemType Directory -Path $backup -Force | Out-Null
 
 if (Test-Path $Target) {
-    $saved = Join-Path $backup.FullName $SkinName
-    Copy-Tree $Target $saved
+    $saved = Join-Path $backup $SkinName
+    try {
+        Copy-Tree $Target $saved @('static')
+    }
+    catch {
+        Say "Could not back up $Target : $($_.Exception.Message)" 'Red'
+        Say "Nothing was installed; the server's skins folder is unchanged." 'Yellow'
+        Remove-Item $backup, $Stage -Recurse -Force -ErrorAction SilentlyContinue
+        exit 1
+    }
+    $savedFramework = Join-Path $saved 'wwwroot\_framework'
+    if (Test-Path $savedFramework) { Remove-Item $savedFramework -Recurse -Force }
     Say "Backup: $saved" 'DarkGray'
 } else {
     # A marker so a rollback knows to remove the folder rather than restore it.
-    Set-Content (Join-Path $backup.FullName 'absent.txt') "No '$SkinName' skin existed before $stamp."
+    Set-Content (Join-Path $backup 'absent.txt') "No '$SkinName' skin existed before $stamp."
     Say "No previous '$SkinName' skin - first install." 'DarkGray'
 }
 
 # ── install ─────────────────────────────────────────────────────────────────
-try {
-    if (Test-Path $Target) { Remove-Item $Target -Recurse -Force }
-    Copy-Tree $Stage $Target
-
-    $missing = $Required | Where-Object { -not (Test-Path (Join-Path $Target $_)) }
-    if ($missing) { throw "Missing after copy: $($missing -join ', ')" }
-}
-catch {
-    Say "Install failed: $($_.Exception.Message)" 'Red'
-    try {
-        if (Restore-Backup $backup) { Say "The previous '$SkinName' skin is back." 'Yellow' }
-        else { Say "The half-copied folder is removed." 'Yellow' }
-        Remove-Item $backup.FullName -Recurse -Force
-    }
-    catch {
-        Say "Could not put the previous skin back: $($_.Exception.Message). It is in $($backup.FullName)." 'Red'
-    }
+if (-not (Swap-In $Stage)) {
+    Remove-Item $backup -Recurse -Force -ErrorAction SilentlyContinue
     exit 1
 }
-finally {
-    if (Test-Path $Stage) { Remove-Item $Stage -Recurse -Force -ErrorAction SilentlyContinue }
+
+# The state before Grafit (the oldest backup) and the last $Keep installs are kept.
+$all = @(Backups)
+if ($all.Count -gt $Keep + 1) {
+    $all[1..($all.Count - $Keep - 1)] | ForEach-Object { Remove-Item $_.FullName -Recurse -Force }
 }
 
 Say "Installed skin: $Target" 'DarkGray'
@@ -197,5 +252,6 @@ Say "Colour: ':root { --giz-palette: green; }' in the Manager's Skin profile cus
 $minClient = Get-Content (Join-Path $Src 'grafit.version.txt') -ErrorAction SilentlyContinue | Where-Object { $_ -like 'Client *' }
 if ($minClient) { Say "Clients: $($minClient -replace '^Client\s+', '') - an older Gizmo Client will not start the shell." 'DarkGray' }
 Say "After every Gizmo Server update, run install.bat again: _framework and static\ are copies of the stock skin's." 'Yellow'
+Say "Backups: $BackupRt" 'DarkGray'
 Say "Back to the previous version:  install.bat rollback" 'DarkGray'
 Say "Remove Grafit completely:      install.bat uninstall" 'DarkGray'

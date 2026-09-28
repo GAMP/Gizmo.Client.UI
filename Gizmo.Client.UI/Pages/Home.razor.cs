@@ -280,7 +280,7 @@ namespace Gizmo.Client.UI.Pages
 
         private void BuyPackage(int productId)
         {
-            if (_buyingProductId.HasValue)
+            if (_buyingProductId.HasValue || PackagePurchaseFlow.IsCartBusy(CartService))
                 return;
 
             _buyingProductId = productId;

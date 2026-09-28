@@ -78,7 +78,7 @@ Set-Content $composition @'
 Set-Content (Join-Path $skin 'grafit.version.txt') @(
     "Grafit $grafit",
     "Gizmo  $gizmo (server)",
-    "Client $client or newer",
+    "Client $client",
     "Built  $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
 )
 
@@ -91,4 +91,4 @@ $parts = @('README.md', 'install.bat', '_install-core.ps1' | ForEach-Object { Jo
 Compress-Archive -Path $parts -DestinationPath $zip -CompressionLevel Optimal
 
 Say "Staged skin\ and packed $zip" 'Green'
-Say "Grafit $grafit for Gizmo $gizmo, client $client or newer" 'DarkGray'
+Say "Grafit $grafit for Gizmo $gizmo, client $client" 'DarkGray'

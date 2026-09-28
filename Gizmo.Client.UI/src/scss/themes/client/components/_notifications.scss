@@ -22,23 +22,25 @@
         }
     }
 
+    // Always rendered and always the same height (the host sizes its window from the
+    // first measurement plus each new card), the close button only from two cards up.
     &__header {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 1rem;
+        box-sizing: border-box;
+        min-height: 4.4rem;
         margin: 0 0 1rem;
-        padding: 0.5rem 0.5rem 0.5rem 1.8rem;
-        border-radius: 1.4rem;
-        background: var(--giz-panel);
-        border: 1px solid rgba(var(--giz-white-rgb), 0.11);
-        box-shadow: 0 0.6rem 1.6rem -0.8rem rgba(var(--giz-black-rgb), 0.6);
+        padding: 0.6rem 0.6rem 0.6rem 1.6rem;
+        border-radius: $giz-r-pill;
+        background: rgba(var(--giz-scrim-rgb), 0.72);
         font-family: $font-family-header-theme-client;
         font-size: 1.2rem;
         font-weight: 700;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: rgba(var(--giz-ink-rgb), 0.66);
+        color: var(--giz-text-2);
     }
 
     &__body {
@@ -175,8 +177,34 @@ $nt-ink-3: var(--giz-text-3);
     }
 }
 
-.giz-notification__close,
 .giz-notifications__close {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    height: 3.2rem;
+    padding: 0 1.2rem;
+    border: 0;
+    border-radius: $giz-r-pill;
+    background: var(--giz-action-quiet-bg);
+    box-shadow: inset 0 0 0 1px var(--giz-action-quiet-line);
+    color: var(--giz-text-2);
+    font-family: $font-family-header-theme-client;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+
+    i { font-size: 1.3rem; }
+
+    &:hover {
+        background: var(--giz-glass-9);
+        color: var(--giz-text-1);
+    }
+}
+
+.giz-notification__close {
     width: 3.2rem;
     height: 3.2rem;
     display: inline-flex;
