@@ -13,6 +13,16 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class AppFilters : CustomDOMComponentBase
     {
+        private const int CATEGORY_GRID_FROM = 9;
+
+        private enum FilterMenu
+        {
+            None,
+            Sort,
+            Category,
+            Mode,
+        }
+
         #region PROPERTIES
 
         [CascadingParameter]
@@ -29,9 +39,9 @@ namespace Gizmo.Client.UI.Components
 
         #endregion
 
-        private bool HasSearch => !string.IsNullOrEmpty(ViewState.SearchPattern);
+        private FilterMenu _open;
 
-        private bool HasRow => ViewState.AppCategories.Any() || ViewState.ExecutableModes.Any();
+        private bool HasSearch => !string.IsNullOrEmpty(ViewState.SearchPattern);
 
         private string AllText => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_FILTERS_ALL);
 
@@ -44,26 +54,88 @@ namespace Gizmo.Client.UI.Components
             _ => nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APP_FILTERS_ALL_APPS),
         });
 
-        private string SortClass(Gizmo.Client.ApplicationSortingOption option) =>
-            option == ViewState.SelectedSortingOption
-                ? "giz-app-filters__seg giz-app-filters__seg--on"
-                : "giz-app-filters__seg";
+        private string SortText => ViewState.SortingOptions
+            .FirstOrDefault(option => option.Value == ViewState.SelectedSortingOption)?.DisplayName ?? string.Empty;
 
-        private string CategoryClass(int? categoryId) =>
-            categoryId == ViewState.SelectedCategoryId
-                ? "giz-app-filters__chip giz-app-filters__chip--on"
-                : "giz-app-filters__chip";
+        private string CategoryText => ViewState.AppCategories
+            .FirstOrDefault(category => category.AppCategoryId == ViewState.SelectedCategoryId)?.Name ?? AllText;
+
+        private string ModeText
+        {
+            get
+            {
+                var selected = ViewState.ExecutableModes
+                    .Where(mode => IsModeOn(mode.Value))
+                    .Select(mode => mode.DisplayName)
+                    .ToList();
+
+                return selected.Count switch
+                {
+                    0 => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_FILTERS_ANY),
+                    1 => selected[0],
+                    _ => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_FILTERS_SELECTED, selected.Count),
+                };
+            }
+        }
+
+        private string CategoryMenuClass => ViewState.AppCategories.Count() + 1 >= CATEGORY_GRID_FROM
+            ? "giz-app-filter__menu giz-app-filter__menu--grid"
+            : "giz-app-filter__menu";
+
+        private bool IsOpen(FilterMenu menu) => _open == menu;
+
+        private bool IsSet(FilterMenu menu) => menu switch
+        {
+            FilterMenu.Sort => ViewState.SelectedSortingOption != ViewState.DefaultSortingOption,
+            FilterMenu.Category => ViewState.SelectedCategoryId.HasValue,
+            FilterMenu.Mode => ViewState.SelectedExecutableModes.Any(),
+            _ => false,
+        };
+
+        private string MenuClass(FilterMenu menu)
+        {
+            var classes = "giz-app-filter";
+
+            if (IsSet(menu))
+                classes += " giz-app-filter--set";
+
+            if (IsOpen(menu))
+                classes += " giz-app-filter--open";
+
+            return classes;
+        }
+
+        private static string ItemClass(bool selected) => selected
+            ? "giz-app-filter__item giz-app-filter__item--on"
+            : "giz-app-filter__item";
+
+        private string SortItemClass(Gizmo.Client.ApplicationSortingOption option) => ItemClass(option == ViewState.SelectedSortingOption);
+
+        private string CategoryItemClass(int? categoryId) => ItemClass(categoryId == ViewState.SelectedCategoryId);
 
         private bool IsModeOn(ApplicationModes mode) => ViewState.SelectedExecutableModes.Contains(mode);
 
-        private string ModeClass(ApplicationModes mode) =>
-            IsModeOn(mode)
-                ? "giz-app-filters__chip giz-app-filters__chip--mode giz-app-filters__chip--on"
-                : "giz-app-filters__chip giz-app-filters__chip--mode";
-
-        private string ModeIcon(ApplicationModes mode) => IsModeOn(mode) ? "ph-bold ph-check" : "ph-bold ph-plus";
+        private string ModeItemClass(ApplicationModes mode) => IsModeOn(mode)
+            ? "giz-app-filter__item giz-app-filter__item--check giz-app-filter__item--on"
+            : "giz-app-filter__item giz-app-filter__item--check";
 
         private string ModePressed(ApplicationModes mode) => IsModeOn(mode) ? "true" : "false";
+
+        private void Toggle(FilterMenu menu) => _open = _open == menu ? FilterMenu.None : menu;
+
+        private void Close() => _open = FilterMenu.None;
+
+        private Task SelectSortAsync(Gizmo.Client.ApplicationSortingOption option)
+        {
+            _open = FilterMenu.None;
+            return AppsPageService.SetSelectedSortingOption(option);
+        }
+
+        private Task SelectCategoryAsync(int? categoryId)
+        {
+            _open = FilterMenu.None;
+            return AppsPageService.SetSelectedApplicationCategory(categoryId);
+        }
 
         private Task ToggleMode(ApplicationModes mode)
         {
@@ -73,6 +145,12 @@ namespace Gizmo.Client.UI.Components
                 selected.Add(mode);
 
             return AppsPageService.SetSelectedSelectedExecutableModes(selected);
+        }
+
+        private Task ClearAllAsync()
+        {
+            _open = FilterMenu.None;
+            return AppsPageService.ClearAllFilters();
         }
 
         protected override void OnInitialized()

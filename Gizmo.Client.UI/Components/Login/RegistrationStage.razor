@@ -5,25 +5,49 @@
     <header class="giz-signup-stage__head">
         <div class="giz-signup-stage__kick">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_KICK)</div>
         <div class="giz-signup-stage__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_TITLE)</div>
+        <div class="giz-signup-stage__hint">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_HINT)</div>
     </header>
 
     <div class="giz-signup-stage__middle">
-        <div class="giz-signup-card">
-            <div class="giz-signup-card__top">
-                <span class="giz-signup-card__kick">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_CARD)</span>
-                @if (HasClubLogo)
-                {
-                    <img class="giz-signup-card__logo" src="@LogoViewState.Logo" alt="" />
-                }
-                else
-                {
-                    <i class="ph-fill ph-game-controller giz-signup-card__mark"></i>
-                }
-            </div>
-            <div class="@NickClass">@NickText</div>
-            <div class="giz-signup-card__foot">
-                <span class="giz-signup-card__name">@FullName</span>
-                <span class="giz-signup-card__since">@SinceText</span>
+        <div class="giz-signup-stage__orbit" aria-hidden="true">
+            @foreach (var icon in OrbitIcons)
+            {
+                <i class="ph-bold @icon.IconClass" style="@OrbitStyle(icon)"></i>
+            }
+        </div>
+
+        <div class="giz-signup-card-stack">
+            <div class="giz-signup-card-stack__back"></div>
+            <div class="giz-signup-card" style="@ProgressStyle">
+                <div class="giz-signup-card__top">
+                    <span class="giz-signup-card__kick">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_CARD)</span>
+                    @if (HasClubLogo)
+                    {
+                        <img class="giz-signup-card__logo" src="@LogoViewState.Logo" alt="" />
+                    }
+                    else
+                    {
+                        <i class="ph-fill ph-game-controller giz-signup-card__mark"></i>
+                    }
+                </div>
+
+                <div class="giz-signup-card__who">
+                    <div class="@NickClass">@NickText</div>
+                    <div class="@NameClass">@NameText</div>
+                </div>
+
+                <div class="giz-signup-card__foot">
+                    @if (HostNumberViewState.HostNumberIsEnabled)
+                    {
+                        <span class="giz-signup-card__chip">
+                            <i class="ph-bold ph-desktop-tower"></i>
+                            <HostNumber />
+                        </span>
+                    }
+                    <span class="giz-signup-card__since">@SinceText</span>
+                </div>
+
+                <span class="giz-signup-card__progress"><i></i></span>
             </div>
         </div>
     </div>
@@ -45,6 +69,10 @@
                 </span>
                 <span class="giz-signup-stage__label">@StepLabel(index)</span>
             </li>
+            @if (index < Steps.Count - 1)
+            {
+                <li class="@LinkClass(index)" aria-hidden="true"></li>
+            }
         }
     </ol>
 </div>

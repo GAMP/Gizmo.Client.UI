@@ -35,7 +35,13 @@ namespace Gizmo.Client.UI.Pages
 
         private LoginStep _step;
         private PasswordInput _passwordInput;
+        private TextInput<string> _nameInput;
+        private PasswordInput _pinInput;
+        private bool _focusPin;
+        private string _submittedName;
         private bool _focusPassword;
+        private bool _focusName;
+        private bool _nameError;
 
         [Inject]
         IOptions<UserLoginOptions> UserLoginOptions { get; set; }
@@ -113,6 +119,12 @@ namespace Gizmo.Client.UI.Pages
 
         private bool IsPhoneLogin => !IsUsernameLogin;
 
+        private bool IsPasswordStep => _step == LoginStep.Password && !string.IsNullOrEmpty(ViewState.LoginName);
+
+        private bool ShowNameError => _nameError && ViewState.HasLoginError;
+
+        private string NamePillClass => IsPhoneLogin ? "giz-signin__pill giz-signin__pill--phone" : "giz-signin__pill";
+
         private bool IsQrStep => HostQRCodeViewState.IsEnabled && (_step == LoginStep.Qr || UserLoginOptions.Value.Disabled);
 
         private bool ShowQrLink => HostQRCodeViewState.IsEnabled;
@@ -126,7 +138,7 @@ namespace Gizmo.Client.UI.Pages
             HostReservationViewState.ReservationNotificationTimeReached || HostReservationViewState.ReservationBlockTimeReached;
 
         private string PasswordTitle => IsUsernameLogin
-            ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOGIN_HELLO, ViewState.LoginName.Trim())
+            ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOGIN_HELLO, (ViewState.LoginName ?? string.Empty).Trim())
             : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOGIN_PASSWORD_TITLE);
 
         private string WhoText => IsUsernameLogin
@@ -140,12 +152,42 @@ namespace Gizmo.Client.UI.Pages
 
             _step = LoginStep.Password;
             _focusPassword = true;
+            _nameError = false;
         }
 
         private void BackToName()
         {
             _step = LoginStep.Name;
+            _nameError = false;
+            _focusName = true;
             UserLoginService.SetPassword(string.Empty);
+        }
+
+        private Task SubmitAsync()
+        {
+            if (IsBusy)
+                return Task.CompletedTask;
+
+            _submittedName = ViewState.LoginName;
+
+            return UserLoginService.LoginAsync();
+        }
+
+        private void OnLoginViewStateChanged(object sender, EventArgs e)
+        {
+            if (_step != LoginStep.Password || !string.IsNullOrEmpty(ViewState.LoginName))
+                return;
+
+            if (NeedsReservationPin && !string.IsNullOrEmpty(_submittedName))
+            {
+                UserLoginService.SetLoginName(_submittedName);
+                _focusPin = true;
+                return;
+            }
+
+            _step = LoginStep.Name;
+            _nameError = true;
+            _focusName = true;
         }
 
         private void OpenQr() => _step = LoginStep.Qr;
@@ -158,8 +200,8 @@ namespace Gizmo.Client.UI.Pages
 
         private Task OnPasswordKeyDown(KeyboardEventArgs args)
         {
-            if (args.Key == "Enter" && !IsBusy)
-                return UserLoginService.LoginAsync();
+            if (args.Key == "Enter")
+                return SubmitAsync();
 
             return Task.CompletedTask;
         }
@@ -204,6 +246,7 @@ namespace Gizmo.Client.UI.Pages
 
         protected override async Task OnInitializedAsync()
         {
+            ViewState.OnChange += OnLoginViewStateChanged;
             this.SubscribeChange(ViewState);
             this.SubscribeChange(HostQRCodeViewState);
             this.SubscribeChange(HostReservationViewState);
@@ -213,10 +256,20 @@ namespace Gizmo.Client.UI.Pages
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (_focusPassword && _passwordInput is not null)
+            if (_focusPin && _pinInput is not null)
+            {
+                _focusPin = false;
+                await _pinInput.FocusAsync();
+            }
+            else if (_focusPassword && _passwordInput is not null)
             {
                 _focusPassword = false;
                 await _passwordInput.FocusAsync();
+            }
+            else if ((firstRender || _focusName) && _nameInput is not null)
+            {
+                _focusName = false;
+                await _nameInput.FocusAsync();
             }
 
             await base.OnAfterRenderAsync(firstRender);
@@ -226,6 +279,7 @@ namespace Gizmo.Client.UI.Pages
         {
             this.UnsubscribeChange(HostReservationViewState);
             this.UnsubscribeChange(HostQRCodeViewState);
+            ViewState.OnChange -= OnLoginViewStateChanged;
             this.UnsubscribeChange(ViewState);
 
             base.Dispose();

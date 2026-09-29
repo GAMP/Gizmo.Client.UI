@@ -36,9 +36,6 @@ namespace Gizmo.Client.UI.Components
         public RenderFragment CardFooter { get; set; }
 
         [Parameter]
-        public RenderFragment Aside { get; set; }
-
-        [Parameter]
         public string Modifier { get; set; }
 
         #endregion
@@ -89,7 +86,6 @@ namespace Gizmo.Client.UI.Components
 
         protected string ClassName => new ClassMapper()
                 .Add("giz-login-card")
-                .If("giz-login-card--spread", () => Aside is not null)
                 .If(Modifier, () => !string.IsNullOrEmpty(Modifier))
                 .If("slide-in", () => _slideIn && !_locked)
                 .If("slide-out", () => _slideOut && !_locked)

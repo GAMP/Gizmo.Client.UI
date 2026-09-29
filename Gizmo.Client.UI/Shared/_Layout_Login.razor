@@ -88,7 +88,21 @@
 
         </div>
         <div class="giz-login__login @ClassName">
-            @Body
+            @if (CurrentRegistrationStep is { } registrationStep)
+            {
+                <div class="giz-signup-spread">
+                    <aside class="giz-signup-spread__stage">
+                        <RegistrationStage Step="@registrationStep" />
+                    </aside>
+                    <div class="giz-signup-spread__form">
+                        @Body
+                    </div>
+                </div>
+            }
+            else
+            {
+                @Body
+            }
             <DialogHost />
         </div>
     </div>

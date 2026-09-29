@@ -2,61 +2,112 @@
 @inherits CustomDOMComponentBase
 
 <div class="giz-app-filters">
-    <div class="giz-app-filters__top">
-        @if (HasSearch)
+    @if (HasSearch)
+    {
+        <div class="giz-app-filters__search">
+            <span class="giz-app-filters__search-label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_RESULTS_FOR))</span>
+            <button type="button" class="giz-app-filters__search-chip" @onclick="@(() => AppsPageService.ClearSearchPattern())">
+                <span>@ViewState.SearchPattern</span>
+                <i class="ph-bold ph-x"></i>
+            </button>
+        </div>
+    }
+    else
+    {
+        <div class="giz-app-filters__title">@Heading</div>
+    }
+
+    <div class="giz-app-filters__bar">
+        <div class="@MenuClass(FilterMenu.Sort)">
+            <button type="button" class="giz-app-filter__button" @onclick="@(() => Toggle(FilterMenu.Sort))">
+                <i class="ph-bold ph-sort-ascending giz-app-filter__icon"></i>
+                <span class="giz-app-filter__text">
+                    <small>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_FILTERS_SORT)</small>
+                    <b>@SortText</b>
+                </span>
+                <i class="ph-bold ph-caret-down giz-app-filter__caret"></i>
+            </button>
+            @if (IsOpen(FilterMenu.Sort))
+            {
+                <div class="giz-app-filter__menu">
+                    @foreach (var option in ViewState.SortingOptions)
+                    {
+                        <button type="button" class="@SortItemClass(option.Value)" @onclick="@(() => SelectSortAsync(option.Value))">
+                            <span>@option.DisplayName</span>
+                            <i class="ph-bold ph-check giz-app-filter__tick"></i>
+                        </button>
+                    }
+                </div>
+            }
+        </div>
+
+        @if (ViewState.AppCategories.Any())
         {
-            <div class="giz-app-filters__search">
-                <span class="giz-app-filters__search-label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_RESULTS_FOR))</span>
-                <button type="button" class="giz-app-filters__search-chip" @onclick="@(() => AppsPageService.ClearSearchPattern())">
-                    <span>@ViewState.SearchPattern</span>
-                    <i class="ph-bold ph-x"></i>
+            <div class="@MenuClass(FilterMenu.Category)">
+                <button type="button" class="giz-app-filter__button" @onclick="@(() => Toggle(FilterMenu.Category))">
+                    <i class="ph-bold ph-squares-four giz-app-filter__icon"></i>
+                    <span class="giz-app-filter__text">
+                        <small>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_FILTERS_CATEGORY)</small>
+                        <b>@CategoryText</b>
+                    </span>
+                    <i class="ph-bold ph-caret-down giz-app-filter__caret"></i>
                 </button>
+                @if (IsOpen(FilterMenu.Category))
+                {
+                    <div class="@CategoryMenuClass">
+                        <button type="button" class="@CategoryItemClass(null)" @onclick="@(() => SelectCategoryAsync(null))">
+                            <span>@AllText</span>
+                            <i class="ph-bold ph-check giz-app-filter__tick"></i>
+                        </button>
+                        @foreach (var category in ViewState.AppCategories)
+                        {
+                            <button type="button" class="@CategoryItemClass(category.AppCategoryId)" @onclick="@(() => SelectCategoryAsync(category.AppCategoryId))">
+                                <span>@category.Name</span>
+                                <i class="ph-bold ph-check giz-app-filter__tick"></i>
+                            </button>
+                        }
+                    </div>
+                }
             </div>
         }
-        else
+
+        @if (ViewState.ExecutableModes.Any())
         {
-            <div class="giz-app-filters__title">@Heading</div>
+            <div class="@MenuClass(FilterMenu.Mode)">
+                <button type="button" class="giz-app-filter__button" @onclick="@(() => Toggle(FilterMenu.Mode))">
+                    <i class="ph-bold ph-sliders-horizontal giz-app-filter__icon"></i>
+                    <span class="giz-app-filter__text">
+                        <small>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_FILTERS_MODE)</small>
+                        <b>@ModeText</b>
+                    </span>
+                    <i class="ph-bold ph-caret-down giz-app-filter__caret"></i>
+                </button>
+                @if (IsOpen(FilterMenu.Mode))
+                {
+                    <div class="giz-app-filter__menu">
+                        @foreach (var mode in ViewState.ExecutableModes)
+                        {
+                            <button type="button" class="@ModeItemClass(mode.Value)" aria-pressed="@ModePressed(mode.Value)" @onclick="@(() => ToggleMode(mode.Value))">
+                                <span class="giz-app-filter__box"><i class="ph-bold ph-check"></i></span>
+                                <span>@mode.DisplayName</span>
+                            </button>
+                        }
+                    </div>
+                }
+            </div>
         }
 
-        <div class="giz-app-filters__sort">
-            @foreach (var option in ViewState.SortingOptions)
-            {
-                <button type="button" class="@SortClass(option.Value)" @onclick="@(() => AppsPageService.SetSelectedSortingOption(option.Value))">@option.DisplayName</button>
-            }
-        </div>
+        @if (ViewState.TotalFilters > 0)
+        {
+            <button type="button" class="giz-app-filters__reset" title="@ResetText" aria-label="@ResetText" @onclick="@ClearAllAsync">
+                <i class="ph-bold ph-arrow-counter-clockwise"></i>
+                <span>@ResetText</span>
+            </button>
+        }
     </div>
 
-    @if (HasRow)
+    @if (_open != FilterMenu.None)
     {
-        <div class="giz-app-filters__row">
-            @if (ViewState.AppCategories.Any())
-            {
-                <button type="button" class="@CategoryClass(null)" @onclick="@(() => AppsPageService.SetSelectedApplicationCategory(null))">@AllText</button>
-                @foreach (var category in ViewState.AppCategories)
-                {
-                    <button type="button" class="@CategoryClass(category.AppCategoryId)" @onclick="@(() => AppsPageService.SetSelectedApplicationCategory(category.AppCategoryId))">@category.Name</button>
-                }
-            }
-
-            @if (ViewState.ExecutableModes.Any())
-            {
-                <span class="giz-app-filters__divider"></span>
-                @foreach (var mode in ViewState.ExecutableModes)
-                {
-                    <button type="button" class="@ModeClass(mode.Value)" aria-pressed="@ModePressed(mode.Value)" @onclick="@(() => ToggleMode(mode.Value))">
-                        <i class="@ModeIcon(mode.Value)"></i>
-                        <span>@mode.DisplayName</span>
-                    </button>
-                }
-            }
-
-            @if (ViewState.TotalFilters > 0)
-            {
-                <button type="button" class="giz-app-filters__reset" @onclick="@(() => AppsPageService.ClearAllFilters())">
-                    <i class="ph-bold ph-arrow-counter-clockwise"></i>
-                    <span>@ResetText</span>
-                </button>
-            }
-        </div>
+        <div class="giz-app-filters__scrim" @onclick="@Close"></div>
     }
 </div>

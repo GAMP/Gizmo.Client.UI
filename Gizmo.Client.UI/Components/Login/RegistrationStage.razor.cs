@@ -22,6 +22,10 @@ namespace Gizmo.Client.UI.Components
         private static readonly RegistrationStep[] ProviderFlow = { RegistrationStep.Verify, RegistrationStep.Account, RegistrationStep.About };
         private static readonly RegistrationStep[] DirectFlow = { RegistrationStep.Account, RegistrationStep.About };
 
+        public sealed record OrbitIcon(string IconClass, double X, double Y, double Size, double Opacity, double Tilt);
+
+        private static readonly IReadOnlyList<OrbitIcon> Orbit = BuildOrbit();
+
         [CascadingParameter]
         protected GrafitLocalizationService GrafitLocalization { get; set; }
 
@@ -34,8 +38,13 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         LogoViewState LogoViewState { get; set; }
 
+        [Inject]
+        HostNumberViewState HostNumberViewState { get; set; }
+
         [Parameter]
         public RegistrationStep Step { get; set; }
+
+        private IReadOnlyList<OrbitIcon> OrbitIcons => Orbit;
 
         private IReadOnlyList<RegistrationStep> Steps => ConfigurationViewState.IsDirectEnabled ? DirectFlow : ProviderFlow;
 
@@ -49,13 +58,44 @@ namespace Gizmo.Client.UI.Components
             ? BasicFieldsViewState.Username.Trim()
             : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_NICK_PLACEHOLDER);
 
-        private string NickClass => HasNick ? "giz-signup-card__nick" : "giz-signup-card__nick giz-signup-card__nick--empty";
+        private string NickClass
+        {
+            get
+            {
+                var classes = "giz-signup-card__nick";
+
+                if (!HasNick)
+                    classes += " giz-signup-card__nick--empty";
+
+                if (Step == RegistrationStep.Account)
+                    classes += " giz-signup-card__nick--live";
+
+                return classes;
+            }
+        }
 
         private string FullName => string.Join(" ", new[] { BasicFieldsViewState.FirstName, BasicFieldsViewState.LastName }
             .Where(part => !string.IsNullOrWhiteSpace(part))
             .Select(part => part.Trim()));
 
+        private string NameText => string.IsNullOrEmpty(FullName)
+            ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_NAME_PLACEHOLDER)
+            : FullName;
+
+        private string NameClass => string.IsNullOrEmpty(FullName)
+            ? "giz-signup-card__name giz-signup-card__name--empty"
+            : "giz-signup-card__name";
+
         private string SinceText => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_SINCE, DateTime.Now.ToString("d", CultureInfo.CurrentCulture));
+
+        private string ProgressStyle
+        {
+            get
+            {
+                var share = (CurrentIndex + 1d) / (Steps.Count + 1d);
+                return $"--giz-signup-progress: {share.ToString("0.###", CultureInfo.InvariantCulture)}";
+            }
+        }
 
         private string StepNumber(int index) => (index + 1).ToString(CultureInfo.CurrentCulture);
 
@@ -73,6 +113,47 @@ namespace Gizmo.Client.UI.Components
 
             return index == CurrentIndex ? "giz-signup-stage__step giz-signup-stage__step--current" : "giz-signup-stage__step";
         }
+
+        private string LinkClass(int index) => index < CurrentIndex
+            ? "giz-signup-stage__link giz-signup-stage__link--done"
+            : "giz-signup-stage__link";
+
+        private static IReadOnlyList<OrbitIcon> BuildOrbit()
+        {
+            var items = new (string Icon, double Angle, double Reach, double Size, double Opacity)[]
+            {
+                ("ph-game-controller",    14, 1.00, 3.0, .55),
+                ("ph-headset",            52, 1.12, 2.2, .30),
+                ("ph-desktop-tower",      98, 1.04, 2.6, .45),
+                ("ph-keyboard",          140, 1.14, 2.0, .25),
+                ("ph-crosshair-simple",  184, 1.00, 2.8, .50),
+                ("ph-mouse",             218, 1.12, 1.8, .22),
+                ("ph-joystick",          256, 1.04, 2.4, .40),
+                ("ph-lightning",         290, 1.12, 2.2, .30),
+                ("ph-cpu",               322, 1.02, 2.8, .45),
+                ("ph-wifi-high",         348, 1.14, 2.0, .25),
+            };
+
+            const double radiusX = 33.0;
+            const double radiusY = 21.0;
+
+            return items
+                .Select(item =>
+                {
+                    var radians = item.Angle * Math.PI / 180.0;
+                    return new OrbitIcon(
+                        item.Icon,
+                        Math.Round(Math.Cos(radians) * radiusX * item.Reach, 2),
+                        Math.Round(Math.Sin(radians) * radiusY * item.Reach, 2),
+                        item.Size,
+                        item.Opacity,
+                        Math.Round(Math.Sin(radians) * 15.0, 1));
+                })
+                .ToList();
+        }
+
+        private static string OrbitStyle(OrbitIcon icon) => string.Create(CultureInfo.InvariantCulture,
+            $"--giz-orbit-x: {icon.X}rem; --giz-orbit-y: {icon.Y}rem; --giz-orbit-size: {icon.Size}rem; --giz-orbit-opacity: {icon.Opacity}; --giz-orbit-tilt: {icon.Tilt}deg");
 
         protected override void OnInitialized()
         {

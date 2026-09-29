@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Gizmo.Client.Options;
+using Gizmo.Client.UI.Components;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.Extensions.Options;
 
 namespace Gizmo.Client.UI.Shared
@@ -58,6 +61,40 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         HostNumberViewService HostHumberViewService { get; set; }
 
+        [Inject]
+        NavigationManager NavigationManager { get; set; }
+
+        private static readonly string[] VerificationRoutes =
+        {
+            ClientRoutes.RegistrationIndexRoute,
+            ClientRoutes.RegistrationProvidersRoute,
+            ClientRoutes.RegistrationPhoneRoute,
+            ClientRoutes.RegistrationEmailRoute,
+            ClientRoutes.RegistrationConfirmationRoute,
+            ClientRoutes.RegistrationRedirectRoute,
+            ClientRoutes.RegistrationErrorRoute,
+        };
+
+        private RegistrationStep? CurrentRegistrationStep
+        {
+            get
+            {
+                var path = "/" + NavigationManager.ToBaseRelativePath(NavigationManager.Uri).Split('?', '#')[0].TrimEnd('/');
+
+                if (string.Equals(path, ClientRoutes.RegistrationBasicFieldsRoute, StringComparison.OrdinalIgnoreCase))
+                    return RegistrationStep.Account;
+
+                if (string.Equals(path, ClientRoutes.RegistrationAdditionalFieldsRoute, StringComparison.OrdinalIgnoreCase))
+                    return RegistrationStep.About;
+
+                return VerificationRoutes.Any(route => string.Equals(path, route, StringComparison.OrdinalIgnoreCase))
+                    ? RegistrationStep.Verify
+                    : null;
+            }
+        }
+
+        private void OnLocationChanged(object sender, LocationChangedEventArgs e) => HandlePositionChanged();
+
         private void UserIdleViewState_OnChange(object sender, EventArgs e)
         {
             if (_previousIsIdle == UserIdleViewState.IsIdle)
@@ -93,6 +130,7 @@ namespace Gizmo.Client.UI.Shared
             _previousIsIdle = UserIdleViewState.IsIdle;
             UserIdleViewState.OnChange += UserIdleViewState_OnChange;
             HostHumberViewService.OnPositionChanged += HandlePositionChanged;
+            NavigationManager.LocationChanged += OnLocationChanged;
             
             _locked = UserLoginOptions.Value.Disabled && !UserRegisterConfigurationViewState.IsEnabled;
 
@@ -149,6 +187,7 @@ namespace Gizmo.Client.UI.Shared
 
             UserIdleViewState.OnChange -= UserIdleViewState_OnChange;
             HostHumberViewService.OnPositionChanged -= HandlePositionChanged;
+            NavigationManager.LocationChanged -= OnLocationChanged;
 
             this.UnsubscribeChange(LoginRotatorViewState);
             this.UnsubscribeChange(LogoViewState);

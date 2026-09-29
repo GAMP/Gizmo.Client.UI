@@ -16,9 +16,6 @@ namespace Gizmo.Client.UI.Components.Login
         public EditContext EditContext { get; set; }
 
         [Parameter]
-        public RenderFragment Aside { get; set; }
-
-        [Parameter]
         public string Title { get; set; } = string.Empty;
 
         [Parameter]

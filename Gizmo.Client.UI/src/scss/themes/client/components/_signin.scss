@@ -1,6 +1,7 @@
 //============= Sign-in steps and the sign-up spread ===============//
 
-// Sign-in: no card, one big field at a time in the middle of the screen.
+// Sign-in: no card, one field at a time in the middle of the screen. The title and the
+// method switch share one line, so the block reads as a form, not a stack.
 .giz-login-card--steps {
     width: 64rem;
     padding: 0;
@@ -8,52 +9,104 @@
     box-shadow: none;
 
     &::before { display: none; }
+}
 
+// The keyboard layout switch sits in the corner opposite the club status.
+.giz-login-card--steps,
+.giz-signup-spread .giz-login-card {
     .giz-login-card__footer {
-        display: flex;
-        justify-content: center;
-        margin-top: 2.4rem;
+        position: fixed;
+        right: 4.8rem;
+        bottom: 3.2rem;
+        z-index: 5;
+        margin: 0;
     }
+
+    .giz-login-card__footer .giz-input-language-menu {
+        display: block;
+        margin: 0;
+        color: var(--giz-text-1);
+        font-family: $font-family-header-theme-client;
+        font-size: 1.4rem;
+        font-weight: 700;
+    }
+
+    // A single layout reads as a plain pill; several as the same pill that opens upwards.
+    .giz-login-card__footer div.giz-input-language-menu,
+    .giz-login-card__footer .giz-input-language-menu .giz-input-control .giz-input-root {
+        display: flex;
+        align-items: center;
+        height: 4.4rem;
+        box-sizing: border-box;
+        padding: 0 1.6rem;
+        border: 1px solid var(--giz-glass-9);
+        border-radius: 1.2rem;
+        background:
+            linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-2)),
+            rgba(var(--giz-scrim-rgb), 0.35);
+        box-shadow: inset 0 1px 0 var(--giz-glass-12);
+        cursor: pointer;
+    }
+
+    .giz-login-card__footer .giz-input-language-menu-item {
+        align-items: center;
+        gap: 0.8rem;
+    }
+}
+
+// The masked phone field draws its hint in a layer of its own; that layer has to use the
+// field's exact font, or the grey digits slide into the typed ones.
+.giz-login-card .giz-masked-phone-input {
+    .giz-phone-prefix,
+    .giz-mask {
+        font-family: $font-family-text-theme-client;
+        font-size: 1.9rem;
+        font-weight: 600;
+        line-height: normal;
+    }
+
+    .giz-phone-prefix { margin-right: 0.2rem; }
+
+    .giz-mask-left { color: var(--giz-text-3); }
 }
 
 .giz-signin {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 2.8rem;
+    gap: 2rem;
     animation: giz-signin-in 0.5s cubic-bezier(0.2, 0, 0, 1) both;
 
+    &__head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2.4rem;
+        min-width: 0;
+    }
+
     &__title {
+        min-width: 0;
         margin: 0;
-        max-width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         font-family: $font-family-header-theme-client;
-        font-size: 7.2rem;
+        font-size: 4.8rem;
         font-weight: 800;
-        line-height: 1.02;
-        letter-spacing: -0.04em;
-        text-align: center;
-        overflow-wrap: anywhere;
+        line-height: 1.15;
+        letter-spacing: -0.035em;
         color: var(--giz-text-1);
     }
 
-    &__sub {
-        max-width: 52rem;
-        margin-top: -1.2rem;
-        font-size: 1.7rem;
-        line-height: 1.5;
-        text-align: center;
-        color: var(--giz-text-2);
-    }
-
     &__who {
+        flex: none;
         display: inline-flex;
         gap: 0.6rem;
-        margin-top: -1.2rem;
         padding: 0;
         border: 0;
         background: none;
         font-family: inherit;
-        font-size: 1.6rem;
+        font-size: 1.5rem;
         color: var(--giz-text-2);
         cursor: pointer;
 
@@ -66,35 +119,35 @@
     }
 
     &__method.giz-login-method.giz-button-group {
-        width: 44rem;
-        margin-bottom: 0;
+        flex: none;
+        width: 34rem;
+        margin: 0;
     }
 
     > form,
     &--password {
-        width: 100%;
         display: flex;
         flex-direction: column;
-        align-items: center;
         gap: 1.2rem;
     }
 
-    &--password { gap: 2.8rem; }
+    &--password { gap: 2rem; }
 
     &__error.giz-login-error-block {
         width: 100%;
         margin: 0;
     }
 
-    // The field and its arrow in one glass pill; the card's underline field inside it
-    // gives up its line.
+    // The field and its arrow in one glass pill: a glyph says what goes in, the hint sits
+    // in the field itself and the ring lights up while the caret is in it.
     &__pill {
         width: 100%;
         box-sizing: border-box;
         display: flex;
         align-items: center;
-        gap: 1.2rem;
-        padding: 1.2rem 1.2rem 1.2rem 2.8rem;
+        gap: 1.4rem;
+        min-height: 8rem;
+        padding: 1.2rem 1.2rem 1.2rem 2.4rem;
         border-radius: 2.4rem;
         background:
             linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-3)),
@@ -102,6 +155,7 @@
         backdrop-filter: blur(4rem);
         -webkit-backdrop-filter: blur(4rem);
         box-shadow: inset 0 0 0 1px var(--giz-glass-10), inset 0 1px 0 var(--giz-glass-12);
+        cursor: text;
         transition: box-shadow 0.2s;
 
         &:focus-within {
@@ -113,7 +167,8 @@
             min-width: 0;
         }
 
-        > .giz-signin__go { flex: none; }
+        > .giz-signin__go,
+        > .giz-signin__glyph { flex: none; }
 
         .giz-input-root,
         .giz-input-control .giz-input-root.giz-input-root--outline {
@@ -123,21 +178,45 @@
 
             &:after { display: none; }
         }
-
     }
 
-    & &__pill .giz-input-wrapper input {
+    &__pill .giz-input-label { display: none; }
+
+    &__pill--phone {
+        padding-left: 1.2rem;
+
+        > .giz-icon-select { flex: 0 0 20rem; }
+    }
+
+    & &__pill .giz-masked-phone-input {
+        .giz-phone-prefix,
+        .giz-mask {
+            font-size: 2.2rem;
+            font-weight: 600;
+        }
+    }
+
+    &__glyph {
         font-size: 2.4rem;
+        color: var(--giz-text-3);
+        transition: color 0.2s;
+    }
+
+    &__pill:focus-within &__glyph { color: var(--giz-accent-soft); }
+
+    & &__pill .giz-input-wrapper input {
+        font-size: 2.2rem;
         font-weight: 600;
+
+        &::placeholder {
+            font-weight: 500;
+            color: var(--giz-text-3);
+        }
     }
 
     &__pill--pin {
-        padding-right: 2.8rem;
-
-        input {
-            letter-spacing: 0.3em;
-            text-align: center;
-        }
+        padding-right: 2.4rem;
+        min-height: 7.2rem;
     }
 
     &__go {
@@ -165,9 +244,10 @@
     &__links {
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
         flex-wrap: wrap;
         gap: 1.2rem 2.8rem;
+        padding: 0 0.4rem;
         font-size: 1.5rem;
         color: var(--giz-text-2);
     }
@@ -202,12 +282,25 @@
         }
     }
 
-    &__qr {
-        width: 26rem;
-        height: 26rem;
-        box-sizing: border-box;
-        padding: 1.6rem;
+    &__qr-card {
+        display: grid;
+        grid-template-columns: 22rem minmax(0, 1fr);
+        align-items: center;
+        gap: 2.8rem;
+        padding: 2rem;
         border-radius: 2.4rem;
+        background:
+            linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-3)),
+            rgba(var(--giz-scrim-rgb), 0.5);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-10), inset 0 1px 0 var(--giz-glass-12);
+    }
+
+    &__qr {
+        width: 22rem;
+        height: 22rem;
+        box-sizing: border-box;
+        padding: 1.4rem;
+        border-radius: 1.8rem;
         background: var(--giz-white);
 
         svg {
@@ -217,69 +310,112 @@
             shape-rendering: crispedges;
         }
     }
+
+    &__qr-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+
+        b {
+            font-family: $font-family-header-theme-client;
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--giz-text-1);
+        }
+
+        span {
+            font-size: 1.5rem;
+            line-height: 1.5;
+            color: var(--giz-text-2);
+        }
+    }
 }
 
-// Sign-up: the home board in miniature - the stages on a tile of their own, the form in
-// the till beside it.
-.giz-login-card--spread {
+// Sign-up: the login layout keeps the stages on a tile of their own beside the page's card,
+// so the tile lives through the whole registration and arrives only once.
+.giz-signup-spread {
     width: min(140rem, calc(100vw - 8rem));
     height: min(80rem, calc(100vh - 16rem));
-    padding: 0;
-    border: 0;
-    box-shadow: none;
     display: grid;
     grid-template-columns: minmax(0, 1fr) 54rem;
     gap: 2.2rem;
 
-    &::before { display: none; }
-
-    .giz-login-card__stage {
+    &__stage {
         position: relative;
+        min-width: 0;
         overflow: hidden;
         border-radius: 3.2rem;
         background:
-            linear-gradient(160deg, rgba(var(--giz-accent-rgb), 0.16) 0%, rgba(var(--giz-accent-rgb), 0) 55%),
+            linear-gradient(160deg, rgba(var(--giz-accent-rgb), 0.2) 0%, rgba(var(--giz-accent-rgb), 0) 50%),
+            linear-gradient(340deg, rgba(var(--giz-accent-rgb), 0.1) 0%, rgba(var(--giz-accent-rgb), 0) 40%),
             var(--giz-tile);
         box-shadow:
             inset 0 0 0 1px var(--giz-glass-8),
             0 40px 80px -40px rgba(var(--giz-black-rgb), 0.95);
+        transition:
+            opacity 0.9s cubic-bezier(0.19, 1, 0.22, 1),
+            transform 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+        animation: giz-signup-in 0.7s cubic-bezier(0.2, 0, 0, 1) both;
     }
 
-    .giz-login-card__panel {
+    &__form {
         min-width: 0;
         min-height: 0;
-        overflow-y: auto;
-        scrollbar-width: thin;
-        scrollbar-color: var(--giz-glass-10) transparent;
         display: flex;
-        flex-direction: column;
-        justify-content: safe center;
-        padding: 3.6rem 4rem;
-        border-radius: 3.2rem;
-        background:
-            linear-gradient(176deg, rgba(var(--giz-accent-rgb), 0.13) 0%, rgba(var(--giz-accent-rgb), 0) 38%),
-            var(--giz-panel);
-        box-shadow:
-            inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.26),
-            0 40px 80px -40px rgba(var(--giz-black-rgb), 0.95);
     }
 }
 
-.giz-login-card__panel {
-    display: contents;
+// The stage dozes off together with the card.
+.giz-signup-spread:has(.giz-login-card.hidden) .giz-signup-spread__stage,
+.giz-signup-spread:has(.giz-login-card.slide-out) .giz-signup-spread__stage {
+    opacity: 0;
+    transform: translateY(1.2rem) scale(0.97);
+    pointer-events: none;
+}
+
+// The page's own card becomes the till beside the stage.
+.giz-signup-spread .giz-login-card {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--giz-glass-10) transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: safe center;
+    padding: 3.6rem 4rem;
+    border: 0;
+    border-radius: 3.2rem;
+    background:
+        linear-gradient(176deg, rgba(var(--giz-accent-rgb), 0.13) 0%, rgba(var(--giz-accent-rgb), 0) 38%),
+        var(--giz-panel);
+    box-shadow:
+        inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.26),
+        0 40px 80px -40px rgba(var(--giz-black-rgb), 0.95);
+
+    &::before { display: none; }
 }
 
 // The host number would sit on the form's corner; registration does not need it.
-.giz-main-container:has(.giz-login-card--spread) .giz-host-number {
+.giz-main-container:has(.giz-signup-spread) .giz-host-number {
     opacity: 0;
 }
 
 .giz-signup-stage {
+    position: relative;
     height: 100%;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     padding: 4.8rem;
+
+    &__head {
+        position: relative;
+        z-index: 1;
+    }
 
     &__kick {
         font-size: 1.3rem;
@@ -299,44 +435,73 @@
         color: var(--giz-text-1);
     }
 
-    &__middle {
-        flex: 1;
-        display: grid;
-        place-items: center;
-        padding: 3.2rem 0;
+    &__hint {
+        margin-top: 1.2rem;
+        font-size: 1.6rem;
+        color: var(--giz-text-2);
     }
 
+    &__middle {
+        position: relative;
+        flex: 1;
+        min-height: 0;
+        display: grid;
+        place-items: center;
+        padding: 2.4rem 0;
+    }
+
+    // The orbit of the lock and the profile popup, opened into an ellipse around the card.
+    &__orbit {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 0;
+        height: 0;
+        pointer-events: none;
+
+        i {
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: var(--giz-orbit-size);
+            opacity: var(--giz-orbit-opacity);
+            color: var(--giz-ink-3);
+            transform: translate(-50%, -50%) translate(var(--giz-orbit-x), var(--giz-orbit-y)) rotate(var(--giz-orbit-tilt));
+        }
+    }
+
+    // Dots at both edges, the lines between them taking whatever room is left.
     &__steps {
+        position: relative;
+        z-index: 1;
         list-style: none;
         margin: 0;
         padding: 0;
-        display: grid;
-        grid-auto-flow: column;
-        grid-auto-columns: minmax(0, 1fr);
+        display: flex;
+        align-items: flex-start;
     }
 
     &__step {
-        position: relative;
+        flex: none;
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
         gap: 1.2rem;
 
-        // The line on to the next stage, filled once this one is done.
-        &::before {
-            content: '';
-            position: absolute;
-            top: 1.7rem;
-            left: 4.8rem;
-            right: 1.2rem;
-            height: 0.2rem;
-            border-radius: 0.1rem;
-            background: var(--giz-glass-9);
-        }
+        &:first-child { align-items: flex-start; }
 
-        &:last-child::before { display: none; }
+        &:last-child { align-items: flex-end; }
+    }
 
-        &--done::before { background: rgba(var(--giz-accent-rgb), 0.55); }
+    &__link {
+        flex: 1;
+        height: 0.2rem;
+        margin: 1.7rem 1.6rem 0;
+        border-radius: 0.1rem;
+        background: var(--giz-glass-9);
+        transition: background 0.4s;
+
+        &--done { background: rgba(var(--giz-accent-rgb), 0.55); }
     }
 
     &__dot {
@@ -351,6 +516,7 @@
         font-size: 1.5rem;
         font-weight: 700;
         color: var(--giz-text-3);
+        transition: background 0.3s, color 0.3s;
     }
 
     &__step--done &__dot {
@@ -368,6 +534,7 @@
     &__label {
         font-size: 1.6rem;
         font-weight: 700;
+        white-space: nowrap;
         color: var(--giz-text-3);
     }
 
@@ -376,16 +543,33 @@
     &__step--current &__label { color: var(--giz-text-1); }
 }
 
-// The player card fills in as the form does: the nickname, the name, today's date.
-.giz-signup-card {
+// The player card with a second one behind it; the nickname, the name and the progress bar
+// follow the form as it fills in.
+.giz-signup-card-stack {
     position: relative;
-    width: min(46rem, 100%);
+    width: min(50rem, 100%);
     aspect-ratio: 1.586;
+    animation: giz-signup-card-in 0.8s cubic-bezier(0.2, 0, 0, 1) 0.15s both;
+
+    &__back {
+        position: absolute;
+        inset: 0;
+        border-radius: 2.4rem;
+        background: linear-gradient(135deg, rgba(var(--giz-accent-rgb), 0.34), rgba(var(--giz-accent-rgb), 0.1));
+        box-shadow: inset 0 0 0 1px var(--giz-glass-8);
+        transform: translate(-2rem, 1.4rem) rotate(-7deg);
+    }
+}
+
+.giz-signup-card {
+    position: absolute;
+    inset: 0;
     box-sizing: border-box;
-    padding: 3.2rem;
+    padding: 3.2rem 3.2rem 4rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow: hidden;
     border-radius: 2.4rem;
     background: linear-gradient(135deg, var(--giz-accent-deep) 0%, var(--giz-accent-deeper) 100%);
     box-shadow:
@@ -393,7 +577,6 @@
         inset 0 1px 0 rgba(var(--giz-white-rgb), 0.28),
         0 3rem 6rem -2rem rgba(var(--giz-black-rgb), 0.8);
     color: var(--giz-white);
-    animation: giz-signup-card-in 0.7s cubic-bezier(0.2, 0, 0, 1) 0.1s both;
 
     &__top {
         display: flex;
@@ -421,38 +604,97 @@
         color: rgba(var(--giz-white-rgb), 0.8);
     }
 
+    &__who {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+    }
+
     &__nick {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
         font-family: $font-family-numeric-theme-client;
-        font-size: 4rem;
+        font-size: 4.2rem;
         font-weight: 700;
         letter-spacing: -0.02em;
+        line-height: 1.1;
         transition: opacity 0.2s;
 
         &--empty { opacity: 0.45; }
+
+        // While the account step is open a caret stands after the name being typed.
+        &--live::after {
+            content: '';
+            display: inline-block;
+            width: 0.3rem;
+            height: 0.9em;
+            margin-left: 0.4rem;
+            vertical-align: -0.1em;
+            border-radius: 0.1rem;
+            background: currentColor;
+            animation: giz-signup-caret 1.1s steps(1) infinite;
+        }
+    }
+
+    &__name {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 1.7rem;
+        font-weight: 600;
+        color: rgba(var(--giz-white-rgb), 0.86);
+        transition: opacity 0.2s;
+
+        &--empty { opacity: 0.5; }
     }
 
     &__foot {
         display: flex;
-        align-items: flex-end;
+        align-items: center;
         justify-content: space-between;
         gap: 1.6rem;
         font-size: 1.4rem;
         color: rgba(var(--giz-white-rgb), 0.78);
     }
 
-    &__name {
-        min-width: 0;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+    &__chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        height: 3rem;
+        padding: 0 1.2rem;
+        border-radius: $giz-r-pill;
+        background: rgba(var(--giz-white-rgb), 0.14);
         font-weight: 700;
         color: var(--giz-white);
+
+        i { font-size: 1.5rem; }
     }
 
-    &__since { flex: none; }
+    &__since { margin-left: auto; }
+
+    &__progress {
+        position: absolute;
+        left: 3.2rem;
+        right: 3.2rem;
+        bottom: 1.8rem;
+        height: 0.4rem;
+        overflow: hidden;
+        border-radius: 0.2rem;
+        background: rgba(var(--giz-white-rgb), 0.18);
+
+        i {
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: var(--giz-white);
+            transform-origin: left;
+            transform: scaleX(var(--giz-signup-progress, 0));
+            transition: transform 0.8s cubic-bezier(0.2, 0, 0, 1);
+        }
+    }
 }
 
 @media (max-height: 860px) {
@@ -461,13 +703,27 @@
 
         &__title { font-size: 5.2rem; }
 
-        &__middle { padding: 2rem 0; }
+        &__hint { display: none; }
+
+        &__middle { padding: 1.6rem 0; }
     }
 
+    .giz-signup-card-stack { width: min(40rem, 100%); }
+
     .giz-signup-card {
-        width: min(38rem, 100%);
-        padding: 2.4rem;
+        padding: 2.4rem 2.4rem 3.4rem;
+
+        &__nick { font-size: 3.4rem; }
     }
+}
+
+@keyframes giz-signup-in {
+    from { opacity: 0; transform: translateY(1.6rem); }
+    to   { opacity: 1; transform: none; }
+}
+
+@keyframes giz-signup-caret {
+    50% { opacity: 0; }
 }
 
 @keyframes giz-signin-in {
@@ -482,5 +738,7 @@
 
 @media (prefers-reduced-motion: reduce) {
     .giz-signin,
-    .giz-signup-card { animation: none; }
+    .giz-signup-spread__stage,
+    .giz-signup-card-stack,
+    .giz-signup-card__nick--live::after { animation: none; }
 }

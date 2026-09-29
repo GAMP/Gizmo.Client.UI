@@ -165,5 +165,12 @@
         public const string SHELL_NEWS_TITLE = nameof(SHELL_NEWS_TITLE);
         public const string SHELL_FILTERS_ALL = nameof(SHELL_FILTERS_ALL);
         public const string SHELL_FILTERS_RESET = nameof(SHELL_FILTERS_RESET);
+        public const string SHELL_SIGNUP_HINT = nameof(SHELL_SIGNUP_HINT);
+        public const string SHELL_SIGNUP_NAME_PLACEHOLDER = nameof(SHELL_SIGNUP_NAME_PLACEHOLDER);
+        public const string SHELL_FILTERS_SORT = nameof(SHELL_FILTERS_SORT);
+        public const string SHELL_FILTERS_CATEGORY = nameof(SHELL_FILTERS_CATEGORY);
+        public const string SHELL_FILTERS_MODE = nameof(SHELL_FILTERS_MODE);
+        public const string SHELL_FILTERS_ANY = nameof(SHELL_FILTERS_ANY);
+        public const string SHELL_FILTERS_SELECTED = nameof(SHELL_FILTERS_SELECTED);
     }
 }
