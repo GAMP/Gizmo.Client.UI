@@ -1,48 +1,176 @@
-.giz-apps-filters {
+//============= App filters ===============//
+
+// The catalogue's filters on Grafit's own controls: the sort as a segmented pill off the
+// top bar, categories and play modes as chips - one click each, nothing to unfold.
+.giz-app-filters {
+    flex: 1;
+    min-width: 0;
     display: flex;
-    align-items: flex-end;
-    gap: 0.8rem;
-    margin-left: auto;
+    flex-direction: column;
+    gap: 1.6rem;
 
-    // .giz-input-control matches the specificity of the input's own theme rules.
-    .giz-input-control .giz-input-root {
-        background-color: var(--giz-glass-5);
+    &__top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1.2rem 2rem;
+    }
+
+    &__title {
+        padding-left: 1.2rem;
+        border-left: 3px solid var(--giz-accent);
+        color: var(--giz-text-1);
+        letter-spacing: 0.02em;
+        @include font-h5-theme-client($font-weight-bold-theme-client);
+    }
+
+    &__search {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+    }
+
+    &__search-label {
+        font-size: 1.6rem;
         color: var(--giz-text-2);
+    }
 
-        input {
+    &__search-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        height: 3.6rem;
+        padding: 0 1.2rem 0 1.6rem;
+        border: 0;
+        border-radius: $giz-r-pill;
+        background: rgba(var(--giz-accent-rgb), 0.16);
+        box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.4);
+        color: var(--giz-text-1);
+        font-family: $font-family-header-theme-client;
+        font-size: 1.5rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.15s;
+
+        i {
+            font-size: 1.3rem;
             color: var(--giz-text-2);
         }
 
-        svg {
-            color: var(--giz-text-3);
-        }
+        &:hover { background: rgba(var(--giz-accent-rgb), 0.24); }
     }
 
-    .giz-input-control .giz-input-root--outline {
-        background: var(--giz-glass-5);
+    &__sort {
+        display: flex;
+        padding: 0.5rem;
+        border-radius: 1.6rem;
         border: 1px solid var(--giz-glass-9);
-        border-radius: 2rem;
+        background:
+            linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-2)),
+            rgba(var(--giz-scrim-rgb), 0.35);
+        box-shadow: inset 0 1px 0 var(--giz-glass-12);
+    }
+
+    &__seg {
+        height: 3.8rem;
+        padding: 0 1.6rem;
+        border: 0;
+        border-radius: 1.1rem;
+        background: none;
+        color: var(--giz-text-2);
+        font-family: $font-family-header-theme-client;
+        font-size: 1.35rem;
+        font-weight: 700;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
 
         &:hover {
-            background: var(--giz-glass-8);
-            border: 1px solid var(--giz-glass-12);
-
-            &.giz-input-root--small { padding: 0.8rem 1.3rem; }
+            background: var(--giz-glass-5);
+            color: var(--giz-text-1);
         }
 
-        &:focus-within {
-            background: var(--giz-glass-7);
-            border: 1px solid rgba(var(--giz-accent-rgb), 0.4);
-            box-shadow: 0 0 0 1px rgba(var(--giz-accent-rgb), 0.08);
-
-            &.giz-input-root--small { padding: 0.8rem 1.3rem; }
+        &--on,
+        &--on:hover {
+            background: var(--giz-action-bg);
+            color: var(--giz-action-ink);
         }
     }
-}
 
-.giz-select.app-filter--default,
-.giz-multi-select.app-filter--default {
-    .giz-input-root {
-        opacity: 0.75;
+    &__row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    &__chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        height: 3.6rem;
+        padding: 0 1.6rem;
+        border: 0;
+        border-radius: $giz-r-pill;
+        background: var(--giz-glass-4);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-8);
+        color: var(--giz-text-2);
+        font-family: $font-family-header-theme-client;
+        font-size: 1.4rem;
+        font-weight: 600;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+
+        i {
+            font-size: 1.3rem;
+            color: var(--giz-text-3);
+        }
+
+        &:hover {
+            background: var(--giz-glass-7);
+            color: var(--giz-text-1);
+        }
+
+        &--on,
+        &--on:hover {
+            background: rgba(var(--giz-accent-rgb), 0.18);
+            box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.5);
+            color: var(--giz-text-1);
+
+            i { color: var(--giz-accent-soft); }
+        }
+    }
+
+    &__divider {
+        width: 1px;
+        height: 2.4rem;
+        margin: 0 0.6rem;
+        background: var(--giz-glass-9);
+    }
+
+    &__reset {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        height: 3.6rem;
+        padding: 0 1.4rem;
+        border: 0;
+        border-radius: $giz-r-pill;
+        background: none;
+        color: var(--giz-text-2);
+        font-family: $font-family-header-theme-client;
+        font-size: 1.4rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+
+        i { font-size: 1.5rem; }
+
+        &:hover {
+            background: var(--giz-glass-5);
+            color: var(--giz-text-1);
+        }
     }
 }

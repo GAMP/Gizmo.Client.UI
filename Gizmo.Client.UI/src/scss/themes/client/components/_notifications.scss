@@ -71,11 +71,11 @@ $nt-ink:   var(--giz-ink);
 $nt-ink-2: var(--giz-text-2);
 $nt-ink-3: var(--giz-text-3);
 
-// A capsule off the top bar: the round type disc where the bar keeps its avatar, the
-// words, the round close button.
+// The top bar's own glass, opaque: the window floats over games and cannot blur them.
+// No outer shadow - the slide wrapper clips everything outside the card to a rectangle.
 @mixin notification-card {
-    --nt-rgb: var(--giz-accent-rgb);
-    --nt-soft: var(--giz-accent-soft);
+    --nt-rgb: var(--giz-ink-rgb);
+    --nt-soft: var(--giz-text-1);
 
     position: relative;
     display: grid;
@@ -84,31 +84,28 @@ $nt-ink-3: var(--giz-text-3);
     gap: 1.4rem;
     width: 100%;
     box-sizing: border-box;
-    margin: 0 0 1rem;
-    padding: 1.2rem 1.2rem 1.2rem 1.2rem;
-    border-radius: 3.6rem;
+    margin: 0 0 0.8rem;
+    padding: 1.4rem 1.2rem 1.4rem 1.4rem;
+    border-radius: 1.6rem;
     background:
-        linear-gradient(180deg, var(--giz-glass-5), var(--giz-glass-1)),
-        linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.97), rgba(var(--giz-glass-2-rgb), 0.97));
-    border: 1px solid var(--giz-glass-10);
-    box-shadow:
-        inset 0 1px 0 var(--giz-glass-10),
-        0 1.4rem 2.8rem -1.6rem rgba(var(--giz-black-rgb), 0.85);
+        linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-2)),
+        linear-gradient(180deg, rgb(var(--giz-glass-rgb)), rgb(var(--giz-glass-2-rgb)));
+    border: 1px solid var(--giz-glass-9);
+    box-shadow: inset 0 1px 0 var(--giz-glass-12);
     color: $nt-ink;
 }
 
 @mixin notification-icon {
-    align-self: start;
-    width: 4.8rem;
-    height: 4.8rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
+    align-self: center;
+    width: 4.4rem;
+    height: 4.4rem;
+    display: grid;
+    place-items: center;
+    border-radius: 1.2rem;
     background: rgba(var(--nt-rgb), 0.16);
-    box-shadow: inset 0 0 0 1px rgba(var(--nt-rgb), 0.34);
     color: var(--nt-soft);
     font-size: 2.2rem;
+    line-height: 1;
 }
 
 @mixin notification-body($align: center, $pad-top: 0.2rem) {
@@ -175,12 +172,12 @@ $nt-ink-3: var(--giz-text-3);
     gap: 0.6rem;
     height: 3.4rem;
     padding: 0 1.4rem 0 1.6rem;
-    border: 1px solid var(--giz-glass-10);
-    border-radius: $giz-r-pill;
+    border: 1px solid var(--giz-glass-9);
+    border-radius: 1.2rem;
     background:
-        linear-gradient(180deg, var(--giz-glass-5), var(--giz-glass-1)),
-        linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.97), rgba(var(--giz-glass-2-rgb), 0.97));
-    box-shadow: 0 1rem 2rem -1.2rem rgba(var(--giz-black-rgb), 0.85);
+        linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-2)),
+        linear-gradient(180deg, rgb(var(--giz-glass-rgb)), rgb(var(--giz-glass-2-rgb)));
+    box-shadow: inset 0 1px 0 var(--giz-glass-12);
     color: var(--giz-text-2);
     font-family: $font-family-header-theme-client;
     font-size: 1.25rem;
@@ -196,18 +193,16 @@ $nt-ink-3: var(--giz-text-3);
     }
 }
 
-// Centred on the type disc, so both round shapes sit concentric with the capsule's ends.
 .giz-notification__close {
-    align-self: start;
+    align-self: center;
     width: 3.2rem;
     height: 3.2rem;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin: 0.8rem 0.8rem 0 0;
     padding: 0;
     border: 0;
-    border-radius: 50%;
+    border-radius: 1rem;
     background: transparent;
     color: $nt-ink-3;
     font-size: 1.5rem;
@@ -287,14 +282,15 @@ $nt-ink-3: var(--giz-text-3);
 .giz-reservation-notification {
     @include notification-card;
 
-    border-radius: 3.2rem;
+    --nt-rgb: var(--giz-warning-rgb);
+    --nt-soft: var(--giz-warning-sun);
 
     &__icon {
         @include notification-icon;
     }
 
     &__body {
-        @include notification-body(start, 0.4rem);
+        @include notification-body;
 
         &__actions {
             display: flex;

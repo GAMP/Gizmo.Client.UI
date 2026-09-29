@@ -1,6 +1,7 @@
 using System;
 using Gizmo.Client.Options;
 using Gizmo.Client.UI.Components;
+using Gizmo.Client.UI.Localization.Resources;
 using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -23,9 +24,18 @@ namespace Gizmo.Client.UI.Pages
 
         private FieldIdentifier? _countryFieldIdentifier;
 
-        // Calling-code digits of the last selected country, used to re-seed the login name
-        // when the user switches back to phone mode (mirrors the pre-refactor behavior).
         private string? _selectedCallingCodeDigits;
+
+        private enum LoginStep
+        {
+            Name,
+            Password,
+            Qr,
+        }
+
+        private LoginStep _step;
+        private PasswordInput _passwordInput;
+        private bool _focusPassword;
 
         [Inject]
         IOptions<UserLoginOptions> UserLoginOptions { get; set; }
@@ -97,10 +107,60 @@ namespace Gizmo.Client.UI.Pages
             return Task.CompletedTask;
         }
 
-        private Task OnKeyDownHandle(KeyboardEventArgs args)
+        private bool IsBusy => ViewState.IsLogginIn || ViewState.IsLogginOut;
+
+        private bool IsUsernameLogin => ViewState.LoginType == View.UserLoginType.UsernameOrEmail;
+
+        private bool IsPhoneLogin => !IsUsernameLogin;
+
+        private bool IsQrStep => HostQRCodeViewState.IsEnabled && (_step == LoginStep.Qr || UserLoginOptions.Value.Disabled);
+
+        private bool ShowQrLink => HostQRCodeViewState.IsEnabled;
+
+        private bool HasLoginName => !string.IsNullOrWhiteSpace(ViewState.LoginName)
+            && (IsUsernameLogin || ViewState.LoginName.Length > (_selectedCallingCodeDigits?.Length ?? 0));
+
+        private bool IsNextDisabled => !HasLoginName;
+
+        private bool NeedsReservationPin =>
+            HostReservationViewState.ReservationNotificationTimeReached || HostReservationViewState.ReservationBlockTimeReached;
+
+        private string PasswordTitle => IsUsernameLogin
+            ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOGIN_HELLO, ViewState.LoginName.Trim())
+            : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOGIN_PASSWORD_TITLE);
+
+        private string WhoText => IsUsernameLogin
+            ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOGIN_NOT_YOU)
+            : "+" + ViewState.LoginName;
+
+        private void GoToPassword()
+        {
+            if (!HasLoginName)
+                return;
+
+            _step = LoginStep.Password;
+            _focusPassword = true;
+        }
+
+        private void BackToName()
+        {
+            _step = LoginStep.Name;
+            UserLoginService.SetPassword(string.Empty);
+        }
+
+        private void OpenQr() => _step = LoginStep.Qr;
+
+        private void OnNameKeyDown(KeyboardEventArgs args)
         {
             if (args.Key == "Enter")
+                GoToPassword();
+        }
+
+        private Task OnPasswordKeyDown(KeyboardEventArgs args)
+        {
+            if (args.Key == "Enter" && !IsBusy)
                 return UserLoginService.LoginAsync();
+
             return Task.CompletedTask;
         }
 
@@ -115,8 +175,6 @@ namespace Gizmo.Client.UI.Pages
                 var switching = ViewState.LoginType != View.UserLoginType.MobilePhone;
                 UserLoginService.SetLoginMethod(View.UserLoginType.MobilePhone);
 
-                // Re-seed the calling code when switching into phone mode with a country already
-                // selected (the digits are captured from the last country selection in this session).
                 if (switching && !string.IsNullOrEmpty(ViewState.Country) && !string.IsNullOrEmpty(_selectedCallingCodeDigits))
                     UserLoginService.SetLoginName(_selectedCallingCodeDigits);
             }
@@ -151,6 +209,17 @@ namespace Gizmo.Client.UI.Pages
             this.SubscribeChange(HostReservationViewState);
 
             await base.OnInitializedAsync();
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (_focusPassword && _passwordInput is not null)
+            {
+                _focusPassword = false;
+                await _passwordInput.FocusAsync();
+            }
+
+            await base.OnAfterRenderAsync(firstRender);
         }
 
         public override void Dispose()

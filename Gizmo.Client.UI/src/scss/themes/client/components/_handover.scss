@@ -1,0 +1,478 @@
+//============= Reservation handover ===============//
+
+// The reservation lock: the player's tile and the reservation's tile, the grace countdown
+// on the line between them. Only transform and opacity move; the tiles take no blur of
+// their own because the veil under them is already blurred.
+.giz-handover {
+    --giz-handover-progress: 0;
+    --giz-handover-line: 34rem;
+    --giz-handover-pulse: 9rem;
+
+    position: fixed;
+    inset: 0;
+    z-index: $login-overlay-index;
+    display: grid;
+    place-items: center;
+    color: var(--giz-text-1);
+
+    &__veil {
+        position: absolute;
+        inset: 0;
+        background: rgba(var(--giz-scrim-rgb), 0.62);
+        backdrop-filter: blur(3rem) saturate(1.1);
+        -webkit-backdrop-filter: blur(3rem) saturate(1.1);
+        animation: giz-handover-fade 0.4s ease-out both;
+    }
+
+    &__stage {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5.6rem;
+    }
+
+    &__head {
+        text-align: center;
+        animation: giz-handover-rise 0.55s cubic-bezier(0.2, 0, 0, 1) 0.05s both;
+    }
+
+    &__title {
+        font-family: $font-family-header-theme-client;
+        font-size: 5.2rem;
+        font-weight: 800;
+        line-height: 1.05;
+        letter-spacing: -0.035em;
+    }
+
+    &__sub {
+        margin-top: 1.4rem;
+        font-size: 1.9rem;
+        color: var(--giz-text-2);
+    }
+
+    &__row {
+        display: grid;
+        grid-template-columns: 46rem var(--giz-handover-line) 46rem;
+        align-items: stretch;
+    }
+
+    &__tile {
+        position: relative;
+        isolation: isolate;
+        box-sizing: border-box;
+        min-height: 31rem;
+        padding: 3.2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2.8rem;
+        border-radius: 3.2rem;
+        border: 1px solid var(--giz-glass-10);
+        box-shadow:
+            inset 0 1.5px 0 rgba(var(--giz-white-rgb), 0.22),
+            0 6rem 12rem -3.4rem rgba(var(--giz-black-rgb), 0.9);
+        animation: giz-handover-rise 0.55s cubic-bezier(0.2, 0, 0, 1) 0.12s both;
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: inherit;
+            background:
+                linear-gradient(180deg, var(--giz-glass-6), var(--giz-glass-1)),
+                linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.85), rgba(var(--giz-glass-2-rgb), 0.92));
+        }
+
+        &--reservation {
+            --giz-handover-tint: var(--giz-warning-rgb);
+
+            justify-content: space-between;
+            border-color: rgba(var(--giz-handover-tint), 0.34);
+            animation-delay: 0.2s;
+
+            &::before {
+                background:
+                    linear-gradient(176deg, rgba(var(--giz-handover-tint), 0.14), rgba(var(--giz-handover-tint), 0) 48%),
+                    linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.85), rgba(var(--giz-glass-2-rgb), 0.92));
+            }
+        }
+    }
+
+    &--done &__tile--reservation {
+        --giz-handover-tint: var(--giz-success-rgb);
+    }
+
+    &__top {
+        display: flex;
+        align-items: center;
+        gap: 1.8rem;
+    }
+
+    &__disc {
+        flex: none;
+        width: 6.4rem;
+        height: 6.4rem;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: linear-gradient(180deg, var(--giz-glass-8), var(--giz-glass-3));
+        box-shadow: inset 0 0 0 1px var(--giz-glass-10);
+        font-size: 2.8rem;
+
+        &--reservation {
+            background: rgba(var(--giz-warning-rgb), 0.16);
+            box-shadow: inset 0 0 0 1px rgba(var(--giz-warning-rgb), 0.36);
+            color: var(--giz-warning-sun);
+        }
+    }
+
+    &--done &__disc--reservation {
+        background: rgba(var(--giz-success-rgb), 0.16);
+        box-shadow: inset 0 0 0 1px rgba(var(--giz-success-rgb), 0.36);
+        color: var(--giz-success-light);
+    }
+
+    &__names {
+        min-width: 0;
+    }
+
+    &__who {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--giz-text-2);
+    }
+
+    &__what {
+        margin-top: 0.3rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-family: $font-family-header-theme-client;
+        font-size: 3.2rem;
+        font-weight: 800;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+    }
+
+    &__keep {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 1.6rem;
+        color: var(--giz-text-2);
+
+        i { font-size: 2rem; }
+    }
+
+    &__out {
+        align-self: flex-start;
+        margin-top: auto;
+        height: 5.2rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0 2.6rem;
+        border: 0;
+        border-radius: 1.6rem;
+        background: var(--giz-glass-5);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-10);
+        color: var(--giz-text-1);
+        font-family: $font-family-header-theme-client;
+        font-size: 1.45rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.15s;
+
+        i { font-size: 1.8rem; }
+
+        &:hover { background: var(--giz-glass-8); }
+    }
+
+    &__keep + &__out {
+        margin-top: 0;
+    }
+
+    &__act {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+    }
+
+    &__field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    &__label {
+        font-size: 1.2rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--giz-text-3);
+    }
+
+    // The code sits in the middle of the field; text-indent balances the spacing that
+    // letter-spacing leaves after the last character.
+    &__input {
+        width: 100%;
+        height: 5.6rem;
+        box-sizing: border-box;
+        padding: 0 1.8rem;
+        border: 0;
+        border-radius: 1.6rem;
+        outline: none;
+        background: rgba(var(--giz-scrim-rgb), 0.45);
+        box-shadow: inset 0 0 0 2px rgba(var(--giz-warning-rgb), 0.45);
+        color: var(--giz-text-1);
+        caret-color: var(--giz-warning-sun);
+        font-family: $font-family-numeric-theme-client;
+        font-size: 2.4rem;
+        font-weight: 600;
+        letter-spacing: 0.3em;
+        text-indent: 0.3em;
+        text-align: center;
+        transition: box-shadow 0.15s;
+
+        &:focus { box-shadow: inset 0 0 0 2px rgba(var(--giz-warning-rgb), 0.9); }
+
+        &--error,
+        &--error:focus { box-shadow: inset 0 0 0 2px var(--giz-danger); }
+
+        &:disabled { opacity: 0.6; }
+    }
+
+    &__error {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--giz-danger-light);
+
+        i { font-size: 1.8rem; }
+    }
+
+    &__go {
+        width: 100%;
+        height: 5.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        border: 0;
+        border-radius: 1.6rem;
+        background: var(--giz-warning);
+        color: var(--giz-night);
+        font-family: $font-family-header-theme-client;
+        font-size: 1.6rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: filter 0.15s, opacity 0.15s;
+
+        i { font-size: 1.8rem; }
+
+        &:hover:not(:disabled) { filter: brightness(1.06); }
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
+    }
+
+    &__due {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        padding: 1.6rem 0 0.4rem;
+        border-top: 1px solid var(--giz-glass-8);
+
+        span {
+            font-size: 1.6rem;
+            color: var(--giz-text-2);
+        }
+
+        b {
+            font-family: $font-family-numeric-theme-client;
+            font-size: 3.2rem;
+            font-weight: 600;
+        }
+    }
+
+    &__done {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 1.7rem;
+        font-weight: 600;
+        color: var(--giz-success-light);
+
+        i { font-size: 2.4rem; }
+    }
+
+    &__link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.6rem;
+    }
+
+    &__count {
+        font-family: $font-family-numeric-theme-client;
+        font-size: 6.4rem;
+        font-weight: 600;
+        line-height: 1;
+        letter-spacing: -0.03em;
+        font-variant-numeric: tabular-nums;
+        color: var(--giz-warning-sun);
+        animation: giz-handover-fade 0.5s ease-out 0.3s both;
+    }
+
+    &--done &__count { color: var(--giz-success-light); }
+
+    &__cap {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--giz-text-3);
+        animation: giz-handover-fade 0.5s ease-out 0.4s both;
+    }
+
+    &__line {
+        position: relative;
+        align-self: stretch;
+        height: 1.4rem;
+    }
+
+    &__track {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        transform-origin: left;
+        animation: giz-handover-draw 0.8s cubic-bezier(0.3, 0, 0.2, 1) 0.35s both;
+
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 0.2rem;
+            margin-top: -0.1rem;
+            background: var(--giz-glass-9);
+        }
+    }
+
+    // The share of the grace time already gone, eased between the one-second ticks.
+    &__fill {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        height: 0.2rem;
+        margin-top: -0.1rem;
+        transform-origin: left;
+        transform: scaleX(var(--giz-handover-progress));
+        background: rgba(var(--giz-warning-rgb), 0.4);
+        transition: transform 1s linear;
+    }
+
+    &--done &__fill { background: var(--giz-success); }
+
+    &__port {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 1.4rem;
+        height: 1.4rem;
+        margin: -0.7rem 0 0 -0.7rem;
+        border-radius: 50%;
+        background: var(--giz-bg-0);
+        box-shadow: inset 0 0 0 0.3rem var(--giz-ink);
+        animation: giz-handover-pop 0.3s ease-out 0.3s both;
+
+        &--end {
+            left: 100%;
+            box-shadow: inset 0 0 0 0.3rem var(--giz-warning-sun);
+            animation-delay: 1.05s;
+        }
+    }
+
+    &--done &__port--end { box-shadow: inset 0 0 0 0.3rem var(--giz-success-light); }
+
+    // From the player's tile to the reservation's, over and over while the countdown runs.
+    &__pulse {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: var(--giz-handover-pulse);
+        height: 0.4rem;
+        margin-top: -0.2rem;
+        border-radius: 0.2rem;
+        background: linear-gradient(90deg, rgba(var(--giz-warning-rgb), 0), var(--giz-warning-sun));
+        transform: translateX(calc(var(--giz-handover-pulse) * -1));
+        animation: giz-handover-travel 2.4s cubic-bezier(0.5, 0, 0.25, 1) 1.2s infinite;
+
+        &::after {
+            content: '';
+            position: absolute;
+            right: -0.6rem;
+            top: 50%;
+            width: 1.2rem;
+            height: 1.2rem;
+            margin-top: -0.6rem;
+            border-radius: 50%;
+            background: var(--giz-warning-sun);
+        }
+    }
+
+    &--done &__pulse { display: none; }
+}
+
+@media (max-width: 1400px) {
+    .giz-handover {
+        --giz-handover-line: 26rem;
+
+        &__row { grid-template-columns: 42rem var(--giz-handover-line) 42rem; }
+    }
+}
+
+@keyframes giz-handover-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes giz-handover-rise {
+    from { opacity: 0; transform: translateY(1.6rem); }
+    to   { opacity: 1; transform: none; }
+}
+
+@keyframes giz-handover-draw {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+}
+
+@keyframes giz-handover-pop {
+    from { transform: scale(0); }
+    to   { transform: scale(1); }
+}
+
+@keyframes giz-handover-travel {
+    0%   { transform: translateX(calc(var(--giz-handover-pulse) * -1)); opacity: 1; }
+    78%  { transform: translateX(calc(var(--giz-handover-line) - var(--giz-handover-pulse))); opacity: 1; }
+    100% { transform: translateX(calc(var(--giz-handover-line) - var(--giz-handover-pulse))); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .giz-handover__veil,
+    .giz-handover__head,
+    .giz-handover__tile,
+    .giz-handover__count,
+    .giz-handover__cap,
+    .giz-handover__track,
+    .giz-handover__port { animation: none; }
+
+    .giz-handover__pulse { display: none; }
+}

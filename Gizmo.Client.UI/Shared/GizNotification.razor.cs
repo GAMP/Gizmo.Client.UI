@@ -51,7 +51,7 @@ namespace Gizmo.Client.UI
             AlertTypes.Success => "ph-bold ph-check",
             AlertTypes.Danger => "ph-fill ph-warning-octagon",
             AlertTypes.Warning => "ph-fill ph-warning",
-            _ => "ph-fill ph-bell-simple",
+            _ => "ph-fill ph-chat-circle-text",
         };
 
         private async Task CloseNotification()

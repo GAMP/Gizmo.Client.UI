@@ -1,99 +1,62 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 
-@if (!string.IsNullOrEmpty(ViewState.SearchPattern))
-{
-    <div class="giz-section__header__filters">
-        <div>
-            <div class="giz-section__header__filters__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_RESULTS_FOR))</div>
-            <div>
-                <Chip CanClose="true" OnClose="@(() => AppsPageService.ClearSearchPattern())">@ViewState.SearchPattern</Chip>
+<div class="giz-app-filters">
+    <div class="giz-app-filters__top">
+        @if (HasSearch)
+        {
+            <div class="giz-app-filters__search">
+                <span class="giz-app-filters__search-label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_RESULTS_FOR))</span>
+                <button type="button" class="giz-app-filters__search-chip" @onclick="@(() => AppsPageService.ClearSearchPattern())">
+                    <span>@ViewState.SearchPattern</span>
+                    <i class="ph-bold ph-x"></i>
+                </button>
             </div>
+        }
+        else
+        {
+            <div class="giz-app-filters__title">@Heading</div>
+        }
+
+        <div class="giz-app-filters__sort">
+            @foreach (var option in ViewState.SortingOptions)
+            {
+                <button type="button" class="@SortClass(option.Value)" @onclick="@(() => AppsPageService.SetSelectedSortingOption(option.Value))">@option.DisplayName</button>
+            }
         </div>
     </div>
-}
-else
-{
-    @switch (ViewState.SelectedSortingOption)
+
+    @if (HasRow)
     {
-        case ApplicationSortingOption.AddDate:
+        <div class="giz-app-filters__row">
+            @if (ViewState.AppCategories.Any())
+            {
+                <button type="button" class="@CategoryClass(null)" @onclick="@(() => AppsPageService.SetSelectedApplicationCategory(null))">@AllText</button>
+                @foreach (var category in ViewState.AppCategories)
+                {
+                    <button type="button" class="@CategoryClass(category.AppCategoryId)" @onclick="@(() => AppsPageService.SetSelectedApplicationCategory(category.AppCategoryId))">@category.Name</button>
+                }
+            }
 
-            <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APP_FILTERS_RECENTLY_ADDED))</div>
+            @if (ViewState.ExecutableModes.Any())
+            {
+                <span class="giz-app-filters__divider"></span>
+                @foreach (var mode in ViewState.ExecutableModes)
+                {
+                    <button type="button" class="@ModeClass(mode.Value)" aria-pressed="@ModePressed(mode.Value)" @onclick="@(() => ToggleMode(mode.Value))">
+                        <i class="@ModeIcon(mode.Value)"></i>
+                        <span>@mode.DisplayName</span>
+                    </button>
+                }
+            }
 
-            break;
-
-        case ApplicationSortingOption.ReleaseDate:
-
-            <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APP_FILTERS_NEW_RELEASES))</div>
-
-            break;
-
-        case ApplicationSortingOption.Popularity:
-        case ApplicationSortingOption.Title:
-
-            <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APP_FILTERS_ALL_APPS))</div>
-
-            break;
+            @if (ViewState.TotalFilters > 0)
+            {
+                <button type="button" class="giz-app-filters__reset" @onclick="@(() => AppsPageService.ClearAllFilters())">
+                    <i class="ph-bold ph-arrow-counter-clockwise"></i>
+                    <span>@ResetText</span>
+                </button>
+            }
+        </div>
     }
-}
-<div class="giz-apps-filters">
-    @if (ViewState.TotalFilters > 0)
-    {
-        <Chip CanClose="true" OnClose="@(() => AppsPageService.ClearAllFilters())">
-            <FiltersIcon />
-            <span>@ViewState.TotalFilters</span>
-        </Chip>
-    }
-    <Select LeftSVGIcon="Icons.Sort_Client"
-            HandleSVGIcon="Icons.Select_Client"
-            ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
-            Size="InputSizes.Small"
-            TValue="ApplicationSortingOption"
-            Value="@ViewState.SelectedSortingOption"
-            ValueChanged="@((value) => AppsPageService.SetSelectedSortingOption(value))"
-            Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SORT_BY))"
-            OpenDirection="PopupOpenDirections.Bottom"
-            MaximumHeight="20.0rem"
-            Class="@(ViewState.SelectedSortingOption != ViewState.DefaultSortingOption ? "app-filter--filled" : "app-filter--default")"
-            PopupClass="giz-scrollbar--v">
-        @foreach (var item in ViewState.SortingOptions)
-        {
-            <SelectItem Value="@item.Value" Text="@item.DisplayName" />
-        }
-    </Select>
-    <Select HandleSVGIcon="Icons.Select_Client"
-            ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
-            Placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APP_FILTERS_ALL_GAMES_AND_APPS))"
-            Size="InputSizes.Small"
-            TValue="int?"
-            Value="@ViewState.SelectedCategoryId"
-            ValueChanged="@((value) => AppsPageService.SetSelectedApplicationCategory(value))"
-            Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_CATEGORY))"
-            OpenDirection="PopupOpenDirections.Bottom"
-            MaximumHeight="20.0rem"
-            Class="@(ViewState.SelectedCategoryId.HasValue ? "app-filter--filled" : "app-filter--default")"
-            PopupClass="giz-scrollbar--v">
-        @foreach (var item in ViewState.AppCategories)
-        {
-            <SelectItem TValue="int?" Value="@item.AppCategoryId" Text="@item.Name" />
-        }
-    </Select>
-    <MultiSelect HandleSVGIcon="Icons.Select_Client"
-                 ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
-                 Placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APP_FILTERS_SELECT_SOMETHING))"
-                 Size="InputSizes.Small"
-                 TValue="ApplicationModes"
-                 Value="@ViewState.SelectedExecutableModes.ToList()"
-                 ValueChanged="@((value) => AppsPageService.SetSelectedSelectedExecutableModes(value))"
-                 Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_PARAMETERS))"
-                 OpenDirection="PopupOpenDirections.Bottom"
-                 CanClearValue="true"
-                 MaximumHeight="20.0rem"
-                 Class="@(ViewState.SelectedExecutableModes.Count() > 0 ? "app-filter--filled" : "app-filter--default")"
-                 PopupClass="giz-scrollbar--v">
-        @foreach (var item in ViewState.ExecutableModes)
-        {
-            <MultiSelectItem Value="@item.Value" Text="@item.DisplayName" />
-        }
-    </MultiSelect>
 </div>

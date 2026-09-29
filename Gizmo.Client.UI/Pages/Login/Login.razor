@@ -13,145 +13,163 @@
                            Message="@reservationMessage" />
     }
 
-    <LoginCard>
-
-    <CardBody>
-        @if (ViewState.HasLoginError)
-        {
-            <ErrorBlock Message="@ViewState.LoginError" ShowIcon="true" Class="giz-login-error-block" />
-        }
-        @if (!UserLoginOptions.Value.Disabled)
-        {
-            <div class="giz-login-title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_SIGN_IN_TITLE))</div>
-            <div>
-                <ButtonGroup Class="giz-login-method" IsMandatory="true" SelectedItemsChanged="@SelectLoginType" IsDisabled="@(ViewState.IsLogginIn || ViewState.IsLogginOut)">
-                    <Button Name="Username" IsSelected="@(ViewState.LoginType == View.UserLoginType.UsernameOrEmail)">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_USERNAME))</Button>
-                    <Button Name="Phone" IsSelected="@(ViewState.LoginType == View.UserLoginType.MobilePhone)">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PHONE_NUMBER))</Button>
-                </ButtonGroup>
-            </div>
-            <EditForm EditContext="@UserLoginService.EditContext" @onkeydown="OnKeyDownHandle">
-                <div class="giz-form-input giz-form-input--swappable" @key="ViewState.LoginType">
-                    @if (ViewState.LoginType == View.UserLoginType.UsernameOrEmail)
+    <LoginCard Modifier="giz-login-card--steps">
+        <CardBody>
+            @if (IsQrStep)
+            {
+                <div class="giz-signin giz-signin--qr" @key="@("qr")">
+                    <h1 class="giz-signin__title">@QrTitle</h1>
+                    <div class="giz-signin__sub">@QrMessage</div>
+                    <div class="giz-signin__qr">
+                        @((MarkupString)HostQRCodeViewState.HostQRCode)
+                    </div>
+                    @if (!UserLoginOptions.Value.Disabled)
                     {
-                        <TextInput UpdateOnInput="true"
-                                   Value="@ViewState.LoginName"
-                                   ValueChanged="@((string value) => UserLoginService.SetLoginName(value))"
-                                   ValueExpression="@(() => ViewState.LoginName)"
-                                   ValidateFunction="@UserLoginService.UsernameCharacterIsValid"
-                                   IsDisabled="@(ViewState.IsLogginIn || ViewState.IsLogginOut)"
-                                   Size="InputSizes.Medium"
-                                   IsFullWidth="true"
-                                   Label="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_USERNAME))" />
-                    }
-                    else
-                    {
-                        <PhoneNumberField SelectedCountryName="@ViewState.Country"
-                                          PhoneValue="@ViewState.LoginName"
-                                          PhoneValueExpression="@(() => ViewState.LoginName)"
-                                          CountryFieldIdentifier="@GetCountryFieldIdentifier()"
-                                          IsDisabled="@(ViewState.IsLogginIn || ViewState.IsLogginOut)"
-                                          Size="InputSizes.Medium"
-                                          IsFullWidth="true"
-                                          RenderWrappers="false"
-                                          CountryLabel="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_COUNTRY))"
-                                          PhoneLabel="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PHONE_NUMBER))"
-                                          SearchPlaceholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEARCH))"
-                                          CountryChanged="@OnCountryChangedAsync"
-                                          PhoneValueChanged="@OnPhoneValueChangedAsync" />
-                    }
-                </div>
-                <div class="giz-form-input">
-                    <PasswordInput ShowRevealButton="true"
-                                   UpdateOnInput="true" Value="@ViewState.Password"
-                                   ValueChanged="@((string value) => UserLoginService.SetPassword(value))"
-                                   ValueExpression="@(() => ViewState.Password)"
-                                   IsPasswordVisible="@ViewState.IsPasswordVisible"
-                                   IsPasswordVisibleChanged="@((bool value) => UserLoginService.SetPasswordVisible(value))"
-                                   IsDisabled="@(ViewState.IsLogginIn || ViewState.IsLogginOut)"
-                                   Size="InputSizes.Medium"
-                                   IsFullWidth="true"
-                                   Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PASSWORD))" />
-                    @if (ShowPasswordRecovery)
-                    {
-                        <div class="giz-login-forgot-password">
-                            <a tabindex="-1" href="@ClientRoutes.PasswordRecoveryKindRoute">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_FORGOT_YOUR_PASSWORD))</a>
+                        <div class="giz-signin__links">
+                            <button type="button" class="giz-signin__link" @onclick="@BackToName">
+                                <i class="ph-bold ph-arrow-left"></i>
+                                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOGIN_BY_NAME)</span>
+                            </button>
                         </div>
                     }
                 </div>
+            }
+            else if (_step == LoginStep.Password)
+            {
+                <EditForm EditContext="@UserLoginService.EditContext" @onkeydown="OnPasswordKeyDown" class="giz-signin giz-signin--password" @key="@("password")">
+                    <h1 class="giz-signin__title">@PasswordTitle</h1>
+                    <button type="button" class="giz-signin__who" @onclick="@BackToName">
+                        <span>@WhoText</span>
+                        <b>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOGIN_CHANGE)</b>
+                    </button>
 
-                @if (HostReservationViewState.ReservationNotificationTimeReached || HostReservationViewState.ReservationBlockTimeReached)
-                {
-                    <div class="giz-form-input">
-                        <div class="giz-login-pin-label-wrapper">
-                            <div class="giz-login-pin-label">
-                                <div>
-                                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_RESERVATION_PIN_INPUT_LABEL))
-                                </div>
-                            </div>
-                        </div>
-                        <PasswordInput UpdateOnInput="true" Value="@ViewState.Pin"
-                                       ValueChanged="@((string value) => UserLoginService.SetPin(value))"
-                                       ValueExpression="@(() => ViewState.Pin)"
-                                       IsDisabled="@(ViewState.IsLogginIn || ViewState.IsLogginOut)"
-                                       IsPasswordVisible="true"
-                                       ShowRevealButton="false"
-                                       Placeholder="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOGIN_PIN_PLACEHOLDER)"
+                    @if (ViewState.HasLoginError)
+                    {
+                        <ErrorBlock Message="@ViewState.LoginError" ShowIcon="true" Class="giz-login-error-block giz-signin__error" />
+                    }
+
+                    <div class="giz-signin__pill">
+                        <PasswordInput @ref="_passwordInput"
+                                       ShowRevealButton="true"
+                                       UpdateOnInput="true"
+                                       Value="@ViewState.Password"
+                                       ValueChanged="@((string value) => UserLoginService.SetPassword(value))"
+                                       ValueExpression="@(() => ViewState.Password)"
+                                       IsPasswordVisible="@ViewState.IsPasswordVisible"
+                                       IsPasswordVisibleChanged="@((bool value) => UserLoginService.SetPasswordVisible(value))"
+                                       IsDisabled="@IsBusy"
                                        Size="InputSizes.Medium"
                                        IsFullWidth="true"
-                                       HasOutline="false"
-                                       Class="giz-password-input--pin" />
-                    </div>
-                }
-
-                <div>
-                    <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" Class="giz-login-submit" @onclick="@UserLoginService.LoginAsync">
-                        @if (ViewState.IsLogginIn || ViewState.IsLogginOut)
-                        {
-                            <Spinner />
-                        }
-                        else
-                        {
-                            <div class="giz-login-submit__content">
-                                <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CONTINUE))</span>
+                                       Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PASSWORD))" />
+                        <button type="button" class="giz-signin__go" disabled="@IsBusy" aria-label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CONTINUE))" @onclick="@UserLoginService.LoginAsync">
+                            @if (IsBusy)
+                            {
+                                <span class="giz-loader giz-loader--small"></span>
+                            }
+                            else
+                            {
                                 <i class="ph-bold ph-arrow-right"></i>
-                            </div>
-                        }
-                    </Button>
-                </div>
-
-                @if (UserRegisterConfigurationViewState.IsEnabled)
-                {
-                    <div class="giz-login-new-user">
-                        <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_NOT_A_MEMBER))</span>
-                        <a @onclick="UserLoginService.OpenRegistrationAsync">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_SIGN_UP_NOW))</a>
+                            }
+                        </button>
                     </div>
-                }
-            </EditForm>
 
-            @* TODO: stub — social login buttons, no action. Wire up when provider auth flow is available. *@
-            @* <LoginSocialButtons /> *@
-        }
+                    @if (NeedsReservationPin)
+                    {
+                        <div class="giz-signin__pill giz-signin__pill--pin">
+                            <PasswordInput UpdateOnInput="true"
+                                           Value="@ViewState.Pin"
+                                           ValueChanged="@((string value) => UserLoginService.SetPin(value))"
+                                           ValueExpression="@(() => ViewState.Pin)"
+                                           IsDisabled="@IsBusy"
+                                           IsPasswordVisible="true"
+                                           ShowRevealButton="false"
+                                           Placeholder="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOGIN_PIN_PLACEHOLDER)"
+                                           Size="InputSizes.Medium"
+                                           IsFullWidth="true"
+                                           Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_RESERVATION_PIN_INPUT_LABEL))" />
+                        </div>
+                    }
 
-        @if (HostQRCodeViewState.IsEnabled)
-        {
-            <div class="giz-login-or">
-                <span>@LocalizationService.GetString("GIZ_LOGIN_OR")</span>
-            </div>
+                    @if (ShowPasswordRecovery)
+                    {
+                        <div class="giz-signin__links">
+                            <a class="giz-signin__link" href="@ClientRoutes.PasswordRecoveryKindRoute">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_FORGOT_YOUR_PASSWORD))</a>
+                        </div>
+                    }
+                </EditForm>
+            }
+            else
+            {
+                <div class="giz-signin giz-signin--name" @key="@("name")">
+                    <h1 class="giz-signin__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOGIN_TITLE)</h1>
 
-            <div class="giz-login-qr">
-                <div class="giz-login-qr__text">
-                    <div class="giz-login-qr__text__title">@QrTitle</div>
-                    <div class="giz-login-qr__text__subtitle">@QrMessage</div>
+                    <ButtonGroup Class="giz-login-method giz-signin__method" IsMandatory="true" SelectedItemsChanged="@SelectLoginType" IsDisabled="@IsBusy">
+                        <Button Name="Username" IsSelected="@IsUsernameLogin">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_USERNAME))</Button>
+                        <Button Name="Phone" IsSelected="@IsPhoneLogin">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PHONE_NUMBER))</Button>
+                    </ButtonGroup>
+
+                    <EditForm EditContext="@UserLoginService.EditContext" @onkeydown="OnNameKeyDown">
+                        <div class="giz-signin__pill" @key="ViewState.LoginType">
+                            @if (IsUsernameLogin)
+                            {
+                                <TextInput
+                                           UpdateOnInput="true"
+                                           Value="@ViewState.LoginName"
+                                           ValueChanged="@((string value) => UserLoginService.SetLoginName(value))"
+                                           ValueExpression="@(() => ViewState.LoginName)"
+                                           ValidateFunction="@UserLoginService.UsernameCharacterIsValid"
+                                           IsDisabled="@IsBusy"
+                                           Size="InputSizes.Medium"
+                                           IsFullWidth="true"
+                                           Label="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_USERNAME))" />
+                            }
+                            else
+                            {
+                                <PhoneNumberField SelectedCountryName="@ViewState.Country"
+                                                  PhoneValue="@ViewState.LoginName"
+                                                  PhoneValueExpression="@(() => ViewState.LoginName)"
+                                                  CountryFieldIdentifier="@GetCountryFieldIdentifier()"
+                                                  IsDisabled="@IsBusy"
+                                                  Size="InputSizes.Medium"
+                                                  IsFullWidth="true"
+                                                  RenderWrappers="false"
+                                                  CountryLabel="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_COUNTRY))"
+                                                  PhoneLabel="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PHONE_NUMBER))"
+                                                  SearchPlaceholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEARCH))"
+                                                  CountryChanged="@OnCountryChangedAsync"
+                                                  PhoneValueChanged="@OnPhoneValueChangedAsync" />
+                            }
+                            <button type="button" class="giz-signin__go" disabled="@IsNextDisabled" aria-label="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOGIN_NEXT)" @onclick="@GoToPassword">
+                                <i class="ph-bold ph-arrow-right"></i>
+                            </button>
+                        </div>
+                    </EditForm>
+
+                    @if (ShowQrLink || UserRegisterConfigurationViewState.IsEnabled)
+                    {
+                        <div class="giz-signin__links">
+                            @if (ShowQrLink)
+                            {
+                                <button type="button" class="giz-signin__link" @onclick="@OpenQr">
+                                    <i class="ph-bold ph-qr-code"></i>
+                                    <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOGIN_BY_QR)</span>
+                                </button>
+                            }
+                            @if (UserRegisterConfigurationViewState.IsEnabled)
+                            {
+                                <div class="giz-signin__new">
+                                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_NOT_A_MEMBER))</span>
+                                    <a @onclick="UserLoginService.OpenRegistrationAsync">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_SIGN_UP_NOW))</a>
+                                </div>
+                            }
+                        </div>
+                    }
                 </div>
-                <div class="giz-login-qr__image">
-                    @((MarkupString)HostQRCodeViewState.HostQRCode)
-                </div>
-            </div>
-        }
-    </CardBody>
-    <CardFooter>
-        <InputLanguageMenu />
-    </CardFooter>
+            }
+        </CardBody>
+        <CardFooter>
+            <InputLanguageMenu />
+        </CardFooter>
     </LoginCard>
 
 </div>

@@ -5,6 +5,7 @@ html[data-giz-idle="1"] {
     .giz-universal-executable-progress-bar__ring--spin, // launch without a known size
     .giz-image-loading--activity,               // shimmer over a loading image
     .giz-registration-redirect__status-dot,
+    .giz-loader,                                // every loading ring
 
     // Finite, but it tracks the hero slide timer, which is stopped while asleep.
     .giz-home-dots__fill,
@@ -15,7 +16,10 @@ html[data-giz-idle="1"] {
     // Top bar
     .giz-deploy--waiting .giz-deploy__ring,
     .giz-deploy--open:not(.giz-deploy--done)::before,
-    .giz-resv__icon {
+    .giz-resv__icon,
+
+    // Reservation lock
+    .giz-handover__pulse {
         // Has to outrank every block's own animation shorthand, whatever its specificity.
         animation-play-state: paused !important;
     }

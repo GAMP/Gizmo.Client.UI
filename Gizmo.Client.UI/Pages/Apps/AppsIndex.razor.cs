@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Gizmo.Client.Options;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -46,6 +47,12 @@ namespace Gizmo.Client.UI.Pages
 
         #endregion
 
+        private bool _isLoading;
+
+        private bool IsLoading => _isLoading;
+
+        private void OnApplicationsChanged(object sender, System.EventArgs e) => _isLoading = false;
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);
@@ -59,6 +66,8 @@ namespace Gizmo.Client.UI.Pages
 
         protected override void OnInitialized()
         {
+            _isLoading = !ViewState.Applications.Any();
+            ViewState.OnChange += OnApplicationsChanged;
             this.SubscribeChange(ViewState);
 
             base.OnInitialized();
@@ -66,6 +75,7 @@ namespace Gizmo.Client.UI.Pages
 
         public override void Dispose()
         {
+            ViewState.OnChange -= OnApplicationsChanged;
             this.UnsubscribeChange(ViewState);
 
             base.Dispose();
