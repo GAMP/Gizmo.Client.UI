@@ -6,13 +6,25 @@
 .giz-peek {
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
-    padding: 0.4rem 0.2rem 0.8rem;
+    gap: 1rem;
+
+    &__name {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.6rem;
+        font-weight: 800;
+        line-height: 1.25;
+        letter-spacing: -0.01em;
+        color: var(--giz-text-1);
+    }
 
     &__about {
         margin: 0;
         display: -webkit-box;
-        -webkit-line-clamp: 3;
+        -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
         font-size: 1.3rem;
@@ -23,7 +35,7 @@
     &__facts {
         display: flex;
         flex-direction: column;
-        gap: 0.9rem;
+        gap: 0.7rem;
     }
 
     // The icon and the caption on one line, the value under them across the card's width.

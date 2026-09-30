@@ -71,25 +71,19 @@
     align-items: center;
 }
 
-// The server: the icon alone in a square chip, red while the club server is out of reach.
+// The server: the bare icon beside the language chip, red while the club server is out of reach.
 .giz-server {
-    @include login-chip;
-    justify-content: center;
-    width: 3.8rem;
-    padding: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 0.4rem;
 
     .giz-server__icon {
         width: 1.8rem;
         height: 1.8rem;
-        color: var(--giz-text-2);
+        color: var(--giz-text-3);
     }
 
-    &--offline {
-        box-shadow: inset 0 0 0 1px rgba(var(--giz-danger-rgb), 0.45);
-        background: rgba(var(--giz-danger-rgb), 0.14);
-
-        .giz-server__icon { color: var(--giz-danger-soft); }
-    }
+    &--offline .giz-server__icon { color: var(--giz-danger-soft); }
 }
 
 .giz-version {
@@ -274,12 +268,12 @@
         min-width: 0;
     }
 
-    // The heading font sits low in its own box; lifting it by its descender puts the word
-    // on the same middle line as the switch beside it.
+    // The eye reads a word's middle at the middle of its small letters, not of its capitals;
+    // the extra room under the heading lifts "ход" to the switch's middle line.
     &__title {
         min-width: 0;
         margin: 0;
-        padding-bottom: 0.08em;
+        padding-bottom: 0.2em;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;

@@ -35,7 +35,26 @@ namespace Gizmo.Client.UI.Components
 
         private string PlaceholderIcon => IsTimeProduct ? "ph-fill ph-clock" : "ph-fill ph-package";
 
-        private bool IsAtMinimum => UserCartProductViewState.Quantity <= 1;
+        private bool IsSingle => UserCartProductViewState.Quantity <= 1;
+
+        private string LessIcon => IsSingle ? "ph-bold ph-trash" : "ph-bold ph-minus";
+
+        private string LessClass => IsSingle
+            ? "giz-cart-line__step giz-cart-line__step--remove"
+            : "giz-cart-line__step";
+
+        private string UnitPriceText => UserCartProductViewState.Quantity > 1
+            ? (UserCartProductViewState.TotalPrice / UserCartProductViewState.Quantity).ToString("C", CultureInfo.CurrentCulture)
+                + " × " + UserCartProductViewState.Quantity.ToString(CultureInfo.CurrentCulture)
+            : null;
+
+        private void OnLessAsync(MouseEventArgs args)
+        {
+            if (IsSingle)
+                ClientServerCartViewService.RemoveEntry(UserCartProductViewState.Guid);
+            else
+                OnRemoveQuantityButtonClickHandler(args);
+        }
 
         private bool IsAtMaximum => IsTimeProduct && UserCartProductViewState.Quantity >= 1;
 

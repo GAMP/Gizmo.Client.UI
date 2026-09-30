@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Options;
+using Microsoft.JSInterop;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -268,20 +269,33 @@ namespace Gizmo.Client.UI.Pages
             if (_focusPin && _pinInput is not null)
             {
                 _focusPin = false;
-                await _pinInput.FocusAsync();
+                await FocusAsync(() => _pinInput.FocusAsync());
             }
             else if (_focusPassword && _passwordInput is not null)
             {
                 _focusPassword = false;
-                await _passwordInput.FocusAsync();
+                await FocusAsync(() => _passwordInput.FocusAsync());
             }
-            else if ((firstRender || _focusName) && _nameInput is not null)
+            else if (firstRender || _focusName)
             {
                 _focusName = false;
-                await _nameInput.FocusAsync();
+
+                if (IsUsernameLogin && _nameInput is not null)
+                    await FocusAsync(() => _nameInput.FocusAsync());
             }
 
             await base.OnAfterRenderAsync(firstRender);
+        }
+
+        private static async Task FocusAsync(Func<ValueTask> focus)
+        {
+            try
+            {
+                await focus();
+            }
+            catch (Exception exception) when (exception is JSException or InvalidOperationException or TaskCanceledException or ObjectDisposedException)
+            {
+            }
         }
 
         public override void Dispose()

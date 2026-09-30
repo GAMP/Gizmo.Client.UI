@@ -75,10 +75,10 @@
     &__items {
         min-height: 0;
         overflow-y: auto;
-        padding: 0.2rem 1.2rem 1.2rem;
+        padding: 0.2rem 1.6rem 1.6rem;
         display: flex;
         flex-direction: column;
-        gap: 0.4rem;
+        gap: 0.8rem;
     }
 
     &__empty {
@@ -357,32 +357,35 @@
     }
 }
 
-// One line of the order: the picture, the name and the bin on top, the count and the
-// price under them.
+// One line of the order, a small tile of its own: the picture, the name with the unit price
+// under it, then the count and the line's sum on one row. At one piece the minus turns into
+// the bin, so there is no separate delete button to aim at.
 .giz-cart-line {
     display: grid;
-    grid-template-columns: 5.6rem minmax(0, 1fr) auto;
-    grid-template-rows: auto auto;
-    align-items: center;
-    column-gap: 1.2rem;
-    row-gap: 0.8rem;
-    padding: 1.1rem 1.2rem;
+    grid-template-columns: 6.4rem minmax(0, 1fr);
+    align-items: stretch;
+    gap: 1.2rem;
+    padding: 1rem;
     border-radius: 1.6rem;
-    transition: background 0.15s;
+    background: var(--giz-glass-3);
+    box-shadow: inset 0 0 0 1px var(--giz-glass-6);
+    transition: background 0.15s, box-shadow 0.15s;
     animation: giz-cart-line-in 0.3s cubic-bezier(0.2, 0, 0, 1) backwards;
 
-    &:hover { background: var(--giz-glass-3); }
+    &:hover {
+        background: var(--giz-glass-5);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-9);
+    }
 
     &__thumb {
-        grid-row: 1 / 3;
-        width: 5.6rem;
-        height: 5.6rem;
+        width: 6.4rem;
+        height: 6.4rem;
+        align-self: center;
         overflow: hidden;
         display: grid;
         place-items: center;
-        border-radius: 1.4rem;
+        border-radius: 1.2rem;
         background: var(--giz-glass-5);
-        box-shadow: inset 0 0 0 1px var(--giz-glass-8);
 
         img {
             width: 100%;
@@ -391,9 +394,17 @@
         }
 
         i {
-            font-size: 2.2rem;
+            font-size: 2.4rem;
             color: var(--giz-text-3);
         }
+    }
+
+    &__body {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.2rem;
     }
 
     &__name {
@@ -403,51 +414,48 @@
         text-overflow: ellipsis;
         font-size: 1.45rem;
         font-weight: 700;
+        line-height: 1.3;
         color: var(--giz-text-1);
     }
 
-    &__remove {
-        justify-self: end;
-        width: 3rem;
-        height: 3rem;
-        display: grid;
-        place-items: center;
-        padding: 0;
-        border: 0;
-        border-radius: 0.9rem;
-        background: none;
+    &__unit {
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.2rem;
+        font-weight: 600;
         color: var(--giz-text-3);
-        font-size: 1.6rem;
-        cursor: pointer;
-        opacity: 0.6;
-        transition: background 0.15s, color 0.15s, opacity 0.15s;
-
-        &:hover {
-            background: rgba(var(--giz-danger-rgb), 0.12);
-            color: var(--giz-danger-soft);
-        }
     }
 
-    &:hover &__remove { opacity: 1; }
+    &__foot {
+        margin-top: 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        min-width: 0;
+
+        > .giz-wm-icart-loader { min-width: 0; }
+    }
 
     &__stepper {
-        justify-self: start;
+        flex: none;
         display: inline-flex;
         align-items: center;
         height: 3.2rem;
+        padding: 0.2rem;
+        box-sizing: border-box;
         border-radius: 1rem;
-        background: var(--giz-glass-4);
-        box-shadow: inset 0 0 0 1px var(--giz-glass-8);
+        background: rgba(var(--giz-scrim-rgb), 0.3);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-7);
     }
 
     &__step {
-        width: 3.2rem;
-        height: 3.2rem;
+        width: 2.8rem;
+        height: 2.8rem;
         display: grid;
         place-items: center;
         padding: 0;
         border: 0;
-        border-radius: 1rem;
+        border-radius: 0.8rem;
         background: none;
         color: var(--giz-text-2);
         font-size: 1.3rem;
@@ -455,28 +463,28 @@
         transition: background 0.15s, color 0.15s;
 
         &:hover:not(:disabled) {
-            background: var(--giz-glass-7);
+            background: var(--giz-glass-8);
             color: var(--giz-text-1);
         }
 
+        &--remove:hover:not(:disabled) {
+            background: rgba(var(--giz-danger-rgb), 0.16);
+            color: var(--giz-danger-soft);
+        }
+
         &:disabled {
-            opacity: 0.35;
+            opacity: 0.3;
             cursor: default;
         }
     }
 
     &__qty {
-        min-width: 2.4rem;
+        min-width: 2.6rem;
         text-align: center;
         font-family: $font-family-numeric-theme-client;
-        font-size: 1.45rem;
+        font-size: 1.4rem;
         font-weight: 700;
         color: var(--giz-text-1);
-    }
-
-    > .giz-wm-icart-loader {
-        justify-self: end;
-        min-width: 0;
     }
 
     &__price {
@@ -503,8 +511,8 @@
         display: inline-flex;
         padding: 0.2rem;
         border-radius: 1rem;
-        background: var(--giz-glass-4);
-        box-shadow: inset 0 0 0 1px var(--giz-glass-8);
+        background: rgba(var(--giz-scrim-rgb), 0.3);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-7);
     }
 
     &__pay-way {
