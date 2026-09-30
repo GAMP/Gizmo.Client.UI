@@ -4,6 +4,7 @@
     [#{$client-theme-comp-attr}] & {
         input {
             position: absolute;
+            padding: 0;
             font-family: $font-family-text-theme-client;
             @include font-l-theme-client($font-weight-light-theme-client);
         }
@@ -23,9 +24,12 @@
             }
         }
 
+        // The typed part is invisible and only holds the place of the typed digits; its
+        // spaces must keep their width, and the hint must never wrap under itself.
         .giz-mask {
             position: absolute;
             display: flex;
+            white-space: pre;
             color: rgba(255, 255, 255, 0.35);
             //FontF
             font-family: $font-family-text-theme-client;

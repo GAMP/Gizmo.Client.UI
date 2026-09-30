@@ -66,9 +66,7 @@
         public const string SHELL_GRACE_CONFIRMED = nameof(SHELL_GRACE_CONFIRMED);
         public const string SHELL_GRACE_CONFIRMED_UNPAID = nameof(SHELL_GRACE_CONFIRMED_UNPAID);
         public const string SHELL_GRACE_PIN_LABEL = nameof(SHELL_GRACE_PIN_LABEL);
-        public const string SHELL_GRACE_TIME_LEFT = nameof(SHELL_GRACE_TIME_LEFT);
         public const string SHELL_GRACE_TIME_UP = nameof(SHELL_GRACE_TIME_UP);
-        public const string SHELL_GRACE_TIME_UP_MESSAGE = nameof(SHELL_GRACE_TIME_UP_MESSAGE);
         public const string SHELL_GRACE_TOP_UP_ACCOUNT = nameof(SHELL_GRACE_TOP_UP_ACCOUNT);
         public const string SHELL_GEN_CONFIRM = nameof(SHELL_GEN_CONFIRM);
         public const string SHELL_GRACE_PIN_WRONG = nameof(SHELL_GRACE_PIN_WRONG);
@@ -130,7 +128,6 @@
         public const string SHELL_HANDOVER_YOURS = nameof(SHELL_HANDOVER_YOURS);
         public const string SHELL_HANDOVER_UNTIL = nameof(SHELL_HANDOVER_UNTIL);
         public const string SHELL_HANDOVER_DUE = nameof(SHELL_HANDOVER_DUE);
-        public const string SHELL_HANDOVER_TIME_KEPT = nameof(SHELL_HANDOVER_TIME_KEPT);
         public const string SHELL_HANDOVER_PAY_TITLE = nameof(SHELL_HANDOVER_PAY_TITLE);
         public const string SHELL_HANDOVER_PAY_HINT = nameof(SHELL_HANDOVER_PAY_HINT);
         public const string SHELL_HANDOVER_DONE_TITLE = nameof(SHELL_HANDOVER_DONE_TITLE);
@@ -172,5 +169,19 @@
         public const string SHELL_FILTERS_MODE = nameof(SHELL_FILTERS_MODE);
         public const string SHELL_FILTERS_ANY = nameof(SHELL_FILTERS_ANY);
         public const string SHELL_FILTERS_SELECTED = nameof(SHELL_FILTERS_SELECTED);
+        public const string SHELL_SIGNUP_STEP_DONE = nameof(SHELL_SIGNUP_STEP_DONE);
+        public const string SHELL_SIGNUP_DONE_KICK = nameof(SHELL_SIGNUP_DONE_KICK);
+        public const string SHELL_SIGNUP_DONE_TITLE = nameof(SHELL_SIGNUP_DONE_TITLE);
+        public const string SHELL_SIGNUP_DONE_SUB = nameof(SHELL_SIGNUP_DONE_SUB);
+        public const string SHELL_SIGNUP_DONE_GO = nameof(SHELL_SIGNUP_DONE_GO);
+        public const string SHELL_SERVER_ONLINE = nameof(SHELL_SERVER_ONLINE);
+        public const string SHELL_SERVER_OFFLINE = nameof(SHELL_SERVER_OFFLINE);
+        public const string SHELL_HANDOVER_SAVE_PROGRESS = nameof(SHELL_HANDOVER_SAVE_PROGRESS);
+        public const string SHELL_GRACE_UNTIL_LOGOUT = nameof(SHELL_GRACE_UNTIL_LOGOUT);
+        public const string SHELL_PEEK_DURATION = nameof(SHELL_PEEK_DURATION);
+        public const string SHELL_PEEK_BUY = nameof(SHELL_PEEK_BUY);
+        public const string SHELL_PEEK_PLAY = nameof(SHELL_PEEK_PLAY);
+        public const string SHELL_PEEK_EXPIRES = nameof(SHELL_PEEK_EXPIRES);
+        public const string SHELL_PEEK_CONTENTS = nameof(SHELL_PEEK_CONTENTS);
     }
 }

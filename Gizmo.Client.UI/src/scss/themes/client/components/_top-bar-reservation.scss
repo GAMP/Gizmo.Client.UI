@@ -6,8 +6,39 @@
     overflow: hidden;
 }
 
-// The search gives way to the reservation first (down to its own minimum).
-.giz-top-bar__left:has(.giz-resv) .giz-top-bar__search { flex-shrink: 100; }
+// While a reservation is announced the search folds into its magnifier, so the reservation
+// reads in full; a click or a query opens it back to full width over the reservation's room.
+.giz-top-bar__left:has(.giz-resv) {
+    .giz-top-bar__search,
+    .giz-header__global-search {
+        flex: none;
+        min-width: 0;
+    }
+
+    .giz-global-search { transition: width 0.25s cubic-bezier(0.2, 0, 0, 1), border-color 0.2s, box-shadow 0.2s; }
+
+    .giz-global-search:not(:focus-within, .open, .nonemtpy) {
+        width: 5.8rem;
+        grid-template-columns: 1fr;
+        cursor: pointer;
+
+        > .giz-ph-icon {
+            justify-self: center;
+            margin: 0;
+        }
+
+        input {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .giz-close-button { display: none; }
+    }
+}
 
 .giz-top-bar__left .giz-resv__lead {
     flex: 0 1 auto;
@@ -21,8 +52,6 @@
 
 @media (max-width: 1440px) {
     .giz-top-bar__left .giz-resv__lead { display: none; }
-
-    .giz-top-bar__left:has(.giz-resv) :is(.giz-top-bar__search, .giz-header__global-search) { min-width: 14rem; }
 }
 
 .giz-resv {

@@ -1,0 +1,69 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<div class="giz-player-card">
+    <div class="giz-player-card__top">
+        <span class="giz-player-card__kick">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_CARD)</span>
+        @if (HasClubLogo)
+        {
+            <img class="giz-player-card__logo" src="@LogoViewState.Logo" alt="" />
+        }
+        else
+        {
+            <i class="ph-fill ph-game-controller giz-player-card__mark"></i>
+        }
+    </div>
+
+    <div class="giz-player-card__who">
+        @if (HasNick)
+        {
+            <div class="giz-player-card__nick">
+                @foreach (var glyph in NickGlyphs)
+                {
+                    <span class="giz-player-card__glyph">@glyph</span>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="giz-player-card__nick giz-player-card__nick--empty">@NickPlaceholder</div>
+        }
+
+        @if (HasName)
+        {
+            <div class="giz-player-card__name">
+                @foreach (var glyph in NameGlyphs)
+                {
+                    <span class="giz-player-card__glyph">@glyph</span>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="giz-player-card__name giz-player-card__name--empty">@NamePlaceholder</div>
+        }
+    </div>
+
+    @if (Facts.Count > 0)
+    {
+        <div class="giz-player-card__facts">
+            @foreach (var fact in Facts)
+            {
+                <span class="giz-player-card__fact" @key="fact.Icon">
+                    <i class="@fact.Icon"></i>
+                    <span>@fact.Text</span>
+                </span>
+            }
+        </div>
+    }
+
+    <div class="giz-player-card__foot">
+        <span class="@BarcodeClass" aria-hidden="true">
+            @foreach (var bar in Bars)
+            {
+                <i style="@bar"></i>
+            }
+        </span>
+        <span class="giz-player-card__since">@SinceText</span>
+    </div>
+</div>

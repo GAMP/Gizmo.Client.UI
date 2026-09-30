@@ -3,47 +3,54 @@
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Forms
 
-<div class="giz-order-item">
-    <div class="giz-order-item__thumb">
+<div class="giz-cart-line">
+    <div class="giz-cart-line__thumb">
         <GizImage @key="UserCartProductViewState.ProductId" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@_product?.DefaultImageId" ImageFitType="ImageFitType.Cover">
             <EmptyResultPlaceholder>
-                <i class="ph-fill ph-package"></i>
+                <i class="@PlaceholderIcon"></i>
             </EmptyResultPlaceholder>
             <ErrorPlaceholder>
-                <i class="ph-fill ph-package"></i>
+                <i class="@PlaceholderIcon"></i>
             </ErrorPlaceholder>
         </GizImage>
     </div>
-    <div class="giz-order-item__description">
-        @_product?.Name
+
+    <div class="giz-cart-line__name">@_product?.Name</div>
+
+    <button type="button" class="giz-cart-line__remove" @onclick="@(() => ClientServerCartViewService.RemoveEntry(UserCartProductViewState.Guid))">
+        <i class="ph-bold ph-trash"></i>
+    </button>
+
+    <div class="giz-cart-line__stepper">
+        <button type="button" class="giz-cart-line__step" disabled="@IsAtMinimum" @onclick="@OnRemoveQuantityButtonClickHandler">
+            <i class="ph-bold ph-minus"></i>
+        </button>
+        <span class="giz-cart-line__qty">@UserCartProductViewState.Quantity</span>
+        <button type="button" class="giz-cart-line__step" disabled="@IsAtMaximum" @onclick="@OnAddQuantityButtonClickHandlerAsync">
+            <i class="ph-bold ph-plus"></i>
+        </button>
     </div>
-    <ICartViewStateLoader ViewState="@ClientServerCartViewService.ViewState" MinimumHeight="6.8rem">
-        <div class="giz-order-item__details">
-            @if (_product?.PurchaseOptions.HasFlag(PurchaseOptionType.Or) == true)
-            {
-                <div class="giz-order-item__details__option">
-                    <RadioButton @key="Guid.NewGuid()" GroupName="@GetPurchaseOptionsGroup()" IsChecked="@(UserCartProductViewState.PayType == OrderLinePayType.Cash)" IsCheckedChanged="@((isChecked) => SetPayType(isChecked, OrderLinePayType.Cash))" />
-                    <span class="giz-order-item__details__price">@UserCartProductViewState.TotalPrice.ToString("C", CultureInfo.CurrentCulture)</span>
-                </div>
-                <div class="giz-order-item__details__option">
-                    <RadioButton @key="Guid.NewGuid()" GroupName="@GetPurchaseOptionsGroup()" IsChecked="@(UserCartProductViewState.PayType == OrderLinePayType.Points)" IsCheckedChanged="@((isChecked) => SetPayType(isChecked, OrderLinePayType.Points))" />
-                    <span class="giz-order-item__details__points"><Points2Icon />@UserCartProductViewState.TotalPointsPrice.GetValueOrDefault().ToString("N0")</span>
-                </div>
-            }
-            else
-            {
-                <div class="giz-order-item__details__price">@UserCartProductViewState.TotalPrice.ToString("C", CultureInfo.CurrentCulture)</div>
-                @if (UserCartProductViewState.TotalPointsPrice.GetValueOrDefault() > 0)
+
+    <ICartViewStateLoader ViewState="@ClientServerCartViewService.ViewState" MinimumHeight="3.2rem">
+        @if (HasPayChoice)
+        {
+            <div class="giz-cart-line__pay">
+                <button type="button" class="@PayClass(OrderLinePayType.Cash)" @onclick="@(() => SetPayType(true, OrderLinePayType.Cash))">@PriceText</button>
+                <button type="button" class="@PayClass(OrderLinePayType.Points)" @onclick="@(() => SetPayType(true, OrderLinePayType.Points))">
+                    <i class="ph-fill ph-coins"></i>
+                    <span>@PointsPriceText</span>
+                </button>
+            </div>
+        }
+        else
+        {
+            <div class="giz-cart-line__price">
+                <span>@PriceText</span>
+                @if (HasPointsPrice)
                 {
-                    <div class="giz-order-item__details__points"><Points2Icon />@UserCartProductViewState.TotalPointsPrice.GetValueOrDefault().ToString("N0")</div>
+                    <span class="giz-cart-line__points"><i class="ph-fill ph-coins"></i>@PointsPriceText</span>
                 }
-            }
-        </div>
+            </div>
+        }
     </ICartViewStateLoader>
-    <div class="giz-order-item__remove">
-        <IconButton Variant="ButtonVariants.Text" Size="ButtonSizes.Small" SVGIcon="Icons.Trash3_Client" @onclick="@(() => ClientServerCartViewService.RemoveEntry(UserCartProductViewState.Guid))" />
-    </div>
-    <div class="giz-order-item__quantity">
-        <QuantityPicker Minimum="1" Maximum="@(_product.ProductType == ProductType.ProductTime ? 1 : int.MaxValue)" Size="ButtonSizes.Small" Quantity="@UserCartProductViewState.Quantity" OnAddQuantityButtonClick="OnAddQuantityButtonClickHandlerAsync" OnRemoveQuantityButtonClick="OnRemoveQuantityButtonClickHandler" />
-    </div>
 </div>

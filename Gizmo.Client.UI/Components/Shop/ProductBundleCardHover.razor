@@ -1,35 +1,27 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
-@using System.Globalization
 
-<div class="giz-timeline">
-    <div class="giz-timeline-header">
-        <HexagonIcon />
-        <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_CARD_BUNDLE_BUNDLE_DESCRIPTION))</div>
-    </div>
-
-    @if (Product != null)
-    {
-        <div class="giz-timeline-item">
-            <div class="giz-time-product-details">
-                <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_BUYING_TIME))</div>
-                <div class="giz-time-product-time-availabile">
-                    @if (Product.PurchaseAvailability != null)
-                    {
-                        @ProductHelpers.GetPurchaseAvailabilities(Product, true, LocalizationService).FirstOrDefault()
-                    }
-                    else
-                    {
-                        <Icon SVGIcon="Icons.Infinite" Size="IconSizes.Small" />
-                    }
+@if (Product != null)
+{
+    <div class="giz-peek">
+        <div class="giz-peek__caption">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PEEK_CONTENTS)</div>
+        <div class="giz-peek__items">
+            @foreach (var bundledProduct in Product.BundledProducts)
+            {
+                <ProductBundleCardBundledProduct @key="bundledProduct" ProductId="@bundledProduct.Id" Quantity="@bundledProduct.Quantity" />
+            }
+        </div>
+        @if (BuyWindow is { Length: > 0 } buyWindow)
+        {
+            <div class="giz-peek__facts">
+                <div class="giz-peek__fact">
+                    <i class="ph-bold ph-shopping-bag"></i>
+                    <span class="giz-peek__text">
+                        <small>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PEEK_BUY)</small>
+                        <b>@buyWindow</b>
+                    </span>
                 </div>
             </div>
-        </div>
-
-        @foreach (var bundledProduct in Product.BundledProducts)
-        {
-            @*Do not use bundledProduct.Id as key, a bundle can have multiple times the same product.*@
-            <ProductBundleCardBundledProduct @key="bundledProduct" ProductId="@bundledProduct.Id" Quantity="@bundledProduct.Quantity" />
         }
-    }
-</div>
+    </div>
+}

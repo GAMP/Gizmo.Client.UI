@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Gizmo.Client.Options;
 using Gizmo.Client.UI.Components;
+using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -21,6 +22,9 @@ namespace Gizmo.Client.UI.Shared
         private bool _slideOut = false;
         private bool _locked = false;
         private bool _disposed = false;
+        private bool _submitting;
+        private PlayerCardData _submitted;
+        private PlayerCardData _welcome;
 
         [Inject()]
         UserRegistrationConfigurationViewState UserRegisterConfigurationViewState { get; init; }
@@ -64,6 +68,24 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         NavigationManager NavigationManager { get; set; }
 
+        [Inject]
+        UserRegistrationBasicFieldsViewState BasicFieldsViewState { get; set; }
+
+        [Inject]
+        UserRegistrationAdditionalFieldsViewState AdditionalFieldsViewState { get; set; }
+
+        [Inject]
+        IRegistrationSessionService RegistrationSession { get; set; }
+
+        [Inject]
+        UserLoginViewService UserLoginService { get; set; }
+
+        private bool HasAboutStep =>
+            RegistrationSession.RequiredUserInfo?.Country == true ||
+            RegistrationSession.RequiredUserInfo?.Address == true ||
+            RegistrationSession.RequiredUserInfo?.City == true ||
+            RegistrationSession.RequiredUserInfo?.PostCode == true;
+
         private static readonly string[] VerificationRoutes =
         {
             ClientRoutes.RegistrationIndexRoute,
@@ -95,6 +117,36 @@ namespace Gizmo.Client.UI.Shared
 
         private void OnLocationChanged(object sender, LocationChangedEventArgs e) => HandlePositionChanged();
 
+        private void OnRegistrationFormChanged(object sender, EventArgs e)
+        {
+            _submitting = BasicFieldsViewState.IsLoading || AdditionalFieldsViewState.IsLoading;
+
+            if (_submitting)
+                _submitted = PlayerCardData.From(BasicFieldsViewState, AdditionalFieldsViewState, RegistrationSession);
+        }
+
+        private void OnRegistrationCleared(object sender, EventArgs e)
+        {
+            if (!_submitting || _submitted is null)
+                return;
+
+            _submitting = false;
+            _welcome = _submitted;
+            HandlePositionChanged();
+        }
+
+        private void CloseWelcome()
+        {
+            var nick = _welcome?.Nick;
+            _welcome = null;
+
+            if (string.IsNullOrEmpty(nick))
+                return;
+
+            UserLoginService.SetLoginMethod(View.UserLoginType.UsernameOrEmail);
+            UserLoginService.SetLoginName(nick);
+        }
+
         private void UserIdleViewState_OnChange(object sender, EventArgs e)
         {
             if (_previousIsIdle == UserIdleViewState.IsIdle)
@@ -105,6 +157,7 @@ namespace Gizmo.Client.UI.Shared
                 if (UserIdleViewState.IsIdle)
                 {
                     _slideOut = true;
+                    _welcome = null;
                 }
                 else
                 {
@@ -131,6 +184,9 @@ namespace Gizmo.Client.UI.Shared
             UserIdleViewState.OnChange += UserIdleViewState_OnChange;
             HostHumberViewService.OnPositionChanged += HandlePositionChanged;
             NavigationManager.LocationChanged += OnLocationChanged;
+            BasicFieldsViewState.OnChange += OnRegistrationFormChanged;
+            AdditionalFieldsViewState.OnChange += OnRegistrationFormChanged;
+            RegistrationSession.Cleared += OnRegistrationCleared;
             
             _locked = UserLoginOptions.Value.Disabled && !UserRegisterConfigurationViewState.IsEnabled;
 
@@ -188,6 +244,9 @@ namespace Gizmo.Client.UI.Shared
             UserIdleViewState.OnChange -= UserIdleViewState_OnChange;
             HostHumberViewService.OnPositionChanged -= HandlePositionChanged;
             NavigationManager.LocationChanged -= OnLocationChanged;
+            BasicFieldsViewState.OnChange -= OnRegistrationFormChanged;
+            AdditionalFieldsViewState.OnChange -= OnRegistrationFormChanged;
+            RegistrationSession.Cleared -= OnRegistrationCleared;
 
             this.UnsubscribeChange(LoginRotatorViewState);
             this.UnsubscribeChange(LogoViewState);

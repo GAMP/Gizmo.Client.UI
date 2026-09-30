@@ -51,6 +51,11 @@ namespace Gizmo.Client.UI.Components
 
         #region PROPERTIES
 
+        private string SelectedFlag => SelectedItem?.Icon is { } icon
+            && (icon.StartsWith("http") || icon.StartsWith("/") || icon.StartsWith("_content"))
+                ? icon
+                : null;
+
         #region IGizInput
 
         [Parameter]

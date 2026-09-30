@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Globalization;
+using System.Threading.Tasks;
 
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
+using Gizmo.Web.Api.Models;
 using Gizmo.Web.Components;
 
 using Microsoft.AspNetCore.Components;
@@ -29,10 +31,25 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public UserCartProductViewState UserCartProductViewState { get; set; }
 
-        public string GetPurchaseOptionsGroup()
-        {
-            return "PurchaseOptions_" + UserCartProductViewState.ProductId;
-        }
+        private bool IsTimeProduct => _product?.ProductType == ProductType.ProductTime;
+
+        private string PlaceholderIcon => IsTimeProduct ? "ph-fill ph-clock" : "ph-fill ph-package";
+
+        private bool IsAtMinimum => UserCartProductViewState.Quantity <= 1;
+
+        private bool IsAtMaximum => IsTimeProduct && UserCartProductViewState.Quantity >= 1;
+
+        private bool HasPayChoice => _product?.PurchaseOptions.HasFlag(PurchaseOptionType.Or) == true;
+
+        private bool HasPointsPrice => UserCartProductViewState.TotalPointsPrice.GetValueOrDefault() > 0;
+
+        private string PriceText => UserCartProductViewState.TotalPrice.ToString("C", CultureInfo.CurrentCulture);
+
+        private string PointsPriceText => UserCartProductViewState.TotalPointsPrice.GetValueOrDefault().ToString("N0", CultureInfo.CurrentCulture);
+
+        private string PayClass(OrderLinePayType payType) => UserCartProductViewState.PayType == payType
+            ? "giz-cart-line__pay-way giz-cart-line__pay-way--on"
+            : "giz-cart-line__pay-way";
 
         public void OnRemoveQuantityButtonClickHandler(MouseEventArgs _) =>
             ClientServerCartViewService.SetQuantity(UserCartProductViewState.Guid, UserCartProductViewState.Quantity - 1);

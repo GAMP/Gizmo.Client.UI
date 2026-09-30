@@ -24,7 +24,13 @@
                   ValidationMessage="@ValidationMessage"
                   RightSVGIcon="@(HandleSVGIcon.HasValue ? HandleSVGIcon.Value : Icons.TriangleDown)"
                   @onclick="OnClickInput">
-                    
+            <LeftContent>
+                @if (SelectedFlag is { Length: > 0 } flag)
+                {
+                    <img class="giz-select__flag" src="@flag" alt="" />
+                }
+            </LeftContent>
+            <ChildContent>
             <div class="giz-input-wrapper">
 
                 @if (IsLoading)
@@ -48,7 +54,7 @@
             {
                 <IconButton SVGIcon="@Icons.Close" Class="giz-input-button-clear" @onclick="OnClickClearValueButtonHandler" />
             }
-
+            </ChildContent>
         </GizInput>
 
         <Popup MaximumHeight="@MaximumHeight"

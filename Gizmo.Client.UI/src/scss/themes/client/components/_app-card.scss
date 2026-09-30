@@ -204,12 +204,13 @@ $ac-plate: rgba(var(--giz-scrim-rgb), 0.86);                       // plate and 
     }
 }
 
-// Launch overlay
+// Launch overlay. The title plate fades out on hover while the category row shows at the top,
+// so the shortcuts keep the same room at the top and the bottom and sit in the card's middle.
 .giz-app-card__content__image__hovered {
     position: absolute;
     inset: 0;
     z-index: 4;
-    padding: $ac-pad $ac-pad calc(#{$ac-pad} * 2 + 4.4rem);
+    padding: calc(#{$ac-pad} * 2 + 3rem) $ac-pad;
     background: transparent;
     transition: background 0.22s ease;
     overflow: hidden;

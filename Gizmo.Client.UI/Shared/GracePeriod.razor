@@ -22,11 +22,26 @@
                                 <div class="giz-handover__what">@Username</div>
                             </div>
                         </div>
-                        @if (TimeKeptText is { Length: > 0 })
+                        @if (RunningApps.Count > 0)
                         {
-                            <div class="giz-handover__keep">
-                                <i class="ph-bold ph-hourglass-medium"></i>
-                                <span>@TimeKeptText</span>
+                            <div class="giz-handover__apps">
+                                <div class="giz-handover__label">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HANDOVER_SAVE_PROGRESS)</div>
+                                @foreach (var app in RunningApps)
+                                {
+                                    <div class="giz-handover__app" @key="app.ExecutableId">
+                                        <span class="giz-handover__app-icon">
+                                            <GizImage ImageType="Gizmo.UI.ImageType.Executable" ImageId="@app.ImageId">
+                                                <EmptyResultPlaceholder>
+                                                    <i class="ph-fill ph-game-controller"></i>
+                                                </EmptyResultPlaceholder>
+                                                <ErrorPlaceholder>
+                                                    <i class="ph-fill ph-game-controller"></i>
+                                                </ErrorPlaceholder>
+                                            </GizImage>
+                                        </span>
+                                        <span class="giz-handover__app-name">@app.Caption</span>
+                                    </div>
+                                }
                             </div>
                         }
                         <button type="button" class="giz-handover__out" @onclick="@(() => UserService.LogoutAsync())">
@@ -95,8 +110,9 @@
                         {
                             <div class="giz-handover__act">
                                 <label class="giz-handover__field">
-                                    <span class="giz-handover__label">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_PIN_LABEL)</span>
+                                    <span class="@PinLabelClass">@PinLabelText</span>
                                     <input type="text"
+                                           @ref="_pinElement"
                                            class="@PinInputClass"
                                            autocomplete="off"
                                            spellcheck="false"
@@ -105,13 +121,6 @@
                                            @oninput="@((ChangeEventArgs e) => OnPinInput(e))"
                                            @onkeydown="@OnPinKeyDown" />
                                 </label>
-                                @if (!string.IsNullOrEmpty(_pinError))
-                                {
-                                    <div class="giz-handover__error">
-                                        <i class="ph-bold ph-warning-circle"></i>
-                                        <span>@_pinError</span>
-                                    </div>
-                                }
                                 <button type="button" class="giz-handover__go" disabled="@IsConfirmDisabled" @onclick="@OnConfirmPinAsync">
                                     <i class="ph-bold ph-check"></i>
                                     <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GEN_CONFIRM)</span>
@@ -125,49 +134,51 @@
     }
     else
     {
-        <div class="giz-login-overlay">
-            <div class="giz-grace-period-wrapper">
-                <div class="giz-grace-period">
-                    @if (!_showDeposit)
-                    {
-                        <div class="giz-grace-period__badge">
-                            <i class="ph-fill ph-hourglass-high giz-ph-icon"></i>
+        <div class="giz-grace">
+            <div class="giz-grace__veil"></div>
+            @if (!_showDeposit)
+            {
+                <div class="giz-grace__stage">
+                    <div class="giz-grace__ring" style="@RingStyle">
+                        <svg viewBox="0 0 340 340" aria-hidden="true">
+                            <circle class="giz-grace__track" cx="170" cy="170" r="150" pathLength="1" />
+                            <circle class="giz-grace__arc" cx="170" cy="170" r="150" pathLength="1" />
+                        </svg>
+                        <div class="giz-grace__in">
+                            <i class="ph-fill ph-hourglass-low"></i>
+                            <div class="giz-grace__count">@CountdownText</div>
+                            <div class="giz-grace__cap">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_UNTIL_LOGOUT)</div>
                         </div>
-                        <div class="giz-grace-period__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_TIME_UP)</div>
-                        <div class="giz-grace-period__message">
-                            @GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_TIME_UP_MESSAGE)
-                        </div>
-                        <div class="giz-grace-period__timer">
-                            <div class="giz-grace-period__timer__label">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_TIME_LEFT)</div>
-                            <div class="giz-grace-period__time">@CountdownText</div>
-                        </div>
-                        <div class="giz-grace-period__actions">
-                            @if (UserOnlineDepositViewState.IsEnabled)
-                            {
-                                <Button Color="ButtonColors.Accent"
-                                        Size="ButtonSizes.ExtraLarge"
-                                        Text="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_TOP_UP_ACCOUNT)"
-                                        @onclick="@(() => _showDeposit = true)" />
-                            }
-                            <Button Variant="ButtonVariants.Outline"
-                                    Size="ButtonSizes.ExtraLarge"
-                                    Text="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GRACE_PERIOD_LOGOUT))"
-                                    @onclick="@(() => UserService.LogoutAsync())" />
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="giz-grace-period__deposit">
-                            <div class="giz-grace-period__deposit__head">
-                                <div class="giz-grace-period__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DEPOSIT_PAGE_TITLE)</div>
-                                <div class="giz-grace-period__time giz-grace-period__time--small">@CountdownText</div>
-                            </div>
-                            <UserOnlineDeposits OnClickPayFromPC="@OnClickPayFromPCHandler" OnClickClear="@OnClickClearHandler" OnPaymentSucceeded="@OnPaymentSucceededHandler" />
-                            <div class="giz-grace-period__back" @onclick="@(() => _showDeposit = false)">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BACK))</div>
-                        </div>
-                    }
+                    </div>
+                    <div class="giz-grace__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_TIME_UP)</div>
+                    <div class="giz-grace__actions">
+                        @if (UserOnlineDepositViewState.IsEnabled)
+                        {
+                            <button type="button" class="giz-grace__go" @onclick="@(() => _showDeposit = true)">
+                                <i class="ph-bold ph-wallet"></i>
+                                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_TOP_UP_ACCOUNT)</span>
+                            </button>
+                        }
+                        <button type="button" class="giz-grace__out" @onclick="@(() => UserService.LogoutAsync())">
+                            <i class="ph-bold ph-sign-out"></i>
+                            <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GRACE_PERIOD_LOGOUT))</span>
+                        </button>
+                    </div>
                 </div>
-            </div>
+            }
+            else
+            {
+                <div class="giz-grace-period giz-grace__deposit">
+                    <div class="giz-grace-period__deposit">
+                        <div class="giz-grace-period__deposit__head">
+                            <div class="giz-grace-period__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DEPOSIT_PAGE_TITLE)</div>
+                            <div class="giz-grace-period__time giz-grace-period__time--small">@CountdownText</div>
+                        </div>
+                        <UserOnlineDeposits OnClickPayFromPC="@OnClickPayFromPCHandler" OnClickClear="@OnClickClearHandler" OnPaymentSucceeded="@OnPaymentSucceededHandler" />
+                        <div class="giz-grace-period__back" @onclick="@(() => _showDeposit = false)">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BACK))</div>
+                    </div>
+                </div>
+            }
         </div>
     }
 }

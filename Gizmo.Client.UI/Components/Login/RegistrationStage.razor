@@ -18,37 +18,7 @@
 
         <div class="giz-signup-card-stack">
             <div class="giz-signup-card-stack__back"></div>
-            <div class="giz-signup-card" style="@ProgressStyle">
-                <div class="giz-signup-card__top">
-                    <span class="giz-signup-card__kick">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_CARD)</span>
-                    @if (HasClubLogo)
-                    {
-                        <img class="giz-signup-card__logo" src="@LogoViewState.Logo" alt="" />
-                    }
-                    else
-                    {
-                        <i class="ph-fill ph-game-controller giz-signup-card__mark"></i>
-                    }
-                </div>
-
-                <div class="giz-signup-card__who">
-                    <div class="@NickClass">@NickText</div>
-                    <div class="@NameClass">@NameText</div>
-                </div>
-
-                <div class="giz-signup-card__foot">
-                    @if (HostNumberViewState.HostNumberIsEnabled)
-                    {
-                        <span class="giz-signup-card__chip">
-                            <i class="ph-bold ph-desktop-tower"></i>
-                            <HostNumber />
-                        </span>
-                    }
-                    <span class="giz-signup-card__since">@SinceText</span>
-                </div>
-
-                <span class="giz-signup-card__progress"><i></i></span>
-            </div>
+            <PlayerCard Data="@CardData" />
         </div>
     </div>
 
@@ -61,6 +31,10 @@
                     @if (index < CurrentIndex)
                     {
                         <i class="ph-bold ph-check"></i>
+                    }
+                    else if (IsFinish(index))
+                    {
+                        <i class="ph-bold ph-flag-checkered"></i>
                     }
                     else
                     {

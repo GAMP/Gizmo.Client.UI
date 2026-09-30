@@ -1,79 +1,51 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 
-<div class="giz-timeline">
-    <div class="giz-timeline-header">
-        <HexagonIcon />
-        <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_CARD_TIME_PRODUCT_DESCRIPTION))</div>
-    </div>
-    <div class="giz-timeline-item">
-        <div class="giz-time-product-time">
-            <Icon SVGIcon="Icons.Time_Client" Size="IconSizes.Small" />@GetTimeText()
-        </div>
-    </div>
-
-    @if (Product != null)
-    {
-        <div class="giz-timeline-item">
-            <div class="giz-time-product-details">
-                <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_BUYING_TIME))</div>
-                <div class="giz-time-product-time-availabile">
-                    @if (Product.PurchaseAvailability != null)
-                    {
-                        @ProductHelpers.GetPurchaseAvailabilities(Product, true, LocalizationService).FirstOrDefault()
-                    }
-                    else
-                    {
-                        <Icon SVGIcon="Icons.Infinite" Size="IconSizes.Small" />
-                    }
-                </div>
-            </div>
-        </div>
-
-        @if (Product.ProductType == ProductType.ProductTime && Product.TimeProduct != null)
+@if (Product != null)
+{
+    <div class="giz-peek">
+        @if (HasDescription)
         {
-            <div class="giz-timeline-item">
-                <div class="giz-time-product-details">
-                    <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_ACTION_TIME))</div>
-                    <div class="giz-time-product-time-availabile">
-                        @if (Product.TimeProduct.UsageAvailability != null)
-                        {
-                            @ProductHelpers.GetUsageAvailabilities(Product, true, LocalizationService).FirstOrDefault()
-                        }
-                        else
-                        {
-                            <Icon SVGIcon="Icons.Infinite" Size="IconSizes.Small" />
-                        }
-                    </div>
-                </div>
+            <p class="giz-peek__about">@Product.Description</p>
+        }
+        <div class="giz-peek__facts">
+            <div class="giz-peek__fact">
+                <i class="ph-bold ph-timer"></i>
+                <span class="giz-peek__text">
+                    <small>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PEEK_DURATION)</small>
+                    <b>@GetTimeText()</b>
+                </span>
             </div>
-
-            @if (Product.TimeProduct.ExpirationOptions != ProductTimeExpirationOptionType.None)
+            @if (BuyWindow is { Length: > 0 } buyWindow)
             {
-                <div class="giz-timeline-item">
-                    <div class="giz-time-product-details">
-                        <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRES))</div>
-                        <div class="giz-time-product-expirations">
-
-                            @if (Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAtDayTime))
-                            {
-                                <div class="giz-time-product-expiration">@ProductHelpers.GetDayTimeFromMinute(Product.TimeProduct.ExpireAtDayTimeMinute)</div>
-                            }
-
-                            @if (Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpireAfterTime))
-                            {
-                                <div class="giz-time-product-expiration">@($"{ProductHelpers.GetExpiresAfterText(Product.TimeProduct, LocalizationService)}")</div>
-                            }
-
-                            @if (Product.TimeProduct.ExpirationOptions.HasFlag(ProductTimeExpirationOptionType.ExpiresAtLogout))
-                            {
-                                <div class="giz-time-product-expiration">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_AFTER_LOGOUT))</div>
-                            }
-
-                        </div>
-                    </div>
+                <div class="giz-peek__fact">
+                    <i class="ph-bold ph-shopping-bag"></i>
+                    <span class="giz-peek__text">
+                        <small>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PEEK_BUY)</small>
+                        <b>@buyWindow</b>
+                    </span>
                 </div>
             }
-        }
-    }
-</div>
+            @if (PlayWindow is { Length: > 0 } playWindow)
+            {
+                <div class="giz-peek__fact">
+                    <i class="ph-bold ph-game-controller"></i>
+                    <span class="giz-peek__text">
+                        <small>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PEEK_PLAY)</small>
+                        <b>@playWindow</b>
+                    </span>
+                </div>
+            }
+            @if (ExpiryText is { Length: > 0 } expiry)
+            {
+                <div class="giz-peek__fact">
+                    <i class="ph-bold ph-hourglass-medium"></i>
+                    <span class="giz-peek__text">
+                        <small>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PEEK_EXPIRES)</small>
+                        <b>@expiry</b>
+                    </span>
+                </div>
+            }
+        </div>
+    </div>
+}

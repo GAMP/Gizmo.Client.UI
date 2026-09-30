@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Globalization;
 using System.Threading.Tasks;
 using Gizmo.Client.UI.Localization.Resources;
@@ -46,6 +48,14 @@ namespace Gizmo.Client.UI.Shared
 
         [Inject]
         UserBalanceViewState UserBalanceViewState { get; set; }
+
+        [Inject]
+        ActiveApplicationsViewState ActiveApplicationsViewState { get; set; }
+
+        private const int RUNNING_APPS_SHOWN = 3;
+
+        private ElementReference _pinElement;
+        private bool _focusPin;
 
         private bool _showDeposit;
 
@@ -103,20 +113,32 @@ namespace Gizmo.Client.UI.Shared
             ? due.ToString("C", CultureInfo.CurrentCulture)
             : string.Empty;
 
-        private string TimeKeptText
+        private IReadOnlyList<AppExeViewState> RunningApps => ActiveApplicationsViewState.Executables
+            .Take(RUNNING_APPS_SHOWN)
+            .ToList();
+
+        private string PinLabelText => string.IsNullOrEmpty(_pinError)
+            ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_PIN_LABEL)
+            : _pinError;
+
+        private string PinLabelClass => string.IsNullOrEmpty(_pinError)
+            ? "giz-handover__label"
+            : "giz-handover__label giz-handover__label--error";
+
+        private double GraceLeft
         {
             get
             {
-                if (UserBalanceViewState.Time is not TimeSpan time || time <= TimeSpan.Zero)
-                    return string.Empty;
+                if (ViewState.Time > _graceTotal)
+                    _graceTotal = ViewState.Time;
 
-                var duration = time.TotalHours >= 1
-                    ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DURATION_HOURS_MINUTES, (int)time.TotalHours, time.Minutes)
-                    : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DURATION_MINUTES, Math.Max(1, time.Minutes));
-
-                return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HANDOVER_TIME_KEPT, duration);
+                return _graceTotal <= TimeSpan.Zero
+                    ? 1d
+                    : Math.Clamp(ViewState.Time.TotalSeconds / _graceTotal.TotalSeconds, 0d, 1d);
             }
         }
+
+        private string RingStyle => $"--giz-grace-left: {GraceLeft.ToString("0.###", CultureInfo.InvariantCulture)}";
 
         private string ProgressStyle
         {
@@ -181,6 +203,7 @@ namespace Gizmo.Client.UI.Shared
                 {
                     _pinError = GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_PIN_WRONG);
                     _pin = string.Empty;
+                    _focusPin = true;
                 }
                 else if (state.Step == 1)
                 {
@@ -193,6 +216,7 @@ namespace Gizmo.Client.UI.Shared
             catch
             {
                 _pinError = GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_PIN_FAILED);
+                _focusPin = true;
             }
             finally
             {
@@ -217,12 +241,31 @@ namespace Gizmo.Client.UI.Shared
             return base.ShouldRender();
         }
 
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (_focusPin && !_pinBusy)
+            {
+                _focusPin = false;
+
+                try
+                {
+                    await _pinElement.FocusAsync();
+                }
+                catch (Exception exception) when (exception is JSException or InvalidOperationException or TaskCanceledException)
+                {
+                }
+            }
+
+            await base.OnAfterRenderAsync(firstRender);
+        }
+
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
             this.SubscribeChange(HostReservationViewState);
             this.SubscribeChange(ConfirmReservationDialogViewService.ViewState);
             this.SubscribeChange(UserBalanceViewState);
+            this.SubscribeChange(ActiveApplicationsViewState);
 
             base.OnInitialized();
         }
@@ -233,6 +276,7 @@ namespace Gizmo.Client.UI.Shared
             this.UnsubscribeChange(HostReservationViewState);
             this.UnsubscribeChange(ConfirmReservationDialogViewService.ViewState);
             this.UnsubscribeChange(UserBalanceViewState);
+            this.UnsubscribeChange(ActiveApplicationsViewState);
 
             base.Dispose();
         }

@@ -1,0 +1,21 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<div class="giz-signup-done">
+    <div class="giz-signup-done__card">
+        <div class="giz-signup-card-stack">
+            <div class="giz-signup-card-stack__back"></div>
+            <PlayerCard Data="@Card" />
+        </div>
+    </div>
+
+    <div class="giz-signup-done__text">
+        <div class="giz-signup-done__kick">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_DONE_KICK)</div>
+        <h1 class="giz-signup-done__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_DONE_TITLE)</h1>
+        <p class="giz-signup-done__sub">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_DONE_SUB)</p>
+        <button type="button" class="giz-signup-done__go" @onclick="@OnDone">
+            <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_DONE_GO)</span>
+            <i class="ph-bold ph-arrow-right"></i>
+        </button>
+    </div>
+</div>

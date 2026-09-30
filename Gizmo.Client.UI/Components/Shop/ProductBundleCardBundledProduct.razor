@@ -1,20 +1,11 @@
 ﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 
-<div class="giz-timeline-item">
-    <div class="giz-bundle-product-details">
-        @if (_product != null && _product.ProductType == ProductType.ProductTime)
-        {
-            <Icon SVGIcon="Icons.Time_Client" Size="IconSizes.Small" />
-        }
-        else
-        {
-            <Icon SVGIcon="Icons.FastFood_Client" Size="IconSizes.Small" />
-        }
-        <div class="giz-bundle-product-details__product-name">@_product?.Name</div>
-        @if (Quantity > 1)
-        {
-            <span>@($" x{Quantity.ToString("N0")}")</span>
-        }
-    </div>
+<div class="giz-peek__item">
+    <i class="@IconClass"></i>
+    <span class="giz-peek__item-name">@_product?.Name</span>
+    @if (Quantity > 1)
+    {
+        <span class="giz-peek__item-count">@QuantityText</span>
+    }
 </div>

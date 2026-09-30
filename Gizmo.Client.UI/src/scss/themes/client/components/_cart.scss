@@ -1,0 +1,547 @@
+//============= Cart ===============//
+
+// The order column of the shop and the product page: the lines on top, the comment and the
+// promo code folded until wanted, the sum and the one big button at the bottom.
+.giz-cart {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    height: 100%;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--giz-glass-9);
+    border-radius: 2rem;
+    background: linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-2));
+    backdrop-filter: blur(40px) saturate(1.6);
+    -webkit-backdrop-filter: blur(40px) saturate(1.6);
+    box-shadow:
+        inset 0 1px 0 var(--giz-glass-12),
+        0 24px 60px -34px rgba(var(--giz-black-rgb), 0.7);
+
+    &__head {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 2.2rem 2rem 1.4rem 2.4rem;
+    }
+
+    &__title {
+        font-family: $font-family-header-theme-client;
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        color: var(--giz-text-1);
+    }
+
+    &__count {
+        min-width: 2.6rem;
+        height: 2.6rem;
+        box-sizing: border-box;
+        padding: 0 0.8rem;
+        display: grid;
+        place-items: center;
+        border-radius: $giz-r-pill;
+        background: rgba(var(--giz-accent-rgb), 0.18);
+        color: var(--giz-accent-soft);
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.3rem;
+        font-weight: 700;
+    }
+
+    &__clear {
+        margin-left: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        height: 3.2rem;
+        padding: 0 1.1rem;
+        border: 0;
+        border-radius: 1rem;
+        background: none;
+        color: var(--giz-text-3);
+        font-family: inherit;
+        font-size: 1.3rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+
+        i { font-size: 1.6rem; }
+
+        &:hover {
+            background: rgba(var(--giz-danger-rgb), 0.12);
+            color: var(--giz-danger-soft);
+        }
+    }
+
+    &__items {
+        min-height: 0;
+        overflow-y: auto;
+        padding: 0.2rem 1.2rem 1.2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    &__empty {
+        margin: auto;
+        padding: 2.4rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+        text-align: center;
+    }
+
+    &__empty-icon {
+        width: 7.2rem;
+        height: 7.2rem;
+        margin-bottom: 0.8rem;
+        display: grid;
+        place-items: center;
+        border-radius: 2.2rem;
+        background: var(--giz-glass-4);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-8);
+        font-size: 3rem;
+        color: var(--giz-text-3);
+    }
+
+    &__empty-title {
+        font-family: $font-family-header-theme-client;
+        font-size: 1.7rem;
+        font-weight: 700;
+        color: var(--giz-text-1);
+    }
+
+    &__empty-text {
+        font-size: 1.4rem;
+        color: var(--giz-text-3);
+    }
+
+    &__foot {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.6rem 2rem 2rem;
+        border-top: 1px solid var(--giz-glass-6);
+        background: rgba(var(--giz-scrim-rgb), 0.18);
+    }
+
+    &__extra {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        height: 4.4rem;
+        padding: 0 1.4rem;
+        border: 0;
+        border-radius: 1.2rem;
+        background: var(--giz-glass-3);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-7);
+        color: var(--giz-text-2);
+        font-family: inherit;
+        font-size: 1.4rem;
+        font-weight: 600;
+        text-align: left;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+
+        i { font-size: 1.7rem; }
+
+        span { flex: 1; }
+
+        &:hover {
+            background: var(--giz-glass-6);
+            color: var(--giz-text-1);
+        }
+    }
+
+    &__extra-add { color: var(--giz-text-3); }
+
+    &__note .giz-input-control .giz-input-root.giz-input-root--outline,
+    &__note .giz-input-control .giz-input-root.giz-input-root--outline:hover,
+    &__note .giz-input-control .giz-input-root.giz-input-root--outline:focus-within {
+        min-height: 6.4rem;
+        padding: 1rem 1.2rem;
+        border: 0;
+        border-radius: 1.2rem;
+        background: var(--giz-glass-3);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-7);
+
+        textarea {
+            color: var(--giz-text-1);
+            font-size: 1.4rem;
+
+            &::placeholder { color: var(--giz-text-3); }
+        }
+    }
+
+    &__note .giz-input-validation-label,
+    &__promo .giz-input-validation-label { display: none; }
+
+    // The promo code: a ticket, the field, the button inside one pill.
+    &__promo {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        height: 4.4rem;
+        padding: 0 0.4rem 0 1.4rem;
+        border-radius: 1.2rem;
+        background: var(--giz-glass-3);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-7);
+        transition: box-shadow 0.15s;
+
+        &:focus-within { box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.6); }
+
+        &--applied { box-shadow: inset 0 0 0 1px rgba(var(--giz-success-rgb), 0.55); }
+
+        &--refused { box-shadow: inset 0 0 0 1px rgba(var(--giz-danger-rgb), 0.5); }
+
+        > .giz-text-input {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .giz-input-control .giz-input-root.giz-input-root--outline,
+        .giz-input-control .giz-input-root.giz-input-root--outline:hover,
+        .giz-input-control .giz-input-root.giz-input-root--outline:focus-within {
+            height: 4.2rem;
+            padding: 0 0.6rem;
+            border: 0;
+            box-shadow: none;
+            background: none;
+        }
+
+        input {
+            color: var(--giz-text-1);
+            font-size: 1.4rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+
+            &::placeholder {
+                color: var(--giz-text-3);
+                font-weight: 500;
+                text-transform: none;
+                letter-spacing: 0;
+            }
+        }
+    }
+
+    &__promo-icon {
+        font-size: 1.8rem;
+        color: var(--giz-text-3);
+    }
+
+    &__promo--applied &__promo-icon { color: var(--giz-success); }
+
+    &__promo-apply,
+    &__promo-remove {
+        flex: none;
+        height: 3.6rem;
+        padding: 0 1.4rem;
+        border: 0;
+        border-radius: 0.9rem;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.3rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.15s, opacity 0.15s;
+
+        &:disabled {
+            opacity: 0.4;
+            cursor: default;
+        }
+    }
+
+    &__promo-apply {
+        background: var(--giz-action-tonal-bg);
+        color: var(--giz-action-tonal-ink);
+
+        &:hover:not(:disabled) { filter: brightness(1.12); }
+    }
+
+    &__promo-remove {
+        width: 3.6rem;
+        padding: 0;
+        background: none;
+        color: var(--giz-text-3);
+        font-size: 1.6rem;
+
+        &:hover:not(:disabled) {
+            background: rgba(var(--giz-danger-rgb), 0.12);
+            color: var(--giz-danger-soft);
+        }
+    }
+
+    &__promo-status {
+        margin-top: -0.4rem;
+        padding: 0 0.4rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--giz-danger-soft);
+
+        &--applied { color: var(--giz-success); }
+    }
+
+    &__sum {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        padding: 0.8rem 0.4rem 0.4rem;
+    }
+
+    &__line {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.6rem;
+        font-size: 1.4rem;
+        color: var(--giz-text-2);
+
+        > .giz-wm-icart-loader { flex: none; }
+    }
+
+    &__total {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 2.6rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        white-space: nowrap;
+        color: var(--giz-text-1);
+    }
+
+    &__plus {
+        font-size: 1.8rem;
+        color: var(--giz-text-3);
+    }
+
+    &__coin {
+        font-size: 2rem;
+        color: var(--giz-points);
+    }
+
+    &__award {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--giz-points);
+
+        i { font-size: 1.5rem; }
+    }
+
+    &__go {
+        height: 5.6rem;
+        margin-top: 0.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        border: 0;
+        border-radius: 1.6rem;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.6rem;
+        font-weight: 700;
+        cursor: pointer;
+        @include giz-action-primary;
+
+        i { font-size: 1.9rem; }
+
+        &:disabled {
+            @include giz-action-off;
+            cursor: default;
+        }
+    }
+}
+
+// One line of the order: the picture, the name and the bin on top, the count and the
+// price under them.
+.giz-cart-line {
+    display: grid;
+    grid-template-columns: 5.6rem minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    column-gap: 1.2rem;
+    row-gap: 0.8rem;
+    padding: 1.1rem 1.2rem;
+    border-radius: 1.6rem;
+    transition: background 0.15s;
+    animation: giz-cart-line-in 0.3s cubic-bezier(0.2, 0, 0, 1) backwards;
+
+    &:hover { background: var(--giz-glass-3); }
+
+    &__thumb {
+        grid-row: 1 / 3;
+        width: 5.6rem;
+        height: 5.6rem;
+        overflow: hidden;
+        display: grid;
+        place-items: center;
+        border-radius: 1.4rem;
+        background: var(--giz-glass-5);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-8);
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        i {
+            font-size: 2.2rem;
+            color: var(--giz-text-3);
+        }
+    }
+
+    &__name {
+        min-width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: var(--giz-text-1);
+    }
+
+    &__remove {
+        justify-self: end;
+        width: 3rem;
+        height: 3rem;
+        display: grid;
+        place-items: center;
+        padding: 0;
+        border: 0;
+        border-radius: 0.9rem;
+        background: none;
+        color: var(--giz-text-3);
+        font-size: 1.6rem;
+        cursor: pointer;
+        opacity: 0.6;
+        transition: background 0.15s, color 0.15s, opacity 0.15s;
+
+        &:hover {
+            background: rgba(var(--giz-danger-rgb), 0.12);
+            color: var(--giz-danger-soft);
+        }
+    }
+
+    &:hover &__remove { opacity: 1; }
+
+    &__stepper {
+        justify-self: start;
+        display: inline-flex;
+        align-items: center;
+        height: 3.2rem;
+        border-radius: 1rem;
+        background: var(--giz-glass-4);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-8);
+    }
+
+    &__step {
+        width: 3.2rem;
+        height: 3.2rem;
+        display: grid;
+        place-items: center;
+        padding: 0;
+        border: 0;
+        border-radius: 1rem;
+        background: none;
+        color: var(--giz-text-2);
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+
+        &:hover:not(:disabled) {
+            background: var(--giz-glass-7);
+            color: var(--giz-text-1);
+        }
+
+        &:disabled {
+            opacity: 0.35;
+            cursor: default;
+        }
+    }
+
+    &__qty {
+        min-width: 2.4rem;
+        text-align: center;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: var(--giz-text-1);
+    }
+
+    > .giz-wm-icart-loader {
+        justify-self: end;
+        min-width: 0;
+    }
+
+    &__price {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.6rem;
+        font-weight: 700;
+        white-space: nowrap;
+        color: var(--giz-text-1);
+    }
+
+    &__points {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 1.3rem;
+        color: var(--giz-points);
+    }
+
+    // Money or points when the product takes either: two small segments, the chosen one lit.
+    &__pay {
+        display: inline-flex;
+        padding: 0.2rem;
+        border-radius: 1rem;
+        background: var(--giz-glass-4);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-8);
+    }
+
+    &__pay-way {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        height: 2.8rem;
+        padding: 0 0.9rem;
+        border: 0;
+        border-radius: 0.8rem;
+        background: none;
+        color: var(--giz-text-3);
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.3rem;
+        font-weight: 700;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+
+        i {
+            font-size: 1.3rem;
+            color: var(--giz-points);
+        }
+
+        &:hover { color: var(--giz-text-1); }
+
+        &--on {
+            background: var(--giz-glass-9);
+            color: var(--giz-text-1);
+        }
+    }
+}
+
+@keyframes giz-cart-line-in {
+    from { opacity: 0; translate: 0 0.8rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .giz-cart-line { animation: none; }
+}

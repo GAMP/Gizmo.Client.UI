@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using Gizmo.Client.UI.Localization.Resources;
 using Gizmo.Client.UI.Localization.Services;
+using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -15,13 +16,11 @@ namespace Gizmo.Client.UI.Components
         Verify,
         Account,
         About,
+        Finish,
     }
 
     public partial class RegistrationStage : CustomDOMComponentBase
     {
-        private static readonly RegistrationStep[] ProviderFlow = { RegistrationStep.Verify, RegistrationStep.Account, RegistrationStep.About };
-        private static readonly RegistrationStep[] DirectFlow = { RegistrationStep.Account, RegistrationStep.About };
-
         public sealed record OrbitIcon(string IconClass, double X, double Y, double Size, double Opacity, double Tilt);
 
         private static readonly IReadOnlyList<OrbitIcon> Orbit = BuildOrbit();
@@ -36,66 +35,44 @@ namespace Gizmo.Client.UI.Components
         UserRegistrationBasicFieldsViewState BasicFieldsViewState { get; set; }
 
         [Inject]
-        LogoViewState LogoViewState { get; set; }
+        UserRegistrationAdditionalFieldsViewState AdditionalFieldsViewState { get; set; }
 
         [Inject]
-        HostNumberViewState HostNumberViewState { get; set; }
+        IRegistrationSessionService RegistrationSession { get; set; }
 
         [Parameter]
         public RegistrationStep Step { get; set; }
 
+        [Parameter]
+        public bool HasAboutStep { get; set; }
+
         private IReadOnlyList<OrbitIcon> OrbitIcons => Orbit;
 
-        private IReadOnlyList<RegistrationStep> Steps => ConfigurationViewState.IsDirectEnabled ? DirectFlow : ProviderFlow;
+        private PlayerCardData CardData => PlayerCardData.From(BasicFieldsViewState, AdditionalFieldsViewState, RegistrationSession);
+
+        private IReadOnlyList<RegistrationStep> Steps
+        {
+            get
+            {
+                var steps = new List<RegistrationStep>();
+
+                if (!ConfigurationViewState.IsDirectEnabled)
+                    steps.Add(RegistrationStep.Verify);
+
+                steps.Add(RegistrationStep.Account);
+
+                if (HasAboutStep || Step == RegistrationStep.About)
+                    steps.Add(RegistrationStep.About);
+
+                steps.Add(RegistrationStep.Finish);
+
+                return steps;
+            }
+        }
 
         private int CurrentIndex => Math.Max(0, Steps.ToList().IndexOf(Step));
 
-        private bool HasClubLogo => !string.IsNullOrEmpty(LogoViewState.Logo);
-
-        private bool HasNick => !string.IsNullOrWhiteSpace(BasicFieldsViewState.Username);
-
-        private string NickText => HasNick
-            ? BasicFieldsViewState.Username.Trim()
-            : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_NICK_PLACEHOLDER);
-
-        private string NickClass
-        {
-            get
-            {
-                var classes = "giz-signup-card__nick";
-
-                if (!HasNick)
-                    classes += " giz-signup-card__nick--empty";
-
-                if (Step == RegistrationStep.Account)
-                    classes += " giz-signup-card__nick--live";
-
-                return classes;
-            }
-        }
-
-        private string FullName => string.Join(" ", new[] { BasicFieldsViewState.FirstName, BasicFieldsViewState.LastName }
-            .Where(part => !string.IsNullOrWhiteSpace(part))
-            .Select(part => part.Trim()));
-
-        private string NameText => string.IsNullOrEmpty(FullName)
-            ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_NAME_PLACEHOLDER)
-            : FullName;
-
-        private string NameClass => string.IsNullOrEmpty(FullName)
-            ? "giz-signup-card__name giz-signup-card__name--empty"
-            : "giz-signup-card__name";
-
-        private string SinceText => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_SINCE, DateTime.Now.ToString("d", CultureInfo.CurrentCulture));
-
-        private string ProgressStyle
-        {
-            get
-            {
-                var share = (CurrentIndex + 1d) / (Steps.Count + 1d);
-                return $"--giz-signup-progress: {share.ToString("0.###", CultureInfo.InvariantCulture)}";
-            }
-        }
+        private bool IsFinish(int index) => Steps[index] == RegistrationStep.Finish;
 
         private string StepNumber(int index) => (index + 1).ToString(CultureInfo.CurrentCulture);
 
@@ -103,7 +80,8 @@ namespace Gizmo.Client.UI.Components
         {
             RegistrationStep.Verify => GrafitResourceKeys.SHELL_SIGNUP_STEP_VERIFY,
             RegistrationStep.Account => GrafitResourceKeys.SHELL_SIGNUP_STEP_ACCOUNT,
-            _ => GrafitResourceKeys.SHELL_SIGNUP_STEP_ABOUT,
+            RegistrationStep.About => GrafitResourceKeys.SHELL_SIGNUP_STEP_ABOUT,
+            _ => GrafitResourceKeys.SHELL_SIGNUP_STEP_DONE,
         });
 
         private string StepClass(int index)
@@ -158,7 +136,7 @@ namespace Gizmo.Client.UI.Components
         protected override void OnInitialized()
         {
             this.SubscribeChange(BasicFieldsViewState);
-            this.SubscribeChange(LogoViewState);
+            this.SubscribeChange(AdditionalFieldsViewState);
 
             base.OnInitialized();
         }
@@ -166,7 +144,7 @@ namespace Gizmo.Client.UI.Components
         public override void Dispose()
         {
             this.UnsubscribeChange(BasicFieldsViewState);
-            this.UnsubscribeChange(LogoViewState);
+            this.UnsubscribeChange(AdditionalFieldsViewState);
 
             base.Dispose();
         }

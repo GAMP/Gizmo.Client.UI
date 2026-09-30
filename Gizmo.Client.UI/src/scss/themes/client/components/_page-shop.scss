@@ -3,9 +3,12 @@
 $giz-sidebar-w: 17rem;
 $giz-cart-w:    50rem;
 
+// One row as tall as the page: the cart column keeps its button on screen and scrolls its
+// lines instead of growing past the window.
 .giz-shop {
     display: grid;
     grid-template-columns: 1fr $giz-cart-w;
+    grid-template-rows: minmax(0, 1fr);
     height: 100%;
     overflow: hidden;
     flex-grow: 1;

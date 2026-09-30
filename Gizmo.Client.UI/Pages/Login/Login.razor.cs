@@ -42,6 +42,7 @@ namespace Gizmo.Client.UI.Pages
         private bool _focusPassword;
         private bool _focusName;
         private bool _nameError;
+        private bool _phoneTried;
 
         [Inject]
         IOptions<UserLoginOptions> UserLoginOptions { get; set; }
@@ -109,6 +110,7 @@ namespace Gizmo.Client.UI.Pages
 
         private Task OnPhoneValueChangedAsync(string? value)
         {
+            _phoneTried = false;
             UserLoginService.SetLoginName(value ?? string.Empty);
             return Task.CompletedTask;
         }
@@ -134,6 +136,14 @@ namespace Gizmo.Client.UI.Pages
 
         private bool IsNextDisabled => !HasLoginName;
 
+        private bool HasCheckedPhone => !string.IsNullOrEmpty(ViewState.PhoneE164);
+
+        private string PhoneError => _phoneTried && IsPhoneLogin && !HasCheckedPhone
+            ? UserLoginService.EditContext
+                .GetValidationMessages(new FieldIdentifier(ViewState, nameof(ViewState.LoginName)))
+                .FirstOrDefault()
+            : null;
+
         private bool NeedsReservationPin =>
             HostReservationViewState.ReservationNotificationTimeReached || HostReservationViewState.ReservationBlockTimeReached;
 
@@ -150,6 +160,13 @@ namespace Gizmo.Client.UI.Pages
             if (!HasLoginName)
                 return;
 
+            if (IsPhoneLogin && !HasCheckedPhone)
+            {
+                _phoneTried = true;
+                return;
+            }
+
+            _phoneTried = false;
             _step = LoginStep.Password;
             _focusPassword = true;
             _nameError = false;
@@ -175,6 +192,12 @@ namespace Gizmo.Client.UI.Pages
 
         private void OnLoginViewStateChanged(object sender, EventArgs e)
         {
+            if (_step == LoginStep.Name && _phoneTried && IsPhoneLogin && HasCheckedPhone)
+            {
+                GoToPassword();
+                return;
+            }
+
             if (_step != LoginStep.Password || !string.IsNullOrEmpty(ViewState.LoginName))
                 return;
 
@@ -229,20 +252,6 @@ namespace Gizmo.Client.UI.Pages
 
         private bool ShowPasswordRecovery =>
             UserRegisterConfigurationViewState.IsPasswordRecoveryEnabled;
-
-        private string? ReservationMessage
-        {
-            get
-            {
-                if (HostReservationViewState.ReservationBlockTimeReached)
-                    return LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_BLOCK_TIME_REACHED_MESSAGE));
-
-                if (HostReservationViewState.ReservationNotificationTimeReached)
-                    return LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_NOTIFICATION_TIME_REACHED_MESSAGE));
-
-                return null;
-            }
-        }
 
         protected override async Task OnInitializedAsync()
         {

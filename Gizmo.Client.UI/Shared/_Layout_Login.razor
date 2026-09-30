@@ -41,15 +41,6 @@
                 </div>
             }
 
-            @* <div class="giz-login-logotype">
-                <div class="giz-login-logotype__icon">
-                    <Icon SVGIcon="Icons.Passport_Client" Size="IconSizes.Large" />
-                </div>
-                <div class="giz-login-logotype__text">
-                    <span>2 line</span>
-                    <span>logotype</span>
-                </div>
-            </div> *@
 
             @if (!string.IsNullOrEmpty(LogoViewState.Logo))
             {
@@ -59,40 +50,35 @@
             }
 
             <div class="giz-login-warnings">
-                @if (_previousIsIdle || _slideOut)
+                @if (HostReservationViewState.ReservationBlockTimeReached)
                 {
-                    @if (HostReservationViewState.ReservationBlockTimeReached)
-                    {
-                        <ReservationNotice Time="@HostReservationViewState.Time.Value.ToShortTimeString()"
-                                           Message="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_BLOCK_TIME_REACHED_MESSAGE))" />
-                    }
-                    else if (HostReservationViewState.ReservationNotificationTimeReached)
-                    {
-                        <ReservationNotice Time="@HostReservationViewState.Time.Value.ToShortTimeString()"
-                                           Message="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_NOTIFICATION_TIME_REACHED_MESSAGE))" />
-                    }
+                    <ReservationNotice Time="@HostReservationViewState.Time.Value.ToShortTimeString()"
+                                       Message="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_BLOCK_TIME_REACHED_MESSAGE))" />
+                }
+                else if (HostReservationViewState.ReservationNotificationTimeReached)
+                {
+                    <ReservationNotice Time="@HostReservationViewState.Time.Value.ToShortTimeString()"
+                                       Message="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_NOTIFICATION_TIME_REACHED_MESSAGE))" />
                 }
             </div>
 
             <div class="giz-client-status" @onclick="test">
                 <ClientLanguageMenu />
-
-                <div class="giz-server">
-                    <Layout_LoginServerConnection />
-                    <div class="giz-version">
-                        <div class="giz-version__title">Gizmo @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SYSTEM_VERSION))</div>
-                        <div class="giz-version__version">@ClientVersionViewState.Version</div>
-                    </div>
-                </div>
+                <Layout_LoginServerConnection />
+                <div class="giz-version">Gizmo @ClientVersionViewState.Version</div>
             </div>
 
         </div>
         <div class="giz-login__login @ClassName">
-            @if (CurrentRegistrationStep is { } registrationStep)
+            @if (_welcome is { } welcome)
+            {
+                <RegistrationWelcome Card="@welcome" OnDone="@CloseWelcome" />
+            }
+            else if (CurrentRegistrationStep is { } registrationStep)
             {
                 <div class="giz-signup-spread">
                     <aside class="giz-signup-spread__stage">
-                        <RegistrationStage Step="@registrationStep" />
+                        <RegistrationStage Step="@registrationStep" HasAboutStep="@HasAboutStep" />
                     </aside>
                     <div class="giz-signup-spread__form">
                         @Body
