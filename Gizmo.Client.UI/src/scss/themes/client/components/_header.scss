@@ -211,6 +211,90 @@
   background-color: rgba(255, 255, 255, 0.10);
 }
 
+// top-bar ladder preview popover (114:11359): 600px wide, dropdown under the top bar;
+// the box is the positioning context of the level (i) popup, the inner body scrolls, so the
+// popup is not clipped by the scroll area
+.giz-ladder-popover {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 60rem;
+  max-height: 100%;
+  border-radius: 0.8rem;
+  background-color: #22272B;
+  box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
+  white-space: normal;
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    min-height: 0;
+    padding: 2.0rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.6rem;
+  }
+
+  &__title {
+    color: $typo-primary-theme-client;
+    @include font-m-theme-client($font-weight-bold-theme-client);
+  }
+
+  &__link {
+    color: $typo-primary-theme-client;
+    text-decoration: underline;
+    text-decoration-color: #0F9FFF;
+    text-underline-offset: 0.2rem;
+    cursor: pointer;
+    @include font-m-theme-client($font-weight-light-theme-client);
+  }
+
+  .giz-ladder-level {
+    &__name {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .giz-ladder-level-row__info {
+      color: $typo-secondary-theme-client;
+      cursor: pointer;
+    }
+  }
+
+  // level (i) popup: positioned against the popover box (outside the scroll area); `top: auto`
+  // keeps its vertical static position at the level name, the margin moves it below the name
+  .giz-ladder-level-popup-wrapper {
+    top: auto;
+    right: 2.0rem;
+    align-self: flex-start;
+    margin-top: 3.2rem;
+  }
+
+  .giz-ladder-progress__title {
+    padding-bottom: 0.8rem;
+    color: $typo-secondary-theme-client;
+    @include font-s-theme-client($font-weight-light-theme-client);
+  }
+}
+
+// `Secured` badge next to the level name (114:11316)
+.giz-ladder-secured-badge {
+  flex: none;
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.4rem;
+  background-color: rgba(0, 120, 210, 0.32);
+  color: $typo-primary-theme-client;
+  @include font-s-theme-client($font-weight-regular-theme-client);
+}
+
 .user-menu-item-button {
   display: flex;
   cursor: pointer;

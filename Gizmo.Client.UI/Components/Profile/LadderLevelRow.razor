@@ -11,39 +11,7 @@
     <span class="giz-ladder-level-row__name">@Item.Name</span>
     @if (Item.HasInfo)
     {
-        <span class="giz-ladder-level-row__info" @onclick="OnInfoClick" @onclick:stopPropagation="true">
-            <Icon SVGIcon="Icons.Info2_Client" Size="IconSizes.Small" />
-        </span>
-        <ProfileCardPopup WrapperClass="giz-ladder-level-popup-wrapper" ContentClass="giz-ladder-level-popup" @bind-IsOpen="_isInfoOpen">
-            @if (Item.HasDescription)
-            {
-                <div class="giz-ladder-level-popup__description">@Item.Description</div>
-            }
-            @if (Item.HasPerks)
-            {
-                <div class="giz-ladder-level-popup__perks">
-                    <div class="giz-ladder-level-popup__label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_PERKS))</div>
-                    @foreach (var perk in Item.PerkTexts)
-                    {
-                        <div class="giz-ladder-level-popup__perk">@perk</div>
-                    }
-                </div>
-            }
-            @if (Item.HasRequirements)
-            {
-                <div class="giz-ladder-level-popup__requirements">
-                    <div class="giz-ladder-level-popup__label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_REQUIREMENTS))</div>
-                    @foreach (var requirement in Item.Requirements)
-                    {
-                        <LadderRequirementRow Item="@requirement" />
-                    }
-                </div>
-            }
-            @if (!string.IsNullOrEmpty(Item.ReachFirstText))
-            {
-                <div class="giz-ladder-level-popup__description">@Item.ReachFirstText</div>
-            }
-        </ProfileCardPopup>
+        <LadderLevelInfo Item="@Item" />
     }
     @if (Item.IsCurrent)
     {

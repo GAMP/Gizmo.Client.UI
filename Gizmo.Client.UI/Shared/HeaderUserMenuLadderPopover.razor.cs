@@ -1,0 +1,79 @@
+using Gizmo.Client.UI.View.Services;
+using Gizmo.Client.UI.View.States;
+using Gizmo.UI.Services;
+using Gizmo.Web.Components;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using System;
+using System.Threading.Tasks;
+
+namespace Gizmo.Client.UI.Shared
+{
+    public partial class HeaderUserMenuLadderPopover : CustomDOMComponentBase, IAsyncDisposable
+    {
+        [Inject]
+        ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
+        UserLadderSummaryViewState ViewState { get; set; }
+
+        [Inject]
+        UserMenuViewState UserMenuViewState { get; set; }
+
+        [Inject]
+        UserMenuViewService UserMenuService { get; set; }
+
+        private ClosePopupEventInterop ClosePopupEventInterop { get; set; }
+
+        protected override void OnInitialized()
+        {
+            this.SubscribeChange(ViewState);
+            this.SubscribeChange(UserMenuViewState);
+
+            base.OnInitialized();
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await base.OnAfterRenderAsync(firstRender);
+
+            if (firstRender)
+            {
+                await JsRuntime.InvokeVoidAsync("registerPopup", Ref);
+                ClosePopupEventInterop = new ClosePopupEventInterop(JsRuntime);
+                await ClosePopupEventInterop.SetupClosePopupEventCallback(args => ClosePopupHandler(args));
+            }
+        }
+
+        public override void Dispose()
+        {
+            this.UnsubscribeChange(UserMenuViewState);
+            this.UnsubscribeChange(ViewState);
+
+            // the block is gone (no level any more): do not leave the popover open for its return
+            if (UserMenuViewState.LadderIsVisible)
+                UserMenuService.CloseLadder();
+
+            ClosePopupEventInterop?.Dispose();
+
+            base.Dispose();
+        }
+
+        private Task ClosePopupHandler(string args)
+        {
+            if (args == Id)
+            {
+                UserMenuService.CloseLadder();
+            }
+
+            return Task.CompletedTask;
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            await InvokeVoidAsync("unregisterPopup", Ref).ConfigureAwait(false);
+
+            Dispose();
+        }
+    }
+}
