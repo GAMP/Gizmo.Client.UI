@@ -19,14 +19,14 @@
         }
         <img src="@WallpaperViewState.Wallpaper" alt='loading' />
     </div>
-    <div class="giz-root">
+    <div class="@RootClass">
         <div class="giz-top-bar">
             <div class="giz-top-bar__left">
                 <div class="giz-top-bar__search">
                     <HeaderGlobalSearch />
                 </div>
             </div>
-            <div class="giz-top-bar__hud">
+            <div class="@HudClass" title="@HudTitle">
                 <div class="giz-topbar-stat giz-topbar-stat--pc">
                     <HostNumber />
                 </div>
@@ -55,6 +55,9 @@
                 <div class="giz-topbar-stat giz-topbar-stat--balance">
                     <span>@BalanceText</span>
                 </div>
+                <button type="button" class="giz-top-bar__eye" @onclick="ToggleFigures" title="@FiguresToggleLabel" aria-label="@FiguresToggleLabel">
+                    <i class="ph-bold @FiguresToggleIcon"></i>
+                </button>
                 <TopBarReservation />
             </div>
             <div class="giz-top-bar__right-group">

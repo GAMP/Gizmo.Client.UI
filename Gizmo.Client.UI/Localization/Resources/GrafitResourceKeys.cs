@@ -19,6 +19,8 @@
         public const string SHELL_DEPOSIT_SUCCESS_TEXT = nameof(SHELL_DEPOSIT_SUCCESS_TEXT);
         public const string SHELL_DEPOSIT_SUCCESS_HINT = nameof(SHELL_DEPOSIT_SUCCESS_HINT);
         public const string SHELL_DEPOSIT_PAGE_TITLE = nameof(SHELL_DEPOSIT_PAGE_TITLE);
+        public const string SHELL_BALANCE_HIDE = nameof(SHELL_BALANCE_HIDE);
+        public const string SHELL_BALANCE_SHOW = nameof(SHELL_BALANCE_SHOW);
         public const string SHELL_BUY_TITLE = nameof(SHELL_BUY_TITLE);
         public const string SHELL_BUY_TITLE_TOPUP = nameof(SHELL_BUY_TITLE_TOPUP);
         public const string SHELL_BUY_DONE_TITLE = nameof(SHELL_BUY_DONE_TITLE);

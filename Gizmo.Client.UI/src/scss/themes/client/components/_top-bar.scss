@@ -370,3 +370,51 @@
 .giz-topbar-stat--points .giz-ph-icon {
     color: var(--giz-points);
 }
+
+// Hidden figures keep their width under the dots, so the HUD and the reservation tag
+// hanging from it do not move.
+.giz-top-bar__hud--hidden {
+    .giz-top-bar__time-value,
+    .giz-top-bar__time-unlimited,
+    .giz-topbar-stat--points > span,
+    .giz-topbar-stat--balance > span {
+        position: relative;
+        color: transparent;
+
+        &::after {
+            content: "\2022\2022\2022";
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: $font-family-text-theme-client;
+            font-size: 1.5rem;
+            letter-spacing: 0.15em;
+            color: var(--giz-text-3);
+        }
+    }
+}
+
+.giz-top-bar__eye {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 3.2rem;
+    height: 3.2rem;
+    margin: 0 -1rem 0 -1rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--giz-text-3);
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+
+    &:hover {
+        background: var(--giz-glass-7);
+        color: var(--giz-ink);
+    }
+}

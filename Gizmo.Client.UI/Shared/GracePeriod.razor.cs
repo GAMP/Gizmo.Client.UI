@@ -11,6 +11,7 @@ using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 
 namespace Gizmo.Client.UI.Shared
@@ -21,6 +22,9 @@ namespace Gizmo.Client.UI.Shared
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
+
+        [Inject]
+        ILogger<GracePeriod> Logger { get; set; }
 
         [Inject]
         GracePeriodViewState ViewState { get; set; }
@@ -137,9 +141,6 @@ namespace Gizmo.Client.UI.Shared
         {
             get
             {
-                if (ViewState.Time > _graceTotal)
-                    _graceTotal = ViewState.Time;
-
                 return _graceTotal <= TimeSpan.Zero
                     ? 1d
                     : Math.Clamp(ViewState.Time.TotalSeconds / _graceTotal.TotalSeconds, 0d, 1d);
@@ -152,9 +153,6 @@ namespace Gizmo.Client.UI.Shared
         {
             get
             {
-                if (ViewState.Time > _graceTotal)
-                    _graceTotal = ViewState.Time;
-
                 var share = _reservationConfirmed || _graceTotal <= TimeSpan.Zero
                     ? (_reservationConfirmed ? 1d : 0d)
                     : 1d - ViewState.Time.TotalSeconds / _graceTotal.TotalSeconds;
@@ -221,8 +219,9 @@ namespace Gizmo.Client.UI.Shared
                     _reservationConfirmed = true;
                 }
             }
-            catch
+            catch (Exception exception)
             {
+                Logger.LogError(exception, "Reservation PIN confirmation failed.");
                 _pinError = GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_PIN_FAILED);
                 _focusPin = true;
             }
@@ -241,10 +240,17 @@ namespace Gizmo.Client.UI.Shared
             return HostReservationViewService.ShowDialog();
         }
 
-        protected override bool ShouldRender()
+        private void TrackGraceTotal()
         {
             if (!ViewState.IsInGracePeriod)
                 _graceTotal = TimeSpan.Zero;
+            else if (ViewState.Time > _graceTotal)
+                _graceTotal = ViewState.Time;
+        }
+
+        protected override bool ShouldRender()
+        {
+            TrackGraceTotal();
 
             return base.ShouldRender();
         }
@@ -255,13 +261,7 @@ namespace Gizmo.Client.UI.Shared
             {
                 _focusPin = false;
 
-                try
-                {
-                    await _pinElement.FocusAsync();
-                }
-                catch (Exception exception) when (exception is JSException or InvalidOperationException or TaskCanceledException)
-                {
-                }
+                await ElementFocus.TryAsync(() => _pinElement.FocusAsync());
             }
 
             await base.OnAfterRenderAsync(firstRender);
@@ -269,6 +269,7 @@ namespace Gizmo.Client.UI.Shared
 
         protected override void OnInitialized()
         {
+            TrackGraceTotal();
             this.SubscribeChange(ViewState);
             this.SubscribeChange(HostReservationViewState);
             this.SubscribeChange(ConfirmReservationDialogViewService.ViewState);

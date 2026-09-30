@@ -9,6 +9,7 @@ using Gizmo.UI.Services;
 using Gizmo.Web.Api.Models;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -61,6 +62,7 @@ namespace Gizmo.Client.UI.Pages
         [Inject] IOptionsMonitor<ClientInterfaceOptions> ClientInterfaceOptions { get; set; }
         [Inject] ILocalizationService LocalizationService { get; set; }
         [Inject] HomePageViewState ViewState { get; set; }
+        [Inject] ILogger<Home> Logger { get; set; }
         [Inject] UserBalanceViewState UserBalanceViewState { get; set; }
         [Inject] AdvertisementsViewState AdvertisementsViewState { get; set; }
         [Inject] ProductDetailsPageViewState ProductDetailsPageViewState { get; set; }
@@ -81,7 +83,13 @@ namespace Gizmo.Client.UI.Pages
 
         private sealed record PackRow(UserProductViewState Product, string Length, string Unit, string PerHourText);
 
-        private IReadOnlyList<PackRow> Packs => TimeProducts.Select(ToRow).ToList();
+        private IReadOnlyList<PackRow> _packs = Array.Empty<PackRow>();
+
+        private IReadOnlyList<PackRow> Packs => _packs;
+
+        private void BuildPacks() => _packs = TimeProducts.Select(ToRow).ToList();
+
+        private void OnProductsChanged(object sender, EventArgs e) => BuildPacks();
 
         private PackRow ToRow(UserProductViewState product)
         {
@@ -365,6 +373,8 @@ namespace Gizmo.Client.UI.Pages
 
         protected override void OnInitialized()
         {
+            BuildPacks();
+            ViewState.OnChange += OnProductsChanged;
             this.SubscribeChange(ViewState);
             this.SubscribeChange(UserBalanceViewState);
             this.SubscribeChange(AdvertisementsViewState);
@@ -425,17 +435,21 @@ namespace Gizmo.Client.UI.Pages
             {
                 _catalogue = await ProductLookupService.GetFilteredStatesAsync(null);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                Logger.LogError(exception, "Could not load the product catalogue for the home page.");
                 _catalogue = Enumerable.Empty<UserProductViewState>();
             }
+
+            BuildPacks();
 
             try
             {
                 _apps = await AppLookupService.GetFilteredStatesAsync();
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                Logger.LogError(exception, "Could not load the applications for the home page.");
                 _apps = Enumerable.Empty<AppViewState>();
             }
 
@@ -454,6 +468,7 @@ namespace Gizmo.Client.UI.Pages
             this.UnsubscribeChange(AdvertisementsViewState);
             this.UnsubscribeChange(UserBalanceViewState);
             this.UnsubscribeChange(ViewState);
+            ViewState.OnChange -= OnProductsChanged;
 
             base.Dispose();
         }

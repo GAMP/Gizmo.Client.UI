@@ -697,6 +697,19 @@ $tile:  var(--giz-tile);
     }
 }
 
+.giz-root--figures-hidden .giz-home-wallet__sum {
+    font-size: 0;
+
+    &::after {
+        content: "\2022\2022\2022\2022\2022";
+        font-size: $t-wallet;
+        letter-spacing: 0.2em;
+        color: var(--giz-text-3);
+    }
+}
+
+.giz-root--figures-hidden .giz-home-wallet__points { display: none; }
+
 // Packages as a price board on a club's wall: the hours large on the left, the price large on
 // the right, the name and the price of an hour small between them. No buttons at rest; the row
 // under the pointer lights up and its price turns into "Buy".

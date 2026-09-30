@@ -33,6 +33,23 @@
                     </div>
                 </div>
             }
+            else if (IsSignInClosed)
+            {
+                <div class="giz-signin giz-signin--closed" @key="@("closed")">
+                    <div class="giz-signin__head">
+                        <h1 class="giz-signin__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOGIN_TITLE)</h1>
+                    </div>
+                    @if (UserRegisterConfigurationViewState.IsEnabled)
+                    {
+                        <div class="giz-signin__links">
+                            <div class="giz-signin__new">
+                                <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_NOT_A_MEMBER))</span>
+                                <a @onclick="UserLoginService.OpenRegistrationAsync">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_SIGN_UP_NOW))</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
             else if (IsPasswordStep)
             {
                 <EditForm EditContext="@UserLoginService.EditContext" @onkeydown="OnPasswordKeyDown" class="giz-signin giz-signin--password" @key="@("password")">

@@ -84,9 +84,13 @@ namespace Gizmo.Client.UI.Components
 
         private string PointsPriceText => UserCartProductViewState.TotalPointsPrice.GetValueOrDefault().ToString("N0", CultureInfo.CurrentCulture);
 
-        private string CashPriceText => ((_product?.UnitPrice ?? 0) * UserCartProductViewState.Quantity).ToString("C", CultureInfo.CurrentCulture);
+        private string CashPriceText => (PaysWithPoints
+            ? (_product?.UnitPrice ?? 0) * UserCartProductViewState.Quantity
+            : UserCartProductViewState.TotalPrice).ToString("C", CultureInfo.CurrentCulture);
 
-        private string PointsWayText => ((_product?.UnitPointsPrice ?? 0) * UserCartProductViewState.Quantity).ToString("N0", CultureInfo.CurrentCulture);
+        private string PointsWayText => (PaysWithPoints
+            ? UserCartProductViewState.TotalPointsPrice.GetValueOrDefault()
+            : (_product?.UnitPointsPrice ?? 0) * UserCartProductViewState.Quantity).ToString("N0", CultureInfo.CurrentCulture);
 
         private string PayClass(OrderLinePayType payType) => UserCartProductViewState.PayType == payType
             ? "giz-cart-line__pay-way giz-cart-line__pay-way--on"
@@ -97,7 +101,7 @@ namespace Gizmo.Client.UI.Components
         private Task OnRowKey(KeyboardEventArgs args) =>
             args.Key is "Enter" or " " ? Toggle() : Task.CompletedTask;
 
-        private void OnLessAsync(MouseEventArgs args)
+        private void OnLess(MouseEventArgs args)
         {
             if (IsSingle)
                 ClientServerCartViewService.RemoveEntry(UserCartProductViewState.Guid);

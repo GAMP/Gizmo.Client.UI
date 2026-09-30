@@ -130,6 +130,8 @@ namespace Gizmo.Client.UI.Pages
 
         private bool IsQrStep => HostQRCodeViewState.IsEnabled && (_step == LoginStep.Qr || UserLoginOptions.Value.Disabled);
 
+        private bool IsSignInClosed => UserLoginOptions.Value.Disabled;
+
         private bool ShowQrLink => HostQRCodeViewState.IsEnabled;
 
         private bool HasLoginName => !string.IsNullOrWhiteSpace(ViewState.LoginName)
@@ -269,33 +271,22 @@ namespace Gizmo.Client.UI.Pages
             if (_focusPin && _pinInput is not null)
             {
                 _focusPin = false;
-                await FocusAsync(() => _pinInput.FocusAsync());
+                await ElementFocus.TryAsync(() => _pinInput.FocusAsync());
             }
             else if (_focusPassword && _passwordInput is not null)
             {
                 _focusPassword = false;
-                await FocusAsync(() => _passwordInput.FocusAsync());
+                await ElementFocus.TryAsync(() => _passwordInput.FocusAsync());
             }
             else if (firstRender || _focusName)
             {
                 _focusName = false;
 
                 if (IsUsernameLogin && _nameInput is not null)
-                    await FocusAsync(() => _nameInput.FocusAsync());
+                    await ElementFocus.TryAsync(() => _nameInput.FocusAsync());
             }
 
             await base.OnAfterRenderAsync(firstRender);
-        }
-
-        private static async Task FocusAsync(Func<ValueTask> focus)
-        {
-            try
-            {
-                await focus();
-            }
-            catch (Exception exception) when (exception is JSException or InvalidOperationException or TaskCanceledException or ObjectDisposedException)
-            {
-            }
         }
 
         public override void Dispose()

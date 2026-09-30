@@ -32,7 +32,11 @@ namespace Gizmo.Client.UI.Shared
         private bool _announced;
         private int _index;
 
-        private List<AdvertisementViewState> News => AdvertisementsViewState.Advertisements
+        private List<AdvertisementViewState> _news = new();
+
+        private List<AdvertisementViewState> News => _news;
+
+        private void ReadNews() => _news = AdvertisementsViewState.Advertisements
             .Take(NEWS_CEILING)
             .ToList();
 
@@ -106,10 +110,15 @@ namespace Gizmo.Client.UI.Shared
             });
         }
 
-        private void OnNewsChanged(object sender, EventArgs e) => AnnounceOnce();
+        private void OnNewsChanged(object sender, EventArgs e)
+        {
+            ReadNews();
+            AnnounceOnce();
+        }
 
         protected override void OnInitialized()
         {
+            ReadNews();
             AdvertisementsViewState.OnChange += OnNewsChanged;
             this.SubscribeChange(AdvertisementsViewState);
 

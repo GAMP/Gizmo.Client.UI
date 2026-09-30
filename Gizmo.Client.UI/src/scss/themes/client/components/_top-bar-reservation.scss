@@ -1,12 +1,14 @@
 //=============== Top bar reservation ================//
 
-// A tag hanging from the bottom edge of the session HUD, so the bar's own row never changes:
-// glass while the reservation is far off, solid amber once its notification time is reached.
+// A tag sliding out from under the session HUD, so the bar's own row never changes. It sits
+// below the HUD's glass (z-index -1), so the HUD's bottom edge and its shadow run over the
+// tag's top; nothing of the tag is behind the glass, which would blur it into a haze. Glass
+// while the reservation is far off, solid amber once its notification time is reached.
 .giz-resv {
     position: absolute;
     top: calc(100% - 1px);
     left: 50%;
-    z-index: 1;
+    z-index: -2;
     display: flex;
     align-items: center;
     gap: 0.45rem;
@@ -21,6 +23,7 @@
         linear-gradient(180deg, var(--giz-glass-2), var(--giz-glass-5)),
         var(--giz-tile-2);
     box-shadow:
+        inset 0 0.7rem 0.6rem -0.6rem rgba(var(--giz-black-rgb), 0.45),
         inset 0 -1px 0 var(--giz-glass-9),
         inset 1px 0 0 var(--giz-glass-9),
         inset -1px 0 0 var(--giz-glass-9);
@@ -54,7 +57,7 @@
 
 .giz-resv--soon {
     background: var(--giz-warning);
-    box-shadow: none;
+    box-shadow: inset 0 0.7rem 0.6rem -0.6rem rgba(var(--giz-black-rgb), 0.35);
     color: rgba(var(--giz-black-rgb), 0.78);
     font-weight: 700;
 

@@ -11,6 +11,7 @@ using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -25,6 +26,7 @@ namespace Gizmo.Client.UI.Components
         [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
 
         [Inject] UserViewState UserViewState { get; set; }
+        [Inject] ILogger<HomePass> Logger { get; set; }
         [Inject] UserProfileViewState UserProfileViewState { get; set; }
         [Inject] UserBalanceViewState UserBalanceViewState { get; set; }
         [Inject] TimeProductsViewState TimeProductsViewState { get; set; }
@@ -101,8 +103,9 @@ namespace Gizmo.Client.UI.Components
             {
                 await TimeProductsViewService.LoadAsync();
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                Logger.LogError(exception, "Could not load the time products for the home pass.");
                 _loadedAt = DateTime.MinValue;
             }
         }
