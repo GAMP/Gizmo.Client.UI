@@ -32,11 +32,11 @@ namespace Gizmo.Client.UI.Components
 
         private string ProgressValue => ViewState.ProgressPercent.ToString("0.##", CultureInfo.InvariantCulture);
 
-        private string FillClass => ViewState.ProgressIsSecured
+        private string FillClass => ViewState.ProgressIsFull
             ? "giz-ladder-progress__fill giz-ladder-progress__fill--secured"
             : "giz-ladder-progress__fill";
 
-        private string GoalClass => ViewState.ProgressIsSecured
+        private string GoalClass => ViewState.ProgressIsFull
             ? "giz-ladder-progress__goal giz-ladder-progress__goal--secured"
             : "giz-ladder-progress__goal";
 

@@ -13,8 +13,6 @@ namespace Gizmo.Client.UI.Components
     {
         private const string HistoryPopupSelector = ".giz-ladder-history-wrapper";
 
-        private bool _isInfoOpen;
-
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
@@ -81,18 +79,6 @@ namespace Gizmo.Client.UI.Components
         {
             await JsRuntime.InvokeVoidAsync("closeOpenPopups", e, HistoryPopupSelector);
             Service.SelectLevel(Item.Rank);
-        }
-
-        private async Task OnInfoClick(MouseEventArgs e)
-        {
-            if (_isInfoOpen)
-            {
-                _isInfoOpen = false;
-                return;
-            }
-
-            await JsRuntime.InvokeVoidAsync("closeOpenPopups", e, HistoryPopupSelector);
-            _isInfoOpen = true;
         }
     }
 }
