@@ -353,7 +353,9 @@
     }
 
     // The field and its arrow in one glass pill: a glyph says what goes in, the hint sits
-    // in the field itself and the ring lights up while the caret is in it.
+    // in the field itself and the ring lights up while the caret is in it. No backdrop blur:
+    // the gradient behind the sign-in screen never stops moving, and a blurred pill would be
+    // redrawn every frame; a denser fill looks the same over those soft colours.
     &__pill {
         width: 100%;
         box-sizing: border-box;
@@ -365,9 +367,7 @@
         border-radius: 2.4rem;
         background:
             linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-3)),
-            rgba(var(--giz-scrim-rgb), 0.5);
-        backdrop-filter: blur(4rem);
-        -webkit-backdrop-filter: blur(4rem);
+            rgba(var(--giz-scrim-rgb), 0.62);
         box-shadow: inset 0 0 0 1px var(--giz-glass-10), inset 0 1px 0 var(--giz-glass-12);
         cursor: text;
         transition: box-shadow 0.2s;
@@ -637,12 +637,6 @@
     grid-template-columns: minmax(0, 1fr) var(--giz-signup-form);
     gap: 2.2rem;
 
-    // Many fields to fill: the form takes more of the width and lays them out in two columns
-    // instead of growing a scrollbar.
-    &:has(.giz-login-card__body > form > :nth-child(6)) {
-        grid-template-columns: minmax(0, 1fr) min(76rem, 52%);
-    }
-
     &__stage {
         position: relative;
         min-width: 0;
@@ -845,9 +839,10 @@
     }
 }
 
-// Many fields: two columns. The pairs the page already groups (the passwords, the name) stay
-// a row of their own; the single fields after them pair up; the nickname has a row alone.
-.giz-signup-spread .giz-login-card__body > form:has(> :nth-child(6)) {
+// Many fields: two columns inside the same tile - neither tile changes size. The pairs the page
+// already groups (the passwords, the name) stay a row of their own; the single fields after
+// them pair up; the nickname has a row alone.
+.giz-signup-spread .giz-login-card__body > form:has(> :nth-child(8)) {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 2.2rem 1.6rem;
@@ -1345,12 +1340,21 @@
         .giz-login-title { font-size: 3.2rem; }
 
         .giz-login-card__body > form { gap: 1.8rem; }
+
+        .giz-login-links { margin-bottom: 0.8rem; }
+
+        .giz-input-control .giz-input-label { margin-bottom: 0.1rem; }
+
+        .giz-input-control .giz-input-root.giz-input-root--small {
+            height: 3.6rem;
+            padding-top: 0.6rem;
+            padding-bottom: 0.6rem;
+        }
     }
 
-    // On a short screen a long form goes to three columns, each field a cell of its own.
-    .giz-signup-spread .giz-login-card__body > form:has(> :nth-child(6)) {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 1.8rem 1.4rem;
+    // On a short screen a long form packs every field into the two columns.
+    .giz-signup-spread .giz-login-card__body > form:has(> :nth-child(8)) {
+        gap: 1.4rem 1.4rem;
 
         > .giz-login-title + *,
         > .giz-form-input-columns { grid-column: auto; }

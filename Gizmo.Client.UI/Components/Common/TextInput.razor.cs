@@ -624,7 +624,6 @@ namespace Gizmo.Client.UI.Components
         {
             if (!firstRender)
             {
-                //await InvokeVoidAsync("writeLine", $"Render {this.ToString()}");
             }
 
             await base.OnAfterRenderAsync(firstRender);

@@ -206,7 +206,6 @@ namespace Gizmo.Client.UI.Components
         {
             if (!firstRender)
             {
-                //await InvokeVoidAsync("writeLine", $"Render {this.ToString()}");
             }
 
             //If is mandatory and there is no item selected, select the first available item if any.

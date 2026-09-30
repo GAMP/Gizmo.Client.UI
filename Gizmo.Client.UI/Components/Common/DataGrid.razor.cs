@@ -332,7 +332,6 @@ namespace Gizmo.Client.UI.Components
             if (!firstRender)
             {
                 _shouldRender = false;
-                //await InvokeVoidAsync("writeLine", $"Render {this.ToString()}");
             }
             else
             {
@@ -756,7 +755,6 @@ namespace Gizmo.Client.UI.Components
             if (item == null)
                 return;
 
-            //InvokeVoidAsync("writeLine", $"Add row {item}");
 
             _rows[item] = row;
 
@@ -780,12 +778,10 @@ namespace Gizmo.Client.UI.Components
             if (item == null)
                 return;
 
-            //InvokeVoidAsync("writeLine", $"Update row {item}");
 
             var actualRow = _rows.Where(a => a.Value == row).FirstOrDefault();
             if (!actualRow.Equals(default(KeyValuePair<DataGridRow<TItemType>, TItemType>)) && actualRow.Key != null)
             {
-                //InvokeVoidAsync("writeLine", $"Remove previous row {actualRow.Key}");
                 _rows.Remove(actualRow.Key);
             }
 
@@ -793,12 +789,10 @@ namespace Gizmo.Client.UI.Components
 
             if (SelectedItems.Contains(item))
             {
-                //InvokeVoidAsync("writeLine", $"Selected row {item}");
                 _rows[item].SetSelected(true);
             }
             else
             {
-                //InvokeVoidAsync("writeLine", $"Deselected row {item}");
                 _rows[item].SetSelected(false);
             }
         }
@@ -808,13 +802,11 @@ namespace Gizmo.Client.UI.Components
             if (item == null)
                 return;
 
-            //InvokeVoidAsync("writeLine", $"Remove row {item}");
             //_rows.Remove(item);
 
             var actualRow = _rows.Where(a => a.Value == row).FirstOrDefault();
             if (!actualRow.Equals(default(KeyValuePair<DataGridRow<TItemType>, TItemType>)))
             {
-                //InvokeVoidAsync("writeLine", $"Remove row {actualRow.Key}");
                 _rows.Remove(actualRow.Key);
             }
         }

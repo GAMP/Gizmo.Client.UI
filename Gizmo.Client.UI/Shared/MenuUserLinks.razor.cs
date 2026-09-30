@@ -153,7 +153,6 @@ namespace Gizmo.Client.UI.Shared
             if (!firstRender)
             {
                 _shouldRender = false;
-                //await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
             }
             else
             {

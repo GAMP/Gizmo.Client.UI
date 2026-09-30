@@ -51,7 +51,6 @@
         public const string SHELL_BUY_ITEMS_COUNT = nameof(SHELL_BUY_ITEMS_COUNT);
         public const string SHELL_BUY_NO_WAYS = nameof(SHELL_BUY_NO_WAYS);
         public const string SHELL_BUY_POINTS_COUNT = nameof(SHELL_BUY_POINTS_COUNT);
-        public const string SHELL_LOGIN_PIN_PLACEHOLDER = nameof(SHELL_LOGIN_PIN_PLACEHOLDER);
         public const string SHELL_RESV_PC_RESERVED = nameof(SHELL_RESV_PC_RESERVED);
         public const string SHELL_RESV_DEVICE_RESERVED = nameof(SHELL_RESV_DEVICE_RESERVED);
         public const string SHELL_RESV_FROM = nameof(SHELL_RESV_FROM);
@@ -61,10 +60,8 @@
         public const string SHELL_RESV_NOTIF_MSG_CODE = nameof(SHELL_RESV_NOTIF_MSG_CODE);
         public const string SHELL_RESV_NOTIF_MSG_PAY = nameof(SHELL_RESV_NOTIF_MSG_PAY);
         public const string SHELL_RESV_ENTER_CODE = nameof(SHELL_RESV_ENTER_CODE);
-        public const string SHELL_GRACE_RESERVED_AT = nameof(SHELL_GRACE_RESERVED_AT);
         public const string SHELL_GRACE_RESERVED_HINT = nameof(SHELL_GRACE_RESERVED_HINT);
         public const string SHELL_GRACE_CONFIRMED = nameof(SHELL_GRACE_CONFIRMED);
-        public const string SHELL_GRACE_CONFIRMED_UNPAID = nameof(SHELL_GRACE_CONFIRMED_UNPAID);
         public const string SHELL_GRACE_PIN_LABEL = nameof(SHELL_GRACE_PIN_LABEL);
         public const string SHELL_GRACE_TIME_UP = nameof(SHELL_GRACE_TIME_UP);
         public const string SHELL_GRACE_TOP_UP_ACCOUNT = nameof(SHELL_GRACE_TOP_UP_ACCOUNT);
@@ -119,7 +116,6 @@
         public const string SHELL_NOTIFICATIONS_CLOSE_ALL = nameof(SHELL_NOTIFICATIONS_CLOSE_ALL);
         public const string SHELL_PROGRESS_TAB = nameof(SHELL_PROGRESS_TAB);
         public const string SHELL_PROGRESS_HOME_CAP = nameof(SHELL_PROGRESS_HOME_CAP);
-        public const string SHELL_PROGRESS_MORE = nameof(SHELL_PROGRESS_MORE);
         public const string SHELL_PROGRESS_OF = nameof(SHELL_PROGRESS_OF);
         public const string SHELL_HERO_PREVIOUS = nameof(SHELL_HERO_PREVIOUS);
         public const string SHELL_HERO_NEXT = nameof(SHELL_HERO_NEXT);
