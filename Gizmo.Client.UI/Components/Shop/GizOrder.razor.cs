@@ -1,5 +1,8 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Linq;
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.UI.Services;
 using Gizmo.Web.Api.Models;
@@ -11,6 +14,10 @@ namespace Gizmo.Client.UI.Components
     public partial class GizOrder : CustomDOMComponentBase
     {
         private bool _noteOpen;
+        private bool _promoOpen;
+        private Guid? _openLine;
+
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -25,7 +32,15 @@ namespace Gizmo.Client.UI.Components
 
         private bool HasProducts => ProductCount > 0;
 
-        private bool IsNoteOpen => _noteOpen || !string.IsNullOrEmpty(Service.ViewState.Notes);
+        private bool HasNote => !string.IsNullOrWhiteSpace(Service.ViewState.Notes);
+
+        private string NoteChipText => HasNote
+            ? Service.ViewState.Notes
+            : LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_ORDER_NOTE));
+
+        private string NoteChipClass => HasNote
+            ? "giz-cart__chip giz-cart__chip--note giz-cart__chip--filled"
+            : "giz-cart__chip giz-cart__chip--note";
 
         private bool IsCartBusy => ClientServerCartViewService.ViewState.IsStateUpdateRequired
             || ClientServerCartViewService.ViewState.IsStateUpdating;
@@ -35,6 +50,13 @@ namespace Gizmo.Client.UI.Components
         private bool HasPromoCode => !string.IsNullOrEmpty(ClientServerCartViewService.ViewState.PromoCodeViewState.PromoCode);
 
         private bool IsPromoLocked => ClientServerCartViewService.ViewState.PromoCodeStatus != PromoCodeApplyStatus.None;
+
+        private bool IsPromoApplied => HasPromoCode
+            && ClientServerCartViewService.ViewState.PromoCodeStatus == PromoCodeApplyStatus.Applied;
+
+        private bool IsPromoEditing => _promoOpen || HasPromoCode;
+
+        private string PromoCodeText => ClientServerCartViewService.ViewState.PromoCodeViewState.PromoCode;
 
         private bool IsApplyDisabled => IsPromoBusy
             || string.IsNullOrWhiteSpace(ClientServerCartViewService.ViewState.PromoCodeViewState.InputPromoCode);
@@ -48,17 +70,18 @@ namespace Gizmo.Client.UI.Components
             _ => "giz-cart__promo",
         };
 
-        private string PromoStatusClass => ClientServerCartViewService.ViewState.PromoCodeStatus == PromoCodeApplyStatus.Applied
-            ? "giz-cart__promo-status giz-cart__promo-status--applied"
-            : "giz-cart__promo-status";
-
         private string PromoStatusText => ClientServerCartViewService.ViewState.PromoCodeStatus switch
         {
-            PromoCodeApplyStatus.Applied => LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_PROMOCODE_APPLIED)),
+            PromoCodeApplyStatus.Applied => null,
             PromoCodeApplyStatus.NotApplied => LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_PROMOCODE_NOT_APPLIED)),
             PromoCodeApplyStatus.Unusable => LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_PROMOCODE_UNUSABLE)),
             _ => ClientServerCartViewService.ViewState.PromotionExceptionMessage,
         };
+
+        private string DiscountText => ClientServerCartViewService.ViewState.Discount > 0
+            ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_CART_DISCOUNT,
+                ClientServerCartViewService.ViewState.Discount.ToString("C", CultureInfo.CurrentCulture))
+            : null;
 
         private string TotalText => ClientServerCartViewService.ViewState.Total.ToString("C", CultureInfo.CurrentCulture);
 
@@ -67,6 +90,18 @@ namespace Gizmo.Client.UI.Components
         private string AwardText => "+" + ClientServerCartViewService.ViewState.PointsAward.ToString("N0", CultureInfo.CurrentCulture);
 
         private void OpenNote() => _noteOpen = true;
+
+        private void CloseNote() => _noteOpen = false;
+
+        private void OpenPromo() => _promoOpen = true;
+
+        private void RemovePromo()
+        {
+            _promoOpen = false;
+            ClientServerCartViewService.RemovePromoCode();
+        }
+
+        private void ToggleLine(Guid line) => _openLine = _openLine == line ? null : line;
 
         protected override void OnInitialized()
         {

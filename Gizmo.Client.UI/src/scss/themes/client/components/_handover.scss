@@ -203,12 +203,52 @@
         font-weight: 600;
     }
 
+    // What stays on the account after signing out: the reason not to fear the button under it.
+    &__kept {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        min-width: 0;
+    }
+
+    &__figs {
+        display: flex;
+        gap: 3.6rem;
+        min-width: 0;
+    }
+
+    &__fig {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        b {
+            font-family: $font-family-numeric-theme-client;
+            font-size: 3.2rem;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+            color: var(--giz-text-1);
+        }
+
+        small {
+            font-size: 1.3rem;
+            color: var(--giz-text-3);
+        }
+    }
+
+    // As wide as the reservation's confirm button across the line, so the two tiles mirror.
     &__out {
-        align-self: flex-start;
+        align-self: stretch;
         margin-top: auto;
         height: 5.2rem;
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 0.8rem;
         padding: 0 2.6rem;
         border: 0;
@@ -227,7 +267,8 @@
         &:hover { background: var(--giz-glass-8); }
     }
 
-    &__apps + &__out {
+    &__apps + &__out,
+    &__kept + &__out {
         margin-top: 0;
     }
 

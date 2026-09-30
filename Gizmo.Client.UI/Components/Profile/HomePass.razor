@@ -1,0 +1,95 @@
+@namespace Gizmo.Client.UI.Components
+@inherits ShellComponentBase
+
+<div class="giz-home-pass">
+    <div class="giz-home-pass__card">
+        <div class="giz-home-pass__top">
+            <span class="giz-home-pass__kick">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_CARD)</span>
+            @if (HasClubLogo)
+            {
+                <img class="giz-home-pass__logo" src="@LogoViewState.Logo" alt="" />
+            }
+            else
+            {
+                <i class="ph-fill ph-game-controller giz-home-pass__mark"></i>
+            }
+        </div>
+
+        <div class="giz-home-pass__nick">@Nick</div>
+
+        <div class="giz-home-pass__figs">
+            <div class="giz-home-pass__fig">
+                <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BALANCE))</small>
+                <b>@BalanceText</b>
+            </div>
+            <div class="giz-home-pass__fig">
+                <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_TIME))</small>
+                @if (HasTimeLimit)
+                {
+                    <b>@TimeText</b>
+                }
+                else
+                {
+                    <b><i class="ph-bold ph-infinity"></i></b>
+                }
+            </div>
+        </div>
+
+        <div class="giz-home-pass__foot">
+            <span class="giz-home-pass__code" aria-hidden="true">
+                @foreach (var bar in Bars)
+                {
+                    <i style="@bar"></i>
+                }
+            </span>
+            @if (SinceText is { Length: > 0 } since)
+            {
+                <span class="giz-home-pass__since">@since</span>
+            }
+        </div>
+    </div>
+
+    @if (Queue.Count > 0)
+    {
+        <div class="giz-home-pass__queue">
+            <div class="giz-caption giz-caption--rule">
+                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_YOUR_TIME)</span>
+                <span class="giz-caption__rule"></span>
+                @if (UntilText is { Length: > 0 } until)
+                {
+                    <span class="giz-home-pass__until">@until</span>
+                }
+            </div>
+            @foreach (var product in Queue)
+            {
+                <div class="@RowClass(product)">
+                    <span class="giz-home-pass__dot"></span>
+                    <span class="giz-home-pass__name">@product.TimeProductName</span>
+                    <span class="giz-home-pass__left">@product.RemainingTime</span>
+                </div>
+            }
+        </div>
+    }
+
+    @if (CanTopUp || CanCallAdmin)
+    {
+        <div class="giz-home-pass__acts">
+            @if (CanTopUp)
+            {
+                <button type="button" class="giz-home-pass__act" @onclick="@TopUp">
+                    <span class="giz-home-pass__act-icon"><i class="ph-fill ph-wallet"></i></span>
+                    <span class="giz-home-pass__act-text">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_TOP_UP))</span>
+                    <i class="ph-bold ph-caret-right giz-home-pass__act-go"></i>
+                </button>
+            }
+            @if (CanCallAdmin)
+            {
+                <button type="button" class="giz-home-pass__act" @onclick="@CallAdmin" @onclick:stopPropagation="true">
+                    <span class="giz-home-pass__act-icon"><i class="ph-bold ph-bell-ringing"></i></span>
+                    <span class="giz-home-pass__act-text">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_CALL_ADMIN)</span>
+                    <i class="ph-bold ph-caret-right giz-home-pass__act-go"></i>
+                </button>
+            }
+        </div>
+    }
+</div>

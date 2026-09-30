@@ -144,9 +144,11 @@
 
 // ---------------------------------------------------------------- reservation notice
 
-// Over the whole screen, asleep or awake: a banner at the top in the reservation's amber.
+// Over the whole screen, asleep or awake: a tag hanging from the top edge, the pair of the top
+// bar's reservation tag. Glass while anyone may still sign in (the session will end when the
+// reservation starts); solid amber once only its owner or a guest with its code may.
 .giz-main-container .giz-login-content .giz-login-warnings {
-    top: 1.6rem;
+    top: 0;
     left: 50%;
     z-index: 3;
     margin: 0;
@@ -157,43 +159,56 @@
 .giz-login-warnings .giz-login-reserved {
     width: max-content;
     min-width: 0;
-    max-width: min(76rem, calc(100vw - 4rem));
+    max-width: min(72rem, calc(100vw - 4rem));
     gap: 1.4rem;
-    padding: 1rem 2.4rem 1rem 1rem;
-    border-radius: 2rem;
-    border: 1px solid rgba(var(--giz-warning-rgb), 0.45);
+    padding: 1.2rem 2.6rem 1.4rem 2rem;
+    border: 0;
+    border-radius: 0 0 2rem 2rem;
     background:
-        linear-gradient(180deg, rgba(var(--giz-warning-rgb), 0.18), rgba(var(--giz-warning-rgb), 0.07)),
-        rgba(var(--giz-scrim-rgb), 0.86);
+        linear-gradient(180deg, var(--giz-glass-2), var(--giz-glass-5)),
+        var(--giz-tile-2);
     box-shadow:
-        inset 0 1px 0 var(--giz-glass-9),
+        inset 0 -1px 0 var(--giz-glass-9),
+        inset 1px 0 0 var(--giz-glass-9),
+        inset -1px 0 0 var(--giz-glass-9),
         0 2rem 4rem -2rem rgba(var(--giz-black-rgb), 0.8);
-    animation: giz-reserved-drop 0.6s cubic-bezier(0.2, 0, 0, 1) backwards;
+    color: var(--giz-text-1);
+    animation: giz-reserved-drop 0.6s cubic-bezier(0.19, 1, 0.22, 1) backwards;
 
-    .giz-login-reserved__badge {
-        width: 4.6rem;
-        height: 4.6rem;
-        border-radius: 1.4rem;
-        border: 0;
-        background: rgba(var(--giz-warning-rgb), 0.2);
-
-        .giz-ph-icon {
-            font-size: 2.4rem;
-            color: var(--giz-warning-sun);
-        }
+    .giz-login-reserved__icon {
+        flex: none;
+        font-size: 2.2rem;
+        color: var(--giz-warning);
     }
 
     .giz-login-reserved__title {
-        font-size: 1.7rem;
-        line-height: 2.2rem;
+        gap: 0 0.5rem;
+        font-size: 1.5rem;
+        line-height: 2rem;
+        color: inherit;
     }
 
-    .giz-login-reserved__time { color: var(--giz-warning-sun); }
+    .giz-login-reserved__time { color: var(--giz-warning); }
 
     .giz-login-reserved__note {
         margin-top: 0.2rem;
-        font-size: 1.35rem;
-        line-height: 1.9rem;
+        font-size: 1.25rem;
+        line-height: 1.7rem;
+        color: var(--giz-text-3);
+    }
+}
+
+.giz-login-warnings .giz-login-reserved--block {
+    background: var(--giz-warning);
+    box-shadow: 0 2rem 4rem -2rem rgba(var(--giz-black-rgb), 0.8);
+    color: rgba(var(--giz-black-rgb), 0.86);
+
+    .giz-login-reserved__icon,
+    .giz-login-reserved__time { color: rgba(var(--giz-black-rgb), 0.9); }
+
+    .giz-login-reserved__note {
+        font-weight: 600;
+        color: rgba(var(--giz-black-rgb), 0.66);
     }
 }
 
@@ -1397,7 +1412,8 @@
 }
 
 @keyframes giz-reserved-drop {
-    from { opacity: 0; translate: 0 -1.6rem; }
+    from { clip-path: inset(0 -4rem 100% -4rem); }
+    to   { clip-path: inset(0 -4rem -4rem -4rem); }
 }
 
 @keyframes giz-signup-card-in {

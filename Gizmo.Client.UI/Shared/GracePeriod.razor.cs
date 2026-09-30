@@ -81,6 +81,14 @@ namespace Gizmo.Client.UI.Shared
 
         private string Username => UserViewState.Username ?? string.Empty;
 
+        private bool ShowKept => !UserViewState.IsGuest;
+
+        private string KeptTimeText => UserBalanceViewState.Time is TimeSpan time && time > TimeSpan.Zero
+            ? string.Create(CultureInfo.CurrentCulture, $"{(int)time.TotalHours}:{time.Minutes:00}")
+            : null;
+
+        private string KeptBalanceText => UserBalanceViewState.Balance.ToString("C", CultureInfo.CurrentCulture);
+
         private string HandoverModifier => _reservationConfirmed
             ? "giz-handover--done"
             : ReservationNeedsPayment ? "giz-handover--pay" : null;

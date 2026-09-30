@@ -1,0 +1,251 @@
+//=============== Home pass ================//
+
+// The right column of the home page when the club sells nothing through the shell: the player
+// card filled in at sign-up, now with the balance and the time on it, the queue of the
+// customer's own time packages, and the two things still worth a click.
+.giz-home-till--pass { container-type: size; }
+
+.giz-home-pass {
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    &__card {
+        flex: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 1.2rem;
+        aspect-ratio: 1.6;
+        box-sizing: border-box;
+        padding: 2.2rem 2.4rem 2rem;
+        border-radius: 2rem;
+        background: linear-gradient(135deg, var(--giz-accent-deep) 0%, var(--giz-accent-deeper) 100%);
+        box-shadow:
+            inset 0 0 0 1px rgba(var(--giz-white-rgb), 0.14),
+            inset 0 1px 0 rgba(var(--giz-white-rgb), 0.28),
+            0 3rem 6rem -2rem rgba(var(--giz-black-rgb), 0.8);
+        color: var(--giz-white);
+    }
+
+    &__top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.2rem;
+    }
+
+    &__kick {
+        font-size: 1.1rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(var(--giz-white-rgb), 0.72);
+    }
+
+    &__logo {
+        max-width: 40%;
+        max-height: 3rem;
+        object-fit: contain;
+    }
+
+    &__mark {
+        font-size: 2.6rem;
+        color: rgba(var(--giz-white-rgb), 0.8);
+    }
+
+    &__nick {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 2.8rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1.15;
+    }
+
+    &__figs {
+        display: flex;
+        gap: 2.4rem;
+        min-width: 0;
+    }
+
+    &__fig {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+
+        small {
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(var(--giz-white-rgb), 0.6);
+        }
+
+        b {
+            font-family: $font-family-numeric-theme-client;
+            font-size: 2.2rem;
+            font-weight: 700;
+            line-height: 1.1;
+            white-space: nowrap;
+
+            i { font-size: 2rem; }
+        }
+    }
+
+    &__foot {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 1.6rem;
+        font-size: 1.2rem;
+        color: rgba(var(--giz-white-rgb), 0.78);
+    }
+
+    &__code {
+        display: flex;
+        align-items: stretch;
+        height: 2.4rem;
+        max-width: 60%;
+        overflow: hidden;
+        color: rgba(var(--giz-white-rgb), 0.85);
+
+        i {
+            flex: none;
+            width: calc(var(--giz-bar-w) * 0.18rem);
+            margin-right: calc(var(--giz-bar-gap) * 0.18rem);
+            background: currentColor;
+        }
+    }
+
+    &__since {
+        margin-left: auto;
+        white-space: nowrap;
+    }
+
+    &__queue {
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    &__until {
+        flex: none;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.2rem;
+        letter-spacing: 0;
+        text-transform: none;
+        color: var(--giz-text-2);
+    }
+
+    &__row {
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        font-size: 1.3rem;
+        color: var(--giz-text-2);
+    }
+
+    &__row--now { color: var(--giz-text-1); }
+
+    &__dot {
+        flex: none;
+        width: 0.8rem;
+        height: 0.8rem;
+        border-radius: 50%;
+        background: rgba(var(--giz-accent-rgb), 0.35);
+    }
+
+    &__row--now &__dot { background: var(--giz-accent); }
+
+    &__name {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    &__left {
+        flex: none;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.35rem;
+        font-weight: 700;
+        white-space: nowrap;
+        color: var(--giz-text-1);
+    }
+
+    &__acts {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+    }
+
+    &__act {
+        display: flex;
+        align-items: center;
+        gap: 1.3rem;
+        min-height: 5.2rem;
+        padding: 0.6rem 1.2rem 0.6rem 0.6rem;
+        border: 0;
+        border-radius: 1.6rem;
+        background: none;
+        box-shadow: inset 0 0 0 1px var(--giz-glass-6);
+        color: var(--giz-text-1);
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+        transition: background 0.15s, box-shadow 0.15s;
+
+        &:hover {
+            background: var(--giz-glass-4);
+            box-shadow: inset 0 0 0 1px var(--giz-glass-9);
+        }
+    }
+
+    &__act-icon {
+        flex: none;
+        width: 4rem;
+        height: 4rem;
+        display: grid;
+        place-items: center;
+        border-radius: 1.2rem;
+        background: var(--giz-glass-5);
+        color: var(--giz-accent-pale);
+        font-size: 1.8rem;
+    }
+
+    &__act-text {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 1.45rem;
+        font-weight: 700;
+    }
+
+    &__act-go {
+        color: var(--giz-text-3);
+        font-size: 1.3rem;
+    }
+}
+
+// Short columns (a laptop, the hero's height only) give up the queue first, then the card's
+// foot; the balance and the time stay on the card.
+@container (max-height: 50rem) {
+    .giz-home-pass__queue { display: none; }
+}
+
+@container (max-height: 36rem) {
+    .giz-home-pass__card { aspect-ratio: auto; }
+    .giz-home-pass__foot { display: none; }
+}

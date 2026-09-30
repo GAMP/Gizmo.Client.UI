@@ -40,8 +40,20 @@ namespace Gizmo.Client.UI.Shared
 
         private bool IsClose => HasReservation && ViewState.ReservationNotificationTimeReached;
 
-        private string StartText =>
-            ViewState.Time?.ToString("t", CultureInfo.CurrentCulture) ?? string.Empty;
+        private string ClassName => (IsClose, IsIgnored) switch
+        {
+            (true, true) => "giz-resv giz-resv--soon giz-resv--ignored",
+            (true, false) => "giz-resv giz-resv--soon",
+            (false, true) => "giz-resv giz-resv--ignored",
+            _ => "giz-resv"
+        };
+
+        private string LeadText => GrafitLocalization.GetString(IsClose
+            ? GrafitResourceKeys.SHELL_RESV_SHORT
+            : GrafitResourceKeys.SHELL_RESV_DEVICE_RESERVED);
+
+        private string FromText => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_RESV_FROM,
+            ViewState.Time?.ToString("t", CultureInfo.CurrentCulture) ?? string.Empty);
 
         private Task OpenReservation() =>
             IsIgnored ? ReservationService.ShowDialog() : Task.CompletedTask;
@@ -58,7 +70,9 @@ namespace Gizmo.Client.UI.Shared
 
                 var left = ViewState.Time!.Value - DateTime.Now;
 
-                return left > TimeSpan.Zero ? FormatSpan(left) : null;
+                return left > TimeSpan.Zero
+                    ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_RESV_IN, FormatSpan(left))
+                    : null;
             }
         }
 

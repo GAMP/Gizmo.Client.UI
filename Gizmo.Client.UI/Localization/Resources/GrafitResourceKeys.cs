@@ -7,7 +7,6 @@
         public const string SHELL_HERO_POPULAR = nameof(SHELL_HERO_POPULAR);
         public const string SHELL_HOME_GAMES_SECTION = nameof(SHELL_HOME_GAMES_SECTION);
         public const string SHELL_HOME_TIME_PACKAGES = nameof(SHELL_HOME_TIME_PACKAGES);
-        public const string SHELL_HOME_NO_PACKAGES = nameof(SHELL_HOME_NO_PACKAGES);
         public const string SHELL_HOME_BAR = nameof(SHELL_HOME_BAR);
         public const string SHELL_HOME_WHOLE_SHOP = nameof(SHELL_HOME_WHOLE_SHOP);
         public const string SHELL_GEN_EMPTY = nameof(SHELL_GEN_EMPTY);
@@ -179,5 +178,19 @@
         public const string SHELL_PEEK_PLAY = nameof(SHELL_PEEK_PLAY);
         public const string SHELL_PEEK_EXPIRES = nameof(SHELL_PEEK_EXPIRES);
         public const string SHELL_PEEK_CONTENTS = nameof(SHELL_PEEK_CONTENTS);
+        public const string SHELL_RESV_SHORT = nameof(SHELL_RESV_SHORT);
+        public const string SHELL_CART_PAY_WITH = nameof(SHELL_CART_PAY_WITH);
+        public const string SHELL_CART_EACH = nameof(SHELL_CART_EACH);
+        public const string SHELL_CART_DISCOUNT = nameof(SHELL_CART_DISCOUNT);
+        public const string SHELL_CART_REMOVE = nameof(SHELL_CART_REMOVE);
+        public const string SHELL_PACK_UNIT_H = nameof(SHELL_PACK_UNIT_H);
+        public const string SHELL_PACK_UNIT_MIN = nameof(SHELL_PACK_UNIT_MIN);
+        public const string SHELL_PACK_PER_HOUR = nameof(SHELL_PACK_PER_HOUR);
+        public const string SHELL_PACK_BEST = nameof(SHELL_PACK_BEST);
+        public const string SHELL_PACK_BUY_FOR = nameof(SHELL_PACK_BUY_FOR);
+        public const string SHELL_HOME_YOUR_TIME = nameof(SHELL_HOME_YOUR_TIME);
+        public const string SHELL_HOME_UNTIL = nameof(SHELL_HOME_UNTIL);
+        public const string SHELL_HOME_CALL_ADMIN = nameof(SHELL_HOME_CALL_ADMIN);
+        public const string SHELL_HANDOVER_KEPT = nameof(SHELL_HANDOVER_KEPT);
     }
 }

@@ -139,24 +139,22 @@ namespace Gizmo.Client.UI.Components
             ? "giz-player-card__code"
             : "giz-player-card__code giz-player-card__code--empty";
 
-        private IReadOnlyList<string> Bars
+        private IReadOnlyList<string> Bars => Barcode(HasNick ? Nick : BARCODE_SAMPLE);
+
+        internal static IReadOnlyList<string> Barcode(string source)
         {
-            get
+            var bars = new List<string> { Bar(1, 1), Bar(1, 2) };
+
+            foreach (var code in (source ?? string.Empty).Select(c => (int)c))
             {
-                var source = HasNick ? Nick : BARCODE_SAMPLE;
-                var bars = new List<string> { Bar(1, 1), Bar(1, 2) };
-
-                foreach (var code in source.Select(c => (int)c))
-                {
-                    bars.Add(Bar(1 + code % 3, 1 + (code >> 2) % 2));
-                    bars.Add(Bar(1 + (code >> 3) % 2, 1 + (code >> 1) % 3));
-                }
-
-                bars.Add(Bar(1, 1));
-                bars.Add(Bar(2, 0));
-
-                return bars;
+                bars.Add(Bar(1 + code % 3, 1 + (code >> 2) % 2));
+                bars.Add(Bar(1 + (code >> 3) % 2, 1 + (code >> 1) % 3));
             }
+
+            bars.Add(Bar(1, 1));
+            bars.Add(Bar(2, 0));
+
+            return bars;
         }
 
         private static string Bar(int width, int gap) =>

@@ -53,6 +53,7 @@
                 @if (HostReservationViewState.ReservationBlockTimeReached)
                 {
                     <ReservationNotice Time="@HostReservationViewState.Time.Value.ToShortTimeString()"
+                                       IsBlocking="true"
                                        Message="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_BLOCK_TIME_REACHED_MESSAGE))" />
                 }
                 else if (HostReservationViewState.ReservationNotificationTimeReached)

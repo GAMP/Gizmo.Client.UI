@@ -44,6 +44,25 @@
                                 }
                             </div>
                         }
+                        else if (ShowKept)
+                        {
+                            <div class="giz-handover__kept">
+                                <div class="giz-handover__label">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HANDOVER_KEPT)</div>
+                                <div class="giz-handover__figs">
+                                    @if (KeptTimeText is { Length: > 0 } keptTime)
+                                    {
+                                        <div class="giz-handover__fig">
+                                            <b>@keptTime</b>
+                                            <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_TIME))</small>
+                                        </div>
+                                    }
+                                    <div class="giz-handover__fig">
+                                        <b>@KeptBalanceText</b>
+                                        <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BALANCE))</small>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                         <button type="button" class="giz-handover__out" @onclick="@(() => UserService.LogoutAsync())">
                             <i class="ph-bold ph-sign-out"></i>
                             <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HANDOVER_LOGOUT)</span>

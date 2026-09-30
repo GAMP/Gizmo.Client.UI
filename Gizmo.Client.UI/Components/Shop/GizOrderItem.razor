@@ -1,60 +1,66 @@
 @namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
-@using System.Globalization
 @using Microsoft.AspNetCore.Components.Forms
 
-<div class="giz-cart-line">
-    <div class="giz-cart-line__thumb">
-        <GizImage @key="UserCartProductViewState.ProductId" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@_product?.DefaultImageId" ImageFitType="ImageFitType.Cover">
-            <EmptyResultPlaceholder>
-                <i class="@PlaceholderIcon"></i>
-            </EmptyResultPlaceholder>
-            <ErrorPlaceholder>
-                <i class="@PlaceholderIcon"></i>
-            </ErrorPlaceholder>
-        </GizImage>
+<div class="@ClassName">
+    <div class="giz-cart-line__row" role="button" tabindex="0" aria-expanded="@IsOpen"
+         @onclick="@Toggle" @onkeydown="@OnRowKey">
+        <span class="giz-cart-line__thumb">
+            <GizImage @key="UserCartProductViewState.ProductId" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@_product?.DefaultImageId" ImageFitType="ImageFitType.Cover">
+                <EmptyResultPlaceholder>
+                    <i class="@PlaceholderIcon"></i>
+                </EmptyResultPlaceholder>
+                <ErrorPlaceholder>
+                    <i class="@PlaceholderIcon"></i>
+                </ErrorPlaceholder>
+            </GizImage>
+        </span>
+        <span class="giz-cart-line__qty">@QuantityText</span>
+        <span class="giz-cart-line__name">@_product?.Name</span>
+        <ICartViewStateLoader ViewState="@ClientServerCartViewService.ViewState" MinimumHeight="2.2rem">
+            <span class="giz-cart-line__sum">
+                @if (ShowsMoney)
+                {
+                    <span>@PriceText</span>
+                }
+                @if (ShowsPoints)
+                {
+                    <span class="giz-cart-line__points">@PointsPriceText<i class="ph-fill ph-coins"></i></span>
+                }
+            </span>
+        </ICartViewStateLoader>
     </div>
 
-    <div class="giz-cart-line__body">
-        <div class="giz-cart-line__name">@_product?.Name</div>
-        @if (UnitPriceText is { Length: > 0 } unitPrice)
-        {
-            <div class="giz-cart-line__unit">@unitPrice</div>
-        }
-
-        <div class="giz-cart-line__foot">
+    @if (IsOpen)
+    {
+        <div class="giz-cart-line__more">
             <div class="giz-cart-line__stepper">
-                <button type="button" class="@LessClass" @onclick="@OnLessAsync">
+                <button type="button" class="@LessClass" title="@LessTitle" @onclick="@OnLessAsync">
                     <i class="@LessIcon"></i>
                 </button>
-                <span class="giz-cart-line__qty">@UserCartProductViewState.Quantity</span>
+                <span class="giz-cart-line__count">@UserCartProductViewState.Quantity</span>
                 <button type="button" class="giz-cart-line__step" disabled="@IsAtMaximum" @onclick="@OnAddQuantityButtonClickHandlerAsync">
                     <i class="ph-bold ph-plus"></i>
                 </button>
             </div>
 
-            <ICartViewStateLoader ViewState="@ClientServerCartViewService.ViewState" MinimumHeight="3.2rem">
-                @if (HasPayChoice)
-                {
-                    <div class="giz-cart-line__pay">
-                        <button type="button" class="@PayClass(OrderLinePayType.Cash)" @onclick="@(() => SetPayType(true, OrderLinePayType.Cash))">@PriceText</button>
+            @if (HasPayChoice)
+            {
+                <div class="giz-cart-line__pay">
+                    <span class="giz-cart-line__pay-label">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_CART_PAY_WITH)</span>
+                    <div class="giz-cart-line__pay-ways">
+                        <button type="button" class="@PayClass(OrderLinePayType.Cash)" @onclick="@(() => SetPayType(true, OrderLinePayType.Cash))">@CashPriceText</button>
                         <button type="button" class="@PayClass(OrderLinePayType.Points)" @onclick="@(() => SetPayType(true, OrderLinePayType.Points))">
                             <i class="ph-fill ph-coins"></i>
-                            <span>@PointsPriceText</span>
+                            <span>@PointsWayText</span>
                         </button>
                     </div>
-                }
-                else
-                {
-                    <div class="giz-cart-line__price">
-                        <span>@PriceText</span>
-                        @if (HasPointsPrice)
-                        {
-                            <span class="giz-cart-line__points"><i class="ph-fill ph-coins"></i>@PointsPriceText</span>
-                        }
-                    </div>
-                }
-            </ICartViewStateLoader>
+                </div>
+            }
+            else if (UnitPriceText is { Length: > 0 } unitPrice)
+            {
+                <span class="giz-cart-line__unit">@unitPrice</span>
+            }
         </div>
-    </div>
+    }
 </div>

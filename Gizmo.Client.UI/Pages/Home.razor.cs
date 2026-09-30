@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.Options;
+using Gizmo.Client.UI.Localization.Resources;
 using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
@@ -8,6 +9,7 @@ using Gizmo.UI.Services;
 using Gizmo.Web.Api.Models;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -51,6 +53,7 @@ namespace Gizmo.Client.UI.Pages
         private int _slide;
 
         private int? _buyingProductId;
+        private int? _selectedPackId;
         private readonly CancellationTokenSource _lifetime = new();
 
         #endregion
@@ -77,6 +80,106 @@ namespace Gizmo.Client.UI.Pages
 
         private IEnumerable<UserProductViewState> TimeProducts =>
             Purchasable(a => a.ProductType == ProductType.ProductTime).Take(PACKS_CEILING);
+
+        private sealed record PackStop(UserProductViewState Product, string Length, string Unit, decimal? PerHour, bool IsBest)
+        {
+            public string PerHourText { get; init; }
+        }
+
+        private IReadOnlyList<PackStop> Packs
+        {
+            get
+            {
+                var stops = TimeProducts.Select(ToStop).ToList();
+
+                var priced = stops.Where(stop => stop.PerHour.HasValue).ToList();
+
+                if (priced.Count < 2)
+                    return stops;
+
+                var best = priced.Min(stop => stop.PerHour!.Value);
+
+                if (best == priced.Max(stop => stop.PerHour!.Value))
+                    return stops;
+
+                var bestId = priced.First(stop => stop.PerHour == best).Product.Id;
+
+                return stops.Select(stop => stop.Product.Id == bestId ? stop with { IsBest = true } : stop).ToList();
+            }
+        }
+
+        private PackStop ToStop(UserProductViewState product)
+        {
+            var minutes = product.TimeProduct?.Minutes ?? 0;
+
+            string length = null;
+            var unit = string.Empty;
+
+            if (minutes > 0 && minutes < 60)
+            {
+                length = minutes.ToString(CultureInfo.CurrentCulture);
+                unit = GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PACK_UNIT_MIN);
+            }
+            else if (minutes >= 60)
+            {
+                var hours = minutes / 60m;
+                length = hours.ToString(hours == decimal.Truncate(hours) ? "0" : "0.#", CultureInfo.CurrentCulture);
+                unit = GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PACK_UNIT_H);
+            }
+
+            decimal? perHour = minutes >= 60 && product.UnitPrice > 0
+                ? Math.Round(product.UnitPrice / (minutes / 60m))
+                : null;
+
+            return new PackStop(product, length, unit, perHour, false)
+            {
+                PerHourText = perHour is decimal value
+                    ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PACK_PER_HOUR, ShortMoney(value))
+                    : null
+            };
+        }
+
+        private int? SelectedPackId
+        {
+            get
+            {
+                var packs = Packs;
+
+                return packs.Any(stop => stop.Product.Id == _selectedPackId)
+                    ? _selectedPackId
+                    : packs.FirstOrDefault()?.Product.Id;
+            }
+        }
+
+        private string StopClass(PackStop stop) => stop.Product.Id == SelectedPackId
+            ? "giz-home-stop giz-home-stop--on"
+            : "giz-home-stop";
+
+        private string BuyText(UserProductViewState product)
+        {
+            if (_buyingProductId == product.Id)
+                return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GEN_WORKING);
+
+            return IsPointsOnly(product)
+                ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GEN_BUY)
+                : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PACK_BUY_FOR, ShortMoney(product.UnitPrice));
+        }
+
+        private void SelectPack(int productId) => _selectedPackId = productId;
+
+        private void OnStopKey(KeyboardEventArgs args, int productId)
+        {
+            if (args.Key is "Enter" or " ")
+                SelectPack(productId);
+        }
+
+        private bool HasSales => TimeProducts.Any() || BarProducts.Count > 0;
+
+        private string BoardClass => HasSales ? "giz-home-board" : "giz-home-board giz-home-board--bare";
+
+        private bool HasPoints => UserBalanceViewState.PointsBalance > 0;
+
+        private string PointsText => UserBalanceViewState.PointsBalance.ToString("N0", CultureInfo.CurrentCulture);
 
         private IEnumerable<UserProductViewState> ShopProducts =>
             Purchasable(a => a.ProductType != ProductType.ProductTime);
@@ -113,7 +216,7 @@ namespace Gizmo.Client.UI.Pages
             }
         }
 
-        private IReadOnlyList<AppViewState> StripApps => Apps.Take(STRIP_APPS).ToList();
+        private IReadOnlyList<AppViewState> StripApps => Apps.Take(HasSales ? STRIP_APPS : STRIP_APPS + 1).ToList();
 
         private IReadOnlyList<AppViewState> HeroApps
         {
@@ -274,6 +377,9 @@ namespace Gizmo.Client.UI.Pages
             product.UnitPrice == 0 && (product.UnitPointsPrice ?? 0) > 0;
 
         private static string Money(decimal amount) => amount.ToString("C", CultureInfo.CurrentCulture);
+
+        private static string ShortMoney(decimal amount) =>
+            amount.ToString(amount == decimal.Truncate(amount) ? "C0" : "C", CultureInfo.CurrentCulture);
 
         private static string PointsPrice(UserProductViewState product) =>
             product.UnitPointsPrice.GetValueOrDefault().ToString("N0", CultureInfo.CurrentCulture);

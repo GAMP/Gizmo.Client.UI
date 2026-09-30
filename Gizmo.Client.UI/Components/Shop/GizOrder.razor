@@ -20,7 +20,9 @@
         {
             @foreach (var orderLine in ClientServerCartViewService.ViewState.Products)
             {
-                <GizOrderItem @key="orderLine" UserCartProductViewState="@orderLine" />
+                <GizOrderItem @key="orderLine" UserCartProductViewState="@orderLine"
+                              IsOpen="@(_openLine == orderLine.Guid)"
+                              OnToggle="@(() => ToggleLine(orderLine.Guid))" />
             }
         }
         else
@@ -34,60 +36,84 @@
     </div>
 
     <div class="giz-cart__foot">
-        @if (IsNoteOpen)
-        {
-            <div class="giz-cart__note">
-                <TextInput IsTransparent="true"
-                           ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
-                           Value="@Service.ViewState.Notes"
-                           ValueChanged="@((string value) => Service.SetNotes(value))"
-                           ValueExpression="@(() => Service.ViewState.Notes)"
-                           IsMultiLine="true"
-                           IsFullWidth="true"
-                           Placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_ORDER_NOTE_PLACEHOLDER))" />
-            </div>
-        }
-        else
-        {
-            <button type="button" class="giz-cart__extra" @onclick="@OpenNote">
-                <i class="ph-bold ph-chat-text"></i>
-                <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_ORDER_NOTE))</span>
-                <i class="ph-bold ph-plus giz-cart__extra-add"></i>
-            </button>
-        }
-
-        <div class="@PromoClass">
-            <i class="ph-bold ph-ticket giz-cart__promo-icon"></i>
-            <TextInput IsTransparent="true"
-                       ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
-                       Value="@ClientServerCartViewService.ViewState.PromoCodeViewState.InputPromoCode"
-                       ValueChanged="@((string value) => ClientServerCartViewService.SetInputPromoCode(value))"
-                       IsReadOnly="@IsPromoLocked"
-                       UpdateOnInput="true"
-                       IsFullWidth="true"
-                       Placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_ORDER_PROMOCODE_PLACEHOLDER))" />
-            @if (HasPromoCode)
+        <div class="giz-cart__extras">
+            @if (_noteOpen)
             {
-                <button type="button" class="giz-cart__promo-remove" disabled="@IsPromoBusy" @onclick="@(() => ClientServerCartViewService.RemovePromoCode())">
-                    <i class="ph-bold ph-x"></i>
-                </button>
+                <div class="giz-cart__note">
+                    <TextInput IsTransparent="true"
+                               ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
+                               Value="@Service.ViewState.Notes"
+                               ValueChanged="@((string value) => Service.SetNotes(value))"
+                               ValueExpression="@(() => Service.ViewState.Notes)"
+                               IsMultiLine="true"
+                               IsFullWidth="true"
+                               Placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_ORDER_NOTE_PLACEHOLDER))" />
+                    <button type="button" class="giz-cart__note-done" title="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GEN_DONE)" @onclick="@CloseNote">
+                        <i class="ph-bold ph-check"></i>
+                    </button>
+                </div>
             }
             else
             {
-                <button type="button" class="giz-cart__promo-apply" disabled="@IsApplyDisabled" @onclick="@(() => ClientServerCartViewService.AddPromoCode(ClientServerCartViewService.ViewState.PromoCodeViewState.InputPromoCode))">
-                    @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_APPLY_PROMOCODE))
+                <button type="button" class="@NoteChipClass" @onclick="@OpenNote">
+                    <i class="ph-bold ph-chat-circle-text"></i>
+                    <span>@NoteChipText</span>
+                </button>
+            }
+
+            @if (IsPromoApplied)
+            {
+                <div class="giz-cart__chip giz-cart__chip--ok">
+                    <i class="ph-bold ph-ticket"></i>
+                    <span class="giz-cart__chip-code">@PromoCodeText</span>
+                    <button type="button" class="giz-cart__chip-drop" disabled="@IsPromoBusy" @onclick="@RemovePromo">
+                        <i class="ph-bold ph-x"></i>
+                    </button>
+                </div>
+            }
+            else if (IsPromoEditing)
+            {
+                <div class="@PromoClass">
+                    <i class="ph-bold ph-ticket giz-cart__promo-icon"></i>
+                    <TextInput IsTransparent="true"
+                               ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
+                               Value="@ClientServerCartViewService.ViewState.PromoCodeViewState.InputPromoCode"
+                               ValueChanged="@((string value) => ClientServerCartViewService.SetInputPromoCode(value))"
+                               IsReadOnly="@IsPromoLocked"
+                               UpdateOnInput="true"
+                               IsFullWidth="true"
+                               Placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_ORDER_PROMOCODE_PLACEHOLDER))" />
+                    @if (HasPromoCode)
+                    {
+                        <button type="button" class="giz-cart__promo-remove" disabled="@IsPromoBusy" @onclick="@RemovePromo">
+                            <i class="ph-bold ph-x"></i>
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="button" class="giz-cart__promo-apply" disabled="@IsApplyDisabled" @onclick="@(() => ClientServerCartViewService.AddPromoCode(ClientServerCartViewService.ViewState.PromoCodeViewState.InputPromoCode))">
+                            @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_APPLY_PROMOCODE))
+                        </button>
+                    }
+                </div>
+            }
+            else
+            {
+                <button type="button" class="giz-cart__chip" @onclick="@OpenPromo">
+                    <i class="ph-bold ph-ticket"></i>
+                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_ORDER_PROMOCODE_PLACEHOLDER))</span>
                 </button>
             }
         </div>
         @if (PromoStatusText is { Length: > 0 } promoStatus)
         {
-            <div class="@PromoStatusClass">@promoStatus</div>
+            <div class="giz-cart__promo-status">@promoStatus</div>
         }
 
         <div class="giz-cart__sum">
-            <div class="giz-cart__line">
-                <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_SUBTOTAL))</span>
-                <ICartViewStateLoader ViewState="@ClientServerCartViewService.ViewState" MinimumHeight="3.0rem">
+            <div class="giz-cart__sum-main">
+                <span class="giz-cart__sum-label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_TOTAL))</span>
+                <ICartViewStateLoader ViewState="@ClientServerCartViewService.ViewState" MinimumHeight="3.4rem">
                     <div class="giz-cart__total">
                         <span>@TotalText</span>
                         @if (ClientServerCartViewService.ViewState.PointsTotal > 0)
@@ -99,14 +125,18 @@
                     </div>
                 </ICartViewStateLoader>
             </div>
-            <div class="giz-cart__line giz-cart__line--award">
-                <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_EARNED_POINTS))</span>
-                <ICartViewStateLoader ViewState="@ClientServerCartViewService.ViewState" MinimumHeight="2.2rem">
-                    <div class="giz-cart__award">
+            <div class="giz-cart__sum-meta">
+                @if (DiscountText is { Length: > 0 } discount)
+                {
+                    <span class="giz-cart__discount">@discount</span>
+                }
+                @if (ClientServerCartViewService.ViewState.PointsAward > 0)
+                {
+                    <span class="giz-cart__award" title="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_EARNED_POINTS))">
                         <i class="ph-fill ph-star-four"></i>
                         <span>@AwardText</span>
-                    </div>
-                </ICartViewStateLoader>
+                    </span>
+                }
             </div>
         </div>
 
