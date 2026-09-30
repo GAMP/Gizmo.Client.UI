@@ -110,8 +110,6 @@
         public const string SHELL_PD_EXPIRES_AT_DAYTIME = nameof(SHELL_PD_EXPIRES_AT_DAYTIME);
         public const string SHELL_PD_EXPIRES_AFTER = nameof(SHELL_PD_EXPIRES_AFTER);
         public const string SHELL_PD_EXPIRES_AT_LOGOUT = nameof(SHELL_PD_EXPIRES_AT_LOGOUT);
-        public const string SHELL_BALANCE_HIDE = nameof(SHELL_BALANCE_HIDE);
-        public const string SHELL_BALANCE_SHOW = nameof(SHELL_BALANCE_SHOW);
         public const string SHELL_NOTIFICATIONS_CLOSE_ALL = nameof(SHELL_NOTIFICATIONS_CLOSE_ALL);
         public const string SHELL_PROGRESS_TAB = nameof(SHELL_PROGRESS_TAB);
         public const string SHELL_PROGRESS_HOME_CAP = nameof(SHELL_PROGRESS_HOME_CAP);
@@ -186,8 +184,6 @@
         public const string SHELL_PACK_UNIT_H = nameof(SHELL_PACK_UNIT_H);
         public const string SHELL_PACK_UNIT_MIN = nameof(SHELL_PACK_UNIT_MIN);
         public const string SHELL_PACK_PER_HOUR = nameof(SHELL_PACK_PER_HOUR);
-        public const string SHELL_PACK_BEST = nameof(SHELL_PACK_BEST);
-        public const string SHELL_PACK_BUY_FOR = nameof(SHELL_PACK_BUY_FOR);
         public const string SHELL_HOME_YOUR_TIME = nameof(SHELL_HOME_YOUR_TIME);
         public const string SHELL_HOME_UNTIL = nameof(SHELL_HOME_UNTIL);
         public const string SHELL_HOME_CALL_ADMIN = nameof(SHELL_HOME_CALL_ADMIN);

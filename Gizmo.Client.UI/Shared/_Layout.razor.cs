@@ -71,26 +71,15 @@ namespace Gizmo.Client.UI.Shared
 
         private string BalanceText => UserBalanceViewState.Balance.ToString("C", CultureInfo.CurrentCulture);
 
-        private string FiguresHiddenText =>
-            LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_IS_HIDDEN));
-
-        private string FiguresToggleLabel =>
-            GrafitLocalization.GetString(_figuresHidden ? GrafitResourceKeys.SHELL_BALANCE_SHOW : GrafitResourceKeys.SHELL_BALANCE_HIDE);
-
-        private string FiguresToggleIcon => _figuresHidden ? "ph-eye" : "ph-eye-slash";
-
         #endregion
 
         #region FIELDS
 
         private bool _playTransition;
-        private bool _figuresHidden;
 
         #endregion
 
         #region METHODS
-
-        private void ToggleFigures() => _figuresHidden = !_figuresHidden;
 
         private string TimeUnitAbbreviation(string resourceKey) =>
             LocalizationService.GetString(resourceKey)?.TrimEnd('.', ' ') ?? string.Empty;

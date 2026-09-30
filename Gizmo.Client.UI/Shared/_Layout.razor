@@ -19,7 +19,7 @@
         }
         <img src="@WallpaperViewState.Wallpaper" alt='loading' />
     </div>
-    <div class="giz-root @(_figuresHidden ? "giz-root--figures-hidden" : null)">
+    <div class="giz-root">
         <div class="giz-top-bar">
             <div class="giz-top-bar__left">
                 <div class="giz-top-bar__search">
@@ -31,40 +31,30 @@
                     <HostNumber />
                 </div>
                 <span class="giz-top-bar__divider"></span>
-                @if (_figuresHidden)
-                {
-                    <div class="giz-topbar-stat giz-topbar-stat--hidden">@FiguresHiddenText</div>
-                }
-                else
-                {
-                    <div class="giz-topbar-tariff">
-                        <HeaderUserBalanceCurrentTimeProduct />
-                    </div>
-                    <span class="giz-top-bar__divider"></span>
-                    <div class="giz-top-bar__time">
-                        <i class="ph-bold ph-clock giz-ph-icon"></i>
-                        @if (HasTimeLimit)
-                        {
-                            <span class="giz-top-bar__time-value">@TimeLeftText</span>
-                        }
-                        else
-                        {
-                            <i class="ph-bold ph-infinity giz-ph-icon giz-top-bar__time-unlimited"></i>
-                        }
-                    </div>
-                    <span class="giz-top-bar__divider"></span>
-                    <div class="giz-topbar-stat giz-topbar-stat--points">
-                        <i class="ph-fill ph-coins giz-ph-icon"></i>
-                        <span>@PointsText</span>
-                    </div>
-                    <span class="giz-top-bar__divider"></span>
-                    <div class="giz-topbar-stat giz-topbar-stat--balance">
-                        <span>@BalanceText</span>
-                    </div>
-                }
-                <button type="button" class="giz-top-bar__eye" @onclick="ToggleFigures" title="@FiguresToggleLabel" aria-label="@FiguresToggleLabel">
-                    <i class="ph-bold @FiguresToggleIcon"></i>
-                </button>
+                <div class="giz-topbar-tariff">
+                    <HeaderUserBalanceCurrentTimeProduct />
+                </div>
+                <span class="giz-top-bar__divider"></span>
+                <div class="giz-top-bar__time">
+                    <i class="ph-bold ph-clock giz-ph-icon"></i>
+                    @if (HasTimeLimit)
+                    {
+                        <span class="giz-top-bar__time-value">@TimeLeftText</span>
+                    }
+                    else
+                    {
+                        <i class="ph-bold ph-infinity giz-ph-icon giz-top-bar__time-unlimited"></i>
+                    }
+                </div>
+                <span class="giz-top-bar__divider"></span>
+                <div class="giz-topbar-stat giz-topbar-stat--points">
+                    <i class="ph-fill ph-coins giz-ph-icon"></i>
+                    <span>@PointsText</span>
+                </div>
+                <span class="giz-top-bar__divider"></span>
+                <div class="giz-topbar-stat giz-topbar-stat--balance">
+                    <span>@BalanceText</span>
+                </div>
                 <TopBarReservation />
             </div>
             <div class="giz-top-bar__right-group">
