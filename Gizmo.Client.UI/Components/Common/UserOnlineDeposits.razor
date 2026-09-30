@@ -57,12 +57,23 @@
     {
         <div class="giz-user-online-deposit__body">
             <div class="giz-user-online-deposit__submitted__summary">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ONLINE_DEPOSIT_TO_BE_PAID)) <span class="giz-user-online-deposit__submitted__summary__amount">@((ViewState.Amount ?? 0).ToString("C", CultureInfo.CurrentCulture))</span></div>
-            <div class="giz-user-online-deposit__submitted__qr">
-                <div class="giz-user-online-deposit__submitted__qr__label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ONLINE_DEPOSIT_QR_CODE))</div>
-                <div class="giz-user-online-deposit__submitted__qr__image">
-                    @((MarkupString)ViewState.QrImage)
+            @if (ViewState.IsPaid)
+            {
+                <div class="giz-user-online-deposit__submitted__summary">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SUCCESS))</div>
+            }
+            else if (ViewState.IsPaymentFailed)
+            {
+                <div class="giz-user-online-deposit__submitted__summary">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_AN_ERROR_HAS_OCCURRED))</div>
+            }
+            else
+            {
+                <div class="giz-user-online-deposit__submitted__qr">
+                    <div class="giz-user-online-deposit__submitted__qr__label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ONLINE_DEPOSIT_QR_CODE))</div>
+                    <div class="giz-user-online-deposit__submitted__qr__image">
+                        @((MarkupString)ViewState.QrImage)
+                    </div>
                 </div>
-            </div>
+            }
         </div>
         <div class="giz-user-online-deposit__footer">
             <div class="giz-user-online-deposit__submitted__action">
