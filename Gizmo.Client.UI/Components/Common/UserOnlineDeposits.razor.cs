@@ -26,9 +26,6 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         UserOnlineDepositViewState ViewState { get; set; }
 
-        [Inject]
-        UserBalanceViewState UserBalanceViewState { get; set; }
-
         [Parameter]
         public EventCallback<MouseEventArgs> OnClick { get; set; }
 
@@ -41,18 +38,12 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback OnPaymentSucceeded { get; set; }
 
-        #region PAYMENT SUCCESS WATCH
+        #region PAYMENT RESULT
 
         private static readonly TimeSpan SuccessAnimationDuration = TimeSpan.FromSeconds(5);
 
-        private const decimal SuccessDetectionFraction = 0.9m;
-
-        private int _lastPageIndex;
-        private bool _watchingBalance;
-        private decimal _lastObservedBalance;
-        private decimal _positiveBalanceDeltaSinceWatchStart;
-        private decimal _watchedAmount;
         private bool _paymentSucceeded;
+        private bool _paymentFailed;
         private decimal? _succeededAmount;
         private CancellationTokenSource _successDelayCts;
 
@@ -61,60 +52,30 @@ namespace Gizmo.Client.UI.Components
 
         private void OnDepositStateChanged(object sender, EventArgs e)
         {
-            if (_lastPageIndex != 1 && ViewState.PageIndex == 1)
+            if (ViewState.PageIndex == 0)
             {
-                StartWatchingBalance();
-            }
-            else if (ViewState.PageIndex == 0)
-            {
-                StopWatchingBalance();
                 _paymentSucceeded = false;
+                _paymentFailed = false;
+                return;
             }
 
-            _lastPageIndex = ViewState.PageIndex;
-        }
-
-        private void StartWatchingBalance()
-        {
-            if (_watchingBalance)
+            if (!ClientFeatures.PaymentEvents || _paymentSucceeded)
                 return;
 
-            _watchingBalance = true;
-            _watchedAmount = ViewState.Amount ?? 0;
-            _lastObservedBalance = UserBalanceViewState.Balance;
-            _positiveBalanceDeltaSinceWatchStart = 0;
-            UserBalanceViewState.OnChange += OnBalanceChanged;
-        }
+            if (PaymentIntentStatus.IsPaid(ViewState))
+            {
+                _succeededAmount = ViewState.Amount;
+                _paymentSucceeded = true;
+                _paymentFailed = false;
 
-        private void StopWatchingBalance()
-        {
-            if (!_watchingBalance)
-                return;
+                DispatchWorkflow(RunSuccessSequenceAsync);
+            }
+            else if (PaymentIntentStatus.IsFailed(ViewState) != _paymentFailed)
+            {
+                _paymentFailed = !_paymentFailed;
 
-            _watchingBalance = false;
-            UserBalanceViewState.OnChange -= OnBalanceChanged;
-        }
-
-        private void OnBalanceChanged(object sender, EventArgs e)
-        {
-            if (!_watchingBalance || _paymentSucceeded)
-                return;
-
-            var current = UserBalanceViewState.Balance;
-            var delta = current - _lastObservedBalance;
-            _lastObservedBalance = current;
-
-            if (delta > 0)
-                _positiveBalanceDeltaSinceWatchStart += delta;
-
-            if (_watchedAmount <= 0 || _positiveBalanceDeltaSinceWatchStart < _watchedAmount * SuccessDetectionFraction)
-                return;
-
-            _succeededAmount = _watchedAmount;
-            _paymentSucceeded = true;
-            StopWatchingBalance();
-
-            DispatchWorkflow(RunSuccessSequenceAsync);
+                DispatchRender();
+            }
         }
 
         private async Task RunSuccessSequenceAsync()
@@ -148,7 +109,6 @@ namespace Gizmo.Client.UI.Components
         {
             this.SubscribeChange(ViewState);
 
-            _lastPageIndex = ViewState.PageIndex;
             ViewState.OnChange += OnDepositStateChanged;
 
             base.OnInitialized();
@@ -159,7 +119,6 @@ namespace Gizmo.Client.UI.Components
             this.UnsubscribeChange(ViewState);
 
             ViewState.OnChange -= OnDepositStateChanged;
-            StopWatchingBalance();
             _successDelayCts?.Cancel();
 
             base.Dispose();

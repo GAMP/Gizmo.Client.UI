@@ -67,6 +67,19 @@
             </Button>
         </div>
     }
+    else if (_paymentFailed)
+    {
+        <div class="giz-user-online-deposit__failed">
+            <div class="giz-user-online-deposit__failed__icon">
+                <i class="ph-fill ph-x-circle"></i>
+            </div>
+            <div class="giz-user-online-deposit__failed__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DEPOSIT_FAILED_TITLE)</div>
+            <div class="giz-user-online-deposit__failed__text">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DEPOSIT_FAILED_TEXT)</div>
+        </div>
+        <div class="giz-user-online-deposit__footer">
+            <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="OnClickClearHandler">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DEPOSIT_RETRY)</Button>
+        </div>
+    }
     else
     {
         <div class="giz-user-online-deposit__body">

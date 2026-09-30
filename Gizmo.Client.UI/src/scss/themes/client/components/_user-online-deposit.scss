@@ -180,6 +180,48 @@
     }
 }
 
+// The payment the bank declined, or that expired or was cancelled: the same shape as success,
+// in red, and one way back to the amount.
+.giz-user-online-deposit__failed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.4rem;
+    padding: 2.8rem 0 1.6rem;
+
+    &__icon {
+        width: 6.4rem;
+        height: 6.4rem;
+        margin-bottom: 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(var(--giz-danger-rgb), 0.14);
+        border: 1px solid rgba(var(--giz-danger-rgb), 0.4);
+        animation: giz-deposit-success-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+
+        i {
+            font-size: 3.6rem;
+            color: var(--giz-danger-soft);
+        }
+    }
+
+    &__title {
+        font-family: $font-family-header-theme-client;
+        font-weight: 800;
+        font-size: 2rem;
+        color: var(--giz-white);
+    }
+
+    &__text {
+        max-width: 36rem;
+        font-size: 1.35rem;
+        color: var(--giz-text-2);
+    }
+}
+
 @keyframes giz-deposit-success-pop {
     0% {
         transform: scale(0.4);

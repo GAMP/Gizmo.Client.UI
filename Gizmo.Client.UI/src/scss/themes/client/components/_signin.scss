@@ -1,18 +1,19 @@
 //============= Sign-in steps and the sign-up spread ===============//
 
-// The quiet chips in the screen's bottom corners: the shell's language, the server, the
-// keyboard layout. One shape for all of them.
-@mixin login-chip {
+// The screen's bottom corners: the shell's language, the server and the Gizmo version on the
+// left, the keyboard layout on the right. Plain words with their icon, no plates; the two
+// switches light up under the pointer.
+@mixin login-corner {
     display: inline-flex;
     align-items: center;
-    gap: 0.8rem;
-    height: 3.8rem;
+    gap: 0.7rem;
+    height: 3.2rem;
     box-sizing: border-box;
-    padding: 0 1.3rem;
+    padding: 0 0.6rem;
     border: 0;
-    border-radius: 1.1rem;
-    background: rgba(var(--giz-scrim-rgb), 0.42);
-    box-shadow: inset 0 0 0 1px var(--giz-glass-8);
+    border-radius: 0.8rem;
+    background: none;
+    box-shadow: none;
     color: var(--giz-text-2);
     font-family: $font-family-header-theme-client;
     font-size: 1.3rem;
@@ -21,47 +22,43 @@
     white-space: nowrap;
 }
 
+@mixin login-corner-hover {
+    background: var(--giz-glass-4);
+    box-shadow: none;
+    color: var(--giz-text-1);
+}
+
 // ---------------------------------------------------------------- status and keyboard
 
 .giz-main-container .giz-login-content .giz-client-status {
     left: 3.2rem;
     bottom: 2.4rem;
     align-items: center;
-    gap: 0.8rem;
+    gap: 1.6rem;
 }
 
 [#{$client-theme-comp-attr}] .giz-client-status {
     .giz-client-language-menu .giz-input-control .giz-input-root,
     .giz-client-language-menu .giz-input-control .giz-input-root:hover,
     .giz-client-language-menu .giz-input-control .giz-input-root:focus-within {
-        @include login-chip;
+        @include login-corner;
         width: auto;
         cursor: pointer;
-        transition: background 0.15s, box-shadow 0.15s;
+        transition: background 0.15s, color 0.15s;
     }
 
-    .giz-client-language-menu .giz-input-control .giz-input-root:hover {
-        background: rgba(var(--giz-scrim-rgb), 0.6);
-        box-shadow: inset 0 0 0 1px var(--giz-glass-11);
-    }
+    .giz-client-language-menu .giz-input-control .giz-input-root:hover { @include login-corner-hover; }
 
-    .giz-client-language-menu .giz-input__icon-right {
-        width: 1.2rem;
-        height: 1.2rem;
-        min-width: 1.2rem;
-        min-height: 1.2rem;
-        margin-left: 0.2rem;
-        opacity: 0.6;
-    }
+    .giz-client-language-menu .giz-input__icon-right { display: none; }
 }
 
 .giz-input-language-menu-item {
     display: flex;
     align-items: center;
-    gap: 0.8rem;
+    gap: 0.7rem;
 
     i {
-        font-size: 1.7rem;
+        font-size: 1.6rem;
         color: var(--giz-text-3);
     }
 }
@@ -71,24 +68,23 @@
     align-items: center;
 }
 
-// The server: the bare icon beside the language chip, red while the club server is out of reach.
+// The club server as a dot before the version: green while it answers, red while it does not.
 .giz-server {
-    display: flex;
-    align-items: center;
-    padding: 0 0.4rem;
+    flex: none;
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background: var(--giz-success-green);
 
-    .giz-server__icon {
-        width: 1.8rem;
-        height: 1.8rem;
-        color: var(--giz-text-3);
-    }
-
-    &--offline .giz-server__icon { color: var(--giz-danger-soft); }
+    &--offline { background: var(--giz-danger); }
 }
 
 .giz-version {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
     padding: 0 0.6rem;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: 600;
     white-space: nowrap;
     color: var(--giz-text-3);
@@ -114,26 +110,21 @@
     .giz-input-language-menu .giz-input-control .giz-input-root,
     .giz-input-language-menu .giz-input-control .giz-input-root:hover,
     .giz-input-language-menu .giz-input-control .giz-input-root:focus-within {
-        @include login-chip;
+        @include login-corner;
         width: auto;
     }
 
-    .giz-input-language-menu .giz-input-control .giz-input-root { cursor: pointer; }
-
-    .giz-input-language-menu .giz-input-control .giz-input-root:hover {
-        background: rgba(var(--giz-scrim-rgb), 0.6);
-        box-shadow: inset 0 0 0 1px var(--giz-glass-11);
+    .giz-input-language-menu .giz-input-control .giz-input-root {
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
     }
 
-    .giz-input-language-menu .giz-input__icon-right {
-        display: flex;
-        width: 1.2rem;
-        height: 1.2rem;
-        min-width: 1.2rem;
-        min-height: 1.2rem;
-        margin-left: 0.2rem;
-        opacity: 0.6;
-    }
+    // The card draws a growing underline under its focused fields; the layout is not a field.
+    .giz-input-language-menu .giz-input-control .giz-input-root::after { content: none; }
+
+    .giz-input-language-menu .giz-input-control .giz-input-root:hover { @include login-corner-hover; }
+
+    .giz-input-language-menu .giz-input__icon-right { display: none; }
 }
 
 // A card that is still sliding in is a transformed box and would carry the fixed chip with

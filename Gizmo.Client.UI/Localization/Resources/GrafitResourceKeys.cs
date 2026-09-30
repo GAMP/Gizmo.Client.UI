@@ -192,5 +192,8 @@
         public const string SHELL_HOME_UNTIL = nameof(SHELL_HOME_UNTIL);
         public const string SHELL_HOME_CALL_ADMIN = nameof(SHELL_HOME_CALL_ADMIN);
         public const string SHELL_HANDOVER_KEPT = nameof(SHELL_HANDOVER_KEPT);
+        public const string SHELL_DEPOSIT_FAILED_TITLE = nameof(SHELL_DEPOSIT_FAILED_TITLE);
+        public const string SHELL_DEPOSIT_FAILED_TEXT = nameof(SHELL_DEPOSIT_FAILED_TEXT);
+        public const string SHELL_DEPOSIT_RETRY = nameof(SHELL_DEPOSIT_RETRY);
     }
 }
