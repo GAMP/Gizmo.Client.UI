@@ -29,6 +29,20 @@
                         }
                     </div>
                 }
+                @if (Item.HasRequirements)
+                {
+                    <div class="giz-ladder-level-popup__requirements">
+                        <div class="giz-ladder-level-popup__label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_REQUIREMENTS))</div>
+                        @foreach (var requirement in Item.Requirements)
+                        {
+                            <LadderRequirementRow Item="@requirement" />
+                        }
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(Item.ReachFirstText))
+                {
+                    <div class="giz-ladder-level-popup__description">@Item.ReachFirstText</div>
+                }
             </ProfileCardPopup>
         }
     </div>
