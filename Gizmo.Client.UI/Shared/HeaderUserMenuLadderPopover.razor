@@ -88,13 +88,13 @@
                 <div class="giz-ladder-progress">
                     <div class="giz-ladder-progress__title">@ViewState.ProgressTitleText</div>
                     <div class="giz-ladder-progress__track">
-                        <div class="giz-ladder-progress__fill @(ViewState.ProgressIsSecured ? "giz-ladder-progress__fill--secured" : "")" style="width: @AchievementValueFormat.Percent(ViewState.ProgressPercent)"></div>
+                        <div class="giz-ladder-progress__fill @(ViewState.ProgressIsFull ? "giz-ladder-progress__fill--secured" : "")" style="width: @AchievementValueFormat.Percent(ViewState.ProgressPercent)"></div>
                         <span class="giz-ladder-progress__knob giz-ladder-progress__knob--start"></span>
                         <span class="giz-ladder-progress__knob giz-ladder-progress__knob--end"></span>
                     </div>
                     <div class="giz-ladder-progress__labels">
                         <span>0</span>
-                        <span class="giz-ladder-progress__goal @(ViewState.ProgressIsSecured ? "giz-ladder-progress__goal--secured" : "")">@ViewState.ProgressGoalText</span>
+                        <span class="giz-ladder-progress__goal @(ViewState.ProgressIsFull ? "giz-ladder-progress__goal--secured" : "")">@ViewState.ProgressGoalText</span>
                     </div>
                 </div>
             }
