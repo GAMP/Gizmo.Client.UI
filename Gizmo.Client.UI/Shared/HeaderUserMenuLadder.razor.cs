@@ -11,7 +11,7 @@ namespace Gizmo.Client.UI
         UserLadderSummaryViewState ViewState { get; set; }
 
         [Inject]
-        UserLadderSummaryViewService Service { get; set; }
+        UserMenuViewService UserMenuService { get; set; }
 
         protected override void OnInitialized()
         {
