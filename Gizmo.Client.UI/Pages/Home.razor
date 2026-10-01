@@ -1,7 +1,7 @@
 ﻿@inherits ShellComponentBase
 @using Gizmo.Web.Api.Models
 
-<div class="giz-home-board @(ProgressOn ? "giz-home-board--split" : null)">
+<div class="@BoardClass">
 
     <div class="giz-home-stage">
 
@@ -112,15 +112,29 @@
         @if (SlideCount > 1)
         {
             <div class="giz-home-dots" @key="SlideIndex">
-                @for (var i = 0; i < SlideCount; i++)
+                <button type="button" class="giz-home-dots__arrow" title="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HERO_PREVIOUS)" @onclick="PreviousSlide" @onclick:stopPropagation="true">
+                    <i class="ph-bold ph-caret-left"></i>
+                </button>
+                @if (ShowSlideDots)
                 {
-                    <span class="giz-home-dots__dot @(i == SlideIndex ? "giz-home-dots__dot--on" : null)">
-                        @if (i == SlideIndex)
-                        {
-                            <span class="giz-home-dots__fill"></span>
-                        }
-                    </span>
+                    @for (var i = 0; i < SlideCount; i++)
+                    {
+                        <span class="giz-home-dots__dot @(i == SlideIndex ? "giz-home-dots__dot--on" : null)">
+                            @if (i == SlideIndex)
+                            {
+                                <span class="giz-home-dots__fill"></span>
+                            }
+                        </span>
+                    }
                 }
+                else
+                {
+                    <span class="giz-home-dots__count">@SlidePositionText</span>
+                    <span class="giz-home-dots__dot giz-home-dots__dot--on"><span class="giz-home-dots__fill"></span></span>
+                }
+                <button type="button" class="giz-home-dots__arrow" title="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HERO_NEXT)" @onclick="NextSlide" @onclick:stopPropagation="true">
+                    <i class="ph-bold ph-caret-right"></i>
+                </button>
             </div>
         }
 
@@ -147,65 +161,77 @@
         </section>
     </div>
 
-    <aside class="giz-home-till" aria-label="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES))">
+    @if (HasSales)
+    {
+        <aside class="giz-home-till" aria-label="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES))">
 
-        <div class="giz-home-wallet">
-            <div class="giz-caption">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BALANCE))</div>
-            <div class="giz-home-wallet__row">
+            <div class="giz-home-wallet">
+                <span class="giz-caption">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BALANCE))</span>
                 <span class="giz-home-wallet__sum">@Money(UserBalanceViewState.Balance)</span>
-            </div>
-        </div>
-
-        <div class="giz-home-till__sec giz-home-till__sec--packs">
-            <div class="giz-caption giz-caption--rule">
-                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_TIME_PACKAGES)</span>
-                <span class="giz-caption__rule"></span>
-                <a href="@ClientRoutes.ShopRoute">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ALL))</a>
+                @if (HasPoints)
+                {
+                    <span class="giz-home-wallet__points"><i class="ph-fill ph-coins"></i>@PointsText</span>
+                }
             </div>
 
-            @if (TimeProducts.Any())
+            @if (Packs.Count > 0)
             {
-                <div class="giz-home-packs">
-                    @foreach (var product in TimeProducts)
-                    {
-                        <article class="giz-home-pack" @key="product.Id">
-                            <span class="giz-home-pack__name" @onclick="@(() => OpenProduct(product.Id))">@product.Name</span>
-                            <span class="giz-home-pack__price">
-                                @if (IsPointsOnly(product))
+                <div class="giz-home-till__sec giz-home-till__sec--packs">
+                    <div class="giz-caption giz-caption--rule">
+                        <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_TIME_PACKAGES)</span>
+                        <span class="giz-caption__rule"></span>
+                        <a href="@ClientRoutes.ShopRoute">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ALL))</a>
+                    </div>
+
+                    <div class="giz-home-prices">
+                        @foreach (var pack in Packs)
+                        {
+                            <div class="@PriceRowClass(pack.Product)" @key="pack.Product.Id">
+                                @if (pack.Length is { } length)
                                 {
-                                    <span class="giz-home-pack__pts">@PointsPrice(product)<i class="ph-fill ph-coins"></i></span>
+                                    <b class="giz-home-prices__length">@length<small>@pack.Unit</small></b>
                                 }
                                 else
                                 {
-                                    @Money(product.UnitPrice)
+                                    <i class="ph-bold ph-clock giz-home-prices__clock"></i>
                                 }
-                            </span>
-                            <button type="button" class="giz-home-buy"
-                                    disabled="@(_buyingProductId.HasValue)"
-                                    @onclick="@(() => BuyPackage(product.Id))">
-                                @GrafitLocalization.GetString(_buyingProductId == product.Id ? GrafitResourceKeys.SHELL_GEN_WORKING : GrafitResourceKeys.SHELL_GEN_BUY)
-                            </button>
-                        </article>
-                    }
+                                <span class="giz-home-prices__name" @onclick="@(() => OpenProduct(pack.Product.Id))">
+                                    <span>@pack.Product.Name</span>
+                                    @if (pack.PerHourText is { Length: > 0 } perHour)
+                                    {
+                                        <small>@perHour</small>
+                                    }
+                                </span>
+                                <span class="giz-home-prices__price">
+                                    @if (IsPointsOnly(pack.Product))
+                                    {
+                                        <span class="giz-home-prices__pts">@PointsPrice(pack.Product)<i class="ph-fill ph-coins"></i></span>
+                                    }
+                                    else
+                                    {
+                                        @ShortMoney(pack.Product.UnitPrice)
+                                    }
+                                </span>
+                                <button type="button" class="giz-home-prices__buy"
+                                        disabled="@(_buyingProductId.HasValue)"
+                                        @onclick="@(() => BuyPackage(pack.Product.Id))">
+                                    @BuyText(pack.Product)
+                                </button>
+                            </div>
+                        }
+                    </div>
                 </div>
             }
-            else
+
+            @if (BarProducts.Count > 0)
             {
-                <div class="giz-home-empty giz-home-empty--small">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_NO_PACKAGES)</div>
-            }
-        </div>
+                <div class="giz-home-till__sec giz-home-till__sec--bar">
+                    <div class="giz-caption giz-caption--rule">
+                        <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_BAR)</span>
+                        <span class="giz-caption__rule"></span>
+                        <a href="@ClientRoutes.ShopRoute">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_WHOLE_SHOP)</a>
+                    </div>
 
-        @if (!ProgressOn)
-        {
-            <div class="giz-home-till__sec giz-home-till__sec--bar">
-                <div class="giz-caption giz-caption--rule">
-                    <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_BAR)</span>
-                    <span class="giz-caption__rule"></span>
-                    <a href="@ClientRoutes.ShopRoute">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_WHOLE_SHOP)</a>
-                </div>
-
-                @if (BarProducts.Count > 0)
-                {
                     <div class="giz-home-bar">
                         @foreach (var product in BarProducts)
                         {
@@ -232,7 +258,7 @@
                                     }
                                     else
                                     {
-                                        @Money(product.UnitPrice)
+                                        @ShortMoney(product.UnitPrice)
                                     }
                                 </span>
                                 <button type="button" class="giz-home-bar__add" title="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ADD_TO_CART))"
@@ -242,16 +268,18 @@
                             </div>
                         }
                     </div>
-                }
-                else
-                {
-                    <div class="giz-home-empty giz-home-empty--small">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GEN_EMPTY)</div>
-                }
-            </div>
-        }
-    </aside>
+                </div>
+            }
+        </aside>
+    }
+    else
+    {
+        <aside class="giz-home-till giz-home-till--pass" aria-label="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_CARD)">
+            <HomePass />
+        </aside>
+    }
 
-    @if (ProgressOn)
+    @if (ClientFeatures.Ladder)
     {
         <HomeProgress />
     }

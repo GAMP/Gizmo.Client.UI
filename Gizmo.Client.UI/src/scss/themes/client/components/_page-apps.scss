@@ -56,46 +56,6 @@
             &.hidden {
                 display: none;
             }
-
-            > div:not(.giz-apps-filters):not(.giz-section__header__filters) {
-                padding-left: 1.2rem;
-                border-left: 3px solid var(--giz-accent);
-                color: var(--giz-text-1);
-                letter-spacing: 0.02em;
-                @include font-h5-theme-client($font-weight-bold-theme-client);
-            }
-        }
-    }
-}
-
-.giz-select.app-filter--filled {
-    .giz-input-root {
-        background: rgba(var(--giz-accent-rgb), 0.08);
-        border-color: rgba(var(--giz-accent-rgb), 0.25);
-        color: var(--giz-accent);
-
-        .giz-icon {
-            svg {
-                color: var(--giz-accent);
-            }
-        }
-
-        input {
-            color: var(--giz-accent);
-        }
-    }
-}
-
-.giz-multi-select.app-filter--filled {
-    .giz-input-root {
-        background: rgba(var(--giz-accent-rgb), 0.08);
-        border-color: rgba(var(--giz-accent-rgb), 0.25);
-        color: var(--giz-accent);
-
-        .giz-input__icon-right {
-            svg {
-                color: var(--giz-accent);
-            }
         }
     }
 }
@@ -127,74 +87,5 @@
 
     .giz-input__icon-right {
         margin-left: 0.4rem;
-    }
-}
-
-.giz-apps-filters {
-    display: flex;
-    align-items: flex-end;
-    gap: 1rem;
-    flex-wrap: wrap;
-
-    .giz-input-label,
-    label {
-        display: block;
-        margin-bottom: 0.4rem;
-        color: var(--giz-text-3);
-        text-transform: uppercase;
-        letter-spacing: 0.09em;
-        font-family: $font-family-header-theme-client;
-        font-size: 1rem;
-        font-weight: 700;
-        line-height: 1.4rem;
-        white-space: nowrap;
-    }
-
-    .giz-input__icon-left {
-        width: 1.6rem;
-        height: 1.6rem;
-        min-width: 1.6rem;
-        min-height: 1.6rem;
-    }
-
-    .giz-filters-icon {
-        color: var(--giz-accent);
-    }
-
-    .giz-input-root {
-        min-height: 4rem;
-        min-width: 24rem;
-
-        // The value takes the room the pill has, not the browser's twenty characters.
-        .giz-input-wrapper {
-            flex: 1 1 auto;
-            min-width: 0;
-
-            input { width: 100%; }
-        }
-        border-radius: 1.3rem;
-        background: linear-gradient(180deg, var(--giz-glass-6), var(--giz-glass-2));
-        border: 1px solid var(--giz-glass-9);
-        box-shadow: inset 0 1px 0 var(--giz-glass-10);
-        transition: border-color 0.16s, background 0.16s;
-
-        &:hover,
-        &:focus-within {
-            border-color: rgba(var(--giz-accent-rgb), 0.4);
-        }
-    }
-
-    // "Filter is set" state keeps the accent tint, just on the new shape.
-    .app-filter--filled .giz-input-root {
-        background: linear-gradient(180deg, rgba(var(--giz-accent-rgb), 0.18), rgba(var(--giz-accent-rgb), 0.08));
-        border-color: rgba(var(--giz-accent-rgb), 0.42);
-    }
-
-    .giz-select__dropdown,
-    .giz-multi-select__dropdown {
-        border-radius: 1.4rem;
-        background: linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.98), rgba(var(--giz-glass-2-rgb), 0.99));
-        border: 1px solid var(--giz-glass-10);
-        box-shadow: 0 2.4rem 5rem -1.6rem rgba(var(--giz-black-rgb), 0.8);
     }
 }

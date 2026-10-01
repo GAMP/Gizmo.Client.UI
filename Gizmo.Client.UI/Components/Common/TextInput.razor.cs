@@ -472,6 +472,8 @@ namespace Gizmo.Client.UI.Components
             return Task.CompletedTask;
         }
 
+        public ValueTask FocusAsync() => _inputElement.FocusAsync();
+
         protected async Task OnRootClickHandler(MouseEventArgs args)
         {
             await _inputElement.FocusAsync();
@@ -622,7 +624,6 @@ namespace Gizmo.Client.UI.Components
         {
             if (!firstRender)
             {
-                //await InvokeVoidAsync("writeLine", $"Render {this.ToString()}");
             }
 
             await base.OnAfterRenderAsync(firstRender);

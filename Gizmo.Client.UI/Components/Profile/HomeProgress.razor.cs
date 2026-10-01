@@ -1,7 +1,10 @@
 using System.Globalization;
+using System.Threading;
 using System.Linq;
 using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.Localization.Services;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Microsoft.AspNetCore.Components;
@@ -14,10 +17,16 @@ namespace Gizmo.Client.UI.Components
 
         [Inject] UserLadderSummaryViewState Ladder { get; set; }
         [Inject] UserChallengesViewState Challenges { get; set; }
+        [Inject] UserChallengesViewService ChallengesService { get; set; }
         [Inject] UserAchievementsViewState Achievements { get; set; }
+        [Inject] UserAchievementsViewService AchievementsService { get; set; }
         [Inject] NavigationService NavigationService { get; set; }
 
+        private readonly CancellationTokenSource _lifetime = new();
+
         private bool HasLadder => Ladder.HasLevel;
+
+        private bool ProgressOn => HasLadder || TotalChallenges > 0 || TotalAchievements > 0;
 
         private int EarnedAchievements => Achievements.Achievements.Count(a => a.IsEarned);
 
@@ -51,30 +60,25 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        private string LinkRoute => LinkIsAchievements ? ClientRoutes.UserAchievementsRoute : ClientRoutes.UserChallengesRoute;
+        private string LinkRoute => ClientRoutes.UserLadderRoute;
 
-        private decimal RingPercent
+        private decimal LinePercent
         {
             get
             {
                 if (HasLadder)
-                    return Ladder.ShowTopBarProgress ? Ladder.TopBarProgressPercent : 0m;
+                    return Ladder.TopBarProgressPercent;
 
                 if (HeadlineIsAchievements)
                     return 100m * EarnedAchievements / TotalAchievements;
 
-                if (HeadlineIsChallenges)
-                    return 100m * DoneChallenges / TotalChallenges;
-
-                return 0m;
+                return HeadlineIsChallenges ? 100m * DoneChallenges / TotalChallenges : 0m;
             }
         }
 
-        private string RingValue => RingPercent.ToString("0.##", CultureInfo.InvariantCulture);
+        private string LineValue => LinePercent.ToString("0.##", CultureInfo.InvariantCulture);
 
-        private bool ShowLine => HasLadder && Ladder.ShowTopBarProgress;
-
-        private string PlainIcon => HeadlineIsChallenges ? "ph-flag-checkered" : "ph-trophy";
+        private bool ShowLine => HasLadder ? Ladder.ShowTopBarProgress : HeadlineIsAchievements || HeadlineIsChallenges;
 
         private string Title
         {
@@ -107,7 +111,14 @@ namespace Gizmo.Client.UI.Components
 
         private string NextStepName => NextChallenge?.Requirements.FirstOrDefault(r => !r.IsMet)?.Name;
 
-        private string NextReward => NextChallenge?.Rewards.FirstOrDefault()?.Text;
+        private UserChallengeRewardViewState NextReward => NextChallenge?.Rewards.FirstOrDefault();
+
+        private string NextRewardIcon => NextReward?.Kind switch
+        {
+            ChallengeRewardKind.Points => "ph-fill ph-coins giz-home-progress__coin",
+            ChallengeRewardKind.Time => "ph-fill ph-clock",
+            _ => "ph-fill ph-gift",
+        };
 
         private string Vendor(string key) => GrafitLocalization.GetString(key);
 
@@ -121,11 +132,20 @@ namespace Gizmo.Client.UI.Components
             this.SubscribeChange(Challenges);
             this.SubscribeChange(Achievements);
 
+            if (!Challenges.IsLoading)
+                DispatchWorkflow(() => ChallengesService.LoadAsync(_lifetime.Token));
+
+            if (!Achievements.IsLoading)
+                DispatchWorkflow(() => AchievementsService.LoadAsync(_lifetime.Token));
+
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
+            _lifetime.Cancel();
+            _lifetime.Dispose();
+
             this.UnsubscribeChange(Achievements);
             this.UnsubscribeChange(Challenges);
             this.UnsubscribeChange(Ladder);

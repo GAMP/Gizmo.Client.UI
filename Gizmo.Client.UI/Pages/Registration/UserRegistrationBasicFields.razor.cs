@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Gizmo.Client.UI.Components;
 using Gizmo.Client.UI.Services;
@@ -28,6 +29,9 @@ namespace Gizmo.Client.UI.Pages.Registration
 
         [Inject]
         NavigationService NavigationService { get; set; }
+
+        [CascadingParameter]
+        RegistrationCardContext Card { get; set; }
 
         public bool HasAdditionalFields =>
             RegistrationSession.RequiredUserInfo?.Country == true ||
@@ -114,14 +118,38 @@ namespace Gizmo.Client.UI.Pages.Registration
             return Task.CompletedTask;
         }
 
+        private void OnViewStateChanged(object sender, EventArgs e) =>
+            Card?.SetDraft(PlayerCardData.FromBasics(ViewState, RegistrationSession));
+
+        private async Task SubmitAsync()
+        {
+            var snapshot = PlayerCardData.FromBasics(ViewState, RegistrationSession);
+
+            void OnCleared(object sender, EventArgs e) => Card?.Complete(snapshot);
+
+            RegistrationSession.Cleared += OnCleared;
+
+            try
+            {
+                await UserRegistrationBasicFieldsViewService.SubmitAsync();
+            }
+            finally
+            {
+                RegistrationSession.Cleared -= OnCleared;
+            }
+        }
+
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
+            ViewState.OnChange += OnViewStateChanged;
+            OnViewStateChanged(this, EventArgs.Empty);
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
+            ViewState.OnChange -= OnViewStateChanged;
             this.UnsubscribeChange(ViewState);
             base.Dispose();
         }

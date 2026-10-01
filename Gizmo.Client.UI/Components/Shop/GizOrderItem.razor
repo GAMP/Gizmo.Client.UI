@@ -1,49 +1,66 @@
-﻿@namespace Gizmo.Client.UI.Components
+@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
-@using System.Globalization
 @using Microsoft.AspNetCore.Components.Forms
 
-<div class="giz-order-item">
-    <div class="giz-order-item__thumb">
-        <GizImage @key="UserCartProductViewState.ProductId" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@_product?.DefaultImageId" ImageFitType="ImageFitType.Cover">
-            <EmptyResultPlaceholder>
-                <i class="ph-fill ph-package"></i>
-            </EmptyResultPlaceholder>
-            <ErrorPlaceholder>
-                <i class="ph-fill ph-package"></i>
-            </ErrorPlaceholder>
-        </GizImage>
+<div class="@ClassName">
+    <div class="giz-cart-line__row" role="button" tabindex="0" aria-expanded="@IsOpen"
+         @onclick="@Toggle" @onkeydown="@OnRowKey">
+        <span class="giz-cart-line__thumb">
+            <GizImage @key="UserCartProductViewState.ProductId" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@_product?.DefaultImageId" ImageFitType="ImageFitType.Cover">
+                <EmptyResultPlaceholder>
+                    <i class="@PlaceholderIcon"></i>
+                </EmptyResultPlaceholder>
+                <ErrorPlaceholder>
+                    <i class="@PlaceholderIcon"></i>
+                </ErrorPlaceholder>
+            </GizImage>
+        </span>
+        <span class="giz-cart-line__qty">@QuantityText</span>
+        <span class="giz-cart-line__name">@_product?.Name</span>
+        <ICartViewStateLoader ViewState="@ClientServerCartViewService.ViewState" MinimumHeight="2.2rem">
+            <span class="giz-cart-line__sum">
+                @if (ShowsMoney)
+                {
+                    <span>@PriceText</span>
+                }
+                @if (ShowsPoints)
+                {
+                    <span class="giz-cart-line__points">@PointsPriceText<i class="ph-fill ph-coins"></i></span>
+                }
+            </span>
+        </ICartViewStateLoader>
     </div>
-    <div class="giz-order-item__description">
-        @_product?.Name
-    </div>
-    <ICartViewStateLoader ViewState="@ClientServerCartViewService.ViewState" MinimumHeight="6.8rem">
-        <div class="giz-order-item__details">
-            @if (_product?.PurchaseOptions.HasFlag(PurchaseOptionType.Or) == true)
+
+    @if (IsOpen)
+    {
+        <div class="giz-cart-line__more">
+            <div class="giz-cart-line__stepper">
+                <button type="button" class="@LessClass" title="@LessTitle" @onclick="@OnLess">
+                    <i class="@LessIcon"></i>
+                </button>
+                <span class="giz-cart-line__count">@UserCartProductViewState.Quantity</span>
+                <button type="button" class="giz-cart-line__step" disabled="@IsAtMaximum" @onclick="@OnAddQuantityButtonClickHandlerAsync">
+                    <i class="ph-bold ph-plus"></i>
+                </button>
+            </div>
+
+            @if (HasPayChoice)
             {
-                <div class="giz-order-item__details__option">
-                    <RadioButton @key="Guid.NewGuid()" GroupName="@GetPurchaseOptionsGroup()" IsChecked="@(UserCartProductViewState.PayType == OrderLinePayType.Cash)" IsCheckedChanged="@((isChecked) => SetPayType(isChecked, OrderLinePayType.Cash))" />
-                    <span class="giz-order-item__details__price">@UserCartProductViewState.TotalPrice.ToString("C", CultureInfo.CurrentCulture)</span>
-                </div>
-                <div class="giz-order-item__details__option">
-                    <RadioButton @key="Guid.NewGuid()" GroupName="@GetPurchaseOptionsGroup()" IsChecked="@(UserCartProductViewState.PayType == OrderLinePayType.Points)" IsCheckedChanged="@((isChecked) => SetPayType(isChecked, OrderLinePayType.Points))" />
-                    <span class="giz-order-item__details__points"><Points2Icon />@UserCartProductViewState.TotalPointsPrice.GetValueOrDefault().ToString("N0")</span>
+                <div class="giz-cart-line__pay">
+                    <span class="giz-cart-line__pay-label">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_CART_PAY_WITH)</span>
+                    <div class="giz-cart-line__pay-ways">
+                        <button type="button" class="@PayClass(OrderLinePayType.Cash)" @onclick="@(() => SetPayType(true, OrderLinePayType.Cash))">@CashPriceText</button>
+                        <button type="button" class="@PayClass(OrderLinePayType.Points)" @onclick="@(() => SetPayType(true, OrderLinePayType.Points))">
+                            <i class="ph-fill ph-coins"></i>
+                            <span>@PointsWayText</span>
+                        </button>
+                    </div>
                 </div>
             }
-            else
+            else if (UnitPriceText is { Length: > 0 } unitPrice)
             {
-                <div class="giz-order-item__details__price">@UserCartProductViewState.TotalPrice.ToString("C", CultureInfo.CurrentCulture)</div>
-                @if (UserCartProductViewState.TotalPointsPrice.GetValueOrDefault() > 0)
-                {
-                    <div class="giz-order-item__details__points"><Points2Icon />@UserCartProductViewState.TotalPointsPrice.GetValueOrDefault().ToString("N0")</div>
-                }
+                <span class="giz-cart-line__unit">@unitPrice</span>
             }
         </div>
-    </ICartViewStateLoader>
-    <div class="giz-order-item__remove">
-        <IconButton Variant="ButtonVariants.Text" Size="ButtonSizes.Small" SVGIcon="Icons.Trash3_Client" @onclick="@(() => ClientServerCartViewService.RemoveEntry(UserCartProductViewState.Guid))" />
-    </div>
-    <div class="giz-order-item__quantity">
-        <QuantityPicker Minimum="1" Maximum="@(_product.ProductType == ProductType.ProductTime ? 1 : int.MaxValue)" Size="ButtonSizes.Small" Quantity="@UserCartProductViewState.Quantity" OnAddQuantityButtonClick="OnAddQuantityButtonClickHandlerAsync" OnRemoveQuantityButtonClick="OnRemoveQuantityButtonClickHandler" />
-    </div>
+    }
 </div>

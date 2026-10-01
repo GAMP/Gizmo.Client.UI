@@ -7,7 +7,6 @@ $pc-ink:      var(--giz-ink);
 $pc-ink-2:    var(--giz-text-2);
 $pc-ink-3:    var(--giz-text-3);
 $pc-line:     var(--giz-glass-6);
-$pc-panel:    rgba(var(--giz-glass-2-rgb), 0.98);
 $giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 0.16), var(--giz-glass-1) 70%);
 
 .giz-product-card {
@@ -36,16 +35,7 @@ $giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 
         transform: translateY(-3px);
         box-shadow: 0 18px 40px -20px rgba(var(--giz-black-rgb), 0.85);
 
-        .giz-product-card__hover-overlay {
-            background: $pc-panel;
-            pointer-events: auto;
-        }
-
-        .giz-product-card__content--hovered {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
-        }
+        .giz-product-card__hover-overlay:has(.giz-peek) { pointer-events: auto; }
     }
 
     &__content {
@@ -200,22 +190,46 @@ $giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 
         background: rgba(var(--giz-accent-rgb), 0.24);
     }
 
-    &:hover .giz-product-card__content__details { visibility: hidden; }
+    // Rested on, a card with something more to say turns over: its back carries the details,
+    // the button under it stays where it was. A short pause first, so a cursor passing over
+    // the shelf does not flip every card on its way.
+    &__content { perspective: 140rem; }
+
+    &__content__top {
+        transform-style: preserve-3d;
+        transition: transform 0.6s cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    &:hover &__content__top:has(.giz-peek) {
+        transform: rotateY(180deg);
+        transition-delay: 0.25s;
+    }
+
+    &__content__image,
+    &__content__details,
+    .giz-product-card-award-indicator { backface-visibility: hidden; }
 
     //
+    // The back of the picture-and-name area.
     &__hover-overlay {
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        bottom: 6.6rem;
+        bottom: 0;
         height: auto;
         min-height: 0;
         max-height: none;
         z-index: 5;
-        padding: 1.2rem 1.4rem;
-        background: transparent;
-        transition: background 0.22s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: safe center;
+        padding: 1.8rem 1.6rem;
+        background:
+            linear-gradient(165deg, rgba(var(--giz-accent-rgb), 0.16) 0%, rgba(var(--giz-accent-rgb), 0) 55%),
+            var(--giz-tile-deep);
+        transform: rotateY(180deg);
+        backface-visibility: hidden;
         overflow-x: hidden;
         overflow-y: auto;
         scrollbar-width: none;
@@ -223,156 +237,7 @@ $giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 
         &::-webkit-scrollbar { display: none; }
     }
 
-    &__content--hovered {
-        opacity: 0;
-        transform: translateY(5px);
-        pointer-events: none;
-        transition: opacity 0.22s ease, transform 0.22s ease;
-    }
-}
-
-// Detail list
-.giz-timeline {
-    display: flex;
-    flex-direction: column;
-
-    &-header {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 0.5rem;
-        color: $pc-ink-3;
-        font-family: $font-family-header-theme-client;
-        font-size: 1.05rem;
-        font-weight: 700;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        line-height: 1.2;
-
-        svg {
-            flex: none;
-            width: 1rem;
-            height: 1rem;
-            color: var(--giz-accent);
-            opacity: 0.85;
-        }
-    }
-
-    &-item {
-        padding: 0.38rem 0;
-
-        & + .giz-timeline-item {
-            box-shadow: inset 0 1px 0 var(--giz-glass-5);
-        }
-    }
-}
-
-.giz-time-product-details {
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
-    min-width: 0;
-
-    // Label
-    > div:first-child {
-        min-width: 0;
-        color: $pc-ink-3;
-        font-family: $font-family-header-theme-client;
-        font-size: 1.1rem;
-        font-weight: 700;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        line-height: 1.3;
-    }
-
-    // Value
-    .giz-time-product-time-availabile {
-        min-width: 0;
-        text-align: left;
-        color: $pc-ink;
-        font-family: $font-family-numeric-theme-client;
-        font-size: 1.25rem;
-        font-weight: 700;
-        font-variant-numeric: tabular-nums;
-        line-height: 1.3;
-        overflow-wrap: anywhere;
-
-        .giz-icon {
-            color: var(--giz-accent);
-            width: 1.5rem;
-            height: 1.5rem;
-        }
-    }
-}
-
-// Package duration - the one value in the panel allowed to shout.
-.giz-time-product-time {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--giz-accent);
-    font-family: $font-family-header-theme-client;
-    font-size: 1.45rem;
-    font-weight: 700;
-    line-height: 1.2;
-
-    .giz-icon {
-        width: 1.5rem;
-        height: 1.5rem;
-    }
-}
-
-.giz-time-product-expirations {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.1rem;
-}
-
-.giz-time-product-expiration {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: none;
-    color: var(--giz-warning-soft);
-    font-size: 1.2rem;
-    font-weight: 600;
-    line-height: 1.3;
-    text-align: left;
-}
-
-// Bundle contents
-.giz-bundle-product-details {
-    display: grid;
-    grid-template-columns: min-content 1fr min-content;
-    align-items: center;
-    gap: 0.6rem;
-    overflow: hidden;
-    color: $pc-ink;
-    font-size: 1.25rem;
-    line-height: 1.3;
-
-    .giz-icon {
-        width: 1.4rem;
-        height: 1.4rem;
-        color: var(--giz-accent);
-    }
-
-    &__product-name {
-        max-width: 100%;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
-
-// Quantity
-    & > span {
-        margin-left: 0;
-        color: $pc-ink-3;
-        font-family: $font-family-numeric-theme-client;
-        font-weight: 700;
-        font-variant-numeric: tabular-nums;
-    }
+    &__content--hovered { min-width: 0; }
 }
 
 // PC groups on a time package
@@ -501,4 +366,19 @@ $giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 
 
 .giz-product-card-alternative-button {
     display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .giz-product-card__content__top,
+    .giz-product-card:hover .giz-product-card__content__top:has(.giz-peek) {
+        transform: none;
+        transition: none;
+    }
+
+    .giz-product-card__hover-overlay {
+        transform: none;
+        opacity: 0;
+    }
+
+    .giz-product-card:hover .giz-product-card__hover-overlay:has(.giz-peek) { opacity: 1; }
 }

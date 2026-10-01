@@ -146,6 +146,8 @@ $ac-plate: rgba(var(--giz-scrim-rgb), 0.86);                       // plate and 
             filter: brightness(0.7) saturate(0.9);
         }
 
+        .giz-app-card__content__details { opacity: 0; }
+
         .giz-app-card__content__image__hovered {
             background: linear-gradient(180deg, rgba(var(--giz-scrim-rgb), 0.28), rgba(var(--giz-scrim-rgb), 0.5));
 
@@ -202,12 +204,13 @@ $ac-plate: rgba(var(--giz-scrim-rgb), 0.86);                       // plate and 
     }
 }
 
-// Launch overlay
+// Launch overlay. The title plate fades out on hover while the category row shows at the top,
+// so the shortcuts keep the same room at the top and the bottom and sit in the card's middle.
 .giz-app-card__content__image__hovered {
     position: absolute;
     inset: 0;
     z-index: 4;
-    padding: $ac-pad $ac-pad calc(#{$ac-pad} * 2 + 4.4rem);
+    padding: calc(#{$ac-pad} * 2 + 3rem) $ac-pad;
     background: transparent;
     transition: background 0.22s ease;
     overflow: hidden;
@@ -302,7 +305,6 @@ $ac-plate: rgba(var(--giz-scrim-rgb), 0.86);                       // plate and 
             .giz-universal-executable-progress-bar {
                 --giz-exe-ring-colour: var(--giz-on-accent);
                 --giz-exe-ring-track: rgba(var(--giz-black-rgb), 0.2);
-                filter: none;
             }
         }
 

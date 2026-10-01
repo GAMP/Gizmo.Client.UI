@@ -6,7 +6,10 @@
         <button class="giz-user-menu-button" @onclick="(args) => OnClick.InvokeAsync(args)" @onclick:stopPropagation="true">
             <HeaderUserMenuUserAvatar />
         </button>
-        <LadderAvatarRing />
+        @if (ClientFeatures.Ladder)
+        {
+            <LadderAvatarRing />
+        }
     </span>
     <MenuUserLinks />
 </div>

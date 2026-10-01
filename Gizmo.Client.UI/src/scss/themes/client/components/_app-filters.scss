@@ -1,48 +1,275 @@
-.giz-apps-filters {
+//============= App filters ===============//
+
+// The catalogue's filters as three pills off the top bar - each names its filter and shows
+// its value, and opens a menu of its own with rows big enough to hit.
+.giz-app-filters {
+    flex: 1;
+    min-width: 0;
     display: flex;
-    align-items: flex-end;
-    gap: 0.8rem;
-    margin-left: auto;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.2rem 2rem;
 
-    // .giz-input-control matches the specificity of the input's own theme rules.
-    .giz-input-control .giz-input-root {
-        background-color: var(--giz-glass-5);
+    &__title {
+        padding-left: 1.2rem;
+        border-left: 3px solid var(--giz-accent);
+        color: var(--giz-text-1);
+        letter-spacing: 0.02em;
+        @include font-h5-theme-client($font-weight-bold-theme-client);
+    }
+
+    &__search {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+    }
+
+    &__search-label {
+        font-size: 1.6rem;
         color: var(--giz-text-2);
+    }
 
-        input {
+    &__search-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        height: 3.6rem;
+        padding: 0 1.2rem 0 1.6rem;
+        border: 0;
+        border-radius: $giz-r-pill;
+        background: rgba(var(--giz-accent-rgb), 0.16);
+        box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.4);
+        color: var(--giz-text-1);
+        font-family: $font-family-header-theme-client;
+        font-size: 1.5rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.15s;
+
+        i {
+            font-size: 1.3rem;
             color: var(--giz-text-2);
         }
 
-        svg {
-            color: var(--giz-text-3);
+        &:hover { background: rgba(var(--giz-accent-rgb), 0.24); }
+    }
+
+    &__bar {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+    }
+
+    &__reset {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        height: 4.8rem;
+        padding: 0 1.4rem;
+        border: 0;
+        border-radius: 1.4rem;
+        background: none;
+        color: var(--giz-text-2);
+        font-family: $font-family-header-theme-client;
+        font-size: 1.4rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+
+        i { font-size: 1.6rem; }
+
+        &:hover {
+            background: var(--giz-glass-5);
+            color: var(--giz-text-1);
         }
     }
 
-    .giz-input-control .giz-input-root--outline {
-        background: var(--giz-glass-5);
-        border: 1px solid var(--giz-glass-9);
-        border-radius: 2rem;
-
-        &:hover {
-            background: var(--giz-glass-8);
-            border: 1px solid var(--giz-glass-12);
-
-            &.giz-input-root--small { padding: 0.8rem 1.3rem; }
-        }
-
-        &:focus-within {
-            background: var(--giz-glass-7);
-            border: 1px solid rgba(var(--giz-accent-rgb), 0.4);
-            box-shadow: 0 0 0 1px rgba(var(--giz-accent-rgb), 0.08);
-
-            &.giz-input-root--small { padding: 0.8rem 1.3rem; }
-        }
+    // A click anywhere else closes the open menu.
+    &__scrim {
+        position: fixed;
+        inset: 0;
+        z-index: 20;
     }
 }
 
-.giz-select.app-filter--default,
-.giz-multi-select.app-filter--default {
-    .giz-input-root {
-        opacity: 0.75;
+.giz-app-filter {
+    position: relative;
+
+    &__button {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        height: 4.8rem;
+        box-sizing: border-box;
+        padding: 0 1.2rem 0 1.4rem;
+        border: 1px solid var(--giz-glass-9);
+        border-radius: 1.4rem;
+        background:
+            linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-2)),
+            rgba(var(--giz-scrim-rgb), 0.35);
+        box-shadow: inset 0 1px 0 var(--giz-glass-12);
+        color: var(--giz-text-1);
+        font-family: inherit;
+        text-align: left;
+        cursor: pointer;
+        transition: border-color 0.15s, background 0.15s;
+
+        &:hover { border-color: var(--giz-glass-12); }
     }
+
+    &__icon {
+        font-size: 1.8rem;
+        color: var(--giz-text-3);
+    }
+
+    &__text {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+
+        small {
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--giz-text-3);
+        }
+
+        b {
+            max-width: 22rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-family: $font-family-header-theme-client;
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: var(--giz-text-1);
+        }
+    }
+
+    &__caret {
+        margin-left: 0.2rem;
+        font-size: 1.3rem;
+        color: var(--giz-text-3);
+        transition: transform 0.2s;
+    }
+
+    &--set &__button {
+        border-color: rgba(var(--giz-accent-rgb), 0.45);
+        background:
+            linear-gradient(180deg, rgba(var(--giz-accent-rgb), 0.2), rgba(var(--giz-accent-rgb), 0.08)),
+            rgba(var(--giz-scrim-rgb), 0.35);
+    }
+
+    &--set &__icon { color: var(--giz-accent-soft); }
+
+    &--open &__button { border-color: rgba(var(--giz-accent-rgb), 0.6); }
+
+    &--open &__caret { transform: rotate(180deg); }
+
+    &__menu {
+        position: absolute;
+        top: calc(100% + 0.8rem);
+        right: 0;
+        z-index: 21;
+        min-width: 100%;
+        width: max-content;
+        max-width: 60rem;
+        max-height: 48rem;
+        overflow-y: auto;
+        box-sizing: border-box;
+        padding: 0.6rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+        border: 1px solid var(--giz-glass-9);
+        border-radius: 1.8rem;
+        background:
+            linear-gradient(180deg, var(--giz-glass-5), var(--giz-glass-1)),
+            linear-gradient(180deg, rgb(var(--giz-glass-rgb)), rgb(var(--giz-glass-2-rgb)));
+        box-shadow:
+            inset 0 1px 0 var(--giz-glass-12),
+            0 2.4rem 5rem -1.6rem rgba(var(--giz-black-rgb), 0.85);
+        scrollbar-width: thin;
+        scrollbar-color: var(--giz-glass-10) transparent;
+        transform-origin: top right;
+        animation: giz-app-filter-open 0.2s cubic-bezier(0.2, 0, 0, 1) both;
+
+        // Many categories lie in two columns instead of one long list.
+        &--grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(18rem, 1fr));
+        }
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.6rem;
+        min-height: 4.4rem;
+        padding: 0 1.2rem 0 1.4rem;
+        border: 0;
+        border-radius: 1.2rem;
+        background: none;
+        color: var(--giz-text-2);
+        font-family: $font-family-header-theme-client;
+        font-size: 1.45rem;
+        font-weight: 600;
+        white-space: nowrap;
+        text-align: left;
+        cursor: pointer;
+        transition: background 0.12s, color 0.12s;
+
+        &:hover {
+            background: var(--giz-glass-6);
+            color: var(--giz-text-1);
+        }
+
+        &--on {
+            background: rgba(var(--giz-accent-rgb), 0.14);
+            color: var(--giz-text-1);
+        }
+
+        &--check { justify-content: flex-start; }
+    }
+
+    &__tick {
+        font-size: 1.5rem;
+        color: var(--giz-accent-soft);
+        opacity: 0;
+    }
+
+    &__item--on &__tick { opacity: 1; }
+
+    &__box {
+        flex: none;
+        width: 2.2rem;
+        height: 2.2rem;
+        display: grid;
+        place-items: center;
+        border-radius: 0.6rem;
+        box-shadow: inset 0 0 0 1.5px var(--giz-glass-12);
+        color: transparent;
+        font-size: 1.3rem;
+        transition: background 0.12s, color 0.12s, box-shadow 0.12s;
+    }
+
+    &__item--on &__box {
+        background: var(--giz-action-bg);
+        box-shadow: none;
+        color: var(--giz-action-ink);
+    }
+}
+
+@keyframes giz-app-filter-open {
+    from { opacity: 0; transform: translateY(-0.6rem) scale(0.98); }
+    to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .giz-app-filter__menu { animation: none; }
 }

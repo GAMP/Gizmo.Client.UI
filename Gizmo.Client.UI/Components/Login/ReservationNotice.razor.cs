@@ -14,5 +14,12 @@ namespace Gizmo.Client.UI.Components
 
         [Parameter]
         public string? Message { get; set; }
+
+        [Parameter]
+        public bool IsBlocking { get; set; }
+
+        private string ClassName => IsBlocking
+            ? "giz-login-reserved giz-login-reserved--block"
+            : "giz-login-reserved";
     }
 }

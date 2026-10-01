@@ -11,7 +11,13 @@
                             <AppFilters />
                         </div>
                         <div class="giz-section__body">
-                            @if (ViewState.Applications.Any())
+                            @if (IsLoading)
+                            {
+                                <div class="giz-page-loader">
+                                    <span class="giz-loader giz-loader--large"></span>
+                                </div>
+                            }
+                            else if (ViewState.Applications.Any())
                             {
                                 <ApplicationVirtualizedCards Items="ViewState.Applications" ColumnsCount="ClientInterfaceOptions.CurrentValue.AppsPageMaxItemsPerRow" />
                             }

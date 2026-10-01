@@ -71,8 +71,13 @@ namespace Gizmo.Client.UI.Shared
 
         private string BalanceText => UserBalanceViewState.Balance.ToString("C", CultureInfo.CurrentCulture);
 
-        private string FiguresHiddenText =>
-            LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_IS_HIDDEN));
+        private string RootClass => _figuresHidden ? "giz-root giz-root--figures-hidden" : "giz-root";
+
+        private string HudClass => _figuresHidden ? "giz-top-bar__hud giz-top-bar__hud--hidden" : "giz-top-bar__hud";
+
+        private string HudTitle => _figuresHidden
+            ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_IS_HIDDEN))
+            : null;
 
         private string FiguresToggleLabel =>
             GrafitLocalization.GetString(_figuresHidden ? GrafitResourceKeys.SHELL_BALANCE_SHOW : GrafitResourceKeys.SHELL_BALANCE_HIDE);

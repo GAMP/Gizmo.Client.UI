@@ -152,11 +152,13 @@ namespace Gizmo.Client.UI.Components
                     switch (way.Kind)
                     {
                         case PayWayKind.Balance:
-                            cells.Add(new PaySegment(way.Kind, way, way.Name, Money(Balance), false, WayIsShort(way), IsSelected(way)));
+                            cells.Add(new PaySegment(way.Kind, way, way.Name,
+                                GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_ON_ACCOUNT, Money(Balance)), false, WayIsShort(way), IsSelected(way)));
                             break;
 
                         case PayWayKind.Points:
-                            cells.Add(new PaySegment(way.Kind, way, way.Name, Points(PointsBalance), true, WayIsShort(way), IsSelected(way)));
+                            cells.Add(new PaySegment(way.Kind, way, way.Name,
+                                GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_YOU_HAVE, Points(PointsBalance)), true, WayIsShort(way), IsSelected(way)));
                             break;
 
                         case PayWayKind.Counter when !CounterIsGrouped:

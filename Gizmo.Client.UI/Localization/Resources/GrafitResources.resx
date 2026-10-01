@@ -132,9 +132,6 @@
   <data name="SHELL_HOME_TIME_PACKAGES" xml:space="preserve">
     <value>Time packages</value>
   </data>
-  <data name="SHELL_HOME_NO_PACKAGES" xml:space="preserve">
-    <value>No packages are available to buy right now</value>
-  </data>
   <data name="SHELL_HOME_BAR" xml:space="preserve">
     <value>Bar</value>
   </data>
@@ -269,9 +266,6 @@
     <value>{0:N0} point|{0:N0} points</value>
     <comment>Plural forms separated by '|': one|few|many in Russian, one|two|few|other in Slovenian, one|other elsewhere. {0} is the count.</comment>
   </data>
-  <data name="SHELL_LOGIN_PIN_PLACEHOLDER" xml:space="preserve">
-    <value>code from your confirmation</value>
-  </data>
   <data name="SHELL_RESV_PC_RESERVED" xml:space="preserve">
     <value>This PC is reserved</value>
   </data>
@@ -299,29 +293,17 @@
   <data name="SHELL_RESV_ENTER_CODE" xml:space="preserve">
     <value>Enter the code</value>
   </data>
-  <data name="SHELL_GRACE_RESERVED_AT" xml:space="preserve">
-    <value>This machine is reserved from {0}. </value>
-  </data>
   <data name="SHELL_GRACE_RESERVED_HINT" xml:space="preserve">
-    <value>If the reservation is yours, enter its code. If it is not, please ask the staff.</value>
+    <value>Please enter the reservation code, or end the session or contact the administrator.</value>
   </data>
   <data name="SHELL_GRACE_CONFIRMED" xml:space="preserve">
     <value>Reservation confirmed</value>
   </data>
-  <data name="SHELL_GRACE_CONFIRMED_UNPAID" xml:space="preserve">
-    <value>The reservation is confirmed but still needs paying for.</value>
-  </data>
   <data name="SHELL_GRACE_PIN_LABEL" xml:space="preserve">
     <value>Reservation code</value>
   </data>
-  <data name="SHELL_GRACE_TIME_LEFT" xml:space="preserve">
-    <value>Time before sign-out</value>
-  </data>
   <data name="SHELL_GRACE_TIME_UP" xml:space="preserve">
     <value>Your time is up</value>
-  </data>
-  <data name="SHELL_GRACE_TIME_UP_MESSAGE" xml:space="preserve">
-    <value>The session is still running. Top up to carry on from where you left off - nothing is lost.</value>
   </data>
   <data name="SHELL_GRACE_TOP_UP_ACCOUNT" xml:space="preserve">
     <value>Top up the account</value>
@@ -330,10 +312,10 @@
     <value>Confirm</value>
   </data>
   <data name="SHELL_GRACE_PIN_WRONG" xml:space="preserve">
-    <value>That code did not work. Check it in your reservation confirmation.</value>
+    <value>Wrong code — try again</value>
   </data>
   <data name="SHELL_GRACE_PIN_FAILED" xml:space="preserve">
-    <value>The code could not be checked. Please try again.</value>
+    <value>Couldn't check the code — try again</value>
   </data>
   <data name="SHELL_DEPLOY_TITLE" xml:space="preserve">
     <value>Deploying</value>
@@ -467,14 +449,6 @@
   <data name="SHELL_PD_EXPIRES_AT_LOGOUT" xml:space="preserve">
     <value>Expires on sign-out</value>
   </data>
-  <data name="SHELL_BALANCE_HIDE" xml:space="preserve">
-    <value>Hide balance</value>
-    <comment>Top bar eye button: hides time, points and money on a shared screen.</comment>
-  </data>
-  <data name="SHELL_BALANCE_SHOW" xml:space="preserve">
-    <value>Show balance</value>
-    <comment>Top bar eye button while the figures are hidden.</comment>
-  </data>
   <data name="SHELL_NOTIFICATIONS_CLOSE_ALL" xml:space="preserve">
     <value>Close all</value>
     <comment>Notification window header, shown from two notifications up.</comment>
@@ -487,12 +461,287 @@
     <value>Your progress</value>
     <comment>Caption of the progress tile on the home board.</comment>
   </data>
-  <data name="SHELL_PROGRESS_MORE" xml:space="preserve">
-    <value>My progress</value>
-    <comment>Button on the home progress tile, opens the Progress tab.</comment>
-  </data>
   <data name="SHELL_PROGRESS_OF" xml:space="preserve">
     <value>{0} of {1}</value>
     <comment>{0} done out of {1}, e.g. achievements 3 of 9.</comment>
+  </data>
+  <data name="SHELL_HERO_PREVIOUS" xml:space="preserve">
+    <value>Previous</value>
+    <comment>Arrow on the home hero: the previous news item / slide.</comment>
+  </data>
+  <data name="SHELL_HERO_NEXT" xml:space="preserve">
+    <value>Next</value>
+    <comment>Arrow on the home hero: the next news item / slide.</comment>
+  </data>
+  <data name="SHELL_HANDOVER_NOW_PLAYING" xml:space="preserve">
+    <value>Playing now</value>
+  </data>
+  <data name="SHELL_HANDOVER_RESERVATION" xml:space="preserve">
+    <value>Reservation</value>
+  </data>
+  <data name="SHELL_HANDOVER_YOURS" xml:space="preserve">
+    <value>Your reservation</value>
+  </data>
+  <data name="SHELL_HANDOVER_UNTIL" xml:space="preserve">
+    <value>until sign-out</value>
+    <comment>Caption under the countdown on the reservation lock screen.</comment>
+  </data>
+  <data name="SHELL_HANDOVER_DUE" xml:space="preserve">
+    <value>To pay</value>
+  </data>
+  <data name="SHELL_HANDOVER_PAY_TITLE" xml:space="preserve">
+    <value>The reservation is waiting for payment</value>
+  </data>
+  <data name="SHELL_HANDOVER_PAY_HINT" xml:space="preserve">
+    <value>The code is right. Pay for the reservation and the session carries on.</value>
+  </data>
+  <data name="SHELL_HANDOVER_DONE_TITLE" xml:space="preserve">
+    <value>All set</value>
+  </data>
+  <data name="SHELL_HANDOVER_DONE_HINT" xml:space="preserve">
+    <value>The session carries on without a break.</value>
+  </data>
+  <data name="SHELL_LOCK_TIME_LEFT" xml:space="preserve">
+    <value>Time left</value>
+  </data>
+  <data name="SHELL_UNIT_HOURS" xml:space="preserve">
+    <value>h</value>
+    <comment>Unit after a big number of hours on the lock screen.</comment>
+  </data>
+  <data name="SHELL_UNIT_MINUTES" xml:space="preserve">
+    <value>min</value>
+    <comment>Unit after a big number of minutes on the lock screen.</comment>
+  </data>
+  <data name="SHELL_LOCK_ENOUGH_UNTIL" xml:space="preserve">
+    <value>Lasts until {0}</value>
+    <comment>{0} is a clock time: when the time left runs out.</comment>
+  </data>
+  <data name="SHELL_LOCK_SET_TITLE" xml:space="preserve">
+    <value>Choose a PIN</value>
+  </data>
+  <data name="SHELL_LOCK_SET_HINT" xml:space="preserve">
+    <value>4 digits to get back to this PC</value>
+  </data>
+  <data name="SHELL_LOCK_LOCKED" xml:space="preserve">
+    <value>This PC is locked</value>
+  </data>
+  <data name="SHELL_LOCK_LOCK" xml:space="preserve">
+    <value>Lock</value>
+  </data>
+  <data name="SHELL_LOCK_UNLOCK" xml:space="preserve">
+    <value>Unlock</value>
+  </data>
+  <data name="SHELL_LOCK_ERASE" xml:space="preserve">
+    <value>Erase</value>
+  </data>
+  <data name="SHELL_SIGNUP_KICK" xml:space="preserve">
+    <value>Sign up</value>
+  </data>
+  <data name="SHELL_SIGNUP_TITLE" xml:space="preserve">
+    <value>Let's get acquainted</value>
+  </data>
+  <data name="SHELL_SIGNUP_CARD" xml:space="preserve">
+    <value>Player card</value>
+  </data>
+  <data name="SHELL_SIGNUP_NICK_PLACEHOLDER" xml:space="preserve">
+    <value>your nickname</value>
+  </data>
+  <data name="SHELL_SIGNUP_SINCE" xml:space="preserve">
+    <value>member since {0}</value>
+    <comment>{0} is today's date on the player card.</comment>
+  </data>
+  <data name="SHELL_SIGNUP_STEP_VERIFY" xml:space="preserve">
+    <value>Verification</value>
+  </data>
+  <data name="SHELL_SIGNUP_STEP_ACCOUNT" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="SHELL_SIGNUP_STEP_ABOUT" xml:space="preserve">
+    <value>About you</value>
+  </data>
+  <data name="SHELL_LOGIN_TITLE" xml:space="preserve">
+    <value>Sign in</value>
+  </data>
+  <data name="SHELL_LOGIN_HELLO" xml:space="preserve">
+    <value>Hi, {0}</value>
+    <comment>{0} is the username typed on the first step.</comment>
+  </data>
+  <data name="SHELL_LOGIN_PASSWORD_TITLE" xml:space="preserve">
+    <value>Enter your password</value>
+  </data>
+  <data name="SHELL_LOGIN_NOT_YOU" xml:space="preserve">
+    <value>Not you?</value>
+  </data>
+  <data name="SHELL_LOGIN_CHANGE" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="SHELL_LOGIN_BY_QR" xml:space="preserve">
+    <value>Sign in with QR</value>
+  </data>
+  <data name="SHELL_LOGIN_BY_NAME" xml:space="preserve">
+    <value>Sign in with name or phone</value>
+  </data>
+  <data name="SHELL_LOGIN_NEXT" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="SHELL_HANDOVER_LOGOUT" xml:space="preserve">
+    <value>Sign out now</value>
+  </data>
+  <data name="SHELL_NEWS_TITLE" xml:space="preserve">
+    <value>News</value>
+    <comment>The top bar news button, shown when the home page is switched off.</comment>
+  </data>
+  <data name="SHELL_FILTERS_ALL" xml:space="preserve">
+    <value>All</value>
+    <comment>The first category chip in the catalogue: no category filter.</comment>
+  </data>
+  <data name="SHELL_FILTERS_RESET" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="SHELL_SIGNUP_HINT" xml:space="preserve">
+    <value>A couple of steps and your player card is ready</value>
+  </data>
+  <data name="SHELL_SIGNUP_NAME_PLACEHOLDER" xml:space="preserve">
+    <value>First and last name</value>
+  </data>
+  <data name="SHELL_FILTERS_SORT" xml:space="preserve">
+    <value>Sort</value>
+  </data>
+  <data name="SHELL_FILTERS_CATEGORY" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="SHELL_FILTERS_MODE" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="SHELL_FILTERS_ANY" xml:space="preserve">
+    <value>Any</value>
+  </data>
+  <data name="SHELL_FILTERS_SELECTED" xml:space="preserve">
+    <value>{0} selected</value>
+    <comment>{0} is how many play modes are ticked.</comment>
+  </data>
+  <data name="SHELL_SIGNUP_STEP_DONE" xml:space="preserve">
+    <value>Done</value>
+    <comment>Last registration stage: the finish.</comment>
+  </data>
+  <data name="SHELL_SIGNUP_DONE_KICK" xml:space="preserve">
+    <value>Registration complete</value>
+    <comment>Small caption above the registration-complete title.</comment>
+  </data>
+  <data name="SHELL_SIGNUP_DONE_TITLE" xml:space="preserve">
+    <value>First level cleared!</value>
+    <comment>Registration-complete title, gamer tone.</comment>
+  </data>
+  <data name="SHELL_SIGNUP_DONE_SUB" xml:space="preserve">
+    <value>Your player card is ready. The lobby is waiting just for you.</value>
+    <comment>Line under the registration-complete title.</comment>
+  </data>
+  <data name="SHELL_SIGNUP_DONE_GO" xml:space="preserve">
+    <value>Get started</value>
+    <comment>Button that closes the registration-complete screen and opens sign-in.</comment>
+  </data>
+  <data name="SHELL_SERVER_ONLINE" xml:space="preserve">
+    <value>Online</value>
+    <comment>Sign-in screen status chip: connected to the club server.</comment>
+  </data>
+  <data name="SHELL_SERVER_OFFLINE" xml:space="preserve">
+    <value>No connection</value>
+    <comment>Sign-in screen status chip: no connection to the club server.</comment>
+  </data>
+  <data name="SHELL_HANDOVER_SAVE_PROGRESS" xml:space="preserve">
+    <value>Save your progress</value>
+    <comment>Caption over the games still running on the reservation screen.</comment>
+  </data>
+  <data name="SHELL_GRACE_UNTIL_LOGOUT" xml:space="preserve">
+    <value>until sign-out</value>
+    <comment>Under the countdown in the time-up ring.</comment>
+  </data>
+  <data name="SHELL_PEEK_DURATION" xml:space="preserve">
+    <value>Time</value>
+    <comment>Product hover: the package's play time.</comment>
+  </data>
+  <data name="SHELL_PEEK_BUY" xml:space="preserve">
+    <value>On sale</value>
+    <comment>Product hover: when the product can be bought.</comment>
+  </data>
+  <data name="SHELL_PEEK_PLAY" xml:space="preserve">
+    <value>Play</value>
+    <comment>Product hover: when a time package can be used.</comment>
+  </data>
+  <data name="SHELL_PEEK_EXPIRES" xml:space="preserve">
+    <value>Expires</value>
+    <comment>Product hover: when a time package expires.</comment>
+  </data>
+  <data name="SHELL_PEEK_CONTENTS" xml:space="preserve">
+    <value>In the set</value>
+    <comment>Product hover: caption over a bundle's contents.</comment>
+  </data>
+  <data name="SHELL_RESV_SHORT" xml:space="preserve">
+    <value>Reserved</value>
+    <comment>Lead of the top bar reservation tag once the reservation is close: "Reserved from 18:30 · in 12 min".</comment>
+  </data>
+  <data name="SHELL_CART_PAY_WITH" xml:space="preserve">
+    <value>Pay with</value>
+    <comment>Before the money/points switch of an open cart line.</comment>
+  </data>
+  <data name="SHELL_CART_EACH" xml:space="preserve">
+    <value>{0} each</value>
+    <comment>Unit price in an open cart line with more than one piece.</comment>
+  </data>
+  <data name="SHELL_CART_DISCOUNT" xml:space="preserve">
+    <value>discount {0}</value>
+    <comment>Beside the cart total when a promotion lowered it; {0} is the amount.</comment>
+  </data>
+  <data name="SHELL_CART_REMOVE" xml:space="preserve">
+    <value>Remove</value>
+    <comment>Tooltip of the bin that replaces the minus at one piece.</comment>
+  </data>
+  <data name="SHELL_PACK_UNIT_H" xml:space="preserve">
+    <value>h</value>
+    <comment>Small unit after the hours of a time package on the home rail ("3 h").</comment>
+  </data>
+  <data name="SHELL_PACK_UNIT_MIN" xml:space="preserve">
+    <value>min</value>
+    <comment>Small unit after the minutes of a short time package on the home rail.</comment>
+  </data>
+  <data name="SHELL_PACK_PER_HOUR" xml:space="preserve">
+    <value>{0}/h</value>
+    <comment>Price of an hour of a time package on the home rail; {0} is the money.</comment>
+  </data>
+  <data name="SHELL_HOME_YOUR_TIME" xml:space="preserve">
+    <value>Your time</value>
+    <comment>Caption over the queue of the customer's own time packages on the home pass.</comment>
+  </data>
+  <data name="SHELL_HOME_UNTIL" xml:space="preserve">
+    <value>until {0}</value>
+    <comment>Beside that caption: when the time runs out; {0} is a clock time.</comment>
+  </data>
+  <data name="SHELL_HOME_CALL_ADMIN" xml:space="preserve">
+    <value>Call an administrator</value>
+    <comment>Home pass button that opens the call-an-administrator form.</comment>
+  </data>
+  <data name="SHELL_HANDOVER_KEPT" xml:space="preserve">
+    <value>Stays on your account</value>
+    <comment>Over the time and balance in the player's tile of the reservation screen, when no game is running.</comment>
+  </data>
+  <data name="SHELL_DEPOSIT_FAILED_TITLE" xml:space="preserve">
+    <value>Payment didn't go through</value>
+    <comment>Top-up dialog when the server reports the payment declined, failed, expired or cancelled.</comment>
+  </data>
+  <data name="SHELL_DEPOSIT_FAILED_TEXT" xml:space="preserve">
+    <value>The bank declined it or the time ran out. Try again.</value>
+    <comment>Under that title.</comment>
+  </data>
+  <data name="SHELL_DEPOSIT_RETRY" xml:space="preserve">
+    <value>Try again</value>
+    <comment>The one button under a failed top-up: back to choosing the amount.</comment>
+  </data>
+  <data name="SHELL_BALANCE_HIDE" xml:space="preserve">
+    <value>Hide balance</value>
+    <comment>Top bar eye button: hides time, points and money on a shared screen.</comment>
+  </data>
+  <data name="SHELL_BALANCE_SHOW" xml:space="preserve">
+    <value>Show balance</value>
+    <comment>Top bar eye button while the figures are hidden.</comment>
   </data>
 </root>

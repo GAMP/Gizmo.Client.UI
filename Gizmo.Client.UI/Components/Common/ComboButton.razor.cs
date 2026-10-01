@@ -170,7 +170,6 @@ namespace Gizmo.Client.UI.Components
 		//{
 		//	if (!firstRender)
 		//	{
-		//		await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
 		//	}
 
 		//	await base.OnAfterRenderAsync(firstRender);

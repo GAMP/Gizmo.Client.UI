@@ -1,0 +1,697 @@
+//============= Cart ===============//
+
+// The order column of the shop and the product page. Lines are quiet rows (picture, count,
+// name, sum); the one being touched opens for its count and way of paying. The comment and
+// the promo code are two capsules until wanted, the total reads like the home balance.
+.giz-cart {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    height: 100%;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--giz-glass-9);
+    border-radius: 2rem;
+    background: linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-2));
+    backdrop-filter: blur(40px) saturate(1.6);
+    -webkit-backdrop-filter: blur(40px) saturate(1.6);
+    box-shadow:
+        inset 0 1px 0 var(--giz-glass-12),
+        0 24px 60px -34px rgba(var(--giz-black-rgb), 0.7);
+
+    &__head {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 2.2rem 2rem 1.4rem 2.4rem;
+    }
+
+    &__title {
+        font-family: $font-family-header-theme-client;
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        color: var(--giz-text-1);
+    }
+
+    &__count {
+        min-width: 2.6rem;
+        height: 2.6rem;
+        box-sizing: border-box;
+        padding: 0 0.8rem;
+        display: grid;
+        place-items: center;
+        border-radius: $giz-r-pill;
+        background: rgba(var(--giz-accent-rgb), 0.18);
+        color: var(--giz-accent-soft);
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.3rem;
+        font-weight: 700;
+    }
+
+    &__clear {
+        margin-left: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        height: 3.2rem;
+        padding: 0 1.1rem;
+        border: 0;
+        border-radius: 1rem;
+        background: none;
+        color: var(--giz-text-3);
+        font-family: inherit;
+        font-size: 1.3rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+
+        i { font-size: 1.6rem; }
+
+        &:hover {
+            background: rgba(var(--giz-danger-rgb), 0.12);
+            color: var(--giz-danger-soft);
+        }
+    }
+
+    &__items {
+        min-height: 0;
+        overflow-y: auto;
+        padding: 0.2rem 1.4rem 1.6rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    &__empty {
+        margin: auto;
+        padding: 2.4rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+        text-align: center;
+    }
+
+    &__empty-icon {
+        width: 7.2rem;
+        height: 7.2rem;
+        margin-bottom: 0.8rem;
+        display: grid;
+        place-items: center;
+        border-radius: 2.2rem;
+        background: var(--giz-glass-4);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-8);
+        font-size: 3rem;
+        color: var(--giz-text-3);
+    }
+
+    &__empty-title {
+        font-family: $font-family-header-theme-client;
+        font-size: 1.7rem;
+        font-weight: 700;
+        color: var(--giz-text-1);
+    }
+
+    &__empty-text {
+        font-size: 1.4rem;
+        color: var(--giz-text-3);
+    }
+
+    &__foot {
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+        padding: 1.8rem 2.4rem 2.4rem;
+        border-top: 1px solid var(--giz-glass-6);
+    }
+
+    // The comment and the promo code: capsules in one row; an open editor takes a row of its own.
+    &__extras {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        min-width: 0;
+    }
+
+    &__chip {
+        flex: none;
+        max-width: 100%;
+        min-width: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        height: 3.6rem;
+        box-sizing: border-box;
+        padding: 0 1.3rem;
+        border: 0;
+        border-radius: $giz-r-pill;
+        background: var(--giz-glass-4);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-7);
+        color: var(--giz-text-2);
+        font-family: inherit;
+        font-size: 1.3rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+
+        i {
+            flex: none;
+            font-size: 1.5rem;
+        }
+
+        span {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        &:hover {
+            background: var(--giz-glass-6);
+            color: var(--giz-text-1);
+        }
+
+        &--note { flex: 1 1 0; }
+
+        &--filled { color: var(--giz-text-1); }
+
+        &--ok,
+        &--ok:hover {
+            padding-right: 0.4rem;
+            background: rgba(var(--giz-success-green-rgb), 0.1);
+            box-shadow: inset 0 0 0 1px rgba(var(--giz-success-green-rgb), 0.3);
+            color: var(--giz-success-green);
+            cursor: default;
+        }
+    }
+
+    &__chip-code {
+        font-family: $font-family-numeric-theme-client;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    &__chip-drop {
+        flex: none;
+        width: 2.8rem;
+        height: 2.8rem;
+        display: grid;
+        place-items: center;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: none;
+        color: inherit;
+        font-size: 1.2rem;
+        opacity: 0.8;
+        cursor: pointer;
+        transition: background 0.15s, opacity 0.15s;
+
+        &:hover:not(:disabled) {
+            background: rgba(var(--giz-success-green-rgb), 0.16);
+            opacity: 1;
+        }
+
+        &:disabled {
+            opacity: 0.4;
+            cursor: default;
+        }
+    }
+
+    &__note {
+        position: relative;
+        flex: 1 0 100%;
+    }
+
+    &__note .giz-input-control .giz-input-root.giz-input-root--outline,
+    &__note .giz-input-control .giz-input-root.giz-input-root--outline:hover,
+    &__note .giz-input-control .giz-input-root.giz-input-root--outline:focus-within {
+        min-height: 6.4rem;
+        padding: 1rem 5rem 1rem 1.4rem;
+        border: 0;
+        border-radius: 1.4rem;
+        background: var(--giz-glass-3);
+        box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.5);
+
+        textarea {
+            color: var(--giz-text-1);
+            font-size: 1.4rem;
+
+            &::placeholder { color: var(--giz-text-3); }
+        }
+    }
+
+    &__note-done {
+        position: absolute;
+        right: 0.8rem;
+        bottom: 0.8rem;
+        width: 3.4rem;
+        height: 3.4rem;
+        display: grid;
+        place-items: center;
+        padding: 0;
+        border: 0;
+        border-radius: 1rem;
+        background: var(--giz-action-tonal-bg);
+        color: var(--giz-action-tonal-ink);
+        font-size: 1.5rem;
+        cursor: pointer;
+
+        &:hover { filter: brightness(1.12); }
+    }
+
+    &__note .giz-input-validation-label,
+    &__promo .giz-input-validation-label { display: none; }
+
+    // The promo code: a ticket, the field, the button inside one pill.
+    &__promo {
+        flex: 1 0 100%;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        height: 4.4rem;
+        padding: 0 0.4rem 0 1.4rem;
+        border-radius: 1.2rem;
+        background: var(--giz-glass-3);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-7);
+        transition: box-shadow 0.15s;
+
+        &:focus-within { box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.6); }
+
+        &--applied { box-shadow: inset 0 0 0 1px rgba(var(--giz-success-rgb), 0.55); }
+
+        &--refused { box-shadow: inset 0 0 0 1px rgba(var(--giz-danger-rgb), 0.5); }
+
+        > .giz-text-input {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .giz-input-control .giz-input-root.giz-input-root--outline,
+        .giz-input-control .giz-input-root.giz-input-root--outline:hover,
+        .giz-input-control .giz-input-root.giz-input-root--outline:focus-within {
+            height: 4.2rem;
+            padding: 0 0.6rem;
+            border: 0;
+            box-shadow: none;
+            background: none;
+        }
+
+        input {
+            color: var(--giz-text-1);
+            font-size: 1.4rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+
+            &::placeholder {
+                color: var(--giz-text-3);
+                font-weight: 500;
+                text-transform: none;
+                letter-spacing: 0;
+            }
+        }
+    }
+
+    &__promo-icon {
+        font-size: 1.8rem;
+        color: var(--giz-text-3);
+    }
+
+    &__promo--applied &__promo-icon { color: var(--giz-success); }
+
+    &__promo-apply,
+    &__promo-remove {
+        flex: none;
+        height: 3.6rem;
+        padding: 0 1.4rem;
+        border: 0;
+        border-radius: 0.9rem;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.3rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.15s, opacity 0.15s;
+
+        &:disabled {
+            opacity: 0.4;
+            cursor: default;
+        }
+    }
+
+    &__promo-apply {
+        background: var(--giz-action-tonal-bg);
+        color: var(--giz-action-tonal-ink);
+
+        &:hover:not(:disabled) { filter: brightness(1.12); }
+    }
+
+    &__promo-remove {
+        width: 3.6rem;
+        padding: 0;
+        background: none;
+        color: var(--giz-text-3);
+        font-size: 1.6rem;
+
+        &:hover:not(:disabled) {
+            background: rgba(var(--giz-danger-rgb), 0.12);
+            color: var(--giz-danger-soft);
+        }
+    }
+
+    &__promo-status {
+        margin-top: -0.8rem;
+        padding: 0 0.4rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--giz-danger-soft);
+    }
+
+    &__sum {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 1.2rem;
+    }
+
+    &__sum-main {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+    }
+
+    &__sum-label {
+        font-family: $font-family-header-theme-client;
+        font-size: 1.15rem;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--giz-text-3);
+    }
+
+    &__total {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 3.4rem;
+        font-weight: 700;
+        line-height: 0.95;
+        letter-spacing: -0.02em;
+        white-space: nowrap;
+        color: var(--giz-text-1);
+    }
+
+    &__plus {
+        font-size: 2rem;
+        color: var(--giz-text-3);
+    }
+
+    &__coin {
+        align-self: center;
+        font-size: 2.2rem;
+        color: var(--giz-points);
+    }
+
+    &__sum-meta {
+        flex: none;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.4rem;
+        padding-bottom: 0.2rem;
+    }
+
+    &__discount {
+        font-size: 1.25rem;
+        font-weight: 600;
+        white-space: nowrap;
+        color: var(--giz-success-green);
+    }
+
+    &__award {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--giz-points);
+
+        i { font-size: 1.4rem; }
+    }
+
+    &__go {
+        height: 5.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        border: 0;
+        border-radius: 1.6rem;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.6rem;
+        font-weight: 700;
+        cursor: pointer;
+        @include giz-action-primary;
+
+        i { font-size: 1.9rem; }
+
+        &:disabled {
+            @include giz-action-off;
+            cursor: default;
+        }
+    }
+}
+
+// One line of the order: the picture, the count, the name and the line's sum on one quiet
+// row. A click opens it for the count (the minus turns into the bin at one piece) and, when
+// the product takes money or points, the way of paying.
+.giz-cart-line {
+    flex: none;
+    padding: 0 1rem;
+    border-radius: 1.4rem;
+    transition: background 0.15s, box-shadow 0.15s;
+    animation: giz-cart-line-in 0.3s cubic-bezier(0.2, 0, 0, 1) backwards;
+
+    &:hover { background: var(--giz-glass-3); }
+
+    &--open,
+    &--open:hover {
+        padding-bottom: 1.2rem;
+        background: var(--giz-glass-4);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-7);
+    }
+
+    &__row {
+        display: grid;
+        grid-template-columns: 4rem auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 1.1rem;
+        height: 6rem;
+        cursor: pointer;
+        outline: none;
+
+        > .giz-wm-icart-loader { min-width: 0; }
+    }
+
+    &:has(.giz-cart-line__row:focus-visible) { box-shadow: inset 0 0 0 2px rgba(var(--giz-accent-rgb), 0.6); }
+
+    &__thumb {
+        width: 4rem;
+        height: 4rem;
+        overflow: hidden;
+        display: grid;
+        place-items: center;
+        border-radius: 1rem;
+        background: var(--giz-glass-5);
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        i {
+            font-size: 1.8rem;
+            color: var(--giz-text-3);
+        }
+    }
+
+    &__qty {
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.4rem;
+        font-weight: 700;
+        white-space: nowrap;
+        color: var(--giz-accent-soft);
+
+        &::after { content: '\00a0×'; }
+    }
+
+    &__name {
+        min-width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 1.45rem;
+        font-weight: 600;
+        color: var(--giz-text-1);
+    }
+
+    &__sum {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.5rem;
+        font-weight: 700;
+        white-space: nowrap;
+        color: var(--giz-text-1);
+    }
+
+    &__points {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+
+        i {
+            font-size: 1.4rem;
+            color: var(--giz-points);
+        }
+    }
+
+    &__more {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-left: 5.1rem;
+        animation: giz-cart-line-open 0.2s cubic-bezier(0.2, 0, 0, 1) backwards;
+    }
+
+    &__stepper {
+        flex: none;
+        display: inline-flex;
+        align-items: center;
+        height: 3.2rem;
+        padding: 0.2rem;
+        box-sizing: border-box;
+        border-radius: 1rem;
+        background: rgba(var(--giz-scrim-rgb), 0.3);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-7);
+    }
+
+    &__step {
+        width: 2.8rem;
+        height: 2.8rem;
+        display: grid;
+        place-items: center;
+        padding: 0;
+        border: 0;
+        border-radius: 0.8rem;
+        background: none;
+        color: var(--giz-text-2);
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+
+        &:hover:not(:disabled) {
+            background: var(--giz-glass-8);
+            color: var(--giz-text-1);
+        }
+
+        &--remove:hover:not(:disabled) {
+            background: rgba(var(--giz-danger-rgb), 0.16);
+            color: var(--giz-danger-soft);
+        }
+
+        &:disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+    }
+
+    &__count {
+        min-width: 2.4rem;
+        text-align: center;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--giz-text-1);
+    }
+
+    &__unit {
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.25rem;
+        font-weight: 600;
+        white-space: nowrap;
+        color: var(--giz-text-3);
+    }
+
+    // Money or points when the product takes either: two small segments, the chosen one lit.
+    &__pay {
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    &__pay-label {
+        font-size: 1.2rem;
+        white-space: nowrap;
+        color: var(--giz-text-3);
+    }
+
+    &__pay-ways {
+        display: inline-flex;
+        padding: 0.2rem;
+        border-radius: 1rem;
+        background: rgba(var(--giz-scrim-rgb), 0.3);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-7);
+    }
+
+    &__pay-way {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        height: 2.8rem;
+        padding: 0 0.9rem;
+        border: 0;
+        border-radius: 0.8rem;
+        background: none;
+        color: var(--giz-text-3);
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.3rem;
+        font-weight: 700;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+
+        i {
+            font-size: 1.3rem;
+            color: var(--giz-points);
+        }
+
+        &:hover { color: var(--giz-text-1); }
+
+        &--on {
+            background: var(--giz-glass-9);
+            color: var(--giz-text-1);
+        }
+    }
+}
+
+@keyframes giz-cart-line-in {
+    from { opacity: 0; translate: 0 0.8rem; }
+}
+
+@keyframes giz-cart-line-open {
+    from { opacity: 0; translate: 0 -0.4rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .giz-cart-line,
+    .giz-cart-line__more { animation: none; }
+}

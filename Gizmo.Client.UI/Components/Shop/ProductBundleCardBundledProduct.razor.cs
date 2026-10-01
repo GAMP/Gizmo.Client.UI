@@ -26,6 +26,12 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public decimal Quantity { get; set; }
 
+        private string IconClass => _product?.ProductType == Gizmo.Web.Api.Models.ProductType.ProductTime
+            ? "ph-bold ph-clock"
+            : "ph-bold ph-package";
+
+        private string QuantityText => "×" + Quantity.ToString("N0", System.Globalization.CultureInfo.CurrentCulture);
+
         protected override async Task OnInitializedAsync()
         {
             _product = await UserProductViewStateLookupService.GetStateAsync(ProductId);

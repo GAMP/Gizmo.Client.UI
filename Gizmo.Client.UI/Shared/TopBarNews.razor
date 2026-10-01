@@ -1,0 +1,62 @@
+﻿@namespace Gizmo.Client.UI.Shared
+@inherits ShellComponentBase
+
+@if (IsShown)
+{
+    <div class="@ButtonClass" data-tooltip="@TooltipText">
+        <button type="button" class="user-menu-item-button--box giz-news-button__icon" aria-label="@Label" @onclick="Toggle" @onclick:stopPropagation="true">
+            <i class="ph-fill ph-megaphone-simple giz-ph-icon"></i>
+        </button>
+        @if (_unseen)
+        {
+            <b class="giz-news-button__dot"></b>
+        }
+
+        @if (_open && Current is { } current)
+        {
+            <div class="giz-news-reader" @onclick:stopPropagation="true">
+                <div class="giz-news-reader__item">
+                    <AdsCarouselItem @key="@current.Id" AdvertisementId="@current.Id" SimpleMode="true" />
+                </div>
+
+                @if (Count > 1)
+                {
+                    <div class="giz-news-reader__foot">
+                        <span class="giz-news-reader__title">@Label</span>
+                        <div class="giz-news-reader__pager">
+                            <button type="button" class="giz-news-reader__arrow" aria-label="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HERO_PREVIOUS)" @onclick="Previous">
+                                <i class="ph-bold ph-caret-left"></i>
+                            </button>
+                            <span class="giz-news-reader__position">@PositionText</span>
+                            <button type="button" class="giz-news-reader__arrow" aria-label="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HERO_NEXT)" @onclick="Next">
+                                <i class="ph-bold ph-caret-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="giz-news-reader__list">
+                        @foreach (var item in Others)
+                        {
+                            <button type="button" class="giz-news-reader__row" @key="@item.Id" @onclick="@(() => Select(item.Id))">
+                                <span class="giz-news-reader__thumb">
+                                    @if (!string.IsNullOrEmpty(item.ThumbnailUrl))
+                                    {
+                                        <img src="@item.ThumbnailUrl" alt="" />
+                                    }
+                                    else
+                                    {
+                                        <i class="ph-fill ph-megaphone-simple"></i>
+                                    }
+                                </span>
+                                <span class="giz-news-reader__name">@item.Title</span>
+                            </button>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    @if (_open)
+    {
+        <div class="giz-news-reader-scrim" @onclick="Close"></div>
+    }
+}

@@ -1,4 +1,5 @@
 ﻿using Gizmo.Client.Options;
+using Gizmo.Client.UI.Localization.Resources;
 using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
@@ -8,6 +9,7 @@ using Gizmo.UI.Services;
 using Gizmo.Web.Api.Models;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -28,6 +30,8 @@ namespace Gizmo.Client.UI.Pages
         #region CONSTANTS
 
         private const int HERO_SLIDES = 5;
+        private const int HERO_NEWS_CEILING = 30;
+        private const int HERO_DOTS = 10;
         private const int HERO_EXECUTABLES = 3;
         private const int BAR_ITEMS = 4;
         private const int STRIP_APPS = 4;
@@ -58,6 +62,7 @@ namespace Gizmo.Client.UI.Pages
         [Inject] IOptionsMonitor<ClientInterfaceOptions> ClientInterfaceOptions { get; set; }
         [Inject] ILocalizationService LocalizationService { get; set; }
         [Inject] HomePageViewState ViewState { get; set; }
+        [Inject] ILogger<Home> Logger { get; set; }
         [Inject] UserBalanceViewState UserBalanceViewState { get; set; }
         [Inject] AdvertisementsViewState AdvertisementsViewState { get; set; }
         [Inject] ProductDetailsPageViewState ProductDetailsPageViewState { get; set; }
@@ -68,11 +73,6 @@ namespace Gizmo.Client.UI.Pages
         [Inject] ClientServerCartViewService CartService { get; set; }
         [Inject] UserCartViewService CheckoutService { get; set; }
         [Inject] NavigationService NavigationService { get; set; }
-        [Inject] UserLadderSummaryViewState LadderSummary { get; set; }
-        [Inject] UserChallengesViewState ChallengesViewState { get; set; }
-        [Inject] UserChallengesViewService ChallengesService { get; set; }
-        [Inject] UserAchievementsViewState AchievementsViewState { get; set; }
-        [Inject] UserAchievementsViewService AchievementsService { get; set; }
 
         #endregion
 
@@ -80,6 +80,59 @@ namespace Gizmo.Client.UI.Pages
 
         private IEnumerable<UserProductViewState> TimeProducts =>
             Purchasable(a => a.ProductType == ProductType.ProductTime).Take(PACKS_CEILING);
+
+        private sealed record PackRow(UserProductViewState Product, string Length, string Unit, string PerHourText);
+
+        private IReadOnlyList<PackRow> _packs = Array.Empty<PackRow>();
+
+        private IReadOnlyList<PackRow> Packs => _packs;
+
+        private void BuildPacks() => _packs = TimeProducts.Select(ToRow).ToList();
+
+        private void OnProductsChanged(object sender, EventArgs e) => BuildPacks();
+
+        private PackRow ToRow(UserProductViewState product)
+        {
+            var minutes = product.TimeProduct?.Minutes ?? 0;
+
+            string length = null;
+            var unit = string.Empty;
+
+            if (minutes > 0 && minutes < 60)
+            {
+                length = minutes.ToString(CultureInfo.CurrentCulture);
+                unit = GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PACK_UNIT_MIN);
+            }
+            else if (minutes >= 60)
+            {
+                var hours = minutes / 60m;
+                length = hours.ToString(hours == decimal.Truncate(hours) ? "0" : "0.#", CultureInfo.CurrentCulture);
+                unit = GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PACK_UNIT_H);
+            }
+
+            var perHour = minutes >= 60 && product.UnitPrice > 0
+                ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PACK_PER_HOUR,
+                    ShortMoney(Math.Round(product.UnitPrice / (minutes / 60m))))
+                : null;
+
+            return new PackRow(product, length, unit, perHour);
+        }
+
+        private string PriceRowClass(UserProductViewState product) => _buyingProductId == product.Id
+            ? "giz-home-prices__row giz-home-prices__row--busy"
+            : "giz-home-prices__row";
+
+        private string BuyText(UserProductViewState product) => GrafitLocalization.GetString(_buyingProductId == product.Id
+            ? GrafitResourceKeys.SHELL_GEN_WORKING
+            : GrafitResourceKeys.SHELL_GEN_BUY);
+
+        private bool HasSales => TimeProducts.Any() || BarProducts.Count > 0;
+
+        private string BoardClass => HasSales ? "giz-home-board" : "giz-home-board giz-home-board--bare";
+
+        private bool HasPoints => UserBalanceViewState.PointsBalance > 0;
+
+        private string PointsText => UserBalanceViewState.PointsBalance.ToString("N0", CultureInfo.CurrentCulture);
 
         private IEnumerable<UserProductViewState> ShopProducts =>
             Purchasable(a => a.ProductType != ProductType.ProductTime);
@@ -116,7 +169,7 @@ namespace Gizmo.Client.UI.Pages
             }
         }
 
-        private IReadOnlyList<AppViewState> StripApps => Apps.Take(STRIP_APPS).ToList();
+        private IReadOnlyList<AppViewState> StripApps => Apps.Take(HasSales ? STRIP_APPS : STRIP_APPS + 1).ToList();
 
         private IReadOnlyList<AppViewState> HeroApps
         {
@@ -211,6 +264,10 @@ namespace Gizmo.Client.UI.Pages
 
         private int SlideIndex => SlideCount > 0 ? _slide % SlideCount : 0;
 
+        private bool ShowSlideDots => SlideCount <= HERO_DOTS;
+
+        private string SlidePositionText => $"{SlideIndex + 1} / {SlideCount}";
+
         private AdvertisementViewState? CurrentBanner =>
             Hero == HeroKind.Banner && Banners.Count > 0 ? Banners[SlideIndex] : null;
 
@@ -222,7 +279,7 @@ namespace Gizmo.Client.UI.Pages
 
         private List<AdvertisementViewState> Banners =>
             AdvertisementsViewState.Advertisements
-                .Take(HERO_SLIDES)
+                .Take(HERO_NEWS_CEILING)
                 .ToList();
 
         private bool HasPromo => Banners.Count > 0;
@@ -269,22 +326,13 @@ namespace Gizmo.Client.UI.Pages
             NavigationService.NavigateTo(ClientRoutes.ApplicationDetailsRoute + $"?ApplicationId={applicationId}");
         }
 
-        private bool ProgressOn =>
-            LadderSummary.HasLevel || ChallengesViewState.Challenges.Any() || AchievementsViewState.Achievements.Any();
-
-        private void LoadProgress()
-        {
-            if (!ChallengesViewState.IsLoading)
-                DispatchWorkflow(() => ChallengesService.LoadAsync(_lifetime.Token));
-
-            if (!AchievementsViewState.IsLoading)
-                DispatchWorkflow(() => AchievementsService.LoadAsync(_lifetime.Token));
-        }
-
         private static bool IsPointsOnly(UserProductViewState product) =>
             product.UnitPrice == 0 && (product.UnitPointsPrice ?? 0) > 0;
 
         private static string Money(decimal amount) => amount.ToString("C", CultureInfo.CurrentCulture);
+
+        private static string ShortMoney(decimal amount) =>
+            amount.ToString(amount == decimal.Truncate(amount) ? "C0" : "C", CultureInfo.CurrentCulture);
 
         private static string PointsPrice(UserProductViewState product) =>
             product.UnitPointsPrice.GetValueOrDefault().ToString("N0", CultureInfo.CurrentCulture);
@@ -325,20 +373,29 @@ namespace Gizmo.Client.UI.Pages
 
         protected override void OnInitialized()
         {
+            BuildPacks();
+            ViewState.OnChange += OnProductsChanged;
             this.SubscribeChange(ViewState);
             this.SubscribeChange(UserBalanceViewState);
             this.SubscribeChange(AdvertisementsViewState);
-            this.SubscribeChange(LadderSummary);
-            this.SubscribeChange(ChallengesViewState);
-            this.SubscribeChange(AchievementsViewState);
-
-            LoadProgress();
-
             ShellActivity.Changed += OnActivityChanged;
 
             ApplySlideTimer();
 
             base.OnInitialized();
+        }
+
+        private void PreviousSlide() => StepSlide(SlideCount - 1);
+
+        private void NextSlide() => StepSlide(1);
+
+        private void StepSlide(int step)
+        {
+            if (SlideCount < 2)
+                return;
+
+            _slide = SlideIndex + step;
+            _slideTimer?.Change(SLIDE_INTERVAL, SLIDE_INTERVAL);
         }
 
         private void ApplySlideTimer()
@@ -378,17 +435,21 @@ namespace Gizmo.Client.UI.Pages
             {
                 _catalogue = await ProductLookupService.GetFilteredStatesAsync(null);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                Logger.LogError(exception, "Could not load the product catalogue for the home page.");
                 _catalogue = Enumerable.Empty<UserProductViewState>();
             }
+
+            BuildPacks();
 
             try
             {
                 _apps = await AppLookupService.GetFilteredStatesAsync();
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                Logger.LogError(exception, "Could not load the applications for the home page.");
                 _apps = Enumerable.Empty<AppViewState>();
             }
 
@@ -404,12 +465,10 @@ namespace Gizmo.Client.UI.Pages
             _slideTimer?.Dispose();
             _slideTimer = null;
 
-            this.UnsubscribeChange(AchievementsViewState);
-            this.UnsubscribeChange(ChallengesViewState);
-            this.UnsubscribeChange(LadderSummary);
             this.UnsubscribeChange(AdvertisementsViewState);
             this.UnsubscribeChange(UserBalanceViewState);
             this.UnsubscribeChange(ViewState);
+            ViewState.OnChange -= OnProductsChanged;
 
             base.Dispose();
         }

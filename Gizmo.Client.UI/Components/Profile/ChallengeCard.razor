@@ -13,59 +13,83 @@
     </ProfileCardPopup>
 
     <div class="giz-challenge-card__top">
-        <div class="giz-challenge-card__art"><i class="ph-fill @ArtIcon"></i></div>
         <div class="giz-challenge-card__head">
-            <div class="giz-challenge-card__name">@Item.Name</div>
-            @if (!string.IsNullOrEmpty(Item.WindowText))
+            <div class="giz-challenge-card__name">
+                @if (Item.IsDone)
+                {
+                    <i class="ph-bold ph-check giz-challenge-card__done"></i>
+                }
+                <span>@Item.Name</span>
+            </div>
+            @if (!string.IsNullOrEmpty(Item.CountText))
             {
-                <div class="@WindowClass">@Item.WindowText</div>
+                <span class="giz-challenge-card__count">@Item.CountText</span>
             }
         </div>
-        @if (!string.IsNullOrEmpty(Item.CountText))
+        @if (ShowMeta)
         {
-            <div class="giz-challenge-card__count-pill">@Item.CountText</div>
+            <div class="giz-challenge-card__meta">
+                @if (!string.IsNullOrEmpty(Item.WindowText))
+                {
+                    <span class="@WindowClass">@Item.WindowText</span>
+                }
+                @if (ShowStateChip)
+                {
+                    <span class="giz-challenge-card__chip">@Item.ChipText</span>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="giz-challenge-card__tally">
+        @if (Item.Requirements.Count > 0)
+        {
+            <div class="giz-challenge-card__segments">
+                @foreach (var requirement in Item.Requirements)
+                {
+                    <span class="@SegmentClass(requirement)"></span>
+                }
+            </div>
+        }
+        else
+        {
+            @if (Item.ShowProgressBar)
+            {
+                <div class="giz-challenge-card__progress" style="--giz-ring-progress: @ProgressValue">
+                    <div class="giz-challenge-card__progress-fill"></div>
+                </div>
+            }
+            <span class="giz-challenge-card__requirements">@Item.RequirementsText</span>
         }
     </div>
 
     @if (Item.Requirements.Count > 0)
     {
-        <div class="giz-challenge-card__segments">
+        <ul class="giz-challenge-card__checklist">
             @foreach (var requirement in Item.Requirements)
             {
-                <span class="@SegmentClass(requirement)"></span>
+                <li class="@RequirementClass(requirement)">
+                    <i class="@RequirementIcon(requirement)"></i>
+                    <span>@requirement.Name</span>
+                </li>
+            }
+        </ul>
+    }
+
+    @if (HasRewards)
+    {
+        <div class="giz-challenge-card__foot">
+            @foreach (var reward in Item.Rewards)
+            {
+                <div class="giz-challenge-card__reward">
+                    <i class="@RewardIcon(reward)"></i>
+                    <b>@reward.Text</b>
+                    @if (!string.IsNullOrEmpty(reward.StatusText))
+                    {
+                        <small>@reward.StatusText</small>
+                    }
+                </div>
             }
         </div>
     }
-    else if (Item.ShowProgressBar)
-    {
-        <div class="giz-challenge-card__progress" style="--giz-ring-progress: @ProgressValue">
-            <div class="giz-challenge-card__progress-fill"></div>
-        </div>
-    }
-
-    <div class="giz-challenge-card__requirements">
-        @if (NextRequirement is not null)
-        {
-            <b>@NextRequirement.Name</b>
-        }
-        <span>@Item.RequirementsText</span>
-    </div>
-
-    <div class="giz-challenge-card__foot">
-        @if (Item.HasChip)
-        {
-            <span class="@ChipClass">@Item.ChipText</span>
-        }
-        @foreach (var reward in Item.Rewards)
-        {
-            <span class="giz-challenge-card__reward">
-                <i class="ph-fill @RewardIcon(reward)"></i>
-                <span>@reward.Text</span>
-                @if (!string.IsNullOrEmpty(reward.StatusText))
-                {
-                    <small>@reward.StatusText</small>
-                }
-            </span>
-        }
-    </div>
 </div>

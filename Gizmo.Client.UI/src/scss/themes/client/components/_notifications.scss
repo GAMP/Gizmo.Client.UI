@@ -1,14 +1,21 @@
 //============= Notifications ===============//
 
+// The notification window is a transparent WebView of its own over the desktop: only the
+// cards may paint, never the page's atmosphere.
+html:has(.giz-notifications),
+html:has(.giz-notifications) body {
+    background: transparent;
+}
+
 .giz-notifications {
     position: fixed;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 46rem;
+    width: 52rem;
     max-height: 74rem;
     box-sizing: border-box;
-    padding: 1.6rem 1.2rem;
+    padding: 1.6rem 2rem 0;
     display: block;
     background: transparent;
     z-index: 600;
@@ -23,24 +30,14 @@
     }
 
     // Always rendered and always the same height (the host sizes its window from the
-    // first measurement plus each new card), the close button only from two cards up.
-    &__header {
+    // first measurement plus each new card), the button only from two cards up.
+    &__footer {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
+        align-items: flex-start;
+        justify-content: center;
         box-sizing: border-box;
-        min-height: 4.4rem;
-        margin: 0 0 1rem;
-        padding: 0.6rem 0.6rem 0.6rem 1.6rem;
-        border-radius: $giz-r-pill;
-        background: rgba(var(--giz-scrim-rgb), 0.72);
-        font-family: $font-family-header-theme-client;
-        font-size: 1.2rem;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--giz-text-2);
+        height: 5.2rem;
+        padding-top: 0.2rem;
     }
 
     &__body {
@@ -74,57 +71,48 @@ $nt-ink:   var(--giz-ink);
 $nt-ink-2: var(--giz-text-2);
 $nt-ink-3: var(--giz-text-3);
 
+// The top bar's own glass, opaque: the window floats over games and cannot blur them.
+// No outer shadow - the slide wrapper clips everything outside the card to a rectangle.
 @mixin notification-card {
-    --nt-rgb: var(--giz-accent-rgb);
-    --nt-soft: var(--giz-accent-soft);
+    --nt-rgb: var(--giz-ink-rgb);
+    --nt-soft: var(--giz-text-1);
 
     position: relative;
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: start;
+    align-items: center;
     gap: 1.4rem;
     width: 100%;
     box-sizing: border-box;
-    overflow: hidden;
-    margin: 0 0 1rem;
-    padding: 1.7rem 1.4rem 1.7rem 2rem;
-    border-radius: 1.8rem;
-    background: var(--giz-panel);
-    border: 1px solid rgba(var(--giz-white-rgb), 0.11);
-    box-shadow:
-        inset 0 1px 0 var(--giz-glass-7),
-        0 0.6rem 1.6rem -0.8rem rgba(var(--giz-black-rgb), 0.6);
+    margin: 0 0 0.8rem;
+    padding: 1.4rem 1.2rem 1.4rem 1.4rem;
+    border-radius: 1.6rem;
+    background:
+        linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-2)),
+        linear-gradient(180deg, rgb(var(--giz-glass-rgb)), rgb(var(--giz-glass-2-rgb)));
+    border: 1px solid var(--giz-glass-9);
+    box-shadow: inset 0 1px 0 var(--giz-glass-12);
     color: $nt-ink;
-
-    // The type's bar.
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        width: 0.4rem;
-        background: rgb(var(--nt-rgb));
-    }
 }
 
 @mixin notification-icon {
-    width: 4rem;
-    height: 4rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    align-self: center;
+    width: 4.4rem;
+    height: 4.4rem;
+    display: grid;
+    place-items: center;
     border-radius: 1.2rem;
     background: rgba(var(--nt-rgb), 0.16);
     color: var(--nt-soft);
-    font-size: 2rem;
-    margin-top: 0.1rem;
+    font-size: 2.2rem;
+    line-height: 1;
 }
 
-@mixin notification-body {
+@mixin notification-body($align: center, $pad-top: 0.2rem) {
+    align-self: $align;
     min-width: 0;
     text-align: left;
-    padding-top: 0.5rem;
+    padding: $pad-top 0 0.2rem;
 
     &__title {
         width: 100%;
@@ -133,8 +121,8 @@ $nt-ink-3: var(--giz-text-3);
         overflow-wrap: anywhere;
         font-family: $font-family-header-theme-client;
         font-weight: 700;
-        font-size: 1.6rem;
-        line-height: 2.1rem;
+        font-size: 1.5rem;
+        line-height: 2rem;
         color: $nt-ink;
     }
 
@@ -143,9 +131,9 @@ $nt-ink-3: var(--giz-text-3);
         overflow: hidden;
         white-space: normal;
         overflow-wrap: anywhere;
-        margin-top: 0.4rem;
-        font-size: 1.35rem;
-        line-height: 1.9rem;
+        margin-top: 0.2rem;
+        font-size: 1.3rem;
+        line-height: 1.8rem;
         color: $nt-ink-2;
     }
 }
@@ -177,43 +165,44 @@ $nt-ink-3: var(--giz-text-3);
     }
 }
 
+// Floats over the desktop like the cards, so it carries their opaque glass.
 .giz-notifications__close {
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
-    height: 3.2rem;
-    padding: 0 1.2rem;
-    border: 0;
-    border-radius: $giz-r-pill;
-    background: var(--giz-action-quiet-bg);
-    box-shadow: inset 0 0 0 1px var(--giz-action-quiet-line);
+    height: 3.4rem;
+    padding: 0 1.4rem 0 1.6rem;
+    border: 1px solid var(--giz-glass-9);
+    border-radius: 1.2rem;
+    background:
+        linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-2)),
+        linear-gradient(180deg, rgb(var(--giz-glass-rgb)), rgb(var(--giz-glass-2-rgb)));
+    box-shadow: inset 0 1px 0 var(--giz-glass-12);
     color: var(--giz-text-2);
     font-family: $font-family-header-theme-client;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 700;
-    letter-spacing: 0.02em;
-    text-transform: none;
     cursor: pointer;
-    transition: background 0.15s, color 0.15s;
+    transition: color 0.15s, border-color 0.15s;
 
     i { font-size: 1.3rem; }
 
     &:hover {
-        background: var(--giz-glass-9);
+        border-color: var(--giz-glass-12);
         color: var(--giz-text-1);
     }
 }
 
 .giz-notification__close {
+    align-self: center;
     width: 3.2rem;
     height: 3.2rem;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin: -0.2rem -0.2rem 0 0;
     padding: 0;
     border: 0;
-    border-radius: 50%;
+    border-radius: 1rem;
     background: transparent;
     color: $nt-ink-3;
     font-size: 1.5rem;
@@ -221,14 +210,14 @@ $nt-ink-3: var(--giz-text-3);
     transition: background 0.15s, color 0.15s;
 
     &:hover {
-        background: var(--giz-glass-7);
+        background: var(--giz-glass-8);
         color: $nt-ink;
     }
 }
 
 .giz-notification__btn {
     height: 3.8rem;
-    padding: 0 1.6rem;
+    padding: 0 1.8rem;
     border-radius: 1.2rem;
     border: 1px solid var(--giz-glass-11);
     background: var(--giz-glass-5);
@@ -293,6 +282,9 @@ $nt-ink-3: var(--giz-text-3);
 .giz-reservation-notification {
     @include notification-card;
 
+    --nt-rgb: var(--giz-warning-rgb);
+    --nt-soft: var(--giz-warning-sun);
+
     &__icon {
         @include notification-icon;
     }
@@ -316,7 +308,7 @@ $nt-ink-3: var(--giz-text-3);
 @keyframes notifications-slide-in-anim {
     from {
         opacity: 0;
-        transform: translate(-50%, -1.6rem) scale(0.97);
+        transform: translate(-50%, -2.4rem) scale(0.96);
     }
     to {
         opacity: 1;
@@ -331,7 +323,7 @@ $nt-ink-3: var(--giz-text-3);
     }
     to {
         opacity: 0;
-        transform: translate(-50%, -1.6rem) scale(0.97);
+        transform: translate(-50%, -2.4rem) scale(0.96);
     }
 }
 

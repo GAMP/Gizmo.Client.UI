@@ -1,6 +1,7 @@
 using System;
 using Gizmo.Client.Options;
 using Gizmo.Client.UI.Components;
+using Gizmo.Client.UI.Localization.Resources;
 using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Options;
+using Microsoft.JSInterop;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,11 +23,29 @@ namespace Gizmo.Client.UI.Pages
     {
         [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
 
+        [CascadingParameter] RegistrationCardContext Card { get; set; }
+
         private FieldIdentifier? _countryFieldIdentifier;
 
-        // Calling-code digits of the last selected country, used to re-seed the login name
-        // when the user switches back to phone mode (mirrors the pre-refactor behavior).
         private string? _selectedCallingCodeDigits;
+
+        private enum LoginStep
+        {
+            Name,
+            Password,
+            Qr,
+        }
+
+        private LoginStep _step;
+        private PasswordInput _passwordInput;
+        private TextInput<string> _nameInput;
+        private PasswordInput _pinInput;
+        private bool _focusPin;
+        private string _submittedName;
+        private bool _focusPassword;
+        private bool _focusName;
+        private bool _nameError;
+        private bool _phoneTried;
 
         [Inject]
         IOptions<UserLoginOptions> UserLoginOptions { get; set; }
@@ -93,14 +113,144 @@ namespace Gizmo.Client.UI.Pages
 
         private Task OnPhoneValueChangedAsync(string? value)
         {
+            _phoneTried = false;
             UserLoginService.SetLoginName(value ?? string.Empty);
             return Task.CompletedTask;
         }
 
-        private Task OnKeyDownHandle(KeyboardEventArgs args)
+        private bool IsBusy => ViewState.IsLogginIn || ViewState.IsLogginOut;
+
+        private bool IsUsernameLogin => ViewState.LoginType == View.UserLoginType.UsernameOrEmail;
+
+        private bool IsPhoneLogin => !IsUsernameLogin;
+
+        private bool IsPasswordStep => _step == LoginStep.Password && !string.IsNullOrEmpty(ViewState.LoginName);
+
+        private bool ShowNameError => _nameError && ViewState.HasLoginError;
+
+        private string NamePillClass => IsPhoneLogin ? "giz-signin__pill giz-signin__pill--phone" : "giz-signin__pill";
+
+        private bool IsQrStep => HostQRCodeViewState.IsEnabled && (_step == LoginStep.Qr || UserLoginOptions.Value.Disabled);
+
+        private bool IsSignInClosed => UserLoginOptions.Value.Disabled;
+
+        private bool ShowQrLink => HostQRCodeViewState.IsEnabled;
+
+        private bool HasLoginName => !string.IsNullOrWhiteSpace(ViewState.LoginName)
+            && (IsUsernameLogin || ViewState.LoginName.Length > (_selectedCallingCodeDigits?.Length ?? 0));
+
+        private bool IsNextDisabled => !HasLoginName;
+
+        private bool HasCheckedPhone => !string.IsNullOrEmpty(ViewState.PhoneE164);
+
+        private string PhoneError => _phoneTried && IsPhoneLogin && !HasCheckedPhone
+            ? UserLoginService.EditContext
+                .GetValidationMessages(new FieldIdentifier(ViewState, nameof(ViewState.LoginName)))
+                .FirstOrDefault()
+            : null;
+
+        private bool NeedsReservationPin =>
+            HostReservationViewState.ReservationNotificationTimeReached || HostReservationViewState.ReservationBlockTimeReached;
+
+        private string PasswordTitle => IsUsernameLogin
+            ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOGIN_HELLO, (ViewState.LoginName ?? string.Empty).Trim())
+            : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOGIN_PASSWORD_TITLE);
+
+        private string WhoText => IsUsernameLogin
+            ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOGIN_NOT_YOU)
+            : "+" + ViewState.LoginName;
+
+        private void GoToPassword()
+        {
+            if (!HasLoginName)
+                return;
+
+            if (IsPhoneLogin && !HasCheckedPhone)
+            {
+                _phoneTried = true;
+                return;
+            }
+
+            _phoneTried = false;
+            _step = LoginStep.Password;
+            _focusPassword = true;
+            _nameError = false;
+        }
+
+        private void BackToName()
+        {
+            _step = LoginStep.Name;
+            _nameError = false;
+            _focusName = true;
+            UserLoginService.SetPassword(string.Empty);
+        }
+
+        private Task SubmitAsync()
+        {
+            if (IsBusy)
+                return Task.CompletedTask;
+
+            _submittedName = ViewState.LoginName;
+
+            return UserLoginService.LoginAsync();
+        }
+
+        private void OnLoginViewStateChanged(object sender, EventArgs e)
+        {
+            if (_step == LoginStep.Name && _phoneTried && IsPhoneLogin && HasCheckedPhone)
+            {
+                GoToPassword();
+                return;
+            }
+
+            if (_step != LoginStep.Password || !string.IsNullOrEmpty(ViewState.LoginName))
+                return;
+
+            if (NeedsReservationPin && !string.IsNullOrEmpty(_submittedName))
+            {
+                UserLoginService.SetLoginName(_submittedName);
+                _focusPin = true;
+                return;
+            }
+
+            _step = LoginStep.Name;
+            _nameError = true;
+            _focusName = true;
+        }
+
+        private void OpenQr() => _step = LoginStep.Qr;
+
+        private void OnCardChanged(object sender, EventArgs e)
+        {
+            if (TakeRegisteredName())
+                _ = InvokeAsync(StateHasChanged);
+        }
+
+        private bool TakeRegisteredName()
+        {
+            var nick = Card?.TakePendingLoginName();
+
+            if (string.IsNullOrEmpty(nick))
+                return false;
+
+            UserLoginService.SetLoginMethod(View.UserLoginType.UsernameOrEmail);
+            UserLoginService.SetLoginName(nick);
+            _step = LoginStep.Name;
+            _focusName = true;
+            return true;
+        }
+
+        private void OnNameKeyDown(KeyboardEventArgs args)
         {
             if (args.Key == "Enter")
-                return UserLoginService.LoginAsync();
+                GoToPassword();
+        }
+
+        private Task OnPasswordKeyDown(KeyboardEventArgs args)
+        {
+            if (args.Key == "Enter")
+                return SubmitAsync();
+
             return Task.CompletedTask;
         }
 
@@ -115,8 +265,6 @@ namespace Gizmo.Client.UI.Pages
                 var switching = ViewState.LoginType != View.UserLoginType.MobilePhone;
                 UserLoginService.SetLoginMethod(View.UserLoginType.MobilePhone);
 
-                // Re-seed the calling code when switching into phone mode with a country already
-                // selected (the digits are captured from the last country selection in this session).
                 if (switching && !string.IsNullOrEmpty(ViewState.Country) && !string.IsNullOrEmpty(_selectedCallingCodeDigits))
                     UserLoginService.SetLoginName(_selectedCallingCodeDigits);
             }
@@ -130,33 +278,52 @@ namespace Gizmo.Client.UI.Pages
         private bool ShowPasswordRecovery =>
             UserRegisterConfigurationViewState.IsPasswordRecoveryEnabled;
 
-        private string? ReservationMessage
-        {
-            get
-            {
-                if (HostReservationViewState.ReservationBlockTimeReached)
-                    return LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_BLOCK_TIME_REACHED_MESSAGE));
-
-                if (HostReservationViewState.ReservationNotificationTimeReached)
-                    return LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_HOST_RESERVATION_LOGIN_NOTIFICATION_TIME_REACHED_MESSAGE));
-
-                return null;
-            }
-        }
-
         protected override async Task OnInitializedAsync()
         {
+            ViewState.OnChange += OnLoginViewStateChanged;
             this.SubscribeChange(ViewState);
             this.SubscribeChange(HostQRCodeViewState);
             this.SubscribeChange(HostReservationViewState);
 
+            if (Card is not null)
+                Card.Changed += OnCardChanged;
+
+            TakeRegisteredName();
+
             await base.OnInitializedAsync();
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (_focusPin && _pinInput is not null)
+            {
+                _focusPin = false;
+                await ElementFocus.TryAsync(() => _pinInput.FocusAsync());
+            }
+            else if (_focusPassword && _passwordInput is not null)
+            {
+                _focusPassword = false;
+                await ElementFocus.TryAsync(() => _passwordInput.FocusAsync());
+            }
+            else if (firstRender || _focusName)
+            {
+                _focusName = false;
+
+                if (IsUsernameLogin && _nameInput is not null)
+                    await ElementFocus.TryAsync(() => _nameInput.FocusAsync());
+            }
+
+            await base.OnAfterRenderAsync(firstRender);
         }
 
         public override void Dispose()
         {
+            if (Card is not null)
+                Card.Changed -= OnCardChanged;
+
             this.UnsubscribeChange(HostReservationViewState);
             this.UnsubscribeChange(HostQRCodeViewState);
+            ViewState.OnChange -= OnLoginViewStateChanged;
             this.UnsubscribeChange(ViewState);
 
             base.Dispose();

@@ -1,44 +1,38 @@
 //=============== Profile header ladder ================//
-// The ladder level under the name in the account head (ProfileHeaderLadderLevel): the badge,
-// the level over its status line, into the Progress tab.
+// The ladder level under the name in the account head (ProfileHeaderLadderLevel): a plain
+// line - the plate, the level, its status - into the Progress tab. Not shown on that tab.
 
 .giz-profile-header-ladder {
     display: inline-flex;
     align-items: center;
     align-self: flex-start;
-    gap: 1rem;
+    gap: 0.8rem;
     max-width: 100%;
-    margin-top: 1rem;
-    padding: 0.5rem 1.2rem 0.5rem 0.5rem;
+    margin-top: 0.8rem;
+    padding: 0;
     border: 0;
-    border-radius: $giz-r-pill;
-    background: rgba(var(--giz-accent-rgb), 0.12);
-    box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.28);
+    background: none;
     font-family: inherit;
     text-align: left;
     cursor: pointer;
-    transition: background 0.15s, box-shadow 0.15s;
 
     .giz-ladder-badge {
-        width: 3.2rem;
-        height: 3.2rem;
-        overflow: hidden;
-        background: var(--giz-accent);
-        color: var(--giz-on-accent);
+        width: 2.2rem;
+        height: 2.2rem;
     }
 
     .giz-ladder-rank {
         width: 100%;
         height: 100%;
-        background: transparent;
-        color: inherit;
-        font-size: 1.4rem;
+        border-radius: 0.3rem;
+        font-size: 1.1rem;
     }
 
     &__text {
         display: flex;
-        flex-direction: column-reverse;
-        gap: 0.1rem;
+        flex-direction: row-reverse;
+        align-items: baseline;
+        gap: 0.6rem;
         min-width: 0;
     }
 
@@ -50,14 +44,20 @@
     }
 
     &__name {
-        font-size: 1.4rem;
+        flex: none;
+        font-size: 1.5rem;
         font-weight: 800;
-        color: var(--giz-accent-pale);
+        color: var(--giz-text-1);
     }
 
     &__status {
-        font-size: 1.2rem;
-        color: var(--giz-text-2);
+        font-size: 1.4rem;
+        color: var(--giz-text-3);
+
+        &::before {
+            content: "·";
+            margin-right: 0.6rem;
+        }
     }
 
     &__chevron {
@@ -66,16 +66,16 @@
         height: 1.6rem;
         min-width: 1.6rem;
         min-height: 1.6rem;
-        color: var(--giz-accent-soft);
+        color: var(--giz-text-3);
+        transition: color 0.15s, transform 0.15s;
     }
 
-    &:hover {
-        background: rgba(var(--giz-accent-rgb), 0.2);
-        box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.45);
+    &:hover &__chevron {
+        color: var(--giz-text-1);
+        transform: translateX(0.2rem);
     }
+}
 
-    &:focus-visible {
-        outline: 2px solid var(--giz-focus);
-        outline-offset: 2px;
-    }
+.giz-account:has(.giz-progress-page) .giz-profile-header-ladder {
+    display: none;
 }

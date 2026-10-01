@@ -67,7 +67,6 @@ namespace Gizmo.Client.UI.Components
             else
             {
                 _shouldRender = false;
-                //await InvokeVoidAsync("writeLine", $"ReRender {this.ToString()}");
             }
 
             await base.OnAfterRenderAsync(firstRender);

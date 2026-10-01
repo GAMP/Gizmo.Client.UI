@@ -25,6 +25,49 @@
     animation: giz-page-in 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
+// The shell arriving after sign-in: the frame mounts once per session, so these run once.
+// Individual translate/scale leave every block's own transform alone.
+@keyframes giz-enter-fade {
+    from { opacity: 0; }
+}
+
+@keyframes giz-enter-drop {
+    from { opacity: 0; translate: 0 -1.8rem; }
+}
+
+@keyframes giz-enter-slide {
+    from { opacity: 0; translate: -2.4rem 0; }
+}
+
+@keyframes giz-enter-rise {
+    from { opacity: 0; translate: 0 2.4rem; scale: 0.985; }
+}
+
+$giz-enter-ease: cubic-bezier(0.2, 0, 0, 1);
+
+.giz-background { animation: giz-enter-fade 0.9s ease-out backwards; }
+
+.giz-top-bar__hud { animation: giz-enter-drop 0.7s $giz-enter-ease 0.1s backwards; }
+
+.giz-top-bar__left { animation: giz-enter-drop 0.7s $giz-enter-ease 0.18s backwards; }
+
+.giz-top-bar__right-group,
+.giz-top-bar__account { animation: giz-enter-drop 0.7s $giz-enter-ease 0.26s backwards; }
+
+.giz-left-panel { animation: giz-enter-slide 0.7s $giz-enter-ease 0.2s backwards; }
+
+.giz-container .giz-app__body { animation: giz-enter-rise 0.8s $giz-enter-ease 0.3s backwards; }
+
+@media (prefers-reduced-motion: reduce) {
+    .giz-background,
+    .giz-top-bar__hud,
+    .giz-top-bar__left,
+    .giz-top-bar__right-group,
+    .giz-top-bar__account,
+    .giz-left-panel,
+    .giz-container .giz-app__body { animation: none; }
+}
+
 .giz-background img { display: none; }
 
 .giz-background--club { background: var(--giz-bg-0); }

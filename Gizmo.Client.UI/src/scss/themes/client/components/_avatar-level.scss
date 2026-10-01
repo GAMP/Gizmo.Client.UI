@@ -1,7 +1,7 @@
 //=============== Avatar level ================//
-// The ladder level worn on the avatar: a ring with the progress to the next level and the
-// level's badge on the bottom-right. The top bar's round button, and the large avatar in the
-// profile popup (--large).
+// The ladder level worn on the avatar: a quiet gauge of the way to the next level round it
+// and the level's plate on the corner. The top bar's round button, and the large avatar in
+// the profile popup (--large).
 
 .giz-avatar-level {
     position: relative;
@@ -9,48 +9,43 @@
     flex: none;
 
     &__ring {
-        @include giz-ring-svg(-0.5rem);
+        @include giz-ring-svg(-0.45rem);
     }
 
     &__track {
-        @include giz-ring-track(2.2);
+        @include giz-ring-track(1.6);
+        stroke: var(--giz-glass-6);
     }
 
     // r = 19
     &__bar {
-        @include giz-ring-bar(119.38, 2.2);
+        @include giz-ring-bar(119.38, 1.6);
+        stroke: var(--giz-accent);
+        stroke-linecap: butt;
     }
 
     &__mark {
         position: absolute;
-        right: -0.4rem;
+        right: -0.5rem;
         bottom: -0.4rem;
         z-index: 1;
         display: flex;
-        width: 2.2rem;
+        width: 2.4rem;
         height: 2.2rem;
-        border-radius: 50%;
-        overflow: hidden;
-        background: var(--giz-accent);
-        border: 0.2rem solid var(--giz-bg-1);
-        color: var(--giz-on-accent);
+        border: 0.2rem solid var(--giz-bg-0);
+        border-radius: 0.6rem;
+        background: var(--giz-bg-0);
         pointer-events: none;
 
         .giz-ladder-badge {
             width: 100%;
             height: 100%;
-            border-radius: 50%;
         }
 
         .giz-ladder-rank {
             width: 100%;
             height: 100%;
-            border-radius: 50%;
-            background: transparent;
-            color: inherit;
-            font-family: $font-family-header-theme-client;
-            font-size: 1rem;
-            font-weight: 800;
+            font-size: 1.2rem;
             line-height: 1;
         }
     }
@@ -71,23 +66,20 @@
         height: calc(100% + 1.6rem);
     }
 
-    &--large &__track,
-    &--large &__bar {
-        stroke-width: 1.6;
-    }
-
     // Above the popup's avatar, which stacks at 2 over the orbit icons.
     &--large &__mark {
         z-index: 3;
-        right: 0;
+        right: -0.2rem;
         bottom: 0;
-        width: 3.2rem;
-        height: 3.2rem;
+        width: 3.4rem;
+        height: 3rem;
         border-width: 0.3rem;
         border-color: rgb(var(--giz-glass-rgb));
+        border-radius: 0.8rem;
+        background: rgb(var(--giz-glass-rgb));
 
         .giz-ladder-rank {
-            font-size: 1.4rem;
+            font-size: 1.6rem;
         }
     }
 }

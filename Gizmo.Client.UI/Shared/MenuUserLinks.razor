@@ -25,7 +25,10 @@
                             <i class="ph ph-user"></i>
                         }
                     </div>
-                    <LadderAvatarRing />
+                    @if (ClientFeatures.Ladder)
+                    {
+                        <LadderAvatarRing />
+                    }
                 </span>
 
             </div>
@@ -33,16 +36,9 @@
 
         <div class="giz-profile-popup__name">@DisplayName</div>
 
-        @if (LadderSummary.HasLevel)
+        @if (ClientFeatures.Ladder)
         {
-            <button type="button" class="giz-profile-popup__standing" @onclick="OnClickProgressHandler">
-                <b>@LadderSummary.LevelName</b>
-                @if (!string.IsNullOrEmpty(LadderSummary.HeaderStatusText))
-                {
-                    <span>@LadderSummary.HeaderStatusText</span>
-                }
-                <i class="ph-bold ph-arrow-right"></i>
-            </button>
+            <ProfilePopupStanding OnOpen="@OnClickProgressHandler" />
         }
 
         <div class="giz-profile-popup__actions">

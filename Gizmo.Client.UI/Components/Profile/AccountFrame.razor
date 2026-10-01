@@ -21,7 +21,10 @@
                         <span>@MemberSince</span>
                     }
                 </div>
-                <ProfileHeaderLadderLevel />
+                @if (ClientFeatures.Ladder)
+                {
+                    <ProfileHeaderLadderLevel />
+                }
             </div>
 
             <div class="giz-account__stats">
@@ -110,7 +113,7 @@
                     <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES))</span>
                 </NavLink>
             }
-            @if (!UserViewState.IsGuest)
+            @if (!UserViewState.IsGuest && ClientFeatures.Ladder)
             {
                 <a class="@ProgressTabClass" href="@ClientRoutes.UserLadderRoute">
                     <i class="ph-bold ph-trophy"></i>

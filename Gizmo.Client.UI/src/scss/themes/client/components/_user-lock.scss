@@ -1,143 +1,265 @@
+//============= Profile lock ===============//
 
-
-.giz-user-lock {
+// The time left, big and in words, and the keypad beside it. Only transform and opacity
+// move on open; the veil carries the one blur.
+.giz-lock {
+    position: fixed;
+    inset: 0;
+    z-index: $login-overlay-index;
+    display: grid;
+    place-items: center;
+    outline: none;
     color: var(--giz-text-1);
 
-    .giz-input-text {
-        .giz-input-root--outline {
-            border-top: none;
-            border-left: none;
-            border-right: none;
-            border-bottom: 0.2rem solid rgba(var(--giz-frost-rgb), 0.28);
-            border-radius: 0;
-
-            &:hover {
-                border-top: none;
-                border-left: none;
-                border-right: none;
-                border-bottom: 0.2rem solid rgba(var(--giz-frost-rgb), 0.28);
-            }
-
-            &:focus-within {
-                border-top: none;
-                border-left: none;
-                border-right: none;
-                border-bottom: 0.2rem solid $typo-brand-theme-client;
-            }
-
-            input {
-                text-align: center;
-                //Font ?
-                font-weight: 700;
-                font-size: 2.6rem;
-                line-height: 3.4rem;
-            }
-        }
-    }
-
-    &.error {
-        .giz-input-text {
-            .giz-input-root--outline {
-                border-bottom: 0.2rem solid var(--giz-danger);
-
-                &:hover {
-                    border-bottom: 0.2rem solid var(--giz-danger);
-                }
-
-                &:focus-within {
-                    border-bottom: 0.2rem solid var(--giz-danger);
-                }
-            }
-        }
-    }
-
-    &-overlay {
+    &__veil {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(180deg, rgba(var(--giz-lock-rgb), 0.94) 0%, rgba(var(--giz-lock-rgb), 0.8) 100%);
-        backdrop-filter: blur(3.0rem);
-        z-index: $lock-overlay-index;
-        opacity: 0;
-        transition: opacity 0.5s;
-
-        &.open {
-            opacity: 1;
-        }
+        inset: 0;
+        background: rgba(var(--giz-scrim-rgb), 0.62);
+        backdrop-filter: blur(3rem) saturate(1.1);
+        -webkit-backdrop-filter: blur(3rem) saturate(1.1);
+        animation: giz-lock-fade 0.4s ease-out both;
     }
 
-    &-wrapper {
+    &__stage {
+        position: relative;
         display: flex;
         align-items: center;
-        justify-content: center;
-        height: 100%;
+        gap: 16rem;
+    }
+
+    &__time {
+        width: 64rem;
+        animation: giz-lock-rise 0.6s cubic-bezier(0.2, 0, 0, 1) 0.08s both;
+    }
+
+    &__label {
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--giz-text-2);
+    }
+
+    &__left {
+        display: flex;
+        align-items: baseline;
+        gap: 1.6rem;
+        margin: 1.2rem 0 2.4rem -0.6rem;
+
+        b {
+            font-family: $font-family-numeric-theme-client;
+            font-size: 17rem;
+            font-weight: 600;
+            line-height: 0.9;
+            letter-spacing: -0.05em;
+            font-variant-numeric: tabular-nums;
+        }
+
+        span {
+            margin-right: 2.4rem;
+            font-size: 4.4rem;
+            font-weight: 700;
+            color: var(--giz-text-3);
+        }
+    }
+
+    &__until {
+        font-size: 2.2rem;
+        color: var(--giz-text-2);
+    }
+
+    &__pin {
+        width: 34rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3.2rem;
+        animation: giz-lock-rise 0.6s cubic-bezier(0.2, 0, 0, 1) 0.16s both;
+    }
+
+    &__head {
         text-align: center;
     }
 
-    &__title {
-        text-shadow: 0 0.4rem 0.4rem rgba(var(--giz-black-rgb), 0.25), 0 0.8rem 2.4rem rgba(var(--giz-black-rgb), 0.2);
-        margin-bottom: 1.2rem;
-        @include font-h1-theme-client($font-weight-bold-theme-client);
+    &__name {
+        font-family: $font-family-header-theme-client;
+        font-size: 3.2rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
     }
 
-    &__subtitle {
-        max-width: 48rem;
-        margin: 0 auto 4rem;
+    &__sub {
+        margin-top: 0.6rem;
+        font-size: 1.5rem;
         color: var(--giz-text-2);
-        text-shadow: 0 0.2rem 0.2rem rgba(var(--giz-black-rgb), 0.2), 0 0.2rem 0.4rem rgba(var(--giz-black-rgb), 0.2);
-        @include font-l-theme-client($font-weight-light-theme-client);
     }
 
-    &__error {
-        margin-top: 0.4rem;
-        margin-bottom: 2.4rem;
-        color: var(--giz-danger-soft);
-        @include font-m-theme-client($font-weight-light-theme-client);
-    }
-
-    // 1-9 in three rows, then 0 under the 8 and backspace beside it, as on a phone.
-    &__numpad {
-        display: grid;
-        grid-template-columns: repeat(3, 6.4rem);
-        justify-content: center;
+    &__code {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         gap: 1.2rem;
-        margin-top: 4rem;
-        margin-bottom: 4rem;
+    }
 
-        & > .giz-button {
-            width: 6.4rem;
-            height: 6.4rem;
-            font-size: 2.2rem;
-            font-weight: 600;
+    &__dots {
+        display: flex;
+        gap: 1.4rem;
+    }
+
+    &__dot {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        background: var(--giz-glass-5);
+        box-shadow: inset 0 0 0 0.2rem var(--giz-glass-12);
+        transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
+
+        &--on {
+            background: var(--giz-accent);
+            box-shadow: none;
+            animation: giz-lock-pop 0.2s ease-out;
         }
 
-        & > .giz-button:first-child {
-            order: 10;
-            grid-column: 2;
-        }
+        &--next { box-shadow: inset 0 0 0 0.2rem var(--giz-accent-light); }
+    }
 
-        & > .giz-button:last-child {
-            order: 11;
+    &--error &__dot--on { background: var(--giz-danger); }
+
+    &--error &__dots { animation: giz-lock-shake 0.4s; }
+
+    &__msg {
+        height: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-size: 1.45rem;
+        font-weight: 600;
+        color: var(--giz-danger-light);
+
+        i { font-size: 1.8rem; }
+    }
+
+    &__pad {
+        display: grid;
+        grid-template-columns: repeat(3, 7.2rem);
+        gap: 1.6rem;
+    }
+
+    &__key {
+        width: 7.2rem;
+        height: 7.2rem;
+        display: grid;
+        place-items: center;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-3));
+        box-shadow: inset 0 0 0 1px var(--giz-glass-9), inset 0 1px 0 var(--giz-glass-11);
+        color: var(--giz-text-1);
+        font-family: $font-family-numeric-theme-client;
+        font-size: 2.6rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.12s, transform 0.12s;
+
+        &:hover { background: linear-gradient(180deg, var(--giz-glass-9), var(--giz-glass-5)); }
+
+        &:active { transform: scale(0.94); }
+
+        &--quiet {
+            background: none;
+            box-shadow: none;
+            color: var(--giz-text-2);
+
+            i { font-size: 2.4rem; }
+
+            &:hover { background: var(--giz-glass-5); }
         }
     }
 
     &__actions {
-        display: flex;
-        justify-content: center;
-        gap: 1.2rem;
-        margin-bottom: 3.2rem;
+        width: 100%;
 
-        .giz-button {
-            min-width: 18rem;
-            padding: 0 2.4rem;
-            font-weight: 700;
+        &--two {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 1rem;
         }
     }
 
-    &__note {
-        color: var(--giz-white);
-        @include font-l-theme-client($font-weight-regular-theme-client);
+    &__go {
+        width: 100%;
+        height: 5.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        border: 0;
+        border-radius: 1.6rem;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.6rem;
+        font-weight: 700;
+        cursor: pointer;
+        @include giz-action-primary;
+
+        i { font-size: 1.8rem; }
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
     }
+
+    &__ghost {
+        height: 5.6rem;
+        padding: 0 2.6rem;
+        border: 0;
+        border-radius: 1.6rem;
+        background: var(--giz-glass-5);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-10);
+        color: var(--giz-text-1);
+        font-family: $font-family-header-theme-client;
+        font-size: 1.45rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.15s;
+
+        &:hover { background: var(--giz-glass-8); }
+    }
+}
+
+@media (max-width: 1400px) {
+    .giz-lock {
+        &__stage { gap: 9rem; }
+
+        &__time { width: 52rem; }
+
+        &__left b { font-size: 13rem; }
+    }
+}
+
+@keyframes giz-lock-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes giz-lock-rise {
+    from { opacity: 0; transform: translateY(1.8rem) scale(0.985); }
+    to   { opacity: 1; transform: none; }
+}
+
+@keyframes giz-lock-pop {
+    from { transform: scale(0.6); }
+    to   { transform: scale(1); }
+}
+
+@keyframes giz-lock-shake {
+    20%, 60% { transform: translateX(-0.8rem); }
+    40%, 80% { transform: translateX(0.8rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .giz-lock__veil,
+    .giz-lock__time,
+    .giz-lock__pin,
+    .giz-lock__dot--on,
+    .giz-lock--error .giz-lock__dots { animation: none; }
 }

@@ -1,3 +1,5 @@
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -11,24 +13,9 @@ namespace Gizmo.Client.UI.Components
     public partial class LadderStandingCard : CustomDOMComponentBase
     {
         private const string HistoryPopupSelector = ".giz-ladder-history-wrapper";
+        private const int DenseLevelCount = 7;
 
         private bool _isBreakdownOpen;
-
-        private decimal RingPercent
-        {
-            get
-            {
-                if (ViewState.ShowProgress)
-                    return ViewState.ProgressPercent;
-
-                if (ViewState.ShowSegments && ViewState.SegmentCount > 0)
-                    return 100m * ViewState.SegmentsLit / ViewState.SegmentCount;
-
-                return ViewState.ShowBanner ? 100m : 0m;
-            }
-        }
-
-        private string RingValue => RingPercent.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -36,9 +23,35 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         UserLadderViewState ViewState { get; set; }
 
+        [Inject]
+        UserLadderSummaryViewState Summary { get; set; }
+
+        private string StatusText => ViewState.ShowBanner
+            ? null
+            : ViewState.ShowStatusLine ? ViewState.StatusLineText : Summary.HeaderStatusText;
+
+        private string ProgressValue => ViewState.ProgressPercent.ToString("0.##", CultureInfo.InvariantCulture);
+
+        private string FillClass => ViewState.ProgressIsFull
+            ? "giz-ladder-progress__fill giz-ladder-progress__fill--secured"
+            : "giz-ladder-progress__fill";
+
+        private string GoalClass => ViewState.ProgressIsFull
+            ? "giz-ladder-progress__goal giz-ladder-progress__goal--secured"
+            : "giz-ladder-progress__goal";
+
+        private string LevelsClass => ViewState.Levels.Count() > DenseLevelCount
+            ? "giz-ladder-levels giz-ladder-levels--dense"
+            : "giz-ladder-levels";
+
+        private string SegmentClass(int index) => index < ViewState.SegmentsLit
+            ? "giz-ladder-segments__segment giz-ladder-segments__segment--lit"
+            : "giz-ladder-segments__segment";
+
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
+            this.SubscribeChange(Summary);
 
             base.OnInitialized();
         }
@@ -57,6 +70,7 @@ namespace Gizmo.Client.UI.Components
 
         public override void Dispose()
         {
+            this.UnsubscribeChange(Summary);
             this.UnsubscribeChange(ViewState);
 
             base.Dispose();

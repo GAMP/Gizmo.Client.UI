@@ -1,0 +1,85 @@
+//============= Loader ===============//
+
+// A ring whose arc fades into its tail, turning at an even speed. It takes the colour of
+// the text around it, so it reads on glass and inside an accent button alike.
+.giz-loader {
+    --giz-loader-size: 2.8rem;
+    --giz-loader-ring: 0.3rem;
+
+    position: relative;
+    display: inline-block;
+    flex: none;
+    width: var(--giz-loader-size);
+    height: var(--giz-loader-size);
+    border-radius: 50%;
+    color: var(--giz-accent-soft);
+    background: conic-gradient(from 0deg, transparent 0deg, transparent 40deg, currentColor 360deg);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--giz-loader-ring) - 0.05rem), var(--giz-black) calc(100% - var(--giz-loader-ring)));
+    mask: radial-gradient(farthest-side, transparent calc(100% - var(--giz-loader-ring) - 0.05rem), var(--giz-black) calc(100% - var(--giz-loader-ring)));
+    animation: giz-loader-turn 0.9s linear infinite;
+
+    // The round head of the arc.
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: var(--giz-loader-ring);
+        height: var(--giz-loader-ring);
+        margin-left: calc(var(--giz-loader-ring) / -2);
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+    &--small {
+        --giz-loader-size: 2rem;
+        --giz-loader-ring: 0.25rem;
+    }
+
+    &--large {
+        --giz-loader-size: 5.6rem;
+        --giz-loader-ring: 0.45rem;
+    }
+
+    &--ink { color: currentColor; }
+}
+
+// A page that is still fetching: the loader alone, in the middle of the space the content
+// will take, arriving after a moment so quick loads never flash it.
+.giz-page-loader {
+    display: grid;
+    place-items: center;
+    min-height: 40rem;
+    animation: giz-loader-arrive 0.3s ease-out 0.25s both;
+}
+
+// The client's own spinner component draws the same ring.
+.giz-animate-spinner {
+    [#{$client-theme-comp-attr}] & {
+        display: inline-grid;
+        place-items: center;
+        overflow: visible;
+        animation: none;
+
+        > .giz-loader {
+            width: auto;
+            height: 100%;
+            aspect-ratio: 1;
+            min-width: 1.6rem;
+            min-height: 1.6rem;
+        }
+    }
+}
+
+@keyframes giz-loader-turn {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes giz-loader-arrive {
+    from { opacity: 0; transform: scale(0.8); }
+    to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .giz-loader { animation-duration: 2.4s; }
+}

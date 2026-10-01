@@ -1,80 +1,83 @@
 ﻿@inherits CustomDOMComponentBase
 @using Microsoft.AspNetCore.Components.Forms
 
-@if (ViewState.IsLocking)
+@if (IsShown)
 {
     <EditForm EditContext="@UserLockService.EditContext">
-        <div class="giz-user-lock-overlay open">
-            <div class="giz-user-lock-wrapper">
-                <div class="giz-user-lock">
-                    <div class="giz-user-lock__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LOCK_SCREEN_TITLE))</div>
-                    <div class="giz-user-lock__subtitle">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LOCK_SCREEN_SUBTITLE))</div>
-                    <div class="giz-user-lock__code">
-                        <PasswordInput IsTransparent="true"
-                                       Value="@ViewState.InputPassword"
-                                       ValueChanged="@((string value) => UserLockService.SetInputPassword(value))"
-                                       ValueExpression="@(() => ViewState.InputPassword)"
-                                       ValidateFunction="@UserLockService.SetInputPasswordCharacterIsValid"
-                                       ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
-                                       ShowRevealButton="true"
-                                       UpdateOnInput="true"
-                                       MaxLength="4" />
+        <div class="giz-lock @LockModifier" tabindex="0" @ref="_root" @onkeydown="@OnKeyDown">
+            <div class="giz-lock__veil"></div>
+            <div class="giz-lock__stage">
+                @if (HasTimeLeft)
+                {
+                    <section class="giz-lock__time">
+                        <div class="giz-lock__label">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOCK_TIME_LEFT)</div>
+                        <div class="giz-lock__left">
+                            @if (HoursLeft > 0)
+                            {
+                                <b>@HoursLeft</b>
+                                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_UNIT_HOURS)</span>
+                            }
+                            <b>@MinutesLeft</b>
+                            <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_UNIT_MINUTES)</span>
+                        </div>
+                        <div class="giz-lock__until">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOCK_ENOUGH_UNTIL, EnoughUntilText)</div>
+                    </section>
+                }
+
+                <section class="giz-lock__pin">
+                    <header class="giz-lock__head">
+                        <div class="giz-lock__name">@HeadTitle</div>
+                        <div class="giz-lock__sub">@HeadSubtitle</div>
+                    </header>
+
+                    <div class="giz-lock__code">
+                        <div class="giz-lock__dots">
+                            @for (int i = 0; i < PIN_LENGTH; i++)
+                            {
+                                <span class="@DotClass(i)"></span>
+                            }
+                        </div>
+                        <div class="giz-lock__msg">
+                            @if (IsErrorShown)
+                            {
+                                <i class="ph-bold ph-warning-circle"></i>
+                                <span>@ViewState.Error</span>
+                            }
+                        </div>
                     </div>
-                    <div class="giz-user-lock__numpad">
-                        @for (int i = 0; i <= 9; i++)
+
+                    <div class="giz-lock__pad">
+                        @for (int i = 1; i <= 9; i++)
                         {
-                            int local_i = i;
-                            <Button Color="ButtonColors.Primary" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.PutDigitAsync(local_i))">@local_i</Button>
+                            int digit = i;
+                            <button type="button" class="giz-lock__key" @onclick="@(() => PressDigitAsync(digit))">@digit</button>
                         }
-                        <Button Color="ButtonColors.Primary" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.DeleteDigitAsync())" LeftSVGIcon="Icons.Backspace"></Button>
+                        <span></span>
+                        <button type="button" class="giz-lock__key" @onclick="@(() => PressDigitAsync(0))">0</button>
+                        <button type="button" class="giz-lock__key giz-lock__key--quiet" aria-label="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOCK_ERASE)" @onclick="@(() => UserLockService.DeleteDigitAsync())"><i class="ph-bold ph-backspace"></i></button>
                     </div>
-                    <div class="giz-user-lock__actions">
-                        <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.SetPasswordAsync())">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SAVE))</Button>
-                        <Button Color="ButtonColors.Accent" Variant="ButtonVariants.Outline" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.CancelLockAsync())">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CANCEL))</Button>
-                    </div>
-                    <div class="giz-user-lock__note"></div>
-                </div>
+
+                    @if (ViewState.IsLocking)
+                    {
+                        <div class="giz-lock__actions giz-lock__actions--two">
+                            <button type="button" class="giz-lock__ghost" @onclick="@(() => UserLockService.CancelLockAsync())">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CANCEL))</button>
+                            <button type="button" class="giz-lock__go" disabled="@IsPinIncomplete" @onclick="@(() => UserLockService.SetPasswordAsync())">
+                                <i class="ph-bold ph-lock-simple"></i>
+                                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOCK_LOCK)</span>
+                            </button>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="giz-lock__actions">
+                            <button type="button" class="giz-lock__go" @onclick="@(() => UserLockService.UnlockAsync())">
+                                <i class="ph-bold ph-lock-simple-open"></i>
+                                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LOCK_UNLOCK)</span>
+                            </button>
+                        </div>
+                    }
+                </section>
             </div>
         </div>
     </EditForm>
-}
-else
-{
-    @if (ViewState.IsLocked)
-    {
-        <EditForm EditContext="@UserLockService.EditContext">
-            <div class="giz-user-lock-overlay open">
-                <div class="giz-user-lock-wrapper">
-                    <div class="giz-user-lock @(!string.IsNullOrEmpty(ViewState.Error) ? "error" : "")">
-                        <div class="giz-user-lock__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LOCK_SCREEN_LOCKED_TITLE))</div>
-                        <div class="giz-user-lock__subtitle">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LOCK_SCREEN_LOCKED_SUBTITLE))</div>
-                        <div class="giz-user-lock__code">
-                            <PasswordInput IsTransparent="true"
-                                       Value="@ViewState.InputPassword"
-                                       ValueChanged="@((string value) => UserLockService.SetInputPassword(value))"
-                                       ValueExpression="@(() => ViewState.InputPassword)"
-                                       ValidateFunction="@UserLockService.SetInputPasswordCharacterIsValid"
-                                       ValidationErrorStyle="ValidationErrorStyles.BorderOnly"
-                                       ShowRevealButton="true"
-                                       UpdateOnInput="true"
-                                       MaxLength="4" />
-                        </div>
-                        <div class="giz-user-lock__error">@ViewState.Error</div>
-                        <div class="giz-user-lock__numpad">
-                            @for (int i = 0; i <= 9; i++)
-                            {
-                                int local_i = i;
-                                <Button Color="ButtonColors.Primary" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.PutDigitAsync(local_i))">@local_i</Button>
-                            }
-                            <Button Color="ButtonColors.Primary" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.DeleteDigitAsync())" LeftSVGIcon="Icons.Backspace"></Button>
-                        </div>
-                        <div class="giz-user-lock__actions">
-                            <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" @onclick="@(() => UserLockService.UnlockAsync())">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LOCK_SCREEN_ENTER_CODE))</Button>
-                        </div>
-                        @*<div class="giz-user-lock__note">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LOCK_SCREEN_FORGOT_PIN))</div>*@
-                    </div>
-                </div>
-            </div>
-        </EditForm>
-    }
 }

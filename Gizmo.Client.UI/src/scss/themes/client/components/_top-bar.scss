@@ -37,7 +37,6 @@
 .giz-top-bar__hud,
 .giz-top-bar__icons,
 .giz-deploy,
-.giz-resv,
 .giz-top-bar .giz-user-menu-button {
     background: linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-2));
     backdrop-filter: blur(4rem) saturate(1.6);
@@ -372,9 +371,29 @@
     color: var(--giz-points);
 }
 
-.giz-topbar-stat--hidden {
-    font-size: 1.3rem;
-    color: var(--giz-text-2);
+// Hidden figures keep their width under the dots, so the HUD and the reservation tag
+// hanging from it do not move.
+.giz-top-bar__hud--hidden {
+    .giz-top-bar__time-value,
+    .giz-top-bar__time-unlimited,
+    .giz-topbar-stat--points > span,
+    .giz-topbar-stat--balance > span {
+        position: relative;
+        color: transparent;
+
+        &::after {
+            content: "\2022\2022\2022";
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: $font-family-text-theme-client;
+            font-size: 1.5rem;
+            letter-spacing: 0.15em;
+            color: var(--giz-text-3);
+        }
+    }
 }
 
 .giz-top-bar__eye {
