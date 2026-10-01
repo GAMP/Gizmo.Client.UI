@@ -22,9 +22,7 @@ namespace Gizmo.Client.UI.Shared
         private bool _slideOut = false;
         private bool _locked = false;
         private bool _disposed = false;
-        private bool _submitting;
-        private PlayerCardData _submitted;
-        private PlayerCardData _welcome;
+        private readonly RegistrationCardContext _card = new();
 
         [Inject()]
         UserRegistrationConfigurationViewState UserRegisterConfigurationViewState { get; init; }
@@ -69,16 +67,7 @@ namespace Gizmo.Client.UI.Shared
         NavigationManager NavigationManager { get; set; }
 
         [Inject]
-        UserRegistrationBasicFieldsViewState BasicFieldsViewState { get; set; }
-
-        [Inject]
-        UserRegistrationAdditionalFieldsViewState AdditionalFieldsViewState { get; set; }
-
-        [Inject]
         IRegistrationSessionService RegistrationSession { get; set; }
-
-        [Inject]
-        UserLoginViewService UserLoginService { get; set; }
 
         private bool HasAboutStep =>
             RegistrationSession.RequiredUserInfo?.Country == true ||
@@ -117,35 +106,11 @@ namespace Gizmo.Client.UI.Shared
 
         private void OnLocationChanged(object sender, LocationChangedEventArgs e) => HandlePositionChanged();
 
-        private void OnRegistrationFormChanged(object sender, EventArgs e)
-        {
-            _submitting = BasicFieldsViewState.IsLoading || AdditionalFieldsViewState.IsLoading;
+        private void OnCardChanged(object sender, EventArgs e) => HandlePositionChanged();
 
-            if (_submitting)
-                _submitted = PlayerCardData.From(BasicFieldsViewState, AdditionalFieldsViewState, RegistrationSession);
-        }
+        private void OnRegistrationCleared(object sender, EventArgs e) => _card.SetDraft(null);
 
-        private void OnRegistrationCleared(object sender, EventArgs e)
-        {
-            if (!_submitting || _submitted is null)
-                return;
-
-            _submitting = false;
-            _welcome = _submitted;
-            HandlePositionChanged();
-        }
-
-        private void CloseWelcome()
-        {
-            var nick = _welcome?.Nick;
-            _welcome = null;
-
-            if (string.IsNullOrEmpty(nick))
-                return;
-
-            UserLoginService.SetLoginMethod(View.UserLoginType.UsernameOrEmail);
-            UserLoginService.SetLoginName(nick);
-        }
+        private void CloseWelcome() => _card.CloseWelcome();
 
         private void UserIdleViewState_OnChange(object sender, EventArgs e)
         {
@@ -157,7 +122,7 @@ namespace Gizmo.Client.UI.Shared
                 if (UserIdleViewState.IsIdle)
                 {
                     _slideOut = true;
-                    _welcome = null;
+                    _card.DropWelcome();
                 }
                 else
                 {
@@ -184,9 +149,8 @@ namespace Gizmo.Client.UI.Shared
             UserIdleViewState.OnChange += UserIdleViewState_OnChange;
             HostHumberViewService.OnPositionChanged += HandlePositionChanged;
             NavigationManager.LocationChanged += OnLocationChanged;
-            BasicFieldsViewState.OnChange += OnRegistrationFormChanged;
-            AdditionalFieldsViewState.OnChange += OnRegistrationFormChanged;
             RegistrationSession.Cleared += OnRegistrationCleared;
+            _card.Changed += OnCardChanged;
             
             _locked = UserLoginOptions.Value.Disabled && !UserRegisterConfigurationViewState.IsEnabled;
 
@@ -244,9 +208,8 @@ namespace Gizmo.Client.UI.Shared
             UserIdleViewState.OnChange -= UserIdleViewState_OnChange;
             HostHumberViewService.OnPositionChanged -= HandlePositionChanged;
             NavigationManager.LocationChanged -= OnLocationChanged;
-            BasicFieldsViewState.OnChange -= OnRegistrationFormChanged;
-            AdditionalFieldsViewState.OnChange -= OnRegistrationFormChanged;
             RegistrationSession.Cleared -= OnRegistrationCleared;
+            _card.Changed -= OnCardChanged;
 
             this.UnsubscribeChange(LoginRotatorViewState);
             this.UnsubscribeChange(LogoViewState);

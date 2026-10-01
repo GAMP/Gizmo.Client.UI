@@ -73,7 +73,7 @@
 
         </div>
         <div class="giz-login__login @ClassName">
-            @if (_welcome is { } welcome)
+            @if (_card.Welcome is { } welcome)
             {
                 <RegistrationWelcome Card="@welcome" OnDone="@CloseWelcome" />
             }
@@ -81,16 +81,20 @@
             {
                 <div class="giz-signup-spread">
                     <aside class="giz-signup-spread__stage">
-                        <RegistrationStage Step="@registrationStep" HasAboutStep="@HasAboutStep" />
+                        <RegistrationStage Step="@registrationStep" HasAboutStep="@HasAboutStep" CardData="@_card.Draft" />
                     </aside>
                     <div class="giz-signup-spread__form">
-                        @Body
+                        <CascadingValue Value="@_card" IsFixed="true">
+                            @Body
+                        </CascadingValue>
                     </div>
                 </div>
             }
             else
             {
-                @Body
+                <CascadingValue Value="@_card" IsFixed="true">
+                    @Body
+                </CascadingValue>
             }
             <DialogHost />
         </div>

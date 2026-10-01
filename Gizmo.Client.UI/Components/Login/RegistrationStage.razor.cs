@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using Gizmo.Client.UI.Localization.Resources;
 using Gizmo.Client.UI.Localization.Services;
-using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -31,24 +30,16 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         UserRegistrationConfigurationViewState ConfigurationViewState { get; set; }
 
-        [Inject]
-        UserRegistrationBasicFieldsViewState BasicFieldsViewState { get; set; }
-
-        [Inject]
-        UserRegistrationAdditionalFieldsViewState AdditionalFieldsViewState { get; set; }
-
-        [Inject]
-        IRegistrationSessionService RegistrationSession { get; set; }
-
         [Parameter]
         public RegistrationStep Step { get; set; }
 
         [Parameter]
         public bool HasAboutStep { get; set; }
 
-        private IReadOnlyList<OrbitIcon> OrbitIcons => Orbit;
+        [Parameter]
+        public PlayerCardData CardData { get; set; }
 
-        private PlayerCardData CardData => PlayerCardData.From(BasicFieldsViewState, AdditionalFieldsViewState, RegistrationSession);
+        private IReadOnlyList<OrbitIcon> OrbitIcons => Orbit;
 
         private IReadOnlyList<RegistrationStep> Steps
         {
@@ -132,21 +123,5 @@ namespace Gizmo.Client.UI.Components
 
         private static string OrbitStyle(OrbitIcon icon) => string.Create(CultureInfo.InvariantCulture,
             $"--giz-orbit-x: {icon.X}rem; --giz-orbit-y: {icon.Y}rem; --giz-orbit-size: {icon.Size}rem; --giz-orbit-opacity: {icon.Opacity}; --giz-orbit-tilt: {icon.Tilt}deg");
-
-        protected override void OnInitialized()
-        {
-            this.SubscribeChange(BasicFieldsViewState);
-            this.SubscribeChange(AdditionalFieldsViewState);
-
-            base.OnInitialized();
-        }
-
-        public override void Dispose()
-        {
-            this.UnsubscribeChange(BasicFieldsViewState);
-            this.UnsubscribeChange(AdditionalFieldsViewState);
-
-            base.Dispose();
-        }
     }
 }

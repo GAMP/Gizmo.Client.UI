@@ -23,6 +23,8 @@ namespace Gizmo.Client.UI.Pages
     {
         [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
 
+        [CascadingParameter] RegistrationCardContext Card { get; set; }
+
         private FieldIdentifier? _countryFieldIdentifier;
 
         private string? _selectedCallingCodeDigits;
@@ -218,6 +220,26 @@ namespace Gizmo.Client.UI.Pages
 
         private void OpenQr() => _step = LoginStep.Qr;
 
+        private void OnCardChanged(object sender, EventArgs e)
+        {
+            if (TakeRegisteredName())
+                _ = InvokeAsync(StateHasChanged);
+        }
+
+        private bool TakeRegisteredName()
+        {
+            var nick = Card?.TakePendingLoginName();
+
+            if (string.IsNullOrEmpty(nick))
+                return false;
+
+            UserLoginService.SetLoginMethod(View.UserLoginType.UsernameOrEmail);
+            UserLoginService.SetLoginName(nick);
+            _step = LoginStep.Name;
+            _focusName = true;
+            return true;
+        }
+
         private void OnNameKeyDown(KeyboardEventArgs args)
         {
             if (args.Key == "Enter")
@@ -263,6 +285,11 @@ namespace Gizmo.Client.UI.Pages
             this.SubscribeChange(HostQRCodeViewState);
             this.SubscribeChange(HostReservationViewState);
 
+            if (Card is not null)
+                Card.Changed += OnCardChanged;
+
+            TakeRegisteredName();
+
             await base.OnInitializedAsync();
         }
 
@@ -291,6 +318,9 @@ namespace Gizmo.Client.UI.Pages
 
         public override void Dispose()
         {
+            if (Card is not null)
+                Card.Changed -= OnCardChanged;
+
             this.UnsubscribeChange(HostReservationViewState);
             this.UnsubscribeChange(HostQRCodeViewState);
             ViewState.OnChange -= OnLoginViewStateChanged;

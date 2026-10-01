@@ -20,28 +20,47 @@ namespace Gizmo.Client.UI.Components
         string Email,
         string City)
     {
-        public static PlayerCardData From(
+        public static PlayerCardData FromBasics(
             UserRegistrationBasicFieldsViewState basic,
+            IRegistrationSessionService session) =>
+            Create(session, basic.Username, basic.FirstName, basic.LastName, basic.BirthDate,
+                basic.MobilePhone, basic.Email, null);
+
+        public static PlayerCardData FromAdditional(
             UserRegistrationAdditionalFieldsViewState additional,
-            IRegistrationSessionService session)
+            IRegistrationSessionService session) =>
+            Create(session, session.Username, session.FirstName, session.LastName, session.BirthDate,
+                session.MobilePhone, session.Email, additional.City);
+
+        private static PlayerCardData Create(
+            IRegistrationSessionService session,
+            string nick,
+            string firstName,
+            string lastName,
+            DateTime? birthDate,
+            string mobilePhone,
+            string email,
+            string city)
         {
-            var phone = CountDigits(basic.MobilePhone) >= PlayerCard.PHONE_DIGITS_SHOWN + 1
-                ? basic.MobilePhone
+            var phone = CountDigits(mobilePhone) >= PlayerCard.PHONE_DIGITS_SHOWN + 1
+                ? mobilePhone
                 : session.Flow == RegistrationFlow.Sms ? session.ActualContact : null;
 
-            var email = !string.IsNullOrWhiteSpace(basic.Email) && basic.Email.Contains('@')
-                ? basic.Email
+            var contactEmail = !string.IsNullOrWhiteSpace(email) && email.Contains('@')
+                ? email
                 : session.Flow == RegistrationFlow.Email ? session.ActualContact : null;
 
             return new PlayerCardData(
-                basic.Username?.Trim() ?? string.Empty,
-                basic.FirstName?.Trim() ?? string.Empty,
-                basic.LastName?.Trim() ?? string.Empty,
-                basic.BirthDate,
+                Clean(nick),
+                Clean(firstName),
+                Clean(lastName),
+                birthDate,
                 phone ?? string.Empty,
-                email?.Trim() ?? string.Empty,
-                additional.City?.Trim() ?? string.Empty);
+                Clean(contactEmail),
+                Clean(city));
         }
+
+        private static string Clean(string value) => value?.Trim() ?? string.Empty;
 
         internal static int CountDigits(string value) => value?.Count(char.IsDigit) ?? 0;
     }
