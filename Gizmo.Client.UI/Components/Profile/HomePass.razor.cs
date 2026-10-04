@@ -51,7 +51,7 @@ namespace Gizmo.Client.UI.Components
         {
             get
             {
-                var time = UserBalanceViewState.Time ?? TimeSpan.Zero;
+                var time = TimeLeft.NotNegative(UserBalanceViewState.Time);
                 return string.Create(CultureInfo.CurrentCulture, $"{(int)time.TotalHours}:{time.Minutes:00}");
             }
         }

@@ -27,7 +27,7 @@ namespace Gizmo.Client.UI.Components
 
         protected string MemberSince => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_MEMBER_SINCE, Profile.RegistrationDate.ToLocalTime().ToString("d MMMM yyyy", CultureInfo.CurrentCulture));
 
-        protected string TimeText => Balance.Time is { } time
+        protected string TimeText => Balance.Time.HasValue && TimeLeft.NotNegative(Balance.Time) is var time
             ? $"{(int)time.TotalHours}{TimeUnit(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_HOUR_ABBREVIATED))} {time.Minutes:00}{TimeUnit(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_MINUTE_ABBREVIATED))}"
             : string.Empty;
 

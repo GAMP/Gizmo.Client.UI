@@ -59,7 +59,7 @@ namespace Gizmo.Client.UI.Shared
                 if (!UserBalanceViewState.Time.HasValue)
                     return string.Empty;
 
-                var time = UserBalanceViewState.Time.Value;
+                var time = TimeLeft.NotNegative(UserBalanceViewState.Time);
                 var hours = TimeUnitAbbreviation(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_HOUR_ABBREVIATED));
                 var minutes = TimeUnitAbbreviation(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_MINUTE_ABBREVIATED));
 
