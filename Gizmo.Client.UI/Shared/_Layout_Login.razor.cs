@@ -40,7 +40,7 @@ namespace Gizmo.Client.UI.Shared
         private LogoViewState LogoViewState { get; set; }
 
         [Inject]
-        IOptions<ClientInterfaceOptions> ClientUIOptions { get; set; }
+        IOptionsMonitor<ClientInterfaceOptions> ClientUIOptions { get; set; }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
