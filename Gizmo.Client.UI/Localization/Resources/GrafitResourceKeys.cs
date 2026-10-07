@@ -166,7 +166,6 @@
         public const string SHELL_SIGNUP_DONE_TITLE = nameof(SHELL_SIGNUP_DONE_TITLE);
         public const string SHELL_SIGNUP_DONE_SUB = nameof(SHELL_SIGNUP_DONE_SUB);
         public const string SHELL_SIGNUP_DONE_GO = nameof(SHELL_SIGNUP_DONE_GO);
-        public const string SHELL_SERVER_ONLINE = nameof(SHELL_SERVER_ONLINE);
         public const string SHELL_SERVER_OFFLINE = nameof(SHELL_SERVER_OFFLINE);
         public const string SHELL_HANDOVER_SAVE_PROGRESS = nameof(SHELL_HANDOVER_SAVE_PROGRESS);
         public const string SHELL_GRACE_UNTIL_LOGOUT = nameof(SHELL_GRACE_UNTIL_LOGOUT);

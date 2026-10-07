@@ -69,14 +69,20 @@
 }
 
 // The club server as a dot before the version: green while it answers, red while it does not.
+// Shown only while the client has no connection to the server.
 .giz-server {
-    flex: none;
-    width: 0.7rem;
-    height: 0.7rem;
-    border-radius: 50%;
-    background: var(--giz-success-green);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--giz-danger-light);
 
-    &--offline { background: var(--giz-danger); }
+    &__dot {
+        flex: none;
+        width: 0.7rem;
+        height: 0.7rem;
+        border-radius: 50%;
+        background: var(--giz-danger);
+    }
 }
 
 .giz-version {

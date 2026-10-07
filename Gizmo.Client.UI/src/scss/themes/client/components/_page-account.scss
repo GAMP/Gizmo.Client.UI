@@ -63,18 +63,29 @@ $ac-line-2: var(--giz-glass-11);
         gap: 1.4rem;
     }
 
+    // the caption and its note (current package, credit) on the first line, the figure alone on
+    // the second, so a tile with a note is as tall as one without
     &__stat {
         min-width: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: baseline;
+        align-content: start;
+        column-gap: 1rem;
+        row-gap: 0.5rem;
         padding: 1.8rem 2rem;
         border-radius: $ac-r;
         @include ac-glass;
 
-        small { @include ac-cap; }
+        small {
+            grid-column: 1;
+            grid-row: 1;
+            @include ac-cap;
+        }
 
         b {
+            grid-column: 1 / -1;
+            grid-row: 2;
             @include ac-num;
             display: inline-flex;
             align-items: center;
@@ -90,6 +101,9 @@ $ac-line-2: var(--giz-glass-11);
         }
 
         > span {
+            grid-column: 2;
+            grid-row: 1;
+            min-width: 0;
             font-size: 1.25rem;
             font-weight: 600;
             color: $ac-ink-3;
@@ -100,13 +114,9 @@ $ac-line-2: var(--giz-glass-11);
 
         // the top-up sits at the right of the balance, across its rows
         &--topup {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) auto;
-            align-content: start;
-            column-gap: 1.2rem;
-            row-gap: 0.5rem;
+            grid-template-columns: auto minmax(0, 1fr) auto;
 
-            > * { grid-column: 1; }
+            b { grid-column: 1 / 3; }
         }
 
         // The HUD's eye hides the money here too.
@@ -128,7 +138,8 @@ $ac-line-2: var(--giz-glass-11);
     &__credit {
         display: flex;
         align-items: center;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        overflow: hidden;
         gap: 0.5rem;
         font-size: 1.25rem;
         font-weight: 600;
@@ -148,8 +159,8 @@ $ac-line-2: var(--giz-glass-11);
     &__credit-kind { color: var(--giz-text-off); }
 
     &__stat &__topup {
-        grid-column: 2;
-        grid-row: 1 / span 3;
+        grid-column: 3;
+        grid-row: 1 / span 2;
         align-self: center;
         height: 4rem;
         display: inline-flex;

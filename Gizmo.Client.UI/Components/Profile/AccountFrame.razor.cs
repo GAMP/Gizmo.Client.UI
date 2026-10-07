@@ -23,9 +23,13 @@ namespace Gizmo.Client.UI.Components
             ? GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_GUEST))
             : UserViewState.Username;
 
-        protected string FullName => string.Join(" ", new[] { UserViewState.FirstName, UserViewState.LastName }.Where(part => !string.IsNullOrWhiteSpace(part)));
+        private static string Pick(string first, string second) => string.IsNullOrWhiteSpace(first) ? second : first;
 
-        protected bool ShowMemberSince => !UserViewState.IsGuest && UserViewState.RegistrationDate != default;
+        protected string FullName => string.Join(" ", new[] { Pick(Profile.FirstName, UserViewState.FirstName), Pick(Profile.LastName, UserViewState.LastName) }.Where(part => !string.IsNullOrWhiteSpace(part)));
+
+        private System.DateTime RegisteredOn => Profile.RegistrationDate != default ? Profile.RegistrationDate : UserViewState.RegistrationDate;
+
+        protected bool ShowMemberSince => !UserViewState.IsGuest && RegisteredOn != default;
 
         protected string SinceText => ShowMemberSince ? MemberSince : string.Empty;
 
@@ -36,9 +40,13 @@ namespace Gizmo.Client.UI.Components
             _ => "giz-jersey__nick",
         };
 
-        protected bool HasEmail => !string.IsNullOrWhiteSpace(UserViewState.Email);
+        protected string EmailText => Pick(Profile.Email, UserViewState.Email);
 
-        protected bool HasPhone => !string.IsNullOrWhiteSpace(UserViewState.MobilePhone);
+        protected bool HasEmail => !string.IsNullOrWhiteSpace(EmailText);
+
+        protected string PhoneText => Pick(Pick(Profile.MobilePhone, UserViewState.MobilePhone), Profile.Phone);
+
+        protected bool HasPhone => !string.IsNullOrWhiteSpace(PhoneText);
 
         protected bool CanTopUp => OnlineDeposit.IsEnabled;
 
@@ -63,7 +71,7 @@ namespace Gizmo.Client.UI.Components
                 _ = await dialog.WaitForResultAsync();
         }
 
-        protected string MemberSince => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_MEMBER_SINCE, UserViewState.RegistrationDate.ToLocalTime().ToString("d MMMM yyyy", CultureInfo.CurrentCulture));
+        protected string MemberSince => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_MEMBER_SINCE, RegisteredOn.ToLocalTime().ToString("d MMMM yyyy", CultureInfo.CurrentCulture));
 
         protected string TimeText => Balance.Time.HasValue && TimeLeft.NotNegative(Balance.Time) is var time
             ? $"{(int)time.TotalHours}{TimeUnit(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_HOUR_ABBREVIATED))} {time.Minutes:00}{TimeUnit(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_EXPIRATION_MINUTE_ABBREVIATED))}"
@@ -97,6 +105,9 @@ namespace Gizmo.Client.UI.Components
 
         [Inject]
         UserViewState UserViewState { get; set; }
+
+        [Inject]
+        UserProfileViewState Profile { get; set; }
 
         [Inject]
         UserBalanceViewState Balance { get; set; }
@@ -149,6 +160,7 @@ namespace Gizmo.Client.UI.Components
         protected override void OnInitialized()
         {
             this.SubscribeChange(UserViewState);
+            this.SubscribeChange(Profile);
             this.SubscribeChange(Balance);
             this.SubscribeChange(Credit);
             this.SubscribeChange(OnlineDeposit);
@@ -159,6 +171,7 @@ namespace Gizmo.Client.UI.Components
 
         public override void Dispose()
         {
+            this.UnsubscribeChange(Profile);
             this.UnsubscribeChange(UserViewState);
             this.UnsubscribeChange(Balance);
             this.UnsubscribeChange(Credit);

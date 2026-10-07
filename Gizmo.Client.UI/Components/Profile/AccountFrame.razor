@@ -24,11 +24,11 @@
                     <div class="giz-jersey__contacts" title="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_CONTACTS_NOTE)">
                         @if (HasEmail)
                         {
-                            <span><i class="ph-bold ph-envelope-simple"></i>@UserViewState.Email</span>
+                            <span><i class="ph-bold ph-envelope-simple"></i>@EmailText</span>
                         }
                         @if (HasPhone)
                         {
-                            <span><i class="ph-bold ph-phone"></i>@UserViewState.MobilePhone</span>
+                            <span><i class="ph-bold ph-phone"></i>@PhoneText</span>
                         }
                     </div>
                     <button type="button" class="giz-jersey__key" @onclick="ChangePassword">
@@ -114,24 +114,19 @@
         </div>
 
         <nav class="giz-account__tabs" aria-label="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_DETAILS))">
-            <a class="@TimeTabClass" href="@ClientRoutes.UserProductsRoute">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_TAB_TIME)</a>
+            <a class="@TimeTabClass" href="@ClientRoutes.UserProfileRoute">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_TAB_TIME)</a>
             @if (!InterfaceOptions.CurrentValue.DisableUserPurchaseHistory)
             {
                 <NavLink class="giz-account__tab" href="@ClientRoutes.UserPurchasesRoute" Match="NavLinkMatch.All">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES))</NavLink>
             }
             @if (!UserViewState.IsGuest && ClientFeatures.Ladder)
             {
-                <a class="@ProgressTabClass" href="@ClientRoutes.UserLadderRoute">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PROGRESS_TAB)</a>
+                <AccountProgressTab TabClass="@ProgressTabClass" />
             }
         </nav>
 
         <div class="giz-account__body">
             @ChildContent
         </div>
-
-        @if (!string.IsNullOrEmpty(ShellVersion.Grafit))
-        {
-            <div class="giz-account__version">Grafit @ShellVersion.Grafit</div>
-        }
     </div>
 </div>

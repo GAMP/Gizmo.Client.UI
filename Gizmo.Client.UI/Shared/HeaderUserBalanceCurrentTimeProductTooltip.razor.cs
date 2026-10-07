@@ -126,7 +126,7 @@ namespace Gizmo.Client.UI.Components
         {
             await OnClickAction.InvokeAsync(args);
 
-            NavigationService.NavigateTo(ClientRoutes.UserProductsRoute);
+            NavigationService.NavigateTo(ClientRoutes.UserProfileRoute);
         }
 
         public async Task OpenShop(MouseEventArgs args)
