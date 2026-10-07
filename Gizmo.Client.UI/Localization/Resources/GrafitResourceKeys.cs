@@ -190,10 +190,7 @@
         public const string SHELL_DEPOSIT_FAILED_TEXT = nameof(SHELL_DEPOSIT_FAILED_TEXT);
         public const string SHELL_DEPOSIT_RETRY = nameof(SHELL_DEPOSIT_RETRY);
         public const string SHELL_HOME_BEST_VALUE = nameof(SHELL_HOME_BEST_VALUE);
-        public const string SHELL_HOME_ENOUGH_UNTIL = nameof(SHELL_HOME_ENOUGH_UNTIL);
-        public const string SHELL_HOME_WINDOW = nameof(SHELL_HOME_WINDOW);
         public const string SHELL_HOME_CHECKOUT = nameof(SHELL_HOME_CHECKOUT);
-        public const string SHELL_PROGRESS_TODO = nameof(SHELL_PROGRESS_TODO);
         public const string SHELL_PROGRESS_OPEN = nameof(SHELL_PROGRESS_OPEN);
         public const string SHELL_PROGRESS_ACHIEVEMENT = nameof(SHELL_PROGRESS_ACHIEVEMENT);
         public const string SHELL_PROGRESS_NOTHING = nameof(SHELL_PROGRESS_NOTHING);
@@ -210,5 +207,9 @@
         public const string SHELL_LADDER_YOU_ARE = nameof(SHELL_LADDER_YOU_ARE);
         public const string SHELL_LADDER_HERE = nameof(SHELL_LADDER_HERE);
         public const string SHELL_LADDER_CONDITIONS = nameof(SHELL_LADDER_CONDITIONS);
+        public const string SHELL_CHALLENGE_STEPS = nameof(SHELL_CHALLENGE_STEPS);
+        public const string SHELL_CHALLENGE_HINT = nameof(SHELL_CHALLENGE_HINT);
+        public const string SHELL_CHALLENGE_STEP_DONE = nameof(SHELL_CHALLENGE_STEP_DONE);
+        public const string SHELL_LADDER_PASSED = nameof(SHELL_LADDER_PASSED);
     }
 }

@@ -24,11 +24,11 @@
                     <div class="giz-jersey__contacts" title="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_CONTACTS_NOTE)">
                         @if (HasEmail)
                         {
-                            <span><i class="ph-bold ph-envelope-simple"></i>@Profile.Email</span>
+                            <span><i class="ph-bold ph-envelope-simple"></i>@UserViewState.Email</span>
                         }
                         @if (HasPhone)
                         {
-                            <span><i class="ph-bold ph-phone"></i>@Profile.MobilePhone</span>
+                            <span><i class="ph-bold ph-phone"></i>@UserViewState.MobilePhone</span>
                         }
                     </div>
                     <button type="button" class="giz-jersey__key" @onclick="ChangePassword">
@@ -40,7 +40,7 @@
         </header>
 
         <div class="giz-account__stats">
-            <div class="giz-account__stat giz-account__stat--money">
+            <div class="@MoneyClass">
                 <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BALANCE))</small>
                 <b>@BalanceText</b>
                 @if (HasCredit)
@@ -82,6 +82,13 @@
                         }
                     </span>
                 }
+                @if (CanTopUp)
+                {
+                    <button type="button" class="giz-account__topup" @onclick="TopUp">
+                        <i class="ph-bold ph-plus"></i>
+                        <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_TOOLTIP_TOP_UP))</span>
+                    </button>
+                }
             </div>
             <div class="giz-account__stat giz-account__stat--points">
                 <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_POINTS))</small>
@@ -104,15 +111,6 @@
                     <span>@CurrentPackageName</span>
                 }
             </div>
-            @if (CanTopUp)
-            {
-                <div class="giz-account__stat giz-account__stat--act">
-                    <button type="button" class="giz-account__topup" @onclick="TopUp">
-                        <i class="ph-bold ph-wallet"></i>
-                        <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_TOP_UP_ACCOUNT)</span>
-                    </button>
-                </div>
-            }
         </div>
 
         <nav class="giz-account__tabs" aria-label="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_DETAILS))">

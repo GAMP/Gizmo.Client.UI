@@ -215,10 +215,6 @@
                             </span>
                             <span class="giz-home-pack__text" @onclick="@(() => OpenProduct(pack.Product.Id))">
                                 <b>@pack.Product.Name</b>
-                                @if (PackHint(pack.Product) is { } hint)
-                                {
-                                    <small>@hint</small>
-                                }
                                 @if (pack.IsBest)
                                 {
                                     <em>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_BEST_VALUE)</em>

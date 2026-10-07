@@ -94,6 +94,7 @@ namespace Gizmo.Client.UI.Components
             get
             {
                 var steps = new List<Step>();
+                var named = new HashSet<int>();
 
                 foreach (var challenge in Challenges.Challenges.Where(a => !a.IsDone && !a.IsEnded))
                 {
@@ -107,11 +108,12 @@ namespace Gizmo.Client.UI.Components
                         ? challenge.Name
                         : $"{challenge.Name} · {challenge.WindowText}";
 
+                    named.Add(next.AchievementId);
                     steps.Add(new Step(next.Name, note, reward?.Text, RewardIcon(reward)));
                 }
 
                 foreach (var achievement in Achievements.Achievements
-                    .Where(a => !a.IsEarned && a.ShowProgressBar)
+                    .Where(a => !a.IsEarned && a.ShowProgressBar && !named.Contains(a.AchievementId))
                     .OrderByDescending(a => a.ProgressPercent))
                 {
                     var note = string.IsNullOrEmpty(achievement.CountText)

@@ -70,6 +70,9 @@ namespace Gizmo.Client.UI.Components
         {
             get
             {
+                if (IsPassed)
+                    return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LADDER_PASSED);
+
                 if (!string.IsNullOrEmpty(Item.MetaText))
                     return Item.MetaText;
 

@@ -76,8 +76,6 @@ namespace Gizmo.Client.UI.Pages
         [Inject] ClientServerCartViewService CartService { get; set; }
         [Inject] UserCartViewService CheckoutService { get; set; }
         [Inject] NavigationService NavigationService { get; set; }
-        [Inject] TimeProductsViewState TimeProductsViewState { get; set; }
-        [Inject] TimeProductsViewService TimeProductsViewService { get; set; }
         [Inject] UserProductGroupViewStateLookupService GroupLookupService { get; set; }
 
         #endregion
@@ -136,43 +134,9 @@ namespace Gizmo.Client.UI.Pages
             return new PackRow(product, length, unit, isBest);
         }
 
-        private string PackClass(PackRow pack)
-        {
-            var css = "giz-home-pack";
-
-            if (pack.IsBest)
-                css += " giz-home-pack--best";
-
-            return _buyingProductId == pack.Product.Id ? css + " giz-home-pack--busy" : css;
-        }
-
-        private string HoursMinutesFormat =>
-            LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PRODUCT_HOURS_MINUTES), "{0}", "{1}");
-
-        private string PackHint(UserProductViewState product)
-        {
-            var now = DateTime.Now;
-
-            if (TimeQueue.Window(product.TimeProduct?.UsageAvailability, now) is { } window)
-                return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_WINDOW, Clock(window.Start), Clock(window.End));
-
-            var minutes = product.TimeProduct?.Minutes ?? 0;
-
-            if (minutes <= 0 || TimeProductsViewState.IsInitialized != true)
-                return null;
-
-            if (TimeQueue.QueuedMinutes(TimeProductsViewState.TimeProducts, HoursMinutesFormat) is not int queued)
-                return null;
-
-            var until = now.AddMinutes(queued + minutes);
-            var text = until - now < TimeSpan.FromHours(20)
-                ? until.ToString("t", CultureInfo.CurrentCulture)
-                : $"{until.ToString("d MMM", CultureInfo.CurrentCulture)}, {until.ToString("t", CultureInfo.CurrentCulture)}";
-
-            return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_ENOUGH_UNTIL, text);
-        }
-
-        private static string Clock(TimeSpan time) => DateTime.Today.Add(time).ToString("t", CultureInfo.CurrentCulture);
+        private string PackClass(PackRow pack) => _buyingProductId == pack.Product.Id
+            ? "giz-home-pack giz-home-pack--busy"
+            : "giz-home-pack";
 
         private enum TillTab { Time, Bar }
 
@@ -503,11 +467,8 @@ namespace Gizmo.Client.UI.Pages
             this.SubscribeChange(ViewState);
             this.SubscribeChange(UserBalanceViewState);
             this.SubscribeChange(AdvertisementsViewState);
-            this.SubscribeChange(TimeProductsViewState);
             this.SubscribeChange(CartService.ViewState);
             ShellActivity.Changed += OnActivityChanged;
-
-            DispatchWorkflow(() => TimeProductsViewService.LoadAsync(_lifetime.Token));
 
             ApplySlideTimer();
 
@@ -605,7 +566,6 @@ namespace Gizmo.Client.UI.Pages
             _slideTimer = null;
 
             this.UnsubscribeChange(CartService.ViewState);
-            this.UnsubscribeChange(TimeProductsViewState);
             this.UnsubscribeChange(AdvertisementsViewState);
             this.UnsubscribeChange(UserBalanceViewState);
             this.UnsubscribeChange(ViewState);

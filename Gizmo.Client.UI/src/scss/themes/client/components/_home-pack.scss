@@ -1,6 +1,6 @@
 //=============== Home packages ================//
-// A package in the till: its hours on a tile, the name with the time it lasts until, the price
-// as the button. The cheapest hour gets the accent tile, the primary button and a green note.
+// A package in the till: its hours on a tile, the name, the price as the button. The cheapest
+// hour gets a green note under the name.
 
 .giz-home-packs {
     flex: 1 1 auto;
@@ -75,7 +75,6 @@
         cursor: pointer;
 
         b,
-        small,
         em {
             overflow: hidden;
             text-overflow: ellipsis;
@@ -86,12 +85,6 @@
             font-size: 1.45rem;
             font-weight: 700;
             color: var(--giz-ink);
-        }
-
-        small {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--giz-text-3);
         }
 
         em {
@@ -125,21 +118,6 @@
             font-size: 0.85em;
             color: var(--giz-points);
         }
-    }
-
-    &--best &__icon {
-        background: var(--giz-accent);
-        color: var(--giz-on-accent);
-
-        small {
-            color: inherit;
-            opacity: 0.72;
-        }
-    }
-
-    &--best &__buy:not(:disabled) {
-        box-shadow: none;
-        @include giz-action-primary;
     }
 
     &--busy { background: rgba(var(--giz-accent-rgb), 0.14); }

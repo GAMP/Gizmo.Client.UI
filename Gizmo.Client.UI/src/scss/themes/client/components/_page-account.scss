@@ -56,10 +56,10 @@ $ac-line-2: var(--giz-glass-11);
         animation: giz-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
-    // ── figures: balance, points, time and the top-up, as tiles ────────
+    // ── figures: balance, points and time, as tiles ──────────────────────
     &__stats {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 1.4rem;
     }
 
@@ -98,9 +98,15 @@ $ac-line-2: var(--giz-glass-11);
 
         &--money b { color: var(--giz-success-green); }
 
-        &--act {
-            justify-content: center;
-            padding: 1.8rem;
+        // the top-up sits at the right of the balance, across its rows
+        &--topup {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-content: start;
+            column-gap: 1.2rem;
+            row-gap: 0.5rem;
+
+            > * { grid-column: 1; }
         }
 
         // The HUD's eye hides the money here too.
@@ -141,22 +147,25 @@ $ac-line-2: var(--giz-glass-11);
 
     &__credit-kind { color: var(--giz-text-off); }
 
-    &__topup {
-        height: 5rem;
+    &__stat &__topup {
+        grid-column: 2;
+        grid-row: 1 / span 3;
+        align-self: center;
+        height: 4rem;
         display: inline-flex;
         align-items: center;
-        gap: 0.8rem;
-        padding: 0 2.4rem;
+        gap: 0.6rem;
+        padding: 0 1.8rem;
         border: 0;
         border-radius: $giz-r-pill;
         font-family: $font-family-header-theme-client;
-        font-size: 1.5rem;
+        font-size: 1.4rem;
         font-weight: 700;
         white-space: nowrap;
         cursor: pointer;
         @include giz-action-primary;
 
-        i { font-size: 1.8rem; }
+        i { font-size: 1.5rem; }
     }
 
     // ── tabs: words with the accent underline ────────────────────────────
@@ -187,6 +196,9 @@ $ac-line-2: var(--giz-glass-11);
 
     &__body {
         min-height: 0;
+        display: flex;
+        flex-direction: column;
+        gap: $ac-g;
     }
 
     &__version {
