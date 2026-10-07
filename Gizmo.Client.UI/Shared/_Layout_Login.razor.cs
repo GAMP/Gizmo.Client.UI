@@ -167,7 +167,7 @@ namespace Gizmo.Client.UI.Shared
                 .AsString();
 
         private bool HasClubBackground =>
-            !string.IsNullOrEmpty(ClientUIOptions.Value.LoginBackground) || LoginRotatorViewState.IsEnabled;
+            !string.IsNullOrEmpty(ClientUIOptions.CurrentValue.LoginBackground) || LoginRotatorViewState.IsEnabled;
 
         #endregion
 

@@ -40,7 +40,7 @@ namespace Gizmo.Client.UI.Components
             : Array.Empty<TimeProductViewState>();
 
         private string HoursMinutesFormat =>
-            LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PRODUCT_HOURS_MINUTES));
+            LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PRODUCT_HOURS_MINUTES), "{0}", "{1}");
 
         private string Headline => Balance.Time.HasValue && Plan is { } plan
             ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TIME_PLAY_UNTIL, plan.EndText)
@@ -191,7 +191,7 @@ namespace Gizmo.Client.UI.Components
 
         private static string Clock(DateTime now, DateTime time) => time - now < TimeSpan.FromHours(20)
             ? time.ToString("t", CultureInfo.CurrentCulture)
-            : time.ToString("d MMM, t", CultureInfo.CurrentCulture);
+            : $"{time.ToString("d MMM", CultureInfo.CurrentCulture)}, {time.ToString("t", CultureInfo.CurrentCulture)}";
 
         private void OpenDetails(int productId)
         {

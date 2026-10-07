@@ -147,7 +147,7 @@ namespace Gizmo.Client.UI.Pages
         }
 
         private string HoursMinutesFormat =>
-            LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PRODUCT_HOURS_MINUTES));
+            LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PRODUCT_HOURS_MINUTES), "{0}", "{1}");
 
         private string PackHint(UserProductViewState product)
         {
@@ -167,7 +167,7 @@ namespace Gizmo.Client.UI.Pages
             var until = now.AddMinutes(queued + minutes);
             var text = until - now < TimeSpan.FromHours(20)
                 ? until.ToString("t", CultureInfo.CurrentCulture)
-                : until.ToString("d MMM, t", CultureInfo.CurrentCulture);
+                : $"{until.ToString("d MMM", CultureInfo.CurrentCulture)}, {until.ToString("t", CultureInfo.CurrentCulture)}";
 
             return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_ENOUGH_UNTIL, text);
         }
