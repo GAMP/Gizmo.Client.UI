@@ -211,5 +211,7 @@
         public const string SHELL_CHALLENGE_HINT = nameof(SHELL_CHALLENGE_HINT);
         public const string SHELL_CHALLENGE_STEP_DONE = nameof(SHELL_CHALLENGE_STEP_DONE);
         public const string SHELL_LADDER_PASSED = nameof(SHELL_LADDER_PASSED);
+        public const string SHELL_SEARCH_BEST = nameof(SHELL_SEARCH_BEST);
+        public const string SHELL_SEARCH_SHORTCUTS = nameof(SHELL_SEARCH_SHORTCUTS);
     }
 }

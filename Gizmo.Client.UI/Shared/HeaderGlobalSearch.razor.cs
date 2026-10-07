@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Shared
@@ -48,6 +50,12 @@ namespace Gizmo.Client.UI.Shared
 
         [Parameter]
         public int MinimumCharacters { get; set; } = 0;
+
+        protected IReadOnlyList<GlobalSearchResultViewState> ExecutableResults => ViewState.ExecutableResults?.ToList() ?? new List<GlobalSearchResultViewState>();
+
+        protected IReadOnlyList<GlobalSearchResultViewState> ProductResults => ViewState.ProductResults?.ToList() ?? new List<GlobalSearchResultViewState>();
+
+        protected bool HasResults => ViewState.ExecutableResults?.Any() == true || ViewState.ProductResults?.Any() == true;
 
         #endregion
 

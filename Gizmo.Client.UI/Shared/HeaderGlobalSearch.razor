@@ -23,52 +23,9 @@
              @ref="@Ref">
             <div class="giz-dropdown-menu__content giz-global-search-dropdown__body">
 
-                @if ((ViewState.ExecutableResults != null && ViewState.ExecutableResults.Count() > 0) || (ViewState.ProductResults != null && ViewState.ProductResults.Count() > 0))
+                @if (HasResults)
                 {
-                    @if (ViewState.ExecutableResults != null && ViewState.ExecutableResults.Count() > 0)
-                    {
-                        <div class="giz-global-search-section">
-                            <div class="giz-global-search-section__header">
-
-                                <div>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GLOBAL_SEARCH_GAMES_AND_APPS))</div>
-
-                                @if (ViewState.ExecutableResults.Count() > 10)
-                                {
-                                    <div class="giz-global-search-section__header__more" @onclick="@(() => GlobalSearchService.ViewAllResultsAsync(Gizmo.Client.UI.View.SearchResultTypes.Executables))">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GLOBAL_SEARCH_SHOW_ALL))</div>
-                                }
-                            </div>
-                            <div class="giz-global-search-section__body">
-
-                                @foreach (var result in ViewState.ExecutableResults.Take(10))
-                                {
-                                    <UniversalExecutable @key="result.Id" ExecutableId="@result.Id" ShowProgressBar="true" ShowExeName="true" ShowAppName="true" />
-                                }
-
-                            </div>
-                        </div>
-                    }
-                    @if (ViewState.ProductResults != null && ViewState.ProductResults.Count() > 0)
-                    {
-                        <div class="giz-global-search-section">
-                            <div class="giz-global-search-section__header">
-
-                                <div>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GLOBAL_SEARCH_SHOP))</div>
-
-                                @if (ViewState.ProductResults.Count() > 10)
-                                {
-                                    <div class="giz-global-search-section__header__more" @onclick="@(() => GlobalSearchService.ViewAllResultsAsync(Gizmo.Client.UI.View.SearchResultTypes.Products))">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GLOBAL_SEARCH_SHOW_ALL))</div>
-                                }
-                            </div>
-                            <div class="giz-global-search-section__body">
-
-                                @foreach (var result in ViewState.ProductResults.Take(10))
-                                {
-                                    <HeaderGlobalSearchProductResultCard @key="result.Id" ProductId="@result.Id" />
-                                }
-
-                            </div>
-                        </div>
-                    }
+                    <SearchBoard Executables="@ExecutableResults" Products="@ProductResults" Pattern="@ViewState.SearchPattern" />
                 }
                 else
                 {

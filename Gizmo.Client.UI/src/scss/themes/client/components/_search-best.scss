@@ -1,0 +1,129 @@
+//=============== Search best match ================//
+// The best match: its picture wide, a quiet line saying what it is, the name large and its
+// actions — every shortcut of the game as a launch pill, or the price on "Add to cart".
+
+.giz-search-best {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    &--product { cursor: pointer; }
+
+    &__art {
+        position: relative;
+        aspect-ratio: 16 / 10;
+        overflow: hidden;
+        border-radius: 1.6rem;
+        background: var(--giz-glass-5);
+        cursor: pointer;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .giz-default-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                width: 30%;
+                height: auto;
+                opacity: 0.5;
+            }
+        }
+    }
+
+    &__hours {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.2rem;
+        color: var(--giz-text-1);
+
+        b {
+            font-family: $font-family-numeric-theme-client;
+            font-size: 7rem;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -0.04em;
+        }
+
+        small {
+            align-self: flex-end;
+            margin-bottom: 4.6rem;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--giz-text-3);
+        }
+    }
+
+    &__kind {
+        margin-top: 0.4rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        font-size: 1.35rem;
+        font-weight: 600;
+        color: var(--giz-text-3);
+    }
+
+    &__name {
+        font-family: $font-family-header-theme-client;
+        font-size: 2.8rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        line-height: 1.12;
+        color: var(--giz-text-1);
+        overflow-wrap: anywhere;
+        cursor: pointer;
+    }
+
+    &__acts {
+        margin-top: 0.6rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+
+        .giz-universal-executable {
+            @include giz-launch-pill;
+            font-size: 1.4rem;
+        }
+
+        .giz-universal-executable:first-child { @include giz-launch-pill-primary; }
+    }
+
+    &__buy {
+        height: 4.6rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0 2rem;
+        border: 0;
+        border-radius: $giz-r-pill;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.45rem;
+        font-weight: 700;
+        cursor: pointer;
+        @include giz-action-primary;
+
+        i { font-size: 1.5rem; }
+
+        b {
+            font-family: $font-family-numeric-theme-client;
+            opacity: 0.8;
+        }
+
+        &:disabled { @include giz-action-off; }
+    }
+
+    &__coin { font-size: 1.4rem; }
+}

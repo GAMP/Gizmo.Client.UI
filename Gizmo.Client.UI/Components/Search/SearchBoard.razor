@@ -1,0 +1,56 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+@using Gizmo.Client.UI.Shared
+
+<div class="@BoardClass">
+    <div class="giz-search-board__best">
+        @if (BestApp is { } best)
+        {
+            <SearchBestApp @key="best.ApplicationId" ApplicationId="@best.ApplicationId" ExecutableIds="@best.ExecutableIds" Pattern="@Pattern" />
+        }
+        else if (BestProductId is int productId)
+        {
+            <HeaderGlobalSearchProductResultCard @key="productId" ProductId="@productId" Pattern="@Pattern" Best="true" />
+        }
+    </div>
+
+    @if (HasRest)
+    {
+        <div class="giz-search-board__rest">
+            @if (RestApps.Count > 0)
+            {
+                <div class="giz-search-board__group">
+                    <div class="giz-caption giz-caption--rule">
+                        <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GLOBAL_SEARCH_GAMES_AND_APPS))</span>
+                        <span class="giz-caption__rule"></span>
+                        @if (MoreExecutables)
+                        {
+                            <a role="button" @onclick="ShowAllExecutables">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GLOBAL_SEARCH_SHOW_ALL))</a>
+                        }
+                    </div>
+                    @foreach (var app in RestApps)
+                    {
+                        <SearchAppLine @key="app.ApplicationId" ApplicationId="@app.ApplicationId" ExecutableIds="@app.ExecutableIds" Pattern="@Pattern" />
+                    }
+                </div>
+            }
+            @if (RestProducts.Count > 0)
+            {
+                <div class="giz-search-board__group">
+                    <div class="giz-caption giz-caption--rule">
+                        <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GLOBAL_SEARCH_SHOP))</span>
+                        <span class="giz-caption__rule"></span>
+                        @if (MoreProducts)
+                        {
+                            <a role="button" @onclick="ShowAllProducts">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GLOBAL_SEARCH_SHOW_ALL))</a>
+                        }
+                    </div>
+                    @foreach (var productId in RestProducts)
+                    {
+                        <HeaderGlobalSearchProductResultCard @key="productId" ProductId="@productId" Pattern="@Pattern" />
+                    }
+                </div>
+            }
+        </div>
+    }
+</div>

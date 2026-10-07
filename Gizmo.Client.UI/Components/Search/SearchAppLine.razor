@@ -1,0 +1,35 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+@if (_app is not null)
+{
+    <div class="giz-search-line" @onclick="OpenApp">
+        <span class="giz-search-line__pic">
+            <GizImage @key="_app.ApplicationId" ImageType="Gizmo.UI.ImageType.Application" ImageId="@_app.ImageId" ImageFitType="ImageFitType.Cover">
+                <EmptyResultPlaceholder>
+                    <div class="giz-default-image">
+                        <img src="_content/Gizmo.Client.UI/img/no-app-image.svg" alt="" />
+                    </div>
+                </EmptyResultPlaceholder>
+                <ErrorPlaceholder>
+                    <div class="giz-default-image">
+                        <img src="_content/Gizmo.Client.UI/img/broken-image.svg" alt="" />
+                    </div>
+                </ErrorPlaceholder>
+            </GizImage>
+        </span>
+        <span class="giz-search-line__text">
+            <b><SearchMatch Text="@_app.Title" Pattern="@Pattern" /></b>
+            @if (!string.IsNullOrEmpty(MetaText))
+            {
+                <small>@MetaText</small>
+            }
+        </span>
+        @if (FirstExecutableId is int executableId)
+        {
+            <span class="giz-search-line__launch" @onclick:stopPropagation="true">
+                <UniversalExecutable @key="executableId" ExecutableId="@executableId" ShowProgressBar="true" ShowExeName="true" />
+            </span>
+        }
+    </div>
+}

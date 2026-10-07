@@ -1,0 +1,124 @@
+//=============== Search line ================//
+// One more result under the best match: a small picture, the name with the typed part marked,
+// a quiet second line, the action on the right; hairlines between, no tiles.
+
+.giz-search-line {
+    display: grid;
+    grid-template-columns: 4.6rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0.9rem 0;
+    border-top: 1px solid var(--giz-glass-5);
+    cursor: pointer;
+
+    .giz-caption + & { border-top: 0; }
+
+    &__pic {
+        position: relative;
+        width: 4.6rem;
+        height: 4.6rem;
+        overflow: hidden;
+        border-radius: 1rem;
+        background: var(--giz-glass-5);
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .giz-default-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                width: 55%;
+                height: auto;
+                opacity: 0.5;
+            }
+        }
+    }
+
+    &__hours {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+        padding-top: 1.1rem;
+        gap: 0.1rem;
+        color: var(--giz-text-1);
+
+        b {
+            font-family: $font-family-numeric-theme-client;
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -0.04em;
+        }
+
+        small {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--giz-text-3);
+        }
+    }
+
+    &__text {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+
+        b,
+        small {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        b {
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: var(--giz-text-1);
+            transition: color 0.16s;
+        }
+
+        small {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--giz-text-3);
+        }
+    }
+
+    &:hover &__text b { color: var(--giz-accent-soft); }
+
+    &__price {
+        height: 3.6rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0 1.4rem;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.4rem;
+        font-weight: 700;
+        white-space: nowrap;
+        cursor: pointer;
+        @include giz-action-tonal;
+
+        i { font-size: 1.3rem; }
+
+        &:disabled { @include giz-action-off; }
+    }
+
+    &__coin { color: var(--giz-points); }
+
+    &__launch .giz-universal-executable {
+        @include giz-launch-pill;
+        font-size: 1.25rem;
+    }
+}

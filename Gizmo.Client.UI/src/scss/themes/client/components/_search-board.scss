@@ -1,0 +1,38 @@
+//=============== Search board ================//
+// The search dropdown: the best match large on the left, the other games and the goods as flat
+// lists on the right. One result alone takes the whole (narrower) dropdown.
+
+.giz-search-board {
+    display: grid;
+    grid-template-columns: minmax(0, 40rem) minmax(0, 1fr);
+    gap: 2.8rem;
+
+    &--single { grid-template-columns: minmax(0, 1fr); }
+
+    &__best { min-width: 0; }
+
+    &__rest {
+        min-width: 0;
+        max-height: calc(100vh - 18rem);
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.8rem;
+        --giz-fade: 0px;
+        mask-image: linear-gradient(to bottom, var(--giz-black) calc(100% - var(--giz-fade)), transparent 100%);
+        -webkit-mask-image: linear-gradient(to bottom, var(--giz-black) calc(100% - var(--giz-fade)), transparent 100%);
+        animation: giz-fade-when-scrollable linear both;
+        animation-timeline: scroll(self);
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar { display: none; }
+    }
+
+    &__group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+
+        .giz-caption a { cursor: pointer; }
+    }
+}
