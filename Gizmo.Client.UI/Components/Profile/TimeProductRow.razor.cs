@@ -22,22 +22,20 @@ namespace Gizmo.Client.UI.Components
 
         protected bool IsIdle => !Order.HasValue;
 
-        protected string OrderText => Order?.ToString(CultureInfo.CurrentCulture) ?? string.Empty;
-
-        protected string RowClass
+        protected string CardClass
         {
             get
             {
-                var css = "giz-account-time__row";
+                var css = "giz-time-pack";
 
                 if (IsCurrent)
-                    css += " giz-account-time__row--current";
+                    css += " giz-time-pack--current";
 
                 if (IsIdle)
-                    css += " giz-account-time__row--idle";
+                    css += " giz-time-pack--idle";
 
                 if (Product.InCredit)
-                    css += " giz-account-time__row--credit";
+                    css += " giz-time-pack--credit";
 
                 return css;
             }

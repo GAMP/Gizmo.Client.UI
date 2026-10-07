@@ -1,0 +1,183 @@
+//=============== Time packages ================//
+// The player's own packages under the timeline, each a card that reads as a package: the
+// package glyph, its kind and place in the queue, the name, what is left, where it works.
+
+.giz-time-packs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 32rem), 1fr));
+    gap: 1.6rem;
+}
+
+.giz-time-pack {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem 2.2rem;
+    border-radius: $ac-r;
+    @include ac-glass;
+
+    &__top {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+
+        .giz-account-tag { flex: none; }
+    }
+
+    &__glyph {
+        flex: none;
+        width: 4rem;
+        height: 4rem;
+        display: grid;
+        place-items: center;
+        border-radius: 1.2rem;
+        background: var(--giz-glass-6);
+        color: $ac-ink-2;
+        font-size: 2rem;
+    }
+
+    &__kind {
+        flex: 1;
+        min-width: 0;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: $ac-ink-3;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__name {
+        margin-top: 0.4rem;
+        font-family: $font-family-header-theme-client;
+        font-size: 2rem;
+        font-weight: 800;
+        color: $ac-ink;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__left {
+        display: flex;
+        align-items: baseline;
+        gap: 0.8rem;
+
+        b {
+            @include ac-num;
+            font-size: 3.4rem;
+            letter-spacing: -0.03em;
+            color: $ac-ink;
+
+            i { font-size: 0.7em; }
+        }
+
+        small {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: $ac-ink-3;
+        }
+    }
+
+    &__facts {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    &__fact {
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: $ac-ink-3;
+
+        > i {
+            flex: none;
+            font-size: 1.5rem;
+        }
+
+        > span {
+            overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        }
+    }
+
+    .giz-user-time-products-host-groups {
+        display: flex;
+        gap: 0.4rem;
+        align-items: center;
+        white-space: nowrap;
+        overflow: hidden;
+        max-width: 100%;
+        min-width: 0;
+
+        .giz-user-time-products-host-group,
+        .giz-user-time-products-host-group--additional {
+            padding: 0.2rem 0.7rem;
+            border-radius: 0.6rem;
+            background: var(--giz-glass-6);
+            color: $ac-ink-2;
+            font-size: 1.15rem;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .giz-user-time-products-host-group.active {
+            background: rgba(var(--giz-accent-rgb), 0.16);
+            color: var(--giz-accent-soft);
+        }
+    }
+
+    &__foot {
+        margin-top: auto;
+        padding-top: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        border-top: 1px solid $ac-line;
+    }
+
+    &__here {
+        display: flex;
+        align-items: baseline;
+        gap: 0.8rem;
+
+        small { @include ac-cap; }
+
+        b {
+            @include ac-num;
+            font-size: 1.6rem;
+            color: $ac-ink;
+        }
+    }
+
+    &__open {
+        flex: none;
+        width: 3.6rem;
+        height: 3.6rem;
+        display: grid;
+        place-items: center;
+        padding: 0;
+        font-size: 1.5rem;
+        cursor: pointer;
+        @include giz-action-tonal;
+    }
+
+    &--current {
+        border-color: transparent;
+        box-shadow: inset 0 0 0 2px var(--giz-accent);
+    }
+
+    &--current &__glyph {
+        background: var(--giz-accent);
+        color: var(--giz-on-accent);
+    }
+
+    &--idle { opacity: 0.72; }
+}

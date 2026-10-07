@@ -1,9 +1,11 @@
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using Gizmo.Client.Options;
 using Gizmo.Client.UI.Localization.Resources;
 using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.Services;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Api.Models;
@@ -24,6 +26,38 @@ namespace Gizmo.Client.UI.Components
         protected string FullName => string.Join(" ", new[] { Profile.FirstName, Profile.LastName }.Where(part => !string.IsNullOrWhiteSpace(part)));
 
         protected bool ShowMemberSince => !UserViewState.IsGuest && Profile.RegistrationDate != default;
+
+        protected string SinceText => ShowMemberSince ? MemberSince : string.Empty;
+
+        protected string NickClass => DisplayName.Length switch
+        {
+            > 16 => "giz-jersey__nick giz-jersey__nick--long",
+            > 10 => "giz-jersey__nick giz-jersey__nick--mid",
+            _ => "giz-jersey__nick",
+        };
+
+        protected bool HasEmail => !string.IsNullOrWhiteSpace(Profile.Email);
+
+        protected bool HasPhone => !string.IsNullOrWhiteSpace(Profile.MobilePhone);
+
+        protected bool CanTopUp => OnlineDeposit.IsEnabled;
+
+        protected string CurrentPackageName => TimeProducts.IsInitialized == true
+            ? TimeProducts.TimeProducts
+                .Where(a => a.ActivationOrder == 1)
+                .Select(a => TimeProductText.Name(a, GrafitLocalization))
+                .FirstOrDefault()
+            : null;
+
+        private Task ChangePassword() => ChangePasswordService.StartAsync(true, true);
+
+        private async Task TopUp()
+        {
+            var dialog = await DialogService.ShowUserOnlineDepositsDialogAsync();
+
+            if (dialog.Result == AddComponentResultCode.Opened)
+                _ = await dialog.WaitForResultAsync();
+        }
 
         protected string MemberSince => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_MEMBER_SINCE, Profile.RegistrationDate.ToLocalTime().ToString("d MMMM yyyy", CultureInfo.CurrentCulture));
 
@@ -75,6 +109,18 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         NavigationManager NavigationManager { get; set; }
 
+        [Inject]
+        UserChangePasswordViewService ChangePasswordService { get; set; }
+
+        [Inject]
+        UserOnlineDepositViewState OnlineDeposit { get; set; }
+
+        [Inject]
+        TimeProductsViewState TimeProducts { get; set; }
+
+        [Inject]
+        IClientDialogService DialogService { get; set; }
+
         private static readonly string[] PROGRESS_ROUTES =
         {
             ClientRoutes.UserLadderRoute,
@@ -82,17 +128,19 @@ namespace Gizmo.Client.UI.Components
             ClientRoutes.UserChallengesRoute,
         };
 
-        private bool IsProgressRoute
+        private static readonly string[] TIME_ROUTES =
         {
-            get
-            {
-                var path = "/" + NavigationManager.ToBaseRelativePath(NavigationManager.Uri).Split('?', '#')[0].TrimEnd('/');
+            ClientRoutes.UserProductsRoute,
+            ClientRoutes.UserProfileRoute,
+        };
 
-                return PROGRESS_ROUTES.Any(route => string.Equals(route, path, System.StringComparison.OrdinalIgnoreCase));
-            }
-        }
+        private string CurrentPath => "/" + NavigationManager.ToBaseRelativePath(NavigationManager.Uri).Split('?', '#')[0].TrimEnd('/');
 
-        private string ProgressTabClass => IsProgressRoute ? "giz-account__tab active" : "giz-account__tab";
+        private bool IsOn(string[] routes) => routes.Any(route => string.Equals(route.TrimEnd('/'), CurrentPath, System.StringComparison.OrdinalIgnoreCase));
+
+        private string ProgressTabClass => IsOn(PROGRESS_ROUTES) ? "giz-account__tab active" : "giz-account__tab";
+
+        private string TimeTabClass => IsOn(TIME_ROUTES) ? "giz-account__tab active" : "giz-account__tab";
 
         [Parameter]
         public RenderFragment ChildContent { get; set; }
@@ -103,6 +151,8 @@ namespace Gizmo.Client.UI.Components
             this.SubscribeChange(UserViewState);
             this.SubscribeChange(Balance);
             this.SubscribeChange(Credit);
+            this.SubscribeChange(OnlineDeposit);
+            this.SubscribeChange(TimeProducts);
 
             base.OnInitialized();
         }
@@ -113,6 +163,8 @@ namespace Gizmo.Client.UI.Components
             this.UnsubscribeChange(UserViewState);
             this.UnsubscribeChange(Balance);
             this.UnsubscribeChange(Credit);
+            this.UnsubscribeChange(OnlineDeposit);
+            this.UnsubscribeChange(TimeProducts);
 
             base.Dispose();
         }

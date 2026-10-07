@@ -2,21 +2,54 @@
 @inherits CustomDOMComponentBase
 @using Gizmo.Client.UI.View.States
 
-<div class="@RowClass" style="--giz-i: @Item.Ordinal" @onclick="OnClick" @onclick:stopPropagation="true">
-    <div class="giz-ladder-level-row__head">
-        <LadderLevelBadge Ordinal="@Item.Ordinal" EmblemUrl="@Item.EmblemUrl" />
-        @if (StateText is not null)
+<div class="@StepClass" style="@StepStyle" @onclick="OnClick" @onclick:stopPropagation="true">
+    @if (!string.IsNullOrEmpty(Here))
+    {
+        <span class="giz-stairs__here">@Here</span>
+    }
+    <div class="giz-stairs__block">
+        @if (Fill is not null)
         {
-            <span class="@StateClass">@StateText</span>
+            <span class="giz-stairs__fill"></span>
         }
-        @if (Item.HasInfo)
+        <div class="giz-stairs__top">
+            <LadderLevelBadge Ordinal="@Item.Ordinal" EmblemUrl="@Item.EmblemUrl" />
+            <b class="giz-stairs__name" title="@Item.Name">@Item.Name</b>
+            @if (Item.HasInfo)
+            {
+                <LadderLevelInfo Item="@Item" />
+            }
+        </div>
+        @if (IsPassed || !string.IsNullOrEmpty(MetaText))
         {
-            <LadderLevelInfo Item="@Item" />
+            <span class="giz-stairs__meta">
+                @if (IsPassed)
+                {
+                    <i class="ph-bold ph-check giz-stairs__passed"></i>
+                }
+                <span>@MetaText</span>
+            </span>
+        }
+        @if (!Dense)
+        {
+            @if (Requirements is not null)
+            {
+                <div class="giz-stairs__reqs">
+                    @foreach (var requirement in Requirements)
+                    {
+                        <LadderRequirementRow Item="@requirement" />
+                    }
+                </div>
+            }
+            else if (Item.HasPerks)
+            {
+                <div class="giz-stairs__perks">
+                    @foreach (var perk in Item.PerkTexts)
+                    {
+                        <span><i class="ph-bold ph-check"></i>@perk</span>
+                    }
+                </div>
+            }
         }
     </div>
-    <span class="giz-ladder-level-row__name">@Item.Name</span>
-    @if (!string.IsNullOrEmpty(Item.MetaText))
-    {
-        <span class="giz-ladder-level-row__meta">@Item.MetaText</span>
-    }
 </div>

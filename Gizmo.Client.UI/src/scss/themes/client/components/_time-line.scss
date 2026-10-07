@@ -1,0 +1,205 @@
+//=============== Time line ================//
+// The Time section's evening: an axis of hours from now to when the time runs out, the packages
+// on it in the order they are spent, the hourly rate hatched, now and the end marked.
+
+.giz-time-line {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 2.4rem 2.8rem 2.6rem;
+    border-radius: $ac-r;
+    @include ac-glass;
+
+    &__head {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 2rem;
+        margin-bottom: 0.8rem;
+    }
+
+    &__title {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+
+        b {
+            font-family: $font-family-header-theme-client;
+            font-size: clamp(2.6rem, 1.8rem + 1vw, 3.6rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            color: $ac-ink;
+        }
+    }
+
+    &__cap { @include ac-cap; }
+
+    &__note {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: $ac-ink-3;
+        text-align: right;
+    }
+
+    &__axis {
+        position: relative;
+        height: 1.6rem;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.2rem;
+        color: $ac-ink-3;
+
+        span {
+            position: absolute;
+            left: var(--giz-at);
+            transform: translateX(-50%);
+            white-space: nowrap;
+
+            &:first-child { transform: none; }
+            &:last-child { transform: translateX(-100%); }
+        }
+    }
+
+    &__track {
+        position: relative;
+        height: 9rem;
+        margin-bottom: 3.4rem;
+        border-radius: 1.2rem;
+        background: var(--giz-glass-2);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-6);
+    }
+
+    &__seg {
+        position: absolute;
+        top: 0.6rem;
+        bottom: 0.6rem;
+        left: var(--giz-from);
+        width: var(--giz-width);
+        border-radius: 0.9rem;
+        overflow: hidden;
+
+        &--now {
+            background: var(--giz-accent);
+            color: var(--giz-on-accent);
+        }
+
+        &--next {
+            background: rgba(var(--giz-accent-rgb), 0.24);
+            box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.5);
+            color: $ac-ink;
+        }
+
+        &--rate {
+            background: repeating-linear-gradient(135deg, var(--giz-glass-9) 0 0.4rem, transparent 0.4rem 0.8rem);
+        }
+    }
+
+    &__label {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.3rem;
+        min-width: 0;
+        padding: 1rem 1.4rem;
+
+        b,
+        small {
+            overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        }
+
+        b {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        small {
+            font-family: $font-family-numeric-theme-client;
+            font-size: 1.3rem;
+            font-weight: 700;
+            opacity: 0.8;
+        }
+    }
+
+    &__now {
+        position: absolute;
+        z-index: 1;
+        top: -0.6rem;
+        bottom: -0.6rem;
+        left: var(--giz-at);
+        width: 2px;
+        margin-left: -1px;
+        background: $ac-ink;
+    }
+
+    &__end {
+        position: absolute;
+        top: calc(100% + 0.8rem);
+        left: var(--giz-at);
+        display: flex;
+        align-items: baseline;
+        gap: 0.6rem;
+        transform: translateX(-100%);
+        white-space: nowrap;
+
+        &::before {
+            content: "";
+            position: absolute;
+            right: 0;
+            bottom: calc(100% + 0.2rem);
+            width: 2px;
+            height: 10rem;
+            background: $ac-ink-3;
+        }
+
+        i {
+            align-self: center;
+            font-size: 1.6rem;
+            color: $ac-ink-2;
+        }
+
+        b {
+            font-family: $font-family-numeric-theme-client;
+            font-size: 1.6rem;
+            color: $ac-ink;
+        }
+
+        small {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: $ac-ink-3;
+        }
+
+        &--right {
+            transform: none;
+
+            &::before {
+                right: auto;
+                left: 0;
+            }
+        }
+    }
+
+    &__legend {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: $ac-ink-3;
+
+        i {
+            width: 1.8rem;
+            height: 1rem;
+            border-radius: 0.3rem;
+            background: repeating-linear-gradient(135deg, var(--giz-glass-12) 0 0.3rem, transparent 0.3rem 0.6rem);
+        }
+    }
+}

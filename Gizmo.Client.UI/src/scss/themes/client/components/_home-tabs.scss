@@ -1,0 +1,55 @@
+//=============== Home tabs ================//
+// The till's two tabs, time packages and the bar: one segmented pill, the open tab in ink.
+
+.giz-home-tabs {
+    flex: none;
+    margin-top: clamp(1.4rem, 1rem + 0.6vw, 2.4rem);
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    padding: 0.4rem;
+    border-radius: $giz-r-pill;
+    background: var(--giz-glass-3);
+    box-shadow: inset 0 0 0 1px var(--giz-glass-6);
+
+    &__tab {
+        min-width: 0;
+        height: 4.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.7rem;
+        padding: 0 1rem;
+        border: 0;
+        border-radius: $giz-r-pill;
+        background: none;
+        color: var(--giz-text-2);
+        font-family: $font-family-header-theme-client;
+        font-size: 1.45rem;
+        font-weight: 700;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: background 0.16s, color 0.16s;
+
+        i { font-size: 1.7rem; }
+
+        em {
+            padding: 0.2rem 0.7rem;
+            border-radius: $giz-r-pill;
+            background: var(--giz-glass-7);
+            font-family: $font-family-numeric-theme-client;
+            font-size: 1.15rem;
+            font-style: normal;
+        }
+
+        &:hover { color: var(--giz-ink); }
+
+        &--active,
+        &--active:hover {
+            background: var(--giz-ink);
+            color: var(--giz-bg-0);
+
+            em { background: rgba(var(--giz-black-rgb), 0.12); }
+        }
+    }
+}

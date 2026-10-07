@@ -6,124 +6,134 @@
 <div class="giz-account giz-scrollbar--v">
     <div class="giz-account__inner">
 
-        <header class="giz-account__head">
-            <UserAvatar Picture="@Profile.Picture" Class="giz-account__avatar" />
-
-            <div class="giz-account__who">
-                <h1 class="giz-account__name">@DisplayName</h1>
-                <div class="giz-account__sub">
-                    @if (!string.IsNullOrEmpty(FullName))
-                    {
-                        <span>@FullName</span>
-                    }
-                    @if (ShowMemberSince)
-                    {
-                        <span>@MemberSince</span>
-                    }
-                </div>
+        <header class="giz-jersey">
+            <div class="giz-jersey__top">
+                <span class="giz-jersey__since">@SinceText</span>
                 @if (ClientFeatures.Ladder)
                 {
                     <ProfileHeaderLadderLevel />
                 }
             </div>
 
-            <div class="giz-account__stats">
-                <div class="giz-account__stat giz-account__stat--money">
-                    <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BALANCE))</small>
-                    <b>@BalanceText</b>
-                </div>
-                <div class="giz-account__stat giz-account__stat--points">
-                    <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_POINTS))</small>
-                    <b>@PointsText <i class="ph-fill ph-coins"></i></b>
-                </div>
-                <div class="giz-account__stat">
-                    <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_TIME))</small>
-                    <b>
-                        @if (Balance.Time.HasValue)
-                        {
-                            @TimeText
-                        }
-                        else
-                        {
-                            <i class="ph-bold ph-infinity"></i>
-                        }
-                    </b>
-                </div>
-                @if (HasCredit)
+            <h1 class="@NickClass" title="@DisplayName">@DisplayName</h1>
+
+            <div class="giz-jersey__bottom">
+                <span class="giz-jersey__name">@FullName</span>
+                @if (!UserViewState.IsGuest)
                 {
-                    <div class="giz-account__stat giz-account__stat--credit">
-                        <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PROFILE_HEADER_CREDIT))</small>
-                        <b>
-                            @if (CreditIsMixed)
-                            {
-                                <span class="giz-account__credit-part" title="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PROFILE_CREDIT_TOOLTIP_TIME_CREDIT_DESCRIPTION))">
-                                    <i class="ph-bold ph-clock giz-account__credit-kind"></i>
-                                    @if (TimeCreditUnlimited)
-                                    {
-                                        <i class="ph-bold ph-infinity"></i>
-                                    }
-                                    else
-                                    {
-                                        @CreditLimitText
-                                    }
-                                </span>
-                                <span class="giz-account__credit-part" title="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PROFILE_CREDIT_TOOLTIP_SALES_CREDIT_DESCRIPTION))">
-                                    <i class="ph-bold ph-shopping-cart-simple giz-account__credit-kind"></i>
-                                    @if (SalesCreditUnlimited)
-                                    {
-                                        <i class="ph-bold ph-infinity"></i>
-                                    }
-                                    else
-                                    {
-                                        @CreditLimitText
-                                    }
-                                </span>
-                            }
-                            else if (CreditUnlimited)
-                            {
-                                <i class="ph-bold ph-infinity"></i>
-                            }
-                            else
-                            {
-                                @CreditLimitText
-                            }
-                        </b>
-                        <span>@CreditNote</span>
+                    <div class="giz-jersey__contacts" title="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_CONTACTS_NOTE)">
+                        @if (HasEmail)
+                        {
+                            <span><i class="ph-bold ph-envelope-simple"></i>@Profile.Email</span>
+                        }
+                        @if (HasPhone)
+                        {
+                            <span><i class="ph-bold ph-phone"></i>@Profile.MobilePhone</span>
+                        }
                     </div>
+                    <button type="button" class="giz-jersey__key" @onclick="ChangePassword">
+                        <i class="ph-bold ph-key"></i>
+                        <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CHANGE_PASSWORD))</span>
+                    </button>
                 }
             </div>
         </header>
 
-        <nav class="giz-account__tabs" aria-label="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_DETAILS))">
-            @if (!UserViewState.IsGuest)
+        <div class="giz-account__stats">
+            <div class="giz-account__stat giz-account__stat--money">
+                <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BALANCE))</small>
+                <b>@BalanceText</b>
+                @if (HasCredit)
+                {
+                    <span class="giz-account__credit" title="@CreditNote">
+                        <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PROFILE_HEADER_CREDIT))</span>
+                        @if (CreditIsMixed)
+                        {
+                            <span class="giz-account__credit-part">
+                                <i class="ph-bold ph-clock giz-account__credit-kind"></i>
+                                @if (TimeCreditUnlimited)
+                                {
+                                    <i class="ph-bold ph-infinity"></i>
+                                }
+                                else
+                                {
+                                    @CreditLimitText
+                                }
+                            </span>
+                            <span class="giz-account__credit-part">
+                                <i class="ph-bold ph-shopping-cart-simple giz-account__credit-kind"></i>
+                                @if (SalesCreditUnlimited)
+                                {
+                                    <i class="ph-bold ph-infinity"></i>
+                                }
+                                else
+                                {
+                                    @CreditLimitText
+                                }
+                            </span>
+                        }
+                        else if (CreditUnlimited)
+                        {
+                            <i class="ph-bold ph-infinity"></i>
+                        }
+                        else
+                        {
+                            <span>@CreditLimitText</span>
+                        }
+                    </span>
+                }
+            </div>
+            <div class="giz-account__stat giz-account__stat--points">
+                <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_POINTS))</small>
+                <b>@PointsText <i class="ph-fill ph-coins"></i></b>
+            </div>
+            <div class="giz-account__stat">
+                <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_TIME))</small>
+                <b>
+                    @if (Balance.Time.HasValue)
+                    {
+                        @TimeText
+                    }
+                    else
+                    {
+                        <i class="ph-bold ph-infinity"></i>
+                    }
+                </b>
+                @if (!string.IsNullOrEmpty(CurrentPackageName))
+                {
+                    <span>@CurrentPackageName</span>
+                }
+            </div>
+            @if (CanTopUp)
             {
-                <NavLink class="giz-account__tab" href="@ClientRoutes.UserProfileRoute" Match="NavLinkMatch.All">
-                    <i class="ph-bold ph-user"></i>
-                    <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_TAB_PROFILE)</span>
-                </NavLink>
+                <div class="giz-account__stat giz-account__stat--act">
+                    <button type="button" class="giz-account__topup" @onclick="TopUp">
+                        <i class="ph-bold ph-wallet"></i>
+                        <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GRACE_TOP_UP_ACCOUNT)</span>
+                    </button>
+                </div>
             }
-            <NavLink class="giz-account__tab" href="@ClientRoutes.UserProductsRoute" Match="NavLinkMatch.All">
-                <i class="ph-bold ph-hourglass-medium"></i>
-                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_TAB_TIME)</span>
-            </NavLink>
+        </div>
+
+        <nav class="giz-account__tabs" aria-label="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_DETAILS))">
+            <a class="@TimeTabClass" href="@ClientRoutes.UserProductsRoute">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_TAB_TIME)</a>
             @if (!InterfaceOptions.CurrentValue.DisableUserPurchaseHistory)
             {
-                <NavLink class="giz-account__tab" href="@ClientRoutes.UserPurchasesRoute" Match="NavLinkMatch.All">
-                    <i class="ph-bold ph-receipt"></i>
-                    <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES))</span>
-                </NavLink>
+                <NavLink class="giz-account__tab" href="@ClientRoutes.UserPurchasesRoute" Match="NavLinkMatch.All">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES))</NavLink>
             }
             @if (!UserViewState.IsGuest && ClientFeatures.Ladder)
             {
-                <a class="@ProgressTabClass" href="@ClientRoutes.UserLadderRoute">
-                    <i class="ph-bold ph-trophy"></i>
-                    <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PROGRESS_TAB)</span>
-                </a>
+                <a class="@ProgressTabClass" href="@ClientRoutes.UserLadderRoute">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PROGRESS_TAB)</a>
             }
         </nav>
 
         <div class="giz-account__body">
             @ChildContent
         </div>
+
+        @if (!string.IsNullOrEmpty(ShellVersion.Grafit))
+        {
+            <div class="giz-account__version">Grafit @ShellVersion.Grafit</div>
+        }
     </div>
 </div>

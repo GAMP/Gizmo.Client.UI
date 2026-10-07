@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using System.Linq;
@@ -36,31 +37,11 @@ namespace Gizmo.Client.UI.Components
 
         private int TotalChallenges => Challenges.Challenges.Count();
 
+        private const int STEPS = 3;
+
         private bool HeadlineIsAchievements => !HasLadder && TotalAchievements > 0;
 
         private bool HeadlineIsChallenges => !HasLadder && TotalAchievements == 0 && TotalChallenges > 0;
-
-        private bool LinkIsAchievements => HasLadder && TotalAchievements > 0;
-
-        private bool LinkIsChallenges => TotalChallenges > 0 && (HasLadder ? TotalAchievements == 0 : HeadlineIsAchievements);
-
-        private string Caption => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PROGRESS_HOME_CAP);
-
-        private string LinkText
-        {
-            get
-            {
-                if (LinkIsAchievements)
-                    return $"{Vendor(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_ACHIEVEMENTS))} {Of(EarnedAchievements, TotalAchievements)}";
-
-                if (LinkIsChallenges)
-                    return $"{Vendor(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CHALLENGES))} {Of(DoneChallenges, TotalChallenges)}";
-
-                return null;
-            }
-        }
-
-        private string LinkRoute => ClientRoutes.UserLadderRoute;
 
         private decimal LinePercent
         {
@@ -106,14 +87,45 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        private UserChallengeViewState NextChallenge => Challenges.Challenges
-            .FirstOrDefault(a => !a.IsDone && !a.IsEnded && a.Requirements.Any(r => !r.IsMet));
+        private sealed record Step(string Title, string Note, string Reward, string RewardIcon);
 
-        private string NextStepName => NextChallenge?.Requirements.FirstOrDefault(r => !r.IsMet)?.Name;
+        private IReadOnlyList<Step> Steps
+        {
+            get
+            {
+                var steps = new List<Step>();
 
-        private UserChallengeRewardViewState NextReward => NextChallenge?.Rewards.FirstOrDefault();
+                foreach (var challenge in Challenges.Challenges.Where(a => !a.IsDone && !a.IsEnded))
+                {
+                    var next = challenge.Requirements.FirstOrDefault(a => !a.IsMet);
 
-        private string NextRewardIcon => NextReward?.Kind switch
+                    if (next is null)
+                        continue;
+
+                    var reward = challenge.Rewards.FirstOrDefault();
+                    var note = string.IsNullOrEmpty(challenge.WindowText)
+                        ? challenge.Name
+                        : $"{challenge.Name} · {challenge.WindowText}";
+
+                    steps.Add(new Step(next.Name, note, reward?.Text, RewardIcon(reward)));
+                }
+
+                foreach (var achievement in Achievements.Achievements
+                    .Where(a => !a.IsEarned && a.ShowProgressBar)
+                    .OrderByDescending(a => a.ProgressPercent))
+                {
+                    var note = string.IsNullOrEmpty(achievement.CountText)
+                        ? null
+                        : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PROGRESS_ACHIEVEMENT, achievement.CountText);
+
+                    steps.Add(new Step(achievement.Name, note, null, null));
+                }
+
+                return steps.Take(STEPS).ToList();
+            }
+        }
+
+        private static string RewardIcon(UserChallengeRewardViewState reward) => reward?.Kind switch
         {
             ChallengeRewardKind.Points => "ph-fill ph-coins giz-home-progress__coin",
             ChallengeRewardKind.Time => "ph-fill ph-clock",

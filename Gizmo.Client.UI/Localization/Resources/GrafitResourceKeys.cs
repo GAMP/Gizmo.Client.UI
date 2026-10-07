@@ -88,12 +88,9 @@
         public const string SHELL_DURATION_HOURS = nameof(SHELL_DURATION_HOURS);
         public const string SHELL_DURATION_MINUTES = nameof(SHELL_DURATION_MINUTES);
         public const string SHELL_TIME_TOOLTIP_EMPTY = nameof(SHELL_TIME_TOOLTIP_EMPTY);
-        public const string SHELL_ACCOUNT_TAB_PROFILE = nameof(SHELL_ACCOUNT_TAB_PROFILE);
         public const string SHELL_ACCOUNT_TAB_TIME = nameof(SHELL_ACCOUNT_TAB_TIME);
         public const string SHELL_ACCOUNT_MEMBER_SINCE = nameof(SHELL_ACCOUNT_MEMBER_SINCE);
-        public const string SHELL_ACCOUNT_NOT_SET = nameof(SHELL_ACCOUNT_NOT_SET);
         public const string SHELL_ACCOUNT_CONTACTS_NOTE = nameof(SHELL_ACCOUNT_CONTACTS_NOTE);
-        public const string SHELL_ACCOUNT_PASSWORD_NOTE = nameof(SHELL_ACCOUNT_PASSWORD_NOTE);
         public const string SHELL_ACCOUNT_NO_TIME = nameof(SHELL_ACCOUNT_NO_TIME);
         public const string SHELL_ACCOUNT_NO_TIME_HINT = nameof(SHELL_ACCOUNT_NO_TIME_HINT);
         public const string SHELL_ACCOUNT_NO_PURCHASES = nameof(SHELL_ACCOUNT_NO_PURCHASES);
@@ -185,7 +182,6 @@
         public const string SHELL_CART_REMOVE = nameof(SHELL_CART_REMOVE);
         public const string SHELL_PACK_UNIT_H = nameof(SHELL_PACK_UNIT_H);
         public const string SHELL_PACK_UNIT_MIN = nameof(SHELL_PACK_UNIT_MIN);
-        public const string SHELL_PACK_PER_HOUR = nameof(SHELL_PACK_PER_HOUR);
         public const string SHELL_HOME_YOUR_TIME = nameof(SHELL_HOME_YOUR_TIME);
         public const string SHELL_HOME_UNTIL = nameof(SHELL_HOME_UNTIL);
         public const string SHELL_HOME_CALL_ADMIN = nameof(SHELL_HOME_CALL_ADMIN);
@@ -193,5 +189,26 @@
         public const string SHELL_DEPOSIT_FAILED_TITLE = nameof(SHELL_DEPOSIT_FAILED_TITLE);
         public const string SHELL_DEPOSIT_FAILED_TEXT = nameof(SHELL_DEPOSIT_FAILED_TEXT);
         public const string SHELL_DEPOSIT_RETRY = nameof(SHELL_DEPOSIT_RETRY);
+        public const string SHELL_HOME_BEST_VALUE = nameof(SHELL_HOME_BEST_VALUE);
+        public const string SHELL_HOME_ENOUGH_UNTIL = nameof(SHELL_HOME_ENOUGH_UNTIL);
+        public const string SHELL_HOME_WINDOW = nameof(SHELL_HOME_WINDOW);
+        public const string SHELL_HOME_CHECKOUT = nameof(SHELL_HOME_CHECKOUT);
+        public const string SHELL_PROGRESS_TODO = nameof(SHELL_PROGRESS_TODO);
+        public const string SHELL_PROGRESS_OPEN = nameof(SHELL_PROGRESS_OPEN);
+        public const string SHELL_PROGRESS_ACHIEVEMENT = nameof(SHELL_PROGRESS_ACHIEVEMENT);
+        public const string SHELL_PROGRESS_NOTHING = nameof(SHELL_PROGRESS_NOTHING);
+        public const string SHELL_TIME_PLAY_UNTIL = nameof(SHELL_TIME_PLAY_UNTIL);
+        public const string SHELL_TIME_ON_THIS_PC = nameof(SHELL_TIME_ON_THIS_PC);
+        public const string SHELL_TIME_ENDS = nameof(SHELL_TIME_ENDS);
+        public const string SHELL_TIME_BY_RATE = nameof(SHELL_TIME_BY_RATE);
+        public const string SHELL_TIME_UNLIMITED = nameof(SHELL_TIME_UNLIMITED);
+        public const string SHELL_PURCHASES_TODAY = nameof(SHELL_PURCHASES_TODAY);
+        public const string SHELL_PURCHASES_YESTERDAY = nameof(SHELL_PURCHASES_YESTERDAY);
+        public const string SHELL_PURCHASES_SPENT = nameof(SHELL_PURCHASES_SPENT);
+        public const string SHELL_PURCHASES_ORDERS = nameof(SHELL_PURCHASES_ORDERS);
+        public const string SHELL_PURCHASES_POINTS = nameof(SHELL_PURCHASES_POINTS);
+        public const string SHELL_LADDER_YOU_ARE = nameof(SHELL_LADDER_YOU_ARE);
+        public const string SHELL_LADDER_HERE = nameof(SHELL_LADDER_HERE);
+        public const string SHELL_LADDER_CONDITIONS = nameof(SHELL_LADDER_CONDITIONS);
     }
 }
