@@ -1,14 +1,14 @@
 //=============== Home packages ================//
-// A package in the till: its hours on a tile, the name, the price as the button. The cheapest
-// hour gets a green note under the name.
+// A package in the till is a line of a list: its hours as a figure, the name, the price as the
+// button, hairlines between. No tile of its own: the till is the only surface. The cheapest hour
+// gets a green note under the name.
 
 .giz-home-packs {
     flex: 1 1 auto;
     min-height: 0;
-    margin-top: 1.6rem;
+    margin-top: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.7rem;
     overflow-y: auto;
     --giz-fade: 0px;
     mask-image: linear-gradient(to bottom, var(--giz-black) calc(100% - var(--giz-fade)), transparent 100%);
@@ -23,27 +23,21 @@
 .giz-home-pack {
     flex: none;
     display: grid;
-    grid-template-columns: 5.8rem minmax(0, 1fr) auto;
+    grid-template-columns: 4.6rem minmax(0, 1fr) auto;
     align-items: center;
-    gap: 1.3rem;
-    padding: 0.7rem 0.9rem 0.7rem 0.7rem;
-    border-radius: 1.5rem;
-    background: var(--giz-glass-3);
-    box-shadow: inset 0 0 0 1px var(--giz-glass-6);
-    transition: background 0.16s;
+    gap: 1.2rem;
+    padding: 1.1rem 0.2rem;
+    border-top: 1px solid var(--giz-glass-5);
 
-    &:hover { background: var(--giz-glass-5); }
+    &:first-child { border-top: 0; }
 
     &__icon {
-        height: 5.8rem;
         display: flex;
-        align-items: center;
-        justify-content: center;
+        align-items: baseline;
         gap: 0.15rem;
-        border-radius: 1.1rem;
-        background: var(--giz-glass-5);
         color: var(--giz-ink);
         cursor: pointer;
+        transition: color 0.16s;
 
         b {
             font-family: $font-family-numeric-theme-client;
@@ -54,8 +48,6 @@
         }
 
         small {
-            align-self: flex-end;
-            margin-bottom: 1.5rem;
             font-size: 1.2rem;
             font-weight: 700;
             color: var(--giz-text-3);
@@ -85,6 +77,7 @@
             font-size: 1.45rem;
             font-weight: 700;
             color: var(--giz-ink);
+            transition: color 0.16s;
         }
 
         em {
@@ -120,19 +113,18 @@
         }
     }
 
-    &--busy { background: rgba(var(--giz-accent-rgb), 0.14); }
+    &:hover &__icon,
+    &:hover &__text b,
+    &--busy &__icon,
+    &--busy &__text b { color: var(--giz-accent-soft); }
 }
 
 @media (max-height: 840px) {
     .giz-home-pack {
-        grid-template-columns: 5rem minmax(0, 1fr) auto;
+        grid-template-columns: 4rem minmax(0, 1fr) auto;
         gap: 1.1rem;
+        padding: 0.8rem 0.2rem;
     }
 
-    .giz-home-pack__icon {
-        height: 5rem;
-
-        b { font-size: 2.4rem; }
-        small { margin-bottom: 1.2rem; }
-    }
+    .giz-home-pack__icon b { font-size: 2.4rem; }
 }
