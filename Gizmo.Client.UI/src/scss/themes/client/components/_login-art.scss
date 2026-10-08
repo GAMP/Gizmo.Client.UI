@@ -1,9 +1,9 @@
 //=============== Sign-in art ================//
 // What a free PC shows on the sign-in screen when the club has set no wallpaper of its own:
 // ribbons stored in grey and tinted to the palette (multiplied by the accent, then never darker
-// than the page's own dark tone), so one picture suits every club colour. It drifts very slowly
-// while nobody touches the PC and steps back behind the sign-in card. A club's own wallpaper or
-// rotator replaces it; a club can also hide it from the Manager's style.css.
+// than the page's own dark tone), so one picture suits every club colour. It stands still and
+// steps back behind the sign-in card. A club's own wallpaper or rotator replaces it; a club can
+// also hide it from the Manager's style.css.
 
 .giz-login-art {
     position: absolute;
@@ -24,10 +24,6 @@
     &__image {
         display: block;
         object-fit: cover;
-        transform: scale(1.06);
-        transform-origin: 30% 55%;
-        will-change: transform;
-        animation: giz-login-art-drift 80s ease-in-out infinite alternate;
     }
 
     &__tint {
@@ -45,25 +41,8 @@
     display: none;
 }
 
-// Someone is at the PC: the picture steps back so the card reads, and stops moving.
-.giz-login-content.collapsed,
-.giz-login-content.shrink {
-    .giz-login-art {
-        opacity: 0.45;
-    }
-
-    .giz-login-art__image {
-        animation-play-state: paused;
-    }
-}
-
-@keyframes giz-login-art-drift {
-    from { transform: scale(1.06) translate3d(0, 0, 0); }
-    to { transform: scale(1.12) translate3d(-1.2%, -0.8%, 0); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .giz-login-art__image {
-        animation: none;
-    }
+// Someone is at the PC: the picture steps back so the card reads.
+.giz-login-content.collapsed .giz-login-art,
+.giz-login-content.shrink .giz-login-art {
+    opacity: 0.45;
 }
