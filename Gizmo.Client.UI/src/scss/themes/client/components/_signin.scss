@@ -356,11 +356,11 @@
         }
     }
 
-    &:has(> .giz-signin__error) .giz-signin__pill:not(.giz-signin__pill--pin) {
+    &:not(.giz-signin--signup):has(> .giz-signin__error) .giz-signin__pill:not(.giz-signin__pill--pin) {
         animation: giz-signin-shake 0.42s cubic-bezier(0.36, 0.07, 0.19, 0.97);
     }
 
-    &:has(> .giz-signin__error) .giz-signin__pill:not(.giz-signin__pill--pin, :focus-within) {
+    &:not(.giz-signin--signup):has(> .giz-signin__error) .giz-signin__pill:not(.giz-signin__pill--pin, :focus-within) {
         box-shadow: inset 0 0 0 2px rgba(var(--giz-danger-rgb), 0.7), inset 0 1px 0 var(--giz-glass-12);
     }
 
@@ -995,8 +995,10 @@
 }
 
 // Registration's questions in the sign-in's own look. A question may take two lines; inside a pill
-// the field's name rides small above what is typed, and a message about the field takes the name's
-// place, so nothing under it moves. The phone pill keeps the sign-in's flag and number.
+// the field's name sits small right above what is typed, the two as one block on the pill's middle
+// line with the glyph, the eye and the arrow; a message about the field takes the name's place, so
+// nothing under it moves. A pill without the arrow keeps the arrow's room, so the fields and the
+// eyes of one question line up. The phone pill keeps the sign-in's flag and number.
 .giz-signin--signup {
     gap: 2.4rem;
 
@@ -1017,18 +1019,33 @@
 
     .giz-signin__fields { animation: giz-signin-note-in 0.3s ease backwards; }
 
-    .giz-signin__pill { min-height: 7.6rem; }
+    .giz-signin__pill { min-height: 8rem; }
+
+    .giz-signin__pill:not(:has(> .giz-signin__go)) { padding-right: 8.2rem; }
 
     .giz-signin__pill .giz-input-wrapper input { font-size: 1.9rem; }
 }
 
 .giz-signin--signup .giz-signin__pill:not(.giz-signin__pill--phone) .giz-input-control {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "name tail" "value tail";
+    align-items: center;
+    gap: 0.3rem 1rem;
+
+    .giz-input-root { display: contents; }
+
+    .giz-input-root > * { grid-area: value; }
+
+    .giz-input-root > .giz-input-button-reveal,
+    .giz-input-root > .giz-input__icon-right,
+    .giz-input-root > .giz-input-button-clear { grid-area: tail; }
+
+    .giz-input-wrapper { height: 2.8rem; }
 
     .giz-input-label,
     .giz-input-validation-label {
+        grid-area: name;
         display: block;
         position: static;
         min-height: 0;
@@ -1046,10 +1063,7 @@
 
     .giz-input-label { color: var(--giz-text-3); }
 
-    .giz-input-validation-label {
-        order: -1;
-        color: var(--giz-danger-soft);
-    }
+    .giz-input-validation-label { color: var(--giz-danger-soft); }
 
     &.giz-input-control--invalid .giz-input-label,
     &.giz-input-control--valid .giz-input-validation-label { display: none; }
@@ -1078,6 +1092,11 @@
     }
 
     &:not(:has(.giz-input-control--invalid)) > .giz-input-validation-label { display: none; }
+
+    .giz-input-control.giz-input-control--invalid .giz-input-label {
+        display: block;
+        visibility: hidden;
+    }
 }
 
 .giz-signin--signup .giz-signin__pill:has(.giz-input-control--invalid) {

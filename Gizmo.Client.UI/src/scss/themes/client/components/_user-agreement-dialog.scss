@@ -83,18 +83,17 @@
     }
 
     &__actions {
-        display: flex;
-        justify-content: flex-end;
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(0, 1fr);
         gap: 1.2rem;
     }
 
     &__decline,
     &__accept {
-        height: 6rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 0 2.8rem;
+        min-width: 0;
+        height: 6.4rem;
+        padding: 0 2.4rem;
         border: 0;
         border-radius: 3rem;
         font-family: $font-family-header-theme-client;
@@ -115,7 +114,5 @@
     &__accept {
         font-weight: 800;
         @include giz-action-primary;
-
-        i { font-size: 2rem; }
     }
 }

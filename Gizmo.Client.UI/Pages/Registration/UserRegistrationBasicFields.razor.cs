@@ -94,6 +94,15 @@ namespace Gizmo.Client.UI.Pages.Registration
 
         protected string MobilePhoneError => MessageOf(nameof(ViewState.MobilePhone));
 
+        protected bool IsExpired => ViewState.HasError && Card?.IsVerificationExpired(RegistrationSession) == true;
+
+        private void VerifyAgain()
+        {
+            UserRegistrationBasicFieldsViewService.Reset();
+            Card?.RequestResume();
+            NavigationService.NavigateTo(RegistrationCardContext.VerifyAgainRoute(RegistrationSession.Flow));
+        }
+
         private string Vendor(string key) => LocalizationService.GetString(key);
 
         private string MessageOf(string field) => UserRegistrationBasicFieldsViewService.EditContext
@@ -307,6 +316,10 @@ namespace Gizmo.Client.UI.Pages.Registration
         {
             this.SubscribeChange(ViewState);
             ViewState.OnChange += OnViewStateChanged;
+
+            if (Card?.TakeResume() == true)
+                _index = Groups.Count - 1;
+
             Card?.SetStage(Current);
             UpdateBack();
             OnViewStateChanged(this, EventArgs.Empty);

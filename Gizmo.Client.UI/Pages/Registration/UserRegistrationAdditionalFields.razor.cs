@@ -41,6 +41,15 @@ namespace Gizmo.Client.UI.Pages.Registration
         [CascadingParameter]
         RegistrationCardContext Card { get; set; }
 
+        protected bool IsExpired => ViewState.HasError && Card?.IsVerificationExpired(RegistrationSession) == true;
+
+        private void VerifyAgain()
+        {
+            UserRegistrationAdditionalFieldsViewService.Reset();
+            Card?.RequestResume();
+            NavigationService.NavigateTo(RegistrationCardContext.VerifyAgainRoute(RegistrationSession.Flow));
+        }
+
         public bool ShowCountry => RegistrationSession.RequiredUserInfo?.Country == true;
         public bool ShowAddress => RegistrationSession.RequiredUserInfo?.Address == true;
         public bool ShowCity => RegistrationSession.RequiredUserInfo?.City == true;

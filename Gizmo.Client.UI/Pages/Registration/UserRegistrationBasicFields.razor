@@ -7,7 +7,11 @@
             <div class="giz-signin__intro">
                 <h1 class="giz-signin__title">@Question</h1>
             </div>
-            @if (ViewState.HasError)
+            @if (IsExpired)
+            {
+                <SignupExpired OnVerifyAgain="@VerifyAgain" />
+            }
+            else if (ViewState.HasError)
             {
                 <ErrorBlock Message="@ViewState.ErrorMessage" ShowIcon="true" Class="giz-login-error-block giz-signin__error" />
             }

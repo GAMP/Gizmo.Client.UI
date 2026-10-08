@@ -114,6 +114,8 @@ namespace Gizmo.Client.UI.Shared
 
         private void OnRegistrationCleared(object sender, EventArgs e) => _card.SetDraft(null);
 
+        private void OnRegistrationChanged(object sender, EventArgs e) => _card.NoteToken(RegistrationSession.Token);
+
         private void CloseWelcome() => _card.CloseWelcome();
 
         private void UserIdleViewState_OnChange(object sender, EventArgs e)
@@ -154,6 +156,7 @@ namespace Gizmo.Client.UI.Shared
             HostHumberViewService.OnPositionChanged += HandlePositionChanged;
             NavigationManager.LocationChanged += OnLocationChanged;
             RegistrationSession.Cleared += OnRegistrationCleared;
+            RegistrationSession.Changed += OnRegistrationChanged;
             _card.Changed += OnCardChanged;
             
             _locked = UserLoginOptions.Value.Disabled && !UserRegisterConfigurationViewState.IsEnabled;
@@ -213,6 +216,7 @@ namespace Gizmo.Client.UI.Shared
             HostHumberViewService.OnPositionChanged -= HandlePositionChanged;
             NavigationManager.LocationChanged -= OnLocationChanged;
             RegistrationSession.Cleared -= OnRegistrationCleared;
+            RegistrationSession.Changed -= OnRegistrationChanged;
             _card.Changed -= OnCardChanged;
 
             this.UnsubscribeChange(LoginRotatorViewState);
