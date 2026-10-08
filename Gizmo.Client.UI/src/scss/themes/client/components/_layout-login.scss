@@ -349,57 +349,35 @@
     animation-play-state: paused;
 }
 
-.giz-login-hardcoded-bg__icons {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0;
-    transform: scale(1.06);
-    transition:
-        opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1),
-        transform 1.6s cubic-bezier(0.19, 1, 0.22, 1);
-
-    // In the accent's own colour, faint: a tint of the palette rather than a grey.
-    i {
-        position: absolute;
-        color: var(--giz-accent-soft);
-        opacity: 0.11;
-    }
-
-    i:nth-child(1) { top: 18%;  left: 12%; font-size: 6.4rem; transform: rotate(-14deg); }
-    i:nth-child(2) { bottom: 16%; left: 22%; font-size: 5.2rem; transform: rotate(10deg); }
-    i:nth-child(3) { top: 30%;  right: 14%; font-size: 5.8rem; transform: rotate(8deg); }
+// Without a club wallpaper the sign-in art covers the moving sheets; they need not run under it.
+.giz-login-content--own-bg .giz-flow {
+    display: none;
 }
 
 // Waking up, the background returns first and quickly, so the form rises onto it rather
 // than onto the club's picture; falling asleep, it waits for the form to go first.
 .giz-login-content.collapsed,
 .giz-login-content.shrink {
-    .giz-login-hardcoded-bg,
-    .giz-login-hardcoded-bg__icons {
+    .giz-login-hardcoded-bg {
         opacity: 1;
         transform: scale(1);
     }
 }
 
 .giz-login-content.shrink {
-    .giz-login-hardcoded-bg,
-    .giz-login-hardcoded-bg__icons {
+    .giz-login-hardcoded-bg {
         transition-duration: 0.6s, 0.9s;
     }
 }
 
 .giz-login-content.grow {
-    .giz-login-hardcoded-bg,
-    .giz-login-hardcoded-bg__icons {
+    .giz-login-hardcoded-bg {
         transition-delay: 0.3s;
     }
 }
 
 .giz-login-content--own-bg {
-    .giz-login-hardcoded-bg,
-    .giz-login-hardcoded-bg__icons {
+    .giz-login-hardcoded-bg {
         opacity: 1;
         transform: none;
         transition: none;
