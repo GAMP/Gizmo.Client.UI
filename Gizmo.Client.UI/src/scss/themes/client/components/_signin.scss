@@ -997,8 +997,8 @@
 // Registration's questions in the sign-in's own look. A question may take two lines; inside a pill
 // the field's name sits small right above what is typed, the two as one block on the pill's middle
 // line with the glyph, the eye and the arrow; a message about the field takes the name's place, so
-// nothing under it moves. A pill without the arrow keeps the arrow's room, so the fields and the
-// eyes of one question line up. The phone pill keeps the sign-in's flag and number.
+// nothing under it moves. The password's one eye shows both fields and stands at the edge, in the
+// arrow's column. The phone pill keeps the sign-in's flag and number.
 .giz-signin--signup {
     gap: 2.4rem;
 
@@ -1021,8 +1021,6 @@
 
     .giz-signin__pill { min-height: 8rem; }
 
-    .giz-signin__pill:not(:has(> .giz-signin__go)) { padding-right: 8.2rem; }
-
     .giz-signin__pill .giz-input-wrapper input { font-size: 1.9rem; }
 }
 
@@ -1042,6 +1040,12 @@
     .giz-input-root > .giz-input-button-clear { grid-area: tail; }
 
     .giz-input-wrapper { height: 2.8rem; }
+
+    .giz-input-button-reveal {
+        width: 5.6rem;
+        height: 5.6rem;
+        border-radius: 1.6rem;
+    }
 
     .giz-input-label,
     .giz-input-validation-label {

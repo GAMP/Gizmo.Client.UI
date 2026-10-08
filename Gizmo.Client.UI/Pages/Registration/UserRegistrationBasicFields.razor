@@ -43,6 +43,8 @@
                                     <ChildContent>
                                         <PasswordInput @ref="_passwordInput"
                                            ShowRevealButton="true"
+                                           IsPasswordVisible="@_showPassword"
+                                           IsPasswordVisibleChanged="@ShowPassword"
                                            UpdateOnInput="true"
                                            Value="@ViewState.Password"
                                            ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetPassword(value))"
@@ -61,6 +63,8 @@
                             {
                                 <PasswordInput @ref="_passwordInput"
                                            ShowRevealButton="true"
+                                           IsPasswordVisible="@_showPassword"
+                                           IsPasswordVisibleChanged="@ShowPassword"
                                            UpdateOnInput="true"
                                            Value="@ViewState.Password"
                                            ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetPassword(value))"
@@ -74,7 +78,8 @@
                         <div class="giz-signin__pill">
                             <i class="ph-bold ph-lock-key giz-signin__glyph"></i>
                             <PasswordInput @ref="_repeatInput"
-                                           ShowRevealButton="true"
+                                           ShowRevealButton="false"
+                                           IsPasswordVisible="@_showPassword"
                                            UpdateOnInput="true"
                                            Value="@ViewState.RepeatPassword"
                                            ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetRepeatPassword(value))"

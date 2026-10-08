@@ -24,6 +24,7 @@ namespace Gizmo.Client.UI.Pages.Registration
         private string? _selectedPhoneCountryName;
         private int _index;
         private bool _focus;
+        private bool _showPassword;
         private TextInput<string> _nickInput;
         private PasswordInput _passwordInput;
         private PasswordInput _repeatInput;
@@ -207,6 +208,8 @@ namespace Gizmo.Client.UI.Pages.Registration
 
             return NavigateBackAsync();
         }
+
+        private void ShowPassword(bool value) => _showPassword = value;
 
         private Task OnKeyDownAsync(KeyboardEventArgs args) => args.Key == "Enter" ? NextAsync() : Task.CompletedTask;
 
