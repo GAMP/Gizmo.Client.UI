@@ -1,0 +1,59 @@
+//============= Code boxes ===============//
+
+// A confirmation code as one box per character. The real field lies over the boxes, see-through,
+// so a click anywhere on them, typing and pasting all go to it.
+.giz-code-boxes {
+    position: relative;
+    display: flex;
+    gap: 1rem;
+    cursor: text;
+
+    &__input {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        opacity: 0;
+        cursor: text;
+    }
+
+    &__box {
+        flex: none;
+        width: 4.4rem;
+        height: 5.6rem;
+        display: grid;
+        place-items: center;
+        border-radius: 1.2rem;
+        background: var(--giz-glass-4);
+        font-family: $font-family-header-theme-client;
+        font-size: 2.8rem;
+        font-weight: 800;
+        color: var(--giz-text-1);
+        transition: box-shadow 0.15s;
+
+        &--empty::before {
+            content: '';
+            width: 1.4rem;
+            height: 2px;
+            border-radius: 1px;
+            background: var(--giz-text-off);
+        }
+    }
+
+    &:focus-within &__box--next {
+        box-shadow: inset 0 0 0 2px var(--giz-accent);
+
+        &::before {
+            width: 2px;
+            height: 2.6rem;
+            background: var(--giz-accent-soft);
+        }
+    }
+
+    &--error &__box--filled {
+        box-shadow: inset 0 0 0 2px rgba(var(--giz-danger-rgb), 0.7);
+    }
+}

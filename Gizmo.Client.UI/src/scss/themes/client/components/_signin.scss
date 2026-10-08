@@ -1450,3 +1450,35 @@
     .giz-signup-done__text > *,
     .giz-login-warnings .giz-login-reserved { animation: none; }
 }
+
+// Password recovery's code step in the sign-in's own look: the way back, the title with a line
+// under it, the code boxes in the pill and the resend link with its countdown.
+.giz-signin {
+    &__back { align-self: flex-start; }
+
+    &__intro {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    &__lead {
+        margin: 0;
+        font-size: 1.7rem;
+        line-height: 1.45;
+        color: var(--giz-text-2);
+    }
+
+    &__pill--code { padding-left: 2.4rem; }
+
+    &__link:disabled,
+    &__link:disabled:hover {
+        color: var(--giz-text-3);
+        cursor: default;
+    }
+
+    &__timer {
+        font-weight: 700;
+        color: var(--giz-text-2);
+    }
+}

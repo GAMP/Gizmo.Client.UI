@@ -49,6 +49,19 @@ namespace Gizmo.Client.UI.Pages
             }
         }
 
+        protected string TimerText => $"{ViewState.SecondsLeft / 60}:{ViewState.SecondsLeft % 60:D2}";
+
+        protected bool IsConfirmDisabled =>
+            ViewState.IsLoading || ViewState.IsValid == false || string.IsNullOrEmpty(ViewState.ConfirmationCode);
+
+        protected bool IsResendDisabled => !ViewState.TimerExpired || ViewState.IsLoading;
+
+        private void OnCodeChanged(string value) => PasswordRecoveryConfirmationViewService.SetConfirmationCode(value);
+
+        private Task ConfirmAsync() => PasswordRecoveryConfirmationViewService.Confirm();
+
+        private void Back() => NavigationService.NavigateTo(ClientRoutes.PasswordRecoveryRoute);
+
         private async Task ResendCode()
         {
             await PasswordRecoveryConfirmationViewService.RestartTimerAsync();
