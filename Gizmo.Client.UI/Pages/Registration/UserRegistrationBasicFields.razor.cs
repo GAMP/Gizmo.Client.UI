@@ -20,11 +20,13 @@ namespace Gizmo.Client.UI.Pages.Registration
     public partial class UserRegistrationBasicFields : ShellComponentBase
     {
         private const int PhoneMaxLength = 20;
+        private const int CHECK_TIMEOUT_MS = 10000;
 
         private string? _selectedPhoneCountryName;
         private int _index;
         private bool _focus;
         private bool _showPassword;
+        private bool _checking;
         private TextInput<string> _nickInput;
         private PasswordInput _passwordInput;
         private PasswordInput _repeatInput;
@@ -76,6 +78,8 @@ namespace Gizmo.Client.UI.Pages.Registration
         protected SignupStage Current => Groups[Math.Clamp(_index, 0, Groups.Count - 1)];
 
         protected bool IsLast => _index >= Groups.Count - 1;
+
+        protected bool IsBusy => ViewState.IsLoading || _checking;
 
         protected bool CanGoBack =>
             _index > 0 || RegistrationSession.Flow != RegistrationFlow.None || !string.IsNullOrEmpty(RegistrationSession.Token);
@@ -167,6 +171,70 @@ namespace Gizmo.Client.UI.Pages.Registration
             }
         }
 
+        private bool RecheckServerFields(SignupStage stage)
+        {
+            var scheduled = false;
+
+            if (stage == SignupStage.Nick && !string.IsNullOrEmpty(ViewState.Username))
+            {
+                UserRegistrationBasicFieldsViewService.SetUsername(ViewState.Username);
+                scheduled = true;
+            }
+
+            if (stage == SignupStage.Contacts)
+            {
+                if (ShowMobilePhone && !string.IsNullOrEmpty(ViewState.MobilePhone))
+                {
+                    UserRegistrationBasicFieldsViewService.SetMobilePhone(ViewState.MobilePhone);
+                    scheduled = true;
+                }
+
+                if (ShowEmail && !string.IsNullOrEmpty(ViewState.Email))
+                {
+                    UserRegistrationBasicFieldsViewService.SetEmail(ViewState.Email);
+                    scheduled = true;
+                }
+            }
+
+            return scheduled;
+        }
+
+        private async Task<bool> PassesServerCheckAsync(SignupStage stage)
+        {
+            if (!RecheckServerFields(stage))
+                return true;
+
+            if (HasErrors(stage))
+                return false;
+
+            var context = UserRegistrationBasicFieldsViewService.EditContext;
+            var done = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+            var started = false;
+
+            void OnValidationStateChanged(object sender, ValidationStateChangedEventArgs e)
+            {
+                if (ViewState.IsValidating)
+                    started = true;
+                else if (started)
+                    done.TrySetResult();
+            }
+
+            context.OnValidationStateChanged += OnValidationStateChanged;
+            _checking = true;
+
+            try
+            {
+                await Task.WhenAny(done.Task, Task.Delay(CHECK_TIMEOUT_MS));
+            }
+            finally
+            {
+                context.OnValidationStateChanged -= OnValidationStateChanged;
+                _checking = false;
+            }
+
+            return done.Task.IsCompleted && !HasErrors(stage);
+        }
+
         private void GoTo(int index)
         {
             _index = index;
@@ -179,13 +247,16 @@ namespace Gizmo.Client.UI.Pages.Registration
 
         protected async Task NextAsync()
         {
-            if (ViewState.IsLoading)
+            if (IsBusy)
                 return;
 
             var stage = Current;
             ValidateStage(stage);
 
             if (HasErrors(stage))
+                return;
+
+            if (!await PassesServerCheckAsync(stage))
                 return;
 
             if (IsLast)

@@ -26,10 +26,11 @@
                                        Size="InputSizes.Medium"
                                        IsFullWidth="true"
                                        MaxLength="45"
+                                       Placeholder=" "
                                        Label="@CountryLabel" />
                         @if (!ShowAddress && !ShowCity && !ShowPostCode)
                         {
-    <SignupGo Label="@GoLabel" IsFinal="true" IsBusy="@ViewState.IsLoading" OnClick="@SubmitAsync" />
+                            <SignupGo Label="@GoLabel" IsFinal="true" IsBusy="@ViewState.IsLoading" OnClick="@SubmitAsync" />
                         }
                     </div>
                 }
@@ -43,10 +44,11 @@
                                        Size="InputSizes.Medium"
                                        IsFullWidth="true"
                                        MaxLength="255"
+                                       Placeholder=" "
                                        Label="@AddressLabel" />
                         @if (!ShowCity && !ShowPostCode)
                         {
-    <SignupGo Label="@GoLabel" IsFinal="true" IsBusy="@ViewState.IsLoading" OnClick="@SubmitAsync" />
+                            <SignupGo Label="@GoLabel" IsFinal="true" IsBusy="@ViewState.IsLoading" OnClick="@SubmitAsync" />
                         }
                     </div>
                 }
@@ -60,10 +62,11 @@
                                        Size="InputSizes.Medium"
                                        IsFullWidth="true"
                                        MaxLength="45"
+                                       Placeholder=" "
                                        Label="@CityLabel" />
                         @if (!ShowPostCode)
                         {
-    <SignupGo Label="@GoLabel" IsFinal="true" IsBusy="@ViewState.IsLoading" OnClick="@SubmitAsync" />
+                            <SignupGo Label="@GoLabel" IsFinal="true" IsBusy="@ViewState.IsLoading" OnClick="@SubmitAsync" />
                         }
                     </div>
                 }
@@ -78,10 +81,11 @@
                                        IsFullWidth="true"
                                        MaxLength="@PostCodeMaxLength"
                                        ValidateFunction="@ValidatePostCodeCharacterAsync"
+                                       Placeholder=" "
                                        Label="@PostCodeLabel" />
                         @if (true)
                         {
-    <SignupGo Label="@GoLabel" IsFinal="true" IsBusy="@ViewState.IsLoading" OnClick="@SubmitAsync" />
+                            <SignupGo Label="@GoLabel" IsFinal="true" IsBusy="@ViewState.IsLoading" OnClick="@SubmitAsync" />
                         }
                     </div>
                 }

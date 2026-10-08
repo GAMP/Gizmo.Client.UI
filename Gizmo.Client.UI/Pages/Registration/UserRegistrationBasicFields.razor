@@ -15,228 +15,238 @@
             {
                 <ErrorBlock Message="@ViewState.ErrorMessage" ShowIcon="true" Class="giz-login-error-block giz-signin__error" />
             }
-            <EditForm EditContext="@UserRegistrationBasicFieldsViewService.EditContext" @onkeydown="OnKeyDownAsync">
-                <div class="giz-signin__fields" @key="@Current">
-                    @if (Current == SignupStage.Nick)
-                    {
-                        <div class="giz-signin__pill">
-                            <i class="ph-bold ph-user giz-signin__glyph"></i>
-                            <TextInput @ref="_nickInput"
-                                       UpdateOnInput="true"
-                                       Value="@ViewState.Username"
-                                       ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetUsername(value))"
-                                       ValueExpression="@(() => ViewState.Username)"
-                                       Size="InputSizes.Medium"
-                                       IsFullWidth="true"
-                                       MaxLength="30"
-                                       Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_USERNAME))" />
-                            <SignupGo Label="@GoLabel" IsFinal="@IsLast" IsBusy="@ViewState.IsLoading" OnClick="@NextAsync" />
-                        </div>
-                    }
-                    else if (Current == SignupStage.Password)
-                    {
-                        <div class="giz-signin__pill">
-                            <i class="ph-bold ph-lock-key giz-signin__glyph"></i>
-                            @if (ViewState.PasswordTooltip.TotalRules > 0)
-                            {
-                                <ClientTooltip OpenDirection="TooltipOpenDirections.Left" Class="giz-password-tooltip-root">
-                                    <ChildContent>
-                                        <PasswordInput @ref="_passwordInput"
-                                           ShowRevealButton="true"
-                                           IsPasswordVisible="@_showPassword"
-                                           IsPasswordVisibleChanged="@ShowPassword"
-                                           UpdateOnInput="true"
-                                           Value="@ViewState.Password"
-                                           ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetPassword(value))"
-                                           ValueExpression="@(() => ViewState.Password)"
-                                           Size="InputSizes.Medium"
-                                           IsFullWidth="true"
-                                           MaxLength="24"
-                                           Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PASSWORD))" />
-                                    </ChildContent>
-                                    <TooltipContent>
-                                        <PasswordTooltip PasswordTooltipViewState="@ViewState.PasswordTooltip" />
-                                    </TooltipContent>
-                                </ClientTooltip>
-                            }
-                            else
-                            {
-                                <PasswordInput @ref="_passwordInput"
-                                           ShowRevealButton="true"
-                                           IsPasswordVisible="@_showPassword"
-                                           IsPasswordVisibleChanged="@ShowPassword"
-                                           UpdateOnInput="true"
-                                           Value="@ViewState.Password"
-                                           ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetPassword(value))"
-                                           ValueExpression="@(() => ViewState.Password)"
-                                           Size="InputSizes.Medium"
-                                           IsFullWidth="true"
-                                           MaxLength="24"
-                                           Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PASSWORD))" />
-                            }
-                        </div>
-                        <div class="giz-signin__pill">
-                            <i class="ph-bold ph-lock-key giz-signin__glyph"></i>
-                            <PasswordInput @ref="_repeatInput"
-                                           ShowRevealButton="false"
-                                           IsPasswordVisible="@_showPassword"
-                                           UpdateOnInput="true"
-                                           Value="@ViewState.RepeatPassword"
-                                           ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetRepeatPassword(value))"
-                                           ValueExpression="@(() => ViewState.RepeatPassword)"
-                                           Size="InputSizes.Medium"
-                                           IsFullWidth="true"
-                                           MaxLength="24"
-                                           Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CONFIRM_PASSWORD))" />
-                            <SignupGo Label="@GoLabel" IsFinal="@IsLast" IsBusy="@ViewState.IsLoading" OnClick="@NextAsync" />
-                        </div>
-                    }
-                    else if (Current == SignupStage.Name)
-                    {
-                        @if (ShowFirstName)
-                        {
-                        <div class="giz-signin__pill">
-                            <i class="ph-bold ph-identification-card giz-signin__glyph"></i>
-                            <TextInput @ref="_firstNameInput"
-                                       UpdateOnInput="true"
-                                       Value="@ViewState.FirstName"
-                                       ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetFirstName(value))"
-                                       ValueExpression="@(() => ViewState.FirstName)"
-                                       Size="InputSizes.Medium"
-                                       IsFullWidth="true"
-                                       MaxLength="45"
-                                       Label="@FirstNameLabel" />
-                            @if (!ShowLastName)
-                            {
-    <SignupGo Label="@GoLabel" IsFinal="@IsLast" IsBusy="@ViewState.IsLoading" OnClick="@NextAsync" />
-                            }
-                        </div>
-                        }
-                        @if (ShowLastName)
-                        {
-                        <div class="giz-signin__pill">
-                            <i class="ph-bold ph-identification-card giz-signin__glyph"></i>
-                            <TextInput @ref="_lastNameInput"
-                                       UpdateOnInput="true"
-                                       Value="@ViewState.LastName"
-                                       ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetLastName(value))"
-                                       ValueExpression="@(() => ViewState.LastName)"
-                                       Size="InputSizes.Medium"
-                                       IsFullWidth="true"
-                                       MaxLength="45"
-                                       Label="@LastNameLabel" />
-                            <SignupGo Label="@GoLabel" IsFinal="@IsLast" IsBusy="@ViewState.IsLoading" OnClick="@NextAsync" />
-                        </div>
-                        }
-                    }
-                    else if (Current == SignupStage.About)
-                    {
-                        @if (ShowBirthDate)
+            <CascadingValue Value="@UserRegistrationBasicFieldsViewService.EditContext" IsFixed="true">
+                <div class="giz-signin__form" @onkeydown="OnKeyDownAsync">
+                    <div class="giz-signin__fields" @key="@Current">
+                        @if (Current == SignupStage.Nick)
                         {
                             <div class="giz-signin__pill">
-                                <i class="ph-bold ph-cake giz-signin__glyph"></i>
-                                <MaskedDateInput Value="@ViewState.BirthDate"
-                                                 ValueChanged="@((DateTime? value) => UserRegistrationBasicFieldsViewService.SetBirthDate(value))"
-                                                 ValueExpression="@(() => ViewState.BirthDate)"
-                                                 Size="InputSizes.Medium"
-                                                 IsFullWidth="true"
-                                                 Label="@BirthDateLabel" />
-                            @if (!ShowSex)
-                            {
-    <SignupGo Label="@GoLabel" IsFinal="@IsLast" IsBusy="@ViewState.IsLoading" OnClick="@NextAsync" />
-                            }
+                                <i class="ph-bold ph-user giz-signin__glyph"></i>
+                                <TextInput @ref="_nickInput"
+                                           UpdateOnInput="true"
+                                           Value="@ViewState.Username"
+                                           ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetUsername(value))"
+                                           ValueExpression="@(() => ViewState.Username)"
+                                           Size="InputSizes.Medium"
+                                           IsFullWidth="true"
+                                           MaxLength="30"
+                                           Placeholder=" "
+                                           Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_USERNAME))" />
+                                <SignupGo Label="@GoLabel" IsFinal="@IsLast" IsBusy="@IsBusy" OnClick="@NextAsync" />
                             </div>
                         }
-                        @if (ShowSex)
+                        else if (Current == SignupStage.Password)
                         {
                             <div class="giz-signin__pill">
-                                <i class="ph-bold ph-gender-intersex giz-signin__glyph"></i>
-                                <Select Value="@ViewState.Sex"
-                                        ValueChanged="@((Sex value) => UserRegistrationBasicFieldsViewService.SetSex(value))"
-                                        ValueExpression="@(() => ViewState.Sex)"
-                                        Size="InputSizes.Medium"
-                                        HandleSVGIcon="Icons.Select_Client"
-                                        IsFullWidth="true"
-                                        Label="@SexLabel"
-                                        OpenDirection="PopupOpenDirections.Bottom"
-                                        PopupClass="giz-scrollbar--v">
-                                    <SelectItem Value="@Sex.Unspecified" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEX_UNSPECIFIED))" />
-                                    <SelectItem Value="@Sex.Male" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEX_MALE))" />
-                                    <SelectItem Value="@Sex.Female" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEX_FEMALE))" />
-                                </Select>
-                            <SignupGo Label="@GoLabel" IsFinal="@IsLast" IsBusy="@ViewState.IsLoading" OnClick="@NextAsync" />
+                                <i class="ph-bold ph-lock-key giz-signin__glyph"></i>
+                                @if (ViewState.PasswordTooltip.TotalRules > 0)
+                                {
+                                    <ClientTooltip OpenDirection="TooltipOpenDirections.Left" Class="giz-password-tooltip-root">
+                                        <ChildContent>
+                                            <PasswordInput @ref="_passwordInput"
+                                               ShowRevealButton="true"
+                                               IsPasswordVisible="@_showPassword"
+                                               IsPasswordVisibleChanged="@ShowPassword"
+                                               UpdateOnInput="true"
+                                               Value="@ViewState.Password"
+                                               ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetPassword(value))"
+                                               ValueExpression="@(() => ViewState.Password)"
+                                               Size="InputSizes.Medium"
+                                               IsFullWidth="true"
+                                               MaxLength="24"
+                                               Placeholder=" "
+                                               Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PASSWORD))" />
+                                        </ChildContent>
+                                        <TooltipContent>
+                                            <PasswordTooltip PasswordTooltipViewState="@ViewState.PasswordTooltip" />
+                                        </TooltipContent>
+                                    </ClientTooltip>
+                                }
+                                else
+                                {
+                                    <PasswordInput @ref="_passwordInput"
+                                               ShowRevealButton="true"
+                                               IsPasswordVisible="@_showPassword"
+                                               IsPasswordVisibleChanged="@ShowPassword"
+                                               UpdateOnInput="true"
+                                               Value="@ViewState.Password"
+                                               ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetPassword(value))"
+                                               ValueExpression="@(() => ViewState.Password)"
+                                               Size="InputSizes.Medium"
+                                               IsFullWidth="true"
+                                               MaxLength="24"
+                                               Placeholder=" "
+                                               Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PASSWORD))" />
+                                }
+                            </div>
+                            <div class="giz-signin__pill">
+                                <i class="ph-bold ph-lock-key giz-signin__glyph"></i>
+                                <PasswordInput @ref="_repeatInput"
+                                               ShowRevealButton="false"
+                                               IsPasswordVisible="@_showPassword"
+                                               UpdateOnInput="true"
+                                               Value="@ViewState.RepeatPassword"
+                                               ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetRepeatPassword(value))"
+                                               ValueExpression="@(() => ViewState.RepeatPassword)"
+                                               Size="InputSizes.Medium"
+                                               IsFullWidth="true"
+                                               MaxLength="24"
+                                               Placeholder=" "
+                                               Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CONFIRM_PASSWORD))" />
+                                <SignupGo Label="@GoLabel" IsFinal="@IsLast" IsBusy="@IsBusy" OnClick="@NextAsync" />
                             </div>
                         }
-                    }
-                    else
-                    {
-                        @if (ShowMobilePhone)
+                        else if (Current == SignupStage.Name)
                         {
-                            <div class="giz-signin__pill giz-signin__pill--phone">
-                                <PhoneNumberField SelectedCountryName="@_selectedPhoneCountryName"
-                                                  PhoneValue="@ViewState.MobilePhone"
-                                                  PhoneValueExpression="@(() => ViewState.MobilePhone)"
-                                                  Size="InputSizes.Medium"
-                                                  IsFullWidth="true"
-                                                  RenderWrappers="false"
-                                                  CanClearCountry="false"
-                                                  CountryLabel="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_COUNTRY))"
-                                                  PhoneLabel="@MobilePhoneLabel"
-                                                  SearchPlaceholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEARCH))"
-                                                  CountryChanged="@OnPhoneCountryChangedAsync"
-                                                  PhoneValueChanged="@OnPhoneValueChangedAsync" />
-                            @if (!ShowEmail && !ShowPhone)
+                            @if (ShowFirstName)
                             {
-    <SignupGo Label="@GoLabel" IsFinal="@IsLast" IsBusy="@ViewState.IsLoading" OnClick="@NextAsync" />
-                            }
+                            <div class="giz-signin__pill">
+                                <i class="ph-bold ph-identification-card giz-signin__glyph"></i>
+                                <TextInput @ref="_firstNameInput"
+                                           UpdateOnInput="true"
+                                           Value="@ViewState.FirstName"
+                                           ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetFirstName(value))"
+                                           ValueExpression="@(() => ViewState.FirstName)"
+                                           Size="InputSizes.Medium"
+                                           IsFullWidth="true"
+                                           MaxLength="45"
+                                           Placeholder=" "
+                                           Label="@FirstNameLabel" />
+                                @if (!ShowLastName)
+                                {
+                                    <SignupGo Label="@GoLabel" IsFinal="@IsLast" IsBusy="@IsBusy" OnClick="@NextAsync" />
+                                }
                             </div>
-                            @if (MobilePhoneError is { Length: > 0 } mobileError)
+                            }
+                            @if (ShowLastName)
                             {
-                                <div class="giz-signin__note giz-signin__note--error">
-                                    <i class="ph-bold ph-warning-circle"></i>
-                                    <span>@mobileError</span>
+                            <div class="giz-signin__pill">
+                                <i class="ph-bold ph-identification-card giz-signin__glyph"></i>
+                                <TextInput @ref="_lastNameInput"
+                                           UpdateOnInput="true"
+                                           Value="@ViewState.LastName"
+                                           ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetLastName(value))"
+                                           ValueExpression="@(() => ViewState.LastName)"
+                                           Size="InputSizes.Medium"
+                                           IsFullWidth="true"
+                                           MaxLength="45"
+                                           Placeholder=" "
+                                           Label="@LastNameLabel" />
+                                <SignupGo Label="@GoLabel" IsFinal="@IsLast" IsBusy="@IsBusy" OnClick="@NextAsync" />
+                            </div>
+                            }
+                        }
+                        else if (Current == SignupStage.About)
+                        {
+                            @if (ShowBirthDate)
+                            {
+                                <div class="giz-signin__pill">
+                                    <i class="ph-bold ph-cake giz-signin__glyph"></i>
+                                    <MaskedDateInput Value="@ViewState.BirthDate"
+                                                     ValueChanged="@((DateTime? value) => UserRegistrationBasicFieldsViewService.SetBirthDate(value))"
+                                                     ValueExpression="@(() => ViewState.BirthDate)"
+                                                     Size="InputSizes.Medium"
+                                                     IsFullWidth="true"
+                                                     Label="@BirthDateLabel" />
+                                @if (!ShowSex)
+                                {
+                                    <SignupGo Label="@GoLabel" IsFinal="@IsLast" IsBusy="@IsBusy" OnClick="@NextAsync" />
+                                }
+                                </div>
+                            }
+                            @if (ShowSex)
+                            {
+                                <div class="giz-signin__pill">
+                                    <i class="ph-bold ph-gender-intersex giz-signin__glyph"></i>
+                                    <Select Value="@ViewState.Sex"
+                                            ValueChanged="@((Sex value) => UserRegistrationBasicFieldsViewService.SetSex(value))"
+                                            ValueExpression="@(() => ViewState.Sex)"
+                                            Size="InputSizes.Medium"
+                                            HandleSVGIcon="Icons.Select_Client"
+                                            IsFullWidth="true"
+                                            Label="@SexLabel"
+                                            OpenDirection="PopupOpenDirections.Bottom"
+                                            PopupClass="giz-scrollbar--v">
+                                        <SelectItem Value="@Sex.Unspecified" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEX_UNSPECIFIED))" />
+                                        <SelectItem Value="@Sex.Male" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEX_MALE))" />
+                                        <SelectItem Value="@Sex.Female" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEX_FEMALE))" />
+                                    </Select>
+                                <SignupGo Label="@GoLabel" IsFinal="@IsLast" IsBusy="@IsBusy" OnClick="@NextAsync" />
                                 </div>
                             }
                         }
-                        @if (ShowEmail)
+                        else
                         {
-                        <div class="giz-signin__pill">
-                            <i class="ph-bold ph-at giz-signin__glyph"></i>
-                            <TextInput @ref="_emailInput"
-                                       UpdateOnInput="true"
-                                       Value="@ViewState.Email"
-                                       ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetEmail(value))"
-                                       ValueExpression="@(() => ViewState.Email)"
-                                       Size="InputSizes.Medium"
-                                       IsFullWidth="true"
-                                       MaxLength="254"
-                                       Label="@EmailLabel" />
-                            @if (!ShowPhone)
+                            @if (ShowMobilePhone)
                             {
-    <SignupGo Label="@GoLabel" IsFinal="@IsLast" IsBusy="@ViewState.IsLoading" OnClick="@NextAsync" />
+                                <div class="giz-signin__pill giz-signin__pill--phone">
+                                    <PhoneNumberField SelectedCountryName="@_selectedPhoneCountryName"
+                                                      PhoneValue="@ViewState.MobilePhone"
+                                                      PhoneValueExpression="@(() => ViewState.MobilePhone)"
+                                                      Size="InputSizes.Medium"
+                                                      IsFullWidth="true"
+                                                      RenderWrappers="false"
+                                                      CanClearCountry="false"
+                                                      CountryLabel="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_COUNTRY))"
+                                                      PhoneLabel="@MobilePhoneLabel"
+                                                      SearchPlaceholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_SEARCH))"
+                                                      CountryChanged="@OnPhoneCountryChangedAsync"
+                                                      PhoneValueChanged="@OnPhoneValueChangedAsync" />
+                                @if (!ShowEmail && !ShowPhone)
+                                {
+                                    <SignupGo Label="@GoLabel" IsFinal="@IsLast" IsBusy="@IsBusy" OnClick="@NextAsync" />
+                                }
+                                </div>
+                                @if (MobilePhoneError is { Length: > 0 } mobileError)
+                                {
+                                    <div class="giz-signin__note giz-signin__note--error">
+                                        <i class="ph-bold ph-warning-circle"></i>
+                                        <span>@mobileError</span>
+                                    </div>
+                                }
                             }
-                        </div>
+                            @if (ShowEmail)
+                            {
+                            <div class="giz-signin__pill">
+                                <i class="ph-bold ph-at giz-signin__glyph"></i>
+                                <TextInput @ref="_emailInput"
+                                           UpdateOnInput="true"
+                                           Value="@ViewState.Email"
+                                           ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetEmail(value))"
+                                           ValueExpression="@(() => ViewState.Email)"
+                                           Size="InputSizes.Medium"
+                                           IsFullWidth="true"
+                                           MaxLength="254"
+                                           Placeholder=" "
+                                           Label="@EmailLabel" />
+                                @if (!ShowPhone)
+                                {
+                                    <SignupGo Label="@GoLabel" IsFinal="@IsLast" IsBusy="@IsBusy" OnClick="@NextAsync" />
+                                }
+                            </div>
+                            }
+                            @if (ShowPhone)
+                            {
+                            <div class="giz-signin__pill">
+                                <i class="ph-bold ph-phone giz-signin__glyph"></i>
+                                <TextInput @ref="_phoneInput"
+                                           UpdateOnInput="true"
+                                           Value="@ViewState.Phone"
+                                           ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetPhone(value))"
+                                           ValueExpression="@(() => ViewState.Phone)"
+                                           Size="InputSizes.Medium"
+                                           IsFullWidth="true"
+                                           MaxLength="20"
+                                           ValidateFunction="@ValidatePhoneCharacterAsync"
+                                           Placeholder=" "
+                                           Label="@PhoneLabel" />
+                                <SignupGo Label="@GoLabel" IsFinal="@IsLast" IsBusy="@IsBusy" OnClick="@NextAsync" />
+                            </div>
+                            }
                         }
-                        @if (ShowPhone)
-                        {
-                        <div class="giz-signin__pill">
-                            <i class="ph-bold ph-phone giz-signin__glyph"></i>
-                            <TextInput @ref="_phoneInput"
-                                       UpdateOnInput="true"
-                                       Value="@ViewState.Phone"
-                                       ValueChanged="@((string value) => UserRegistrationBasicFieldsViewService.SetPhone(value))"
-                                       ValueExpression="@(() => ViewState.Phone)"
-                                       Size="InputSizes.Medium"
-                                       IsFullWidth="true"
-                                       MaxLength="20"
-                                       ValidateFunction="@ValidatePhoneCharacterAsync"
-                                       Label="@PhoneLabel" />
-                            <SignupGo Label="@GoLabel" IsFinal="@IsLast" IsBusy="@ViewState.IsLoading" OnClick="@NextAsync" />
-                        </div>
-                        }
-                    }
+                    </div>
                 </div>
-            </EditForm>
+            </CascadingValue>
         </div>
     </CardBody>
     <CardFooter>

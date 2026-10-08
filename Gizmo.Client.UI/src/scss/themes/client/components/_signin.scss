@@ -997,8 +997,9 @@
 // Registration's questions in the sign-in's own look. A question may take two lines; inside a pill
 // the field's name sits small right above what is typed, the two as one block on the pill's middle
 // line with the glyph, the eye and the arrow; a message about the field takes the name's place, so
-// nothing under it moves. The password's one eye shows both fields and stands at the edge, in the
-// arrow's column. The phone pill keeps the sign-in's flag and number.
+// nothing under it moves. An empty field at rest shows its name large on that line instead, and the
+// name slides up when the caret comes in. The password's one eye shows both fields and stands at the
+// edge, in the arrow's column. The phone pill keeps the sign-in's flag and number.
 .giz-signin--signup {
     gap: 2.4rem;
 
@@ -1041,6 +1042,8 @@
 
     .giz-input-wrapper { height: 2.8rem; }
 
+    .giz-input-wrapper input { caret-color: var(--giz-accent); }
+
     .giz-input-button-reveal {
         width: 5.6rem;
         height: 5.6rem;
@@ -1065,7 +1068,20 @@
         text-transform: none;
     }
 
-    .giz-input-label { color: var(--giz-text-3); }
+    .giz-input-label {
+        transform-origin: 0 50%;
+        color: var(--giz-text-3);
+        transition: transform 0.22s cubic-bezier(0.2, 0, 0, 1), color 0.2s;
+    }
+
+    &:focus-within .giz-input-label { color: var(--giz-accent-soft); }
+
+    // Name row 1.6rem, gap 0.3rem, value row 2.8rem: the name's middle moves from 0.8rem to the
+    // block's middle at 2.35rem, at the typed text's size.
+    &.giz-input-control--valid:not(:focus-within):has(input:placeholder-shown) .giz-input-label {
+        transform: translateY(1.55rem) scale(1.44);
+        color: var(--giz-text-2);
+    }
 
     .giz-input-validation-label { color: var(--giz-danger-soft); }
 
