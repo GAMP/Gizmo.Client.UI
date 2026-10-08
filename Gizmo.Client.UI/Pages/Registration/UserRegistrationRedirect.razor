@@ -4,13 +4,8 @@
 <LoginCard Modifier="giz-login-card--steps">
     <CardBody>
         <div class="giz-signin giz-signin--signup">
-            <button type="button" class="giz-signin__link giz-signin__back" @onclick="@RegistrationRedirectViewService.NavigateBackAsync">
-                <i class="ph-bold ph-arrow-left"></i>
-                <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BACK))</span>
-            </button>
             <div class="giz-signin__intro">
                 <h1 class="giz-signin__title">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_TITLE), GetProviderDisplayName())</h1>
-                <p class="giz-signin__lead">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_SCAN_HINT))</p>
             </div>
             @if (ViewState.HasError)
             {
@@ -48,12 +43,6 @@
                     </div>
                 }
             }
-            <div class="giz-signin__links">
-                <div class="giz-signin__new">
-                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_ALREADY_A_MEMBER))</span>
-                    <RegistrationSignInLink>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_IN))</RegistrationSignInLink>
-                </div>
-            </div>
         </div>
     </CardBody>
     <CardFooter>

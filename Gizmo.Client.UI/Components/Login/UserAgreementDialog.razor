@@ -3,35 +3,56 @@
 
 <HostedDialog>
     <div class="@ClassName">
-        <div class="giz-user-agreement-dialog__head">
-            <span class="giz-user-agreement-dialog__seal"><i class="ph-bold ph-seal-check"></i></span>
-            <div class="giz-user-agreement-dialog__titles">
-                <div class="giz-user-agreement-dialog__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_AGREEMENT_DIALOG_TITLE))</div>
-                <div class="giz-user-agreement-dialog__name">@Name</div>
+        @if (ShowsCard)
+        {
+            <div class="giz-user-agreement-dialog__card">
+                <div class="giz-signup-card-stack">
+                    <div class="giz-signup-card-stack__back"></div>
+                    <PlayerCard />
+                </div>
             </div>
-            @if (DisplayOptions.Closable)
-            {
-                <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="CloseDialogAsync" />
-            }
-        </div>
-        <div class="giz-user-agreement-dialog__text giz-scrollbar--v">
-            <div class="user-agreement">
-                @((MarkupString)Agreement)
+        }
+        <div class="giz-client-dialog giz-user-agreement-dialog__panel">
+            <div class="giz-user-agreement-dialog__head">
+                <span class="giz-user-agreement-dialog__seal"><i class="ph-bold ph-seal-check"></i></span>
+                <div class="giz-user-agreement-dialog__titles">
+                    <div class="giz-user-agreement-dialog__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_AGREEMENT_TITLE)</div>
+                    <div class="giz-user-agreement-dialog__name">@Name</div>
+                </div>
+                @if (_expanded)
+                {
+                    <button type="button" class="giz-user-agreement-dialog__fold" @onclick="ToggleExpanded">
+                        <i class="ph-bold ph-arrows-in-simple"></i>
+                        <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_AGREEMENT_COLLAPSE)</span>
+                    </button>
+                }
+                @if (DisplayOptions.Closable)
+                {
+                    <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="CloseDialogAsync" />
+                }
             </div>
-        </div>
-        <button type="button" class="giz-user-agreement-dialog__more" @onclick="ToggleExpanded">
-            <span>@MoreText</span>
-            <i class="@MoreIcon"></i>
-        </button>
-        <div class="giz-user-agreement-dialog__actions">
-            @if (CanDecline)
+            <div class="giz-user-agreement-dialog__text giz-scrollbar--v">
+                <div class="user-agreement">
+                    @((MarkupString)Agreement)
+                </div>
+            </div>
+            @if (!_expanded)
             {
-                <button type="button" class="giz-user-agreement-dialog__decline" @onclick="DeclineAsync">@DeclineText</button>
+                <button type="button" class="giz-user-agreement-dialog__more" @onclick="ToggleExpanded">
+                    <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_AGREEMENT_READ_ALL)</span>
+                    <i class="ph-bold ph-caret-down"></i>
+                </button>
             }
-            <button type="button" class="giz-user-agreement-dialog__accept" @onclick="AcceptAsync">
-                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_AGREEMENT_ACCEPT)</span>
-                <i class="ph-bold ph-check"></i>
-            </button>
+            <div class="giz-user-agreement-dialog__actions">
+                @if (CanDecline)
+                {
+                    <button type="button" class="giz-user-agreement-dialog__decline" @onclick="DeclineAsync">@DeclineText</button>
+                }
+                <button type="button" class="giz-user-agreement-dialog__accept" @onclick="AcceptAsync">
+                    <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_AGREEMENT_ACCEPT)</span>
+                    <i class="ph-bold ph-check"></i>
+                </button>
+            </div>
         </div>
     </div>
 </HostedDialog>

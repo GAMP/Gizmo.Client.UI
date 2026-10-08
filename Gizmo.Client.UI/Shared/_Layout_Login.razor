@@ -77,9 +77,30 @@
             {
                 <RegistrationWelcome Card="@welcome" OnDone="@CloseWelcome" />
             }
+            else if (CurrentSignupStage == SignupStage.Rules)
+            {
+                <div class="giz-signup giz-signup--rules">
+                    <CascadingValue Value="@_card" IsFixed="true">
+                        @Body
+                    </CascadingValue>
+                </div>
+            }
             else if (CurrentSignupStage is { } signupStage)
             {
                 <div class="giz-signup">
+                    <div class="giz-signup__bar">
+                        @if (_card.Back is { } back)
+                        {
+                            <button type="button" class="giz-signup__back" @onclick="@(() => back())">
+                                <i class="ph-bold ph-arrow-left"></i>
+                                <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BACK))</span>
+                            </button>
+                        }
+                        <div class="giz-signup__signin">
+                            <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_ALREADY_A_MEMBER))</span>
+                            <Gizmo.Client.UI.Pages.Registration.RegistrationSignInLink>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_IN))</Gizmo.Client.UI.Pages.Registration.RegistrationSignInLink>
+                        </div>
+                    </div>
                     <div class="giz-signup__main">
                         <div class="giz-signup__card">
                             <div class="giz-signup-card-stack">

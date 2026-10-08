@@ -25,9 +25,6 @@ namespace Gizmo.Client.UI.Pages.Registration
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
-        protected string Lead => ViewState.HasError
-            ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SELECT_OTHER_METHOD))
-            : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_VERIFY_HINT);
 
         [Inject]
         UserRegistrationProvidersViewState ViewState { get; set; }

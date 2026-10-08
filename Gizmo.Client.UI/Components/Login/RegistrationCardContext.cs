@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
     public sealed class RegistrationCardContext
     {
         private string _pendingLoginName;
+        private object _backOwner;
 
         public event EventHandler Changed;
 
@@ -13,6 +15,25 @@ namespace Gizmo.Client.UI.Components
         public PlayerCardData Welcome { get; private set; }
 
         public SignupStage? Stage { get; private set; }
+
+        public Func<Task> Back { get; private set; }
+
+        public void SetBack(object owner, Func<Task> back)
+        {
+            _backOwner = owner;
+            Back = back;
+            Changed?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void ClearBack(object owner)
+        {
+            if (!ReferenceEquals(_backOwner, owner))
+                return;
+
+            _backOwner = null;
+            Back = null;
+            Changed?.Invoke(this, EventArgs.Empty);
+        }
 
         public void SetStage(SignupStage stage)
         {

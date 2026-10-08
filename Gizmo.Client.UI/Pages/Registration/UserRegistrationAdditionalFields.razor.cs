@@ -86,8 +86,15 @@ namespace Gizmo.Client.UI.Pages.Registration
             }
         }
 
+        private Task BackAsync()
+        {
+            NavigationService.NavigateTo(ClientRoutes.RegistrationBasicFieldsRoute);
+            return Task.CompletedTask;
+        }
+
         protected override void OnInitialized()
         {
+            Card?.SetBack(this, BackAsync);
             this.SubscribeChange(ViewState);
             ViewState.OnChange += OnViewStateChanged;
             OnViewStateChanged(this, EventArgs.Empty);
@@ -97,6 +104,7 @@ namespace Gizmo.Client.UI.Pages.Registration
 
         public override void Dispose()
         {
+            Card?.ClearBack(this);
             ViewState.OnChange -= OnViewStateChanged;
             this.UnsubscribeChange(ViewState);
 

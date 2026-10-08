@@ -1,29 +1,53 @@
 //============= User agreement dialog ===========//
 
-// The club's agreement: its name, the first lines of the text with "read all" to open it in place,
-// and two plain answers - accept, and decline or skip where the agreement allows it.
-.giz-client-dialog.giz-user-agreement-dialog {
-    width: min(56rem, calc(100vw - 4rem));
-    max-width: none;
-    max-height: calc(100vh - 8rem);
-    box-sizing: border-box;
+// The club's agreement: a seal, "the club's rules first" with the agreement's name, its first lines
+// with "read all" to open it in place, and two plain answers - accept, and decline or skip where
+// the agreement allows it. In registration the player's blank card waits above it.
+.giz-user-agreement-dialog {
     display: flex;
     flex-direction: column;
-    gap: 1.8rem;
-    padding: 3.2rem 3.6rem;
-    border: 0;
-    border-radius: 3.2rem;
-    background:
-        linear-gradient(176deg, rgba(var(--giz-accent-rgb), 0.13) 0%, rgba(var(--giz-accent-rgb), 0) 38%),
-        var(--giz-panel);
-    box-shadow:
-        inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.26),
-        0 40px 80px -40px rgba(var(--giz-black-rgb), 0.95);
+    align-items: center;
 
-    &::before { display: none; }
-}
+    &__card {
+        position: relative;
+        z-index: 0;
+        margin-bottom: 2.4rem;
+        opacity: 0.9;
+        animation: giz-signup-card-in 0.8s cubic-bezier(0.2, 0, 0, 1) backwards;
 
-.giz-user-agreement-dialog {
+        .giz-signup-card-stack { width: 42rem; }
+    }
+
+    &--open &__card { display: none; }
+
+    &__panel.giz-client-dialog {
+        position: relative;
+        z-index: 1;
+        width: min(60rem, calc(100vw - 4rem));
+        max-width: none;
+        max-height: calc(100vh - 8rem);
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 1.8rem;
+        padding: 3.2rem 3.6rem;
+        border: 0;
+        border-radius: 3.2rem;
+        background:
+            linear-gradient(176deg, rgba(var(--giz-accent-rgb), 0.13) 0%, rgba(var(--giz-accent-rgb), 0) 38%),
+            var(--giz-panel);
+        box-shadow:
+            inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.26),
+            0 40px 80px -40px rgba(var(--giz-black-rgb), 0.95);
+        animation: giz-signin-in 0.5s cubic-bezier(0.2, 0, 0, 1) backwards;
+
+        &::before { display: none; }
+    }
+
+    &--signup &__panel.giz-client-dialog { width: min(72rem, calc(100vw - 4rem)); }
+
+    &--open &__panel.giz-client-dialog { height: min(76rem, calc(100vh - 20rem)); }
+
     &__head {
         position: relative;
         display: flex;
@@ -63,20 +87,39 @@
         color: var(--giz-text-2);
     }
 
+    &__fold {
+        flex: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0;
+        border: 0;
+        background: none;
+        font-family: inherit;
+        font-size: 1.5rem;
+        color: var(--giz-text-2);
+        cursor: pointer;
+        transition: color 0.15s;
+
+        i { font-size: 1.8rem; }
+
+        &:hover { color: var(--giz-text-1); }
+    }
+
     &__text {
-        max-height: 14.4rem;
+        max-height: 7.2rem;
         overflow: hidden;
-        -webkit-mask-image: linear-gradient(180deg, var(--giz-black) 45%, transparent);
-        mask-image: linear-gradient(180deg, var(--giz-black) 45%, transparent);
+        -webkit-mask-image: linear-gradient(180deg, var(--giz-black) 40%, transparent);
+        mask-image: linear-gradient(180deg, var(--giz-black) 40%, transparent);
     }
 
     &--open &__text {
         flex: 1 1 auto;
         min-height: 0;
-        max-height: min(48rem, calc(100vh - 34rem));
+        max-height: none;
         overflow-y: auto;
-        -webkit-mask-image: linear-gradient(180deg, var(--giz-black) 90%, transparent);
-        mask-image: linear-gradient(180deg, var(--giz-black) 90%, transparent);
+        -webkit-mask-image: linear-gradient(180deg, var(--giz-black) 85%, transparent);
+        mask-image: linear-gradient(180deg, var(--giz-black) 85%, transparent);
     }
 
     .user-agreement {

@@ -88,15 +88,6 @@ namespace Gizmo.Client.UI.Pages.Registration
             _ => GrafitResourceKeys.SHELL_SIGNUP_Q_CONTACTS,
         });
 
-        protected string Hint => GrafitLocalization.GetString(Current switch
-        {
-            SignupStage.Nick => GrafitResourceKeys.SHELL_SIGNUP_NICK_HINT,
-            SignupStage.Password => GrafitResourceKeys.SHELL_SIGNUP_PASSWORD_HINT,
-            SignupStage.Name => GrafitResourceKeys.SHELL_SIGNUP_NAME_HINT,
-            SignupStage.Contacts when ShowMobilePhone => GrafitResourceKeys.SHELL_SIGNUP_CONTACTS_HINT,
-            _ => GrafitResourceKeys.SHELL_SIGNUP_ABOUT_HINT,
-        });
-
         protected string GoLabel => !IsLast || HasAdditionalFields
             ? Vendor(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CONTINUE))
             : Vendor(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_UP_BUTTON));
@@ -171,7 +162,10 @@ namespace Gizmo.Client.UI.Pages.Registration
             _index = index;
             _focus = true;
             Card?.SetStage(Current);
+            UpdateBack();
         }
+
+        private void UpdateBack() => Card?.SetBack(this, CanGoBack ? BackAsync : null);
 
         protected async Task NextAsync()
         {
@@ -198,6 +192,7 @@ namespace Gizmo.Client.UI.Pages.Registration
             if (_index > 0)
             {
                 GoTo(_index - 1);
+                DispatchRender();
                 return Task.CompletedTask;
             }
 
@@ -313,6 +308,7 @@ namespace Gizmo.Client.UI.Pages.Registration
             this.SubscribeChange(ViewState);
             ViewState.OnChange += OnViewStateChanged;
             Card?.SetStage(Current);
+            UpdateBack();
             OnViewStateChanged(this, EventArgs.Empty);
             base.OnInitialized();
         }
@@ -332,6 +328,7 @@ namespace Gizmo.Client.UI.Pages.Registration
 
         public override void Dispose()
         {
+            Card?.ClearBack(this);
             ViewState.OnChange -= OnViewStateChanged;
             this.UnsubscribeChange(ViewState);
             base.Dispose();

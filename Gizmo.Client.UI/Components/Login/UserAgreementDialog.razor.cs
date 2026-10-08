@@ -39,9 +39,13 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<UserAgreementResult> ResultCallback { get; set; }
 
-        protected string ClassName => _expanded
-            ? "giz-client-dialog giz-user-agreement-dialog giz-user-agreement-dialog--open"
-            : "giz-client-dialog giz-user-agreement-dialog";
+        protected bool ShowsCard => AllowContinueWithoutAccept;
+
+        protected string ClassName => new ClassMapper()
+            .Add("giz-user-agreement-dialog")
+            .If("giz-user-agreement-dialog--signup", () => ShowsCard)
+            .If("giz-user-agreement-dialog--open", () => _expanded)
+            .AsString();
 
         protected bool CanDecline => IsRejectable || AllowContinueWithoutAccept;
 
@@ -49,11 +53,6 @@ namespace Gizmo.Client.UI.Components
             ? GrafitResourceKeys.SHELL_AGREEMENT_SKIP
             : GrafitResourceKeys.SHELL_AGREEMENT_DECLINE);
 
-        protected string MoreText => GrafitLocalization.GetString(_expanded
-            ? GrafitResourceKeys.SHELL_AGREEMENT_COLLAPSE
-            : GrafitResourceKeys.SHELL_AGREEMENT_READ_ALL);
-
-        protected string MoreIcon => _expanded ? "ph-bold ph-caret-up" : "ph-bold ph-caret-down";
 
         private void ToggleExpanded() => _expanded = !_expanded;
 

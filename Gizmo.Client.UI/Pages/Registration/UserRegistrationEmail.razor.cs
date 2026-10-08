@@ -19,6 +19,9 @@ namespace Gizmo.Client.UI.Pages.Registration
         [CascadingParameter]
         protected GrafitLocalizationService GrafitLocalization { get; set; }
 
+        [CascadingParameter]
+        RegistrationCardContext Card { get; set; }
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
@@ -52,8 +55,15 @@ namespace Gizmo.Client.UI.Pages.Registration
             await base.OnAfterRenderAsync(firstRender);
         }
 
+        private Task BackAsync()
+        {
+            NavigationService.NavigateTo(ClientRoutes.RegistrationProvidersRoute);
+            return Task.CompletedTask;
+        }
+
         protected override void OnInitialized()
         {
+            Card?.SetBack(this, BackAsync);
             this.SubscribeChange(ViewState);
 
             base.OnInitialized();
@@ -61,6 +71,7 @@ namespace Gizmo.Client.UI.Pages.Registration
 
         public override void Dispose()
         {
+            Card?.ClearBack(this);
             this.UnsubscribeChange(ViewState);
 
             base.Dispose();

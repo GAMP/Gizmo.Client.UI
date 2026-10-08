@@ -214,21 +214,13 @@
         public const string SHELL_RECOVERY_CODE_SENT = nameof(SHELL_RECOVERY_CODE_SENT);
         public const string SHELL_RECOVERY_NOT_FOUND = nameof(SHELL_RECOVERY_NOT_FOUND);
         public const string SHELL_SIGNUP_Q_VERIFY = nameof(SHELL_SIGNUP_Q_VERIFY);
-        public const string SHELL_SIGNUP_VERIFY_HINT = nameof(SHELL_SIGNUP_VERIFY_HINT);
         public const string SHELL_SIGNUP_Q_PHONE = nameof(SHELL_SIGNUP_Q_PHONE);
-        public const string SHELL_SIGNUP_PHONE_HINT = nameof(SHELL_SIGNUP_PHONE_HINT);
         public const string SHELL_SIGNUP_Q_EMAIL = nameof(SHELL_SIGNUP_Q_EMAIL);
-        public const string SHELL_SIGNUP_EMAIL_HINT = nameof(SHELL_SIGNUP_EMAIL_HINT);
         public const string SHELL_SIGNUP_Q_NICK = nameof(SHELL_SIGNUP_Q_NICK);
-        public const string SHELL_SIGNUP_NICK_HINT = nameof(SHELL_SIGNUP_NICK_HINT);
         public const string SHELL_SIGNUP_Q_PASSWORD = nameof(SHELL_SIGNUP_Q_PASSWORD);
-        public const string SHELL_SIGNUP_PASSWORD_HINT = nameof(SHELL_SIGNUP_PASSWORD_HINT);
         public const string SHELL_SIGNUP_Q_NAME = nameof(SHELL_SIGNUP_Q_NAME);
-        public const string SHELL_SIGNUP_NAME_HINT = nameof(SHELL_SIGNUP_NAME_HINT);
         public const string SHELL_SIGNUP_Q_ABOUT = nameof(SHELL_SIGNUP_Q_ABOUT);
-        public const string SHELL_SIGNUP_ABOUT_HINT = nameof(SHELL_SIGNUP_ABOUT_HINT);
         public const string SHELL_SIGNUP_Q_CONTACTS = nameof(SHELL_SIGNUP_Q_CONTACTS);
-        public const string SHELL_SIGNUP_CONTACTS_HINT = nameof(SHELL_SIGNUP_CONTACTS_HINT);
         public const string SHELL_SIGNUP_Q_ADDRESS = nameof(SHELL_SIGNUP_Q_ADDRESS);
         public const string SHELL_SIGNUP_QR_WAIT = nameof(SHELL_SIGNUP_QR_WAIT);
         public const string SHELL_SIGNUP_QR_WAIT_HINT = nameof(SHELL_SIGNUP_QR_WAIT_HINT);
@@ -246,5 +238,7 @@
         public const string SHELL_AGREEMENT_SKIP = nameof(SHELL_AGREEMENT_SKIP);
         public const string SHELL_AGREEMENT_READ_ALL = nameof(SHELL_AGREEMENT_READ_ALL);
         public const string SHELL_AGREEMENT_COLLAPSE = nameof(SHELL_AGREEMENT_COLLAPSE);
+        public const string SHELL_SIGNUP_Q_CODE = nameof(SHELL_SIGNUP_Q_CODE);
+        public const string SHELL_AGREEMENT_TITLE = nameof(SHELL_AGREEMENT_TITLE);
     }
 }

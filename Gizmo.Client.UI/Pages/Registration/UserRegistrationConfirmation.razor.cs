@@ -1,3 +1,4 @@
+using Gizmo.Client.UI.Components;
 using Gizmo.Client.UI.Localization.Resources;
 using Gizmo.Client.UI.Localization.Services;
 using System.Threading.Tasks;
@@ -16,6 +17,9 @@ namespace Gizmo.Client.UI.Pages.Registration
     {
         [CascadingParameter]
         protected GrafitLocalizationService GrafitLocalization { get; set; }
+
+        [CascadingParameter]
+        RegistrationCardContext Card { get; set; }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -58,12 +62,14 @@ namespace Gizmo.Client.UI.Pages.Registration
 
         protected override void OnInitialized()
         {
+            Card?.SetBack(this, NavigateBackAsync);
             this.SubscribeChange(ViewState);
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
+            Card?.ClearBack(this);
             this.UnsubscribeChange(ViewState);
             base.Dispose();
         }
