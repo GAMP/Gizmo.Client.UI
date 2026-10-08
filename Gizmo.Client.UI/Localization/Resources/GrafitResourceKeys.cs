@@ -236,9 +236,6 @@
         public const string SHELL_AGREEMENT_ACCEPT = nameof(SHELL_AGREEMENT_ACCEPT);
         public const string SHELL_AGREEMENT_DECLINE = nameof(SHELL_AGREEMENT_DECLINE);
         public const string SHELL_AGREEMENT_SKIP = nameof(SHELL_AGREEMENT_SKIP);
-        public const string SHELL_AGREEMENT_READ_ALL = nameof(SHELL_AGREEMENT_READ_ALL);
-        public const string SHELL_AGREEMENT_COLLAPSE = nameof(SHELL_AGREEMENT_COLLAPSE);
         public const string SHELL_SIGNUP_Q_CODE = nameof(SHELL_SIGNUP_Q_CODE);
-        public const string SHELL_AGREEMENT_TITLE = nameof(SHELL_AGREEMENT_TITLE);
     }
 }

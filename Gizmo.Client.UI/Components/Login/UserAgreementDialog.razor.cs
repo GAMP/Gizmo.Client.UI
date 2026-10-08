@@ -10,7 +10,6 @@ namespace Gizmo.Client.UI.Components
     public partial class UserAgreementDialog : CustomDOMComponentBase
     {
         private bool _accepted;
-        private bool _expanded;
 
         [CascadingParameter]
         protected GrafitLocalizationService GrafitLocalization { get; set; }
@@ -39,13 +38,13 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<UserAgreementResult> ResultCallback { get; set; }
 
-        protected bool ShowsCard => AllowContinueWithoutAccept;
+        protected string ClassName => AllowContinueWithoutAccept
+            ? "giz-user-agreement-dialog giz-user-agreement-dialog--signup"
+            : "giz-user-agreement-dialog";
 
-        protected string ClassName => new ClassMapper()
-            .Add("giz-user-agreement-dialog")
-            .If("giz-user-agreement-dialog--signup", () => ShowsCard)
-            .If("giz-user-agreement-dialog--open", () => _expanded)
-            .AsString();
+        protected string Title => string.IsNullOrWhiteSpace(Name)
+            ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_AGREEMENT_DIALOG_TITLE))
+            : Name;
 
         protected bool CanDecline => IsRejectable || AllowContinueWithoutAccept;
 
@@ -53,8 +52,6 @@ namespace Gizmo.Client.UI.Components
             ? GrafitResourceKeys.SHELL_AGREEMENT_SKIP
             : GrafitResourceKeys.SHELL_AGREEMENT_DECLINE);
 
-
-        private void ToggleExpanded() => _expanded = !_expanded;
 
         private Task CloseDialogAsync() => DismissCallback.InvokeAsync();
 

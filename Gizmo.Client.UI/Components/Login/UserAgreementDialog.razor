@@ -3,29 +3,10 @@
 
 <HostedDialog>
     <div class="@ClassName">
-        @if (ShowsCard)
-        {
-            <div class="giz-user-agreement-dialog__card">
-                <div class="giz-signup-card-stack">
-                    <div class="giz-signup-card-stack__back"></div>
-                    <PlayerCard />
-                </div>
-            </div>
-        }
         <div class="giz-client-dialog giz-user-agreement-dialog__panel">
             <div class="giz-user-agreement-dialog__head">
                 <span class="giz-user-agreement-dialog__seal"><i class="ph-bold ph-seal-check"></i></span>
-                <div class="giz-user-agreement-dialog__titles">
-                    <div class="giz-user-agreement-dialog__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_AGREEMENT_TITLE)</div>
-                    <div class="giz-user-agreement-dialog__name">@Name</div>
-                </div>
-                @if (_expanded)
-                {
-                    <button type="button" class="giz-user-agreement-dialog__fold" @onclick="ToggleExpanded">
-                        <i class="ph-bold ph-arrows-in-simple"></i>
-                        <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_AGREEMENT_COLLAPSE)</span>
-                    </button>
-                }
+                <div class="giz-user-agreement-dialog__title">@Title</div>
                 @if (DisplayOptions.Closable)
                 {
                     <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="CloseDialogAsync" />
@@ -36,13 +17,6 @@
                     @((MarkupString)Agreement)
                 </div>
             </div>
-            @if (!_expanded)
-            {
-                <button type="button" class="giz-user-agreement-dialog__more" @onclick="ToggleExpanded">
-                    <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_AGREEMENT_READ_ALL)</span>
-                    <i class="ph-bold ph-caret-down"></i>
-                </button>
-            }
             <div class="giz-user-agreement-dialog__actions">
                 @if (CanDecline)
                 {
