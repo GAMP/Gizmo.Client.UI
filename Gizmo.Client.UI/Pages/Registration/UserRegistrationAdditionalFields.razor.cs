@@ -1,3 +1,6 @@
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
+using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Threading.Tasks;
 using Gizmo.Client.UI.Components;
@@ -13,8 +16,15 @@ namespace Gizmo.Client.UI.Pages.Registration
     [Route(ClientRoutes.RegistrationAdditionalFieldsRoute)]
     public partial class UserRegistrationAdditionalFields : CustomDOMComponentBase
     {
+        [CascadingParameter]
+        protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
+
+        protected string GoLabel => LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_UP_BUTTON));
+
+        private Task OnKeyDownAsync(KeyboardEventArgs args) => args.Key == "Enter" ? SubmitAsync() : Task.CompletedTask;
 
         [Inject]
         IRegistrationSessionService RegistrationSession { get; set; }

@@ -77,17 +77,23 @@
             {
                 <RegistrationWelcome Card="@welcome" OnDone="@CloseWelcome" />
             }
-            else if (CurrentRegistrationStep is { } registrationStep)
+            else if (CurrentSignupStage is { } signupStage)
             {
-                <div class="giz-signup-spread">
-                    <aside class="giz-signup-spread__stage">
-                        <RegistrationStage Step="@registrationStep" HasAboutStep="@HasAboutStep" CardData="@_card.Draft" />
-                    </aside>
-                    <div class="giz-signup-spread__form">
-                        <CascadingValue Value="@_card" IsFixed="true">
-                            @Body
-                        </CascadingValue>
+                <div class="giz-signup">
+                    <div class="giz-signup__main">
+                        <div class="giz-signup__card">
+                            <div class="giz-signup-card-stack">
+                                <div class="giz-signup-card-stack__back"></div>
+                                <PlayerCard Data="@_card.Draft" />
+                            </div>
+                        </div>
+                        <div class="giz-signup__form">
+                            <CascadingValue Value="@_card" IsFixed="true">
+                                @Body
+                            </CascadingValue>
+                        </div>
                     </div>
+                    <SignupRoad Stages="@RoadStages" Current="@signupStage" />
                 </div>
             }
             else

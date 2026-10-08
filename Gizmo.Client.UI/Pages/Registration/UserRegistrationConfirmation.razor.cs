@@ -1,3 +1,5 @@
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using System.Threading.Tasks;
 using Gizmo.Client;
 using Gizmo.Client.UI.Services;
@@ -12,8 +14,13 @@ namespace Gizmo.Client.UI.Pages.Registration
     [Route(ClientRoutes.RegistrationConfirmationRoute)]
     public partial class UserRegistrationConfirmation : CustomDOMComponentBase
     {
+        [CascadingParameter]
+        protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
+
+        protected string TimerText => $"{ViewState.SecondsLeft / 60}:{ViewState.SecondsLeft % 60:D2}";
 
         [Inject]
         UserRegistrationConfirmationViewService UserRegistrationConfirmationViewService { get; set; }

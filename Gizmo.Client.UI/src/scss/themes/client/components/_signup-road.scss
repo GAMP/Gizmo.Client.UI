@@ -1,0 +1,76 @@
+//============= Sign-up road ===============//
+
+// The whole registration as a row of slots: the passed ones lit with a tick, the current one in the
+// accent, the rest waiting, a line between each two.
+.giz-signup-road {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: flex-start;
+
+    &__slot {
+        flex: none;
+        width: 10rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.9rem;
+        font-size: 1.4rem;
+        font-weight: 600;
+        text-align: center;
+        color: var(--giz-text-3);
+    }
+
+    &__dot {
+        width: 4.8rem;
+        height: 4.8rem;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--giz-glass-5);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-9);
+        font-size: 2rem;
+        color: var(--giz-text-3);
+        transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+    }
+
+    &__slot--done { color: var(--giz-text-2); }
+
+    &__slot--done &__dot {
+        background: var(--giz-action-tonal-bg);
+        box-shadow: inset 0 0 0 1px var(--giz-action-tonal-line);
+        color: var(--giz-accent-soft);
+    }
+
+    &__slot--now { color: var(--giz-text-1); }
+
+    &__slot--now &__dot {
+        background: var(--giz-action-bg);
+        box-shadow: none;
+        color: var(--giz-action-ink);
+    }
+
+    &__line {
+        flex: 1;
+        height: 2px;
+        margin-top: 2.3rem;
+        border-radius: 1px;
+        background: var(--giz-glass-8);
+        transition: background 0.3s;
+    }
+
+    &__line--done { background: rgba(var(--giz-accent-rgb), 0.55); }
+}
+
+@media (max-height: 860px) {
+    .giz-signup-road {
+        &__dot {
+            width: 4rem;
+            height: 4rem;
+            font-size: 1.7rem;
+        }
+
+        &__line { margin-top: 1.9rem; }
+    }
+}

@@ -1,3 +1,4 @@
+using Gizmo.Client.UI.Localization.Resources;
 using System;
 using System.Threading.Tasks;
 using Gizmo;
@@ -51,20 +52,16 @@ namespace Gizmo.Client.UI.Pages.Registration
             return RegistrationSession.SelectedProvider?.Name ?? string.Empty;
         }
 
-        private Icons GetProviderIcon()
-        {
-            var channelGuid = RegistrationSession.SelectedProvider?.ChannelGuid ?? Guid.Empty;
-            return ChannelIcons.ResolveChannelIcon(channelGuid);
-        }
+        protected string QrCardClass => ViewState.IsQrExpired
+            ? "giz-signin__qr-card giz-signin__qr-card--expired"
+            : "giz-signin__qr-card";
 
-        private string GetProviderIconCssClass()
-        {
-            var channelGuid = RegistrationSession.SelectedProvider?.ChannelGuid.ToString("D") ?? string.Empty;
-            if (channelGuid.Equals(CommunicationChannels.Telegram, StringComparison.OrdinalIgnoreCase))
-                return "giz-registration-redirect__provider-icon--telegram";
-            if (channelGuid.Equals(CommunicationChannels.FacebookMessenger, StringComparison.OrdinalIgnoreCase))
-                return "giz-registration-redirect__provider-icon--facebook";
-            return string.Empty;
-        }
+        protected string QrTitle => ViewState.IsQrExpired
+            ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_QR_EXPIRED))
+            : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_QR_WAIT);
+
+        protected string QrText => ViewState.IsQrExpired
+            ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_SESSION_EXPIRED))
+            : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_QR_WAIT_HINT);
     }
 }

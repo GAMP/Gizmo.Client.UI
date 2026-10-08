@@ -1,3 +1,5 @@
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +19,15 @@ namespace Gizmo.Client.UI.Pages.Registration
     [Route(ClientRoutes.RegistrationProvidersRoute)]
     public partial class UserRegistrationProviders : CustomDOMComponentBase
     {
+        [CascadingParameter]
+        protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
+
+        protected string Lead => ViewState.HasError
+            ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SELECT_OTHER_METHOD))
+            : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_VERIFY_HINT);
 
         [Inject]
         UserRegistrationProvidersViewState ViewState { get; set; }

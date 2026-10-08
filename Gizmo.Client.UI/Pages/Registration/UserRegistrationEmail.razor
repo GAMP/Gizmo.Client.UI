@@ -1,53 +1,46 @@
 @namespace Gizmo.Client.UI.Pages.Registration
-@inherits CustomDOMComponentBase
+@inherits ShellComponentBase
 
-<LoginCard>
-    <CardHeader>
-        <div class="giz-login-links">
-            <div class="giz-back-button" @onclick="@(() => NavigationService.NavigateTo(ClientRoutes.RegistrationProvidersRoute))">
-                <Icon SVGIcon="Icons.ArrowLeft_Client" Size="IconSizes.ExtraSmall" />
-            </div>
-            <div class="giz-login-new-user">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_ALREADY_A_MEMBER)) <RegistrationSignInLink>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_IN))</RegistrationSignInLink></div>
-        </div>
-        <div class="giz-login-alerts"></div>
-    </CardHeader>
+<LoginCard Modifier="giz-login-card--steps">
     <CardBody>
-        @if (ViewState.HasError)
-        {
-            <ErrorBlock Message="@ViewState.ErrorMessage" ShowIcon="true" Class="giz-login-error-block" />
-        }
-        <EditForm EditContext="@RegistrationEmailViewService.EditContext">
-            <div class="giz-login-title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_UP_TITLE))</div>
-            <div class="giz-login-subtitle--sign-up">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_EMAIL_CONFIRMATION_MESSAGE))</div>
-            <div class="giz-form-input">
-                <TextInput UpdateOnInput="true"
-                           Value="@ViewState.Email"
-                           ValueChanged="@((string value) => RegistrationEmailViewService.SetEmail(value))"
-                           ValueExpression="@(() => ViewState.Email)"
-                           IsDisabled="@ViewState.IsLoading"
-                           Size="InputSizes.Medium"
-                           IsFullWidth="true"
-                           Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_EMAIL_ADDRESS))" />
+        <div class="giz-signin giz-signin--signup">
+            <button type="button" class="giz-signin__link giz-signin__back" @onclick="@(() => NavigationService.NavigateTo(ClientRoutes.RegistrationProvidersRoute))">
+                <i class="ph-bold ph-arrow-left"></i>
+                <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_BACK))</span>
+            </button>
+            <div class="giz-signin__intro">
+                <h1 class="giz-signin__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_Q_EMAIL)</h1>
+                <p class="giz-signin__lead">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_EMAIL_HINT)</p>
             </div>
-            <div class="giz-form-input">
-                <Button IsDisabled="@(ViewState.IsValid == false || ViewState.IsLoading)"
-                        Color="ButtonColors.Accent"
-                        Size="ButtonSizes.ExtraLarge"
-                        IsFullWidth="true"
-                        @onclick="@RegistrationEmailViewService.SubmitAsync">
-                    <ChildContent>
-                        @if (ViewState.IsLoading)
-                        {
-                            <Spinner />
-                        }
-                        else
-                        {
-                            <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CONFIRMATION_SEND_CODE))</div>
-                        }
-                    </ChildContent>
-                </Button>
+            @if (ViewState.HasError)
+            {
+                <ErrorBlock Message="@ViewState.ErrorMessage" ShowIcon="true" Class="giz-login-error-block giz-signin__error" />
+            }
+            <EditForm EditContext="@RegistrationEmailViewService.EditContext" @onkeydown="OnKeyDownAsync">
+                <div class="giz-signin__pill">
+                    <i class="ph-bold ph-at giz-signin__glyph"></i>
+                    <TextInput @ref="_emailInput"
+                               UpdateOnInput="true"
+                               Value="@ViewState.Email"
+                               ValueChanged="@((string value) => RegistrationEmailViewService.SetEmail(value))"
+                               ValueExpression="@(() => ViewState.Email)"
+                               IsDisabled="@ViewState.IsLoading"
+                               Size="InputSizes.Medium"
+                               IsFullWidth="true"
+                               Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_EMAIL_ADDRESS))" />
+                    <SignupGo Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CONFIRMATION_SEND_CODE))"
+                              IsBusy="@ViewState.IsLoading"
+                              IsDisabled="@(ViewState.IsValid == false)"
+                              OnClick="@RegistrationEmailViewService.SubmitAsync" />
+                </div>
+            </EditForm>
+            <div class="giz-signin__links">
+                <div class="giz-signin__new">
+                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_ALREADY_A_MEMBER))</span>
+                    <RegistrationSignInLink>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_IN))</RegistrationSignInLink>
+                </div>
             </div>
-        </EditForm>
+        </div>
     </CardBody>
     <CardFooter>
         <InputLanguageMenu />

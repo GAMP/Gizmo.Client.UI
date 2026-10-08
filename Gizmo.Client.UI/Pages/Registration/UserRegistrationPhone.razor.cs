@@ -1,3 +1,7 @@
+using System.Linq;
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
+using Microsoft.AspNetCore.Components.Web;
 using Gizmo.Client.UI.Components;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -14,8 +18,23 @@ namespace Gizmo.Client.UI.Pages.Registration
     {
         private FieldIdentifier? _countryFieldIdentifier;
 
+        [CascadingParameter]
+        protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
+
+        protected string PhoneError => RegistrationPhoneViewService.EditContext
+            .GetValidationMessages(new FieldIdentifier(ViewState, nameof(ViewState.MobilePhone)))
+            .FirstOrDefault();
+
+        private Task OnKeyDownAsync(KeyboardEventArgs args)
+        {
+            if (args.Key != "Enter" || ViewState.IsLoading || ViewState.IsValid != true)
+                return Task.CompletedTask;
+
+            return RegistrationPhoneViewService.SubmitAsync();
+        }
 
         [Inject]
         UserRegistrationPhoneViewService RegistrationPhoneViewService { get; set; }

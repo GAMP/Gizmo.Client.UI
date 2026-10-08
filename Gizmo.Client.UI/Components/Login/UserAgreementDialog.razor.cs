@@ -1,15 +1,19 @@
-﻿using Gizmo.UI.Services;
+﻿using System.Threading.Tasks;
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
-using System.Threading.Tasks;
 
 namespace Gizmo.Client.UI.Components
 {
     public partial class UserAgreementDialog : CustomDOMComponentBase
     {
         private bool _accepted;
+        private bool _expanded;
 
-        #region PROPERTIES
+        [CascadingParameter]
+        protected GrafitLocalizationService GrafitLocalization { get; set; }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -23,10 +27,6 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public bool IsRejectable { get; set; }
 
-        /// <summary>
-        /// Allows the user to continue without checking the accept checkbox, even for non-rejectable agreements.
-        /// Used by the registration flow, where declining a mandatory agreement routes the user back to login.
-        /// </summary>
         [Parameter]
         public bool AllowContinueWithoutAccept { get; set; }
 
@@ -39,21 +39,39 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<UserAgreementResult> ResultCallback { get; set; }
 
-        #endregion
+        protected string ClassName => _expanded
+            ? "giz-client-dialog giz-user-agreement-dialog giz-user-agreement-dialog--open"
+            : "giz-client-dialog giz-user-agreement-dialog";
 
-        #region METHODS
+        protected bool CanDecline => IsRejectable || AllowContinueWithoutAccept;
 
-        private async Task CloseDialogAsync()
+        protected string DeclineText => GrafitLocalization.GetString(IsRejectable
+            ? GrafitResourceKeys.SHELL_AGREEMENT_SKIP
+            : GrafitResourceKeys.SHELL_AGREEMENT_DECLINE);
+
+        protected string MoreText => GrafitLocalization.GetString(_expanded
+            ? GrafitResourceKeys.SHELL_AGREEMENT_COLLAPSE
+            : GrafitResourceKeys.SHELL_AGREEMENT_READ_ALL);
+
+        protected string MoreIcon => _expanded ? "ph-bold ph-caret-up" : "ph-bold ph-caret-down";
+
+        private void ToggleExpanded() => _expanded = !_expanded;
+
+        private Task CloseDialogAsync() => DismissCallback.InvokeAsync();
+
+        private Task AcceptAsync()
         {
-            await DismissCallback.InvokeAsync();
+            _accepted = true;
+            return ContinueAsync();
         }
 
-        private async Task ContinueAsync()
+        private Task DeclineAsync()
         {
-            await ResultCallback.InvokeAsync(new UserAgreementResult() { Accepted = _accepted});
+            _accepted = false;
+            return ContinueAsync();
         }
 
-        #endregion
+        private Task ContinueAsync() => ResultCallback.InvokeAsync(new UserAgreementResult() { Accepted = _accepted });
 
         protected override void OnParametersSet()
         {

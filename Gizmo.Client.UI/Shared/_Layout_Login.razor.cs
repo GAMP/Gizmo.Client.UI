@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gizmo.Client.Options;
@@ -70,12 +71,6 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         IRegistrationSessionService RegistrationSession { get; set; }
 
-        private bool HasAboutStep =>
-            RegistrationSession.RequiredUserInfo?.Country == true ||
-            RegistrationSession.RequiredUserInfo?.Address == true ||
-            RegistrationSession.RequiredUserInfo?.City == true ||
-            RegistrationSession.RequiredUserInfo?.PostCode == true;
-
         private static readonly string[] VerificationRoutes =
         {
             ClientRoutes.RegistrationIndexRoute,
@@ -87,23 +82,31 @@ namespace Gizmo.Client.UI.Shared
             ClientRoutes.RegistrationErrorRoute,
         };
 
-        private RegistrationStep? CurrentRegistrationStep
+        private SignupStage? CurrentSignupStage
         {
             get
             {
                 var path = "/" + NavigationManager.ToBaseRelativePath(NavigationManager.Uri).Split('?', '#')[0].TrimEnd('/');
 
+                if (string.Equals(path, ClientRoutes.RegistrationIndexRoute, StringComparison.OrdinalIgnoreCase))
+                    return SignupStage.Rules;
+
                 if (string.Equals(path, ClientRoutes.RegistrationBasicFieldsRoute, StringComparison.OrdinalIgnoreCase))
-                    return RegistrationStep.Account;
+                    return _card.Stage ?? SignupStage.Nick;
 
                 if (string.Equals(path, ClientRoutes.RegistrationAdditionalFieldsRoute, StringComparison.OrdinalIgnoreCase))
-                    return RegistrationStep.About;
+                    return SignupStage.Address;
 
                 return VerificationRoutes.Any(route => string.Equals(path, route, StringComparison.OrdinalIgnoreCase))
-                    ? RegistrationStep.Verify
+                    ? SignupStage.Verify
                     : null;
             }
         }
+
+        private IReadOnlyList<SignupStage> RoadStages => SignupStages.Road(
+            RegistrationSession,
+            RegistrationSession.AgreementChoices.Count > 0 || CurrentSignupStage == SignupStage.Rules,
+            !UserRegisterConfigurationViewState.IsDirectEnabled);
 
         private void OnLocationChanged(object sender, LocationChangedEventArgs e) => HandlePositionChanged();
 

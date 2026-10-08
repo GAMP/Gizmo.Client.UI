@@ -12,6 +12,17 @@ namespace Gizmo.Client.UI.Components
 
         public PlayerCardData Welcome { get; private set; }
 
+        public SignupStage? Stage { get; private set; }
+
+        public void SetStage(SignupStage stage)
+        {
+            if (Stage == stage)
+                return;
+
+            Stage = stage;
+            Changed?.Invoke(this, EventArgs.Empty);
+        }
+
         public void SetDraft(PlayerCardData draft)
         {
             if (Draft == draft)

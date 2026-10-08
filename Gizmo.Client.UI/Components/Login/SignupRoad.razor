@@ -1,0 +1,16 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<ol class="giz-signup-road">
+    @foreach (var slot in Slots)
+    {
+        <li class="@slot.ClassName">
+            <span class="giz-signup-road__dot"><i class="@slot.Icon"></i></span>
+            <span class="giz-signup-road__label">@slot.Label</span>
+        </li>
+        @if (!slot.IsLast)
+        {
+            <li class="@slot.LineClass" aria-hidden="true"></li>
+        }
+    }
+</ol>

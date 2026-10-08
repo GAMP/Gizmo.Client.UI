@@ -3,22 +3,30 @@
 
 @if (HasError)
 {
-    <ErrorBlock Message="@ErrorMessage" ShowIcon="true" Class="giz-login-error-block" />
+    <ErrorBlock Message="@ErrorMessage" ShowIcon="true" Class="giz-login-error-block giz-signin__error" />
 }
 
-<div class="giz-login-title">@Title</div>
-<div class="giz-login-subtitle--sign-up">@Subtitle</div>
+@if (ShowHeading)
+{
+    <div class="giz-login-title">@Title</div>
+    <div class="giz-login-subtitle--sign-up">@Subtitle</div>
+}
 
 @if (PriorityProviders.Count > 0)
 {
-    <div class="giz-registration-providers-list">
+    <div class="giz-ways">
         @foreach (var provider in PriorityProviders)
         {
-            <button class="giz-registration-provider-btn @GetProviderCssClass(provider.IsPrimary)"
-                    type="button"
-                    @onclick="@(() => OnSelect.InvokeAsync(provider.MethodId))">
-                <Icon SVGIcon="@ChannelIcons.ResolveChannelIcon(provider.ChannelGuid)" />
-                @provider.Name
+            <button class="giz-way" type="button" @onclick="@(() => OnSelect.InvokeAsync(provider.MethodId))">
+                <span class="giz-way__icon"><Icon SVGIcon="@ChannelIcons.ResolveChannelIcon(provider.ChannelGuid)" /></span>
+                <span class="giz-way__text">
+                    <b>@provider.Name</b>
+                    @if (HintOf(provider) is { Length: > 0 } hint)
+                    {
+                        <small>@hint</small>
+                    }
+                </span>
+                <i class="ph-bold ph-arrow-right giz-way__go"></i>
             </button>
         }
     </div>
@@ -37,14 +45,19 @@
         <p class="giz-registration-providers-hint">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_TRY_ALTERNATIVES))</p>
     }
 
-    <div class="giz-registration-providers-list">
+    <div class="giz-ways">
         @foreach (var provider in AltProviders)
         {
-            <button class="giz-registration-provider-btn @GetProviderCssClass(provider.IsPrimary)"
-                    type="button"
-                    @onclick="@(() => OnSelect.InvokeAsync(provider.MethodId))">
-                <Icon SVGIcon="@ChannelIcons.ResolveChannelIcon(provider.ChannelGuid)" />
-                @provider.Name
+            <button class="giz-way" type="button" @onclick="@(() => OnSelect.InvokeAsync(provider.MethodId))">
+                <span class="giz-way__icon"><Icon SVGIcon="@ChannelIcons.ResolveChannelIcon(provider.ChannelGuid)" /></span>
+                <span class="giz-way__text">
+                    <b>@provider.Name</b>
+                    @if (HintOf(provider) is { Length: > 0 } hint)
+                    {
+                        <small>@hint</small>
+                    }
+                </span>
+                <i class="ph-bold ph-arrow-right giz-way__go"></i>
             </button>
         }
     </div>

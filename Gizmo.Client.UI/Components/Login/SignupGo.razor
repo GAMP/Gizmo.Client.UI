@@ -1,0 +1,13 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<button type="button" class="giz-signin__go" disabled="@(IsBusy || IsDisabled)" aria-label="@Label" title="@Label" @onclick="OnClick">
+    @if (IsBusy)
+    {
+        <span class="giz-loader giz-loader--small"></span>
+    }
+    else
+    {
+        <i class="@IconClass"></i>
+    }
+</button>
