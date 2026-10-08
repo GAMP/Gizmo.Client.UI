@@ -84,17 +84,24 @@
         }
     }
 
+    // Rows that do not fit whole wrap into a second column, outside the tile, so the list never
+    // shows half a row whatever the screen's height and shape. The negative margin lets the last
+    // row's bottom padding (empty space) run into the gap above the button.
     &__list {
         flex: 1 1 auto;
         min-height: 0;
+        margin-bottom: -0.9rem;
         display: flex;
         flex-direction: column;
+        flex-wrap: wrap;
+        align-content: flex-start;
         justify-content: safe center;
         overflow: hidden;
     }
 
     &__row {
         flex: none;
+        width: 100%;
         display: flex;
         align-items: center;
         gap: 1.2rem;
@@ -107,7 +114,6 @@
             padding-top: 0.2rem;
         }
 
-        &:nth-child(n + 3) { display: none; }
     }
 
     &__text {
@@ -203,12 +209,8 @@
     .giz-home-till--progress { gap: 0.9rem; }
 
     .giz-home-progress {
+        &__list { margin-bottom: -0.6rem; }
         &__row { padding: 0.6rem 0; }
-        &__row:nth-child(n + 2) { display: none; }
         &__open { height: 3.8rem; }
     }
-}
-
-@media (min-height: 1050px) {
-    .giz-home-progress__row:nth-child(n + 3) { display: flex; }
 }
