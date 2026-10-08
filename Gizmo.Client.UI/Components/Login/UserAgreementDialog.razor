@@ -12,17 +12,27 @@
                     <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="CloseDialogAsync" />
                 }
             </div>
-            <div class="giz-user-agreement-dialog__text giz-scrollbar--v">
+            <div class="giz-user-agreement-dialog__text giz-scrollbar--v" @ref="_text">
                 <div class="user-agreement">
                     @((MarkupString)Agreement)
                 </div>
             </div>
             <div class="giz-user-agreement-dialog__actions">
-                @if (CanDecline)
+                @if (IsRead)
                 {
-                    <button type="button" class="giz-user-agreement-dialog__decline" @onclick="DeclineAsync">@DeclineText</button>
+                    @if (CanDecline)
+                    {
+                        <button type="button" class="giz-user-agreement-dialog__decline" @onclick="DeclineAsync">@DeclineText</button>
+                    }
+                    <button type="button" class="giz-user-agreement-dialog__accept" @onclick="AcceptAsync">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_AGREEMENT_ACCEPT)</button>
                 }
-                <button type="button" class="giz-user-agreement-dialog__accept" @onclick="AcceptAsync">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_AGREEMENT_ACCEPT)</button>
+                else
+                {
+                    <button type="button" class="giz-user-agreement-dialog__read" @onclick="ScrollPageAsync">
+                        <i class="ph-bold ph-arrow-down"></i>
+                        <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_AGREEMENT_READ_TO_END)</span>
+                    </button>
+                }
             </div>
         </div>
     </div>

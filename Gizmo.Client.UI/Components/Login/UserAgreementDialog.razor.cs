@@ -1,15 +1,20 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Gizmo.Client.UI.Localization.Resources;
 using Gizmo.Client.UI.Localization.Services;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace Gizmo.Client.UI.Components
 {
     public partial class UserAgreementDialog : CustomDOMComponentBase
     {
         private bool _accepted;
+        private bool _isRead;
+        private ElementReference _text;
+        private DotNetObjectReference<UserAgreementDialog> _self;
 
         [CascadingParameter]
         protected GrafitLocalizationService GrafitLocalization { get; set; }
@@ -48,10 +53,30 @@ namespace Gizmo.Client.UI.Components
 
         protected bool CanDecline => IsRejectable || AllowContinueWithoutAccept;
 
+        protected bool IsRead => _isRead;
+
         protected string DeclineText => GrafitLocalization.GetString(IsRejectable
             ? GrafitResourceKeys.SHELL_AGREEMENT_SKIP
             : GrafitResourceKeys.SHELL_AGREEMENT_DECLINE);
 
+        [JSInvokable]
+        public Task ReadToEnd()
+        {
+            _isRead = true;
+            return InvokeAsync(StateHasChanged);
+        }
+
+        private async Task ScrollPageAsync()
+        {
+            try
+            {
+                await InvokeVoidAsync("scrollAgreementPage", _text);
+            }
+            catch (JSException)
+            {
+                await ReadToEnd();
+            }
+        }
 
         private Task CloseDialogAsync() => DismissCallback.InvokeAsync();
 
@@ -74,6 +99,31 @@ namespace Gizmo.Client.UI.Components
             base.OnParametersSet();
 
             _accepted = false;
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await base.OnAfterRenderAsync(firstRender);
+
+            if (!firstRender)
+                return;
+
+            _self = CreateDotNetObjectReference(this);
+
+            try
+            {
+                await InvokeVoidAsync("watchAgreementReading", _text, _self);
+            }
+            catch (JSException)
+            {
+                await ReadToEnd();
+            }
+        }
+
+        public override void Dispose()
+        {
+            _self?.Dispose();
+            base.Dispose();
         }
     }
 }

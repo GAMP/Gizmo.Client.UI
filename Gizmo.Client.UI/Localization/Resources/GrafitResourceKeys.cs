@@ -236,6 +236,7 @@
         public const string SHELL_AGREEMENT_ACCEPT = nameof(SHELL_AGREEMENT_ACCEPT);
         public const string SHELL_AGREEMENT_DECLINE = nameof(SHELL_AGREEMENT_DECLINE);
         public const string SHELL_AGREEMENT_SKIP = nameof(SHELL_AGREEMENT_SKIP);
+        public const string SHELL_AGREEMENT_READ_TO_END = nameof(SHELL_AGREEMENT_READ_TO_END);
         public const string SHELL_SIGNUP_EXPIRED = nameof(SHELL_SIGNUP_EXPIRED);
         public const string SHELL_SIGNUP_VERIFY_AGAIN = nameof(SHELL_SIGNUP_VERIFY_AGAIN);
         public const string SHELL_SIGNUP_Q_CODE = nameof(SHELL_SIGNUP_Q_CODE);

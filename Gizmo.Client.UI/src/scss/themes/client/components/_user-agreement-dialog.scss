@@ -1,7 +1,9 @@
 //============= User agreement dialog ===========//
 
 // The club's agreement in full at once: a seal and the agreement's name, the whole text to scroll,
-// and two plain answers - accept, and decline or skip where the agreement allows it.
+// and two plain answers - accept, and decline or skip where the agreement allows it. The answers
+// come once the text is read to the end; until then one button stands in their place, turns the
+// text a page down and fills as the reading goes (--giz-read, set by watchAgreementReading).
 .giz-user-agreement-dialog {
     display: flex;
     flex-direction: column;
@@ -114,5 +116,28 @@
     &__accept {
         font-weight: 800;
         @include giz-action-primary;
+    }
+
+    &__read {
+        width: 100%;
+        height: 6.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        padding: 0 2.4rem;
+        border: 0;
+        border-radius: 3rem;
+        background: linear-gradient(90deg, var(--giz-action-tonal-bg) var(--giz-read, 0%), var(--giz-glass-5) var(--giz-read, 0%));
+        font-family: $font-family-header-theme-client;
+        font-size: 1.7rem;
+        font-weight: 700;
+        color: var(--giz-text-2);
+        cursor: pointer;
+        transition: color 0.15s;
+
+        i { font-size: 2rem; }
+
+        &:hover { color: var(--giz-text-1); }
     }
 }
