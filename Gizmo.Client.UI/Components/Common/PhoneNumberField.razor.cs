@@ -18,6 +18,7 @@ namespace Gizmo.Client.UI.Components
     public partial class PhoneNumberField : CustomDOMComponentBase
     {
         private const string DEFAULT_NATIONAL_MASK = "###-###-####";
+        private const int E164_MAX_DIGITS = 15;
 
         private bool _isLoaded;
         private readonly Dictionary<string, string> _regionCodes = new();
@@ -152,8 +153,22 @@ namespace Gizmo.Client.UI.Components
                 index += 1;
             }
 
-            return mask.Substring(index).TrimStart(' ', '-', '.', '/');
+            return WithoutLoneBrackets(mask.Substring(index).TrimStart(' ', '-', '.', '/'));
         }
+
+        private static string WithoutLoneBrackets(string mask)
+        {
+            var open = mask.IndexOf('(');
+            var close = mask.IndexOf(')');
+            var balanced = mask.Count(c => c == '(') == mask.Count(c => c == ')') && open <= close;
+
+            if (balanced)
+                return mask;
+
+            return string.Join(" ", mask.Replace('(', ' ').Replace(')', ' ').Split(' ', StringSplitOptions.RemoveEmptyEntries));
+        }
+
+        private int GetExtraDigits() => Math.Max(0, E164_MAX_DIGITS - GetMask().Count(c => c == '#'));
 
         private int GetLockedPrefixLength()
         {

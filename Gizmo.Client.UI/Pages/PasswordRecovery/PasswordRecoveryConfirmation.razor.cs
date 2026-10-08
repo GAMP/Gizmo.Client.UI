@@ -2,6 +2,8 @@ using System;
 using System.Threading.Tasks;
 using Gizmo;
 using Gizmo.Client.UI;
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -14,14 +16,13 @@ namespace Gizmo.Client.UI.Pages
     [Route(ClientRoutes.PasswordRecoveryConfirmationRoute)]
     public partial class PasswordRecoveryConfirmation : CustomDOMComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
         PasswordRecoveryConfirmationViewService PasswordRecoveryConfirmationViewService { get; set; }
-
-        [Inject]
-        UserLoginViewService UserLoginService { get; set; }
 
         [Inject]
         NavigationService NavigationService { get; set; }
@@ -32,8 +33,21 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         IPasswordRecoverySessionService PasswordRecoverySession { get; set; }
 
-        [Inject]
-        UserRegistrationConfigurationViewState UserRegisterConfigurationViewState { get; init; }
+        protected string CodeSubtitle
+        {
+            get
+            {
+                var destination = PasswordRecoverySession.Destination;
+                if (!string.IsNullOrWhiteSpace(destination))
+                    return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_RECOVERY_CODE_SENT_TO, destination.Trim());
+
+                var provider = PasswordRecoverySession.ActiveProvider?.Name;
+                if (!string.IsNullOrWhiteSpace(provider))
+                    return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_RECOVERY_CODE_SENT_VIA, provider.Trim());
+
+                return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_RECOVERY_CODE_SENT);
+            }
+        }
 
         private async Task ResendCode()
         {
@@ -69,7 +83,6 @@ namespace Gizmo.Client.UI.Pages
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
-            this.SubscribeChange(UserRegisterConfigurationViewState);
 
             base.OnInitialized();
         }
@@ -77,7 +90,6 @@ namespace Gizmo.Client.UI.Pages
         public override void Dispose()
         {
             this.UnsubscribeChange(ViewState);
-            this.UnsubscribeChange(UserRegisterConfigurationViewState);
 
             base.Dispose();
         }

@@ -19,13 +19,7 @@ namespace Gizmo.Client.UI.Pages
         PasswordRecoverySetNewPasswordViewService PasswordRecoverySetNewPasswordViewService { get; set; }
 
         [Inject]
-        UserLoginViewService UserLoginService { get; set; }
-
-        [Inject]
         PasswordRecoverySetNewPasswordViewState ViewState { get; set; }
-
-        [Inject]
-        UserRegistrationConfigurationViewState UserRegisterConfigurationViewState { get; init; }
 
         public void OnCloseButtonClickHandler()
         {
@@ -35,7 +29,6 @@ namespace Gizmo.Client.UI.Pages
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
-            this.SubscribeChange(UserRegisterConfigurationViewState);
 
             base.OnInitialized();
         }
@@ -43,7 +36,6 @@ namespace Gizmo.Client.UI.Pages
         public override void Dispose()
         {
             this.UnsubscribeChange(ViewState);
-            this.UnsubscribeChange(UserRegisterConfigurationViewState);
 
             base.Dispose();
         }

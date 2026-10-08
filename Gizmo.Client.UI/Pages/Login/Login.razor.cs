@@ -25,6 +25,8 @@ namespace Gizmo.Client.UI.Pages
 
         [CascadingParameter] RegistrationCardContext Card { get; set; }
 
+        [CascadingParameter] RecoveryHandoff Recovery { get; set; }
+
         private FieldIdentifier? _countryFieldIdentifier;
 
         private string? _selectedCallingCodeDigits;
@@ -78,6 +80,9 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         IOptions<HostQRCodeOptions> HostQrCodeOptions { get; set; }
+
+        [Inject]
+        NavigationService NavigationService { get; set; }
 
         protected string QrTitle => string.IsNullOrEmpty(HostQrCodeOptions.Value.Title)
             ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_QR_TITLE))
@@ -233,6 +238,16 @@ namespace Gizmo.Client.UI.Pages
         }
 
         private void OpenQr() => _step = LoginStep.Qr;
+
+        private void RecoverPassword()
+        {
+            var name = (ViewState.LoginName ?? string.Empty).Trim();
+
+            if (name.Length > 0)
+                Recovery?.Offer(new RecoveryRequest(IsPhoneLogin, name, ViewState.Country, ViewState.RegionCode));
+
+            NavigationService.NavigateTo(ClientRoutes.PasswordRecoveryKindRoute);
+        }
 
         private void OnCardChanged(object sender, EventArgs e)
         {

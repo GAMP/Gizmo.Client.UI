@@ -23,6 +23,7 @@ namespace Gizmo.Client.UI.Shared
         private bool _locked = false;
         private bool _disposed = false;
         private readonly RegistrationCardContext _card = new();
+        private readonly RecoveryHandoff _recovery = new();
 
         [Inject()]
         UserRegistrationConfigurationViewState UserRegisterConfigurationViewState { get; init; }

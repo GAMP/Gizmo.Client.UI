@@ -113,7 +113,7 @@
                     @if (ShowPasswordRecovery)
                     {
                         <div class="giz-signin__links">
-                            <a class="giz-signin__link" href="@ClientRoutes.PasswordRecoveryKindRoute">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_FORGOT_YOUR_PASSWORD))</a>
+                            <button type="button" class="giz-signin__link" @onclick="@RecoverPassword">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_FORGOT_YOUR_PASSWORD))</button>
                         </div>
                     }
                 </EditForm>

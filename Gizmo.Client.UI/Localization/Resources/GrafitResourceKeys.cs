@@ -212,5 +212,10 @@
         public const string SHELL_LADDER_PASSED = nameof(SHELL_LADDER_PASSED);
         public const string SHELL_SEARCH_BEST = nameof(SHELL_SEARCH_BEST);
         public const string SHELL_SEARCH_SHORTCUTS = nameof(SHELL_SEARCH_SHORTCUTS);
+        public const string SHELL_RECOVERY_CODE_TITLE = nameof(SHELL_RECOVERY_CODE_TITLE);
+        public const string SHELL_RECOVERY_CODE_SENT_TO = nameof(SHELL_RECOVERY_CODE_SENT_TO);
+        public const string SHELL_RECOVERY_CODE_SENT_VIA = nameof(SHELL_RECOVERY_CODE_SENT_VIA);
+        public const string SHELL_RECOVERY_CODE_SENT = nameof(SHELL_RECOVERY_CODE_SENT);
+        public const string SHELL_RECOVERY_NOT_FOUND = nameof(SHELL_RECOVERY_NOT_FOUND);
     }
 }

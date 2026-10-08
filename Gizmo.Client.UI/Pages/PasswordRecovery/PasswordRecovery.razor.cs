@@ -22,13 +22,7 @@ namespace Gizmo.Client.UI.Pages
         PasswordRecoveryViewService PasswordRecoveryViewService { get; set; }
 
         [Inject]
-        UserLoginViewService UserLoginService { get; set; }
-
-        [Inject]
         PasswordRecoveryViewState ViewState { get; set; }
-
-        [Inject]
-        UserRegistrationConfigurationViewState UserRegisterConfigurationViewState { get; init; }
 
         [Inject]
         NavigationService NavigationService { get; set; }
@@ -45,14 +39,12 @@ namespace Gizmo.Client.UI.Pages
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
-            this.SubscribeChange(UserRegisterConfigurationViewState);
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
             this.UnsubscribeChange(ViewState);
-            this.UnsubscribeChange(UserRegisterConfigurationViewState);
             base.Dispose();
         }
 
