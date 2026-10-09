@@ -1,0 +1,127 @@
+//============= Sign-up ===============//
+
+// Registration as creating a character: the player card on the left fills in while the questions on
+// the right are answered one at a time, and the road under both is the whole way.
+.giz-signup {
+    width: min(124rem, calc(100vw - 8rem));
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+
+    &__bar {
+        display: flex;
+        align-items: center;
+        min-height: 3.2rem;
+        font-size: 1.5rem;
+        color: var(--giz-text-2);
+    }
+
+    &__back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0;
+        border: 0;
+        background: none;
+        font-family: inherit;
+        font-size: 1.5rem;
+        color: var(--giz-text-2);
+        cursor: pointer;
+        transition: color 0.15s;
+
+        i { font-size: 1.8rem; }
+
+        &:hover { color: var(--giz-text-1); }
+    }
+
+    &__signin {
+        margin-left: auto;
+        display: inline-flex;
+        gap: 0.5rem;
+
+        a {
+            font-weight: 700;
+            color: var(--giz-accent-soft);
+            cursor: pointer;
+        }
+    }
+
+    &__main {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 56rem;
+        align-items: center;
+        gap: 6.4rem;
+        min-height: min(56rem, calc(100vh - 30rem));
+    }
+
+    &__card {
+        display: grid;
+        place-items: center;
+        padding: 2.4rem 0 3.2rem;
+        transition:
+            opacity 0.6s cubic-bezier(0.19, 1, 0.22, 1),
+            transform 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+
+        .giz-signup-card-stack { width: min(56rem, 100%); }
+    }
+
+    &__form {
+        min-width: 0;
+
+        .giz-login-card--steps { width: 100%; }
+    }
+
+    &--rules { display: none; }
+
+    .giz-signup-road {
+        transition:
+            opacity 0.6s cubic-bezier(0.19, 1, 0.22, 1),
+            transform 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+}
+
+// The card and the road doze off together with the form and wake a beat after the background.
+.giz-signup:has(.giz-login-card.hidden),
+.giz-signup:has(.giz-login-card.slide-out) {
+    .giz-signup__bar,
+    .giz-signup__card,
+    .giz-signup-road {
+        opacity: 0;
+        transform: translateY(1.2rem);
+        pointer-events: none;
+    }
+}
+
+.giz-signup:has(.giz-login-card.slide-in) {
+    .giz-signup__bar,
+    .giz-signup__card,
+    .giz-signup-road { transition-delay: 0.25s; }
+}
+
+// The host number would sit over the questions; registration does not need it until the screen
+// dozes off.
+.giz-main-container:has(.giz-signup):not(:has(.giz-login-card.hidden)) .giz-host-number,
+.giz-main-container:has(.giz-signup-done) .giz-host-number {
+    opacity: 0;
+}
+
+// The club's agreement opens on the sign-in background itself, the blank card above it.
+.giz-login__login:has(> .giz-signup) .giz-dialog:has(.giz-user-agreement-dialog) {
+    background: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+@media (max-height: 860px) {
+    .giz-signup {
+        gap: 2.4rem;
+
+        &__main { gap: 4.8rem; }
+
+        &__card {
+            padding: 1.2rem 0 2.4rem;
+
+            .giz-signup-card-stack { width: min(46rem, 100%); }
+        }
+    }
+}

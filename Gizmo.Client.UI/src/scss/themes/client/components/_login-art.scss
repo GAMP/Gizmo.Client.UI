@@ -1,0 +1,48 @@
+//=============== Sign-in art ================//
+// What a free PC shows on the sign-in screen when the club has set no wallpaper of its own:
+// ribbons stored in grey and tinted to the palette (multiplied by the accent, then never darker
+// than the page's own dark tone), so one picture suits every club colour. It stands still and
+// steps back behind the sign-in card. A club's own wallpaper or rotator replaces it; a club can
+// also hide it from the Manager's style.css.
+
+.giz-login-art {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    isolation: isolate;
+    transition: opacity 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+
+    &__image,
+    &__tint,
+    &__lift {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    &__image {
+        display: block;
+        object-fit: cover;
+    }
+
+    &__tint {
+        background: linear-gradient(150deg, var(--giz-accent-pale), var(--giz-accent) 45%, var(--giz-accent-deep));
+        mix-blend-mode: multiply;
+    }
+
+    &__lift {
+        background: var(--giz-bg-0);
+        mix-blend-mode: lighten;
+    }
+}
+
+.giz-login-content:not(.giz-login-content--own-bg) .giz-login-art {
+    display: none;
+}
+
+// Someone is at the PC: the picture steps back so the card reads.
+.giz-login-content.collapsed .giz-login-art,
+.giz-login-content.shrink .giz-login-art {
+    opacity: 0.45;
+}

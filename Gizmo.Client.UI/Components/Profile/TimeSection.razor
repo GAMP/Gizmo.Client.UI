@@ -1,0 +1,75 @@
+@namespace Gizmo.Client.UI.Components
+@inherits ShellComponentBase
+@using Gizmo.Client.UI.View.States
+
+@if (ViewState.IsInitializing && ViewState.IsInitialized != true)
+{
+    <div class="giz-account-wait"><Spinner /></div>
+}
+else
+{
+    <section class="giz-time-line">
+        <div class="giz-time-line__head">
+            <div class="giz-time-line__title">
+                <span class="giz-time-line__cap">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TIME_ON_THIS_PC)</span>
+                <b>@Headline</b>
+            </div>
+            <span class="giz-time-line__note"><i class="ph-bold ph-info"></i>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_TIME_HINT)</span>
+        </div>
+
+        @if (_plan is { } plan)
+        {
+            <div class="giz-time-line__axis">
+                @foreach (var tick in plan.Ticks)
+                {
+                    <span style="--giz-at: @tick.At">@tick.Label</span>
+                }
+            </div>
+            <div class="giz-time-line__track">
+                @foreach (var segment in plan.Segments)
+                {
+                    <div class="giz-time-line__seg giz-time-line__seg--@segment.Kind" style="--giz-from: @segment.From; --giz-width: @segment.Width">
+                        @if (segment.ShowLabel)
+                        {
+                            <span class="giz-time-line__label">
+                                <b>@segment.Name</b>
+                                <small>@segment.Left</small>
+                            </span>
+                        }
+                    </div>
+                }
+                <span class="giz-time-line__now" style="--giz-at: @plan.Now"></span>
+                <span class="@(plan.EndFirst ? "giz-time-line__end giz-time-line__end--right" : "giz-time-line__end")" style="--giz-at: @plan.End">
+                    <i class="ph-bold ph-flag-checkered"></i>
+                    <b>@plan.EndText</b>
+                    <small>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TIME_ENDS)</small>
+                </span>
+            </div>
+            @if (plan.HasRate)
+            {
+                <div class="giz-time-line__legend"><i></i>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TIME_BY_RATE)</div>
+            }
+        }
+    </section>
+
+    @if (OrderedTimeProducts.Count == 0)
+    {
+        <div class="giz-account-empty">
+            <i class="ph ph-hourglass"></i>
+            <b>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_NO_TIME)</b>
+            <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_NO_TIME_HINT)</span>
+        </div>
+    }
+    else
+    {
+        <div class="giz-time-packs">
+            @foreach (var product in OrderedTimeProducts)
+            {
+                <TimeProductRow @key="product"
+                                Product="@product"
+                                CanOpen="@(ProductDetailsNavigationEnabled && product.TimeProductType == UsageType.TimeOffer && product.ProductId.HasValue)"
+                                OnOpen="@(() => OpenDetails(product.ProductId.Value))" />
+            }
+        </div>
+    }
+}

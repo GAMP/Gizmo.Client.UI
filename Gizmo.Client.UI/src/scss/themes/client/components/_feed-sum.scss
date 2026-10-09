@@ -1,0 +1,41 @@
+//=============== Purchases month ================//
+// The month so far over the feed: spent, orders, points earned. Shown only when the page holds
+// the whole month.
+
+.giz-feed-sum {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: 1.4rem;
+
+    &__fig {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        padding: 1.8rem 2.2rem;
+        border-radius: $ac-r;
+        @include ac-glass;
+
+        small { @include ac-cap; }
+
+        b {
+            @include ac-num;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 2.8rem;
+            color: $ac-ink;
+            white-space: nowrap;
+        }
+    }
+
+    &__pts {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+
+        i {
+            font-size: 0.8em;
+            color: var(--giz-points);
+        }
+    }
+}

@@ -1,3 +1,5 @@
+using Gizmo.Client.UI.Components;
+using Gizmo.Client.UI.Localization.Resources;
 using System;
 using System.Threading.Tasks;
 using Gizmo;
@@ -16,6 +18,9 @@ namespace Gizmo.Client.UI.Pages.Registration
     public partial class UserRegistrationRedirect : CustomDOMComponentBase
     {
         [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
+        [CascadingParameter]
+        RegistrationCardContext Card { get; set; }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -36,12 +41,14 @@ namespace Gizmo.Client.UI.Pages.Registration
 
         protected override void OnInitialized()
         {
+            Card?.SetBack(this, RegistrationRedirectViewService.NavigateBackAsync);
             this.SubscribeChange(ViewState);
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
+            Card?.ClearBack(this);
             this.UnsubscribeChange(ViewState);
             base.Dispose();
         }
@@ -51,20 +58,16 @@ namespace Gizmo.Client.UI.Pages.Registration
             return RegistrationSession.SelectedProvider?.Name ?? string.Empty;
         }
 
-        private Icons GetProviderIcon()
-        {
-            var channelGuid = RegistrationSession.SelectedProvider?.ChannelGuid ?? Guid.Empty;
-            return ChannelIcons.ResolveChannelIcon(channelGuid);
-        }
+        protected string QrCardClass => ViewState.IsQrExpired
+            ? "giz-signin__qr-card giz-signin__qr-card--expired"
+            : "giz-signin__qr-card";
 
-        private string GetProviderIconCssClass()
-        {
-            var channelGuid = RegistrationSession.SelectedProvider?.ChannelGuid.ToString("D") ?? string.Empty;
-            if (channelGuid.Equals(CommunicationChannels.Telegram, StringComparison.OrdinalIgnoreCase))
-                return "giz-registration-redirect__provider-icon--telegram";
-            if (channelGuid.Equals(CommunicationChannels.FacebookMessenger, StringComparison.OrdinalIgnoreCase))
-                return "giz-registration-redirect__provider-icon--facebook";
-            return string.Empty;
-        }
+        protected string QrTitle => ViewState.IsQrExpired
+            ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_QR_EXPIRED))
+            : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_QR_WAIT);
+
+        protected string QrText => ViewState.IsQrExpired
+            ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_SESSION_EXPIRED))
+            : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_QR_WAIT_HINT);
     }
 }

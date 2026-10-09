@@ -1,0 +1,130 @@
+//=============== Home packages ================//
+// A package in the till is a line of a list: its hours as a figure, the name, the price as the
+// button, hairlines between. No tile of its own: the till is the only surface. The cheapest hour
+// gets a green note under the name.
+
+.giz-home-packs {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    --giz-fade: 0px;
+    mask-image: linear-gradient(to bottom, var(--giz-black) calc(100% - var(--giz-fade)), transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, var(--giz-black) calc(100% - var(--giz-fade)), transparent 100%);
+    animation: giz-fade-when-scrollable linear both;
+    animation-timeline: scroll(self);
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar { display: none; }
+}
+
+.giz-home-pack {
+    flex: none;
+    display: grid;
+    grid-template-columns: 4.6rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 1.1rem 0.2rem;
+    border-top: 1px solid var(--giz-glass-5);
+
+    &:first-child { border-top: 0; }
+
+    &__icon {
+        display: flex;
+        align-items: baseline;
+        gap: 0.15rem;
+        color: var(--giz-ink);
+        cursor: pointer;
+        transition: color 0.16s;
+
+        b {
+            font-family: $font-family-numeric-theme-client;
+            font-size: 2.8rem;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -0.04em;
+        }
+
+        small {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--giz-text-3);
+        }
+
+        i {
+            font-size: 2.4rem;
+            color: var(--giz-text-3);
+        }
+    }
+
+    &__text {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        cursor: pointer;
+
+        b,
+        em {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        b {
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: var(--giz-ink);
+            transition: color 0.16s;
+        }
+
+        em {
+            font-size: 1.2rem;
+            font-style: normal;
+            font-weight: 700;
+            color: var(--giz-success-light);
+        }
+    }
+
+    &__buy {
+        min-width: 7.2rem;
+        height: 3.6rem;
+        padding: 0 1.3rem;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.45rem;
+        font-weight: 700;
+        white-space: nowrap;
+        cursor: pointer;
+        @include giz-action-tonal;
+
+        &:disabled { @include giz-action-off; }
+    }
+
+    &__pts {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35em;
+
+        i {
+            font-size: 0.85em;
+            color: var(--giz-points);
+        }
+    }
+
+    &:hover &__icon,
+    &:hover &__text b,
+    &--busy &__icon,
+    &--busy &__text b { color: var(--giz-accent-soft); }
+}
+
+@media (max-height: 840px) {
+    .giz-home-pack {
+        grid-template-columns: 4rem minmax(0, 1fr) auto;
+        gap: 1.1rem;
+        padding: 0.8rem 0.2rem;
+    }
+
+    .giz-home-pack__icon b { font-size: 2.4rem; }
+}

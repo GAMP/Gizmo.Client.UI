@@ -36,7 +36,7 @@ namespace Gizmo.Client.UI.Components
 
         private bool ShowMeter => !Item.IsEarned && Item.ShowProgressBar;
 
-        private string ProgressValue => Item.ProgressPercent.ToString("0.##", CultureInfo.InvariantCulture);
+        private string ProgressValue => CssValue.Number(Item.ProgressPercent);
 
         private void OnCardClick() => Service.Highlight(Item.AchievementId);
 

@@ -5,10 +5,52 @@
 @using Gizmo
 
 <AccountFrame>
-    <section class="giz-account-card giz-account-card--list">
-        <div class="giz-account-card__head">
-            <i class="ph-fill ph-receipt"></i>
-            <h2>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_HISTORY))</h2>
+    @if (!HasOrders)
+    {
+        <div class="giz-account-empty">
+            <i class="ph ph-receipt"></i>
+            <b>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_NO_PURCHASES)</b>
+            <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_NO_PURCHASES_HINT)</span>
+        </div>
+    }
+    else
+    {
+        @if (Month is { } month)
+        {
+            <div class="giz-feed-sum">
+                <div class="giz-feed-sum__fig">
+                    <small>@month.Label</small>
+                    <b>
+                        @if (month.Spent > 0 || month.Points == 0)
+                        {
+                            @month.Spent.ToString("C", CultureInfo.CurrentCulture)
+                        }
+                        @if (month.Points > 0)
+                        {
+                            <span class="giz-feed-sum__pts">@month.Points.ToString("N0", CultureInfo.CurrentCulture)<i class="ph-fill ph-coins"></i></span>
+                        }
+                    </b>
+                </div>
+                <div class="giz-feed-sum__fig">
+                    <small>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PURCHASES_ORDERS)</small>
+                    <b>@month.Count.ToString("N0", CultureInfo.CurrentCulture)</b>
+                </div>
+                @if (month.Earned > 0)
+                {
+                    <div class="giz-feed-sum__fig">
+                        <small>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PURCHASES_POINTS)</small>
+                        <b><span class="giz-feed-sum__pts">+@month.Earned.ToString("N0", CultureInfo.CurrentCulture)<i class="ph-fill ph-coins"></i></span></b>
+                    </div>
+                }
+            </div>
+        }
+
+        <div class="giz-feed__bar">
+            <div class="giz-feed__filter">
+                <button type="button" class="@FilterClass(OrderFilter.All)" @onclick="@(() => _filter = OrderFilter.All)">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_FILTERS_ALL)</button>
+                <button type="button" class="@FilterClass(OrderFilter.Time)" @onclick="@(() => _filter = OrderFilter.Time)">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_TAB_TIME)</button>
+                <button type="button" class="@FilterClass(OrderFilter.Bar)" @onclick="@(() => _filter = OrderFilter.Bar)">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_BAR)</button>
+            </div>
             @if (ViewState.PrevCursor != null || ViewState.NextCursor != null)
             {
                 <div class="giz-account-pager">
@@ -24,106 +66,104 @@
             }
         </div>
 
-        @if (!HasOrders)
-        {
-            <div class="giz-account-card__empty">
-                <i class="ph ph-receipt"></i>
-                <b>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_NO_PURCHASES)</b>
-                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_NO_PURCHASES_HINT)</span>
-            </div>
-        }
-        else
-        {
-            <div class="giz-account-orders">
-                @foreach (var order in ViewState.Orders)
-                {
-                    <details class="giz-account-order @StatusClass(order)" @key="order">
-                        <summary class="giz-account-order__sum">
-                            <div class="giz-account-order__when">
-                                <b>@order.OrderDate.ToString("d MMM", CultureInfo.CurrentCulture)</b>
-                                <small>@order.OrderDate.ToString("HH:mm", CultureInfo.CurrentCulture)</small>
-                            </div>
-                            <div class="giz-account-order__what">
-                                <b>@order.ProductNames</b>
-                                <small>
-                                    @if (order.Id > 0)
-                                    {
-                                        <span class="giz-account-order__fact">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_ORDER_NUMBER, order.Id)</span>
-                                    }
-                                    <span class="giz-account-order__fact">@GrafitLocalization.GetPluralString(GrafitResourceKeys.SHELL_BUY_ITEMS_COUNT, order.OrderLines.Count())</span>
-                                    @if (!string.IsNullOrWhiteSpace(order.Invoice?.PaymentMethodNames))
-                                    {
-                                        <span class="giz-account-order__fact">@order.Invoice.PaymentMethodNames</span>
-                                    }
-                                </small>
-                            </div>
-                            <div class="giz-account-order__sum-total">
-                                @if (order.TotalPrice > 0 || order.TotalPointsPrice == 0)
-                                {
-                                    <b>@order.TotalPrice.ToString("C", CultureInfo.CurrentCulture)</b>
-                                }
-                                @if (order.TotalPointsPrice > 0)
-                                {
-                                    <b class="giz-account-order__pts">@order.TotalPointsPrice.ToString("N0", CultureInfo.CurrentCulture) <i class="ph-fill ph-coins"></i></b>
-                                }
-                            </div>
-                            <div class="giz-account-order__status">
-                                <span class="giz-account-tag @StatusClass(order)">@GrafitLocalization.GetString(StatusKey(order))</span>
-                                @if (ShowPaymentStatus(order))
-                                {
-                                    <span class="giz-account-tag giz-account-tag--off">@GrafitLocalization.GetString(PaymentKey(order))</span>
-                                }
-                            </div>
-                            <i class="ph-bold ph-caret-down giz-account-order__caret"></i>
-                        </summary>
-
-                        <div class="giz-account-order__body">
-                            <div class="giz-account-order__lines">
-                                @foreach (var line in order.OrderLines)
-                                {
-                                    <div class="giz-account-order__line">
-                                        @if (IsLinkable(line))
+        <div class="giz-feed">
+            @foreach (var day in Days)
+            {
+                <div class="giz-feed__day" @key="day.Date">
+                    <span class="giz-feed__date">@day.Label</span>
+                    <div class="giz-feed__orders">
+                        @foreach (var order in day.Orders)
+                        {
+                            <details class="@OrderClass(order)" @key="order">
+                                <summary class="giz-feed-order__sum">
+                                    <span class="giz-feed-order__thumbs">
+                                        @foreach (var line in Thumbs(order))
                                         {
-                                            <a class="giz-account-order__line-name" href="@ProductLink(line)">@line.ProductName</a>
+                                            <PurchaseThumb @key="line" Line="@line" />
                                         }
-                                        else
-                                        {
-                                            <span class="giz-account-order__line-name">@line.ProductName</span>
-                                        }
-                                        <span class="giz-account-order__line-qty">@line.Quantity @GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PIECES_ABBREVIATED))</span>
-                                        <span class="giz-account-order__line-sum">
-                                            @if (line.TotalPointsPrice > 0)
-                                            {
-                                                <span class="giz-account-order__pts">@line.TotalPointsPrice.ToString("N0", CultureInfo.CurrentCulture) <i class="ph-fill ph-coins"></i></span>
-                                            }
-                                            else
-                                            {
-                                                @line.TotalPrice.ToString("C", CultureInfo.CurrentCulture)
-                                            }
-                                        </span>
-                                    </div>
-                                }
-                            </div>
-                            @if (order.TotalPointsAward > 0 || !string.IsNullOrWhiteSpace(order.Notes))
-                            {
-                                <div class="giz-account-order__extra">
+                                    </span>
+                                    <span class="giz-feed-order__what">
+                                        <b>@order.ProductNames</b>
+                                        <small>@Facts(order)</small>
+                                    </span>
                                     @if (order.TotalPointsAward > 0)
                                     {
-                                        <span class="giz-account-order__earned">
-                                            <i class="ph-fill ph-sparkle"></i>
-                                            @GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_EARNED_POINTS)) @order.TotalPointsAward.ToString("N0", CultureInfo.CurrentCulture)
-                                        </span>
+                                        <span class="giz-feed-order__earned">+@order.TotalPointsAward.ToString("N0", CultureInfo.CurrentCulture)<i class="ph-fill ph-coins"></i></span>
                                     }
-                                    @if (!string.IsNullOrWhiteSpace(order.Notes))
+                                    <span class="giz-feed-order__total">
+                                        @if (order.TotalPrice > 0 || order.TotalPointsPrice == 0)
+                                        {
+                                            <b>@order.TotalPrice.ToString("C", CultureInfo.CurrentCulture)</b>
+                                        }
+                                        @if (order.TotalPointsPrice > 0)
+                                        {
+                                            <b class="giz-feed-order__pts">@order.TotalPointsPrice.ToString("N0", CultureInfo.CurrentCulture)<i class="ph-fill ph-coins"></i></b>
+                                        }
+                                    </span>
+                                    <span class="giz-feed-order__status">
+                                        <span class="@StatusClass(order)"><i></i>@GrafitLocalization.GetString(StatusKey(order))</span>
+                                        @if (ShowPaymentStatus(order))
+                                        {
+                                            <small>@GrafitLocalization.GetString(PaymentKey(order))</small>
+                                        }
+                                    </span>
+                                    <i class="ph-bold ph-caret-down giz-feed-order__caret"></i>
+                                </summary>
+
+                                <div class="giz-feed-order__body">
+                                    <div class="giz-feed-order__lines">
+                                        @foreach (var line in order.OrderLines)
+                                        {
+                                            <div class="giz-feed-order__line">
+                                                @if (IsLinkable(line))
+                                                {
+                                                    <a class="giz-feed-order__line-name" href="@ProductLink(line)">@line.ProductName</a>
+                                                }
+                                                else
+                                                {
+                                                    <span class="giz-feed-order__line-name">@line.ProductName</span>
+                                                }
+                                                <span class="giz-feed-order__line-qty">@line.Quantity @GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_PIECES_ABBREVIATED))</span>
+                                                <span class="giz-feed-order__line-sum">
+                                                    @if (line.TotalPointsPrice > 0)
+                                                    {
+                                                        <span class="giz-feed-order__pts">@line.TotalPointsPrice.ToString("N0", CultureInfo.CurrentCulture)<i class="ph-fill ph-coins"></i></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        @line.TotalPrice.ToString("C", CultureInfo.CurrentCulture)
+                                                    }
+                                                </span>
+                                            </div>
+                                        }
+                                    </div>
+                                    @if (order.TotalPointsAward > 0 || !string.IsNullOrWhiteSpace(order.Notes))
                                     {
-                                        <span class="giz-account-order__note">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_NOTE)) @order.Notes</span>
+                                        <div class="giz-feed-order__extra">
+                                            @if (order.TotalPointsAward > 0)
+                                            {
+                                                <span class="giz-feed-order__award">
+                                                    <i class="ph-fill ph-sparkle"></i>
+                                                    @GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_EARNED_POINTS)) @order.TotalPointsAward.ToString("N0", CultureInfo.CurrentCulture)
+                                                </span>
+                                            }
+                                            @if (!string.IsNullOrWhiteSpace(order.Notes))
+                                            {
+                                                <span class="giz-feed-order__note">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_PURCHASES_ORDER_NOTE)) @order.Notes</span>
+                                            }
+                                        </div>
                                     }
                                 </div>
-                            }
-                        </div>
-                    </details>
-                }
-            </div>
-        }
-    </section>
+                            </details>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(ShellVersion.Grafit))
+    {
+        <div class="giz-account__version">Grafit @ShellVersion.Grafit</div>
+    }
 </AccountFrame>

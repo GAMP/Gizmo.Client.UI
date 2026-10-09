@@ -1,3 +1,5 @@
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +19,12 @@ namespace Gizmo.Client.UI.Pages.Registration
     [Route(ClientRoutes.RegistrationProvidersRoute)]
     public partial class UserRegistrationProviders : CustomDOMComponentBase
     {
+        [CascadingParameter]
+        protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
+
 
         [Inject]
         UserRegistrationProvidersViewState ViewState { get; set; }

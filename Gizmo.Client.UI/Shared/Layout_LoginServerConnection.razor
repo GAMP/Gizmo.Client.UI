@@ -1,4 +1,10 @@
 ﻿@namespace Gizmo.Client.UI.Shared
 @inherits CustomDOMComponentBase
 
-<span class="@ClassName" title="@StatusText"></span>
+@if (!ViewState.IsConnected)
+{
+    <span class="giz-server" role="status">
+        <i class="giz-server__dot"></i>
+        <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SERVER_OFFLINE)</span>
+    </span>
+}

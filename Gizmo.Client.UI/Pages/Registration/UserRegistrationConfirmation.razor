@@ -1,27 +1,44 @@
 @namespace Gizmo.Client.UI.Pages.Registration
 @inherits CustomDOMComponentBase
 
-<ConfirmationCodeCard EditContext="@UserRegistrationConfirmationViewService.EditContext"
-                      Title="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_UP_TITLE))"
-                      Subtitle="@ViewState.ConfirmationCodeMessage"
-                      ConfirmationCode="@ViewState.ConfirmationCode"
-                      CodeChanged="@((string value) => UserRegistrationConfirmationViewService.SetConfirmationCode(value))"
-                      CodeExpression="@(() => ViewState.ConfirmationCode)"
-                      IsLoading="@ViewState.IsLoading"
-                      IsValid="@ViewState.IsValid"
-                      HasError="@ViewState.HasError"
-                      ErrorMessage="@ViewState.ErrorMessage"
-                      OnConfirm="@UserRegistrationConfirmationViewService.Confirm"
-                      OnCloseError="@OnCloseButtonClickHandler"
-                      SecondsLeft="@ViewState.SecondsLeft"
-                      TimerExpired="@ViewState.TimerExpired"
-                      OnResend="@RestartTimer"
-                      SignUpSubtitle="true"
-                      ShowFooter="false">
-    <HeaderLinks>
-        <div class="giz-back-button" @onclick="@NavigateBackAsync">
-            <Icon SVGIcon="Icons.ArrowLeft_Client" Size="IconSizes.ExtraSmall" />
+<LoginCard Modifier="giz-login-card--steps">
+    <CardBody>
+        <div class="giz-signin giz-signin--signup">
+            <div class="giz-signin__intro">
+                <h1 class="giz-signin__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_Q_CODE)</h1>
+            </div>
+            @if (ViewState.HasError)
+            {
+                <ErrorBlock Message="@ViewState.ErrorMessage" ShowIcon="true" Class="giz-login-error-block giz-signin__error" />
+            }
+            <div class="giz-signin__pill giz-signin__pill--code">
+                <i class="ph-bold ph-key giz-signin__glyph"></i>
+                <CodeBoxes Value="@ViewState.ConfirmationCode"
+                           ValueChanged="@((string value) => UserRegistrationConfirmationViewService.SetConfirmationCode(value))"
+                           Length="@RegistrationSession.CodeLength"
+                           IsDisabled="@ViewState.IsLoading"
+                           HasError="@ViewState.HasError"
+                           Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PASSWORD_RECOVERY_ENTER_YOUR_CODE))"
+                           OnSubmit="@UserRegistrationConfirmationViewService.Confirm" />
+                <SignupGo Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CONFIRM))"
+                          IsBusy="@ViewState.IsLoading"
+                          IsDisabled="@(ViewState.IsValid == false || string.IsNullOrEmpty(ViewState.ConfirmationCode))"
+                          OnClick="@UserRegistrationConfirmationViewService.Confirm" />
+            </div>
+
+            <div class="giz-signin__links">
+                <button type="button" class="giz-signin__link" disabled="@(!ViewState.TimerExpired || ViewState.IsLoading)" @onclick="@RestartTimer">
+                    <i class="ph-bold ph-arrow-clockwise"></i>
+                    <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_RESEND))</span>
+                    @if (!ViewState.TimerExpired)
+                    {
+                        <b class="giz-signin__timer">@TimerText</b>
+                    }
+                </button>
+            </div>
         </div>
-        <div class="giz-login-new-user">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_ALREADY_A_MEMBER)) <RegistrationSignInLink>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_SIGN_IN))</RegistrationSignInLink></div>
-    </HeaderLinks>
-</ConfirmationCodeCard>
+    </CardBody>
+    <CardFooter>
+        <InputLanguageMenu />
+    </CardFooter>
+</LoginCard>

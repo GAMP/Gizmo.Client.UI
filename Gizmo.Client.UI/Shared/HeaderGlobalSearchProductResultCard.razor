@@ -1,36 +1,118 @@
 ﻿@inherits CustomDOMComponentBase
 
-<div class="giz-global-search-result-card giz-global-search-result-card--product" @onclick="OnClickHandler">
-    <div class="giz-global-search-result-card__image">
-        <GizImage @key="_userProductViewState" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@_userProductViewState.DefaultImageId">
-            <EmptyResultPlaceholder>
-                <div class="giz-default-image">
-                    <img src="_content/Gizmo.Client.UI/img/no-product-image.svg" alt='loading' />
-                </div>
-            </EmptyResultPlaceholder>
-            <ErrorPlaceholder>
-                <div class="giz-default-image">
-                    <img src="_content/Gizmo.Client.UI/img/broken-image.svg" alt='loading' />
-                </div>
-            </ErrorPlaceholder>
-        </GizImage>
+@if (Best)
+{
+    <div class="giz-search-best giz-search-best--product" @onclick="OnClickHandler">
+        <div class="giz-search-best__art">
+            @if (Length is not null)
+            {
+                <span class="giz-search-best__hours"><b>@Length</b><small>@Unit</small></span>
+            }
+            else
+            {
+                <GizImage @key="_userProductViewState" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@_userProductViewState.DefaultImageId" ImageFitType="ImageFitType.Cover">
+                    <EmptyResultPlaceholder>
+                        <div class="giz-default-image">
+                            <img src="_content/Gizmo.Client.UI/img/no-product-image.svg" alt="" />
+                        </div>
+                    </EmptyResultPlaceholder>
+                    <ErrorPlaceholder>
+                        <div class="giz-default-image">
+                            <img src="_content/Gizmo.Client.UI/img/broken-image.svg" alt="" />
+                        </div>
+                    </ErrorPlaceholder>
+                </GizImage>
+            }
+        </div>
+        <div class="giz-search-best__kind">
+            <HeaderGlobalSearchProductResultCardProductGroup @key="_userProductViewState" ProductGroupId="@_userProductViewState.ProductGroupId" />
+            <span>· @GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SEARCH_BEST)</span>
+        </div>
+        <div class="giz-search-best__name">
+            <SearchMatch Text="@_userProductViewState.Name" Pattern="@Pattern" />
+        </div>
+        <div class="giz-search-best__acts">
+            @if (_userProductViewState.DisallowPurchase)
+            {
+                <ClientTooltip Text="@_userProductViewState.DisallowPurchaseReason" Class="giz-product-host-groups-tooltip">
+                    <ChildContent>
+                        <button type="button" class="giz-search-best__buy" disabled>
+                            <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ADD_TO_CART))</span>
+                            <b>@PriceText</b>
+                            @if (IsPointsOnly)
+                            {
+                                <i class="ph-fill ph-coins giz-search-best__coin"></i>
+                            }
+                        </button>
+                    </ChildContent>
+                </ClientTooltip>
+            }
+            else
+            {
+                <button type="button" class="giz-search-best__buy" @onclick="OnClickActionButtonHandler" @onclick:stopPropagation="true">
+                    <i class="ph-bold ph-plus"></i>
+                    <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ADD_TO_CART))</span>
+                    <b>@PriceText</b>
+                    @if (IsPointsOnly)
+                    {
+                        <i class="ph-fill ph-coins giz-search-best__coin"></i>
+                    }
+                </button>
+            }
+        </div>
     </div>
-    <div class="giz-global-search-result-card__category">
-        <HeaderGlobalSearchProductResultCardProductGroup @key="_userProductViewState" ProductGroupId="@_userProductViewState.ProductGroupId" />
-    </div>
-    <div class="giz-global-search-result-card__title">@_userProductViewState.Name</div>
-    <div class="giz-global-search-result-card__action">
+}
+else
+{
+    <div class="giz-search-line" @onclick="OnClickHandler">
+        <span class="giz-search-line__pic">
+            @if (Length is not null)
+            {
+                <span class="giz-search-line__hours"><b>@Length</b><small>@Unit</small></span>
+            }
+            else
+            {
+                <GizImage @key="_userProductViewState" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@_userProductViewState.DefaultImageId" ImageFitType="ImageFitType.Cover">
+                    <EmptyResultPlaceholder>
+                        <div class="giz-default-image">
+                            <img src="_content/Gizmo.Client.UI/img/no-product-image.svg" alt="" />
+                        </div>
+                    </EmptyResultPlaceholder>
+                    <ErrorPlaceholder>
+                        <div class="giz-default-image">
+                            <img src="_content/Gizmo.Client.UI/img/broken-image.svg" alt="" />
+                        </div>
+                    </ErrorPlaceholder>
+                </GizImage>
+            }
+        </span>
+        <span class="giz-search-line__text">
+            <b><SearchMatch Text="@_userProductViewState.Name" Pattern="@Pattern" /></b>
+            <small><HeaderGlobalSearchProductResultCardProductGroup @key="_userProductViewState" ProductGroupId="@_userProductViewState.ProductGroupId" /></small>
+        </span>
         @if (_userProductViewState.DisallowPurchase)
         {
             <ClientTooltip Text="@_userProductViewState.DisallowPurchaseReason" Class="giz-product-host-groups-tooltip">
                 <ChildContent>
-                    <Button IsDisabled="true" Variant="ButtonVariants.Outline" @onclick="OnClickActionButtonHandler">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ADD_TO_CART))</Button>
+                    <button type="button" class="giz-search-line__price" disabled>
+                        @PriceText
+                        @if (IsPointsOnly)
+                        {
+                            <i class="ph-fill ph-coins giz-search-line__coin"></i>
+                        }
+                    </button>
                 </ChildContent>
             </ClientTooltip>
         }
         else
-        { 
-            <Button Variant="ButtonVariants.Outline" @onclick="OnClickActionButtonHandler">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ADD_TO_CART))</Button>
+        {
+            <button type="button" class="giz-search-line__price" title="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ADD_TO_CART))" @onclick="OnClickActionButtonHandler" @onclick:stopPropagation="true">
+                <i class="ph-bold ph-plus"></i>@PriceText
+                @if (IsPointsOnly)
+                {
+                    <i class="ph-fill ph-coins giz-search-line__coin"></i>
+                }
+            </button>
         }
     </div>
-</div>
+}

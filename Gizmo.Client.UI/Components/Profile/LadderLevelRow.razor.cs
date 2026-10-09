@@ -1,4 +1,8 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -14,64 +18,67 @@ namespace Gizmo.Client.UI.Components
         private const string HistoryPopupSelector = ".giz-ladder-history-wrapper";
 
         [Inject]
-        ILocalizationService LocalizationService { get; set; }
-
-        [Inject]
         UserLadderViewService Service { get; set; }
 
         [Parameter]
         public UserLadderLevelViewState Item { get; set; } = null!;
 
-        private string RowClass
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
+        [Parameter]
+        public string Rise { get; set; } = "0";
+
+        [Parameter]
+        public string Fill { get; set; }
+
+        [Parameter]
+        public string Here { get; set; }
+
+        [Parameter]
+        public IReadOnlyList<UserLadderRequirementViewState> Requirements { get; set; }
+
+        [Parameter]
+        public bool Dense { get; set; }
+
+        private bool IsPassed => Item.IsSatisfied && !Item.IsCurrent && !Item.IsNext;
+
+        private string StepClass
         {
             get
             {
-                var css = "giz-ladder-level-row";
+                var css = "giz-stairs__step";
 
                 if (Item.IsCurrent)
-                    css += " giz-ladder-level-row--current";
+                    css += " giz-stairs__step--current";
+                else if (Item.IsNext)
+                    css += " giz-stairs__step--next";
+                else if (IsPassed)
+                    css += " giz-stairs__step--passed";
 
                 if (Item.IsLocked)
-                    css += " giz-ladder-level-row--locked";
+                    css += " giz-stairs__step--locked";
 
-                return Item.IsSelected ? css + " giz-ladder-level-row--selected" : css;
+                return Item.IsSelected ? css + " giz-stairs__step--selected" : css;
             }
         }
 
-        private string StateText
+        private string StepStyle => Fill is null
+            ? $"--giz-step: {Rise}"
+            : $"--giz-step: {Rise}; --giz-fill: {Fill}";
+
+        private string MetaText
         {
             get
             {
-                if (Item.IsCurrent)
-                    return LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_CURRENT));
+                if (IsPassed)
+                    return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LADDER_PASSED);
 
-                if (Item.IsProjected)
-                    return LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_PROJECTED));
+                if (!string.IsNullOrEmpty(Item.MetaText))
+                    return Item.MetaText;
 
-                if (Item.IsNext)
-                    return LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_NEXT));
-
-                return Item.IsLocked
-                    ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_LADDER_LOCKED))
+                return Item.HasRequirements
+                    ? GrafitLocalization.GetPluralString(GrafitResourceKeys.SHELL_LADDER_CONDITIONS, Item.Requirements.Count)
                     : null;
-            }
-        }
-
-        private string StateClass
-        {
-            get
-            {
-                if (Item.IsCurrent)
-                    return "giz-ladder-level-row__state giz-ladder-level-row__state--current";
-
-                if (Item.IsProjected)
-                    return Item.IsProjectedDown
-                        ? "giz-ladder-level-row__state giz-ladder-level-row__state--down"
-                        : "giz-ladder-level-row__state";
-
-                return Item.IsLocked
-                    ? "giz-ladder-level-row__state giz-ladder-level-row__state--locked"
-                    : "giz-ladder-level-row__state";
             }
         }
 

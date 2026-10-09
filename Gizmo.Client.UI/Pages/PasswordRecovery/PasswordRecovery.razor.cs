@@ -22,16 +22,15 @@ namespace Gizmo.Client.UI.Pages
         PasswordRecoveryViewService PasswordRecoveryViewService { get; set; }
 
         [Inject]
-        UserLoginViewService UserLoginService { get; set; }
-
-        [Inject]
         PasswordRecoveryViewState ViewState { get; set; }
 
         [Inject]
-        UserRegistrationConfigurationViewState UserRegisterConfigurationViewState { get; init; }
+        NavigationService NavigationService { get; set; }
 
         [Inject]
-        NavigationService NavigationService { get; set; }
+        UserRegistrationConfigurationViewState UserRegisterConfigurationViewState { get; set; }
+
+        private void OpenRegistration() => NavigationService.NavigateTo(ClientRoutes.RegistrationIndexRoute);
 
         private IReadOnlyList<ProviderOption> PriorityOptions =>
             ViewState.PriorityProviders.Select(ToOption).ToList();
@@ -45,14 +44,12 @@ namespace Gizmo.Client.UI.Pages
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);
-            this.SubscribeChange(UserRegisterConfigurationViewState);
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
             this.UnsubscribeChange(ViewState);
-            this.UnsubscribeChange(UserRegisterConfigurationViewState);
             base.Dispose();
         }
 

@@ -1,0 +1,367 @@
+//=============== Ladder stairs ================//
+// The Progress tab's level card as a staircase: the month's score and the sentence about the
+// level on top, one step per level rising to the right, the player's step wider and filled with
+// the accent, the next one filling from below (or listing its conditions), where the points came
+// from at the foot.
+
+.giz-stairs {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+    padding: 2.6rem 3rem;
+    border-radius: $ac-r;
+    @include ac-glass;
+
+    --giz-stairs-low: 13rem;
+    --giz-stairs-rise: 15rem;
+
+    &__head {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 3rem;
+    }
+
+    &__score {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    &__period { @include ac-cap; }
+
+    &__value {
+        display: flex;
+        align-items: flex-end;
+        gap: 1.2rem;
+
+        b {
+            font-family: $font-family-numeric-theme-client;
+            font-size: clamp(4.8rem, 2.4rem + 2.6vw, 7.2rem);
+            font-weight: 700;
+            line-height: 0.85;
+            letter-spacing: -0.04em;
+            color: $ac-ink;
+            white-space: nowrap;
+        }
+
+        small {
+            max-width: 9rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            line-height: 1.3;
+            color: $ac-ink-3;
+        }
+    }
+
+    &__say {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.8rem;
+        text-align: right;
+    }
+
+    &__line {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        align-items: baseline;
+        gap: 0.4rem 1rem;
+        font-size: clamp(1.6rem, 1.2rem + 0.4vw, 2rem);
+        font-weight: 600;
+        color: $ac-ink-2;
+
+        b { color: $ac-ink; }
+    }
+
+    &__chips {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 0.6rem;
+
+        &:empty { display: none; }
+    }
+
+    &__chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        height: 2.6rem;
+        padding: 0 1rem;
+        border-radius: $giz-r-pill;
+        background: rgba(var(--giz-warning-amber-rgb), 0.14);
+        color: var(--giz-warning-soft);
+        font-family: $font-family-header-theme-client;
+        font-size: 1.1rem;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        white-space: nowrap;
+
+        i { font-size: 1.3rem; }
+
+        &--good {
+            background: rgba(var(--giz-success-green-rgb), 0.14);
+            color: var(--giz-success-leaf);
+        }
+    }
+
+    &__note {
+        font-size: 1.3rem;
+        color: $ac-ink-3;
+
+        &--warning { color: var(--giz-warning-soft); }
+    }
+
+    &__steps {
+        display: flex;
+        align-items: flex-end;
+        gap: 1rem;
+        padding-top: 3.4rem;
+    }
+
+    &__step {
+        position: relative;
+        flex: 1 1 0;
+        min-width: 0;
+        cursor: pointer;
+
+        &--current { flex-grow: 1.9; }
+        &--next { flex-grow: 1.35; }
+    }
+
+    &__here {
+        position: absolute;
+        left: 0;
+        bottom: calc(100% + 1rem);
+        max-width: 100%;
+        overflow: hidden;
+        color: var(--giz-accent-light);
+        font-size: 1.3rem;
+        font-weight: 700;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__block {
+        position: relative;
+        height: calc(var(--giz-stairs-low) + var(--giz-step, 0) * var(--giz-stairs-rise));
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        padding: 1.6rem 1.8rem;
+        box-sizing: border-box;
+        border-radius: 1.6rem 1.6rem 0.6rem 0.6rem;
+        background: var(--giz-glass-3);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-6);
+        transition: box-shadow 0.15s, background 0.15s;
+
+        > * { position: relative; }
+    }
+
+    &__step:hover &__block { box-shadow: inset 0 0 0 1px var(--giz-glass-12); }
+
+    &__step--selected &__block,
+    &__step--selected:hover &__block { box-shadow: inset 0 0 0 2px $ac-ink; }
+
+    &__fill {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: var(--giz-fill, 0%);
+        border-top: 2px solid var(--giz-accent);
+        border-radius: 0 0 0.6rem 0.6rem;
+        background: rgba(var(--giz-accent-rgb), 0.16);
+    }
+
+    &__top {
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+
+        .giz-ladder-badge {
+            flex: none;
+            width: 2.6rem;
+            height: 2.6rem;
+        }
+
+        .giz-ladder-rank {
+            width: 100%;
+            height: 100%;
+            border-radius: 0.5rem;
+            font-size: 1.4rem;
+        }
+
+        .giz-ladder-level-row__info {
+            flex: none;
+            margin-left: auto;
+        }
+
+        .giz-ladder-level-popup-wrapper {
+            top: calc(100% + 0.6rem);
+            right: 0;
+            left: auto;
+        }
+    }
+
+    &__step:nth-child(-n + 2) .giz-ladder-level-popup-wrapper {
+        right: auto;
+        left: 0;
+    }
+
+    &__name {
+        display: -webkit-box;
+        min-width: 0;
+        overflow: hidden;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.6rem;
+        font-weight: 800;
+        line-height: 1.15;
+        color: $ac-ink;
+        overflow-wrap: break-word;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+
+    &__passed {
+        flex: none;
+        font-size: 1.4rem;
+        color: var(--giz-success-green);
+    }
+
+    &__meta {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: $font-family-numeric-theme-client;
+        min-width: 0;
+        font-size: 1.25rem;
+        color: $ac-ink-3;
+
+        span {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    &__perks {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        // what the level gives: plain bullets, ticks are kept for what is done
+        span {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: $ac-ink-2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            &::before {
+                content: "";
+                flex: none;
+                width: 0.4rem;
+                height: 0.4rem;
+                border-radius: 50%;
+                background: currentColor;
+                opacity: 0.6;
+            }
+        }
+    }
+
+    &__reqs {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    &__step--passed &__block {
+        background: rgba(var(--giz-accent-rgb), 0.12);
+        box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.25);
+    }
+
+    &__step--current &__block {
+        background: var(--giz-accent);
+        box-shadow: none;
+        color: var(--giz-on-accent);
+
+        .giz-ladder-rank {
+            background: var(--giz-on-accent);
+            color: var(--giz-accent);
+        }
+    }
+
+    &__step--current &__name,
+    &__step--current &__meta,
+    &__step--current &__perks span { color: inherit; }
+
+    &__step--current &__meta,
+    &__step--current &__perks span { opacity: 0.85; }
+
+    &__step--locked &__block { opacity: 0.7; }
+
+    &__steps--dense {
+        --giz-stairs-low: 9rem;
+        --giz-stairs-rise: 9rem;
+        gap: 0.6rem;
+
+        .giz-stairs__block { padding: 1.2rem; }
+
+        .giz-stairs__top {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .giz-stairs__name { font-size: 1.25rem; }
+
+        .giz-stairs__passed,
+        .giz-ladder-level-row__info { display: none; }
+
+        .giz-stairs__step:not(.giz-stairs__step--current):not(.giz-stairs__step--next) {
+            .giz-stairs__name,
+            .giz-stairs__meta { display: none; }
+        }
+
+        .giz-stairs__step--current { flex-grow: 1.6; }
+        .giz-stairs__step--next { flex-grow: 1.2; }
+    }
+}
+
+@media (max-height: 840px) {
+    .giz-stairs {
+        --giz-stairs-low: 11rem;
+        --giz-stairs-rise: 11rem;
+        padding: 2rem 2.4rem;
+        gap: 1.8rem;
+    }
+}
+
+@media (max-width: 1300px) {
+    .giz-stairs__head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .giz-stairs__say {
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .giz-stairs__line,
+    .giz-stairs__chips { justify-content: flex-start; }
+}

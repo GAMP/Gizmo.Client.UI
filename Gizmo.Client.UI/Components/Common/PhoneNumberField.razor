@@ -31,7 +31,8 @@
     <div class="giz-form-input">
         <MaskedPhoneInput Mask="@GetMask()"
                           Prefix="+"
-                          AllowMoreDigits="false"
+                          AllowMoreDigits="true"
+                          ExtraDigits="@GetExtraDigits()"
                           LockedLength="@GetLockedPrefixLength()"
                           Value="@PhoneValue"
                           ValueChanged="@((string? v) => PhoneValueChanged.InvokeAsync(v))"
@@ -64,7 +65,8 @@ else
                 PopupClass="giz-scrollbar--v" />
     <MaskedPhoneInput Mask="@GetMask()"
                       Prefix="+"
-                      AllowMoreDigits="false"
+                      AllowMoreDigits="true"
+                      ExtraDigits="@GetExtraDigits()"
                       LockedLength="@GetLockedPrefixLength()"
                       Value="@PhoneValue"
                       ValueChanged="@((string? v) => PhoneValueChanged.InvokeAsync(v))"

@@ -16,68 +16,87 @@
     <div class="giz-challenge-popup__description">@Item.PopupDescription</div>
 }
 
-<div class="giz-challenge-popup__section">
-    <div class="giz-challenge-popup__label-row">
-        <span class="giz-challenge-popup__label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CHALLENGES_POPUP_ACHIEVEMENTS))</span>
-        <span class="giz-challenge-popup__value">@Item.PopupRequirementsCountText</span>
+@if (Item.Requirements.Count > 0)
+{
+    <div class="giz-challenge-popup__goal">
+        <div class="giz-challenge-popup__goal-head">
+            <span class="giz-challenge-popup__label">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_CHALLENGE_STEPS)</span>
+            <span class="giz-challenge-popup__count">@MetText</span>
+        </div>
+        <div class="giz-challenge-popup__segs">
+            @foreach (var requirement in Item.Requirements)
+            {
+                <span class="@(requirement.IsMet ? "giz-challenge-popup__seg giz-challenge-popup__seg--met" : "giz-challenge-popup__seg")"></span>
+            }
+        </div>
+        <p class="giz-challenge-popup__hint">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_CHALLENGE_HINT)</p>
     </div>
-    <div class="giz-challenge-popup__progress @(Item.IsDone ? "giz-challenge-popup__progress--done" : "")">
-        <div class="giz-challenge-popup__progress-fill" style="width: @AchievementValueFormat.Percent(Item.ProgressPercent)"></div>
-    </div>
-    <div class="giz-challenge-popup__rows">
+
+    <ol class="giz-challenge-popup__steps">
         @foreach (var requirement in Item.Requirements)
         {
-            <div class="giz-challenge-popup__row" @key="requirement.AchievementId">
-                @if (requirement.IsMet)
-                {
-                    <Icon SVGIcon="Icons.CheckCircle_Client" />
-                    <span class="giz-challenge-popup__requirement">@requirement.Name</span>
-                }
-                else
-                {
-                    <Icon SVGIcon="Icons.Circle_Client" />
-                    <NavLink class="giz-challenge-popup__requirement giz-challenge-popup__requirement--unmet" href="@($"{ClientRoutes.UserAchievementsRoute}?AchievementId={requirement.AchievementId}")">@requirement.Name</NavLink>
-                }
-            </div>
+            <li class="@StepClass(requirement)" @key="requirement.AchievementId">
+                <span class="giz-challenge-popup__mark">
+                    @if (requirement.IsMet)
+                    {
+                        <i class="ph-bold ph-check"></i>
+                    }
+                    else
+                    {
+                        @StepNumber(requirement)
+                    }
+                </span>
+                <div class="giz-challenge-popup__step-body">
+                    <div class="giz-challenge-popup__step-head">
+                        @if (requirement.IsMet)
+                        {
+                            <b>@requirement.Name</b>
+                            <span class="giz-challenge-popup__got">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_CHALLENGE_STEP_DONE)</span>
+                        }
+                        else
+                        {
+                            <NavLink class="giz-challenge-popup__step-name" href="@($"{ClientRoutes.UserAchievementsRoute}?AchievementId={requirement.AchievementId}")">@requirement.Name</NavLink>
+                        }
+                    </div>
+                    @if (WhatToDo(requirement) is { } what)
+                    {
+                        <p class="giz-challenge-popup__what">@what</p>
+                    }
+                    @if (!requirement.IsMet && Achievement(requirement) is { ShowProgressBar: true } achievement)
+                    {
+                        <div class="giz-challenge-popup__step-progress" style="--giz-fill: @AchievementValueFormat.Percent(achievement.ProgressPercent)">
+                            <span class="giz-challenge-popup__bar"><i></i></span>
+                            <small>@achievement.PopupProgressText</small>
+                        </div>
+                    }
+                </div>
+            </li>
         }
-    </div>
-</div>
+    </ol>
+}
 
 @if (Item.Rewards.Count > 0)
 {
-    <div class="giz-challenge-popup__section">
-        <div class="giz-challenge-popup__label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CHALLENGES_POPUP_REWARDS))</div>
-        <div class="giz-challenge-popup__rows">
-            @foreach (var reward in Item.Rewards)
-            {
-                <div class="giz-challenge-popup__row">
-                    @switch (reward.Kind)
-                    {
-                        case ChallengeRewardKind.Points:
-                            <Icon SVGIcon="Icons.Coins_Client" Class="giz-challenge-popup__reward-icon giz-challenge-popup__reward-icon--points" />
-                            break;
-                        case ChallengeRewardKind.Time:
-                            <Icon SVGIcon="Icons.WorkHistory_Client" Class="giz-challenge-popup__reward-icon giz-challenge-popup__reward-icon--time" />
-                            break;
-                        default:
-                            <Icon SVGIcon="Icons.ShoppingCart_Client" Class="giz-challenge-popup__reward-icon giz-challenge-popup__reward-icon--product" />
-                            break;
-                    }
-                    <span class="giz-challenge-popup__reward">@reward.Text</span>
-                    @if (!string.IsNullOrEmpty(reward.StatusText))
-                    {
-                        <span class="giz-challenge-popup__reward-status">@reward.StatusText</span>
-                    }
-                </div>
-            }
-        </div>
+    <div class="giz-challenge-popup__rewards">
+        <span class="giz-challenge-popup__label">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CHALLENGES_POPUP_REWARDS))</span>
+        @foreach (var reward in Item.Rewards)
+        {
+            <div class="giz-challenge-popup__prize">
+                <i class="@RewardIcon(reward)"></i>
+                <b>@reward.Text</b>
+                @if (!string.IsNullOrEmpty(reward.StatusText))
+                {
+                    <small>@reward.StatusText</small>
+                }
+            </div>
+        }
     </div>
 }
 
 @if (!string.IsNullOrEmpty(Item.PopupWindowText))
 {
-    <div class="giz-challenge-popup__footer @(Item.PopupWindowIsWarning ? "giz-challenge-popup__footer--warning" : "")">
-        <Icon SVGIcon="Icons.Schedule_Client" />
+    <div class="@(Item.PopupWindowIsWarning ? "giz-challenge-popup__window giz-challenge-popup__window--warning" : "giz-challenge-popup__window")">
+        <i class="ph-bold ph-timer"></i>
         <span>@Item.PopupWindowText</span>
     </div>
 }

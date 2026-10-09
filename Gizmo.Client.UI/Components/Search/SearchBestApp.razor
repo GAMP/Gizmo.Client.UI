@@ -1,0 +1,32 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+@if (_app is not null)
+{
+    <div class="giz-search-best">
+        <div class="giz-search-best__art" @onclick="OpenApp">
+            <GizImage @key="_app.ApplicationId" ImageType="Gizmo.UI.ImageType.Application" ImageId="@_app.ImageId" ImageFitType="ImageFitType.Cover">
+                <EmptyResultPlaceholder>
+                    <div class="giz-default-image">
+                        <img src="_content/Gizmo.Client.UI/img/no-app-image.svg" alt="" />
+                    </div>
+                </EmptyResultPlaceholder>
+                <ErrorPlaceholder>
+                    <div class="giz-default-image">
+                        <img src="_content/Gizmo.Client.UI/img/broken-image.svg" alt="" />
+                    </div>
+                </ErrorPlaceholder>
+            </GizImage>
+        </div>
+        <div class="giz-search-best__kind">@KindText</div>
+        <div class="giz-search-best__name" @onclick="OpenApp">
+            <SearchMatch Text="@_app.Title" Pattern="@Pattern" />
+        </div>
+        <div class="giz-search-best__acts">
+            @foreach (var executableId in ExecutableIds)
+            {
+                <UniversalExecutable @key="executableId" ExecutableId="@executableId" ShowProgressBar="true" ShowExeName="true" />
+            }
+        </div>
+    </div>
+}

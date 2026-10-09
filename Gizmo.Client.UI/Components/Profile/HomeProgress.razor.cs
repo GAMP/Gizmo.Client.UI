@@ -1,5 +1,5 @@
-using System.Globalization;
-using System.Threading;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Linq;
 using Gizmo.Client.UI.Localization.Resources;
 using Gizmo.Client.UI.Services;
@@ -22,11 +22,11 @@ namespace Gizmo.Client.UI.Components
         [Inject] UserAchievementsViewService AchievementsService { get; set; }
         [Inject] NavigationService NavigationService { get; set; }
 
-        private readonly CancellationTokenSource _lifetime = new();
+        [CascadingParameter] ProgressLoading Progress { get; set; }
 
         private bool HasLadder => Ladder.HasLevel;
 
-        private bool ProgressOn => HasLadder || TotalChallenges > 0 || TotalAchievements > 0;
+        private bool ProgressOn => PlayerProgress.Any(Ladder, Challenges, Achievements);
 
         private int EarnedAchievements => Achievements.Achievements.Count(a => a.IsEarned);
 
@@ -36,31 +36,11 @@ namespace Gizmo.Client.UI.Components
 
         private int TotalChallenges => Challenges.Challenges.Count();
 
+        private const int STEPS = 3;
+
         private bool HeadlineIsAchievements => !HasLadder && TotalAchievements > 0;
 
         private bool HeadlineIsChallenges => !HasLadder && TotalAchievements == 0 && TotalChallenges > 0;
-
-        private bool LinkIsAchievements => HasLadder && TotalAchievements > 0;
-
-        private bool LinkIsChallenges => TotalChallenges > 0 && (HasLadder ? TotalAchievements == 0 : HeadlineIsAchievements);
-
-        private string Caption => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PROGRESS_HOME_CAP);
-
-        private string LinkText
-        {
-            get
-            {
-                if (LinkIsAchievements)
-                    return $"{Vendor(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_ACHIEVEMENTS))} {Of(EarnedAchievements, TotalAchievements)}";
-
-                if (LinkIsChallenges)
-                    return $"{Vendor(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CHALLENGES))} {Of(DoneChallenges, TotalChallenges)}";
-
-                return null;
-            }
-        }
-
-        private string LinkRoute => ClientRoutes.UserLadderRoute;
 
         private decimal LinePercent
         {
@@ -76,7 +56,7 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        private string LineValue => LinePercent.ToString("0.##", CultureInfo.InvariantCulture);
+        private string LineValue => CssValue.Number(LinePercent);
 
         private bool ShowLine => HasLadder ? Ladder.ShowTopBarProgress : HeadlineIsAchievements || HeadlineIsChallenges;
 
@@ -106,19 +86,49 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        private UserChallengeViewState NextChallenge => Challenges.Challenges
-            .FirstOrDefault(a => !a.IsDone && !a.IsEnded && a.Requirements.Any(r => !r.IsMet));
+        private sealed record Step(string Title, string Note, string Reward, string RewardIcon);
 
-        private string NextStepName => NextChallenge?.Requirements.FirstOrDefault(r => !r.IsMet)?.Name;
-
-        private UserChallengeRewardViewState NextReward => NextChallenge?.Rewards.FirstOrDefault();
-
-        private string NextRewardIcon => NextReward?.Kind switch
+        private IReadOnlyList<Step> Steps
         {
-            ChallengeRewardKind.Points => "ph-fill ph-coins giz-home-progress__coin",
-            ChallengeRewardKind.Time => "ph-fill ph-clock",
-            _ => "ph-fill ph-gift",
-        };
+            get
+            {
+                var steps = new List<Step>();
+                var named = new HashSet<int>();
+
+                foreach (var challenge in Challenges.Challenges.Where(a => !a.IsDone && !a.IsEnded))
+                {
+                    var next = challenge.Requirements.FirstOrDefault(a => !a.IsMet);
+
+                    if (next is null)
+                        continue;
+
+                    var reward = challenge.Rewards.FirstOrDefault();
+                    var note = string.IsNullOrEmpty(challenge.WindowText)
+                        ? challenge.Name
+                        : $"{challenge.Name} · {challenge.WindowText}";
+
+                    named.Add(next.AchievementId);
+                    steps.Add(new Step(next.Name, note, reward?.Text, RewardIcon(reward)));
+                }
+
+                foreach (var achievement in Achievements.Achievements
+                    .Where(a => !a.IsEarned && a.ShowProgressBar && !named.Contains(a.AchievementId))
+                    .OrderByDescending(a => a.ProgressPercent))
+                {
+                    var note = string.IsNullOrEmpty(achievement.CountText)
+                        ? null
+                        : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PROGRESS_ACHIEVEMENT, achievement.CountText);
+
+                    steps.Add(new Step(achievement.Name, note, null, null));
+                }
+
+                return steps.Take(STEPS).ToList();
+            }
+        }
+
+        private static string RewardIcon(UserChallengeRewardViewState reward) => ChallengeRewardIcon.IsPoints(reward)
+            ? ChallengeRewardIcon.Glyph(reward) + " giz-home-progress__coin"
+            : ChallengeRewardIcon.Glyph(reward);
 
         private string Vendor(string key) => GrafitLocalization.GetString(key);
 
@@ -126,26 +136,24 @@ namespace Gizmo.Client.UI.Components
 
         private void OpenProgress() => NavigationService.NavigateTo(ClientRoutes.UserLadderRoute);
 
+        private Task LoadProgressAsync() => Task.WhenAll(ChallengesService.LoadAsync(), AchievementsService.LoadAsync());
+
         protected override void OnInitialized()
         {
             this.SubscribeChange(Ladder);
             this.SubscribeChange(Challenges);
             this.SubscribeChange(Achievements);
 
-            if (!Challenges.IsLoading)
-                DispatchWorkflow(() => ChallengesService.LoadAsync(_lifetime.Token));
-
-            if (!Achievements.IsLoading)
-                DispatchWorkflow(() => AchievementsService.LoadAsync(_lifetime.Token));
+            if (Progress is null)
+                DispatchWorkflow(LoadProgressAsync);
+            else
+                Progress.Ensure(LoadProgressAsync, PlayerProgress.Failed(Challenges, Achievements));
 
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
-            _lifetime.Cancel();
-            _lifetime.Dispose();
-
             this.UnsubscribeChange(Achievements);
             this.UnsubscribeChange(Challenges);
             this.UnsubscribeChange(Ladder);

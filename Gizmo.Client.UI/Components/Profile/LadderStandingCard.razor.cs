@@ -1,24 +1,20 @@
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.JSInterop;
 
 namespace Gizmo.Client.UI.Components
 {
     public partial class LadderStandingCard : CustomDOMComponentBase
     {
-        private const string HistoryPopupSelector = ".giz-ladder-history-wrapper";
         private const int DenseLevelCount = 7;
 
-        private bool _isBreakdownOpen;
-
-        [Inject]
-        ILocalizationService LocalizationService { get; set; }
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
 
         [Inject]
         UserLadderViewState ViewState { get; set; }
@@ -30,23 +26,53 @@ namespace Gizmo.Client.UI.Components
             ? null
             : ViewState.ShowStatusLine ? ViewState.StatusLineText : Summary.HeaderStatusText;
 
-        private string ProgressValue => ViewState.ProgressPercent.ToString("0.##", CultureInfo.InvariantCulture);
+        private string PeriodLine => string.Join(" · ", new[]
+        {
+            ViewState.PeriodText,
+            string.Join(" ", new[] { ViewState.PeriodEndsLabelText, ViewState.PeriodEndText }.Where(a => !string.IsNullOrWhiteSpace(a))),
+        }.Where(a => !string.IsNullOrWhiteSpace(a)));
 
-        private string FillClass => ViewState.ProgressIsFull
-            ? "giz-ladder-progress__fill giz-ladder-progress__fill--secured"
-            : "giz-ladder-progress__fill";
+        private bool IsDense => ViewState.Levels.Count() > DenseLevelCount;
 
-        private string GoalClass => ViewState.ProgressIsFull
-            ? "giz-ladder-progress__goal giz-ladder-progress__goal--secured"
-            : "giz-ladder-progress__goal";
+        private string StepsClass => IsDense ? "giz-stairs__steps giz-stairs__steps--dense" : "giz-stairs__steps";
 
-        private string LevelsClass => ViewState.Levels.Count() > DenseLevelCount
-            ? "giz-ladder-levels giz-ladder-levels--dense"
-            : "giz-ladder-levels";
+        private string NextFill
+        {
+            get
+            {
+                if (ViewState.ShowProgress)
+                    return CssValue.Percent(ViewState.ProgressPercent);
 
-        private string SegmentClass(int index) => index < ViewState.SegmentsLit
-            ? "giz-ladder-segments__segment giz-ladder-segments__segment--lit"
-            : "giz-ladder-segments__segment";
+                if (ViewState.ShowSegments && ViewState.SegmentCount > 0)
+                    return CssValue.Percent(100m * ViewState.SegmentsLit / ViewState.SegmentCount);
+
+                return null;
+            }
+        }
+
+        private string HereText => ViewState.ShowScore
+            ? $"{GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LADDER_HERE)} · {ViewState.ScoreText}"
+            : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_LADDER_HERE);
+
+        private sealed record Step(UserLadderLevelViewState Level, string Rise, string Fill, string Here, IReadOnlyList<UserLadderRequirementViewState> Requirements);
+
+        private IReadOnlyList<Step> Steps
+        {
+            get
+            {
+                var levels = ViewState.Levels.ToList();
+                var last = levels.Count > 1 ? levels.Count - 1 : 1;
+
+                return levels
+                    .Select((level, index) => new Step(
+                        level,
+                        (index / (decimal)last).ToString("0.###", CultureInfo.InvariantCulture),
+                        level.IsNext && !ViewState.ShowRequirements ? NextFill : null,
+                        level.IsCurrent ? HereText : null,
+                        level.IsNext && ViewState.ShowRequirements ? ViewState.Requirements.ToList() : null))
+                    .ToList();
+            }
+        }
 
         protected override void OnInitialized()
         {
@@ -54,18 +80,6 @@ namespace Gizmo.Client.UI.Components
             this.SubscribeChange(Summary);
 
             base.OnInitialized();
-        }
-
-        private async Task OnBreakdownClick(MouseEventArgs e)
-        {
-            if (_isBreakdownOpen)
-            {
-                _isBreakdownOpen = false;
-                return;
-            }
-
-            await JsRuntime.InvokeVoidAsync("closeOpenPopups", e, HistoryPopupSelector);
-            _isBreakdownOpen = true;
         }
 
         public override void Dispose()

@@ -1,15 +1,25 @@
-﻿using Gizmo.UI.Services;
+﻿using System;
+using System.Threading.Tasks;
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
+using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
-using System.Threading.Tasks;
+using Microsoft.JSInterop;
 
 namespace Gizmo.Client.UI.Components
 {
     public partial class UserAgreementDialog : CustomDOMComponentBase
     {
         private bool _accepted;
+        private bool _isRead;
+        private ElementReference _text;
+        private DotNetObjectReference<UserAgreementDialog> _self;
+        private string _watched;
+        private bool _watch;
 
-        #region PROPERTIES
+        [CascadingParameter]
+        protected GrafitLocalizationService GrafitLocalization { get; set; }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -23,10 +33,6 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public bool IsRejectable { get; set; }
 
-        /// <summary>
-        /// Allows the user to continue without checking the accept checkbox, even for non-rejectable agreements.
-        /// Used by the registration flow, where declining a mandatory agreement routes the user back to login.
-        /// </summary>
         [Parameter]
         public bool AllowContinueWithoutAccept { get; set; }
 
@@ -39,27 +45,95 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<UserAgreementResult> ResultCallback { get; set; }
 
-        #endregion
+        protected string ClassName => AllowContinueWithoutAccept
+            ? "giz-user-agreement-dialog giz-user-agreement-dialog--signup"
+            : "giz-user-agreement-dialog";
 
-        #region METHODS
+        protected string Title => string.IsNullOrWhiteSpace(Name)
+            ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_AGREEMENT_DIALOG_TITLE))
+            : Name;
 
-        private async Task CloseDialogAsync()
+        protected bool CanDecline => IsRejectable || AllowContinueWithoutAccept;
+
+        protected bool IsRead => _isRead;
+
+        protected string DeclineText => GrafitLocalization.GetString(IsRejectable
+            ? GrafitResourceKeys.SHELL_AGREEMENT_SKIP
+            : GrafitResourceKeys.SHELL_AGREEMENT_DECLINE);
+
+        [JSInvokable]
+        public Task ReadToEnd()
         {
-            await DismissCallback.InvokeAsync();
+            _isRead = true;
+            return InvokeAsync(StateHasChanged);
         }
 
-        private async Task ContinueAsync()
+        private async Task ScrollPageAsync()
         {
-            await ResultCallback.InvokeAsync(new UserAgreementResult() { Accepted = _accepted});
+            try
+            {
+                await InvokeVoidAsync("scrollAgreementPage", _text);
+            }
+            catch (JSException)
+            {
+                await ReadToEnd();
+            }
         }
 
-        #endregion
+        private Task CloseDialogAsync() => DismissCallback.InvokeAsync();
+
+        private Task AcceptAsync()
+        {
+            _accepted = true;
+            return ContinueAsync();
+        }
+
+        private Task DeclineAsync()
+        {
+            _accepted = false;
+            return ContinueAsync();
+        }
+
+        private Task ContinueAsync() => ResultCallback.InvokeAsync(new UserAgreementResult() { Accepted = _accepted });
 
         protected override void OnParametersSet()
         {
             base.OnParametersSet();
 
             _accepted = false;
+
+            if (_watched != Agreement)
+            {
+                _watched = Agreement;
+                _isRead = false;
+                _watch = true;
+            }
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await base.OnAfterRenderAsync(firstRender);
+
+            if (!_watch)
+                return;
+
+            _watch = false;
+            _self ??= CreateDotNetObjectReference(this);
+
+            try
+            {
+                await InvokeVoidAsync("watchAgreementReading", _text, _self);
+            }
+            catch (JSException)
+            {
+                await ReadToEnd();
+            }
+        }
+
+        public override void Dispose()
+        {
+            _self?.Dispose();
+            base.Dispose();
         }
     }
 }

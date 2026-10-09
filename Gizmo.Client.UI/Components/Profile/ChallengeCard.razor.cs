@@ -38,7 +38,7 @@ namespace Gizmo.Client.UI.Components
         private UserChallengeRequirementViewState NextRequirement =>
             Item.IsDone || Item.IsEnded ? null : Item.Requirements.FirstOrDefault(a => !a.IsMet);
 
-        private string ProgressValue => Item.ProgressPercent.ToString("0.##", CultureInfo.InvariantCulture);
+        private string ProgressValue => CssValue.Number(Item.ProgressPercent);
 
         private static string SegmentClass(UserChallengeRequirementViewState requirement) => requirement.IsMet
             ? "giz-challenge-card__segment giz-challenge-card__segment--met"
@@ -62,11 +62,8 @@ namespace Gizmo.Client.UI.Components
             return ReferenceEquals(requirement, NextRequirement) ? "ph-bold ph-arrow-right" : "ph ph-circle";
         }
 
-        private static string RewardIcon(UserChallengeRewardViewState reward) => reward.Kind switch
-        {
-            ChallengeRewardKind.Points => "ph-fill ph-coins giz-challenge-card__reward-icon giz-challenge-card__reward-icon--points",
-            ChallengeRewardKind.Time => "ph-fill ph-clock giz-challenge-card__reward-icon",
-            _ => "ph-fill ph-gift giz-challenge-card__reward-icon",
-        };
+        private static string RewardIcon(UserChallengeRewardViewState reward) => ChallengeRewardIcon.IsPoints(reward)
+            ? ChallengeRewardIcon.Glyph(reward) + " giz-challenge-card__reward-icon giz-challenge-card__reward-icon--points"
+            : ChallengeRewardIcon.Glyph(reward) + " giz-challenge-card__reward-icon";
     }
 }

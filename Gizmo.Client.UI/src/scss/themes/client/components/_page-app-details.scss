@@ -220,3 +220,34 @@
         @include font-m-theme-client($font-weight-light-theme-client);
     }
 }
+
+// On a 21:9 screen the page grows with the screen instead of standing as a narrow column: the
+// width a 16:9 screen of the same height would give, a larger poster and larger media.
+@media (min-aspect-ratio: 2/1) {
+    .giz-app-details__app {
+        width: min(100%, calc(100vh * 16 / 9 - 16rem));
+    }
+
+    .giz-app-details__app__info__image {
+        width: 28rem;
+        height: 42rem;
+    }
+
+    .giz-app-details__app__info__details {
+        width: auto;
+        min-width: 0;
+    }
+
+    .giz-app-details__app__info__details__description {
+        max-width: 90rem;
+    }
+
+    .giz-app-details__app__info__additional-content__media {
+        height: 22.5rem;
+    }
+
+    .giz-app-media-item {
+        width: 40rem;
+        height: 22.5rem;
+    }
+}

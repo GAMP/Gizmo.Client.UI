@@ -3,54 +3,59 @@
 
 @if (ProgressOn)
 {
-    <aside class="giz-home-till giz-home-till--progress" aria-label="@Caption">
-        <div class="giz-caption giz-caption--rule">
-            <span>@Caption</span>
-            <span class="giz-caption__rule"></span>
-            @if (LinkText is not null)
+    <aside class="giz-home-till giz-home-till--progress" aria-label="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PROGRESS_HOME_CAP)">
+        <div class="giz-home-progress__head">
+            @if (HasLadder)
             {
-                <a href="@LinkRoute">@LinkText</a>
+                <LadderLevelBadge Ordinal="@Ladder.Ordinal" EmblemUrl="@Ladder.EmblemUrl" />
             }
-        </div>
-
-        <button type="button" class="giz-home-progress" @onclick="OpenProgress">
-            <span class="giz-home-progress__top">
-                @if (HasLadder)
+            else
+            {
+                <span class="giz-home-progress__glyph"><i class="ph-fill ph-trophy"></i></span>
+            }
+            <span class="giz-home-progress__who">
+                <b>@Title</b>
+                @if (!string.IsNullOrEmpty(Subtitle))
                 {
-                    <LadderLevelBadge Ordinal="@Ladder.Ordinal" EmblemUrl="@Ladder.EmblemUrl" />
+                    <span>@Subtitle</span>
                 }
-                <span class="giz-home-progress__who">
-                    <b>@Title</b>
-                    @if (!string.IsNullOrEmpty(Subtitle))
-                    {
-                        <span>@Subtitle</span>
-                    }
-                </span>
-                <i class="ph-bold ph-arrow-right giz-home-progress__go"></i>
             </span>
-
             @if (ShowLine)
             {
                 <span class="giz-home-progress__line" style="--giz-ring-progress: @LineValue"><i></i></span>
             }
+        </div>
 
-            @if (NextChallenge is not null)
-            {
-                <span class="giz-home-progress__next">
-                    <i class="ph-bold ph-flag-checkered"></i>
-                    <span class="giz-home-progress__step">
-                        @if (NextStepName is not null)
+        @if (Steps.Count > 0)
+        {
+            <div class="giz-home-progress__list">
+                @foreach (var step in Steps)
+                {
+                    <div class="giz-home-progress__row">
+                        <span class="giz-home-progress__text">
+                            <b>@step.Title</b>
+                            @if (!string.IsNullOrEmpty(step.Note))
+                            {
+                                <span>@step.Note</span>
+                            }
+                        </span>
+                        @if (!string.IsNullOrEmpty(step.Reward))
                         {
-                            <b>@NextStepName</b>
+                            <span class="giz-home-progress__reward"><i class="@step.RewardIcon"></i>@step.Reward</span>
                         }
-                        <span>@NextChallenge.Name</span>
-                    </span>
-                    @if (NextReward is not null)
-                    {
-                        <em><i class="@NextRewardIcon"></i>@NextReward.Text</em>
-                    }
-                </span>
-            }
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="giz-home-progress__empty">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PROGRESS_NOTHING)</p>
+        }
+
+        <button type="button" class="giz-home-progress__open" @onclick="OpenProgress">
+            <i class="ph-bold ph-trophy"></i>
+            <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PROGRESS_OPEN)</span>
+            <i class="ph-bold ph-arrow-right giz-home-progress__go"></i>
         </button>
     </aside>
 }

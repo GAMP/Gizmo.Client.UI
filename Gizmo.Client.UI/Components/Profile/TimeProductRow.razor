@@ -4,71 +4,66 @@
 @using Gizmo.Client.UI.View.States
 @using Gizmo.Client.UI.Pages
 
-<div class="@RowClass">
-    <div class="giz-account-time__order">@OrderText</div>
-
-    <div class="giz-account-time__type"><i class="ph-fill @TimeProductText.Icon(Product.TimeProductType)"></i></div>
-
-    <div class="giz-account-time__main">
-        <div class="giz-account-time__line">
-            <b class="giz-account-time__name">@TimeProductText.Name(Product, GrafitLocalization)</b>
-            <span class="giz-account-time__kind">@GrafitLocalization.GetString(TimeProductText.TypeKey(Product.TimeProductType))</span>
-            @if (IsCurrent)
-            {
-                <span class="giz-account-tag giz-account-tag--on">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_ACTIVE_NOW)</span>
-            }
-            else if (Order.HasValue)
-            {
-                <span class="giz-account-tag">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_QUEUE_POSITION, Order.Value)</span>
-            }
-            else
-            {
-                <span class="giz-account-tag giz-account-tag--off">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_NOT_HERE)</span>
-            }
-            @if (Product.InCredit)
-            {
-                <span class="giz-account-tag giz-account-tag--credit">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_TITLE_USING_CREDIT))</span>
-            }
-        </div>
-        <div class="giz-account-time__meta">
-            @if (Product.PurchaseTime.HasValue)
-            {
-                <span class="giz-account-time__fact">
-                    <i class="ph ph-calendar-blank"></i>
-                    <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PURCHASE_DATE)): @Product.PurchaseTime.Value.ToLocalTime().ToString("g", CultureInfo.CurrentCulture)</span>
-                </span>
-            }
-            @if (!string.IsNullOrEmpty(Expiry))
-            {
-                <span class="giz-account-time__fact">
-                    <i class="ph ph-hourglass-low"></i>
-                    <span>@Expiry</span>
-                </span>
-            }
-            <span class="giz-account-time__fact giz-account-time__fact--hosts">
-                <i class="ph ph-desktop"></i>
-                <ProductsProductHosts TimeProduct="@Product" />
-            </span>
-        </div>
+<div class="@CardClass">
+    <div class="giz-time-pack__top">
+        <span class="giz-time-pack__glyph"><i class="ph-fill @TimeProductText.Icon(Product.TimeProductType)"></i></span>
+        <span class="giz-time-pack__kind">@GrafitLocalization.GetString(TimeProductText.TypeKey(Product.TimeProductType))</span>
+        @if (IsCurrent)
+        {
+            <span class="giz-account-tag giz-account-tag--on">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_ACTIVE_NOW)</span>
+        }
+        else if (Order.HasValue)
+        {
+            <span class="giz-account-tag">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_QUEUE_POSITION, Order.Value)</span>
+        }
+        else
+        {
+            <span class="giz-account-tag giz-account-tag--off">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_NOT_HERE)</span>
+        }
+        @if (Product.InCredit)
+        {
+            <span class="giz-account-tag giz-account-tag--credit">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_TITLE_USING_CREDIT))</span>
+        }
     </div>
 
-    <div class="giz-account-time__stat">
-        <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_REMAINING_TIME))</small>
+    <b class="giz-time-pack__name" title="@TimeProductText.Name(Product, GrafitLocalization)">@TimeProductText.Name(Product, GrafitLocalization)</b>
+
+    <div class="giz-time-pack__left">
         <b><TimeAmount Value="@Product.RemainingTime" /></b>
-    </div>
-    <div class="giz-account-time__stat">
-        <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_USABLE_TIME))</small>
-        <b><TimeAmount Value="@Product.UsableTime" /></b>
+        <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_REMAINING_TIME))</small>
     </div>
 
-    @if (CanOpen)
-    {
-        <button type="button" class="giz-account-time__open" title="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_DETAILS))" @onclick="OnOpen">
-            <i class="ph-bold ph-arrow-up-right"></i>
-        </button>
-    }
-    else
-    {
-        <span class="giz-account-time__open giz-account-time__open--none"></span>
-    }
+    <div class="giz-time-pack__facts">
+        @if (Product.PurchaseTime.HasValue)
+        {
+            <span class="giz-time-pack__fact">
+                <i class="ph ph-calendar-blank"></i>
+                <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_PURCHASE_DATE)): @Product.PurchaseTime.Value.ToLocalTime().ToString("g", CultureInfo.CurrentCulture)</span>
+            </span>
+        }
+        @if (!string.IsNullOrEmpty(Expiry))
+        {
+            <span class="giz-time-pack__fact">
+                <i class="ph ph-hourglass-low"></i>
+                <span>@Expiry</span>
+            </span>
+        }
+        <span class="giz-time-pack__fact giz-time-pack__fact--hosts">
+            <i class="ph ph-desktop"></i>
+            <ProductsProductHosts TimeProduct="@Product" />
+        </span>
+    </div>
+
+    <div class="giz-time-pack__foot">
+        <span class="giz-time-pack__here">
+            <small>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_USABLE_TIME))</small>
+            <b><TimeAmount Value="@Product.UsableTime" /></b>
+        </span>
+        @if (CanOpen)
+        {
+            <button type="button" class="giz-time-pack__open" title="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_DETAILS))" @onclick="OnOpen">
+                <i class="ph-bold ph-arrow-up-right"></i>
+            </button>
+        }
+    </div>
 </div>

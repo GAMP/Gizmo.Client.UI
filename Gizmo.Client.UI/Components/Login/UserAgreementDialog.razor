@@ -2,34 +2,38 @@
 @inherits CustomDOMComponentBase
 
 <HostedDialog>
-    <div class="giz-client-dialog giz-user-agreement-dialog">
-        <div class="giz-client-dialog__header">
-            <div class="giz-client-dialog__header__title">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_AGREEMENT_DIALOG_TITLE))</div>
-            <div class="giz-client-dialog__header__subtitle">@Name</div>
-            @if (DisplayOptions.Closable)
-            {
-                <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="CloseDialogAsync" />
-            }
-        </div>
-        <div class="giz-client-dialog__body giz-scrollbar--v">
-            <div class="user-agreement">
-                @((MarkupString)Agreement)
+    <div class="@ClassName">
+        <div class="giz-client-dialog giz-user-agreement-dialog__panel">
+            <div class="giz-user-agreement-dialog__head">
+                <span class="giz-user-agreement-dialog__seal"><i class="ph-bold ph-seal-check"></i></span>
+                <div class="giz-user-agreement-dialog__title">@Title</div>
+                @if (DisplayOptions.Closable)
+                {
+                    <IconButton SVGIcon="Icons.Close" Variant="ButtonVariants.Text" Size="ButtonSizes.Small" Class="close-btn" @onclick="CloseDialogAsync" />
+                }
             </div>
-        </div>
-        <div class="giz-client-dialog__footer">
-            <div class="giz-user-agreement-checkboxes">
-                <CheckBox Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_AGREEMENT_DIALOG_AGREE_CHECKBOX))"
-                          IsChecked="@_accepted"
-                          IsCheckedChanged="@((value) => { _accepted = value; } )"
-                          Class="@(IsRejectable ? "" : "giz-user-agreement-checkbox--required")" />
+            <div class="giz-user-agreement-dialog__text giz-scrollbar--v" @ref="_text">
+                <div class="user-agreement">
+                    @((MarkupString)Agreement)
+                </div>
             </div>
-            <Button IsDisabled="@(!AllowContinueWithoutAccept && !IsRejectable && !_accepted)"
-                    Color="ButtonColors.Accent"
-                    Size="ButtonSizes.ExtraLarge"
-                    IsFullWidth="true"
-                    @onclick="ContinueAsync">
-                @LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CONTINUE))
-            </Button>
+            <div class="giz-user-agreement-dialog__actions">
+                @if (IsRead)
+                {
+                    @if (CanDecline)
+                    {
+                        <button type="button" class="giz-user-agreement-dialog__decline" @onclick="DeclineAsync">@DeclineText</button>
+                    }
+                    <button type="button" class="giz-user-agreement-dialog__accept" @onclick="AcceptAsync">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_AGREEMENT_ACCEPT)</button>
+                }
+                else
+                {
+                    <button type="button" class="giz-user-agreement-dialog__read" @onclick="ScrollPageAsync">
+                        <i class="ph-bold ph-arrow-down"></i>
+                        <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_AGREEMENT_READ_TO_END)</span>
+                    </button>
+                }
+            </div>
         </div>
     </div>
 </HostedDialog>

@@ -1,0 +1,21 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits ShellComponentBase
+
+<div class="@ClassName">
+    <input @ref="_input"
+           class="giz-code-boxes__input"
+           type="text"
+           value="@Text"
+           maxlength="@MaxLength"
+           inputmode="numeric"
+           autocomplete="one-time-code"
+           spellcheck="false"
+           disabled="@IsDisabled"
+           aria-label="@Label"
+           @oninput="OnInputAsync"
+           @onkeydown="OnKeyDownAsync" />
+    @foreach (var box in Boxes)
+    {
+        <span class="@box.ClassName">@box.Char</span>
+    }
+</div>

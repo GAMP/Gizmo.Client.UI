@@ -174,100 +174,163 @@
                 }
             </div>
 
-            @if (Packs.Count > 0)
+            @if (ShowTillTabs)
             {
-                <div class="giz-home-till__sec giz-home-till__sec--packs">
-                    <div class="giz-caption giz-caption--rule">
-                        <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_TIME_PACKAGES)</span>
-                        <span class="giz-caption__rule"></span>
-                        <a href="@ClientRoutes.ShopRoute">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ALL))</a>
-                    </div>
-
-                    <div class="giz-home-prices">
-                        @foreach (var pack in Packs)
-                        {
-                            <div class="@PriceRowClass(pack.Product)" @key="pack.Product.Id">
-                                @if (pack.Length is { } length)
-                                {
-                                    <b class="giz-home-prices__length">@length<small>@pack.Unit</small></b>
-                                }
-                                else
-                                {
-                                    <i class="ph-bold ph-clock giz-home-prices__clock"></i>
-                                }
-                                <span class="giz-home-prices__name" @onclick="@(() => OpenProduct(pack.Product.Id))">
-                                    <span>@pack.Product.Name</span>
-                                    @if (pack.PerHourText is { Length: > 0 } perHour)
-                                    {
-                                        <small>@perHour</small>
-                                    }
-                                </span>
-                                <span class="giz-home-prices__price">
-                                    @if (IsPointsOnly(pack.Product))
-                                    {
-                                        <span class="giz-home-prices__pts">@PointsPrice(pack.Product)<i class="ph-fill ph-coins"></i></span>
-                                    }
-                                    else
-                                    {
-                                        @ShortMoney(pack.Product.UnitPrice)
-                                    }
-                                </span>
-                                <button type="button" class="giz-home-prices__buy"
-                                        disabled="@(_buyingProductId.HasValue)"
-                                        @onclick="@(() => BuyPackage(pack.Product.Id))">
-                                    @BuyText(pack.Product)
-                                </button>
-                            </div>
-                        }
-                    </div>
+                <div class="giz-home-tabs" role="tablist">
+                    <button type="button" role="tab" class="@TabClass(TillTab.Time)" aria-selected="@(ActiveTab == TillTab.Time)" @onclick="@(() => SelectTab(TillTab.Time))">
+                        <i class="ph-bold ph-hourglass-medium"></i>
+                        <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_TAB_TIME)</span>
+                        <em>@Packs.Count</em>
+                    </button>
+                    <button type="button" role="tab" class="@TabClass(TillTab.Bar)" aria-selected="@(ActiveTab == TillTab.Bar)" @onclick="@(() => SelectTab(TillTab.Bar))">
+                        <i class="ph-bold ph-coffee"></i>
+                        <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_BAR)</span>
+                        <em>@GoodsCount</em>
+                    </button>
+                </div>
+            }
+            else
+            {
+                <div class="giz-caption giz-caption--rule giz-home-till__cap">
+                    <span>@GrafitLocalization.GetString(ActiveTab == TillTab.Time ? GrafitResourceKeys.SHELL_HOME_TIME_PACKAGES : GrafitResourceKeys.SHELL_HOME_BAR)</span>
+                    <span class="giz-caption__rule"></span>
                 </div>
             }
 
-            @if (BarProducts.Count > 0)
+            @if (ActiveTab == TillTab.Time)
             {
-                <div class="giz-home-till__sec giz-home-till__sec--bar">
-                    <div class="giz-caption giz-caption--rule">
-                        <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_BAR)</span>
-                        <span class="giz-caption__rule"></span>
-                        <a href="@ClientRoutes.ShopRoute">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_WHOLE_SHOP)</a>
-                    </div>
-
-                    <div class="giz-home-bar">
-                        @foreach (var product in BarProducts)
+                <div class="giz-home-packs">
+                    @foreach (var pack in Packs)
+                    {
+                        <div class="@PackClass(pack)" @key="pack.Product.Id">
+                            <span class="giz-home-pack__icon" @onclick="@(() => OpenProduct(pack.Product.Id))">
+                                @if (pack.Length is { } length)
+                                {
+                                    <b>@length</b><small>@pack.Unit</small>
+                                }
+                                else
+                                {
+                                    <i class="ph-bold ph-clock"></i>
+                                }
+                            </span>
+                            <span class="giz-home-pack__text" @onclick="@(() => OpenProduct(pack.Product.Id))">
+                                <b>@pack.Product.Name</b>
+                                @if (pack.IsBest)
+                                {
+                                    <em>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_BEST_VALUE)</em>
+                                }
+                            </span>
+                            <button type="button" class="giz-home-pack__buy"
+                                    disabled="@(_buyingProductId.HasValue)"
+                                    @onclick="@(() => BuyPackage(pack.Product.Id))">
+                                @if (_buyingProductId == pack.Product.Id)
+                                {
+                                    @GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GEN_WORKING)
+                                }
+                                else if (IsPointsOnly(pack.Product))
+                                {
+                                    <span class="giz-home-pack__pts">@PointsPrice(pack.Product)<i class="ph-fill ph-coins"></i></span>
+                                }
+                                else
+                                {
+                                    @ShortMoney(pack.Product.UnitPrice)
+                                }
+                            </button>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                @if (BarGroups.Count > 1)
+                {
+                    <div class="giz-home-cats">
+                        <button type="button" class="@GroupClass(null)" @onclick="@(() => SelectGroup(null))">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_FILTERS_ALL)</button>
+                        @foreach (var group in BarGroups)
                         {
-                            <div class="giz-home-bar__row" @key="product.Id" title="@product.Name">
-                                <span class="giz-home-bar__thumb" @onclick="@(() => OpenProduct(product.Id))">
-                                    <GizImage @key="product.Id" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@product.DefaultImageId" ImageFitType="ImageFitType.Cover">
-                                        <EmptyResultPlaceholder>
-                                            <div class="giz-default-image">
-                                                <img src="_content/Gizmo.Client.UI/img/no-product-image.svg" alt="" />
-                                            </div>
-                                        </EmptyResultPlaceholder>
-                                        <ErrorPlaceholder>
-                                            <div class="giz-default-image">
-                                                <img src="_content/Gizmo.Client.UI/img/broken-image.svg" alt="" />
-                                            </div>
-                                        </ErrorPlaceholder>
-                                    </GizImage>
-                                </span>
-                                <span class="giz-home-bar__name" @onclick="@(() => OpenProduct(product.Id))">@product.Name</span>
-                                <span class="giz-home-bar__price">
-                                    @if (IsPointsOnly(product))
+                            <button type="button" class="@GroupClass(group.ProductGroupId)" @key="group.ProductGroupId" @onclick="@(() => SelectGroup(group.ProductGroupId))">@group.Name</button>
+                        }
+                    </div>
+                }
+
+                <div class="giz-home-goods">
+                    @foreach (var product in BarGoods)
+                    {
+                        <div class="@GoodClass(product)" @key="product.Id">
+                            <span class="giz-home-good__pic" @onclick="@(() => OpenProduct(product.Id))">
+                                <GizImage @key="product.Id" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@product.DefaultImageId" ImageFitType="ImageFitType.Cover">
+                                    <EmptyResultPlaceholder>
+                                        <div class="giz-default-image">
+                                            <img src="_content/Gizmo.Client.UI/img/no-product-image.svg" alt="" />
+                                        </div>
+                                    </EmptyResultPlaceholder>
+                                    <ErrorPlaceholder>
+                                        <div class="giz-default-image">
+                                            <img src="_content/Gizmo.Client.UI/img/broken-image.svg" alt="" />
+                                        </div>
+                                    </ErrorPlaceholder>
+                                </GizImage>
+                            </span>
+                            <span class="giz-home-good__body">
+                                <b class="giz-home-good__name" title="@product.Name" @onclick="@(() => OpenProduct(product.Id))">@product.Name</b>
+                                <span class="giz-home-good__foot">
+                                    <span class="giz-home-good__price">
+                                        @if (IsPointsOnly(product))
+                                        {
+                                            <span class="giz-home-good__pts">@PointsPrice(product)<i class="ph-fill ph-coins"></i></span>
+                                        }
+                                        else
+                                        {
+                                            @ShortMoney(product.UnitPrice)
+                                        }
+                                    </span>
+                                    @if (CartLine(product.Id) is { Quantity: > 0 } line)
                                     {
-                                        <span class="giz-home-bar__pts">@PointsPrice(product)<i class="ph-fill ph-coins"></i></span>
+                                        <span class="giz-home-good__step">
+                                            <button type="button" disabled="@CartBusy" @onclick="@(() => Decrease(line))"><i class="ph-bold ph-minus"></i></button>
+                                            <b>@line.Quantity</b>
+                                            <button type="button" disabled="@CartBusy" @onclick="@(() => Increase(line))"><i class="ph-bold ph-plus"></i></button>
+                                        </span>
                                     }
                                     else
                                     {
-                                        @ShortMoney(product.UnitPrice)
+                                        <button type="button" class="giz-home-good__add" title="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ADD_TO_CART))"
+                                                disabled="@CartBusy" @onclick="@(() => AddGood(product.Id))">
+                                            <i class="ph-bold ph-plus"></i>
+                                        </button>
                                     }
                                 </span>
-                                <button type="button" class="giz-home-bar__add" title="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ADD_TO_CART))"
-                                        @onclick="@(() => AddToCart(product.Id))">
-                                    <i class="ph-bold ph-plus"></i>
-                                </button>
-                            </div>
-                        }
-                    </div>
+                            </span>
+                        </div>
+                    }
+                </div>
+            }
+
+            @if (CartCount > 0)
+            {
+                <div class="giz-home-cart">
+                    <span class="giz-home-cart__icon"><i class="ph-bold ph-shopping-bag"></i><em>@CartCount</em></span>
+                    <span class="giz-home-cart__text">
+                        <b>
+                            @if (ShowCartMoney)
+                            {
+                                @Money(CartService.ViewState.Total)
+                            }
+                            @if (CartService.ViewState.PointsTotal > 0)
+                            {
+                                <span class="giz-home-cart__pts">@CartPointsText<i class="ph-fill ph-coins"></i></span>
+                            }
+                        </b>
+                        <small>@CartSummary</small>
+                    </span>
+                    <button type="button" class="giz-home-cart__go" disabled="@CartBusy" @onclick="Checkout">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_CHECKOUT)</button>
+                </div>
+            }
+            else
+            {
+                <div class="giz-caption giz-caption--rule giz-home-till__foot">
+                    <span class="giz-caption__rule"></span>
+                    <a href="@ClientRoutes.ShopRoute">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_WHOLE_SHOP)</a>
                 </div>
             }
         </aside>

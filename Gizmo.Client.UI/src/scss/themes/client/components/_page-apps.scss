@@ -7,6 +7,13 @@
     flex-grow: 1;
     max-width: 256rem;
 
+    // The club sets the apps per row in the Manager. On a 21:9 screen that many columns made
+    // posters taller than half the screen; the catalogue takes the width a 16:9 screen of the
+    // same height would give it, centred, so the cards keep their 16:9 size.
+    @media (min-aspect-ratio: 2/1) {
+        max-width: min(256rem, calc(100vh * 16 / 9));
+    }
+
     &-wrapper {
         display: flex;
         justify-content: center;

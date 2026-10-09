@@ -56,94 +56,43 @@ $ac-line-2: var(--giz-glass-11);
         animation: giz-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
-    // ── head: avatar, name, figures ──────────────────────────────────────
-    &__head {
+    // ── figures: balance, points and time, as tiles ──────────────────────
+    &__stats {
         display: grid;
-        grid-template-columns: auto minmax(0, 1fr) auto;
-        align-items: center;
-        gap: calc(#{$ac-g} * 1.2);
-        padding: calc(#{$ac-g} * 1.1) calc(#{$ac-g} * 1.4);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.4rem;
+    }
+
+    // the caption and its note (current package, credit) on the first line, the figure alone on
+    // the second, so a tile with a note is as tall as one without
+    &__stat {
+        min-width: 0;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: baseline;
+        align-content: start;
+        column-gap: 1rem;
+        row-gap: 0.5rem;
+        padding: 1.8rem 2rem;
         border-radius: $ac-r;
         @include ac-glass;
-    }
-
-    &__avatar {
-        width: 8.8rem;
-        height: 8.8rem;
-        flex: none;
-
-        &.giz-avatar,
-        img {
-            width: 8.8rem;
-            height: 8.8rem;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-    }
-
-    &__who {
-        min-width: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    &__name {
-        margin: 0;
-        font-family: $font-family-header-theme-client;
-        font-size: clamp(2.4rem, 1.8rem + 0.8vw, 3.4rem);
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        line-height: 1.05;
-        color: $ac-ink;
-        @include ac-one-line;
-    }
-
-    &__sub {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem 1.2rem;
-        font-size: 1.35rem;
-        color: $ac-ink-2;
-
-        > span + span::before {
-            content: "·";
-            margin-right: 1.2rem;
-            color: $ac-ink-3;
-        }
-    }
-
-    &__stats {
-        display: flex;
-        align-items: stretch;
-        gap: 0;
-    }
-
-    &__stat {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        padding: 0.4rem 2.4rem;
-        border-left: 1px solid $ac-line;
-        min-width: 11rem;
-
-        &:first-child {
-            border-left: 0;
-            padding-left: 0;
-        }
 
         small {
+            grid-column: 1;
+            grid-row: 1;
             @include ac-cap;
         }
 
         b {
+            grid-column: 1 / -1;
+            grid-row: 2;
             @include ac-num;
-            font-size: clamp(1.9rem, 1.5rem + 0.5vw, 2.5rem);
-            color: $ac-ink;
-            white-space: nowrap;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            font-size: clamp(2.2rem, 1.6rem + 0.6vw, 2.8rem);
+            color: $ac-ink;
+            white-space: nowrap;
 
             i {
                 font-size: 0.75em;
@@ -151,15 +100,23 @@ $ac-line-2: var(--giz-glass-11);
             }
         }
 
-        span {
-            max-width: 22rem;
-            font-size: 1.15rem;
-            line-height: 1.35;
+        > span {
+            grid-column: 2;
+            grid-row: 1;
+            min-width: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
             color: $ac-ink-3;
+            @include ac-one-line;
         }
 
-        &--money b {
-            color: var(--giz-success-green);
+        &--money b { color: var(--giz-success-green); }
+
+        // the top-up sits at the right of the balance, across its rows
+        &--topup {
+            grid-template-columns: auto minmax(0, 1fr) auto;
+
+            b { grid-column: 1 / 3; }
         }
 
         // The HUD's eye hides the money here too.
@@ -171,87 +128,88 @@ $ac-line-2: var(--giz-glass-11);
 
             &::after {
                 content: "\2022\2022\2022\2022\2022";
-                font-size: clamp(1.9rem, 1.5rem + 0.5vw, 2.5rem);
+                font-size: clamp(2.2rem, 1.6rem + 0.6vw, 2.8rem);
                 letter-spacing: 0.2em;
                 color: var(--giz-text-3);
             }
         }
-
-        // Time and sales credit differ (one unlimited, one not): one figure each.
-        b .giz-account__credit-part {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3em;
-            max-width: none;
-            font-size: inherit;
-            line-height: inherit;
-            color: inherit;
-
-            & + .giz-account__credit-part { margin-left: 0.6em; }
-
-            .giz-account__credit-kind { color: var(--giz-text-3); }
-        }
     }
 
-    // ── tabs: the same segmented control the payment chooser uses ────────
-    &__tabs {
-        align-self: flex-start;
+    &__credit {
         display: flex;
-        gap: 0.4rem;
-        padding: 0.5rem;
-        border-radius: 1.6rem;
-        background: rgba(var(--giz-black-rgb), 0.26);
-        box-shadow: inset 0 0 0 1px $ac-line;
+        align-items: center;
+        flex-wrap: nowrap;
+        overflow: hidden;
+        gap: 0.5rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: $ac-ink-3;
+
+        i { font-size: 1.3rem; }
+    }
+
+    &__credit-part {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3em;
+
+        & + & { margin-left: 0.6em; }
+    }
+
+    &__credit-kind { color: var(--giz-text-off); }
+
+    &__stat &__topup {
+        grid-column: 3;
+        grid-row: 1 / span 2;
+        align-self: center;
+        height: 4rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0 1.8rem;
+        border: 0;
+        border-radius: $giz-r-pill;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.4rem;
+        font-weight: 700;
+        white-space: nowrap;
+        cursor: pointer;
+        @include giz-action-primary;
+
+        i { font-size: 1.5rem; }
+    }
+
+    // ── tabs: words with the accent underline ────────────────────────────
+    &__tabs {
+        display: flex;
+        gap: 3.2rem;
+        border-bottom: 1px solid var(--giz-glass-7);
     }
 
     &__tab {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.8rem;
-        height: 4.2rem;
-        padding: 0 1.8rem;
-        border-radius: 1.2rem;
-        color: $ac-ink-2;
-        font-size: 1.4rem;
+        margin-bottom: -1px;
+        padding: 0 0 1.4rem;
+        border-bottom: 3px solid transparent;
+        color: $ac-ink-3;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.7rem;
         font-weight: 700;
         text-decoration: none;
-        transition: background 0.15s, color 0.15s;
+        transition: color 0.15s, border-color 0.15s;
 
-        i {
-            font-size: 1.7rem;
-            color: $ac-ink-3;
-            transition: color 0.15s;
-        }
-
-        &:hover {
-            color: $ac-ink;
-            background: var(--giz-glass-4);
-
-            i {
-                color: $ac-ink-2;
-            }
-        }
+        &:hover { color: $ac-ink-2; }
 
         &.active {
-            background: var(--giz-action-bg);
-            color: var(--giz-action-ink);
-            box-shadow: inset 0 1px 0 rgba(var(--giz-white-rgb), 0.25), 0 0.8rem 2rem -1rem rgba(var(--giz-accent-rgb), 0.7);
-
-            i {
-                color: inherit;
-            }
+            border-color: var(--giz-accent);
+            color: $ac-ink;
         }
     }
 
     &__body {
         min-height: 0;
-    }
-
-    &__grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, 38rem), 1fr));
+        display: flex;
+        flex-direction: column;
         gap: $ac-g;
-        align-items: start;
     }
 
     &__version {
@@ -265,162 +223,42 @@ $ac-line-2: var(--giz-glass-11);
     }
 }
 
-// ── cards ────────────────────────────────────────────────────────────────
-.giz-account-card {
+// ── waiting and empty ───────────────────────────────────────────────────
+.giz-account-wait {
     display: flex;
-    flex-direction: column;
-    gap: 1.6rem;
-    padding: calc(#{$ac-g} * 1.1) calc(#{$ac-g} * 1.3);
-    border-radius: $ac-r;
-    @include ac-glass;
+    justify-content: center;
+    padding: 3rem 0;
 
-    &__head {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        flex-wrap: wrap;
-
-        > i {
-            width: 3.6rem;
-            height: 3.6rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 1.1rem;
-            background: rgba(var(--giz-accent-rgb), 0.14);
-            color: var(--giz-accent-soft);
-            font-size: 1.8rem;
-        }
-
-        h2 {
-            margin: 0;
-            font-family: $font-family-header-theme-client;
-            font-size: 1.7rem;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-            color: $ac-ink;
-        }
-    }
-
-    &__hint {
-        margin-left: auto;
-        font-size: 1.2rem;
-        color: $ac-ink-3;
-    }
-
-    &__fields {
-        display: flex;
-        flex-direction: column;
-    }
-
-    &__note {
+    .giz-animate-spinner {
+        height: 4rem;
         margin: 0;
-        font-size: 1.25rem;
-        line-height: 1.4;
-        color: $ac-ink-3;
-    }
-
-    &__actions {
-        display: flex;
-        gap: 0.8rem;
-    }
-
-    &__wait {
-        display: flex;
-        justify-content: center;
-        padding: 3rem 0;
-
-        .giz-animate-spinner {
-            height: 4rem;
-            margin: 0;
-        }
-    }
-
-    &__empty {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.6rem;
-        padding: 4rem 2rem;
-        text-align: center;
-
-        i {
-            font-size: 3.6rem;
-            color: $ac-ink-3;
-            margin-bottom: 0.6rem;
-        }
-
-        b {
-            font-size: 1.6rem;
-            color: $ac-ink;
-        }
-
-        span {
-            font-size: 1.3rem;
-            color: $ac-ink-3;
-        }
     }
 }
 
-.giz-account-field {
+.giz-account-empty {
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
-    padding: 1.1rem 0;
-    border-top: 1px solid $ac-line;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 4rem 2rem;
+    border-radius: $ac-r;
+    text-align: center;
+    @include ac-glass;
 
-    &:first-child {
-        border-top: 0;
-        padding-top: 0;
-    }
-
-    small {
-        @include ac-cap;
+    i {
+        margin-bottom: 0.6rem;
+        font-size: 3.6rem;
+        color: $ac-ink-3;
     }
 
     b {
-        font-size: 1.55rem;
-        font-weight: 600;
-        color: $ac-ink;
-        @include ac-one-line;
-    }
-
-    &__empty {
-        font-size: 1.45rem;
-        color: $ac-ink-3;
-    }
-
-    &__secret {
-        letter-spacing: 0.18em;
-
-        &::before { content: "\2022\2022\2022\2022\2022\2022\2022\2022"; }
-    }
-}
-
-.giz-account-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.8rem;
-    height: 4.4rem;
-    padding: 0 1.8rem;
-    border-radius: 1.3rem;
-    border: 1px solid $ac-line-2;
-    background: var(--giz-glass-5);
-    color: $ac-ink;
-    font: inherit;
-    font-size: 1.4rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.15s, border-color 0.15s;
-
-    i {
         font-size: 1.6rem;
-        color: var(--giz-accent-soft);
+        color: $ac-ink;
     }
 
-    &:hover {
-        background: rgba(var(--giz-accent-rgb), 0.16);
-        border-color: rgba(var(--giz-accent-rgb), 0.4);
+    span {
+        font-size: 1.3rem;
+        color: $ac-ink-3;
     }
 }
 
@@ -446,16 +284,6 @@ $ac-line-2: var(--giz-glass-11);
         color: var(--giz-accent-soft);
     }
 
-    &--good {
-        background: rgba(var(--giz-success-green-rgb), 0.14);
-        color: var(--giz-success-leaf);
-    }
-
-    &--wait {
-        background: rgba(var(--giz-warning-amber-rgb), 0.14);
-        color: var(--giz-warning-soft);
-    }
-
     &--off,
     &--off {
         background: var(--giz-glass-4);
@@ -465,201 +293,6 @@ $ac-line-2: var(--giz-glass-11);
     &--credit {
         background: rgba(var(--giz-warning-light-rgb), 0.14);
         color: var(--giz-warning-light);
-    }
-}
-
-// ── time products ────────────────────────────────────────────────────────
-.giz-account-time {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-
-    &__row {
-        display: grid;
-        grid-template-columns: auto auto minmax(0, 1fr) auto auto auto;
-        align-items: center;
-        gap: 1.4rem;
-        padding: 1.2rem 1.4rem;
-        border-radius: 1.5rem;
-        background: rgba(var(--giz-white-rgb), 0.035);
-        box-shadow: inset 0 0 0 1px $ac-line;
-
-        &--current {
-            background: rgba(var(--giz-accent-rgb), 0.08);
-            box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.28);
-        }
-
-        &--idle {
-            opacity: 0.72;
-        }
-    }
-
-    &__order {
-        width: 2.4rem;
-        height: 2.4rem;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        background: var(--giz-glass-9);
-        @include ac-num;
-        font-size: 1.15rem;
-        color: $ac-ink-2;
-
-        .giz-account-time__row--current & {
-            background: var(--giz-accent);
-            color: var(--giz-on-accent);
-        }
-    }
-
-    &__type {
-        width: 4.2rem;
-        height: 4.2rem;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 1.2rem;
-        background: var(--giz-glass-5);
-        color: $ac-ink-2;
-        font-size: 2rem;
-
-        .giz-account-time__row--current & {
-            color: var(--giz-accent-soft);
-        }
-
-        .giz-account-time__row--credit & {
-            color: var(--giz-warning-light);
-        }
-    }
-
-    &__main {
-        min-width: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    &__line {
-        display: flex;
-        align-items: center;
-        gap: 0.8rem;
-        min-width: 0;
-    }
-
-    &__name {
-        font-size: 1.55rem;
-        font-weight: 700;
-        color: $ac-ink;
-        @include ac-one-line;
-        flex: 0 1 auto;
-        min-width: 0;
-    }
-
-    &__kind {
-        font-size: 1.2rem;
-        color: $ac-ink-3;
-        white-space: nowrap;
-    }
-
-    &__meta {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 0.4rem 1.6rem;
-        min-width: 0;
-    }
-
-    &__fact {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        min-width: 0;
-        font-size: 1.2rem;
-        color: $ac-ink-2;
-
-        > i {
-            font-size: 1.4rem;
-            color: $ac-ink-3;
-        }
-
-        > span {
-            @include ac-one-line;
-        }
-
-        &--hosts {
-            flex: 1 1 12rem;
-        }
-    }
-
-    &__stat {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 0.3rem;
-        min-width: 8rem;
-
-        small {
-            @include ac-cap;
-        }
-
-        b {
-            @include ac-num;
-            font-size: 1.7rem;
-            color: $ac-ink;
-            white-space: nowrap;
-        }
-    }
-
-    &__open {
-        width: 3.6rem;
-        height: 3.6rem;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 1.1rem;
-        border: 1px solid $ac-line-2;
-        background: var(--giz-glass-4);
-        color: $ac-ink-2;
-        font-size: 1.5rem;
-        cursor: pointer;
-        transition: background 0.15s, color 0.15s;
-
-        &:hover {
-            background: rgba(var(--giz-accent-rgb), 0.18);
-            color: $ac-ink;
-        }
-
-        &--none {
-            border: 0;
-            background: none;
-            cursor: default;
-        }
-    }
-
-    .giz-user-time-products-host-groups {
-        display: flex;
-        gap: 0.4rem;
-        align-items: center;
-        white-space: nowrap;
-        overflow: hidden;
-        max-width: 100%;
-        min-width: 0;
-
-        .giz-user-time-products-host-group,
-        .giz-user-time-products-host-group--additional {
-            padding: 0.2rem 0.7rem;
-            border-radius: 0.6rem;
-            background: var(--giz-glass-6);
-            color: $ac-ink-2;
-            font-size: 1.15rem;
-            font-weight: 600;
-            line-height: 1.6;
-        }
-
-        .giz-user-time-products-host-group.active {
-            background: rgba(var(--giz-accent-rgb), 0.16);
-            color: var(--giz-accent-soft);
-        }
     }
 }
 
@@ -723,212 +356,6 @@ $ac-line-2: var(--giz-glass-11);
     }
 }
 
-.giz-account-orders {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-}
-
-.giz-account-order {
-    border-radius: 1.5rem;
-    background: rgba(var(--giz-white-rgb), 0.035);
-    box-shadow: inset 0 0 0 1px $ac-line;
-    transition: background 0.15s;
-
-    &[open] {
-        background: var(--giz-glass-4);
-    }
-
-    &__sum {
-        display: grid;
-        grid-template-columns: auto minmax(0, 1fr) auto auto auto;
-        align-items: center;
-        gap: 1.6rem;
-        padding: 1.1rem 1.4rem;
-        list-style: none;
-        cursor: pointer;
-        border-radius: 1.5rem;
-
-        &::-webkit-details-marker {
-            display: none;
-        }
-
-        &:hover {
-            background: var(--giz-glass-2);
-        }
-    }
-
-    &__when {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.2rem;
-        min-width: 5.6rem;
-
-        b {
-            @include ac-num;
-            font-size: 1.4rem;
-            color: $ac-ink;
-            white-space: nowrap;
-        }
-
-        small {
-            @include ac-num;
-            font-size: 1.15rem;
-            color: $ac-ink-3;
-        }
-    }
-
-    &__what {
-        min-width: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 0.3rem;
-
-        b {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: $ac-ink;
-            @include ac-one-line;
-        }
-
-        small {
-            font-size: 1.2rem;
-            color: $ac-ink-3;
-            @include ac-one-line;
-        }
-    }
-
-    &__sum-total {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 1rem;
-        min-width: 11rem;
-
-        b {
-            @include ac-num;
-            font-size: 1.6rem;
-            color: $ac-ink;
-            white-space: nowrap;
-        }
-    }
-
-    &__pts {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-
-        i {
-            font-size: 0.85em;
-            color: var(--giz-points);
-        }
-    }
-
-    &__status {
-        display: flex;
-        justify-content: flex-end;
-        gap: 0.5rem;
-        min-width: 17rem;
-    }
-
-    &__caret {
-        font-size: 1.4rem;
-        color: $ac-ink-3;
-        transition: transform 0.2s;
-
-        [open] > summary & {
-            transform: rotate(180deg);
-        }
-    }
-
-    &__body {
-        padding: 0.2rem 1.4rem 1.4rem;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    &__lines {
-        display: flex;
-        flex-direction: column;
-        border-top: 1px solid $ac-line;
-    }
-
-    &__line {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto auto;
-        align-items: center;
-        gap: 1.6rem;
-        padding: 0.8rem 0;
-        border-bottom: 1px solid $ac-line;
-        font-size: 1.35rem;
-        color: $ac-ink-2;
-
-        &-name {
-            @include ac-one-line;
-            color: $ac-ink;
-            text-decoration: none;
-        }
-
-        a.giz-account-order__line-name:hover {
-            color: var(--giz-accent-soft);
-        }
-
-        &-qty {
-            color: $ac-ink-3;
-            white-space: nowrap;
-            font-variant-numeric: tabular-nums;
-        }
-
-        &-sum {
-            @include ac-num;
-            font-size: 1.35rem;
-            color: $ac-ink;
-            white-space: nowrap;
-        }
-    }
-
-    &__extra {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem 2rem;
-        font-size: 1.25rem;
-        color: $ac-ink-2;
-    }
-
-    &__earned {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-
-        i {
-            color: var(--giz-points);
-        }
-    }
-
-    &__note {
-        color: $ac-ink-3;
-    }
-}
-
-// ── narrow: the head stacks, rows drop the figures under the name ────────
-@media (max-width: 1500px) {
-    .giz-account__head {
-        grid-template-columns: auto minmax(0, 1fr);
-    }
-
-    .giz-account__stats {
-        grid-column: 1 / -1;
-        padding-top: 1.4rem;
-        border-top: 1px solid $ac-line;
-    }
-}
-
-.giz-account-order__fact + .giz-account-order__fact::before {
-    content: "\00a0\00b7\00a0";
-}
-
-.giz-account-time__row--idle .giz-account-time__order::before {
-    content: "\2013";
+@media (max-width: 1100px) {
+    .giz-account__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

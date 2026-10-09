@@ -7,7 +7,8 @@
     cursor: pointer;
 
     // Launch progress: a ring round the icon, filling while the size is known, a comet
-    // running round while it is not. Width, inset and colours are set per place.
+    // running round while it is not; once the program runs, a quarter of it stays under the
+    // icon, set a little further out. Width, inset and colours are set per place.
     &-progress-bar {
         --giz-exe-ring-w: 0.3rem;
         --giz-exe-ring-inset: 0.2rem;
@@ -58,6 +59,17 @@
                     opacity: 1;
                     transform: none;
                 }
+            }
+
+            &--running {
+                inset: calc(var(--giz-exe-ring-inset) - var(--giz-exe-run-gap, 0.2rem));
+                background: conic-gradient(transparent 0 0.375turn, var(--giz-exe-ring-colour, var(--giz-accent-light)) 0.375turn 0.625turn, transparent 0.625turn);
+
+                &::before,
+                &::after { opacity: 1; }
+
+                &::before { transform: rotate(0.375turn); }
+                &::after { transform: rotate(0.625turn); }
             }
         }
     }

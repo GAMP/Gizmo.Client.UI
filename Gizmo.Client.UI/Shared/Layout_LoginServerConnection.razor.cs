@@ -14,12 +14,6 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         ClientConnectionViewState ViewState { get; set; }
 
-        private string ClassName => ViewState.IsConnected ? "giz-server" : "giz-server giz-server--offline";
-
-        private string StatusText => GrafitLocalization.GetString(ViewState.IsConnected
-            ? GrafitResourceKeys.SHELL_SERVER_ONLINE
-            : GrafitResourceKeys.SHELL_SERVER_OFFLINE);
-
         protected override void OnInitialized()
         {
             this.SubscribeChange(ViewState);

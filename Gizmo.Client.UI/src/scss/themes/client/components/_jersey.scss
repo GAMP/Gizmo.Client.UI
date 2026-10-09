@@ -1,0 +1,147 @@
+//=============== Jersey ================//
+// The account head as a sports jersey: the club's colour, the nickname set huge, the time in the
+// club and the level above it; the name, the contacts and the password key below.
+
+.giz-jersey {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(2rem, 1.2rem + 1vw, 2.8rem) clamp(2.2rem, 1.4rem + 1.2vw, 3.4rem);
+    border-radius: 2.4rem;
+    background: var(--giz-accent);
+    color: var(--giz-on-accent);
+    overflow: hidden;
+
+    &__top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2rem;
+        min-height: 2.6rem;
+    }
+
+    &__since {
+        font-family: $font-family-header-theme-client;
+        font-size: 1.2rem;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    &__nick {
+        max-width: 100%;
+        margin: 1rem 0 0;
+        padding-bottom: 0.06em;
+        font-family: $font-family-header-theme-client;
+        font-size: clamp(8rem, 3rem + 6vw, 15rem);
+        font-weight: 800;
+        line-height: 0.95;
+        letter-spacing: -0.055em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        &--mid { font-size: clamp(6rem, 2.4rem + 4.4vw, 11rem); }
+
+        &--long {
+            font-size: clamp(4.4rem, 1.8rem + 3.2vw, 8rem);
+            letter-spacing: -0.04em;
+        }
+    }
+
+    &__bottom {
+        margin-top: 2rem;
+        display: flex;
+        align-items: flex-end;
+        gap: 2.4rem;
+        min-height: 4.4rem;
+    }
+
+    &__name {
+        min-width: 0;
+        margin-right: auto;
+        font-size: 1.8rem;
+        font-weight: 700;
+        opacity: 0.75;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__contacts {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.6rem;
+        font-size: 1.45rem;
+        font-weight: 700;
+
+        span {
+            max-width: 40rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        }
+
+        i { opacity: 0.7; }
+    }
+
+    &__key {
+        flex: none;
+        height: 4.4rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0 1.8rem;
+        border: 0;
+        border-radius: $giz-r-pill;
+        background: rgba(var(--giz-black-rgb), 0.2);
+        color: inherit;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.4rem;
+        font-weight: 800;
+        cursor: pointer;
+        transition: background 0.15s;
+
+        &:hover { background: rgba(var(--giz-black-rgb), 0.3); }
+
+        i { font-size: 1.7rem; }
+    }
+
+    .giz-profile-header-ladder {
+        margin-top: 0;
+
+        .giz-ladder-rank {
+            background: var(--giz-on-accent);
+            color: var(--giz-accent);
+        }
+    }
+
+    .giz-profile-header-ladder__name,
+    .giz-profile-header-ladder__status,
+    .giz-profile-header-ladder__chevron { color: inherit; }
+
+    .giz-profile-header-ladder__status { opacity: 0.75; }
+}
+
+@media (max-height: 840px) {
+    .giz-jersey { padding-top: 1.8rem; padding-bottom: 2rem; }
+    .giz-jersey__nick { font-size: 9rem; }
+    .giz-jersey__nick--mid { font-size: 7rem; }
+    .giz-jersey__nick--long { font-size: 5.4rem; }
+    .giz-jersey__bottom { margin-top: 1.2rem; }
+}
+
+@media (max-width: 1100px) {
+    .giz-jersey__bottom {
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .giz-jersey__contacts { align-items: flex-start; }
+}

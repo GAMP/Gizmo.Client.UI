@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gizmo.Client.Options;
@@ -23,6 +24,7 @@ namespace Gizmo.Client.UI.Shared
         private bool _locked = false;
         private bool _disposed = false;
         private readonly RegistrationCardContext _card = new();
+        private readonly RecoveryHandoff _recovery = new();
 
         [Inject()]
         UserRegistrationConfigurationViewState UserRegisterConfigurationViewState { get; init; }
@@ -46,7 +48,7 @@ namespace Gizmo.Client.UI.Shared
         private LogoViewState LogoViewState { get; set; }
 
         [Inject]
-        IOptions<ClientInterfaceOptions> ClientUIOptions { get; set; }
+        IOptionsMonitor<ClientInterfaceOptions> ClientUIOptions { get; set; }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -69,12 +71,6 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         IRegistrationSessionService RegistrationSession { get; set; }
 
-        private bool HasAboutStep =>
-            RegistrationSession.RequiredUserInfo?.Country == true ||
-            RegistrationSession.RequiredUserInfo?.Address == true ||
-            RegistrationSession.RequiredUserInfo?.City == true ||
-            RegistrationSession.RequiredUserInfo?.PostCode == true;
-
         private static readonly string[] VerificationRoutes =
         {
             ClientRoutes.RegistrationIndexRoute,
@@ -86,29 +82,39 @@ namespace Gizmo.Client.UI.Shared
             ClientRoutes.RegistrationErrorRoute,
         };
 
-        private RegistrationStep? CurrentRegistrationStep
+        private SignupStage? CurrentSignupStage
         {
             get
             {
                 var path = "/" + NavigationManager.ToBaseRelativePath(NavigationManager.Uri).Split('?', '#')[0].TrimEnd('/');
 
+                if (string.Equals(path, ClientRoutes.RegistrationIndexRoute, StringComparison.OrdinalIgnoreCase))
+                    return SignupStage.Rules;
+
                 if (string.Equals(path, ClientRoutes.RegistrationBasicFieldsRoute, StringComparison.OrdinalIgnoreCase))
-                    return RegistrationStep.Account;
+                    return _card.Stage ?? SignupStage.Nick;
 
                 if (string.Equals(path, ClientRoutes.RegistrationAdditionalFieldsRoute, StringComparison.OrdinalIgnoreCase))
-                    return RegistrationStep.About;
+                    return SignupStage.Address;
 
                 return VerificationRoutes.Any(route => string.Equals(path, route, StringComparison.OrdinalIgnoreCase))
-                    ? RegistrationStep.Verify
+                    ? SignupStage.Verify
                     : null;
             }
         }
+
+        private IReadOnlyList<SignupStage> RoadStages => SignupStages.Road(
+            RegistrationSession,
+            RegistrationSession.AgreementChoices.Count > 0 || CurrentSignupStage == SignupStage.Rules,
+            !UserRegisterConfigurationViewState.IsDirectEnabled);
 
         private void OnLocationChanged(object sender, LocationChangedEventArgs e) => HandlePositionChanged();
 
         private void OnCardChanged(object sender, EventArgs e) => HandlePositionChanged();
 
         private void OnRegistrationCleared(object sender, EventArgs e) => _card.SetDraft(null);
+
+        private void OnRegistrationChanged(object sender, EventArgs e) => _card.NoteToken(RegistrationSession.Token);
 
         private void CloseWelcome() => _card.CloseWelcome();
 
@@ -150,6 +156,7 @@ namespace Gizmo.Client.UI.Shared
             HostHumberViewService.OnPositionChanged += HandlePositionChanged;
             NavigationManager.LocationChanged += OnLocationChanged;
             RegistrationSession.Cleared += OnRegistrationCleared;
+            RegistrationSession.Changed += OnRegistrationChanged;
             _card.Changed += OnCardChanged;
             
             _locked = UserLoginOptions.Value.Disabled && !UserRegisterConfigurationViewState.IsEnabled;
@@ -167,7 +174,7 @@ namespace Gizmo.Client.UI.Shared
                 .AsString();
 
         private bool HasClubBackground =>
-            !string.IsNullOrEmpty(ClientUIOptions.Value.LoginBackground) || LoginRotatorViewState.IsEnabled;
+            !string.IsNullOrEmpty(ClientUIOptions.CurrentValue.LoginBackground) || LoginRotatorViewState.IsEnabled;
 
         #endregion
 
@@ -209,6 +216,7 @@ namespace Gizmo.Client.UI.Shared
             HostHumberViewService.OnPositionChanged -= HandlePositionChanged;
             NavigationManager.LocationChanged -= OnLocationChanged;
             RegistrationSession.Cleared -= OnRegistrationCleared;
+            RegistrationSession.Changed -= OnRegistrationChanged;
             _card.Changed -= OnCardChanged;
 
             this.UnsubscribeChange(LoginRotatorViewState);

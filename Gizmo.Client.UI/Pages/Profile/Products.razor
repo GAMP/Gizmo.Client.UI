@@ -1,41 +1,6 @@
 ﻿@namespace Gizmo.Client.UI.Pages
 @inherits CustomDOMComponentBase
-@using Gizmo.Client.UI.View.States
 
 <AccountFrame>
-    <section class="giz-account-card giz-account-card--list">
-        <div class="giz-account-card__head">
-            <i class="ph-fill ph-hourglass-medium"></i>
-            <h2>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_TIME_PRODUCTS_TITLE))</h2>
-            <span class="giz-account-card__hint">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_TIME_HINT)</span>
-        </div>
-
-        @if (ViewState.IsInitializing)
-        {
-            <div class="giz-account-card__wait"><Spinner /></div>
-        }
-        else if (ViewState.IsInitialized == true)
-        {
-            if (OrderedTimeProducts.Count == 0)
-            {
-                <div class="giz-account-card__empty">
-                    <i class="ph ph-hourglass"></i>
-                    <b>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_NO_TIME)</b>
-                    <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_ACCOUNT_NO_TIME_HINT)</span>
-                </div>
-            }
-            else
-            {
-                <div class="giz-account-time">
-                    @foreach (var product in OrderedTimeProducts)
-                    {
-                        <TimeProductRow @key="product"
-                                        Product="@product"
-                                        CanOpen="@(ProductDetailsNavigationEnabled && product.TimeProductType == UsageType.TimeOffer && product.ProductId.HasValue)"
-                                        OnOpen="@(() => OpenDetails(product.ProductId.Value))" />
-                    }
-                </div>
-            }
-        }
-    </section>
+    <TimeSection />
 </AccountFrame>

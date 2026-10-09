@@ -1,14 +1,10 @@
 @namespace Gizmo.Client.UI.Pages
-@inherits CustomDOMComponentBase
+@inherits ShellComponentBase
 
 <AccountFrame>
     <div class="giz-challenges">
         <div class="giz-challenges__header">
             <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_CHALLENGES))</span>
-            @if (!ViewState.IsLoading && !ViewState.HasError)
-            {
-                <span class="giz-challenges__count">@ViewState.CompletedCountText</span>
-            }
         </div>
 
         @if (ViewState.IsLoading)

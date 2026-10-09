@@ -1,3 +1,6 @@
+using Gizmo;
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using System;
 using System.Collections.Generic;
 using Gizmo.UI.Services;
@@ -35,7 +38,26 @@ namespace Gizmo.Client.UI.Components.Login
         [Parameter]
         public EventCallback<int> OnSelect { get; set; }
 
-        private static string GetProviderCssClass(bool isPrimary) =>
-            isPrimary ? "giz-registration-provider-btn--primary" : string.Empty;
+        [Parameter]
+        public bool ShowHeading { get; set; } = true;
+
+        [CascadingParameter]
+        protected GrafitLocalizationService GrafitLocalization { get; set; }
+
+        private string HintOf(ProviderOption provider)
+        {
+            var channel = provider.ChannelGuid.ToString("D");
+
+            if (channel.Equals(CommunicationChannels.Telegram, StringComparison.OrdinalIgnoreCase))
+                return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_WAY_TELEGRAM);
+
+            if (channel.Equals(CommunicationChannels.Sms, StringComparison.OrdinalIgnoreCase))
+                return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_WAY_SMS);
+
+            if (channel.Equals(CommunicationChannels.Email, StringComparison.OrdinalIgnoreCase))
+                return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_WAY_EMAIL);
+
+            return null;
+        }
     }
 }

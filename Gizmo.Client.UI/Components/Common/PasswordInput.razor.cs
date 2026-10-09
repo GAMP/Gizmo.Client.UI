@@ -427,6 +427,10 @@ namespace Gizmo.Client.UI.Components
             return Task.CompletedTask;
         }
 
+        protected string RevealIconClass => IsPasswordVisible ? "ph-bold ph-eye-slash" : "ph-bold ph-eye";
+
+        protected int RevealTabIndex => CanFocusRevealButton ? 0 : -1;
+
         public Task OnClickButtonEyeHandler(MouseEventArgs args)
         {
             IsPasswordVisible = !IsPasswordVisible;

@@ -1,56 +1,52 @@
 //=============== Home progress ================//
-// The home board's second right-hand tile, one button into the Progress tab: the level plate
-// (or the tally when the club runs no ladder) with the name and status, the meter, and the
-// next challenge step under a hairline.
+// The home board's second right-hand tile: the level (or the tally when the club runs no ladder)
+// on one line, the next challenge steps and the achievements closest to done centred in the room
+// left, and one button into the Progress tab.
 
 .giz-home-progress {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 1.6rem;
-    width: calc(100% + 2rem);
-    margin: calc(clamp(0.8rem, 0.45rem + 0.6vw, 1.6rem) - 1rem) -1rem -1rem;
-    padding: 1rem;
-    border: 0;
-    border-radius: 1.4rem;
-    background: none;
-    transition: background 0.15s;
-    color: inherit;
-    font: inherit;
-    text-align: left;
-    cursor: pointer;
-
-    &__top {
+    &__head {
+        flex: none;
         display: flex;
         align-items: center;
-        gap: 1.4rem;
+        gap: 1.2rem;
         min-width: 0;
+
+        .giz-ladder-badge {
+            flex: none;
+            width: 3.6rem;
+            height: 3.6rem;
+            border-radius: 0.6rem;
+        }
+
+        .giz-ladder-rank {
+            width: 100%;
+            height: 100%;
+            border-radius: 0.6rem;
+            font-size: 1.9rem;
+            line-height: 1;
+        }
     }
 
-    .giz-ladder-badge {
+    &__glyph {
         flex: none;
-        width: 4.4rem;
-        height: 4.4rem;
-        border-radius: 0.6rem;
-    }
-
-    .giz-ladder-rank {
-        width: 100%;
-        height: 100%;
-        border-radius: 0.6rem;
-        font-size: 2.2rem;
-        line-height: 1;
+        width: 3.6rem;
+        height: 3.6rem;
+        display: grid;
+        place-items: center;
+        border-radius: 1rem;
+        background: var(--giz-glass-6);
+        color: var(--giz-text-2);
+        font-size: 1.8rem;
     }
 
     &__who {
-        flex: 1;
+        flex: 0 1 auto;
         min-width: 0;
+        display: flex;
+        flex-direction: column;
 
         b,
         span {
-            display: block;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -58,40 +54,22 @@
 
         b {
             font-family: $font-family-header-theme-client;
-            font-size: 2.2rem;
+            font-size: 1.7rem;
             font-weight: 800;
-            letter-spacing: -0.02em;
-            line-height: 1.1;
+            line-height: 1.15;
             color: var(--giz-text-1);
         }
 
         span {
-            margin-top: 0.3rem;
-            font-size: 1.4rem;
-            color: var(--giz-text-2);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--giz-text-3);
         }
     }
 
-    &__go {
-        flex: none;
-        font-size: 1.8rem;
-        color: var(--giz-text-3);
-        transition: color 0.15s, transform 0.15s;
-    }
-
-    &:hover {
-        background: var(--giz-glass-3);
-    }
-
-    &:hover &__go {
-        color: var(--giz-text-1);
-        transform: translateX(0.2rem);
-    }
-
     &__line {
-        display: block;
-        flex: none;
-        margin-top: auto;
+        flex: 1 1 6rem;
+        min-width: 4rem;
         height: 0.5rem;
         border-radius: 0.25rem;
         background: var(--giz-glass-6);
@@ -106,52 +84,44 @@
         }
     }
 
-    &__next {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        min-width: 0;
-        margin-top: auto;
-        padding-top: 1.2rem;
-        border-top: 1px solid var(--giz-glass-6);
-        font-size: 1.4rem;
-
-        .giz-home-progress__line + & {
-            margin-top: 0;
-        }
-
-        > i {
-            flex: none;
-            font-size: 1.6rem;
-            color: var(--giz-text-3);
-        }
-
-        em {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            flex: none;
-            margin-left: auto;
-            max-width: 40%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            font-family: $font-family-numeric-theme-client;
-            font-size: 1.4rem;
-            font-style: normal;
-            font-weight: 700;
-            color: var(--giz-text-1);
-        }
-    }
-
-    &__coin {
-        color: var(--giz-points);
-    }
-
-    &__step {
+    // Rows that do not fit whole wrap into a second column, outside the tile, so the list never
+    // shows half a row whatever the screen's height and shape. The negative margin lets the last
+    // row's bottom padding (empty space) run into the gap above the button.
+    &__list {
+        flex: 1 1 auto;
+        min-height: 0;
+        margin-bottom: -0.9rem;
         display: flex;
         flex-direction: column;
+        flex-wrap: wrap;
+        align-content: flex-start;
+        justify-content: safe center;
+        overflow: hidden;
+    }
+
+    &__row {
+        flex: none;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
         min-width: 0;
+        padding: 0.9rem 0;
+        border-top: 1px solid var(--giz-glass-5);
+
+        &:first-child {
+            border-top: 0;
+            padding-top: 0.2rem;
+        }
+
+    }
+
+    &__text {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
 
         b,
         span {
@@ -161,24 +131,86 @@
         }
 
         b {
+            font-size: 1.45rem;
             font-weight: 700;
             color: var(--giz-text-1);
         }
 
         span {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
+            font-weight: 600;
             color: var(--giz-text-3);
         }
     }
+
+    &__reward {
+        flex: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        max-width: 42%;
+        overflow: hidden;
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--giz-text-1);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        i {
+            flex: none;
+            color: var(--giz-text-3);
+        }
+    }
+
+    &__coin {
+        &,
+        .giz-home-progress__reward & { color: var(--giz-points); }
+    }
+
+    &__empty {
+        flex: 1 1 auto;
+        margin: 0;
+        font-size: 1.35rem;
+        line-height: 1.45;
+        color: var(--giz-text-3);
+    }
+
+    &__open {
+        flex: none;
+        width: 100%;
+        height: 4.4rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0 1.6rem;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.45rem;
+        font-weight: 700;
+        cursor: pointer;
+        @include giz-action-tonal;
+
+        i { font-size: 1.7rem; }
+
+        span { flex: 1; text-align: left; }
+    }
+
+    &__go { transition: transform 0.15s; }
+
+    &__open:hover &__go { transform: translateX(0.2rem); }
+}
+
+.giz-home-till--progress {
+    gap: 1.2rem;
+    justify-content: flex-start;
 }
 
 @media (max-height: 840px) {
-    .giz-home-progress {
-        gap: 1rem;
+    .giz-home-till--progress { gap: 0.9rem; }
 
-        .giz-ladder-badge { width: 3.8rem; height: 3.8rem; }
-        .giz-ladder-rank { font-size: 1.9rem; }
-        &__who b { font-size: 1.9rem; }
-        &__next { padding-top: 0.9rem; }
+    .giz-home-progress {
+        &__list { margin-bottom: -0.6rem; }
+        &__row { padding: 0.6rem 0; }
+        &__open { height: 3.8rem; }
     }
 }

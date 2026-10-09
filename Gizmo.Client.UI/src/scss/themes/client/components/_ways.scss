@@ -1,0 +1,76 @@
+//============= Ways to confirm ===============//
+
+// The ways to confirm an account as big rows in the sign-in's glass: the channel's icon, its name
+// with a line on what comes next, and an arrow.
+.giz-ways {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.giz-way {
+    width: 100%;
+    min-height: 8rem;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 1.8rem;
+    padding: 0 2.4rem 0 1.4rem;
+    border: 0;
+    border-radius: 2.4rem;
+    background:
+        linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-3)),
+        rgba(var(--giz-scrim-rgb), 0.62);
+    box-shadow: inset 0 0 0 1px var(--giz-glass-10), inset 0 1px 0 var(--giz-glass-12);
+    font-family: inherit;
+    text-align: left;
+    color: var(--giz-text-1);
+    cursor: pointer;
+    transition: box-shadow 0.15s;
+
+    &:hover { box-shadow: inset 0 0 0 2px var(--giz-accent), inset 0 1px 0 var(--giz-glass-12); }
+
+    &__icon {
+        flex: none;
+        width: 5.2rem;
+        height: 5.2rem;
+        display: grid;
+        place-items: center;
+        border-radius: 1.5rem;
+        background: var(--giz-action-tonal-bg);
+        color: var(--giz-accent-soft);
+
+        .giz-icon {
+            width: 2.6rem;
+            height: 2.6rem;
+        }
+    }
+
+    &__text {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+
+        b {
+            font-family: $font-family-header-theme-client;
+            font-size: 1.9rem;
+            font-weight: 800;
+        }
+
+        small {
+            font-size: 1.5rem;
+            color: var(--giz-text-2);
+        }
+    }
+
+    &__go {
+        flex: none;
+        font-size: 2.2rem;
+        color: var(--giz-text-3);
+        transition: color 0.15s;
+    }
+
+    &:hover &__go { color: var(--giz-accent-soft); }
+}

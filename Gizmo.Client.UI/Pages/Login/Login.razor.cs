@@ -25,6 +25,8 @@ namespace Gizmo.Client.UI.Pages
 
         [CascadingParameter] RegistrationCardContext Card { get; set; }
 
+        [CascadingParameter] RecoveryHandoff Recovery { get; set; }
+
         private FieldIdentifier? _countryFieldIdentifier;
 
         private string? _selectedCallingCodeDigits;
@@ -45,6 +47,8 @@ namespace Gizmo.Client.UI.Pages
         private bool _focusPassword;
         private bool _focusName;
         private bool _nameError;
+        private bool _passwordError;
+        private bool _awaitingResult;
         private bool _phoneTried;
 
         [Inject]
@@ -76,6 +80,9 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         IOptions<HostQRCodeOptions> HostQrCodeOptions { get; set; }
+
+        [Inject]
+        NavigationService NavigationService { get; set; }
 
         protected string QrTitle => string.IsNullOrEmpty(HostQrCodeOptions.Value.Title)
             ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGIN_QR_TITLE))
@@ -128,6 +135,8 @@ namespace Gizmo.Client.UI.Pages
 
         private bool ShowNameError => _nameError && ViewState.HasLoginError;
 
+        private bool ShowPasswordError => _passwordError && ViewState.HasLoginError;
+
         private string NamePillClass => IsPhoneLogin ? "giz-signin__pill giz-signin__pill--phone" : "giz-signin__pill";
 
         private bool IsQrStep => HostQRCodeViewState.IsEnabled && (_step == LoginStep.Qr || UserLoginOptions.Value.Disabled);
@@ -175,12 +184,14 @@ namespace Gizmo.Client.UI.Pages
             _step = LoginStep.Password;
             _focusPassword = true;
             _nameError = false;
+            _passwordError = false;
         }
 
         private void BackToName()
         {
             _step = LoginStep.Name;
             _nameError = false;
+            _passwordError = false;
             _focusName = true;
             UserLoginService.SetPassword(string.Empty);
         }
@@ -191,12 +202,20 @@ namespace Gizmo.Client.UI.Pages
                 return Task.CompletedTask;
 
             _submittedName = ViewState.LoginName;
+            _passwordError = false;
+            _awaitingResult = true;
 
             return UserLoginService.LoginAsync();
         }
 
         private void OnLoginViewStateChanged(object sender, EventArgs e)
         {
+            if (_awaitingResult && !IsBusy && ViewState.HasLoginError)
+            {
+                _awaitingResult = false;
+                _passwordError = true;
+            }
+
             if (_step == LoginStep.Name && _phoneTried && IsPhoneLogin && HasCheckedPhone)
             {
                 GoToPassword();
@@ -219,6 +238,16 @@ namespace Gizmo.Client.UI.Pages
         }
 
         private void OpenQr() => _step = LoginStep.Qr;
+
+        private void RecoverPassword()
+        {
+            var name = (ViewState.LoginName ?? string.Empty).Trim();
+
+            if (name.Length > 0)
+                Recovery?.Offer(new RecoveryRequest(IsPhoneLogin, name, ViewState.Country, ViewState.RegionCode));
+
+            NavigationService.NavigateTo(ClientRoutes.PasswordRecoveryKindRoute);
+        }
 
         private void OnCardChanged(object sender, EventArgs e)
         {

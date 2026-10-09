@@ -27,7 +27,6 @@ namespace Gizmo.Client.UI.Components
 
         [Inject] UserViewState UserViewState { get; set; }
         [Inject] ILogger<HomePass> Logger { get; set; }
-        [Inject] UserProfileViewState UserProfileViewState { get; set; }
         [Inject] UserBalanceViewState UserBalanceViewState { get; set; }
         [Inject] TimeProductsViewState TimeProductsViewState { get; set; }
         [Inject] TimeProductsViewService TimeProductsViewService { get; set; }
@@ -51,7 +50,7 @@ namespace Gizmo.Client.UI.Components
         {
             get
             {
-                var time = UserBalanceViewState.Time ?? TimeSpan.Zero;
+                var time = TimeLeft.NotNegative(UserBalanceViewState.Time);
                 return string.Create(CultureInfo.CurrentCulture, $"{(int)time.TotalHours}:{time.Minutes:00}");
             }
         }
@@ -61,9 +60,11 @@ namespace Gizmo.Client.UI.Components
                 DateTime.Now.Add(time).ToString("t", CultureInfo.CurrentCulture))
             : null;
 
-        private string SinceText => !UserViewState.IsGuest && UserProfileViewState.RegistrationDate != default
+        private DateTime RegisteredOn => UserViewState.RegistrationDate;
+
+        private string SinceText => !UserViewState.IsGuest && RegisteredOn != default
             ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_SINCE,
-                UserProfileViewState.RegistrationDate.ToLocalTime().ToString("yyyy", CultureInfo.CurrentCulture))
+                RegisteredOn.ToLocalTime().ToString("yyyy", CultureInfo.CurrentCulture))
             : null;
 
         private IReadOnlyList<TimeProductViewState> Queue => TimeProductsViewState.IsInitialized == true

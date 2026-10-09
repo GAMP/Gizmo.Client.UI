@@ -1,137 +1,143 @@
-//============= Client UI User agreement dialog ===========//
+//============= User agreement dialog ===========//
 
+// The club's agreement in full at once: a seal and the agreement's name, the whole text to scroll,
+// and two plain answers - accept, and decline or skip where the agreement allows it. The answers
+// come once the text is read to the end; until then one button stands in their place, turns the
+// text a page down and fills as the reading goes (--giz-read, set by watchAgreementReading).
 .giz-user-agreement-dialog {
-    max-width: 60.0rem;
-    border-radius: 2.8rem;
-    background:
-        linear-gradient(180deg, var(--giz-glass-5), var(--giz-glass-1)),
-        linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.94), rgba(var(--giz-glass-2-rgb), 0.97));
-    border: 1px solid var(--giz-glass-10);
-    box-shadow:
-        inset 0 1.5px 0 rgba(var(--giz-white-rgb), 0.22),
-        0 4rem 9rem -3rem rgba(var(--giz-black-rgb), 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-    .giz-client-dialog__header__title {
-        font-family: $font-family-header-theme-client;
-        font-weight: 800;
-        font-size: 2.4rem;
-        line-height: 1.25;
-        color: var(--giz-text-1);
-        letter-spacing: -0.01em;
+    &__panel.giz-client-dialog {
+        position: relative;
+        z-index: 1;
+        width: min(60rem, calc(100vw - 4rem));
+        max-width: none;
+        max-height: calc(100vh - 8rem);
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 1.8rem;
+        padding: 3.2rem 3.6rem;
+        border: 0;
+        border-radius: 3.2rem;
+        background:
+            linear-gradient(176deg, rgba(var(--giz-accent-rgb), 0.13) 0%, rgba(var(--giz-accent-rgb), 0) 38%),
+            var(--giz-panel);
+        box-shadow:
+            inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.26),
+            0 40px 80px -40px rgba(var(--giz-black-rgb), 0.95);
+        animation: giz-signin-in 0.5s cubic-bezier(0.2, 0, 0, 1) backwards;
+
+        &::before { display: none; }
     }
 
-    .giz-client-dialog__header__subtitle {
-        margin-top: 0.6rem;
-        color: var(--giz-text-3);
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
+    &--signup &__panel.giz-client-dialog { width: min(72rem, calc(100vw - 4rem)); }
+
+    &__panel.giz-client-dialog { max-height: min(76rem, calc(100vh - 16rem)); }
+
+    &__head {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 1.6rem;
+    }
+
+    &__seal {
+        flex: none;
+        width: 5.2rem;
+        height: 5.2rem;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--giz-action-tonal-bg);
+        font-size: 2.6rem;
+        color: var(--giz-accent-soft);
+    }
+
+    &__title {
+        flex: 1;
+        min-width: 0;
         font-family: $font-family-header-theme-client;
-        font-size: 1.1rem;
-        font-weight: 700;
+        font-size: 2.6rem;
+        font-weight: 800;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        color: var(--giz-text-1);
+    }
+
+    &__text {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        padding-right: 0.8rem;
+        -webkit-mask-image: linear-gradient(180deg, var(--giz-black) 90%, transparent);
+        mask-image: linear-gradient(180deg, var(--giz-black) 90%, transparent);
     }
 
     .user-agreement {
-        @include font-l-theme-client($font-weight-light-theme-client);
+        font-size: 1.55rem;
+        line-height: 2.4rem;
         color: var(--giz-text-2);
-        line-height: 2.2rem;
+
+        p { margin: 0 0 1.2rem; }
     }
 
-    .giz-client-dialog__body {
-        border-radius: 1.6rem;
-        background: rgba(var(--giz-black-rgb), 0.22);
-        border: 1px solid var(--giz-glass-6);
-        padding: 1.8rem 2rem;
+    &__actions {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(0, 1fr);
+        gap: 1.2rem;
     }
 
-    .giz-button--fill.accent:not(.disabled) {
-        height: 5.2rem;
-        border-radius: 1.5rem;
-        border: none;
+    &__decline,
+    &__accept {
+        min-width: 0;
+        height: 6.4rem;
+        padding: 0 2.4rem;
+        border: 0;
+        border-radius: 3rem;
         font-family: $font-family-header-theme-client;
+        font-size: 1.7rem;
         font-weight: 700;
-        transition: filter 0.18s, box-shadow 0.18s;
-
-        &,
-        &:hover {
-            background: var(--giz-action-bg);
-            color: var(--giz-action-ink);
-        }
-
-        &:hover {
-            filter: brightness(1.08);
-        }
+        cursor: pointer;
     }
 
-    .giz-client-dialog__body {
-        max-height: 24.0rem;
-        position: relative;
-        overflow-y: auto;
+    &__decline {
+        background: var(--giz-action-quiet-bg);
+        box-shadow: inset 0 0 0 1px var(--giz-action-quiet-line);
+        color: var(--giz-text-1);
+        transition: background 0.15s;
 
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-
-        &::-webkit-scrollbar {
-            display: none;
-        }
-
-        /*&:after {
-            content: '';
-            display: inline-block;
-            position: sticky;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-            background: linear-gradient(180deg, rgba(34, 39, 43, 0) 86.67%, #22272B 100%), transparent;
-        }*/
+        &:hover { background: var(--giz-glass-9); }
     }
 
-    .giz-check-box {
-        display: inline-flex;
-
-        input {
-            position: absolute;
-            left: -9999px;
-        }
-
-        input + label {
-            position: relative;
-            display: flex;
-            align-items: flex-start;
-        }
-
-        input:checked + label:after {
-            left: 0.7rem;
-        }
+    &__accept {
+        font-weight: 800;
+        @include giz-action-primary;
     }
 
-    .giz-user-agreement-checkboxes {
-        margin-bottom: 2.4rem;
+    &__read {
+        width: 100%;
+        height: 6.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        padding: 0 2.4rem;
+        border: 0;
+        border-radius: 3rem;
+        background: linear-gradient(90deg, var(--giz-action-tonal-bg) var(--giz-read, 0%), var(--giz-glass-5) var(--giz-read, 0%));
+        font-family: $font-family-header-theme-client;
+        font-size: 1.7rem;
+        font-weight: 700;
+        color: var(--giz-text-2);
+        cursor: pointer;
+        transition: color 0.15s;
 
-        .giz-check-box label {
-            align-items: flex-start;
-        }
+        i { font-size: 2rem; }
 
-        .giz-check-box label:before {
-            margin-top: 0.1rem;
-        }
-
-        .giz-check-box label span {
-            line-height: 2rem;
-            color: var(--giz-text-2);
-        }
-
-        // keep the tick aligned to the top-anchored box
-        .giz-check-box input:checked + label:after {
-            top: 1.2rem;
-        }
-    }
-
-    .giz-user-agreement-checkbox--required {
-        input:not(:checked) + label:before {
-            border-color: rgba(var(--giz-danger-rgb), 0.8);
-            background: rgba(var(--giz-danger-rgb), 0.12);
-        }
+        &:hover { color: var(--giz-text-1); }
     }
 }

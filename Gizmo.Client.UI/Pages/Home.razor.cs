@@ -33,7 +33,7 @@ namespace Gizmo.Client.UI.Pages
         private const int HERO_NEWS_CEILING = 30;
         private const int HERO_DOTS = 10;
         private const int HERO_EXECUTABLES = 3;
-        private const int BAR_ITEMS = 4;
+        private const int GOODS_CEILING = 24;
         private const int STRIP_APPS = 4;
         private const int PACKS_CEILING = 24;
 
@@ -53,6 +53,13 @@ namespace Gizmo.Client.UI.Pages
         private int _slide;
 
         private int? _buyingProductId;
+        private TillTab _tab = TillTab.Time;
+        private int? _group;
+        private IReadOnlyList<UserProductGroupViewState> _groups = Array.Empty<UserProductGroupViewState>();
+        private IReadOnlyList<UserProductViewState> _shop = Array.Empty<UserProductViewState>();
+        private IReadOnlyList<UserProductGroupViewState> _barGroups = Array.Empty<UserProductGroupViewState>();
+        private IReadOnlyList<UserProductViewState> _barGoods = Array.Empty<UserProductViewState>();
+        private Dictionary<int, UserCartProductViewState> _cartLines = new();
         private readonly CancellationTokenSource _lifetime = new();
 
         #endregion
@@ -73,6 +80,7 @@ namespace Gizmo.Client.UI.Pages
         [Inject] ClientServerCartViewService CartService { get; set; }
         [Inject] UserCartViewService CheckoutService { get; set; }
         [Inject] NavigationService NavigationService { get; set; }
+        [Inject] UserProductGroupViewStateLookupService GroupLookupService { get; set; }
 
         #endregion
 
@@ -81,17 +89,65 @@ namespace Gizmo.Client.UI.Pages
         private IEnumerable<UserProductViewState> TimeProducts =>
             Purchasable(a => a.ProductType == ProductType.ProductTime).Take(PACKS_CEILING);
 
-        private sealed record PackRow(UserProductViewState Product, string Length, string Unit, string PerHourText);
+        private sealed record PackRow(UserProductViewState Product, string Length, string Unit, bool IsBest);
 
         private IReadOnlyList<PackRow> _packs = Array.Empty<PackRow>();
 
         private IReadOnlyList<PackRow> Packs => _packs;
 
-        private void BuildPacks() => _packs = TimeProducts.Select(ToRow).ToList();
+        private void BuildLists()
+        {
+            var products = TimeProducts.ToList();
+            var best = BestValue(products);
 
-        private void OnProductsChanged(object sender, EventArgs e) => BuildPacks();
+            _packs = products.Select(a => ToRow(a, a.Id == best)).ToList();
+            _shop = Purchasable(a => a.ProductType != ProductType.ProductTime).ToList();
 
-        private PackRow ToRow(UserProductViewState product)
+            var used = _shop.Select(a => a.ProductGroupId).ToHashSet();
+
+            _barGroups = _groups
+                .Where(a => used.Contains(a.ProductGroupId))
+                .OrderBy(a => a.DisplayOrder)
+                .ThenBy(a => a.Name)
+                .ToList();
+
+            BuildBarGoods();
+        }
+
+        private void BuildBarGoods() => _barGoods = _shop
+            .Where(a => ActiveGroup is not int group || a.ProductGroupId == group)
+            .Take(GOODS_CEILING)
+            .ToList();
+
+        private void BuildCart()
+        {
+            var lines = new Dictionary<int, UserCartProductViewState>();
+
+            foreach (var line in CartService.ViewState.Products)
+            {
+                if (line.ProductId is int productId)
+                    lines.TryAdd(productId, line);
+            }
+
+            _cartLines = lines;
+        }
+
+        private void OnCartChanged(object sender, EventArgs e) => BuildCart();
+
+        private static int? BestValue(IReadOnlyList<UserProductViewState> products)
+        {
+            var hourly = products
+                .Where(a => !IsPointsOnly(a) && a.UnitPrice > 0 && (a.TimeProduct?.Minutes ?? 0) >= 60)
+                .Select(a => (a.Id, PerHour: a.UnitPrice / (a.TimeProduct.Minutes / 60m)))
+                .OrderBy(a => a.PerHour)
+                .ToList();
+
+            return hourly.Count > 1 && hourly[0].PerHour < hourly[1].PerHour ? hourly[0].Id : null;
+        }
+
+        private void OnProductsChanged(object sender, EventArgs e) => BuildLists();
+
+        private PackRow ToRow(UserProductViewState product, bool isBest)
         {
             var minutes = product.TimeProduct?.Minutes ?? 0;
 
@@ -110,23 +166,92 @@ namespace Gizmo.Client.UI.Pages
                 unit = GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PACK_UNIT_H);
             }
 
-            var perHour = minutes >= 60 && product.UnitPrice > 0
-                ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PACK_PER_HOUR,
-                    ShortMoney(Math.Round(product.UnitPrice / (minutes / 60m))))
-                : null;
-
-            return new PackRow(product, length, unit, perHour);
+            return new PackRow(product, length, unit, isBest);
         }
 
-        private string PriceRowClass(UserProductViewState product) => _buyingProductId == product.Id
-            ? "giz-home-prices__row giz-home-prices__row--busy"
-            : "giz-home-prices__row";
+        private string PackClass(PackRow pack) => _buyingProductId == pack.Product.Id
+            ? "giz-home-pack giz-home-pack--busy"
+            : "giz-home-pack";
 
-        private string BuyText(UserProductViewState product) => GrafitLocalization.GetString(_buyingProductId == product.Id
-            ? GrafitResourceKeys.SHELL_GEN_WORKING
-            : GrafitResourceKeys.SHELL_GEN_BUY);
+        private enum TillTab { Time, Bar }
 
-        private bool HasSales => TimeProducts.Any() || BarProducts.Count > 0;
+        private bool HasGoods => _shop.Count > 0;
+
+        private bool ShowTillTabs => Packs.Count > 0 && HasGoods;
+
+        private TillTab ActiveTab => !HasGoods ? TillTab.Time : Packs.Count == 0 ? TillTab.Bar : _tab;
+
+        private string TabClass(TillTab tab) => ActiveTab == tab
+            ? "giz-home-tabs__tab giz-home-tabs__tab--active"
+            : "giz-home-tabs__tab";
+
+        private void SelectTab(TillTab tab) => _tab = tab;
+
+        private int GoodsCount => _shop.Count;
+
+        private IReadOnlyList<UserProductGroupViewState> BarGroups => _barGroups;
+
+        private int? ActiveGroup => _group is int group && BarGroups.Any(a => a.ProductGroupId == group) ? group : null;
+
+        private string GroupClass(int? group) => ActiveGroup == group
+            ? "giz-home-cats__cat giz-home-cats__cat--active"
+            : "giz-home-cats__cat";
+
+        private void SelectGroup(int? group)
+        {
+            _group = group;
+            BuildBarGoods();
+        }
+
+        private IReadOnlyList<UserProductViewState> BarGoods => _barGoods;
+
+        private UserCartProductViewState CartLine(int productId) => _cartLines.GetValueOrDefault(productId);
+
+        private string GoodClass(UserProductViewState product) => CartLine(product.Id) is { Quantity: > 0 }
+            ? "giz-home-good giz-home-good--in"
+            : "giz-home-good";
+
+        private bool CartBusy => PackagePurchaseFlow.IsCartBusy(CartService);
+
+        private int CartCount => CartService.ViewState.Products.Sum(a => a.Quantity);
+
+        private bool ShowCartMoney => CartService.ViewState.Total > 0 || CartService.ViewState.PointsTotal == 0;
+
+        private string CartPointsText => CartService.ViewState.PointsTotal.ToString("N0", CultureInfo.CurrentCulture);
+
+        private string CartSummary
+        {
+            get
+            {
+                var lines = CartService.ViewState.Products.ToList();
+
+                return lines.Count == 1
+                    ? $"{lines[0].ProductName} × {lines[0].Quantity}"
+                    : GrafitLocalization.GetPluralString(GrafitResourceKeys.SHELL_BUY_ITEMS_COUNT, CartCount);
+            }
+        }
+
+        private void AddGood(int productId) => CartService.AddProduct(productId);
+
+        private void Increase(UserCartProductViewState line) => CartService.SetQuantity(line.Guid, line.Quantity + 1);
+
+        private void Decrease(UserCartProductViewState line)
+        {
+            if (line.Quantity > 1)
+                CartService.SetQuantity(line.Guid, line.Quantity - 1);
+            else
+                CartService.RemoveEntry(line.Guid);
+        }
+
+        private void Checkout()
+        {
+            if (CartBusy)
+                return;
+
+            DispatchWorkflow(() => CheckoutService.SubmitAsync());
+        }
+
+        private bool HasSales => _packs.Count > 0 || HasGoods;
 
         private string BoardClass => HasSales ? "giz-home-board" : "giz-home-board giz-home-board--bare";
 
@@ -134,24 +259,10 @@ namespace Gizmo.Client.UI.Pages
 
         private string PointsText => UserBalanceViewState.PointsBalance.ToString("N0", CultureInfo.CurrentCulture);
 
-        private IEnumerable<UserProductViewState> ShopProducts =>
-            Purchasable(a => a.ProductType != ProductType.ProductTime);
+        private IEnumerable<UserProductViewState> ShopProducts => _shop;
 
         private IReadOnlyList<UserProductViewState> HeroProducts =>
             ShopProducts.Take(HERO_SLIDES).ToList();
-
-        private IReadOnlyList<UserProductViewState> BarProducts
-        {
-            get
-            {
-                if (HasPromo)
-                    return ShopProducts.Take(BAR_ITEMS).ToList();
-
-                var rest = ShopProducts.Skip(HeroProducts.Count).Take(BAR_ITEMS).ToList();
-
-                return rest.Count > 0 ? rest : ShopProducts.Take(BAR_ITEMS).ToList();
-            }
-        }
 
         private IEnumerable<AppViewState> Apps
         {
@@ -373,11 +484,14 @@ namespace Gizmo.Client.UI.Pages
 
         protected override void OnInitialized()
         {
-            BuildPacks();
+            BuildLists();
+            BuildCart();
             ViewState.OnChange += OnProductsChanged;
             this.SubscribeChange(ViewState);
             this.SubscribeChange(UserBalanceViewState);
             this.SubscribeChange(AdvertisementsViewState);
+            CartService.ViewState.OnChange += OnCartChanged;
+            this.SubscribeChange(CartService.ViewState);
             ShellActivity.Changed += OnActivityChanged;
 
             ApplySlideTimer();
@@ -441,7 +555,17 @@ namespace Gizmo.Client.UI.Pages
                 _catalogue = Enumerable.Empty<UserProductViewState>();
             }
 
-            BuildPacks();
+            try
+            {
+                _groups = (await GroupLookupService.GetStatesAsync()).ToList();
+            }
+            catch (Exception exception)
+            {
+                Logger.LogError(exception, "Could not load the product groups for the home page.");
+                _groups = Array.Empty<UserProductGroupViewState>();
+            }
+
+            BuildLists();
 
             try
             {
@@ -465,6 +589,8 @@ namespace Gizmo.Client.UI.Pages
             _slideTimer?.Dispose();
             _slideTimer = null;
 
+            this.UnsubscribeChange(CartService.ViewState);
+            CartService.ViewState.OnChange -= OnCartChanged;
             this.UnsubscribeChange(AdvertisementsViewState);
             this.UnsubscribeChange(UserBalanceViewState);
             this.UnsubscribeChange(ViewState);

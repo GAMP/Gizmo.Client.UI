@@ -1942,3 +1942,44 @@ document.addEventListener("visibilitychange", _grafitEvaluate);
 });
 
 _grafitEvaluate();
+
+// The club's agreement is read to the end before it is answered: on every scroll the panel learns
+// how much is read (--giz-read, 0-100%), and the dialog hears once when the end is reached. A text
+// that fits without scrolling counts as read.
+window.watchAgreementReading = function watchAgreementReading(text, dialog) {
+    if (!text) {
+        return;
+    }
+
+    const panel = text.closest(".giz-user-agreement-dialog__panel") || text;
+    let ended = false;
+
+    if (text._gizReading) {
+        text.removeEventListener("scroll", text._gizReading);
+    }
+
+    text.scrollTop = 0;
+
+    const update = function () {
+        const room = text.scrollHeight - text.clientHeight;
+        const read = room <= 2 ? 1 : Math.min(1, text.scrollTop / (room - 2));
+        panel.style.setProperty("--giz-read", (read * 100).toFixed(1) + "%");
+
+        if (!ended && read >= 1) {
+            ended = true;
+            text.removeEventListener("scroll", update);
+            dialog.invokeMethodAsync("ReadToEnd").catch(() => {});
+        }
+    };
+
+    text._gizReading = update;
+    text.addEventListener("scroll", update, { passive: true });
+    requestAnimationFrame(update);
+};
+
+// The agreement's "read to the end" button turns the text a page down.
+window.scrollAgreementPage = function scrollAgreementPage(text) {
+    if (text) {
+        text.scrollBy({ top: text.clientHeight * 0.85, behavior: "smooth" });
+    }
+};

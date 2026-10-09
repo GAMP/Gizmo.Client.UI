@@ -1,0 +1,20 @@
+@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+@if (IsTime)
+{
+    <span class="giz-feed-order__thumb giz-feed-order__thumb--time"><i class="ph-bold ph-hourglass-medium"></i></span>
+}
+else if (Line.ProductId.HasValue)
+{
+    <span class="giz-feed-order__thumb">
+        <GizImage @key="Line.ProductId" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@_imageId" ImageFitType="ImageFitType.Cover">
+            <EmptyResultPlaceholder><i class="ph-bold ph-shopping-bag"></i></EmptyResultPlaceholder>
+            <ErrorPlaceholder><i class="ph-bold ph-shopping-bag"></i></ErrorPlaceholder>
+        </GizImage>
+    </span>
+}
+else
+{
+    <span class="giz-feed-order__thumb"><i class="ph-bold ph-receipt"></i></span>
+}
