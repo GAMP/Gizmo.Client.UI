@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Linq;
 using Gizmo.Client.UI.Localization.Resources;
 using Gizmo.Client.UI.Services;
@@ -23,8 +23,6 @@ namespace Gizmo.Client.UI.Components
         [Inject] NavigationService NavigationService { get; set; }
 
         [CascadingParameter] ProgressLoading Progress { get; set; }
-
-        private readonly CancellationTokenSource _lifetime = new();
 
         private bool HasLadder => Ladder.HasLevel;
 
@@ -138,26 +136,24 @@ namespace Gizmo.Client.UI.Components
 
         private void OpenProgress() => NavigationService.NavigateTo(ClientRoutes.UserLadderRoute);
 
+        private Task LoadProgressAsync() => Task.WhenAll(ChallengesService.LoadAsync(), AchievementsService.LoadAsync());
+
         protected override void OnInitialized()
         {
             this.SubscribeChange(Ladder);
             this.SubscribeChange(Challenges);
             this.SubscribeChange(Achievements);
 
-            if (Progress?.TryStart() != false)
-            {
-                DispatchWorkflow(() => ChallengesService.LoadAsync(_lifetime.Token));
-                DispatchWorkflow(() => AchievementsService.LoadAsync(_lifetime.Token));
-            }
+            if (Progress is null)
+                DispatchWorkflow(LoadProgressAsync);
+            else
+                Progress.Ensure(LoadProgressAsync, PlayerProgress.Failed(Challenges, Achievements));
 
             base.OnInitialized();
         }
 
         public override void Dispose()
         {
-            _lifetime.Cancel();
-            _lifetime.Dispose();
-
             this.UnsubscribeChange(Achievements);
             this.UnsubscribeChange(Challenges);
             this.UnsubscribeChange(Ladder);

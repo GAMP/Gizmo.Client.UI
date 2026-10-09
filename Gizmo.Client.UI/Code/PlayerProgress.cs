@@ -7,5 +7,8 @@ namespace Gizmo.Client.UI
     {
         public static bool Any(UserLadderSummaryViewState ladder, UserChallengesViewState challenges, UserAchievementsViewState achievements) =>
             ladder.HasLevel || challenges.Challenges.Any() || achievements.Achievements.Any();
+
+        public static bool Failed(UserChallengesViewState challenges, UserAchievementsViewState achievements) =>
+            (challenges.HasError && !challenges.IsLoading) || (achievements.HasError && !achievements.IsLoading);
     }
 }

@@ -27,7 +27,6 @@ namespace Gizmo.Client.UI.Components
 
         [Inject] UserViewState UserViewState { get; set; }
         [Inject] ILogger<HomePass> Logger { get; set; }
-        [Inject] UserProfileViewState UserProfileViewState { get; set; }
         [Inject] UserBalanceViewState UserBalanceViewState { get; set; }
         [Inject] TimeProductsViewState TimeProductsViewState { get; set; }
         [Inject] TimeProductsViewService TimeProductsViewService { get; set; }
@@ -61,9 +60,7 @@ namespace Gizmo.Client.UI.Components
                 DateTime.Now.Add(time).ToString("t", CultureInfo.CurrentCulture))
             : null;
 
-        private DateTime RegisteredOn => UserProfileViewState.RegistrationDate != default
-            ? UserProfileViewState.RegistrationDate
-            : UserViewState.RegistrationDate;
+        private DateTime RegisteredOn => UserViewState.RegistrationDate;
 
         private string SinceText => !UserViewState.IsGuest && RegisteredOn != default
             ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_SINCE,

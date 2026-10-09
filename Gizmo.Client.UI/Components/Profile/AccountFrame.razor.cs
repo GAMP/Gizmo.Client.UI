@@ -23,11 +23,9 @@ namespace Gizmo.Client.UI.Components
             ? GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_GUEST))
             : UserViewState.Username;
 
-        private static string Pick(string first, string second) => string.IsNullOrWhiteSpace(first) ? second : first;
+        protected string FullName => string.Join(" ", new[] { UserViewState.FirstName, UserViewState.LastName }.Where(part => !string.IsNullOrWhiteSpace(part)));
 
-        protected string FullName => string.Join(" ", new[] { Pick(Profile.FirstName, UserViewState.FirstName), Pick(Profile.LastName, UserViewState.LastName) }.Where(part => !string.IsNullOrWhiteSpace(part)));
-
-        private System.DateTime RegisteredOn => Profile.RegistrationDate != default ? Profile.RegistrationDate : UserViewState.RegistrationDate;
+        private System.DateTime RegisteredOn => UserViewState.RegistrationDate;
 
         protected bool ShowMemberSince => !UserViewState.IsGuest && RegisteredOn != default;
 
@@ -40,11 +38,11 @@ namespace Gizmo.Client.UI.Components
             _ => "giz-jersey__nick",
         };
 
-        protected string EmailText => Pick(Profile.Email, UserViewState.Email);
+        protected string EmailText => UserViewState.Email;
 
         protected bool HasEmail => !string.IsNullOrWhiteSpace(EmailText);
 
-        protected string PhoneText => Pick(Pick(Pick(Profile.MobilePhone, UserViewState.MobilePhone), Profile.Phone), UserViewState.Phone);
+        protected string PhoneText => string.IsNullOrWhiteSpace(UserViewState.MobilePhone) ? UserViewState.Phone : UserViewState.MobilePhone;
 
         protected bool HasPhone => !string.IsNullOrWhiteSpace(PhoneText);
 
@@ -107,9 +105,6 @@ namespace Gizmo.Client.UI.Components
         UserViewState UserViewState { get; set; }
 
         [Inject]
-        UserProfileViewState Profile { get; set; }
-
-        [Inject]
         UserBalanceViewState Balance { get; set; }
 
         [Inject]
@@ -160,7 +155,6 @@ namespace Gizmo.Client.UI.Components
         protected override void OnInitialized()
         {
             this.SubscribeChange(UserViewState);
-            this.SubscribeChange(Profile);
             this.SubscribeChange(Balance);
             this.SubscribeChange(Credit);
             this.SubscribeChange(OnlineDeposit);
@@ -171,7 +165,6 @@ namespace Gizmo.Client.UI.Components
 
         public override void Dispose()
         {
-            this.UnsubscribeChange(Profile);
             this.UnsubscribeChange(UserViewState);
             this.UnsubscribeChange(Balance);
             this.UnsubscribeChange(Credit);
