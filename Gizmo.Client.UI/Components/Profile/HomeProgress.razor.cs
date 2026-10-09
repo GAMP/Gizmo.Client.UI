@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Globalization;
 using System.Threading;
 using System.Linq;
 using Gizmo.Client.UI.Localization.Resources;
@@ -23,11 +22,13 @@ namespace Gizmo.Client.UI.Components
         [Inject] UserAchievementsViewService AchievementsService { get; set; }
         [Inject] NavigationService NavigationService { get; set; }
 
+        [CascadingParameter] ProgressLoading Progress { get; set; }
+
         private readonly CancellationTokenSource _lifetime = new();
 
         private bool HasLadder => Ladder.HasLevel;
 
-        private bool ProgressOn => HasLadder || TotalChallenges > 0 || TotalAchievements > 0;
+        private bool ProgressOn => PlayerProgress.Any(Ladder, Challenges, Achievements);
 
         private int EarnedAchievements => Achievements.Achievements.Count(a => a.IsEarned);
 
@@ -57,7 +58,7 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        private string LineValue => LinePercent.ToString("0.##", CultureInfo.InvariantCulture);
+        private string LineValue => CssValue.Number(LinePercent);
 
         private bool ShowLine => HasLadder ? Ladder.ShowTopBarProgress : HeadlineIsAchievements || HeadlineIsChallenges;
 
@@ -127,12 +128,9 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        private static string RewardIcon(UserChallengeRewardViewState reward) => reward?.Kind switch
-        {
-            ChallengeRewardKind.Points => "ph-fill ph-coins giz-home-progress__coin",
-            ChallengeRewardKind.Time => "ph-fill ph-clock",
-            _ => "ph-fill ph-gift",
-        };
+        private static string RewardIcon(UserChallengeRewardViewState reward) => ChallengeRewardIcon.IsPoints(reward)
+            ? ChallengeRewardIcon.Glyph(reward) + " giz-home-progress__coin"
+            : ChallengeRewardIcon.Glyph(reward);
 
         private string Vendor(string key) => GrafitLocalization.GetString(key);
 
@@ -146,11 +144,11 @@ namespace Gizmo.Client.UI.Components
             this.SubscribeChange(Challenges);
             this.SubscribeChange(Achievements);
 
-            if (!Challenges.IsLoading)
+            if (Progress?.TryStart() != false)
+            {
                 DispatchWorkflow(() => ChallengesService.LoadAsync(_lifetime.Token));
-
-            if (!Achievements.IsLoading)
                 DispatchWorkflow(() => AchievementsService.LoadAsync(_lifetime.Token));
+            }
 
             base.OnInitialized();
         }

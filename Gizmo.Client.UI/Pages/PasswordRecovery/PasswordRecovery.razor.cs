@@ -27,6 +27,11 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         NavigationService NavigationService { get; set; }
 
+        [Inject]
+        UserRegistrationConfigurationViewState UserRegisterConfigurationViewState { get; set; }
+
+        private void OpenRegistration() => NavigationService.NavigateTo(ClientRoutes.RegistrationIndexRoute);
+
         private IReadOnlyList<ProviderOption> PriorityOptions =>
             ViewState.PriorityProviders.Select(ToOption).ToList();
 

@@ -28,6 +28,11 @@ namespace Gizmo.Client.UI.Pages
         NavigationService NavigationService { get; set; }
 
         [Inject]
+        UserRegistrationConfigurationViewState UserRegisterConfigurationViewState { get; set; }
+
+        private void OpenRegistration() => NavigationService.NavigateTo(ClientRoutes.RegistrationIndexRoute);
+
+        [Inject]
         PasswordRecoveryConfirmationViewState ViewState { get; set; }
 
         [Inject]

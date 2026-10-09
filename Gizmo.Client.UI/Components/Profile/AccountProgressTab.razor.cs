@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Threading;
 using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
@@ -20,10 +19,12 @@ namespace Gizmo.Client.UI.Components
         [Inject] UserAchievementsViewState Achievements { get; set; }
         [Inject] UserAchievementsViewService AchievementsService { get; set; }
 
+        [CascadingParameter] ProgressLoading Progress { get; set; }
+
         [Parameter]
         public string TabClass { get; set; }
 
-        private bool ProgressOn => Ladder.HasLevel || Challenges.Challenges.Any() || Achievements.Achievements.Any();
+        private bool ProgressOn => PlayerProgress.Any(Ladder, Challenges, Achievements);
 
         protected override void OnInitialized()
         {
@@ -31,11 +32,11 @@ namespace Gizmo.Client.UI.Components
             this.SubscribeChange(Challenges);
             this.SubscribeChange(Achievements);
 
-            if (!Challenges.IsLoading)
+            if (Progress?.TryStart() != false)
+            {
                 DispatchWorkflow(() => ChallengesService.LoadAsync(_lifetime.Token));
-
-            if (!Achievements.IsLoading)
                 DispatchWorkflow(() => AchievementsService.LoadAsync(_lifetime.Token));
+            }
 
             base.OnInitialized();
         }

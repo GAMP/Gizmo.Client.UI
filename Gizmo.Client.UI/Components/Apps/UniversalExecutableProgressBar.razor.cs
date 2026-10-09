@@ -37,7 +37,7 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public int ExecutableId { get; set; }
 
-        private string ProgressValue => _appExeExecutionViewState.Progress.ToString("0.##", CultureInfo.InvariantCulture);
+        private string ProgressValue => CssValue.Number(_appExeExecutionViewState.Progress);
 
         protected override async Task OnInitializedAsync()
         {

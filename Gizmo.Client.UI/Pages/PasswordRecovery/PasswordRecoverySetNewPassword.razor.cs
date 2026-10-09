@@ -21,6 +21,14 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         PasswordRecoverySetNewPasswordViewState ViewState { get; set; }
 
+        [Inject]
+        NavigationService NavigationService { get; set; }
+
+        [Inject]
+        UserRegistrationConfigurationViewState UserRegisterConfigurationViewState { get; set; }
+
+        private void OpenRegistration() => NavigationService.NavigateTo(ClientRoutes.RegistrationIndexRoute);
+
         public void OnCloseButtonClickHandler()
         {
             PasswordRecoverySetNewPasswordViewService.Reset();

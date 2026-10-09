@@ -89,6 +89,7 @@ namespace Gizmo.Client.UI.Shared
         #region FIELDS
 
         private bool _playTransition;
+        private readonly ProgressLoading _progress = new();
         private bool _figuresHidden;
 
         #endregion

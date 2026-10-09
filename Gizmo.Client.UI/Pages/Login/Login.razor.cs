@@ -210,7 +210,7 @@ namespace Gizmo.Client.UI.Pages
 
         private void OnLoginViewStateChanged(object sender, EventArgs e)
         {
-            if (_awaitingResult && !IsBusy && ViewState.HasLoginError && string.IsNullOrEmpty(ViewState.Password))
+            if (_awaitingResult && !IsBusy && ViewState.HasLoginError)
             {
                 _awaitingResult = false;
                 _passwordError = true;

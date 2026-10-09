@@ -15,6 +15,8 @@ namespace Gizmo.Client.UI.Components
         private bool _isRead;
         private ElementReference _text;
         private DotNetObjectReference<UserAgreementDialog> _self;
+        private string _watched;
+        private bool _watch;
 
         [CascadingParameter]
         protected GrafitLocalizationService GrafitLocalization { get; set; }
@@ -99,16 +101,24 @@ namespace Gizmo.Client.UI.Components
             base.OnParametersSet();
 
             _accepted = false;
+
+            if (_watched != Agreement)
+            {
+                _watched = Agreement;
+                _isRead = false;
+                _watch = true;
+            }
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            if (!firstRender)
+            if (!_watch)
                 return;
 
-            _self = CreateDotNetObjectReference(this);
+            _watch = false;
+            _self ??= CreateDotNetObjectReference(this);
 
             try
             {

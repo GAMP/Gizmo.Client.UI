@@ -35,6 +35,9 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         UserAchievementsViewService AchievementsService { get; set; }
 
+        [CascadingParameter]
+        ProgressLoading Progress { get; set; }
+
         private string ChallengesCountText => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PROGRESS_OF,
             Challenges.Challenges.Count(a => a.IsDone), Challenges.Challenges.Count());
 
@@ -52,6 +55,7 @@ namespace Gizmo.Client.UI.Pages
             this.SubscribeChange(Challenges);
             this.SubscribeChange(Achievements);
 
+            Progress?.MarkStarted();
             DispatchWorkflow(() => ChallengesService.LoadAsync());
             DispatchWorkflow(() => AchievementsService.LoadAsync());
 

@@ -56,6 +56,10 @@ namespace Gizmo.Client.UI.Pages
         private TillTab _tab = TillTab.Time;
         private int? _group;
         private IReadOnlyList<UserProductGroupViewState> _groups = Array.Empty<UserProductGroupViewState>();
+        private IReadOnlyList<UserProductViewState> _shop = Array.Empty<UserProductViewState>();
+        private IReadOnlyList<UserProductGroupViewState> _barGroups = Array.Empty<UserProductGroupViewState>();
+        private IReadOnlyList<UserProductViewState> _barGoods = Array.Empty<UserProductViewState>();
+        private Dictionary<int, UserCartProductViewState> _cartLines = new();
         private readonly CancellationTokenSource _lifetime = new();
 
         #endregion
@@ -91,13 +95,44 @@ namespace Gizmo.Client.UI.Pages
 
         private IReadOnlyList<PackRow> Packs => _packs;
 
-        private void BuildPacks()
+        private void BuildLists()
         {
             var products = TimeProducts.ToList();
             var best = BestValue(products);
 
             _packs = products.Select(a => ToRow(a, a.Id == best)).ToList();
+            _shop = Purchasable(a => a.ProductType != ProductType.ProductTime).ToList();
+
+            var used = _shop.Select(a => a.ProductGroupId).ToHashSet();
+
+            _barGroups = _groups
+                .Where(a => used.Contains(a.ProductGroupId))
+                .OrderBy(a => a.DisplayOrder)
+                .ThenBy(a => a.Name)
+                .ToList();
+
+            BuildBarGoods();
         }
+
+        private void BuildBarGoods() => _barGoods = _shop
+            .Where(a => ActiveGroup is not int group || a.ProductGroupId == group)
+            .Take(GOODS_CEILING)
+            .ToList();
+
+        private void BuildCart()
+        {
+            var lines = new Dictionary<int, UserCartProductViewState>();
+
+            foreach (var line in CartService.ViewState.Products)
+            {
+                if (line.ProductId is int productId)
+                    lines.TryAdd(productId, line);
+            }
+
+            _cartLines = lines;
+        }
+
+        private void OnCartChanged(object sender, EventArgs e) => BuildCart();
 
         private static int? BestValue(IReadOnlyList<UserProductViewState> products)
         {
@@ -110,7 +145,7 @@ namespace Gizmo.Client.UI.Pages
             return hourly.Count > 1 && hourly[0].PerHour < hourly[1].PerHour ? hourly[0].Id : null;
         }
 
-        private void OnProductsChanged(object sender, EventArgs e) => BuildPacks();
+        private void OnProductsChanged(object sender, EventArgs e) => BuildLists();
 
         private PackRow ToRow(UserProductViewState product, bool isBest)
         {
@@ -140,7 +175,7 @@ namespace Gizmo.Client.UI.Pages
 
         private enum TillTab { Time, Bar }
 
-        private bool HasGoods => ShopProducts.Any();
+        private bool HasGoods => _shop.Count > 0;
 
         private bool ShowTillTabs => Packs.Count > 0 && HasGoods;
 
@@ -152,21 +187,9 @@ namespace Gizmo.Client.UI.Pages
 
         private void SelectTab(TillTab tab) => _tab = tab;
 
-        private int GoodsCount => ShopProducts.Count();
+        private int GoodsCount => _shop.Count;
 
-        private IReadOnlyList<UserProductGroupViewState> BarGroups
-        {
-            get
-            {
-                var used = ShopProducts.Select(a => a.ProductGroupId).ToHashSet();
-
-                return _groups
-                    .Where(a => used.Contains(a.ProductGroupId))
-                    .OrderBy(a => a.DisplayOrder)
-                    .ThenBy(a => a.Name)
-                    .ToList();
-            }
-        }
+        private IReadOnlyList<UserProductGroupViewState> BarGroups => _barGroups;
 
         private int? ActiveGroup => _group is int group && BarGroups.Any(a => a.ProductGroupId == group) ? group : null;
 
@@ -174,15 +197,15 @@ namespace Gizmo.Client.UI.Pages
             ? "giz-home-cats__cat giz-home-cats__cat--active"
             : "giz-home-cats__cat";
 
-        private void SelectGroup(int? group) => _group = group;
+        private void SelectGroup(int? group)
+        {
+            _group = group;
+            BuildBarGoods();
+        }
 
-        private IReadOnlyList<UserProductViewState> BarGoods => ShopProducts
-            .Where(a => ActiveGroup is not int group || a.ProductGroupId == group)
-            .Take(GOODS_CEILING)
-            .ToList();
+        private IReadOnlyList<UserProductViewState> BarGoods => _barGoods;
 
-        private UserCartProductViewState CartLine(int productId) =>
-            CartService.ViewState.Products.FirstOrDefault(a => a.ProductId == productId);
+        private UserCartProductViewState CartLine(int productId) => _cartLines.GetValueOrDefault(productId);
 
         private string GoodClass(UserProductViewState product) => CartLine(product.Id) is { Quantity: > 0 }
             ? "giz-home-good giz-home-good--in"
@@ -228,7 +251,7 @@ namespace Gizmo.Client.UI.Pages
             DispatchWorkflow(() => CheckoutService.SubmitAsync());
         }
 
-        private bool HasSales => TimeProducts.Any() || HasGoods;
+        private bool HasSales => _packs.Count > 0 || HasGoods;
 
         private string BoardClass => HasSales ? "giz-home-board" : "giz-home-board giz-home-board--bare";
 
@@ -236,8 +259,7 @@ namespace Gizmo.Client.UI.Pages
 
         private string PointsText => UserBalanceViewState.PointsBalance.ToString("N0", CultureInfo.CurrentCulture);
 
-        private IEnumerable<UserProductViewState> ShopProducts =>
-            Purchasable(a => a.ProductType != ProductType.ProductTime);
+        private IEnumerable<UserProductViewState> ShopProducts => _shop;
 
         private IReadOnlyList<UserProductViewState> HeroProducts =>
             ShopProducts.Take(HERO_SLIDES).ToList();
@@ -462,11 +484,13 @@ namespace Gizmo.Client.UI.Pages
 
         protected override void OnInitialized()
         {
-            BuildPacks();
+            BuildLists();
+            BuildCart();
             ViewState.OnChange += OnProductsChanged;
             this.SubscribeChange(ViewState);
             this.SubscribeChange(UserBalanceViewState);
             this.SubscribeChange(AdvertisementsViewState);
+            CartService.ViewState.OnChange += OnCartChanged;
             this.SubscribeChange(CartService.ViewState);
             ShellActivity.Changed += OnActivityChanged;
 
@@ -531,8 +555,6 @@ namespace Gizmo.Client.UI.Pages
                 _catalogue = Enumerable.Empty<UserProductViewState>();
             }
 
-            BuildPacks();
-
             try
             {
                 _groups = (await GroupLookupService.GetStatesAsync()).ToList();
@@ -542,6 +564,8 @@ namespace Gizmo.Client.UI.Pages
                 Logger.LogError(exception, "Could not load the product groups for the home page.");
                 _groups = Array.Empty<UserProductGroupViewState>();
             }
+
+            BuildLists();
 
             try
             {
@@ -566,6 +590,7 @@ namespace Gizmo.Client.UI.Pages
             _slideTimer = null;
 
             this.UnsubscribeChange(CartService.ViewState);
+            CartService.ViewState.OnChange -= OnCartChanged;
             this.UnsubscribeChange(AdvertisementsViewState);
             this.UnsubscribeChange(UserBalanceViewState);
             this.UnsubscribeChange(ViewState);

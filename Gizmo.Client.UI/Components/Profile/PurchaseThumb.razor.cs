@@ -4,6 +4,7 @@ using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -14,6 +15,9 @@ namespace Gizmo.Client.UI.Components
 
         [Inject]
         UserProductViewStateLookupService ProductLookup { get; set; }
+
+        [Inject]
+        ILogger<PurchaseThumb> Logger { get; set; }
 
         [Parameter]
         public UserOrderLineViewState Line { get; set; }
@@ -30,8 +34,9 @@ namespace Gizmo.Client.UI.Components
                 {
                     _imageId = (await ProductLookup.GetStateAsync(productId))?.DefaultImageId;
                 }
-                catch (Exception)
+                catch (Exception exception)
                 {
+                    Logger.LogWarning(exception, "Could not load product {ProductId} for a purchase picture.", productId);
                     _imageId = null;
                 }
             }

@@ -245,6 +245,13 @@
                             }
                         }
                     </div>
+                    @if (CheckFailed)
+                    {
+                        <div class="giz-signin__note giz-signin__note--error">
+                            <i class="ph-bold ph-warning-circle"></i>
+                            <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_CHECK_FAILED)</span>
+                        </div>
+                    }
                 </div>
             </CascadingValue>
         </div>

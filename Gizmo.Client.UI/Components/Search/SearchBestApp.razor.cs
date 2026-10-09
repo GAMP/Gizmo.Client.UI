@@ -66,6 +66,12 @@ namespace Gizmo.Client.UI.Components
         {
             _app = await AppViewStateLookupService.GetStateAsync(ApplicationId);
 
+            if (IsDisposed)
+            {
+                _app = null;
+                return;
+            }
+
             if (_app is not null)
             {
                 this.SubscribeChange(_app);

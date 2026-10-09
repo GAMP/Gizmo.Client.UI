@@ -1954,6 +1954,12 @@ window.watchAgreementReading = function watchAgreementReading(text, dialog) {
     const panel = text.closest(".giz-user-agreement-dialog__panel") || text;
     let ended = false;
 
+    if (text._gizReading) {
+        text.removeEventListener("scroll", text._gizReading);
+    }
+
+    text.scrollTop = 0;
+
     const update = function () {
         const room = text.scrollHeight - text.clientHeight;
         const read = room <= 2 ? 1 : Math.min(1, text.scrollTop / (room - 2));
@@ -1966,6 +1972,7 @@ window.watchAgreementReading = function watchAgreementReading(text, dialog) {
         }
     };
 
+    text._gizReading = update;
     text.addEventListener("scroll", update, { passive: true });
     requestAnimationFrame(update);
 };

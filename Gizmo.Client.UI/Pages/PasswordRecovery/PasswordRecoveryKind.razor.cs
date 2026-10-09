@@ -4,6 +4,7 @@ using Gizmo.Client.UI.View.Services;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using System.Net.Mail;
 
 namespace Gizmo.Client.UI.Pages
 {
@@ -34,12 +35,18 @@ namespace Gizmo.Client.UI.Pages
             base.OnInitialized();
         }
 
+        private static bool IsEmail(string value) =>
+            !string.IsNullOrWhiteSpace(value) &&
+            MailAddress.TryCreate(value.Trim(), out var address) &&
+            address.Address == value.Trim() &&
+            address.Host.Contains('.');
+
         private static PasswordRecoveryIdentifierKind KindOf(RecoveryRequest request)
         {
             if (request.IsPhone)
                 return PasswordRecoveryIdentifierKind.MobilePhone;
 
-            return request.Value.Contains('@')
+            return IsEmail(request.Value)
                 ? PasswordRecoveryIdentifierKind.Email
                 : PasswordRecoveryIdentifierKind.Username;
         }

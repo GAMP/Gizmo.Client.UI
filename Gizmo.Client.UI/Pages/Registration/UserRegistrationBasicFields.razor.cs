@@ -27,6 +27,7 @@ namespace Gizmo.Client.UI.Pages.Registration
         private bool _focus;
         private bool _showPassword;
         private bool _checking;
+        private bool _checkFailed;
         private TextInput<string> _nickInput;
         private PasswordInput _passwordInput;
         private PasswordInput _repeatInput;
@@ -80,6 +81,8 @@ namespace Gizmo.Client.UI.Pages.Registration
         protected bool IsLast => _index >= Groups.Count - 1;
 
         protected bool IsBusy => ViewState.IsLoading || _checking;
+
+        protected bool CheckFailed => _checkFailed;
 
         protected bool CanGoBack =>
             _index > 0 || RegistrationSession.Flow != RegistrationFlow.None || !string.IsNullOrEmpty(RegistrationSession.Token);
@@ -232,7 +235,13 @@ namespace Gizmo.Client.UI.Pages.Registration
                 _checking = false;
             }
 
-            return done.Task.IsCompleted && !HasErrors(stage);
+            if (!done.Task.IsCompleted)
+            {
+                _checkFailed = true;
+                return false;
+            }
+
+            return !HasErrors(stage);
         }
 
         private void GoTo(int index)
@@ -250,6 +259,7 @@ namespace Gizmo.Client.UI.Pages.Registration
             if (IsBusy)
                 return;
 
+            _checkFailed = false;
             var stage = Current;
             ValidateStage(stage);
 

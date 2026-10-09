@@ -41,10 +41,10 @@ namespace Gizmo.Client.UI.Components
             get
             {
                 if (ViewState.ShowProgress)
-                    return Percent(ViewState.ProgressPercent);
+                    return CssValue.Percent(ViewState.ProgressPercent);
 
                 if (ViewState.ShowSegments && ViewState.SegmentCount > 0)
-                    return Percent(100m * ViewState.SegmentsLit / ViewState.SegmentCount);
+                    return CssValue.Percent(100m * ViewState.SegmentsLit / ViewState.SegmentCount);
 
                 return null;
             }
@@ -73,9 +73,6 @@ namespace Gizmo.Client.UI.Components
                     .ToList();
             }
         }
-
-        private static string Percent(decimal value) =>
-            decimal.Clamp(value, 0, 100).ToString("0.##", CultureInfo.InvariantCulture) + "%";
 
         protected override void OnInitialized()
         {

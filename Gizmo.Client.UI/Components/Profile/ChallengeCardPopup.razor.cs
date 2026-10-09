@@ -54,12 +54,9 @@ namespace Gizmo.Client.UI.Components
                 : description;
         }
 
-        private static string RewardIcon(UserChallengeRewardViewState reward) => reward.Kind switch
-        {
-            ChallengeRewardKind.Points => "ph-fill ph-coins giz-challenge-popup__prize-icon giz-challenge-popup__prize-icon--points",
-            ChallengeRewardKind.Time => "ph-fill ph-clock giz-challenge-popup__prize-icon",
-            _ => "ph-fill ph-gift giz-challenge-popup__prize-icon",
-        };
+        private static string RewardIcon(UserChallengeRewardViewState reward) => ChallengeRewardIcon.IsPoints(reward)
+            ? ChallengeRewardIcon.Glyph(reward) + " giz-challenge-popup__prize-icon giz-challenge-popup__prize-icon--points"
+            : ChallengeRewardIcon.Glyph(reward) + " giz-challenge-popup__prize-icon";
 
         protected override void OnInitialized()
         {

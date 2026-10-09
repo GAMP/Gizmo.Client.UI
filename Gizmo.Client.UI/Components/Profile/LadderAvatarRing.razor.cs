@@ -10,7 +10,7 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         UserLadderSummaryViewState ViewState { get; set; }
 
-        private string ProgressValue => ViewState.TopBarProgressPercent.ToString("0.##", CultureInfo.InvariantCulture);
+        private string ProgressValue => CssValue.Number(ViewState.TopBarProgressPercent);
 
         protected override void OnInitialized()
         {
