@@ -44,7 +44,7 @@ namespace Gizmo.Client.UI.Components
 
         protected bool HasEmail => !string.IsNullOrWhiteSpace(EmailText);
 
-        protected string PhoneText => Pick(Pick(Profile.MobilePhone, UserViewState.MobilePhone), Profile.Phone);
+        protected string PhoneText => Pick(Pick(Pick(Profile.MobilePhone, UserViewState.MobilePhone), Profile.Phone), UserViewState.Phone);
 
         protected bool HasPhone => !string.IsNullOrWhiteSpace(PhoneText);
 

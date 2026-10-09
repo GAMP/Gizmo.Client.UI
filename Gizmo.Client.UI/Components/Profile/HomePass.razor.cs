@@ -61,9 +61,13 @@ namespace Gizmo.Client.UI.Components
                 DateTime.Now.Add(time).ToString("t", CultureInfo.CurrentCulture))
             : null;
 
-        private string SinceText => !UserViewState.IsGuest && UserProfileViewState.RegistrationDate != default
+        private DateTime RegisteredOn => UserProfileViewState.RegistrationDate != default
+            ? UserProfileViewState.RegistrationDate
+            : UserViewState.RegistrationDate;
+
+        private string SinceText => !UserViewState.IsGuest && RegisteredOn != default
             ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SIGNUP_SINCE,
-                UserProfileViewState.RegistrationDate.ToLocalTime().ToString("yyyy", CultureInfo.CurrentCulture))
+                RegisteredOn.ToLocalTime().ToString("yyyy", CultureInfo.CurrentCulture))
             : null;
 
         private IReadOnlyList<TimeProductViewState> Queue => TimeProductsViewState.IsInitialized == true
