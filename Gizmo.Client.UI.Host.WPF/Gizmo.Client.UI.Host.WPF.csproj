@@ -24,12 +24,16 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="options.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
   <ItemGroup>
     <None Include="$(ProjectDir)static\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <Target Name="CleanPublishOutput" AfterTargets="Publish">
@@ -49,6 +53,11 @@
     <Delete Files="@(FilesToDelete)" />
     <!--delete directories-->
     <RemoveDir Directories="@(DirsToClean)" Condition="%(Filename) != 'wwwroot' and %(Filename) != 'static' " />
+  </Target>
+
+  <!--the skin host page is the one Gizmo.Client.UI builds from src\html\index.html, it carries the font and icon links-->
+  <Target Name="CopySkinHostPage" AfterTargets="Publish">
+    <Copy SourceFiles="$(ProjectDir)..\Gizmo.Client.UI\wwwroot\index.html" DestinationFolder="$(PublishDir)wwwroot" />
   </Target>
 
 </Project>
