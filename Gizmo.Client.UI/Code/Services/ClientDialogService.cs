@@ -43,7 +43,7 @@ namespace Gizmo.Client.UI.Services
         {
             return ShowDialogAsync<ChangeProfileDialog>(new Dictionary<string, object>(), new DialogDisplayOptions()
             {
-                Closable = true,
+                Closable = false,
                 CloseOnClick = false
             }, default, default);
         }

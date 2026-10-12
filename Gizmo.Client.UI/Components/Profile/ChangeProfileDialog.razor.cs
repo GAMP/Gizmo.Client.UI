@@ -1,12 +1,9 @@
-﻿using Gizmo.Client.UI.Services;
+using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Components.Web;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,16 +11,14 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class ChangeProfileDialog : CustomDOMComponentBase
     {
-        private bool _countriesLoaded;
-        private CountryInfo _defaultCountry = null;
-        private IconSelectCountry _otherCountry = null;
-        private bool _isLoaded;
+        private string _selectedPhoneCountryName;
+        private bool _isClosing;
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
         [Inject]
-        CountryInformationService CountryInformationService { get; set; }
+        IPhoneValidationService PhoneValidationService { get; set; }
 
         [Inject]
         UserChangeProfileViewService UserChangeProfileViewStateService { get; set; }
@@ -40,65 +35,28 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<EmptyComponentResult> ResultCallback { get; set; }
 
-        public List<IconSelectCountry> Countries { get; set; } = new List<IconSelectCountry>();
-
-        public void OnClickClearValueButtonHandler(MouseEventArgs args)
+        private Task OnPhoneCountryChangedAsync(PhoneCountrySelection selection)
         {
-            SetSelectedCountry(Countries.Where(a => a.Text == LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_COUNTRY_OTHER))).FirstOrDefault());
-        }
+            _selectedPhoneCountryName = selection?.CountryName;
 
-        public IconSelectCountry GetSelectedCountry()
-        {
-            if (string.IsNullOrEmpty(ViewState.Country))
+            if (selection == null)
             {
-                return null;
+                UserChangeProfileViewStateService.SetPhoneRegionCode(null);
+                UserChangeProfileViewStateService.SetMobilePhone(null);
             }
             else
             {
-                return Countries.Where(a => a.Text == ViewState.Country).FirstOrDefault();
+                UserChangeProfileViewStateService.SetPhoneRegionCode(selection.RegionCode);
+                UserChangeProfileViewStateService.SetMobilePhone(selection.CallingCodeDigits);
             }
+
+            return Task.CompletedTask;
         }
 
-        protected void SetSelectedCountry(IconSelectCountry value)
+        private Task OnPhoneValueChangedAsync(string value)
         {
-            if (value == null)
-            {
-                UserChangeProfileViewStateService.SetCountry(null);
-            }
-            else
-            {
-                UserChangeProfileViewStateService.SetCountry(value.Text);
-            }
-        }
-
-        private async Task CloseDialog()
-        {
-            await ResultCallback.InvokeAsync();
-        }
-
-        private void LoadUserCountry()
-        {
-            if (ViewState.IsInitialized == true && _countriesLoaded)
-            {
-                var userCountry = Countries.Where(a => a.Text == ViewState.Country).FirstOrDefault();
-                if (userCountry != null)
-                {
-                    SetSelectedCountry(userCountry);
-                }
-                else
-                {
-                    IconSelectCountry defaultItem = null;
-
-                    if (defaultItem == null)
-                    {
-                        var other = Countries.Where(a => a.Text == LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_COUNTRY_OTHER))).FirstOrDefault();
-                        defaultItem = other;
-                    }
-
-                    SetSelectedCountry(defaultItem);
-                }
-                _isLoaded = true;
-            }
+            UserChangeProfileViewStateService.SetMobilePhone(value);
+            return Task.CompletedTask;
         }
 
         protected override void OnInitialized()
@@ -110,49 +68,21 @@ namespace Gizmo.Client.UI.Components
 
         protected override async Task OnInitializedAsync()
         {
-            var countries = await CountryInformationService.GetCountryInfoAsync();
-
-            foreach (var country in countries)
+            if (ViewState.ShowMobilePhone && !string.IsNullOrEmpty(ViewState.PhoneRegionCode))
             {
-                Countries.Add(new IconSelectCountry()
-                {
-                    Text = country.NativeName,
-                    Icon = string.IsNullOrEmpty(country.TwoLetterCountryCode)
-                        ? "_content/Gizmo.Client.UI/img/no-flag-image.svg"
-                        : $"_content/Gizmo.Client.UI/img/flags/{country.TwoLetterCountryCode.ToLowerInvariant()}.svg"
-                });
+                var countries = await PhoneValidationService.GetCountriesAsync();
+                _selectedPhoneCountryName = countries.FirstOrDefault(country => country.RegionCode == ViewState.PhoneRegionCode)?.CountryName;
             }
-
-            _otherCountry = new IconSelectCountry()
-            {
-                Text = LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_COUNTRY_OTHER)),
-                Icon = "_content/Gizmo.Client.UI/img/no-flag-image.svg"
-            };
-
-            Countries.Add(_otherCountry);
-
-            foreach (var item in Countries)
-            {
-                item.Display = item.Text;
-            }
-
-            //Render the list first.
-            await InvokeAsync(StateHasChanged);
-
-            //_defaultCountry = await CountryInformationService.GetCurrentCountryInfoAsync();
-
-            LoadUserCountry();
-
-            _countriesLoaded = true;
 
             await base.OnInitializedAsync();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (!_isLoaded)
+            if (ViewState.IsComplete && !_isClosing)
             {
-                LoadUserCountry();
+                _isClosing = true;
+                await ResultCallback.InvokeAsync();
             }
 
             await base.OnAfterRenderAsync(firstRender);
@@ -163,18 +93,6 @@ namespace Gizmo.Client.UI.Components
             this.UnsubscribeChange(ViewState);
 
             base.Dispose();
-        }
-
-        private FieldIdentifier? _countryFieldIdentifier;
-
-        private FieldIdentifier GetCountryFieldIdentifier()
-        {
-            if (_countryFieldIdentifier == null)
-            {
-                _countryFieldIdentifier = new FieldIdentifier(ViewState, nameof(ViewState.Country));
-            }
-
-            return _countryFieldIdentifier.Value;
         }
     }
 }

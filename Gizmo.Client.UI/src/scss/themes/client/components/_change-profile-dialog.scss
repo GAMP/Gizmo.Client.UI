@@ -1,61 +1,44 @@
+//============= Client UI Complete profile dialog ===========//
+// Figma 147:12984, 147:13032
+
 .giz-change-profile {
 
     &-dialog {
-        color: #FAFAFA;
-        width: 60.0rem;
+        color: $typo-primary-theme-client;
+        width: 66.4rem;
+        max-height: 100%;
 
-        .giz-user-avatar {
-            width: 13.1rem;
-            height: 13.1rem;
+        .giz-client-dialog__header {
+            margin-bottom: 2.4rem;
+
+            &__subtitle {
+                margin-top: 0.8rem;
+                color: $typo-secondary-theme-client;
+            }
+        }
+
+        .giz-client-dialog__body {
+            // header and footer stay visible, only the fields scroll
+            max-height: 50.0rem;
         }
 
         .giz-input-control {
             .giz-input-label {
-                @include font-s-theme-client($font-weight-light-theme-client);
-            }
-        }
-    }
-
-    &-section {
-        &__header {
-            margin-bottom: 1.6rem;
-            color: rgba(255, 255, 255, 0.6);
-            @include font-l-theme-client($font-weight-light-theme-client);
-        }
-
-        &__body {
-        }
-    }
-
-    &-group {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.6rem;
-        align-items: center;
-
-        &__username {
-            .giz-input-control {
-                .giz-input-label {
-                    @include font-m-theme-client($font-weight-light-theme-client);
-                }
-
-                .giz-input-validation-label {
-                    display: none;
-                }
-            }
-
-            &__tip {
-                margin-top: 0.4rem;
+                margin-bottom: 0.4rem;
                 @include font-s-theme-client($font-weight-light-theme-client);
             }
         }
 
-        &__avatar {
-            justify-self: center;
-
-            svg {
-                color: rgba(250, 250, 250, 0.16);
-            }
+        &__error {
+            margin-bottom: 1.2rem;
+            color: $typo-alert-theme-client;
+            @include font-s-theme-client($font-weight-light-theme-client);
         }
+    }
+
+    &-fields {
+        display: flex;
+        flex-direction: column;
+        gap: 1.0rem;
     }
 }
