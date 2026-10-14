@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Gizmo.Client.UI.Localization.Resources;
-using Gizmo.Client.UI.Localization.Services;
 using Gizmo.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -14,7 +12,8 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class SearchAppLine : CustomDOMComponentBase
     {
-        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+        private const int ALL_ROUND_FROM = 4;
+        private const int ROUND_SLOTS = 6;
 
         [Inject]
         AppViewStateLookupService AppViewStateLookupService { get; set; }
@@ -41,23 +40,17 @@ namespace Gizmo.Client.UI.Components
 
         private AppCategoryViewState _category;
 
-        protected int? FirstExecutableId => ExecutableIds.Count > 0 ? ExecutableIds[0] : null;
+        protected string MetaText => _category?.Name;
 
-        protected string MetaText
-        {
-            get
-            {
-                var parts = new List<string>();
+        protected bool AllRound => ExecutableIds.Count >= ALL_ROUND_FROM;
 
-                if (!string.IsNullOrWhiteSpace(_category?.Name))
-                    parts.Add(_category.Name);
+        protected string LaunchClass => AllRound ? "giz-search-line__launch giz-search-line__launch--round" : "giz-search-line__launch";
 
-                if (ExecutableIds.Count > 1)
-                    parts.Add(GrafitLocalization.GetPluralString(GrafitResourceKeys.SHELL_SEARCH_SHORTCUTS, ExecutableIds.Count));
+        protected IReadOnlyList<int> ShownExecutableIds => ExecutableIds.Count > ROUND_SLOTS && !AppDetailsPageViewState.DisableAppDetails
+            ? ExecutableIds.Take(ROUND_SLOTS - 1).ToList()
+            : ExecutableIds;
 
-                return string.Join(" · ", parts);
-            }
-        }
+        protected int MoreCount => ExecutableIds.Count - ShownExecutableIds.Count;
 
         private void OpenApp()
         {

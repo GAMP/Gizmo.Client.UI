@@ -1,17 +1,19 @@
 //=============== Search line ================//
 // One more result under the best match: a small picture, the name with the typed part marked,
-// a quiet second line, the action on the right; hairlines between, no tiles.
+// a quiet second line, the action on the right; no lines between, the row under the pointer lights up.
 
 .giz-search-line {
     display: grid;
     grid-template-columns: 4.6rem minmax(0, 1fr) auto;
     align-items: center;
     gap: 1.2rem;
-    padding: 0.9rem 0;
-    border-top: 1px solid var(--giz-glass-5);
+    margin: 0 -0.8rem;
+    padding: 0.8rem;
+    border-radius: 1.4rem;
     cursor: pointer;
+    transition: background 0.16s;
 
-    .giz-caption + & { border-top: 0; }
+    &:hover { background: var(--giz-glass-4); }
 
     &__pic {
         position: relative;
@@ -117,8 +119,59 @@
 
     &__coin { color: var(--giz-points); }
 
-    &__launch .giz-universal-executable {
-        @include giz-launch-pill;
-        font-size: 1.25rem;
+    &__launch {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+
+        .giz-universal-executable {
+            @include giz-launch-pill;
+            font-size: 1.25rem;
+        }
+
+        // every shortcut after the first is a round icon that opens up to its name the moment the
+        // pointer is on it (a title tooltip comes late, and the icons of one game often look alike);
+        // from four shortcuts on the first one is round too, so the name keeps its room
+        .giz-universal-executable + .giz-universal-executable,
+        &--round .giz-universal-executable {
+            padding-right: 0.4em;
+
+            .giz-universal-executable__description {
+                max-width: 0;
+                margin-left: -0.8em;
+                overflow: hidden;
+            }
+
+            &:hover {
+                padding-right: 1.4em;
+
+                .giz-universal-executable__description {
+                    max-width: 24rem;
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+
+    // past six shortcuts: "+N", the size of a round shortcut, opens the game's page
+    &__more {
+        flex: none;
+        width: 4.6rem;
+        height: 4.6rem;
+        border: 0;
+        border-radius: 50%;
+        background: var(--giz-glass-7);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-11);
+        color: var(--giz-text-2);
+        font-family: $font-family-numeric-theme-client;
+        font-size: 1.35rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.16s, color 0.16s;
+
+        &:hover {
+            background: var(--giz-glass-11);
+            color: var(--giz-text-1);
+        }
     }
 }

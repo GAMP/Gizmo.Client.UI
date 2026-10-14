@@ -11,9 +11,15 @@
 
     &__best { min-width: 0; }
 
+    // the lines reach 0.8rem past the text on both sides for their hover tint (pictures stay in
+    // line with the captions); that room is the list's own padding, so the scrolling list
+    // neither clips the tint nor scrolls sideways
     &__rest {
         min-width: 0;
+        margin-inline: -0.8rem;
+        padding-inline: 0.8rem;
         max-height: calc(100vh - 18rem);
+        overflow-x: hidden;
         overflow-y: auto;
         display: flex;
         flex-direction: column;
@@ -33,6 +39,15 @@
         flex-direction: column;
         gap: 0.4rem;
 
-        .giz-caption a { cursor: pointer; }
+        .giz-caption {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.4rem;
+        }
+
+        .giz-caption a {
+            margin-left: auto;
+            cursor: pointer;
+        }
     }
 }

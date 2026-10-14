@@ -25,10 +25,17 @@
                 <small>@MetaText</small>
             }
         </span>
-        @if (FirstExecutableId is int executableId)
+        @if (ExecutableIds.Count > 0)
         {
-            <span class="giz-search-line__launch" @onclick:stopPropagation="true">
-                <UniversalExecutable @key="executableId" ExecutableId="@executableId" ShowProgressBar="true" ShowExeName="true" />
+            <span class="@LaunchClass" @onclick:stopPropagation="true">
+                @foreach (var executableId in ShownExecutableIds)
+                {
+                    <UniversalExecutable @key="executableId" ExecutableId="@executableId" ShowProgressBar="true" ShowExeName="true" />
+                }
+                @if (MoreCount > 0)
+                {
+                    <button type="button" class="giz-search-line__more" @onclick="OpenApp">+@MoreCount</button>
+                }
             </span>
         }
     </div>

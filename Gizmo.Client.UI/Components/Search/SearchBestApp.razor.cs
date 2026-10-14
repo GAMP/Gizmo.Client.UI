@@ -20,9 +20,6 @@ namespace Gizmo.Client.UI.Components
         AppViewStateLookupService AppViewStateLookupService { get; set; }
 
         [Inject]
-        AppCategoryViewStateLookupService AppCategoryViewStateLookupService { get; set; }
-
-        [Inject]
         AppDetailsPageViewState AppDetailsPageViewState { get; set; }
 
         [Inject]
@@ -39,16 +36,11 @@ namespace Gizmo.Client.UI.Components
 
         private AppViewState _app;
 
-        private AppCategoryViewState _category;
-
         protected string KindText
         {
             get
             {
                 var best = GrafitLocalization.GetString(GrafitResourceKeys.SHELL_SEARCH_BEST);
-
-                if (!string.IsNullOrWhiteSpace(_category?.Name))
-                    return $"{_category.Name} · {best}";
 
                 return string.IsNullOrEmpty(best) ? string.Empty : char.ToUpper(best[0], CultureInfo.CurrentCulture) + best[1..];
             }
@@ -73,10 +65,7 @@ namespace Gizmo.Client.UI.Components
             }
 
             if (_app is not null)
-            {
                 this.SubscribeChange(_app);
-                _category = await AppCategoryViewStateLookupService.GetStateAsync(_app.ApplicationCategoryId);
-            }
 
             await base.OnInitializedAsync();
         }

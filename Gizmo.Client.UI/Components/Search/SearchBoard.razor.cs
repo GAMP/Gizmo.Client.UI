@@ -8,6 +8,7 @@ using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -24,6 +25,9 @@ namespace Gizmo.Client.UI.Components
 
         [Inject]
         GlobalSearchViewService GlobalSearchService { get; set; }
+
+        [Inject]
+        ILogger<SearchBoard> Logger { get; set; }
 
         [Parameter]
         public IReadOnlyList<GlobalSearchResultViewState> Executables { get; set; } = Array.Empty<GlobalSearchResultViewState>();
@@ -72,7 +76,7 @@ namespace Gizmo.Client.UI.Components
             {
                 _appsKey = key;
 
-                var apps = await GroupByAppAsync(Executables);
+                var apps = await GroupByAppAsync(Executables, Pattern);
 
                 if (key == _appsKey)
                     _apps = apps;
@@ -81,7 +85,7 @@ namespace Gizmo.Client.UI.Components
             await base.OnParametersSetAsync();
         }
 
-        private async Task<IReadOnlyList<SearchApp>> GroupByAppAsync(IReadOnlyList<GlobalSearchResultViewState> executables)
+        private async Task<IReadOnlyList<SearchApp>> GroupByAppAsync(IReadOnlyList<GlobalSearchResultViewState> executables, string pattern)
         {
             var order = new List<int>();
             var groups = new Dictionary<int, List<int>>();
@@ -103,7 +107,37 @@ namespace Gizmo.Client.UI.Components
                 ids.Add(result.Id);
             }
 
-            return order.Select(a => new SearchApp(a, groups[a])).ToList();
+            var apps = new List<SearchApp>(order.Count);
+
+            foreach (var applicationId in order)
+                apps.Add(new SearchApp(applicationId, await AllExecutablesAsync(applicationId, groups[applicationId], pattern)));
+
+            return apps;
         }
+
+        private async Task<IReadOnlyList<int>> AllExecutablesAsync(int applicationId, IReadOnlyList<int> found, string pattern)
+        {
+            try
+            {
+                var all = await AppExeViewStateLookupService.GetFilteredStatesAsync(applicationId);
+
+                var ids = all
+                    .OrderBy(a => CaptionMatches(a.Caption, pattern) ? 0 : 1)
+                    .ThenBy(a => a.DisplayOrder)
+                    .Select(a => a.ExecutableId)
+                    .ToList();
+
+                return ids.Count > 0 ? ids : found;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogWarning(ex, "Could not read the shortcuts of application {ApplicationId}; the search shows the ones it found.", applicationId);
+
+                return found;
+            }
+        }
+
+        private static bool CaptionMatches(string caption, string pattern) =>
+            !string.IsNullOrEmpty(pattern) && caption?.Contains(pattern, StringComparison.InvariantCultureIgnoreCase) == true;
     }
 }
