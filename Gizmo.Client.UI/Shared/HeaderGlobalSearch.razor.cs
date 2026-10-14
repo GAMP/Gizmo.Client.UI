@@ -58,13 +58,13 @@ namespace Gizmo.Client.UI.Shared
 
         protected bool HasResults => ViewState.ExecutableResults?.Any() == true || ViewState.ProductResults?.Any() == true;
 
-        protected bool IsWaitingForPattern => ViewState.EmptyResultTitle == LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GLOBAL_SEARCH_NOT_ENOUGH_CHARACTERS_TITLE));
+        protected bool IsNothingFound => ViewState.EmptyResultTitle == LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GLOBAL_SEARCH_NO_RESULTS_TITLE));
 
-        protected string EmptyIcon => IsWaitingForPattern ? "ph-keyboard" : "ph-magnifying-glass";
+        protected string EmptyIcon => IsNothingFound ? "ph-magnifying-glass" : "ph-keyboard";
 
-        protected string EmptyTitle => GrafitLocalization.GetString(IsWaitingForPattern ? GrafitResourceKeys.SHELL_SEARCH_START_TITLE : GrafitResourceKeys.SHELL_SEARCH_NONE_TITLE);
+        protected string EmptyTitle => GrafitLocalization.GetString(IsNothingFound ? GrafitResourceKeys.SHELL_SEARCH_NONE_TITLE : GrafitResourceKeys.SHELL_SEARCH_START_TITLE);
 
-        protected string EmptyText => GrafitLocalization.GetString(IsWaitingForPattern ? GrafitResourceKeys.SHELL_SEARCH_START_TEXT : GrafitResourceKeys.SHELL_SEARCH_NONE_TEXT);
+        protected string EmptyText => GrafitLocalization.GetString(IsNothingFound ? GrafitResourceKeys.SHELL_SEARCH_NONE_TEXT : GrafitResourceKeys.SHELL_SEARCH_START_TEXT);
 
         #endregion
 
