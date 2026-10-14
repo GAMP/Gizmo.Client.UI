@@ -25,10 +25,13 @@
                 <small>@MetaText</small>
             }
         </span>
-        @if (FirstExecutableId is int executableId)
+        @if (ExecutableIds.Count > 0)
         {
             <span class="giz-search-line__launch" @onclick:stopPropagation="true">
-                <UniversalExecutable @key="executableId" ExecutableId="@executableId" ShowProgressBar="true" ShowExeName="true" />
+                @foreach (var executableId in ExecutableIds)
+                {
+                    <UniversalExecutable @key="executableId" ExecutableId="@executableId" ShowProgressBar="true" ShowExeName="true" />
+                }
             </span>
         }
     </div>

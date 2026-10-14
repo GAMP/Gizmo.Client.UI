@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Gizmo.Client.UI.Localization.Resources;
-using Gizmo.Client.UI.Localization.Services;
 using Gizmo.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -14,8 +11,6 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class SearchAppLine : CustomDOMComponentBase
     {
-        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
-
         [Inject]
         AppViewStateLookupService AppViewStateLookupService { get; set; }
 
@@ -41,23 +36,7 @@ namespace Gizmo.Client.UI.Components
 
         private AppCategoryViewState _category;
 
-        protected int? FirstExecutableId => ExecutableIds.Count > 0 ? ExecutableIds[0] : null;
-
-        protected string MetaText
-        {
-            get
-            {
-                var parts = new List<string>();
-
-                if (!string.IsNullOrWhiteSpace(_category?.Name))
-                    parts.Add(_category.Name);
-
-                if (ExecutableIds.Count > 1)
-                    parts.Add(GrafitLocalization.GetPluralString(GrafitResourceKeys.SHELL_SEARCH_SHORTCUTS, ExecutableIds.Count));
-
-                return string.Join(" · ", parts);
-            }
-        }
+        protected string MetaText => _category?.Name;
 
         private void OpenApp()
         {

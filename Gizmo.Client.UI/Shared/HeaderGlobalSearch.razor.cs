@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.Localization.Services;
+﻿using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -56,6 +57,14 @@ namespace Gizmo.Client.UI.Shared
         protected IReadOnlyList<GlobalSearchResultViewState> ProductResults => ViewState.ProductResults?.ToList() ?? new List<GlobalSearchResultViewState>();
 
         protected bool HasResults => ViewState.ExecutableResults?.Any() == true || ViewState.ProductResults?.Any() == true;
+
+        protected bool IsWaitingForPattern => ViewState.EmptyResultTitle == LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GLOBAL_SEARCH_NOT_ENOUGH_CHARACTERS_TITLE));
+
+        protected string EmptyIcon => IsWaitingForPattern ? "ph-keyboard" : "ph-magnifying-glass";
+
+        protected string EmptyTitle => GrafitLocalization.GetString(IsWaitingForPattern ? GrafitResourceKeys.SHELL_SEARCH_START_TITLE : GrafitResourceKeys.SHELL_SEARCH_NONE_TITLE);
+
+        protected string EmptyText => GrafitLocalization.GetString(IsWaitingForPattern ? GrafitResourceKeys.SHELL_SEARCH_START_TEXT : GrafitResourceKeys.SHELL_SEARCH_NONE_TEXT);
 
         #endregion
 

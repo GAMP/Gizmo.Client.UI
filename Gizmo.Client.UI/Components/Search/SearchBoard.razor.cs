@@ -66,7 +66,7 @@ namespace Gizmo.Client.UI.Components
 
         protected override async Task OnParametersSetAsync()
         {
-            var key = string.Join(",", Executables.Select(a => a.Id));
+            var key = Pattern + "|" + string.Join(",", Executables.Select(a => a.Id));
 
             if (key != _appsKey)
             {
@@ -103,7 +103,35 @@ namespace Gizmo.Client.UI.Components
                 ids.Add(result.Id);
             }
 
-            return order.Select(a => new SearchApp(a, groups[a])).ToList();
+            var apps = new List<SearchApp>(order.Count);
+
+            foreach (var applicationId in order)
+                apps.Add(new SearchApp(applicationId, await AllExecutablesAsync(applicationId, groups[applicationId])));
+
+            return apps;
         }
+
+        private async Task<IReadOnlyList<int>> AllExecutablesAsync(int applicationId, IReadOnlyList<int> found)
+        {
+            try
+            {
+                var all = await AppExeViewStateLookupService.GetFilteredStatesAsync(applicationId);
+
+                var ids = all
+                    .OrderBy(a => CaptionMatches(a.Caption) ? 0 : 1)
+                    .ThenBy(a => a.DisplayOrder)
+                    .Select(a => a.ExecutableId)
+                    .ToList();
+
+                return ids.Count > 0 ? ids : found;
+            }
+            catch (Exception)
+            {
+                return found;
+            }
+        }
+
+        private bool CaptionMatches(string caption) =>
+            !string.IsNullOrEmpty(Pattern) && caption?.Contains(Pattern, StringComparison.InvariantCultureIgnoreCase) == true;
     }
 }
