@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Gizmo.UI.Services;
 using Gizmo.Client.UI.View.Services;
@@ -11,6 +12,9 @@ namespace Gizmo.Client.UI.Components
 {
     public partial class SearchAppLine : CustomDOMComponentBase
     {
+        private const int ALL_ROUND_FROM = 4;
+        private const int ROUND_SLOTS = 6;
+
         [Inject]
         AppViewStateLookupService AppViewStateLookupService { get; set; }
 
@@ -37,6 +41,16 @@ namespace Gizmo.Client.UI.Components
         private AppCategoryViewState _category;
 
         protected string MetaText => _category?.Name;
+
+        protected bool AllRound => ExecutableIds.Count >= ALL_ROUND_FROM;
+
+        protected string LaunchClass => AllRound ? "giz-search-line__launch giz-search-line__launch--round" : "giz-search-line__launch";
+
+        protected IReadOnlyList<int> ShownExecutableIds => ExecutableIds.Count > ROUND_SLOTS && !AppDetailsPageViewState.DisableAppDetails
+            ? ExecutableIds.Take(ROUND_SLOTS - 1).ToList()
+            : ExecutableIds;
+
+        protected int MoreCount => ExecutableIds.Count - ShownExecutableIds.Count;
 
         private void OpenApp()
         {
