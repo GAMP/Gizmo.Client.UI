@@ -38,6 +38,15 @@
     flex-shrink: 0;
 }
 
+// A club without quick-launch shortcuts: no hairline over an empty list. (:has() cannot be
+// nested, so the rail itself is asked.)
+.giz-left-panel:not(:has(.giz-dock-item)) {
+    .giz-left-panel__divider,
+    .giz-left-panel__quicklaunch {
+        display: none;
+    }
+}
+
 .giz-sidebar__inner {
     display: flex;
     flex-direction: column;

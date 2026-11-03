@@ -112,15 +112,52 @@ namespace Gizmo.Client.UI.Components
 
         private bool ShowLines => HasDiscount || Fees > 0;
 
-        protected override bool OffersPoints =>
-            PackageLine is { PurchaseOptions: PurchaseOptionType.Or, UnitPointsPrice: > 0 };
+        #endregion
 
-        protected override bool IsPayingWithPoints => PackageLine?.PayType == OrderLinePayType.Points;
+        #region POINTS FOR THE WHOLE ORDER
+
+        private static bool IsEitherWay(UserCartProductViewState line) =>
+            line.PurchaseOptions == PurchaseOptionType.Or && line.UnitPointsPrice > 0 && line.UnitPrice > 0;
+
+        private IEnumerable<UserCartProductViewState> EitherWayLines => CartService.ViewState.Products.Where(IsEitherWay);
+
+        private static int LinePoints(UserCartProductViewState line) =>
+            line.PayType == OrderLinePayType.Points && line.TotalPointsPrice > 0
+                ? line.TotalPointsPrice.Value
+                : line.UnitPointsPrice.GetValueOrDefault() * line.Quantity;
+
+        private int PointsAlwaysDue => CartService.ViewState.Products
+            .Where(a => !IsEitherWay(a))
+            .Sum(a => a.TotalPointsPrice.GetValueOrDefault());
+
+        private int PointsToSpend => PointsBalance - PointsAlwaysDue;
+
+        protected override bool OffersPoints => _pointsAllowed && EitherWayLines.Any();
+
+        protected override bool IsPayingWithPoints => EitherWayLines.Any(a => a.PayType == OrderLinePayType.Points);
+
+        protected override bool WayIsShort(PayWay way) => way.Kind == PayWayKind.Points
+            ? IsPriced && !EitherWayLines.Any(a => LinePoints(a) <= PointsToSpend)
+            : base.WayIsShort(way);
+
+        private IEnumerable<PayWay> MoneyWays => _ways.Where(a => a.Kind != PayWayKind.Points);
+
+        private PayWay MoneyWay
+        {
+            get
+            {
+                var methodId = CartOrderService.ViewState.PaymentMethodId;
+
+                return methodId is null ? null : MoneyWays.FirstOrDefault(a => a.MethodId == methodId);
+            }
+        }
+
+        private bool ShowRest => IsPayingWithPoints && IsPriced && Total > 0 && MoneyWays.Any();
+
+        private string RestCaption => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BUY_REST_WITH, Money(Total));
 
         protected override void Select(PayWay way)
         {
-            var line = PackageLine;
-
             if (way is null || IsSelected(way) || _paying)
                 return;
 
@@ -131,7 +168,7 @@ namespace Gizmo.Client.UI.Components
                 return;
             }
 
-            if (line is not null && IsPayingWithPoints)
+            foreach (var line in EitherWayLines.Where(a => a.PayType == OrderLinePayType.Points))
                 CartService.SetPayType(line.Guid, OrderLinePayType.Cash);
 
             base.Select(way);
@@ -139,8 +176,36 @@ namespace Gizmo.Client.UI.Components
 
         protected override void SelectPoints()
         {
-            if (PackageLine is { } line)
-                CartService.SetPayType(line.Guid, OrderLinePayType.Points);
+            var left = PointsToSpend;
+
+            foreach (var line in EitherWayLines.OrderByDescending(LinePoints).ThenBy(a => a.Number))
+            {
+                var points = LinePoints(line);
+                var wanted = points <= left ? OrderLinePayType.Points : OrderLinePayType.Cash;
+
+                if (wanted == OrderLinePayType.Points)
+                    left -= points;
+
+                if (line.PayType != wanted)
+                    CartService.SetPayType(line.Guid, wanted);
+            }
+
+            if (MoneyWay is not null)
+                return;
+
+            var rest = MoneyWays.FirstOrDefault(a => a.Kind == PayWayKind.Balance) ?? MoneyWays.FirstOrDefault();
+
+            if (rest is not null)
+                CartOrderService.SetOrderPaymentMethod(rest.MethodId);
+        }
+
+        private void SelectRest(PayWay way)
+        {
+            if (way is null || _paying || way == MoneyWay)
+                return;
+
+            CartOrderService.SetOrderPaymentMethod(way.MethodId);
+            StateHasChanged();
         }
 
         #endregion

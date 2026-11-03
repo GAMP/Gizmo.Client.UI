@@ -1446,6 +1446,43 @@ document.addEventListener("mouseover", function placeDockTooltip(event) {
     tip.style.setProperty("--giz-dock-tip-left", railBox.right + "px");
 }, true);
 
+// An executable's icon is cut round only when it is a picture with its own background
+// (opaque corners, the way most clubs upload them). A drawn icon on transparency is shown
+// whole: the --free modifier on the icon box. Load events do not bubble, hence capture.
+document.addEventListener("load", function markExecutableIcon(event) {
+    const img = event.target;
+
+    if (!(img instanceof HTMLImageElement)) return;
+
+    const box = img.parentElement && img.parentElement.classList.contains("giz-universal-executable__icon")
+        ? img.parentElement
+        : null;
+
+    if (!box) return;
+
+    let free = false;
+
+    try {
+        const size = 24;
+        const canvas = document.createElement("canvas");
+        canvas.width = size;
+        canvas.height = size;
+
+        const context = canvas.getContext("2d", { willReadFrequently: true });
+        context.drawImage(img, 0, 0, size, size);
+
+        const pixels = context.getImageData(0, 0, size, size).data;
+        const alpha = (x, y) => pixels[(y * size + x) * 4 + 3];
+        const corners = [alpha(1, 1), alpha(size - 2, 1), alpha(1, size - 2), alpha(size - 2, size - 2)];
+
+        free = corners.filter((value) => value < 128).length >= 2;
+    } catch (_) {
+        free = false;
+    }
+
+    box.classList.toggle("giz-universal-executable__icon--free", free);
+}, true);
+
 // Writing direction for the current language.
 window.setDocumentDirection = function setDocumentDirection(direction) {
     const value = direction === "rtl" ? "rtl" : "ltr";

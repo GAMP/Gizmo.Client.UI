@@ -7,15 +7,23 @@
     {
         @if (_appExeExecutionViewState.IsIndeterminate)
         {
-            <span class="giz-universal-executable-progress-bar__ring giz-universal-executable-progress-bar__ring--spin" role="progressbar"></span>
+            <svg class="giz-universal-executable-progress-bar__ring giz-universal-executable-progress-bar__ring--spin" viewBox="0 0 48 48" role="progressbar">
+                <circle class="giz-universal-executable-progress-bar__track" cx="24" cy="24" r="22" />
+                <circle class="giz-universal-executable-progress-bar__arc" cx="24" cy="24" r="22" pathLength="100" />
+            </svg>
         }
         else
         {
-            <span class="giz-universal-executable-progress-bar__ring" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="@ProgressValue" style="--giz-ring-progress: @ProgressValue"></span>
+            <svg class="giz-universal-executable-progress-bar__ring" viewBox="0 0 48 48" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="@ProgressValue" style="--giz-ring-progress: @ProgressValue">
+                <circle class="giz-universal-executable-progress-bar__track" cx="24" cy="24" r="22" />
+                <circle class="giz-universal-executable-progress-bar__arc" cx="24" cy="24" r="22" pathLength="100" />
+            </svg>
         }
     }
     else if (_appExeExecutionViewState.IsRunning)
     {
-        <span class="running giz-universal-executable-progress-bar__ring giz-universal-executable-progress-bar__ring--running"></span>
+        <svg class="running giz-universal-executable-progress-bar__ring giz-universal-executable-progress-bar__ring--running" viewBox="0 0 48 48">
+            <circle class="giz-universal-executable-progress-bar__arc" cx="24" cy="24" r="22" pathLength="100" />
+        </svg>
     }
 </div>

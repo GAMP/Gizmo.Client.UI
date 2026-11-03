@@ -244,5 +244,6 @@
         public const string SHELL_SIGNUP_VERIFY_AGAIN = nameof(SHELL_SIGNUP_VERIFY_AGAIN);
         public const string SHELL_SIGNUP_CHECK_FAILED = nameof(SHELL_SIGNUP_CHECK_FAILED);
         public const string SHELL_SIGNUP_Q_CODE = nameof(SHELL_SIGNUP_Q_CODE);
+        public const string SHELL_BUY_REST_WITH = nameof(SHELL_BUY_REST_WITH);
     }
 }

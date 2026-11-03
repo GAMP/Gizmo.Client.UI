@@ -3,12 +3,16 @@
 // button, hairlines between. No tile of its own: the till is the only surface. The cheapest hour
 // gets a green note under the name.
 
+// The rows share one grid, so the figure column is as wide as the widest length ("30 мин",
+// "1,5 ч") and every name starts on the same line.
 .giz-home-packs {
     flex: 1 1 auto;
     min-height: 0;
     margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: minmax(4.6rem, max-content) minmax(0, 1fr) auto;
+    align-content: start;
+    column-gap: 1.2rem;
     overflow-y: auto;
     --giz-fade: 0px;
     mask-image: linear-gradient(to bottom, var(--giz-black) calc(100% - var(--giz-fade)), transparent 100%);
@@ -21,11 +25,10 @@
 }
 
 .giz-home-pack {
-    flex: none;
+    grid-column: 1 / -1;
     display: grid;
-    grid-template-columns: 4.6rem minmax(0, 1fr) auto;
+    grid-template-columns: subgrid;
     align-items: center;
-    gap: 1.2rem;
     padding: 1.1rem 0.2rem;
     border-top: 1px solid var(--giz-glass-5);
 
@@ -35,6 +38,7 @@
         display: flex;
         align-items: baseline;
         gap: 0.15rem;
+        white-space: nowrap;
         color: var(--giz-ink);
         cursor: pointer;
         transition: color 0.16s;
@@ -120,9 +124,12 @@
 }
 
 @media (max-height: 840px) {
+    .giz-home-packs {
+        grid-template-columns: minmax(4rem, max-content) minmax(0, 1fr) auto;
+        column-gap: 1.1rem;
+    }
+
     .giz-home-pack {
-        grid-template-columns: 4rem minmax(0, 1fr) auto;
-        gap: 1.1rem;
         padding: 0.8rem 0.2rem;
     }
 

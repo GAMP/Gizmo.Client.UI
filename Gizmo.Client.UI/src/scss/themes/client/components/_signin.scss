@@ -423,7 +423,8 @@
         padding-left: 1rem;
 
         > .giz-select {
-            flex: 0 0 19rem;
+            flex: 0 1 15rem;
+            min-width: 12rem;
             position: relative;
             margin-right: 1.8rem;
 
@@ -438,7 +439,13 @@
             }
         }
 
-        > .giz-masked-phone-input { margin-right: 1.4rem; }
+        // The number's hint ("(###) ###-##-##") never reaches under the button: the field
+        // measures itself and the figures shrink to fit it; anything longer is cut at its edge.
+        > .giz-masked-phone-input {
+            margin-right: 1.4rem;
+            container-type: inline-size;
+            overflow: hidden;
+        }
     }
 
     & &__pill--phone > .giz-select .giz-input-root.giz-input-root--medium {
@@ -470,8 +477,9 @@
 
     & &__pill .giz-masked-phone-input {
         .giz-phone-prefix,
-        .giz-mask {
-            font-size: 2.2rem;
+        .giz-mask,
+        .giz-input-wrapper input {
+            font-size: clamp(1.4rem, 7.2cqi, 2.2rem);
             font-weight: 600;
         }
 

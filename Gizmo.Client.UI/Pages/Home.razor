@@ -279,6 +279,11 @@
                                         {
                                             <span class="giz-home-good__pts">@PointsPrice(product)<i class="ph-fill ph-coins"></i></span>
                                         }
+                                        else if (OwnPrice(product) is decimal own)
+                                        {
+                                            <s class="giz-home-good__was">@ShortMoney(product.UnitPrice)</s>
+                                            @ShortMoney(own)
+                                        }
                                         else
                                         {
                                             @ShortMoney(product.UnitPrice)

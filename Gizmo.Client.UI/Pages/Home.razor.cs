@@ -207,6 +207,12 @@ namespace Gizmo.Client.UI.Pages
 
         private UserCartProductViewState CartLine(int productId) => _cartLines.GetValueOrDefault(productId);
 
+        private decimal? OwnPrice(UserProductViewState product) =>
+            CartLine(product.Id) is { Quantity: > 0, PayType: OrderLinePayType.Cash, TotalPrice: > 0 } line &&
+            line.TotalPrice / line.Quantity < product.UnitPrice
+                ? line.TotalPrice / line.Quantity
+                : null;
+
         private string GoodClass(UserProductViewState product) => CartLine(product.Id) is { Quantity: > 0 }
             ? "giz-home-good giz-home-good--in"
             : "giz-home-good";

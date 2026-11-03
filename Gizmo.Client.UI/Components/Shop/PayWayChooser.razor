@@ -31,9 +31,21 @@ else if (Segments is { Count: > 0 })
                 </button>
             }
         </div>
-        @if (ShowChips)
+        @if (ShowRest)
         {
-            
+            <div class="giz-buy__chips giz-buy__chips--rest">
+                <span class="giz-buy__chips-cap">@RestCaption</span>
+                @foreach (var way in Rest)
+                {
+                    <button type="button" @key="way"
+                            class="giz-buy__chip @(way == RestSelected ? "giz-buy__chip--on" : null)"
+                            disabled="@Disabled"
+                            @onclick="@(() => OnRest.InvokeAsync(way))">@way.Name</button>
+                }
+            </div>
+        }
+        else if (ShowChips)
+        {
             <div class="giz-buy__chips">
                 @foreach (var way in Chips)
                 {
