@@ -1454,11 +1454,12 @@ document.addEventListener("load", function markExecutableIcon(event) {
 
     if (!(img instanceof HTMLImageElement)) return;
 
-    const box = img.parentElement && img.parentElement.classList.contains("giz-universal-executable__icon")
-        ? img.parentElement
-        : null;
+    const parent = img.parentElement;
+    const block = parent && ["giz-universal-executable__icon", "giz-active-app-card__image"].find((name) => parent.classList.contains(name));
 
-    if (!box) return;
+    if (!block) return;
+
+    const box = parent;
 
     let free = false;
 
@@ -1480,7 +1481,7 @@ document.addEventListener("load", function markExecutableIcon(event) {
         free = false;
     }
 
-    box.classList.toggle("giz-universal-executable__icon--free", free);
+    box.classList.toggle(block + "--free", free);
 }, true);
 
 // Writing direction for the current language.

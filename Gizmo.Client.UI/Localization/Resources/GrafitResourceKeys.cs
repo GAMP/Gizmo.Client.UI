@@ -245,5 +245,10 @@
         public const string SHELL_SIGNUP_CHECK_FAILED = nameof(SHELL_SIGNUP_CHECK_FAILED);
         public const string SHELL_SIGNUP_Q_CODE = nameof(SHELL_SIGNUP_Q_CODE);
         public const string SHELL_BUY_REST_WITH = nameof(SHELL_BUY_REST_WITH);
+        public const string SHELL_APPS_RUNNING = nameof(SHELL_APPS_RUNNING);
+        public const string SHELL_APPS_STARTING = nameof(SHELL_APPS_STARTING);
+        public const string SHELL_APPS_LOADING = nameof(SHELL_APPS_LOADING);
+        public const string SHELL_NOTIFICATIONS_MORE = nameof(SHELL_NOTIFICATIONS_MORE);
+        public const string SHELL_NOTIFICATIONS_FOLD = nameof(SHELL_NOTIFICATIONS_FOLD);
     }
 }

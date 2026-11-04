@@ -3,7 +3,6 @@
 
 <div class="giz-active-app-card">
     <div class="giz-active-app-card__image">
-
         <GizImage @key="Executable" ImageType="Gizmo.UI.ImageType.Executable" ImageId="@Executable.ImageId">
             <EmptyResultPlaceholder>
                 <div class="giz-default-image">
@@ -16,12 +15,60 @@
                 </div>
             </ErrorPlaceholder>
         </GizImage>
-
+        <UniversalExecutableProgressBar @key="Executable.ExecutableId" ExecutableId="@Executable.ExecutableId" />
     </div>
     <div class="giz-active-app-card__info">
         <div class="giz-active-app-card__info__title">@Executable.Caption</div>
+        <div class="giz-active-app-card__info__status">@StatusText</div>
     </div>
     <div class="giz-active-app-card__actions">
-        <ExecutableLaunchButton @key="Executable.ExecutableId" ExecutableId="@Executable.ExecutableId" Size="ButtonSizes.Large" IsFullWidth="true" />
+        @if (IsBusy)
+        {
+            <button type="button" class="giz-active-app-card__act giz-active-app-card__act--open" @onclick="Abort">
+                <i class="ph-bold ph-x"></i>
+                <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_CANCEL))</span>
+            </button>
+        }
+        else
+        {
+            @if (CanLaunchAgain)
+            {
+                <button type="button" class="giz-active-app-card__act" @onclick="LaunchAgain">
+                    <i class="ph-fill ph-play"></i>
+                    <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_LAUNCH))</span>
+                </button>
+            }
+            <button type="button" class="@AutoLaunchClass" aria-pressed="@Executable.AutoLaunch" @onclick="ToggleAutoLaunch">
+                <i class="ph-bold ph-lightning"></i>
+                <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_AUTO_START))</span>
+            </button>
+            <button type="button" class="giz-active-app-card__act" @onclick="Repair">
+                <i class="ph-bold ph-arrow-counter-clockwise"></i>
+                <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_REPAIR))</span>
+            </button>
+            @if (HasFiles)
+            {
+                <button type="button" class="giz-active-app-card__act" @onclick="OpenFiles">
+                    <i class="ph-bold ph-folder-simple"></i>
+                    <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_PERSONAL_FILES))</span>
+                </button>
+            }
+            <button type="button" class="giz-active-app-card__act giz-active-app-card__act--stop" @onclick="Terminate">
+                <i class="ph-fill ph-stop"></i>
+                <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_TERMINATE))</span>
+            </button>
+        }
     </div>
+    @if (ShowFiles)
+    {
+        <div class="giz-active-app-card__files">
+            @foreach (var file in Files)
+            {
+                <button type="button" class="giz-active-app-card__file" @key="file.PersonalFileId" @onclick="@(() => OpenFile(file))">
+                    <i class="ph-bold ph-folder-simple"></i>
+                    <span>@file.Caption</span>
+                </button>
+            }
+        </div>
+    }
 </div>

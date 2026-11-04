@@ -1,40 +1,15 @@
 //=============== Cover placeholder ================//
-// A game or program the club has not given a cover: the sign-in screen's ribbons, tinted to the
-// palette the same way (_login-art.scss), filling the cover's box. The picture is an SVG <image>
-// so the places that size their own <img> placeholders leave it alone.
+// A game or program the club has not given a cover: a neutral glass tile, the same for both,
+// filling the cover's box and taking its corners.
 
 .giz-cover-placeholder {
-    position: relative;
     display: block;
     align-self: stretch;
     width: 100%;
     height: 100%;
-    overflow: hidden;
     border-radius: inherit;
-    isolation: isolate;
-
-    &__art,
-    &__tint,
-    &__lift {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-    }
-
-    &__art {
-        display: block;
-        transform: scale(1.25);
-        transform-origin: 30% 70%;
-    }
-
-    &__tint {
-        background: linear-gradient(150deg, var(--giz-accent-pale), var(--giz-accent) 45%, var(--giz-accent-deep));
-        mix-blend-mode: multiply;
-    }
-
-    &__lift {
-        background: var(--giz-bg-0);
-        mix-blend-mode: lighten;
-    }
+    background:
+        linear-gradient(180deg, var(--giz-glass-6), var(--giz-glass-2)),
+        var(--giz-bg-1);
+    box-shadow: inset 0 0 0 1px var(--giz-glass-8);
 }
