@@ -1,7 +1,7 @@
 //=============== Icon placeholder ================//
-// A picture the club has not given (an executable without an icon, a game without a cover):
-// a plain application glyph on the palette's tint. It fills whatever box the picture would
-// have filled and takes that box's corners; the glyph scales with the box.
+// A shortcut the club has not given an icon (and whose game has no cover either): a play
+// mark on the shell's glass. It fills whatever box the picture would have filled, takes that
+// box's corners, and the mark scales with the box.
 
 .giz-icon-placeholder {
     container-type: size;
@@ -11,12 +11,14 @@
     height: 100%;
     border-radius: inherit;
     overflow: hidden;
-    background: linear-gradient(160deg, rgba(var(--giz-accent-rgb), 0.3), rgba(var(--giz-accent-rgb), 0.12));
-    box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.3);
-    color: var(--giz-accent-pale);
+    background: var(--giz-glass-5);
+    box-shadow: inset 0 0 0 1px var(--giz-glass-9);
+    color: var(--giz-text-1);
 
     i {
-        font-size: min(46cqmin, 6.4rem);
+        font-size: min(38cqmin, 5rem);
         line-height: 1;
+        // The triangle's weight sits left of its box; nudge it to the optical centre.
+        transform: translateX(6%);
     }
 }

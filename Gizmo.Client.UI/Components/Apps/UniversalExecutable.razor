@@ -9,7 +9,14 @@
         <GizImage @key="_appExeViewState" ImageType="Gizmo.UI.ImageType.Executable" ImageId="@_appExeViewState.ImageId">
             <EmptyResultPlaceholder>
                 <div class="giz-default-image">
-                    <GizIconPlaceholder />
+                    <GizImage @key="_appViewState" ImageType="Gizmo.UI.ImageType.Application" ImageId="@_appViewState?.ImageId" ImageFitType="ImageFitType.Cover">
+                        <EmptyResultPlaceholder>
+                            <GizIconPlaceholder />
+                        </EmptyResultPlaceholder>
+                        <ErrorPlaceholder>
+                            <GizIconPlaceholder />
+                        </ErrorPlaceholder>
+                    </GizImage>
                 </div>
             </EmptyResultPlaceholder>
             <ErrorPlaceholder>
