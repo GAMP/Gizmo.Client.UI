@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.View.States;
+﻿using Gizmo.Client.UI.Localization.Services;
+using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -7,8 +8,11 @@ namespace Gizmo.Client.UI.Shared
 {
     public partial class Layout_LoginLock : CustomDOMComponentBase
     {
+        [CascadingParameter]
+        protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         [Inject]
-        ILocalizationService LocalizationService { get; set; }
+        HostNumberViewState HostNumberViewState { get; set; }
 
         [Inject]
         HostLockViewState ViewState { get; set; }

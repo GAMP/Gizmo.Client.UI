@@ -244,13 +244,13 @@
             {
                 @if (BarGroups.Count > 1)
                 {
-                    <div class="giz-home-cats">
-                        <button type="button" class="@GroupClass(null)" @onclick="@(() => SelectGroup(null))">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_FILTERS_ALL)</button>
+                    <GizScroller Class="giz-home-cats">
+                        <button type="button" class="@GroupClass(null)" aria-pressed="@GroupPressed(null)" @onclick="@(() => SelectGroup(null))">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_FILTERS_ALL)</button>
                         @foreach (var group in BarGroups)
                         {
-                            <button type="button" class="@GroupClass(group.ProductGroupId)" @key="group.ProductGroupId" @onclick="@(() => SelectGroup(group.ProductGroupId))">@group.Name</button>
+                            <button type="button" class="@GroupClass(group.ProductGroupId)" aria-pressed="@GroupPressed(group.ProductGroupId)" @key="group.ProductGroupId" @onclick="@(() => SelectGroup(group.ProductGroupId))">@group.Name</button>
                         }
-                    </div>
+                    </GizScroller>
                 }
 
                 <div class="giz-home-goods">

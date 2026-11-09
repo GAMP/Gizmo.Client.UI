@@ -26,7 +26,7 @@
         {
             <button type="button" class="giz-active-app-card__act giz-active-app-card__act--open" @onclick="Abort">
                 <i class="ph-bold ph-x"></i>
-                <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_CANCEL))</span>
+                <span class="giz-active-app-card__label"><span><span class="giz-active-app-card__label-text">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_CANCEL))</span></span></span>
             </button>
         }
         else
@@ -35,27 +35,27 @@
             {
                 <button type="button" class="giz-active-app-card__act" @onclick="LaunchAgain">
                     <i class="ph-fill ph-play"></i>
-                    <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_LAUNCH))</span>
+                    <span class="giz-active-app-card__label"><span><span class="giz-active-app-card__label-text">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_LAUNCH))</span></span></span>
                 </button>
             }
             <button type="button" class="@AutoLaunchClass" aria-pressed="@Executable.AutoLaunch" @onclick="ToggleAutoLaunch">
                 <i class="ph-bold ph-lightning"></i>
-                <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_AUTO_START))</span>
+                <span class="giz-active-app-card__label"><span><span class="giz-active-app-card__label-text">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_AUTO_START))</span></span></span>
             </button>
             <button type="button" class="giz-active-app-card__act" @onclick="Repair">
                 <i class="ph-bold ph-arrow-counter-clockwise"></i>
-                <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_REPAIR))</span>
+                <span class="giz-active-app-card__label"><span><span class="giz-active-app-card__label-text">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_REPAIR))</span></span></span>
             </button>
             @if (HasFiles)
             {
-                <button type="button" class="giz-active-app-card__act" @onclick="OpenFiles">
+                <button type="button" class="@FilesClass" aria-expanded="@FilesExpanded" @onclick="OpenFiles">
                     <i class="ph-bold ph-folder-simple"></i>
-                    <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_PERSONAL_FILES))</span>
+                    <span class="giz-active-app-card__label"><span><span class="giz-active-app-card__label-text">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_PERSONAL_FILES))</span></span></span>
                 </button>
             }
             <button type="button" class="giz-active-app-card__act giz-active-app-card__act--stop" @onclick="Terminate">
                 <i class="ph-fill ph-stop"></i>
-                <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_TERMINATE))</span>
+                <span class="giz-active-app-card__label"><span><span class="giz-active-app-card__label-text">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APPS_TERMINATE))</span></span></span>
             </button>
         }
     </div>

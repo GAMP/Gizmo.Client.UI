@@ -64,10 +64,14 @@
     width: 100%;
 }
 
+$giz-rail-item: 4rem;
+$giz-rail-gap: 0.8rem;
+
 .giz-left-panel .giz-header__modules-menu {
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: $giz-rail-gap;
     padding: 0;
     height: auto;
     width: 100%;
@@ -85,9 +89,9 @@
     align-items: center;
     justify-content: center;
     gap: 0;
-    padding: 1rem 0;
-    border-radius: 1.6rem;
-    height: auto;
+    padding: 0;
+    border-radius: 1.4rem;
+    height: $giz-rail-item;
     width: 100%;
     box-sizing: border-box;
 
@@ -104,12 +108,48 @@
 }
 
 // The section you are in sits on the palette's own plate, its icon filled in the plate's ink;
-// the others are thin icons with no plate at all.
+// the others are thin icons with no plate at all. One plate (the menu's ::before) slides to the
+// section picked and stretches a little on the way; the icon takes the plate's ink as it lands.
+// Items are one fixed height, so the plate's place is the item's index times item + gap.
+.giz-left-panel .giz-header__modules-menu::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: $giz-rail-item;
+    border-radius: 1.4rem;
+    background: var(--giz-action-bg);
+    opacity: 0;
+    pointer-events: none;
+    translate: 0 calc(var(--giz-rail-at, 0) * #{$giz-rail-item + $giz-rail-gap});
+    transition: translate 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
+}
+
+@for $i from 1 through 10 {
+    .giz-left-panel .giz-header__modules-menu:has(> .giz-header__modules-menu-item:nth-child(#{$i}) > a.active)::before {
+        --giz-rail-at: #{$i - 1};
+        opacity: 1;
+        animation: giz-rail-stretch-#{$i} 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @keyframes giz-rail-stretch-#{$i} {
+        0% { scale: 1 1; }
+        24% { scale: 0.92 1.24; }
+        100% { scale: 1 1; }
+    }
+}
+
 .giz-left-panel .giz-header__modules-menu-item > a.active,
 .giz-left-panel .giz-header__modules-menu-item > a.active:hover {
-    background: var(--giz-action-bg);
+    background: transparent;
     color: var(--giz-action-ink);
     box-shadow: none;
+    transition: color 0.2s ease 0.14s, background 0.15s;
+}
+
+.giz-left-panel .giz-header__modules-menu-item > a.active::before {
+    display: none;
 }
 
 .giz-left-panel .giz-header__modules-menu-item > a {
@@ -117,7 +157,7 @@
 }
 
 .giz-left-panel .giz-header__modules-menu-item > a .giz-ph-icon {
-    font-size: 2.8rem;
+    font-size: 2.6rem;
     flex-shrink: 0;
 }
 

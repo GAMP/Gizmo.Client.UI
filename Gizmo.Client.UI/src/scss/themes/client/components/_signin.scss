@@ -990,6 +990,34 @@
 
     &__pill--code { padding-left: 2.4rem; }
 
+    // Recovery by call: the number to ring, large, then what the shell is waiting for.
+    &__number {
+        font-family: $font-family-header-theme-client;
+        font-size: 5.6rem;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -0.02em;
+        font-variant-numeric: tabular-nums;
+        color: var(--giz-text-1);
+    }
+
+    &__wait {
+        display: inline-flex;
+        align-items: center;
+        gap: 1.2rem;
+        font-size: 1.7rem;
+        font-weight: 700;
+        color: var(--giz-text-2);
+
+        &::before {
+            content: '';
+            width: 1.2rem;
+            height: 1.2rem;
+            border-radius: 50%;
+            background: var(--giz-accent);
+        }
+    }
+
     &__link:disabled,
     &__link:disabled:hover {
         color: var(--giz-text-3);

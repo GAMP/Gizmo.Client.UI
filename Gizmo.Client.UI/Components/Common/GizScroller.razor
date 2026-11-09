@@ -1,0 +1,14 @@
+﻿@namespace Gizmo.Client.UI.Components
+@inherits CustomDOMComponentBase
+
+<div class="@ClassName" id="@Id" @ref="@Ref">
+    <div class="giz-scroller__track">
+        @ChildContent
+    </div>
+    <button type="button" class="giz-scroller__arrow giz-scroller__arrow--back" tabindex="-1" aria-hidden="true" @onclick="Back">
+        <i class="ph-bold ph-caret-left"></i>
+    </button>
+    <button type="button" class="giz-scroller__arrow giz-scroller__arrow--next" tabindex="-1" aria-hidden="true" @onclick="Next">
+        <i class="ph-bold ph-caret-right"></i>
+    </button>
+</div>

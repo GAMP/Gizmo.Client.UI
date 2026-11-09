@@ -193,6 +193,8 @@ namespace Gizmo.Client.UI.Pages
 
         private int? ActiveGroup => _group is int group && BarGroups.Any(a => a.ProductGroupId == group) ? group : null;
 
+        private string GroupPressed(int? group) => ActiveGroup == group ? "true" : "false";
+
         private string GroupClass(int? group) => ActiveGroup == group
             ? "giz-home-cats__cat giz-home-cats__cat--active"
             : "giz-home-cats__cat";

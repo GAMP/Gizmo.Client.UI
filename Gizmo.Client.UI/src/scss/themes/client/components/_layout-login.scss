@@ -384,6 +384,18 @@
     }
 }
 
+// `--giz-login-wallpaper: always` (club CSS, read by grafitTheme): the club's wallpaper stays
+// while someone is at the PC. The shell's background is not laid over it; a light scrim fades
+// in instead so the form reads on any picture.
+html[data-login-wallpaper="always"] .giz-login-content:not(.giz-login-content--own-bg) {
+    .giz-login-hardcoded-bg {
+        background: rgba(var(--giz-scrim-rgb), 0.42);
+        transform: none;
+    }
+
+    .giz-flow { display: none; }
+}
+
 .giz-login-card {
     position: relative;
     display: flex;

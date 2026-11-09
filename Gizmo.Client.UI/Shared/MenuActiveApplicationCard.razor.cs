@@ -45,6 +45,12 @@ namespace Gizmo.Client.UI.Shared
 
         protected bool ShowFiles => _filesOpen && _files.Count > 1;
 
+        protected string FilesClass => ShowFiles
+            ? "giz-active-app-card__act giz-active-app-card__act--open"
+            : "giz-active-app-card__act";
+
+        protected string FilesExpanded => ShowFiles ? "true" : "false";
+
         protected string StatusText
         {
             get

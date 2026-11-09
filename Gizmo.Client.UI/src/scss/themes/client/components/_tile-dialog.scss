@@ -1,0 +1,290 @@
+//=============== Tile dialog ================//
+// A question, a notice or a short form (change password, reservation): one flat field in its
+// tone's colour - the accent for a question or a form, warning, danger or success for the
+// others - with its words, fields and buttons in the field's dark ink.
+
+.giz-tile-dialog {
+    --giz-tile-bg: var(--giz-accent);
+    --giz-tile-ink: var(--giz-on-accent);
+    --giz-focus: var(--giz-on-accent);
+    position: relative;
+    width: 60rem;
+    max-width: calc(100vw - 4rem);
+    box-sizing: border-box;
+    padding: 4.6rem 4.6rem 4.4rem;
+    border-radius: 3.4rem;
+    background: var(--giz-tile-bg);
+    color: var(--giz-tile-ink);
+    font-family: $font-family-header-theme-client;
+    box-shadow: 0 4rem 9rem -2.6rem rgba(var(--giz-black-rgb), 0.9);
+
+    &--danger { --giz-tile-bg: var(--giz-danger); }
+
+    &--warning { --giz-tile-bg: var(--giz-warning); }
+
+    &--success { --giz-tile-bg: var(--giz-success); }
+
+    &__close {
+        position: absolute;
+        top: 2.4rem;
+        right: 2.4rem;
+        width: 4.4rem;
+        height: 4.4rem;
+        padding: 0;
+        display: grid;
+        place-items: center;
+        border: 0;
+        border-radius: $giz-r-pill;
+        background: transparent;
+        color: var(--giz-tile-ink);
+        cursor: pointer;
+
+        i { font-size: 2rem; }
+
+        &:hover { background: color-mix(in srgb, var(--giz-tile-ink) 10%, transparent); }
+    }
+
+    &__icon {
+        display: block;
+        font-size: 4.8rem;
+    }
+
+    &__title {
+        margin: 2.2rem 0 0;
+        font-size: 4.4rem;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -0.03em;
+        overflow-wrap: anywhere;
+    }
+
+    &__text {
+        max-height: 40vh;
+        margin: 1.6rem 0 0;
+        overflow: auto;
+        font-size: 1.9rem;
+        font-weight: 600;
+        line-height: 1.45;
+        color: color-mix(in srgb, var(--giz-tile-ink) 74%, transparent);
+    }
+
+    &__note {
+        margin: 2.4rem 0 0;
+        font-size: 1.6rem;
+        font-weight: 700;
+        line-height: 1.4;
+        color: color-mix(in srgb, var(--giz-tile-ink) 66%, transparent);
+    }
+
+    &__error {
+        margin: 1.4rem 0 0;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        font-size: 1.6rem;
+        font-weight: 800;
+
+        i { font-size: 2rem; }
+    }
+
+    &__form {
+        display: grid;
+        gap: 1.4rem;
+        margin-top: 3rem;
+    }
+
+    &__field {
+        display: grid;
+        gap: 0.8rem;
+    }
+
+    &__label {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: color-mix(in srgb, var(--giz-tile-ink) 70%, transparent);
+    }
+
+    &__well {
+        min-height: 6rem;
+        padding: 0 0.6rem 0 2rem;
+        display: flex;
+        align-items: center;
+        border-radius: 1.8rem;
+        background: color-mix(in srgb, var(--giz-tile-ink) 12%, transparent);
+        transition: box-shadow 0.2s;
+
+        &:focus-within { box-shadow: inset 0 0 0 2.5px var(--giz-tile-ink); }
+
+        > * {
+            flex: 1;
+            min-width: 0;
+        }
+    }
+
+    &__actions {
+        margin-top: 3.6rem;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 1.2rem;
+    }
+
+    &__button {
+        height: 5.8rem;
+        padding: 0 2.8rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        border: 0;
+        border-radius: $giz-r-pill;
+        background: transparent;
+        box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--giz-tile-ink) 40%, transparent);
+        color: var(--giz-tile-ink);
+        font: inherit;
+        font-size: 1.8rem;
+        font-weight: 800;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: background 0.15s;
+
+        &:hover { background: color-mix(in srgb, var(--giz-tile-ink) 8%, transparent); }
+
+        &--primary,
+        &--primary:hover {
+            background: var(--giz-tile-ink);
+            box-shadow: none;
+            color: var(--giz-tile-bg);
+        }
+
+        &:disabled,
+        &:disabled:hover {
+            background: color-mix(in srgb, var(--giz-tile-ink) 18%, transparent);
+            box-shadow: none;
+            color: color-mix(in srgb, var(--giz-tile-ink) 50%, transparent);
+            cursor: default;
+        }
+
+        .giz-loader {
+            --giz-loader-size: 2.2rem;
+            color: currentColor;
+        }
+    }
+
+    &__facts {
+        margin-top: 2.6rem;
+        display: grid;
+        gap: 0.8rem;
+    }
+
+    &__fact {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 1.7rem;
+        font-weight: 700;
+
+        i { font-size: 2rem; }
+    }
+
+    &__sum {
+        margin-top: 2.2rem;
+        padding: 1.8rem 2rem;
+        display: grid;
+        gap: 0.6rem;
+        border-radius: 1.8rem;
+        background: color-mix(in srgb, var(--giz-tile-ink) 9%, transparent);
+    }
+
+    &__row {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1.6rem;
+        font-size: 1.7rem;
+        font-weight: 700;
+        color: color-mix(in srgb, var(--giz-tile-ink) 74%, transparent);
+
+        b {
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+            color: var(--giz-tile-ink);
+        }
+
+        &--due {
+            font-size: 2.2rem;
+            color: var(--giz-tile-ink);
+        }
+    }
+
+    &__qr {
+        margin-top: 2rem;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        gap: 2rem;
+
+        .giz-tile-dialog__text { margin: 0; }
+    }
+
+    &__qr-code {
+        padding: 1.4rem;
+        border-radius: 2rem;
+        background: var(--giz-white);
+        line-height: 0;
+
+        svg {
+            width: 16rem;
+            height: 16rem;
+        }
+    }
+}
+
+// The vendor's fields inside a well: no frame, label or message line of their own, the
+// value in the field's ink. Hover and focus are stated with the base, or the vendor's
+// input theme wins the moment the pointer is on the field.
+[#{$client-theme-comp-attr}] .giz-tile-dialog__well {
+    .giz-input-control .giz-input-root,
+    .giz-input-control .giz-input-root.giz-input-root--outline {
+        &,
+        &:hover,
+        &:focus-within {
+            border: 0;
+            box-shadow: none;
+            background: none;
+            color: var(--giz-tile-ink);
+        }
+
+        &::after { display: none; }
+    }
+
+    .giz-input-control { overflow: visible; }
+
+    .giz-input-control .giz-input-label,
+    .giz-input-validation-label { display: none; }
+
+    .giz-input-control .giz-input-root input {
+        color: var(--giz-tile-ink);
+        font-family: $font-family-header-theme-client;
+        font-size: 2rem;
+        font-weight: 700;
+
+        &::placeholder { color: color-mix(in srgb, var(--giz-tile-ink) 55%, transparent); }
+    }
+
+    .giz-input-button-reveal {
+        border: 0;
+        background: none;
+        color: var(--giz-tile-ink);
+        cursor: pointer;
+    }
+
+    .giz-input__icon-right,
+    .giz-input-root svg { color: var(--giz-tile-ink); }
+}
+
+[#{$client-theme-comp-attr}] .giz-tile-dialog__well--code .giz-input-control .giz-input-root input {
+    font-size: 3.2rem;
+    font-weight: 800;
+    letter-spacing: 0.3em;
+}

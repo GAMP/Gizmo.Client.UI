@@ -1,4 +1,5 @@
 using Gizmo.Client.UI.Components;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.UI.Services;
@@ -13,6 +14,8 @@ namespace Gizmo.Client.UI.Pages
     {
         [CascadingParameter] RecoveryHandoff Recovery { get; set; }
 
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
@@ -23,6 +26,8 @@ namespace Gizmo.Client.UI.Pages
         NavigationService NavigationService { get; set; }
 
         protected bool IsHandingOff { get; private set; }
+
+        private void BackToSignIn() => NavigationService.NavigateTo(ClientRoutes.LoginRoute);
 
         protected override void OnInitialized()
         {

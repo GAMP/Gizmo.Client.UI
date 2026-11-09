@@ -39,6 +39,12 @@ namespace Gizmo.Client.UI.Pages
 
         #endregion
 
+        protected string GroupClass(int? group) => group == ViewState.SelectedUserProductGroupId
+            ? "giz-shop-group giz-shop-group--active"
+            : "giz-shop-group";
+
+        protected string GroupPressed(int? group) => group == ViewState.SelectedUserProductGroupId ? "true" : "false";
+
         protected override async Task OnInitializedAsync()
         {
             this.SubscribeChange(ViewState);

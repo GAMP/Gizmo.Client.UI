@@ -3,11 +3,16 @@
 
 @if (ViewState.IsLocked)
 {
-    <div class="giz-login-overlay">
-        <div class="giz-host-locked">
-            <div class="giz-host-locked__message">
-                <Icon Size="IconSizes.Large" SVGIcon="Icons.Lock_Client" />
-                <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SYSTEM_LOCKED))</div>
+    <div class="giz-login-overlay giz-login-overlay--state">
+        <div class="giz-state-screen">
+            @if (HostNumberViewState.HostNumberIsEnabled)
+            {
+                <div class="giz-state-screen__host"><HostNumber /></div>
+            }
+            <div class="giz-state-screen__body">
+                <i class="ph-bold ph-lock-simple giz-state-screen__icon"></i>
+                <h1 class="giz-state-screen__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_STATE_LOCKED_TITLE)</h1>
+                <p class="giz-state-screen__text">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_STATE_ASK_ADMIN)</p>
             </div>
         </div>
     </div>

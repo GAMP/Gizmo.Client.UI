@@ -271,6 +271,7 @@ stylesheet has loaded, so no rebuild is needed.
 |---|---|---|
 | `--giz-palette` | `blue` (default), `purple`, `red`, `orange`, `amber`, `green`, `teal`, `pink`, or any colour such as `#e11d48` | The whole palette - accent steps, surfaces, ink and glass - is derived from this one accent. |
 | `--giz-motion` | `off` (default) / `on` | The slow moving gradient behind the sign-in screen and the shell (only when the club has no wallpaper of its own). |
+| `--giz-login-wallpaper` | `idle` (default) / `always` | The club's sign-in wallpaper (or media rotator). By default it shows while the PC is free and gives way to the shell's own background when someone is at the PC; `always` keeps it behind the sign-in form too, under a light scrim. |
 | `--giz-host-number-top`, `--giz-host-number-right`, `--giz-host-number-bottom`, `--giz-host-number-left` | a length or `auto` | Where the station number sits on the sign-in screen. Defaults: top `2.4rem`, right `3.2rem`. |
 | `--giz-host-number-transform` | a CSS transform | For example `translateX(-50%)` to centre it together with `left: 50%`. |
 | `--giz-host-number-align` | `left` / `center` / `right` | Text alignment of the station number. |
@@ -279,6 +280,7 @@ stylesheet has loaded, so no rebuild is needed.
 ```css
 :root { --giz-palette: purple; }
 :root { --giz-palette: #e11d48; --giz-motion: on; }
+:root { --giz-login-wallpaper: always; }
 :root {
     --giz-host-number-left: 50%;
     --giz-host-number-right: auto;

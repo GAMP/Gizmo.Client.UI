@@ -3,12 +3,19 @@
 
 @if (ViewState.IsDisabled)
 {
-    <div class="giz-login-overlay">
-        <div class="giz-user-ban-wrapper">
-            <div class="giz-user-ban">
-                <div class="giz-user-ban__message">@((MarkupString)LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_BAN_MESSAGE)))</div>
-                <div class="giz-user-ban__time">@string.Format("{0:mm\\:ss}", ViewState.Time)</div>
-                <div class="giz-user-ban__action"><Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_USER_BAN_LOGOUT))" @onclick="@(() => UserService.LogoutAsync())" /></div>
+    <div class="giz-login-overlay giz-login-overlay--state">
+        <div class="giz-state-screen giz-state-screen--danger">
+            <div class="giz-state-screen__body">
+                <i class="ph-bold ph-prohibit giz-state-screen__icon"></i>
+                <h1 class="giz-state-screen__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_STATE_BANNED_TITLE)</h1>
+                <p class="giz-state-screen__text">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_STATE_ASK_ADMIN)</p>
+                <div class="giz-state-screen__actions">
+                    <button type="button" class="giz-state-screen__action" @onclick="SignOutAsync">
+                        <i class="ph-bold ph-sign-out"></i>
+                        <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_STATE_SIGN_OUT)</span>
+                    </button>
+                    <span class="giz-state-screen__note">@SignOutIn</span>
+                </div>
             </div>
         </div>
     </div>

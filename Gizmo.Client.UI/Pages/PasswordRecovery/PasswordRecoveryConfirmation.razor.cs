@@ -77,6 +77,26 @@ namespace Gizmo.Client.UI.Pages
             PasswordRecoveryConfirmationViewService.Reset();
         }
 
+        protected bool IsRedirect => ViewState.Action == PasswordRecoveryAction.Redirect && ViewState.RedirectUrl is not null;
+
+        protected bool IsCall => ViewState.Action == PasswordRecoveryAction.Call;
+
+        protected string BranchTitle => IsCall
+            ? GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PASSWORD_RECOVERY_CALL_TITLE))
+            : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_RECOVERY_QR_TITLE);
+
+        protected string BranchLead => IsCall
+            ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_RECOVERY_CALL_LEAD)
+            : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_RECOVERY_QR_LEAD);
+
+        protected string QrCardClass => ViewState.IsQrExpired
+            ? "giz-signin__qr-card giz-signin__qr-card--expired"
+            : "giz-signin__qr-card";
+
+        protected string QrTitle => ViewState.IsQrExpired
+            ? GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_REGISTRATION_REDIRECT_QR_EXPIRED))
+            : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_RECOVERY_WAITING);
+
         private string GetProviderDisplayName()
         {
             return PasswordRecoverySession.ActiveProvider?.Name ?? string.Empty;

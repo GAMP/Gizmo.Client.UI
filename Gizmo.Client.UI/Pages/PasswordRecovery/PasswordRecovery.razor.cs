@@ -1,3 +1,4 @@
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.Components.Login;
 using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
@@ -15,6 +16,8 @@ namespace Gizmo.Client.UI.Pages
     [Route(ClientRoutes.PasswordRecoveryRoute)]
     public partial class PasswordRecovery : CustomDOMComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         [Inject]
         ILocalizationService LocalizationService { get; set; }
 
@@ -29,6 +32,8 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         UserRegistrationConfigurationViewState UserRegisterConfigurationViewState { get; set; }
+
+        private void BackToDestination() => NavigationService.NavigateTo(ClientRoutes.PasswordRecoveryDestinationRoute);
 
         private void OpenRegistration() => NavigationService.NavigateTo(ClientRoutes.RegistrationIndexRoute);
 

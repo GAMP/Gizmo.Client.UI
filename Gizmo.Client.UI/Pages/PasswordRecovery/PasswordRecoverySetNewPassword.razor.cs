@@ -27,6 +27,8 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         UserRegistrationConfigurationViewState UserRegisterConfigurationViewState { get; set; }
 
+        protected bool IsSubmitDisabled => ViewState.IsValid == false || ViewState.IsLoading;
+
         private void OpenRegistration() => NavigationService.NavigateTo(ClientRoutes.RegistrationIndexRoute);
 
         public void OnCloseButtonClickHandler()
