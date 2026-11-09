@@ -3,6 +3,7 @@ using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using Gizmo.Client.UI.Localization.Resources;
 using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -39,6 +40,9 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback OnPaymentSucceeded { get; set; }
 
+        [Parameter]
+        public RenderFragment Head { get; set; }
+
         #region PAYMENT RESULT
 
         private static readonly TimeSpan SuccessAnimationDuration = TimeSpan.FromSeconds(5);
@@ -48,9 +52,42 @@ namespace Gizmo.Client.UI.Components
         private decimal? _succeededAmount;
         private CancellationTokenSource _successDelayCts;
 
+        protected string ClassName => _paymentSucceeded
+            ? "giz-user-online-deposit giz-user-online-deposit--done"
+            : "giz-user-online-deposit";
+
         protected string AmountText => Money(ViewState.Amount ?? 0);
 
-        protected bool IsSubmitDisabled => ViewState.IsValid == false || ViewState.IsLoading;
+        protected bool IsSubmitDisabled => ViewState.IsValid == false || ViewState.IsLoading || (ViewState.Amount ?? 0) <= 0;
+
+        protected string PayClass => ViewState.IsLoading
+            ? "giz-buy__btn giz-buy__btn--primary giz-buy__btn--busy giz-user-online-deposit__submit"
+            : "giz-buy__btn giz-buy__btn--primary giz-user-online-deposit__submit";
+
+        protected string PayLabel => (ViewState.Amount ?? 0) > 0
+            ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TOPUP_PAY_AMOUNT, AmountText)
+            : GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ONLINE_DEPOSIT_TITLE));
+
+        protected string AmountNote
+        {
+            get
+            {
+                if (ViewState.MinimumAmount is decimal min && ViewState.MaximumAmount is decimal max)
+                    return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TOPUP_LIMITS, Money(min), Money(max));
+
+                if (ViewState.MinimumAmount is decimal from)
+                    return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TOPUP_MIN, Money(from));
+
+                if (ViewState.MaximumAmount is decimal to)
+                    return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TOPUP_MAX, Money(to));
+
+                return string.Empty;
+            }
+        }
+
+        protected static string CurrencySymbol => CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
+
+        protected static bool CurrencyFirst => CultureInfo.CurrentCulture.NumberFormat.CurrencyPositivePattern is 0 or 2;
 
         protected string PresetClass(decimal preset) => preset == ViewState.Amount
             ? "giz-user-online-deposit__preset giz-user-online-deposit__preset--on"
@@ -107,6 +144,14 @@ namespace Gizmo.Client.UI.Components
         }
 
         #endregion
+
+        private async Task FinishNowAsync()
+        {
+            _successDelayCts?.Cancel();
+            await OnPaymentSucceeded.InvokeAsync();
+        }
+
+        private Task RetryAsync() => OnClickClear.InvokeAsync(new MouseEventArgs());
 
         private Task OnClickPayFromPCHandler(MouseEventArgs args)
         {

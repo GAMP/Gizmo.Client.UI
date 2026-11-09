@@ -18,6 +18,10 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<MouseEventArgs> OnClick { get; set; }
 
+        protected string Name => Item is IconSelectCountry country && !string.IsNullOrEmpty(country.Text) ? country.Text : Item.Display;
+
+        protected string Code => (Item as IconSelectCountry)?.PhonePrefix;
+
         #endregion
 
         #region OVERRIDES

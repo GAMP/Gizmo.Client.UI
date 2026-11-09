@@ -1,6 +1,6 @@
 //=============== Boot ================//
-// Right after sign-in the shell gathers its content behind a quiet curtain: the guest's name
-// and a thin bar. When the start page has what it needs (or after four seconds at most) the
+// Right after sign-in the shell gathers its content behind a quiet curtain: a chasing ring, the
+// guest's name and a line on what the shell is doing. When the start page has what it needs (or after four seconds at most) the
 // curtain fades and the shell assembles once: the top bar drops in, the rail slides in and the
 // page's blocks rise one after another. Transforms and opacity only; the curtain leaves the
 // page when the assembly ends.
@@ -23,10 +23,29 @@
         transition: opacity 0.3s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    &__hello {
-        font-size: 1.6rem;
-        font-weight: 700;
-        color: var(--giz-text-3);
+    &__ring {
+        width: 5.6rem;
+        height: 5.6rem;
+        margin-bottom: 2.2rem;
+        animation: giz-boot-turn 1.8s linear infinite;
+    }
+
+    &__ring-track,
+    &__ring-arc {
+        fill: none;
+        stroke-width: 4;
+    }
+
+    &__ring-track { stroke: var(--giz-glass-6); }
+
+    // The arc's head runs ahead, its tail almost catches up, and the head runs off again
+    // (r 20: the circle is about 126 long).
+    &__ring-arc {
+        stroke: var(--giz-accent);
+        stroke-linecap: round;
+        stroke-dasharray: 1 200;
+        stroke-dashoffset: 0;
+        animation: giz-boot-chase 1.4s ease-in-out infinite;
     }
 
     &__name {
@@ -35,29 +54,39 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         font-family: $font-family-header-theme-client;
-        font-size: 6.4rem;
+        padding-bottom: 0.1em;
+        font-size: 5.6rem;
         font-weight: 800;
-        line-height: 1.05;
+        line-height: 1.15;
         letter-spacing: -0.035em;
         color: var(--giz-text-1);
     }
 
-    &__track {
-        width: 22rem;
-        height: 0.4rem;
-        margin-top: 2.2rem;
+    // One line at a time: each rises in, holds, and leaves upward as the next rises in.
+    &__lines {
+        position: relative;
+        width: 48rem;
+        max-width: 90vw;
+        height: 2.6rem;
+        margin-top: 0.6rem;
         overflow: hidden;
-        border-radius: $giz-r-pill;
-        background: var(--giz-glass-6);
     }
 
-    &__bar {
-        display: block;
-        width: 40%;
-        height: 100%;
-        border-radius: $giz-r-pill;
-        background: var(--giz-accent);
-        animation: giz-boot-bar 1.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    &__line {
+        position: absolute;
+        inset: 0;
+        text-align: center;
+        white-space: nowrap;
+        font-size: 1.8rem;
+        font-weight: 700;
+        line-height: 2.6rem;
+        color: var(--giz-text-2);
+        opacity: 0;
+        animation: giz-boot-line 8.4s cubic-bezier(0.22, 1, 0.36, 1) infinite backwards;
+    }
+
+    @for $i from 2 through 6 {
+        &__line:nth-child(#{$i}) { animation-delay: #{($i - 1) * 1.4}s; }
     }
 
     &--leaving {
@@ -78,9 +107,44 @@
     }
 }
 
-@keyframes giz-boot-bar {
-    from { transform: translateX(-110%); }
-    to { transform: translateX(260%); }
+@keyframes giz-boot-turn {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes giz-boot-chase {
+    0% {
+        stroke-dasharray: 1 200;
+        stroke-dashoffset: 0;
+    }
+
+    50% {
+        stroke-dasharray: 96 200;
+        stroke-dashoffset: -16;
+    }
+
+    100% {
+        stroke-dasharray: 96 200;
+        stroke-dashoffset: -124;
+    }
+}
+
+@keyframes giz-boot-line {
+    0% {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+
+    3%,
+    14% {
+        opacity: 1;
+        transform: none;
+    }
+
+    17%,
+    100% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
 }
 
 @media (prefers-reduced-motion: no-preference) {

@@ -2,18 +2,19 @@
 @inherits CustomDOMComponentBase
 
 <HostedDialog>
-    <div class="giz-tile-dialog giz-tile-dialog--topup">
-        @if (DisplayOptions.Closable)
-        {
-            <button type="button" class="giz-tile-dialog__close" aria-label="@CloseLabel" @onclick="@OnDismissHandler">
-                <i class="ph-bold ph-x"></i>
-            </button>
-        }
-        <i class="ph-bold ph-wallet giz-tile-dialog__icon"></i>
-        <h2 class="giz-tile-dialog__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TOPUP_TITLE)</h2>
-        <p class="giz-tile-dialog__text">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TOPUP_HINT)</p>
-        <div class="giz-tile-dialog__form">
-            <UserOnlineDeposits OnClickPayFromPC="@OnClickPayFromPCHandler" OnClickClear="@OnClickClearHandler" OnPaymentSucceeded="@OnPaymentSucceededHandler" />
-        </div>
+    <div class="giz-buy giz-buy--topup">
+        <UserOnlineDeposits OnClickPayFromPC="@OnClickPayFromPCHandler" OnClickClear="@OnClickClearHandler" OnPaymentSucceeded="@OnPaymentSucceededHandler">
+            <Head>
+                <header class="giz-buy__head">
+                    @if (DisplayOptions.Closable)
+                    {
+                        <button type="button" class="giz-buy__close" aria-label="@CloseLabel" @onclick="@OnDismissHandler">
+                            <i class="ph-bold ph-x"></i>
+                        </button>
+                    }
+                    <h2 class="giz-buy__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TOPUP_TITLE)</h2>
+                </header>
+            </Head>
+        </UserOnlineDeposits>
     </div>
 </HostedDialog>

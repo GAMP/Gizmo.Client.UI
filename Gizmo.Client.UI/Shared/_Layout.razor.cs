@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Linq;
+using System.Collections.Generic;
+using System;
 using System.Globalization;
 using System.Threading.Tasks;
 
@@ -90,7 +92,17 @@ namespace Gizmo.Client.UI.Shared
 
         private bool HasUserName => !string.IsNullOrWhiteSpace(UserViewState.Username);
 
-        private string BootTitle => HasUserName ? UserViewState.Username : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BOOT_HELLO);
+        private static readonly string[] BootLineKeys =
+        {
+            GrafitResourceKeys.SHELL_BOOT_LINE_MONITOR,
+            GrafitResourceKeys.SHELL_BOOT_LINE_APPS,
+            GrafitResourceKeys.SHELL_BOOT_LINE_GAMES,
+            GrafitResourceKeys.SHELL_BOOT_LINE_GPU,
+            GrafitResourceKeys.SHELL_BOOT_LINE_BAR,
+            GrafitResourceKeys.SHELL_BOOT_LINE_TILES
+        };
+
+        private IEnumerable<string> BootLines => BootLineKeys.Select(GrafitLocalization.GetString);
 
         private string BootClass => _stage == AssemblyStage.Revealing ? "giz-boot giz-boot--leaving" : "giz-boot";
 
@@ -116,7 +128,7 @@ namespace Gizmo.Client.UI.Shared
 
         private enum AssemblyStage { Loading, Revealing, Done }
 
-        private static readonly TimeSpan BootShortest = TimeSpan.FromMilliseconds(650);
+        private static readonly TimeSpan BootShortest = TimeSpan.FromMilliseconds(900);
         private static readonly TimeSpan BootLongest = TimeSpan.FromSeconds(4);
         private static readonly TimeSpan AssemblyLength = TimeSpan.FromMilliseconds(1100);
 

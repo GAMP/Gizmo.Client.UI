@@ -92,12 +92,20 @@
     {
         <div class="@BootClass" aria-hidden="true">
             <div class="giz-boot__card">
+                <svg class="giz-boot__ring" viewBox="0 0 48 48">
+                    <circle class="giz-boot__ring-track" cx="24" cy="24" r="20"></circle>
+                    <circle class="giz-boot__ring-arc" cx="24" cy="24" r="20"></circle>
+                </svg>
                 @if (HasUserName)
                 {
-                    <span class="giz-boot__hello">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BOOT_HELLO)</span>
+                    <span class="giz-boot__name">@UserViewState.Username</span>
                 }
-                <span class="giz-boot__name">@BootTitle</span>
-                <span class="giz-boot__track"><span class="giz-boot__bar"></span></span>
+                <span class="giz-boot__lines">
+                    @foreach (var line in BootLines)
+                    {
+                        <span class="giz-boot__line">@line</span>
+                    }
+                </span>
             </div>
         </div>
     }
