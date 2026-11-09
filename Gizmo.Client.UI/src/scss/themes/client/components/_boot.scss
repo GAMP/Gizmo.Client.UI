@@ -1,0 +1,125 @@
+//=============== Boot ================//
+// Right after sign-in the shell gathers its content behind a quiet curtain: the guest's name
+// and a thin bar. When the start page has what it needs (or after four seconds at most) the
+// curtain fades and the shell assembles once: the top bar drops in, the rail slides in and the
+// page's blocks rise one after another. Transforms and opacity only; the curtain leaves the
+// page when the assembly ends.
+
+.giz-boot {
+    position: fixed;
+    inset: 0;
+    z-index: $dialog-index - 1;
+    display: grid;
+    place-items: center;
+    background: var(--giz-atmosphere);
+    transition: opacity 0.5s ease;
+
+    &__card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        animation: giz-boot-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+        transition: opacity 0.3s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    &__hello {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--giz-text-3);
+    }
+
+    &__name {
+        max-width: 80vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-family: $font-family-header-theme-client;
+        font-size: 6.4rem;
+        font-weight: 800;
+        line-height: 1.05;
+        letter-spacing: -0.035em;
+        color: var(--giz-text-1);
+    }
+
+    &__track {
+        width: 22rem;
+        height: 0.4rem;
+        margin-top: 2.2rem;
+        overflow: hidden;
+        border-radius: $giz-r-pill;
+        background: var(--giz-glass-6);
+    }
+
+    &__bar {
+        display: block;
+        width: 40%;
+        height: 100%;
+        border-radius: $giz-r-pill;
+        background: var(--giz-accent);
+        animation: giz-boot-bar 1.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    }
+
+    &--leaving {
+        opacity: 0;
+        pointer-events: none;
+
+        .giz-boot__card {
+            opacity: 0;
+            transform: scale(0.96);
+        }
+    }
+}
+
+@keyframes giz-boot-in {
+    from {
+        opacity: 0;
+        transform: translateY(1.6rem);
+    }
+}
+
+@keyframes giz-boot-bar {
+    from { transform: translateX(-110%); }
+    to { transform: translateX(260%); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .giz-root--assembling {
+        .giz-top-bar > * { animation: giz-assemble-drop 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+        .giz-top-bar > :nth-child(2) { animation-delay: 0.06s; }
+
+        .giz-top-bar > :nth-child(3) { animation-delay: 0.12s; }
+
+        .giz-left-panel { animation: giz-assemble-slide 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both; }
+
+        .giz-app__body > * > * { animation: giz-assemble-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.14s both; }
+
+        .giz-app__body > * > :nth-child(2) { animation-delay: 0.22s; }
+
+        .giz-app__body > * > :nth-child(3) { animation-delay: 0.3s; }
+
+        .giz-app__body > * > :nth-child(n + 4) { animation-delay: 0.38s; }
+    }
+}
+
+@keyframes giz-assemble-drop {
+    from {
+        opacity: 0;
+        transform: translateY(-1.6rem);
+    }
+}
+
+@keyframes giz-assemble-slide {
+    from {
+        opacity: 0;
+        transform: translateX(-2rem);
+    }
+}
+
+@keyframes giz-assemble-rise {
+    from {
+        opacity: 0;
+        transform: translateY(3.2rem) scale(0.985);
+    }
+}

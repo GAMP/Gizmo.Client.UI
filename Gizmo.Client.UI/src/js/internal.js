@@ -1758,6 +1758,31 @@ window.setDocumentDirection = function setDocumentDirection(direction) {
             if (wallpaper) {
                 theme.loginWallpaper(wallpaper);
             }
+
+            // `:root { --giz-login-surface: solid; }` makes the sign-in screen's fields opaque.
+            const surface = computed.getPropertyValue("--giz-login-surface");
+
+            if (surface) {
+                theme.loginSurface(surface);
+            }
+        },
+
+        // "solid" or "glass": whether the sign-in screen's fields and cards let the picture
+        // behind them show through (glass, the default) or stand on the page's own dark tone.
+        loginSurface: function (value) {
+            const wanted = String(value || "").trim().replace(/["']/g, "").toLowerCase();
+
+            if (wanted === "solid") {
+                root.setAttribute("data-login-surface", "solid");
+                return true;
+            }
+
+            if (wanted === "glass") {
+                root.removeAttribute("data-login-surface");
+                return true;
+            }
+
+            return false;
         },
 
         // "always" or "idle": whether the club's sign-in wallpaper stays when someone is at the

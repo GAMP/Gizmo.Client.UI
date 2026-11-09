@@ -396,6 +396,32 @@ html[data-login-wallpaper="always"] .giz-login-content:not(.giz-login-content--o
     .giz-flow { display: none; }
 }
 
+// `--giz-login-surface: solid` (club CSS, read by grafitTheme): the sign-in screen's fields,
+// ways, code boxes, QR card, method switch and corner chips stand on the page's own dark tone
+// instead of glass, so a club wallpaper with its own text or logo never shows through them.
+html[data-login-surface="solid"] {
+    .giz-signin__pill,
+    .giz-way,
+    .giz-code-boxes__box,
+    .giz-signin__qr-card,
+    .giz-login-method.giz-button-group,
+    .giz-recovery-method.giz-button-group {
+        background: var(--giz-bg-1);
+    }
+
+    .giz-client-status .giz-client-language-menu .giz-input-control .giz-input-root,
+    .giz-client-status .giz-version,
+    .giz-login-card__footer div.giz-input-language-menu:not(.giz-select),
+    .giz-login-card__footer .giz-input-language-menu .giz-input-control .giz-input-root {
+        &,
+        &:hover {
+            padding: 0 1rem;
+            border-radius: 1rem;
+            background: var(--giz-bg-1);
+        }
+    }
+}
+
 .giz-login-card {
     position: relative;
     display: flex;
@@ -923,36 +949,6 @@ html[data-login-wallpaper="always"] .giz-login-content:not(.giz-login-content--o
 
         &:hover {
             color: var(--giz-white);
-        }
-    }
-}
-
-.giz-password-tooltip {
-    display: grid;
-    grid-template-columns: min-content max-content;
-    gap: 1.6rem;
-    padding: 1.2rem 1.6rem;
-
-    &-root {
-        display: block;
-    }
-
-    &-message {
-        &.passed {
-            color: #219653;
-        }
-    }
-
-    &__icon {
-    }
-
-    &__body {
-        &__title {
-            @include font-m-theme-client($font-weight-regular-theme-client);
-        }
-
-        &__messages {
-            @include font-m-theme-client($font-weight-light-theme-client);
         }
     }
 }

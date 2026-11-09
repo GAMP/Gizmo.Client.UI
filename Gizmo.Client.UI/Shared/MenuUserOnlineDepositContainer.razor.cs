@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
@@ -9,6 +10,8 @@ namespace Gizmo.Client.UI
 {
     public partial class MenuUserOnlineDepositContainer : CustomDOMComponentBase
     {
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         [Inject]
         IJSRuntime JSRuntime { get; set; }
 

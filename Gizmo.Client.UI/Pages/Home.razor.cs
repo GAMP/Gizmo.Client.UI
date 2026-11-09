@@ -27,6 +27,10 @@ namespace Gizmo.Client.UI.Pages
     {
         [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
 
+        [CascadingParameter] ShellAssembly Assembly { get; set; }
+
+        private bool _holdsAssembly;
+
         #region CONSTANTS
 
         private const int HERO_SLIDES = 5;
@@ -492,6 +496,12 @@ namespace Gizmo.Client.UI.Pages
 
         protected override void OnInitialized()
         {
+            if (Assembly != null)
+            {
+                Assembly.Hold();
+                _holdsAssembly = true;
+            }
+
             BuildLists();
             BuildCart();
             ViewState.OnChange += OnProductsChanged;
@@ -585,11 +595,24 @@ namespace Gizmo.Client.UI.Pages
                 _apps = Enumerable.Empty<AppViewState>();
             }
 
+            ReleaseAssembly();
+
             await base.OnInitializedAsync();
+        }
+
+        private void ReleaseAssembly()
+        {
+            if (!_holdsAssembly)
+                return;
+
+            _holdsAssembly = false;
+            Assembly.Release();
         }
 
         public override void Dispose()
         {
+            ReleaseAssembly();
+
             ShellActivity.Changed -= OnActivityChanged;
 
             _lifetime.Cancel();

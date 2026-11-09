@@ -80,11 +80,27 @@
             </aside>
             <div class="giz-app__body">
                 <CascadingValue Value="@_progress" IsFixed="true">
-                    @Body
+                    <CascadingValue Value="@_assembly" IsFixed="true">
+                        @Body
+                    </CascadingValue>
                 </CascadingValue>
             </div>
         </div>
     </div>
+
+    @if (ShowBoot)
+    {
+        <div class="@BootClass" aria-hidden="true">
+            <div class="giz-boot__card">
+                @if (HasUserName)
+                {
+                    <span class="giz-boot__hello">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_BOOT_HELLO)</span>
+                }
+                <span class="giz-boot__name">@BootTitle</span>
+                <span class="giz-boot__track"><span class="giz-boot__bar"></span></span>
+            </div>
+        </div>
+    }
 
     <UserLock />
     <DialogHost />

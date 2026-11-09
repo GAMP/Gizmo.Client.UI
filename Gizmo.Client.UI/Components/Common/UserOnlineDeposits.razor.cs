@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Linq;
+using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -46,6 +47,18 @@ namespace Gizmo.Client.UI.Components
         private bool _paymentFailed;
         private decimal? _succeededAmount;
         private CancellationTokenSource _successDelayCts;
+
+        protected string AmountText => Money(ViewState.Amount ?? 0);
+
+        protected bool IsSubmitDisabled => ViewState.IsValid == false || ViewState.IsLoading;
+
+        protected string PresetClass(decimal preset) => preset == ViewState.Amount
+            ? "giz-user-online-deposit__preset giz-user-online-deposit__preset--on"
+            : "giz-user-online-deposit__preset";
+
+        protected string PresetPressed(decimal preset) => preset == ViewState.Amount ? "true" : "false";
+
+        protected static string Money(decimal value) => value.ToString("C", CultureInfo.CurrentCulture);
 
         protected string SucceededAmountFormatted =>
             (_succeededAmount ?? 0).ToString("C", CultureInfo.CurrentCulture);

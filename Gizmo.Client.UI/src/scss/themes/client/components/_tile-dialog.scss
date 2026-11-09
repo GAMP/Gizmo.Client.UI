@@ -288,3 +288,107 @@
     font-weight: 800;
     letter-spacing: 0.3em;
 }
+
+// The top-up inside a tile: the shared top-up content (UserOnlineDeposits) in the tile's ink.
+.giz-tile-dialog--topup {
+    .giz-user-online-deposit { color: var(--giz-tile-ink); }
+
+    .giz-user-online-deposit__amount-value { color: var(--giz-tile-ink); }
+
+    .giz-user-online-deposit__amount-note,
+    .giz-user-online-deposit__qr-hint,
+    .giz-user-online-deposit__success__text,
+    .giz-user-online-deposit__success__hint,
+    .giz-user-online-deposit__failed__text { color: color-mix(in srgb, var(--giz-tile-ink) 72%, transparent); }
+
+    .giz-user-online-deposit__success__title,
+    .giz-user-online-deposit__failed__title { color: var(--giz-tile-ink); }
+
+    .giz-user-online-deposit__preset {
+        &,
+        &:hover {
+            background: color-mix(in srgb, var(--giz-tile-ink) 12%, transparent);
+            box-shadow: none;
+            color: var(--giz-tile-ink);
+        }
+
+        &:hover { background: color-mix(in srgb, var(--giz-tile-ink) 18%, transparent); }
+
+        &--on,
+        &--on:hover {
+            background: var(--giz-tile-ink);
+            color: var(--giz-tile-bg);
+        }
+    }
+
+    .giz-user-online-deposit__custom {
+        background: color-mix(in srgb, var(--giz-tile-ink) 12%, transparent);
+        box-shadow: none;
+
+        &:focus-within { box-shadow: inset 0 0 0 2.5px var(--giz-tile-ink); }
+
+        > i { color: color-mix(in srgb, var(--giz-tile-ink) 60%, transparent); }
+    }
+
+    .giz-user-online-deposit__primary {
+        &,
+        &:hover {
+            background: var(--giz-tile-ink);
+            box-shadow: none;
+            color: var(--giz-tile-bg);
+        }
+
+        &:disabled,
+        &:disabled:hover {
+            background: color-mix(in srgb, var(--giz-tile-ink) 18%, transparent);
+            color: color-mix(in srgb, var(--giz-tile-ink) 50%, transparent);
+        }
+    }
+
+    .giz-user-online-deposit__secondary {
+        &,
+        &:hover {
+            background: transparent;
+            box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--giz-tile-ink) 40%, transparent);
+            color: var(--giz-tile-ink);
+        }
+
+        &:hover { background: color-mix(in srgb, var(--giz-tile-ink) 8%, transparent); }
+    }
+
+    .giz-user-online-deposit__quiet {
+        &,
+        &:hover { color: color-mix(in srgb, var(--giz-tile-ink) 72%, transparent); }
+    }
+
+    .giz-user-online-deposit__success__icon,
+    .giz-user-online-deposit__failed__icon {
+        background: color-mix(in srgb, var(--giz-tile-ink) 12%, transparent);
+        border-color: transparent;
+
+        i { color: var(--giz-tile-ink); }
+    }
+
+    .giz-user-online-deposit__success__countdown { background: color-mix(in srgb, var(--giz-tile-ink) 14%, transparent); }
+
+    .giz-user-online-deposit__success__countdown__fill { background: var(--giz-tile-ink); }
+}
+
+[#{$client-theme-comp-attr}] .giz-tile-dialog--topup .giz-user-online-deposit__custom .giz-input-control .giz-input-root {
+    &,
+    &:hover,
+    &:focus-within {
+        border: 0;
+        box-shadow: none;
+        background: none;
+    }
+
+    input {
+        color: var(--giz-tile-ink);
+        font-family: $font-family-header-theme-client;
+        font-size: 1.8rem;
+        font-weight: 700;
+
+        &::placeholder { color: color-mix(in srgb, var(--giz-tile-ink) 55%, transparent); }
+    }
+}

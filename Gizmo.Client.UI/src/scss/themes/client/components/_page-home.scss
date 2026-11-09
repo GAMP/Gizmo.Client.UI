@@ -690,16 +690,11 @@ $tile:  var(--giz-tile);
     }
 }
 
-.giz-root--figures-hidden .giz-home-wallet__sum {
-    font-size: 0;
+.giz-home-wallet__sum { @include giz-figure($t-wallet, "\2022\2022\2022\2022\2022", flex-start); }
 
-    &::after {
-        content: "\2022\2022\2022\2022\2022";
-        font-size: $t-wallet;
-        letter-spacing: 0.2em;
-        color: var(--giz-text-3);
-    }
-}
+.giz-root--figures-hidden .giz-home-wallet__sum { @include giz-figure-hidden; }
+
+.giz-root--figures-revealed .giz-home-wallet__sum { @include giz-figure-revealed; }
 
 .giz-root--figures-hidden .giz-home-wallet__points { display: none; }
 

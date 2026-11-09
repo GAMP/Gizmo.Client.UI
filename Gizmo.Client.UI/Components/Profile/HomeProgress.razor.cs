@@ -24,6 +24,8 @@ namespace Gizmo.Client.UI.Components
 
         [CascadingParameter] ProgressLoading Progress { get; set; }
 
+        [CascadingParameter] ShellAssembly Assembly { get; set; }
+
         private bool HasLadder => Ladder.HasLevel;
 
         private bool ProgressOn => PlayerProgress.Any(Ladder, Challenges, Achievements);
@@ -138,6 +140,12 @@ namespace Gizmo.Client.UI.Components
 
         private Task LoadProgressAsync() => Task.WhenAll(ChallengesService.LoadAsync(), AchievementsService.LoadAsync());
 
+        private async Task ReleaseAssemblyAfterAsync(Task running)
+        {
+            await Task.WhenAny(running);
+            Assembly.Release();
+        }
+
         protected override void OnInitialized()
         {
             this.SubscribeChange(Ladder);
@@ -148,6 +156,12 @@ namespace Gizmo.Client.UI.Components
                 DispatchWorkflow(LoadProgressAsync);
             else
                 Progress.Ensure(LoadProgressAsync, PlayerProgress.Failed(Challenges, Achievements));
+
+            if (Assembly != null && Progress != null && !Progress.Running.IsCompleted)
+            {
+                Assembly.Hold();
+                _ = ReleaseAssemblyAfterAsync(Progress.Running);
+            }
 
             base.OnInitialized();
         }

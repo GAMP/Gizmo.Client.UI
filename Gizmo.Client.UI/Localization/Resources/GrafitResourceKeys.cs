@@ -292,5 +292,18 @@
         public const string SHELL_DIALOG_SIGN_OUT_TEXT = nameof(SHELL_DIALOG_SIGN_OUT_TEXT);
         public const string SHELL_DIALOG_CLEAR_CART_TITLE = nameof(SHELL_DIALOG_CLEAR_CART_TITLE);
         public const string SHELL_DIALOG_CLEAR_CART_TEXT = nameof(SHELL_DIALOG_CLEAR_CART_TEXT);
+        public const string SHELL_PASSWORD_STRONG = nameof(SHELL_PASSWORD_STRONG);
+        public const string SHELL_PASSWORD_WEAK = nameof(SHELL_PASSWORD_WEAK);
+        public const string SHELL_PASSWORD_RULE_SPECIAL = nameof(SHELL_PASSWORD_RULE_SPECIAL);
+        public const string SHELL_HELP_TITLE = nameof(SHELL_HELP_TITLE);
+        public const string SHELL_HELP_HINT = nameof(SHELL_HELP_HINT);
+        public const string SHELL_HELP_SENT_TITLE = nameof(SHELL_HELP_SENT_TITLE);
+        public const string SHELL_HELP_SENT_TEXT = nameof(SHELL_HELP_SENT_TEXT);
+        public const string SHELL_TOPUP_TITLE = nameof(SHELL_TOPUP_TITLE);
+        public const string SHELL_TOPUP_HINT = nameof(SHELL_TOPUP_HINT);
+        public const string SHELL_TOPUP_CREDIT = nameof(SHELL_TOPUP_CREDIT);
+        public const string SHELL_TOPUP_TO_PAY = nameof(SHELL_TOPUP_TO_PAY);
+        public const string SHELL_TOPUP_QR_HINT = nameof(SHELL_TOPUP_QR_HINT);
+        public const string SHELL_BOOT_HELLO = nameof(SHELL_BOOT_HELLO);
     }
 }

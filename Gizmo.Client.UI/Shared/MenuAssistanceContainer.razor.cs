@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.View.Services;
+﻿using Gizmo.Client.UI.Localization.Services;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
@@ -28,7 +29,20 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         UserMenuViewService UserMenuViewService { get; set; }
 
+        [CascadingParameter]
+        protected GrafitLocalizationService GrafitLocalization { get; set; }
+
         #endregion
+
+        protected string MenuClass => UserMenuViewState.AssistanceRequestsIsVisible ? "giz-dropdown-menu open" : "giz-dropdown-menu";
+
+        protected string NoteCount => $"{ViewState.Note?.Length ?? 0}/{ViewState.NoteLimit}";
+
+        protected string ReasonClass(int id) => ViewState.SelectedAssistanceRequestType == id
+            ? "giz-menu-assistance__reason giz-menu-assistance__reason--on"
+            : "giz-menu-assistance__reason";
+
+        protected string ReasonPressed(int id) => ViewState.SelectedAssistanceRequestType == id ? "true" : "false";
 
         private void ValueChangedHandler(int? value)
         {
