@@ -988,7 +988,24 @@
         color: var(--giz-text-2);
     }
 
-    &__pill--code { padding-left: 2.4rem; }
+    // A confirmation code: its boxes stand on their own and share the row, so four digits get
+    // wide boxes and six narrower ones; the go button closes the row at the boxes' height.
+    &__code {
+        display: flex;
+        align-items: stretch;
+        gap: 1.2rem;
+
+        > .giz-code-boxes {
+            flex: 1;
+            min-width: 0;
+        }
+
+        > .giz-signin__go {
+            width: 8rem;
+            height: auto;
+            border-radius: 2rem;
+        }
+    }
 
     // Recovery by call: the number to ring, large, then what the shell is waiting for.
     &__number {
