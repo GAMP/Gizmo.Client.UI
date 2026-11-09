@@ -203,8 +203,6 @@ namespace Gizmo.Client.UI.Components
             }
             catch (OperationCanceledException)
             {
-                //we have cancelled loading, this only happens on dispose so no extra action is needed
-                //in order to render any component change
                 if (serial != _loadSerial)
                     return;
 
