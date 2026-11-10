@@ -22,7 +22,10 @@
     }
     else if (ViewState.PageIndex == 0)
     {
-        @Head
+        @if (Head is not null)
+        {
+            <div class="giz-user-online-deposit__bar giz-user-online-deposit__bar--corner">@Head</div>
+        }
         <div class="giz-user-online-deposit__step" @key="@("amount")">
             <div class="giz-user-online-deposit__figure">
                 @if (HasPresets)
@@ -101,13 +104,14 @@
     }
     else
     {
-        @Head
-        <div class="giz-user-online-deposit__step giz-user-online-deposit__step--pay" @key="@("pay")">
-            <div class="giz-user-online-deposit__pay-sum">@AmountText</div>
-            <button type="button" class="giz-user-online-deposit__change" @onclick="OnClickClearHandler">
+        <div class="giz-user-online-deposit__bar">
+            <button type="button" class="giz-user-online-deposit__change" aria-label="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TOPUP_CHANGE_AMOUNT)" @onclick="OnClickClearHandler">
                 <i class="ph-bold ph-pencil-simple"></i>
-                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TOPUP_CHANGE_AMOUNT)</span>
             </button>
+            <div class="giz-user-online-deposit__pay-sum">@AmountText</div>
+            @Head
+        </div>
+        <div class="giz-user-online-deposit__step giz-user-online-deposit__step--pay" @key="@("pay")">
             <div class="giz-user-online-deposit__qr">@((MarkupString)ViewState.QrImage)</div>
             <button type="button" class="giz-buy__btn giz-user-online-deposit__from-pc" @onclick="OnClickPayFromPCHandler">
                 <i class="ph-bold ph-arrow-square-out"></i>

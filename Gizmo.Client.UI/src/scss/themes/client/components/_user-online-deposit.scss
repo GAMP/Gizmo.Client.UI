@@ -1,9 +1,10 @@
 //=============== Online deposit (top-up) ================//
 // The top-up on the checkout's glass sheet (giz-buy). The amount is one big figure, typed or
-// stepped with - and +, over a rail whose stops are the club's presets. The QR step is centred:
-// the sum, "change amount" under it, the QR, and one "open in browser" button. While the payment
-// is awaited the sheet's top light breathes instead of a waiting line. Success is a big "+X" on
-// the accent.
+// stepped with - and +, over a rail whose stops are the club's presets. The dialog has no title,
+// only the close in the corner. On the QR step the sum is the head (a bare pencil left of it goes
+// back to the amount), the QR is centred over one "open in browser" button. While the payment is
+// awaited the sheet's top light breathes instead of a waiting line. Success is a big "+X" on the
+// accent.
 
 .giz-user-online-deposit {
     position: relative;
@@ -12,6 +13,26 @@
     gap: 2.2rem;
     color: var(--giz-text-1);
     white-space: normal;
+
+    &__bar {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+
+        .giz-buy__close {
+            position: static;
+            flex: none;
+            margin-left: auto;
+        }
+
+        // The amount step has no title: the close sits in the corner and the figure rises under it.
+        &--corner {
+            position: relative;
+            z-index: 1;
+            justify-content: flex-end;
+            margin-bottom: -2.6rem;
+        }
+    }
 
     &__step {
         display: flex;
@@ -195,38 +216,38 @@
     }
 
     &__pay-sum {
+        min-width: 0;
         font-family: $font-family-header-theme-client;
-        font-size: 4.4rem;
+        font-size: 3rem;
         font-weight: 800;
         line-height: 1.05;
         letter-spacing: -0.02em;
         font-variant-numeric: tabular-nums;
+        white-space: nowrap;
     }
 
     &__change {
-        height: 3.4rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-        margin-top: -0.6rem;
-        padding: 0 1.4rem;
+        flex: none;
+        width: 3.6rem;
+        height: 3.6rem;
+        display: grid;
+        place-items: center;
+        padding: 0;
         border: 0;
-        border-radius: $giz-r-pill;
-        background: none;
+        border-radius: 50%;
+        background: var(--giz-glass-5);
         color: var(--giz-text-2);
-        font-size: 1.4rem;
-        font-weight: 700;
+        font-size: 1.6rem;
         cursor: pointer;
-        transition: background 0.15s, color 0.15s;
+        transition: background 0.16s, color 0.16s;
 
         &:hover {
-            background: var(--giz-glass-5);
+            background: var(--giz-glass-10);
             color: var(--giz-text-1);
         }
     }
 
     &__qr {
-        margin-top: 0.6rem;
         padding: 1.4rem;
         border-radius: 2rem;
         background: var(--giz-white);
@@ -321,6 +342,8 @@
 
     .giz-user-online-deposit__countdown-fill { background: var(--giz-on-accent); }
 }
+
+.giz-buy.giz-buy--topup { padding-top: 2.4rem; }
 
 .giz-buy--topup:has(.giz-user-online-deposit--done) {
     background: var(--giz-accent);

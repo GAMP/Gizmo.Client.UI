@@ -2,18 +2,15 @@
 @inherits CustomDOMComponentBase
 
 <HostedDialog>
-    <div class="giz-buy giz-buy--topup">
+    <div class="giz-buy giz-buy--topup" role="dialog" aria-label="@Title">
         <UserOnlineDeposits FocusAmount="true" OnClickPayFromPC="@OnClickPayFromPCHandler" OnClickClear="@OnClickClearHandler" OnPaymentSucceeded="@OnPaymentSucceededHandler">
             <Head>
-                <header class="giz-buy__head">
-                    @if (DisplayOptions.Closable)
-                    {
-                        <button type="button" class="giz-buy__close" aria-label="@CloseLabel" @onclick="@OnDismissHandler">
-                            <i class="ph-bold ph-x"></i>
-                        </button>
-                    }
-                    <h2 class="giz-buy__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TOPUP_TITLE)</h2>
-                </header>
+                @if (DisplayOptions.Closable)
+                {
+                    <button type="button" class="giz-buy__close" aria-label="@CloseLabel" @onclick="@OnDismissHandler">
+                        <i class="ph-bold ph-x"></i>
+                    </button>
+                }
             </Head>
         </UserOnlineDeposits>
     </div>

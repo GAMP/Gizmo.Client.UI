@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.Localization.Services;
+﻿using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using System.Threading.Tasks;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -32,6 +33,8 @@ namespace Gizmo.Client.UI.Components
 
         [Parameter]
         public EventCallback<EmptyComponentResult> ResultCallback { get; set; }
+
+        protected string Title => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TOPUP_TITLE);
 
         protected string CloseLabel => GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CLOSE));
 
