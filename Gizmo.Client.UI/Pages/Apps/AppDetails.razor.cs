@@ -1,4 +1,7 @@
-﻿using Gizmo.Client.UI.View.Services;
+﻿using System.Globalization;
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
@@ -14,8 +17,6 @@ namespace Gizmo.Client.UI.Pages
     public partial class AppDetails : CustomDOMComponentBase
     {
         #region FIELDS
-        private bool _showMore;
-        private int _selectedTabIndex;
         private IEnumerable<AppLinkViewState> _appLinkViewStates = Enumerable.Empty<AppLinkViewState>();
         private bool _hasMedia;
         private bool _hasLinks;
@@ -48,30 +49,34 @@ namespace Gizmo.Client.UI.Pages
         [SupplyParameterFromQuery]
         public int ApplicationId { get; set; }
 
-        #endregion
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
 
-        #region METHODS
+        protected AppExeViewState MainExecutable => ViewState.Executables.FirstOrDefault();
 
-        private Task SelectTab(int tabIndex)
-        {
-            _selectedTabIndex = tabIndex;
+        protected bool HasMoreExecutables => ViewState.Executables.Skip(1).Any();
 
-            StateHasChanged();
+        protected bool HasDescription => !string.IsNullOrWhiteSpace(ViewState.Application?.Description);
 
-            return Task.CompletedTask;
-        }
+        protected int? PublisherId => ViewState.Application?.PublisherId;
+
+        protected string ReleaseDateText => ViewState.Application?.ReleaseDate is DateTime released
+            ? released.ToString("d", CultureInfo.CurrentCulture)
+            : string.Empty;
+
+        protected string AddDateText => ViewState.Application is { } app && app.AddDate.Year > 1
+            ? app.AddDate.ToString("d", CultureInfo.CurrentCulture)
+            : string.Empty;
+
+        protected string LaunchLabel =>
+            GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_LAUNCH)).Replace("\\", "\\\\").Replace("'", "\\'");
+
+        protected bool HasFacts => PublisherId.HasValue || ReleaseDateText.Length > 0 || AddDateText.Length > 0;
 
         #endregion
 
         private Task OnClickBackButtonHandler()
         {
             return NavigationService.GoBackAsync();
-        }
-
-        private Task OnClickMainButtonHandler()
-        {
-            _showMore = true;
-            return Task.CompletedTask;
         }
 
         protected override async Task OnInitializedAsync()
@@ -86,10 +91,6 @@ namespace Gizmo.Client.UI.Pages
                 _hasMedia = _appLinkViewStates.Where(a => a.MediaUrlType != AdvertisementMediaUrlType.None).Any();
                 _hasLinks = _appLinkViewStates.Where(a => a.MediaUrlType == AdvertisementMediaUrlType.None).Any();
 
-                if (!_hasMedia && _hasLinks)
-                {
-                    _selectedTabIndex = 1;
-                }
             }
             catch (Exception ex)
             {

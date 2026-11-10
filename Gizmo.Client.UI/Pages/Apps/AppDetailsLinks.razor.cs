@@ -23,6 +23,8 @@ namespace Gizmo.Client.UI.Pages
 
         #endregion
 
+        protected IEnumerable<AppLinkViewState> PageLinks => _appLinksViewState.Where(a => a.MediaUrlType == AdvertisementMediaUrlType.None);
+
         protected override async Task OnInitializedAsync()
         {
             try

@@ -311,5 +311,7 @@
         public const string SHELL_DEPOSIT_DONE_TITLE = nameof(SHELL_DEPOSIT_DONE_TITLE);
         public const string SHELL_TOPUP_OPEN_BROWSER = nameof(SHELL_TOPUP_OPEN_BROWSER);
         public const string SHELL_TIME_UNIT_HOURS = nameof(SHELL_TIME_UNIT_HOURS);
+        public const string SHELL_APP_LAUNCH_SECTION = nameof(SHELL_APP_LAUNCH_SECTION);
+        public const string SHELL_APP_IN_CLUB_SINCE = nameof(SHELL_APP_IN_CLUB_SINCE);
     }
 }
