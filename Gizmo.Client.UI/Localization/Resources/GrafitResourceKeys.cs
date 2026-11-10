@@ -310,5 +310,6 @@
         public const string SHELL_TOPUP_MORE = nameof(SHELL_TOPUP_MORE);
         public const string SHELL_DEPOSIT_DONE_TITLE = nameof(SHELL_DEPOSIT_DONE_TITLE);
         public const string SHELL_TOPUP_OPEN_BROWSER = nameof(SHELL_TOPUP_OPEN_BROWSER);
+        public const string SHELL_TIME_UNIT_HOURS = nameof(SHELL_TIME_UNIT_HOURS);
     }
 }

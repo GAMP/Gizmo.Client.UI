@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Gizmo.Client.UI.Localization.Services;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -22,6 +23,8 @@ namespace Gizmo.Client.UI.Components
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
+
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
 
         [Inject]
         NavigationService NavigationService { get; set; }

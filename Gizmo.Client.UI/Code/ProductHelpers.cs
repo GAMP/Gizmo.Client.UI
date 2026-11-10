@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 
@@ -73,6 +75,11 @@ namespace Gizmo.Client.UI
                 if (product.TimeProduct.Minutes < 60)
                 {
                     result = localizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_TIME_PRODUCT_MINUTES));
+                }
+                else if (localizationService is GrafitLocalizationService grafitLocalization)
+                {
+                    var hours = Math.Min((int)TimeSpan.FromMinutes(product.TimeProduct.Minutes).TotalHours, 24);
+                    result = grafitLocalization.GetPluralString(GrafitResourceKeys.SHELL_TIME_UNIT_HOURS, hours);
                 }
                 else
                 {
