@@ -273,24 +273,31 @@ namespace Gizmo.Client.UI.Pages
 
         private IEnumerable<UserProductViewState> ShopProducts => _shop;
 
-        private IReadOnlyList<UserProductViewState> HeroProducts =>
-            ShopProducts.Take(HERO_SLIDES).ToList();
-
-        private IEnumerable<AppViewState> Apps
+        private IReadOnlyList<UserProductViewState> PopularShopProducts
         {
             get
             {
-                var popularOrder = ViewState.PopularApplications
-                    .Select((app, index) => (app.ApplicationId, index))
-                    .ToDictionary(a => a.ApplicationId, a => a.index);
+                var popular = ViewState.PopularProducts.Select(a => a.Id).ToHashSet();
 
-                var source = _apps.Any() ? _apps : ViewState.PopularApplications;
-
-                return source
-                    .OrderBy(a => popularOrder.TryGetValue(a.ApplicationId, out var rank) ? rank : int.MaxValue)
-                    .ThenBy(a => a.Title);
+                return ShopProducts.Where(a => popular.Contains(a.Id)).Take(HERO_SLIDES).ToList();
             }
         }
+
+        private bool HasPopularProducts => PopularShopProducts.Count > 0;
+
+        private IReadOnlyList<UserProductViewState> HeroProducts => HasPopularProducts
+            ? PopularShopProducts
+            : ShopProducts.Take(HERO_SLIDES).ToList();
+
+        private bool HasPopularApps => ViewState.PopularApplications.Any();
+
+        private IEnumerable<AppViewState> Apps => HasPopularApps
+            ? ViewState.PopularApplications
+            : _apps.OrderBy(a => a.Title);
+
+        private string StripCaption => HasPopularApps
+            ? GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_POPULAR_APPS))
+            : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_GAMES_SECTION);
 
         private IReadOnlyList<AppViewState> StripApps => Apps.Take(HasSales ? STRIP_APPS : STRIP_APPS + 1).ToList();
 
@@ -370,12 +377,26 @@ namespace Gizmo.Client.UI.Pages
                 if (HasPromo)
                     return HeroKind.Banner;
 
+                if (HasPopularApps)
+                    return HeroKind.App;
+
+                if (HasPopularProducts)
+                    return HeroKind.Product;
+
                 if (HeroApps.Count > 0)
                     return HeroKind.App;
 
                 return HeroProducts.Count > 0 ? HeroKind.Product : HeroKind.Empty;
             }
         }
+
+        private string HeroAppCaption => GrafitLocalization.GetString(HasPopularApps
+            ? GrafitResourceKeys.SHELL_HERO_POPULAR
+            : GrafitResourceKeys.SHELL_HOME_GAMES_SECTION);
+
+        private string HeroProductCaption => GrafitLocalization.GetString(HasPopularProducts
+            ? GrafitResourceKeys.SHELL_HERO_POPULAR
+            : GrafitResourceKeys.SHELL_HOME_BAR);
 
         private int SlideCount => Hero switch
         {
