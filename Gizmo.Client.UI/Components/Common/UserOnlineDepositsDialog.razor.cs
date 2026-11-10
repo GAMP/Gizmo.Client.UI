@@ -65,6 +65,8 @@ namespace Gizmo.Client.UI.Components
 
         protected override void OnInitialized()
         {
+            UserOnlineDepositViewStateService.Clear();
+
             this.SubscribeChange(ViewState);
 
             base.OnInitialized();

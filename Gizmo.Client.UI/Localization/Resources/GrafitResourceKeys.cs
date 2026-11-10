@@ -15,7 +15,6 @@
         public const string SHELL_GEN_DONE = nameof(SHELL_GEN_DONE);
         public const string SHELL_GEN_LATER = nameof(SHELL_GEN_LATER);
         public const string SHELL_GEN_HIDE = nameof(SHELL_GEN_HIDE);
-        public const string SHELL_DEPOSIT_SUCCESS_TEXT = nameof(SHELL_DEPOSIT_SUCCESS_TEXT);
         public const string SHELL_DEPOSIT_PAGE_TITLE = nameof(SHELL_DEPOSIT_PAGE_TITLE);
         public const string SHELL_BALANCE_HIDE = nameof(SHELL_BALANCE_HIDE);
         public const string SHELL_BALANCE_SHOW = nameof(SHELL_BALANCE_SHOW);
@@ -295,7 +294,6 @@
         public const string SHELL_HELP_TITLE = nameof(SHELL_HELP_TITLE);
         public const string SHELL_HELP_SENT_TITLE = nameof(SHELL_HELP_SENT_TITLE);
         public const string SHELL_TOPUP_TITLE = nameof(SHELL_TOPUP_TITLE);
-        public const string SHELL_TOPUP_TO_PAY = nameof(SHELL_TOPUP_TO_PAY);
         public const string SHELL_BOOT_LINE_MONITOR = nameof(SHELL_BOOT_LINE_MONITOR);
         public const string SHELL_BOOT_LINE_APPS = nameof(SHELL_BOOT_LINE_APPS);
         public const string SHELL_BOOT_LINE_GAMES = nameof(SHELL_BOOT_LINE_GAMES);
@@ -303,11 +301,14 @@
         public const string SHELL_BOOT_LINE_BAR = nameof(SHELL_BOOT_LINE_BAR);
         public const string SHELL_BOOT_LINE_TILES = nameof(SHELL_BOOT_LINE_TILES);
         public const string SHELL_HELP_SENT_NOTE = nameof(SHELL_HELP_SENT_NOTE);
-        public const string SHELL_TOPUP_AMOUNT_LABEL = nameof(SHELL_TOPUP_AMOUNT_LABEL);
         public const string SHELL_TOPUP_PAY_AMOUNT = nameof(SHELL_TOPUP_PAY_AMOUNT);
-        public const string SHELL_TOPUP_WAITING = nameof(SHELL_TOPUP_WAITING);
         public const string SHELL_TOPUP_LIMITS = nameof(SHELL_TOPUP_LIMITS);
         public const string SHELL_TOPUP_MIN = nameof(SHELL_TOPUP_MIN);
         public const string SHELL_TOPUP_MAX = nameof(SHELL_TOPUP_MAX);
+        public const string SHELL_TOPUP_CHANGE_AMOUNT = nameof(SHELL_TOPUP_CHANGE_AMOUNT);
+        public const string SHELL_TOPUP_LESS = nameof(SHELL_TOPUP_LESS);
+        public const string SHELL_TOPUP_MORE = nameof(SHELL_TOPUP_MORE);
+        public const string SHELL_DEPOSIT_DONE_TITLE = nameof(SHELL_DEPOSIT_DONE_TITLE);
+        public const string SHELL_TOPUP_OPEN_BROWSER = nameof(SHELL_TOPUP_OPEN_BROWSER);
     }
 }
