@@ -3,50 +3,49 @@
 
 @if (Product != null)
 {
-    <div class="giz-peek">
+    <div class="giz-peek giz-peek--time">
         <div class="giz-peek__name">@Product.Name</div>
-        @if (HasDescription)
+        <div class="giz-peek__amount">
+            <b>@TimeNumber</b>
+            <span>@TimeUnit</span>
+        </div>
+        @if (PlaySegments.Count > 0)
         {
-            <p class="giz-peek__about">@Product.Description</p>
+            <div class="giz-peek__block">
+                <div class="giz-peek__cap"><span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PEEK_PLAY)</span>@if (PlayWindow is { Length: > 0 } playWindow){<b>@playWindow</b>}</div>
+                <div class="giz-peek__day">
+                    @foreach (var segment in PlaySegments)
+                    {
+                        <span class="giz-peek__day-on" style="--giz-peek-from: @segment.Left; --giz-peek-span: @segment.Width"></span>
+                    }
+                </div>
+            </div>
+        }
+        @if (BuyWeek.Count > 0)
+        {
+            <div class="giz-peek__block">
+                <div class="giz-peek__cap"><span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PEEK_BUY)</span>@if (BuyWindow is { Length: > 0 } buyWindow){<b>@buyWindow</b>}</div>
+                <div class="giz-peek__week">
+                    @foreach (var day in BuyWeek)
+                    {
+                        <span class="@DayClass(day)">@day.Name</span>
+                    }
+                </div>
+            </div>
         }
         <div class="giz-peek__facts">
-            <div class="giz-peek__fact">
-                <i class="ph-bold ph-timer"></i>
-                <span class="giz-peek__text">
-                    <small>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PEEK_DURATION)</small>
-                    <b>@GetTimeText()</b>
-                </span>
-            </div>
-            @if (BuyWindow is { Length: > 0 } buyWindow)
-            {
-                <div class="giz-peek__fact">
-                    <i class="ph-bold ph-shopping-bag"></i>
-                    <span class="giz-peek__text">
-                        <small>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PEEK_BUY)</small>
-                        <b>@buyWindow</b>
-                    </span>
-                </div>
-            }
-            @if (PlayWindow is { Length: > 0 } playWindow)
-            {
-                <div class="giz-peek__fact">
-                    <i class="ph-bold ph-game-controller"></i>
-                    <span class="giz-peek__text">
-                        <small>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PEEK_PLAY)</small>
-                        <b>@playWindow</b>
-                    </span>
-                </div>
-            }
             @if (ExpiryText is { Length: > 0 } expiry)
             {
                 <div class="giz-peek__fact">
                     <i class="ph-bold ph-hourglass-medium"></i>
-                    <span class="giz-peek__text">
-                        <small>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PEEK_EXPIRES)</small>
-                        <b>@expiry</b>
-                    </span>
+                    <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PEEK_EXPIRES)</span>
+                    <b>@expiry</b>
                 </div>
             }
+            <div class="giz-peek__fact giz-peek__fact--groups">
+                <i class="ph-bold ph-desktop"></i>
+                <ProductTimeHostGroups @key="Product.Id" Product="@Product" />
+            </div>
         </div>
     </div>
 }

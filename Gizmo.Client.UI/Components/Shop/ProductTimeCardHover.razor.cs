@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Globalization;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gizmo.Client.UI.Localization.Services;
@@ -21,7 +23,17 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public UserProductViewState Product { get; set; }
 
-        private bool HasDescription => !string.IsNullOrWhiteSpace(Product?.Description);
+        private string TimeNumber => ProductHelpers.GetProductTimeNumber(Product);
+
+        private string TimeUnit => ProductHelpers.GetProductTimeText(Product, GrafitLocalization);
+
+        private IReadOnlyList<AvailabilityShape.Segment> PlaySegments =>
+            AvailabilityShape.DaySegments(Product?.TimeProduct?.UsageAvailability, DateTime.Now.DayOfWeek);
+
+        private IReadOnlyList<AvailabilityShape.WeekDay> BuyWeek =>
+            AvailabilityShape.Week(Product?.PurchaseAvailability, CultureInfo.CurrentCulture);
+
+        private static string DayClass(AvailabilityShape.WeekDay day) => day.On ? "giz-peek__weekday giz-peek__weekday--on" : "giz-peek__weekday";
 
         private string BuyWindow => Product?.PurchaseAvailability is null
             ? null
@@ -55,15 +67,6 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        private string GetTimeText()
-        {
-            if (Product != null && Product.ProductType == ProductType.ProductTime)
-            {
-                return $"{Product.TimeProduct?.Minutes.ToString("N0")} {LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_MINUTES_ABBREVIATED))}";
-            }
-
-            return string.Empty;
-        }
 
         protected override async Task OnInitializedAsync()
         {

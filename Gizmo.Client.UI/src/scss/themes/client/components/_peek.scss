@@ -1,12 +1,18 @@
 //============= Product peek ===============//
 
-// What a product card shows under the cursor: only what its face does not say - the words the
-// club wrote about it, when it is sold and played, when it burns out, what a set holds. Each
-// fact is an icon, a small caption and the value, sitting just above the card's button.
+// What a product card unfolds under the cursor, centred and over the card's whole height: the
+// name, then what the card face cannot show - a package's time large, the hours it plays on a
+// day track, the days it is sold, when it burns out and where it works; an item's words, its
+// bonus points and sale days; what a set holds.
 .giz-peek {
+    height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 1.2rem;
+    text-align: center;
+    color: var(--giz-text-1);
 
     &__name {
         display: -webkit-box;
@@ -14,77 +20,163 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
         font-family: $font-family-header-theme-client;
-        font-size: 1.6rem;
+        font-size: 1.5rem;
         font-weight: 800;
         line-height: 1.25;
         letter-spacing: -0.01em;
-        color: var(--giz-text-1);
+    }
+
+    &__amount {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        b {
+            font-family: $font-family-header-theme-client;
+            font-size: 6.4rem;
+            font-weight: 800;
+            line-height: 0.9;
+            letter-spacing: -0.04em;
+            font-variant-numeric: tabular-nums;
+        }
+
+        span {
+            margin-top: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--giz-text-3);
+        }
     }
 
     &__about {
         margin: 0;
         display: -webkit-box;
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 4;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        font-size: 1.3rem;
-        line-height: 1.5;
+        font-size: 1.35rem;
+        font-weight: 600;
+        line-height: 1.45;
         color: var(--giz-text-2);
     }
 
-    &__facts {
+    &__block { width: 100%; }
+
+    &__cap {
         display: flex;
-        flex-direction: column;
-        gap: 0.7rem;
+        justify-content: space-between;
+        gap: 0.8rem;
+        margin-bottom: 0.6rem;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--giz-text-3);
+
+        b {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: $font-family-numeric-theme-client;
+            font-variant-numeric: tabular-nums;
+            color: var(--giz-text-1);
+        }
+
+        &--center { justify-content: center; }
     }
 
-    // The icon and the caption on one line, the value under them across the card's width.
-    &__fact {
-        display: grid;
-        grid-template-columns: 1.6rem minmax(0, 1fr);
-        align-items: center;
-        column-gap: 0.6rem;
-        row-gap: 0.2rem;
-        min-width: 0;
+    // A day from 00:00 to 24:00; each segment starts and spans as a share of it.
+    &__day {
+        position: relative;
+        height: 0.8rem;
+        border-radius: $giz-r-pill;
+        background: var(--giz-glass-7);
+    }
 
-        > i {
-            font-size: 1.4rem;
-            color: var(--giz-accent-soft);
+    &__day-on {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: var(--giz-peek-from);
+        width: var(--giz-peek-span);
+        border-radius: $giz-r-pill;
+        background: var(--giz-accent);
+    }
+
+    &__week {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap: 0.35rem;
+    }
+
+    &__weekday {
+        height: 2.6rem;
+        display: grid;
+        place-items: center;
+        border-radius: 0.8rem;
+        background: var(--giz-glass-4);
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: var(--giz-text-3);
+
+        &--on {
+            background: var(--giz-accent);
+            color: var(--giz-on-accent);
         }
     }
 
-    &__text { display: contents; }
-
-    &__text small {
-        font-size: 1.1rem;
-        font-weight: 600;
-        line-height: 1.3;
-        color: var(--giz-text-3);
+    &__facts {
+        width: 100%;
+        display: grid;
+        gap: 0.6rem;
+        padding-top: 1.2rem;
+        border-top: 1px solid var(--giz-glass-7);
     }
 
-    &__text b {
-        grid-column: 1 / -1;
-        overflow-wrap: anywhere;
-        font-family: $font-family-numeric-theme-client;
+    &__fact {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        min-width: 0;
         font-size: 1.3rem;
         font-weight: 700;
-        line-height: 1.3;
-        font-variant-numeric: tabular-nums;
-        color: var(--giz-text-1);
+
+        > i {
+            flex: none;
+            font-size: 1.5rem;
+            color: var(--giz-text-3);
+        }
+
+        > span { color: var(--giz-text-3); }
+
+        b {
+            font-family: $font-family-numeric-theme-client;
+            font-variant-numeric: tabular-nums;
+        }
+
+        &--groups .giz-time-product-host-groups { margin-top: 0; }
     }
 
-    &__caption {
-        font-size: 1.1rem;
-        font-weight: 700;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: var(--giz-text-3);
+    &__award {
+        height: 3rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0 1.2rem;
+        border-radius: $giz-r-pill;
+        background: rgba(var(--giz-points-rgb), 0.14);
+        color: var(--giz-points);
+        font-size: 1.3rem;
+        font-weight: 800;
     }
 
     &__items {
         display: flex;
         flex-direction: column;
         gap: 0.7rem;
+        text-align: left;
     }
 
     &__item {

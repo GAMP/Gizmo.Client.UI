@@ -198,30 +198,20 @@ $giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 
         background: rgba(var(--giz-accent-rgb), 0.24);
     }
 
-    // Rested on, a card with something more to say shows its details: they rise from the bottom
-    // edge over the picture and name, which drift up and fade, speeding up and then easing in;
-    // the button under them stays. A short pause first, so a cursor passing over the shelf does
-    // not move every card on its way.
+    // Rested on, a card with something more to say unfolds its details: the panel opens from the
+    // card's top-left corner, speeding up and then easing in, and the details fade in once it is
+    // open; the button under them stays. A short pause first, so a cursor passing over the shelf
+    // does not open every card on its way.
     &__content__top { overflow: hidden; }
 
-    &__content__image,
-    &__content__details,
-    .giz-product-card-award-indicator {
-        transition: transform 0.55s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.55s cubic-bezier(0.65, 0, 0.35, 1);
-    }
+    &:hover &__content__top:has(.giz-peek) > .giz-product-card__hover-overlay {
+        clip-path: circle(150% at 0 0);
+        transition: clip-path 0.34s cubic-bezier(0.65, 0, 0.35, 1) 0.1s;
 
-    &:hover &__content__top:has(.giz-peek) {
-        > .giz-product-card__content__image,
-        > .giz-product-card__content__details,
-        > .giz-product-card-award-indicator {
-            opacity: 0;
-            transform: translateY(-24%);
-            transition-delay: 0.2s;
-        }
-
-        > .giz-product-card__hover-overlay {
+        .giz-peek {
+            opacity: 1;
             transform: none;
-            transition-delay: 0.2s;
+            transition: opacity 0.22s ease-out 0.3s, transform 0.22s ease-out 0.3s;
         }
     }
 
@@ -244,16 +234,25 @@ $giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 
         background:
             linear-gradient(165deg, rgba(var(--giz-accent-rgb), 0.16) 0%, rgba(var(--giz-accent-rgb), 0) 55%),
             var(--giz-tile-deep);
-        transform: translateY(100%);
-        transition: transform 0.55s cubic-bezier(0.65, 0, 0.35, 1);
+        clip-path: circle(0 at 0 0);
+        transition: clip-path 0.3s cubic-bezier(0.65, 0, 0.35, 1) 0.06s;
         overflow-x: hidden;
         overflow-y: auto;
         scrollbar-width: none;
         pointer-events: none;
         &::-webkit-scrollbar { display: none; }
+
+        .giz-peek {
+            opacity: 0;
+            transform: translateY(0.6rem);
+            transition: opacity 0.12s ease-out, transform 0.12s ease-out;
+        }
     }
 
-    &__content--hovered { min-width: 0; }
+    &__content--hovered {
+        min-width: 0;
+        height: 100%;
+    }
 }
 
 // PC groups on a time package
@@ -385,18 +384,10 @@ $giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .giz-product-card__content__image,
-    .giz-product-card__content__details,
-    .giz-product-card-award-indicator,
-    .giz-product-card__hover-overlay { transition: opacity 0.2s; }
-
-    .giz-product-card:hover .giz-product-card__content__top:has(.giz-peek) > .giz-product-card__content__image,
-    .giz-product-card:hover .giz-product-card__content__top:has(.giz-peek) > .giz-product-card__content__details,
-    .giz-product-card:hover .giz-product-card__content__top:has(.giz-peek) > .giz-product-card-award-indicator { transform: none; }
-
     .giz-product-card__hover-overlay {
-        transform: none;
+        clip-path: none;
         opacity: 0;
+        transition: opacity 0.2s;
     }
 
     .giz-product-card:hover .giz-product-card__hover-overlay:has(.giz-peek) { opacity: 1; }
