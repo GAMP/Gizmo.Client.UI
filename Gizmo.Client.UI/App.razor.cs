@@ -26,8 +26,11 @@ public partial class App : ComponentBase, IDisposable
     [Inject] private JSInteropService JSInteropService { get; set; }
     [Inject] private ILocalizationService LocalizationService { get; set; }
     [Inject] private ClientLocalizationViewState LocalizationViewState { get; set; }
+    [Inject] private UserLoginStatusViewState LoginStatusViewState { get; set; }
 
     protected GrafitLocalizationService GrafitLocalization { get; private set; }
+
+    protected ShellIntro Intro { get; } = new();
 
     private DotNetObjectReference<App> _selfRef;
 
@@ -40,6 +43,7 @@ public partial class App : ComponentBase, IDisposable
         GrafitLocalization = new GrafitLocalizationService(LocalizationService);
 
         LocalizationViewState.OnChange += OnCultureChanged;
+        LoginStatusViewState.OnChange += OnLoginStatusChanged;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -94,9 +98,16 @@ public partial class App : ComponentBase, IDisposable
     private void OnCultureChanged(object sender, EventArgs e) =>
         _ = InvokeAsync(ApplyDocumentDirectionAsync);
 
+    private void OnLoginStatusChanged(object sender, EventArgs e)
+    {
+        if (!LoginStatusViewState.IsLoggedIn)
+            Intro.Reset();
+    }
+
     public void Dispose()
     {
         LocalizationViewState.OnChange -= OnCultureChanged;
+        LoginStatusViewState.OnChange -= OnLoginStatusChanged;
 
         _selfRef?.Dispose();
     }

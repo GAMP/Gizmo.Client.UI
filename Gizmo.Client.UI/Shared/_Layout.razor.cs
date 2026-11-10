@@ -82,7 +82,8 @@ namespace Gizmo.Client.UI.Shared
 
         private string RootClass => "giz-root"
             + (_figuresHidden ? " giz-root--figures-hidden" : _figuresToggled ? " giz-root--figures-revealed" : string.Empty)
-            + (_stage == AssemblyStage.Revealing ? " giz-root--assembling" : string.Empty);
+            + (_stage == AssemblyStage.Revealing ? " giz-root--assembling" : string.Empty)
+            + (_resumed ? " giz-root--resumed" : string.Empty);
 
         private string HudClass => _figuresHidden
             ? "giz-top-bar__hud giz-top-bar__hud--hidden"
@@ -126,11 +127,15 @@ namespace Gizmo.Client.UI.Shared
         private readonly ShellAssembly _assembly = new();
         private AssemblyStage _stage = AssemblyStage.Loading;
 
+        private bool _resumed;
+
+        [CascadingParameter] protected ShellIntro Intro { get; set; }
+
         private enum AssemblyStage { Loading, Revealing, Done }
 
         private static readonly TimeSpan BootShortest = TimeSpan.FromMilliseconds(900);
         private static readonly TimeSpan BootLongest = TimeSpan.FromSeconds(4);
-        private static readonly TimeSpan AssemblyLength = TimeSpan.FromMilliseconds(1100);
+        private static readonly TimeSpan AssemblyLength = TimeSpan.FromMilliseconds(1300);
 
         #endregion
 
@@ -150,6 +155,7 @@ namespace Gizmo.Client.UI.Shared
                 await Task.WhenAll(Task.Delay(BootShortest), released);
 
                 _stage = AssemblyStage.Revealing;
+                Intro?.MarkPlayed();
                 await InvokeAsync(StateHasChanged);
 
                 await Task.Delay(AssemblyLength);
@@ -173,6 +179,7 @@ namespace Gizmo.Client.UI.Shared
 
         private void OnLocationChanged(object sender, LocationChangedEventArgs e)
         {
+            _resumed = false;
             _playTransition = true;
             _ = InvokeAsync(StateHasChanged);
         }
@@ -183,6 +190,12 @@ namespace Gizmo.Client.UI.Shared
 
         protected override async Task OnInitializedAsync()
         {
+            if (Intro?.Played == true)
+            {
+                _stage = AssemblyStage.Done;
+                _resumed = true;
+            }
+
             NavigationManager.LocationChanged += OnLocationChanged;
 
             this.SubscribeChange(HostOutOfOrderViewState);
@@ -194,10 +207,10 @@ namespace Gizmo.Client.UI.Shared
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (firstRender)
+            if (firstRender && !_resumed)
                 _ = AssembleAsync();
 
-            if (firstRender || _playTransition)
+            if ((firstRender && !_resumed) || _playTransition)
             {
                 _playTransition = false;
                 await JsRuntime.InvokeVoidAsync("restartPageTransition");
