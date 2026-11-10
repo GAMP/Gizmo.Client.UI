@@ -3,6 +3,7 @@
 // about, every executable when there are several, the media and the links on the right.
 
 .giz-app-page {
+    position: relative;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -10,7 +11,35 @@
     padding: 0 2.4rem 0 0;
     color: var(--giz-text-1);
 
+    // The cover, blurred large behind the page and fading out towards every edge.
+    &__wash {
+        position: absolute;
+        inset: -1rem -2.4rem -2.4rem -1rem;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
+        -webkit-mask-image: radial-gradient(ellipse closest-side at 50% 42%, #000 30%, transparent 100%);
+        mask-image: radial-gradient(ellipse closest-side at 50% 42%, #000 30%, transparent 100%);
+
+        > *,
+        .giz-default-image {
+            position: absolute;
+            inset: -6rem;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 30%;
+            filter: blur(5rem) saturate(1.25);
+            opacity: 0.5;
+        }
+    }
+
     &__back {
+        position: relative;
+        z-index: 1;
         align-self: flex-start;
         height: 3.4rem;
         display: inline-flex;
@@ -19,7 +48,7 @@
         padding: 0 1.4rem;
         border: 0;
         border-radius: $giz-r-pill;
-        background: var(--giz-glass-5);
+        background: var(--giz-glass-6);
         color: var(--giz-text-2);
         font-size: 1.35rem;
         font-weight: 700;
@@ -27,33 +56,45 @@
         transition: background 0.15s, color 0.15s;
 
         &:hover {
-            background: var(--giz-glass-9);
+            background: var(--giz-glass-10);
             color: var(--giz-text-1);
         }
     }
 
-    &__grid {
+    // The composition: centred on the page and in its height while it fits, scrolling past it.
+    &__stage {
+        position: relative;
+        z-index: 1;
         flex: 1;
         min-height: 0;
-        display: grid;
-        grid-template-columns: 34rem minmax(0, 1fr);
-        gap: 3.2rem;
-    }
-
-    &__side {
+        overflow-y: auto;
         display: flex;
         flex-direction: column;
-        gap: 1.6rem;
-        min-height: 0;
+        gap: 3.2rem;
+        width: 100%;
+        max-width: 132rem;
+        margin: 0 auto;
+        padding: 1.2rem 0 3rem;
+
+        > :first-child { margin-top: auto; }
+
+        > :last-child { margin-bottom: auto; }
+    }
+
+    &__top {
+        display: grid;
+        grid-template-columns: 38rem minmax(0, 1fr);
+        gap: 5.6rem;
+        align-items: center;
     }
 
     &__poster {
         position: relative;
         aspect-ratio: 3 / 4;
         overflow: hidden;
-        border-radius: 2.2rem;
+        border-radius: 2.4rem;
         background: var(--giz-glass-3);
-        box-shadow: inset 0 0 0 1px var(--giz-glass-6), 0 2.4rem 5rem -2.4rem rgba(var(--giz-black-rgb), 0.9);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-8), 0 3.2rem 7rem -2.4rem rgba(var(--giz-black-rgb), 0.95);
 
         > *,
         .giz-default-image {
@@ -68,94 +109,100 @@
         }
     }
 
-    &__launch .giz-universal-executable {
-        @include giz-launch-pill;
-        @include giz-launch-pill-primary;
-        width: 100%;
+    &__info { min-width: 0; }
 
-        &::after {
+    &__category {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: var(--giz-text-2);
+    }
+
+    &__title {
+        margin: 0.8rem 0 0;
+        font-family: $font-family-header-theme-client;
+        font-size: 7.2rem;
+        font-weight: 800;
+        line-height: 0.95;
+        letter-spacing: -0.035em;
+        overflow-wrap: anywhere;
+    }
+
+    &__about {
+        max-width: 70rem;
+        margin: 2rem 0 0;
+        font-size: 1.8rem;
+        font-weight: 600;
+        line-height: 1.5;
+        color: var(--giz-text-2);
+    }
+
+    &__launches {
+        margin-top: 3.2rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.2rem;
+    }
+
+    &__exe {
+        display: contents;
+
+        .giz-universal-executable { @include giz-launch-pill; }
+
+        &--main .giz-universal-executable { @include giz-launch-pill-primary; }
+
+        &--play .giz-universal-executable::after {
             content: var(--giz-play-label, "Launch");
             padding-right: 0.2em;
         }
     }
 
     &__facts {
+        margin-top: 3.2rem;
         display: grid;
-        gap: 1.4rem;
-        padding: 2rem 2.2rem;
-        border-radius: 2rem;
-        background: linear-gradient(180deg, var(--giz-glass-4), var(--giz-glass-1));
-        box-shadow: inset 0 0 0 1px var(--giz-glass-6);
+        grid-template-columns: repeat(var(--giz-app-facts, 3), minmax(0, 25rem));
+        gap: 1.2rem;
     }
 
     &__fact {
-        display: flex;
-        justify-content: space-between;
-        gap: 1.2rem;
-        font-size: 1.45rem;
+        min-width: 0;
+        padding: 1.6rem 1.8rem;
+        border-radius: 1.8rem;
+        background: linear-gradient(180deg, var(--giz-glass-5), var(--giz-glass-2));
+        box-shadow: inset 0 0 0 1px var(--giz-glass-7);
 
         span {
+            display: block;
+            font-size: 1.25rem;
+            font-weight: 700;
             color: var(--giz-text-3);
-            font-weight: 600;
         }
 
         b {
-            min-width: 0;
+            display: block;
+            margin-top: 0.6rem;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             font-family: $font-family-header-theme-client;
-            font-weight: 700;
+            font-size: 1.9rem;
+            font-weight: 800;
             font-variant-numeric: tabular-nums;
-            text-align: right;
         }
     }
 
-    &__main {
-        min-height: 0;
-        display: flex;
-        flex-direction: column;
+    &__lower {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
         gap: 2.4rem;
-        padding-bottom: 2.4rem;
-        overflow-y: auto;
+        align-items: start;
     }
 
-    &__category {
-        font-size: 1.35rem;
-        font-weight: 600;
-        color: var(--giz-text-3);
-    }
-
-    &__title {
-        margin: 0.6rem 0 0;
-        font-family: $font-family-header-theme-client;
-        font-size: 5rem;
-        font-weight: 800;
-        line-height: 1;
-        letter-spacing: -0.03em;
-    }
-
-    &__about {
-        max-width: 72rem;
-        margin: 0;
-        font-size: 1.6rem;
-        font-weight: 600;
-        line-height: 1.5;
-        color: var(--giz-text-2);
-    }
+    &__lower > :only-child { grid-column: 1 / -1; }
 
     &__caption {
-        margin: 0 0 1.2rem;
-        font-size: 1.6rem;
+        margin: 0 0 1.4rem;
+        font-size: 1.7rem;
         font-weight: 800;
-    }
-
-    &__exes {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-
-        .giz-universal-executable { @include giz-launch-pill; }
     }
 }
 

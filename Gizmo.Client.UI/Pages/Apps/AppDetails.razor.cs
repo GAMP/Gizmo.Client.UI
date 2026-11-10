@@ -51,9 +51,24 @@ namespace Gizmo.Client.UI.Pages
 
         [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
 
-        protected AppExeViewState MainExecutable => ViewState.Executables.FirstOrDefault();
+        protected bool IsPlainLaunch(AppExeViewState executable) =>
+            ViewState.Executables.Count() == 1 &&
+            (string.IsNullOrWhiteSpace(executable.Caption) ||
+             string.Equals(executable.Caption.Trim(), ViewState.Application?.Title?.Trim(), StringComparison.OrdinalIgnoreCase));
 
-        protected bool HasMoreExecutables => ViewState.Executables.Skip(1).Any();
+        protected bool HasExecutables => ViewState.Executables.Any();
+
+        protected bool ShowsName(AppExeViewState executable) => !IsPlainLaunch(executable);
+
+        protected string LaunchClass(AppExeViewState executable)
+        {
+            if (executable != ViewState.Executables.FirstOrDefault())
+                return "giz-app-page__exe";
+
+            return IsPlainLaunch(executable)
+                ? "giz-app-page__exe giz-app-page__exe--main giz-app-page__exe--play"
+                : "giz-app-page__exe giz-app-page__exe--main";
+        }
 
         protected bool HasDescription => !string.IsNullOrWhiteSpace(ViewState.Application?.Description);
 
@@ -70,7 +85,7 @@ namespace Gizmo.Client.UI.Pages
         protected string LaunchLabel =>
             GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_LAUNCH)).Replace("\\", "\\\\").Replace("'", "\\'");
 
-        protected bool HasFacts => PublisherId.HasValue || ReleaseDateText.Length > 0 || AddDateText.Length > 0;
+        protected int FactCount => (PublisherId.HasValue ? 1 : 0) + (ReleaseDateText.Length > 0 ? 1 : 0) + (AddDateText.Length > 0 ? 1 : 0);
 
         #endregion
 
