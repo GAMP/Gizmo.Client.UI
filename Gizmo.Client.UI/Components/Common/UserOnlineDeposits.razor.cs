@@ -71,6 +71,10 @@ namespace Gizmo.Client.UI.Components
 
         protected string AmountText => Money(ViewState.Amount ?? 0);
 
+        protected decimal? InputAmount => ViewState.Amount is decimal amount ? WithoutTrailingZeros(amount) : null;
+
+        private static decimal WithoutTrailingZeros(decimal value) => value / 1.000000000000000000000000000000000m;
+
         protected bool IsSubmitDisabled => ViewState.IsValid == false || ViewState.IsLoading || (ViewState.Amount ?? 0) <= 0;
 
         protected string PayClass => ViewState.IsLoading
