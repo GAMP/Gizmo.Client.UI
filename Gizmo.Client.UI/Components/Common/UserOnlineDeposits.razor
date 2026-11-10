@@ -6,7 +6,10 @@
 <div class="@ClassName">
     @if (_paymentSucceeded)
     {
-        <span class="giz-user-online-deposit__countdown"><span class="giz-user-online-deposit__countdown-fill"></span></span>
+        <svg class="giz-user-online-deposit__countdown" aria-hidden="true">
+            <rect class="giz-user-online-deposit__countdown-track" pathLength="100"></rect>
+            <rect class="giz-user-online-deposit__countdown-fill" pathLength="100"></rect>
+        </svg>
         <div class="giz-user-online-deposit__done">
             <div class="giz-user-online-deposit__done-sum">@SucceededSum</div>
             <div class="giz-user-online-deposit__done-title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DEPOSIT_DONE_TITLE)</div>

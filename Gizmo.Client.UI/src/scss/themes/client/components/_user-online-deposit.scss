@@ -296,22 +296,34 @@
         letter-spacing: -0.01em;
     }
 
+    // The auto-close countdown: a line just inside the tile's edge that runs out in 5 s, set in
+    // from the edge so it stands on the accent and not against the backdrop. Each rect is measured
+    // as 100 (pathLength), whatever the tile's size.
     &__countdown {
         position: absolute;
-        top: -1.6rem;
-        left: 0;
-        right: 0;
-        height: 0.3rem;
-        overflow: hidden;
-        border-radius: $giz-r-pill;
-        background: var(--giz-glass-7);
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
     }
 
+    &__countdown-track,
     &__countdown-fill {
-        display: block;
-        height: 100%;
-        transform-origin: left center;
-        background: var(--giz-success);
+        x: 0.6rem;
+        y: 0.6rem;
+        width: calc(100% - 1.2rem);
+        height: calc(100% - 1.2rem);
+        rx: calc(var(--giz-topup-done-radius, 2rem) - 0.6rem);
+        fill: none;
+        stroke-width: 2.5px;
+    }
+
+    &__countdown-track { stroke: color-mix(in srgb, var(--giz-on-accent) 12%, transparent); }
+
+    &__countdown-fill {
+        stroke: var(--giz-on-accent);
+        stroke-dasharray: 100 100;
+        stroke-dashoffset: 0;
         animation: giz-deposit-countdown 5s linear forwards;
     }
 }
@@ -333,31 +345,21 @@
         }
     }
 
-    .giz-user-online-deposit__countdown {
-        top: 1.4rem;
-        left: 2.4rem;
-        right: 2.4rem;
-        background: color-mix(in srgb, var(--giz-on-accent) 16%, transparent);
-    }
-
-    .giz-user-online-deposit__countdown-fill { background: var(--giz-on-accent); }
 }
 
 .giz-buy.giz-buy--topup { padding-top: 2.4rem; }
 
+// In the top-up dialog the whole sheet is the tile: the result drops its own card and lets the
+// countdown run round the sheet's edge.
 .giz-buy--topup:has(.giz-user-online-deposit--done) {
+    --giz-topup-done-radius: 2.2rem;
     background: var(--giz-accent);
     box-shadow: 0 4rem 9rem -3rem rgba(var(--giz-black-rgb), 0.95);
 
     .giz-user-online-deposit--done {
+        position: static;
         padding: 0;
         background: none;
-    }
-
-    .giz-user-online-deposit__countdown {
-        top: -1.6rem;
-        left: 0;
-        right: 0;
     }
 }
 
@@ -444,8 +446,7 @@
 }
 
 @keyframes giz-deposit-countdown {
-    from { transform: scaleX(1); }
-    to { transform: scaleX(0); }
+    to { stroke-dashoffset: 100; }
 }
 
 .giz-top-bar .giz-user-online-deposit-menu {
