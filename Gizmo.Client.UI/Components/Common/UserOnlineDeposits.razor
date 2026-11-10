@@ -30,7 +30,7 @@
             <div class="giz-user-online-deposit__bar giz-user-online-deposit__bar--corner">@Head</div>
         }
         <div class="giz-user-online-deposit__step" @key="@("amount")">
-            <div class="giz-user-online-deposit__figure">
+            <div class="@FigureClass">
                 @if (HasPresets)
                 {
                     <button type="button" class="giz-user-online-deposit__nudge" aria-label="@LessLabel" disabled="@StepDownDisabled" @onclick="StepDown">
@@ -40,7 +40,7 @@
                 @if (ViewState.AllowCustomValue)
                 {
                     <EditForm class="giz-user-online-deposit__form" EditContext="@UserOnlineDepositViewStateService.EditContext">
-                        <label class="giz-user-online-deposit__amount">
+                        <label class="giz-user-online-deposit__amount" style="--giz-topup-chars: @AmountChars">
                             @if (CurrencyFirst)
                             {
                                 <span class="giz-user-online-deposit__currency">@CurrencySymbol</span>
@@ -49,6 +49,7 @@
                                        IsTransparent="true"
                                        Size="InputSizes.Small"
                                        UpdateOnInput="true"
+                                       MaxLength="@AmountMaxLength"
                                        TValue="decimal?"
                                        Value="@InputAmount"
                                        ValueChanged="@((value) => UserOnlineDepositViewStateService.SetAmount(value))"
@@ -63,7 +64,7 @@
                 }
                 else
                 {
-                    <div class="giz-user-online-deposit__amount giz-user-online-deposit__amount--fixed">@AmountText</div>
+                    <div class="giz-user-online-deposit__amount giz-user-online-deposit__amount--fixed" style="--giz-topup-chars: @FixedAmountChars">@AmountText</div>
                 }
                 @if (HasPresets)
                 {

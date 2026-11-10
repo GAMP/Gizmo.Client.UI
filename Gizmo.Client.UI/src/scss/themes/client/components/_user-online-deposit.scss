@@ -41,12 +41,17 @@
         animation: giz-buy-in 0.36s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
+    // The figure shrinks to fit the row: the row is the size container, the steps take their two
+    // buttons and gaps from it, and each character is about 0.6em with the currency about 0.8em.
     &__figure {
+        container-type: inline-size;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 1.6rem;
         padding-top: 0.6rem;
+
+        &--steps { --giz-topup-steps: 13.6rem; }
     }
 
     &__nudge {
@@ -86,13 +91,14 @@
     }
 
     &__amount {
+        --giz-topup-size: min(var(--giz-topup-cap, 8rem), calc((100cqi - var(--giz-topup-steps, 0rem)) / (0.6 * var(--giz-topup-chars, 1) + 0.8)));
         max-width: 100%;
         display: flex;
         align-items: baseline;
         justify-content: center;
         gap: 0.6rem;
         font-family: $font-family-header-theme-client;
-        font-size: 8rem;
+        font-size: var(--giz-topup-size);
         font-weight: 800;
         line-height: 1.05;
         letter-spacing: -0.03em;
@@ -418,7 +424,7 @@
         caret-color: var(--giz-accent);
         color: var(--giz-text-1);
         font-family: $font-family-header-theme-client;
-        font-size: 8rem;
+        font-size: var(--giz-topup-size);
         font-weight: 800;
         letter-spacing: -0.03em;
         line-height: 1.05;
@@ -457,6 +463,7 @@
 .giz-top-bar .giz-user-online-deposit-menu .giz-user-online-deposit {
     padding: 1.8rem 2rem 2rem;
 
-    .giz-user-online-deposit__amount,
+    --giz-topup-cap: 6rem;
+
     .giz-user-online-deposit__done-sum { font-size: 6rem; }
 }

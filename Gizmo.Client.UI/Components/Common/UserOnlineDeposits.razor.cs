@@ -75,6 +75,16 @@ namespace Gizmo.Client.UI.Components
 
         private static decimal WithoutTrailingZeros(decimal value) => value / 1.000000000000000000000000000000000m;
 
+        protected int AmountChars => Math.Max(1, InputAmount?.ToString(CultureInfo.CurrentCulture).Length ?? 1);
+
+        protected int FixedAmountChars => AmountText.Length;
+
+        protected int AmountMaxLength => Math.Truncate(ViewState.MaximumAmount ?? 99_999_999m).ToString(CultureInfo.InvariantCulture).Length + 3;
+
+        protected string FigureClass => HasPresets
+            ? "giz-user-online-deposit__figure giz-user-online-deposit__figure--steps"
+            : "giz-user-online-deposit__figure";
+
         protected bool IsSubmitDisabled => ViewState.IsValid == false || ViewState.IsLoading || (ViewState.Amount ?? 0) <= 0;
 
         protected string PayClass => ViewState.IsLoading
