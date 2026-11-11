@@ -6,26 +6,22 @@
         <div class="giz-shop__products">
             <div class="giz-shop__products__header">
                 <div class="giz-shop__products__header__tab">
-                    <ClientTab>
-                        <ClientTabItem Class="@(!ViewState.SelectedUserProductGroupId.HasValue ? "active" : "")">
-                            <div @onclick=@(() => ShopService.UpdateUserGroupedProductsAsync(null))>
-                                <i class="ph-fill ph-squares-four"></i>
-                                <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ALL))</span>
-                            </div>
-                        </ClientTabItem>
+                    <GizScroller Class="giz-shop-groups">
+                        <button type="button" class="@GroupClass(null)" aria-pressed="@GroupPressed(null)" @onclick="@(() => ShopService.UpdateUserGroupedProductsAsync(null))">
+                            <i class="ph-fill ph-squares-four"></i>
+                            <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_ALL))</span>
+                        </button>
                         @if (ViewState.UserProductGroups != null)
                         {
                             @foreach (var productGroup in ViewState.UserProductGroups)
                             {
-                                <ClientTabItem Class="@(productGroup.ProductGroupId == ViewState.SelectedUserProductGroupId ? "active" : "")" OnClick=@(() => ShopService.UpdateUserGroupedProductsAsync(productGroup.ProductGroupId))>
-                                    <div>
-                                        <i class="ph-fill ph-tag"></i>
-                                        <span>@productGroup.Name</span>
-                                    </div>
-                                </ClientTabItem>
+                                <button type="button" class="@GroupClass(productGroup.ProductGroupId)" aria-pressed="@GroupPressed(productGroup.ProductGroupId)" @key="productGroup.ProductGroupId" @onclick="@(() => ShopService.UpdateUserGroupedProductsAsync(productGroup.ProductGroupId))">
+                                    <i class="ph-fill ph-tag"></i>
+                                    <span>@productGroup.Name</span>
+                                </button>
                             }
                         }
-                    </ClientTab>
+                    </GizScroller>
                 </div>
             </div>
             <div class="giz-shop__products__body giz-scrollbar--v">
@@ -57,7 +53,7 @@
                     <div class="giz-section" @key="productGroup.Key">
                         <ProductsIndexSectionHeader ProductGroupId="@productGroup.Key" />
                         <div class="giz-section__body">
-                            <ProductVirtualizedCards @key="productGroup.Key" Items="productGroup" ColumnsCount="ClientInterfaceOptions.CurrentValue.ProductsPageMaxItemsPerRow" />
+                            <ProductVirtualizedCards @key="productGroup.Key" Items="productGroup" ColumnsCount="ClientInterfaceOptions.CurrentValue.ProductsPageMaxItemsPerRow" OwnPrices="@OwnPrices" />
                         </div>
                     </div>
                 }

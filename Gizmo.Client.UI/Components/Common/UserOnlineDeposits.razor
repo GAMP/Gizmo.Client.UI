@@ -3,102 +3,124 @@
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Forms
 
-<div class="giz-user-online-deposit">
+<div class="@ClassName">
     @if (_paymentSucceeded)
     {
-        <div class="giz-user-online-deposit__success">
-            <div class="giz-user-online-deposit__success__countdown">
-                <div class="giz-user-online-deposit__success__countdown__fill"></div>
-            </div>
-            <div class="giz-user-online-deposit__success__icon">
-                <i class="ph-fill ph-check-circle"></i>
-            </div>
-            <div class="giz-user-online-deposit__success__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DEPOSIT_SUCCESS_TITLE)</div>
-            <div class="giz-user-online-deposit__success__text">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DEPOSIT_SUCCESS_TEXT, SucceededAmountFormatted)</div>
-            <div class="giz-user-online-deposit__success__hint">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DEPOSIT_SUCCESS_HINT)</div>
-        </div>
-    }
-    else if (ViewState.PageIndex == 0)
-    {
-        <div class="giz-user-online-deposit__body">
-            <div class="giz-user-online-deposit__label">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ONLINE_DEPOSIT_QUICK_SELECT))</div>
-            <div>
-                <ButtonGroup>
-                    @foreach (var preset in ViewState.Presets)
-                    {
-                        <Button Size="ButtonSizes.Large" Name="@preset.ToString()" IsSelected="@(@preset == ViewState.Amount)" @onclick="@(() => UserOnlineDepositViewStateService.SelectPreset(@preset))">@preset.ToString("C", CultureInfo.CurrentCulture)</Button>
-                    }
-                </ButtonGroup>
-            </div>
-            @if (ViewState.AllowCustomValue)
-            {
-                <EditForm EditContext="@UserOnlineDepositViewStateService.EditContext">
-                    <div>
-                        <TextInput IsTransparent="true"
-                                    Size="InputSizes.Small"
-                                    IsFullWidth="true"
-                                    UpdateOnInput="true"
-                                    TValue="decimal?"
-                                    Value="@ViewState.Amount"
-                                    ValueChanged="@((value) => UserOnlineDepositViewStateService.SetAmount(value))"
-                                    ValueExpression="@(() => ViewState.Amount)"
-                                    Label="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ONLINE_DEPOSIT_OR_ENTER_AMOUNT))" />
-                    </div>
-                </EditForm>
-            }
-            <div class="giz-user-online-deposit__summary">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ONLINE_DEPOSIT_WILL_BE_CREDITED)) <span class="giz-user-online-deposit__summary__amount">@((ViewState.Amount ?? 0).ToString("C", CultureInfo.CurrentCulture))</span></div>
-        </div>
-        <div class="giz-user-online-deposit__footer">
-            <Button IsDisabled="@(ViewState.IsValid == false || ViewState.IsLoading)"
-                    Color="ButtonColors.Accent"
-                    Size="ButtonSizes.ExtraLarge"
-                    IsFullWidth="true"
-                    @onclick="@(() => UserOnlineDepositViewStateService.SubmitAsync())">
-                <ChildContent>
-                    @if (ViewState.IsLoading)
-                    {
-                        <Spinner />
-                    }
-                    else
-                    {
-                        <div>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ONLINE_DEPOSIT_TITLE))</div>
-                    }
-                </ChildContent>
-            </Button>
+        <svg class="giz-user-online-deposit__countdown" aria-hidden="true">
+            <rect class="giz-user-online-deposit__countdown-track" pathLength="100"></rect>
+            <rect class="giz-user-online-deposit__countdown-fill" pathLength="100"></rect>
+        </svg>
+        <div class="giz-user-online-deposit__done">
+            <div class="giz-user-online-deposit__done-sum">@SucceededSum</div>
+            <div class="giz-user-online-deposit__done-title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DEPOSIT_DONE_TITLE)</div>
+            <button type="button" class="giz-buy__btn giz-buy__btn--primary" @onclick="FinishNowAsync">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_GEN_DONE)</button>
         </div>
     }
     else if (_paymentFailed)
     {
-        <div class="giz-user-online-deposit__failed">
-            <div class="giz-user-online-deposit__failed__icon">
-                <i class="ph-fill ph-x-circle"></i>
+        <CartDialogResult Ok="false"
+                          Title="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DEPOSIT_FAILED_TITLE)"
+                          ActionText="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DEPOSIT_RETRY)"
+                          OnClose="@RetryAsync" />
+    }
+    else if (ViewState.PageIndex == 0)
+    {
+        @if (Head is not null)
+        {
+            <div class="giz-user-online-deposit__bar giz-user-online-deposit__bar--corner">@Head</div>
+        }
+        <div class="giz-user-online-deposit__step" @key="@("amount")">
+            <div class="@FigureClass">
+                @if (HasPresets)
+                {
+                    <button type="button" class="giz-user-online-deposit__nudge" aria-label="@LessLabel" disabled="@StepDownDisabled" @onclick="StepDown">
+                        <i class="ph-bold ph-minus"></i>
+                    </button>
+                }
+                @if (ViewState.AllowCustomValue)
+                {
+                    <EditForm class="giz-user-online-deposit__form" EditContext="@UserOnlineDepositViewStateService.EditContext">
+                        <label class="giz-user-online-deposit__amount" style="--giz-topup-chars: @AmountChars">
+                            @if (CurrencyFirst)
+                            {
+                                <span class="giz-user-online-deposit__currency">@CurrencySymbol</span>
+                            }
+                            <TextInput @ref="_amountInput"
+                                       IsTransparent="true"
+                                       Size="InputSizes.Small"
+                                       UpdateOnInput="true"
+                                       MaxLength="@AmountMaxLength"
+                                       TValue="decimal?"
+                                       Value="@InputAmount"
+                                       ValueChanged="@((value) => UserOnlineDepositViewStateService.SetAmount(value))"
+                                       ValueExpression="@(() => ViewState.Amount)"
+                                       Placeholder="0" />
+                            @if (!CurrencyFirst)
+                            {
+                                <span class="giz-user-online-deposit__currency">@CurrencySymbol</span>
+                            }
+                        </label>
+                    </EditForm>
+                }
+                else
+                {
+                    <div class="giz-user-online-deposit__amount giz-user-online-deposit__amount--fixed" style="--giz-topup-chars: @FixedAmountChars">@AmountText</div>
+                }
+                @if (HasPresets)
+                {
+                    <button type="button" class="giz-user-online-deposit__nudge" aria-label="@MoreLabel" disabled="@StepUpDisabled" @onclick="StepUp">
+                        <i class="ph-bold ph-plus"></i>
+                    </button>
+                }
             </div>
-            <div class="giz-user-online-deposit__failed__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DEPOSIT_FAILED_TITLE)</div>
-            <div class="giz-user-online-deposit__failed__text">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DEPOSIT_FAILED_TEXT)</div>
-        </div>
-        <div class="giz-user-online-deposit__footer">
-            <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="OnClickClearHandler">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DEPOSIT_RETRY)</Button>
+            @if (AmountNote is { Length: > 0 } note)
+            {
+                <div class="@NoteClass">@note</div>
+            }
+            @if (HasPresets)
+            {
+                <div class="giz-user-online-deposit__rail" style="--giz-topup-fill: @FillText">
+                    <span class="giz-user-online-deposit__track"><span class="giz-user-online-deposit__fill"></span></span>
+                    @foreach (var stop in Stops)
+                    {
+                        <button type="button" class="@stop.ClassName" style="--giz-topup-stop: @stop.At" aria-pressed="@stop.Pressed" @onclick="@(() => UserOnlineDepositViewStateService.SelectPreset(stop.Value))">
+                            <span class="giz-user-online-deposit__dot"></span>
+                            <span class="giz-user-online-deposit__stop-label">@stop.Label</span>
+                        </button>
+                    }
+                </div>
+            }
+            @if (ViewState.HasError)
+            {
+                <div class="giz-user-online-deposit__error"><i class="ph-bold ph-warning-circle"></i><span>@ViewState.ErrorMessage</span></div>
+            }
+            <button type="button" class="@PayClass" disabled="@IsSubmitDisabled" @onclick="@(() => UserOnlineDepositViewStateService.SubmitAsync())">
+                @if (ViewState.IsLoading)
+                {
+                    <span class="giz-loader giz-loader--small"></span>
+                }
+                else
+                {
+                    <span>@PayLabel</span>
+                }
+            </button>
         </div>
     }
     else
     {
-        <div class="giz-user-online-deposit__body">
-            <div class="giz-user-online-deposit__submitted__summary">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ONLINE_DEPOSIT_TO_BE_PAID)) <span class="giz-user-online-deposit__submitted__summary__amount">@((ViewState.Amount ?? 0).ToString("C", CultureInfo.CurrentCulture))</span></div>
-            <div class="giz-user-online-deposit__submitted__qr">
-                <div class="giz-user-online-deposit__submitted__qr__label">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ONLINE_DEPOSIT_QR_CODE))</div>
-                <div class="giz-user-online-deposit__submitted__qr__image">
-                    @((MarkupString)ViewState.QrImage)
-                </div>
-            </div>
+        <div class="giz-user-online-deposit__bar">
+            <button type="button" class="giz-user-online-deposit__change" aria-label="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TOPUP_CHANGE_AMOUNT)" @onclick="OnClickClearHandler">
+                <i class="ph-bold ph-pencil-simple"></i>
+            </button>
+            <div class="giz-user-online-deposit__pay-sum">@AmountText</div>
+            @Head
         </div>
-        <div class="giz-user-online-deposit__footer">
-            <div class="giz-user-online-deposit__submitted__action">
-                <div class="giz-user-online-deposit__submitted__action__label">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ONLINE_DEPOSIT_OR))</div>
-                <Button Color="ButtonColors.Accent" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="OnClickPayFromPCHandler">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ONLINE_DEPOSIT_PAY_FROM_PC))</Button>
-            </div>
-            <div class="giz-user-online-deposit-clear-button">
-                <Button Variant="ButtonVariants.Outline" Size="ButtonSizes.ExtraLarge" IsFullWidth="true" @onclick="OnClickClearHandler">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ONLINE_DEPOSIT_CLEAR))</Button>
-            </div>
+        <div class="giz-user-online-deposit__step giz-user-online-deposit__step--pay" @key="@("pay")">
+            <div class="giz-user-online-deposit__qr">@((MarkupString)ViewState.QrImage)</div>
+            <button type="button" class="giz-buy__btn giz-user-online-deposit__from-pc" @onclick="OnClickPayFromPCHandler">
+                <i class="ph-bold ph-arrow-square-out"></i>
+                <span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TOPUP_OPEN_BROWSER)</span>
+            </button>
         </div>
     }
 </div>

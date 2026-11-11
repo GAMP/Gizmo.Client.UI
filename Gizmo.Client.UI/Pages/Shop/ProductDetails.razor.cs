@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
@@ -26,6 +28,7 @@ namespace Gizmo.Client.UI.Pages
         private UserProductGroupViewState _userProductGroupViewState;
         private int _previousProductId;
         private bool _showMore = false;
+        private IReadOnlyDictionary<int, decimal> _ownPrices = CartPrices.None;
         #endregion
 
         #region PROPERTIES
@@ -47,6 +50,9 @@ namespace Gizmo.Client.UI.Pages
         }
         [Inject]
         ProductDetailsPageViewState ViewState { get; set; }
+
+        [Inject]
+        ClientServerCartViewService CartService { get; set; }
 
         [Parameter]
         [SupplyParameterFromQuery]
@@ -78,6 +84,18 @@ namespace Gizmo.Client.UI.Pages
             }
         }
 
+        protected decimal? OwnPriceOf(UserProductViewState product) => CartPrices.Own(product, _ownPrices);
+
+        private void OnCartChanged(object sender, EventArgs e)
+        {
+            var prices = CartPrices.Of(CartService.ViewState.Products);
+            if (CartPrices.Same(prices, _ownPrices))
+                return;
+
+            _ownPrices = prices;
+            InvokeAsync(StateHasChanged);
+        }
+
         private Task OnClickBackButtonHandler()
         {
             return NavigationService.GoBackAsync();
@@ -89,6 +107,14 @@ namespace Gizmo.Client.UI.Pages
         }
 
         #region OVERRIDES
+
+        protected override void OnInitialized()
+        {
+            _ownPrices = CartPrices.Of(CartService.ViewState.Products);
+            CartService.ViewState.OnChange += OnCartChanged;
+
+            base.OnInitialized();
+        }
 
         protected override async Task OnParametersSetAsync()
         {
@@ -110,6 +136,8 @@ namespace Gizmo.Client.UI.Pages
 
         public override void Dispose()
         {
+            CartService.ViewState.OnChange -= OnCartChanged;
+
             if (_userProductGroupViewState != null)
                 this.UnsubscribeChange(_userProductGroupViewState);
 

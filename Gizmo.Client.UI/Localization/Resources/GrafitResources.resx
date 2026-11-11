@@ -156,15 +156,6 @@
   <data name="SHELL_GEN_HIDE" xml:space="preserve">
     <value>Hide</value>
   </data>
-  <data name="SHELL_DEPOSIT_SUCCESS_TITLE" xml:space="preserve">
-    <value>Done</value>
-  </data>
-  <data name="SHELL_DEPOSIT_SUCCESS_TEXT" xml:space="preserve">
-    <value>{0} added to your account</value>
-  </data>
-  <data name="SHELL_DEPOSIT_SUCCESS_HINT" xml:space="preserve">
-    <value>This will close automatically in 5 seconds</value>
-  </data>
   <data name="SHELL_DEPOSIT_PAGE_TITLE" xml:space="preserve">
     <value>Top up</value>
   </data>
@@ -193,7 +184,7 @@
     <value>Top up at the counter</value>
   </data>
   <data name="SHELL_BUY_TOPUP_SUB" xml:space="preserve">
-    <value>Short by {0} - the purchase continues once the money is in</value>
+    <value>Short by {0}</value>
   </data>
   <data name="SHELL_BUY_PAY_WITH" xml:space="preserve">
     <value>Payment method</value>
@@ -631,17 +622,16 @@
     <value>until sign-out</value>
     <comment>Under the countdown in the time-up ring.</comment>
   </data>
-  <data name="SHELL_PEEK_DURATION" xml:space="preserve">
-    <value>Time</value>
-    <comment>Product hover: the package's play time.</comment>
-  </data>
   <data name="SHELL_PEEK_BUY" xml:space="preserve">
     <value>On sale</value>
     <comment>Product hover: when the product can be bought.</comment>
   </data>
   <data name="SHELL_PEEK_PLAY" xml:space="preserve">
-    <value>Play</value>
+    <value>Playing hours</value>
     <comment>Product hover: when a time package can be used.</comment>
+  </data>
+  <data name="SHELL_PEEK_TODAY_OFF" xml:space="preserve">
+    <value>Not available today</value>
   </data>
   <data name="SHELL_PEEK_EXPIRES" xml:space="preserve">
     <value>Expires</value>
@@ -698,10 +688,6 @@
   <data name="SHELL_DEPOSIT_FAILED_TITLE" xml:space="preserve">
     <value>Payment didn't go through</value>
     <comment>Top-up dialog when the server reports the payment declined, failed, expired or cancelled.</comment>
-  </data>
-  <data name="SHELL_DEPOSIT_FAILED_TEXT" xml:space="preserve">
-    <value>The bank declined it or the time ran out. Try again.</value>
-    <comment>Under that title.</comment>
   </data>
   <data name="SHELL_DEPOSIT_RETRY" xml:space="preserve">
     <value>Try again</value>
@@ -950,5 +936,289 @@
   </data>
   <data name="SHELL_SIGNUP_CHECK_FAILED" xml:space="preserve">
     <value>Could not check this right now. Try again.</value>
+  </data>
+  <data name="SHELL_BUY_REST_WITH" xml:space="preserve">
+    <value>Remaining {0}:</value>
+    <comment>Before the money ways when points pay for part of an order. {0} is the money left to pay.</comment>
+  </data>
+  <data name="SHELL_APPS_RUNNING" xml:space="preserve">
+    <value>Running</value>
+    <comment>State of a program in the active applications list.</comment>
+  </data>
+  <data name="SHELL_APPS_STARTING" xml:space="preserve">
+    <value>Starting</value>
+    <comment>A program is being prepared and its size is not known yet.</comment>
+  </data>
+  <data name="SHELL_APPS_LOADING" xml:space="preserve">
+    <value>Loading · {0} %</value>
+    <comment>A program is being prepared. {0} is the percentage done.</comment>
+  </data>
+  <data name="SHELL_NOTIFICATIONS_MORE" xml:space="preserve">
+    <value>{0} more</value>
+    <comment>Opens the folded notifications. {0} is how many are folded.</comment>
+  </data>
+  <data name="SHELL_NOTIFICATIONS_FOLD" xml:space="preserve">
+    <value>Fold</value>
+    <comment>Folds the notifications back so only the newest shows.</comment>
+  </data>
+  <data name="SHELL_STATE_LOCKED_TITLE" xml:space="preserve">
+    <value>This computer is locked</value>
+    <comment>Full-screen state: the computer is locked by the club.</comment>
+  </data>
+  <data name="SHELL_STATE_ASK_ADMIN" xml:space="preserve">
+    <value>Please contact the administrator</value>
+    <comment>Full-screen state: what to do on a locked computer or a blocked account.</comment>
+  </data>
+  <data name="SHELL_STATE_OUT_OF_ORDER_TITLE" xml:space="preserve">
+    <value>This computer is out of order</value>
+    <comment>Full-screen state: the computer is marked out of order.</comment>
+  </data>
+  <data name="SHELL_STATE_OUT_OF_ORDER_TEXT" xml:space="preserve">
+    <value>Please use another computer</value>
+    <comment>Full-screen state: what to do when the computer is out of order.</comment>
+  </data>
+  <data name="SHELL_STATE_BANNED_TITLE" xml:space="preserve">
+    <value>Account blocked</value>
+    <comment>Full-screen state: the signed-in account has been blocked.</comment>
+  </data>
+  <data name="SHELL_STATE_SIGN_OUT" xml:space="preserve">
+    <value>Sign out</value>
+    <comment>Full-screen state: sign out of a blocked account now.</comment>
+  </data>
+  <data name="SHELL_STATE_BANNED_SIGN_OUT_IN" xml:space="preserve">
+    <value>Automatic sign-out in {0}</value>
+    <comment>Full-screen state: countdown to the automatic sign-out of a blocked account. {0} = minutes:seconds.</comment>
+  </data>
+  <data name="SHELL_STATE_ERROR_TITLE" xml:space="preserve">
+    <value>Shell error</value>
+    <comment>Full-screen state: the shell failed.</comment>
+  </data>
+  <data name="SHELL_STATE_ERROR_TEXT" xml:space="preserve">
+    <value>Restart the client or contact the administrator</value>
+    <comment>Full-screen state: what to do after a shell failure.</comment>
+  </data>
+  <data name="SHELL_STATE_NOT_FOUND_TITLE" xml:space="preserve">
+    <value>Page not found</value>
+    <comment>Full-screen state: an address that leads nowhere.</comment>
+  </data>
+  <data name="SHELL_STATE_NOT_FOUND_TEXT" xml:space="preserve">
+    <value>This section is unavailable or turned off</value>
+    <comment>Full-screen state: why a page is missing.</comment>
+  </data>
+  <data name="SHELL_STATE_GO_HOME" xml:space="preserve">
+    <value>Go to home</value>
+    <comment>Full-screen state: leave a missing page for the start page.</comment>
+  </data>
+  <data name="SHELL_PASSWORD_TITLE" xml:space="preserve">
+    <value>Change password</value>
+    <comment>Change password dialog: title.</comment>
+  </data>
+  <data name="SHELL_PASSWORD_DONE" xml:space="preserve">
+    <value>Password changed</value>
+    <comment>Change password dialog: the new password is saved.</comment>
+  </data>
+  <data name="SHELL_PASSWORD_FAILED" xml:space="preserve">
+    <value>Password not changed</value>
+    <comment>Change password dialog: the password could not be changed; the reason follows.</comment>
+  </data>
+  <data name="SHELL_RESERVE_TITLE" xml:space="preserve">
+    <value>This computer is reserved</value>
+    <comment>Reservation dialog: this computer is reserved; the guest enters the reservation code.</comment>
+  </data>
+  <data name="SHELL_RESERVE_TEXT" xml:space="preserve">
+    <value>Enter the reservation code to start the session</value>
+    <comment>Reservation dialog: what to enter.</comment>
+  </data>
+  <data name="SHELL_RESERVE_PAY_TITLE" xml:space="preserve">
+    <value>Reservation payment</value>
+    <comment>Reservation dialog: the reservation has to be paid.</comment>
+  </data>
+  <data name="SHELL_RESERVE_DONE" xml:space="preserve">
+    <value>Reservation confirmed</value>
+    <comment>Reservation dialog: the reservation is confirmed.</comment>
+  </data>
+  <data name="SHELL_RESERVE_QR" xml:space="preserve">
+    <value>Scan the code with your phone. The session starts once the payment is received</value>
+    <comment>Reservation dialog: next to the QR code for paying by phone.</comment>
+  </data>
+  <data name="SHELL_RESERVE_AT_DESK" xml:space="preserve">
+    <value>You can also pay at the front desk</value>
+    <comment>Reservation dialog: the other way to pay.</comment>
+  </data>
+  <data name="SHELL_RECOVERY_TITLE" xml:space="preserve">
+    <value>Password recovery</value>
+    <comment>Password recovery: title of the first steps.</comment>
+  </data>
+  <data name="SHELL_RECOVERY_TO_SIGN_IN" xml:space="preserve">
+    <value>Back to sign-in</value>
+    <comment>Password recovery: back to the sign-in screen.</comment>
+  </data>
+  <data name="SHELL_RECOVERY_KIND_LEAD" xml:space="preserve">
+    <value>Choose how to find your account</value>
+    <comment>Password recovery: choose what to find the account by.</comment>
+  </data>
+  <data name="SHELL_RECOVERY_LEAD_USERNAME" xml:space="preserve">
+    <value>Enter the account's username</value>
+    <comment>Password recovery: enter the account's username.</comment>
+  </data>
+  <data name="SHELL_RECOVERY_LEAD_PHONE" xml:space="preserve">
+    <value>Enter the phone number on the account</value>
+    <comment>Password recovery: enter the phone number on the account.</comment>
+  </data>
+  <data name="SHELL_RECOVERY_LEAD_EMAIL" xml:space="preserve">
+    <value>Enter the e-mail on the account</value>
+    <comment>Password recovery: enter the e-mail on the account.</comment>
+  </data>
+  <data name="SHELL_RECOVERY_HOW_TITLE" xml:space="preserve">
+    <value>Verification method</value>
+    <comment>Password recovery: choose how to confirm it is you.</comment>
+  </data>
+  <data name="SHELL_RECOVERY_HOW_LEAD" xml:space="preserve">
+    <value>Choose where to send the code</value>
+    <comment>Password recovery: under the verification methods.</comment>
+  </data>
+  <data name="SHELL_RECOVERY_OTHER_WAY" xml:space="preserve">
+    <value>Another method</value>
+    <comment>Password recovery: go back to the verification methods.</comment>
+  </data>
+  <data name="SHELL_RECOVERY_QR_TITLE" xml:space="preserve">
+    <value>Confirm with a QR code</value>
+    <comment>Password recovery: confirm with a QR code.</comment>
+  </data>
+  <data name="SHELL_RECOVERY_QR_LEAD" xml:space="preserve">
+    <value>Scan the code with your phone</value>
+    <comment>Password recovery: what to do with the QR code.</comment>
+  </data>
+  <data name="SHELL_RECOVERY_CALL_LEAD" xml:space="preserve">
+    <value>Call this number from the phone on the account</value>
+    <comment>Password recovery: call the number below from the phone on the account.</comment>
+  </data>
+  <data name="SHELL_RECOVERY_WAITING" xml:space="preserve">
+    <value>Waiting for confirmation</value>
+    <comment>Password recovery: the shell waits for the call or the scan.</comment>
+  </data>
+  <data name="SHELL_RECOVERY_NEW_LEAD" xml:space="preserve">
+    <value>Set the password you will sign in with</value>
+    <comment>Password recovery: set the new password.</comment>
+  </data>
+  <data name="SHELL_RECOVERY_BY_USERNAME" xml:space="preserve">
+    <value>Username</value>
+    <comment>Password recovery: find the account by its username.</comment>
+  </data>
+  <data name="SHELL_RECOVERY_BY_PHONE" xml:space="preserve">
+    <value>Phone number</value>
+    <comment>Password recovery: find the account by its phone number.</comment>
+  </data>
+  <data name="SHELL_RECOVERY_BY_EMAIL" xml:space="preserve">
+    <value>E-mail</value>
+    <comment>Password recovery: find the account by its e-mail.</comment>
+  </data>
+  <data name="SHELL_DIALOG_SIGN_OUT_TITLE" xml:space="preserve">
+    <value>Sign out?</value>
+    <comment>Question before signing out (replaces the vendor's wording).</comment>
+  </data>
+  <data name="SHELL_DIALOG_SIGN_OUT_TEXT" xml:space="preserve">
+    <value>The current session will end</value>
+    <comment>Question before signing out: what happens.</comment>
+  </data>
+  <data name="SHELL_DIALOG_CLEAR_CART_TITLE" xml:space="preserve">
+    <value>Clear the cart?</value>
+    <comment>Question before emptying the cart (replaces the vendor's wording).</comment>
+  </data>
+  <data name="SHELL_DIALOG_CLEAR_CART_TEXT" xml:space="preserve">
+    <value>All items will be removed from the cart</value>
+    <comment>Question before emptying the cart: what happens.</comment>
+  </data>
+  <data name="SHELL_PASSWORD_STRONG" xml:space="preserve">
+    <value>Strong password</value>
+    <comment>Password strength card: every rule is met.</comment>
+  </data>
+  <data name="SHELL_PASSWORD_WEAK" xml:space="preserve">
+    <value>Password too weak</value>
+    <comment>Password strength card: rules are still missing.</comment>
+  </data>
+  <data name="SHELL_PASSWORD_RULE_SPECIAL" xml:space="preserve">
+    <value>At least 1 special character</value>
+    <comment>Password strength card: the password needs a special character.</comment>
+  </data>
+  <data name="SHELL_HELP_TITLE" xml:space="preserve">
+    <value>Call the administrator</value>
+    <comment>Help panel: title.</comment>
+  </data>
+  <data name="SHELL_HELP_SENT_TITLE" xml:space="preserve">
+    <value>Request sent</value>
+    <comment>Help panel: the request is sent.</comment>
+  </data>
+  <data name="SHELL_TOPUP_TITLE" xml:space="preserve">
+    <value>Top up your balance</value>
+    <comment>Top-up panel: title.</comment>
+  </data>
+  <data name="SHELL_BOOT_LINE_MONITOR" xml:space="preserve">
+    <value>Wiping the monitor</value>
+    <comment>Curtain after sign-in: one of the lines that take turns under the guest's name while the shell loads.</comment>
+  </data>
+  <data name="SHELL_BOOT_LINE_APPS" xml:space="preserve">
+    <value>Finding your apps</value>
+    <comment>Curtain after sign-in: one of the lines that take turns under the guest's name while the shell loads.</comment>
+  </data>
+  <data name="SHELL_BOOT_LINE_GAMES" xml:space="preserve">
+    <value>Putting the games on the shelves</value>
+    <comment>Curtain after sign-in: one of the lines that take turns under the guest's name while the shell loads.</comment>
+  </data>
+  <data name="SHELL_BOOT_LINE_GPU" xml:space="preserve">
+    <value>Warming up the graphics card</value>
+    <comment>Curtain after sign-in: one of the lines that take turns under the guest's name while the shell loads.</comment>
+  </data>
+  <data name="SHELL_BOOT_LINE_BAR" xml:space="preserve">
+    <value>Checking what's at the bar</value>
+    <comment>Curtain after sign-in: one of the lines that take turns under the guest's name while the shell loads.</comment>
+  </data>
+  <data name="SHELL_BOOT_LINE_TILES" xml:space="preserve">
+    <value>Laying out the tiles</value>
+    <comment>Curtain after sign-in: one of the lines that take turns under the guest's name while the shell loads.</comment>
+  </data>
+  <data name="SHELL_HELP_SENT_NOTE" xml:space="preserve">
+    <value>The answer will come to your notifications</value>
+    <comment>Help panel: after the request is sent.</comment>
+  </data>
+  <data name="SHELL_TOPUP_PAY_AMOUNT" xml:space="preserve">
+    <value>Top up {0}</value>
+    <comment>Top-up: the pay button with the amount. {0} = amount.</comment>
+  </data>
+  <data name="SHELL_TOPUP_LIMITS" xml:space="preserve">
+    <value>From {0} to {1}</value>
+    <comment>Top-up: the allowed range under the amount. {0} = least, {1} = most.</comment>
+  </data>
+  <data name="SHELL_TOPUP_MAX" xml:space="preserve">
+    <value>Up to {0}</value>
+    <comment>Top-up: the most amount under the field. {0} = amount.</comment>
+  </data>
+  <data name="SHELL_TOPUP_CHANGE_AMOUNT" xml:space="preserve">
+    <value>Change amount</value>
+    <comment>Top-up, QR step: under the sum, goes back to choosing the amount.</comment>
+  </data>
+  <data name="SHELL_TOPUP_LESS" xml:space="preserve">
+    <value>Less</value>
+    <comment>Top-up: the round minus button beside the amount (read by screen readers), steps to the next smaller preset.</comment>
+  </data>
+  <data name="SHELL_TOPUP_MORE" xml:space="preserve">
+    <value>More</value>
+    <comment>Top-up: the round plus button beside the amount (read by screen readers), steps to the next larger preset.</comment>
+  </data>
+  <data name="SHELL_DEPOSIT_DONE_TITLE" xml:space="preserve">
+    <value>Balance topped up</value>
+    <comment>Top-up succeeded: the line under the big '+amount' on the accent sheet.</comment>
+  </data>
+  <data name="SHELL_TOPUP_OPEN_BROWSER" xml:space="preserve">
+    <value>Open in browser</value>
+    <comment>Top-up, QR step: the button under the QR, opens the payment page in the browser on this PC.</comment>
+  </data>
+  <data name="SHELL_TIME_UNIT_HOURS" xml:space="preserve">
+    <value>hour|hours</value>
+    <comment>Time package tile: the word under the number of hours, in its plural forms separated by '|' (one|few|many as the language needs).</comment>
+  </data>
+  <data name="SHELL_APP_IN_CLUB_SINCE" xml:space="preserve">
+    <value>In the club since</value>
+    <comment>App page facts: the date the club added the game.</comment>
   </data>
 </root>

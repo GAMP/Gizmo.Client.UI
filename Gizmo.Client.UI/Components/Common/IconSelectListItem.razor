@@ -13,6 +13,10 @@
                 <span class="giz-icon-select-flag">@Item.Icon</span>
             }
         </div>
-        <div class="giz-icon-select-item__display">@($"{Item.Display}")</div>
+        <div class="giz-icon-select-item__display">@Name</div>
+        @if (Code is { Length: > 0 })
+        {
+            <div class="giz-icon-select-item__code">@Code</div>
+        }
     </div>
 </ListItem>

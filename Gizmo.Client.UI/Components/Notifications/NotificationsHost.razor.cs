@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Gizmo.Client.Options;
+using Gizmo.Client.UI.Localization.Resources;
 using Gizmo.Client.UI.Localization.Services;
 using Gizmo.UI.Services;
 using Gizmo.UI.View.States;
@@ -46,6 +47,8 @@ namespace Gizmo.Client.UI.Components
         private List<int> _removedItems = new List<int>();
         private readonly SemaphoreSlim _animationLock = new(1);
         private AnimationEventInterop? _animationEventInterop;
+
+        private bool _expanded;
 
         private bool _slideInComplete = false;
         private bool _slideOutComplete = false;
@@ -167,6 +170,58 @@ namespace Gizmo.Client.UI.Components
         private async Task<BoundingClientRect> GetElementSize()
         {
             return await JsInvokeAsync<BoundingClientRect>("getElementBoundingClientRect", Ref);
+        }
+
+        private async Task RequestMeasuredSize()
+        {
+            var size = await GetElementSize();
+            size.Height += _fontSize * 2;
+            _componentSize.Width = (int)size.Width;
+            _componentSize.Height = (int)size.Height;
+            NotificationsService.RequestNotificationHostSize(_componentSize);
+        }
+
+        private int NewestId => _visible.Count == 0 ? -1 : _visible.Max(a => a.Identifier);
+
+        private bool IsFolded => !_expanded && _visible.Count > 1;
+
+        protected string FoldText => _expanded
+            ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_NOTIFICATIONS_FOLD)
+            : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_NOTIFICATIONS_MORE, _visible.Count - 1);
+
+        protected string FoldIcon => _expanded ? "ph-bold ph-caret-up" : "ph-bold ph-caret-down";
+
+        protected string WrapperClass(INotificationController controller)
+        {
+            var id = controller.Identifier;
+
+            var state = _newlyAddedItemId == id ? "tmp"
+                : _slideInItemId == id ? "slide-in"
+                : _slideOutItemId == id ? "slide-out"
+                : string.Empty;
+
+            var folded = IsFolded && id != NewestId && id != _newlyAddedItemId
+                ? "giz-notification-wrapper--folded"
+                : string.Empty;
+
+            return $"giz-notification-wrapper {state} {folded}".Trim();
+        }
+
+        private async Task ToggleFold()
+        {
+            if (!await _animationLock.WaitAsync(TimeSpan.FromSeconds(5)))
+                return;
+
+            try
+            {
+                _expanded = !_expanded;
+                await Rerender();
+                await RequestMeasuredSize();
+            }
+            finally
+            {
+                _animationLock.Release();
+            }
         }
 
         private async Task SetNotificationsContainerHeight()
@@ -315,6 +370,8 @@ namespace Gizmo.Client.UI.Components
                                 await SlideItemIn(item);
                                 _currentAnimation = NotificationsAnimations.None;
 
+                                await RequestMeasuredSize();
+
                                 NotificationsService.TryResetTimeout(item);
                             }
                         }
@@ -331,6 +388,10 @@ namespace Gizmo.Client.UI.Components
                         }
 
                         _visible = snapShot;
+
+                        if (_visible.Count <= 1)
+                            _expanded = false;
+
                         await Rerender();
                     }
                 }
@@ -566,6 +627,7 @@ namespace Gizmo.Client.UI.Components
                 .If("slide-in", () => _slideIn)
                 .If("slide-out", () => _slideOut)
                 .If("prerender", () => _isTemp || _hidden)
+                .If("giz-notifications--folded", () => IsFolded)
                 .AsString();
 
         #endregion

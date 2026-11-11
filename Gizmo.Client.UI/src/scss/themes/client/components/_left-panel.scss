@@ -4,7 +4,7 @@
 // containing block of the quick-launch tooltip, which is fixed to escape the rail's clipping.
 .giz-left-panel {
     position: relative;
-    width: 8.5rem;
+    width: 7.4rem;
 
     max-height: 100%;
     flex-shrink: 0;
@@ -38,6 +38,15 @@
     flex-shrink: 0;
 }
 
+// A club without quick-launch shortcuts: no hairline over an empty list. (:has() cannot be
+// nested, so the rail itself is asked.)
+.giz-left-panel:not(:has(.giz-dock-item)) {
+    .giz-left-panel__divider,
+    .giz-left-panel__quicklaunch {
+        display: none;
+    }
+}
+
 .giz-sidebar__inner {
     display: flex;
     flex-direction: column;
@@ -49,16 +58,20 @@
 .giz-sidebar__nav {
     flex: 0 0 auto;
     overflow: visible;
-    padding: 1.2rem 0.8rem;
+    padding: 1rem 0.7rem;
     display: flex;
     flex-direction: column;
     width: 100%;
 }
 
+$giz-rail-item: 4rem;
+$giz-rail-gap: 0.8rem;
+
 .giz-left-panel .giz-header__modules-menu {
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: $giz-rail-gap;
     padding: 0;
     height: auto;
     width: 100%;
@@ -76,9 +89,9 @@
     align-items: center;
     justify-content: center;
     gap: 0;
-    padding: 0.6rem;
+    padding: 0;
     border-radius: 1.4rem;
-    height: auto;
+    height: $giz-rail-item;
     width: 100%;
     box-sizing: border-box;
 
@@ -94,23 +107,49 @@
     color: var(--giz-white);
 }
 
-.giz-left-panel .giz-header__modules-menu-item > a.active {
-    background: rgba(var(--giz-accent-rgb),0.10);
-    color: var(--giz-accent);
+// The section you are in sits on the palette's own plate, its icon filled in the plate's ink;
+// the others are thin icons with no plate at all. One plate (the menu's ::before) slides to the
+// section picked and stretches a little on the way; the icon takes the plate's ink as it lands.
+// Items are one fixed height, so the plate's place is the item's index times item + gap.
+.giz-left-panel .giz-header__modules-menu::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: $giz-rail-item;
+    border-radius: 1.4rem;
+    background: var(--giz-action-bg);
+    opacity: 0;
+    pointer-events: none;
+    translate: 0 calc(var(--giz-rail-at, 0) * #{$giz-rail-item + $giz-rail-gap});
+    transition: translate 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
+}
+
+@for $i from 1 through 10 {
+    .giz-left-panel .giz-header__modules-menu:has(> .giz-header__modules-menu-item:nth-child(#{$i}) > a.active)::before {
+        --giz-rail-at: #{$i - 1};
+        opacity: 1;
+        animation: giz-rail-stretch-#{$i} 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @keyframes giz-rail-stretch-#{$i} {
+        0% { scale: 1 1; }
+        24% { scale: 0.92 1.24; }
+        100% { scale: 1 1; }
+    }
+}
+
+.giz-left-panel .giz-header__modules-menu-item > a.active,
+.giz-left-panel .giz-header__modules-menu-item > a.active:hover {
+    background: transparent;
+    color: var(--giz-action-ink);
     box-shadow: none;
+    transition: color 0.2s ease 0.14s, background 0.15s;
 }
 
 .giz-left-panel .giz-header__modules-menu-item > a.active::before {
-    content: '';
-    display: block;
-    position: absolute;
-    left: -0.8rem;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 0.3rem;
-    height: 2.2rem;
-    border-radius: 99px;
-    background: var(--giz-accent);
+    display: none;
 }
 
 .giz-left-panel .giz-header__modules-menu-item > a {
@@ -118,7 +157,7 @@
 }
 
 .giz-left-panel .giz-header__modules-menu-item > a .giz-ph-icon {
-    font-size: 3.2rem;
+    font-size: 2.6rem;
     flex-shrink: 0;
 }
 

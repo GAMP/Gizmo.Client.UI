@@ -1,0 +1,102 @@
+//=============== State screen ================//
+// A computer or an account that cannot be used (locked, out of order, banned) and the shell's
+// own error and missing pages: the whole screen is one flat field in the accent (the danger
+// colour for a ban or an error), its words in the field's dark ink.
+
+.giz-login-overlay--state {
+    background: none;
+    backdrop-filter: none;
+}
+
+.giz-state-screen {
+    --giz-state-bg: var(--giz-accent);
+    --giz-state-ink: var(--giz-on-accent);
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background: var(--giz-state-bg);
+    color: var(--giz-state-ink);
+    font-family: $font-family-header-theme-client;
+
+    &--danger { --giz-state-bg: var(--giz-danger); }
+
+    &--page {
+        position: fixed;
+        z-index: $login-overlay-index;
+    }
+
+    &__host {
+        position: absolute;
+        top: 6rem;
+        right: 7rem;
+        font-size: clamp(8rem, 7.8vw, 15rem);
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: -0.03em;
+        white-space: nowrap;
+    }
+
+    &__body {
+        position: absolute;
+        left: clamp(6rem, 7.8vw, 15rem);
+        right: clamp(6rem, 7.8vw, 15rem);
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    &__icon {
+        display: block;
+        font-size: clamp(6rem, 4.8vw, 9.2rem);
+    }
+
+    &__title {
+        max-width: 120rem;
+        margin: 3.4rem 0 3rem;
+        font-size: clamp(7.2rem, 7.1vw, 13.6rem);
+        font-weight: 800;
+        line-height: 0.94;
+        letter-spacing: -0.045em;
+    }
+
+    &__text {
+        max-width: 86rem;
+        margin: 0;
+        font-size: clamp(2.2rem, 1.6vw, 3rem);
+        font-weight: 600;
+        line-height: 1.38;
+        color: color-mix(in srgb, var(--giz-state-ink) 74%, transparent);
+    }
+
+    &__actions {
+        margin-top: 5.6rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 2.4rem;
+    }
+
+    &__action {
+        height: 7.2rem;
+        padding: 0 4rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 1.2rem;
+        border: 0;
+        border-radius: $giz-r-pill;
+        background: var(--giz-state-ink);
+        color: var(--giz-state-bg);
+        font: inherit;
+        font-size: 2.3rem;
+        font-weight: 800;
+        cursor: pointer;
+
+        i { font-size: 2.4rem; }
+    }
+
+    &__note {
+        font-size: 2.2rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        color: color-mix(in srgb, var(--giz-state-ink) 66%, transparent);
+    }
+}

@@ -8,7 +8,7 @@
         @if (HasProducts)
         {
             <span class="giz-cart__count">@ProductCount</span>
-            <button type="button" class="giz-cart__clear" @onclick="@(() => Service.ClearUserCartProductsAsync())">
+            <button type="button" class="giz-cart__clear" @onclick="OnClickClearHandler">
                 <i class="ph-bold ph-trash"></i>
                 <span>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CLEAR))</span>
             </button>

@@ -3,93 +3,79 @@
 @using Microsoft.AspNetCore.Components.Forms
 @inherits CustomDOMComponentBase
 
-<div class="giz-dropdown-menu @(UserMenuViewState.AssistanceRequestsIsVisible ? "open" : "")"
+<div class="@MenuClass"
      id="@Id"
      @ref="@Ref">
     <div class="giz-dropdown-menu__content giz-menu-assistance">
+        <div class="giz-panel-head">
+            <div class="giz-panel-head__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HELP_TITLE)</div>
+        </div>
         @if (ViewState.IsInitializing)
         {
-            <Spinner />
+            <div class="giz-menu-assistance__wait"><span class="giz-loader"></span></div>
+        }
+        else if (!ViewState.AnyPending)
+        {
+            <EditForm EditContext="@AssistanceRequestViewService.EditContext" class="giz-menu-assistance__form">
+                <div class="giz-menu-assistance__group">
+                    <div class="giz-menu-assistance__label">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_SELECT_TYPE_LABEL))</div>
+                    @if (ViewState.AssistanceRequestTypes != null)
+                    {
+                        <div class="giz-menu-assistance__reasons">
+                            @foreach (var item in ViewState.AssistanceRequestTypes)
+                            {
+                                <button type="button" class="@ReasonClass(item.Id)" aria-pressed="@ReasonPressed(item.Id)" disabled="@ViewState.IsLoading" @onclick="@(() => ValueChangedHandler(item.Id))">@item.Title</button>
+                            }
+                        </div>
+                    }
+                </div>
+                <div class="giz-menu-assistance__group">
+                    <div class="giz-menu-assistance__label">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_NOTE_LABEL))</div>
+                    <div class="giz-menu-assistance__note">
+                        <TextInput IsDisabled="@(ViewState.IsLoading)"
+                                   UpdateOnInput="true"
+                                   Value="@ViewState.Note"
+                                   ValueChanged="@((string value) => AssistanceRequestViewService.SetNote(value))"
+                                   ValueExpression="@(() => ViewState.Note)"
+                                   IsFullWidth="true"
+                                   IsMultiLine="true"
+                                   IsTransparent="true"
+                                   MaxLength="@ViewState.NoteLimit"
+                                   Placeholder="@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_NOTE_PLACEHOLDER))"
+                                   InputClass="giz-scrollbar--v" />
+                        <span class="giz-menu-assistance__count">@NoteCount</span>
+                    </div>
+                </div>
+                <button type="button" class="giz-menu-assistance__send" disabled="@ViewState.IsLoading" @onclick="AssistanceRequestViewService.SubmitAsync">
+                    @if (ViewState.IsLoading)
+                    {
+                        <span class="giz-loader giz-loader--small"></span>
+                    }
+                    else
+                    {
+                        <i class="ph-bold ph-paper-plane-tilt"></i>
+                        <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_SEND))</span>
+                    }
+                </button>
+            </EditForm>
         }
         else
         {
-            @if (!ViewState.AnyPending)
-            {
-                <div>
-                    <EditForm EditContext="@AssistanceRequestViewService.EditContext">
-                        <Select IsDisabled="@(ViewState.IsLoading)"
-                                HandleSVGIcon="Icons.Select_Client"
-                                TValue="int?"
-                                Value="@ViewState.SelectedAssistanceRequestType"
-                                ValueChanged="@ValueChangedHandler"
-                                ValueExpression="@(() => ViewState.SelectedAssistanceRequestType)"
-                                Size="InputSizes.ExtraSmall"
-                                MaximumHeight="20rem"
-                                PopupClass="giz-scrollbar--v"
-                                IsFullWidth="true"
-                                Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_SELECT_TYPE_LABEL))"
-                                Placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_SELECT_TYPE_PLACEHOLDER))">
-                            @if (ViewState.AssistanceRequestTypes != null)
-                            {
-                                @foreach (var item in ViewState.AssistanceRequestTypes)
-                                {
-                                    <SelectItem TValue="int?" Value="@item.Id">@item.Title</SelectItem>
-                                }
-                            }
-                        </Select>
-                    </EditForm>
-                </div>
-                <div>
-                    <TextInput IsDisabled="@(ViewState.IsLoading)"
-                               UpdateOnInput="true"
-                               Value="@ViewState.Note"
-                               ValueChanged="@((string value) => AssistanceRequestViewService.SetNote(value))"
-                               ValueExpression="@(() => ViewState.Note)"
-                               IsFullWidth="true"
-                               IsMultiLine="true"
-                               MaxLength="@ViewState.NoteLimit"
-                               Label="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_NOTE_LABEL))"
-                               Placeholder="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_NOTE_PLACEHOLDER))"
-                               InputClass="giz-scrollbar--v" />
-                    <div class="giz-menu-assistance-note-counter">@($"{ViewState.Note?.Length ?? 0}/{ViewState.NoteLimit}")</div>
-                </div>
-                <div>
-                    <Button IsDisabled="@(ViewState.IsLoading)"
-                            Color="ButtonColors.Accent"
-                            IsFullWidth="true"
-                            Size="ButtonSizes.Large"
-                            @onclick="AssistanceRequestViewService.SubmitAsync">
-                        <ChildContent>
-                            @if (ViewState.IsLoading)
-                            {
-                                <Spinner />
-                            }
-                            else
-                            {
-                                <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_SEND))</div>
-                            }
-                        </ChildContent>
-                    </Button>
-                </div>
-            }
-            else
-            {
-                <Alert AlertType="AlertTypes.Info" Title="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_SENT_TITLE))" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_SENT_MESSAGE))">
-                    <Button Color="ButtonColors.Info" Variant="ButtonVariants.Outline" Size="ButtonSizes.Small" @onclick="AssistanceRequestViewService.CancelAsync">
-                        <ChildContent>
-                            @if (ViewState.IsLoading)
-                            {
-                                <div style="visibility: hidden">@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_SENT_CANCEL))</div>
-                                <Spinner />
-                            }
-                            else
-                            {
-                                <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_SENT_CANCEL))</div>
-                            }
-                        </ChildContent>
-                    </Button>
-                </Alert>
-            }
+            <div class="giz-menu-assistance__sent">
+                <span class="giz-menu-assistance__sent-icon"><i class="ph-bold ph-check"></i></span>
+                <div class="giz-menu-assistance__sent-title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HELP_SENT_TITLE)</div>
+                <div class="giz-menu-assistance__sent-text">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HELP_SENT_NOTE)</div>
+                <button type="button" class="giz-menu-assistance__cancel" disabled="@ViewState.IsLoading" @onclick="AssistanceRequestViewService.CancelAsync">
+                    @if (ViewState.IsLoading)
+                    {
+                        <span class="giz-loader giz-loader--small"></span>
+                    }
+                    else
+                    {
+                        <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ASSISTANCE_REQUEST_SENT_CANCEL))</span>
+                    }
+                </button>
+            </div>
         }
     </div>
 </div>

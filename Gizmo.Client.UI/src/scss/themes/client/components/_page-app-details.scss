@@ -1,253 +1,288 @@
-//=============== Page App Details ================//
+//=============== App page ================//
+// The poster with the main launch and the facts on the left; the category, the title, the
+// about, every executable when there are several, the media and the links on the right.
 
-.giz-app-details {
-    display: grid;
-    grid-template-columns: 1fr min-content;
-    width: 100%;
+.giz-app-page {
+    position: relative;
     height: 100%;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    padding: 0 2.4rem 0 0;
+    color: var(--giz-text-1);
 
-    .giz-client-tab__content {
-        gap: 2.4rem;
-    }
-
-    &__app {
-        justify-self: center;
-        display: grid;
-        grid-template-rows: min-content 1fr;
-        width: 118.6rem;
-        height: 100%;
+    // The cover, blurred large behind the page and fading out towards every edge.
+    &__wash {
+        position: absolute;
+        inset: -1rem -2.4rem -2.4rem -1rem;
+        z-index: 0;
         overflow: hidden;
+        pointer-events: none;
+        -webkit-mask-image: radial-gradient(ellipse closest-side at 50% 42%, var(--giz-black) 30%, transparent 100%);
+        mask-image: radial-gradient(ellipse closest-side at 50% 42%, var(--giz-black) 30%, transparent 100%);
 
-        &__navigation {
-            display: flex;
-
-            & > div {
-                display: flex;
-                align-items: center;
-                margin: 2.8rem 0;
-                cursor: pointer;
-                color: var(--giz-text-2);
-                transition: color 0.18s;
-                @include font-l-theme-client($font-weight-light-theme-client);
-
-                &:hover {
-                    color: var(--giz-accent);
-                }
-            }
-
-            &__icon {
-                display: flex;
-                align-items: center;
-                margin-right: 1.0rem;
-            }
+        > *,
+        .giz-default-image {
+            position: absolute;
+            inset: -6rem;
         }
 
-        &__info {
-            display: grid;
-            grid-template-columns: min-content 1fr;
-            column-gap: 4.0rem;
-            row-gap: 1.7rem;
+        img {
             width: 100%;
             height: 100%;
-            overflow: hidden;
-
-            &__main {
-                overflow: auto;
-                @include giz-scroll-fade;
-            }
-
-            &__image {
-                width: 22.2rem;
-                height: 33.3rem;
-                background: rgba(var(--giz-night-rgb), 0.7);
-                border: 1px solid var(--giz-glass-6);
-                backdrop-filter: blur(12px);
-                -webkit-backdrop-filter: blur(12px);
-                border-radius: 1.6rem;
-                overflow: hidden;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                }
-
-                .giz-default-image {
-                    width: 100%;
-                    height: 100%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    img {
-                        width: unset;
-                        height: unset;
-                        max-width: 80%;
-                        max-height: 80%;
-                        object-fit: contain;
-                    }
-                }
-            }
-
-            &__details {
-                color: #FAFAFA;
-                display: grid;
-                grid-template-rows: min-content min-content 1fr min-content;
-                width: 70.0rem;
-                overflow: hidden;
-
-                .giz-button {
-                    padding: 0.5rem 1.7rem;
-                }
-
-                &__category {
-                    margin-bottom: 1.6rem;
-                    color: var(--giz-accent);
-                    @include font-xl-theme-client($font-weight-regular-theme-client);
-                }
-
-                &__title {
-                    margin-bottom: 2.4rem;
-                    font-family: $font-family-header-theme-client;
-                    font-size: 4rem;
-                    line-height: 1.1;
-                    font-weight: 800;
-                    letter-spacing: -0.02em;
-                }
-
-                &__description {
-                    @include font-l-theme-client($font-weight-light-theme-client);
-                }
-
-                &__executables {
-                    display: flex;
-                    flex-wrap: wrap;
-                    align-items: center;
-                    gap: 0.8rem;
-                    margin: 3.2rem 0;
-
-                    .giz-universal-executable { @include giz-launch-pill; }
-
-                    .giz-universal-executable:first-child { @include giz-launch-pill-primary; }
-                }
-            }
-
-            &__additional-content {
-                width: 100%;
-                overflow: hidden;
-                margin-top: 4.2rem;
-
-                &__tags {
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 1rem;
-                    //margin-bottom: 4.2rem;
-
-                    .giz-app-tag {
-                        color: var(--giz-text-2);
-                        background: var(--giz-glass-5);
-                        border: 1px solid var(--giz-glass-9);
-                        border-radius: 0.4rem;
-                        padding: 0.2rem 1.2rem;
-                        font-weight: 400;
-                        font-size: 1.6rem;
-                        line-height: 3.0rem;
-                        transition: background 0.18s, border-color 0.18s, color 0.18s;
-
-                        &:hover {
-                            background: rgba(var(--giz-accent-rgb), 0.1);
-                            border-color: rgba(var(--giz-accent-rgb), 0.28);
-                            color: var(--giz-accent);
-                        }
-                    }
-                }
-
-                &__media {
-                    margin-top: 2.4rem;
-                    height: 16.4rem;
-                    overflow: hidden;
-                }
-            }
+            object-fit: cover;
+            object-position: center 30%;
+            filter: blur(5rem) saturate(1.25);
+            opacity: 0.5;
         }
     }
 
-    &__leaderboard {
-    }
+    &__back {
+        position: relative;
+        z-index: 1;
+        align-self: flex-start;
+        height: 3.4rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0 1.4rem;
+        border: 0;
+        border-radius: $giz-r-pill;
+        background: var(--giz-glass-6);
+        color: var(--giz-text-2);
+        font-size: 1.35rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
 
-    &-card-brand-info {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-auto-rows: min-content;
-        row-gap: 2.4rem;
-        column-gap: 1.8rem;
-        margin-top: 2.4rem;
-        white-space: nowrap;
-        color: var(--giz-text-3);
-        @include font-s-theme-client($font-weight-regular-theme-client);
-
-        .giz-app-details-card-brand-text {
-            text-align: right;
+        &:hover {
+            background: var(--giz-glass-10);
             color: var(--giz-text-1);
         }
     }
+
+    // The composition: centred on the page and in its height while it fits, scrolling past it.
+    &__stage {
+        position: relative;
+        z-index: 1;
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 3.2rem;
+        width: 100%;
+        max-width: 132rem;
+        margin: 0 auto;
+        padding: 1.2rem 0 3rem;
+
+        > :first-child { margin-top: auto; }
+
+        > :last-child { margin-bottom: auto; }
+    }
+
+    &__top {
+        display: grid;
+        grid-template-columns: 38rem minmax(0, 1fr);
+        gap: 5.6rem;
+        align-items: center;
+    }
+
+    &__poster {
+        position: relative;
+        aspect-ratio: 3 / 4;
+        overflow: hidden;
+        border-radius: 2.4rem;
+        background: var(--giz-glass-3);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-8), 0 3.2rem 7rem -2.4rem rgba(var(--giz-black-rgb), 0.95);
+
+        > *,
+        .giz-default-image {
+            width: 100%;
+            height: 100%;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    &__info { min-width: 0; }
+
+    &__category {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: var(--giz-text-2);
+    }
+
+    &__title {
+        margin: 0.8rem 0 0;
+        font-family: $font-family-header-theme-client;
+        font-size: 7.2rem;
+        font-weight: 800;
+        line-height: 0.95;
+        letter-spacing: -0.035em;
+        overflow-wrap: anywhere;
+    }
+
+    &__about {
+        max-width: 70rem;
+        margin: 2rem 0 0;
+        font-size: 1.8rem;
+        font-weight: 600;
+        line-height: 1.5;
+        color: var(--giz-text-2);
+    }
+
+    &__launches {
+        margin-top: 3.2rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.2rem;
+    }
+
+    &__exe {
+        display: contents;
+
+        .giz-universal-executable { @include giz-launch-pill; }
+
+        &--main .giz-universal-executable { @include giz-launch-pill-primary; }
+
+        &--play .giz-universal-executable::after {
+            content: var(--giz-play-label, "Launch");
+            padding-right: 0.2em;
+        }
+    }
+
+    &__facts {
+        margin-top: 3.2rem;
+        display: grid;
+        grid-template-columns: repeat(var(--giz-app-facts, 3), minmax(0, 25rem));
+        gap: 1.2rem;
+    }
+
+    &__fact {
+        min-width: 0;
+        padding: 1.6rem 1.8rem;
+        border-radius: 1.8rem;
+        background: linear-gradient(180deg, var(--giz-glass-5), var(--giz-glass-2));
+        box-shadow: inset 0 0 0 1px var(--giz-glass-7);
+
+        span {
+            display: block;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--giz-text-3);
+        }
+
+        b {
+            display: block;
+            margin-top: 0.6rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: $font-family-header-theme-client;
+            font-size: 1.9rem;
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+        }
+    }
+
+    &__lower {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 2.4rem;
+        align-items: start;
+    }
+
+    &__lower > :only-child { grid-column: 1 / -1; }
+
+    &__caption {
+        margin: 0 0 1.4rem;
+        font-size: 1.7rem;
+        font-weight: 800;
+    }
+}
+
+.giz-app-media {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+    gap: 1.2rem;
 }
 
 .giz-app-media-item {
-    width: 29.2rem;
-    height: 16.4rem;
+    position: relative;
+    aspect-ratio: 16 / 9;
     overflow: hidden;
-    border-radius: 1.2rem;
-    background: var(--giz-tile);
+    padding: 0;
+    border: 0;
+    border-radius: 1.4rem;
+    background: var(--giz-glass-3);
+    box-shadow: inset 0 0 0 1px var(--giz-glass-6);
     cursor: pointer;
 
     img {
         width: 100%;
         height: 100%;
+        display: block;
         object-fit: cover;
-        color: transparent;
-        transition: transform 0.2s;
+        transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.3, 1);
     }
 
-    &:hover img { transform: scale(1.03); }
+    &:hover img { transform: scale(1.04); }
+
+    // A video: a round dark plate with a play mark drawn by borders.
+    &--video::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 4.4rem;
+        height: 4.4rem;
+        border-radius: 50%;
+        background: rgba(var(--giz-black-rgb), 0.55);
+        transform: translate(-50%, -50%);
+    }
+
+    &--video::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: calc(50% + 0.3rem);
+        z-index: 1;
+        border-top: 0.8rem solid transparent;
+        border-bottom: 0.8rem solid transparent;
+        border-left: 1.3rem solid var(--giz-white);
+        transform: translate(-50%, -50%);
+    }
+}
+
+.giz-app-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
 }
 
 .giz-app-link-item {
-    & > a {
-        color: var(--giz-accent);
-        @include font-m-theme-client($font-weight-light-theme-client);
-    }
-}
+    height: 3.6rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0 1.4rem;
+    border-radius: $giz-r-pill;
+    background: var(--giz-glass-5);
+    color: var(--giz-text-2);
+    font-size: 1.35rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
 
-// On a 21:9 screen the page grows with the screen instead of standing as a narrow column: the
-// width a 16:9 screen of the same height would give, a larger poster and larger media.
-@media (min-aspect-ratio: 2/1) {
-    .giz-app-details__app {
-        width: min(100%, calc(100vh * 16 / 9 - 16rem));
-    }
-
-    .giz-app-details__app__info__image {
-        width: 28rem;
-        height: 42rem;
-    }
-
-    .giz-app-details__app__info__details {
-        width: auto;
-        min-width: 0;
+    &:hover {
+        background: var(--giz-glass-9);
+        color: var(--giz-text-1);
     }
 
-    .giz-app-details__app__info__details__description {
-        max-width: 90rem;
-    }
-
-    .giz-app-details__app__info__additional-content__media {
-        height: 22.5rem;
-    }
-
-    .giz-app-media-item {
-        width: 40rem;
-        height: 22.5rem;
-    }
+    i { font-size: 1.5rem; }
 }

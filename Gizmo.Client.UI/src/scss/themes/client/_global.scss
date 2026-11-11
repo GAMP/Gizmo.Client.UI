@@ -116,14 +116,13 @@ a {
         img {
             width: 100%;
             height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
+            border-radius: var(--giz-exe-icon-radius, 50%);
+            object-fit: var(--giz-exe-icon-fit, cover);
         }
 
-        .giz-default-image img {
-            width: 60%;
-            height: auto;
-            opacity: 0.5;
+        .giz-default-image {
+            width: 100%;
+            height: 100%;
         }
     }
 
@@ -212,4 +211,54 @@ a {
     stroke-dashoffset: calc(#{$c} * (1 - var(--giz-ring-progress, 0) / 100));
     stroke-opacity: clamp(0, var(--giz-ring-progress, 0) * 1000, 1);
     transition: stroke-dashoffset 0.6s ease;
+}
+
+// A figure the guest hides: the digits blur away and dots settle in their place, keeping the
+// width; shown again, the digits come back out of the blur. $align places the dots.
+@mixin giz-figure($size: 1.5rem, $dots: "\2022\2022\2022", $align: center) {
+    position: relative;
+    transition: color 0.3s ease;
+
+    &::after {
+        content: $dots;
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: $align;
+        font-family: $font-family-text-theme-client;
+        font-size: $size;
+        letter-spacing: 0.15em;
+        color: var(--giz-text-3);
+        opacity: 0;
+        transform: translateY(0.5em);
+        transition: opacity 0.18s ease, transform 0.18s ease;
+        pointer-events: none;
+    }
+}
+
+@mixin giz-figure-hidden {
+    color: transparent;
+    animation: giz-figure-blur-out 0.45s ease;
+
+    &::after {
+        opacity: 1;
+        transform: none;
+        transition: opacity 0.3s ease 0.16s, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.16s;
+    }
+}
+
+@mixin giz-figure-revealed {
+    animation: giz-figure-blur-in 0.45s ease;
+}
+
+@keyframes giz-figure-blur-out {
+    0% { filter: blur(0); }
+    55% { filter: blur(0.5rem); }
+    100% { filter: blur(0); }
+}
+
+@keyframes giz-figure-blur-in {
+    0% { filter: blur(0.5rem); }
+    100% { filter: blur(0); }
 }

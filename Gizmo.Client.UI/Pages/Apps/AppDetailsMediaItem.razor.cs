@@ -19,6 +19,10 @@ namespace Gizmo.Client.UI.Pages
 
         #endregion
 
+        protected string ItemClass => Link?.MediaUrlType is AdvertisementMediaUrlType.YouTube or AdvertisementMediaUrlType.Vk
+            ? "giz-app-media-item giz-app-media-item--video"
+            : "giz-app-media-item";
+
         private async Task ShowMediaDialogAsync()
         {
             var dialog = await DialogService.ShowMediaDialogAsync(new MediaDialogParameters()

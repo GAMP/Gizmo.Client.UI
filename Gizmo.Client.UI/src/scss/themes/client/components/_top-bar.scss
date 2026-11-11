@@ -11,6 +11,10 @@
     z-index: 500;
 }
 
+// The icons sit as far from the avatar as the search sits from the screen's edge; the deploy
+// banner between them takes no gap while it is folded.
+.giz-top-bar__right-group > .giz-deploy:not(.giz-deploy--open) { margin-left: -1.6rem; }
+
 .giz-top-bar__right-group { justify-self: stretch; justify-content: flex-end; }
 
 .giz-top-bar__left {
@@ -29,7 +33,7 @@
 .giz-top-bar__right-group {
     display: flex;
     align-items: center;
-    gap: 1.2rem;
+    gap: 1.4rem;
     min-width: 0;
 }
 
@@ -372,28 +376,26 @@
 }
 
 // Hidden figures keep their width under the dots, so the HUD and the reservation tag
-// hanging from it do not move.
+// hanging from it do not move; hiding and showing them dissolves (giz-figure).
+.giz-top-bar__hud {
+    .giz-top-bar__time-value,
+    .giz-top-bar__time-unlimited,
+    .giz-topbar-stat--points > span,
+    .giz-topbar-stat--balance > span { @include giz-figure; }
+}
+
 .giz-top-bar__hud--hidden {
     .giz-top-bar__time-value,
     .giz-top-bar__time-unlimited,
     .giz-topbar-stat--points > span,
-    .giz-topbar-stat--balance > span {
-        position: relative;
-        color: transparent;
+    .giz-topbar-stat--balance > span { @include giz-figure-hidden; }
+}
 
-        &::after {
-            content: "\2022\2022\2022";
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: $font-family-text-theme-client;
-            font-size: 1.5rem;
-            letter-spacing: 0.15em;
-            color: var(--giz-text-3);
-        }
-    }
+.giz-top-bar__hud--revealed {
+    .giz-top-bar__time-value,
+    .giz-top-bar__time-unlimited,
+    .giz-topbar-stat--points > span,
+    .giz-topbar-stat--balance > span { @include giz-figure-revealed; }
 }
 
 .giz-top-bar__eye {

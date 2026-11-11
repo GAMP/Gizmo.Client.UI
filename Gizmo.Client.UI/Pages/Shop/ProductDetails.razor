@@ -20,7 +20,7 @@
                                 {
                                     <div class="giz-product-page__time">
                                         <b>@ProductHelpers.GetProductTimeNumber(Product)</b>
-                                        <span>@ProductHelpers.GetProductTimeText(Product, LocalizationService)</span>
+                                        <span>@ProductHelpers.GetProductTimeText(Product, GrafitLocalization)</span>
                                     </div>
                                 }
                                 else
@@ -41,7 +41,7 @@
                         }
                         <h1 class="giz-product-page__title">@Product.Name</h1>
 
-                        <div class="giz-product-page__price"><ProductCardPrice @key="ProductId" Product="@Product" /></div>
+                        <div class="giz-product-page__price"><ProductCardPrice @key="ProductId" Product="@Product" OwnPrice="@OwnPriceOf(Product)" /></div>
 
                         @if (CanPurchase)
                         {
@@ -158,7 +158,7 @@
                         <div class="giz-product-page__related-row">
                             @foreach (var related in ViewState.RelatedProducts)
                             {
-                                <ProductCard @key="related.Id" Product="@related" />
+                                <ProductCard @key="related.Id" Product="@related" OwnPrice="@OwnPriceOf(related)" />
                             }
                         </div>
                     </section>

@@ -1,9 +1,12 @@
-﻿using Gizmo.Client.UI.Services;
+﻿using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
+using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
@@ -16,6 +19,8 @@ namespace Gizmo.Client.UI.Shared
         protected bool _shouldRender;
 
         #region PROPERTIES
+
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
@@ -40,6 +45,9 @@ namespace Gizmo.Client.UI.Shared
 
         [Inject]
         IClientDialogService DialogService { get; set; }
+
+        [Inject]
+        ILogger<MenuUserLinks> Logger { get; set; }
 
         [Inject]
         NavigationService NavigationService { get; set; }
@@ -103,13 +111,16 @@ namespace Gizmo.Client.UI.Shared
             return UserLockService.LockAsync();
         }
 
-        private Task OnClickUserLogoutButtonHandler()
+        private async Task OnClickUserLogoutButtonHandler()
         {
             _shouldRender = true;
 
             UserMenuViewService.CloseUserLinks();
 
-            return UserService.LogoutWithConfirmationAsync();
+            if (await Confirmation.AskAsync(DialogService, Logger,
+                GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DIALOG_SIGN_OUT_TITLE),
+                GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DIALOG_SIGN_OUT_TEXT)))
+                await UserService.LogoutAsync();
         }
 
         private void OnClickAccountButtonHandler()

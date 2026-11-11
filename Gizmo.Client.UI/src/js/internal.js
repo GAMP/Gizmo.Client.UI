@@ -1446,6 +1446,44 @@ document.addEventListener("mouseover", function placeDockTooltip(event) {
     tip.style.setProperty("--giz-dock-tip-left", railBox.right + "px");
 }, true);
 
+// An executable's icon is cut round only when it is a picture with its own background
+// (opaque corners, the way most clubs upload them). A drawn icon on transparency is shown
+// whole: the --free modifier on the icon box. Load events do not bubble, hence capture.
+document.addEventListener("load", function markExecutableIcon(event) {
+    const img = event.target;
+
+    if (!(img instanceof HTMLImageElement)) return;
+
+    const parent = img.parentElement;
+    const block = parent && ["giz-universal-executable__icon", "giz-active-app-card__image"].find((name) => parent.classList.contains(name));
+
+    if (!block) return;
+
+    const box = parent;
+
+    let free = false;
+
+    try {
+        const size = 24;
+        const canvas = document.createElement("canvas");
+        canvas.width = size;
+        canvas.height = size;
+
+        const context = canvas.getContext("2d", { willReadFrequently: true });
+        context.drawImage(img, 0, 0, size, size);
+
+        const pixels = context.getImageData(0, 0, size, size).data;
+        const alpha = (x, y) => pixels[(y * size + x) * 4 + 3];
+        const corners = [alpha(1, 1), alpha(size - 2, 1), alpha(1, size - 2), alpha(size - 2, size - 2)];
+
+        free = corners.filter((value) => value < 128).length >= 2;
+    } catch (_) {
+        free = false;
+    }
+
+    box.classList.toggle(block + "--free", free);
+}, true);
+
 // Writing direction for the current language.
 window.setDocumentDirection = function setDocumentDirection(direction) {
     const value = direction === "rtl" ? "rtl" : "ltr";
@@ -1712,6 +1750,57 @@ window.setDocumentDirection = function setDocumentDirection(direction) {
             if (motion) {
                 theme.motion(motion);
             }
+
+            // `:root { --giz-login-wallpaper: always; }` keeps the club's wallpaper behind the
+            // sign-in form while someone is at the PC (_layout-login.scss).
+            const wallpaper = computed.getPropertyValue("--giz-login-wallpaper");
+
+            if (wallpaper) {
+                theme.loginWallpaper(wallpaper);
+            }
+
+            // `:root { --giz-login-surface: solid; }` makes the sign-in screen's fields opaque.
+            const surface = computed.getPropertyValue("--giz-login-surface");
+
+            if (surface) {
+                theme.loginSurface(surface);
+            }
+        },
+
+        // "solid" or "glass": whether the sign-in screen's fields and cards let the picture
+        // behind them show through (glass, the default) or stand on the page's own dark tone.
+        loginSurface: function (value) {
+            const wanted = String(value || "").trim().replace(/["']/g, "").toLowerCase();
+
+            if (wanted === "solid") {
+                root.setAttribute("data-login-surface", "solid");
+                return true;
+            }
+
+            if (wanted === "glass") {
+                root.removeAttribute("data-login-surface");
+                return true;
+            }
+
+            return false;
+        },
+
+        // "always" or "idle": whether the club's sign-in wallpaper stays when someone is at the
+        // PC, or gives way to the shell's own background as it does by default.
+        loginWallpaper: function (value) {
+            const wanted = String(value || "").trim().replace(/["']/g, "").toLowerCase();
+
+            if (wanted === "always") {
+                root.setAttribute("data-login-wallpaper", "always");
+                return true;
+            }
+
+            if (wanted === "idle") {
+                root.removeAttribute("data-login-wallpaper");
+                return true;
+            }
+
+            return false;
         },
 
         // "on" or "off": the moving background behind the sign-in screen and the shell.
@@ -1982,4 +2071,133 @@ window.scrollAgreementPage = function scrollAgreementPage(text) {
     if (text) {
         text.scrollBy({ top: text.clientHeight * 0.85, behavior: "smooth" });
     }
+};
+
+// Group strips scroll sideways in one row: the wheel glides them, the ends fade and show an
+// arrow only where more is hidden, and an item newly pressed is brought into view (a render that
+// leaves the same item pressed keeps the row where the guest scrolled it).
+window.grafitScroller = {
+    attach: function (root) {
+        const track = root && root.querySelector(".giz-scroller__track");
+        if (!track || root._gizScroller) {
+            return;
+        }
+
+        const calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const state = { track: track, target: 0, frame: 0 };
+
+        state.room = function () {
+            return Math.max(0, track.scrollWidth - track.clientWidth);
+        };
+
+        state.edges = function () {
+            const room = state.room();
+            root.classList.toggle("giz-scroller--back", room > 1 && track.scrollLeft > 1);
+            root.classList.toggle("giz-scroller--next", room > 1 && track.scrollLeft < room - 2);
+        };
+
+        state.from = function () {
+            return state.frame ? state.target : track.scrollLeft;
+        };
+
+        const glide = function () {
+            const left = state.target - track.scrollLeft;
+            if (Math.abs(left) < 0.5) {
+                track.scrollLeft = state.target;
+                state.frame = 0;
+                return;
+            }
+            track.scrollLeft += left * 0.2;
+            state.frame = requestAnimationFrame(glide);
+        };
+
+        state.go = function (to) {
+            state.target = Math.max(0, Math.min(state.room(), to));
+            if (calm) {
+                track.scrollLeft = state.target;
+                return;
+            }
+            if (!state.frame) {
+                state.frame = requestAnimationFrame(glide);
+            }
+        };
+
+        state.wheel = function (e) {
+            let delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+            if (e.deltaMode === 1) {
+                delta *= 40;
+            } else if (e.deltaMode === 2) {
+                delta *= track.clientWidth;
+            }
+            const from = state.from();
+            const to = Math.max(0, Math.min(state.room(), from + delta * 1.2));
+            if (Math.abs(to - from) < 1) {
+                return;
+            }
+            e.preventDefault();
+            state.go(to);
+        };
+
+        track.addEventListener("wheel", state.wheel, { passive: false });
+        track.addEventListener("scroll", state.edges, { passive: true });
+        state.resize = new ResizeObserver(state.edges);
+        state.resize.observe(track);
+
+        root._gizScroller = state;
+        window.grafitScroller.reveal(root, true);
+    },
+
+    step: function (root, direction) {
+        const state = root && root._gizScroller;
+        if (state) {
+            state.go(state.from() + direction * state.track.clientWidth * 0.7);
+        }
+    },
+
+    reveal: function (root, instant) {
+        const state = root && root._gizScroller;
+        if (!state) {
+            return;
+        }
+
+        state.edges();
+
+        const track = state.track;
+        const item = track.querySelector('[aria-pressed="true"]');
+        if (!item || item === state.pressed) {
+            return;
+        }
+        state.pressed = item;
+
+        const margin = Math.min(80, track.clientWidth * 0.12);
+        const view = state.from();
+        const start = item.offsetLeft;
+        const end = start + item.offsetWidth;
+        if (start >= view + margin && end <= view + track.clientWidth - margin) {
+            return;
+        }
+
+        const to = start - (track.clientWidth - item.offsetWidth) / 2;
+        if (instant) {
+            track.scrollLeft = Math.max(0, Math.min(state.room(), to));
+            state.target = track.scrollLeft;
+            state.edges();
+        } else {
+            state.go(to);
+        }
+    },
+
+    detach: function (root) {
+        const state = root && root._gizScroller;
+        if (!state) {
+            return;
+        }
+        if (state.frame) {
+            cancelAnimationFrame(state.frame);
+        }
+        state.resize.disconnect();
+        state.track.removeEventListener("wheel", state.wheel);
+        state.track.removeEventListener("scroll", state.edges);
+        delete root._gizScroller;
+    },
 };

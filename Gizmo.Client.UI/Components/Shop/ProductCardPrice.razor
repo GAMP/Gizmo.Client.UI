@@ -8,7 +8,12 @@
 }
 else
 {
-    @if (Product.UnitPrice > 0)
+    @if (HasOwnPrice)
+    {
+        <s class="giz-product-card__price__was">@ListPriceText</s>
+        <span>@OwnPriceText</span>
+    }
+    else if (Product.UnitPrice > 0)
     {
         <span>@Product.UnitPrice.ToString("C", CultureInfo.CurrentCulture)</span>
     }

@@ -126,6 +126,14 @@ $giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 
                     color: var(--giz-accent);
                 }
 
+                // The guest's own price once the item is in the cart; the catalogue's struck out.
+                .giz-product-card__price__was {
+                    color: $pc-ink-3;
+                    font-size: 1.3rem;
+                    font-weight: 600;
+                    text-decoration-thickness: 1px;
+                }
+
                 svg {
                     min-width: 1.6rem;
                     min-height: 1.6rem;
@@ -190,27 +198,25 @@ $giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 
         background: rgba(var(--giz-accent-rgb), 0.24);
     }
 
-    // Rested on, a card with something more to say turns over: its back carries the details,
-    // the button under it stays where it was. A short pause first, so a cursor passing over
-    // the shelf does not flip every card on its way.
-    &__content { perspective: 140rem; }
+    // Rested on, a card with something more to say unfolds its details: the panel opens from the
+    // card's top-left corner, speeding up and then easing in, and the details fade in once it is
+    // open; the button under them stays. A short pause first, so a cursor passing over the shelf
+    // does not open every card on its way.
+    &__content__top { overflow: hidden; }
 
-    &__content__top {
-        transform-style: preserve-3d;
-        transition: transform 0.6s cubic-bezier(0.2, 0, 0, 1);
+    &:hover &__content__top:has(.giz-peek) > .giz-product-card__hover-overlay {
+        clip-path: circle(150% at 0 0);
+        transition: clip-path 0.34s cubic-bezier(0.65, 0, 0.35, 1) 0.1s;
+
+        .giz-peek {
+            opacity: 1;
+            transform: none;
+            transition: opacity 0.22s ease-out 0.3s, transform 0.22s ease-out 0.3s;
+        }
     }
-
-    &:hover &__content__top:has(.giz-peek) {
-        transform: rotateY(180deg);
-        transition-delay: 0.25s;
-    }
-
-    &__content__image,
-    &__content__details,
-    .giz-product-card-award-indicator { backface-visibility: hidden; }
 
     //
-    // The back of the picture-and-name area.
+    // The details over the picture-and-name area.
     &__hover-overlay {
         position: absolute;
         top: 0;
@@ -228,16 +234,25 @@ $giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 
         background:
             linear-gradient(165deg, rgba(var(--giz-accent-rgb), 0.16) 0%, rgba(var(--giz-accent-rgb), 0) 55%),
             var(--giz-tile-deep);
-        transform: rotateY(180deg);
-        backface-visibility: hidden;
+        clip-path: circle(0 at 0 0);
+        transition: clip-path 0.3s cubic-bezier(0.65, 0, 0.35, 1) 0.06s;
         overflow-x: hidden;
         overflow-y: auto;
         scrollbar-width: none;
         pointer-events: none;
         &::-webkit-scrollbar { display: none; }
+
+        .giz-peek {
+            opacity: 0;
+            transform: translateY(0.6rem);
+            transition: opacity 0.12s ease-out, transform 0.12s ease-out;
+        }
     }
 
-    &__content--hovered { min-width: 0; }
+    &__content--hovered {
+        min-width: 0;
+        height: 100%;
+    }
 }
 
 // PC groups on a time package
@@ -369,15 +384,10 @@ $giz-image-bg: radial-gradient(120% 120% at 50% 0%, rgba(var(--giz-accent-rgb), 
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .giz-product-card__content__top,
-    .giz-product-card:hover .giz-product-card__content__top:has(.giz-peek) {
-        transform: none;
-        transition: none;
-    }
-
     .giz-product-card__hover-overlay {
-        transform: none;
+        clip-path: none;
         opacity: 0;
+        transition: opacity 0.2s;
     }
 
     .giz-product-card:hover .giz-product-card__hover-overlay:has(.giz-peek) { opacity: 1; }

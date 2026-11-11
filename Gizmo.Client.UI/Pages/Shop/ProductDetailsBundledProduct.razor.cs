@@ -1,4 +1,5 @@
-﻿using Gizmo.Client.UI.View.Services;
+﻿using Gizmo.Client.UI.Localization.Services;
+using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using System.Threading.Tasks;
 using Gizmo.Web.Components;
@@ -23,6 +24,8 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
+
+        [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
 
         [Parameter]
         public int ProductId { get; set; }

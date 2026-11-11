@@ -17,7 +17,7 @@
                                 </div>
                                 <div class="giz-product-time-image__time">
                                     <div class="giz-product-time-image__time__number">@ProductHelpers.GetProductTimeNumber(Product)</div>
-                                    <div class="giz-product-time-image__time__text">@ProductHelpers.GetProductTimeText(Product, LocalizationService)</div>
+                                    <div class="giz-product-time-image__time__text">@ProductHelpers.GetProductTimeText(Product, GrafitLocalization)</div>
                                 </div>
                             </div>
                         </div>
@@ -33,7 +33,7 @@
 
             <div class="giz-product-card__content__details">
                 <div class="giz-product-card__price">
-                    <ProductCardPrice @key="Product.Id" Product="@Product" />
+                    <ProductCardPrice @key="Product.Id" Product="@Product" OwnPrice="@OwnPrice" />
                 </div>
                 <div class="giz-product-card__title">
                     @Product.Name

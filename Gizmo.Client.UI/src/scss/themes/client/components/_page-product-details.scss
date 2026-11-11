@@ -83,20 +83,25 @@ $pd-line-2: var(--giz-glass-11);
         align-items: start;
     }
 
+    // The club's picture is shown whole, in its own proportions: a poster stands taller than
+    // the square, a banner lies lower. Only a picture taller than 1.5 squares is letterboxed.
+    // Placeholders (no picture, a time package's figure) keep the square.
     &__art {
         position: relative;
         width: $pd-art;
-        height: $pd-art;
+        aspect-ratio: 1;
         border-radius: 2.2rem;
         overflow: hidden;
         background: var(--giz-tile-deep);
         box-shadow: inset 0 0 0 1px $pd-line, 0 3rem 6rem -3rem rgba(var(--giz-black-rgb), 0.8);
 
-        // GizImage renders an <img> with a fit class; fill the plate.
+        &:has(> img) { aspect-ratio: auto; }
+
         img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
+            max-height: calc(#{$pd-art} * 1.5);
+            object-fit: contain;
             display: block;
         }
 
@@ -190,11 +195,18 @@ $pd-line-2: var(--giz-glass-11);
             color: $pd-ink;
         }
 
-        > span:not(:first-child):not(.giz-product-card__price__points) {
+        > span:not(:first-child):not(.giz-product-card__price__points):not(s + span) {
             font-size: 0.55em;
             font-weight: 600;
             color: $pd-ink-3;
             margin: 0 0.4rem;
+        }
+
+        .giz-product-card__price__was {
+            font-size: 0.55em;
+            font-weight: 600;
+            color: $pd-ink-3;
+            text-decoration-thickness: 1px;
         }
 
         .giz-product-card__price__points {

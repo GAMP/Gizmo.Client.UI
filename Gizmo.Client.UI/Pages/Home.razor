@@ -13,7 +13,7 @@
         }
         else if (Hero == HeroKind.App && CurrentHeroApp is { } app)
         {
-            <section class="giz-home-hero giz-home-hero--app" aria-label="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HERO_POPULAR)" @key="@($"a{app.ApplicationId}")">
+            <section class="giz-home-hero giz-home-hero--app" aria-label="@HeroAppCaption" @key="@($"a{app.ApplicationId}")">
                 <div class="giz-home-hero__bg">
                     <GizImage @key="app.ApplicationId" ImageType="Gizmo.UI.ImageType.Application" ImageId="@app.ImageId" ImageFitType="ImageFitType.Cover">
                         <EmptyResultPlaceholder><div class="giz-default-image"></div></EmptyResultPlaceholder>
@@ -26,7 +26,7 @@
                     <GizImage @key="app.ApplicationId" ImageType="Gizmo.UI.ImageType.Application" ImageId="@app.ImageId" ImageFitType="ImageFitType.Cover">
                         <EmptyResultPlaceholder>
                             <div class="giz-default-image">
-                                <img src="_content/Gizmo.Client.UI/img/no-app-image.svg" alt="" />
+                                <GizCoverPlaceholder />
                             </div>
                         </EmptyResultPlaceholder>
                         <ErrorPlaceholder>
@@ -38,7 +38,7 @@
                 </div>
 
                 <div class="giz-home-hero__body">
-                    <div class="giz-home-hero__kick">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HERO_POPULAR)</div>
+                    <div class="giz-home-hero__kick">@HeroAppCaption</div>
                     <div class="giz-home-hero__title">@app.Title</div>
                     <div class="giz-home-hero__launch" style="--giz-play-label: '@LaunchLabel'">
                         @foreach (var exe in HeroExecutables(app.ApplicationId))
@@ -59,7 +59,7 @@
         }
         else if (Hero == HeroKind.Product && CurrentHeroProduct is { } featured)
         {
-            <section class="giz-home-hero giz-home-hero--goods" aria-label="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HERO_POPULAR)" @key="@($"p{featured.Id}")">
+            <section class="giz-home-hero giz-home-hero--goods" aria-label="@HeroProductCaption" @key="@($"p{featured.Id}")">
                 <div class="giz-home-hero__bg">
                     <GizImage @key="featured.Id" ImageType="Gizmo.UI.ImageType.ProductDefault" ImageId="@featured.DefaultImageId" ImageFitType="ImageFitType.Cover">
                         <EmptyResultPlaceholder><div class="giz-default-image"></div></EmptyResultPlaceholder>
@@ -84,7 +84,7 @@
                 </div>
 
                 <div class="giz-home-hero__body">
-                    <div class="giz-home-hero__kick">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HERO_POPULAR)</div>
+                    <div class="giz-home-hero__kick">@HeroProductCaption</div>
                     <div class="giz-home-hero__title">@featured.Name</div>
                     <div class="giz-home-hero__price">
                         @if (IsPointsOnly(featured))
@@ -140,7 +140,7 @@
 
         <section class="giz-home-strip" aria-label="@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_GAMES_SECTION)">
             <div class="giz-caption giz-caption--rule">
-                <span>@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_POPULAR_APPS))</span>
+                <span>@StripCaption</span>
                 <span class="giz-caption__rule"></span>
                 <a href="@ClientRoutes.ApplicationsRoute">@GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_APP_FILTERS_ALL_APPS))</a>
             </div>
@@ -244,13 +244,13 @@
             {
                 @if (BarGroups.Count > 1)
                 {
-                    <div class="giz-home-cats">
-                        <button type="button" class="@GroupClass(null)" @onclick="@(() => SelectGroup(null))">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_FILTERS_ALL)</button>
+                    <GizScroller Class="giz-home-cats">
+                        <button type="button" class="@GroupClass(null)" aria-pressed="@GroupPressed(null)" @onclick="@(() => SelectGroup(null))">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_FILTERS_ALL)</button>
                         @foreach (var group in BarGroups)
                         {
-                            <button type="button" class="@GroupClass(group.ProductGroupId)" @key="group.ProductGroupId" @onclick="@(() => SelectGroup(group.ProductGroupId))">@group.Name</button>
+                            <button type="button" class="@GroupClass(group.ProductGroupId)" aria-pressed="@GroupPressed(group.ProductGroupId)" @key="group.ProductGroupId" @onclick="@(() => SelectGroup(group.ProductGroupId))">@group.Name</button>
                         }
-                    </div>
+                    </GizScroller>
                 }
 
                 <div class="giz-home-goods">
@@ -278,6 +278,11 @@
                                         @if (IsPointsOnly(product))
                                         {
                                             <span class="giz-home-good__pts">@PointsPrice(product)<i class="ph-fill ph-coins"></i></span>
+                                        }
+                                        else if (OwnPrice(product) is decimal own)
+                                        {
+                                            <s class="giz-home-good__was">@ShortMoney(product.UnitPrice)</s>
+                                            @ShortMoney(own)
                                         }
                                         else
                                         {

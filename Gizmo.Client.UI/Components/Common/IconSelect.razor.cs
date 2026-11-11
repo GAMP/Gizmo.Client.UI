@@ -30,6 +30,7 @@ namespace Gizmo.Client.UI.Components
         private TValue _syncedSelectedItem;
         private List _popupContent;
         private ElementReference _inputElement;
+        private ElementReference _searchInput;
         private bool _isOpen;
         private double _popupX;
         private double _popupY;
@@ -221,7 +222,10 @@ namespace Gizmo.Client.UI.Components
                 return;
 
             if (!_isOpen)
+            {
                 await Open();
+                await InvokeVoidAsync("setInputSelectionAll", _searchInput);
+            }
             else
                 _isOpen = false;
         }

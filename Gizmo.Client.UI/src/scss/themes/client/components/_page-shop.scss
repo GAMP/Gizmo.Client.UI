@@ -22,72 +22,14 @@ $giz-cart-w:    50rem;
 
     &__products__header__tab {
         margin-bottom: 1.6rem;
-
-        .giz-client-tab {
-            width: fit-content;
-            padding: 0.7rem;
-            border-radius: 2rem;
-            background: linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-2));
-            border: 1px solid var(--giz-glass-9);
-            box-shadow: inset 0 1px 0 var(--giz-glass-12);
-        }
-
-        .giz-client-tab__wrapper {
-            background: transparent;
-        }
-
-        .giz-client-tab__previous,
-        .giz-client-tab__next {
-            display: none;
-        }
-
-        .giz-client-tab-item {
-            height: 4.4rem;
-            padding: 0 2rem;
-            border-radius: 1.4rem;
-            display: flex;
-            align-items: center;
-            gap: 0.9rem;
-
-            > div {
-                display: flex;
-                align-items: center;
-                gap: 0.9rem;
-            }
-            color: var(--giz-ink-3);
-            font-weight: 600;
-            cursor: pointer;
-            transition: filter 0.16s, background 0.16s, color 0.16s;
-
-            i {
-                font-size: 1.8rem;
-                color: var(--giz-ink-3);
-                transition: color 0.16s;
-            }
-
-            &:hover:not(.active) {
-                filter: brightness(1.15);
-            }
-
-            &.active {
-                background: var(--giz-action-bg);
-                box-shadow: 0 8px 20px -10px rgba(var(--giz-accent-rgb), 0.7);
-                color: var(--giz-action-ink);
-
-                &::before {
-                    display: none;
-                }
-
-                i {
-                    color: var(--giz-action-ink);
-                }
-            }
-        }
+        display: flex;
+        min-width: 0;
     }
 
     // ── Center: products ───────────────────────────────────────────
     &__products {
         display: grid;
+        grid-template-columns: minmax(0, 1fr);
         grid-template-rows: min-content 1fr;
         height: 100%;
         overflow: hidden;
@@ -147,5 +89,59 @@ $giz-cart-w:    50rem;
             width: 100%;
             height: 100%;
         }
+    }
+}
+
+// The groups above the shop: one glass pill that hugs its groups and, when they do not fit,
+// scrolls them sideways inside it (giz-scroller).
+.giz-shop-groups {
+    width: fit-content;
+    padding: 0.7rem;
+    border-radius: 2rem;
+    background: linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-2));
+    border: 1px solid var(--giz-glass-9);
+    box-shadow: inset 0 1px 0 var(--giz-glass-12);
+
+    .giz-scroller__track {
+        gap: 0.4rem;
+        border-radius: 1.4rem;
+    }
+
+    .giz-scroller__arrow--back { left: 1.3rem; }
+
+    .giz-scroller__arrow--next { right: 1.3rem; }
+}
+
+.giz-shop-group {
+    height: 4.4rem;
+    padding: 0 2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9rem;
+    border: 0;
+    border-radius: 1.4rem;
+    background: transparent;
+    color: var(--giz-ink-3);
+    font: inherit;
+    font-size: 1.5rem;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+
+    i {
+        font-size: 1.8rem;
+        color: var(--giz-ink-3);
+        transition: color 0.2s;
+    }
+
+    &:hover { background: var(--giz-glass-5); }
+
+    &--active,
+    &--active:hover {
+        background: var(--giz-action-bg);
+        color: var(--giz-action-ink);
+
+        i { color: var(--giz-action-ink); }
     }
 }

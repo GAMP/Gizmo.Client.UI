@@ -3,10 +3,16 @@
 
 @if (ViewState.IsOutOfOrder)
 {
-    <div class="giz-login-overlay">
-        <div class="giz-host-out-of-order">
-            <div class="giz-host-out-of-order__message">
-                <div>@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SYSTEM_OUT_OF_ORDER))</div>
+    <div class="giz-login-overlay giz-login-overlay--state">
+        <div class="giz-state-screen">
+            @if (HostNumberViewState.HostNumberIsEnabled)
+            {
+                <div class="giz-state-screen__host"><HostNumber /></div>
+            }
+            <div class="giz-state-screen__body">
+                <i class="ph-bold ph-wrench giz-state-screen__icon"></i>
+                <h1 class="giz-state-screen__title">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_STATE_OUT_OF_ORDER_TITLE)</h1>
+                <p class="giz-state-screen__text">@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_STATE_OUT_OF_ORDER_TEXT)</p>
             </div>
         </div>
     </div>

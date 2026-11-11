@@ -8,6 +8,8 @@ namespace Gizmo.Client.UI
         private Task _running = Task.CompletedTask;
         private bool _started;
 
+        public Task Running => _running;
+
         public void Ensure(Func<Task> load, bool failed)
         {
             if (_started && !failed)

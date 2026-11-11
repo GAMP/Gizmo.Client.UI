@@ -8,7 +8,7 @@
     <div class="virtual-chunk-grid" style="@_gridColumnsStyle">
         @for (int i = 0; i < chunkedProducts.Length; i++)
         {
-            <ProductCard @key="chunkedProducts[i].Id" Product="chunkedProducts[i]" />
+            <ProductCard @key="chunkedProducts[i].Id" Product="chunkedProducts[i]" OwnPrice="@OwnPriceOf(chunkedProducts[i])" />
         }
     </div>
 </Virtualize>

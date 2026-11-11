@@ -84,7 +84,11 @@
                                    Selected="@SelectedWay"
                                    Disabled="@(_paying || !IsPriced)"
                                    OnSegment="@SelectSegment"
-                                   OnWay="@Select" />
+                                   OnWay="@Select"
+                                   Rest="@(ShowRest ? MoneyWays : null)"
+                                   RestCaption="@RestCaption"
+                                   RestSelected="@MoneyWay"
+                                   OnRest="@SelectRest" />
                 }
 
                 <section class="giz-buy__bill @(IsBusy ? "giz-buy__bill--busy" : null)">

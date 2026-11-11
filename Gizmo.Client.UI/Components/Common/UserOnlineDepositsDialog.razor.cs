@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
+using System.Threading.Tasks;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -14,8 +16,8 @@ namespace Gizmo.Client.UI.Components
         [Inject]
         IJSRuntime JSRuntime { get; set; }
 
-        [Inject]
-        ILocalizationService LocalizationService { get; set; }
+        [CascadingParameter]
+        protected GrafitLocalizationService GrafitLocalization { get; set; }
 
         [Inject]
         UserOnlineDepositViewState ViewState { get; set; }
@@ -32,11 +34,16 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public EventCallback<EmptyComponentResult> ResultCallback { get; set; }
 
+        protected string Title => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TOPUP_TITLE);
+
+        protected string CloseLabel => GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CLOSE));
+
+        private bool IsPaymentUnderway => ViewState.PageIndex != 0 && !ViewState.IsPaid && !ViewState.IsPaymentFailed;
+
         private async Task OnDismissHandler()
         {
             await DismissCallback.InvokeAsync();
 
-            //reset previous selection
             UserOnlineDepositViewStateService.Clear();
         }
 
@@ -63,6 +70,9 @@ namespace Gizmo.Client.UI.Components
 
         protected override void OnInitialized()
         {
+            if (!IsPaymentUnderway)
+                UserOnlineDepositViewStateService.Clear();
+
             this.SubscribeChange(ViewState);
 
             base.OnInitialized();

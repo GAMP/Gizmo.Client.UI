@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using Gizmo.Web.Components;
 
@@ -37,5 +38,19 @@ namespace Gizmo.Client.UI.Components
 
         [Parameter]
         public EventCallback<PayWay> OnWay { get; set; }
+
+        [Parameter]
+        public IEnumerable<PayWay> Rest { get; set; }
+
+        [Parameter]
+        public string RestCaption { get; set; }
+
+        [Parameter]
+        public PayWay RestSelected { get; set; }
+
+        [Parameter]
+        public EventCallback<PayWay> OnRest { get; set; }
+
+        protected bool ShowRest => Rest is not null && Rest.Any();
     }
 }

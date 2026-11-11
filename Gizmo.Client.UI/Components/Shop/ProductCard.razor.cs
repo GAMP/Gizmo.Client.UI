@@ -10,6 +10,9 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public UserProductViewState Product { get; set; }
 
+        [Parameter]
+        public decimal? OwnPrice { get; set; }
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (!firstRender)

@@ -40,6 +40,27 @@ namespace Gizmo.Client.UI.Pages
                 ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_RECOVERY_NOT_FOUND)
                 : ViewState.ErrorMessage;
 
+        protected bool IsPhone => ViewState.IdentifierKind == PasswordRecoveryIdentifierKind.MobilePhone;
+
+        protected bool IsSubmitDisabled => ViewState.IsValid != true || ViewState.IsLoading;
+
+        protected string Lead => GrafitLocalization.GetString(ViewState.IdentifierKind switch
+        {
+            PasswordRecoveryIdentifierKind.MobilePhone => GrafitResourceKeys.SHELL_RECOVERY_LEAD_PHONE,
+            PasswordRecoveryIdentifierKind.Email => GrafitResourceKeys.SHELL_RECOVERY_LEAD_EMAIL,
+            _ => GrafitResourceKeys.SHELL_RECOVERY_LEAD_USERNAME
+        });
+
+        protected string FieldLabel => GrafitLocalization.GetString(ViewState.IdentifierKind == PasswordRecoveryIdentifierKind.Email
+            ? GrafitResourceKeys.SHELL_RECOVERY_BY_EMAIL
+            : GrafitResourceKeys.SHELL_RECOVERY_BY_USERNAME);
+
+        protected string GlyphClass => ViewState.IdentifierKind == PasswordRecoveryIdentifierKind.Email
+            ? "ph-bold ph-envelope-simple"
+            : "ph-bold ph-user";
+
+        private void BackToKind() => NavigationService.NavigateTo(ClientRoutes.PasswordRecoveryKindRoute);
+
         private bool HoldsRequest => ViewState.IdentifierKind == PasswordRecoveryIdentifierKind.MobilePhone
             ? ViewState.MobilePhone == _request.Value
             : ViewState.MatchValue == _request.Value;

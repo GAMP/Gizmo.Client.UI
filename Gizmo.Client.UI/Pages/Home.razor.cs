@@ -27,6 +27,10 @@ namespace Gizmo.Client.UI.Pages
     {
         [CascadingParameter] protected GrafitLocalizationService GrafitLocalization { get; set; }
 
+        [CascadingParameter] ShellAssembly Assembly { get; set; }
+
+        private bool _holdsAssembly;
+
         #region CONSTANTS
 
         private const int HERO_SLIDES = 5;
@@ -60,6 +64,7 @@ namespace Gizmo.Client.UI.Pages
         private IReadOnlyList<UserProductGroupViewState> _barGroups = Array.Empty<UserProductGroupViewState>();
         private IReadOnlyList<UserProductViewState> _barGoods = Array.Empty<UserProductViewState>();
         private Dictionary<int, UserCartProductViewState> _cartLines = new();
+        private IReadOnlyDictionary<int, decimal> _ownPrices = CartPrices.None;
         private readonly CancellationTokenSource _lifetime = new();
 
         #endregion
@@ -130,6 +135,7 @@ namespace Gizmo.Client.UI.Pages
             }
 
             _cartLines = lines;
+            _ownPrices = CartPrices.Of(CartService.ViewState.Products);
         }
 
         private void OnCartChanged(object sender, EventArgs e) => BuildCart();
@@ -193,6 +199,8 @@ namespace Gizmo.Client.UI.Pages
 
         private int? ActiveGroup => _group is int group && BarGroups.Any(a => a.ProductGroupId == group) ? group : null;
 
+        private string GroupPressed(int? group) => ActiveGroup == group ? "true" : "false";
+
         private string GroupClass(int? group) => ActiveGroup == group
             ? "giz-home-cats__cat giz-home-cats__cat--active"
             : "giz-home-cats__cat";
@@ -206,6 +214,8 @@ namespace Gizmo.Client.UI.Pages
         private IReadOnlyList<UserProductViewState> BarGoods => _barGoods;
 
         private UserCartProductViewState CartLine(int productId) => _cartLines.GetValueOrDefault(productId);
+
+        private decimal? OwnPrice(UserProductViewState product) => CartPrices.Own(product, _ownPrices);
 
         private string GoodClass(UserProductViewState product) => CartLine(product.Id) is { Quantity: > 0 }
             ? "giz-home-good giz-home-good--in"
@@ -261,24 +271,58 @@ namespace Gizmo.Client.UI.Pages
 
         private IEnumerable<UserProductViewState> ShopProducts => _shop;
 
-        private IReadOnlyList<UserProductViewState> HeroProducts =>
-            ShopProducts.Take(HERO_SLIDES).ToList();
+        private IReadOnlyList<UserProductViewState> PopularShopProducts
+        {
+            get
+            {
+                var rank = new Dictionary<int, int>();
+                foreach (var product in ViewState.PopularProducts)
+                    rank.TryAdd(product.Id, rank.Count);
+
+                return ShopProducts
+                    .Where(a => rank.ContainsKey(a.Id))
+                    .OrderBy(a => rank[a.Id])
+                    .Take(HERO_SLIDES)
+                    .ToList();
+            }
+        }
+
+        private bool HasPopularProducts => PopularShopProducts.Count > 0;
+
+        private IReadOnlyList<UserProductViewState> HeroProducts => HasPopularProducts
+            ? PopularShopProducts
+            : ShopProducts.Take(HERO_SLIDES).ToList();
 
         private IEnumerable<AppViewState> Apps
         {
             get
             {
-                var popularOrder = ViewState.PopularApplications
-                    .Select((app, index) => (app.ApplicationId, index))
-                    .ToDictionary(a => a.ApplicationId, a => a.index);
-
+                var rank = PopularAppRank;
                 var source = _apps.Any() ? _apps : ViewState.PopularApplications;
 
                 return source
-                    .OrderBy(a => popularOrder.TryGetValue(a.ApplicationId, out var rank) ? rank : int.MaxValue)
+                    .OrderBy(a => rank.TryGetValue(a.ApplicationId, out var place) ? place : int.MaxValue)
                     .ThenBy(a => a.Title);
             }
         }
+
+        private Dictionary<int, int> PopularAppRank
+        {
+            get
+            {
+                var rank = new Dictionary<int, int>();
+                foreach (var app in ViewState.PopularApplications)
+                    rank.TryAdd(app.ApplicationId, rank.Count);
+
+                return rank;
+            }
+        }
+
+        private bool IsPopularApp(AppViewState app) => ViewState.PopularApplications.Any(a => a.ApplicationId == app.ApplicationId);
+
+        private string StripCaption => StripApps is { Count: > 0 } strip && strip.All(IsPopularApp)
+            ? GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_POPULAR_APPS))
+            : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_GAMES_SECTION);
 
         private IReadOnlyList<AppViewState> StripApps => Apps.Take(HasSales ? STRIP_APPS : STRIP_APPS + 1).ToList();
 
@@ -286,11 +330,14 @@ namespace Gizmo.Client.UI.Pages
         {
             get
             {
-                var next = Apps.Skip(STRIP_APPS).Take(HERO_SLIDES).ToList();
+                var rest = Apps.Skip(StripApps.Count).ToList();
+                var popular = rest.Where(IsPopularApp).ToList();
 
-                return next.Count > 0 ? next : Apps.Take(HERO_SLIDES).ToList();
+                return (popular.Count > 0 ? popular : rest).Take(HERO_SLIDES).ToList();
             }
         }
+
+        private bool HeroAppsPopular => HeroApps is { Count: > 0 } apps && IsPopularApp(apps[0]);
 
         private IReadOnlyList<AppExeViewState> HeroExecutables(int applicationId)
         {
@@ -358,12 +405,26 @@ namespace Gizmo.Client.UI.Pages
                 if (HasPromo)
                     return HeroKind.Banner;
 
+                if (HeroAppsPopular)
+                    return HeroKind.App;
+
+                if (HasPopularProducts)
+                    return HeroKind.Product;
+
                 if (HeroApps.Count > 0)
                     return HeroKind.App;
 
                 return HeroProducts.Count > 0 ? HeroKind.Product : HeroKind.Empty;
             }
         }
+
+        private string HeroAppCaption => GrafitLocalization.GetString(HeroAppsPopular
+            ? GrafitResourceKeys.SHELL_HERO_POPULAR
+            : GrafitResourceKeys.SHELL_HOME_GAMES_SECTION);
+
+        private string HeroProductCaption => GrafitLocalization.GetString(HasPopularProducts
+            ? GrafitResourceKeys.SHELL_HERO_POPULAR
+            : GrafitResourceKeys.SHELL_HOME_BAR);
 
         private int SlideCount => Hero switch
         {
@@ -484,6 +545,12 @@ namespace Gizmo.Client.UI.Pages
 
         protected override void OnInitialized()
         {
+            if (Assembly != null)
+            {
+                Assembly.Hold();
+                _holdsAssembly = true;
+            }
+
             BuildLists();
             BuildCart();
             ViewState.OnChange += OnProductsChanged;
@@ -577,11 +644,24 @@ namespace Gizmo.Client.UI.Pages
                 _apps = Enumerable.Empty<AppViewState>();
             }
 
+            ReleaseAssembly();
+
             await base.OnInitializedAsync();
+        }
+
+        private void ReleaseAssembly()
+        {
+            if (!_holdsAssembly)
+                return;
+
+            _holdsAssembly = false;
+            Assembly.Release();
         }
 
         public override void Dispose()
         {
+            ReleaseAssembly();
+
             ShellActivity.Changed -= OnActivityChanged;
 
             _lifetime.Cancel();

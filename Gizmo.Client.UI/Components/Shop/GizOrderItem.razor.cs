@@ -82,6 +82,12 @@ namespace Gizmo.Client.UI.Components
 
         private string PriceText => UserCartProductViewState.TotalPrice.ToString("C", CultureInfo.CurrentCulture);
 
+        private decimal ListTotal => UserCartProductViewState.OriginalUnitPrice * UserCartProductViewState.Quantity;
+
+        private bool IsDiscounted => ShowsMoney && ListTotal > UserCartProductViewState.TotalPrice;
+
+        private string ListPriceText => ListTotal.ToString("C", CultureInfo.CurrentCulture);
+
         private string PointsPriceText => UserCartProductViewState.TotalPointsPrice.GetValueOrDefault().ToString("N0", CultureInfo.CurrentCulture);
 
         private string CashPriceText => (PaysWithPoints

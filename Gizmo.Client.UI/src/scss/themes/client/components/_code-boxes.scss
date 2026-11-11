@@ -1,11 +1,11 @@
 //============= Code boxes ===============//
 
-// A confirmation code as one box per character. The real field lies over the boxes, see-through,
+// A confirmation code as one box per character, the boxes sharing the row's width. The real field lies over the boxes, see-through,
 // so a click anywhere on them, typing and pasting all go to it.
 .giz-code-boxes {
     position: relative;
     display: flex;
-    gap: 1rem;
+    gap: 1.2rem;
     cursor: text;
 
     &__input {
@@ -21,22 +21,25 @@
     }
 
     &__box {
-        flex: none;
-        width: 4.4rem;
-        height: 5.6rem;
+        flex: 1 1 0;
+        min-width: 0;
+        height: 8rem;
         display: grid;
         place-items: center;
-        border-radius: 1.2rem;
-        background: var(--giz-glass-4);
+        border-radius: 2rem;
+        background:
+            linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-3)),
+            rgba(var(--giz-scrim-rgb), 0.62);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-10), inset 0 1px 0 var(--giz-glass-12);
         font-family: $font-family-header-theme-client;
-        font-size: 2.8rem;
+        font-size: 3.6rem;
         font-weight: 800;
         color: var(--giz-text-1);
         transition: box-shadow 0.15s;
 
         &--empty::before {
             content: '';
-            width: 1.4rem;
+            width: 1.8rem;
             height: 2px;
             border-radius: 1px;
             background: var(--giz-text-off);
@@ -44,16 +47,16 @@
     }
 
     &:focus-within &__box--next {
-        box-shadow: inset 0 0 0 2px var(--giz-accent);
+        box-shadow: inset 0 0 0 2px var(--giz-accent), inset 0 1px 0 var(--giz-glass-12);
 
         &::before {
             width: 2px;
-            height: 2.6rem;
+            height: 3.2rem;
             background: var(--giz-accent-soft);
         }
     }
 
     &--error &__box--filled {
-        box-shadow: inset 0 0 0 2px rgba(var(--giz-danger-rgb), 0.7);
+        box-shadow: inset 0 0 0 2px rgba(var(--giz-danger-rgb), 0.7), inset 0 1px 0 var(--giz-glass-12);
     }
 }

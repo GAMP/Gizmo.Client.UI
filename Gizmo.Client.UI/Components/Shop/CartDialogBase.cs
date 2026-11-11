@@ -43,6 +43,8 @@ namespace Gizmo.Client.UI.Components
 
         protected readonly List<PayWay> _ways = new();
 
+        protected bool _pointsAllowed;
+
         protected Step _step = Step.Confirm;
         protected bool _paying;
 
@@ -223,7 +225,9 @@ namespace Gizmo.Client.UI.Components
 
             try
             {
-                var all = await PaymentMethodLookupService.GetStatesAsync();
+                var all = (await PaymentMethodLookupService.GetStatesAsync()).ToList();
+
+                _pointsAllowed = all.Any(a => a.Id == POINTS_PAYMENT_METHOD_ID && a.IsEnabled && !a.IsDeleted);
 
                 methods = all
                     .Where(a => a.Id != POINTS_PAYMENT_METHOD_ID && !a.IsOnline && !a.IsDeleted && a.IsEnabled)
@@ -231,6 +235,7 @@ namespace Gizmo.Client.UI.Components
             }
             catch (Exception)
             {
+                _pointsAllowed = false;
                 methods = Enumerable.Empty<PaymentMethodViewState>();
             }
 
@@ -365,6 +370,9 @@ namespace Gizmo.Client.UI.Components
 
                 if (IsPayingAtCounter)
                     return GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_PLACE_ORDER));
+
+                if (PointsDue > 0)
+                    return GrafitLocalization.GetString(PayForKey, $"{PointsWithUnit(PointsDue)} + {Money(Total)}");
 
                 return GrafitLocalization.GetString(PayForKey, Money(Total));
             }

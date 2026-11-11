@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using Gizmo.Client.UI.Localization.Resources;
+using Gizmo.Client.UI.Localization.Services;
+using System.Linq;
 using Gizmo.Client.Options;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -21,6 +23,15 @@ namespace Gizmo.Client.UI.Pages
 
         [Inject]
         IUICompositionService IUICompositionService { get; set; }
+
+        [CascadingParameter]
+        protected GrafitLocalizationService GrafitLocalization { get; set; }
+
+        protected string Title => GrafitLocalization?.GetString(GrafitResourceKeys.SHELL_STATE_NOT_FOUND_TITLE) ?? "Page not found";
+
+        protected string Text => GrafitLocalization?.GetString(GrafitResourceKeys.SHELL_STATE_NOT_FOUND_TEXT) ?? "This section is unavailable or turned off";
+
+        protected string Action => GrafitLocalization?.GetString(GrafitResourceKeys.SHELL_STATE_GO_HOME) ?? "Go to home";
 
         private void GoHome()
         {

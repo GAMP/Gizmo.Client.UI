@@ -3,13 +3,25 @@
 @using Gizmo.Client.UI.View;
 
 <div class="giz-dock-item-tooltip">
-    <div class="giz-dock-item-tooltip__header">
-        @Executable?.Caption
+    <div class="giz-dock-item-tooltip__cover">
+        <GizImage @key="CoverKey" ImageType="Gizmo.UI.ImageType.Application" ImageId="@CoverImageId" ImageFitType="ImageFitType.Cover">
+            <EmptyResultPlaceholder>
+                <div class="giz-default-image">
+                    <GizCoverPlaceholder />
+                </div>
+            </EmptyResultPlaceholder>
+            <ErrorPlaceholder>
+                <div class="giz-default-image">
+                    <GizCoverPlaceholder />
+                </div>
+            </ErrorPlaceholder>
+        </GizImage>
     </div>
     <div class="giz-dock-item-tooltip__body">
-        @Executable?.Description
-    </div>
-    <div class="giz-dock-item-tooltip__actions">
-        <Button Variant="ButtonVariants.Outline" Text="@LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_DETAILS))" @onclick="OnClickDetailsButtonHandle" />
+        <div class="giz-dock-item-tooltip__name">@Executable?.Caption</div>
+        <button type="button" class="giz-dock-item-tooltip__details" @onclick="OnClickDetailsButtonHandle">
+            <span>@DetailsLabel</span>
+            <i class="ph-bold ph-arrow-right"></i>
+        </button>
     </div>
 </div>

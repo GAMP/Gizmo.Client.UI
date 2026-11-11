@@ -1,4 +1,4 @@
-@namespace Gizmo.Client.UI.Components
+﻿@namespace Gizmo.Client.UI.Components
 @inherits CustomDOMComponentBase
 @using Microsoft.AspNetCore.Components.Forms
 
@@ -19,6 +19,10 @@
         <span class="giz-cart-line__name">@_product?.Name</span>
         <ICartViewStateLoader ViewState="@ClientServerCartViewService.ViewState" MinimumHeight="2.2rem">
             <span class="giz-cart-line__sum">
+                @if (IsDiscounted)
+                {
+                    <s class="giz-cart-line__was">@ListPriceText</s>
+                }
                 @if (ShowsMoney)
                 {
                     <span>@PriceText</span>

@@ -98,11 +98,12 @@
     .giz-signup-road { transition-delay: 0.25s; }
 }
 
-// The host number would sit over the questions; registration does not need it until the screen
-// dozes off.
+// The host number would sit over the questions and the top-right sign-in link; registration does
+// not need it until the screen dozes off.
 .giz-main-container:has(.giz-signup):not(:has(.giz-login-card.hidden)) .giz-host-number,
 .giz-main-container:has(.giz-signup-done) .giz-host-number {
     opacity: 0;
+    pointer-events: none;
 }
 
 // The club's agreement opens on the sign-in background itself, the blank card above it.

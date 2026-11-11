@@ -72,10 +72,12 @@ $nt-ink-2: var(--giz-text-2);
 $nt-ink-3: var(--giz-text-3);
 
 // The top bar's own glass, opaque: the window floats over games and cannot blur them.
-// No outer shadow - the slide wrapper clips everything outside the card to a rectangle.
+// No outline and no outer shadow (the window under the cards is transparent, a shadow would
+// paint a box over the game); the type's colour washes in from the icon side instead.
 @mixin notification-card {
-    --nt-rgb: var(--giz-ink-rgb);
-    --nt-soft: var(--giz-text-1);
+    --nt-rgb: var(--giz-accent-rgb);
+    --nt-soft: var(--giz-accent-pale);
+    --nt-glyph: var(--giz-on-accent);
 
     position: relative;
     display: grid;
@@ -86,12 +88,12 @@ $nt-ink-3: var(--giz-text-3);
     box-sizing: border-box;
     margin: 0 0 0.8rem;
     padding: 1.4rem 1.2rem 1.4rem 1.4rem;
-    border-radius: 1.6rem;
+    border-radius: 1.8rem;
     background:
-        linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-2)),
+        linear-gradient(90deg, rgba(var(--nt-rgb), 0.34) 0, rgba(var(--nt-rgb), 0.12) 9rem, rgba(var(--nt-rgb), 0) 26rem),
         linear-gradient(180deg, rgb(var(--giz-glass-rgb)), rgb(var(--giz-glass-2-rgb)));
-    border: 1px solid var(--giz-glass-9);
-    box-shadow: inset 0 1px 0 var(--giz-glass-12);
+    border: 0;
+    box-shadow: none;
     color: $nt-ink;
 }
 
@@ -101,10 +103,10 @@ $nt-ink-3: var(--giz-text-3);
     height: 4.4rem;
     display: grid;
     place-items: center;
-    border-radius: 1.2rem;
-    background: rgba(var(--nt-rgb), 0.16);
-    color: var(--nt-soft);
-    font-size: 2.2rem;
+    border-radius: 50%;
+    background: rgb(var(--nt-rgb));
+    color: var(--nt-glyph);
+    font-size: 2.1rem;
     line-height: 1;
 }
 
@@ -172,12 +174,9 @@ $nt-ink-3: var(--giz-text-3);
     gap: 0.6rem;
     height: 3.4rem;
     padding: 0 1.4rem 0 1.6rem;
-    border: 1px solid var(--giz-glass-9);
-    border-radius: 1.2rem;
-    background:
-        linear-gradient(180deg, var(--giz-glass-7), var(--giz-glass-2)),
-        linear-gradient(180deg, rgb(var(--giz-glass-rgb)), rgb(var(--giz-glass-2-rgb)));
-    box-shadow: inset 0 1px 0 var(--giz-glass-12);
+    border: 0;
+    border-radius: $giz-r-pill;
+    background: rgb(var(--giz-glass-2-rgb));
     color: var(--giz-text-2);
     font-family: $font-family-header-theme-client;
     font-size: 1.25rem;
@@ -188,7 +187,7 @@ $nt-ink-3: var(--giz-text-3);
     i { font-size: 1.3rem; }
 
     &:hover {
-        border-color: var(--giz-glass-12);
+        background: rgb(var(--giz-glass-rgb));
         color: var(--giz-text-1);
     }
 }
@@ -256,14 +255,17 @@ $nt-ink-3: var(--giz-text-3);
     &--success {
         --nt-rgb: var(--giz-success-teal-rgb);
         --nt-soft: var(--giz-success-mint);
+        --nt-glyph: var(--giz-black);
     }
     &--danger {
         --nt-rgb: var(--giz-danger-coral-rgb);
         --nt-soft: var(--giz-danger-light);
+        --nt-glyph: var(--giz-black);
     }
     &--warning {
         --nt-rgb: var(--giz-warning-rgb);
         --nt-soft: var(--giz-warning-sun);
+        --nt-glyph: var(--giz-black);
     }
 
     &__icon {
@@ -279,18 +281,32 @@ $nt-ink-3: var(--giz-text-3);
     }
 }
 
+// The one that asks for an answer is the important one: larger.
 .giz-reservation-notification {
     @include notification-card;
 
     --nt-rgb: var(--giz-warning-rgb);
     --nt-soft: var(--giz-warning-sun);
+    --nt-glyph: var(--giz-black);
+    align-items: start;
+    gap: 1.8rem;
+    padding: 2rem 1.6rem 2rem 2rem;
+    border-radius: 2.2rem;
+    background:
+        linear-gradient(90deg, rgba(var(--nt-rgb), 0.36) 0, rgba(var(--nt-rgb), 0.14) 12rem, rgba(var(--nt-rgb), 0) 32rem),
+        linear-gradient(180deg, rgb(var(--giz-glass-rgb)), rgb(var(--giz-glass-2-rgb)));
 
     &__icon {
         @include notification-icon;
+        width: 5.2rem;
+        height: 5.2rem;
+        font-size: 2.6rem;
     }
 
     &__body {
         @include notification-body;
+
+        &__title { font-size: 1.8rem; line-height: 2.4rem; }
 
         &__actions {
             display: flex;
@@ -346,5 +362,43 @@ $nt-ink-3: var(--giz-text-3);
     to {
         height: 0;
         opacity: 0;
+    }
+}
+
+// Folded: only the newest card shows, the others wait behind it ("N more" opens them).
+// The footer keeps its height; the lips under the card are drawn inside it.
+.giz-notification-wrapper--folded {
+    display: none;
+}
+
+.giz-notifications__footer {
+    gap: 0.6rem;
+}
+
+.giz-notifications--folded .giz-notifications__footer {
+    position: relative;
+    padding-top: 1.4rem;
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        top: -0.8rem;
+        border-radius: 0 0 1.6rem 1.6rem;
+        background: rgb(var(--giz-glass-2-rgb));
+    }
+
+    &::before {
+        left: 1.6rem;
+        right: 1.6rem;
+        height: 1.4rem;
+        z-index: 1;
+    }
+
+    &::after {
+        left: 3.4rem;
+        right: 3.4rem;
+        height: 2rem;
+        opacity: 0.85;
     }
 }

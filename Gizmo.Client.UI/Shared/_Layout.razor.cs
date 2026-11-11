@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Linq;
+using System.Collections.Generic;
+using System;
 using System.Globalization;
 using System.Threading.Tasks;
 
@@ -12,6 +14,7 @@ using Gizmo.UI.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 
@@ -45,6 +48,12 @@ namespace Gizmo.Client.UI.Shared
         [Inject]
         UserBalanceViewState UserBalanceViewState { get; set; }
 
+        [Inject]
+        UserViewState UserViewState { get; set; }
+
+        [Inject]
+        ILogger<_Layout> Logger { get; set; }
+
         [CascadingParameter]
         GrafitLocalizationService GrafitLocalization { get; set; }
 
@@ -71,9 +80,32 @@ namespace Gizmo.Client.UI.Shared
 
         private string BalanceText => UserBalanceViewState.Balance.ToString("C", CultureInfo.CurrentCulture);
 
-        private string RootClass => _figuresHidden ? "giz-root giz-root--figures-hidden" : "giz-root";
+        private string RootClass => "giz-root"
+            + (_figuresHidden ? " giz-root--figures-hidden" : _figuresToggled ? " giz-root--figures-revealed" : string.Empty)
+            + (_stage == AssemblyStage.Revealing ? " giz-root--assembling" : string.Empty)
+            + (_resumed ? " giz-root--resumed" : string.Empty);
 
-        private string HudClass => _figuresHidden ? "giz-top-bar__hud giz-top-bar__hud--hidden" : "giz-top-bar__hud";
+        private string HudClass => _figuresHidden
+            ? "giz-top-bar__hud giz-top-bar__hud--hidden"
+            : _figuresToggled ? "giz-top-bar__hud giz-top-bar__hud--revealed" : "giz-top-bar__hud";
+
+        private bool ShowBoot => _stage != AssemblyStage.Done;
+
+        private bool HasUserName => !string.IsNullOrWhiteSpace(UserViewState.Username);
+
+        private static readonly string[] BootLineKeys =
+        {
+            GrafitResourceKeys.SHELL_BOOT_LINE_MONITOR,
+            GrafitResourceKeys.SHELL_BOOT_LINE_APPS,
+            GrafitResourceKeys.SHELL_BOOT_LINE_GAMES,
+            GrafitResourceKeys.SHELL_BOOT_LINE_GPU,
+            GrafitResourceKeys.SHELL_BOOT_LINE_BAR,
+            GrafitResourceKeys.SHELL_BOOT_LINE_TILES
+        };
+
+        private IEnumerable<string> BootLines => BootLineKeys.Select(GrafitLocalization.GetString);
+
+        private string BootClass => _stage == AssemblyStage.Revealing ? "giz-boot giz-boot--leaving" : "giz-boot";
 
         private string HudTitle => _figuresHidden
             ? LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_MENU_BALANCE_IS_HIDDEN))
@@ -91,12 +123,51 @@ namespace Gizmo.Client.UI.Shared
         private bool _playTransition;
         private readonly ProgressLoading _progress = new();
         private bool _figuresHidden;
+        private bool _figuresToggled;
+        private readonly ShellAssembly _assembly = new();
+        private AssemblyStage _stage = AssemblyStage.Loading;
+
+        private bool _resumed;
+
+        [CascadingParameter] protected ShellIntro Intro { get; set; }
+
+        private enum AssemblyStage { Loading, Revealing, Done }
+
+        private static readonly TimeSpan BootShortest = TimeSpan.FromMilliseconds(900);
+        private static readonly TimeSpan BootLongest = TimeSpan.FromSeconds(4);
+        private static readonly TimeSpan AssemblyLength = TimeSpan.FromMilliseconds(1300);
 
         #endregion
 
         #region METHODS
 
-        private void ToggleFigures() => _figuresHidden = !_figuresHidden;
+        private void ToggleFigures()
+        {
+            _figuresHidden = !_figuresHidden;
+            _figuresToggled = true;
+        }
+
+        private async Task AssembleAsync()
+        {
+            try
+            {
+                var released = Task.WhenAny(_assembly.WhenReleasedAsync(), Task.Delay(BootLongest));
+                await Task.WhenAll(Task.Delay(BootShortest), released);
+
+                _stage = AssemblyStage.Revealing;
+                Intro?.MarkPlayed();
+                await InvokeAsync(StateHasChanged);
+
+                await Task.Delay(AssemblyLength);
+            }
+            catch (Exception exception)
+            {
+                Logger.LogError(exception, "The shell's assembly after sign-in failed.");
+            }
+
+            _stage = AssemblyStage.Done;
+            await InvokeAsync(StateHasChanged);
+        }
 
         private string TimeUnitAbbreviation(string resourceKey) =>
             LocalizationService.GetString(resourceKey)?.TrimEnd('.', ' ') ?? string.Empty;
@@ -108,6 +179,7 @@ namespace Gizmo.Client.UI.Shared
 
         private void OnLocationChanged(object sender, LocationChangedEventArgs e)
         {
+            _resumed = false;
             _playTransition = true;
             _ = InvokeAsync(StateHasChanged);
         }
@@ -118,17 +190,27 @@ namespace Gizmo.Client.UI.Shared
 
         protected override async Task OnInitializedAsync()
         {
+            if (Intro?.Played == true)
+            {
+                _stage = AssemblyStage.Done;
+                _resumed = true;
+            }
+
             NavigationManager.LocationChanged += OnLocationChanged;
 
             this.SubscribeChange(HostOutOfOrderViewState);
             this.SubscribeChange(UserBalanceViewState);
+            this.SubscribeChange(UserViewState);
 
             await base.OnInitializedAsync();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (firstRender || _playTransition)
+            if (firstRender && !_resumed)
+                _ = AssembleAsync();
+
+            if ((firstRender && !_resumed) || _playTransition)
             {
                 _playTransition = false;
                 await JsRuntime.InvokeVoidAsync("restartPageTransition");
@@ -143,6 +225,7 @@ namespace Gizmo.Client.UI.Shared
 
             this.UnsubscribeChange(HostOutOfOrderViewState);
             this.UnsubscribeChange(UserBalanceViewState);
+            this.UnsubscribeChange(UserViewState);
         }
 
         #endregion

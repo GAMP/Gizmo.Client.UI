@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Globalization;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Gizmo.Client.UI.Localization.Resources;
 using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -21,15 +24,24 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public UserProductViewState Product { get; set; }
 
-        private bool HasDescription => !string.IsNullOrWhiteSpace(Product?.Description);
+        private string TimeNumber => ProductHelpers.GetProductTimeNumber(Product);
+
+        private string TimeUnit => ProductHelpers.GetProductTimeText(Product, GrafitLocalization);
+
+        private AvailabilityShape.Day PlayDay => AvailabilityShape.Today(Product?.TimeProduct?.UsageAvailability, DateTime.Now);
+
+        private static bool PlaysToday(AvailabilityShape.Day day) => day.Segments.Count > 0;
+
+        private string TodayOffText => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PEEK_TODAY_OFF);
+
+        private IReadOnlyList<AvailabilityShape.WeekDay> BuyWeek =>
+            AvailabilityShape.Week(Product?.PurchaseAvailability, CultureInfo.CurrentCulture);
+
+        private static string DayClass(AvailabilityShape.WeekDay day) => day.On ? "giz-peek__weekday giz-peek__weekday--on" : "giz-peek__weekday";
 
         private string BuyWindow => Product?.PurchaseAvailability is null
             ? null
             : ProductHelpers.GetPurchaseAvailabilities(Product, true, LocalizationService).FirstOrDefault();
-
-        private string PlayWindow => Product?.TimeProduct?.UsageAvailability is null
-            ? null
-            : ProductHelpers.GetUsageAvailabilities(Product, true, LocalizationService).FirstOrDefault();
 
         private string ExpiryText
         {
@@ -55,15 +67,6 @@ namespace Gizmo.Client.UI.Components
             }
         }
 
-        private string GetTimeText()
-        {
-            if (Product != null && Product.ProductType == ProductType.ProductTime)
-            {
-                return $"{Product.TimeProduct?.Minutes.ToString("N0")} {LocalizationService.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_PRODUCT_TIME_MINUTES_ABBREVIATED))}";
-            }
-
-            return string.Empty;
-        }
 
         protected override async Task OnInitializedAsync()
         {

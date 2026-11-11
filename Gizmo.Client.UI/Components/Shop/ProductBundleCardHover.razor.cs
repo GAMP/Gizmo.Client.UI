@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Globalization;
+using System.Collections.Generic;
+using System.Linq;
 using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -14,6 +16,11 @@ namespace Gizmo.Client.UI.Components
 
         [Inject]
         ILocalizationService LocalizationService { get; set; }
+
+        private IReadOnlyList<AvailabilityShape.WeekDay> BuyWeek =>
+            AvailabilityShape.Week(Product?.PurchaseAvailability, CultureInfo.CurrentCulture);
+
+        private static string DayClass(AvailabilityShape.WeekDay day) => day.On ? "giz-peek__weekday giz-peek__weekday--on" : "giz-peek__weekday";
 
         private string BuyWindow => Product?.PurchaseAvailability is null
             ? null

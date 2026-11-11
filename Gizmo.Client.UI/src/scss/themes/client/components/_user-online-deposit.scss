@@ -1,274 +1,469 @@
+//=============== Online deposit (top-up) ================//
+// The top-up on the checkout's glass sheet (giz-buy). The amount is one big figure, typed or
+// stepped with - and +, over a rail whose stops are the club's presets. The dialog has no title,
+// only the close in the corner. On the QR step the sum is the head (a bare pencil left of it goes
+// back to the amount), the QR is centred over one "open in browser" button. While the payment is
+// awaited the sheet's top light breathes instead of a waiting line. Success is a big "+X" on the
+// accent.
 
 .giz-user-online-deposit {
-    color: #FAFAFA;
-
-    &__body {
-        display: flex;
-        flex-direction: column;
-        gap: 1.4rem;
-    }
-
-    &__label {
-        font-size: 1.15rem;
-        font-weight: 700;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--giz-text-3);
-        font-family: $font-family-header-theme-client;
-    }
-
-    .giz-button-group {
-        margin: 0;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(12.8rem, 1fr));
-        gap: 0.8rem;
-        border: none;
-
-        &:has(> .giz-button:nth-child(4):last-child) { grid-template-columns: repeat(2, 1fr); }
-
-        .giz-button {
-            flex: 1;
-            border-radius: 1.2rem;
-            background: var(--giz-glass-5);
-            border: 1px solid var(--giz-glass-8);
-            color: var(--giz-text-2);
-            font-weight: 600;
-            font-size: 1.5rem;
-            line-height: 2rem;
-            transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
-
-            &:hover:not(.selected) {
-                background: rgba(var(--giz-accent-rgb), 0.10);
-                border-color: rgba(var(--giz-accent-rgb), 0.25);
-                color: var(--giz-text-1);
-            }
-
-            &.selected {
-                background: rgba(var(--giz-accent-rgb), 0.20);
-                border-color: rgba(var(--giz-accent-rgb), 0.45);
-                color: var(--giz-accent);
-            }
-        }
-    }
-
-    &__summary,
-    &__submitted__summary {
-        display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-        gap: 1rem;
-        font-size: 1.3rem;
-        color: var(--giz-text-3);
-    }
-
-    &__summary__amount,
-    &__submitted__summary__amount {
-        font-family: $font-family-numeric-theme-client;
-        font-size: 1.9rem;
-        font-weight: 700;
-        color: var(--giz-white);
-        white-space: nowrap;
-    }
-
-    &__footer {
-        display: flex;
-        flex-direction: column;
-        gap: 0.8rem;
-        margin-top: 0.6rem;
-    }
-
-    &__submitted__qr {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-
-        &__label {
-            font-size: 1.3rem;
-            color: var(--giz-text-3);
-        }
-
-        &__image {
-            padding: 1.2rem;
-            border-radius: 1.4rem;
-            background: var(--giz-white);
-            line-height: 0;
-
-            svg {
-                width: 24rem;
-                height: 24rem;
-                shape-rendering: crispedges;
-            }
-        }
-    }
-
-    &__submitted__action {
-        display: flex;
-        flex-direction: column;
-        gap: 0.8rem;
-
-        &__label {
-            text-align: center;
-            font-size: 1.2rem;
-            color: var(--giz-text-3);
-        }
-    }
-
-    &__success {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 0.4rem;
-        padding: 2.8rem 0 1.6rem;
-        position: relative; // anchors the countdown strip to the top edge
-
-        &__countdown {
-            position: absolute;
-            top: 0;
-            left: 0.4rem;
-            right: 0.4rem;
-            height: 0.3rem;
-            border-radius: 999px;
-            background: var(--giz-glass-7);
-            overflow: hidden;
-
-            &__fill {
-                width: 100%;
-                height: 100%;
-                transform-origin: left center;
-                background: linear-gradient(90deg, var(--giz-success-teal), var(--giz-success-mint-2));
-                animation: giz-deposit-countdown 5s linear forwards;
-            }
-        }
-
-        &__icon {
-            width: 6.4rem;
-            height: 6.4rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: rgba(var(--giz-success-teal-rgb), 0.16);
-            border: 1px solid rgba(var(--giz-success-teal-rgb), 0.4);
-            margin-bottom: 0.8rem;
-            animation: giz-deposit-success-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-
-            i {
-                font-size: 3.6rem;
-                color: var(--giz-success-teal);
-            }
-        }
-
-        &__title {
-            font-family: $font-family-header-theme-client;
-            font-weight: 800;
-            font-size: 2rem;
-            color: var(--giz-white);
-        }
-
-        &__text {
-            font-size: 1.35rem;
-            color: var(--giz-text-2);
-        }
-
-        &__hint {
-            margin-top: 0.6rem;
-            font-size: 1.2rem;
-            color: var(--giz-text-3);
-        }
-    }
-}
-
-// The payment the bank declined, or that expired or was cancelled: the same shape as success,
-// in red, and one way back to the amount.
-.giz-user-online-deposit__failed {
+    position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 0.4rem;
-    padding: 2.8rem 0 1.6rem;
+    gap: 2.2rem;
+    color: var(--giz-text-1);
+    white-space: normal;
 
-    &__icon {
-        width: 6.4rem;
-        height: 6.4rem;
-        margin-bottom: 0.8rem;
+    &__bar {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+
+        .giz-buy__close {
+            position: static;
+            flex: none;
+            margin-left: auto;
+        }
+
+        // The amount step has no title: the close sits in the corner and the figure rises under it.
+        &--corner {
+            position: relative;
+            z-index: 1;
+            justify-content: flex-end;
+            margin-bottom: -2.6rem;
+        }
+    }
+
+    &__step {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        animation: giz-buy-in 0.36s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    // The figure shrinks to fit the row: the row is the size container, the steps take their two
+    // buttons and gaps from it, and each character is about 0.6em with the currency about 0.8em.
+    &__figure {
+        container-type: inline-size;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 50%;
-        background: rgba(var(--giz-danger-rgb), 0.14);
-        border: 1px solid rgba(var(--giz-danger-rgb), 0.4);
-        animation: giz-deposit-success-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        gap: 1.6rem;
+        padding-top: 0.6rem;
 
-        i {
-            font-size: 3.6rem;
-            color: var(--giz-danger-soft);
+        &--steps { --giz-topup-steps: 13.6rem; }
+    }
+
+    &__nudge {
+        flex: none;
+        width: 5.2rem;
+        height: 5.2rem;
+        display: grid;
+        place-items: center;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: var(--giz-glass-5);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-9);
+        color: var(--giz-text-2);
+        font-size: 2rem;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s, opacity 0.15s, transform 0.12s;
+
+        &:hover:not(:disabled) {
+            background: var(--giz-glass-9);
+            color: var(--giz-text-1);
+        }
+
+        &:active:not(:disabled) { transform: scale(0.94); }
+
+        &:disabled {
+            opacity: 0.35;
+            cursor: default;
         }
     }
 
-    &__title {
-        font-family: $font-family-header-theme-client;
-        font-weight: 800;
-        font-size: 2rem;
-        color: var(--giz-white);
+    &__form {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        justify-content: center;
     }
 
-    &__text {
-        max-width: 36rem;
+    &__amount {
+        --giz-topup-size: min(var(--giz-topup-cap, 8rem), calc((100cqi - var(--giz-topup-steps, 0rem)) / (0.6 * var(--giz-topup-chars, 1) + 0.8)));
+        max-width: 100%;
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+        gap: 0.6rem;
+        font-family: $font-family-header-theme-client;
+        font-size: var(--giz-topup-size);
+        font-weight: 800;
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+        font-variant-numeric: tabular-nums;
+        cursor: text;
+
+        &--fixed {
+            flex: 1;
+            cursor: default;
+        }
+    }
+
+    &__currency {
+        flex: none;
+        color: var(--giz-text-3);
+    }
+
+    &__note {
+        margin-top: -0.8rem;
+        text-align: center;
         font-size: 1.35rem;
+        font-weight: 600;
+        color: var(--giz-text-3);
+        transition: color 0.2s;
+
+        &--invalid { color: var(--giz-danger-soft); }
+    }
+
+    // A stop's place is its index over the count (--giz-topup-stop), the fill reaches the amount
+    // between the two stops around it (--giz-topup-fill).
+    &__rail {
+        position: relative;
+        height: 5.4rem;
+        margin: 0.4rem 1.6rem 0;
+    }
+
+    &__track {
+        position: absolute;
+        top: 0.7rem;
+        left: 0;
+        right: 0;
+        height: 0.4rem;
+        border-radius: $giz-r-pill;
+        background: var(--giz-glass-8);
+    }
+
+    &__fill {
+        display: block;
+        width: var(--giz-topup-fill, 0%);
+        height: 100%;
+        border-radius: inherit;
+        background: var(--giz-accent);
+        transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    &__stop {
+        position: absolute;
+        top: 0;
+        left: var(--giz-topup-stop);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: var(--giz-text-3);
+        cursor: pointer;
+        transform: translateX(-50%);
+
+        &:hover { color: var(--giz-text-1); }
+
+        &--on,
+        &--on:hover { color: var(--giz-text-1); }
+    }
+
+    &__dot {
+        width: 1.8rem;
+        height: 1.8rem;
+        border-radius: 50%;
+        background: var(--giz-panel);
+        box-shadow: inset 0 0 0 0.3rem var(--giz-glass-10);
+        transition: background 0.2s, box-shadow 0.2s;
+    }
+
+    &__stop--past &__dot { box-shadow: inset 0 0 0 0.3rem var(--giz-accent); }
+
+    &__stop--on &__dot {
+        background: var(--giz-accent);
+        box-shadow: 0 0 0 0.4rem var(--giz-panel), 0 0 0 0.55rem var(--giz-accent);
+    }
+
+    &__stop-label {
+        white-space: nowrap;
+        font-family: $font-family-header-theme-client;
+        font-size: 1.35rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+    }
+
+    &__error {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--giz-danger-soft);
+
+        i { font-size: 1.8rem; }
+    }
+
+    &__submit {
+        width: 100%;
+        min-height: 5.2rem;
+        font-size: 1.6rem;
+    }
+
+    &__step--pay {
+        align-items: center;
+        gap: 1.4rem;
+    }
+
+    &__pay-sum {
+        min-width: 0;
+        font-family: $font-family-header-theme-client;
+        font-size: 3rem;
+        font-weight: 800;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+    }
+
+    &__change {
+        flex: none;
+        width: 3.6rem;
+        height: 3.6rem;
+        display: grid;
+        place-items: center;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: var(--giz-glass-5);
         color: var(--giz-text-2);
+        font-size: 1.6rem;
+        cursor: pointer;
+        transition: background 0.16s, color 0.16s;
+
+        &:hover {
+            background: var(--giz-glass-10);
+            color: var(--giz-text-1);
+        }
+    }
+
+    &__qr {
+        padding: 1.4rem;
+        border-radius: 2rem;
+        background: var(--giz-white);
+        line-height: 0;
+        animation: giz-topup-qr 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
+
+        svg {
+            width: 22rem;
+            height: 22rem;
+            shape-rendering: crispedges;
+        }
+    }
+
+    &__from-pc {
+        width: 100%;
+        margin-top: 0.8rem;
+    }
+
+    &__done {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.2rem;
+        padding: 1.2rem 0 0.4rem;
+        text-align: center;
+        animation: giz-buy-in 0.36s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+        .giz-buy__btn--primary {
+            min-width: 16rem;
+            margin-top: 1.2rem;
+        }
+    }
+
+    &__done-sum {
+        font-family: $font-family-header-theme-client;
+        font-size: 8rem;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -0.03em;
+        font-variant-numeric: tabular-nums;
+    }
+
+    &__done-title {
+        font-size: 2.2rem;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+    }
+
+    // The auto-close countdown: a line just inside the tile's edge that runs out in 5 s, set in
+    // from the edge so it stands on the accent and not against the backdrop. Each rect is measured
+    // as 100 (pathLength), whatever the tile's size.
+    &__countdown {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    &__countdown-track,
+    &__countdown-fill {
+        x: 0.6rem;
+        y: 0.6rem;
+        width: calc(100% - 1.2rem);
+        height: calc(100% - 1.2rem);
+        rx: calc(var(--giz-topup-done-radius, 2rem) - 0.6rem);
+        fill: none;
+        stroke-width: 2.5px;
+    }
+
+    &__countdown-track { stroke: color-mix(in srgb, var(--giz-on-accent) 12%, transparent); }
+
+    &__countdown-fill {
+        stroke: var(--giz-on-accent);
+        stroke-dasharray: 100 100;
+        stroke-dashoffset: 0;
+        animation: giz-deposit-countdown 5s linear forwards;
     }
 }
 
-@keyframes giz-deposit-success-pop {
-    0% {
-        transform: scale(0.4);
+// The payment went through: the result stands on the accent, in its dark ink. In the top-up
+// dialog the whole sheet turns to the accent; elsewhere the result is an accent card.
+.giz-user-online-deposit--done {
+    padding: 3.2rem 2.4rem 2.4rem;
+    border-radius: 2rem;
+    background: var(--giz-accent);
+    color: var(--giz-on-accent);
+
+    .giz-buy__btn.giz-buy__btn--primary {
+        &,
+        &:hover:not(:disabled) {
+            background: var(--giz-on-accent);
+            color: var(--giz-accent);
+            filter: none;
+        }
+    }
+
+}
+
+.giz-buy.giz-buy--topup { padding-top: 2.4rem; }
+
+// In the top-up dialog the whole sheet is the tile: the result drops its own card and lets the
+// countdown run round the sheet's edge.
+.giz-buy--topup:has(.giz-user-online-deposit--done) {
+    --giz-topup-done-radius: 2.2rem;
+    background: var(--giz-accent);
+    box-shadow: 0 4rem 9rem -3rem rgba(var(--giz-black-rgb), 0.95);
+
+    .giz-user-online-deposit--done {
+        position: static;
+        padding: 0;
+        background: none;
+    }
+}
+
+// Waiting for the payment: the accent light at the top of the sheet slowly breathes, under its
+// content (isolation keeps it above the sheet's own background).
+.giz-buy:has(.giz-user-online-deposit--waiting),
+.giz-grace__deposit:has(.giz-user-online-deposit--waiting) {
+    position: relative;
+    isolation: isolate;
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        border-radius: inherit;
+        background: linear-gradient(176deg, rgba(var(--giz-accent-rgb), 0.26) 0%, rgba(var(--giz-accent-rgb), 0) 46%);
+        animation: giz-topup-breathe 3.2s ease-in-out infinite;
+    }
+}
+
+[#{$client-theme-comp-attr}] .giz-user-online-deposit__amount {
+    .giz-input-control { overflow: visible; }
+
+    .giz-input-control .giz-input-root,
+    .giz-input-control .giz-input-root.giz-input-root--outline {
+        &,
+        &:hover,
+        &:focus-within {
+            width: auto;
+            height: auto;
+            padding: 0;
+            border: 0;
+            box-shadow: none;
+            background: none;
+        }
+
+        &::after { display: none; }
+
+        .giz-input-wrapper {
+            width: auto;
+            height: auto;
+        }
+    }
+
+    .giz-input-control .giz-input-root input,
+    .giz-input-control .giz-input-root.giz-input-root--small input {
+        position: static;
+        width: auto;
+        height: auto;
+        min-width: 1ch;
+        max-width: 100%;
+        field-sizing: content;
+        padding: 0;
+        caret-color: var(--giz-accent);
+        color: var(--giz-text-1);
+        font-family: $font-family-header-theme-client;
+        font-size: var(--giz-topup-size);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1.05;
+        text-align: center;
+
+        &::placeholder { color: var(--giz-text-off); }
+    }
+
+    .giz-input-control .giz-input-label,
+    .giz-input-validation-label { display: none; }
+}
+
+@keyframes giz-topup-qr {
+    from {
         opacity: 0;
+        transform: scale(0.92);
     }
-    60% {
-        transform: scale(1.08);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
+}
+
+@keyframes giz-topup-breathe {
+    0%,
+    100% { opacity: 0.15; }
+
+    50% { opacity: 1; }
 }
 
 @keyframes giz-deposit-countdown {
-    from {
-        transform: scaleX(1);
-    }
-    to {
-        transform: scaleX(0);
-    }
-}
-
-.giz-user-online-deposit-dialog {
-    width: 52rem;
-
-    .close-btn {
-        background: var(--giz-glass-6);
-        border-radius: 50%;
-
-        &:hover {
-            background: var(--giz-glass-11);
-        }
-    }
+    to { stroke-dashoffset: 100; }
 }
 
 .giz-top-bar .giz-user-online-deposit-menu {
-    min-width: 40rem;
-    border-radius: 2rem;
+    width: 46rem;
+    border-radius: 2.2rem;
 }
 
-.giz-top-bar .giz-user-online-deposit__body {
-    padding: 2rem;
-}
+.giz-top-bar .giz-user-online-deposit-menu .giz-user-online-deposit {
+    padding: 1.8rem 2rem 2rem;
 
-.giz-top-bar .giz-user-online-deposit__footer {
-    padding: 0 2rem 2rem;
-    border-top: none;
+    --giz-topup-cap: 6rem;
+
+    .giz-user-online-deposit__done-sum { font-size: 6rem; }
 }

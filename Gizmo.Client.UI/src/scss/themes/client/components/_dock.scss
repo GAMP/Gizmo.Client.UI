@@ -16,19 +16,15 @@
         padding: 0 0.2rem;
         box-sizing: content-box;
 
+        // A shortcut on the rail, rested on: its game's cover, the name and a "Details" pill.
         &-tooltip {
+            width: 32rem;
+            overflow: hidden;
+            border-radius: 1.8rem;
             background: linear-gradient(180deg, rgba(var(--giz-glass-rgb), 0.97), rgba(var(--giz-glass-2-rgb), 0.985));
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--giz-glass-7);
-            box-shadow: 0 8px 32px rgba(var(--giz-black-rgb), 0.6);
-            border-radius: 1.6rem;
-            padding: 1.4rem 1.6rem;
-            white-space: nowrap;
-            min-width: 23.4rem;
-            display: grid;
-            grid-template-rows: min-content auto min-content;
-            gap: 0.4rem;
+            box-shadow: inset 0 0 0 1px var(--giz-glass-9), 0 2.4rem 5rem -2rem rgba(var(--giz-black-rgb), 0.8);
 
             &-wrapper {
                 position: absolute;
@@ -43,24 +39,64 @@
                 }
             }
 
-            &__header {
-                font-family: $font-family-header-theme-client;
-                font-size: 1.4rem;
-                font-weight: 700;
-                color: var(--giz-text-1);
+            &__cover {
+                position: relative;
+                height: 11rem;
+                overflow: hidden;
+                background: var(--giz-glass-3);
+
+                > *,
+                .giz-default-image {
+                    width: 100%;
+                    height: 100%;
+                }
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    object-position: center 30%;
+                }
             }
 
             &__body {
-                font-size: 1.3rem;
-                color: var(--giz-text-3);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+                padding: 1.4rem 1.6rem 1.6rem;
             }
 
-            &__actions {
-                justify-self: right;
+            &__name {
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font-family: $font-family-header-theme-client;
+                font-size: 1.6rem;
+                font-weight: 800;
+                color: var(--giz-text-1);
+            }
 
-                .giz-button {
-                    padding: 0 1.7rem;
-                }
+            &__details {
+                flex: none;
+                height: 3.8rem;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.6rem;
+                padding: 0 1.6rem;
+                border: 0;
+                border-radius: $giz-r-pill;
+                background: var(--giz-action-tonal-bg);
+                color: var(--giz-action-tonal-ink);
+                font-size: 1.4rem;
+                font-weight: 700;
+                cursor: pointer;
+                transition: filter 0.15s;
+
+                &:hover { filter: brightness(1.15); }
+
+                i { font-size: 1.5rem; }
             }
         }
     }

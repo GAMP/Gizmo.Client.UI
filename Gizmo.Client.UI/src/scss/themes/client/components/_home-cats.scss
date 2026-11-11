@@ -1,18 +1,16 @@
 //=============== Home categories ================//
-// The bar tab's product groups as pills; the open one tinted with the accent.
+// The bar tab's product groups as pills in one row that scrolls sideways (giz-scroller);
+// the open one tinted with the accent.
 
 .giz-home-cats {
     flex: none;
     margin-top: 1.4rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
+
+    .giz-scroller__track { gap: 0.6rem; }
 
     &__cat {
         height: 3.2rem;
-        max-width: 100%;
         padding: 0 1.3rem;
-        overflow: hidden;
         border: 0;
         border-radius: $giz-r-pill;
         background: var(--giz-glass-4);
@@ -21,9 +19,9 @@
         font-family: $font-family-header-theme-client;
         font-size: 1.25rem;
         font-weight: 700;
-        text-overflow: ellipsis;
         white-space: nowrap;
         cursor: pointer;
+        transition: background 0.2s, box-shadow 0.2s, color 0.2s;
 
         &:hover { color: var(--giz-ink); }
 

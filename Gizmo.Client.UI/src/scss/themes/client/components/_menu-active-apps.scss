@@ -140,7 +140,7 @@
 }
 
 .giz-top-bar .giz-active-apps {
-    min-width: 46rem;
+    min-width: 52rem;
     border-radius: 2rem;
 }
 
@@ -148,55 +148,200 @@
     padding: 0.8rem;
 }
 
+// A running program is a row: its icon, its name and state, then its actions as round
+// buttons whose name opens out to the left on hover. Terminating is the only tinted one; a
+// program being prepared offers only to cancel.
+// Buttons sit edge to edge (the gap between them is transparent border), and every name opens
+// and closes on the same curve, so the button closing hands its width to the one opening: the
+// button under the pointer stays under it whichever way the pointer moves.
 .giz-top-bar .giz-active-app-card {
     display: grid;
-    grid-template-columns: min-content 1fr min-content;
+    grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
     gap: 1.4rem;
-    padding: 1rem 1.2rem;
-    border: 1px solid transparent;
-    border-bottom: none;
-    border-radius: 1.4rem;
-    transition: background 0.15s, border-color 0.15s;
+    padding: 1rem 1rem 1rem 1.2rem;
+    border: 0;
+    border-radius: 1.6rem;
+    transition: background 0.15s;
+
+    &:hover { background: var(--giz-glass-4); }
+
+    &__image {
+        position: relative;
+        width: 4.6rem;
+        height: 4.6rem;
+        padding: 0;
+        display: grid;
+        place-items: center;
+        background: none;
+
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: var(--giz-exe-icon-radius, 50%);
+            object-fit: var(--giz-exe-icon-fit, cover);
+            transform: scale(var(--giz-exe-icon-scale, 1));
+        }
+
+        .giz-default-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        &--free {
+            --giz-exe-icon-radius: 0;
+            --giz-exe-icon-fit: contain;
+            --giz-exe-icon-scale: 0.86;
+        }
+
+        .giz-universal-executable-progress-bar {
+            --giz-exe-ring-inset: -0.5rem;
+        }
+
+        // Everything listed here runs; the running mark would only repeat that.
+        .giz-universal-executable-progress-bar__ring--running { display: none; }
+    }
+
+    &__info {
+        min-width: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+
+        &__title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--giz-ink);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        &__status {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--giz-text-3);
+            white-space: nowrap;
+        }
+    }
+
+    &__actions {
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        margin-right: -0.3rem;
+    }
+
+    &__act {
+        flex: none;
+        height: 3.8rem;
+        padding: 0 1rem;
+        display: inline-flex;
+        align-items: center;
+        border: solid transparent;
+        border-width: 0 0.3rem;
+        background-clip: padding-box;
+        border-radius: $giz-r-pill;
+        background-color: var(--giz-glass-6);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-9);
+        color: var(--giz-text-1);
+        font: inherit;
+        font-size: 1.35rem;
+        font-weight: 700;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: background-color 0.2s, box-shadow 0.2s, color 0.2s;
+
+        i { font-size: 1.8rem; }
+
+        &:hover,
+        &:focus-visible {
+            background-color: var(--giz-glass-9);
+        }
+
+        &--on,
+        &--on:hover {
+            background-color: rgba(var(--giz-accent-rgb), 0.22);
+            box-shadow: inset 0 0 0 1px rgba(var(--giz-accent-rgb), 0.5);
+            color: var(--giz-accent-pale);
+        }
+
+        &--stop,
+        &--stop:hover {
+            background-color: rgba(var(--giz-danger-rgb), 0.16);
+            box-shadow: inset 0 0 0 1px rgba(var(--giz-danger-rgb), 0.32);
+            color: var(--giz-danger-soft);
+        }
+    }
+
+    &__label {
+        display: grid;
+        grid-template-columns: 0fr;
+        transition: grid-template-columns 0.34s cubic-bezier(0.3, 0.8, 0.25, 1);
+
+        > span {
+            min-width: 0;
+            overflow: hidden;
+        }
+    }
+
+    &__label-text {
+        display: block;
+        padding: 0 0.5rem 0 0.7rem;
+        opacity: 0;
+        transition: opacity 0.16s ease;
+    }
+
+    // Several personal files: a glass inset under the row, one line per folder, in the
+    // manager's own look.
+    &__files {
+        grid-column: 1 / -1;
+        display: grid;
+        gap: 0.2rem;
+        padding: 0.6rem;
+        border-radius: 1.6rem;
+        background: var(--giz-glass-3);
+        box-shadow: inset 0 0 0 1px var(--giz-glass-6);
+    }
+
+    &__file {
+        height: 4.6rem;
+        padding: 0 1.4rem;
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        border: 0;
+        border-radius: 1.2rem;
+        background: transparent;
+        color: var(--giz-text-1);
+        font: inherit;
+        font-size: 1.45rem;
+        font-weight: 700;
+        text-align: left;
+        cursor: pointer;
+        transition: background 0.15s;
+
+        i {
+            font-size: 1.9rem;
+            color: var(--giz-text-3);
+        }
+
+        &:hover { background: var(--giz-glass-6); }
+    }
 }
 
-.giz-top-bar .giz-active-app-card:hover {
-    background: var(--giz-glass-4);
-    border-color: var(--giz-glass-7);
-}
+.giz-top-bar .giz-active-app-card__act {
+    &:hover,
+    &:focus-visible,
+    &--open {
+        .giz-active-app-card__label { grid-template-columns: 1fr; }
 
-.giz-top-bar .giz-active-app-card__image {
-    padding: 0;
-    width: 4.4rem;
-    height: 4.4rem;
-    border-radius: 1.1rem;
-    overflow: hidden;
-    background: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.giz-top-bar .giz-active-app-card__image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.giz-top-bar .giz-active-app-card__info {
-    padding: 0;
-    min-width: 0;
-}
-
-.giz-top-bar .giz-active-app-card__info__title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--giz-ink);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.giz-top-bar .giz-active-app-card__actions {
-    padding: 0;
+        .giz-active-app-card__label-text {
+            opacity: 1;
+            transition: opacity 0.22s ease 0.08s;
+        }
+    }
 }
