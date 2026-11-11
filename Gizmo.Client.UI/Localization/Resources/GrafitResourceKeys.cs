@@ -162,7 +162,6 @@
         public const string SHELL_SERVER_OFFLINE = nameof(SHELL_SERVER_OFFLINE);
         public const string SHELL_HANDOVER_SAVE_PROGRESS = nameof(SHELL_HANDOVER_SAVE_PROGRESS);
         public const string SHELL_GRACE_UNTIL_LOGOUT = nameof(SHELL_GRACE_UNTIL_LOGOUT);
-        public const string SHELL_PEEK_DURATION = nameof(SHELL_PEEK_DURATION);
         public const string SHELL_PEEK_BUY = nameof(SHELL_PEEK_BUY);
         public const string SHELL_PEEK_PLAY = nameof(SHELL_PEEK_PLAY);
         public const string SHELL_PEEK_TODAY_OFF = nameof(SHELL_PEEK_TODAY_OFF);
