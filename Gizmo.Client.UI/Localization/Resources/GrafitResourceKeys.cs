@@ -165,6 +165,7 @@
         public const string SHELL_PEEK_DURATION = nameof(SHELL_PEEK_DURATION);
         public const string SHELL_PEEK_BUY = nameof(SHELL_PEEK_BUY);
         public const string SHELL_PEEK_PLAY = nameof(SHELL_PEEK_PLAY);
+        public const string SHELL_PEEK_TODAY_OFF = nameof(SHELL_PEEK_TODAY_OFF);
         public const string SHELL_PEEK_EXPIRES = nameof(SHELL_PEEK_EXPIRES);
         public const string SHELL_PEEK_CONTENTS = nameof(SHELL_PEEK_CONTENTS);
         public const string SHELL_RESV_SHORT = nameof(SHELL_RESV_SHORT);
@@ -303,7 +304,6 @@
         public const string SHELL_HELP_SENT_NOTE = nameof(SHELL_HELP_SENT_NOTE);
         public const string SHELL_TOPUP_PAY_AMOUNT = nameof(SHELL_TOPUP_PAY_AMOUNT);
         public const string SHELL_TOPUP_LIMITS = nameof(SHELL_TOPUP_LIMITS);
-        public const string SHELL_TOPUP_MIN = nameof(SHELL_TOPUP_MIN);
         public const string SHELL_TOPUP_MAX = nameof(SHELL_TOPUP_MAX);
         public const string SHELL_TOPUP_CHANGE_AMOUNT = nameof(SHELL_TOPUP_CHANGE_AMOUNT);
         public const string SHELL_TOPUP_LESS = nameof(SHELL_TOPUP_LESS);

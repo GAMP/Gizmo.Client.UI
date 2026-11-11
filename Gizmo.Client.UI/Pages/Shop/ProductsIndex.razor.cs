@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gizmo.Client.Options;
@@ -19,6 +20,7 @@ namespace Gizmo.Client.UI.Pages
     public partial class ProductsIndex : CustomDOMComponentBase
     {
         private Dictionary<int, UserProductGroupViewState> _userProductGroups;
+        private IReadOnlyDictionary<int, decimal> _ownPrices = CartPrices.None;
 
         #region PROPERTIES
 
@@ -37,6 +39,11 @@ namespace Gizmo.Client.UI.Pages
         [Inject]
         UserProductGroupViewStateLookupService UserProductGroupViewStateLookupService { get; set; }
 
+        [Inject]
+        ClientServerCartViewService CartService { get; set; }
+
+        protected IReadOnlyDictionary<int, decimal> OwnPrices => _ownPrices;
+
         #endregion
 
         protected string GroupClass(int? group) => group == ViewState.SelectedUserProductGroupId
@@ -45,9 +52,22 @@ namespace Gizmo.Client.UI.Pages
 
         protected string GroupPressed(int? group) => group == ViewState.SelectedUserProductGroupId ? "true" : "false";
 
+        private void OnCartChanged(object sender, EventArgs e)
+        {
+            var prices = CartPrices.Of(CartService.ViewState.Products);
+            if (CartPrices.Same(prices, _ownPrices))
+                return;
+
+            _ownPrices = prices;
+            InvokeAsync(StateHasChanged);
+        }
+
         protected override async Task OnInitializedAsync()
         {
             this.SubscribeChange(ViewState);
+
+            _ownPrices = CartPrices.Of(CartService.ViewState.Products);
+            CartService.ViewState.OnChange += OnCartChanged;
 
             var productGroups = await UserProductGroupViewStateLookupService.GetStatesAsync();
 
@@ -58,6 +78,7 @@ namespace Gizmo.Client.UI.Pages
 
         public override void Dispose()
         {
+            CartService.ViewState.OnChange -= OnCartChanged;
             this.UnsubscribeChange(ViewState);
 
             base.Dispose();

@@ -4,6 +4,7 @@ using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using Gizmo.Client.Options;
 using Gizmo.Client.UI.Localization.Resources;
 using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.Services;
@@ -12,6 +13,7 @@ using Gizmo.UI.Services;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 
 namespace Gizmo.Client.UI.Components
@@ -28,6 +30,9 @@ namespace Gizmo.Client.UI.Components
 
         [Inject]
         UserOnlineDepositViewState ViewState { get; set; }
+
+        [Inject]
+        IOptions<UserOnlineDepositOptions> DepositOptions { get; set; }
 
         [Parameter]
         public EventCallback<MouseEventArgs> OnClick { get; set; }
@@ -79,7 +84,11 @@ namespace Gizmo.Client.UI.Components
 
         protected int FixedAmountChars => AmountText.Length;
 
-        protected int AmountMaxLength => Math.Truncate(ViewState.MaximumAmount ?? 99_999_999m).ToString(CultureInfo.InvariantCulture).Length + 3;
+        private decimal AmountCeiling => ViewState.MaximumAmount is decimal configured
+            ? Math.Min(configured, DepositOptions.Value.MaximumAmount)
+            : DepositOptions.Value.MaximumAmount;
+
+        protected int AmountMaxLength => Math.Truncate(AmountCeiling).ToString(CultureInfo.InvariantCulture).Length + 3;
 
         protected string FigureClass => HasPresets
             ? "giz-user-online-deposit__figure giz-user-online-deposit__figure--steps"
@@ -95,22 +104,9 @@ namespace Gizmo.Client.UI.Components
             ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TOPUP_PAY_AMOUNT, AmountText)
             : GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_ONLINE_DEPOSIT_TITLE));
 
-        protected string AmountNote
-        {
-            get
-            {
-                if (ViewState.MinimumAmount is decimal min && ViewState.MaximumAmount is decimal max)
-                    return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TOPUP_LIMITS, Money(min), Money(max));
-
-                if (ViewState.MinimumAmount is decimal from)
-                    return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TOPUP_MIN, Money(from));
-
-                if (ViewState.MaximumAmount is decimal to)
-                    return GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TOPUP_MAX, Money(to));
-
-                return string.Empty;
-            }
-        }
+        protected string AmountNote => ViewState.MinimumAmount is decimal min
+            ? GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TOPUP_LIMITS, Money(min), Money(AmountCeiling))
+            : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_TOPUP_MAX, Money(AmountCeiling));
 
         protected string NoteClass => ViewState.Amount.HasValue && ViewState.IsValid == false
             ? "giz-user-online-deposit__note giz-user-online-deposit__note--invalid"

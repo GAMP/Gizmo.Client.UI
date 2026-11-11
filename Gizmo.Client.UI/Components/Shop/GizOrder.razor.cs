@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using Gizmo.Client.UI.Localization.Resources;
 using Gizmo.Client.UI.Localization.Services;
+using Gizmo.Client.UI.Services;
 using Gizmo.Client.UI.View.Services;
 using Gizmo.UI.Services;
 using Gizmo.Web.Api.Models;
@@ -27,6 +29,9 @@ namespace Gizmo.Client.UI.Components
 
         [Inject]
         ClientServerCartViewService ClientServerCartViewService { get; set; }
+
+        [Inject]
+        IClientDialogService DialogService { get; set; }
 
         private int ProductCount => ClientServerCartViewService.ViewState.Products.Count();
 
@@ -119,6 +124,14 @@ namespace Gizmo.Client.UI.Components
             this.UnsubscribeChange(Service.ViewState);
 
             base.Dispose();
+        }
+
+        private async Task OnClickClearHandler()
+        {
+            if (await Confirmation.AskAsync(DialogService,
+                GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DIALOG_CLEAR_CART_TITLE),
+                GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DIALOG_CLEAR_CART_TEXT)))
+                ClientServerCartViewService.Clear();
         }
     }
 }

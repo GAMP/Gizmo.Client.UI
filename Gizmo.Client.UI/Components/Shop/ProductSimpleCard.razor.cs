@@ -30,6 +30,9 @@ namespace Gizmo.Client.UI.Components
         [Parameter]
         public UserProductViewState Product { get; set; }
 
+        [Parameter]
+        public decimal? OwnPrice { get; set; }
+
         public void OpenDetails()
         {
             if (_clickHandled)
@@ -68,6 +71,11 @@ namespace Gizmo.Client.UI.Components
                 {
                     _shouldRender = true;
                 }
+            }
+
+            if (parameters.TryGetValue<decimal?>(nameof(OwnPrice), out var newOwnPrice) && newOwnPrice != OwnPrice)
+            {
+                _shouldRender = true;
             }
 
             await base.SetParametersAsync(parameters);

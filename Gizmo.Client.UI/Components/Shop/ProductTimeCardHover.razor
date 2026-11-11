@@ -9,16 +9,23 @@
             <b>@TimeNumber</b>
             <span>@TimeUnit</span>
         </div>
-        @if (PlaySegments.Count > 0)
+        @if (PlayDay is { } playDay)
         {
             <div class="giz-peek__block">
-                <div class="giz-peek__cap"><span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PEEK_PLAY)</span>@if (PlayWindow is { Length: > 0 } playWindow){<b>@playWindow</b>}</div>
-                <div class="giz-peek__day">
-                    @foreach (var segment in PlaySegments)
-                    {
-                        <span class="giz-peek__day-on" style="--giz-peek-from: @segment.Left; --giz-peek-span: @segment.Width"></span>
-                    }
-                </div>
+                <div class="giz-peek__cap"><span>@GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PEEK_PLAY)</span>@if (PlaysToday(playDay)){<b>@playDay.Hours</b>}</div>
+                @if (PlaysToday(playDay))
+                {
+                    <div class="giz-peek__day">
+                        @foreach (var segment in playDay.Segments)
+                        {
+                            <span class="giz-peek__day-on" style="--giz-peek-from: @segment.Left; --giz-peek-span: @segment.Width"></span>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="giz-peek__day giz-peek__day--off">@TodayOffText</div>
+                }
             </div>
         }
         @if (BuyWeek.Count > 0)

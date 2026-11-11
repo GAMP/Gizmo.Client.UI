@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Gizmo.Client.UI.Localization.Resources;
 using Gizmo.Client.UI.Localization.Services;
 using Gizmo.Client.UI.View.States;
 using Gizmo.UI.Services;
@@ -27,8 +28,11 @@ namespace Gizmo.Client.UI.Components
 
         private string TimeUnit => ProductHelpers.GetProductTimeText(Product, GrafitLocalization);
 
-        private IReadOnlyList<AvailabilityShape.Segment> PlaySegments =>
-            AvailabilityShape.DaySegments(Product?.TimeProduct?.UsageAvailability, DateTime.Now.DayOfWeek);
+        private AvailabilityShape.Day PlayDay => AvailabilityShape.Today(Product?.TimeProduct?.UsageAvailability, DateTime.Now);
+
+        private static bool PlaysToday(AvailabilityShape.Day day) => day.Segments.Count > 0;
+
+        private string TodayOffText => GrafitLocalization.GetString(GrafitResourceKeys.SHELL_PEEK_TODAY_OFF);
 
         private IReadOnlyList<AvailabilityShape.WeekDay> BuyWeek =>
             AvailabilityShape.Week(Product?.PurchaseAvailability, CultureInfo.CurrentCulture);
@@ -38,10 +42,6 @@ namespace Gizmo.Client.UI.Components
         private string BuyWindow => Product?.PurchaseAvailability is null
             ? null
             : ProductHelpers.GetPurchaseAvailabilities(Product, true, LocalizationService).FirstOrDefault();
-
-        private string PlayWindow => Product?.TimeProduct?.UsageAvailability is null
-            ? null
-            : ProductHelpers.GetUsageAvailabilities(Product, true, LocalizationService).FirstOrDefault();
 
         private string ExpiryText
         {

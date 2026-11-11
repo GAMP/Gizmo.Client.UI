@@ -176,18 +176,15 @@ namespace Gizmo.Client.UI.Components
 
         protected override void SelectPoints()
         {
-            var left = PointsToSpend;
+            var lines = EitherWayLines.OrderByDescending(LinePoints).ThenBy(a => a.Number).ToList();
+            var covered = PointsCover.MostCovered(lines.Select(LinePoints).ToList(), PointsToSpend);
 
-            foreach (var line in EitherWayLines.OrderByDescending(LinePoints).ThenBy(a => a.Number))
+            for (var index = 0; index < lines.Count; index++)
             {
-                var points = LinePoints(line);
-                var wanted = points <= left ? OrderLinePayType.Points : OrderLinePayType.Cash;
+                var wanted = covered.Contains(index) ? OrderLinePayType.Points : OrderLinePayType.Cash;
 
-                if (wanted == OrderLinePayType.Points)
-                    left -= points;
-
-                if (line.PayType != wanted)
-                    CartService.SetPayType(line.Guid, wanted);
+                if (lines[index].PayType != wanted)
+                    CartService.SetPayType(lines[index].Guid, wanted);
             }
 
             if (MoneyWay is not null)

@@ -12,24 +12,32 @@ namespace Gizmo.Client.UI
 
         public sealed record Segment(string Left, string Width);
 
+        public sealed record Day(IReadOnlyList<Segment> Segments, string Hours);
+
         public sealed record WeekDay(string Name, bool On);
 
-        public static IReadOnlyList<Segment> DaySegments(ProductAvailabilityViewState availability, DayOfWeek today)
+        private static readonly Day Closed = new(Array.Empty<Segment>(), string.Empty);
+
+        public static Day Today(ProductAvailabilityViewState availability, DateTime now)
         {
             if (availability is null || !availability.TimeRange)
-                return Array.Empty<Segment>();
+                return null;
 
-            var day = availability.DaysAvailable.FirstOrDefault(a => a.Day == today) ?? availability.DaysAvailable.FirstOrDefault();
-            if (day is null)
-                return Array.Empty<Segment>();
+            if (OutsideDates(availability, now.Date))
+                return Closed;
 
-            var times = day.DayTimesAvailable?.Where(a => a.EndSecond > a.StartSecond).ToList();
-            if (times is null || times.Count == 0)
-                return new[] { new Segment("0%", "100%") };
-
-            return times
-                .Select(a => new Segment(Percent(a.StartSecond / SecondsPerDay), Percent((a.EndSecond - a.StartSecond) / SecondsPerDay)))
+            var times = availability.DaysAvailable
+                .Where(a => a.Day == now.DayOfWeek)
+                .SelectMany(OpenTimes)
+                .OrderBy(a => a.StartSecond)
                 .ToList();
+
+            if (times.Count == 0)
+                return Closed;
+
+            return new Day(
+                times.Select(a => new Segment(Percent(a.StartSecond / SecondsPerDay), Percent((a.EndSecond - a.StartSecond) / SecondsPerDay))).ToList(),
+                string.Join(", ", times.Select(a => Clock(a.StartSecond) + "–" + Clock(a.EndSecond))));
         }
 
         public static IReadOnlyList<WeekDay> Week(ProductAvailabilityViewState availability, CultureInfo culture)
@@ -37,7 +45,11 @@ namespace Gizmo.Client.UI
             if (availability is null || !availability.TimeRange)
                 return Array.Empty<WeekDay>();
 
-            var open = availability.DaysAvailable.Select(a => a.Day).ToHashSet();
+            var open = availability.DaysAvailable
+                .Where(a => OpenTimes(a).Any())
+                .Select(a => a.Day)
+                .ToHashSet();
+
             if (open.Count == 7)
                 return Array.Empty<WeekDay>();
 
@@ -49,12 +61,23 @@ namespace Gizmo.Client.UI
                 .ToList();
         }
 
+        private static IEnumerable<ProductAvailabilityDayTimeViewState> OpenTimes(ProductAvailabilityDayViewState day) =>
+            day?.DayTimesAvailable?.Where(a => a.EndSecond > a.StartSecond) ?? Enumerable.Empty<ProductAvailabilityDayTimeViewState>();
+
+        private static bool OutsideDates(ProductAvailabilityViewState availability, DateTime today) =>
+            availability.DateRange &&
+            ((availability.StartDate is DateTime start && start.Date > today) ||
+             (availability.EndDate is DateTime end && end.Date < today));
+
         private static string ShortName(CultureInfo culture, DayOfWeek day)
         {
             var name = culture.DateTimeFormat.GetShortestDayName(day);
 
             return name.Length > 0 ? char.ToUpper(name[0], culture) + name[1..] : name;
         }
+
+        private static string Clock(int second) =>
+            (second / 3600).ToString("00", CultureInfo.InvariantCulture) + ":" + (second % 3600 / 60).ToString("00", CultureInfo.InvariantCulture);
 
         private static string Percent(double fraction) => (fraction * 100).ToString("0.###", CultureInfo.InvariantCulture) + "%";
     }

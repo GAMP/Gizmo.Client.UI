@@ -64,6 +64,7 @@ namespace Gizmo.Client.UI.Pages
         private IReadOnlyList<UserProductGroupViewState> _barGroups = Array.Empty<UserProductGroupViewState>();
         private IReadOnlyList<UserProductViewState> _barGoods = Array.Empty<UserProductViewState>();
         private Dictionary<int, UserCartProductViewState> _cartLines = new();
+        private IReadOnlyDictionary<int, decimal> _ownPrices = CartPrices.None;
         private readonly CancellationTokenSource _lifetime = new();
 
         #endregion
@@ -134,6 +135,7 @@ namespace Gizmo.Client.UI.Pages
             }
 
             _cartLines = lines;
+            _ownPrices = CartPrices.Of(CartService.ViewState.Products);
         }
 
         private void OnCartChanged(object sender, EventArgs e) => BuildCart();
@@ -213,11 +215,7 @@ namespace Gizmo.Client.UI.Pages
 
         private UserCartProductViewState CartLine(int productId) => _cartLines.GetValueOrDefault(productId);
 
-        private decimal? OwnPrice(UserProductViewState product) =>
-            CartLine(product.Id) is { Quantity: > 0, PayType: OrderLinePayType.Cash, TotalPrice: > 0 } line &&
-            line.TotalPrice / line.Quantity < product.UnitPrice
-                ? line.TotalPrice / line.Quantity
-                : null;
+        private decimal? OwnPrice(UserProductViewState product) => CartPrices.Own(product, _ownPrices);
 
         private string GoodClass(UserProductViewState product) => CartLine(product.Id) is { Quantity: > 0 }
             ? "giz-home-good giz-home-good--in"
@@ -277,9 +275,15 @@ namespace Gizmo.Client.UI.Pages
         {
             get
             {
-                var popular = ViewState.PopularProducts.Select(a => a.Id).ToHashSet();
+                var rank = new Dictionary<int, int>();
+                foreach (var product in ViewState.PopularProducts)
+                    rank.TryAdd(product.Id, rank.Count);
 
-                return ShopProducts.Where(a => popular.Contains(a.Id)).Take(HERO_SLIDES).ToList();
+                return ShopProducts
+                    .Where(a => rank.ContainsKey(a.Id))
+                    .OrderBy(a => rank[a.Id])
+                    .Take(HERO_SLIDES)
+                    .ToList();
             }
         }
 
@@ -291,9 +295,32 @@ namespace Gizmo.Client.UI.Pages
 
         private bool HasPopularApps => ViewState.PopularApplications.Any();
 
-        private IEnumerable<AppViewState> Apps => HasPopularApps
-            ? ViewState.PopularApplications
-            : _apps.OrderBy(a => a.Title);
+        private IEnumerable<AppViewState> Apps
+        {
+            get
+            {
+                var rank = PopularAppRank;
+                var source = _apps.Any() ? _apps : ViewState.PopularApplications;
+
+                return source
+                    .OrderBy(a => rank.TryGetValue(a.ApplicationId, out var place) ? place : int.MaxValue)
+                    .ThenBy(a => a.Title);
+            }
+        }
+
+        private Dictionary<int, int> PopularAppRank
+        {
+            get
+            {
+                var rank = new Dictionary<int, int>();
+                foreach (var app in ViewState.PopularApplications)
+                    rank.TryAdd(app.ApplicationId, rank.Count);
+
+                return rank;
+            }
+        }
+
+        private bool IsPopularApp(AppViewState app) => ViewState.PopularApplications.Any(a => a.ApplicationId == app.ApplicationId);
 
         private string StripCaption => HasPopularApps
             ? GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_POPULAR_APPS))
@@ -305,11 +332,14 @@ namespace Gizmo.Client.UI.Pages
         {
             get
             {
-                var next = Apps.Skip(STRIP_APPS).Take(HERO_SLIDES).ToList();
+                var rest = Apps.Skip(StripApps.Count).ToList();
+                var popular = rest.Where(IsPopularApp).ToList();
 
-                return next.Count > 0 ? next : Apps.Take(HERO_SLIDES).ToList();
+                return (popular.Count > 0 ? popular : rest).Take(HERO_SLIDES).ToList();
             }
         }
+
+        private bool HeroAppsPopular => HeroApps is { Count: > 0 } apps && IsPopularApp(apps[0]);
 
         private IReadOnlyList<AppExeViewState> HeroExecutables(int applicationId)
         {
@@ -377,7 +407,7 @@ namespace Gizmo.Client.UI.Pages
                 if (HasPromo)
                     return HeroKind.Banner;
 
-                if (HasPopularApps)
+                if (HeroAppsPopular)
                     return HeroKind.App;
 
                 if (HasPopularProducts)
@@ -390,7 +420,7 @@ namespace Gizmo.Client.UI.Pages
             }
         }
 
-        private string HeroAppCaption => GrafitLocalization.GetString(HasPopularApps
+        private string HeroAppCaption => GrafitLocalization.GetString(HeroAppsPopular
             ? GrafitResourceKeys.SHELL_HERO_POPULAR
             : GrafitResourceKeys.SHELL_HOME_GAMES_SECTION);
 

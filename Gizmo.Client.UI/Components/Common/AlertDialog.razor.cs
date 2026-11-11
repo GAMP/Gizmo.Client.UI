@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Gizmo.Client.UI.Localization.Resources;
 using Gizmo.Client.UI.Localization.Services;
 using Gizmo.UI;
 using Gizmo.UI.Services;
@@ -18,9 +17,6 @@ namespace Gizmo.Client.UI.Components
 
         [CascadingParameter]
         protected GrafitLocalizationService GrafitLocalization { get; set; }
-
-        [Inject]
-        ILocalizationService LocalizationService { get; set; }
 
         [Parameter]
         public DialogDisplayOptions DisplayOptions { get; set; }
@@ -59,24 +55,6 @@ namespace Gizmo.Client.UI.Components
 
         protected bool HasMessage => !string.IsNullOrWhiteSpace(Message);
 
-        protected string ShownTitle => Reworded?.Title ?? Title;
-
-        protected string ShownMessage => Reworded?.Message ?? Message;
-
-        private (string Title, string Message)? Reworded
-        {
-            get
-            {
-                if (Message == Vendor(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_LOGOUT_VERIFICATION_MESSAGE)))
-                    return (GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DIALOG_SIGN_OUT_TITLE), GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DIALOG_SIGN_OUT_TEXT));
-
-                if (Message == Vendor(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_SHOP_VERIFY_CLEAR_CART)))
-                    return (GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DIALOG_CLEAR_CART_TITLE), GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DIALOG_CLEAR_CART_TEXT));
-
-                return null;
-            }
-        }
-
         protected string CloseLabel => Text(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CLOSE));
 
         protected IReadOnlyList<DialogAction> Actions => Buttons switch
@@ -112,8 +90,6 @@ namespace Gizmo.Client.UI.Components
         private DialogAction Secondary(AlertDialogResultButton result, string key) => new(result, Text(key), false);
 
         private string Text(string key) => GrafitLocalization.GetString(key);
-
-        private string Vendor(string key) => LocalizationService.GetString(key);
 
         private async Task CloseDialog(AlertDialogResultButton alertDialogResultButton)
         {

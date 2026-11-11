@@ -73,11 +73,14 @@
         font-weight: 700;
         color: var(--giz-text-3);
 
+        span {
+            flex: none;
+            white-space: nowrap;
+        }
+
         b {
             min-width: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            text-align: right;
             font-family: $font-family-numeric-theme-client;
             font-variant-numeric: tabular-nums;
             color: var(--giz-text-1);
@@ -92,6 +95,21 @@
         height: 0.8rem;
         border-radius: $giz-r-pill;
         background: var(--giz-glass-7);
+
+        // A day the package does not play on: the empty track carries the note.
+        &--off {
+            height: 2.4rem;
+            padding: 0 1rem;
+            overflow: hidden;
+            background: var(--giz-glass-4);
+            font-size: 1.1rem;
+            font-weight: 700;
+            line-height: 2.4rem;
+            text-align: center;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: var(--giz-text-3);
+        }
     }
 
     &__day-on {

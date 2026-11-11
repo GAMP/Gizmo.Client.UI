@@ -38,6 +38,8 @@ namespace Gizmo.Client.UI.Components
 
         protected string CloseLabel => GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_CLOSE));
 
+        private bool IsPaymentUnderway => ViewState.PageIndex != 0 && !ViewState.IsPaid && !ViewState.IsPaymentFailed;
+
         private async Task OnDismissHandler()
         {
             await DismissCallback.InvokeAsync();
@@ -68,7 +70,8 @@ namespace Gizmo.Client.UI.Components
 
         protected override void OnInitialized()
         {
-            UserOnlineDepositViewStateService.Clear();
+            if (!IsPaymentUnderway)
+                UserOnlineDepositViewStateService.Clear();
 
             this.SubscribeChange(ViewState);
 
