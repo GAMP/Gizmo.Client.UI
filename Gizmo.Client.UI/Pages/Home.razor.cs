@@ -293,8 +293,6 @@ namespace Gizmo.Client.UI.Pages
             ? PopularShopProducts
             : ShopProducts.Take(HERO_SLIDES).ToList();
 
-        private bool HasPopularApps => ViewState.PopularApplications.Any();
-
         private IEnumerable<AppViewState> Apps
         {
             get
@@ -322,7 +320,7 @@ namespace Gizmo.Client.UI.Pages
 
         private bool IsPopularApp(AppViewState app) => ViewState.PopularApplications.Any(a => a.ApplicationId == app.ApplicationId);
 
-        private string StripCaption => HasPopularApps
+        private string StripCaption => StripApps is { Count: > 0 } strip && strip.All(IsPopularApp)
             ? GrafitLocalization.GetString(nameof(Gizmo.Client.UI.Resources.Properties.Resources.GIZ_GEN_POPULAR_APPS))
             : GrafitLocalization.GetString(GrafitResourceKeys.SHELL_HOME_GAMES_SECTION);
 

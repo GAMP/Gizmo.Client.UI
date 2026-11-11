@@ -10,6 +10,7 @@ using Gizmo.UI.Services;
 using Gizmo.Web.Api.Models;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 
 namespace Gizmo.Client.UI.Components
 {
@@ -32,6 +33,9 @@ namespace Gizmo.Client.UI.Components
 
         [Inject]
         IClientDialogService DialogService { get; set; }
+
+        [Inject]
+        ILogger<GizOrder> Logger { get; set; }
 
         private int ProductCount => ClientServerCartViewService.ViewState.Products.Count();
 
@@ -128,7 +132,7 @@ namespace Gizmo.Client.UI.Components
 
         private async Task OnClickClearHandler()
         {
-            if (await Confirmation.AskAsync(DialogService,
+            if (await Confirmation.AskAsync(DialogService, Logger,
                 GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DIALOG_CLEAR_CART_TITLE),
                 GrafitLocalization.GetString(GrafitResourceKeys.SHELL_DIALOG_CLEAR_CART_TEXT)))
                 ClientServerCartViewService.Clear();
