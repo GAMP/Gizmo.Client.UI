@@ -12,7 +12,16 @@ namespace Gizmo.Client.UI.Shared
         public string MediaPath { get; set; }
 
         [Parameter]
+        public string Preload { get; set; } = "auto";
+
+        [Parameter]
+        public double StartSeconds { get; set; }
+
+        [Parameter]
         public EventCallback<VideoEventArgs> OnVideoEvent { get; set; }
+
+        private string _appliedMediaPath;
+        private double _appliedStartSeconds;
 
         private VideoEventInterop VideoEventInterop { get; set; }
 
@@ -30,6 +39,9 @@ namespace Gizmo.Client.UI.Shared
 
             if (firstRender)
             {
+                _appliedMediaPath = MediaPath;
+                _appliedStartSeconds = StartSeconds;
+
                 try
                 {
                     VideoEventInterop = new VideoEventInterop(JsRuntime);
@@ -40,6 +52,32 @@ namespace Gizmo.Client.UI.Shared
                 {
 
                 }
+
+                return;
+            }
+
+            var sameMedia = string.Equals(_appliedMediaPath, MediaPath, StringComparison.OrdinalIgnoreCase);
+            _appliedMediaPath = MediaPath;
+
+            // A new file starts from canplay. The same file is seeked only when the clock moved it.
+            if (!sameMedia)
+            {
+                _appliedStartSeconds = StartSeconds;
+                return;
+            }
+
+            if (Math.Abs(_appliedStartSeconds - StartSeconds) < 0.5)
+                return;
+
+            _appliedStartSeconds = StartSeconds;
+
+            try
+            {
+                await JsRuntime.InvokeVoidAsync("playVideo", Id, StartSeconds);
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 

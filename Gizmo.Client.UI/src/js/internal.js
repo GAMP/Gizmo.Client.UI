@@ -890,15 +890,8 @@ window.onVideoEvent = function onVideoEvent(event, state) {
     });
 };
 
-window.onVideoCanPlayThroughEvent = function onVideoCanPlayThroughEvent(event) {
+window.onVideoCanPlayEvent = function onVideoCanPlayEvent(event) {
     onVideoEvent(event, 0);
-    //console.log('onVideoCanPlayThroughEvent');
-    //console.log(event);
-    //try {
-    //    event.target.play();
-    //} catch (error) {
-    //    console.error(error);
-    //}
 };
 
 window.onVideoEndedEvent = function onVideoEndedEvent(event) {
@@ -948,7 +941,7 @@ window.registerVideoComponent = function registerVideoComponent(element) {
         //element.addEventListener("emptied", videoEvent);
         //element.addEventListener("stalled", videoEvent);
 
-        element.addEventListener("canplaythrough", onVideoCanPlayThroughEvent);
+        element.addEventListener("canplay", onVideoCanPlayEvent);
         element.addEventListener("ended", onVideoEndedEvent);
     }
 };
@@ -963,7 +956,7 @@ window.unregisterVideoComponent = function unregisterVideoComponent(element) {
 
     if (objRefIndex > -1) {
         element.removeEventListener("pause", videoEvent);
-        element.removeEventListener("canplaythrough", onVideoCanPlayThroughEvent);
+        element.removeEventListener("canplay", onVideoCanPlayEvent);
         element.removeEventListener("ended", onVideoEndedEvent);
 
         registeredVideoComponents.splice(objRefIndex, 1);
@@ -973,15 +966,46 @@ window.unregisterVideoComponent = function unregisterVideoComponent(element) {
     }
 };
 
-window.playVideo = function playVideo(id) {
+window.playVideo = function playVideo(id, seconds) {
     try {
-        //console.log('element.play()');
         var element = document.getElementById(id);
-        if (element.currentTime > 0) {
-            element.currentTime = 0;
-        } else {
-            element.muted = true;
-            element.play();
+        if (!element)
+            return;
+
+        element.muted = true;
+
+        var startAt = (typeof seconds === "number" && isFinite(seconds) && seconds > 0) ? seconds : 0;
+        if (isFinite(element.duration) && element.duration > 0 && startAt >= element.duration)
+            startAt = Math.max(0, element.duration - 0.05);
+
+        var drift = Math.abs((element.currentTime || 0) - startAt);
+
+        // canplay fires again while the clip is already at this position.
+        // Seeking from there aborts playback, and play() issued in the same turn loses to that seek.
+        if (!element.paused && !element.ended && drift < 0.5)
+            return;
+
+        var start = function () {
+            var playPromise = element.play();
+            if (playPromise !== undefined)
+                playPromise.catch(function (error) { console.error(error); });
+        };
+
+        if (!element.ended && drift < 0.5) {
+            start();
+            return;
+        }
+
+        var onSeeked = function () {
+            element.removeEventListener("seeked", onSeeked);
+            start();
+        };
+        element.addEventListener("seeked", onSeeked);
+        try {
+            element.currentTime = startAt;
+        } catch (e) {
+            element.removeEventListener("seeked", onSeeked);
+            start();
         }
     } catch (error) {
         console.error(error);
