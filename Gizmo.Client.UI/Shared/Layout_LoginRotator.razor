@@ -7,7 +7,7 @@
         <div class="giz-login-background-wrapper previous">
             @if (_previousItem.IsVideo)
             {
-                <Layout_LoginRotatorVideo MediaPath="@_previousItem.MediaPath" />
+                <Layout_LoginRotatorVideo @key="@(_previousItem.MediaPath + "-previous")" MediaPath="@_previousItem.MediaPath" Preload="none" />
             }
             else
             {
@@ -20,7 +20,7 @@
         <div class="@AnimatedClassName">
             @if (_currentItem.IsVideo)
             {
-                <Layout_LoginRotatorVideo MediaPath="@_currentItem.MediaPath" OnVideoEvent="@OnVideoEventHandle" />
+                <Layout_LoginRotatorVideo @key="_currentItem.MediaPath" MediaPath="@_currentItem.MediaPath" StartSeconds="@_currentItem.PositionSeconds" OnVideoEvent="@OnVideoEventHandle" />
             }
             else
             {

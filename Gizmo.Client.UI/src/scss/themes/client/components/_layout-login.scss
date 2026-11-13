@@ -384,6 +384,12 @@
     }
 }
 
+// A rotator with files is not the club wallpaper. It stays visible while someone is at the PC.
+.giz-login-content:has(.giz-login-background-wrapper) .giz-login-hardcoded-bg {
+    opacity: 0;
+    transition: none;
+}
+
 // `--giz-login-wallpaper: always` (club CSS, read by grafitTheme): the club's wallpaper stays
 // while someone is at the PC. The shell's background is not laid over it; a light scrim fades
 // in instead so the form reads on any picture.
@@ -394,6 +400,19 @@ html[data-login-wallpaper="always"] .giz-login-content:not(.giz-login-content--o
     }
 
     .giz-flow { display: none; }
+}
+
+// Rotator or club wallpaper: the shell gradient and idle art must not cover media.
+html[data-login-wallpaper="always"] {
+    .giz-login-content .giz-login-hardcoded-bg {
+        opacity: 0;
+        transition: none;
+    }
+
+    .giz-login-art,
+    .giz-flow {
+        display: none;
+    }
 }
 
 // `--giz-login-surface: solid` (club CSS, read by grafitTheme): the sign-in screen's fields,
