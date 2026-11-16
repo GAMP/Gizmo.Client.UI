@@ -34,7 +34,8 @@ namespace Gizmo.Client.UI.Shared
         private bool HasReservation =>
             ViewState.ReservationId.HasValue
             && ViewState.Time.HasValue
-            && ViewState.Time.Value > DateTime.Now;
+            && ViewState.Time.Value > DateTime.Now
+            && (ViewState.ReservationNotificationTimeReached || ViewState.ReservationBlockTimeReached);
 
         private bool IsIgnored => HasReservation && ViewState.Ignored;
 
