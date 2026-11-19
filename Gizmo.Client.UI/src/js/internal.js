@@ -982,7 +982,7 @@ window.playVideo = function playVideo(id, seconds) {
 
         // canplay fires again while the clip is already at this position.
         // Seeking from there aborts playback, and play() issued in the same turn loses to that seek.
-        if (!element.paused && !element.ended && drift < 0.5)
+        if (!element.paused && !element.ended && drift < 0.15)
             return;
 
         var start = function () {
@@ -991,7 +991,7 @@ window.playVideo = function playVideo(id, seconds) {
                 playPromise.catch(function (error) { console.error(error); });
         };
 
-        if (!element.ended && drift < 0.5) {
+        if (!element.ended && drift < 0.15) {
             start();
             return;
         }

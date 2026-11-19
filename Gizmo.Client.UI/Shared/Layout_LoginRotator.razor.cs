@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Gizmo.Client.Options;
+using Gizmo.Client.UI.View.Constants;
 using Gizmo.Client.UI.View.States;
 using Gizmo.Web.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 
 namespace Gizmo.Client.UI.Shared
@@ -14,11 +17,14 @@ namespace Gizmo.Client.UI.Shared
         private double _shownPosition;
         private bool _animation = false;
         private string _nextAnimation = string.Empty;
-        private string[] _animations = new string[] { "slide-in-top", "slide-in-bottom", "slide-in-left", "slide-in-right" };
-        private Random random = new();
+        private static readonly string[] TransitionClasses = new string[] { "slide-in-left", "slide-in-top", "slide-in-right", "slide-in-bottom" };
+        private int _sequenceIndex;
 
         [Inject]
         LoginRotatorViewState ViewState { get; set; }
+
+        [Inject]
+        IOptionsMonitor<LoginRotatorOptions> LoginRotatorOptions { get; set; }
 
         private double CurrentPosition => _currentItem?.PositionSeconds ?? 0;
 
@@ -46,7 +52,7 @@ namespace Gizmo.Client.UI.Shared
             var same = _currentItem != null
                 && string.Equals(_currentItem.MediaPath, next.MediaPath, StringComparison.OrdinalIgnoreCase);
 
-            if (same && Math.Abs(_shownPosition - next.PositionSeconds) < 0.5)
+            if (same && Math.Abs(_shownPosition - next.PositionSeconds) < 0.15)
                 return;
 
             _shownPosition = next.PositionSeconds;
@@ -62,11 +68,28 @@ namespace Gizmo.Client.UI.Shared
             _currentItem = next;
 
             _animation = true;
-            _nextAnimation = _animations[random.Next(0, _animations.Length)];
+            _nextAnimation = TakeTransitionClass();
             await InvokeAsync(StateHasChanged);
             await Task.Delay(1000);
             _animation = false;
             await InvokeAsync(StateHasChanged);
+        }
+
+        private string TakeTransitionClass()
+        {
+            var transition = LoginRotatorOptions.CurrentValue.Transition;
+            if (transition == LoginRotatorTransition.Sequential)
+            {
+                var className = TransitionClasses[_sequenceIndex % TransitionClasses.Length];
+                _sequenceIndex++;
+                return className;
+            }
+
+            var index = (int)transition;
+            if ((uint)index >= (uint)TransitionClasses.Length)
+                index = 0;
+
+            return TransitionClasses[index];
         }
 
         protected override void OnInitialized()

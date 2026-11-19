@@ -66,7 +66,7 @@ namespace Gizmo.Client.UI.Shared
                 return;
             }
 
-            if (Math.Abs(_appliedStartSeconds - StartSeconds) < 0.5)
+            if (Math.Abs(_appliedStartSeconds - StartSeconds) < 0.15)
                 return;
 
             _appliedStartSeconds = StartSeconds;
